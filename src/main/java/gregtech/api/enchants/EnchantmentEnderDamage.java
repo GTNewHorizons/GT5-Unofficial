@@ -9,7 +9,6 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 
 import gregtech.api.enums.ConfigCategories;
-import gregtech.api.enums.Materials;
 import gregtech.api.util.GTConfig;
 import gregtech.api.util.GTLanguageManager;
 
@@ -20,11 +19,6 @@ public class EnchantmentEnderDamage extends EnchantmentDamage {
     public EnchantmentEnderDamage() {
         super(GTConfig.addIDConfig(ConfigCategories.IDs.enchantments, "Disjunction", 15), 2, -1);
         GTLanguageManager.addStringLocalization(getName(), "Disjunction");
-        Materials.Silver.setEnchantmentForTools(this, 2);
-        Materials.Mercury.setEnchantmentForTools(this, 3);
-        Materials.Electrum.setEnchantmentForTools(this, 3);
-        Materials.SterlingSilver.setEnchantmentForTools(this, 4);
-        Materials.AstralSilver.setEnchantmentForTools(this, 5);
         INSTANCE = this;
     }
 

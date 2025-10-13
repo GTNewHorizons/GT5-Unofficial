@@ -23,6 +23,7 @@ import cofh.api.energy.IEnergyReceiver;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
@@ -91,7 +92,8 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
 
     @Override
     public byte getTileEntityBaseType() {
-        return (byte) (mInsulated ? 9 : 8);
+        if (mInsulated) return HarvestTool.CutterLevel1.toTileEntityBaseType();
+        return HarvestTool.CutterLevel0.toTileEntityBaseType();
     }
 
     @Override

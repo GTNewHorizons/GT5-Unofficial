@@ -127,7 +127,6 @@ import org.joml.Vector3i;
 import com.google.auto.value.AutoValue;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.common.collect.SetMultimap;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
@@ -177,8 +176,8 @@ import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.RunnableSound;
-import gregtech.common.blocks.BlockOresAbstract;
 import gregtech.common.items.ItemIntegratedCircuit;
+import gregtech.common.ores.OreManager;
 import gregtech.common.pollution.Pollution;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
@@ -2452,6 +2451,26 @@ public class GTUtility {
         return false;
     }
 
+    public static <A, B> int indexOf(A[] array, B value) {
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] == value) return i;
+        }
+
+        return -1;
+    }
+
+    public static <A, B> boolean contains(A[] array, B value) {
+        return indexOf(array, value) != -1;
+    }
+
+    public static <T> T getIndexSafe(T[] array, int index) {
+        return index < 0 || index >= array.length ? null : array[index];
+    }
+
+    public static <T> T getIndexSafe(List<T> list, int index) {
+        return index < 0 || index >= list.size() ? null : list.get(index);
+    }
+
     public static Block getBlockFromStack(ItemStack itemStack) {
         if (isStackInvalid(itemStack)) return Blocks.air;
         return getBlockFromItem(itemStack.getItem());
@@ -2702,10 +2721,10 @@ public class GTUtility {
     public static int getRadioactivityLevel(ItemStack aStack) {
         ItemData tData = GTOreDictUnificator.getItemData(aStack);
         if (tData != null && tData.hasValidMaterialData()) {
-            if (tData.mMaterial.mMaterial.mEnchantmentArmors instanceof EnchantmentRadioactivity)
-                return tData.mMaterial.mMaterial.mEnchantmentArmorsLevel;
-            if (tData.mMaterial.mMaterial.mEnchantmentTools instanceof EnchantmentRadioactivity)
-                return tData.mMaterial.mMaterial.mEnchantmentToolsLevel;
+            if (tData.mMaterial.mMaterial.mArmorEnchantment instanceof EnchantmentRadioactivity)
+                return tData.mMaterial.mMaterial.mArmorEnchantmentLevel;
+            if (tData.mMaterial.mMaterial.mToolEnchantment instanceof EnchantmentRadioactivity)
+                return tData.mMaterial.mMaterial.mToolEnchantmentLevel;
         }
         return EnchantmentHelper.getEnchantmentLevel(EnchantmentRadioactivity.INSTANCE.effectId, aStack);
     }
@@ -3997,6 +4016,14 @@ public class GTUtility {
         return null;
     }
 
+    public static int hashCode(int... values) {
+        return Arrays.hashCode(values);
+    }
+
+    public static long hashCode(long... values) {
+        return Arrays.hashCode(values);
+    }
+
     public static boolean eraseBlockByFakePlayer(FakePlayer aPlayer, int aX, int aY, int aZ, boolean isSimulate) {
         if (aPlayer == null) return false;
         World aWorld = aPlayer.worldObj;
@@ -4456,20 +4483,14 @@ public class GTUtility {
             && GTOreDictUnificator.getAssociation(aStack).mPrefix.equals(aPrefix);
     }
 
-    public static final ImmutableSet<String> ORE_BLOCK_CLASSES = ImmutableSet.of(
-        "bartworks.system.material.BWMetaGeneratedOres",
-        "bartworks.system.material.BWMetaGeneratedSmallOres",
-        "gtPlusPlus.core.block.base.BlockBaseOre");
+    public static boolean isOre(Block block, int meta) {
+        if (OreManager.isOre(block, meta)) return true;
+
+        return isOre(new ItemStack(block, 1, meta));
+    }
 
     public static final String LOC_SEPARATOR = "\u001F";
     public static final String YAP_SEPARATOR = "\\n";
-
-    public static boolean isOre(Block aBlock, int aMeta) {
-        return (aBlock instanceof BlockOresAbstract) || isOre(new ItemStack(aBlock, 1, aMeta))
-            || ORE_BLOCK_CLASSES.contains(
-                aBlock.getClass()
-                    .getName());
-    }
 
     public static boolean isOre(ItemStack aStack) {
         int tItem = GTUtility.stackToInt(aStack);
