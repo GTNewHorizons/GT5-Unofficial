@@ -305,7 +305,7 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
 
         if (this.emptyingMode) {
             this.addOutput(Materials.Helium.getGas(this.HeliumSupply));
-            this.addOutput(
+            this.addOutputPartial(
                 new ItemStack(THTRMaterials.aTHTR_Materials, this.fuelSupply, THTRMaterials.MATERIAL_FUEL_INDEX));
             this.HeliumSupply = 0;
             this.fuelSupply = 0;

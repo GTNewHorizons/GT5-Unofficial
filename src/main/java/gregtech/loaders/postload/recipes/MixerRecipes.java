@@ -37,6 +37,7 @@ import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class MixerRecipes implements Runnable {
 
     @Override
