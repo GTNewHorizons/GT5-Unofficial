@@ -20,6 +20,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import bartworks.system.material.Werkstoff;
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.TCustomHashMap;
 import gnu.trove.strategy.HashingStrategy;
@@ -27,6 +28,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtneioreplugin.plugin.block.BlockDimensionDisplay;
@@ -210,7 +212,7 @@ public class EyeOfHarmonyRecipe {
         return switch (key) {
             case "Ne" -> GTOreDictUnificator.get(OrePrefixes.dust, Materials.Netherrack, 1);
             case "ED", "VA", "EA" -> GTOreDictUnificator.get(OrePrefixes.dust, Materials.Endstone, 1);
-            case "Mo" -> getModItem(NewHorizonsCoreMod.ID, "item.MoonStoneDust", 1, placeholder);
+            case "Mo", "Ra" -> getModItem(NewHorizonsCoreMod.ID, "item.MoonStoneDust", 1, placeholder);
             case "De" -> getModItem(NewHorizonsCoreMod.ID, "item.DeimosStoneDust", 1, placeholder);
             case "Ma" -> getModItem(NewHorizonsCoreMod.ID, "item.MarsStoneDust", 1, placeholder);
             case "Ph" -> getModItem(NewHorizonsCoreMod.ID, "item.PhobosStoneDust", 1, placeholder);
@@ -395,6 +397,13 @@ public class EyeOfHarmonyRecipe {
         }
     }
 
+    public static void processHelperIfPossible(HashMapHelper outputMap, IOreMaterial material, double mainMultiplier,
+        double probability) {
+        if (material instanceof Materials gtMat) processHelper(outputMap, gtMat, mainMultiplier, probability);
+        else if (material instanceof Werkstoff bwMat)
+            processHelper(outputMap, bwMat.getBridgeMaterial(), mainMultiplier, probability);
+    }
+
     private static ArrayList<Pair<Materials, Long>> processDimension(
         GT5OreLayerHelper.NormalOreDimensionWrapper normalOreDimWrapper,
         GT5OreSmallHelper.SmallOreDimensionWrapper smallOreDimWrapper, long timeInSeconds) {
@@ -404,15 +413,11 @@ public class EyeOfHarmonyRecipe {
 
         if (normalOreDimWrapper != null) {
             normalOreDimWrapper.oreVeinToProbabilityInDimension.forEach((veinInfo, probability) -> {
-                if (veinInfo.mPrimaryVeinMaterial instanceof Materials gtMat)
-                    processHelper(outputMap, gtMat, mainMultiplier, probability);
-                if (veinInfo.mSecondaryMaterial instanceof Materials gtMat)
-                    processHelper(outputMap, gtMat, mainMultiplier, probability);
+                processHelperIfPossible(outputMap, veinInfo.mPrimaryVeinMaterial, mainMultiplier, probability);
+                processHelperIfPossible(outputMap, veinInfo.mSecondaryMaterial, mainMultiplier, probability);
                 // 8.0 to replicate void miner getDropsVanillaVeins method yields.
-                if (veinInfo.mBetweenMaterial instanceof Materials gtMat)
-                    processHelper(outputMap, gtMat, mainMultiplier / 8.0, probability);
-                if (veinInfo.mSporadicMaterial instanceof Materials gtMat)
-                    processHelper(outputMap, gtMat, mainMultiplier / 8.0, probability);
+                processHelperIfPossible(outputMap, veinInfo.mBetweenMaterial, mainMultiplier / 8.0, probability);
+                processHelperIfPossible(outputMap, veinInfo.mSporadicMaterial, mainMultiplier / 8.0, probability);
             });
         }
 
@@ -420,8 +425,7 @@ public class EyeOfHarmonyRecipe {
         if (smallOreDimWrapper != null) {
             smallOreDimWrapper.oreVeinProbabilities.forEach(
                 (veinInfo, probability) -> {
-                    if (veinInfo.material instanceof Materials gtMat)
-                        processHelper(outputMap, gtMat, mainMultiplier, probability);
+                    processHelperIfPossible(outputMap, veinInfo.material, mainMultiplier, probability);
                 });
         }
 

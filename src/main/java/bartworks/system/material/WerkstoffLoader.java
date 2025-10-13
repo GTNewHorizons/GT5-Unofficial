@@ -72,6 +72,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -2068,17 +2069,17 @@ public class WerkstoffLoader {
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
             Materials bridgeMaterial = werkstoff.getBridgeMaterial();
             List<Materials> mOreByProducts = bridgeMaterial.mOreByProducts;
-            if (mOreByProducts.size() > 0) throw new ClassCastException("Test: mOreByProducts.size() == " + mOreByProducts.size() + ".(" + bridgeMaterial.mName);
+            if (mOreByProducts.size() > 0) throw new ClassCastException(
+                "Test: mOreByProducts.size() == " + mOreByProducts.size() + ".(" + bridgeMaterial.mName);
 
             int size = werkstoff.getNoOfByProducts();
             for (int i = 0; i < size; i++) {
                 ISubTagContainer material = werkstoff.getOreByProductRaw(i); // At least not duplicate now.
                 if (material instanceof Materials) mOreByProducts.add(((Materials) material));
-                else if (material instanceof Werkstoff)
-                    mOreByProducts.add(((Werkstoff) material).getBridgeMaterial());
+                else if (material instanceof Werkstoff) mOreByProducts.add(((Werkstoff) material).getBridgeMaterial());
                 else throw new ClassCastException();
             }
-            if (size < 3) bridgeMaterial.addOreByProduct(werkstoff.getBridgeMaterial());
+            if (size < 3) mOreByProducts.add(werkstoff.getBridgeMaterial());
             // So it should be the same to Materials' mOreByProducts.
         }
     }
