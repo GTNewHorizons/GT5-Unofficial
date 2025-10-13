@@ -314,17 +314,17 @@ public class RecipeLoaderChemicalSkips {
                     getModItem(EtFuturumRequiem.ID, "chorus_flower", 64, 0))
                 .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 64L, 6))
                 .fluidInputs(
-                    Materials.NefariousOil.getFluid(10000),
-                    Materials.EnderAirUnstable.getFluid(10000),
-                    Materials.TeleportatiumUnstableAmalgam.getFluid(1000),
-                    FluidRegistry.getFluidStack("endergoo", 4000))
+                    Materials.NefariousOil.getFluid(10_000),
+                    Materials.EnderAirUnstable.getFluid(10_000),
+                    Materials.TeleportatiumUnstableAmalgam.getFluid(1_000),
+                    FluidRegistry.getFluidStack("endergoo", 4_000))
                 .fluidOutputs(
                     Materials.TeleportatiumStable.getFluid(800),
-                    Materials.TeleportatiumUnstableVolatile.getFluid(1000),
-                    Materials.TeleportatiumUnstableUnbalanced.getFluid(1000),
-                    Materials.TeleportatiumUnstableSemifluid.getFluid(1000),
-                    Materials.TeleportatiumUnstableHypercritical.getFluid(1000),
-                    Materials.EnderAir.getFluid(1000))
+                    Materials.TeleportatiumUnstableVolatile.getFluid(1_000),
+                    Materials.TeleportatiumUnstableUnbalanced.getFluid(1_000),
+                    Materials.TeleportatiumUnstableSemifluid.getFluid(1_000),
+                    Materials.TeleportatiumUnstableHypercritical.getFluid(1_000),
+                    Materials.EnderAir.getFluid(1_000))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_UEV)
                 .metadata(QFT_CATALYST, GregtechItemList.TeleportiumCatalyst.get(0))
@@ -630,7 +630,7 @@ public class RecipeLoaderChemicalSkips {
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Enderium, 64L),
                     getModItem(EtFuturumRequiem.ID, "chorus_flower", 64, 0),
-                    Materials.Glowstone.getNanite(64),
+                    Materials.Glowstone.getNanite(1),
                     getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 64L, 6),
                     GregtechItemList.PinkMetalCatalyst.get(1),
                     GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.TeleportatiumEncased, 1L),
