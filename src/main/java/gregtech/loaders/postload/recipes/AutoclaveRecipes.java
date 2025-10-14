@@ -254,6 +254,17 @@ public class AutoclaveRecipes implements Runnable {
             .eut(TierEU.RECIPE_LV)
             .addTo(autoclaveRecipes);
 
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Olivine, 15))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Asbestos, 18),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Magnetite, 7))
+            .fluidInputs(GTModHandler.getDistilledWater(9_000))
+            .fluidOutputs(Materials.Hydrogen.getGas(14_000))
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(autoclaveRecipes);
+
         // Marble Block
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Calcite, 1L))
