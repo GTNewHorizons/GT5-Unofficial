@@ -15149,7 +15149,6 @@ public class MaterialsInit {
             .setARGB(0x00ffe632)
             .setColor(Dyes.dyeYellow)
             .setMeltingPoint(310)
-            // C15H10N2O2
             .addMaterial(Materials.Carbon, 15)
             .addMaterial(Materials.Hydrogen, 10)
             .addMaterial(Materials.Nitrogen, 2)
@@ -15169,7 +15168,6 @@ public class MaterialsInit {
             .setARGB(0x00fff37a)
             .setColor(Dyes.dyeYellow)
             .setMeltingPoint(365)
-            // C13H14N2
             .addMaterial(Materials.Carbon, 13)
             .addMaterial(Materials.Hydrogen, 14)
             .addMaterial(Materials.Nitrogen, 2)
@@ -15188,7 +15186,6 @@ public class MaterialsInit {
             .setARGB(0x00ffe632)
             .setColor(Dyes.dyeYellow)
             .setMeltingPoint(310)
-            // C15H10N2O2
             .addMaterial(Materials.Carbon, 15)
             .addMaterial(Materials.Hydrogen, 10)
             .addMaterial(Materials.Nitrogen, 2)
@@ -15207,7 +15204,6 @@ public class MaterialsInit {
             .addFluid()
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(176)
-            // C4H8O
             .addMaterial(Materials.Carbon, 4)
             .addMaterial(Materials.Hydrogen, 8)
             .addMaterial(Materials.Oxygen, 1)
@@ -15226,7 +15222,6 @@ public class MaterialsInit {
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(208)
             .addElectrolyzerRecipe()
-            // C4H8O
             .addMaterial(Materials.Carbon, 4)
             .addMaterial(Materials.Hydrogen, 8)
             .addMaterial(Materials.Oxygen, 1)
@@ -15244,7 +15239,6 @@ public class MaterialsInit {
             .addFluid()
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(256)
-            // C4NiO4
             .addMaterial(Materials.Carbon, 4)
             .addMaterial(Materials.Nickel, 1)
             .addMaterial(Materials.Oxygen, 4)
@@ -15276,7 +15270,6 @@ public class MaterialsInit {
             .addGas()
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(160)
-            // C2H4O
             .addMaterial(Materials.Carbon, 2)
             .addMaterial(Materials.Hydrogen, 4)
             .addMaterial(Materials.Oxygen, 1)
@@ -15308,7 +15301,6 @@ public class MaterialsInit {
             .addFluid()
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(260)
-            // C2H6O2
             .addMaterial(Materials.Carbon, 2)
             .addMaterial(Materials.Hydrogen, 6)
             .addMaterial(Materials.Oxygen, 2)
@@ -15326,7 +15318,6 @@ public class MaterialsInit {
             .addGas()
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(150)
-            // C2H4O
             .addMaterial(Materials.Carbon, 2)
             .addMaterial(Materials.Hydrogen, 4)
             .addMaterial(Materials.Oxygen, 1)
@@ -15343,7 +15334,6 @@ public class MaterialsInit {
             .addDustItems()
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(533)
-            // C5H12O4
             .addMaterial(Materials.Carbon, 5)
             .addMaterial(Materials.Hydrogen, 12)
             .addMaterial(Materials.Oxygen, 4)
@@ -15373,7 +15363,6 @@ public class MaterialsInit {
             .addFluid()
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(249)
-            // C5H9NO
             .addMaterial(Materials.Carbon, 5)
             .addMaterial(Materials.Hydrogen, 9)
             .addMaterial(Materials.Nitrogen, 1)
@@ -15392,7 +15381,6 @@ public class MaterialsInit {
             .setARGB(0x0000ff0c)
             .setColor(Dyes.dyeGreen)
             .setMeltingPoint(355)
-            // C8H4Cl2O2
             .addMaterial(Materials.Carbon, 8)
             .addMaterial(Materials.Hydrogen, 4)
             .addMaterial(Materials.Chlorine, 2)
@@ -15412,7 +15400,6 @@ public class MaterialsInit {
             .addGas()
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(192)
-            // C2H2
             .addMaterial(Materials.Carbon, 2)
             .addMaterial(Materials.Hydrogen, 2)
             .constructMaterial();
@@ -15428,7 +15415,6 @@ public class MaterialsInit {
             .setARGB(0x00ff8733)
             .setColor(Dyes.dyeOrange)
             .setMeltingPoint(420)
-            // C6H6N2O2
             .addMaterial(Materials.Carbon, 6)
             .addMaterial(Materials.Hydrogen, 6)
             .addMaterial(Materials.Nitrogen, 2)
@@ -15447,7 +15433,6 @@ public class MaterialsInit {
             .setARGB(0x00fbec5d)
             .setColor(Dyes.dyeYellow)
             .setMeltingPoint(293)
-            // C6H6N2
             .addMaterial(Materials.Carbon, 6)
             .addMaterial(Materials.Hydrogen, 8)
             .addMaterial(Materials.Nitrogen, 2)
@@ -15467,7 +15452,6 @@ public class MaterialsInit {
             .setColor(Dyes.dyeGray)
             .setMeltingPoint(180)
             .addElectrolyzerRecipe()
-            // CH5N
             .addMaterial(Materials.Carbon, 1)
             .addMaterial(Materials.Hydrogen, 5)
             .addMaterial(Materials.Nitrogen, 1)
@@ -15485,7 +15469,6 @@ public class MaterialsInit {
             .setColor(Dyes.dyeGray)
             .setMeltingPoint(156)
             .addElectrolyzerRecipe()
-            // C3H9N
             .addMaterial(Materials.Carbon, 3)
             .addMaterial(Materials.Hydrogen, 9)
             .addMaterial(Materials.Nitrogen, 1)
@@ -15502,7 +15485,6 @@ public class MaterialsInit {
             .setARGB(0x00ffff97)
             .setColor(Dyes.dyeYellow)
             .setMeltingPoint(229)
-            // C4H6O2
             .addMaterial(Materials.Carbon, 4)
             .addMaterial(Materials.Hydrogen, 6)
             .addMaterial(Materials.Oxygen, 2)
@@ -15518,7 +15500,6 @@ public class MaterialsInit {
             .setARGB(0x00ebebeb)
             .setColor(Dyes.dyeGray)
             .setMeltingPoint(2430)
-            // CaC2
             .addMaterial(Materials.Calcium, 1)
             .addMaterial(Materials.Carbon, 2)
             .constructMaterial();
@@ -15546,7 +15527,6 @@ public class MaterialsInit {
             .setARGB(0x00f7f7b4)
             .setColor(Dyes.dyeYellow)
             .setMeltingPoint(331)
-            // C4H6O2
             .addMaterial(Materials.Carbon, 4)
             .addMaterial(Materials.Hydrogen, 6)
             .addMaterial(Materials.Oxygen, 2)
@@ -15566,7 +15546,6 @@ public class MaterialsInit {
             .setBlastFurnaceTemp(1_668)
             .setBlastFurnaceRequired(true)
             .setAutoGenerateBlastFurnaceRecipes(false)
-            // NiAl3
             .addMaterial(Materials.Nickel, 1)
             .addMaterial(Materials.Aluminium, 3)
             .constructMaterial();
@@ -15581,7 +15560,6 @@ public class MaterialsInit {
             .setARGB(0x00e6e6e6)
             .setColor(Dyes.dyeGray)
             .setMeltingPoint(1_955)
-            // NiAl
             .addMaterial(Materials.Nickel, 1)
             .addMaterial(Materials.Aluminium, 1)
             .constructMaterial();
@@ -15596,7 +15574,6 @@ public class MaterialsInit {
             .setARGB(0x00323232)
             .setColor(Dyes.dyeBlack)
             .setMeltingPoint(1090)
-            // Bi2O3
             .addMaterial(Materials.Bismuth, 2)
             .addMaterial(Materials.Oxygen, 3)
             .constructMaterial();
@@ -15636,7 +15613,6 @@ public class MaterialsInit {
             .addFluid()
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(415)
-            // C10H10O4
             .addMaterial(Materials.Carbon, 10)
             .addMaterial(Materials.Hydrogen, 10)
             .addMaterial(Materials.Oxygen, 4)
@@ -15669,7 +15645,6 @@ public class MaterialsInit {
             .addFluid()
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(480)
-            // C9H6O6
             .addMaterial(Materials.Carbon, 8)
             .addMaterial(Materials.Hydrogen, 6)
             .addMaterial(Materials.Oxygen, 4)
@@ -15686,7 +15661,6 @@ public class MaterialsInit {
             .setARGB(0x0070924a)
             .setColor(Dyes.dyeLime)
             .setMeltingPoint(225)
-            // C8H10
             .addMaterial(Materials.Carbon, 8)
             .addMaterial(Materials.Hydrogen, 10)
             .addElectrolyzerRecipe()
@@ -15703,7 +15677,6 @@ public class MaterialsInit {
             .setARGB(0x007a8854)
             .setColor(Dyes.dyeLime)
             .setMeltingPoint(286)
-            // C8H10
             .addMaterial(Materials.Carbon, 8)
             .addMaterial(Materials.Hydrogen, 10)
             .addElectrolyzerRecipe()
@@ -15719,7 +15692,6 @@ public class MaterialsInit {
             .setARGB(0x008f5f27)
             .setColor(Dyes.dyeBrown)
             .setMeltingPoint(413)
-            // CoC22H14O4
             .addMaterial(Materials.Cobalt, 1)
             .addMaterial(Materials.Carbon, 22)
             .addMaterial(Materials.Hydrogen, 14)
@@ -15764,7 +15736,6 @@ public class MaterialsInit {
             .setARGB(0x00dba2e5)
             .setColor(Dyes.dyePurple)
             .setMeltingPoint(413)
-            // C4H6CoO4
             .addMaterial(Materials.Carbon, 4)
             .addMaterial(Materials.Hydrogen, 6)
             .addMaterial(Materials.Cobalt, 1)
@@ -15811,7 +15782,6 @@ public class MaterialsInit {
             .addDustItems()
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(673)
-            // NaBH4
             .addMaterial(Materials.Sodium, 1)
             .addMaterial(Materials.Boron, 1)
             .addMaterial(Materials.Hydrogen, 4)
@@ -15839,7 +15809,6 @@ public class MaterialsInit {
             .addDustItems()
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(353)
-            // C18H15P
             .addMaterial(Materials.Carbon, 18)
             .addMaterial(Materials.Hydrogen, 15)
             .addMaterial(Materials.Phosphorus, 1)
@@ -15855,7 +15824,6 @@ public class MaterialsInit {
             .addFluid()
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(179)
-            // PCL3
             .addMaterial(Materials.Phosphorus, 1)
             .addMaterial(Materials.Chlorine, 3)
             .constructMaterial();
@@ -15870,7 +15838,6 @@ public class MaterialsInit {
             .setARGB(0x00c0c0c0)
             .setColor(Dyes.dyeLightGray)
             .setMeltingPoint(911)
-            // NaH
             .addMaterial(Materials.Sodium, 1)
             .addMaterial(Materials.Hydrogen, 1)
             .constructMaterial();
@@ -15885,7 +15852,6 @@ public class MaterialsInit {
             .addFluid()
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(239)
-            // C3H9BO3
             .addMaterial(Materials.Carbon, 3)
             .addMaterial(Materials.Hydrogen, 9)
             .addMaterial(Materials.Boron, 1)
@@ -15901,7 +15867,6 @@ public class MaterialsInit {
             .addDustItems()
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(400)
-            // CH3NaO
             .addMaterial(Materials.Carbon, 1)
             .addMaterial(Materials.Hydrogen, 3)
             .addMaterial(Materials.Oxygen, 1)
