@@ -81,7 +81,7 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                     .addTo(cutterRecipes);
             }
 
-            if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)) {
+            if (aMaterial.mUnifiable && (aMaterial.mMaterialInto == aMaterial)) {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L),
@@ -107,7 +107,7 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                 }
             }
 
-            if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial))
+            if (aMaterial.mUnifiable && (aMaterial.mMaterialInto == aMaterial))
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L),

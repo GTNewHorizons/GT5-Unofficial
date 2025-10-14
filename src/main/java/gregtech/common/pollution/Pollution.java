@@ -50,7 +50,7 @@ import gregtech.api.util.GTUtility;
 // the global pollution manager should be a
 // non static instance in GTProxy
 // and all access to it should be non static and via
-// GTProxy.gregtechProxy.pollutionManager......
+// GTProxy.proxy.pollutionManager......
 public class Pollution {
 
     private static final Storage STORAGE = new Storage();
