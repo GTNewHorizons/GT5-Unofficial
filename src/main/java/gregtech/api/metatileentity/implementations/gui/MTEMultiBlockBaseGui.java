@@ -16,7 +16,12 @@ import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import com.cleanroommc.modularui.value.sync.DynamicSyncHandler;
+import com.cleanroommc.modularui.widget.EmptyWidget;
+import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
@@ -74,6 +79,7 @@ import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
 import gregtech.common.modularui2.sync.Predicates;
+import org.jetbrains.annotations.Nullable;
 
 public class MTEMultiBlockBaseGui {
 
@@ -86,6 +92,7 @@ public class MTEMultiBlockBaseGui {
     protected final Map<String, IPanelHandler> panelMap = new HashMap<>();
     protected Map<String, UITexture> shutdownReasonTextureMap = new HashMap<>();
     protected Map<String, String> shutdownReasonTooltipMap = new HashMap<>();
+
 
     public MTEMultiBlockBaseGui(MTEMultiBlockBase base) {
         this.base = base;
@@ -205,6 +212,7 @@ public class MTEMultiBlockBaseGui {
             .child(createShutdownReasonWidget(syncManager))
             .child(createRecipeResultWidget())
             .childIf(base.showRecipeTextInGUI(), createRecipeInfoTextWidget(syncManager))
+            .marginBottom(2)
             .childIf(base.showRecipeTextInGUI(), createRecipeInfoWidget(syncManager));
     }
 
@@ -258,10 +266,56 @@ public class MTEMultiBlockBaseGui {
     }
 
     private IWidget createRecipeInfoWidget(PanelSyncManager syncManager) {
-        Flow column = new Column().coverChildren();
-        column.child(createItemRecipeInfoColumn(syncManager));
-        column.child(createFluidRecipeInfoColumn(syncManager));
-        return column;
+        IntSyncValue maxProgressTimeSyncer = (IntSyncValue) syncManager.getSyncHandler("maxProgressTime:0");
+        GenericListSyncHandler<ItemStack> itemOutputSyncer = (GenericListSyncHandler<ItemStack>) syncManager.getSyncHandler("itemOutput:0");
+
+        DynamicSyncHandler recipeHandler = new DynamicSyncHandler()
+            .widgetProvider((syncManager1, packet) -> {
+                if(packet == null){
+                    return new EmptyWidget();
+                }
+
+                int maxProgressTime = packet.readInt();
+                int size = packet.readInt();
+                Flow column = Flow.column().coverChildren();
+
+
+                for (int i = 0; i < size; i++) {
+                    ItemStack itemStack = NetworkUtils.readItemStack(packet);
+                    long amount = itemStack.stackSize;
+
+                    column.child(Flow.row()
+                        .widthRel(1)
+                        .marginBottom(4)
+                        .child(createItemDrawable(itemStack))
+                        .child(createHoverableTextForItem(itemStack, amount, maxProgressTime)));
+                }
+                return column;
+            });
+
+        itemOutputSyncer.setChangeListener(() -> recipeHandler.notifyUpdate(packet -> {
+            packet.writeInt(maxProgressTimeSyncer.getValue());
+            List<ItemStack> items = itemOutputSyncer.getValue();
+            packet.writeInt(items.size());
+            for (ItemStack item : items) {
+                NetworkUtils.writeItemStack(packet, item);
+            }
+        }));
+        maxProgressTimeSyncer.setChangeListener(() -> recipeHandler.notifyUpdate(packet -> {
+            packet.writeInt(maxProgressTimeSyncer.getValue());
+            List<ItemStack> items = itemOutputSyncer.getValue();
+            packet.writeInt(items.size());
+            for (ItemStack item : items) {
+                NetworkUtils.writeItemStack(packet, item);
+            }
+        }));
+        return new DynamicSyncedWidget<>().widthRel(1)
+            .syncHandler(recipeHandler);
+
+//        Flow column = new Column().coverChildren();
+//        column.child(createItemRecipeInfoColumn(syncManager));
+//        column.child(createFluidRecipeInfoColumn(syncManager));
+//        return column;
     }
 
     private IWidget createRecipeInfoTextWidget(PanelSyncManager syncManager) {
@@ -991,20 +1045,26 @@ public class MTEMultiBlockBaseGui {
                 NetworkUtils::writeFluidStack,
                 null,
                 null));
-        syncManager.syncValue(
-            "itemOutput",
-            new GenericListSyncHandler<ItemStack>(
-                () -> base.mOutputItems != null ? Arrays.asList(base.mOutputItems) : Collections.emptyList(),
-                val -> base.mOutputItems = val.toArray(new ItemStack[0]),
-                NetworkUtils::readItemStack,
-                NetworkUtils::writeItemStack,
-                null,
-                null));
+
+
         syncManager
             .syncValue("progressTime", new IntSyncValue(() -> base.mProgresstime, val -> base.mProgresstime = val));
-        syncManager.syncValue(
-            "maxProgressTime",
-            new IntSyncValue(() -> base.mMaxProgresstime, val -> base.mMaxProgresstime = val));
+
+        IntSyncValue maxProgressTimeSyncer = new IntSyncValue(() -> base.mMaxProgresstime, val -> base.mMaxProgresstime = val);
+        syncManager.syncValue("maxProgressTime",maxProgressTimeSyncer);
+
+
+
+        GenericListSyncHandler<ItemStack> itemOutputSyncer = new GenericListSyncHandler<>(
+            () -> base.mOutputItems != null ? Arrays.asList(base.mOutputItems) : Collections.emptyList(),
+            val -> base.mOutputItems = val.toArray(new ItemStack[0]),
+            NetworkUtils::readItemStack,
+            NetworkUtils::writeItemStack,
+            (a,b) -> a.isItemEqual(b) && a.stackSize == b.stackSize,
+            null);
+        syncManager.syncValue("itemOutput", itemOutputSyncer);
+
+
 
         StringSyncValue recipeInfoSyncer = new StringSyncValue(base::generateCurrentRecipeInfoString);
         syncManager.syncValue("recipeInfo", recipeInfoSyncer);

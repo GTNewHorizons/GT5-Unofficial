@@ -3046,6 +3046,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         return true;
     }
 
+    @Override
+    protected boolean forceUseMui2() {
+        return true;
+    }
+
     protected final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
     public String generateCurrentRecipeInfoString() {
