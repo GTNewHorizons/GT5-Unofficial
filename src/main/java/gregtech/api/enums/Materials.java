@@ -1444,6 +1444,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         MaterialsUEVplus.GravitonShard.renderer = new InfinityRenderer();
         MaterialsUEVplus.ExoHalkonite.renderer = new InfinityRenderer();
         MaterialsUEVplus.HotExoHalkonite.renderer = new InfinityRenderer();
+        Materials.TeleportatiumEncased.renderer = new GaiaSpiritRenderer();
         Materials.PrismaticNaquadah.renderer = new RainbowOverlayRenderer(Materials.PrismaticNaquadah.getRGBA());
     }
 
