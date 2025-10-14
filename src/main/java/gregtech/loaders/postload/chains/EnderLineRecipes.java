@@ -8,6 +8,7 @@ import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.EtFuturumRequiem;
 import static gregtech.api.enums.Mods.HardcoreEnderExpansion;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
@@ -421,6 +422,16 @@ public class EnderLineRecipes {
             .eut(TierEU.RECIPE_UV)
             .metadata(CompressionTierKey.INSTANCE, 1)
             .addTo(compressorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.TeleportatiumEncased, 4),
+                GTUtility.getIntegratedCircuit(4))
+            .fluidInputs(Materials.EnderAirFortified.getFluid(144L))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TeleportatiumEncased, 1))
+            .duration(3 * SECONDS + 4 * TICKS)
+            .eut(TierEU.RECIPE_ZPM)
+            .addTo(assemblerRecipes);
     }
 
     private static void addEncasedTeleportatiumPartsRecipe(OrePrefixes prefix, int multiplier, int inverseMultiplier) {
