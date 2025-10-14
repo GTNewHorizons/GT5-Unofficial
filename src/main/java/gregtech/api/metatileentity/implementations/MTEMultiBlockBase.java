@@ -3077,56 +3077,58 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             }
         };
 
-        int lines = 0;
-        int MAX_LINES = 10;
-
-        if (mOutputItems != null) {
-            HashMap<String, Long> nameToAmount = new HashMap<>();
-            for (var item : mOutputItems) {
-                if (item == null || item.stackSize <= 0) continue;
-                nameToAmount.merge(item.getDisplayName(), (long) item.stackSize, Long::sum);
-            }
-            for (Map.Entry<String, Long> entry : nameToAmount.entrySet()) {
-                if (lines >= MAX_LINES) {
-                    ret.append("...");
-                    return ret.toString();
-                }
-                lines++;
-                ret.append(EnumChatFormatting.AQUA)
-                    .append(entry.getKey())
-                    .append(EnumChatFormatting.WHITE)
-                    .append(" x ")
-                    .append(EnumChatFormatting.GOLD);
-                numberFormat.format(entry.getValue(), ret);
-                ret.append(EnumChatFormatting.WHITE);
-                appendRate.accept(entry.getValue());
-                ret.append('\n');
-            }
-        }
-        if (mOutputFluids != null) {
-            HashMap<String, Long> nameToAmount = new HashMap<>();
-            for (var fluid : mOutputFluids) {
-                if (fluid == null || fluid.amount <= 0) continue;
-                nameToAmount.merge(fluid.getLocalizedName(), (long) fluid.amount, Long::sum);
-            }
-            for (Map.Entry<String, Long> entry : nameToAmount.entrySet()) {
-                if (lines >= MAX_LINES) {
-                    ret.append("...");
-                    return ret.toString();
-                }
-                lines++;
-                ret.append(EnumChatFormatting.AQUA)
-                    .append(entry.getKey())
-                    .append(EnumChatFormatting.WHITE)
-                    .append(" x ")
-                    .append(EnumChatFormatting.GOLD);
-                numberFormat.format(entry.getValue(), ret);
-                ret.append("L")
-                    .append(EnumChatFormatting.WHITE);
-                appendRate.accept(entry.getValue());
-                ret.append('\n');
-            }
-        }
+        // todo: remove after widgets are implemented
+        /*
+         * int lines = 0;
+         * int MAX_LINES = 10;
+         * if (mOutputItems != null) {
+         * HashMap<String, Long> nameToAmount = new HashMap<>();
+         * for (var item : mOutputItems) {
+         * if (item == null || item.stackSize <= 0) continue;
+         * nameToAmount.merge(item.getDisplayName(), (long) item.stackSize, Long::sum);
+         * }
+         * for (Map.Entry<String, Long> entry : nameToAmount.entrySet()) {
+         * if (lines >= MAX_LINES) {
+         * ret.append("...");
+         * return ret.toString();
+         * }
+         * lines++;
+         * ret.append(EnumChatFormatting.AQUA)
+         * .append(entry.getKey())
+         * .append(EnumChatFormatting.WHITE)
+         * .append(" x ")
+         * .append(EnumChatFormatting.GOLD);
+         * numberFormat.format(entry.getValue(), ret);
+         * ret.append(EnumChatFormatting.WHITE);
+         * appendRate.accept(entry.getValue());
+         * ret.append('\n');
+         * }
+         * }
+         * if (mOutputFluids != null) {
+         * HashMap<String, Long> nameToAmount = new HashMap<>();
+         * for (var fluid : mOutputFluids) {
+         * if (fluid == null || fluid.amount <= 0) continue;
+         * nameToAmount.merge(fluid.getLocalizedName(), (long) fluid.amount, Long::sum);
+         * }
+         * for (Map.Entry<String, Long> entry : nameToAmount.entrySet()) {
+         * if (lines >= MAX_LINES) {
+         * ret.append("...");
+         * return ret.toString();
+         * }
+         * lines++;
+         * ret.append(EnumChatFormatting.AQUA)
+         * .append(entry.getKey())
+         * .append(EnumChatFormatting.WHITE)
+         * .append(" x ")
+         * .append(EnumChatFormatting.GOLD);
+         * numberFormat.format(entry.getValue(), ret);
+         * ret.append("L")
+         * .append(EnumChatFormatting.WHITE);
+         * appendRate.accept(entry.getValue());
+         * ret.append('\n');
+         * }
+         * }
+         */
         return ret.toString();
     }
 

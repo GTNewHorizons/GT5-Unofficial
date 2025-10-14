@@ -203,10 +203,11 @@ public class MTEMultiBlockBaseGui {
                     .widthRel(1))
             .child(createShutdownDurationWidget(syncManager))
             .child(createShutdownReasonWidget(syncManager))
+            .marginBottom(2)
             .child(createRecipeResultWidget())
-            .childIf(base.showRecipeTextInGUI(), createItemRecipeInfoColumn(syncManager))
-            .childIf(base.showRecipeTextInGUI(), createFluidRecipeInfoColumn(syncManager));
-        // .childIf(base.showRecipeTextInGUI(), createRecipeInfoWidget(syncManager));
+            .marginBottom(2)
+            .childIf(base.showRecipeTextInGUI(), createRecipeInfoTextWidget(syncManager))
+            .childIf(base.showRecipeTextInGUI(), createRecipeInfoWidget(syncManager));
     }
 
     protected IWidget createShutdownDurationWidget(PanelSyncManager syncManager) {
@@ -220,7 +221,6 @@ public class MTEMultiBlockBaseGui {
                 time.getSeconds() % 60);
         })
             .asWidget()
-            .marginBottom(2)
             .widthRel(1)
             .setEnabledIf(
                 widget -> base.shouldDisplayShutDownReason() && !baseMetaTileEntity.isActive()
@@ -232,7 +232,6 @@ public class MTEMultiBlockBaseGui {
         StringSyncValue shutdownReasonSync = (StringSyncValue) syncManager.getSyncHandler("shutdownDisplayString:0");
         return IKey.dynamic(shutdownReasonSync::getValue)
             .asWidget()
-            .marginBottom(2)
             .widthRel(1)
             .setEnabledIf(widget -> shouldShutdownReasonBeDisplayed(shutdownReasonSync.getValue()));
     }
@@ -248,7 +247,6 @@ public class MTEMultiBlockBaseGui {
             () -> base.getCheckRecipeResult()
                 .getDisplayString())
             .asWidget()
-            .marginBottom(2)
             .widthRel(1)
             .setEnabledIf(widget -> shouldRecipeResultBeDisplayed());
 
@@ -261,14 +259,19 @@ public class MTEMultiBlockBaseGui {
     }
 
     private IWidget createRecipeInfoWidget(PanelSyncManager syncManager) {
+        Flow column = new Column().coverChildren();
+        column.child(createItemRecipeInfoColumn(syncManager));
+        column.child(createFluidRecipeInfoColumn(syncManager));
+        return column;
+    }
+
+    private IWidget createRecipeInfoTextWidget(PanelSyncManager syncManager) {
         return IKey.dynamic(() -> ((StringSyncValue) syncManager.getSyncHandler("recipeInfo:0")).getValue())
             .asWidget()
-            .marginBottom(2)
-            .widthRel(1)
+            .widthRel(1f)
             .setEnabledIf(
                 widget -> Predicates.isNonEmptyList(syncManager.getSyncHandler("itemOutput:0"))
                     || Predicates.isNonEmptyList(syncManager.getSyncHandler("fluidOutput:0")));
-
     }
 
     private Flow createItemRecipeInfoColumn(PanelSyncManager syncManager) {
@@ -278,15 +281,18 @@ public class MTEMultiBlockBaseGui {
         IntSyncValue maxProgressSyncer = (IntSyncValue) syncManager.getSyncHandler("maxProgressTime:0");
 
         Flow returnColumn = Flow.column()
-            .marginBottom(4);
+            .widthRel(0.8f)
+            .coverChildrenHeight();
         returnColumn.setEnabledIf(useless -> Predicates.isNonEmptyList(itemOutputSyncer));
 
+        // merge stacksizes into one entry
         final Map<ItemStack, Long> nameToAmount = new HashMap<>();
         for (ItemStack item : itemOutputList) {
             if (item == null || item.stackSize <= 0) continue;
             nameToAmount.merge(item, (long) item.stackSize, Long::sum);
         }
 
+        // sort map
         final List<Map.Entry<ItemStack, Long>> sortedMap = nameToAmount.entrySet()
             .stream()
             .sorted(
@@ -310,6 +316,30 @@ public class MTEMultiBlockBaseGui {
         return returnColumn;
     }
 
+    private ItemDisplayWidget createItemDrawable(ItemStack itemStack) {
+        return new ItemDisplayWidget().background()
+            .displayAmount(false)
+            .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
+            .item(itemStack)
+            .size(18, 18)
+            .marginRight(1);
+    }
+
+    private TextWidget<?> createHoverableTextForItem(ItemStack item, long amount, int progressTime) {
+        String itemName = EnumChatFormatting.AQUA + item.getDisplayName() + EnumChatFormatting.RESET;
+        String amountString = EnumChatFormatting.WHITE + " x "
+            + EnumChatFormatting.GOLD
+            + GTUtility.formatShortenedLong(amount)
+            + EnumChatFormatting.WHITE
+            + GTUtility.appendRate(false, amount, true, progressTime);
+        String itemTextLine = EnumChatFormatting.AQUA + GTUtility.truncateText(itemName, 45 - amountString.length())
+            + amountString;
+
+        return new TextWidget<>(IKey.dynamic(() -> itemTextLine)).tooltip(
+            t -> t.addLine(
+                EnumChatFormatting.AQUA + itemName + "\n" + GTUtility.appendRate(false, amount, false, progressTime)));
+    }
+
     /*
      * Returns a Column of Rows.
      * Each Row represents one Fluid Stack
@@ -321,17 +351,19 @@ public class MTEMultiBlockBaseGui {
         GenericListSyncHandler<FluidStack> fluidOutputSyncer = (GenericListSyncHandler<FluidStack>) syncManager
             .getSyncHandler("fluidOutput:0");
         Flow returnColumn = Flow.column()
-            .marginBottom(4);
+            .widthRel(0.8f)
+            .coverChildrenHeight();
         List<FluidStack> fluidOutputList = fluidOutputSyncer.getValue();
         IntSyncValue maxProgressSyncer = (IntSyncValue) syncManager.getSyncHandler("maxProgressTime:0");
         returnColumn.setEnabledIf(useless -> Predicates.isNonEmptyList(fluidOutputSyncer));
 
+        // merge stacksizes into one entry
         final Map<FluidStack, Long> nameToAmount = new HashMap<>();
         for (FluidStack fluid : fluidOutputList) {
             if (fluid == null || fluid.amount <= 0) continue;
             nameToAmount.merge(fluid, (long) fluid.amount, Long::sum);
         }
-
+        // sort map
         final List<Map.Entry<FluidStack, Long>> sortedMap = nameToAmount.entrySet()
             .stream()
             .sorted(
@@ -364,7 +396,7 @@ public class MTEMultiBlockBaseGui {
             .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
             .item(fluidDisplayStack)
             .size(18, 18)
-            .marginRight(1);
+            .marginRight(4);
     }
 
     private TextWidget<?> createHoverableTextForFluid(FluidStack fluidStack, long amount, int progressTime) {
@@ -375,36 +407,12 @@ public class MTEMultiBlockBaseGui {
             + "L"
             + EnumChatFormatting.WHITE
             + GTUtility.appendRate(false, amount, true, progressTime);
-        String fluidTextLine = EnumChatFormatting.AQUA + GTUtility.truncateText(fluidName, 40 - amountString.length())
+        String fluidTextLine = EnumChatFormatting.AQUA + GTUtility.truncateText(fluidName, 45 - amountString.length())
             + amountString;
 
         return new TextWidget<>(fluidTextLine).tooltip(
             t -> t.addLine(
                 EnumChatFormatting.AQUA + fluidName + "\n" + GTUtility.appendRate(true, amount, false, progressTime)));
-    }
-
-    private ItemDisplayWidget createItemDrawable(ItemStack itemStack) {
-        return new ItemDisplayWidget().background()
-            .displayAmount(false)
-            .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
-            .item(itemStack)
-            .size(18, 18)
-            .marginRight(1);
-    }
-
-    private TextWidget<?> createHoverableTextForItem(ItemStack item, long amount, int progressTime) {
-        String itemName = EnumChatFormatting.AQUA + item.getDisplayName() + EnumChatFormatting.RESET;
-        String amountString = EnumChatFormatting.WHITE + " x "
-            + EnumChatFormatting.GOLD
-            + GTUtility.formatShortenedLong(amount)
-            + EnumChatFormatting.WHITE
-            + GTUtility.appendRate(false, amount, true, progressTime);
-        String itemTextLine = EnumChatFormatting.AQUA + GTUtility.truncateText(itemName, 40 - amountString.length())
-            + amountString;
-
-        return new TextWidget<>(IKey.dynamic(() -> itemTextLine)).tooltip(
-            t -> t.addLine(
-                EnumChatFormatting.AQUA + itemName + "\n" + GTUtility.appendRate(false, amount, false, progressTime)));
     }
 
     // TODO: separate panel gap into 'left row' and 'right row', for easier usage
