@@ -56,7 +56,7 @@ public class CoverEUMeterGui extends CoverGui<CoverEUMeter> {
     }
 
     private @NotNull Flow makeEnergyThresholdRow() {
-        return makeNamedColumn(IKey.str(StatCollector.translateToLocal("gt.interact.desc.EnergyTHR"))).child(
+        return makeNamedColumn(IKey.str(StatCollector.translateToLocal("gt.interact.desc.EnergyThreshold"))).child(
             makeNumberField(140).value(new LongSyncValue(cover::getThreshold, cover::setThresdhold))
                 .setNumbersLong(
                     () -> 0L,
