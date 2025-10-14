@@ -350,19 +350,7 @@ public class MTEMultiBlockBaseGui {
                     .child(createItemDrawable(itemStack))
                     .child(createHoverableTextForItem(itemStack, amount, syncManager)));
         }
-        /*
-         * for (int i = 0; i < size; i++) {
-         * ItemStack itemStack = NetworkUtils.readItemStack(packet);
-         * long amount = itemStack.stackSize;
-         * column.child(
-         * Flow.row()
-         * .widthRel(1)
-         * .height(18)
-         * .marginBottom(4)
-         * .child(createItemDrawable(itemStack))
-         * .child(createHoverableTextForItem(itemStack, amount, syncManager)));
-         * }
-         */
+
         return column;
     }
 
@@ -405,19 +393,6 @@ public class MTEMultiBlockBaseGui {
                     .child(createFluidDrawable(fluidStack))
                     .child(createHoverableTextForFluid(fluidStack, amount, syncManager)));
         }
-        /*
-         * for (int i = 0; i < size; i++) {
-         * FluidStack fluidStack = NetworkUtils.readFluidStack(packet);
-         * long amount = fluidStack.amount;
-         * column.child(
-         * Flow.row()
-         * .widthRel(1)
-         * .height(18)
-         * .marginBottom(4)
-         * .child(createFluidDrawable(fluidStack))
-         * .child(createHoverableTextForFluid(fluidStack, amount, syncManager)));
-         * }
-         */
         return column;
     }
 

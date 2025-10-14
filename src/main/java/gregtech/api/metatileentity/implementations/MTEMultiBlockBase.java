@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.function.LongConsumer;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
@@ -3070,70 +3069,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         numberFormat.setMinimumFractionDigits(0);
         numberFormat.setMaximumFractionDigits(2);
 
-        LongConsumer appendRate = (amount) -> {
-            double processPerTick = (double) amount / mMaxProgresstime * 20;
-            ret.append(" (");
-            if (processPerTick > 1) {
-                numberFormat.format(Math.round(processPerTick * 10) / 10.0, ret);
-                ret.append("/s)");
-            } else {
-                numberFormat.format(Math.round(1 / processPerTick * 10) / 10.0, ret);
-                ret.append("s/ea)");
-            }
-        };
-
-        // todo: remove after widgets are implemented
-        /*
-         * int lines = 0;
-         * int MAX_LINES = 10;
-         * if (mOutputItems != null) {
-         * HashMap<String, Long> nameToAmount = new HashMap<>();
-         * for (var item : mOutputItems) {
-         * if (item == null || item.stackSize <= 0) continue;
-         * nameToAmount.merge(item.getDisplayName(), (long) item.stackSize, Long::sum);
-         * }
-         * for (Map.Entry<String, Long> entry : nameToAmount.entrySet()) {
-         * if (lines >= MAX_LINES) {
-         * ret.append("...");
-         * return ret.toString();
-         * }
-         * lines++;
-         * ret.append(EnumChatFormatting.AQUA)
-         * .append(entry.getKey())
-         * .append(EnumChatFormatting.WHITE)
-         * .append(" x ")
-         * .append(EnumChatFormatting.GOLD);
-         * numberFormat.format(entry.getValue(), ret);
-         * ret.append(EnumChatFormatting.WHITE);
-         * appendRate.accept(entry.getValue());
-         * ret.append('\n');
-         * }
-         * }
-         * if (mOutputFluids != null) {
-         * HashMap<String, Long> nameToAmount = new HashMap<>();
-         * for (var fluid : mOutputFluids) {
-         * if (fluid == null || fluid.amount <= 0) continue;
-         * nameToAmount.merge(fluid.getLocalizedName(), (long) fluid.amount, Long::sum);
-         * }
-         * for (Map.Entry<String, Long> entry : nameToAmount.entrySet()) {
-         * if (lines >= MAX_LINES) {
-         * ret.append("...");
-         * return ret.toString();
-         * }
-         * lines++;
-         * ret.append(EnumChatFormatting.AQUA)
-         * .append(entry.getKey())
-         * .append(EnumChatFormatting.WHITE)
-         * .append(" x ")
-         * .append(EnumChatFormatting.GOLD);
-         * numberFormat.format(entry.getValue(), ret);
-         * ret.append("L")
-         * .append(EnumChatFormatting.WHITE);
-         * appendRate.accept(entry.getValue());
-         * ret.append('\n');
-         * }
-         * }
-         */
         return ret.toString();
     }
 
