@@ -209,9 +209,8 @@ public class MTEMultiBlockBaseGui {
             .child(createShutdownReasonWidget(syncManager))
             .marginBottom(2)
             .child(createRecipeResultWidget())
-            .marginBottom(2)
             .childIf(base.showRecipeTextInGUI(), createRecipeInfoTextWidget(syncManager))
-            .marginBottom(2)
+
             .childIf(base.showRecipeTextInGUI(), createRecipeInfoWidget(syncManager));
     }
 
@@ -253,6 +252,7 @@ public class MTEMultiBlockBaseGui {
                 .getDisplayString())
             .asWidget()
             .widthRel(1)
+            .marginBottom(2)
             .setEnabledIf(widget -> shouldRecipeResultBeDisplayed());
 
     }
@@ -285,7 +285,7 @@ public class MTEMultiBlockBaseGui {
         fluidOutputSyncer
             .setChangeListener(() -> notifyRecipeHandler(recipeHandler, itemOutputSyncer, fluidOutputSyncer));
         return new DynamicSyncedWidget<>().widthRel(1)
-            .height(18)
+            .coverChildrenHeight()
             .syncHandler(recipeHandler);
 
         // Flow column = new Column().coverChildren();
@@ -315,10 +315,33 @@ public class MTEMultiBlockBaseGui {
         int size = packet.readInt();
         Flow column = Flow.column()
             .coverChildren();
-        for (int i = 0; i < size; i++) {
-            ItemStack itemStack = NetworkUtils.readItemStack(packet);
-            long amount = itemStack.stackSize;
+        List<ItemStack> itemList = new ArrayList<>(size);
 
+        for (int i = 0; i < size; i++) {
+            itemList.add(NetworkUtils.readItemStack(packet));
+        }
+
+        // Merge list into map
+        final Map<ItemStack, Long> stackToAmountMap = new HashMap<>();
+        for (ItemStack item : itemList) {
+            stackToAmountMap.merge(item, (long) item.stackSize, Long::sum);
+        }
+
+        // sort map and return as List of Entries
+        final List<Map.Entry<ItemStack, Long>> sortedEntryList = stackToAmountMap.entrySet()
+            .stream()
+            .sorted(
+                Map.Entry.<ItemStack, Long>comparingByValue()
+                    .thenComparing(
+                        entry -> entry.getKey()
+                            .getDisplayName())
+                    .reversed())
+            .collect(Collectors.toList());
+
+        // create row for each entry
+        for (Map.Entry<ItemStack, Long> entry : sortedEntryList) {
+            ItemStack itemStack = entry.getKey();
+            long amount = entry.getValue();
             column.child(
                 Flow.row()
                     .widthRel(1)
@@ -327,6 +350,19 @@ public class MTEMultiBlockBaseGui {
                     .child(createItemDrawable(itemStack))
                     .child(createHoverableTextForItem(itemStack, amount, syncManager)));
         }
+        /*
+         * for (int i = 0; i < size; i++) {
+         * ItemStack itemStack = NetworkUtils.readItemStack(packet);
+         * long amount = itemStack.stackSize;
+         * column.child(
+         * Flow.row()
+         * .widthRel(1)
+         * .height(18)
+         * .marginBottom(4)
+         * .child(createItemDrawable(itemStack))
+         * .child(createHoverableTextForItem(itemStack, amount, syncManager)));
+         * }
+         */
         return column;
     }
 
@@ -334,10 +370,33 @@ public class MTEMultiBlockBaseGui {
         int size = packet.readInt();
         Flow column = Flow.column()
             .coverChildren();
+        // read packet into list
+        List<FluidStack> fluidList = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
-            FluidStack fluidStack = NetworkUtils.readFluidStack(packet);
-            long amount = fluidStack.amount;
+            fluidList.add(NetworkUtils.readFluidStack(packet));
+        }
 
+        // Merge list into map
+        final Map<FluidStack, Long> stackToAmountMap = new HashMap<>();
+        for (FluidStack fluid : fluidList) {
+            stackToAmountMap.merge(fluid, (long) fluid.amount, Long::sum);
+        }
+
+        // sort map and return as List of Entries
+        final List<Map.Entry<FluidStack, Long>> sortedEntryList = stackToAmountMap.entrySet()
+            .stream()
+            .sorted(
+                Map.Entry.<FluidStack, Long>comparingByValue()
+                    .thenComparing(
+                        entry -> entry.getKey()
+                            .getLocalizedName())
+                    .reversed())
+            .collect(Collectors.toList());
+
+        // create row for each entry
+        for (Map.Entry<FluidStack, Long> entry : sortedEntryList) {
+            FluidStack fluidStack = entry.getKey();
+            long amount = entry.getValue();
             column.child(
                 Flow.row()
                     .widthRel(1)
@@ -346,6 +405,19 @@ public class MTEMultiBlockBaseGui {
                     .child(createFluidDrawable(fluidStack))
                     .child(createHoverableTextForFluid(fluidStack, amount, syncManager)));
         }
+        /*
+         * for (int i = 0; i < size; i++) {
+         * FluidStack fluidStack = NetworkUtils.readFluidStack(packet);
+         * long amount = fluidStack.amount;
+         * column.child(
+         * Flow.row()
+         * .widthRel(1)
+         * .height(18)
+         * .marginBottom(4)
+         * .child(createFluidDrawable(fluidStack))
+         * .child(createHoverableTextForFluid(fluidStack, amount, syncManager)));
+         * }
+         */
         return column;
     }
 
@@ -353,13 +425,14 @@ public class MTEMultiBlockBaseGui {
         return IKey.dynamic(() -> ((StringSyncValue) syncManager.getSyncHandler("recipeInfo:0")).getValue())
             .asWidget()
             .widthRel(1f)
+            .marginBottom(2)
             .setEnabledIf(
                 widget -> Predicates.isNonEmptyList(syncManager.getSyncHandler("itemOutput:0"))
                     || Predicates.isNonEmptyList(syncManager.getSyncHandler("fluidOutput:0")));
     }
 
     private ItemDisplayWidget createItemDrawable(ItemStack itemStack) {
-        return new ItemDisplayWidget().background()
+        return new ItemDisplayWidget().background(IDrawable.EMPTY)
             .displayAmount(false)
             .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
             .item(itemStack)
@@ -371,11 +444,13 @@ public class MTEMultiBlockBaseGui {
         IntSyncValue maxProgressTimeSyncer = (IntSyncValue) syncManager.getSyncHandler("maxProgressTime:0");
         String itemName = EnumChatFormatting.AQUA + item.getDisplayName() + EnumChatFormatting.RESET;
 
-        return new TextWidget<>(IKey.dynamic(() -> getItemTextLine(itemName, amount, maxProgressTimeSyncer))).tooltip(
-            t -> t.addLine(
-                EnumChatFormatting.AQUA + itemName
-                    + "\n"
-                    + GTUtility.appendRate(false, amount, false, maxProgressTimeSyncer.getValue())));
+        return new TextWidget<>(IKey.dynamic(() -> getItemTextLine(itemName, amount, maxProgressTimeSyncer)))
+            .scale(0.8f)
+            .tooltip(
+                t -> t.addLine(
+                    EnumChatFormatting.AQUA + itemName
+                        + "\n"
+                        + GTUtility.appendRate(false, amount, false, maxProgressTimeSyncer.getValue())));
     }
 
     private @NotNull String getItemTextLine(String itemName, long amount, IntSyncValue maxProgressTimeSyncer) {
@@ -393,7 +468,8 @@ public class MTEMultiBlockBaseGui {
     private ItemDisplayWidget createFluidDrawable(FluidStack fluidStack) {
         // uses an itemstack representation of the fluid as there is no FluidDisplayWidget (yet)
         ItemStack fluidDisplayStack = GTUtility.getFluidDisplayStack(fluidStack, false, false);
-        return new ItemDisplayWidget().displayAmount(false)
+        return new ItemDisplayWidget().background(IDrawable.EMPTY)
+            .displayAmount(false)
             .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
             .item(fluidDisplayStack)
             .size(18, 18)
@@ -405,11 +481,12 @@ public class MTEMultiBlockBaseGui {
         IntSyncValue maxProgressSyncer = (IntSyncValue) syncManager.getSyncHandler("maxProgressTime:0");
         String fluidName = EnumChatFormatting.AQUA + fluidStack.getLocalizedName() + EnumChatFormatting.RESET;
 
-        return new TextWidget<>(IKey.dynamic(() -> getFluidTextLine(fluidName, amount, maxProgressSyncer))).tooltip(
-            t -> t.addLine(
-                EnumChatFormatting.AQUA + fluidName
-                    + "\n"
-                    + GTUtility.appendRate(true, amount, false, maxProgressSyncer.getValue())));
+        return new TextWidget<>(IKey.dynamic(() -> getFluidTextLine(fluidName, amount, maxProgressSyncer))).scale(0.8f)
+            .tooltip(
+                t -> t.addLine(
+                    EnumChatFormatting.AQUA + fluidName
+                        + "\n"
+                        + GTUtility.appendRate(true, amount, false, maxProgressSyncer.getValue())));
     }
 
     private @NotNull String getFluidTextLine(String fluidName, long amount, IntSyncValue maxProgressTimeSyncer) {
