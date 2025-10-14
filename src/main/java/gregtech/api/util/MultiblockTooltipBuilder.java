@@ -571,22 +571,22 @@ public class MultiblockTooltipBuilder {
         return this;
     }
 
-    public MultiblockTooltipBuilder addStructurePart(String locKey, String info, String desc, int... hintDots) {
+    public MultiblockTooltipBuilder addStructurePart(String partLocKey, String info, String desc, int... hintDots) {
         if (hintDots.length == 0) {
-            addStructureInfo(desc.isEmpty() ? "GT5U.MBTT.PartInfo" : "GT5U.MBTT.PartInfo_X", locKey, switch (info) {
+            addStructureInfo(desc.isEmpty() ? "GT5U.MBTT.PartInfo" : "GT5U.MBTT.PartInfo_X", partLocKey, switch (info) {
                 case "<casing>" -> "GT5U.MBTT.AnyCasing";
                 case "<bottom casing>" -> "GT5U.MBTT.AnyBottomCasing";
                 default -> info;
             }, desc);
         } else {
-            addStructurePart(locKey, hintLine(info, hintDots), desc);
-            addStructureHint(locKey, hintDots);
+            addStructurePart(partLocKey, hintLine(info, hintDots), desc);
+            addStructureHint(partLocKey, hintDots);
         }
         return this;
     }
 
-    public MultiblockTooltipBuilder addStructurePart(String locKey, String info, int... hintDots) {
-        addStructurePart(locKey, info, "", hintDots);
+    public MultiblockTooltipBuilder addStructurePart(String partLocKey, String info, int... hintDots) {
+        addStructurePart(partLocKey, info, "", hintDots);
         return this;
     }
 

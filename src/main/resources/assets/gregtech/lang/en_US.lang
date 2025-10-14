@@ -3628,6 +3628,7 @@ gt.channelfor.super_chest=Super Chest Tier
 
 # Used in addMachineType
 # CONTEXT: Machine type: (machtype)
+machtype.bbf=Blast Furnace, BBF
 machtype.ebf=Blast Furnace, EBF
 machtype.vf=Vacuum Freezer, VF
 machtype.lcr=Chemical Reactor, LCR
@@ -3657,6 +3658,7 @@ machtype.eoh=Spacetime Manipulator, EOH
 machtype.windmill=Windmill
 machtype.adv_nt_compressor=Advanced Neutronium Compressor,
 machtype.bhc=BHC
+machtype.cleanroom=Cleanroom
 
 # Used in addController. These are some commonly used shared ones
 # CONTEXT: Controller: (corepos)
@@ -3667,6 +3669,18 @@ gt.mb.corepos.top_center=Top center
 gt.mb.hint_block=Hint block with dot %d
 
 # Multiblock Tooltip lines
+gt.cleanroom.tips.1=Consumes 40 EU/t when first turned on, and 4 EU/t once at 100% efficiency\nCan accept 2A from an LV energy hatch\nWill overclock and gain efficiency faster starting from HV
+gt.cleanroom.tips.2=§cWarning:\nBelow 100% efficiency machines inside have a chance to void outputs!\nEach maintenance issue reduces maximum efficiency by 10%\nGenerating any pollution inside causes the cleanroom to shut down
+gt.cleanroom.info.1=  If width or length is even, it can be in either of the two middle positions
+gt.cleanroom.info.2=Top layer, except for edges
+gt.cleanroom.info.3=§f%s: §7Edges of top layer, all walls and floor. Minimum §6%s§7
+gt.cleanroom.info.4=Any Plascrete Block. Exactly one
+gt.cleanroom.info.5=Up to §6%s%%§7 of plascrete blocks can be replaced by other valid blocks\n   Try some of the following:\n   - Any §8EV+§7 tier glass\n   - Machine hulls or diodes for item and power transfer\n   - Reinforced Doors (§oIC2§r§7). Keep closed, no gaps allowed or efficiency will drop!\n   - Elevators (§oOpenBlocks§r§7) or Travel Anchors (§oEnderIO§r§7)\n   See §8config/GregTech/MachineStats.cfg§7 for more valid blocks\n   §eAll non-plascrete blocks now share the same limit. Feel free to mix and match!
+
+gt.bbf.tips.1=Usable for Steel and general Pyrometallurgy\nHas a useful interface, unlike other gregtech multis
+gt.bbf.info.1=Everything except the controller
+gt.bbf.info.2=The top block is also empty\n   You can share the walls of GT multis, so\n   each additional one costs less, up to 4
+
 gt.bhc.tips.1=§dUses the immense power of the event horizon to compress things\n§dNo longer requires heat management to perform superdense compression\n§dCan create advanced singularities!
 gt.bhc.tips.2=Insert a §fBlack Hole Seed§7 to open a black hole\nThe black hole will begin its life at §c100§7 stability and slowly decay\nStability decays by §c1/s§7 until it reaches 0\nAt 0 stability, the black hole is §4UNSTABLE\nOnce the black hole becomes unstable, it will void recipes and eventually close itself!
 gt.bhc.tips.3=The decay can be §lhalted§r§7 by inserting 1 L/s of spacetime into specific hatches\nEvery §c30§7 total seconds saved by spacetime insertion will §cdouble§7 the cost per second!\nInsert a §fBlack Hole Collapser§7 to close the black hole\nTo restore stability and reset spacetime costs, close the black hole and open a new one
