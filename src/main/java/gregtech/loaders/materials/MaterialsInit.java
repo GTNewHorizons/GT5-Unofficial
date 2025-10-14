@@ -55,6 +55,7 @@ public class MaterialsInit {
         loadNetheriteLine();
         loadPrismaticAcidLine();
         loadMagicMaterials();
+        loadBotaniaMaterials();
     }
 
     private static void loadElements() {
@@ -14890,6 +14891,199 @@ public class MaterialsInit {
             .setARGB(0x00a99da5)
             .addFluid()
             .addCell()
+            .constructMaterial();
+    }
+
+    private static void loadBotaniaMaterials() {
+        Materials.Manasteel = loadManasteel();
+        Materials.Terrasteel = loadTerrasteel();
+        Materials.ElvenElementium = loadElvenElementium();
+        Materials.Livingrock = loadLivingrock();
+        Materials.GaiaSpirit = loadGaiaSpirit();
+        Materials.Livingwood = loadLivingwood();
+        Materials.Dreamwood = loadDreamwood();
+        Materials.ManaDiamond = loadManaDiamond();
+        Materials.BotaniaDragonstone = loadBotaniaDragonstone();
+    }
+
+    private static Materials loadManasteel() {
+        return new MaterialBuilder().setName("Manasteel")
+            .setDefaultLocalName("Manasteel")
+            .setChemicalFormula("Ms")
+            .setMetaItemSubID(201)
+            .setIconSet(new TextureSet("Manasteel", false))
+            .setARGB(0xff46aae6)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setTool(5_120, 4, 8.0f)
+            .setMeltingPoint(1_500)
+            .setBlastFurnaceTemp(1_500)
+            .setBlastFurnaceRequired(true)
+            .addAspect(TCAspects.METALLUM, 3)
+            .addAspect(TCAspects.PRAECANTATIO, 1)
+            .addOrePrefixBlacklist(OrePrefixes.ingot)
+            .addOrePrefixBlacklist(OrePrefixes.nugget)
+            .constructMaterial();
+    }
+
+    private static Materials loadTerrasteel() {
+        return new MaterialBuilder().setName("Terrasteel")
+            .setDefaultLocalName("Terrasteel")
+            .setChemicalFormula("Tr")
+            .setMetaItemSubID(202)
+            .setIconSet(new TextureSet("Manasteel", false))
+            .setARGB(0xff46c800)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setTool(10_240, 5, 32.0f)
+            .setMeltingPoint(5_400)
+            .setBlastFurnaceTemp(5_400)
+            .setBlastFurnaceRequired(true)
+            .addAspect(TCAspects.METALLUM, 2)
+            .addAspect(TCAspects.TERRA, 1)
+            .addAspect(TCAspects.PRAECANTATIO, 1)
+            .addOrePrefixBlacklist(OrePrefixes.ingot)
+            .addOrePrefixBlacklist(OrePrefixes.nugget)
+            .constructMaterial();
+    }
+
+    private static Materials loadElvenElementium() {
+        return new MaterialBuilder().setName("ElvenElementium")
+            .setDefaultLocalName("Elven Elementium")
+            .setChemicalFormula("Ef")
+            .setMetaItemSubID(203)
+            .setIconSet(new TextureSet("Manasteel", false))
+            .setARGB(0xffff2df0)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setTool(32_768, 7, 20.0f)
+            .setMeltingPoint(7_200)
+            .setBlastFurnaceTemp(7_200)
+            .setBlastFurnaceRequired(true)
+            .addAspect(TCAspects.METALLUM, 3)
+            .addAspect(TCAspects.PRAECANTATIO, 2)
+            .addAspect(TCAspects.AURAM, 1)
+            .addOrePrefixBlacklist(OrePrefixes.ingot)
+            .addOrePrefixBlacklist(OrePrefixes.nugget)
+            .constructMaterial();
+    }
+
+    private static Materials loadLivingrock() {
+        return new MaterialBuilder().setName("Livingrock")
+            .setDefaultLocalName("Livingrock")
+            .setChemicalFormula("Lv")
+            .setMetaItemSubID(204)
+            .setIconSet(new TextureSet("Livingrock", true))
+            .addDustItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .addAspect(TCAspects.TERRA, 2)
+            .addAspect(TCAspects.VICTUS, 2)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
+            .addOrePrefixBlacklist(OrePrefixes.rotor)
+            .addOrePrefix(OrePrefixes.plate)
+            .addOrePrefix(OrePrefixes.rod) // this is not working
+            .constructMaterial();
+    }
+
+    private static Materials loadGaiaSpirit() {
+        return new MaterialBuilder().setName("GaiaSpirit")
+            .setDefaultLocalName("Gaia Spirit")
+            .setChemicalFormula("Gs")
+            .setMetaItemSubID(205)
+            .setIconSet(new TextureSet("GaiaSpirit", true))
+            .setTool(850_000, 12, 32.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .addSubTag(SubTag.SOFT)
+            .addSubTag(SubTag.TRANSPARENT)
+            .addOrePrefixBlacklist(OrePrefixes.ingot)
+            .constructMaterial();
+    }
+
+    private static Materials loadLivingwood() {
+        return new MaterialBuilder().setName("Livingwood")
+            .setDefaultLocalName("Livingwood")
+            .setChemicalFormula("Lw")
+            .setMetaItemSubID(206)
+            .setIconSet(new TextureSet("Livingwood", true))
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .addAspect(TCAspects.ARBOR, 4)
+            .addAspect(TCAspects.VICTUS, 2)
+            .addSubTag(SubTag.FLAMMABLE)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
+            .addSubTag(SubTag.WOOD)
+            .addOrePrefixBlacklist(OrePrefixes.ingot)
+            .addOrePrefixBlacklist(OrePrefixes.nugget)
+            .constructMaterial();
+    }
+
+    private static Materials loadDreamwood() {
+        return new MaterialBuilder().setName("Dreamwood")
+            .setDefaultLocalName("Dreamwood")
+            .setChemicalFormula("Dw")
+            .setMetaItemSubID(207)
+            .setIconSet(new TextureSet("Dreamwood", true))
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .addAspect(TCAspects.ARBOR, 4)
+            .addAspect(TCAspects.AURAM, 2)
+            .addAspect(TCAspects.PRAECANTATIO, 1)
+            .addSubTag(SubTag.FLAMMABLE)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
+            .addSubTag(SubTag.WOOD)
+            .addOrePrefixBlacklist(OrePrefixes.ingot)
+            .addOrePrefixBlacklist(OrePrefixes.nugget)
+            .constructMaterial();
+    }
+
+    private static Materials loadManaDiamond() {
+        return new MaterialBuilder().setName("ManaDiamond")
+            .setDefaultLocalName("Mana Diamond")
+            .setChemicalFormula("Ma₄C")
+            .setMetaItemSubID(208)
+            .setIconSet(new TextureSet("ManaDiamond", true))
+            .setTool(2_560, 8, 16.0f)
+            .addDustItems()
+            .addGemItems()
+            .addSubTag(SubTag.CRYSTAL)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
+            .addSubTag(SubTag.TRANSPARENT)
+            .addOrePrefixBlacklist(OrePrefixes.nugget)
+            .constructMaterial();
+    }
+
+    private static Materials loadBotaniaDragonstone() {
+        return new MaterialBuilder().setName("BotaniaDragonstone")
+            .setDefaultLocalName("Dragonstone")
+            .setChemicalFormula("Dg")
+            .setMetaItemSubID(209)
+            .setIconSet(new TextureSet("Dragonstone", true))
+            .setTool(3_840, 12, 24.0f)
+            .addDustItems()
+            .addGemItems()
+            .addSubTag(SubTag.CRYSTAL)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
+            .addSubTag(SubTag.TRANSPARENT)
+            .addOrePrefixBlacklist(OrePrefixes.nugget)
             .constructMaterial();
     }
 }
