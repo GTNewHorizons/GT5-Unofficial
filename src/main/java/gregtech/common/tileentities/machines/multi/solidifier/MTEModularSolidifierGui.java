@@ -8,6 +8,7 @@ import java.util.Objects;
 import net.minecraft.util.EnumChatFormatting;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
+import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
@@ -121,29 +122,29 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
             .child(
                 new Column().sizeRel(1)
                     .child(
-                        new TextWidget("Stats").size(60, 18)
-                            .alignment(Alignment.Center))
+                        new TextWidget<>("Stats").size(60, 18)
+                            .align(Alignment.Center))
                     .widgetTheme("backgroundPopup")
                     .child(
-                        new TextWidget(
+                        new TextWidget<>(
                             IKey.dynamic(
                                 () -> EnumChatFormatting.DARK_PURPLE + "Speed: "
                                     + EnumChatFormatting.WHITE
                                     + speedSync.getValue())).size(120, 20))
                     .child(
-                        new TextWidget(
+                        new TextWidget<>(
                             IKey.dynamic(
                                 () -> EnumChatFormatting.DARK_PURPLE + "Parallels Per Tier: "
                                     + EnumChatFormatting.WHITE
                                     + parallelSync.getValue())).size(120, 20))
                     .child(
-                        new TextWidget(
+                        new TextWidget<>(
                             IKey.dynamic(
                                 () -> EnumChatFormatting.DARK_PURPLE + "EU Consumption: "
                                     + EnumChatFormatting.WHITE
                                     + euEffBaseSync.getValue())).size(120, 20))
                     .child(
-                        new TextWidget(
+                        new TextWidget<>(
                             IKey.dynamic(
                                 () -> EnumChatFormatting.DARK_PURPLE + "OC Factor: "
                                     + EnumChatFormatting.WHITE
@@ -207,7 +208,7 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
                     })
                     .marginRight(2))
             .child(
-                new TextWidget(
+                new TextWidget<>(
                     IKey.dynamic(
                         () -> EnumChatFormatting.WHITE
                             + SolidifierModules.getModule(moduleSync.getIntValue()).shorthand)).scale(0.5f)
@@ -229,8 +230,8 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
                     .padding(2)
                     .widgetTheme("backgroundPopup")
                     .child(
-                        new TextWidget("Select Module " + (index + 1)).size(60, 18)
-                            .alignment(Alignment.Center)
+                        new TextWidget<>("Select Module " + (index + 1)).size(60, 18)
+                            .align(Alignment.Center)
                             .marginBottom(5))
                     .child(
                         SlotGroupWidget.builder()
@@ -251,7 +252,9 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
                                         moduleSync.setIntValue(i);
                                         return true;
                                     }))
-                            .build()));
+                            .build()
+                            .topRel(0.5f)
+                            .leftRel(0.4f)));
     }
 
     protected Flow createModuleTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
@@ -309,6 +312,7 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
             // module selecting
             .child(
                 new Column().size(40, 80)
+                    .background(IDrawable.EMPTY)
                     .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
                     .padding(4, 4, 5, 5)
                     .child(createModuleSelectButton(syncManager, parent, 3))
