@@ -1331,15 +1331,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         Silicone.mOreReRegistrations.add(AnyRubber);
         StyreneButadieneRubber.mOreReRegistrations.add(AnySyntheticRubber);
         Silicone.mOreReRegistrations.add(AnySyntheticRubber);
-
-        Hydrogen.add(SubTag.ICE_ORE);
-        Nitrogen.add(SubTag.ICE_ORE);
-        Oxygen.add(SubTag.ICE_ORE);
-        Methane.add(SubTag.ICE_ORE);
-        CarbonDioxide.add(SubTag.ICE_ORE);
-        SulfurDioxide.add(SubTag.ICE_ORE);
-        Ammonia.add(SubTag.ICE_ORE);
-
     }
 
     private static void setToolEnchantments() {
