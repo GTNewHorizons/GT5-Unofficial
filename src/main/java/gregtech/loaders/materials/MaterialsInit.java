@@ -572,10 +572,10 @@ public class MaterialsInit {
             .addEmpty()
             .addAspect(TCAspects.VACUOS, 2)
             .addSubTag(SubTag.TRANSPARENT)
-            .addOrePrefixBlacklist(OrePrefixes.cell)
-            .addOrePrefixBlacklist(OrePrefixes.bucket)
-            .addOrePrefixBlacklist(OrePrefixes.bucketClay)
-            .addOrePrefixBlacklist(OrePrefixes.bottle)
+            .removeOrePrefix(OrePrefixes.cell)
+            .removeOrePrefix(OrePrefixes.bucket)
+            .removeOrePrefix(OrePrefixes.bucketClay)
+            .removeOrePrefix(OrePrefixes.bottle)
             .constructMaterial();
     }
 
@@ -720,9 +720,9 @@ public class MaterialsInit {
             .addSubTag(SubTag.MORTAR_GRINDABLE)
             .addSubTag(SubTag.MULTI_PLATE)
             .addSubTag(SubTag.WASHING_MERCURY)
-            .addOrePrefixBlacklist(OrePrefixes.nugget) // minecraft:gold_nugget
-            .addOrePrefixBlacklist(OrePrefixes.block) // minecraft:gold_block
-            .addOrePrefixBlacklist(OrePrefixes.ingot) // minecraft:gold_ingot
+            .removeOrePrefix(OrePrefixes.nugget) // minecraft:gold_nugget
+            .removeOrePrefix(OrePrefixes.block) // minecraft:gold_block
+            .removeOrePrefix(OrePrefixes.ingot) // minecraft:gold_ingot
             .constructMaterial();
     }
 
@@ -755,8 +755,6 @@ public class MaterialsInit {
             .setColor(Dyes.dyeBlue)
             .setARGB(0xf00000ff)
             .setFuel(MaterialBuilder.FuelType.Gas, 20)
-            .addOrePrefix(OrePrefixes.ore)
-            .addOrePrefix(OrePrefixes.rawOre)
             .setOreMultiplier(4)
             .addCell()
             .addPlasma()
@@ -765,6 +763,8 @@ public class MaterialsInit {
             .addSubTag(SubTag.TRANSPARENT)
             .addSubTag(SubTag.ICE_ORE)
             .addSubTag(SubTag.NO_ORE_PROCESSING)
+            .addOrePrefix(OrePrefixes.ore)
+            .addOrePrefix(OrePrefixes.rawOre)
             .constructMaterial();
     }
 
@@ -856,8 +856,8 @@ public class MaterialsInit {
             .addSubTag(SubTag.METAL)
             .addSubTag(SubTag.MORTAR_GRINDABLE)
             .addSubTag(SubTag.MULTI_PLATE)
-            .addOrePrefixBlacklist(OrePrefixes.block) // minecraft:iron_block
-            .addOrePrefixBlacklist(OrePrefixes.ingot) // minecraft:iron_ingot
+            .removeOrePrefix(OrePrefixes.block) // minecraft:iron_block
+            .removeOrePrefix(OrePrefixes.ingot) // minecraft:iron_ingot
             .constructMaterial();
     }
 
@@ -1233,8 +1233,6 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeCyan)
             .setARGB(0xf00096c8)
-            .addOrePrefix(OrePrefixes.ore)
-            .addOrePrefix(OrePrefixes.rawOre)
             .setOreMultiplier(4)
             .addCell()
             .addPlasma()
@@ -1243,6 +1241,8 @@ public class MaterialsInit {
             .addSubTag(SubTag.TRANSPARENT)
             .addSubTag(SubTag.ICE_ORE)
             .addSubTag(SubTag.NO_ORE_PROCESSING)
+            .addOrePrefix(OrePrefixes.ore)
+            .addOrePrefix(OrePrefixes.rawOre)
             .constructMaterial();
     }
 
@@ -1318,8 +1318,6 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeWhite)
             .setARGB(0xf00064c8)
-            .addOrePrefix(OrePrefixes.ore)
-            .addOrePrefix(OrePrefixes.rawOre)
             .setOreMultiplier(4)
             .addCell()
             .addPlasma()
@@ -1328,6 +1326,8 @@ public class MaterialsInit {
             .addSubTag(SubTag.TRANSPARENT)
             .addSubTag(SubTag.ICE_ORE)
             .addSubTag(SubTag.NO_ORE_PROCESSING)
+            .addOrePrefix(OrePrefixes.ore)
+            .addOrePrefix(OrePrefixes.rawOre)
             .constructMaterial();
     }
 
@@ -2316,7 +2316,7 @@ public class MaterialsInit {
             .setDefaultLocalName("BrickNether")
             .setUnifiable(false)
             .setIconSet(TextureSet.SET_DULL)
-            .addOrePrefixBlacklist(OrePrefixes.ingot) // minecraft:netherbrick
+            .removeOrePrefix(OrePrefixes.ingot) // minecraft:netherbrick
             .constructMaterial();
     }
 
@@ -3112,7 +3112,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.QUARTZ)
-            .addOrePrefixBlacklist(OrePrefixes.dust) // dreamcraft:item.ChargedCertusQuartzDust
+            .removeOrePrefix(OrePrefixes.dust) // dreamcraft:item.ChargedCertusQuartzDust
             .constructMaterial();
     }
 
@@ -3196,7 +3196,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.EXPLOSIVE)
             .addSubTag(SubTag.NO_SMELTING)
-            .addOrePrefixBlacklist(OrePrefixes.cell) // IC2:itemCellEmpty:4
+            .removeOrePrefix(OrePrefixes.cell) // IC2:itemCellEmpty:4
             .constructMaterial();
     }
 
@@ -3632,7 +3632,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.SMELTING_TO_FLUID)
             .addSubTag(SubTag.STONE)
             .addSubTag(SubTag.UNBURNABLE)
-            .addOrePrefixBlacklist(OrePrefixes.dust) // minecraft:glowstone_dust
+            .removeOrePrefix(OrePrefixes.dust) // minecraft:glowstone_dust
             .constructMaterial();
     }
 
@@ -4131,9 +4131,9 @@ public class MaterialsInit {
             .setARGB(0x00ff4000)
             .addCell()
             .setHeatDamage(3.0f)
-            .addOrePrefixBlacklist(OrePrefixes.cell) // IC2:itemCellEmpty:2
-            .addOrePrefixBlacklist(OrePrefixes.bucket) // minecraft:lava_bucket
-            .addOrePrefixBlacklist(OrePrefixes.bucketClay) // IguanaTweaksTConstruct:clayBucketLava
+            .removeOrePrefix(OrePrefixes.cell) // IC2:itemCellEmpty:2
+            .removeOrePrefix(OrePrefixes.bucket) // minecraft:lava_bucket
+            .removeOrePrefix(OrePrefixes.bucketClay) // IguanaTweaksTConstruct:clayBucketLava
             .constructMaterial();
     }
 
@@ -4389,7 +4389,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.QUARTZ)
-            .addOrePrefixBlacklist(OrePrefixes.gem) // minecraft:quartz
+            .removeOrePrefix(OrePrefixes.gem) // minecraft:quartz
             .constructMaterial();
     }
 
@@ -4412,7 +4412,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.UNBURNABLE)
-            .addOrePrefixBlacklist(OrePrefixes.gem) // minecraft:nether_star
+            .removeOrePrefix(OrePrefixes.gem) // minecraft:nether_star
             .constructMaterial();
     }
 
@@ -4701,7 +4701,7 @@ public class MaterialsInit {
             .setColor(Dyes.dyePink)
             .setARGB(0x008000c4)
             .addCell()
-            .addOrePrefixBlacklist(OrePrefixes.cell) // IC2:itemCellEmpty:3
+            .removeOrePrefix(OrePrefixes.cell) // IC2:itemCellEmpty:3
             .constructMaterial();
     }
 
@@ -5178,7 +5178,7 @@ public class MaterialsInit {
             .setARGB(0x00323246)
             .setFuel(MaterialBuilder.FuelType.Diesel, 16)
             .addCell()
-            .addOrePrefixBlacklist(OrePrefixes.cell)
+            .removeOrePrefix(OrePrefixes.cell)
             .constructMaterial();
     }
 
@@ -5316,7 +5316,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.EXPLOSIVE)
             .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.NO_SMASHING)
-            .addOrePrefixBlacklist(OrePrefixes.dust) // minecraft:gunpowder
+            .removeOrePrefix(OrePrefixes.dust) // minecraft:gunpowder
             .constructMaterial();
     }
 
@@ -5416,9 +5416,9 @@ public class MaterialsInit {
             .addCell()
             .addAspect(TCAspects.SANO, 2)
             .addSubTag(SubTag.FOOD)
-            .addOrePrefixBlacklist(OrePrefixes.bucket) // minecraft:milk_bucket
-            .addOrePrefixBlacklist(OrePrefixes.bucketClay) // IguanaTweaksTConstruct:clayBucketMilk
-            .addOrePrefixBlacklist(OrePrefixes.bottle)
+            .removeOrePrefix(OrePrefixes.bucket) // minecraft:milk_bucket
+            .removeOrePrefix(OrePrefixes.bucketClay) // IguanaTweaksTConstruct:clayBucketMilk
+            .removeOrePrefix(OrePrefixes.bottle)
             .constructMaterial();
     }
 
@@ -5456,7 +5456,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.PAPER)
-            .addOrePrefixBlacklist(OrePrefixes.plate) // minecraft:paper
+            .removeOrePrefix(OrePrefixes.plate) // minecraft:paper
             .constructMaterial();
     }
 
@@ -5988,8 +5988,6 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeBlue)
             .setARGB(0x003f3480)
-            .addOrePrefix(OrePrefixes.ore)
-            .addOrePrefix(OrePrefixes.rawOre)
             .setOreMultiplier(4)
             .addCell()
             .addGas()
@@ -5998,6 +5996,8 @@ public class MaterialsInit {
             .addElectrolyzerRecipe()
             .addSubTag(SubTag.ICE_ORE)
             .addSubTag(SubTag.NO_ORE_PROCESSING)
+            .addOrePrefix(OrePrefixes.ore)
+            .addOrePrefix(OrePrefixes.rawOre)
             .constructMaterial();
     }
 
@@ -6189,8 +6189,8 @@ public class MaterialsInit {
             .addMaterial(Materials.Calcium, 1)
             .addAspect(TCAspects.MORTUUS, 2)
             .addAspect(TCAspects.CORPUS, 1)
-            .addOrePrefixBlacklist(OrePrefixes.dust) // minecraft:dye:15
-            .addOrePrefixBlacklist(OrePrefixes.stick)
+            .removeOrePrefix(OrePrefixes.dust) // minecraft:dye:15
+            .removeOrePrefix(OrePrefixes.stick)
             .constructMaterial();
     }
 
@@ -6233,7 +6233,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.STONE)
-            .addOrePrefixBlacklist(OrePrefixes.ingot) // minecraft:brick
+            .removeOrePrefix(OrePrefixes.ingot) // minecraft:brick
             .constructMaterial();
     }
 
@@ -6310,8 +6310,6 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeLightBlue)
             .setARGB(0xf0a9d0f5)
-            .addOrePrefix(OrePrefixes.ore)
-            .addOrePrefix(OrePrefixes.rawOre)
             .setOreMultiplier(4)
             .addCell()
             .addGas()
@@ -6322,6 +6320,8 @@ public class MaterialsInit {
             .addSubTag(SubTag.TRANSPARENT)
             .addSubTag(SubTag.ICE_ORE)
             .addSubTag(SubTag.NO_ORE_PROCESSING)
+            .addOrePrefix(OrePrefixes.ore)
+            .addOrePrefix(OrePrefixes.rawOre)
             .constructMaterial();
     }
 
@@ -6401,7 +6401,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.MORTAR_GRINDABLE)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
-            .addOrePrefixBlacklist(OrePrefixes.gem) // minecraft:coal:1
+            .removeOrePrefix(OrePrefixes.gem) // minecraft:coal:1
             .constructMaterial();
     }
 
@@ -6508,8 +6508,8 @@ public class MaterialsInit {
             .addSubTag(SubTag.MORTAR_GRINDABLE)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
-            .addOrePrefixBlacklist(OrePrefixes.block) // minecraft:coal_block
-            .addOrePrefixBlacklist(OrePrefixes.gem) // minecraft:coal:0
+            .removeOrePrefix(OrePrefixes.block) // minecraft:coal_block
+            .removeOrePrefix(OrePrefixes.gem) // minecraft:coal:0
             .constructMaterial();
     }
 
@@ -6672,8 +6672,8 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.TRANSPARENT)
-            .addOrePrefixBlacklist(OrePrefixes.block) // minecraft:diamond_block
-            .addOrePrefixBlacklist(OrePrefixes.gem) // minecraft:diamond
+            .removeOrePrefix(OrePrefixes.block) // minecraft:diamond_block
+            .removeOrePrefix(OrePrefixes.gem) // minecraft:diamond
             .constructMaterial();
     }
 
@@ -6739,8 +6739,8 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.TRANSPARENT)
-            .addOrePrefixBlacklist(OrePrefixes.block) // minecraft:emerald_block
-            .addOrePrefixBlacklist(OrePrefixes.gem) // minecraft:emerald
+            .removeOrePrefix(OrePrefixes.block) // minecraft:emerald_block
+            .removeOrePrefix(OrePrefixes.gem) // minecraft:emerald
             .constructMaterial();
     }
 
@@ -7199,8 +7199,6 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeMagenta)
             .setFuel(MaterialBuilder.FuelType.Gas, 104)
-            .addOrePrefix(OrePrefixes.ore)
-            .addOrePrefix(OrePrefixes.rawOre)
             .setOreMultiplier(4)
             .addCell()
             .addElectrolyzerRecipe()
@@ -7208,6 +7206,8 @@ public class MaterialsInit {
             .addMaterial(Materials.Hydrogen, 4)
             .addSubTag(SubTag.ICE_ORE)
             .addSubTag(SubTag.NO_ORE_PROCESSING)
+            .addOrePrefix(OrePrefixes.ore)
+            .addOrePrefix(OrePrefixes.rawOre)
             .constructMaterial();
     }
 
@@ -7383,7 +7383,7 @@ public class MaterialsInit {
             .addOreByproduct(() -> Materials.Olivine)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.STONE)
-            .addOrePrefixBlacklist(OrePrefixes.stickLong) // dreamcraft:item.LongObsidianRod
+            .removeOrePrefix(OrePrefixes.stickLong) // dreamcraft:item.LongObsidianRod
             .constructMaterial();
     }
 
@@ -7999,10 +7999,10 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_RECYCLING)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
-            .addOrePrefixBlacklist(OrePrefixes.cell) // IC2:itemCellEmpty:1
-            .addOrePrefixBlacklist(OrePrefixes.bucket) // minecraft:water_bucket
-            .addOrePrefixBlacklist(OrePrefixes.bucketClay) // IguanaTweaksTConstruct:clayBucketWater
-            .addOrePrefixBlacklist(OrePrefixes.bottle) // minecraft:potion:0
+            .removeOrePrefix(OrePrefixes.cell) // IC2:itemCellEmpty:1
+            .removeOrePrefix(OrePrefixes.bucket) // minecraft:water_bucket
+            .removeOrePrefix(OrePrefixes.bucketClay) // IguanaTweaksTConstruct:clayBucketWater
+            .removeOrePrefix(OrePrefixes.bottle) // minecraft:potion:0
             .constructMaterial();
     }
 
@@ -9238,8 +9238,6 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeYellow)
             .setARGB(0x00c8c819)
-            .addOrePrefix(OrePrefixes.ore)
-            .addOrePrefix(OrePrefixes.rawOre)
             .setOreMultiplier(4)
             .addCell()
             .addGas()
@@ -9247,6 +9245,8 @@ public class MaterialsInit {
             .addMaterial(Materials.Oxygen, 2)
             .addSubTag(SubTag.ICE_ORE)
             .addSubTag(SubTag.NO_ORE_PROCESSING)
+            .addOrePrefix(OrePrefixes.ore)
+            .addOrePrefix(OrePrefixes.rawOre)
             .constructMaterial();
     }
 
@@ -10083,8 +10083,8 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.WOOD)
-            .addOrePrefixBlacklist(OrePrefixes.stick) // minecraft:stick
-            .addOrePrefixBlacklist(OrePrefixes.ingot)
+            .removeOrePrefix(OrePrefixes.stick) // minecraft:stick
+            .removeOrePrefix(OrePrefixes.ingot)
             .constructMaterial();
     }
 
@@ -10590,8 +10590,8 @@ public class MaterialsInit {
             .addSubTag(SubTag.MORTAR_GRINDABLE)
             .addSubTag(SubTag.SMELTING_TO_FLUID)
             .addSubTag(SubTag.UNBURNABLE)
-            .addOrePrefixBlacklist(OrePrefixes.dust) // minecraft:blaze_powder
-            .addOrePrefixBlacklist(OrePrefixes.stick) // minecraft:blaze_rod
+            .removeOrePrefix(OrePrefixes.dust) // minecraft:blaze_powder
+            .removeOrePrefix(OrePrefixes.stick) // minecraft:blaze_rod
             .constructMaterial();
     }
 
@@ -10819,7 +10819,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.PEARL)
-            .addOrePrefixBlacklist(OrePrefixes.gem) // minecraft:ender_pearl
+            .removeOrePrefix(OrePrefixes.gem) // minecraft:ender_pearl
             .constructMaterial();
     }
 
@@ -10861,7 +10861,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.MORTAR_GRINDABLE)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.STONE)
-            .addOrePrefixBlacklist(OrePrefixes.gem) // minecraft:flint
+            .removeOrePrefix(OrePrefixes.gem) // minecraft:flint
             .constructMaterial();
     }
 
@@ -11208,8 +11208,8 @@ public class MaterialsInit {
             .addSubTag(SubTag.CRYSTALLISABLE)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
-            .addOrePrefixBlacklist(OrePrefixes.block) // minecraft:lapis_block
-            .addOrePrefixBlacklist(OrePrefixes.gem) // minecraft:dye:4
+            .removeOrePrefix(OrePrefixes.block) // minecraft:lapis_block
+            .removeOrePrefix(OrePrefixes.gem) // minecraft:dye:4
             .constructMaterial();
     }
 
@@ -11741,8 +11741,8 @@ public class MaterialsInit {
             .addSubTag(SubTag.SMELTING_TO_FLUID)
             .addSubTag(SubTag.STONE)
             .addSubTag(SubTag.UNBURNABLE)
-            .addOrePrefixBlacklist(OrePrefixes.block) // minecraft:redstone_block
-            .addOrePrefixBlacklist(OrePrefixes.dust) // minecraft:redstone
+            .removeOrePrefix(OrePrefixes.block) // minecraft:redstone_block
+            .removeOrePrefix(OrePrefixes.dust) // minecraft:redstone
             .constructMaterial();
     }
 
@@ -11968,7 +11968,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.AER, 1)
             .addSubTag(SubTag.FOOD)
             .addSubTag(SubTag.SMELTING_TO_FLUID)
-            .addOrePrefixBlacklist(OrePrefixes.dust) // minecraft:sugar
+            .removeOrePrefix(OrePrefixes.dust) // minecraft:sugar
             .constructMaterial();
     }
 
@@ -12311,7 +12311,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.NO_WORKING)
             .addSubTag(SubTag.WOOD)
-            .addOrePrefixBlacklist(OrePrefixes.ingot)
+            .removeOrePrefix(OrePrefixes.ingot)
             .constructMaterial();
     }
 
@@ -12511,7 +12511,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.PEARL)
-            .addOrePrefixBlacklist(OrePrefixes.gem) // minecraft:ender_eye
+            .removeOrePrefix(OrePrefixes.gem) // minecraft:ender_eye
             .constructMaterial();
     }
 
@@ -14722,8 +14722,8 @@ public class MaterialsInit {
             .setAutoGenerateBlastFurnaceRecipes(false)
             .setAutoGeneratedVacuumFreezerRecipe(false)
             .addSubTag(SubTag.TRANSPARENT)
-            .addOrePrefixBlacklist(OrePrefixes.itemCasing)
-            .addOrePrefixBlacklist(OrePrefixes.nugget)
+            .removeOrePrefix(OrePrefixes.itemCasing)
+            .removeOrePrefix(OrePrefixes.nugget)
             .constructMaterial();
     }
 
@@ -14745,10 +14745,10 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_RECIPES)
             .addSubTag(SubTag.SMELTING_TO_FLUID)
             .addSubTag(SubTag.TRANSPARENT)
-            .addOrePrefixBlacklist(OrePrefixes.cellMolten)
-            .addOrePrefixBlacklist(OrePrefixes.nugget)
-            .addOrePrefixBlacklist(OrePrefixes.spring)
-            .addOrePrefixBlacklist(OrePrefixes.springSmall)
+            .removeOrePrefix(OrePrefixes.cellMolten)
+            .removeOrePrefix(OrePrefixes.nugget)
+            .removeOrePrefix(OrePrefixes.spring)
+            .removeOrePrefix(OrePrefixes.springSmall)
             .constructMaterial()
             .setProcessingMaterialTierEU(TierEU.RECIPE_ZPM);
     }
@@ -14923,8 +14923,8 @@ public class MaterialsInit {
             .setBlastFurnaceRequired(true)
             .addAspect(TCAspects.METALLUM, 3)
             .addAspect(TCAspects.PRAECANTATIO, 1)
-            .addOrePrefixBlacklist(OrePrefixes.ingot)
-            .addOrePrefixBlacklist(OrePrefixes.nugget)
+            .removeOrePrefix(OrePrefixes.ingot)
+            .removeOrePrefix(OrePrefixes.nugget)
             .constructMaterial();
     }
 
@@ -14946,8 +14946,8 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.TERRA, 1)
             .addAspect(TCAspects.PRAECANTATIO, 1)
-            .addOrePrefixBlacklist(OrePrefixes.ingot)
-            .addOrePrefixBlacklist(OrePrefixes.nugget)
+            .removeOrePrefix(OrePrefixes.ingot)
+            .removeOrePrefix(OrePrefixes.nugget)
             .constructMaterial();
     }
 
@@ -14969,8 +14969,8 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 3)
             .addAspect(TCAspects.PRAECANTATIO, 2)
             .addAspect(TCAspects.AURAM, 1)
-            .addOrePrefixBlacklist(OrePrefixes.ingot)
-            .addOrePrefixBlacklist(OrePrefixes.nugget)
+            .removeOrePrefix(OrePrefixes.ingot)
+            .removeOrePrefix(OrePrefixes.nugget)
             .constructMaterial();
     }
 
@@ -14987,9 +14987,9 @@ public class MaterialsInit {
             .addAspect(TCAspects.VICTUS, 2)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
-            .addOrePrefixBlacklist(OrePrefixes.rotor)
             .addOrePrefix(OrePrefixes.plate)
             .addOrePrefix(OrePrefixes.rod) // this is not working
+            .removeOrePrefix(OrePrefixes.rotor)
             .constructMaterial();
     }
 
@@ -15006,7 +15006,7 @@ public class MaterialsInit {
             .addGearItems()
             .addSubTag(SubTag.SOFT)
             .addSubTag(SubTag.TRANSPARENT)
-            .addOrePrefixBlacklist(OrePrefixes.ingot)
+            .removeOrePrefix(OrePrefixes.ingot)
             .constructMaterial();
     }
 
@@ -15026,8 +15026,8 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.WOOD)
-            .addOrePrefixBlacklist(OrePrefixes.ingot)
-            .addOrePrefixBlacklist(OrePrefixes.nugget)
+            .removeOrePrefix(OrePrefixes.ingot)
+            .removeOrePrefix(OrePrefixes.nugget)
             .constructMaterial();
     }
 
@@ -15048,8 +15048,8 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.WOOD)
-            .addOrePrefixBlacklist(OrePrefixes.ingot)
-            .addOrePrefixBlacklist(OrePrefixes.nugget)
+            .removeOrePrefix(OrePrefixes.ingot)
+            .removeOrePrefix(OrePrefixes.nugget)
             .constructMaterial();
     }
 
@@ -15066,7 +15066,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.TRANSPARENT)
-            .addOrePrefixBlacklist(OrePrefixes.nugget)
+            .removeOrePrefix(OrePrefixes.nugget)
             .constructMaterial();
     }
 
@@ -15083,7 +15083,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.TRANSPARENT)
-            .addOrePrefixBlacklist(OrePrefixes.nugget)
+            .removeOrePrefix(OrePrefixes.nugget)
             .constructMaterial();
     }
 }
