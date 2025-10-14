@@ -1,12 +1,13 @@
 package gregtech.common.covers.gui;
 
+import net.minecraft.util.StatCollector;
+
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
 import gregtech.api.modularui2.CoverGuiData;
-import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverLiquidMeter;
 
 public class CoverLiquidMeterGui extends CoverGui<CoverLiquidMeter> {
@@ -33,7 +34,7 @@ public class CoverLiquidMeterGui extends CoverGui<CoverLiquidMeter> {
                     .setNumbers(0, maxCapacity)
                     .setFocusOnGuiOpen(true))
             .child(
-                IKey.str(GTUtility.trans("222", "Fluid threshold"))
+                IKey.str(StatCollector.translateToLocal("gt.interact.desc.Fluid_Meter.FluidThreshold"))
                     .asWidget());
     }
 }
