@@ -164,7 +164,7 @@ public class MTEMultiBlockBaseGui {
                     .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
                     .child(
                         createTerminalTextWidget(syncManager, panel)
-                            .size(getTerminalWidgetWidth() - 10, getTerminalWidgetHeight() - 8)
+                            .size(getTerminalWidgetWidth() - 4, getTerminalWidgetHeight() - 8)
                             .collapseDisabledChild())
                     .childIf(base.supportsTerminalCornerColumn(), createTerminalCornerColumn(panel, syncManager)));
     }
@@ -199,7 +199,7 @@ public class MTEMultiBlockBaseGui {
     }
 
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-        return new ListWidget<>()
+        return new ListWidget<>().widthRel(1)
             .child(
                 new TextWidget<>(GTUtility.trans("142", "Running perfectly.")).color(Color.WHITE.main)
                     .setEnabledIf(widget -> base.getErrorDisplayID() == 0 && baseMetaTileEntity.isActive())
@@ -284,7 +284,7 @@ public class MTEMultiBlockBaseGui {
             .setChangeListener(() -> notifyRecipeHandler(recipeHandler, itemOutputSyncer, fluidOutputSyncer));
         fluidOutputSyncer
             .setChangeListener(() -> notifyRecipeHandler(recipeHandler, itemOutputSyncer, fluidOutputSyncer));
-        return new DynamicSyncedWidget<>().widthRel(1)
+        return new DynamicSyncedWidget<>().widthRel(0.85f)
             .coverChildrenHeight()
             .syncHandler(recipeHandler);
 
