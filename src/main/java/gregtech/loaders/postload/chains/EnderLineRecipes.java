@@ -417,6 +417,7 @@ public class EnderLineRecipes {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.TeleportatiumEncased, 64))
+            .fluidInputs(Materials.EnderAirFortified.getFluid(144L * 64))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.TeleportatiumEncased, 1))
             .duration(500 * SECONDS)
             .eut(TierEU.RECIPE_UV)
