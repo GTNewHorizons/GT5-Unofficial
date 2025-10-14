@@ -12,6 +12,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 
@@ -27,6 +28,7 @@ public class FluidCannerBackend extends RecipeMapBackend {
     protected GTRecipe findFallback(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot) {
         for (ItemStack item : items) {
             if (item == null) continue;
+            // Try to fill a container
             for (FluidStack fluid : fluids) {
                 if (fluid == null) continue;
                 ItemStack filledItem = GTUtility.fillFluidContainer(fluid, item, false, true);
@@ -38,23 +40,28 @@ public class FluidCannerBackend extends RecipeMapBackend {
                         .fluidInputs(fluidToTake)
                         .duration(Math.max(fluidToTake.amount / 64, 16))
                         .eut(1)
+                        .nbtSensitive()
                         .noBuffer()
                         .build()
                         .orElse(null);
                 }
+            }
 
-                FluidStack drainedFluid = GTUtility.getFluidForFilledItem(item, true);
-                if (drainedFluid != null) {
-                    return GTValues.RA.stdBuilder()
-                        .itemInputs(GTUtility.copyAmount(1, item))
-                        .itemOutputs(GTUtility.getContainerItem(item, true))
-                        .fluidOutputs(drainedFluid)
-                        .duration(Math.max(drainedFluid.amount / 64, 16))
-                        .eut(1)
-                        .noBuffer()
-                        .build()
-                        .orElse(null);
+            // Try to empty a container
+            FluidStack drainedFluid = GTUtility.getFluidForFilledItem(item, true);
+            if (drainedFluid != null) {
+                GTRecipeBuilder recipeBuilder = GTValues.RA.stdBuilder();
+                recipeBuilder.itemInputs(GTUtility.copyAmount(1, item))
+                    .itemOutputs(GTUtility.getContainerItem(item, true));
+                if (drainedFluid.amount > 0) {
+                    recipeBuilder.fluidOutputs(drainedFluid);
                 }
+                return recipeBuilder.duration(Math.max(drainedFluid.amount / 64, 16))
+                    .eut(1)
+                    .nbtSensitive()
+                    .noBuffer()
+                    .build()
+                    .orElse(null);
             }
         }
         return null;

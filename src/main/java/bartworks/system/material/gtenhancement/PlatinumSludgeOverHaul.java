@@ -138,7 +138,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.BlockFrameBox;
-import gregtech.common.blocks.BlockOresAbstract;
+import gregtech.common.blocks.GTBlockOre;
 import gregtech.mixin.interfaces.accessors.IRecipeMutableAccess;
 import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.item.base.BaseItemComponent;
@@ -1137,7 +1137,7 @@ public class PlatinumSludgeOverHaul {
             return true;
 
         if (Block.getBlockFromItem(stack.getItem()) instanceof GTGenericBlock
-            && !(Block.getBlockFromItem(stack.getItem()) instanceof BlockOresAbstract)) return true;
+            && !(Block.getBlockFromItem(stack.getItem()) instanceof GTBlockOre)) return true;
 
         for (ItemStack itemStack : ITEMLIST_VALUES) {
             if (!BWUtil.checkStackAndPrefix(stack) && GTUtility.areStacksEqual(itemStack, stack, true)) {

@@ -1,5 +1,7 @@
 package gregtech.common.covers.gui.redstone;
 
+import net.minecraft.util.StatCollector;
+
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
@@ -50,13 +52,13 @@ public class CoverWirelessDoesWorkDetectorGui
                                 GTGuiTextures.OVERLAY_BUTTON_POWER_SWITCH_ON)
                             .build()
                             .width(120)
-                            .marginRight(2))
-                    .child(
-                        new TextWidget(
-                            IKey.dynamic(
-                                () -> activityMode.getValue()
-                                    .getKey()
-                                    .get()))))
+                            .marginRight(2)
+                            .child(
+                                new TextWidget<>(
+                                    IKey.dynamic(
+                                        () -> StatCollector.translateToLocal(
+                                            activityMode.getValue()
+                                                .getKey()))))))
             .child(physicalRow(physicalSyncer));
     }
 }

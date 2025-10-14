@@ -16,7 +16,6 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsBotania;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTLog;
@@ -364,57 +363,53 @@ public class LoaderGTOreDictionary implements Runnable {
             Materials.MAX,
             GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitMAX", 1L));
 
+        GTOreDictUnificator
+            .registerOre(OrePrefixes.block, Materials.Manasteel, GTModHandler.getModItem(Botania.ID, "storage", 1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.block,
-            MaterialsBotania.Manasteel,
-            GTModHandler.getModItem(Botania.ID, "storage", 1L));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.block,
-            MaterialsBotania.Terrasteel,
+            Materials.Terrasteel,
             GTModHandler.getModItem(Botania.ID, "storage", 1L, 1));
         GTOreDictUnificator.registerOre(
             OrePrefixes.ingot,
-            MaterialsBotania.ElvenElementium,
+            Materials.ElvenElementium,
             GTModHandler.getModItem(Botania.ID, "manaResource", 1L, 7));
         GTOreDictUnificator.registerOre(
             OrePrefixes.nugget,
-            MaterialsBotania.ElvenElementium,
+            Materials.ElvenElementium,
             GTModHandler.getModItem(Botania.ID, "manaResource", 1L, 19));
         GTOreDictUnificator.registerOre(
             OrePrefixes.block,
-            MaterialsBotania.ElvenElementium,
+            Materials.ElvenElementium,
             GTModHandler.getModItem(Botania.ID, "storage", 1L, 2));
         GTOreDictUnificator.registerOre(
             OrePrefixes.block,
-            MaterialsBotania.Livingrock,
+            Materials.Livingrock,
             GTModHandler.getModItem(Botania.ID, "livingrock", 1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.ingot,
-            MaterialsBotania.GaiaSpirit,
+            Materials.GaiaSpirit,
             GTModHandler.getModItem(Botania.ID, "manaResource", 1L, 14));
         GTOreDictUnificator.registerOre(
             OrePrefixes.block,
-            MaterialsBotania.Livingwood,
+            Materials.Livingwood,
             GTModHandler.getModItem(Botania.ID, "livingwood", 1L));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.block,
-            MaterialsBotania.Dreamwood,
-            GTModHandler.getModItem(Botania.ID, "dreamwood", 1L));
+        GTOreDictUnificator
+            .registerOre(OrePrefixes.block, Materials.Dreamwood, GTModHandler.getModItem(Botania.ID, "dreamwood", 1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.gem,
-            MaterialsBotania.ManaDiamond,
+            Materials.ManaDiamond,
             GTModHandler.getModItem(Botania.ID, "manaResource", 1L, 2));
         GTOreDictUnificator.registerOre(
             OrePrefixes.block,
-            MaterialsBotania.ManaDiamond,
+            Materials.ManaDiamond,
             GTModHandler.getModItem(Botania.ID, "storage", 1L, 3));
         GTOreDictUnificator.registerOre(
             OrePrefixes.gem,
-            MaterialsBotania.BotaniaDragonstone,
+            Materials.BotaniaDragonstone,
             GTModHandler.getModItem(Botania.ID, "manaResource", 1L, 9));
         GTOreDictUnificator.registerOre(
             OrePrefixes.block,
-            MaterialsBotania.BotaniaDragonstone,
+            Materials.BotaniaDragonstone,
             GTModHandler.getModItem(Botania.ID, "storage", 1L, 4));
 
         GTOreDictUnificator.registerOre(
