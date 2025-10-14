@@ -12590,7 +12590,7 @@ public class MaterialsInit {
         return new MaterialBuilder().setName("Pyrotheum")
             .setDefaultLocalName("Pyrotheum")
             .setMetaItemSubID(843)
-            .setIconSet(TextureSet.SET_FIERY)
+            .setIconSet(TextureSet.SET_PYROTHEUM)
             .setColor(Dyes.dyeYellow)
             .setARGB(0x00ff8000)
             .setFuel(MaterialBuilder.FuelType.Thermal, 62)
