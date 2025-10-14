@@ -934,6 +934,17 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials ComplexityCatalyst;
     public static Materials EntropicCatalyst;
 
+    // Botania Materials
+    public static Materials Manasteel;
+    public static Materials Terrasteel;
+    public static Materials ElvenElementium;
+    public static Materials Livingrock;
+    public static Materials GaiaSpirit;
+    public static Materials Livingwood;
+    public static Materials Dreamwood;
+    public static Materials ManaDiamond;
+    public static Materials BotaniaDragonstone;
+
     public static final List<IMaterialHandler> mMaterialHandlers = new ArrayList<>();
     public static final Map<Fluid, Materials> FLUID_MAP = new LinkedHashMap<>();
     /** @deprecated This is for keeping compatibility with addons mods (Such as TinkersGregworks etc.) */
@@ -945,7 +956,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
 
     static {
         MaterialsInit.load();
-        MaterialsBotania.load();
         MaterialsKevlar.load();
         MaterialsOreAlum.load();
         MaterialsUEVplus.load();
@@ -1408,7 +1418,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
      */
     public static void initClient() {
         MaterialsUEVplus.TranscendentMetal.renderer = new TranscendentMetalRenderer();
-        MaterialsBotania.GaiaSpirit.renderer = new GaiaSpiritRenderer();
+        Materials.GaiaSpirit.renderer = new GaiaSpiritRenderer();
         Infinity.renderer = new InfinityRenderer();
         CosmicNeutronium.renderer = new CosmicNeutroniumRenderer();
         MaterialsUEVplus.Universium.renderer = new UniversiumRenderer();
