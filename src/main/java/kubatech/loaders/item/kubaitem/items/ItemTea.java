@@ -18,7 +18,7 @@
  * spotless:on
  */
 
-package kubatech.loaders.item.items;
+package kubatech.loaders.item.kubaitem.items;
 
 import java.util.List;
 
@@ -28,7 +28,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-import kubatech.loaders.item.ItemProxy;
+import kubatech.loaders.item.kubaitem.ItemProxy;
 
 public class ItemTea extends ItemProxy {
 
