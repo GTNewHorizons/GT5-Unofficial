@@ -301,7 +301,7 @@ GT5U.interface.coverTabs.east=东
 # Waila
 GT5U.waila.machine.working_disabled=工作停止
 GT5U.waila.machine.idle=空闲
-GT5U.waila.machine.in_progress=运行中: %,.1fs / %,.1fs (%,.1f%%)
+GT5U.waila.machine.in_progress=%,.1fs / %,.1fs (%,.1f%%)
 GT5U.waila.machine_facing=机器朝向: %s
 GT5U.waila.output_facing=输出方向: %s
 GT5U.waila.facing=方向: %s
