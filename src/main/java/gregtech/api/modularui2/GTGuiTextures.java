@@ -285,6 +285,12 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.OVERLAY_SLOT_BLOCK_STANDARD)
         .build();
+    public static final UITexture OVERLAY_SLOT_EXTRUDER_SHAPE = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/extruder_shape")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.SLOT_EXTRUDER_SHAPE)
+        .build();
     private static final SteamTextureRegisterer OVERLAY_SLOT_BLOCK_STEAM = SteamTextureRegisterer.builder()
         .location("gui/overlay_slot/block_%s")
         .fullImage()

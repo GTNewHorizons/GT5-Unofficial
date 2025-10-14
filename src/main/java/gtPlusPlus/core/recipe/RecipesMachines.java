@@ -205,6 +205,7 @@ public class RecipesMachines {
         advHeatExchanger();
         chiselBuses();
         solidifierHatches();
+        extrusionHatches();
 
         gt4FarmManager();
         gt4Inventory();
@@ -3448,6 +3449,33 @@ public class RecipesMachines {
                 .eut(GTValues.VP[componentTier])
                 .addTo(assemblerRecipes);
 
+        }
+    }
+
+    private static void extrusionHatches() {
+        ItemStack[] mSuperBusesInput = new ItemStack[] { ItemList.Hatch_Input_Bus_IV.get(1),
+            ItemList.Hatch_Input_Bus_LuV.get(1), ItemList.Hatch_Input_Bus_ZPM.get(1),
+            ItemList.Hatch_Input_Bus_UV.get(1) };
+
+        ItemStack[] mSolidifierHatches = new ItemStack[] { GregtechItemList.Hatch_Extrusion_I.get(1),
+            GregtechItemList.Hatch_Extrusion_II.get(1), GregtechItemList.Hatch_Extrusion_III.get(1),
+            GregtechItemList.Hatch_Extrusion_IV.get(1) };
+
+        for (int i = 0; i < 4; i++) {
+            int componentTier = i + 5;
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTUtility.getIntegratedCircuit(17),
+                    mSuperBusesInput[i],
+                    CI.getSensor(componentTier, 1),
+                    CI.getConveyor(componentTier, 1),
+                    CI.getTieredComponent(OrePrefixes.circuit, componentTier + 1, 4),
+                    new ItemStack(Blocks.chest))
+                .itemOutputs(mSolidifierHatches[i])
+                .fluidInputs(CI.getTieredFluid(componentTier, 2 * INGOTS))
+                .duration(30 * SECONDS)
+                .eut(GTValues.VP[componentTier])
+                .addTo(assemblerRecipes);
         }
     }
 }
