@@ -20,7 +20,6 @@ import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsKevlar;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -502,7 +501,7 @@ public class BlastFurnaceRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Quicklime.getDust(2), Materials.Carbon.getDust(3))
-            .itemOutputs(MaterialsKevlar.CalciumCarbide.getDust(3))
+            .itemOutputs(Materials.CalciumCarbide.getDust(3))
             .fluidOutputs(Materials.CarbonMonoxide.getGas(1_000))
             .duration(30 * SECONDS)
             .eut((int) TierEU.RECIPE_HV)
@@ -513,7 +512,7 @@ public class BlastFurnaceRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Nickel.getDust(1), Materials.Aluminium.getDust(3))
-            .itemOutputs(MaterialsKevlar.NickelAluminide.getIngots(4))
+            .itemOutputs(Materials.NickelAluminide.getIngots(4))
             .duration(45 * SECONDS)
             .eut((int) TierEU.RECIPE_HV)
             .metadata(COIL_HEAT, 1688)
@@ -621,7 +620,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .itemInputs(
                 new ItemStack(WerkstoffLoader.items.get(OrePrefixes.dust), 1, 78),
                 GTUtility.getIntegratedCircuit(2))
-            .itemOutputs(MaterialsKevlar.RhodiumChloride.getDust(4))
+            .itemOutputs(Materials.RhodiumChloride.getDust(4))
             .fluidInputs(Materials.Chlorine.getGas(3_000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
