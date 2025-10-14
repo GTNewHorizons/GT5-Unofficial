@@ -22,6 +22,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.Nullable;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
@@ -413,10 +415,12 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
         return (meta % SMALL_ORE_META_OFFSET) >= NATURAL_ORE_META_OFFSET;
     }
 
+    @Nullable
     public Materials getMaterial(int meta) {
         return GTDataUtils.getIndexSafe(GregTechAPI.sGeneratedMaterials, getMaterialIndex(meta));
     }
 
+    @Nullable
     public StoneType getStoneType(int meta) {
         return GTDataUtils.getIndexSafe(stoneTypes, getStoneIndex(meta));
     }
