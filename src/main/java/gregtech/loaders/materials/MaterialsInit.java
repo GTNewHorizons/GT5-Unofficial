@@ -15010,6 +15010,11 @@ public class MaterialsInit {
             .setMetaItemSubID(421)
             .setIconSet(TextureSet.SET_FLUID)
             .setARGB(0x00c47b74)
+            .addCell()
+            .addFluid()
+            .constructMaterial();
+    }
+
     private static void loadBotaniaMaterials() {
         Materials.Manasteel = loadManasteel();
         Materials.Terrasteel = loadTerrasteel();
@@ -15506,6 +15511,11 @@ public class MaterialsInit {
             .setMetaItemSubID(456)
             .setIconSet(TextureSet.SET_FLUID)
             .setARGB(0x0017064f)
+            .addCell()
+            .addFluid()
+            .constructMaterial();
+    }
+
     private static Materials loadNMethylIIPyrrolidone() {
         return new MaterialBuilder().setName("NMethylpyrolidone")
             .setDefaultLocalName("N-Methyl-2-pyrrolidone")
@@ -15691,10 +15701,10 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_RECYCLING_RECIPES)
             .addSubTag(SubTag.NO_RECYCLING)
             .addSubTag(SubTag.NO_ORE_PROCESSING)
-            .addOrePrefixBlacklist(OrePrefixes.cellMolten)
-            .addOrePrefixBlacklist(OrePrefixes.nugget)
-            .addOrePrefixBlacklist(OrePrefixes.spring)
-            .addOrePrefixBlacklist(OrePrefixes.springSmall)
+            .removeOrePrefix(OrePrefixes.cellMolten)
+            .removeOrePrefix(OrePrefixes.nugget)
+            .removeOrePrefix(OrePrefixes.spring)
+            .removeOrePrefix(OrePrefixes.springSmall)
             .constructMaterial()
             .setProcessingMaterialTierEU(TierEU.RECIPE_UV);
 
