@@ -22,7 +22,6 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsKevlar;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -317,8 +316,8 @@ public class ChemicalBathRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.WovenKevlar.get(1))
-            .itemOutputs(MaterialsKevlar.Kevlar.getPlates(1))
-            .fluidInputs(MaterialsKevlar.PolyurethaneResin.getFluid(1_000))
+            .itemOutputs(Materials.Kevlar.getPlates(1))
+            .fluidInputs(Materials.PolyurethaneResin.getFluid(1_000))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(chemicalBathRecipes);
