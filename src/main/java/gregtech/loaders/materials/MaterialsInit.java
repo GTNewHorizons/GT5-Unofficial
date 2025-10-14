@@ -14924,8 +14924,8 @@ public class MaterialsInit {
             .setBlastFurnaceRequired(true)
             .addAspect(TCAspects.METALLUM, 3)
             .addAspect(TCAspects.PRAECANTATIO, 1)
-            .removeOrePrefix(OrePrefixes.ingot)
-            .removeOrePrefix(OrePrefixes.nugget)
+            .removeOrePrefix(OrePrefixes.ingot) // Botania:manaResource:0
+            .removeOrePrefix(OrePrefixes.nugget) // Botania:manaResource:17
             .constructMaterial();
     }
 
@@ -14947,8 +14947,8 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.TERRA, 1)
             .addAspect(TCAspects.PRAECANTATIO, 1)
-            .removeOrePrefix(OrePrefixes.ingot)
-            .removeOrePrefix(OrePrefixes.nugget)
+            .removeOrePrefix(OrePrefixes.ingot) // Botania:manaResource:4
+            .removeOrePrefix(OrePrefixes.nugget) // Botania:manaResource:18
             .constructMaterial();
     }
 
@@ -14970,8 +14970,8 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 3)
             .addAspect(TCAspects.PRAECANTATIO, 2)
             .addAspect(TCAspects.AURAM, 1)
-            .removeOrePrefix(OrePrefixes.ingot)
-            .removeOrePrefix(OrePrefixes.nugget)
+            .removeOrePrefix(OrePrefixes.ingot) // Botania:manaResource:7
+            .removeOrePrefix(OrePrefixes.nugget) // Botania:manaResource:19
             .constructMaterial();
     }
 
@@ -15007,7 +15007,7 @@ public class MaterialsInit {
             .addGearItems()
             .addSubTag(SubTag.SOFT)
             .addSubTag(SubTag.TRANSPARENT)
-            .removeOrePrefix(OrePrefixes.ingot)
+            .removeOrePrefix(OrePrefixes.ingot) // Botania::manaResource:14
             .constructMaterial();
     }
 
