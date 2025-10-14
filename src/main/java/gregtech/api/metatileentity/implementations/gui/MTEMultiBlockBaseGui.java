@@ -435,7 +435,7 @@ public class MTEMultiBlockBaseGui {
             + GTUtility.formatShortenedLong(amount)
             + EnumChatFormatting.WHITE
             + GTUtility.appendRate(false, amount, true, maxProgressTimeSyncer.getValue());
-        String itemTextLine = EnumChatFormatting.AQUA + GTUtility.truncateText(itemName, 45 - amountString.length())
+        String itemTextLine = EnumChatFormatting.AQUA + GTUtility.truncateText(itemName, 42 - amountString.length())
             + amountString;
         return itemTextLine;
     }
