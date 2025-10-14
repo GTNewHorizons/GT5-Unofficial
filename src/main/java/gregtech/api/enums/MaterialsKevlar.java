@@ -1,604 +1,871 @@
 package gregtech.api.enums;
 
-import java.util.Arrays;
-
-import gregtech.api.objects.MaterialStack;
-
 public class MaterialsKevlar {
 
-    public static Materials DiphenylmethaneDiisocyanate = new MaterialBuilder(
-        796,
-        TextureSet.SET_DULL,
-        "4,4'-Diphenylmethane Diisocyanate").setName("DiphenylmethaneDiisocyanate")
+    public static Materials DiphenylmethaneDiisocyanate;
+    public static Materials DiaminodiphenylmethanMixture;
+    public static Materials DiphenylmethaneDiisocyanateMixture;
+    public static Materials Butyraldehyde;
+    public static Materials Isobutyraldehyde;
+    public static Materials NickelTetracarbonyl;
+    public static Materials KevlarCatalyst;
+    public static Materials EthyleneOxide;
+    public static Materials SiliconOil;
+    public static Materials Ethyleneglycol;
+    public static Materials Acetaldehyde;
+    public static Materials Pentaerythritol;
+    public static Materials PolyurethaneResin;
+    public static Materials NMethylIIPyrrolidone;
+    public static Materials TerephthaloylChloride;
+    public static Materials Acetylene;
+    public static Materials IVNitroaniline;
+    public static Materials ParaPhenylenediamine;
+    public static Materials Methylamine;
+    public static Materials Trimethylamine;
+    public static Materials GammaButyrolactone;
+    public static Materials CalciumCarbide;
+    public static Materials LiquidCrystalKevlar;
+    public static Materials IIButinIIVdiol;
+    public static Materials NickelAluminide;
+    public static Materials RaneyNickelActivated;
+    public static Materials BismuthIIIOxide;
+    public static Materials ThionylChloride;
+    public static Materials SulfurDichloride;
+    public static Materials DimethylTerephthalate;
+    public static Materials Kevlar;
+    public static Materials TerephthalicAcid;
+    public static Materials IIIDimethylbenzene;
+    public static Materials IVDimethylbenzene;
+    public static Materials CobaltIINaphthenate;
+    public static Materials NaphthenicAcid;
+    public static Materials CobaltIIHydroxide;
+    public static Materials CobaltIIAcetate;
+    public static Materials CobaltIINitrate;
+    public static Materials OrganorhodiumCatalyst;
+    public static Materials SodiumBorohydride;
+    public static Materials RhodiumChloride;
+    public static Materials Triphenylphosphene;
+    public static Materials PhosphorusTrichloride;
+    public static Materials SodiumHydride;
+    public static Materials TrimethylBorate;
+    public static Materials SodiumMethoxide;
+
+    public static void load() {
+        MaterialsKevlar.DiphenylmethaneDiisocyanate = loadDiphenylmethaneDiisocyanate();
+        MaterialsKevlar.DiaminodiphenylmethanMixture = loadDiaminodiphenylmethanMixture();
+        MaterialsKevlar.DiphenylmethaneDiisocyanateMixture = loadDiphenylmethaneDiisocyanateMixture();
+        MaterialsKevlar.Butyraldehyde = loadButyraldehyde();
+        MaterialsKevlar.Isobutyraldehyde = loadIsobutyraldehyde();
+        MaterialsKevlar.NickelTetracarbonyl = loadNickelTetracarbonyl();
+        MaterialsKevlar.KevlarCatalyst = loadKevlarCatalyst();
+        MaterialsKevlar.EthyleneOxide = loadEthyleneOxide();
+        MaterialsKevlar.SiliconOil = loadSiliconOil();
+        MaterialsKevlar.Ethyleneglycol = loadEthyleneglycol();
+        MaterialsKevlar.Acetaldehyde = loadAcetaldehyde();
+        MaterialsKevlar.Pentaerythritol = loadPentaerythritol();
+        MaterialsKevlar.PolyurethaneResin = loadPolyurethaneResin();
+        MaterialsKevlar.NMethylIIPyrrolidone = loadNMethylIIPyrrolidone();
+        MaterialsKevlar.TerephthaloylChloride = loadTerephthaloylChloride();
+        MaterialsKevlar.Acetylene = loadAcetylene();
+        MaterialsKevlar.IVNitroaniline = loadIVNitroaniline();
+        MaterialsKevlar.ParaPhenylenediamine = loadParaPhenylenediamine();
+        MaterialsKevlar.Methylamine = loadMethylamine();
+        MaterialsKevlar.Trimethylamine = loadTrimethylamine();
+        MaterialsKevlar.GammaButyrolactone = loadGammaButyrolactone();
+        MaterialsKevlar.CalciumCarbide = loadCalciumCarbide();
+        MaterialsKevlar.LiquidCrystalKevlar = loadLiquidCrystalKevlar();
+        MaterialsKevlar.IIButinIIVdiol = loadIIButinIIVdiol();
+        MaterialsKevlar.NickelAluminide = loadNickelAluminide();
+        MaterialsKevlar.RaneyNickelActivated = loadRaneyNickelActivated();
+        MaterialsKevlar.BismuthIIIOxide = loadBismuthIIIOxide();
+        MaterialsKevlar.ThionylChloride = loadThionylChloride();
+        MaterialsKevlar.SulfurDichloride = loadSulfurDichloride();
+        MaterialsKevlar.DimethylTerephthalate = loadDimethylTerephthalate();
+        MaterialsKevlar.Kevlar = loadKevlar();
+        MaterialsKevlar.TerephthalicAcid = loadTerephthalicAcid();
+        MaterialsKevlar.IIIDimethylbenzene = loadIIIDimethylbenzene();
+        MaterialsKevlar.IVDimethylbenzene = loadIVDimethylbenzene();
+        MaterialsKevlar.CobaltIINaphthenate = loadCobaltIINaphthenate();
+        MaterialsKevlar.NaphthenicAcid = loadNaphthenicAcid();
+        MaterialsKevlar.CobaltIIHydroxide = loadCobaltIIHydroxide();
+        MaterialsKevlar.CobaltIIAcetate = loadCobaltIIAcetate();
+        MaterialsKevlar.CobaltIINitrate = loadCobaltIINitrate();
+        MaterialsKevlar.OrganorhodiumCatalyst = loadOrganorhodiumCatalyst();
+        MaterialsKevlar.SodiumBorohydride = loadSodiumBorohydride();
+        MaterialsKevlar.RhodiumChloride = loadRhodiumChloride();
+        MaterialsKevlar.Triphenylphosphene = loadTriphenylphosphene();
+        MaterialsKevlar.PhosphorusTrichloride = loadPhosphorusTrichloride();
+        MaterialsKevlar.SodiumHydride = loadSodiumHydride();
+        MaterialsKevlar.TrimethylBorate = loadTrimethylBorate();
+        MaterialsKevlar.SodiumMethoxide = loadSodiumMethoxide();
+    }
+
+    private static Materials loadDiphenylmethaneDiisocyanate() {
+        return new MaterialBuilder().setName("DiphenylmethaneDiisocyanate")
+            .setDefaultLocalName("4,4'-Diphenylmethane Diisocyanate")
+            .setMetaItemSubID(796)
+            .setIconSet(TextureSet.SET_DULL)
             .addDustItems()
-            .setRGB(255, 230, 50)
+            .setARGB(0x00ffe632)
             .setColor(Dyes.dyeYellow)
             .setMeltingPoint(310)
-            .setMaterialList(
-                new MaterialStack(Materials.Carbon, 15),
-                new MaterialStack(Materials.Hydrogen, 10),
-                new MaterialStack(Materials.Nitrogen, 2),
-                new MaterialStack(Materials.Oxygen, 2))
-            .setAspects(
-                Arrays.asList(
-                    new TCAspects.TC_AspectStack(TCAspects.TERRA, 1),
-                    new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1)))
-            .constructMaterial(); // C15H10N2O2
-    public static Materials DiaminodiphenylmethanMixture = new MaterialBuilder(
-        795,
-        TextureSet.SET_FLUID,
-        "Diaminodiphenylmethane Mixture").setName("DiaminodiphenylmethanMixture")
+            // C15H10N2O2
+            .addMaterial(Materials.Carbon, 15)
+            .addMaterial(Materials.Hydrogen, 10)
+            .addMaterial(Materials.Nitrogen, 2)
+            .addMaterial(Materials.Oxygen, 2)
+            .addAspect(TCAspects.TERRA, 1)
+            .addAspect(TCAspects.VENENUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadDiaminodiphenylmethanMixture() {
+        return new MaterialBuilder().setName("DiaminodiphenylmethanMixture")
+            .setDefaultLocalName("Diaminodiphenylmethane Mixture")
+            .setMetaItemSubID(795)
+            .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addFluid()
-            .setRGB(255, 243, 122)
+            .setARGB(0x00fff37a)
             .setColor(Dyes.dyeYellow)
             .setMeltingPoint(365)
-            .setMaterialList(
-                new MaterialStack(Materials.Carbon, 13),
-                new MaterialStack(Materials.Hydrogen, 14),
-                new MaterialStack(Materials.Nitrogen, 2))
-            .setAspects(
-                Arrays.asList(
-                    new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
-                    new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1)))
-            .constructMaterial(); // C13H14N2
-    public static Materials DiphenylmethaneDiisocyanateMixture = new MaterialBuilder(
-        794,
-        TextureSet.SET_FLUID,
-        "Diphenylmethane Diisocyanate Mixture").setName("DiphenylmethaneDiisocyanateMixture")
+            // C13H14N2
+            .addMaterial(Materials.Carbon, 13)
+            .addMaterial(Materials.Hydrogen, 14)
+            .addMaterial(Materials.Nitrogen, 2)
+            .addAspect(TCAspects.AQUA, 1)
+            .addAspect(TCAspects.VENENUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadDiphenylmethaneDiisocyanateMixture() {
+        return new MaterialBuilder().setName("DiphenylmethaneDiisocyanateMixture")
+            .setDefaultLocalName("Diphenylmethane Diisocyanate Mixture")
+            .setMetaItemSubID(794)
+            .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addFluid()
-            .setRGB(255, 230, 50)
+            .setARGB(0x00ffe632)
             .setColor(Dyes.dyeYellow)
             .setMeltingPoint(310)
-            .setMaterialList(
-                new MaterialStack(Materials.Carbon, 15),
-                new MaterialStack(Materials.Hydrogen, 10),
-                new MaterialStack(Materials.Nitrogen, 2),
-                new MaterialStack(Materials.Oxygen, 2))
-            .setAspects(
-                Arrays.asList(
-                    new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
-                    new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1)))
-            .constructMaterial(); // C15H10N2O2
-    public static Materials Butyraldehyde = new MaterialBuilder(793, TextureSet.SET_FLUID, "Butyraldehyde")
-        .setName("Butyraldehyde")
-        .addCell()
-        .addFluid()
-        .setRGB(255, 255, 255)
-        .setColor(Dyes.dyeWhite)
-        .setMeltingPoint(176)
-        .setMaterialList(
-            new MaterialStack(Materials.Carbon, 4),
-            new MaterialStack(Materials.Hydrogen, 8),
-            new MaterialStack(Materials.Oxygen, 1))
-        .setAspects(
-            Arrays.asList(
-                new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
-                new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1)))
-        .constructMaterial(); // C4H8O
-    public static Materials Isobutyraldehyde = new MaterialBuilder(792, TextureSet.SET_FLUID, "Isobutyraldehyde")
-        .setName("Isobutyraldehyde")
-        .addCell()
-        .addFluid()
-        .setRGB(255, 255, 255)
-        .setColor(Dyes.dyeWhite)
-        .setMeltingPoint(208)
-        .setExtraData(1)
-        .setMaterialList(
-            new MaterialStack(Materials.Carbon, 4),
-            new MaterialStack(Materials.Hydrogen, 8),
-            new MaterialStack(Materials.Oxygen, 1))
-        .setAspects(
-            Arrays.asList(
-                new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
-                new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1)))
-        .constructMaterial(); // C4H8O
-    public static Materials NickelTetracarbonyl = new MaterialBuilder(791, TextureSet.SET_FLUID, "Nickel Tetracarbonyl")
-        .setName("NickelTetracarbonyl")
-        .addCell()
-        .addFluid()
-        .setRGB(255, 255, 255)
-        .setColor(Dyes.dyeWhite)
-        .setMeltingPoint(256)
-        .setMaterialList(
-            new MaterialStack(Materials.Carbon, 4),
-            new MaterialStack(Materials.Nickel, 1),
-            new MaterialStack(Materials.Oxygen, 4))
-        .setAspects(
-            Arrays.asList(
-                new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
-                new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1)))
-        .constructMaterial(); // C4NiO4
-    public static Materials KevlarCatalyst = new MaterialBuilder(790, TextureSet.SET_DULL, "Polyurethane Catalyst A")
-        .setName("PolyurethaneCatalystADust")
-        .addDustItems()
-        .setRGB(50, 50, 50)
-        .setColor(Dyes.dyeBlack)
-        .setMeltingPoint(300)
-        .setAspects(
-            Arrays.asList(
-                new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
-                new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1)))
-        .constructMaterial();
-    public static Materials EthyleneOxide = new MaterialBuilder(789, TextureSet.SET_FLUID, "Ethylene Oxide")
-        .setName("EthyleneOxide")
-        .addCell()
-        .addGas()
-        .setRGB(255, 255, 255)
-        .setColor(Dyes.dyeWhite)
-        .setMeltingPoint(160)
-        .setMaterialList(
-            new MaterialStack(Materials.Carbon, 2),
-            new MaterialStack(Materials.Hydrogen, 4),
-            new MaterialStack(Materials.Oxygen, 1))
-        .setAspects(
-            Arrays.asList(
-                new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
-                new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1)))
-        .constructMaterial(); // C2H4O
-    public static Materials SiliconOil = new MaterialBuilder(788, TextureSet.SET_FLUID, "Silicon Oil")
-        .setName("SiliconOil")
-        .addCell()
-        .addFluid()
-        .setRGB(255, 255, 255)
-        .setColor(Dyes.dyeWhite)
-        .setMeltingPoint(473)
-        .setAspects(
-            Arrays.asList(
-                new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1)))
-        .constructMaterial();
-    public static Materials Ethyleneglycol = new MaterialBuilder(787, TextureSet.SET_FLUID, "Ethylene Glycol")
-        .setName("EthyleneGlycol")
-        .addCell()
-        .addFluid()
-        .setRGB(255, 255, 255)
-        .setColor(Dyes.dyeWhite)
-        .setMeltingPoint(260)
-        .setMaterialList(
-            new MaterialStack(Materials.Carbon, 2),
-            new MaterialStack(Materials.Hydrogen, 6),
-            new MaterialStack(Materials.Oxygen, 2))
-        .setAspects(
-            Arrays.asList(
-                new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
-                new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1)))
-        .constructMaterial(); // C2H6O2
-    public static Materials Acetaldehyde = new MaterialBuilder(786, TextureSet.SET_FLUID, "Acetaldehyde")
-        .setName("Acetaldehyde")
-        .addCell()
-        .addGas()
-        .setRGB(255, 255, 255)
-        .setColor(Dyes.dyeWhite)
-        .setMeltingPoint(150)
-        .setMaterialList(
-            new MaterialStack(Materials.Carbon, 2),
-            new MaterialStack(Materials.Hydrogen, 4),
-            new MaterialStack(Materials.Oxygen, 1))
-        .setAspects(
-            Arrays.asList(
-                new TCAspects.TC_AspectStack(TCAspects.AQUA, 1),
-                new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1)))
-        .constructMaterial(); // C2H4O
-    public static Materials Pentaerythritol = new MaterialBuilder(785, TextureSet.SET_DULL, "Pentaerythritol")
-        .setName("Pentaerythritol")
-        .addDustItems()
-        .setRGB(255, 255, 255)
-        .setColor(Dyes.dyeWhite)
-        .setMeltingPoint(533)
-        .setMaterialList(
-            new MaterialStack(Materials.Carbon, 5),
-            new MaterialStack(Materials.Hydrogen, 12),
-            new MaterialStack(Materials.Oxygen, 4))
-        .setAspects(
-            Arrays.asList(
-                new TCAspects.TC_AspectStack(TCAspects.TERRA, 1),
-                new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1)))
-        .constructMaterial(); // C5H12O4
-    public static Materials PolyurethaneResin = new MaterialBuilder(784, TextureSet.SET_FLUID, "Polyurethane Resin")
-        .setName("PolyurethaneResin")
-        .addCell()
-        .addFluid()
-        .setRGB(230, 230, 120)
-        .setColor(Dyes.dyeYellow)
-        .constructMaterial();
-    public static Materials NMethylIIPyrrolidone = new MaterialBuilder(
-        783,
-        TextureSet.SET_FLUID,
-        "N-Methyl-2-pyrrolidone").setName("NMethylpyrolidone")
+            // C15H10N2O2
+            .addMaterial(Materials.Carbon, 15)
+            .addMaterial(Materials.Hydrogen, 10)
+            .addMaterial(Materials.Nitrogen, 2)
+            .addMaterial(Materials.Oxygen, 2)
+            .addAspect(TCAspects.AQUA, 1)
+            .addAspect(TCAspects.VENENUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadButyraldehyde() {
+        return new MaterialBuilder().setName("Butyraldehyde")
+            .setDefaultLocalName("Butyraldehyde")
+            .setMetaItemSubID(793)
+            .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addFluid()
-            .setRGB(255, 255, 255)
+            .setColor(Dyes.dyeWhite)
+            .setMeltingPoint(176)
+            // C4H8O
+            .addMaterial(Materials.Carbon, 4)
+            .addMaterial(Materials.Hydrogen, 8)
+            .addMaterial(Materials.Oxygen, 1)
+            .addAspect(TCAspects.AQUA, 1)
+            .addAspect(TCAspects.IGNIS, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadIsobutyraldehyde() {
+        return new MaterialBuilder().setName("Isobutyraldehyde")
+            .setDefaultLocalName("Isobutyraldehyde")
+            .setMetaItemSubID(792)
+            .setIconSet(TextureSet.SET_FLUID)
+            .addCell()
+            .addFluid()
+            .setColor(Dyes.dyeWhite)
+            .setMeltingPoint(208)
+            .addElectrolyzerRecipe()
+            // C4H8O
+            .addMaterial(Materials.Carbon, 4)
+            .addMaterial(Materials.Hydrogen, 8)
+            .addMaterial(Materials.Oxygen, 1)
+            .addAspect(TCAspects.AQUA, 1)
+            .addAspect(TCAspects.IGNIS, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadNickelTetracarbonyl() {
+        return new MaterialBuilder().setName("NickelTetracarbonyl")
+            .setDefaultLocalName("Nickel Tetracarbonyl")
+            .setMetaItemSubID(791)
+            .setIconSet(TextureSet.SET_FLUID)
+            .addCell()
+            .addFluid()
+            .setColor(Dyes.dyeWhite)
+            .setMeltingPoint(256)
+            // C4NiO4
+            .addMaterial(Materials.Carbon, 4)
+            .addMaterial(Materials.Nickel, 1)
+            .addMaterial(Materials.Oxygen, 4)
+            .addAspect(TCAspects.AQUA, 1)
+            .addAspect(TCAspects.METALLUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadKevlarCatalyst() {
+        return new MaterialBuilder().setName("PolyurethaneCatalystADust")
+            .setDefaultLocalName("Polyurethane Catalyst A")
+            .setMetaItemSubID(790)
+            .setIconSet(TextureSet.SET_DULL)
+            .addDustItems()
+            .setARGB(0x00323232)
+            .setColor(Dyes.dyeBlack)
+            .setMeltingPoint(300)
+            .addAspect(TCAspects.AQUA, 1)
+            .addAspect(TCAspects.LUCRUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadEthyleneOxide() {
+        return new MaterialBuilder().setName("EthyleneOxide")
+            .setDefaultLocalName("Ethylene Oxide")
+            .setMetaItemSubID(789)
+            .setIconSet(TextureSet.SET_FLUID)
+            .addCell()
+            .addGas()
+            .setColor(Dyes.dyeWhite)
+            .setMeltingPoint(160)
+            // C2H4O
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Hydrogen, 4)
+            .addMaterial(Materials.Oxygen, 1)
+            .addAspect(TCAspects.AQUA, 1)
+            .addAspect(TCAspects.IGNIS, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadSiliconOil() {
+        return new MaterialBuilder().setName("SiliconOil")
+            .setDefaultLocalName("Silicon Oil")
+            .setMetaItemSubID(788)
+            .setIconSet(TextureSet.SET_FLUID)
+            .addCell()
+            .addFluid()
+            .setColor(Dyes.dyeWhite)
+            .setMeltingPoint(473)
+            .addAspect(TCAspects.AQUA, 1)
+            .addAspect(TCAspects.MACHINA, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadEthyleneglycol() {
+        return new MaterialBuilder().setName("EthyleneGlycol")
+            .setDefaultLocalName("Ethylene Glycol")
+            .setMetaItemSubID(787)
+            .setIconSet(TextureSet.SET_FLUID)
+            .addCell()
+            .addFluid()
+            .setColor(Dyes.dyeWhite)
+            .setMeltingPoint(260)
+            // C2H6O2
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Hydrogen, 6)
+            .addMaterial(Materials.Oxygen, 2)
+            .addAspect(TCAspects.AQUA, 1)
+            .addAspect(TCAspects.IGNIS, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadAcetaldehyde() {
+        return new MaterialBuilder().setName("Acetaldehyde")
+            .setDefaultLocalName("Acetaldehyde")
+            .setMetaItemSubID(786)
+            .setIconSet(TextureSet.SET_FLUID)
+            .addCell()
+            .addGas()
+            .setColor(Dyes.dyeWhite)
+            .setMeltingPoint(150)
+            // C2H4O
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Hydrogen, 4)
+            .addMaterial(Materials.Oxygen, 1)
+            .addAspect(TCAspects.AQUA, 1)
+            .addAspect(TCAspects.IGNIS, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadPentaerythritol() {
+        return new MaterialBuilder().setName("Pentaerythritol")
+            .setDefaultLocalName("Pentaerythritol")
+            .setMetaItemSubID(785)
+            .setIconSet(TextureSet.SET_DULL)
+            .addDustItems()
+            .setColor(Dyes.dyeWhite)
+            .setMeltingPoint(533)
+            // C5H12O4
+            .addMaterial(Materials.Carbon, 5)
+            .addMaterial(Materials.Hydrogen, 12)
+            .addMaterial(Materials.Oxygen, 4)
+            .addAspect(TCAspects.TERRA, 1)
+            .addAspect(TCAspects.LUCRUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadPolyurethaneResin() {
+        return new MaterialBuilder().setName("PolyurethaneResin")
+            .setDefaultLocalName("Polyurethane Resin")
+            .setMetaItemSubID(784)
+            .setIconSet(TextureSet.SET_FLUID)
+            .addCell()
+            .addFluid()
+            .setARGB(0x00e6e678)
+            .setColor(Dyes.dyeYellow)
+            .constructMaterial();
+    }
+
+    private static Materials loadNMethylIIPyrrolidone() {
+        return new MaterialBuilder().setName("NMethylpyrolidone")
+            .setDefaultLocalName("N-Methyl-2-pyrrolidone")
+            .setMetaItemSubID(783)
+            .setIconSet(TextureSet.SET_FLUID)
+            .addCell()
+            .addFluid()
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(249)
-            .setMaterialList(
-                new MaterialStack(Materials.Carbon, 5),
-                new MaterialStack(Materials.Hydrogen, 9),
-                new MaterialStack(Materials.Nitrogen, 1),
-                new MaterialStack(Materials.Oxygen, 1))
-            .setAspects(
-                Arrays.asList(
-                    new TCAspects.TC_AspectStack(TCAspects.TERRA, 1),
-                    new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1)))
-            .constructMaterial(); // C5H9NO
-    public static Materials TerephthaloylChloride = new MaterialBuilder(
-        782,
-        TextureSet.SET_POWDER,
-        "Terephthaloyl Chloride").setName("TerephthaloylChloride")
+            // C5H9NO
+            .addMaterial(Materials.Carbon, 5)
+            .addMaterial(Materials.Hydrogen, 9)
+            .addMaterial(Materials.Nitrogen, 1)
+            .addMaterial(Materials.Oxygen, 1)
+            .addAspect(TCAspects.TERRA, 1)
+            .addAspect(TCAspects.VENENUM, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadTerephthaloylChloride() {
+        return new MaterialBuilder().setName("TerephthaloylChloride")
+            .setDefaultLocalName("Terephthaloyl Chloride")
+            .setMetaItemSubID(782)
+            .setIconSet(TextureSet.SET_POWDER)
             .addDustItems()
-            .setRGB(0, 255, 12)
+            .setARGB(0x0000ff0c)
             .setColor(Dyes.dyeGreen)
             .setMeltingPoint(355)
-            .setMaterialList(
-                new MaterialStack(Materials.Carbon, 8),
-                new MaterialStack(Materials.Hydrogen, 4),
-                new MaterialStack(Materials.Chlorine, 2),
-                new MaterialStack(Materials.Oxygen, 2))
-            .setAspects(
-                Arrays.asList(
-                    new TCAspects.TC_AspectStack(TCAspects.TERRA, 1),
-                    new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1)))
-            .constructMaterial(); // C8H4Cl2O2
-    public static Materials Acetylene = new MaterialBuilder(781, TextureSet.SET_FLUID, "Acetylene").setName("Acetylene")
-        .addCell()
-        .addGas()
-        .setRGB(255, 255, 255)
-        .setColor(Dyes.dyeWhite)
-        .setMeltingPoint(192)
-        .setMaterialList(new MaterialStack(Materials.Carbon, 2), new MaterialStack(Materials.Hydrogen, 2))
-        .constructMaterial(); // C2H2
-                              // TODO
-                              // Add
-                              // to
-                              // JUPITER
-                              // Athmosphere
-                              // and
-                              // Enceladus
-                              // and
-                              // to
-                              // moon
-                              // of
-                              // Saturn
-    public static Materials IVNitroaniline = new MaterialBuilder(780, TextureSet.SET_FLUID, "4-Nitroaniline")
-        .setName("4Nitroaniline")
-        .addCell()
-        .addFluid()
-        .setRGB(255, 135, 51)
-        .setColor(Dyes.dyeOrange)
-        .setMeltingPoint(420)
-        .setMaterialList(
-            new MaterialStack(Materials.Carbon, 6),
-            new MaterialStack(Materials.Hydrogen, 6),
-            new MaterialStack(Materials.Nitrogen, 2),
-            new MaterialStack(Materials.Oxygen, 2))
-        .setAspects(
-            Arrays.asList(
-                new TCAspects.TC_AspectStack(TCAspects.TERRA, 1),
-                new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1)))
-        .constructMaterial(); // C6H6N2O2
-    public static Materials ParaPhenylenediamine = new MaterialBuilder(
-        779,
-        TextureSet.SET_POWDER,
-        "para-Phenylenediamine").setName("pPhenylenediamine")
+            // C8H4Cl2O2
+            .addMaterial(Materials.Carbon, 8)
+            .addMaterial(Materials.Hydrogen, 4)
+            .addMaterial(Materials.Chlorine, 2)
+            .addMaterial(Materials.Oxygen, 2)
+            .addAspect(TCAspects.TERRA, 1)
+            .addAspect(TCAspects.VITREUS, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadAcetylene() {
+        // TODO: Add to JUPITER Athmosphere and Enceladus and to moon of Saturn
+        return new MaterialBuilder().setName("Acetylene")
+            .setDefaultLocalName("Acetylene")
+            .setMetaItemSubID(781)
+            .setIconSet(TextureSet.SET_FLUID)
+            .addCell()
+            .addGas()
+            .setColor(Dyes.dyeWhite)
+            .setMeltingPoint(192)
+            // C2H2
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Hydrogen, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadIVNitroaniline() {
+        return new MaterialBuilder().setName("4Nitroaniline")
+            .setDefaultLocalName("4-Nitroaniline")
+            .setMetaItemSubID(780)
+            .setIconSet(TextureSet.SET_FLUID)
+            .addCell()
+            .addFluid()
+            .setARGB(0x00ff8733)
+            .setColor(Dyes.dyeOrange)
+            .setMeltingPoint(420)
+            // C6H6N2O2
+            .addMaterial(Materials.Carbon, 6)
+            .addMaterial(Materials.Hydrogen, 6)
+            .addMaterial(Materials.Nitrogen, 2)
+            .addMaterial(Materials.Oxygen, 2)
+            .addAspect(TCAspects.TERRA, 1)
+            .addAspect(TCAspects.VITREUS, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadParaPhenylenediamine() {
+        return new MaterialBuilder().setName("pPhenylenediamine")
+            .setDefaultLocalName("para-Phenylenediamine")
+            .setMetaItemSubID(779)
+            .setIconSet(TextureSet.SET_POWDER)
             .addDustItems()
-            .setRGB(251, 236, 93)
+            .setARGB(0x00fbec5d)
             .setColor(Dyes.dyeYellow)
             .setMeltingPoint(293)
-            .setMaterialList(
-                new MaterialStack(Materials.Carbon, 6),
-                new MaterialStack(Materials.Hydrogen, 8),
-                new MaterialStack(Materials.Nitrogen, 2))
-            .setAspects(
-                Arrays.asList(
-                    new TCAspects.TC_AspectStack(TCAspects.TERRA, 1),
-                    new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1)))
-            .constructMaterial(); // C6H6N2
-    public static Materials Methylamine = new MaterialBuilder(778, TextureSet.SET_FLUID, "Methylamine")
-        .setName("Methylamine")
-        .addCell()
-        .addGas()
-        .setRGB(65, 68, 105)
-        .setColor(Dyes.dyeGray)
-        .setMeltingPoint(180)
-        .setExtraData(1)
-        .setMaterialList(
-            new MaterialStack(Materials.Carbon, 1),
-            new MaterialStack(Materials.Hydrogen, 5),
-            new MaterialStack(Materials.Nitrogen, 1))
-        .constructMaterial(); // CH5N
-    public static Materials Trimethylamine = new MaterialBuilder(777, TextureSet.SET_FLUID, "Trimethylamine")
-        .setName("Trimethylamine")
-        .addCell()
-        .addGas()
-        .setRGB(105, 68, 105)
-        .setColor(Dyes.dyeGray)
-        .setMeltingPoint(156)
-        .setExtraData(1)
-        .setMaterialList(
-            new MaterialStack(Materials.Carbon, 3),
-            new MaterialStack(Materials.Hydrogen, 9),
-            new MaterialStack(Materials.Nitrogen, 1))
-        .constructMaterial(); // C3H9N
-    public static Materials GammaButyrolactone = new MaterialBuilder(776, TextureSet.SET_FLUID, "gamma-Butyrolactone")
-        .setName("GammaButyrolactone")
-        .addCell()
-        .addFluid()
-        .setRGB(255, 255, 151)
-        .setColor(Dyes.dyeYellow)
-        .setMeltingPoint(229)
-        .setMaterialList(
-            new MaterialStack(Materials.Carbon, 4),
-            new MaterialStack(Materials.Hydrogen, 6),
-            new MaterialStack(Materials.Oxygen, 2))
-        .constructMaterial(); // C4H6O2
-    public static Materials CalciumCarbide = new MaterialBuilder(775, TextureSet.SET_DULL, "Calcium Carbide")
-        .setName("CacliumCarbide")
-        .addDustItems()
-        .setRGB(235, 235, 235)
-        .setColor(Dyes.dyeGray)
-        .setMeltingPoint(2430)
-        .setMaterialList(new MaterialStack(Materials.Calcium, 1), new MaterialStack(Materials.Carbon, 2))
-        .constructMaterial(); // CaC2
-    public static Materials LiquidCrystalKevlar = new MaterialBuilder(
-        774,
-        TextureSet.SET_FLUID,
-        "Liquid Crystal Kevlar").setName("LiquidCrystalKevlar")
+            // C6H6N2
+            .addMaterial(Materials.Carbon, 6)
+            .addMaterial(Materials.Hydrogen, 8)
+            .addMaterial(Materials.Nitrogen, 2)
+            .addAspect(TCAspects.TERRA, 1)
+            .addAspect(TCAspects.VITREUS, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadMethylamine() {
+        return new MaterialBuilder().setName("Methylamine")
+            .setDefaultLocalName("Methylamine")
+            .setMetaItemSubID(778)
+            .setIconSet(TextureSet.SET_FLUID)
+            .addCell()
+            .addGas()
+            .setARGB(0x00414469)
+            .setColor(Dyes.dyeGray)
+            .setMeltingPoint(180)
+            .addElectrolyzerRecipe()
+            // CH5N
+            .addMaterial(Materials.Carbon, 1)
+            .addMaterial(Materials.Hydrogen, 5)
+            .addMaterial(Materials.Nitrogen, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadTrimethylamine() {
+        return new MaterialBuilder().setName("Trimethylamine")
+            .setDefaultLocalName("Trimethylamine")
+            .setMetaItemSubID(777)
+            .setIconSet(TextureSet.SET_FLUID)
+            .addCell()
+            .addGas()
+            .setARGB(0x00694469)
+            .setColor(Dyes.dyeGray)
+            .setMeltingPoint(156)
+            .addElectrolyzerRecipe()
+            // C3H9N
+            .addMaterial(Materials.Carbon, 3)
+            .addMaterial(Materials.Hydrogen, 9)
+            .addMaterial(Materials.Nitrogen, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadGammaButyrolactone() {
+        return new MaterialBuilder().setName("GammaButyrolactone")
+            .setDefaultLocalName("gamma-Butyrolactone")
+            .setMetaItemSubID(776)
+            .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addFluid()
-            .setRGB(240, 240, 120)
+            .setARGB(0x00ffff97)
             .setColor(Dyes.dyeYellow)
-            .constructMaterial(); // [-CO-C6H4-CO-NH-C6H4-NH-]n
-    public static Materials IIButinIIVdiol = new MaterialBuilder(773, TextureSet.SET_POWDER, "2-Butin-1,4-diol")
-        .setName("2Butin14diol")
-        .addDustItems()
-        .setRGB(247, 247, 180)
-        .setColor(Dyes.dyeYellow)
-        .setMeltingPoint(331)
-        .setMaterialList(
-            new MaterialStack(Materials.Carbon, 4),
-            new MaterialStack(Materials.Hydrogen, 6),
-            new MaterialStack(Materials.Oxygen, 2))
-        .constructMaterial(); // C4H6O2
-    public static Materials NickelAluminide = new MaterialBuilder(772, TextureSet.SET_METALLIC, "Nickel Aluminide")
-        .setName("NickelAluminide")
-        .addDustItems()
-        .addMetalItems()
-        .setRGB(230, 230, 230)
-        .setColor(Dyes.dyeGray)
-        .setMeltingPoint(1668)
-        .setBlastFurnaceTemp(1668)
-        .setBlastFurnaceRequired(true)
-        .setMaterialList(new MaterialStack(Materials.Nickel, 1), new MaterialStack(Materials.Aluminium, 3))
-        .constructMaterial()
-        .disableAutoGeneratedBlastFurnaceRecipes(); // NiAl3
-    public static Materials RaneyNickelActivated = new MaterialBuilder(771, TextureSet.SET_POWDER, "Raney Nickel")
-        .setName("RaneyNickelActivated")
-        .addDustItems()
-        .setRGB(230, 230, 230)
-        .setColor(Dyes.dyeGray)
-        .setMeltingPoint(1955)
-        .setMaterialList(new MaterialStack(Materials.Nickel, 1), new MaterialStack(Materials.Aluminium, 1))
-        .constructMaterial(); // NiAl
-    public static Materials BismuthIIIOxide = new MaterialBuilder(769, TextureSet.SET_POWDER, "Bismuth Oxide")
-        .setName("BismuthIIIOxide")
-        .addDustItems()
-        .setRGB(50, 50, 50)
-        .setColor(Dyes.dyeBlack)
-        .setMeltingPoint(1090)
-        .setMaterialList(new MaterialStack(Materials.Bismuth, 2), new MaterialStack(Materials.Oxygen, 3))
-        .constructMaterial(); // Bi2O3
-    public static Materials ThionylChloride = new MaterialBuilder(768, TextureSet.SET_FLUID, "Thionyl Chloride")
-        .setName("ThionylChloride")
-        .addCell()
-        .addFluid()
-        .setRGB(255, 255, 255)
-        .setColor(Dyes.dyeWhite)
-        .constructMaterial(); // SOCl2
-    public static Materials SulfurDichloride = new MaterialBuilder(767, TextureSet.SET_FLUID, "Sulfur Dichloride")
-        .setName("SulfurDichloride")
-        .addCell()
-        .addFluid()
-        .setRGB(200, 0, 0)
-        .setColor(Dyes.dyeRed)
-        .constructMaterial(); // SCl2
-    public static Materials DimethylTerephthalate = new MaterialBuilder(
-        766,
-        TextureSet.SET_FLUID,
-        "Dimethyl Terephthalate").setName("DimethylTerephthalate")
+            .setMeltingPoint(229)
+            // C4H6O2
+            .addMaterial(Materials.Carbon, 4)
+            .addMaterial(Materials.Hydrogen, 6)
+            .addMaterial(Materials.Oxygen, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadCalciumCarbide() {
+        return new MaterialBuilder().setName("CacliumCarbide")
+            .setDefaultLocalName("Calcium Carbide")
+            .setMetaItemSubID(775)
+            .setIconSet(TextureSet.SET_DULL)
+            .addDustItems()
+            .setARGB(0x00ebebeb)
+            .setColor(Dyes.dyeGray)
+            .setMeltingPoint(2430)
+            // CaC2
+            .addMaterial(Materials.Calcium, 1)
+            .addMaterial(Materials.Carbon, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadLiquidCrystalKevlar() {
+        return new MaterialBuilder().setName("LiquidCrystalKevlar")
+            .setDefaultLocalName("Liquid Crystal Kevlar")
+            .setChemicalFormula("[-CO-C₆H₄-CO-NH-C₆H₄-NH-]n")
+            .setMetaItemSubID(774)
+            .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addFluid()
-            .setRGB(255, 255, 255)
+            .setARGB(0x00f0f078)
+            .setColor(Dyes.dyeYellow)
+            .constructMaterial();
+    }
+
+    private static Materials loadIIButinIIVdiol() {
+        return new MaterialBuilder().setName("2Butin14diol")
+            .setDefaultLocalName("2-Butin-1,4-diol")
+            .setMetaItemSubID(773)
+            .setIconSet(TextureSet.SET_POWDER)
+            .addDustItems()
+            .setARGB(0x00f7f7b4)
+            .setColor(Dyes.dyeYellow)
+            .setMeltingPoint(331)
+            // C4H6O2
+            .addMaterial(Materials.Carbon, 4)
+            .addMaterial(Materials.Hydrogen, 6)
+            .addMaterial(Materials.Oxygen, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadNickelAluminide() {
+        return new MaterialBuilder().setName("NickelAluminide")
+            .setDefaultLocalName("Nickel Aluminide")
+            .setMetaItemSubID(772)
+            .setIconSet(TextureSet.SET_METALLIC)
+            .addDustItems()
+            .addMetalItems()
+            .setARGB(0x00e6e6e6)
+            .setColor(Dyes.dyeGray)
+            .setMeltingPoint(1_668)
+            .setBlastFurnaceTemp(1_668)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            // NiAl3
+            .addMaterial(Materials.Nickel, 1)
+            .addMaterial(Materials.Aluminium, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadRaneyNickelActivated() {
+        return new MaterialBuilder().setName("RaneyNickelActivated")
+            .setDefaultLocalName("Raney Nickel")
+            .setMetaItemSubID(771)
+            .setIconSet(TextureSet.SET_POWDER)
+            .addDustItems()
+            .setARGB(0x00e6e6e6)
+            .setColor(Dyes.dyeGray)
+            .setMeltingPoint(1_955)
+            // NiAl
+            .addMaterial(Materials.Nickel, 1)
+            .addMaterial(Materials.Aluminium, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadBismuthIIIOxide() {
+        return new MaterialBuilder().setName("BismuthIIIOxide")
+            .setDefaultLocalName("Bismuth Oxide")
+            .setMetaItemSubID(769)
+            .setIconSet(TextureSet.SET_POWDER)
+            .addDustItems()
+            .setARGB(0x00323232)
+            .setColor(Dyes.dyeBlack)
+            .setMeltingPoint(1090)
+            // Bi2O3
+            .addMaterial(Materials.Bismuth, 2)
+            .addMaterial(Materials.Oxygen, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadThionylChloride() {
+        // SOCl2
+        return new MaterialBuilder().setName("ThionylChloride")
+            .setDefaultLocalName("Thionyl Chloride")
+            .setMetaItemSubID(768)
+            .setIconSet(TextureSet.SET_FLUID)
+            .addCell()
+            .addFluid()
+            .setColor(Dyes.dyeWhite)
+            .constructMaterial();
+    }
+
+    private static Materials loadSulfurDichloride() {
+        // SCl2
+        return new MaterialBuilder().setName("SulfurDichloride")
+            .setDefaultLocalName("Sulfur Dichloride")
+            .setMetaItemSubID(767)
+            .setIconSet(TextureSet.SET_FLUID)
+            .addCell()
+            .addFluid()
+            .setARGB(0x00c80000)
+            .setColor(Dyes.dyeRed)
+            .constructMaterial();
+    }
+
+    private static Materials loadDimethylTerephthalate() {
+        return new MaterialBuilder().setName("DimethylTerephthalate")
+            .setDefaultLocalName("Dimethyl Terephthalate")
+            .setMetaItemSubID(766)
+            .setIconSet(TextureSet.SET_FLUID)
+            .addCell()
+            .addFluid()
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(415)
-            .setMaterialList(
-                new MaterialStack(Materials.Carbon, 10),
-                new MaterialStack(Materials.Hydrogen, 10),
-                new MaterialStack(Materials.Oxygen, 4))
-            .constructMaterial(); // C10H10O4
-    public static Materials Kevlar = new MaterialBuilder(765, TextureSet.SET_DULL, "Kevlar").setName("Kevlar")
-        .addDustItems()
-        .addMetalItems()
-        .addGearItems()
-        .setRGB(240, 240, 120)
-        .setColor(Dyes.dyeYellow)
-        .constructMaterial();
-    public static Materials TerephthalicAcid = new MaterialBuilder(764, TextureSet.SET_FLUID, "Terephthalic Acid")
-        .setName("TerephthalicAcid")
-        .addCell()
-        .addFluid()
-        .setRGB(255, 255, 255)
-        .setColor(Dyes.dyeWhite)
-        .setMeltingPoint(480)
-        .setMaterialList(
-            new MaterialStack(Materials.Carbon, 8L),
-            new MaterialStack(Materials.Hydrogen, 6),
-            new MaterialStack(Materials.Oxygen, 4))
-        .constructMaterial(); // C9H6O6
-    public static Materials IIIDimethylbenzene = new MaterialBuilder(763, TextureSet.SET_FLUID, "1,3-Dimethylbenzene")
-        .addCell()
-        .addFluid()
-        .setRGB(112, 146, 74)
-        .setColor(Dyes.dyeLime)
-        .setMeltingPoint(225)
-        .setMaterialList(new MaterialStack(Materials.Carbon, 8), new MaterialStack(Materials.Hydrogen, 10))
-        .addElectrolyzerRecipe()
-        .constructMaterial(); // C8H10
-    public static Materials IVDimethylbenzene = new MaterialBuilder(762, TextureSet.SET_FLUID, "1,4-Dimethylbenzene")
-        .addCell()
-        .addFluid()
-        .setRGB(122, 136, 84)
-        .setColor(Dyes.dyeLime)
-        .setMeltingPoint(286)
-        .setMaterialList(new MaterialStack(Materials.Carbon, 8), new MaterialStack(Materials.Hydrogen, 10))
-        .addElectrolyzerRecipe()
-        .constructMaterial(); // C8H10
-    public static Materials CobaltIINaphthenate = new MaterialBuilder(761, TextureSet.SET_DULL, "Cobalt II Naphthenate")
-        .setName("Cobalt(II)Naphthenate")
-        .addDustItems()
-        .setRGB(143, 95, 39)
-        .setColor(Dyes.dyeBrown)
-        .setMeltingPoint(413)
-        .setMaterialList(
-            new MaterialStack(Materials.Cobalt, 1),
-            new MaterialStack(Materials.Carbon, 22),
-            new MaterialStack(Materials.Hydrogen, 14),
-            new MaterialStack(Materials.Oxygen, 4))
-        .constructMaterial(); // CoC22H14O4
-    public static Materials NaphthenicAcid = new MaterialBuilder(760, TextureSet.SET_FLUID, "Naphthenic Acid")
-        .setName("NaphthenicAcid")
-        .addCell()
-        .addFluid()
-        .setRGB(255, 255, 255)
-        .setColor(Dyes.dyeWhite)
-        .setFuelType(MaterialBuilder.SEMIFLUID)
-        .setFuelPower(80)
-        .constructMaterial();
-    public static Materials CobaltIIHydroxide = new MaterialBuilder(759, TextureSet.SET_POWDER, "Cobalt II Hydroxide")
-        .setName("CobaltIIHydroxide")
-        .addDustItems()
-        .setRGB(229, 140, 239)
-        .setColor(Dyes.dyePurple)
-        .setMeltingPoint(441)
-        .setMaterialList(
-            new MaterialStack(Materials.Cobalt, 1),
-            new MaterialStack(Materials.Hydrogen, 2),
-            new MaterialStack(Materials.Oxygen, 2))
-        .constructMaterial(); // CoH2O2
-    public static Materials CobaltIIAcetate = new MaterialBuilder(758, TextureSet.SET_POWDER, "Cobalt II Acetate")
-        .setName("Cobalt(II)Acetate")
-        .addDustItems()
-        .setRGB(219, 162, 229)
-        .setColor(Dyes.dyePurple)
-        .setMeltingPoint(413)
-        .setMaterialList(
-            new MaterialStack(Materials.Carbon, 4L),
-            new MaterialStack(Materials.Hydrogen, 6),
-            new MaterialStack(Materials.Cobalt, 1),
-            new MaterialStack(Materials.Oxygen, 4))
-        .constructMaterial(); // C4H6CoO4
-    public static Materials CobaltIINitrate = new MaterialBuilder(757, TextureSet.SET_POWDER, "Cobalt II Nitrate")
-        .setName("Cobalt(II)Nitrate")
-        .addDustItems()
-        .setRGB(170, 0, 0)
-        .setColor(Dyes.dyeRed)
-        .setMeltingPoint(373)
-        .setMaterialList(
-            new MaterialStack(Materials.Cobalt, 1),
-            new MaterialStack(Materials.Nitrogen, 2),
-            new MaterialStack(Materials.Oxygen, 6))
-        .constructMaterial(); // Co(NO3)2
-    public static Materials OrganorhodiumCatalyst = new MaterialBuilder(
-        756,
-        TextureSet.SET_POWDER,
-        "Organorhodium Catalyst").setName("OrganorhodiumCatalyst")
+            // C10H10O4
+            .addMaterial(Materials.Carbon, 10)
+            .addMaterial(Materials.Hydrogen, 10)
+            .addMaterial(Materials.Oxygen, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadKevlar() {
+        return new MaterialBuilder().setName("Kevlar")
+            .setDefaultLocalName("Kevlar")
+            .setMetaItemSubID(765)
+            .setIconSet(TextureSet.SET_DULL)
             .addDustItems()
-            .setRGB(170, 0, 0)
-            .setColor(Dyes.dyeRed)
-            .setMeltingPoint(373)
-            .setMaterialList(new MaterialStack(Materials.Cobalt, 1), new MaterialStack(Materials.NitricAcid, 2))
-            .constructMaterial(); // RhHCO(P(C6H5)3)3
-    public static Materials SodiumBorohydride = new MaterialBuilder(755, TextureSet.SET_POWDER, "Sodium Borohydride")
-        .setName("SodiumBorohydride")
-        .addDustItems()
-        .setRGB(255, 255, 255)
-        .setColor(Dyes.dyeWhite)
-        .setMeltingPoint(673)
-        .setMaterialList(
-            new MaterialStack(Materials.Sodium, 1),
-            new MaterialStack(Materials.Boron, 1),
-            new MaterialStack(Materials.Hydrogen, 4))
-        .constructMaterial(); // NaBH4
-    public static Materials RhodiumChloride = new MaterialBuilder(754, TextureSet.SET_POWDER, "Rhodium Chloride")
-        .setName("RhodiumChloride")
-        .addDustItems()
-        .setRGB(128, 0, 0)
-        .setColor(Dyes.dyeRed)
-        .setMeltingPoint(723)
-        .constructMaterial(); // RHCL3
-    public static Materials Triphenylphosphene = new MaterialBuilder(753, TextureSet.SET_POWDER, "Triphenylphosphine")
-        .setName("Triphenylphosphene")
-        .addDustItems()
-        .setRGB(255, 255, 255)
-        .setColor(Dyes.dyeWhite)
-        .setMeltingPoint(353)
-        .setMaterialList(
-            new MaterialStack(Materials.Carbon, 18L),
-            new MaterialStack(Materials.Hydrogen, 15L),
-            new MaterialStack(Materials.Phosphorus, 1L))
-        .constructMaterial(); // C18H15P
-    public static Materials PhosphorusTrichloride = new MaterialBuilder(
-        752,
-        TextureSet.SET_FLUID,
-        "Phosphorus Trichloride").setName("PhosphorusTrichloride")
+            .addMetalItems()
+            .addGearItems()
+            .setARGB(0x00f0f078)
+            .setColor(Dyes.dyeYellow)
+            .addSubTag(SubTag.FLAMMABLE)
+            .addSubTag(SubTag.MULTI_PLATE)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.STRETCHY)
+            .constructMaterial();
+    }
+
+    private static Materials loadTerephthalicAcid() {
+        return new MaterialBuilder().setName("TerephthalicAcid")
+            .setDefaultLocalName("Terephthalic Acid")
+            .setMetaItemSubID(764)
+            .setIconSet(TextureSet.SET_FLUID)
             .addCell()
             .addFluid()
-            .setRGB(255, 255, 255)
+            .setColor(Dyes.dyeWhite)
+            .setMeltingPoint(480)
+            // C9H6O6
+            .addMaterial(Materials.Carbon, 8)
+            .addMaterial(Materials.Hydrogen, 6)
+            .addMaterial(Materials.Oxygen, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadIIIDimethylbenzene() {
+        return new MaterialBuilder().setName("1,3Dimethylbenzene")
+            .setDefaultLocalName("1,3-Dimethylbenzene")
+            .setMetaItemSubID(763)
+            .setIconSet(TextureSet.SET_FLUID)
+            .addCell()
+            .addFluid()
+            .setARGB(0x0070924a)
+            .setColor(Dyes.dyeLime)
+            .setMeltingPoint(225)
+            // C8H10
+            .addMaterial(Materials.Carbon, 8)
+            .addMaterial(Materials.Hydrogen, 10)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadIVDimethylbenzene() {
+        return new MaterialBuilder().setName("1,4Dimethylbenzene")
+            .setDefaultLocalName("1,4-Dimethylbenzene")
+            .setMetaItemSubID(762)
+            .setIconSet(TextureSet.SET_FLUID)
+            .addCell()
+            .addFluid()
+            .setARGB(0x007a8854)
+            .setColor(Dyes.dyeLime)
+            .setMeltingPoint(286)
+            // C8H10
+            .addMaterial(Materials.Carbon, 8)
+            .addMaterial(Materials.Hydrogen, 10)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadCobaltIINaphthenate() {
+        return new MaterialBuilder().setName("Cobalt(II)Naphthenate")
+            .setDefaultLocalName("Cobalt II Naphthenate")
+            .setMetaItemSubID(761)
+            .setIconSet(TextureSet.SET_DULL)
+            .addDustItems()
+            .setARGB(0x008f5f27)
+            .setColor(Dyes.dyeBrown)
+            .setMeltingPoint(413)
+            // CoC22H14O4
+            .addMaterial(Materials.Cobalt, 1)
+            .addMaterial(Materials.Carbon, 22)
+            .addMaterial(Materials.Hydrogen, 14)
+            .addMaterial(Materials.Oxygen, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadNaphthenicAcid() {
+        return new MaterialBuilder().setName("NaphthenicAcid")
+            .setDefaultLocalName("Naphthenic Acid")
+            .setMetaItemSubID(760)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeWhite)
+            .setFuel(MaterialBuilder.FuelType.SemiFluid, 80)
+            .addCell()
+            .addFluid()
+            .constructMaterial();
+    }
+
+    private static Materials loadCobaltIIHydroxide() {
+        return new MaterialBuilder().setName("CobaltIIHydroxide")
+            .setDefaultLocalName("Cobalt II Hydroxide")
+            .setChemicalFormula("Co(OH)₂")
+            .setMetaItemSubID(759)
+            .setIconSet(TextureSet.SET_POWDER)
+            .addDustItems()
+            .setARGB(0x00e58cef)
+            .setColor(Dyes.dyePurple)
+            .setMeltingPoint(441)
+            .addMaterial(Materials.Cobalt, 1)
+            .addMaterial(Materials.Hydrogen, 2)
+            .addMaterial(Materials.Oxygen, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadCobaltIIAcetate() {
+        return new MaterialBuilder().setName("Cobalt(II)Acetate")
+            .setDefaultLocalName("Cobalt II Acetate")
+            .setMetaItemSubID(758)
+            .setIconSet(TextureSet.SET_POWDER)
+            .addDustItems()
+            .setARGB(0x00dba2e5)
+            .setColor(Dyes.dyePurple)
+            .setMeltingPoint(413)
+            // C4H6CoO4
+            .addMaterial(Materials.Carbon, 4)
+            .addMaterial(Materials.Hydrogen, 6)
+            .addMaterial(Materials.Cobalt, 1)
+            .addMaterial(Materials.Oxygen, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadCobaltIINitrate() {
+        return new MaterialBuilder().setName("Cobalt(II)Nitrate")
+            .setDefaultLocalName("Cobalt II Nitrate")
+            .setChemicalFormula("Co(NO₃)₂")
+            .setMetaItemSubID(757)
+            .setIconSet(TextureSet.SET_POWDER)
+            .addDustItems()
+            .setARGB(0x00aa0000)
+            .setColor(Dyes.dyeRed)
+            .setMeltingPoint(373)
+            .addMaterial(Materials.Cobalt, 1)
+            .addMaterial(Materials.Nitrogen, 2)
+            .addMaterial(Materials.Oxygen, 6)
+            .constructMaterial();
+    }
+
+    private static Materials loadOrganorhodiumCatalyst() {
+        return new MaterialBuilder().setName("OrganorhodiumCatalyst")
+            .setDefaultLocalName("Organorhodium Catalyst")
+            .setChemicalFormula("RhHCO(P(C₆H₅)₃)₃")
+            .setMetaItemSubID(756)
+            .setIconSet(TextureSet.SET_POWDER)
+            .addDustItems()
+            .setARGB(0x00aa0000)
+            .setColor(Dyes.dyeRed)
+            .setMeltingPoint(373)
+            .addMaterial(Materials.Cobalt, 1)
+            .addMaterial(Materials.NitricAcid, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadSodiumBorohydride() {
+        return new MaterialBuilder().setName("SodiumBorohydride")
+            .setDefaultLocalName("Sodium Borohydride")
+            .setMetaItemSubID(755)
+            .setIconSet(TextureSet.SET_POWDER)
+            .addDustItems()
+            .setColor(Dyes.dyeWhite)
+            .setMeltingPoint(673)
+            // NaBH4
+            .addMaterial(Materials.Sodium, 1)
+            .addMaterial(Materials.Boron, 1)
+            .addMaterial(Materials.Hydrogen, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadRhodiumChloride() {
+        return new MaterialBuilder().setName("RhodiumChloride")
+            .setDefaultLocalName("Rhodium Chloride")
+            .setChemicalFormula("RhCl₃")
+            .setMetaItemSubID(754)
+            .setIconSet(TextureSet.SET_POWDER)
+            .addDustItems()
+            .setARGB(0x00800000)
+            .setColor(Dyes.dyeRed)
+            .setMeltingPoint(723)
+            .constructMaterial();
+    }
+
+    private static Materials loadTriphenylphosphene() {
+        return new MaterialBuilder().setName("Triphenylphosphene")
+            .setDefaultLocalName("Triphenylphosphine")
+            .setMetaItemSubID(753)
+            .setIconSet(TextureSet.SET_POWDER)
+            .addDustItems()
+            .setColor(Dyes.dyeWhite)
+            .setMeltingPoint(353)
+            // C18H15P
+            .addMaterial(Materials.Carbon, 18)
+            .addMaterial(Materials.Hydrogen, 15)
+            .addMaterial(Materials.Phosphorus, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadPhosphorusTrichloride() {
+        return new MaterialBuilder().setName("PhosphorusTrichloride")
+            .setDefaultLocalName("Phosphorus Trichloride")
+            .setMetaItemSubID(752)
+            .setIconSet(TextureSet.SET_FLUID)
+            .addCell()
+            .addFluid()
             .setColor(Dyes.dyeWhite)
             .setMeltingPoint(179)
-            .setMaterialList(new MaterialStack(Materials.Phosphorus, 1L), new MaterialStack(Materials.Chlorine, 3L))
-            .constructMaterial(); // PCL3
-    public static Materials SodiumHydride = new MaterialBuilder(751, TextureSet.SET_POWDER, "Sodium Hydride")
-        .setName("SodiumHydride")
-        .addDustItems()
-        .setRGB(192, 192, 192)
-        .setColor(Dyes.dyeLightGray)
-        .setMeltingPoint(911)
-        .setMaterialList(new MaterialStack(Materials.Sodium, 1L), new MaterialStack(Materials.Hydrogen, 1L))
-        .constructMaterial(); // NaH
-    public static Materials TrimethylBorate = new MaterialBuilder(750, TextureSet.SET_FLUID, "Trimethyl Borate")
-        .setName("TrimethylBorate")
-        .addCell()
-        .addFluid()
-        .setRGB(255, 255, 255)
-        .setColor(Dyes.dyeWhite)
-        .setMeltingPoint(239)
-        .setMaterialList(
-            new MaterialStack(Materials.Carbon, 3L),
-            new MaterialStack(Materials.Hydrogen, 9L),
-            new MaterialStack(Materials.Boron, 1L),
-            new MaterialStack(Materials.Oxygen, 3L))
-        .constructMaterial(); // C3H9BO3
-    public static Materials SodiumMethoxide = new MaterialBuilder(749, TextureSet.SET_POWDER, "Sodium Methoxide")
-        .setName("SodiumMethoxide")
-        .addDustItems()
-        .setRGB(255, 255, 255)
-        .setColor(Dyes.dyeWhite)
-        .setMeltingPoint(400)
-        .setMaterialList(
-            new MaterialStack(Materials.Carbon, 1L),
-            new MaterialStack(Materials.Hydrogen, 3L),
-            new MaterialStack(Materials.Oxygen, 1L),
-            new MaterialStack(Materials.Sodium, 1L))
-        .constructMaterial(); // CH3NaO
+            // PCL3
+            .addMaterial(Materials.Phosphorus, 1)
+            .addMaterial(Materials.Chlorine, 3)
+            .constructMaterial();
+    }
 
-    // H3RhCl6
+    private static Materials loadSodiumHydride() {
+        return new MaterialBuilder().setName("SodiumHydride")
+            .setDefaultLocalName("Sodium Hydride")
+            .setMetaItemSubID(751)
+            .setIconSet(TextureSet.SET_POWDER)
+            .addDustItems()
+            .setARGB(0x00c0c0c0)
+            .setColor(Dyes.dyeLightGray)
+            .setMeltingPoint(911)
+            // NaH
+            .addMaterial(Materials.Sodium, 1)
+            .addMaterial(Materials.Hydrogen, 1)
+            .constructMaterial();
+    }
 
-    /**
-     * This method is called by Materials. It can be safely called multiple times.
-     * It exists to allow Materials ensure this class is initialized.
-     */
-    public static void init() {
-        // no-op. all work is done by <clinit>
+    private static Materials loadTrimethylBorate() {
+        return new MaterialBuilder().setName("TrimethylBorate")
+            .setDefaultLocalName("Trimethyl Borate")
+            .setMetaItemSubID(750)
+            .setIconSet(TextureSet.SET_FLUID)
+            .addCell()
+            .addFluid()
+            .setColor(Dyes.dyeWhite)
+            .setMeltingPoint(239)
+            // C3H9BO3
+            .addMaterial(Materials.Carbon, 3)
+            .addMaterial(Materials.Hydrogen, 9)
+            .addMaterial(Materials.Boron, 1)
+            .addMaterial(Materials.Oxygen, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadSodiumMethoxide() {
+        return new MaterialBuilder().setName("SodiumMethoxide")
+            .setDefaultLocalName("Sodium Methoxide")
+            .setMetaItemSubID(749)
+            .setIconSet(TextureSet.SET_POWDER)
+            .addDustItems()
+            .setColor(Dyes.dyeWhite)
+            .setMeltingPoint(400)
+            // CH3NaO
+            .addMaterial(Materials.Carbon, 1)
+            .addMaterial(Materials.Hydrogen, 3)
+            .addMaterial(Materials.Oxygen, 1)
+            .addMaterial(Materials.Sodium, 1)
+            .constructMaterial();
     }
 }

@@ -67,8 +67,7 @@ import gregtech.common.covers.CoverPosition;
 public class GregTechAPI {
 
     /**
-     * Fixes the HashMap Mappings for ItemStacks once the Server started
-     * <br>
+     * Fixes the HashMap Mappings for ItemStacks once the Server started <br>
      * <br>
      * NOTE: We use wildcards generics for the key because it could be for example {@link ItemStack} or
      * {@link GTItemStack}
@@ -152,10 +151,10 @@ public class GregTechAPI {
      */
     public static IThaumcraftCompat sThaumcraftCompat;
     /**
-     * The Lists below are executed at their respective timings. Useful to do things at a particular moment in time.
-     * The Lists are not Threaded - a native Java interface is used for their execution.
-     * Add your "commands" in the constructor or in the static-code-block of your mod's Main class.
-     * Implement the method {@code run()}, and everything should work.
+     * The Lists below are executed at their respective timings. Useful to do things at a particular moment in time. The
+     * Lists are not Threaded - a native Java interface is used for their execution. Add your "commands" in the
+     * constructor or in the static-code-block of your mod's Main class. Implement the method {@code run()}, and
+     * everything should work.
      */
     public static List<Runnable> sBeforeGTPreload = new ArrayList<>(), sAfterGTPreload = new ArrayList<>(),
         sBeforeGTLoad = new ArrayList<>(), sAfterGTLoad = new ArrayList<>(), sBeforeGTPostload = new ArrayList<>(),
@@ -176,7 +175,7 @@ public class GregTechAPI {
      */
     public static Block sBlockMachines;
 
-    public static Block sBlockOres1, sBlockOresUb1, sBlockOresUb2, sBlockOresUb3,
+    public static Block sBlockOres1,
         /* sBlockGem, */
         sBlockMetal1, sBlockMetal2, sBlockMetal3, sBlockMetal4, sBlockMetal5, sBlockMetal6, sBlockMetal7, sBlockMetal8,
         sBlockMetal9, sBlockGem1, sBlockGem2, sBlockGem3, sBlockReinforced;
@@ -194,6 +193,7 @@ public class GregTechAPI {
     public static Block sWormholeRender;
     public static Block sBlackholeRender;
     public static Block sSpaceElevatorCable;
+    public static Block nanoForgeRender;
     /**
      * Getting assigned by the Config
      */

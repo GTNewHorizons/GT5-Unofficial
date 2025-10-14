@@ -576,7 +576,7 @@ public class Assembler implements Runnable {
                     .itemOutputs(CustomItemList.eM_dynamoMulti64_UHV.get(1))
                     .fluidInputs(Materials.Tungsten.getMolten(16 * INGOTS))
                     .duration(20 * SECONDS)
-                    .eut(TierEU.RECIPE_UHV)
+                    .eut(TierEU.RECIPE_UV)
                     .addTo(assemblerRecipes);
                 // Dynamo UEV 64A
                 GTValues.RA.stdBuilder()

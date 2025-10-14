@@ -70,23 +70,22 @@ public class MTEMonsterRepellent extends MTETieredMachineBlock {
 
     @Override
     public void onPostTick(IGregTechTileEntity mte, long aTimer) {
-        if (mte.isServerSide()) {
-            if (mte.isAllowedToWork()) {
-                final int prevRange = mRange;
-                if (mte.isUniversalEnergyStored(getMinimumStoredEU())
-                    && mte.decreaseStoredEnergyUnits(1L << (this.mTier * 2), false)) {
-                    mRange = getRepellentRange(mTier, true);
-                } else {
-                    mRange = getRepellentRange(mTier, false);
-                }
-                if (prevRange != mRange) {
-                    GTMod.proxy.spawnEventHandler.putRepellent(mte, mRange);
-                }
+        if (!mte.isServerSide()) return;
+        if (mte.isAllowedToWork()) {
+            final int prevRange = mRange;
+            if (mte.isUniversalEnergyStored(getMinimumStoredEU())
+                && mte.decreaseStoredEnergyUnits(1L << (this.mTier * 2), false)) {
+                mRange = getRepellentRange(mTier, true);
             } else {
-                if (mRange != -1) {
-                    GTMod.proxy.spawnEventHandler.removeRepellent(mte);
-                    mRange = -1;
-                }
+                mRange = getRepellentRange(mTier, false);
+            }
+            if (prevRange != mRange) {
+                GTMod.proxy.spawnEventHandler.putRepellent(mte, mRange);
+            }
+        } else {
+            if (mRange != -1) {
+                GTMod.proxy.spawnEventHandler.removeRepellent(mte);
+                mRange = -1;
             }
         }
     }

@@ -23,6 +23,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class AutoclaveRecipes implements Runnable {
 
     @Override
@@ -254,6 +255,33 @@ public class AutoclaveRecipes implements Runnable {
             .addTo(autoclaveRecipes);
 
         GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Olivine, 15))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Asbestos, 18),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Magnetite, 7))
+            .fluidInputs(GTModHandler.getDistilledWater(9_000))
+            .fluidOutputs(Materials.Hydrogen.getGas(14_000))
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(autoclaveRecipes);
+
+        // Marble Block
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Calcite, 1L))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, Materials.Marble, 1L))
+            .fluidInputs(Materials.Water.getFluid(1_000L))
+            .duration(15 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(autoclaveRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Calcite, 1L))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stone, Materials.Marble, 1L))
+            .fluidInputs(GTModHandler.getDistilledWater(500L))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(autoclaveRecipes);
+
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.TranscendentMetal, 1L),
                 GTOreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.Mellion, 32L))
@@ -270,5 +298,6 @@ public class AutoclaveRecipes implements Runnable {
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_UXV)
             .addTo(autoclaveRecipes);
+
     }
 }

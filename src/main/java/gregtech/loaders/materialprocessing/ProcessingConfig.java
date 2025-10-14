@@ -11,8 +11,7 @@ public class ProcessingConfig implements gregtech.api.interfaces.IMaterialHandle
     }
 
     /**
-     * To add a new material, please see the following example:
-     * <blockquote>
+     * To add a new material, please see the following example: <blockquote>
      *
      * <pre>
      * int numberOfMaterialSlots = GregTechAPI.sMaterialProperties.get("general", "AmountOfCustomMaterialSlots", 16);

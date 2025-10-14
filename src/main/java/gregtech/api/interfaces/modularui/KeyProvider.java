@@ -7,5 +7,5 @@ import com.cleanroommc.modularui.api.drawable.IKey;
  */
 public interface KeyProvider {
 
-    IKey getKey();
+    String getKey();
 }
