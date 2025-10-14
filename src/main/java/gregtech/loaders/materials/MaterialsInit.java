@@ -12410,7 +12410,7 @@ public class MaterialsInit {
             .setChemicalFormula(
                 "(KNO₃)(" + Materials.Redstone.mChemicalFormula + ")(H₂O)(" + Materials.Blizz.mChemicalFormula + ")")
             .setMetaItemSubID(898)
-            .setIconSet(TextureSet.SET_SHINY)
+            .setIconSet(TextureSet.SET_CRYOTHEUM)
             .setColor(Dyes.dyeLightBlue)
             .setARGB(0x000094cb)
             .setFuel(MaterialBuilder.FuelType.Thermal, 62)
