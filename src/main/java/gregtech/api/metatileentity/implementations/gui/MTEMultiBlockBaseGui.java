@@ -49,6 +49,7 @@ import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.CycleButtonWidget;
+import com.cleanroommc.modularui.widgets.ItemDisplayWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
@@ -203,7 +204,9 @@ public class MTEMultiBlockBaseGui {
             .child(createShutdownDurationWidget(syncManager))
             .child(createShutdownReasonWidget(syncManager))
             .child(createRecipeResultWidget())
-            .childIf(base.showRecipeTextInGUI(), createRecipeInfoWidget(syncManager));
+            .childIf(base.showRecipeTextInGUI(), createItemRecipeInfoColumn(syncManager))
+            .childIf(base.showRecipeTextInGUI(), createFluidRecipeInfoColumn(syncManager));
+        // .childIf(base.showRecipeTextInGUI(), createRecipeInfoWidget(syncManager));
     }
 
     protected IWidget createShutdownDurationWidget(PanelSyncManager syncManager) {
@@ -266,6 +269,142 @@ public class MTEMultiBlockBaseGui {
                 widget -> Predicates.isNonEmptyList(syncManager.getSyncHandler("itemOutput:0"))
                     || Predicates.isNonEmptyList(syncManager.getSyncHandler("fluidOutput:0")));
 
+    }
+
+    private Flow createItemRecipeInfoColumn(PanelSyncManager syncManager) {
+        GenericListSyncHandler<ItemStack> itemOutputSyncer = (GenericListSyncHandler<ItemStack>) syncManager
+            .getSyncHandler("itemOutput:0");
+        List<ItemStack> itemOutputList = itemOutputSyncer.getValue();
+        IntSyncValue maxProgressSyncer = (IntSyncValue) syncManager.getSyncHandler("maxProgressTime:0");
+
+        Flow returnColumn = Flow.column()
+            .marginBottom(4);
+        returnColumn.setEnabledIf(useless -> Predicates.isNonEmptyList(itemOutputSyncer));
+
+        final Map<ItemStack, Long> nameToAmount = new HashMap<>();
+        for (ItemStack item : itemOutputList) {
+            if (item == null || item.stackSize <= 0) continue;
+            nameToAmount.merge(item, (long) item.stackSize, Long::sum);
+        }
+
+        final List<Map.Entry<ItemStack, Long>> sortedMap = nameToAmount.entrySet()
+            .stream()
+            .sorted(
+                Map.Entry.<ItemStack, Long>comparingByValue()
+                    .reversed())
+            .collect(Collectors.toList());
+
+        for (Map.Entry<ItemStack, Long> entry : sortedMap) {
+            ItemStack copiedItem = entry.getKey()
+                .copy();
+            long amount = entry.getValue();
+            Flow recipeRow = new Row().widthRel(1)
+                .height(18)
+                .marginBottom(4);
+            // Icon display
+            recipeRow.child(createItemDrawable(copiedItem));
+            // Hoverable Text Widget
+            recipeRow.child(createHoverableTextForItem(copiedItem, amount, maxProgressSyncer.getValue()));
+            returnColumn.child(recipeRow);
+        }
+        return returnColumn;
+    }
+
+    /*
+     * Returns a Column of Rows.
+     * Each Row represents one Fluid Stack
+     * Each row is represented by an Icon of the texture, and a Hoverable Text Widget
+     * The text Widget is Localized Name(with name cut off at big length) x Amount (value/second)
+     * The hover is Full name \n Amount: x \n Per Second/Minute/Hour/Day
+     */
+    private Flow createFluidRecipeInfoColumn(PanelSyncManager syncManager) {
+        GenericListSyncHandler<FluidStack> fluidOutputSyncer = (GenericListSyncHandler<FluidStack>) syncManager
+            .getSyncHandler("fluidOutput:0");
+        Flow returnColumn = Flow.column()
+            .marginBottom(4);
+        List<FluidStack> fluidOutputList = fluidOutputSyncer.getValue();
+        IntSyncValue maxProgressSyncer = (IntSyncValue) syncManager.getSyncHandler("maxProgressTime:0");
+        returnColumn.setEnabledIf(useless -> Predicates.isNonEmptyList(fluidOutputSyncer));
+
+        final Map<FluidStack, Long> nameToAmount = new HashMap<>();
+        for (FluidStack fluid : fluidOutputList) {
+            if (fluid == null || fluid.amount <= 0) continue;
+            nameToAmount.merge(fluid, (long) fluid.amount, Long::sum);
+        }
+
+        final List<Map.Entry<FluidStack, Long>> sortedMap = nameToAmount.entrySet()
+            .stream()
+            .sorted(
+                Map.Entry.<FluidStack, Long>comparingByValue()
+                    .reversed())
+            .collect(Collectors.toList());
+
+        for (Map.Entry<FluidStack, Long> entry : sortedMap) {
+            FluidStack copiedFluid = entry.getKey()
+                .copy();
+            long amount = entry.getValue();
+
+            Flow recipeRow = new Row().widthRel(1)
+                .height(18)
+                .marginBottom(4);
+            // Icon display
+            recipeRow.child(createFluidDrawable(copiedFluid));
+            // Hoverable Text Widget
+            recipeRow.child(createHoverableTextForFluid(copiedFluid, amount, maxProgressSyncer.getValue()));
+            returnColumn.child(recipeRow);
+        }
+
+        return returnColumn;
+    }
+
+    private ItemDisplayWidget createFluidDrawable(FluidStack fluidStack) {
+        // uses an itemstack representation of the fluid as there is no FluidDisplayWidget (yet)
+        ItemStack fluidDisplayStack = GTUtility.getFluidDisplayStack(fluidStack, false, false);
+        return new ItemDisplayWidget().displayAmount(false)
+            .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
+            .item(fluidDisplayStack)
+            .size(18, 18)
+            .marginRight(1);
+    }
+
+    private TextWidget<?> createHoverableTextForFluid(FluidStack fluidStack, long amount, int progressTime) {
+        String fluidName = EnumChatFormatting.AQUA + fluidStack.getLocalizedName() + EnumChatFormatting.RESET;
+        String amountString = EnumChatFormatting.WHITE + " x "
+            + EnumChatFormatting.GOLD
+            + GTUtility.formatShortenedLong(amount)
+            + "L"
+            + EnumChatFormatting.WHITE
+            + GTUtility.appendRate(false, amount, true, progressTime);
+        String fluidTextLine = EnumChatFormatting.AQUA + GTUtility.truncateText(fluidName, 40 - amountString.length())
+            + amountString;
+
+        return new TextWidget<>(fluidTextLine).tooltip(
+            t -> t.addLine(
+                EnumChatFormatting.AQUA + fluidName + "\n" + GTUtility.appendRate(true, amount, false, progressTime)));
+    }
+
+    private ItemDisplayWidget createItemDrawable(ItemStack itemStack) {
+        return new ItemDisplayWidget().background()
+            .displayAmount(false)
+            .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
+            .item(itemStack)
+            .size(18, 18)
+            .marginRight(1);
+    }
+
+    private TextWidget<?> createHoverableTextForItem(ItemStack item, long amount, int progressTime) {
+        String itemName = EnumChatFormatting.AQUA + item.getDisplayName() + EnumChatFormatting.RESET;
+        String amountString = EnumChatFormatting.WHITE + " x "
+            + EnumChatFormatting.GOLD
+            + GTUtility.formatShortenedLong(amount)
+            + EnumChatFormatting.WHITE
+            + GTUtility.appendRate(false, amount, true, progressTime);
+        String itemTextLine = EnumChatFormatting.AQUA + GTUtility.truncateText(itemName, 40 - amountString.length())
+            + amountString;
+
+        return new TextWidget<>(IKey.dynamic(() -> itemTextLine)).tooltip(
+            t -> t.addLine(
+                EnumChatFormatting.AQUA + itemName + "\n" + GTUtility.appendRate(false, amount, false, progressTime)));
     }
 
     // TODO: separate panel gap into 'left row' and 'right row', for easier usage
