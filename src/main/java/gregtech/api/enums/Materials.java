@@ -333,24 +333,22 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Yellorium;
     public static Materials Zectium;
 
-    // spotless:off
-    // Tier materials and aliases for the old style of tiered circuits
-    public static Materials ULV; @Deprecated public static Materials Primitive;
-    public static Materials  LV; @Deprecated public static Materials Basic;
-    public static Materials  MV; @Deprecated public static Materials Good;
-    public static Materials  HV; @Deprecated public static Materials Advanced;
-    public static Materials  EV; @Deprecated public static Materials Data;
-    public static Materials  IV; @Deprecated public static Materials Elite;
-    public static Materials LuV; @Deprecated public static Materials Master;
-    public static Materials ZPM; @Deprecated public static Materials Ultimate;
-    public static Materials  UV; @Deprecated public static Materials Superconductor;
-    public static Materials UHV; @Deprecated public static Materials Infinite;
-    public static Materials UEV; @Deprecated public static Materials Bio;
-    public static Materials UIV; @Deprecated public static Materials Optical;
-    public static Materials UMV; @Deprecated public static Materials Exotic;
-    public static Materials UXV; @Deprecated public static Materials Cosmic;
-    public static Materials MAX; @Deprecated public static Materials Transcendent;
-    // spotless:on
+    // Tier materials
+    public static Materials ULV;
+    public static Materials LV;
+    public static Materials MV;
+    public static Materials HV;
+    public static Materials EV;
+    public static Materials IV;
+    public static Materials LuV;
+    public static Materials ZPM;
+    public static Materials UV;
+    public static Materials UHV;
+    public static Materials UEV;
+    public static Materials UIV;
+    public static Materials UMV;
+    public static Materials UXV;
+    public static Materials MAX;
 
     // Circuitry
     public static Materials Resistor;

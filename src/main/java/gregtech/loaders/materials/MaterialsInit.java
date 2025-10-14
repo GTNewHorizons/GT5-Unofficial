@@ -4803,21 +4803,21 @@ public class MaterialsInit {
     }
 
     private static void loadTiers() {
-        Materials.ULV = Materials.Primitive = loadULV();
-        Materials.LV = Materials.Basic = loadLV();
-        Materials.MV = Materials.Good = loadMV();
-        Materials.HV = Materials.Advanced = loadHV();
-        Materials.EV = Materials.Data = loadEV();
-        Materials.IV = Materials.Elite = loadIV();
-        Materials.LuV = Materials.Master = loadLuV();
-        Materials.ZPM = Materials.Ultimate = loadZPM();
-        Materials.UV = Materials.Superconductor = loadUV();
-        Materials.UHV = Materials.Infinite = loadUHV();
-        Materials.UEV = Materials.Bio = loadUEV();
-        Materials.UIV = Materials.Optical = loadUIV();
-        Materials.UMV = Materials.Exotic = loadUMV();
-        Materials.UXV = Materials.Cosmic = loadUXV();
-        Materials.MAX = Materials.Transcendent = loadMAX();
+        Materials.ULV = loadULV();
+        Materials.LV = loadLV();
+        Materials.MV = loadMV();
+        Materials.HV = loadHV();
+        Materials.EV = loadEV();
+        Materials.IV = loadIV();
+        Materials.LuV = loadLuV();
+        Materials.ZPM = loadZPM();
+        Materials.UV = loadUV();
+        Materials.UHV = loadUHV();
+        Materials.UEV = loadUEV();
+        Materials.UIV = loadUIV();
+        Materials.UMV = loadUMV();
+        Materials.UXV = loadUXV();
+        Materials.MAX = loadMAX();
     }
 
     private static Materials loadULV() {
