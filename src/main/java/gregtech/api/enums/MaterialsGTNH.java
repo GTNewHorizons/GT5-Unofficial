@@ -1,685 +1,385 @@
 package gregtech.api.enums;
 
 import static gregtech.GTMod.GT_FML_LOGGER;
-import static gregtech.api.enums.Materials.Aluminium;
-import static gregtech.api.enums.Materials.Aluminiumoxide;
-import static gregtech.api.enums.Materials.Boron;
-import static gregtech.api.enums.Materials.Calcium;
-import static gregtech.api.enums.Materials.Hydrogen;
-import static gregtech.api.enums.Materials.Iron;
-import static gregtech.api.enums.Materials.Magnesium;
-import static gregtech.api.enums.Materials.Oxygen;
-import static gregtech.api.enums.Materials.Silicon;
-import static gregtech.api.enums.Materials.SiliconDioxide;
-import static gregtech.api.enums.Materials.Sodium;
-import static gregtech.api.enums.Materials.Water;
 
 import gregtech.api.interfaces.IMaterialHandler;
-import gregtech.api.objects.MaterialStack;
 
 public class MaterialsGTNH implements IMaterialHandler {
+
+    public static Materials Signalum;
+    public static Materials Lumium;
+    public static Materials EnrichedCopper;
+    public static Materials DiamondCopper;
+    public static Materials TarPitch;
+    public static Materials LimePure;
+    public static Materials Wimalite;
+    public static Materials Yellorite;
+    public static Materials Turquoise;
+    public static Materials Tapazite;
+    public static Materials Thyrium;
+    public static Materials Tourmaline;
+    public static Materials Spinel;
+    public static Materials Starconium;
+    public static Materials Sugilite;
+    public static Materials Prismarine;
+    public static Materials GraveyardDirt;
+    public static Materials Tennantite;
+    public static Materials Fairy;
+    public static Materials Ludicrite;
+    public static Materials AquaRegia;
+    public static Materials SolutionBlueVitriol;
+    public static Materials SolutionNickelSulfate;
+    public static Materials Lodestone;
+    public static Materials Luminite;
+    public static Materials Chlorite;
+    public static Materials Staurolite;
+    public static Materials Cordierite;
+    public static Materials Datolite;
+    public static Materials MetamorphicMineralMixture;
+    public static Materials Plagioclase;
+    public static Materials Epidote;
 
     public MaterialsGTNH() {
         GT_FML_LOGGER.info("Registering GTNH-Materials (post Java 64kb limit)");
         Materials.add(this);
     }
 
-    /**
-     * This Class is for adding new Materials since Java has a Limiation of 64kb per Method / Class header
-     */
-    public static Materials Signalum = new Materials(
-        -1,
-        TextureSet.SET_NONE,
-        1.0F,
-        0,
-        2,
-        1 | 2,
-        255,
-        255,
-        255,
-        0,
-        "Signalum",
-        "Signalum",
-        0,
-        0,
-        -1,
-        0,
-        false,
-        false,
-        3,
-        1,
-        1,
-        Dyes._NULL);
-
-    public static Materials Lumium = new Materials(
-        -1,
-        TextureSet.SET_NONE,
-        1.0F,
-        0,
-        2,
-        1 | 2,
-        255,
-        255,
-        255,
-        0,
-        "Lumium",
-        "Lumium",
-        0,
-        0,
-        -1,
-        0,
-        false,
-        false,
-        3,
-        1,
-        1,
-        Dyes._NULL);
-    public static Materials EnrichedCopper = new Materials(
-        -1,
-        TextureSet.SET_NONE,
-        1.0F,
-        0,
-        2,
-        1 | 2,
-        255,
-        255,
-        255,
-        0,
-        "EnrichedCopper",
-        "Enriched Copper",
-        0,
-        0,
-        -1,
-        0,
-        false,
-        false,
-        3,
-        1,
-        1,
-        Dyes._NULL);
-    public static Materials DiamondCopper = new Materials(
-        -1,
-        TextureSet.SET_NONE,
-        1.0F,
-        0,
-        2,
-        1 | 2,
-        255,
-        255,
-        255,
-        0,
-        "DiamondCopper",
-        "Diamond Copper",
-        0,
-        0,
-        -1,
-        0,
-        false,
-        false,
-        3,
-        1,
-        1,
-        Dyes._NULL);
-    public static Materials TarPitch = new Materials(
-        -1,
-        TextureSet.SET_NONE,
-        1.0F,
-        0,
-        2,
-        1 | 2,
-        255,
-        255,
-        255,
-        0,
-        "TarPitch",
-        "Tar Pitch",
-        0,
-        0,
-        -1,
-        0,
-        false,
-        false,
-        3,
-        1,
-        1,
-        Dyes._NULL);
-    public static Materials LimePure = new Materials(
-        -1,
-        TextureSet.SET_NONE,
-        1.0F,
-        0,
-        0,
-        0,
-        255,
-        255,
-        255,
-        0,
-        "LimePure",
-        "Pure Lime",
-        0,
-        0,
-        -1,
-        0,
-        false,
-        false,
-        1,
-        1,
-        1,
-        Dyes.dyeLime);
-    public static Materials Wimalite = new Materials(
-        -1,
-        TextureSet.SET_NONE,
-        1.0F,
-        0,
-        2,
-        8,
-        255,
-        255,
-        255,
-        0,
-        "Wimalite",
-        "Wimalite",
-        0,
-        0,
-        -1,
-        0,
-        false,
-        false,
-        3,
-        1,
-        1,
-        Dyes.dyeYellow);
-    public static Materials Yellorite = new Materials(
-        -1,
-        TextureSet.SET_NONE,
-        1.0F,
-        0,
-        2,
-        8,
-        255,
-        255,
-        255,
-        0,
-        "Yellorite",
-        "Yellorite",
-        0,
-        0,
-        -1,
-        0,
-        false,
-        false,
-        3,
-        1,
-        1,
-        Dyes.dyeYellow);
-    public static Materials Turquoise = new Materials(
-        -1,
-        TextureSet.SET_NONE,
-        1.0F,
-        0,
-        1,
-        1,
-        255,
-        255,
-        255,
-        0,
-        "Turquoise",
-        "Turquoise",
-        0,
-        0,
-        -1,
-        0,
-        false,
-        false,
-        3,
-        1,
-        1,
-        Dyes._NULL);
-    public static Materials Tapazite = new Materials(
-        -1,
-        TextureSet.SET_NONE,
-        1.0F,
-        0,
-        1,
-        1,
-        255,
-        255,
-        255,
-        0,
-        "Tapazite",
-        "Tapazite",
-        0,
-        0,
-        -1,
-        0,
-        false,
-        false,
-        3,
-        1,
-        1,
-        Dyes.dyeGreen);
-    public static Materials Thyrium = new Materials(
-        -1,
-        TextureSet.SET_NONE,
-        1.0F,
-        0,
-        1,
-        1 | 2 | 8,
-        255,
-        255,
-        255,
-        0,
-        "Thyrium",
-        "Thyrium",
-        0,
-        0,
-        -1,
-        0,
-        false,
-        false,
-        3,
-        1,
-        1,
-        Dyes._NULL);
-    public static Materials Tourmaline = new Materials(
-        -1,
-        TextureSet.SET_RUBY,
-        1.0F,
-        0,
-        1,
-        1,
-        255,
-        255,
-        255,
-        0,
-        "Tourmaline",
-        "Tourmaline",
-        0,
-        0,
-        -1,
-        0,
-        false,
-        false,
-        3,
-        1,
-        1,
-        Dyes._NULL);
-    public static Materials Spinel = new Materials(
-        -1,
-        TextureSet.SET_NONE,
-        1.0F,
-        0,
-        1,
-        0,
-        255,
-        255,
-        255,
-        0,
-        "Spinel",
-        "Spinel",
-        0,
-        0,
-        -1,
-        0,
-        false,
-        false,
-        3,
-        1,
-        1,
-        Dyes._NULL);
-    public static Materials Starconium = new Materials(
-        -1,
-        TextureSet.SET_NONE,
-        1.0F,
-        0,
-        1,
-        1 | 2 | 8,
-        255,
-        255,
-        255,
-        0,
-        "Starconium",
-        "Starconium",
-        0,
-        0,
-        -1,
-        0,
-        false,
-        false,
-        3,
-        1,
-        1,
-        Dyes._NULL);
-    public static Materials Sugilite = new Materials(
-        -1,
-        TextureSet.SET_NONE,
-        1.0F,
-        0,
-        1,
-        1,
-        255,
-        255,
-        255,
-        0,
-        "Sugilite",
-        "Sugilite",
-        0,
-        0,
-        -1,
-        0,
-        false,
-        false,
-        3,
-        1,
-        1,
-        Dyes._NULL);
-    public static Materials Prismarine = new Materials(
-        -1,
-        TextureSet.SET_NONE,
-        1.0F,
-        0,
-        2,
-        1 | 4,
-        255,
-        255,
-        255,
-        0,
-        "Prismarine",
-        "Prismarine",
-        0,
-        0,
-        -1,
-        0,
-        false,
-        false,
-        3,
-        1,
-        1,
-        Dyes._NULL);
-    public static Materials GraveyardDirt = new Materials(
-        -1,
-        TextureSet.SET_NONE,
-        1.0F,
-        0,
-        2,
-        1,
-        255,
-        255,
-        255,
-        0,
-        "GraveyardDirt",
-        "Graveyard Dirt",
-        0,
-        0,
-        -1,
-        0,
-        false,
-        false,
-        3,
-        1,
-        1,
-        Dyes._NULL);
-    public static Materials Tennantite = new Materials(
-        -1,
-        TextureSet.SET_NONE,
-        1.0F,
-        0,
-        2,
-        1,
-        255,
-        255,
-        255,
-        0,
-        "Tennantite",
-        "Tennantite",
-        0,
-        0,
-        -1,
-        0,
-        false,
-        false,
-        3,
-        1,
-        1,
-        Dyes._NULL);
-    public static Materials Fairy = new Materials(
-        -1,
-        TextureSet.SET_NONE,
-        1.0F,
-        0,
-        2,
-        1 | 2,
-        255,
-        255,
-        255,
-        0,
-        "Fairy",
-        "Fairy",
-        0,
-        0,
-        -1,
-        0,
-        false,
-        false,
-        3,
-        1,
-        1,
-        Dyes._NULL);
-    public static Materials Ludicrite = new Materials(
-        -1,
-        TextureSet.SET_NONE,
-        1.0F,
-        0,
-        2,
-        1 | 2,
-        255,
-        255,
-        255,
-        0,
-        "Ludicrite",
-        "Ludicrite",
-        0,
-        0,
-        -1,
-        0,
-        false,
-        false,
-        3,
-        1,
-        1,
-        Dyes._NULL);
-    public static Materials AquaRegia = new Materials(
-        -1,
-        TextureSet.SET_NONE,
-        1.0F,
-        0,
-        2,
-        0,
-        255,
-        255,
-        255,
-        0,
-        "AquaRegia",
-        "Aqua Regia",
-        0,
-        0,
-        -1,
-        0,
-        false,
-        false,
-        3,
-        1,
-        1,
-        Dyes._NULL);
-    public static Materials SolutionBlueVitriol = new Materials(
-        -1,
-        TextureSet.SET_NONE,
-        1.0F,
-        0,
-        2,
-        0,
-        255,
-        255,
-        255,
-        0,
-        "SolutionBlueVitriol",
-        "Blue Vitriol Solution",
-        0,
-        0,
-        -1,
-        0,
-        false,
-        false,
-        3,
-        1,
-        1,
-        Dyes._NULL);
-    public static Materials SolutionNickelSulfate = new Materials(
-        -1,
-        TextureSet.SET_NONE,
-        1.0F,
-        0,
-        2,
-        0,
-        255,
-        255,
-        255,
-        0,
-        "SolutionNickelSulfate",
-        "Nickel Sulfate Solution",
-        0,
-        0,
-        -1,
-        0,
-        false,
-        false,
-        3,
-        1,
-        1,
-        Dyes._NULL);
-    public static Materials Lodestone = new Materials(
-        -1,
-        TextureSet.SET_NONE,
-        1.0F,
-        0,
-        1,
-        1 | 8,
-        255,
-        255,
-        255,
-        0,
-        "Lodestone",
-        "Lodestone",
-        0,
-        0,
-        -1,
-        0,
-        false,
-        false,
-        1,
-        1,
-        1,
-        Dyes._NULL);
-    public static Materials Luminite = new Materials(
-        -1,
-        TextureSet.SET_NONE,
-        1.0F,
-        0,
-        1,
-        1 | 8,
-        250,
-        250,
-        250,
-        0,
-        "Luminite",
-        "Luminite",
-        0,
-        0,
-        -1,
-        0,
-        false,
-        false,
-        3,
-        1,
-        1,
-        Dyes.dyeWhite);
-
-    // Deepslate stuff
-    public static Materials Chlorite = new MaterialBuilder(167, TextureSet.SET_SHINY, "Chlorite").addDustItems()
-        .setRGB(96, 125, 108)
-        .setColor(Dyes.dyeLime)
-        .setMaterialList(
-            new MaterialStack(Iron, 3),
-            new MaterialStack(Magnesium, 2),
-            new MaterialStack(Aluminiumoxide, 1),
-            new MaterialStack(SiliconDioxide, 3),
-            new MaterialStack(Water, 4),
-            new MaterialStack(Oxygen, 5))
-        .constructMaterial();
-    public static Materials Staurolite = new MaterialBuilder(168, TextureSet.SET_DULL, "Staurolite").addDustItems()
-        .setRGB(63, 40, 22)
-        .setColor(Dyes.dyeBrown)
-        .setMaterialList(
-            new MaterialStack(Iron, 2),
-            new MaterialStack(Aluminium, 9),
-            new MaterialStack(SiliconDioxide, 4),
-            new MaterialStack(Oxygen, 16),
-            new MaterialStack(Hydrogen, 1))
-        .constructMaterial();
-    public static Materials Cordierite = new MaterialBuilder(169, TextureSet.SET_SHINY, "Cordierite").addDustItems()
-        .setRGB(67, 75, 130)
-        .setColor(Dyes.dyePurple)
-        .setMaterialList(
-            new MaterialStack(Iron, 1),
-            new MaterialStack(Magnesium, 1),
-            new MaterialStack(SiliconDioxide, 5),
-            new MaterialStack(Aluminiumoxide, 1),
-            new MaterialStack(Oxygen, 5))
-        .constructMaterial();
-    public static Materials Datolite = new MaterialBuilder(170, TextureSet.SET_SHINY, "Datolite").addDustItems()
-        .setRGB(234, 196, 206)
-        .setColor(Dyes.dyeWhite)
-        .setMaterialList(
-            new MaterialStack(Calcium, 1),
-            new MaterialStack(Boron, 1),
-            new MaterialStack(SiliconDioxide, 1),
-            new MaterialStack(Oxygen, 3),
-            new MaterialStack(Hydrogen, 1))
-        .constructMaterial();
-    public static Materials MetamorphicMineralMixture = new MaterialBuilder(
-        171,
-        TextureSet.SET_DULL,
-        "Metamorphic Mineral Mixture").addDustItems()
-            .setRGB(108, 130, 148)
-            .setColor(Dyes.dyeCyan)
-            .constructMaterial();
-    public static Materials Plagioclase = new MaterialBuilder(172, TextureSet.SET_SHINY, "Plagioclase").addDustItems()
-        .setRGB(193, 186, 178)
-        .setColor(Dyes.dyeWhite)
-        .setMaterialList(
-            new MaterialStack(Sodium, 1),
-            new MaterialStack(Aluminium, 1),
-            new MaterialStack(Silicon, 3),
-            new MaterialStack(Oxygen, 8))
-        .constructMaterial();
-    public static Materials Epidote = new MaterialBuilder(862, TextureSet.SET_DULL, "Epidote").addDustItems()
-        .setRGB(140, 177, 33)
-        .setColor(Dyes.dyeLime)
-        .setMaterialList(
-            new MaterialStack(Calcium, 2),
-            new MaterialStack(Aluminium, 3),
-            new MaterialStack(SiliconDioxide, 3),
-            new MaterialStack(Oxygen, 1),
-            new MaterialStack(Hydrogen, 1))
-        .constructMaterial();
-
-    private static void initSubTags() {
-        SubTag.METAL.addTo(Signalum, Lumium, EnrichedCopper, DiamondCopper);
-        SubTag.NO_SMASHING.addTo(TarPitch);
-    }
-
     @Override
     public void onMaterialsInit() {
-        initSubTags();
+        MaterialsGTNH.Signalum = loadSignalum();
+        MaterialsGTNH.Lumium = loadLumium();
+        MaterialsGTNH.EnrichedCopper = loadEnrichedCopper();
+        MaterialsGTNH.DiamondCopper = loadDiamondCopper();
+        MaterialsGTNH.TarPitch = loadTarPitch();
+        MaterialsGTNH.LimePure = loadLimePure();
+        MaterialsGTNH.Wimalite = loadWimalite();
+        MaterialsGTNH.Yellorite = loadYellorite();
+        MaterialsGTNH.Turquoise = loadTurquoise();
+        MaterialsGTNH.Tapazite = loadTapazite();
+        MaterialsGTNH.Thyrium = loadThyrium();
+        MaterialsGTNH.Tourmaline = loadTourmaline();
+        MaterialsGTNH.Spinel = loadSpinel();
+        MaterialsGTNH.Starconium = loadStarconium();
+        MaterialsGTNH.Sugilite = loadSugilite();
+        MaterialsGTNH.Prismarine = loadPrismarine();
+        MaterialsGTNH.GraveyardDirt = loadGraveyardDirt();
+        MaterialsGTNH.Tennantite = loadTennantite();
+        MaterialsGTNH.Fairy = loadFairy();
+        MaterialsGTNH.Ludicrite = loadLudicrite();
+        MaterialsGTNH.AquaRegia = loadAquaRegia();
+        MaterialsGTNH.SolutionBlueVitriol = loadSolutionBlueVitriol();
+        MaterialsGTNH.SolutionNickelSulfate = loadSolutionNickelSulfate();
+        MaterialsGTNH.Lodestone = loadLodestone();
+        MaterialsGTNH.Luminite = loadLuminite();
+        MaterialsGTNH.Chlorite = loadChlorite();
+        MaterialsGTNH.Staurolite = loadStaurolite();
+        MaterialsGTNH.Cordierite = loadCordierite();
+        MaterialsGTNH.Datolite = loadDatolite();
+        MaterialsGTNH.MetamorphicMineralMixture = loadMetamorphicMineralMixture();
+        MaterialsGTNH.Plagioclase = loadPlagioclase();
+        MaterialsGTNH.Epidote = loadEpidote();
+    }
+
+    private static Materials loadSignalum() {
+        return new MaterialBuilder().setName("Signalum")
+            .setDefaultLocalName("Signalum")
+            .addDustItems()
+            .addMetalItems()
+            .addSubTag(SubTag.METAL)
+            .constructMaterial();
+    }
+
+    private static Materials loadLumium() {
+        return new MaterialBuilder().setName("Lumium")
+            .setDefaultLocalName("Lumium")
+            .addDustItems()
+            .addMetalItems()
+            .addSubTag(SubTag.METAL)
+            .constructMaterial();
+    }
+
+    private static Materials loadEnrichedCopper() {
+        return new MaterialBuilder().setName("EnrichedCopper")
+            .setDefaultLocalName("Enriched Copper")
+            .addDustItems()
+            .addMetalItems()
+            .addSubTag(SubTag.METAL)
+            .constructMaterial();
+    }
+
+    private static Materials loadDiamondCopper() {
+        return new MaterialBuilder().setName("DiamondCopper")
+            .setDefaultLocalName("Diamond Copper")
+            .addDustItems()
+            .addMetalItems()
+            .addSubTag(SubTag.METAL)
+            .constructMaterial();
+    }
+
+    private static Materials loadTarPitch() {
+        return new MaterialBuilder().setName("TarPitch")
+            .setDefaultLocalName("Tar Pitch")
+            .addDustItems()
+            .addMetalItems()
+            .addSubTag(SubTag.NO_SMASHING)
+            .constructMaterial();
+    }
+
+    private static Materials loadLimePure() {
+        return new MaterialBuilder().setName("LimePure")
+            .setDefaultLocalName("Pure Lime")
+            .setColor(Dyes.dyeLime)
+            .constructMaterial();
+    }
+
+    private static Materials loadWimalite() {
+        return new MaterialBuilder().setName("Wimalite")
+            .setDefaultLocalName("Wimalite")
+            .setColor(Dyes.dyeYellow)
+            .addOreItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadYellorite() {
+        return new MaterialBuilder().setName("Yellorite")
+            .setDefaultLocalName("Yellorite")
+            .setColor(Dyes.dyeYellow)
+            .addOreItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadTurquoise() {
+        return new MaterialBuilder().setName("Turquoise")
+            .setDefaultLocalName("Turquoise")
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadTapazite() {
+        return new MaterialBuilder().setName("Tapazite")
+            .setDefaultLocalName("Tapazite")
+            .setColor(Dyes.dyeGreen)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadThyrium() {
+        return new MaterialBuilder().setName("Thyrium")
+            .setDefaultLocalName("Thyrium")
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadTourmaline() {
+        return new MaterialBuilder().setName("Tourmaline")
+            .setDefaultLocalName("Tourmaline")
+            .setIconSet(TextureSet.SET_RUBY)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadSpinel() {
+        return new MaterialBuilder().setName("Spinel")
+            .setDefaultLocalName("Spinel")
+            .constructMaterial();
+    }
+
+    private static Materials loadStarconium() {
+        return new MaterialBuilder().setName("Starconium")
+            .setDefaultLocalName("Starconium")
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadSugilite() {
+        return new MaterialBuilder().setName("Sugilite")
+            .setDefaultLocalName("Sugilite")
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadPrismarine() {
+        return new MaterialBuilder().setName("Prismarine")
+            .setDefaultLocalName("Prismarine")
+            .addDustItems()
+            .addGemItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadGraveyardDirt() {
+        return new MaterialBuilder().setName("GraveyardDirt")
+            .setDefaultLocalName("Graveyard Dirt")
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadTennantite() {
+        return new MaterialBuilder().setName("Tennantite")
+            .setDefaultLocalName("Tennantite")
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadFairy() {
+        return new MaterialBuilder().setName("Fairy")
+            .setDefaultLocalName("Fairy")
+            .addDustItems()
+            .addMetalItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadLudicrite() {
+        return new MaterialBuilder().setName("Ludicrite")
+            .setDefaultLocalName("Ludicrite")
+            .addDustItems()
+            .addMetalItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadAquaRegia() {
+        return new MaterialBuilder().setName("AquaRegia")
+            .setDefaultLocalName("Aqua Regia")
+            .constructMaterial();
+    }
+
+    private static Materials loadSolutionBlueVitriol() {
+        return new MaterialBuilder().setName("SolutionBlueVitriol")
+            .setDefaultLocalName("Blue Vitriol Solution")
+            .constructMaterial();
+    }
+
+    private static Materials loadSolutionNickelSulfate() {
+        return new MaterialBuilder().setName("SolutionNickelSulfate")
+            .setDefaultLocalName("Nickel Sulfate Solution")
+            .constructMaterial();
+    }
+
+    private static Materials loadLodestone() {
+        return new MaterialBuilder().setName("Lodestone")
+            .setDefaultLocalName("Lodestone")
+            .addDustItems()
+            .addOreItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadLuminite() {
+        return new MaterialBuilder().setName("Luminite")
+            .setDefaultLocalName("Luminite")
+            .setColor(Dyes.dyeWhite)
+            .setARGB(0x00fafafa)
+            .addDustItems()
+            .addOreItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadChlorite() {
+        return new MaterialBuilder().setName("Chlorite")
+            .setDefaultLocalName("Chlorite")
+            .setMetaItemSubID(167)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeLime)
+            .addDustItems()
+            .setARGB(0x00607d6c)
+            .addMaterial(Materials.Iron, 3)
+            .addMaterial(Materials.Magnesium, 2)
+            .addMaterial(Materials.Aluminiumoxide, 1)
+            .addMaterial(Materials.SiliconDioxide, 3)
+            .addMaterial(Materials.Water, 4)
+            .addMaterial(Materials.Oxygen, 5)
+            .constructMaterial();
+    }
+
+    private static Materials loadStaurolite() {
+        return new MaterialBuilder().setName("Staurolite")
+            .setDefaultLocalName("Staurolite")
+            .setMetaItemSubID(168)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeBrown)
+            .addDustItems()
+            .setARGB(0x003f2816)
+            .addMaterial(Materials.Iron, 2)
+            .addMaterial(Materials.Aluminium, 9)
+            .addMaterial(Materials.SiliconDioxide, 4)
+            .addMaterial(Materials.Oxygen, 16)
+            .addMaterial(Materials.Hydrogen, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadCordierite() {
+        return new MaterialBuilder().setName("Cordierite")
+            .setDefaultLocalName("Cordierite")
+            .setMetaItemSubID(169)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyePurple)
+            .setARGB(0x00434b82)
+            .addDustItems()
+            .addMaterial(Materials.Iron, 1)
+            .addMaterial(Materials.Magnesium, 1)
+            .addMaterial(Materials.SiliconDioxide, 5)
+            .addMaterial(Materials.Aluminiumoxide, 1)
+            .addMaterial(Materials.Oxygen, 5)
+            .constructMaterial();
+    }
+
+    private static Materials loadDatolite() {
+        return new MaterialBuilder().setName("Datolite")
+            .setDefaultLocalName("Datolite")
+            .setMetaItemSubID(170)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeWhite)
+            .setARGB(0x00eac4ce)
+            .addDustItems()
+            .addMaterial(Materials.Calcium, 1)
+            .addMaterial(Materials.Boron, 1)
+            .addMaterial(Materials.SiliconDioxide, 1)
+            .addMaterial(Materials.Oxygen, 3)
+            .addMaterial(Materials.Hydrogen, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadMetamorphicMineralMixture() {
+        return new MaterialBuilder().setName("MetamorphicMineralMixture")
+            .setDefaultLocalName("Metamorphic Mineral Mixture")
+            .setMetaItemSubID(171)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeCyan)
+            .setARGB(0x006c8294)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadPlagioclase() {
+        return new MaterialBuilder().setName("Plagioclase")
+            .setDefaultLocalName("Plagioclase")
+            .setMetaItemSubID(172)
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeWhite)
+            .setARGB(0x00c1bab2)
+            .addDustItems()
+            .addMaterial(Materials.Sodium, 1)
+            .addMaterial(Materials.Aluminium, 1)
+            .addMaterial(Materials.Silicon, 3)
+            .addMaterial(Materials.Oxygen, 8)
+            .constructMaterial();
+    }
+
+    private static Materials loadEpidote() {
+        return new MaterialBuilder().setName("Epidote")
+            .setDefaultLocalName("Epidote")
+            .setMetaItemSubID(862)
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeLime)
+            .setARGB(0x008cb121)
+            .addDustItems()
+            .addMaterial(Materials.Calcium, 2)
+            .addMaterial(Materials.Aluminium, 3)
+            .addMaterial(Materials.SiliconDioxide, 3)
+            .addMaterial(Materials.Oxygen, 1)
+            .addMaterial(Materials.Hydrogen, 1)
+            .constructMaterial();
     }
 }
