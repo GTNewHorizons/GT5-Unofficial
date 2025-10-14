@@ -16,10 +16,6 @@ import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import com.cleanroommc.modularui.value.sync.DynamicSyncHandler;
-import com.cleanroommc.modularui.widget.EmptyWidget;
-import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumChatFormatting;
@@ -44,16 +40,19 @@ import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Alignment.MainAxis;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
+import com.cleanroommc.modularui.value.sync.DynamicSyncHandler;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.GenericSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
+import com.cleanroommc.modularui.widget.EmptyWidget;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.CycleButtonWidget;
+import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
 import com.cleanroommc.modularui.widgets.ItemDisplayWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
@@ -79,7 +78,6 @@ import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
 import gregtech.common.modularui2.sync.Predicates;
-import org.jetbrains.annotations.Nullable;
 
 public class MTEMultiBlockBaseGui {
 
@@ -92,7 +90,6 @@ public class MTEMultiBlockBaseGui {
     protected final Map<String, IPanelHandler> panelMap = new HashMap<>();
     protected Map<String, UITexture> shutdownReasonTextureMap = new HashMap<>();
     protected Map<String, String> shutdownReasonTooltipMap = new HashMap<>();
-
 
     public MTEMultiBlockBaseGui(MTEMultiBlockBase base) {
         this.base = base;
@@ -210,7 +207,9 @@ public class MTEMultiBlockBaseGui {
                     .widthRel(1))
             .child(createShutdownDurationWidget(syncManager))
             .child(createShutdownReasonWidget(syncManager))
+            .marginBottom(2)
             .child(createRecipeResultWidget())
+            .marginBottom(2)
             .childIf(base.showRecipeTextInGUI(), createRecipeInfoTextWidget(syncManager))
             .marginBottom(2)
             .childIf(base.showRecipeTextInGUI(), createRecipeInfoWidget(syncManager));
@@ -253,7 +252,6 @@ public class MTEMultiBlockBaseGui {
             () -> base.getCheckRecipeResult()
                 .getDisplayString())
             .asWidget()
-            .marginBottom(2)
             .widthRel(1)
             .setEnabledIf(widget -> shouldRecipeResultBeDisplayed());
 
@@ -267,62 +265,88 @@ public class MTEMultiBlockBaseGui {
 
     private IWidget createRecipeInfoWidget(PanelSyncManager syncManager) {
         IntSyncValue maxProgressTimeSyncer = (IntSyncValue) syncManager.getSyncHandler("maxProgressTime:0");
-        GenericListSyncHandler<ItemStack> itemOutputSyncer = (GenericListSyncHandler<ItemStack>) syncManager.getSyncHandler("itemOutput:0");
+        GenericListSyncHandler<ItemStack> itemOutputSyncer = (GenericListSyncHandler<ItemStack>) syncManager
+            .getSyncHandler("itemOutput:0");
+        GenericListSyncHandler<FluidStack> fluidOutputSyncer = (GenericListSyncHandler<FluidStack>) syncManager
+            .getSyncHandler("fluidOutput:0");
 
-        DynamicSyncHandler recipeHandler = new DynamicSyncHandler()
-            .widgetProvider((syncManager1, packet) -> {
-                if(packet == null){
-                    return new EmptyWidget();
-                }
-
-                int maxProgressTime = packet.readInt();
-                int size = packet.readInt();
-                Flow column = Flow.column().coverChildren();
-
-
-                for (int i = 0; i < size; i++) {
-                    ItemStack itemStack = NetworkUtils.readItemStack(packet);
-                    long amount = itemStack.stackSize;
-
-                    column.child(Flow.row()
-                        .widthRel(1)
-                        .marginBottom(4)
-                        .child(createItemDrawable(itemStack))
-                        .child(createHoverableTextForItem(itemStack, amount, maxProgressTime)));
-                }
-                return column;
-            });
-
-        itemOutputSyncer.setChangeListener(() -> recipeHandler.notifyUpdate(packet -> {
-            packet.writeInt(maxProgressTimeSyncer.getValue());
-            List<ItemStack> items = itemOutputSyncer.getValue();
-            packet.writeInt(items.size());
-            for (ItemStack item : items) {
-                NetworkUtils.writeItemStack(packet, item);
+        DynamicSyncHandler recipeHandler = new DynamicSyncHandler().widgetProvider((syncManager1, packet) -> {
+            if (packet == null) {
+                return new EmptyWidget();
             }
-        }));
-        maxProgressTimeSyncer.setChangeListener(() -> recipeHandler.notifyUpdate(packet -> {
-            packet.writeInt(maxProgressTimeSyncer.getValue());
-            List<ItemStack> items = itemOutputSyncer.getValue();
-            packet.writeInt(items.size());
-            for (ItemStack item : items) {
-                NetworkUtils.writeItemStack(packet, item);
-            }
-        }));
+            return Flow.column()
+                .coverChildren()
+                .child(createItemRecipeInfo(packet, syncManager))
+                .child(createFluidRecipeInfo(packet, syncManager));
+        });
+
+        itemOutputSyncer.setChangeListener(() -> notifyRecipeHandler(recipeHandler, itemOutputSyncer, fluidOutputSyncer));
+        fluidOutputSyncer.setChangeListener(() -> notifyRecipeHandler(recipeHandler, itemOutputSyncer, fluidOutputSyncer));
         return new DynamicSyncedWidget<>().widthRel(1)
+            .height(18)
             .syncHandler(recipeHandler);
 
-//        Flow column = new Column().coverChildren();
-//        column.child(createItemRecipeInfoColumn(syncManager));
-//        column.child(createFluidRecipeInfoColumn(syncManager));
-//        return column;
+        // Flow column = new Column().coverChildren();
+        // column.child(createItemRecipeInfoColumn(syncManager));
+        // column.child(createFluidRecipeInfoColumn(syncManager));
+        // return column;
+    }
+    private void notifyRecipeHandler(DynamicSyncHandler recipeHandler, GenericListSyncHandler<ItemStack> itemOutputSyncer, GenericListSyncHandler<FluidStack> fluidOutputSyncer){
+        recipeHandler.notifyUpdate(packet -> {
+            List<ItemStack> items = itemOutputSyncer.getValue();
+            packet.writeInt(items.size());
+            for (ItemStack item : items) {
+                NetworkUtils.writeItemStack(packet, item);
+            }
+
+            List<FluidStack> fluids = fluidOutputSyncer.getValue();
+            packet.writeInt(fluids.size());
+            for (FluidStack fluid : fluids) {
+                NetworkUtils.writeFluidStack(packet, fluid);
+            }
+        });
     }
 
+
+    private IWidget createItemRecipeInfo(PacketBuffer packet, PanelSyncManager syncManager) {
+        int size = packet.readInt();
+        Flow column = Flow.column().coverChildren();
+        for (int i = 0; i < size; i++) {
+            ItemStack itemStack = NetworkUtils.readItemStack(packet);
+            long amount = itemStack.stackSize;
+
+            column.child(
+                Flow.row()
+                    .widthRel(1)
+                    .height(18)
+                    .marginBottom(4)
+                    .child(createItemDrawable(itemStack))
+                    .child(createHoverableTextForItem(itemStack, amount, syncManager)));
+        }
+        return column;
+    }
+
+    private IWidget createFluidRecipeInfo(PacketBuffer packet, PanelSyncManager syncManager) {
+        int size = packet.readInt();
+        Flow column = Flow.column().coverChildren();
+        for (int i = 0; i < size; i++) {
+            FluidStack fluidStack = NetworkUtils.readFluidStack(packet);
+            long amount = fluidStack.amount;
+
+            column.child(
+                Flow.row()
+                    .widthRel(1)
+                    .height(18)
+                    .marginBottom(4)
+                    .child(createFluidDrawable(fluidStack))
+                    .child(createHoverableTextForFluid(fluidStack, amount, syncManager)));
+        }
+        return column;
+    }
     private IWidget createRecipeInfoTextWidget(PanelSyncManager syncManager) {
         return IKey.dynamic(() -> ((StringSyncValue) syncManager.getSyncHandler("recipeInfo:0")).getValue())
             .asWidget()
             .widthRel(1f)
-            .marginBottom(2)
             .setEnabledIf(
                 widget -> Predicates.isNonEmptyList(syncManager.getSyncHandler("itemOutput:0"))
                     || Predicates.isNonEmptyList(syncManager.getSyncHandler("fluidOutput:0")));
@@ -331,6 +355,7 @@ public class MTEMultiBlockBaseGui {
     private Flow createItemRecipeInfoColumn(PanelSyncManager syncManager) {
         GenericListSyncHandler<ItemStack> itemOutputSyncer = (GenericListSyncHandler<ItemStack>) syncManager
             .getSyncHandler("itemOutput:0");
+
         List<ItemStack> itemOutputList = itemOutputSyncer.getValue();
         IntSyncValue maxProgressSyncer = (IntSyncValue) syncManager.getSyncHandler("maxProgressTime:0");
 
@@ -358,42 +383,48 @@ public class MTEMultiBlockBaseGui {
             ItemStack copiedItem = entry.getKey()
                 .copy();
             long amount = entry.getValue();
-            Flow recipeRow = new Row().widthRel(0.8f)
+            Flow recipeRow = new Row().widthRel(1)
                 .height(18)
                 .marginBottom(4);
             // Icon display
             recipeRow.child(createItemDrawable(copiedItem));
             // Hoverable Text Widget
-            recipeRow.child(createHoverableTextForItem(copiedItem, amount, maxProgressSyncer.getValue()));
+            recipeRow.child(createHoverableTextForItem(copiedItem, amount, syncManager));
             returnColumn.child(recipeRow);
         }
         return returnColumn;
     }
 
     private ItemDisplayWidget createItemDrawable(ItemStack itemStack) {
-        return new ItemDisplayWidget().displayAmount(false)
-            .background(IDrawable.EMPTY)
+        return new ItemDisplayWidget().background()
+            .displayAmount(false)
             .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
             .item(itemStack)
+            .size(18, 18)
             .marginRight(1);
     }
 
-    private TextWidget<?> createHoverableTextForItem(ItemStack item, long amount, int progressTime) {
+    private TextWidget<?> createHoverableTextForItem(ItemStack item, long amount, PanelSyncManager syncManager) {
+        IntSyncValue maxProgressTimeSyncer = (IntSyncValue) syncManager.getSyncHandler("maxProgressTime:0");
         String itemName = EnumChatFormatting.AQUA + item.getDisplayName() + EnumChatFormatting.RESET;
+
+        return new TextWidget<>(IKey.dynamic(() -> getItemTextLine(itemName, amount, maxProgressTimeSyncer))).tooltip(
+            t -> t.addLine(
+                EnumChatFormatting.AQUA + itemName
+                    + "\n"
+                    + GTUtility.appendRate(false, amount, false, maxProgressTimeSyncer.getValue())));
+    }
+
+    private @NotNull String getItemTextLine(String itemName, long amount, IntSyncValue maxProgressTimeSyncer) {
+
         String amountString = EnumChatFormatting.WHITE + " x "
             + EnumChatFormatting.GOLD
             + GTUtility.formatShortenedLong(amount)
             + EnumChatFormatting.WHITE
-            + GTUtility.appendRate(false, amount, true, progressTime);
-        String itemTextLine = EnumChatFormatting.AQUA + GTUtility.truncateText(itemName, 40 - amountString.length())
+            + GTUtility.appendRate(false, amount, true, maxProgressTimeSyncer.getValue());
+        String itemTextLine = EnumChatFormatting.AQUA + GTUtility.truncateText(itemName, 45 - amountString.length())
             + amountString;
-
-        return new TextWidget<>(IKey.dynamic(() -> itemTextLine)).scale(0.8f)
-            .tooltip(
-                t -> t.addLine(
-                    EnumChatFormatting.AQUA + itemName
-                        + "\n"
-                        + GTUtility.appendRate(false, amount, false, progressTime)));
+        return itemTextLine;
     }
 
     /*
@@ -410,7 +441,6 @@ public class MTEMultiBlockBaseGui {
             .widthRel(0.8f)
             .coverChildrenHeight();
         List<FluidStack> fluidOutputList = fluidOutputSyncer.getValue();
-        IntSyncValue maxProgressSyncer = (IntSyncValue) syncManager.getSyncHandler("maxProgressTime:0");
         returnColumn.setEnabledIf(useless -> Predicates.isNonEmptyList(fluidOutputSyncer));
 
         // merge stacksizes into one entry
@@ -426,6 +456,7 @@ public class MTEMultiBlockBaseGui {
                 Map.Entry.<FluidStack, Long>comparingByValue()
                     .reversed())
             .collect(Collectors.toList());
+
         for (Map.Entry<FluidStack, Long> entry : sortedMap) {
             FluidStack copiedFluid = entry.getKey()
                 .copy();
@@ -437,7 +468,7 @@ public class MTEMultiBlockBaseGui {
             // Icon display
             recipeRow.child(createFluidDrawable(copiedFluid));
             // Hoverable Text Widget
-            recipeRow.child(createHoverableTextForFluid(copiedFluid, amount, maxProgressSyncer.getValue()));
+            recipeRow.child(createHoverableTextForFluid(copiedFluid, amount, syncManager));
             returnColumn.child(recipeRow);
         }
 
@@ -449,26 +480,30 @@ public class MTEMultiBlockBaseGui {
         ItemStack fluidDisplayStack = GTUtility.getFluidDisplayStack(fluidStack, false, false);
         return new ItemDisplayWidget().displayAmount(false)
             .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
-            .background(IDrawable.EMPTY)
             .item(fluidDisplayStack)
             .size(18, 18)
             .marginRight(4);
     }
 
-    private TextWidget<?> createHoverableTextForFluid(FluidStack fluidStack, long amount, int progressTime) {
+    private TextWidget<?> createHoverableTextForFluid(FluidStack fluidStack, long amount, PanelSyncManager syncManager) {
+        IntSyncValue maxProgressSyncer = (IntSyncValue) syncManager.getSyncHandler("maxProgressTime:0");
         String fluidName = EnumChatFormatting.AQUA + fluidStack.getLocalizedName() + EnumChatFormatting.RESET;
+
+        return new TextWidget<>(IKey.dynamic(() -> getFluidTextLine(fluidName, amount, maxProgressSyncer))).tooltip(
+            t -> t.addLine(
+                EnumChatFormatting.AQUA + fluidName + "\n" + GTUtility.appendRate(true, amount, false, maxProgressSyncer.getValue())));
+    }
+
+    private @NotNull String getFluidTextLine(String fluidName, long amount, IntSyncValue maxProgressTimeSyncer) {
         String amountString = EnumChatFormatting.WHITE + " x "
             + EnumChatFormatting.GOLD
             + GTUtility.formatShortenedLong(amount)
             + "L"
             + EnumChatFormatting.WHITE
-            + GTUtility.appendRate(false, amount, true, progressTime);
-        String fluidTextLine = EnumChatFormatting.AQUA + GTUtility.truncateText(fluidName, 40 - amountString.length())
+            + GTUtility.appendRate(false, amount, true, maxProgressTimeSyncer.getValue());
+        String fluidTextLine = EnumChatFormatting.AQUA + GTUtility.truncateText(fluidName, 45 - amountString.length())
             + amountString;
-
-        return new TextWidget<>(fluidTextLine).tooltip(
-            t -> t.addLine(
-                EnumChatFormatting.AQUA + fluidName + "\n" + GTUtility.appendRate(true, amount, false, progressTime)));
+        return fluidTextLine;
     }
 
     // TODO: separate panel gap into 'left row' and 'right row', for easier usage
@@ -1046,25 +1081,22 @@ public class MTEMultiBlockBaseGui {
                 null,
                 null));
 
-
         syncManager
             .syncValue("progressTime", new IntSyncValue(() -> base.mProgresstime, val -> base.mProgresstime = val));
 
-        IntSyncValue maxProgressTimeSyncer = new IntSyncValue(() -> base.mMaxProgresstime, val -> base.mMaxProgresstime = val);
-        syncManager.syncValue("maxProgressTime",maxProgressTimeSyncer);
-
-
+        IntSyncValue maxProgressTimeSyncer = new IntSyncValue(
+            () -> base.mMaxProgresstime,
+            val -> base.mMaxProgresstime = val);
+        syncManager.syncValue("maxProgressTime", maxProgressTimeSyncer);
 
         GenericListSyncHandler<ItemStack> itemOutputSyncer = new GenericListSyncHandler<>(
             () -> base.mOutputItems != null ? Arrays.asList(base.mOutputItems) : Collections.emptyList(),
             val -> base.mOutputItems = val.toArray(new ItemStack[0]),
             NetworkUtils::readItemStack,
             NetworkUtils::writeItemStack,
-            (a,b) -> a.isItemEqual(b) && a.stackSize == b.stackSize,
+            (a, b) -> a.isItemEqual(b) && a.stackSize == b.stackSize,
             null);
         syncManager.syncValue("itemOutput", itemOutputSyncer);
-
-
 
         StringSyncValue recipeInfoSyncer = new StringSyncValue(base::generateCurrentRecipeInfoString);
         syncManager.syncValue("recipeInfo", recipeInfoSyncer);
@@ -1126,15 +1158,6 @@ public class MTEMultiBlockBaseGui {
 
         BooleanSyncValue mufflerSyncer = new BooleanSyncValue(base::isMuffled, base::setMuffled);
         syncManager.syncValue("mufflerSyncer", mufflerSyncer);
-        /*
-         * GenericListSyncHandler<Map.Entry<ItemStack, Long>> sortedItemOutputSyncHandler =
-         * new GenericMapSyncHandler.Builder<ItemStack,Long>()
-         * .getter(() -> )
-         * .setter()
-         * .keyAdapter(new RecipeOutputKeyItemStackAdapter())
-         * .valueAdapter(new RecipeOutputValueLongAdapter())
-         * .build();
-         */
     }
 
     protected void setMachineModeIcons() {}
@@ -1149,30 +1172,4 @@ public class MTEMultiBlockBaseGui {
         return this.shutdownReasonTooltipMap
             .getOrDefault(key, EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.gui.hoverable.error"));
     }
-    /*
-     * private Map<ItemStack,Long> getSortedItemOutputMap()
-     * {
-     * if(base.mOutputItems == null) return Collections.emptyMap();
-     * List<ItemStack> outputItemStackList = Arrays.asList(base.mOutputItems);
-     * final Map<ItemStack, Long> mergingMap = new HashMap<>();
-     * // populate map
-     * for (ItemStack item : outputItemStackList) {
-     * if (item == null || item.stackSize <= 0) continue;
-     * mergingMap.merge(item, (long) item.stackSize, Long::sum);
-     * }
-     * // sort map
-     * Map<ItemStack,Long> sortedMap = new HashMap<>();
-     * List<Map.Entry<ItemStack, Long>> sortedList = mergingMap.entrySet().stream().sorted( Map.Entry.<ItemStack,
-     * Long>comparingByValue()
-     * .reversed()).collect(Collectors.toList());
-     * for(Map.Entry<ItemStack, Long> entry : sortedList)
-     * {
-     * sortedMap.put(entry.getKey(),entry.getValue());
-     * }
-     * return sortedMap;
-     * }
-     * private void setSortedItemOutputMap(Map<ItemStack, Long> inMap)
-     * {
-     * }
-     */
 }
