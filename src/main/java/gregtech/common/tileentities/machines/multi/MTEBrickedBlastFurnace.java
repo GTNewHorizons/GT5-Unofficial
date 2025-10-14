@@ -27,6 +27,7 @@ import org.lwjgl.input.Keyboard;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.theme.WidgetThemeKey;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
@@ -50,6 +51,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverRegistry;
+import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
@@ -512,7 +514,7 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
 
     @Override
     public byte getTileEntityBaseType() {
-        return 0;
+        return HarvestTool.PickaxeLevel2.toTileEntityBaseType();
     }
 
     @Override
@@ -603,14 +605,14 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
                 SlotGroupWidget.builder()
                     .matrix("I", "I", "I")
                     .key('I', index -> {
-                        String textureThemeId = switch (index) {
+                        WidgetThemeKey<?> textureTheme = switch (index) {
                             case 0 -> GTWidgetThemes.OVERLAY_ITEM_SLOT_INGOT;
                             case 1 -> GTWidgetThemes.OVERLAY_ITEM_SLOT_DUST;
                             case 2 -> GTWidgetThemes.OVERLAY_ITEM_SLOT_FURNACE;
                             default -> throw new IllegalStateException("Unexpected value: " + index);
                         };
                         return new ItemSlot().slot(new ModularSlot(inventoryHandler, index).slotGroup("item_inv"))
-                            .widgetTheme(textureThemeId);
+                            .widgetTheme(textureTheme);
                     })
                     .build()
                     .pos(33, 15))
@@ -618,7 +620,7 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
                 SlotGroupWidget.builder()
                     .matrix("III")
                     .key('I', index -> {
-                        String textureThemeId = switch (index) {
+                        WidgetThemeKey<?> textureThemeId = switch (index) {
                             case 0 -> GTWidgetThemes.OVERLAY_ITEM_SLOT_INGOT;
                             case 1, 2 -> GTWidgetThemes.OVERLAY_ITEM_SLOT_DUST;
                             default -> throw new IllegalStateException("Unexpected value: " + index);
