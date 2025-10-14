@@ -352,49 +352,6 @@ public class MTEMultiBlockBaseGui {
                     || Predicates.isNonEmptyList(syncManager.getSyncHandler("fluidOutput:0")));
     }
 
-    private Flow createItemRecipeInfoColumn(PanelSyncManager syncManager) {
-        GenericListSyncHandler<ItemStack> itemOutputSyncer = (GenericListSyncHandler<ItemStack>) syncManager
-            .getSyncHandler("itemOutput:0");
-
-        List<ItemStack> itemOutputList = itemOutputSyncer.getValue();
-        IntSyncValue maxProgressSyncer = (IntSyncValue) syncManager.getSyncHandler("maxProgressTime:0");
-
-        Flow returnColumn = Flow.column()
-            .widthRel(0.8f)
-            .coverChildrenHeight();
-        returnColumn.setEnabledIf(useless -> Predicates.isNonEmptyList(itemOutputSyncer));
-
-        // merge stacksizes into one entry
-        final Map<ItemStack, Long> nameToAmount = new HashMap<>();
-        for (ItemStack item : itemOutputList) {
-            if (item == null || item.stackSize <= 0) continue;
-            nameToAmount.merge(item, (long) item.stackSize, Long::sum);
-        }
-
-        // sort map
-        final List<Map.Entry<ItemStack, Long>> sortedMap = nameToAmount.entrySet()
-            .stream()
-            .sorted(
-                Map.Entry.<ItemStack, Long>comparingByValue()
-                    .reversed())
-            .collect(Collectors.toList());
-
-        for (Map.Entry<ItemStack, Long> entry : sortedMap) {
-            ItemStack copiedItem = entry.getKey()
-                .copy();
-            long amount = entry.getValue();
-            Flow recipeRow = new Row().widthRel(1)
-                .height(18)
-                .marginBottom(4);
-            // Icon display
-            recipeRow.child(createItemDrawable(copiedItem));
-            // Hoverable Text Widget
-            recipeRow.child(createHoverableTextForItem(copiedItem, amount, syncManager));
-            returnColumn.child(recipeRow);
-        }
-        return returnColumn;
-    }
-
     private ItemDisplayWidget createItemDrawable(ItemStack itemStack) {
         return new ItemDisplayWidget().background()
             .displayAmount(false)
@@ -425,54 +382,6 @@ public class MTEMultiBlockBaseGui {
         String itemTextLine = EnumChatFormatting.AQUA + GTUtility.truncateText(itemName, 45 - amountString.length())
             + amountString;
         return itemTextLine;
-    }
-
-    /*
-     * Returns a Column of Rows.
-     * Each Row represents one Fluid Stack
-     * Each row is represented by an Icon of the texture, and a Hoverable Text Widget
-     * The text Widget is Localized Name(with name cut off at big length) x Amount (value/second)
-     * The hover is Full name \n Amount: x \n Per Second/Minute/Hour/Day
-     */
-    private Flow createFluidRecipeInfoColumn(PanelSyncManager syncManager) {
-        GenericListSyncHandler<FluidStack> fluidOutputSyncer = (GenericListSyncHandler<FluidStack>) syncManager
-            .getSyncHandler("fluidOutput:0");
-        Flow returnColumn = Flow.column()
-            .widthRel(0.8f)
-            .coverChildrenHeight();
-        List<FluidStack> fluidOutputList = fluidOutputSyncer.getValue();
-        returnColumn.setEnabledIf(useless -> Predicates.isNonEmptyList(fluidOutputSyncer));
-
-        // merge stacksizes into one entry
-        final Map<FluidStack, Long> nameToAmount = new HashMap<>();
-        for (FluidStack fluid : fluidOutputList) {
-            if (fluid == null || fluid.amount <= 0) continue;
-            nameToAmount.merge(fluid, (long) fluid.amount, Long::sum);
-        }
-        // sort map
-        final List<Map.Entry<FluidStack, Long>> sortedMap = nameToAmount.entrySet()
-            .stream()
-            .sorted(
-                Map.Entry.<FluidStack, Long>comparingByValue()
-                    .reversed())
-            .collect(Collectors.toList());
-
-        for (Map.Entry<FluidStack, Long> entry : sortedMap) {
-            FluidStack copiedFluid = entry.getKey()
-                .copy();
-            long amount = entry.getValue();
-
-            Flow recipeRow = new Row().widthRel(1)
-                .height(18)
-                .marginBottom(4);
-            // Icon display
-            recipeRow.child(createFluidDrawable(copiedFluid));
-            // Hoverable Text Widget
-            recipeRow.child(createHoverableTextForFluid(copiedFluid, amount, syncManager));
-            returnColumn.child(recipeRow);
-        }
-
-        return returnColumn;
     }
 
     private ItemDisplayWidget createFluidDrawable(FluidStack fluidStack) {
@@ -1078,7 +987,7 @@ public class MTEMultiBlockBaseGui {
                 val -> base.mOutputFluids = val.toArray(new FluidStack[0]),
                 NetworkUtils::readFluidStack,
                 NetworkUtils::writeFluidStack,
-                null,
+                (a,b) -> a.isFluidEqual(b) && a.amount == b.amount,
                 null));
 
         syncManager
