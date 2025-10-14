@@ -15067,7 +15067,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.TRANSPARENT)
-            .removeOrePrefix(OrePrefixes.nugget)
+            .removeOrePrefix(OrePrefixes.gem) // Botania:manaResource:2
             .constructMaterial();
     }
 
@@ -15084,7 +15084,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.TRANSPARENT)
-            .removeOrePrefix(OrePrefixes.nugget)
+            .removeOrePrefix(OrePrefixes.gem) // Botania:manaResource:9
             .constructMaterial();
     }
 }
