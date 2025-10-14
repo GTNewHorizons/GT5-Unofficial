@@ -48,7 +48,7 @@ dependencies {
     api("com.github.GTNewHorizons:Postea:1.1.3:dev")
 
     compileOnlyApi('com.github.GTNewHorizons:ThaumicTinkerer:2.11.26:dev')
-    compileOnlyApi("com.github.GTNewHorizons:Mobs-Info:0.5.4-GTNH:dev")
+    compileOnlyApi("com.github.GTNewHorizons:Mobs-Info:0.5.6-GTNH:dev")
     compileOnlyApi("com.github.GTNewHorizons:Navigator:1.0.17:dev")
     implementation('com.github.GTNewHorizons:Baubles-Expanded:2.1.15-GTNH:dev') {transitive=false}
     // Required to prevent an older bauble api from Extra Utilities from loading first in the javac classpath
@@ -58,20 +58,27 @@ dependencies {
 
     compileOnlyApi("com.github.GTNewHorizons:Avaritia:1.75:dev")
 
-    compileOnlyApi('com.github.GTNewHorizons:Angelica:1.0.0-beta57:dev') { transitive = false }
+    compileOnlyApi('com.github.GTNewHorizons:Angelica:1.0.0-beta62:dev') { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:AppleCore:3.3.7:dev") { transitive = false }
-    compileOnlyApi("com.github.GTNewHorizons:BuildCraft:7.1.44:dev") { transitive = false }
+    compileOnlyApi("com.github.GTNewHorizons:BuildCraft:7.1.45:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.9.26:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:ForestryMC:4.10.17:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:Galacticraft:3.3.12-GTNH:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:ProjectRed:4.11.13-GTNH:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:Railcraft:9.16.33:dev") { transitive = false }
+    // Required to use Blast Furnace and Smoker Recipe maps from EFR.
+    compileOnlyApi("ganymedes01.etfuturum:Et-Futurum-Requiem:2.6.2.21-GTNH-daily") { transitive = false }
+    compileOnlyApi("com.github.GTNewHorizons:Backhand:1.8.0:dev") { transitive = false }
+
+
 
     compileOnly("TGregworks:TGregworks:1.7.10-GTNH-1.0.27:deobf") {transitive = false}
     compileOnly("com.github.GTNewHorizons:ThaumicBases:1.8.13:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:EnderCore:0.4.8:dev") { transitive = false }
     compileOnly('com.github.GTNewHorizons:VisualProspecting:1.4.8:dev') { transitive = false }
     compileOnly("com.github.GTNewHorizons:Galaxy-Space-GTNH:1.1.121-GTNH:dev") { transitive = false }
+    compileOnly("com.github.GTNewHorizons:Hardcore-Ender-Expansion:1.13.0-GTNH:dev") { transitive = false }
+
 
     implementation("com.github.GTNewHorizons:TinkersConstruct:1.13.54-GTNH:dev")
 
@@ -115,7 +122,7 @@ dependencies {
     // For testing EEC multiblock
     // runtimeOnlyNonPublishable("com.github.GTNewHorizons:EnderIO:2.9.26:dev") { transitive = false }
     // runtimeOnlyNonPublishable rfg.deobf("curse.maven:extra-utilities-225561:2264384")
-    // runtimeOnlyNonPublishable("com.github.GTNewHorizons:Mobs-Info:0.5.4-GTNH:dev")
+    // runtimeOnlyNonPublishable("com.github.GTNewHorizons:Mobs-Info:0.5.6-GTNH:dev")
 
     testImplementation(platform('org.junit:junit-bom:5.9.2'))
     testImplementation('org.junit.jupiter:junit-jupiter')
@@ -135,7 +142,7 @@ dependencies {
     //runtimeOnlyNonPublishable('com.github.GTNewHorizons:TCNEIAdditions:1.5.4:dev')
 
     // For testing ctm
-    runtimeOnlyNonPublishable('com.github.GTNewHorizons:Angelica:1.0.0-beta57:dev') { transitive = false }
+    runtimeOnlyNonPublishable('com.github.GTNewHorizons:Angelica:1.0.0-beta62:dev') { transitive = false }
 
     // Speeds up mod identification and loading in dev
     runtimeOnlyNonPublishable(rfg.deobf("CoreTweaks:CoreTweaks:0.3.3.2"))
