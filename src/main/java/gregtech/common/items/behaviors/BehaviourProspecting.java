@@ -83,7 +83,7 @@ public class BehaviourProspecting extends BehaviourNone {
         }
 
         if (aBlock.getMaterial() == Material.rock || aBlock.getMaterial() == Material.ground
-            || OreManager.isOre(aBlock, aMeta)) {
+            || GTUtility.isOre(aBlock, aMeta)) {
             if (!GTModHandler.damageOrDechargeItem(aStack, this.mVanillaCosts, this.mEUCosts, aPlayer)) return false;
 
             GTUtility.sendSoundToPlayers(aWorld, SoundResource.RANDOM_ANVIL_USE, 1.0F, -1.0F, aX, aY, aZ);
