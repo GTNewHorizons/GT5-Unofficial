@@ -738,22 +738,6 @@ public enum OrePrefixes {
         dust.mGeneratedItems.addAll(dustRefined.mGeneratedItems);
         dustTiny.mGeneratedItems.addAll(dust.mGeneratedItems);
         dustSmall.mGeneratedItems.addAll(dust.mGeneratedItems);
-
-        ore.mGeneratedItems.add(Materials.Hydrogen);
-        ore.mGeneratedItems.add(Materials.Nitrogen);
-        ore.mGeneratedItems.add(Materials.Oxygen);
-        ore.mGeneratedItems.add(Materials.Methane);
-        ore.mGeneratedItems.add(Materials.CarbonDioxide);
-        ore.mGeneratedItems.add(Materials.SulfurDioxide);
-        ore.mGeneratedItems.add(Materials.Ammonia);
-
-        rawOre.mGeneratedItems.add(Materials.Hydrogen);
-        rawOre.mGeneratedItems.add(Materials.Nitrogen);
-        rawOre.mGeneratedItems.add(Materials.Oxygen);
-        rawOre.mGeneratedItems.add(Materials.Methane);
-        rawOre.mGeneratedItems.add(Materials.CarbonDioxide);
-        rawOre.mGeneratedItems.add(Materials.SulfurDioxide);
-        rawOre.mGeneratedItems.add(Materials.Ammonia);
         // -----
 
         toolHeadFile.mCondition = new ICondition.And<>(

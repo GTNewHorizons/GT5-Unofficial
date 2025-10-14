@@ -951,6 +951,66 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials ComplexityCatalyst;
     public static Materials EntropicCatalyst;
 
+    // Botania Materials
+    public static Materials Manasteel;
+    public static Materials Terrasteel;
+    public static Materials ElvenElementium;
+    public static Materials Livingrock;
+    public static Materials GaiaSpirit;
+    public static Materials Livingwood;
+    public static Materials Dreamwood;
+    public static Materials ManaDiamond;
+    public static Materials BotaniaDragonstone;
+
+    // Kevlar Line
+    public static Materials DiphenylmethaneDiisocyanate;
+    public static Materials DiaminodiphenylmethanMixture;
+    public static Materials DiphenylmethaneDiisocyanateMixture;
+    public static Materials Butyraldehyde;
+    public static Materials Isobutyraldehyde;
+    public static Materials NickelTetracarbonyl;
+    public static Materials KevlarCatalyst;
+    public static Materials EthyleneOxide;
+    public static Materials SiliconOil;
+    public static Materials Ethyleneglycol;
+    public static Materials Acetaldehyde;
+    public static Materials Pentaerythritol;
+    public static Materials PolyurethaneResin;
+    public static Materials NMethylIIPyrrolidone;
+    public static Materials TerephthaloylChloride;
+    public static Materials Acetylene;
+    public static Materials IVNitroaniline;
+    public static Materials ParaPhenylenediamine;
+    public static Materials Methylamine;
+    public static Materials Trimethylamine;
+    public static Materials GammaButyrolactone;
+    public static Materials CalciumCarbide;
+    public static Materials LiquidCrystalKevlar;
+    public static Materials IIButinIIVdiol;
+    public static Materials NickelAluminide;
+    public static Materials RaneyNickelActivated;
+    public static Materials BismuthIIIOxide;
+    public static Materials ThionylChloride;
+    public static Materials SulfurDichloride;
+    public static Materials DimethylTerephthalate;
+    public static Materials Kevlar;
+    public static Materials TerephthalicAcid;
+    public static Materials IIIDimethylbenzene;
+    public static Materials IVDimethylbenzene;
+    public static Materials CobaltIINaphthenate;
+    public static Materials NaphthenicAcid;
+    public static Materials CobaltIIHydroxide;
+    public static Materials CobaltIIAcetate;
+    public static Materials CobaltIINitrate;
+    public static Materials OrganorhodiumCatalyst;
+    public static Materials SodiumBorohydride;
+    public static Materials RhodiumChloride;
+    public static Materials Triphenylphosphene;
+    public static Materials PhosphorusTrichloride;
+    public static Materials SodiumHydride;
+    public static Materials TrimethylBorate;
+    public static Materials SodiumMethoxide;
+
     public static final List<IMaterialHandler> mMaterialHandlers = new ArrayList<>();
     public static final Map<Fluid, Materials> FLUID_MAP = new LinkedHashMap<>();
     /** @deprecated This is for keeping compatibility with addons mods (Such as TinkersGregworks etc.) */
@@ -962,8 +1022,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
 
     static {
         MaterialsInit.load();
-        MaterialsBotania.load();
-        MaterialsKevlar.load();
         MaterialsOreAlum.load();
         MaterialsUEVplus.load();
 
@@ -1348,15 +1406,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         Silicone.mOreReRegistrations.add(AnyRubber);
         StyreneButadieneRubber.mOreReRegistrations.add(AnySyntheticRubber);
         Silicone.mOreReRegistrations.add(AnySyntheticRubber);
-
-        Hydrogen.add(SubTag.ICE_ORE);
-        Nitrogen.add(SubTag.ICE_ORE);
-        Oxygen.add(SubTag.ICE_ORE);
-        Methane.add(SubTag.ICE_ORE);
-        CarbonDioxide.add(SubTag.ICE_ORE);
-        SulfurDioxide.add(SubTag.ICE_ORE);
-        Ammonia.add(SubTag.ICE_ORE);
-
     }
 
     private static void setToolEnchantments() {
@@ -1434,7 +1483,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
      */
     public static void initClient() {
         MaterialsUEVplus.TranscendentMetal.renderer = new TranscendentMetalRenderer();
-        MaterialsBotania.GaiaSpirit.renderer = new GaiaSpiritRenderer();
+        Materials.GaiaSpirit.renderer = new GaiaSpiritRenderer();
         Infinity.renderer = new InfinityRenderer();
         CosmicNeutronium.renderer = new CosmicNeutroniumRenderer();
         MaterialsUEVplus.Universium.renderer = new UniversiumRenderer();

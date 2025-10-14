@@ -30,7 +30,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsGTNH;
-import gregtech.api.enums.MaterialsKevlar;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
@@ -384,7 +383,7 @@ public class RecipeLoaderChemicalSkips {
                 FluidUtils.getFluidStack("xenoxene", 16_000),
                 Materials.RadoxPolymer.getMolten(1 * STACKS),
                 Materials.RadoxHeavy.getFluid(16_000),
-                MaterialsKevlar.Kevlar.getMolten(1 * STACKS))
+                Materials.Kevlar.getMolten(1 * STACKS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .metadata(QFT_CATALYST, GregtechItemList.UltimatePlasticCatalyst.get(0))
@@ -396,9 +395,9 @@ public class RecipeLoaderChemicalSkips {
                 .itemInputs(GTBees.combs.getStackForType(CombType.KEVLAR, 24), Materials.Carbon.getDust(64))
                 .fluidInputs(Materials.Nitrogen.getGas(16_000), Materials.Hydrogen.getGas(16_000))
                 .fluidOutputs(
-                    MaterialsKevlar.PolyurethaneResin.getFluid(32_000),
-                    MaterialsKevlar.LiquidCrystalKevlar.getFluid(32 * INGOTS),
-                    MaterialsKevlar.Kevlar.getMolten(1 * STACKS))
+                    Materials.PolyurethaneResin.getFluid(32_000),
+                    Materials.LiquidCrystalKevlar.getFluid(32 * INGOTS),
+                    Materials.Kevlar.getMolten(1 * STACKS))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_UIV)
                 .metadata(QFT_CATALYST, GregtechItemList.UltimatePlasticCatalyst.get(0))
@@ -691,7 +690,7 @@ public class RecipeLoaderChemicalSkips {
             .itemInputs(
                 GTUtility.getIntegratedCircuit(10),
                 CI.getEmptyCatalyst(1),
-                MaterialsKevlar.Kevlar.getDust(64),
+                Materials.Kevlar.getDust(64),
                 MaterialsUEVplus.TranscendentMetal.getNanite(1))
             .itemOutputs(GregtechItemList.UltimatePlasticCatalyst.get(1))
             .fluidInputs(GGMaterial.shirabon.getMolten(10 * STACKS))
