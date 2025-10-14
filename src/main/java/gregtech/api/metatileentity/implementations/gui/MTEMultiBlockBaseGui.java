@@ -280,8 +280,10 @@ public class MTEMultiBlockBaseGui {
                 .child(createFluidRecipeInfo(packet, syncManager));
         });
 
-        itemOutputSyncer.setChangeListener(() -> notifyRecipeHandler(recipeHandler, itemOutputSyncer, fluidOutputSyncer));
-        fluidOutputSyncer.setChangeListener(() -> notifyRecipeHandler(recipeHandler, itemOutputSyncer, fluidOutputSyncer));
+        itemOutputSyncer
+            .setChangeListener(() -> notifyRecipeHandler(recipeHandler, itemOutputSyncer, fluidOutputSyncer));
+        fluidOutputSyncer
+            .setChangeListener(() -> notifyRecipeHandler(recipeHandler, itemOutputSyncer, fluidOutputSyncer));
         return new DynamicSyncedWidget<>().widthRel(1)
             .height(18)
             .syncHandler(recipeHandler);
@@ -291,7 +293,9 @@ public class MTEMultiBlockBaseGui {
         // column.child(createFluidRecipeInfoColumn(syncManager));
         // return column;
     }
-    private void notifyRecipeHandler(DynamicSyncHandler recipeHandler, GenericListSyncHandler<ItemStack> itemOutputSyncer, GenericListSyncHandler<FluidStack> fluidOutputSyncer){
+
+    private void notifyRecipeHandler(DynamicSyncHandler recipeHandler,
+        GenericListSyncHandler<ItemStack> itemOutputSyncer, GenericListSyncHandler<FluidStack> fluidOutputSyncer) {
         recipeHandler.notifyUpdate(packet -> {
             List<ItemStack> items = itemOutputSyncer.getValue();
             packet.writeInt(items.size());
@@ -307,10 +311,10 @@ public class MTEMultiBlockBaseGui {
         });
     }
 
-
     private IWidget createItemRecipeInfo(PacketBuffer packet, PanelSyncManager syncManager) {
         int size = packet.readInt();
-        Flow column = Flow.column().coverChildren();
+        Flow column = Flow.column()
+            .coverChildren();
         for (int i = 0; i < size; i++) {
             ItemStack itemStack = NetworkUtils.readItemStack(packet);
             long amount = itemStack.stackSize;
@@ -328,7 +332,8 @@ public class MTEMultiBlockBaseGui {
 
     private IWidget createFluidRecipeInfo(PacketBuffer packet, PanelSyncManager syncManager) {
         int size = packet.readInt();
-        Flow column = Flow.column().coverChildren();
+        Flow column = Flow.column()
+            .coverChildren();
         for (int i = 0; i < size; i++) {
             FluidStack fluidStack = NetworkUtils.readFluidStack(packet);
             long amount = fluidStack.amount;
@@ -343,6 +348,7 @@ public class MTEMultiBlockBaseGui {
         }
         return column;
     }
+
     private IWidget createRecipeInfoTextWidget(PanelSyncManager syncManager) {
         return IKey.dynamic(() -> ((StringSyncValue) syncManager.getSyncHandler("recipeInfo:0")).getValue())
             .asWidget()
@@ -394,13 +400,16 @@ public class MTEMultiBlockBaseGui {
             .marginRight(4);
     }
 
-    private TextWidget<?> createHoverableTextForFluid(FluidStack fluidStack, long amount, PanelSyncManager syncManager) {
+    private TextWidget<?> createHoverableTextForFluid(FluidStack fluidStack, long amount,
+        PanelSyncManager syncManager) {
         IntSyncValue maxProgressSyncer = (IntSyncValue) syncManager.getSyncHandler("maxProgressTime:0");
         String fluidName = EnumChatFormatting.AQUA + fluidStack.getLocalizedName() + EnumChatFormatting.RESET;
 
         return new TextWidget<>(IKey.dynamic(() -> getFluidTextLine(fluidName, amount, maxProgressSyncer))).tooltip(
             t -> t.addLine(
-                EnumChatFormatting.AQUA + fluidName + "\n" + GTUtility.appendRate(true, amount, false, maxProgressSyncer.getValue())));
+                EnumChatFormatting.AQUA + fluidName
+                    + "\n"
+                    + GTUtility.appendRate(true, amount, false, maxProgressSyncer.getValue())));
     }
 
     private @NotNull String getFluidTextLine(String fluidName, long amount, IntSyncValue maxProgressTimeSyncer) {
@@ -987,7 +996,7 @@ public class MTEMultiBlockBaseGui {
                 val -> base.mOutputFluids = val.toArray(new FluidStack[0]),
                 NetworkUtils::readFluidStack,
                 NetworkUtils::writeFluidStack,
-                (a,b) -> a.isFluidEqual(b) && a.amount == b.amount,
+                (a, b) -> a.isFluidEqual(b) && a.amount == b.amount,
                 null));
 
         syncManager
