@@ -37,6 +37,7 @@ import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.items.GTGenericBlock;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -390,10 +391,14 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
     public static final int SMALL_ORE_META_OFFSET = 16000, NATURAL_ORE_META_OFFSET = 8000;
 
     public int getMaterialIndex(int meta) {
+        if (meta < 0) return 0;
+
         return meta % 1000;
     }
 
     public int getStoneIndex(int meta) {
+        if (meta < 0) return 0;
+
         meta %= SMALL_ORE_META_OFFSET;
         meta %= NATURAL_ORE_META_OFFSET;
 
@@ -409,14 +414,10 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
     }
 
     public Materials getMaterial(int meta) {
-        return GregTechAPI.sGeneratedMaterials[getMaterialIndex(meta)];
+        return GTDataUtils.getIndexSafe(GregTechAPI.sGeneratedMaterials, getMaterialIndex(meta));
     }
 
     public StoneType getStoneType(int meta) {
-        int stoneType = getStoneIndex(meta);
-
-        if (stoneType < 0 || stoneType >= stoneTypes.size()) return null;
-
-        return stoneTypes.get(stoneType);
+        return GTDataUtils.getIndexSafe(stoneTypes, getStoneIndex(meta));
     }
 }
