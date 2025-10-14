@@ -77,7 +77,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:Galaxy-Space-GTNH:1.1.121-GTNH:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Hardcore-Ender-Expansion:1.13.0-GTNH:dev") { transitive = false }
 
-    implementation("com.github.GTNewHorizons:TinkersConstruct:1.14.4-GTNH:dev")
+    implementation("com.github.GTNewHorizons:TinkersConstruct:1.14.6-GTNH:dev")
 
     compileOnly("com.github.GTNewHorizons:Chisel:2.17.0-GTNH:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Translocators:1.4.0:dev") { transitive = false }
