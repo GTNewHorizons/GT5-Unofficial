@@ -508,6 +508,7 @@ public class MaterialsInit {
             .addOreByproduct(() -> Materials.Cobalt)
             .addOreByproduct(() -> Materials.Gold)
             .addOreByproduct(() -> Materials.Nickel)
+            .setArcSmeltingInto(() -> Materials.AnnealedCopper)
             .addSubTag(SubTag.METAL)
             .addSubTag(SubTag.MORTAR_GRINDABLE)
             .addSubTag(SubTag.MULTI_PLATE)
