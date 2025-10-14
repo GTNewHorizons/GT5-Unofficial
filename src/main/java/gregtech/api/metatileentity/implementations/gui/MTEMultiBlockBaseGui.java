@@ -203,9 +203,7 @@ public class MTEMultiBlockBaseGui {
                     .widthRel(1))
             .child(createShutdownDurationWidget(syncManager))
             .child(createShutdownReasonWidget(syncManager))
-            .marginBottom(2)
             .child(createRecipeResultWidget())
-            .marginBottom(2)
             .childIf(base.showRecipeTextInGUI(), createRecipeInfoTextWidget(syncManager))
             .childIf(base.showRecipeTextInGUI(), createRecipeInfoWidget(syncManager));
     }
@@ -247,6 +245,7 @@ public class MTEMultiBlockBaseGui {
             () -> base.getCheckRecipeResult()
                 .getDisplayString())
             .asWidget()
+            .marginBottom(2)
             .widthRel(1)
             .setEnabledIf(widget -> shouldRecipeResultBeDisplayed());
 
@@ -269,6 +268,7 @@ public class MTEMultiBlockBaseGui {
         return IKey.dynamic(() -> ((StringSyncValue) syncManager.getSyncHandler("recipeInfo:0")).getValue())
             .asWidget()
             .widthRel(1f)
+            .marginBottom(2)
             .setEnabledIf(
                 widget -> Predicates.isNonEmptyList(syncManager.getSyncHandler("itemOutput:0"))
                     || Predicates.isNonEmptyList(syncManager.getSyncHandler("fluidOutput:0")));
@@ -304,7 +304,7 @@ public class MTEMultiBlockBaseGui {
             ItemStack copiedItem = entry.getKey()
                 .copy();
             long amount = entry.getValue();
-            Flow recipeRow = new Row().widthRel(1)
+            Flow recipeRow = new Row().widthRel(0.8f)
                 .height(18)
                 .marginBottom(4);
             // Icon display
@@ -317,11 +317,10 @@ public class MTEMultiBlockBaseGui {
     }
 
     private ItemDisplayWidget createItemDrawable(ItemStack itemStack) {
-        return new ItemDisplayWidget().background()
-            .displayAmount(false)
+        return new ItemDisplayWidget().displayAmount(false)
+            .background(IDrawable.EMPTY)
             .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
             .item(itemStack)
-            .size(18, 18)
             .marginRight(1);
     }
 
@@ -332,12 +331,15 @@ public class MTEMultiBlockBaseGui {
             + GTUtility.formatShortenedLong(amount)
             + EnumChatFormatting.WHITE
             + GTUtility.appendRate(false, amount, true, progressTime);
-        String itemTextLine = EnumChatFormatting.AQUA + GTUtility.truncateText(itemName, 45 - amountString.length())
+        String itemTextLine = EnumChatFormatting.AQUA + GTUtility.truncateText(itemName, 40 - amountString.length())
             + amountString;
 
-        return new TextWidget<>(IKey.dynamic(() -> itemTextLine)).tooltip(
-            t -> t.addLine(
-                EnumChatFormatting.AQUA + itemName + "\n" + GTUtility.appendRate(false, amount, false, progressTime)));
+        return new TextWidget<>(IKey.dynamic(() -> itemTextLine)).scale(0.8f)
+            .tooltip(
+                t -> t.addLine(
+                    EnumChatFormatting.AQUA + itemName
+                        + "\n"
+                        + GTUtility.appendRate(false, amount, false, progressTime)));
     }
 
     /*
@@ -370,7 +372,6 @@ public class MTEMultiBlockBaseGui {
                 Map.Entry.<FluidStack, Long>comparingByValue()
                     .reversed())
             .collect(Collectors.toList());
-
         for (Map.Entry<FluidStack, Long> entry : sortedMap) {
             FluidStack copiedFluid = entry.getKey()
                 .copy();
@@ -394,6 +395,7 @@ public class MTEMultiBlockBaseGui {
         ItemStack fluidDisplayStack = GTUtility.getFluidDisplayStack(fluidStack, false, false);
         return new ItemDisplayWidget().displayAmount(false)
             .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
+            .background(IDrawable.EMPTY)
             .item(fluidDisplayStack)
             .size(18, 18)
             .marginRight(4);
@@ -407,7 +409,7 @@ public class MTEMultiBlockBaseGui {
             + "L"
             + EnumChatFormatting.WHITE
             + GTUtility.appendRate(false, amount, true, progressTime);
-        String fluidTextLine = EnumChatFormatting.AQUA + GTUtility.truncateText(fluidName, 45 - amountString.length())
+        String fluidTextLine = EnumChatFormatting.AQUA + GTUtility.truncateText(fluidName, 40 - amountString.length())
             + amountString;
 
         return new TextWidget<>(fluidTextLine).tooltip(
@@ -1064,6 +1066,15 @@ public class MTEMultiBlockBaseGui {
 
         BooleanSyncValue mufflerSyncer = new BooleanSyncValue(base::isMuffled, base::setMuffled);
         syncManager.syncValue("mufflerSyncer", mufflerSyncer);
+        /*
+         * GenericListSyncHandler<Map.Entry<ItemStack, Long>> sortedItemOutputSyncHandler =
+         * new GenericMapSyncHandler.Builder<ItemStack,Long>()
+         * .getter(() -> )
+         * .setter()
+         * .keyAdapter(new RecipeOutputKeyItemStackAdapter())
+         * .valueAdapter(new RecipeOutputValueLongAdapter())
+         * .build();
+         */
     }
 
     protected void setMachineModeIcons() {}
@@ -1078,4 +1089,30 @@ public class MTEMultiBlockBaseGui {
         return this.shutdownReasonTooltipMap
             .getOrDefault(key, EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.gui.hoverable.error"));
     }
+    /*
+     * private Map<ItemStack,Long> getSortedItemOutputMap()
+     * {
+     * if(base.mOutputItems == null) return Collections.emptyMap();
+     * List<ItemStack> outputItemStackList = Arrays.asList(base.mOutputItems);
+     * final Map<ItemStack, Long> mergingMap = new HashMap<>();
+     * // populate map
+     * for (ItemStack item : outputItemStackList) {
+     * if (item == null || item.stackSize <= 0) continue;
+     * mergingMap.merge(item, (long) item.stackSize, Long::sum);
+     * }
+     * // sort map
+     * Map<ItemStack,Long> sortedMap = new HashMap<>();
+     * List<Map.Entry<ItemStack, Long>> sortedList = mergingMap.entrySet().stream().sorted( Map.Entry.<ItemStack,
+     * Long>comparingByValue()
+     * .reversed()).collect(Collectors.toList());
+     * for(Map.Entry<ItemStack, Long> entry : sortedList)
+     * {
+     * sortedMap.put(entry.getKey(),entry.getValue());
+     * }
+     * return sortedMap;
+     * }
+     * private void setSortedItemOutputMap(Map<ItemStack, Long> inMap)
+     * {
+     * }
+     */
 }
