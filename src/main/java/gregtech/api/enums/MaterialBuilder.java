@@ -85,6 +85,7 @@ public class MaterialBuilder {
     private Supplier<Materials> pendingDirectSmelting;
     private final LinkedHashSet<SubTag> subTags = new LinkedHashSet<>();
     private final List<OrePrefixes> orePrefixBlacklist = new ArrayList<>();
+    private final List<OrePrefixes> orePrefixWhitelist = new ArrayList<>();
 
     public MaterialBuilder() {}
 
@@ -140,6 +141,7 @@ public class MaterialBuilder {
 
         for (SubTag subTag : subTags) subTag.addContainerToList(material);
         for (OrePrefixes prefix : orePrefixBlacklist) prefix.mNotGeneratedItems.add(material);
+        for (OrePrefixes prefix : orePrefixWhitelist) prefix.mGeneratedItems.add(material);
 
         return material;
     }
@@ -522,8 +524,14 @@ public class MaterialBuilder {
     }
 
     /** Adds an {@link OrePrefixes} that should not be generated. */
-    public MaterialBuilder addOrePrefixBlacklist(OrePrefixes prefix) {
+    public MaterialBuilder removeOrePrefix(OrePrefixes prefix) {
         this.orePrefixBlacklist.add(prefix);
+        return this;
+    }
+
+    /** Adds an {@link OrePrefixes} that will be generated. */
+    public MaterialBuilder addOrePrefix(OrePrefixes prefix) {
+        this.orePrefixWhitelist.add(prefix);
         return this;
     }
 }

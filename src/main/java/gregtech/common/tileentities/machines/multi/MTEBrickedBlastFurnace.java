@@ -514,7 +514,7 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
 
     @Override
     public byte getTileEntityBaseType() {
-        return HarvestTool.WrenchLevel0.toTileEntityBaseType();
+        return HarvestTool.PickaxeLevel2.toTileEntityBaseType();
     }
 
     @Override
