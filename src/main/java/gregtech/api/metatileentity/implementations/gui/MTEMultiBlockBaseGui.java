@@ -311,18 +311,16 @@ public class MTEMultiBlockBaseGui {
         });
     }
 
-    private final int DISPLAY_ROW_HEIGHT = 14;
+    private final int DISPLAY_ROW_HEIGHT = 13;
 
     private IWidget createItemRecipeInfo(PacketBuffer packet, PanelSyncManager syncManager) {
         int size = packet.readInt();
         Flow column = Flow.column()
             .coverChildren();
-        List<ItemStack> itemList = new ArrayList<>(size);
 
         Map<ItemDisplayKey, Long> itemDisplayMap = new HashMap<>(size);
         for (int i = 0; i < size; i++) {
             ItemStack item = NetworkUtils.readItemStack(packet);
-            itemList.add(item);
             itemDisplayMap
                 .merge(new ItemDisplayKey(item.getItem(), item.getItemDamage()), (long) item.stackSize, Long::sum);
         }
@@ -368,20 +366,20 @@ public class MTEMultiBlockBaseGui {
         int size = packet.readInt();
         Flow column = Flow.column()
             .coverChildren();
-        // read packet into list
-        List<FluidStack> fluidList = new ArrayList<>(size);
-        for (int i = 0; i < size; i++) {
-            fluidList.add(NetworkUtils.readFluidStack(packet));
-        }
 
-        // Merge list into map
-        final Map<FluidStack, Long> stackToAmountMap = new HashMap<>();
-        for (FluidStack fluid : fluidList) {
-            stackToAmountMap.merge(fluid, (long) fluid.amount, Long::sum);
+        // create merged map of fluidstack to total amount in recipe
+        final Map<FluidStack, Long> fluidDisplayMap = new HashMap<>(size);
+        for (int i = 0; i < size; i++) {
+            FluidStack fluidStack = NetworkUtils.readFluidStack(packet);
+            long amount = (long) fluidStack.amount;
+            // map.merge requires the objects to be the same. fluidstacks with different stacksizes will be different.
+            // set the amount to 1 to ensure fluid stacks of the same fluid get merged together
+            fluidStack.amount = 1;
+            fluidDisplayMap.merge(fluidStack, amount, Long::sum);
         }
 
         // sort map and return as List of Entries
-        final List<Map.Entry<FluidStack, Long>> sortedEntryList = stackToAmountMap.entrySet()
+        final List<Map.Entry<FluidStack, Long>> sortedEntryList = fluidDisplayMap.entrySet()
             .stream()
             .sorted(
                 Map.Entry.<FluidStack, Long>comparingByValue()
@@ -408,6 +406,7 @@ public class MTEMultiBlockBaseGui {
     private IWidget createRecipeInfoTextWidget(PanelSyncManager syncManager) {
         return IKey.dynamic(() -> ((StringSyncValue) syncManager.getSyncHandler("recipeInfo:0")).getValue())
             .asWidget()
+            .marginBottom(2)
             .widthRel(1)
             .setEnabledIf(
                 widget -> Predicates.isNonEmptyList(syncManager.getSyncHandler("itemOutput:0"))
@@ -420,7 +419,7 @@ public class MTEMultiBlockBaseGui {
             .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
             // Second argument is stacksize, don't care about it
             .item(new ItemStack(item, 1, damage))
-            .size(DISPLAY_ROW_HEIGHT)
+            .size(DISPLAY_ROW_HEIGHT - 1)
             .marginRight(1);
     }
 
@@ -459,7 +458,7 @@ public class MTEMultiBlockBaseGui {
             .displayAmount(false)
             .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
             .item(fluidDisplayStack)
-            .size(DISPLAY_ROW_HEIGHT)
+            .size(DISPLAY_ROW_HEIGHT - 1)
             .marginRight(1);
     }
 
