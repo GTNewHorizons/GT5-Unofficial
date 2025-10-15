@@ -65,7 +65,6 @@ import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
-import com.mojang.realmsclient.util.Pair;
 
 import gregtech.api.enums.StructureError;
 import gregtech.api.enums.VoidingMode;
@@ -320,46 +319,41 @@ public class MTEMultiBlockBaseGui {
             .coverChildren();
         List<ItemStack> itemList = new ArrayList<>(size);
 
+        Map<ItemDisplayKey, Integer> itemDisplayMap = new HashMap<>(size);
         for (int i = 0; i < size; i++) {
-            itemList.add(NetworkUtils.readItemStack(packet));
+            ItemStack item = NetworkUtils.readItemStack(packet);
+            itemList.add(item);
+            itemDisplayMap
+                .merge(new ItemDisplayKey(item.getItem(), item.getItemDamage()), item.stackSize, Integer::sum);
         }
-
-        // Merge list into map
-        final Map<Item, Pair<Integer, Long>> itemToAmountMap = new HashMap<>();
-        for (ItemStack item : itemList) {
-            itemToAmountMap.merge(
-                item.getItem(),
-                Pair.of(item.getItemDamage(), (long) item.stackSize),
-                (a, b) -> Pair.of(a.first(), a.second() + b.second()));
-        }
-
-        // sort map and return as List of Entries
-        final List<Map.Entry<Item, Pair<Integer, Long>>> sortedEntryList = itemToAmountMap.entrySet()
+        // a and b comparison swapped for stacksize on purpose to get descending order
+        List<Map.Entry<ItemDisplayKey, Integer>> sortedEntries = itemDisplayMap.entrySet()
             .stream()
-            // a and b comparison swapped on purpose to get descending order
             .sorted((a, b) -> {
-                Pair<Integer, Long> pairA = a.getValue();
-                Pair<Integer, Long> pairB = b.getValue();
-                if (pairA.second() == pairB.second()) {
-                    // Second argument is stacksize, don't care about it
-                    ItemStack itemA = new ItemStack(a.getKey(), 1, pairA.first());
-                    ItemStack itemB = new ItemStack(b.getKey(), 1, pairB.first());
-                    return itemB.getDisplayName()
-                        .compareTo(itemA.getDisplayName());
+                ItemDisplayKey itemDisplayA = a.getKey();
+                Integer stackSizeA = a.getValue();
+                ItemDisplayKey itemDisplayB = b.getKey();
+                Integer stackSizeB = b.getValue();
+
+                if (stackSizeA.equals(stackSizeB)) {
+                    ItemStack itemA = new ItemStack(itemDisplayA.item(), itemDisplayA.damage(), stackSizeA);
+                    ItemStack itemB = new ItemStack(itemDisplayB.item(), itemDisplayB.damage(), stackSizeB);
+                    String nameA = StatCollector.translateToLocal(itemA.toString());
+                    String nameB = StatCollector.translateToLocal(itemB.toString());
+                    return nameA.compareTo(nameB);
                 } else {
-                    return pairB.second()
-                        .compareTo(pairA.second());
+                    return stackSizeB.compareTo(stackSizeA);
                 }
             })
             .collect(Collectors.toList());
 
         // create row for each entry
-        for (Map.Entry<Item, Pair<Integer, Long>> entry : sortedEntryList) {
-            Item item = entry.getKey();
-            int damage = entry.getValue()
-                .first();
-            long amount = entry.getValue()
-                .second();
+        for (Map.Entry<ItemDisplayKey, Integer> entry : sortedEntries) {
+            Item item = entry.getKey()
+                .item();
+            int damage = entry.getKey()
+                .damage();
+            int amount = entry.getValue();
             column.child(
                 Flow.row()
                     .widthRel(1)
