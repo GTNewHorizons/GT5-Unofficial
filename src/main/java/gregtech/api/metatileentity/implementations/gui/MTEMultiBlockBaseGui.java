@@ -16,6 +16,7 @@ import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumChatFormatting;
@@ -64,6 +65,7 @@ import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
+import com.mojang.realmsclient.util.Pair;
 
 import gregtech.api.enums.StructureError;
 import gregtech.api.enums.VoidingMode;
@@ -323,32 +325,47 @@ public class MTEMultiBlockBaseGui {
         }
 
         // Merge list into map
-        final Map<ItemStack, Long> stackToAmountMap = new HashMap<>();
+        final Map<Item, Pair<Integer, Long>> itemToAmountMap = new HashMap<>();
         for (ItemStack item : itemList) {
-            stackToAmountMap.merge(item, (long) item.stackSize, Long::sum);
+            itemToAmountMap.merge(
+                item.getItem(),
+                Pair.of(item.getItemDamage(), (long) item.stackSize),
+                (a, b) -> Pair.of(a.first(), a.second() + b.second()));
         }
 
         // sort map and return as List of Entries
-        final List<Map.Entry<ItemStack, Long>> sortedEntryList = stackToAmountMap.entrySet()
+        final List<Map.Entry<Item, Pair<Integer, Long>>> sortedEntryList = itemToAmountMap.entrySet()
             .stream()
-            .sorted(
-                Map.Entry.<ItemStack, Long>comparingByValue()
-                    .thenComparing(
-                        entry -> entry.getKey()
-                            .getDisplayName())
-                    .reversed())
+            // a and b comparison swapped on purpose to get descending order
+            .sorted((a, b) -> {
+                Pair<Integer, Long> pairA = a.getValue();
+                Pair<Integer, Long> pairB = b.getValue();
+                if (pairA.second() == pairB.second()) {
+                    // Second argument is stacksize, don't care about it
+                    ItemStack itemA = new ItemStack(a.getKey(), 1, pairA.first());
+                    ItemStack itemB = new ItemStack(b.getKey(), 1, pairB.first());
+                    return itemB.getDisplayName()
+                        .compareTo(itemA.getDisplayName());
+                } else {
+                    return pairB.second()
+                        .compareTo(pairA.second());
+                }
+            })
             .collect(Collectors.toList());
 
         // create row for each entry
-        for (Map.Entry<ItemStack, Long> entry : sortedEntryList) {
-            ItemStack itemStack = entry.getKey();
-            long amount = entry.getValue();
+        for (Map.Entry<Item, Pair<Integer, Long>> entry : sortedEntryList) {
+            Item item = entry.getKey();
+            int damage = entry.getValue()
+                .first();
+            long amount = entry.getValue()
+                .second();
             column.child(
                 Flow.row()
                     .widthRel(1)
                     .height(DISPLAY_ROW_HEIGHT)
-                    .child(createItemDrawable(itemStack))
-                    .child(createHoverableTextForItem(itemStack, amount, syncManager)));
+                    .child(createItemDrawable(item, damage))
+                    .child(createHoverableTextForItem(item, damage, amount, syncManager)));
         }
 
         return column;
@@ -404,18 +421,21 @@ public class MTEMultiBlockBaseGui {
                     || Predicates.isNonEmptyList(syncManager.getSyncHandler("fluidOutput:0")));
     }
 
-    private ResizableItemDisplayWidget createItemDrawable(ItemStack itemStack) {
+    private ResizableItemDisplayWidget createItemDrawable(Item item, int damage) {
         return new ResizableItemDisplayWidget().background(IDrawable.EMPTY)
             .displayAmount(false)
             .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
-            .item(itemStack)
+            // Second argument is stacksize, don't care about it
+            .item(new ItemStack(item, 1, damage))
             .size(DISPLAY_ROW_HEIGHT)
             .marginRight(1);
     }
 
-    private TextWidget<?> createHoverableTextForItem(ItemStack item, long amount, PanelSyncManager syncManager) {
+    private TextWidget<?> createHoverableTextForItem(Item item, int damage, long amount, PanelSyncManager syncManager) {
+        // Second argument is stacksize, don't care about it
+        ItemStack itemStack = new ItemStack(item, 1, damage);
         IntSyncValue maxProgressTimeSyncer = (IntSyncValue) syncManager.getSyncHandler("maxProgressTime:0");
-        String itemName = EnumChatFormatting.AQUA + item.getDisplayName() + EnumChatFormatting.RESET;
+        String itemName = EnumChatFormatting.AQUA + itemStack.getDisplayName() + EnumChatFormatting.RESET;
 
         return new TextWidget<>(IKey.dynamic(() -> getItemTextLine(itemName, amount, maxProgressTimeSyncer)))
             .height(DISPLAY_ROW_HEIGHT)
