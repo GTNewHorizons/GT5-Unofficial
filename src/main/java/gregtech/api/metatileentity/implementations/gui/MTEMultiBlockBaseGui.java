@@ -16,7 +16,9 @@ import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
@@ -39,16 +41,19 @@ import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Alignment.MainAxis;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
+import com.cleanroommc.modularui.value.sync.DynamicSyncHandler;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.GenericSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
+import com.cleanroommc.modularui.widget.EmptyWidget;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.CycleButtonWidget;
+import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
@@ -67,6 +72,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
+import gregtech.api.modularui2.widgets.ResizableItemDisplayWidget;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -155,11 +161,14 @@ public class MTEMultiBlockBaseGui {
         return new Row().size(getTerminalRowWidth(), getTerminalRowHeight())
             .child(
                 new ParentWidget<>().size(getTerminalWidgetWidth(), getTerminalWidgetHeight())
-                    .padding(4)
+                    .paddingTop(4)
+                    .paddingBottom(4)
+                    .paddingLeft(4)
+                    .paddingRight(0)
                     .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
                     .child(
                         createTerminalTextWidget(syncManager, panel)
-                            .size(getTerminalWidgetWidth() - 10, getTerminalWidgetHeight() - 8)
+                            .size(getTerminalWidgetWidth() - 4, getTerminalWidgetHeight() - 8)
                             .collapseDisabledChild())
                     .childIf(base.supportsTerminalCornerColumn(), createTerminalCornerColumn(panel, syncManager)));
     }
@@ -194,7 +203,7 @@ public class MTEMultiBlockBaseGui {
     }
 
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-        return new ListWidget<>()
+        return new ListWidget<>().widthRel(1)
             .child(
                 new TextWidget<>(GTUtility.trans("142", "Running perfectly.")).color(Color.WHITE.main)
                     .setEnabledIf(widget -> base.getErrorDisplayID() == 0 && baseMetaTileEntity.isActive())
@@ -203,6 +212,8 @@ public class MTEMultiBlockBaseGui {
             .child(createShutdownDurationWidget(syncManager))
             .child(createShutdownReasonWidget(syncManager))
             .child(createRecipeResultWidget())
+            .childIf(base.showRecipeTextInGUI(), createRecipeInfoTextWidget(syncManager))
+
             .childIf(base.showRecipeTextInGUI(), createRecipeInfoWidget(syncManager));
     }
 
@@ -217,7 +228,6 @@ public class MTEMultiBlockBaseGui {
                 time.getSeconds() % 60);
         })
             .asWidget()
-            .marginBottom(2)
             .widthRel(1)
             .setEnabledIf(
                 widget -> base.shouldDisplayShutDownReason() && !baseMetaTileEntity.isActive()
@@ -229,8 +239,8 @@ public class MTEMultiBlockBaseGui {
         StringSyncValue shutdownReasonSync = (StringSyncValue) syncManager.getSyncHandler("shutdownDisplayString:0");
         return IKey.dynamic(shutdownReasonSync::getValue)
             .asWidget()
-            .marginBottom(2)
             .widthRel(1)
+            .marginBottom(2)
             .setEnabledIf(widget -> shouldShutdownReasonBeDisplayed(shutdownReasonSync.getValue()));
     }
 
@@ -245,8 +255,8 @@ public class MTEMultiBlockBaseGui {
             () -> base.getCheckRecipeResult()
                 .getDisplayString())
             .asWidget()
-            .marginBottom(2)
             .widthRel(1)
+            .marginBottom(2)
             .setEnabledIf(widget -> shouldRecipeResultBeDisplayed());
 
     }
@@ -258,6 +268,142 @@ public class MTEMultiBlockBaseGui {
     }
 
     private IWidget createRecipeInfoWidget(PanelSyncManager syncManager) {
+        IntSyncValue maxProgressTimeSyncer = (IntSyncValue) syncManager.getSyncHandler("maxProgressTime:0");
+        GenericListSyncHandler<ItemStack> itemOutputSyncer = (GenericListSyncHandler<ItemStack>) syncManager
+            .getSyncHandler("itemOutput:0");
+        GenericListSyncHandler<FluidStack> fluidOutputSyncer = (GenericListSyncHandler<FluidStack>) syncManager
+            .getSyncHandler("fluidOutput:0");
+
+        DynamicSyncHandler recipeHandler = new DynamicSyncHandler().widgetProvider((syncManager1, packet) -> {
+            if (packet == null) {
+                return new EmptyWidget();
+            }
+            return Flow.column()
+                .coverChildren()
+                .child(createItemRecipeInfo(packet, syncManager))
+                .child(createFluidRecipeInfo(packet, syncManager));
+        });
+
+        itemOutputSyncer
+            .setChangeListener(() -> notifyRecipeHandler(recipeHandler, itemOutputSyncer, fluidOutputSyncer));
+        fluidOutputSyncer
+            .setChangeListener(() -> notifyRecipeHandler(recipeHandler, itemOutputSyncer, fluidOutputSyncer));
+        return new DynamicSyncedWidget<>().widthRel(0.85f)
+            .coverChildrenHeight()
+            .syncHandler(recipeHandler);
+
+    }
+
+    private void notifyRecipeHandler(DynamicSyncHandler recipeHandler,
+        GenericListSyncHandler<ItemStack> itemOutputSyncer, GenericListSyncHandler<FluidStack> fluidOutputSyncer) {
+        recipeHandler.notifyUpdate(packet -> {
+            List<ItemStack> items = itemOutputSyncer.getValue();
+            packet.writeInt(items.size());
+            for (ItemStack item : items) {
+                NetworkUtils.writeItemStack(packet, item);
+            }
+
+            List<FluidStack> fluids = fluidOutputSyncer.getValue();
+            packet.writeInt(fluids.size());
+            for (FluidStack fluid : fluids) {
+                NetworkUtils.writeFluidStack(packet, fluid);
+            }
+        });
+    }
+
+    private final int DISPLAY_ROW_HEIGHT = 13;
+
+    private IWidget createItemRecipeInfo(PacketBuffer packet, PanelSyncManager syncManager) {
+        int size = packet.readInt();
+        Flow column = Flow.column()
+            .coverChildren();
+
+        Map<ItemDisplayKey, Long> itemDisplayMap = new HashMap<>(size);
+        for (int i = 0; i < size; i++) {
+            ItemStack item = NetworkUtils.readItemStack(packet);
+            itemDisplayMap
+                .merge(new ItemDisplayKey(item.getItem(), item.getItemDamage()), (long) item.stackSize, Long::sum);
+        }
+        // a and b comparison swapped for stacksize on purpose to get descending order
+        List<Map.Entry<ItemDisplayKey, Long>> sortedEntries = itemDisplayMap.entrySet()
+            .stream()
+            .sorted((a, b) -> {
+                ItemDisplayKey itemDisplayA = a.getKey();
+                Long stackSizeA = a.getValue();
+                ItemDisplayKey itemDisplayB = b.getKey();
+                Long stackSizeB = b.getValue();
+
+                if (stackSizeA.equals(stackSizeB)) {
+                    ItemStack itemA = new ItemStack(itemDisplayA.item(), 1, itemDisplayA.damage());
+                    ItemStack itemB = new ItemStack(itemDisplayB.item(), 1, itemDisplayB.damage());
+                    return itemA.getDisplayName()
+                        .compareTo(itemB.getDisplayName());
+                } else {
+                    return stackSizeB.compareTo(stackSizeA);
+                }
+            })
+            .collect(Collectors.toList());
+
+        // create row for each entry
+        for (Map.Entry<ItemDisplayKey, Long> entry : sortedEntries) {
+            Item item = entry.getKey()
+                .item();
+            int damage = entry.getKey()
+                .damage();
+            long amount = entry.getValue();
+            column.child(
+                Flow.row()
+                    .widthRel(1)
+                    .height(DISPLAY_ROW_HEIGHT)
+                    .child(createItemDrawable(item, damage))
+                    .child(createHoverableTextForItem(item, damage, amount, syncManager)));
+        }
+
+        return column;
+    }
+
+    private IWidget createFluidRecipeInfo(PacketBuffer packet, PanelSyncManager syncManager) {
+        int size = packet.readInt();
+        Flow column = Flow.column()
+            .coverChildren();
+
+        // create merged map of fluidstack to total amount in recipe
+        final Map<FluidStack, Long> fluidDisplayMap = new HashMap<>(size);
+        for (int i = 0; i < size; i++) {
+            FluidStack fluidStack = NetworkUtils.readFluidStack(packet);
+            long amount = (long) fluidStack.amount;
+            // map.merge requires the objects to be the same. fluidstacks with different stacksizes will be different.
+            // set the amount to 1 to ensure fluid stacks of the same fluid get merged together
+            fluidStack.amount = 1;
+            fluidDisplayMap.merge(fluidStack, amount, Long::sum);
+        }
+
+        // sort map and return as List of Entries
+        final List<Map.Entry<FluidStack, Long>> sortedEntryList = fluidDisplayMap.entrySet()
+            .stream()
+            .sorted(
+                Map.Entry.<FluidStack, Long>comparingByValue()
+                    .thenComparing(
+                        entry -> entry.getKey()
+                            .getLocalizedName())
+                    .reversed())
+            .collect(Collectors.toList());
+
+        // create row for each entry
+        for (Map.Entry<FluidStack, Long> entry : sortedEntryList) {
+            FluidStack fluidStack = entry.getKey();
+            long amount = entry.getValue();
+            column.child(
+                Flow.row()
+                    .widthRel(1)
+                    .height(DISPLAY_ROW_HEIGHT)
+                    .child(createFluidDrawable(fluidStack))
+                    .child(createHoverableTextForFluid(fluidStack, amount, syncManager)));
+        }
+        return column;
+    }
+
+    private IWidget createRecipeInfoTextWidget(PanelSyncManager syncManager) {
         return IKey.dynamic(() -> ((StringSyncValue) syncManager.getSyncHandler("recipeInfo:0")).getValue())
             .asWidget()
             .marginBottom(2)
@@ -265,7 +411,82 @@ public class MTEMultiBlockBaseGui {
             .setEnabledIf(
                 widget -> Predicates.isNonEmptyList(syncManager.getSyncHandler("itemOutput:0"))
                     || Predicates.isNonEmptyList(syncManager.getSyncHandler("fluidOutput:0")));
+    }
 
+    private ResizableItemDisplayWidget createItemDrawable(Item item, int damage) {
+        return new ResizableItemDisplayWidget().background(IDrawable.EMPTY)
+            .displayAmount(false)
+            .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
+            // Second argument is stacksize, don't care about it
+            .item(new ItemStack(item, 1, damage))
+            .size(DISPLAY_ROW_HEIGHT - 1)
+            .marginRight(1);
+    }
+
+    private TextWidget<?> createHoverableTextForItem(Item item, int damage, long amount, PanelSyncManager syncManager) {
+        // Second argument is stacksize, don't care about it
+        ItemStack itemStack = new ItemStack(item, 1, damage);
+        IntSyncValue maxProgressTimeSyncer = (IntSyncValue) syncManager.getSyncHandler("maxProgressTime:0");
+        String itemName = EnumChatFormatting.AQUA + itemStack.getDisplayName() + EnumChatFormatting.RESET;
+
+        return new TextWidget<>(IKey.dynamic(() -> getItemTextLine(itemName, amount, maxProgressTimeSyncer)))
+            .height(DISPLAY_ROW_HEIGHT)
+            .scale(0.75f)
+            .tooltip(
+                t -> t.addLine(
+                    EnumChatFormatting.AQUA + itemName
+                        + "\n"
+                        + GTUtility.appendRate(false, amount, false, maxProgressTimeSyncer.getValue())));
+    }
+
+    private @NotNull String getItemTextLine(String itemName, long amount, IntSyncValue maxProgressTimeSyncer) {
+
+        String amountString = EnumChatFormatting.WHITE + " x "
+            + EnumChatFormatting.GOLD
+            + GTUtility.formatShortenedLong(amount)
+            + EnumChatFormatting.WHITE
+            + GTUtility.appendRate(false, amount, true, maxProgressTimeSyncer.getValue());
+        String itemTextLine = EnumChatFormatting.AQUA + GTUtility.truncateText(itemName, 48 - amountString.length())
+            + amountString;
+        return itemTextLine;
+    }
+
+    private ResizableItemDisplayWidget createFluidDrawable(FluidStack fluidStack) {
+        // uses an itemstack representation of the fluid as there is no FluidDisplayWidget (yet)
+        ItemStack fluidDisplayStack = GTUtility.getFluidDisplayStack(fluidStack, false, false);
+        return new ResizableItemDisplayWidget().background(IDrawable.EMPTY)
+            .displayAmount(false)
+            .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
+            .item(fluidDisplayStack)
+            .size(DISPLAY_ROW_HEIGHT - 1)
+            .marginRight(1);
+    }
+
+    private TextWidget<?> createHoverableTextForFluid(FluidStack fluidStack, long amount,
+        PanelSyncManager syncManager) {
+        IntSyncValue maxProgressSyncer = (IntSyncValue) syncManager.getSyncHandler("maxProgressTime:0");
+        String fluidName = EnumChatFormatting.AQUA + fluidStack.getLocalizedName() + EnumChatFormatting.RESET;
+
+        return new TextWidget<>(IKey.dynamic(() -> getFluidTextLine(fluidName, amount, maxProgressSyncer)))
+            .height(DISPLAY_ROW_HEIGHT)
+            .scale(0.75f)
+            .tooltip(
+                t -> t.addLine(
+                    EnumChatFormatting.AQUA + fluidName
+                        + "\n"
+                        + GTUtility.appendRate(true, amount, false, maxProgressSyncer.getValue())));
+    }
+
+    private @NotNull String getFluidTextLine(String fluidName, long amount, IntSyncValue maxProgressTimeSyncer) {
+        String amountString = EnumChatFormatting.WHITE + " x "
+            + EnumChatFormatting.GOLD
+            + GTUtility.formatShortenedLong(amount)
+            + "L"
+            + EnumChatFormatting.WHITE
+            + GTUtility.appendRate(false, amount, true, maxProgressTimeSyncer.getValue());
+        String fluidTextLine = EnumChatFormatting.AQUA + GTUtility.truncateText(fluidName, 48 - amountString.length())
+            + amountString;
+        return fluidTextLine;
     }
 
     // TODO: separate panel gap into 'left row' and 'right row', for easier usage
@@ -840,22 +1061,25 @@ public class MTEMultiBlockBaseGui {
                 val -> base.mOutputFluids = val.toArray(new FluidStack[0]),
                 NetworkUtils::readFluidStack,
                 NetworkUtils::writeFluidStack,
-                null,
+                (a, b) -> a.isFluidEqual(b) && a.amount == b.amount,
                 null));
-        syncManager.syncValue(
-            "itemOutput",
-            new GenericListSyncHandler<ItemStack>(
-                () -> base.mOutputItems != null ? Arrays.asList(base.mOutputItems) : Collections.emptyList(),
-                val -> base.mOutputItems = val.toArray(new ItemStack[0]),
-                NetworkUtils::readItemStack,
-                NetworkUtils::writeItemStack,
-                null,
-                null));
+
         syncManager
             .syncValue("progressTime", new IntSyncValue(() -> base.mProgresstime, val -> base.mProgresstime = val));
-        syncManager.syncValue(
-            "maxProgressTime",
-            new IntSyncValue(() -> base.mMaxProgresstime, val -> base.mMaxProgresstime = val));
+
+        IntSyncValue maxProgressTimeSyncer = new IntSyncValue(
+            () -> base.mMaxProgresstime,
+            val -> base.mMaxProgresstime = val);
+        syncManager.syncValue("maxProgressTime", maxProgressTimeSyncer);
+
+        GenericListSyncHandler<ItemStack> itemOutputSyncer = new GenericListSyncHandler<>(
+            () -> base.mOutputItems != null ? Arrays.asList(base.mOutputItems) : Collections.emptyList(),
+            val -> base.mOutputItems = val.toArray(new ItemStack[0]),
+            NetworkUtils::readItemStack,
+            NetworkUtils::writeItemStack,
+            (a, b) -> a.isItemEqual(b) && a.stackSize == b.stackSize,
+            null);
+        syncManager.syncValue("itemOutput", itemOutputSyncer);
 
         StringSyncValue recipeInfoSyncer = new StringSyncValue(base::generateCurrentRecipeInfoString);
         syncManager.syncValue("recipeInfo", recipeInfoSyncer);
