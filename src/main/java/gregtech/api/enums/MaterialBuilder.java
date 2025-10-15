@@ -524,7 +524,7 @@ public class MaterialBuilder {
     }
 
     /** Adds an {@link OrePrefixes} that should not be generated. */
-    public MaterialBuilder addOrePrefixBlacklist(OrePrefixes prefix) {
+    public MaterialBuilder removeOrePrefix(OrePrefixes prefix) {
         this.orePrefixBlacklist.add(prefix);
         return this;
     }

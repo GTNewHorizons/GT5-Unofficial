@@ -4485,7 +4485,9 @@ public class GTUtility {
     }
 
     public static boolean isOre(Block block, int meta) {
-        if (OreManager.isOre(block, meta)) return true;
+        OptionalBoolean isOre = OreManager.isOre(block, meta);
+
+        if (isOre != OptionalBoolean.NONE) return isOre.getAsBoolean();
 
         return isOre(new ItemStack(block, 1, meta));
     }
