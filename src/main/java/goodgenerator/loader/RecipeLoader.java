@@ -48,7 +48,6 @@ import goodgenerator.util.MaterialFix;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsKevlar;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
@@ -1215,7 +1214,7 @@ public class RecipeLoader {
                 ItemList.Hull_MAX.get(1L),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUV, 4),
                 GGMaterial.orundum.get(OrePrefixes.plate, 2),
-                GTOreDictUnificator.get(OrePrefixes.plateTriple, MaterialsKevlar.Kevlar, 8),
+                GTOreDictUnificator.get(OrePrefixes.plateTriple, Materials.Kevlar, 8),
                 ItemList.UV_Coil.get(8),
                 GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Neutronium, 16),
                 ItemList.Electric_Motor_UHV.get(2),
@@ -1237,7 +1236,7 @@ public class RecipeLoader {
                 ItemList.Hull_UEV.get(1L),
                 GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Draconium, 4),
                 GGMaterial.orundum.get(OrePrefixes.plate, 8),
-                GTOreDictUnificator.get(OrePrefixes.plateDense, MaterialsKevlar.Kevlar, 16),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Kevlar, 16),
                 ItemList.UHV_Coil.get(8),
                 GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.TengamAttuned, 16),
                 ItemList.Electric_Motor_UEV.get(2),
