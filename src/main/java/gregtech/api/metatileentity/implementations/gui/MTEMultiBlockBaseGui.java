@@ -53,7 +53,6 @@ import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.CycleButtonWidget;
 import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
-import com.cleanroommc.modularui.widgets.ItemDisplayWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
@@ -72,6 +71,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
+import gregtech.api.modularui2.widgets.ResizableItemDisplayWidget;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -160,7 +160,10 @@ public class MTEMultiBlockBaseGui {
         return new Row().size(getTerminalRowWidth(), getTerminalRowHeight())
             .child(
                 new ParentWidget<>().size(getTerminalWidgetWidth(), getTerminalWidgetHeight())
-                    .padding(4)
+                    .paddingTop(4)
+                    .paddingBottom(4)
+                    .paddingLeft(4)
+                    .paddingRight(0)
                     .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
                     .child(
                         createTerminalTextWidget(syncManager, panel)
@@ -207,7 +210,6 @@ public class MTEMultiBlockBaseGui {
                     .widthRel(1))
             .child(createShutdownDurationWidget(syncManager))
             .child(createShutdownReasonWidget(syncManager))
-            .marginBottom(2)
             .child(createRecipeResultWidget())
             .childIf(base.showRecipeTextInGUI(), createRecipeInfoTextWidget(syncManager))
 
@@ -237,6 +239,7 @@ public class MTEMultiBlockBaseGui {
         return IKey.dynamic(shutdownReasonSync::getValue)
             .asWidget()
             .widthRel(1)
+            .marginBottom(2)
             .setEnabledIf(widget -> shouldShutdownReasonBeDisplayed(shutdownReasonSync.getValue()));
     }
 
@@ -288,10 +291,6 @@ public class MTEMultiBlockBaseGui {
             .coverChildrenHeight()
             .syncHandler(recipeHandler);
 
-        // Flow column = new Column().coverChildren();
-        // column.child(createItemRecipeInfoColumn(syncManager));
-        // column.child(createFluidRecipeInfoColumn(syncManager));
-        // return column;
     }
 
     private void notifyRecipeHandler(DynamicSyncHandler recipeHandler,
@@ -310,6 +309,8 @@ public class MTEMultiBlockBaseGui {
             }
         });
     }
+
+    private final int DISPLAY_ROW_HEIGHT = 14;
 
     private IWidget createItemRecipeInfo(PacketBuffer packet, PanelSyncManager syncManager) {
         int size = packet.readInt();
@@ -345,8 +346,7 @@ public class MTEMultiBlockBaseGui {
             column.child(
                 Flow.row()
                     .widthRel(1)
-                    .height(18)
-                    .marginBottom(4)
+                    .height(DISPLAY_ROW_HEIGHT)
                     .child(createItemDrawable(itemStack))
                     .child(createHoverableTextForItem(itemStack, amount, syncManager)));
         }
@@ -388,8 +388,7 @@ public class MTEMultiBlockBaseGui {
             column.child(
                 Flow.row()
                     .widthRel(1)
-                    .height(18)
-                    .marginBottom(4)
+                    .height(DISPLAY_ROW_HEIGHT)
                     .child(createFluidDrawable(fluidStack))
                     .child(createHoverableTextForFluid(fluidStack, amount, syncManager)));
         }
@@ -399,19 +398,18 @@ public class MTEMultiBlockBaseGui {
     private IWidget createRecipeInfoTextWidget(PanelSyncManager syncManager) {
         return IKey.dynamic(() -> ((StringSyncValue) syncManager.getSyncHandler("recipeInfo:0")).getValue())
             .asWidget()
-            .widthRel(1f)
-            .marginBottom(2)
+            .widthRel(1)
             .setEnabledIf(
                 widget -> Predicates.isNonEmptyList(syncManager.getSyncHandler("itemOutput:0"))
                     || Predicates.isNonEmptyList(syncManager.getSyncHandler("fluidOutput:0")));
     }
 
-    private ItemDisplayWidget createItemDrawable(ItemStack itemStack) {
-        return new ItemDisplayWidget().background(IDrawable.EMPTY)
+    private ResizableItemDisplayWidget createItemDrawable(ItemStack itemStack) {
+        return new ResizableItemDisplayWidget().background(IDrawable.EMPTY)
             .displayAmount(false)
             .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
             .item(itemStack)
-            .size(18, 18)
+            .size(DISPLAY_ROW_HEIGHT)
             .marginRight(1);
     }
 
@@ -420,7 +418,8 @@ public class MTEMultiBlockBaseGui {
         String itemName = EnumChatFormatting.AQUA + item.getDisplayName() + EnumChatFormatting.RESET;
 
         return new TextWidget<>(IKey.dynamic(() -> getItemTextLine(itemName, amount, maxProgressTimeSyncer)))
-            .scale(0.8f)
+            .height(DISPLAY_ROW_HEIGHT)
+            .scale(0.75f)
             .tooltip(
                 t -> t.addLine(
                     EnumChatFormatting.AQUA + itemName
@@ -435,20 +434,20 @@ public class MTEMultiBlockBaseGui {
             + GTUtility.formatShortenedLong(amount)
             + EnumChatFormatting.WHITE
             + GTUtility.appendRate(false, amount, true, maxProgressTimeSyncer.getValue());
-        String itemTextLine = EnumChatFormatting.AQUA + GTUtility.truncateText(itemName, 42 - amountString.length())
+        String itemTextLine = EnumChatFormatting.AQUA + GTUtility.truncateText(itemName, 46 - amountString.length())
             + amountString;
         return itemTextLine;
     }
 
-    private ItemDisplayWidget createFluidDrawable(FluidStack fluidStack) {
+    private ResizableItemDisplayWidget createFluidDrawable(FluidStack fluidStack) {
         // uses an itemstack representation of the fluid as there is no FluidDisplayWidget (yet)
         ItemStack fluidDisplayStack = GTUtility.getFluidDisplayStack(fluidStack, false, false);
-        return new ItemDisplayWidget().background(IDrawable.EMPTY)
+        return new ResizableItemDisplayWidget().background(IDrawable.EMPTY)
             .displayAmount(false)
             .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
             .item(fluidDisplayStack)
-            .size(18, 18)
-            .marginRight(4);
+            .size(DISPLAY_ROW_HEIGHT)
+            .marginRight(1);
     }
 
     private TextWidget<?> createHoverableTextForFluid(FluidStack fluidStack, long amount,
@@ -456,7 +455,9 @@ public class MTEMultiBlockBaseGui {
         IntSyncValue maxProgressSyncer = (IntSyncValue) syncManager.getSyncHandler("maxProgressTime:0");
         String fluidName = EnumChatFormatting.AQUA + fluidStack.getLocalizedName() + EnumChatFormatting.RESET;
 
-        return new TextWidget<>(IKey.dynamic(() -> getFluidTextLine(fluidName, amount, maxProgressSyncer))).scale(0.8f)
+        return new TextWidget<>(IKey.dynamic(() -> getFluidTextLine(fluidName, amount, maxProgressSyncer)))
+            .height(DISPLAY_ROW_HEIGHT)
+            .scale(0.75f)
             .tooltip(
                 t -> t.addLine(
                     EnumChatFormatting.AQUA + fluidName
@@ -471,7 +472,7 @@ public class MTEMultiBlockBaseGui {
             + "L"
             + EnumChatFormatting.WHITE
             + GTUtility.appendRate(false, amount, true, maxProgressTimeSyncer.getValue());
-        String fluidTextLine = EnumChatFormatting.AQUA + GTUtility.truncateText(fluidName, 45 - amountString.length())
+        String fluidTextLine = EnumChatFormatting.AQUA + GTUtility.truncateText(fluidName, 46 - amountString.length())
             + amountString;
         return fluidTextLine;
     }
