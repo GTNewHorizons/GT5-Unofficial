@@ -786,6 +786,7 @@ GT5U.MBTT.PartInfo=§f%s: §7%s
 GT5U.MBTT.PartInfo_X=§f%s: §7%s (%s)
 GT5U.MBTT.PartHintDesc=Hint block with dot %s
 GT5U.MBTT.AnyGlass=Any Glass
+GT5U.MBTT.AnyGlass_Tier=Any Glass (%s+)
 GT5U.MBTT.AnyCasing=Any Casing
 GT5U.MBTT.AnyBottomCasing=Any Bottom Casing
 GT5U.MBTT.MaintenanceHatch=Maintenance Hatch
@@ -3669,6 +3670,14 @@ gt.mb.corepos.top_center=Top center
 gt.mb.hint_block=Hint block with dot %d
 
 # Multiblock Tooltip lines
+gt.tfft.tips.1=High-Tech fluid tank that can hold up to 25 different fluids!\nHas 1/25th of the total capacity as capacity for each fluid\nRight clicking the controller with a screwdriver will turn on excess voiding\nFluid storage amount and running cost depends on the storage field blocks used
+gt.tfft.tips.2=Note on hatch locking:\nUse an Integrated Circuit in the GUI slot to limit which fluid is output\nThe index of a stored fluid can be obtained through the Tricorder
+gt.tfft.info.1=Energy hatch is not required when running cost is 0
+gt.tfft.info.2=Any top or bottom casing
+gt.tfft.info.3=Instead of any casing or glass, has to touch storage field block
+gt.tfft.info.4=You can have a bunch of hatches
+gt.tfft.info.5=Use MIOH with conduits or fluid storage buses to see all fluids at once.
+
 gt.cleanroom.tips.1=Consumes 40 EU/t when first turned on, and 4 EU/t once at 100% efficiency\nCan accept 2A from an LV energy hatch\nWill overclock and gain efficiency faster starting from HV
 gt.cleanroom.tips.2=§cWarning:\nBelow 100% efficiency machines inside have a chance to void outputs!\nEach maintenance issue reduces maximum efficiency by 10%\nGenerating any pollution inside causes the cleanroom to shut down
 gt.cleanroom.info.1=  If width or length is even, it can be in either of the two middle positions
@@ -3764,13 +3773,16 @@ gt.ebf.info.3=Any Heat Proof Machine Casing
 gt.mfe.tips.1=Use screwdriver to switch mode\nInsert an electromagnet into the electromagnet housing to use\nBetter electromagnets give further bonuses\nWith Tengam electromagnet, multi-amp (NOT laser) hatches are allowed
 gt.mfe.info.1=1 Block Above/Behind Controller
 
-gt.so_fuel_cell_ii.tips.1=Oxidizes gas fuels to generate electricity without polluting the environment\nConsumes up to %sEU worth of fuel with up to 100%% efficiency each second\nNitrobenzene and other gas fuels above 1M EU/bucket are more efficient\nSteam production requires the SOFC to heat up completely first\nOutputs %sEU/t and %sL/s Superheated Steam\nAdditionally, requires %sL/s Oxygen gas
-gt.so_fuel_cell_ii.info.1=3x, Center 1x1x3
-gt.so_fuel_cell_ii.info.2=6x, touching the electrolyte units on the horizontal sides
-gt.so_fuel_cell_ii.info.3=Back center
-gt.so_fuel_cell_ii.info.4=Fuel, any casing
-gt.so_fuel_cell_ii.info.5=Oxygen, any casing
-gt.so_fuel_cell_ii.info.6=Superheated Steam, any casing
+gt.so_fuel_cell.tips.1=Oxidizes gas fuels to generate electricity without polluting the environment\nConsumes up to %sEU worth of fuel with up to 100%% efficiency each second
+gt.so_fuel_cell.tips.2=Steam production requires the SOFC to heat up completely first\nOutputs %sEU/t and %sL/s %s\nAdditionally, requires %sL/s Oxygen gas
+gt.so_fuel_cell.info.1=3x, Center 1x1x3
+gt.so_fuel_cell.info.2=6x, touching the electrolyte units on the horizontal sides
+gt.so_fuel_cell.info.3=Back center
+gt.so_fuel_cell.info.4=Fuel, any casing
+gt.so_fuel_cell.info.5=Oxygen, any casing
+gt.so_fuel_cell_i.info.1=Steam, any casing
+gt.so_fuel_cell_ii.tips.1=Nitrobenzene and other gas fuels above 1M EU/bucket are more efficient
+gt.so_fuel_cell_ii.info.1=Superheated Steam, any casing
 
 gt.lapo_super_capacitor.tips.1=Loses energy equal to 1%% of the total capacity every 24 hours\nCapped at §c%s §7EU/t passive loss per %s%s §7capacitor\nThe passive loss increases §4100§7-fold for every capacitor tier above\nPassive loss is multiplied by the number of maintenance issues present
 gt.lapo_super_capacitor.tips.2=Glass shell has to be Tier - 3 of the highest capacitor tier

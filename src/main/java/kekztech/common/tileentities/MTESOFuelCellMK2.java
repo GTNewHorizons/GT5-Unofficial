@@ -103,22 +103,25 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.gas_turbine")
+            .addInfo("gt.so_fuel_cell.tips.1", GTUtility.formatNumbers(EU_PER_TICK * 20))
+            .addInfo("gt.so_fuel_cell_ii.tips.1")
             .addInfo(
-                "gt.so_fuel_cell_ii.tips.1",
-                GTUtility.formatNumbers(EU_PER_TICK * 20),
+                "gt.so_fuel_cell.tips.2",
                 EU_PER_TICK,
                 STEAM_PER_SEC,
+                FluidRegistry.getFluidStack("ic2superheatedsteam", 1)
+                    .getLocalizedName(),
                 OXYGEN_PER_SEC)
             .beginStructureBlock(3, 3, 5, false)
             .addController("front_center")
             .addCasingInfoMin("gt.blockcasings4.0.name", 12)
-            .addStructurePart("tile.kekztech_gdcceramicelectrolyteunit_block.name", "gt.so_fuel_cell_ii.info.1")
-            .addStructurePart("Material.reinforcedglass", "gt.so_fuel_cell_ii.info.2")
-            .addDynamoHatch("gt.so_fuel_cell_ii.info.3", 2)
-            .addMaintenanceHatch("GT5U.MBTT.AnyCasing", 1)
-            .addInputHatch("gt.so_fuel_cell_ii.info.4", 1)
-            .addInputHatch("gt.so_fuel_cell_ii.info.5", 1)
-            .addOutputHatch("gt.so_fuel_cell_ii.info.6", 1)
+            .addStructurePart("tile.kekztech_gdcceramicelectrolyteunit_block.name", "gt.so_fuel_cell.info.1")
+            .addStructurePart("Material.reinforcedglass", "gt.so_fuel_cell.info.2")
+            .addDynamoHatch("gt.so_fuel_cell.info.3", 2)
+            .addMaintenanceHatch("<casing>", 1)
+            .addInputHatch("gt.so_fuel_cell.info.4", 1)
+            .addInputHatch("gt.so_fuel_cell.info.5", 1)
+            .addOutputHatch("gt.so_fuel_cell_ii.info.1", 1)
             .toolTipFinisher();
         return tt;
     }

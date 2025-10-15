@@ -10,6 +10,7 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
+import static gregtech.api.util.tooltip.TooltipHelper.voltageText;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.math.BigInteger;
@@ -340,30 +341,21 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fluid Tank")
-            .addInfo("High-Tech fluid tank that can hold up to 25 different fluids!")
-            .addInfo("Has 1/25th of the total capacity as capacity for each fluid")
-            .addInfo("Right clicking the controller with a screwdriver will turn on excess voiding")
-            .addInfo("Fluid storage amount and running cost depends on the storage field blocks used")
-            .addSeparator()
-            .addInfo("Note on hatch locking:")
-            .addInfo("Use an Integrated Circuit in the GUI slot to limit which fluid is output")
-            .addInfo("The index of a stored fluid can be obtained through the Tricorder")
+        tt.addMachineType("machtype.fluid_tank")
+            .addManyInfo("gt.tfft.tips.1", "gt.tfft.tips.2")
             .beginVariableStructureBlock(5, 5, 5, 15, 5, 5, false)
-            .addController("Top Center")
-            .addCasingInfoMin("T.F.F.T Casing", MIN_CASING_AMOUNT, false)
-            .addCasingInfoRange("Storage Field Blocks", 7, 117, true)
-            .addStructureInfo("Energy hatch is not required when running cost is 0")
-            .addCasingInfoRange("Any Tiered Glass (EV+)", 48, 208, false)
-            .addMaintenanceHatch("Any top or bottom casing")
-            .addEnergyHatch("Any top or bottom casing")
-            .addInputHatch("Instead of any casing or glass, has to touch storage field block")
-            .addOutputHatch("Instead of any casing or glass, has to touch storage field block")
-            .addStructureInfo("You can have a bunch of hatches")
-            .addOtherStructurePart(
-                "Multi I/O Hatches",
-                "Instead of any casing or glass, has to touch storage field block")
-            .addStructureInfo("Use MIOH with conduits or fluid storage buses to see all fluids at once.")
+            .addController("top_center")
+            .addCasingInfoMin("tile.kekztech_tfftstoragefield_block.0.name", MIN_CASING_AMOUNT)
+            .addCasingInfoRange("tile.kekztech_tfftstoragefield_block.generic.name", 7, 117, true)
+            .addStructureInfo("gt.tfft.info.1")
+            .addCasingInfoRange(translate("GT5U.MBTT.AnyGlass_Tier", voltageText(4)), 48, 208, true)
+            .addMaintenanceHatch("gt.tfft.info.2")
+            .addEnergyHatch("gt.tfft.info.2")
+            .addInputHatch("gt.tfft.info.3")
+            .addOutputHatch("gt.tfft.info.3")
+            .addStructureInfo("gt.tfft.info.4")
+            .addStructurePart("gt.blockmachines.machine.tffthatch.name", "gt.tfft.info.3")
+            .addStructureInfo("gt.tfft.info.5")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
