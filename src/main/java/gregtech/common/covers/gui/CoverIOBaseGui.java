@@ -1,5 +1,7 @@
 package gregtech.common.covers.gui;
 
+import net.minecraft.util.StatCollector;
+
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
@@ -74,16 +76,18 @@ public class CoverIOBaseGui extends CoverGui<CoverIOBase> {
             .tooltip(
                 IKey.dynamic(
                     () -> ioModeSyncValue.getValue() == TransferMode.IMPORT
-                        ? IKey.lang("gt.interact.desc.conveyor.AllowIn")
-                        : IKey.lang("gt.interact.desc.conveyor.AllowOut")),
+                        ? StatCollector.translateToLocal("gt.interact.desc.conveyor.AllowIn")
+                        : StatCollector.translateToLocal("gt.interact.desc.conveyor.AllowOut")),
                 IKey.dynamic(
                     () -> ioModeSyncValue.getValue() == TransferMode.IMPORT
-                        ? IKey.lang("gt.interact.desc.conveyor.BlockIn")
-                        : IKey.lang("gt.interact.desc.conveyor.BlockOut")))
+                        ? StatCollector.translateToLocal("gt.interact.desc.conveyor.BlockIn")
+                        : StatCollector.translateToLocal("gt.interact.desc.conveyor.BlockOut")))
             .build();
-        IWidget blockingLabel = IKey.dynamic(
-            () -> ioModeSyncValue.getValue() == TransferMode.IMPORT ? IKey.lang("gt.interact.desc.conveyor.InputBlock")
-                : IKey.lang("gt.interact.desc.conveyor.OutputBlock"))
+        IWidget blockingLabel = IKey
+            .dynamic(
+                () -> ioModeSyncValue.getValue() == TransferMode.IMPORT
+                    ? StatCollector.translateToLocal("gt.interact.desc.conveyor.InputBlock")
+                    : StatCollector.translateToLocal("gt.interact.desc.conveyor.OutputBlock"))
             .asWidget();
 
         column.child(

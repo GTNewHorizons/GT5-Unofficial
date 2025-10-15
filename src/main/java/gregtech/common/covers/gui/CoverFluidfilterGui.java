@@ -1,5 +1,6 @@
 package gregtech.common.covers.gui;
 
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -98,12 +99,12 @@ public class CoverFluidfilterGui extends CoverGui<CoverFluidfilter> {
                         .tooltip(
                             IKey.dynamic(
                                 () -> ioModeSyncValue.getValue() == FilterDirectionMode.INPUT
-                                    ? IKey.lang("gt.interact.desc.FluidFilter.AllowOutput")
-                                    : IKey.lang("gt.interact.desc.FluidFilter.AllowInput")),
+                                    ? StatCollector.translateToLocal("gt.interact.desc.FluidFilter.AllowOutput")
+                                    : StatCollector.translateToLocal("gt.interact.desc.FluidFilter.AllowInput")),
                             IKey.dynamic(
                                 () -> ioModeSyncValue.getValue() == FilterDirectionMode.INPUT
-                                    ? IKey.lang("gt.interact.desc.FluidFilter.BlockOutput")
-                                    : IKey.lang("gt.interact.desc.FluidFilter.BlockInput")))
+                                    ? StatCollector.translateToLocal("gt.interact.desc.FluidFilter.BlockOutput")
+                                    : StatCollector.translateToLocal("gt.interact.desc.FluidFilter.BlockInput")))
                         .build(),
                     IKey.lang("gt.interact.desc.FluidFilter.BlockFlow")
                         .asWidget()))
@@ -122,7 +123,7 @@ public class CoverFluidfilterGui extends CoverGui<CoverFluidfilter> {
                         if (fluidStack != null) {
                             return fluidStack.getLocalizedName();
                         }
-                        return IKey.lang("gt.interact.desc.FluidFilter.Empty");
+                        return StatCollector.translateToLocal("gt.interact.desc.FluidFilter.Empty");
                     })
                         .asWidget()));
     }
