@@ -2401,6 +2401,11 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
             .set(new ItemRedstoneSniffer("Item_Redstone_Sniffer", "Redstone Sniffer", "What are these frequencies?!"));
         ItemList.Vajra_Core.set(addItem(Vajra_Core.ID, "Vajra Core", ""));
         ItemList.Magnetron.set(addItem(Magnetron.ID, "Magnetron", ""));
+        ItemList.ChaosLocator.set(
+            new ItemChaosLocator(
+                "Item_Chaos_Locator",
+                "Chaos Locator",
+                String.join("/n ", "Locates areas with extreme entropy", "and transfers you to them")));
 
         try {
             CropCard tCrop;
