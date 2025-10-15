@@ -447,7 +447,7 @@ public class MTEMultiBlockBaseGui {
             + GTUtility.formatShortenedLong(amount)
             + EnumChatFormatting.WHITE
             + GTUtility.appendRate(false, amount, true, maxProgressTimeSyncer.getValue());
-        String itemTextLine = EnumChatFormatting.AQUA + GTUtility.truncateText(itemName, 46 - amountString.length())
+        String itemTextLine = EnumChatFormatting.AQUA + GTUtility.truncateText(itemName, 48 - amountString.length())
             + amountString;
         return itemTextLine;
     }
@@ -485,7 +485,7 @@ public class MTEMultiBlockBaseGui {
             + "L"
             + EnumChatFormatting.WHITE
             + GTUtility.appendRate(false, amount, true, maxProgressTimeSyncer.getValue());
-        String fluidTextLine = EnumChatFormatting.AQUA + GTUtility.truncateText(fluidName, 46 - amountString.length())
+        String fluidTextLine = EnumChatFormatting.AQUA + GTUtility.truncateText(fluidName, 48 - amountString.length())
             + amountString;
         return fluidTextLine;
     }
