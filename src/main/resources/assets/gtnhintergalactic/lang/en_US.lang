@@ -199,13 +199,7 @@ gt.blockmachines.multimachine.ig.siphon.lore3=The name is wrong by definition...
 # Dyson Swarm
 gt.blockmachines.multimachine.ig.dyson.name=Dyson Swarm Ground Unit
 gt.blockmachines.multimachine.ig.dyson.type=Dyson Swarm
-gt.blockmachines.multimachine.ig.dyson.desc1=Put Dyson Swarm Modules in the Input Bus(es) to send them to the next star.
-gt.blockmachines.multimachine.ig.dyson.desc2=Outputs §a%s*§9§lD§r §7EU/t per module up to §a10,000
-gt.blockmachines.multimachine.ig.dyson.desc3=Each hour, §6§lI§r§a * (2 * %s) / (exp(-%s * (§6§lI§r§a - 1)) + exp(%s * §b§lC§r§a)) §7of modules are destroyed.
-gt.blockmachines.multimachine.ig.dyson.desc4=§b§lC§r§bomputation/s§r, §6§lI§r§6nitial module amount, §9§lD§r§9imension-dependent factor §7(check quest for values)
-gt.blockmachines.multimachine.ig.dyson.desc5=Requires §a%sL/h §7of %s.
-gt.blockmachines.multimachine.ig.dyson.desc6=R-Click with a Plunger to extract as many Modules to your inventory as possible.
-gt.blockmachines.multimachine.ig.dyson.desc7=Sneaking will dump the rest on the ground.
+gt.blockmachines.multimachine.ig.dyson.desc1=Put Dyson Swarm Modules in the Input Bus(es) to send them to the next star.\nOutputs §a%s*§9§lD§r §7EU/t per module up to §a10,000\nEach hour, §6§lI§r§a * (2 * %s) / (exp(-%s * (§6§lI§r§a - 1)) + exp(%s * §b§lC§r§a)) §7of modules are destroyed.\n§b§lC§r§bomputation/s§r, §6§lI§r§6nitial module amount, §9§lD§r§9imension-dependent factor §7(check quest for values)\nRequires §a%sL/h §7of %s.\nR-Click with a Plunger to extract as many Modules to your inventory as possible.\nSneaking will dump the rest on the ground.
 gt.blockmachines.multimachine.ig.dyson.lore0=Wait, this isn't an army of vacuum cleaners?
 gt.blockmachines.multimachine.ig.dyson.lore1=Number 9? Not quite.
 gt.blockmachines.multimachine.ig.dyson.lore2=Not the game.
@@ -365,7 +359,7 @@ ig.structure.and= and
 
 ig.dyson.structure.dynamo=Can use Single- and/or Multi-Amp Dynamo Hatches and/or Laser Source Hatches (1 - 12)
 ig.dyson.structure.optical=Optical Reception Connector
-ig.dyson.structure.additionally=Additionally needed:
+ig.dyson.structure.additionally=§oAdditionally needed:
 ig.dyson.structure.deployment.core=Module Deployment Unit Core
 ig.dyson.structure.deployment.magnet=Module Deployment Unit Superconducting Magnet
 ig.dyson.structure.deployment.base=Module Deployment Unit Base Casing
