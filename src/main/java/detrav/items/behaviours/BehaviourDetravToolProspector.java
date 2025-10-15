@@ -264,7 +264,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
 
         ItemStack blockStack = new ItemStack(block, 1, meta);
 
-        if (OreManager.isOre(block, meta)) {
+        if (GTUtility.isOre(block, meta)) {
             addOreToHashMap(blockStack.getDisplayName(), aPlayer);
             if (!aPlayer.capabilities.isCreativeMode) aItem.doDamage(aStack, this.mCosts);
             return;
