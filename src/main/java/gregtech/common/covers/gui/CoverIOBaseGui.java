@@ -1,7 +1,5 @@
 package gregtech.common.covers.gui;
 
-import net.minecraft.util.StatCollector;
-
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
@@ -43,7 +41,7 @@ public class CoverIOBaseGui extends CoverGui<CoverIOBase> {
         IWidget exportImportButtons = new EnumRowBuilder<>(TransferMode.class).value(ioModeSyncValue)
             .overlay(GTGuiTextures.OVERLAY_BUTTON_EXPORT, GTGuiTextures.OVERLAY_BUTTON_IMPORT)
             .build();
-        IWidget exportImportLabel = IKey.str(StatCollector.translateToLocal("gt.interact.desc.Pump.ExpImp"))
+        IWidget exportImportLabel = IKey.lang("gt.interact.desc.Pump.ExpImp")
             .asWidget();
 
         EnumSyncValue<MachineProcessingCondition> conditionModeSyncValue = new EnumSyncValue<>(
@@ -57,7 +55,7 @@ public class CoverIOBaseGui extends CoverGui<CoverIOBase> {
                 GTGuiTextures.OVERLAY_BUTTON_USE_PROCESSING_STATE,
                 GTGuiTextures.OVERLAY_BUTTON_USE_INVERTED_PROCESSING_STATE)
             .build();
-        IWidget conditionLabel = IKey.str(StatCollector.translateToLocal("gt.interact.desc.conveyor.Conditional"))
+        IWidget conditionLabel = IKey.lang("gt.interact.desc.conveyor.Conditional")
             .asWidget();
 
         EnumSyncValue<BlockMode> blockModeSyncValue = new EnumSyncValue<>(
@@ -76,18 +74,16 @@ public class CoverIOBaseGui extends CoverGui<CoverIOBase> {
             .tooltip(
                 IKey.dynamic(
                     () -> ioModeSyncValue.getValue() == TransferMode.IMPORT
-                        ? StatCollector.translateToLocal("gt.interact.desc.conveyor.AllowIn")
-                        : StatCollector.translateToLocal("gt.interact.desc.conveyor.AllowOut")),
+                        ? IKey.lang("gt.interact.desc.conveyor.AllowIn")
+                        : IKey.lang("gt.interact.desc.conveyor.AllowOut")),
                 IKey.dynamic(
                     () -> ioModeSyncValue.getValue() == TransferMode.IMPORT
-                        ? StatCollector.translateToLocal("gt.interact.desc.conveyor.BlockIn")
-                        : StatCollector.translateToLocal("gt.interact.desc.conveyor.BlockOut")))
+                        ? IKey.lang("gt.interact.desc.conveyor.BlockIn")
+                        : IKey.lang("gt.interact.desc.conveyor.BlockOut")))
             .build();
-        IWidget blockingLabel = IKey
-            .dynamic(
-                () -> ioModeSyncValue.getValue() == TransferMode.IMPORT
-                    ? StatCollector.translateToLocal("gt.interact.desc.conveyor.InputBlock")
-                    : StatCollector.translateToLocal("gt.interact.desc.conveyor.OutputBlock"))
+        IWidget blockingLabel = IKey.dynamic(
+            () -> ioModeSyncValue.getValue() == TransferMode.IMPORT ? IKey.lang("gt.interact.desc.conveyor.InputBlock")
+                : IKey.lang("gt.interact.desc.conveyor.OutputBlock"))
             .asWidget();
 
         column.child(

@@ -1,7 +1,5 @@
 package gregtech.common.covers.gui;
 
-import net.minecraft.util.StatCollector;
-
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
@@ -49,10 +47,10 @@ public class CoverItemFilterGui extends CoverGui<CoverItemFilter> {
                                 .overlay(GTGuiTextures.OVERLAY_BUTTON_WHITELIST, GTGuiTextures.OVERLAY_BUTTON_BLACKLIST)
                                 .build())
                         .child(
-                            IKey.str(StatCollector.translateToLocal("gt.interact.desc.Item_Filter.CheckMode"))
+                            IKey.lang("gt.interact.desc.Item_Filter.CheckMode")
                                 .asWidget()))
                 .child(
-                    IKey.str(StatCollector.translateToLocal("gt.interact.desc.Item_Filter.Filter") + " ")
+                    IKey.lang("gt.interact.desc.Item_Filter.Filter" + " ")
                         .asWidget()
                         .marginTop(WIDGET_MARGIN))
                 .child(

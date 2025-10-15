@@ -1,7 +1,5 @@
 package gregtech.common.covers.gui;
 
-import net.minecraft.util.StatCollector;
-
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
@@ -51,27 +49,27 @@ public class CoverControlsWorkGui extends CoverGui<CoverControlsWork> {
                         .value(LinkedBoolValue.of(conditionModeSyncValue, RedstoneCondition.ENABLE_WITH_REDSTONE))
                         .overlay(GTGuiTextures.OVERLAY_BUTTON_REDSTONE_ON)
                         .size(16),
-                    IKey.str(StatCollector.translateToLocal("gt.interact.desc.MachContr.EnRedstone"))
+                    IKey.lang("gt.interact.desc.MachContr.EnRedstone")
                         .asWidget())
                 .row(
                     new SelectButton()
                         .value(LinkedBoolValue.of(conditionModeSyncValue, RedstoneCondition.DISABLE_WITH_REDSTONE))
                         .overlay(GTGuiTextures.OVERLAY_BUTTON_REDSTONE_OFF)
                         .size(16),
-                    IKey.str(StatCollector.translateToLocal("gt.interact.desc.MachContr.DisRedstone"))
+                    IKey.lang("gt.interact.desc.MachContr.DisRedstone")
                         .asWidget())
                 .row(
                     new SelectButton().value(LinkedBoolValue.of(conditionModeSyncValue, RedstoneCondition.DISABLE))
                         .overlay(GTGuiTextures.OVERLAY_BUTTON_CROSS)
                         .size(16),
-                    IKey.str(StatCollector.translateToLocal("gt.interact.desc.MachContr.DisMachine"))
+                    IKey.lang("gt.interact.desc.MachContr.DisMachine")
                         .asWidget())
                 .row(
                     new ToggleButton().value(safeModeSyncValue)
                         .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                         .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
                         .size(16),
-                    IKey.str(StatCollector.translateToLocal("gt.interact.desc.MachContr.SafeMode"))
+                    IKey.lang("gt.interact.desc.MachContr.SafeMode")
                         .asWidget()));
     }
 }
