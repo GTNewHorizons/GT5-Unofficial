@@ -26,7 +26,6 @@ import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsKevlar;
 import gregtech.api.enums.MaterialsOreAlum;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
@@ -1664,7 +1663,7 @@ public class MixerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.IC2_Spray_WeedEx.get(1))
-            .fluidInputs(MaterialsKevlar.NaphthenicAcid.getFluid(10))
+            .fluidInputs(Materials.NaphthenicAcid.getFluid(10))
             .fluidOutputs(Materials.WeedEX9000.getFluid(750))
             .duration(5 * SECONDS)
             .eut(100)

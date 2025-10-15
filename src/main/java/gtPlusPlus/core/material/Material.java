@@ -97,6 +97,8 @@ public class Material implements IOreMaterial {
     /** A cache field for raw ores to prevent constant map lookups. */
     private ItemStack rawOre;
 
+    private boolean hasOre;
+
     public Material(final String materialName, final MaterialState defaultState, final MaterialStack... inputs) {
         this(materialName, defaultState, null, inputs);
     }
@@ -1131,6 +1133,14 @@ public class Material implements IOreMaterial {
         }
 
         return GTUtility.copyAmount(stacksize, ore);
+    }
+
+    public final boolean hasOre() {
+        return hasOre;
+    }
+
+    public void setHasOre() {
+        this.hasOre = true;
     }
 
     public final Block getOreBlock(final int stacksize) {

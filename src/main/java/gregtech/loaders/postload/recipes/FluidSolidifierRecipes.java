@@ -24,7 +24,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsKevlar;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -285,7 +284,7 @@ public class FluidSolidifierRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Spinneret.get(0L))
             .itemOutputs(ItemList.KevlarFiber.get(8L))
-            .fluidInputs(MaterialsKevlar.LiquidCrystalKevlar.getFluid(1 * INGOTS))
+            .fluidInputs(Materials.LiquidCrystalKevlar.getFluid(1 * INGOTS))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(fluidSolidifierRecipes);
