@@ -336,11 +336,10 @@ public class MTEMultiBlockBaseGui {
                 Integer stackSizeB = b.getValue();
 
                 if (stackSizeA.equals(stackSizeB)) {
-                    ItemStack itemA = new ItemStack(itemDisplayA.item(), itemDisplayA.damage(), stackSizeA);
-                    ItemStack itemB = new ItemStack(itemDisplayB.item(), itemDisplayB.damage(), stackSizeB);
-                    String nameA = StatCollector.translateToLocal(itemA.toString());
-                    String nameB = StatCollector.translateToLocal(itemB.toString());
-                    return nameA.compareTo(nameB);
+                    ItemStack itemA = new ItemStack(itemDisplayA.item(), stackSizeA, itemDisplayA.damage());
+                    ItemStack itemB = new ItemStack(itemDisplayB.item(), stackSizeB, itemDisplayB.damage());
+                    return itemA.getDisplayName()
+                        .compareTo(itemB.getDisplayName());
                 } else {
                     return stackSizeB.compareTo(stackSizeA);
                 }
