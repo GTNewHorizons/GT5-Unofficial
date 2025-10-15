@@ -74,12 +74,9 @@ public class TextureSet {
         SET_STELLAR = new TextureSet("stellar", true), SET_VIVID = new TextureSet("vivid", true),
         SET_DRACONIUM = new TextureSet("draconium", false),
         SET_AWOKEN_DRACONIUM = new TextureSet("awakeneddraconium", false),
-        SET_ELECTROTINE = new TextureSet("electrotine", false),
-        SET_REDSTONE = new TextureSet("redstone", false),
-        SET_GLOWSTONE = new TextureSet("glowstone", false),
-        SET_PYROTHEUM = new TextureSet("pyrotheum", false),
-        SET_CRYOTHEUM = new TextureSet("cryotheum", false),
-        SET_BLAZE = new TextureSet("blaze", false),
+        SET_ELECTROTINE = new TextureSet("electrotine", false), SET_REDSTONE = new TextureSet("redstone", false),
+        SET_GLOWSTONE = new TextureSet("glowstone", false), SET_PYROTHEUM = new TextureSet("pyrotheum", false),
+        SET_CRYOTHEUM = new TextureSet("cryotheum", false), SET_BLAZE = new TextureSet("blaze", false),
         SET_BLIZZ = new TextureSet("blizz", false);
 
     /**

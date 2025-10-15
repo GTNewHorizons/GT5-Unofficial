@@ -149,8 +149,8 @@ public class FluidUtils {
     }
 
     public static Fluid addGtFluid(final String aName, final String aLocalized, final short[] rgba, final int aState,
-                                   final long aTemperatureK, final ItemStack aFullContainer, final ItemStack aEmptyContainer,
-                                   final int aFluidAmount, final boolean aGenerateCell, final boolean aCustomTexture) {
+        final long aTemperatureK, final ItemStack aFullContainer, final ItemStack aEmptyContainer,
+        final int aFluidAmount, final boolean aGenerateCell, final boolean aCustomTexture) {
         if (aCustomTexture) {
             return addGTFluid(
                 aName,
@@ -181,8 +181,8 @@ public class FluidUtils {
     }
 
     public static Fluid addGtFluid(final String aName, final String aLocalized, final short[] rgba, final int aState,
-                                   final long aTemperatureK, final ItemStack aFullContainer, final ItemStack aEmptyContainer,
-                                   final int aFluidAmount, final boolean aGenerateCell) {
+        final long aTemperatureK, final ItemStack aFullContainer, final ItemStack aEmptyContainer,
+        final int aFluidAmount, final boolean aGenerateCell) {
         return addGTFluid(
             aName,
             "fluid." + aName,
@@ -197,8 +197,8 @@ public class FluidUtils {
             false);
     }
 
-    public static Fluid addGTFluidMolten(final String aName, final String aLocalized, final short[] aRGBa, final int aState,
-        final long aTemperatureK, final ItemStack aFullContainer, final ItemStack aEmptyContainer,
+    public static Fluid addGTFluidMolten(final String aName, final String aLocalized, final short[] aRGBa,
+        final int aState, final long aTemperatureK, final ItemStack aFullContainer, final ItemStack aEmptyContainer,
         final int aFluidAmount, final boolean aGenerateCell) {
         return addGTFluid(
             "molten." + aName,
