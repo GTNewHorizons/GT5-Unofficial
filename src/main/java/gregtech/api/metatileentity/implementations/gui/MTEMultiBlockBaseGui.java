@@ -319,25 +319,25 @@ public class MTEMultiBlockBaseGui {
             .coverChildren();
         List<ItemStack> itemList = new ArrayList<>(size);
 
-        Map<ItemDisplayKey, Integer> itemDisplayMap = new HashMap<>(size);
+        Map<ItemDisplayKey, Long> itemDisplayMap = new HashMap<>(size);
         for (int i = 0; i < size; i++) {
             ItemStack item = NetworkUtils.readItemStack(packet);
             itemList.add(item);
             itemDisplayMap
-                .merge(new ItemDisplayKey(item.getItem(), item.getItemDamage()), item.stackSize, Integer::sum);
+                .merge(new ItemDisplayKey(item.getItem(), item.getItemDamage()), (long) item.stackSize, Long::sum);
         }
         // a and b comparison swapped for stacksize on purpose to get descending order
-        List<Map.Entry<ItemDisplayKey, Integer>> sortedEntries = itemDisplayMap.entrySet()
+        List<Map.Entry<ItemDisplayKey, Long>> sortedEntries = itemDisplayMap.entrySet()
             .stream()
             .sorted((a, b) -> {
                 ItemDisplayKey itemDisplayA = a.getKey();
-                Integer stackSizeA = a.getValue();
+                Long stackSizeA = a.getValue();
                 ItemDisplayKey itemDisplayB = b.getKey();
-                Integer stackSizeB = b.getValue();
+                Long stackSizeB = b.getValue();
 
                 if (stackSizeA.equals(stackSizeB)) {
-                    ItemStack itemA = new ItemStack(itemDisplayA.item(), stackSizeA, itemDisplayA.damage());
-                    ItemStack itemB = new ItemStack(itemDisplayB.item(), stackSizeB, itemDisplayB.damage());
+                    ItemStack itemA = new ItemStack(itemDisplayA.item(), 1, itemDisplayA.damage());
+                    ItemStack itemB = new ItemStack(itemDisplayB.item(), 1, itemDisplayB.damage());
                     return itemA.getDisplayName()
                         .compareTo(itemB.getDisplayName());
                 } else {
@@ -347,12 +347,12 @@ public class MTEMultiBlockBaseGui {
             .collect(Collectors.toList());
 
         // create row for each entry
-        for (Map.Entry<ItemDisplayKey, Integer> entry : sortedEntries) {
+        for (Map.Entry<ItemDisplayKey, Long> entry : sortedEntries) {
             Item item = entry.getKey()
                 .item();
             int damage = entry.getKey()
                 .damage();
-            int amount = entry.getValue();
+            long amount = entry.getValue();
             column.child(
                 Flow.row()
                     .widthRel(1)
