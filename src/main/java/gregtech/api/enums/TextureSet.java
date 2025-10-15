@@ -113,7 +113,7 @@ public class TextureSet {
         SET_WHITE_DWARF_MATTER = new TextureSet("WhiteDwarfMatter", true),
         SET_UNIVERSIUM = new TextureSet("universium", true), SET_ETERNITY = new TextureSet("eternity", true),
         SET_MAGMATTER = new TextureSet("magmatter", true), SET_GRAVITON_SHARD = new TextureSet("GravitonShard", true),
-        SET_DSSF = new TextureSet("dimensionallyshiftedsuperfluid", true),
+        SET_DIMENSIONALLY_SHIFTED_SUPER_FLUID = new TextureSet("dimensionallyshiftedsuperfluid", true),
         SET_PROTOHALKONITE_BASE = new TextureSet("protohalkonitebase", true),
         SET_HOT_PROTOHALKONITE = new TextureSet("hotprotohalkonite", true),
         SET_PROTOHALKONITE = new TextureSet("protohalkonite", true),
