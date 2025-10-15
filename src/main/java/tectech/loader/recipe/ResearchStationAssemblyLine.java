@@ -56,7 +56,6 @@ import goodgenerator.items.GGMaterial;
 import goodgenerator.util.ItemRefer;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsKevlar;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -2156,7 +2155,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     .get(OrePrefixes.plate, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 4L),
                 GTOreDictUnificator
                     .get(OrePrefixes.screw, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 16L),
-                GTOreDictUnificator.get(OrePrefixes.ring, MaterialsKevlar.Kevlar, 64L),
+                GTOreDictUnificator.get(OrePrefixes.ring, Materials.Kevlar, 64L),
                 GTOreDictUnificator.get("ringRadoxPoly", 64L),
                 GTOreDictUnificator
                     .get(OrePrefixes.rotor, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 4L),
@@ -2187,7 +2186,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTOreDictUnificator
                     .get(OrePrefixes.round, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 64L),
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, MaterialsUEVplus.SpaceTime, 4L),
-                MaterialsKevlar.Kevlar.getPlates(64), MaterialsKevlar.Kevlar.getPlates(16),
+                Materials.Kevlar.getPlates(64), Materials.Kevlar.getPlates(16),
                 GTOreDictUnificator.get("plateRadoxPoly", 64L), GTOreDictUnificator.get("plateRadoxPoly", 16L),
                 Materials.Neutronium.getNanite(4) },
             new FluidStack[] { moltenMHDCSM_576, moltenSpaceTime_576, moltenUniversium_576,

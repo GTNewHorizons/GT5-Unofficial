@@ -1455,7 +1455,7 @@ public class Material implements IOreMaterial {
 
         // This fluid does not exist at all, time to generate it.
         if (this.materialState == MaterialState.SOLID) {
-            return FluidUtils.addGTFluid(
+            return FluidUtils.addGTFluidMolten(
                 this.getUnlocalizedName(),
                 "Molten " + this.getLocalizedName(),
                 this.RGBA,
@@ -1466,7 +1466,7 @@ public class Material implements IOreMaterial {
                 1000,
                 this.vGenerateCells);
         } else if (this.materialState == MaterialState.LIQUID || this.materialState == MaterialState.PURE_LIQUID) {
-            return FluidUtils.addGTFluid(
+            return FluidUtils.addGTFluidMolten(
                 this.getUnlocalizedName(),
                 this.getLocalizedName(),
                 this.RGBA,
