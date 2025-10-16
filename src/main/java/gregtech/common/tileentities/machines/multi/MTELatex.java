@@ -181,7 +181,7 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
                     discount = 0.0625 * itemPipeTier;
                     if (controllerStack != null && controllerStack.isItemEqual(
                         Objects.requireNonNull(
-                            getModItem(UniversalSingularities.ID, "universal.rubber.singularity", 1L)))) {
+                            getModItem(UniversalSingularities.ID, "universal.elastic.singularity", 1L)))) {
                         discount = discount + 0.25;
                         base_parallel = 16;
                     }
