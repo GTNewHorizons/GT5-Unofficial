@@ -1554,6 +1554,7 @@ GT5U.gui.text.beta-plus=Beta Plus Decay
 GT5U.gui.text.invalidfluidsup=Invalid Fluid Supplied
 GT5U.gui.text.amperage=Amperage
 GT5U.gui.text.voltagetier=Voltage Tier
+GT5U.gui.text.seconds_between_refill=Seconds Between Refills
 
 
 GT5U.gui.hoverable.runningfine=Running Fine.
