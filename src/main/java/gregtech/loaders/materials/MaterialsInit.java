@@ -7054,7 +7054,6 @@ public class MaterialsInit {
             .setColor(Dyes.dyeLightBlue)
             .setARGB(0xf0a9d0f5)
             .addCell()
-            .addPlasma()
             .setMeltingPoint(4)
             .addCentrifugeRecipe()
             .addMaterial(Materials.Nitrogen, 40)
