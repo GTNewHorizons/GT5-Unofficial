@@ -1120,7 +1120,9 @@ public class RecipeLoader {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(2), GTOreDictUnificator.get(OrePrefixes.dust, Materials.Boron, 2))
+            .itemInputs(
+                GTUtility.getIntegratedCircuit(2),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Boron, 2))
             .fluidInputs(Materials.Oxygen.getGas(3_000))
             .itemOutputs(WerkstoffMaterialPool.BoronTrioxide.get(OrePrefixes.dust, 1))
             .duration(30 * GTRecipeBuilder.SECONDS)
