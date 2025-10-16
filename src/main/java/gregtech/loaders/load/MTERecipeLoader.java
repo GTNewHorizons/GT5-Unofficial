@@ -3667,7 +3667,7 @@ public class MTERecipeLoader implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.pipeSmall, Materials.TungstenSteel, 1L),
                 ItemList.Electric_Pump_EV.get(1L),
                 GTUtility.getIntegratedCircuit(5))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.pipeSmall, Materials.Ultimate, 1L))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.pipeSmall, Materials.ZPM, 1L))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -3676,7 +3676,7 @@ public class MTERecipeLoader implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.TungstenSteel, 1L),
                 ItemList.Electric_Pump_IV.get(1L),
                 GTUtility.getIntegratedCircuit(5))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Ultimate, 1L))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.ZPM, 1L))
             .duration(20 * SECONDS)
             .eut(4096)
             .addTo(assemblerRecipes);
@@ -3685,7 +3685,7 @@ public class MTERecipeLoader implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.TungstenSteel, 1L),
                 ItemList.Electric_Pump_IV.get(2L),
                 GTUtility.getIntegratedCircuit(5))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Ultimate, 1L))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.ZPM, 1L))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);

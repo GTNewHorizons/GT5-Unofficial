@@ -2281,7 +2281,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 4),
-                GTOreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Advanced, 4),
+                GTOreDictUnificator.get(OrePrefixes.plateAlloy, Materials.HV, 4),
                 GTOreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Diamond, 1),
                 GTUtility.getIntegratedCircuit(2))
             .itemOutputs(ItemList.Ingot_IridiumAlloy.get(1))

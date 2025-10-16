@@ -333,24 +333,22 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Yellorium;
     public static Materials Zectium;
 
-    // spotless:off
-    // Tier materials and aliases for the old style of tiered circuits
-    public static Materials ULV; @Deprecated public static Materials Primitive;
-    public static Materials  LV; @Deprecated public static Materials Basic;
-    public static Materials  MV; @Deprecated public static Materials Good;
-    public static Materials  HV; @Deprecated public static Materials Advanced;
-    public static Materials  EV; @Deprecated public static Materials Data;
-    public static Materials  IV; @Deprecated public static Materials Elite;
-    public static Materials LuV; @Deprecated public static Materials Master;
-    public static Materials ZPM; @Deprecated public static Materials Ultimate;
-    public static Materials  UV; @Deprecated public static Materials Superconductor;
-    public static Materials UHV; @Deprecated public static Materials Infinite;
-    public static Materials UEV; @Deprecated public static Materials Bio;
-    public static Materials UIV; @Deprecated public static Materials Optical;
-    public static Materials UMV; @Deprecated public static Materials Exotic;
-    public static Materials UXV; @Deprecated public static Materials Cosmic;
-    public static Materials MAX; @Deprecated public static Materials Transcendent;
-    // spotless:on
+    // Tier materials
+    public static Materials ULV;
+    public static Materials LV;
+    public static Materials MV;
+    public static Materials HV;
+    public static Materials EV;
+    public static Materials IV;
+    public static Materials LuV;
+    public static Materials ZPM;
+    public static Materials UV;
+    public static Materials UHV;
+    public static Materials UEV;
+    public static Materials UIV;
+    public static Materials UMV;
+    public static Materials UXV;
+    public static Materials MAX;
 
     // Circuitry
     public static Materials Resistor;
@@ -945,6 +943,55 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials ManaDiamond;
     public static Materials BotaniaDragonstone;
 
+    // Kevlar Line
+    public static Materials DiphenylmethaneDiisocyanate;
+    public static Materials DiaminodiphenylmethanMixture;
+    public static Materials DiphenylmethaneDiisocyanateMixture;
+    public static Materials Butyraldehyde;
+    public static Materials Isobutyraldehyde;
+    public static Materials NickelTetracarbonyl;
+    public static Materials KevlarCatalyst;
+    public static Materials EthyleneOxide;
+    public static Materials SiliconOil;
+    public static Materials Ethyleneglycol;
+    public static Materials Acetaldehyde;
+    public static Materials Pentaerythritol;
+    public static Materials PolyurethaneResin;
+    public static Materials NMethylIIPyrrolidone;
+    public static Materials TerephthaloylChloride;
+    public static Materials Acetylene;
+    public static Materials IVNitroaniline;
+    public static Materials ParaPhenylenediamine;
+    public static Materials Methylamine;
+    public static Materials Trimethylamine;
+    public static Materials GammaButyrolactone;
+    public static Materials CalciumCarbide;
+    public static Materials LiquidCrystalKevlar;
+    public static Materials IIButinIIVdiol;
+    public static Materials NickelAluminide;
+    public static Materials RaneyNickelActivated;
+    public static Materials BismuthIIIOxide;
+    public static Materials ThionylChloride;
+    public static Materials SulfurDichloride;
+    public static Materials DimethylTerephthalate;
+    public static Materials Kevlar;
+    public static Materials TerephthalicAcid;
+    public static Materials IIIDimethylbenzene;
+    public static Materials IVDimethylbenzene;
+    public static Materials CobaltIINaphthenate;
+    public static Materials NaphthenicAcid;
+    public static Materials CobaltIIHydroxide;
+    public static Materials CobaltIIAcetate;
+    public static Materials CobaltIINitrate;
+    public static Materials OrganorhodiumCatalyst;
+    public static Materials SodiumBorohydride;
+    public static Materials RhodiumChloride;
+    public static Materials Triphenylphosphene;
+    public static Materials PhosphorusTrichloride;
+    public static Materials SodiumHydride;
+    public static Materials TrimethylBorate;
+    public static Materials SodiumMethoxide;
+
     public static final List<IMaterialHandler> mMaterialHandlers = new ArrayList<>();
     public static final Map<Fluid, Materials> FLUID_MAP = new LinkedHashMap<>();
     /** @deprecated This is for keeping compatibility with addons mods (Such as TinkersGregworks etc.) */
@@ -956,7 +1003,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
 
     static {
         MaterialsInit.load();
-        MaterialsKevlar.load();
         MaterialsOreAlum.load();
         MaterialsUEVplus.load();
 

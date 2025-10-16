@@ -1935,7 +1935,7 @@ public class CraftingRecipeLoader implements Runnable {
             GTModHandler.addCraftingRecipe(
                 GTModHandler.getModItem(GraviSuite.ID, "advNanoChestPlate", 1, WILDCARD),
                 bits_no_remove_buffered,
-                new Object[] { "CJC", "TNT", "WPW", 'C', OrePrefixes.plateAlloy.get(Materials.Advanced), 'T',
+                new Object[] { "CJC", "TNT", "WPW", 'C', OrePrefixes.plateAlloy.get(Materials.HV), 'T',
                     OrePrefixes.plate.get(Materials.TungstenSteel), 'J',
                     GTModHandler.getModItem(GraviSuite.ID, "advJetpack", 1, WILDCARD), 'N',
                     GTModHandler.getModItem(IndustrialCraft2.ID, "itemArmorNanoChestplate", 1, WILDCARD), 'W',
