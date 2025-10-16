@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui.base;
+package gregtech.common.gui.modularui.item;
 
 import static gregtech.api.enums.Mods.GregTech;
 
