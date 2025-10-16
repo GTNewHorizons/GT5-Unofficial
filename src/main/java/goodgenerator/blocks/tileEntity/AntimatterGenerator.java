@@ -540,6 +540,11 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
     @Override
+    protected boolean useMui2() {
+        return false;
+    }
+
+    @Override
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
         super.drawTexts(screenElements, inventorySlot);
 
