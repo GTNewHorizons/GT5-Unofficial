@@ -868,6 +868,11 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
     }
 
     @Override
+    protected boolean useMui2() {
+        return false;
+    }
+
+    @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         buildContext.addSyncedWindow(INFO_WINDOW_ID, this::createT4InfoWindow);
         builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
