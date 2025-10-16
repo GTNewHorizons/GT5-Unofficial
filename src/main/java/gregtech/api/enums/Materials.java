@@ -992,6 +992,17 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials TrimethylBorate;
     public static Materials SodiumMethoxide;
 
+    // Aluminium Ores
+    public static Materials BauxiteSlurry;
+    public static Materials HeatedBauxiteSlurry;
+    public static Materials SluiceJuice;
+    public static Materials SluiceSand;
+    public static Materials BauxiteSlag;
+    public static Materials IlmeniteSlag;
+    public static Materials GreenSapphireJuice;
+    public static Materials SapphireJuice;
+    public static Materials RubyJuice;
+
     public static final List<IMaterialHandler> mMaterialHandlers = new ArrayList<>();
     public static final Map<Fluid, Materials> FLUID_MAP = new LinkedHashMap<>();
     /** @deprecated This is for keeping compatibility with addons mods (Such as TinkersGregworks etc.) */
@@ -1003,7 +1014,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
 
     static {
         MaterialsInit.load();
-        MaterialsOreAlum.load();
         MaterialsUEVplus.load();
 
         setOreByproducts();
