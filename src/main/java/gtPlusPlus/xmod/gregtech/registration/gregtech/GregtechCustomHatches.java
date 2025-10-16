@@ -12,6 +12,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Extrusion_II;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Extrusion_III;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Extrusion_IV;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_Cryotheum;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_Debug_Steam;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_Pyrotheum;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_Steam;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_TurbineHousing;
@@ -66,6 +67,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSuper
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbineProvider;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTESuperBusOutput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEHatchCustomFluidBase;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEHatchCustomFluidBaseDebug;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 
 public class GregtechCustomHatches {
@@ -147,6 +149,16 @@ public class GregtechCustomHatches {
                 "Steam Hatch", // Local name
                 0 // Casing texture
             ).getStackForm(1L));
+        // Debug Steam Hatch
+        GregtechItemList.Hatch_Input_Debug_Steam.set(
+            new MTEHatchCustomFluidBaseDebug(
+                Materials.Steam.getGas(1)
+                    .getFluid(), // Fluid to restrict hatch
+                Hatch_Input_Debug_Steam.ID, // ID
+                "hatch.steam.input.debug", // unlocal name
+                "Debug Steam Hatch", // local name
+                0) // casing texture
+                    .getStackForm(1));
     }
 
     private static void run2() {
