@@ -5433,12 +5433,12 @@ public class GTUtility {
                     + formatNumbers(roundNumber.apply(perTick))
                     + (isLiquid ? "L" : "")
                     + (perSecond > 1_000_000
-                    ? EnumChatFormatting.WHITE + " ["
-                    + EnumChatFormatting.GRAY
-                    + formatShortenedLong((long) perTick)
-                    + EnumChatFormatting.WHITE
-                    + "]"
-                    : "")
+                        ? EnumChatFormatting.WHITE + " ["
+                            + EnumChatFormatting.GRAY
+                            + formatShortenedLong((long) perTick)
+                            + EnumChatFormatting.WHITE
+                            + "]"
+                        : "")
                     + EnumChatFormatting.RESET);
             ret.append("\n");
             ret.append(
