@@ -2744,6 +2744,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             alwaysMaxParallel ? getMaxParallelRecipes() : Math.min(getMaxParallelRecipes(), powerPanelMaxParallel));
     }
 
+    public int getmStartUpCheck() {
+        return mStartUpCheck;
+    }
+
     @Override
     public Pos2d getVoidingModeButtonPos() {
         return new Pos2d(8, 91);
