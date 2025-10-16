@@ -21,6 +21,7 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.metatileentity.implementations.MTEHatchEnergyDebug;
 import gregtech.api.util.GTUtility;
 
 public abstract class MegaMultiBlockBase<T extends MegaMultiBlockBase<T>> extends MTEExtendedPowerMultiBlockBase<T> {
@@ -55,6 +56,11 @@ public abstract class MegaMultiBlockBase<T extends MegaMultiBlockBase<T>> extend
         long maxEnergy = ttHatches[1];
 
         for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
+            if (tHatch instanceof MTEHatchEnergyDebug debugHatch) {
+                storedEnergy = debugHatch.getEUVar();
+                maxEnergy = debugHatch.maxEUStore();
+                break;
+            }
             storedEnergy += tHatch.getBaseMetaTileEntity()
                 .getStoredEU();
             maxEnergy += tHatch.getBaseMetaTileEntity()

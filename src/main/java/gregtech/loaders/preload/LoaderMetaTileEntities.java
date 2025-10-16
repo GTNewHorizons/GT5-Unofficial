@@ -60,6 +60,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchBulkCatalystHousing;
 import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.metatileentity.implementations.MTEHatchEnergyDebug;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.metatileentity.implementations.MTEHatchMagnet;
@@ -9023,6 +9024,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.Hatch_Energy_UXV.set(
             new MTEHatchEnergy(ENERGY_HATCH_UXV.ID, "hatch.energy.tier.13", "UXV Energy Hatch", 13).getStackForm(1L));
+
+        ItemList.DebugEnergyHatch.set(
+            new MTEHatchEnergyDebug(ENERGY_HATCH_DEBUG.ID, "hatch.energy.debug", "Debug Energy Hatch", 14)
+                .getStackForm(1L));
     }
 
     private static void registerInputHatch() {

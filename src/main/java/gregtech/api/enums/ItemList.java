@@ -2756,6 +2756,7 @@ public enum ItemList implements IItemContainer {
     MagLevHarness,
 
     ManaFly,
+    DebugEnergyHatch,
     // semicolon after the comment to reduce merge conflicts
     ;
 
