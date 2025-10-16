@@ -208,7 +208,7 @@ public class MTEHatchEnergyDebug extends MTEHatchEnergy {
                 + "Halve"
                 + EnumChatFormatting.RESET
                 + " Amperage");
-        t.addLine(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.GRAY + "Max Amperage of 536,870,912");
+        t.addLine(EnumChatFormatting.GRAY + "" + EnumChatFormatting.ITALIC + "Max Amperage of 536,870,912");
     }
 
     final int MAX_AMPERAGE = 536870912;
@@ -234,29 +234,33 @@ public class MTEHatchEnergyDebug extends MTEHatchEnergy {
         numberInputColumn.widthRel(1f)
             .height(18 * 2 + 8)
             .paddingTop(4);
-        // voltage syncer
+
         Flow voltageRow = Flow.row()
             .height(18)
             .coverChildrenWidth()
             .left(4)
             .marginBottom(4);
 
+        // add a number input field to determine voltage tier
         voltageRow.child(
             createNumberTextField().width(40)
                 .setNumbers(0, 15)
                 .value(voltageTierSyncer)
                 .setDefaultNumber(0));
 
+        // add the changing tier description widget
         voltageRow.child(IKey.dynamic(() -> {
             int clampedTier = GTUtility.clamp(voltageTierSyncer.getIntValue(), 0, TIER_COLORS.length - 1);
             String color = GTValues.TIER_COLORS[clampedTier];
-            return "Voltage Tier " + "(" + color + GTValues.VN[clampedTier] + EnumChatFormatting.RESET + ")";
+            return IKey.lang(
+                "GT5U.gui.text.voltagetier") + " (" + color + GTValues.VN[clampedTier] + EnumChatFormatting.RESET + ")";
         })
             .asWidget()
             .width(80)
             .height(18)
             .marginRight(2));
 
+        // add a button to increment / decrement voltage tier
         voltageRow.child(
             new ButtonWidget<>().overlay(GuiTextures.GRAPH)
                 .size(18)
@@ -267,15 +271,21 @@ public class MTEHatchEnergyDebug extends MTEHatchEnergy {
             .height(18)
             .left(4)
             .coverChildrenWidth();
+
+        // number field for amperage
         amperageRow.child(
             createNumberTextField().width(60)
                 .setNumbers(1, MAX_AMPERAGE)
                 .value(amperageSyncer)
                 .setDefaultNumber(2));
+
+        // text widget for Amperage, is static. width is larger for nice spacing
         amperageRow.child(
-            new TextWidget<>("Amperage").width(60)
+            new TextWidget<>(IKey.lang("GT5U.gui.text.amperage")).width(60)
                 .height(18)
                 .marginRight(2));
+
+        // button to double / halve amperage, up to 536,870,912
         amperageRow.child(
             new ButtonWidget<>().overlay(GuiTextures.MAZE)
                 .size(18)
@@ -286,7 +296,7 @@ public class MTEHatchEnergyDebug extends MTEHatchEnergy {
         numberInputColumn.child(amperageRow);
 
         return GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings)
-            .doesAddGregTechLogo(false)
+            .doesAddGregTechLogo(true)
             .build()
             .child(numberInputColumn);
     }
