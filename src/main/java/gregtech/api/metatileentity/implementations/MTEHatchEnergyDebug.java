@@ -68,6 +68,7 @@ public class MTEHatchEnergyDebug extends MTEHatchEnergy {
         super.saveNBTData(aNBT);
         aNBT.setInteger("debugAmperage", amperage);
         aNBT.setInteger("debugVTier", voltageTier);
+        aNBT.setInteger("secondsInterval", secondsInterval);
     }
 
     @Override
@@ -75,6 +76,7 @@ public class MTEHatchEnergyDebug extends MTEHatchEnergy {
         super.loadNBTData(aNBT);
         amperage = aNBT.getInteger("debugAmperage");
         voltageTier = aNBT.getInteger("debugVTier");
+        secondsInterval = aNBT.getInteger("secondsInterval");
     }
 
     @Override
@@ -93,6 +95,7 @@ public class MTEHatchEnergyDebug extends MTEHatchEnergy {
     // 0 = ulv -> 14 MAX+
     private int voltageTier = 15;
     private int amperage = 2;
+    private int secondsInterval = 30;
 
     @Override
     public long getMinimumStoredEU() {
@@ -128,8 +131,9 @@ public class MTEHatchEnergyDebug extends MTEHatchEnergy {
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPreTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide()) {
-            // refill entirely every 30 seconds
-            if (aTick % 30 * SECONDS == 0L) {
+            // refill entirely every [secondsInterval] seconds, default is 30
+            // minimum value of 1, to avoid div by 0
+            if (aTick % ((long) Math.max(1, secondsInterval) * SECONDS) == 0L) {
                 fetchEnergy();
             }
         }
@@ -153,7 +157,7 @@ public class MTEHatchEnergyDebug extends MTEHatchEnergy {
     private TextFieldWidget createNumberTextField() {
         return new TextFieldWidget().setTextAlignment(Alignment.CenterRight)
             .setFormatAsInteger(true)
-            .height(18)
+            .height(14)
             .marginRight(2);
     }
 
@@ -208,6 +212,8 @@ public class MTEHatchEnergyDebug extends MTEHatchEnergy {
     }
 
     final int MAX_AMPERAGE = 536870912;
+    final int MIN_SECONDS_PER_REFILL = 1;
+    final int MAX_SECONDS_PER_REFILL = 60;
 
     private boolean onAmperageModifierButtonPressed(int mouseButton, IntSyncValue amperageSyncer) {
 
@@ -225,10 +231,10 @@ public class MTEHatchEnergyDebug extends MTEHatchEnergy {
 
         IntSyncValue voltageTierSyncer = new IntSyncValue(() -> voltageTier, tier -> voltageTier = tier);
         IntSyncValue amperageSyncer = new IntSyncValue(() -> amperage, amp -> amperage = amp);
-
+        IntSyncValue intervalSyncer = new IntSyncValue(() -> secondsInterval, inter -> secondsInterval = inter);
         Flow numberInputColumn = Flow.column();
         numberInputColumn.widthRel(1f)
-            .height(18 * 2 + 8)
+            .height(18 * 3 + 4 * 3)
             .paddingTop(4);
 
         Flow voltageRow = Flow.row()
@@ -253,7 +259,7 @@ public class MTEHatchEnergyDebug extends MTEHatchEnergy {
         })
             .asWidget()
             .width(80)
-            .height(18)
+            .height(14)
             .marginRight(2));
 
         // add a button to increment / decrement voltage tier
@@ -266,6 +272,7 @@ public class MTEHatchEnergyDebug extends MTEHatchEnergy {
         Flow amperageRow = Flow.row()
             .height(18)
             .left(4)
+            .marginBottom(16)
             .coverChildrenWidth();
 
         // number field for amperage
@@ -288,8 +295,32 @@ public class MTEHatchEnergyDebug extends MTEHatchEnergy {
                 .onMousePressed(mouseButton -> onAmperageModifierButtonPressed(mouseButton, amperageSyncer))
                 .tooltip(this::createAmperageModifierButtonTooltip));
 
+        // row to allow setting of 'refill interval'
+        Flow intervalRow = Flow.row()
+            .height(18)
+            .coverChildrenWidth()
+            .left(6);
+
+        intervalRow.child(
+            createNumberTextField().width(20)
+                .setDefaultNumber(30)
+                .setNumbers(MIN_SECONDS_PER_REFILL, MAX_SECONDS_PER_REFILL)
+                .value(intervalSyncer));
+        IKey.dynamic(() -> {
+            int clampedTier = GTUtility.clamp(voltageTierSyncer.getIntValue(), 0, TIER_COLORS.length - 1);
+            String color = GTValues.TIER_COLORS[clampedTier];
+            return IKey.lang(
+                "GT5U.gui.text.voltagetier") + " (" + color + GTValues.VN[clampedTier] + EnumChatFormatting.RESET + ")";
+        });
+        intervalRow.child(
+            IKey.lang("GT5U.gui.text.seconds_between_refill")
+                .asWidget()
+                .width(120)
+                .height(18));
+
         numberInputColumn.child(voltageRow);
         numberInputColumn.child(amperageRow);
+        numberInputColumn.child(intervalRow);
 
         return GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings)
             .doesAddGregTechLogo(true)
