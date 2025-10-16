@@ -4,7 +4,6 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BOLD;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GREEN;
 import static gregtech.api.enums.GTValues.TIER_COLORS;
 import static gregtech.api.enums.GTValues.V;
-import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -134,7 +133,7 @@ public class MTEHatchEnergyDebug extends MTEHatchEnergy {
         if (aBaseMetaTileEntity.isServerSide()) {
             // refill entirely every [refillInterval] ticks, default is 600/30 seconds
             // minimum value of 1, to avoid div by 0
-            if (aTick % ((long) Math.max(1, refillInterval) ) == 0L) {
+            if (aTick % ((long) Math.max(1, refillInterval)) == 0L) {
                 fetchEnergy();
             }
         }
@@ -312,7 +311,8 @@ public class MTEHatchEnergyDebug extends MTEHatchEnergy {
             IKey.lang("GT5U.gui.text.ticks_between_refill")
                 .asWidget()
                 .width(100)
-                .height(18).scale(0.9f));
+                .height(18)
+                .scale(0.9f));
 
         numberInputColumn.child(voltageRow);
         numberInputColumn.child(amperageRow);
