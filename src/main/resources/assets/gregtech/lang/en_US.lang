@@ -1417,6 +1417,7 @@ GT5U.gui.text.lockedvalue=Locked: %s
 GT5U.gui.text.success=§aProcessing recipe
 GT5U.gui.text.progress=§fProgress:
 GT5U.gui.text.amount=§fAmount:
+GT5U.gui.text.per_tick=§fPer tick:
 GT5U.gui.text.per_second=§fPer second:
 GT5U.gui.text.per_minute=§fPer minute:
 GT5U.gui.text.per_hour=§fPer hour:
