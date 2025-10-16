@@ -7054,7 +7054,6 @@ public class MaterialsInit {
             .setColor(Dyes.dyeLightBlue)
             .setARGB(0xf0a9d0f5)
             .addCell()
-            .addPlasma()
             .setMeltingPoint(4)
             .addCentrifugeRecipe()
             .addMaterial(Materials.Nitrogen, 40)
@@ -14654,7 +14653,7 @@ public class MaterialsInit {
 
     private static Materials loadNethersemifluid() {
         return new MaterialBuilder().setName("nethersemifluid")
-            .setDefaultLocalName("Nether SemiFluid")
+            .setDefaultLocalName("Nether Semifluid")
             .setMetaItemSubID(119)
             .setIconSet(TextureSet.SET_FLUID)
             .setARGB(0x00dac172)
