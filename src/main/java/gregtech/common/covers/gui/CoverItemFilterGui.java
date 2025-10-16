@@ -50,7 +50,7 @@ public class CoverItemFilterGui extends CoverGui<CoverItemFilter> {
                             IKey.lang("gt.interact.desc.Item_Filter.CheckMode")
                                 .asWidget()))
                 .child(
-                    IKey.lang("gt.interact.desc.Item_Filter.Filter" + " ")
+                    IKey.lang("gt.interact.desc.Item_Filter.Filter")
                         .asWidget()
                         .marginTop(WIDGET_MARGIN))
                 .child(
