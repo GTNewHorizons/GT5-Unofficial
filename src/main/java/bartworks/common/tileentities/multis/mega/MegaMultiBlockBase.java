@@ -4,6 +4,7 @@ import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.Arrays;
 
+import gregtech.api.metatileentity.implementations.MTEHatchEnergyDebug;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -55,6 +56,12 @@ public abstract class MegaMultiBlockBase<T extends MegaMultiBlockBase<T>> extend
         long maxEnergy = ttHatches[1];
 
         for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
+            if(tHatch instanceof MTEHatchEnergyDebug debugHatch)
+            {
+                storedEnergy = debugHatch.getEUVar();
+                maxEnergy = debugHatch.maxEUStore();
+                break;
+            }
             storedEnergy += tHatch.getBaseMetaTileEntity()
                 .getStoredEU();
             maxEnergy += tHatch.getBaseMetaTileEntity()
