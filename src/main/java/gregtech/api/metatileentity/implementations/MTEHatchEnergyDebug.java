@@ -68,7 +68,7 @@ public class MTEHatchEnergyDebug extends MTEHatchEnergy {
         super.saveNBTData(aNBT);
         aNBT.setInteger("debugAmperage", amperage);
         aNBT.setInteger("debugVTier", voltageTier);
-        aNBT.setInteger("secondsInterval", secondsInterval);
+        aNBT.setInteger("refillInterval", refillInterval);
     }
 
     @Override
@@ -76,7 +76,7 @@ public class MTEHatchEnergyDebug extends MTEHatchEnergy {
         super.loadNBTData(aNBT);
         amperage = aNBT.getInteger("debugAmperage");
         voltageTier = aNBT.getInteger("debugVTier");
-        secondsInterval = aNBT.getInteger("secondsInterval");
+        refillInterval = aNBT.getInteger("refillInterval");
     }
 
     @Override
@@ -95,7 +95,8 @@ public class MTEHatchEnergyDebug extends MTEHatchEnergy {
     // 0 = ulv -> 14 MAX+
     private int voltageTier = 15;
     private int amperage = 2;
-    private int secondsInterval = 30;
+    // Refills every [refill interval] ticks, default 600 (30 seconds)
+    private int refillInterval = 600;
 
     @Override
     public long getMinimumStoredEU() {
@@ -131,9 +132,9 @@ public class MTEHatchEnergyDebug extends MTEHatchEnergy {
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPreTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide()) {
-            // refill entirely every [secondsInterval] seconds, default is 30
+            // refill entirely every [refillInterval] ticks, default is 600/30 seconds
             // minimum value of 1, to avoid div by 0
-            if (aTick % ((long) Math.max(1, secondsInterval) * SECONDS) == 0L) {
+            if (aTick % ((long) Math.max(1, refillInterval) ) == 0L) {
                 fetchEnergy();
             }
         }
@@ -212,8 +213,8 @@ public class MTEHatchEnergyDebug extends MTEHatchEnergy {
     }
 
     final int MAX_AMPERAGE = 536870912;
-    final int MIN_SECONDS_PER_REFILL = 1;
-    final int MAX_SECONDS_PER_REFILL = 60;
+    final int MIN_TICKS_PER_REFILL = 20;
+    final int MAX_TICKS_PER_REFILL = 1200;
 
     private boolean onAmperageModifierButtonPressed(int mouseButton, IntSyncValue amperageSyncer) {
 
@@ -231,7 +232,7 @@ public class MTEHatchEnergyDebug extends MTEHatchEnergy {
 
         IntSyncValue voltageTierSyncer = new IntSyncValue(() -> voltageTier, tier -> voltageTier = tier);
         IntSyncValue amperageSyncer = new IntSyncValue(() -> amperage, amp -> amperage = amp);
-        IntSyncValue intervalSyncer = new IntSyncValue(() -> secondsInterval, inter -> secondsInterval = inter);
+        IntSyncValue intervalSyncer = new IntSyncValue(() -> refillInterval, inter -> refillInterval = inter);
         Flow numberInputColumn = Flow.column();
         numberInputColumn.widthRel(1f)
             .height(18 * 3 + 4 * 3)
@@ -302,21 +303,16 @@ public class MTEHatchEnergyDebug extends MTEHatchEnergy {
             .left(6);
 
         intervalRow.child(
-            createNumberTextField().width(20)
-                .setDefaultNumber(30)
-                .setNumbers(MIN_SECONDS_PER_REFILL, MAX_SECONDS_PER_REFILL)
+            createNumberTextField().width(40)
+                .setDefaultNumber(600)
+                .setNumbers(MIN_TICKS_PER_REFILL, MAX_TICKS_PER_REFILL)
                 .value(intervalSyncer));
-        IKey.dynamic(() -> {
-            int clampedTier = GTUtility.clamp(voltageTierSyncer.getIntValue(), 0, TIER_COLORS.length - 1);
-            String color = GTValues.TIER_COLORS[clampedTier];
-            return IKey.lang(
-                "GT5U.gui.text.voltagetier") + " (" + color + GTValues.VN[clampedTier] + EnumChatFormatting.RESET + ")";
-        });
+
         intervalRow.child(
-            IKey.lang("GT5U.gui.text.seconds_between_refill")
+            IKey.lang("GT5U.gui.text.ticks_between_refill")
                 .asWidget()
-                .width(120)
-                .height(18));
+                .width(100)
+                .height(18).scale(0.9f));
 
         numberInputColumn.child(voltageRow);
         numberInputColumn.child(amperageRow);
