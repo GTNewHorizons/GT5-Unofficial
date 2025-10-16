@@ -3041,6 +3041,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         return true;
     }
 
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
     public boolean shouldDisplayShutDownReason() {
         return true;
     }

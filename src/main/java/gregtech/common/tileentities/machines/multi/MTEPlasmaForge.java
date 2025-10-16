@@ -1121,6 +1121,11 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     private static final int CATALYST_WINDOW_ID = 10;
 
     @Override
+    protected boolean useMui2() {
+        return false;
+    }
+
+    @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         buildContext.addSyncedWindow(CATALYST_WINDOW_ID, this::createCatalystWindow);
         builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
