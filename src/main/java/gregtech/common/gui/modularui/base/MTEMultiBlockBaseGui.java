@@ -103,6 +103,11 @@ public class MTEMultiBlockBaseGui {
         initShutdownMaps();
     }
 
+    public MTEMultiBlockBaseGui withMachineModeIcons(UITexture... icons) {
+        Collections.addAll(this.machineModeIcons, icons);
+        return this;
+    }
+
     protected void initCustomIcons() {
         this.customIcons.put("power_switch_disabled", GTGuiTextures.OVERLAY_BUTTON_POWER_SWITCH_DISABLED);
         this.customIcons.put("power_switch_on", GTGuiTextures.OVERLAY_BUTTON_POWER_SWITCH_ON);
