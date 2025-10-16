@@ -77,13 +77,13 @@ public class CoverFluidfilterGui extends CoverGui<CoverFluidfilter> {
                     new EnumRowBuilder<>(FilterDirectionMode.class).value(ioModeSyncValue)
                         .overlay(GTGuiTextures.OVERLAY_BUTTON_IMPORT, GTGuiTextures.OVERLAY_BUTTON_EXPORT)
                         .build(),
-                    IKey.str(StatCollector.translateToLocal("gt.interact.desc.FluidFilter.Direction"))
+                    IKey.lang("gt.interact.desc.FluidFilter.Direction")
                         .asWidget())
                 .row(
                     new EnumRowBuilder<>(FilterType.class).value(filterTypeSyncValue)
                         .overlay(GTGuiTextures.OVERLAY_BUTTON_WHITELIST, GTGuiTextures.OVERLAY_BUTTON_BLACKLIST)
                         .build(),
-                    IKey.str(StatCollector.translateToLocal("gt.interact.desc.FluidFilter.Type"))
+                    IKey.lang("gt.interact.desc.FluidFilter.Type")
                         .asWidget())
                 .row(
                     new EnumRowBuilder<>(BlockMode.class).value(blockModeSyncValue)
@@ -106,7 +106,7 @@ public class CoverFluidfilterGui extends CoverGui<CoverFluidfilter> {
                                     ? StatCollector.translateToLocal("gt.interact.desc.FluidFilter.BlockOutput")
                                     : StatCollector.translateToLocal("gt.interact.desc.FluidFilter.BlockInput")))
                         .build(),
-                    IKey.str(StatCollector.translateToLocal("gt.interact.desc.FluidFilter.BlockFlow"))
+                    IKey.lang("gt.interact.desc.FluidFilter.BlockFlow")
                         .asWidget()))
             .child(
                 Flow.row()

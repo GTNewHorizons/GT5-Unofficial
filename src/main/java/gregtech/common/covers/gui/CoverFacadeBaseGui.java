@@ -1,7 +1,6 @@
 package gregtech.common.covers.gui;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.utils.Alignment;
@@ -42,28 +41,28 @@ public class CoverFacadeBaseGui extends CoverGui<CoverFacadeBase> {
                         .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                         .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
                         .size(16),
-                    IKey.str(StatCollector.translateToLocal("gt.interact.desc.facade.Redstone"))
+                    IKey.lang("gt.interact.desc.facade.Redstone")
                         .asWidget())
                 .row(
                     new ToggleButton().value(new BooleanSyncValue(cover::getEnergyPass, cover::setEnergyPass))
                         .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                         .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
                         .size(16),
-                    IKey.str(StatCollector.translateToLocal("gt.interact.desc.facade.Energy"))
+                    IKey.lang("gt.interact.desc.facade.Energy")
                         .asWidget())
                 .row(
                     new ToggleButton().value(new BooleanSyncValue(cover::getFluidPass, cover::setFluidPass))
                         .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                         .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
                         .size(16),
-                    IKey.str(StatCollector.translateToLocal("gt.interact.desc.facade.Fluids"))
+                    IKey.lang("gt.interact.desc.facade.Fluids")
                         .asWidget())
                 .row(
                     new ToggleButton().value(new BooleanSyncValue(cover::getItemPass, cover::setItemPass))
                         .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                         .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
                         .size(16),
-                    IKey.str(StatCollector.translateToLocal("gt.interact.desc.facade.Items"))
+                    IKey.lang("gt.interact.desc.facade.Items")
                         .asWidget()));
     }
 
