@@ -16,6 +16,7 @@ import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
@@ -203,7 +204,16 @@ public class MTEMultiBlockBaseGui {
     }
 
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
+        IntSyncValue startupCheckSyncer = new IntSyncValue(base::getmStartUpCheck);
+        syncManager.syncValue("startupCheck", startupCheckSyncer);
+
         return new ListWidget<>().widthRel(1)
+            .child(IKey.lang("GT5U.multiblock.startup").color(Color.WHITE.main)
+                .asWidget()
+                .alignment(Alignment.CenterLeft)
+                .setEnabledIf(w -> startupCheckSyncer.getValue() > 0)
+                .marginBottom(2)
+                .widthRel(1))
             .child(
                 new TextWidget<>(GTUtility.trans("142", "Running perfectly.")).color(Color.WHITE.main)
                     .setEnabledIf(widget -> base.getErrorDisplayID() == 0 && baseMetaTileEntity.isActive())
