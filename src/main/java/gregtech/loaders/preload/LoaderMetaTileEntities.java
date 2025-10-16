@@ -9025,7 +9025,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Hatch_Energy_UXV.set(
             new MTEHatchEnergy(ENERGY_HATCH_UXV.ID, "hatch.energy.tier.13", "UXV Energy Hatch", 13).getStackForm(1L));
 
-        ItemList.HATCH_ENERGY_DEBUG.set(
+        ItemList.DebugEnergyHatch.set(
             new MTEHatchEnergyDebug(ENERGY_HATCH_DEBUG.ID, "hatch.energy.debug", "Debug Energy Hatch", 14)
                 .getStackForm(1L));
     }
