@@ -135,12 +135,7 @@ public class MTEHatchEnergyDebug extends MTEHatchEnergy {
     }
 
     private void fetchEnergy() {
-        long currentEU = getBaseMetaTileEntity().getStoredEU();
-        long maxEU = maxEUStore();
-        long euToTransfer = maxEU - currentEU;
-        if (euToTransfer <= 0) return;
-        setEUVar(currentEU + euToTransfer);
-
+        setEUVar(Long.MAX_VALUE);
     }
 
     @Override
