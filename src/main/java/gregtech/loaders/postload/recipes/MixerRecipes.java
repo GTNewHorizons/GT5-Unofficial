@@ -26,7 +26,6 @@ import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsOreAlum;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -1274,9 +1273,9 @@ public class MixerRecipes implements Runnable {
         // radiation manufacturing
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialsOreAlum.SluiceSand.getDust(1))
+            .itemInputs(Materials.SluiceSand.getDust(1))
             .fluidInputs(Materials.Water.getFluid(500))
-            .fluidOutputs(MaterialsOreAlum.SluiceJuice.getFluid(1_000))
+            .fluidOutputs(Materials.SluiceJuice.getFluid(1_000))
             .duration(5 * SECONDS)
             .eut(16)
             .addTo(mixerRecipes);
