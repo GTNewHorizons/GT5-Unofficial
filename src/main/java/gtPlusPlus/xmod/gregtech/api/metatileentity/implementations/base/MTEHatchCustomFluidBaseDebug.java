@@ -32,7 +32,7 @@ public class MTEHatchCustomFluidBaseDebug extends MTEHatchCustomFluidBase {
 
     }
 
-    private static final int MAX_CAPACITY = 2000000000;
+    private static final int MAX_CAPACITY = 200000000;
 
     @Override
     public void onFirstTick(IGregTechTileEntity baseMetaTileEntity) {
