@@ -1,4 +1,4 @@
-package gregtech.api.metatileentity.implementations.gui;
+package gregtech.common.gui.modularui.base;
 
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FORBIDDEN_TOOLTIP;
@@ -70,6 +70,7 @@ import gregtech.api.enums.StructureError;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
+import gregtech.api.metatileentity.implementations.gui.ItemDisplayKey;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.modularui2.widgets.ResizableItemDisplayWidget;
@@ -77,6 +78,9 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.gui.modularui.base.adapter.CheckRecipeResultAdapter;
+import gregtech.common.gui.modularui.base.adapter.ShutdownReasonAdapter;
+import gregtech.common.gui.modularui.base.adapter.StructureErrorAdapter;
 import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
 import gregtech.common.modularui2.sync.Predicates;
 

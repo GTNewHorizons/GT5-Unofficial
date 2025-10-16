@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui.uifactory;
+package gregtech.common.gui.modularui.synchandler;
 
 import java.util.List;
 import java.util.function.Supplier;

@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui.uifactory;
+package gregtech.common.gui.modularui.base;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -31,7 +31,7 @@ import gregtech.api.util.GTUtility;
 /**
  * Creates UI for selecting item from given list. This is client-only UI to allow using client-preferred settings.
  */
-public class SelectItemUIFactory {
+public class ItemSelectBaseGui {
 
     private final String header;
     private final ItemStack headerItem;
@@ -56,12 +56,12 @@ public class SelectItemUIFactory {
     private final Supplier<Integer> COLOR_TITLE = () -> getTextColorOrDefault("title", 0x222222);
     private final Supplier<Integer> COLOR_TEXT_GRAY = () -> getTextColorOrDefault("text_gray", 0x555555);
 
-    public SelectItemUIFactory(String header, ItemStack headerItem, Consumer<ItemStack> selectedCallback,
+    public ItemSelectBaseGui(String header, ItemStack headerItem, Consumer<ItemStack> selectedCallback,
         List<ItemStack> stacks) {
         this(header, headerItem, selectedCallback, stacks, UNSELECTED);
     }
 
-    public SelectItemUIFactory(String header, ItemStack headerItem, Consumer<ItemStack> selectedCallback,
+    public ItemSelectBaseGui(String header, ItemStack headerItem, Consumer<ItemStack> selectedCallback,
         List<ItemStack> stacks, int selected) {
         this(header, headerItem, selectedCallback, stacks, selected, false);
     }
@@ -79,7 +79,7 @@ public class SelectItemUIFactory {
      * @param noDeselect       true if player cannot deselect, false otherwise. If this is set to true, selectedCallback
      *                         is guaranteed to be called with a nonnull stack
      */
-    public SelectItemUIFactory(String header, ItemStack headerItem, Consumer<ItemStack> selectedCallback,
+    public ItemSelectBaseGui(String header, ItemStack headerItem, Consumer<ItemStack> selectedCallback,
         List<ItemStack> stacks, int selected, boolean noDeselect) {
         this.header = header;
         this.headerItem = headerItem;
@@ -94,13 +94,13 @@ public class SelectItemUIFactory {
      * @param dialogOpened  Flag to store whether this UI is opened and hence it should block duplicated creation of
      *                      this UI
      */
-    public SelectItemUIFactory setAnotherWindow(boolean anotherWindow, AtomicBoolean dialogOpened) {
+    public ItemSelectBaseGui setAnotherWindow(boolean anotherWindow, AtomicBoolean dialogOpened) {
         this.anotherWindow = anotherWindow;
         this.dialogOpened = dialogOpened;
         return this;
     }
 
-    public SelectItemUIFactory setGuiTint(int guiTint) {
+    public ItemSelectBaseGui setGuiTint(int guiTint) {
         this.guiTint = guiTint;
         return this;
     }
@@ -108,7 +108,7 @@ public class SelectItemUIFactory {
     /**
      * @param currentGetter Getter for "current" item displayed that may change from external reasons
      */
-    public SelectItemUIFactory setCurrentGetter(Supplier<ItemStack> currentGetter) {
+    public ItemSelectBaseGui setCurrentGetter(Supplier<ItemStack> currentGetter) {
         this.currentGetter = currentGetter;
         return this;
     }

@@ -1,4 +1,4 @@
-package gregtech.api.metatileentity.implementations.gui;
+package gregtech.common.gui.modularui.base.adapter;
 
 import java.io.IOException;
 

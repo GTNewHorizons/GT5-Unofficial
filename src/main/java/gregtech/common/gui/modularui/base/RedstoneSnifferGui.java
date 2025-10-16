@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui.uifactory;
+package gregtech.common.gui.modularui.base;
 
 import static gregtech.api.enums.Mods.GregTech;
 
@@ -46,17 +46,18 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.net.PacketDebugRedstoneCover;
 import gregtech.common.covers.CoverPosition;
+import gregtech.common.gui.modularui.synchandler.SnifferEntryListSyncHandler;
 import gregtech.common.items.ItemRedstoneSniffer;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 
-public class RedstoneSnifferGuiBuilder {
+public class RedstoneSnifferGui {
 
     private final GuiData guiData;
     private final PanelSyncManager guiSyncManager;
     private String freqFilter = "";
     private String ownerFilter = "";
 
-    public RedstoneSnifferGuiBuilder(GuiData guiData, PanelSyncManager guiSyncManager) {
+    public RedstoneSnifferGui(GuiData guiData, PanelSyncManager guiSyncManager) {
         this.guiData = guiData;
         this.guiSyncManager = guiSyncManager;
     }

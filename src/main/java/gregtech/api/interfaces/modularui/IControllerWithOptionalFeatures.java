@@ -451,7 +451,7 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
      * @param tooltipFeatureEnabled  tooltip text to display when the feature is enabled
      * @param tooltipFeatureDisabled tooltip text to display when the feature is disabled
      *
-     * @see gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui#addDynamicTooltipOfFeatureToButton(RichTooltip,
+     * @see gregtech.common.gui.modularui.base.MTEMultiBlockBaseGui#addDynamicTooltipOfFeatureToButton(RichTooltip,
      *      Supplier, Supplier, String, String) For equivalent method but made for non-ModularUI
      */
     default void addDynamicTooltipOfFeatureToButton(Widget widget, Supplier<Boolean> supportsFeature,

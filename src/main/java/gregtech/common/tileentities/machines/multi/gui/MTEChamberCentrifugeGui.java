@@ -27,8 +27,8 @@ import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
-import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.common.gui.modularui.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.MTEChamberCentrifuge;
 
 public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui {

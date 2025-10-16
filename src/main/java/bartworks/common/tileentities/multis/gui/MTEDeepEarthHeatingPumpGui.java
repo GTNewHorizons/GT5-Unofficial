@@ -1,8 +1,8 @@
 package bartworks.common.tileentities.multis.gui;
 
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
-import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.common.gui.modularui.base.MTEMultiBlockBaseGui;
 
 public class MTEDeepEarthHeatingPumpGui extends MTEMultiBlockBaseGui {
 
