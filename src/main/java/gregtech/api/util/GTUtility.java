@@ -5392,12 +5392,14 @@ public class GTUtility {
         final StringBuffer ret = new StringBuffer();
         final DecimalFormat df = new DecimalFormat("0.00");
         final double progressTime = (double) maxProgressTicks / 20;
+        double perTick = amount / (double) maxProgressTicks;
         double perSecond = amount / progressTime;
         double perMinute = perSecond * 60;
         double perHour = perSecond * 3_600;
         double perDay = perSecond * 86_400;
 
         final String amountText = translateToLocal("GT5U.gui.text.amount") + " ";
+        final String perTickText = translateToLocal("GT5U.gui.text.per_tick") + " ";
         final String perSecondText = translateToLocal("GT5U.gui.text.per_second") + " ";
         final String perMinuteText = translateToLocal("GT5U.gui.text.per_minute") + " ";
         final String perHourText = translateToLocal("GT5U.gui.text.per_hour") + " ";
@@ -5424,6 +5426,19 @@ public class GTUtility {
                 amountText + EnumChatFormatting.GOLD
                     + formatNumbers(amount)
                     + (isLiquid ? "L" : "")
+                    + EnumChatFormatting.RESET);
+            ret.append("\n");
+            ret.append(
+                perTickText + EnumChatFormatting.GOLD
+                    + formatNumbers(roundNumber.apply(perTick))
+                    + (isLiquid ? "L" : "")
+                    + (perSecond > 1_000_000
+                        ? EnumChatFormatting.WHITE + " ["
+                            + EnumChatFormatting.GRAY
+                            + formatShortenedLong((long) perTick)
+                            + EnumChatFormatting.WHITE
+                            + "]"
+                        : "")
                     + EnumChatFormatting.RESET);
             ret.append("\n");
             ret.append(
