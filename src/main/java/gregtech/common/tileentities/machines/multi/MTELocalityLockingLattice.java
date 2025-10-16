@@ -14,13 +14,22 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
@@ -29,18 +38,23 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
-import gregtech.api.recipe.RecipeMap;
-import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.blocks.BlockCasings3;
 import gregtech.common.misc.GTStructureChannels;
 
 public class MTELocalityLockingLattice extends MTEExtendedPowerMultiBlockBase<MTELocalityLockingLattice>
     implements ISurvivalConstructable {
+
+    // mMode 0 = Formation Mode
+    // mMode 1 = Stabilization Mode
+    private byte mMode = 0;
+    private long UnstableEnder;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTELocalityLockingLattice> STRUCTURE_DEFINITION = StructureDefinition
@@ -349,39 +363,46 @@ public class MTELocalityLockingLattice extends MTEExtendedPowerMultiBlockBase<MT
     }
 
     @Override
-    protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 1.5F)
-            .setMaxParallelSupplier(this::getTrueParallel);
+    public CheckRecipeResult checkProcessing() {
+
+        List<FluidStack> fluids = this.getStoredFluids();
+        for (FluidStack fluid : fluids) {
+            if (fluid.getFluid()
+                .equals(
+                    Materials.Neutronium.getMolten(1)
+                        .getFluid())) {
+                UnstableEnder += 144;
+                if (!this.depleteInput(Materials.Neutronium.getMolten(144))) {
+                    stopMachine(ShutDownReasonRegistry.outOfFluid(fluid));
+                }
+            }
+        }
+
+        mMaxProgresstime = 20;
+
+        return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     @Override
-    public int getMaxParallelRecipes() {
-        return (4 * GTUtility.getTier(this.getMaxInputVoltage()));
+    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
+        super.drawTexts(screenElements, inventorySlot);
+
+        screenElements
+            .widget(
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> "Unstable Ender" + ": "
+                            + EnumChatFormatting.BLUE
+                            + numberFormat.format(UnstableEnder)
+                            + EnumChatFormatting.WHITE
+                            + " L")
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get()))
+            .widget(new FakeSyncWidget.LongSyncer(this::getUnstableAmount, val -> UnstableEnder = val));
     }
 
-    @Override
-    public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.brewingRecipes;
-    }
-
-    @Override
-    public boolean supportsVoidProtection() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsBatchMode() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
+    private long getUnstableAmount() {
+        return UnstableEnder;
     }
 
     @Override
