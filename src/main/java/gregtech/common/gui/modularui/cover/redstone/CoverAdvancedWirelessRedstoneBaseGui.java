@@ -1,4 +1,4 @@
-package gregtech.common.covers.gui.redstone;
+package gregtech.common.gui.modularui.cover.redstone;
 
 import java.util.UUID;
 
@@ -13,10 +13,10 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.common.covers.gui.CoverGui;
+import gregtech.common.gui.modularui.base.CoverBaseGui;
 import gregtech.common.covers.redstone.CoverAdvancedWirelessRedstoneBase;
 
-public class CoverAdvancedWirelessRedstoneBaseGui<T extends CoverAdvancedWirelessRedstoneBase> extends CoverGui<T> {
+public class CoverAdvancedWirelessRedstoneBaseGui<T extends CoverAdvancedWirelessRedstoneBase> extends CoverBaseGui<T> {
 
     public CoverAdvancedWirelessRedstoneBaseGui(CoverAdvancedWirelessRedstoneBase cover) {
         super((T) cover);

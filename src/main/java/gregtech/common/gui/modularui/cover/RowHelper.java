@@ -1,4 +1,4 @@
-package gregtech.common.covers.gui;
+package gregtech.common.gui.modularui.cover;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -10,7 +10,7 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.covers.Invertable;
 
-public class Rows {
+public class RowHelper {
 
     public static Flow makeInvertRedstoneRow(Invertable cover) {
         BooleanSyncValue isInvertedSyncValue = new BooleanSyncValue(cover::isInverted, cover::setInverted);

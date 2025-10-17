@@ -1,4 +1,4 @@
-package gregtech.common.covers.gui;
+package gregtech.common.gui.modularui.cover;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.utils.Alignment;
@@ -12,10 +12,11 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverShutter;
 import gregtech.common.covers.modes.ShutterMode;
+import gregtech.common.gui.modularui.base.CoverBaseGui;
 import gregtech.common.modularui2.sync.LinkedBoolValue;
 import gregtech.common.modularui2.widget.SelectButton;
 
-public class CoverShutterGui extends CoverGui<CoverShutter> {
+public class CoverShutterGui extends CoverBaseGui<CoverShutter> {
 
     public CoverShutterGui(CoverShutter cover) {
         super(cover);

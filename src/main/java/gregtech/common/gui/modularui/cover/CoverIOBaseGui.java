@@ -1,4 +1,4 @@
-package gregtech.common.covers.gui;
+package gregtech.common.gui.modularui.cover;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
@@ -16,9 +16,10 @@ import gregtech.common.covers.CoverIOBase;
 import gregtech.common.covers.modes.BlockMode;
 import gregtech.common.covers.modes.MachineProcessingCondition;
 import gregtech.common.covers.modes.TransferMode;
+import gregtech.common.gui.modularui.base.CoverBaseGui;
 import gregtech.common.modularui2.widget.builder.EnumRowBuilder;
 
-public class CoverIOBaseGui extends CoverGui<CoverIOBase> {
+public class CoverIOBaseGui extends CoverBaseGui<CoverIOBase> {
 
     private final String string;
 

@@ -1,5 +1,6 @@
-package gregtech.common.covers.gui;
+package gregtech.common.gui.modularui.cover;
 
+import gregtech.common.gui.modularui.base.CoverBaseGui;
 import net.minecraft.item.ItemStack;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -16,7 +17,7 @@ import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverFacadeBase;
 
-public class CoverFacadeBaseGui extends CoverGui<CoverFacadeBase> {
+public class CoverFacadeBaseGui extends CoverBaseGui<CoverFacadeBase> {
 
     public CoverFacadeBaseGui(CoverFacadeBase cover) {
         super(cover);

@@ -1,7 +1,8 @@
-package gregtech.common.covers.gui;
+package gregtech.common.gui.modularui.cover;
 
 import static gregtech.api.modularui2.GTGuiTextures.OVERLAY_BUTTON_CYCLIC;
 
+import gregtech.common.gui.modularui.base.CoverBaseGui;
 import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
@@ -16,7 +17,7 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.common.covers.CoverEUMeter;
 
-public class CoverEUMeterGui extends CoverGui<CoverEUMeter> {
+public class CoverEUMeterGui extends CoverBaseGui<CoverEUMeter> {
 
     public CoverEUMeterGui(CoverEUMeter cover) {
         super(cover);
@@ -26,7 +27,7 @@ public class CoverEUMeterGui extends CoverGui<CoverEUMeter> {
     public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
         column.child(
             makeRowLayout().child(positionRow(makeEnergyTypeRow()))
-                .child(positionRow(Rows.makeInvertRedstoneRow(cover)))
+                .child(positionRow(RowHelper.makeInvertRedstoneRow(cover)))
                 .child(positionRow(makeEnergyThresholdRow())));
     }
 

@@ -4,6 +4,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.lang.ref.WeakReference;
 
+import gregtech.common.gui.modularui.base.CoverBaseGui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -21,8 +22,7 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.conditions.RedstoneCondition;
-import gregtech.common.covers.gui.CoverControlsWorkGui;
-import gregtech.common.covers.gui.CoverGui;
+import gregtech.common.gui.modularui.cover.CoverControlsWorkGui;
 import gregtech.common.gui.mui1.cover.ControlsWorkUIFactory;
 
 public class CoverControlsWork extends CoverLegacyData {
@@ -205,7 +205,7 @@ public class CoverControlsWork extends CoverLegacyData {
     // GUI stuff
 
     @Override
-    protected @NotNull CoverGui<?> getCoverGui() {
+    protected @NotNull CoverBaseGui<?> getCoverGui() {
         return new CoverControlsWorkGui(this);
     }
 

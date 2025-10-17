@@ -2,6 +2,7 @@ package gregtech.common.covers;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import gregtech.common.gui.modularui.base.CoverBaseGui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fluids.Fluid;
 
@@ -15,8 +16,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.util.GTUtility;
-import gregtech.common.covers.gui.CoverDoesWorkGui;
-import gregtech.common.covers.gui.CoverGui;
+import gregtech.common.gui.modularui.cover.CoverDoesWorkGui;
 import gregtech.common.covers.modes.DetectionMode;
 import gregtech.common.covers.modes.RedstoneMode;
 import gregtech.common.gui.mui1.cover.DoesWorkUIFactory;
@@ -161,7 +161,7 @@ public class CoverDoesWork extends CoverLegacyData {
     // GUI stuff
 
     @Override
-    protected @NotNull CoverGui<?> getCoverGui() {
+    protected @NotNull CoverBaseGui<?> getCoverGui() {
         return new CoverDoesWorkGui(this);
     }
 

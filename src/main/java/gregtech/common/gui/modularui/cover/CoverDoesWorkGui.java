@@ -1,4 +1,4 @@
-package gregtech.common.covers.gui;
+package gregtech.common.gui.modularui.cover;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -16,9 +16,10 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.covers.CoverDoesWork;
 import gregtech.common.covers.modes.DetectionMode;
 import gregtech.common.covers.modes.RedstoneMode;
+import gregtech.common.gui.modularui.base.CoverBaseGui;
 import gregtech.common.modularui2.widget.builder.EnumRowBuilder;
 
-public class CoverDoesWorkGui extends CoverGui<CoverDoesWork> {
+public class CoverDoesWorkGui extends CoverBaseGui<CoverDoesWork> {
 
     public CoverDoesWorkGui(CoverDoesWork cover) {
         super(cover);

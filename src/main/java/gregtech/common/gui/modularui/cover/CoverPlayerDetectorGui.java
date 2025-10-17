@@ -1,4 +1,4 @@
-package gregtech.common.covers.gui;
+package gregtech.common.gui.modularui.cover;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.utils.Alignment;
@@ -12,10 +12,11 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverPlayerDetector;
 import gregtech.common.covers.modes.PlayerDetectionMode;
+import gregtech.common.gui.modularui.base.CoverBaseGui;
 import gregtech.common.modularui2.sync.LinkedBoolValue;
 import gregtech.common.modularui2.widget.SelectButton;
 
-public class CoverPlayerDetectorGui extends CoverGui<CoverPlayerDetector> {
+public class CoverPlayerDetectorGui extends CoverBaseGui<CoverPlayerDetector> {
 
     public CoverPlayerDetectorGui(CoverPlayerDetector cover) {
         super(cover);

@@ -16,14 +16,14 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.common.covers.gui.CoverGui;
+import gregtech.common.gui.modularui.base.CoverBaseGui;
 import gregtech.common.modularui2.sync.LinkedBoolValue;
 import gregtech.common.modularui2.widget.SelectButton;
 import tectech.mechanics.enderStorage.EnderLinkTag;
 import tectech.mechanics.enderStorage.EnderWorldSavedData;
 import tectech.thing.cover.CoverEnderFluidLink;
 
-public class CoverEnderFluidLinkGui extends CoverGui<CoverEnderFluidLink> {
+public class CoverEnderFluidLinkGui extends CoverBaseGui<CoverEnderFluidLink> {
 
     public CoverEnderFluidLinkGui(CoverEnderFluidLink cover) {
         super(cover);

@@ -1,4 +1,4 @@
-package gregtech.common.covers.gui;
+package gregtech.common.gui.modularui.base;
 
 import net.minecraft.item.ItemStack;
 
@@ -17,11 +17,11 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 import gregtech.common.modularui2.widget.CoverTickRateButton;
 
-public class CoverGui<T extends Cover> {
+public class CoverBaseGui<T extends Cover> {
 
     protected final T cover;
 
-    public CoverGui(T cover) {
+    public CoverBaseGui(T cover) {
         this.cover = cover;
     }
 
@@ -53,7 +53,7 @@ public class CoverGui<T extends Cover> {
      * Creates a standalone panel holding the UI for this cover. <br>
      *
      * Since it is standalone, you shouldn't try to have multiple instances of this panel on screen at once, or tied to
-     * several widgets. Use {@link CoverGui#createBasePanel} with a unique panel name instead.
+     * several widgets. Use {@link CoverBaseGui#createBasePanel} with a unique panel name instead.
      */
     public final ModularPanel createStandalonePanel(PanelSyncManager syncManager, UISettings uiSettings,
         CoverGuiData data) {
@@ -117,7 +117,7 @@ public class CoverGui<T extends Cover> {
     }
 
     /**
-     * Creates a layout to which you can add rows positioned with {@link CoverGui#positionRow}.
+     * Creates a layout to which you can add rows positioned with {@link CoverBaseGui#positionRow}.
      */
     protected Flow makeRowLayout() {
         return Flow.column()
@@ -128,7 +128,7 @@ public class CoverGui<T extends Cover> {
     }
 
     /**
-     * Positions a row to render nicely inside the layout returned by {@link CoverGui#makeRowLayout}.
+     * Positions a row to render nicely inside the layout returned by {@link CoverBaseGui#makeRowLayout}.
      */
     protected Flow positionRow(Flow row) {
         return row.coverChildren()

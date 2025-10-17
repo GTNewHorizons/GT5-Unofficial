@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.covers;
 
+import gregtech.common.gui.modularui.base.CoverBaseGui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -20,7 +21,6 @@ import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
-import gregtech.common.covers.gui.CoverGui;
 import gregtech.common.covers.modes.BlockMode;
 import gregtech.common.gui.mui1.cover.OverflowUIFactory;
 import gtPlusPlus.xmod.gregtech.common.covers.gui.CoverOverflowValveGui;
@@ -277,7 +277,7 @@ public class CoverOverflowValve extends Cover {
     }
 
     @Override
-    protected @NotNull CoverGui<CoverOverflowValve> getCoverGui() {
+    protected @NotNull CoverBaseGui<CoverOverflowValve> getCoverGui() {
         return new CoverOverflowValveGui(this);
     }
 

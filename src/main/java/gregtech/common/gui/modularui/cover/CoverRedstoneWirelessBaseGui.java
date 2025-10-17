@@ -1,4 +1,4 @@
-package gregtech.common.covers.gui;
+package gregtech.common.gui.modularui.cover;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
@@ -11,8 +11,9 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.covers.CoverRedstoneWirelessBase;
+import gregtech.common.gui.modularui.base.CoverBaseGui;
 
-public class CoverRedstoneWirelessBaseGui extends CoverGui<CoverRedstoneWirelessBase> {
+public class CoverRedstoneWirelessBaseGui extends CoverBaseGui<CoverRedstoneWirelessBase> {
 
     public CoverRedstoneWirelessBaseGui(CoverRedstoneWirelessBase cover) {
         super(cover);

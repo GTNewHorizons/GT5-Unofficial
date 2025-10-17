@@ -1,8 +1,9 @@
-package gregtech.common.covers.gui;
+package gregtech.common.gui.modularui.cover;
 
 import static gregtech.common.covers.CoverFluidRegulator.TICK_RATE_MAX;
 import static gregtech.common.covers.CoverFluidRegulator.TICK_RATE_MIN;
 
+import gregtech.common.gui.modularui.base.CoverBaseGui;
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -23,7 +24,7 @@ import gregtech.common.covers.modes.MachineProcessingCondition;
 import gregtech.common.covers.modes.TransferMode;
 import gregtech.common.modularui2.widget.builder.EnumRowBuilder;
 
-public class CoverFluidRegulatorGui extends CoverGui<CoverFluidRegulator> {
+public class CoverFluidRegulatorGui extends CoverBaseGui<CoverFluidRegulator> {
 
     private static final NumberFormatMUI numberFormat;
 

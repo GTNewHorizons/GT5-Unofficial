@@ -1,4 +1,4 @@
-package gregtech.common.covers.gui;
+package gregtech.common.gui.modularui.cover;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.utils.Alignment;
@@ -13,9 +13,10 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverItemFilter;
 import gregtech.common.covers.modes.FilterType;
+import gregtech.common.gui.modularui.base.CoverBaseGui;
 import gregtech.common.modularui2.widget.builder.EnumRowBuilder;
 
-public class CoverItemFilterGui extends CoverGui<CoverItemFilter> {
+public class CoverItemFilterGui extends CoverBaseGui<CoverItemFilter> {
 
     public CoverItemFilterGui(CoverItemFilter cover) {
         super(cover);

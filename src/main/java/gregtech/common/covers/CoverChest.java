@@ -3,6 +3,7 @@ package gregtech.common.covers;
 import static gregtech.api.modularui2.GTGuis.GLOBAL_SWITCH_MUI2;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
+import gregtech.common.gui.modularui.base.CoverBaseGui;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
@@ -23,8 +24,7 @@ import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTByteBuffer;
-import gregtech.common.covers.gui.CoverChestGui;
-import gregtech.common.covers.gui.CoverGui;
+import gregtech.common.gui.modularui.cover.CoverChestGui;
 import gregtech.common.gui.mui1.cover.ChestUIFactory;
 import io.netty.buffer.ByteBuf;
 
@@ -190,7 +190,7 @@ public class CoverChest extends Cover {
     }
 
     @Override
-    protected @NotNull CoverGui<?> getCoverGui() {
+    protected @NotNull CoverBaseGui<?> getCoverGui() {
         return new CoverChestGui(this);
     }
 

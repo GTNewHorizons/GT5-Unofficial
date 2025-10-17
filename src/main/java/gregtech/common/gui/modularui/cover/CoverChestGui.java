@@ -1,4 +1,4 @@
-package gregtech.common.covers.gui;
+package gregtech.common.gui.modularui.cover;
 
 import java.util.Arrays;
 
@@ -11,8 +11,9 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.common.covers.CoverChest;
+import gregtech.common.gui.modularui.base.CoverBaseGui;
 
-public class CoverChestGui extends CoverGui<CoverChest> {
+public class CoverChestGui extends CoverBaseGui<CoverChest> {
 
     public CoverChestGui(CoverChest cover) {
         super(cover);

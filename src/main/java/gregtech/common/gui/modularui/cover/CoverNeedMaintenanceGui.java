@@ -1,4 +1,4 @@
-package gregtech.common.covers.gui;
+package gregtech.common.gui.modularui.cover;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -15,10 +15,11 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.covers.CoverNeedMaintainance;
 import gregtech.common.covers.conditions.MaintenanceAlertCondition;
 import gregtech.common.covers.modes.RedstoneMode;
+import gregtech.common.gui.modularui.base.CoverBaseGui;
 import gregtech.common.modularui2.sync.LinkedBoolValue;
 import gregtech.common.modularui2.widget.SelectButton;
 
-public class CoverNeedMaintenanceGui extends CoverGui<CoverNeedMaintainance> {
+public class CoverNeedMaintenanceGui extends CoverBaseGui<CoverNeedMaintainance> {
 
     public CoverNeedMaintenanceGui(CoverNeedMaintainance cover) {
         super(cover);
