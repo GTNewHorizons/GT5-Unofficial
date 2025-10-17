@@ -59,7 +59,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -1000,7 +999,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                 "gt.eoh.tips.7",
                 formatNumbers(MOLTEN_SPACETIME_PER_FAILURE_TIER),
                 SPACETIME_FAILURE_BASE,
-                MaterialsUEVplus.SpaceTime.getLocalizedNameForItem("%material"))
+                Materials.SpaceTime.getLocalizedNameForItem("%material"))
             .addSeparator(GOLD)
             .addInfo(
                 "gt.eoh.tips.8",
@@ -1010,7 +1009,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                 formatNumbers(PARALLEL_MULTIPLIER_CONSTANT),
                 formatNumbers(POWER_DIVISION_CONSTANT),
                 formatNumbers(POWER_INCREASE_CONSTANT),
-                MaterialsUEVplus.RawStarMatter.getLocalizedNameForItem("%material"))
+                Materials.RawStarMatter.getLocalizedNameForItem("%material"))
             .addSeparator(GOLD)
             .addInfo("gt.eoh.tips.9")
             .beginStructureBlock(33, 33, 33, false)
@@ -1059,7 +1058,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
         {
             put(Materials.Hydrogen.mGas, 0L);
             put(Materials.Helium.mGas, 0L);
-            put(MaterialsUEVplus.RawStarMatter.mFluid, 0L);
+            put(Materials.RawStarMatter.mFluid, 0L);
         }
     };
 
@@ -1129,7 +1128,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
     }
 
     private long getStellarPlasmaStored() {
-        return validFluidMap.get(MaterialsUEVplus.RawStarMatter.mFluid);
+        return validFluidMap.get(Materials.RawStarMatter.mFluid);
     }
 
     public CheckRecipeResult processRecipe(EyeOfHarmonyRecipe recipeObject) {
@@ -1251,7 +1250,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
 
         // Reduce internal storage by input fluid quantity required for recipe.
         if (parallelAmount > 1) {
-            validFluidMap.put(MaterialsUEVplus.RawStarMatter.mFluid, 0L);
+            validFluidMap.put(Materials.RawStarMatter.mFluid, 0L);
         } else {
             validFluidMap.put(Materials.Hydrogen.mGas, 0L);
             validFluidMap.put(Materials.Helium.mGas, 0L);
@@ -1343,7 +1342,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
         if (failedParallelAmount > 0) {
             // 2^Tier spacetime released upon recipe failure.
             outputFluidToAENetwork(
-                MaterialsUEVplus.SpaceTime.getMolten(1),
+                Materials.SpaceTime.getMolten(1),
                 (long) ((successChance * MOLTEN_SPACETIME_PER_FAILURE_TIER
                     * GTUtility.powInt(SPACETIME_FAILURE_BASE, currentRecipeRocketTier + 1)) * failedParallelAmount));
             if (parallelAmount == 1) {
@@ -1572,7 +1571,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                         YELLOW + formatNumbers(starMatterOutput.amount * 20.0 / currentMaxProgresstime) + RESET));
 
                 FluidStackLong stellarPlasmaOutput = new FluidStackLong(
-                    MaterialsUEVplus.RawStarMatter.getFluid(0),
+                    Materials.RawStarMatter.getFluid(0),
                     (long) (stellarPlasma.amount * yield * successChance * parallelAmount));
                 str.add(
                     StatCollector.translateToLocalFormatted(
