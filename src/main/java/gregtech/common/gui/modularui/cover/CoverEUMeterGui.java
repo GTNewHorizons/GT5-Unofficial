@@ -2,7 +2,6 @@ package gregtech.common.gui.modularui.cover;
 
 import static gregtech.api.modularui2.GTGuiTextures.OVERLAY_BUTTON_CYCLIC;
 
-import gregtech.common.gui.modularui.base.CoverBaseGui;
 import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
@@ -16,6 +15,7 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.common.covers.CoverEUMeter;
+import gregtech.common.gui.modularui.base.CoverBaseGui;
 
 public class CoverEUMeterGui extends CoverBaseGui<CoverEUMeter> {
 

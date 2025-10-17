@@ -15,7 +15,7 @@ public class RowHelper {
     public static Flow makeInvertRedstoneRow(Invertable cover) {
         BooleanSyncValue isInvertedSyncValue = new BooleanSyncValue(cover::isInverted, cover::setInverted);
         return Flow.row()
-            .debugName("invert_redstone")
+            .name("invert_redstone")
             .child(
                 new ToggleButton().value(isInvertedSyncValue)
                     .overlay(true, GTGuiTextures.OVERLAY_BUTTON_REDSTONE_ON)

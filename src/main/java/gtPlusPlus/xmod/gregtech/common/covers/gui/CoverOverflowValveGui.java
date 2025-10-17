@@ -8,8 +8,8 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.common.gui.modularui.base.CoverBaseGui;
 import gregtech.common.covers.modes.BlockMode;
+import gregtech.common.gui.modularui.base.CoverBaseGui;
 import gregtech.common.modularui2.widget.builder.EnumRowBuilder;
 import gtPlusPlus.xmod.gregtech.common.covers.CoverOverflowValve;
 

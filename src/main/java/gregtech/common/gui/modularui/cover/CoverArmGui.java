@@ -1,6 +1,5 @@
 package gregtech.common.gui.modularui.cover;
 
-import gregtech.common.gui.modularui.base.CoverBaseGui;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
@@ -16,6 +15,7 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.covers.CoverArm;
+import gregtech.common.gui.modularui.base.CoverBaseGui;
 import gregtech.common.modularui2.sync.LinkedBoolValue;
 import gregtech.common.modularui2.widget.SelectButton;
 

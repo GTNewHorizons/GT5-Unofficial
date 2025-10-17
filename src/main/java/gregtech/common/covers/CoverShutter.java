@@ -1,6 +1,5 @@
 package gregtech.common.covers;
 
-import gregtech.common.gui.modularui.base.CoverBaseGui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fluids.Fluid;
 
@@ -14,8 +13,9 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.util.GTUtility;
-import gregtech.common.gui.modularui.cover.CoverShutterGui;
 import gregtech.common.covers.modes.ShutterMode;
+import gregtech.common.gui.modularui.base.CoverBaseGui;
+import gregtech.common.gui.modularui.cover.CoverShutterGui;
 import gregtech.common.gui.mui1.cover.ShutterUIFactory;
 
 public class CoverShutter extends CoverLegacyData {

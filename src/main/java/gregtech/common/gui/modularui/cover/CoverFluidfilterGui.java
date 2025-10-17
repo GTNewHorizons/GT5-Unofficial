@@ -1,6 +1,5 @@
 package gregtech.common.gui.modularui.cover;
 
-import gregtech.common.gui.modularui.base.CoverBaseGui;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -24,6 +23,7 @@ import gregtech.common.covers.CoverFluidfilter;
 import gregtech.common.covers.modes.BlockMode;
 import gregtech.common.covers.modes.FilterDirectionMode;
 import gregtech.common.covers.modes.FilterType;
+import gregtech.common.gui.modularui.base.CoverBaseGui;
 import gregtech.common.modularui2.widget.builder.EnumRowBuilder;
 
 public class CoverFluidfilterGui extends CoverBaseGui<CoverFluidfilter> {

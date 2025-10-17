@@ -1,6 +1,5 @@
 package gregtech.common.covers.redstone;
 
-import gregtech.common.gui.modularui.base.CoverBaseGui;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -16,6 +15,7 @@ import gregtech.api.interfaces.modularui.KeyProvider;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.common.covers.CoverPosition;
+import gregtech.common.gui.modularui.base.CoverBaseGui;
 import gregtech.common.gui.modularui.cover.redstone.CoverWirelessDoesWorkDetectorGui;
 import gregtech.common.gui.mui1.cover.WirelessActivityDetectorUIFactory;
 import io.netty.buffer.ByteBuf;

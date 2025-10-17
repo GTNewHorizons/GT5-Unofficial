@@ -4,7 +4,6 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.Arrays;
 
-import gregtech.common.gui.modularui.base.CoverBaseGui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -25,6 +24,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.base.CoverBaseGui;
 import gregtech.common.gui.modularui.cover.CoverLiquidMeterGui;
 import gregtech.common.gui.mui1.cover.LiquidMeterUIFactory;
 import gregtech.common.tileentities.storage.MTEDigitalTankBase;

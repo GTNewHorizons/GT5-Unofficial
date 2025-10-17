@@ -2,7 +2,6 @@ package gregtech.common.covers;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-import gregtech.common.gui.modularui.base.CoverBaseGui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTBase;
@@ -23,6 +22,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.base.CoverBaseGui;
 import gregtech.common.gui.modularui.cover.CoverArmGui;
 import gregtech.common.gui.mui1.cover.ArmUIFactory;
 import io.netty.buffer.ByteBuf;

@@ -4,7 +4,6 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.function.Consumer;
 
-import gregtech.common.gui.modularui.base.CoverBaseGui;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
@@ -27,6 +26,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.covers.CoverItemMeter;
+import gregtech.common.gui.modularui.base.CoverBaseGui;
 
 public class CoverItemMeterGui extends CoverBaseGui<CoverItemMeter> {
 

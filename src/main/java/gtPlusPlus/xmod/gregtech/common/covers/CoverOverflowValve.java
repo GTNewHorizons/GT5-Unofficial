@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.covers;
 
-import gregtech.common.gui.modularui.base.CoverBaseGui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -22,6 +21,7 @@ import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 import gregtech.common.covers.modes.BlockMode;
+import gregtech.common.gui.modularui.base.CoverBaseGui;
 import gregtech.common.gui.mui1.cover.OverflowUIFactory;
 import gtPlusPlus.xmod.gregtech.common.covers.gui.CoverOverflowValveGui;
 import io.netty.buffer.ByteBuf;

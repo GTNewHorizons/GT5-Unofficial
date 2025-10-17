@@ -81,7 +81,7 @@ public class CoverBaseGui<T extends Cover> {
             }
         });
         final ModularPanel panel = ModularPanel.defaultPanel(panelName, getGUIWidth(), getGUIHeight())
-            .debugName(getGuiId());
+            .name(getGuiId());
         final Flow widgetsColumn = Flow.column()
             .coverChildren()
             .crossAxisAlignment(Alignment.CrossAxis.START)
