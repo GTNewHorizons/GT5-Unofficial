@@ -651,13 +651,6 @@ public enum OrePrefixes {
         // -----
         ingotHot.mGeneratedItems.add(Materials.TranscendentMetal);
 
-        plate.mGeneratedItems.add(Materials.Paper);
-        plateDouble.mGeneratedItems.add(Materials.Paper);
-        plateTriple.mGeneratedItems.add(Materials.Paper);
-        plateQuadruple.mGeneratedItems.add(Materials.Paper);
-        plateQuintuple.mGeneratedItems.add(Materials.Paper);
-        ring.mGeneratedItems.add(Materials.Paper);
-
         lens.mGeneratedItems.add(Materials.EnderPearl);
         lens.mGeneratedItems.add(Materials.EnderEye);
 
