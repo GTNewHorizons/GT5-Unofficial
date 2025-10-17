@@ -73,23 +73,6 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
             }
         }
 
-        for (int matId = 0; matId < 1000; matId++) {
-            Materials mat = getMaterial(matId);
-
-            if (mat == null) continue;
-
-            GTLanguageManager
-                .addStringLocalization(mUnlocalizedName + "." + (matId) + ".name", getLocalizedNameFormat(mat));
-            GTLanguageManager.addStringLocalization(
-                mUnlocalizedName + "." + (matId + GTOreAdapter.SMALL_ORE_META_OFFSET) + ".name",
-                "Small " + getLocalizedNameFormat(mat));
-
-            GTLanguageManager.addStringLocalization(mUnlocalizedName + "." + (matId) + ".tooltip", mat.getToolTip());
-            GTLanguageManager.addStringLocalization(
-                mUnlocalizedName + "." + (matId + GTOreAdapter.SMALL_ORE_META_OFFSET) + ".tooltip",
-                mat.getToolTip());
-        }
-
         OreInfo<Materials> info = new OreInfo<>();
 
         for (int matId = 0; matId < 1000; matId++) {
@@ -378,6 +361,14 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
             .post(new OreInteractEvent(world, x, y, z, this, world.getBlockMetadata(x, y, z), player));
 
         return false;
+    }
+
+    @Override
+    public void onBlockHarvested(World world, int x, int y, int z, int meta, EntityPlayer player) {
+        super.onBlockHarvested(world, x, y, z, meta, player);
+
+        MinecraftForge.EVENT_BUS
+            .post(new OreInteractEvent(world, x, y, z, this, world.getBlockMetadata(x, y, z), player));
     }
 
     @Override

@@ -1172,6 +1172,8 @@ public enum OrePrefixes {
     public boolean doGenerateItem(Materials aMaterial) {
         if (aMaterial == null) return false;
         if (aMaterial == Materials._NULL) return false;
+        if (aMaterial.mMetaItemSubID == -1) return false;
+        if (!aMaterial.mHasParentMod) return false;
 
         // This only falls through, returning false, when the material has no overlap with `mMaterialGenerationBits`.
         // spotless:off
