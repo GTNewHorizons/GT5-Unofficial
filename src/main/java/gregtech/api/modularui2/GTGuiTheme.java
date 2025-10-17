@@ -55,14 +55,17 @@ public class GTGuiTheme {
     }
 
     public static void registerThemes() {
-        MinecraftForge.EVENT_BUS.register(GTGuiTheme.class);
+        MinecraftForge.EVENT_BUS.register(new GTGuiTheme.EventHandler());
         GTGuiThemes.init();
         THEMES.forEach(GTGuiTheme::register);
     }
 
-    @SubscribeEvent
-    public static void onReloadThemes(ReloadThemeEvent.Pre event) {
-        THEMES.forEach(GTGuiTheme::buildJson);
+    public static class EventHandler {
+
+        @SubscribeEvent
+        public void onReloadThemes(ReloadThemeEvent.Pre event) {
+            THEMES.forEach(GTGuiTheme::buildJson);
+        }
     }
 
     public static Builder builder(String themeId) {
@@ -83,16 +86,16 @@ public class GTGuiTheme {
         }
 
         /**
-         * Set a parent theme for this theme, which unset values will inherit from.
-         * If not set, it will use the default theme as the parent (VANILLA).
+         * Set a parent theme for this theme, which unset values will inherit from. If not set, it will use the default
+         * theme as the parent (VANILLA).
          */
         public Builder parent(GTGuiTheme parent) {
             return parent(parent.themeId);
         }
 
         /**
-         * Set a parent theme for this theme, which unset values will inherit from.
-         * If not set, it will use the default theme as the parent (VANILLA).
+         * Set a parent theme for this theme, which unset values will inherit from. If not set, it will use the default
+         * theme as the parent (VANILLA).
          */
         public Builder parent(String parentId) {
             theme.elementBuilder.add(b -> b.add("parent", parentId));
@@ -111,7 +114,7 @@ public class GTGuiTheme {
          * Set a tooltip hover background fallback for when specific widgets do not set their own.
          */
         public Builder globalHoverBackground(String hoverBackgroundId) {
-            theme.elementBuilder.add(b -> b.add("hoverBackground", hoverBackgroundId));
+            theme.elementBuilder.add(b -> b.add("background:hover", hoverBackgroundId));
             return this;
         }
 
@@ -213,7 +216,7 @@ public class GTGuiTheme {
                         new JsonBuilder().add("type", "texture")
                             .add("id", buttonId))
                         .add(
-                            "hoverBackground",
+                            "background:hover",
                             new JsonBuilder().add("type", "texture")
                                 .add("id", hoverId))
                         .add("textColor", textColor)
@@ -339,7 +342,7 @@ public class GTGuiTheme {
                         new JsonBuilder().add("type", "texture")
                             .add("id", backgroundId))
                         .add(
-                            "hoverBackground",
+                            "background:hover",
                             new JsonBuilder().add("type", "texture")
                                 .add("id", hoverBackgroundId))
                         .add(
@@ -347,7 +350,7 @@ public class GTGuiTheme {
                             new JsonBuilder().add("type", "texture")
                                 .add("id", selectedBackgroundId))
                         .add(
-                            "selectedHoverBackground",
+                            "selectedBackground:hover",
                             new JsonBuilder().add("type", "texture")
                                 .add("id", selectedHoverBackgroundId))
                         .add("selectedColor", selectedColor)
@@ -485,7 +488,7 @@ public class GTGuiTheme {
                         new JsonBuilder().add("type", "texture")
                             .add("id", backgroundId))
                         .add(
-                            "hoverBackground",
+                            "background:hover",
                             new JsonBuilder().add("type", "texture")
                                 .add("id", hoverBackgroundId))));
             return this;

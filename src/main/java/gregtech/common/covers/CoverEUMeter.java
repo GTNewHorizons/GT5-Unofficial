@@ -22,8 +22,8 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicBatteryBuffer;
 import gregtech.api.util.GTUtility;
-import gregtech.common.covers.gui.CoverEUMeterGui;
-import gregtech.common.covers.gui.CoverGui;
+import gregtech.common.gui.modularui.cover.CoverEUMeterGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.gui.mui1.cover.EUMeterUIFactory;
 import io.netty.buffer.ByteBuf;
 
@@ -226,7 +226,7 @@ public class CoverEUMeter extends Cover implements Invertable {
     }
 
     @Override
-    protected @NotNull CoverGui<?> getCoverGui() {
+    protected @NotNull CoverBaseGui<?> getCoverGui() {
         return new CoverEUMeterGui(this);
     }
 
@@ -239,19 +239,23 @@ public class CoverEUMeter extends Cover implements Invertable {
 
     public enum EnergyType {
 
-        UNIVERSAL_STORAGE(GTUtility.trans("301", "Universal"), GTUtility.trans("256", "Universal Storage"),
+        UNIVERSAL_STORAGE(translateToLocal("gt.interact.desc.Energy_Detector.universal"),
+            translateToLocal("gt.interact.desc.Energy_Detector.universal.tooltip"),
             ICoverable::getUniversalEnergyStored, ICoverable::getUniversalEnergyCapacity),
-        ELECTRICITY_STORAGE(GTUtility.trans("302", "Int. EU"), GTUtility.trans("257", "Electricity Storage"),
-            ICoverable::getStoredEU, ICoverable::getEUCapacity),
-        STEAM_STORAGE(GTUtility.trans("303", "Steam"), GTUtility.trans("258", "Steam Storage"),
-            ICoverable::getStoredSteam, ICoverable::getSteamCapacity),
-        AVERAGE_ELECTRIC_INPUT(GTUtility.trans("304", "Avg. Input"), GTUtility.trans("259", "Average Electric Input"),
+        ELECTRICITY_STORAGE(translateToLocal("gt.interact.desc.Energy_Detector.electricity"),
+            translateToLocal("gt.interact.desc.Energy_Detector.electricity.tooltip"), ICoverable::getStoredEU,
+            ICoverable::getEUCapacity),
+        STEAM_STORAGE(translateToLocal("gt.interact.desc.Energy_Detector.steam"),
+            translateToLocal("gt.interact.desc.Energy_Detector.steam.tooltip"), ICoverable::getStoredSteam,
+            ICoverable::getSteamCapacity),
+        AVERAGE_ELECTRIC_INPUT(translateToLocal("gt.interact.desc.Energy_Detector.average_in"),
+            translateToLocal("gt.interact.desc.Energy_Detector.average_in.tooltip"),
             ICoverable::getAverageElectricInput, (te) -> te.getInputVoltage() * te.getInputAmperage()),
-        AVERAGE_ELECTRIC_OUTPUT(GTUtility.trans("305", "Avg. Output"),
-            GTUtility.trans("260", "Average Electric Output"), ICoverable::getAverageElectricOutput,
-            (te) -> te.getOutputVoltage() * te.getOutputAmperage()),
-        ELECTRICITY_STORAGE_INCLUDING_BATTERIES(GTUtility.trans("306", "EU stored"),
-            GTUtility.trans("261", "Electricity Storage(Including Batteries)"), (te) -> {
+        AVERAGE_ELECTRIC_OUTPUT(translateToLocal("gt.interact.desc.Energy_Detector.average_out"),
+            translateToLocal("gt.interact.desc.Energy_Detector.average_out.tooltip"),
+            ICoverable::getAverageElectricOutput, (te) -> te.getOutputVoltage() * te.getOutputAmperage()),
+        ELECTRICITY_STORAGE_INCLUDING_BATTERIES(translateToLocal("gt.interact.desc.Energy_Detector.eu_stored"),
+            translateToLocal("gt.interact.desc.Energy_Detector.eu_stored.tooltip"), (te) -> {
                 if (te instanceof IGregTechTileEntity) {
                     IMetaTileEntity mte = ((IGregTechTileEntity) te).getMetaTileEntity();
                     if (mte instanceof MTEBasicBatteryBuffer buffer) {

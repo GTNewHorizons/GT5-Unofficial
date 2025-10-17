@@ -13,6 +13,7 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.text;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.function.Supplier;
 
@@ -30,6 +31,7 @@ import gregtech.api.fluid.GTFluidTank;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.internal.IGTRecipeAdder;
 import gregtech.api.net.IGT_NetworkHandler;
+import gregtech.api.util.GTChunkAssociatedData;
 
 /**
  * Made for static imports, this Class is just a Helper.
@@ -178,17 +180,17 @@ public class GTValues {
     };
 
     public static final String[] TIER_COLORS = new String[] { EnumChatFormatting.RED.toString(), // ULV, 0
-        EnumChatFormatting.GRAY.toString(), // LV, 1
+        EnumChatFormatting.BLACK.toString(), // LV, 1
         EnumChatFormatting.GOLD.toString(), // MV, 2
         EnumChatFormatting.YELLOW.toString(), // HV, 3
         EnumChatFormatting.DARK_GRAY.toString(), // EV, 4
-        EnumChatFormatting.GREEN.toString(), // IV, 5
+        EnumChatFormatting.BLUE.toString(), // IV, 5
         EnumChatFormatting.LIGHT_PURPLE.toString(), // LuV, 6
         EnumChatFormatting.AQUA.toString(), // ZPM, 7
-        EnumChatFormatting.DARK_GREEN.toString(), // UV, 8
-        EnumChatFormatting.DARK_RED.toString(), // UHV, 9
-        EnumChatFormatting.DARK_PURPLE.toString(), // UEV, 10
-        EnumChatFormatting.DARK_BLUE.toString() + EnumChatFormatting.BOLD, // UIV, 11
+        EnumChatFormatting.DARK_GREEN.toString() + EnumChatFormatting.UNDERLINE, // UV, 8
+        EnumChatFormatting.DARK_RED.toString() + EnumChatFormatting.UNDERLINE, // UHV, 9
+        EnumChatFormatting.DARK_PURPLE.toString() + EnumChatFormatting.UNDERLINE, // UEV, 10
+        EnumChatFormatting.DARK_BLUE.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.UNDERLINE, // UIV, 11
         EnumChatFormatting.RED.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.UNDERLINE, // UMV, 12
         EnumChatFormatting.DARK_RED.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.UNDERLINE, // UXV, 13
         EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.UNDERLINE, // MAX, 14
@@ -274,10 +276,6 @@ public class GTValues {
      */
     public static IGT_NetworkHandler NW;
     /**
-     * Control percentage of filled 3x3 chunks. Lower number means less oreveins spawn
-     */
-    public static int oreveinPercentage;
-    /**
      * Control number of attempts to find a valid orevein. Generally this maximum limit isn't hit, selecting a vein is
      * cheap
      */
@@ -314,6 +312,10 @@ public class GTValues {
      * Debug parameter for world generation. Tracks chunks added/removed from run queue.
      */
     public static boolean debugWorldGen = false;
+    /**
+     * Debug parameter for world generation. Measures amount of time taken to generate oreveins, stone, etc.
+     */
+    public static boolean profileWorldGen = false;
     /**
      * Debug parameter for orevein generation.
      */
@@ -440,6 +442,7 @@ public class GTValues {
     public static boolean worldTickHappened = false;
 
     public static final int[] emptyIntArray = new int[0];
+    public static final long[] emptyLongArray = new long[0];
 
     public static final IFluidTank[] emptyFluidTank = new IFluidTank[0];
     public static final GTFluidTank[] emptyFluidTankGT = new GTFluidTank[0];
@@ -449,11 +452,13 @@ public class GTValues {
     public static final String[] emptyStringArray = new String[0];
     public static final Object[] emptyObjectArray = new Object[0];
     public static final IIconContainer[] emptyIconContainerArray = new IIconContainer[3];
+    @SuppressWarnings("rawtypes")
+    public static final Iterator[] EMPTY_ITERATOR_ARRAY = new Iterator[0];
 
     /**
-     * Detects if we're in a deobfuscated environment, meaning that additional sanity checks should be ran.
-     * If the blackboard is null, we're in a unit test that hasn't set its env up properly and also want those checks to
-     * be ran.
+     * Detects if we're in a deobfuscated environment, meaning that additional sanity checks should be ran. If the
+     * blackboard is null, we're in a unit test that hasn't set its env up properly and also want those checks to be
+     * ran.
      */
     public static boolean DEVENV = Launch.blackboard == null ? true
         : (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
@@ -587,7 +592,6 @@ public class GTValues {
     public static final String AuthorPineapple = "Author: " + EnumChatFormatting.BLUE + "Recursive Pineapple";
 
     public static final Supplier<String> AuthorNoc = chain(
-        text("Author: "),
         animatedText(
             "Noc",
             0,
@@ -610,6 +614,15 @@ public class GTValues {
         + "u"
         + EnumChatFormatting.DARK_BLUE
         + "ez";
+
+    public static final Supplier<String> fancyAuthorChrom = chain(
+        animatedText(
+            "Chrom",
+            0,
+            1000,
+            EnumChatFormatting.WHITE + BOLD,
+            EnumChatFormatting.BLUE + BOLD,
+            EnumChatFormatting.GOLD + BOLD));
 
     private static final long[] EXPLOSION_LOOKUP_V = new long[] { V[0], V[1], V[2], V[3], V[4], V[4] * 2, V[5], V[6],
         V[7], V[8], V[8] * 2, V[9], V[10], V[11], V[12], V[12] * 2, V[13], V[14], V[15] };
@@ -636,5 +649,10 @@ public class GTValues {
             return StatCollector.translateToLocal(unlocalizedName);
         }
         return StatCollector.translateToLocal("GT5U.voltage_names.error_voltage_report_this");
+    }
+
+    public static <T> Iterator<T>[] emptyIteratorArray() {
+        // noinspection unchecked
+        return EMPTY_ITERATOR_ARRAY;
     }
 }

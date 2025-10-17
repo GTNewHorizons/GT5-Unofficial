@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 import org.jetbrains.annotations.Nullable;
@@ -103,6 +103,28 @@ public class BlockCasings5 extends BlockCasingsAbstract
     }
 
     @Override
+    public IIcon getIcon(int side, int meta) {
+        IIconContainer background = switch (meta % ACTIVE_OFFSET) {
+            case 1 -> Textures.BlockIcons.MACHINE_COIL_KANTHAL_BACKGROUND;
+            case 2 -> Textures.BlockIcons.MACHINE_COIL_NICHROME_BACKGROUND;
+            case 3 -> Textures.BlockIcons.MACHINE_COIL_TUNGSTENSTEEL_BACKGROUND;
+            case 4 -> Textures.BlockIcons.MACHINE_COIL_HSSG_BACKGROUND;
+            case 5 -> Textures.BlockIcons.MACHINE_COIL_NAQUADAH_BACKGROUND;
+            case 6 -> Textures.BlockIcons.MACHINE_COIL_NAQUADAHALLOY_BACKGROUND;
+            case 7 -> Textures.BlockIcons.MACHINE_COIL_ELECTRUMFLUX_BACKGROUND;
+            case 8 -> Textures.BlockIcons.MACHINE_COIL_AWAKENEDDRACONIUM_BACKGROUND;
+            case 9 -> Textures.BlockIcons.MACHINE_COIL_HSSS_BACKGROUND;
+            case 10 -> Textures.BlockIcons.MACHINE_COIL_TRINIUM_BACKGROUND;
+            case 11 -> Textures.BlockIcons.MACHINE_COIL_INFINITY_BACKGROUND;
+            case 12 -> Textures.BlockIcons.MACHINE_COIL_HYPOGEN_BACKGROUND;
+            case 13 -> Textures.BlockIcons.MACHINE_COIL_ETERNAL_BACKGROUND;
+            default -> Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL_BACKGROUND;
+        };
+
+        return background.getIcon();
+    }
+
+    @Override
     public @Nullable ITexture[][] getTextures(int metadata) {
         List<ITexture> textures = new ArrayList<>();
 
@@ -143,11 +165,7 @@ public class BlockCasings5 extends BlockCasingsAbstract
                 default -> Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL_BACKGROUND;
             };
 
-            textures.add(
-                TextureFactory.builder()
-                    .addIcon(background)
-                    .material(Blocks.stone)
-                    .build());
+            textures.add(TextureFactory.of(background));
 
             if (metadata >= ACTIVE_OFFSET) {
                 IIconContainer foreground = switch (metadata % ACTIVE_OFFSET) {
@@ -171,7 +189,6 @@ public class BlockCasings5 extends BlockCasingsAbstract
                     TextureFactory.builder()
                         .addIcon(foreground)
                         .glow()
-                        .material(Blocks.glowstone)
                         .build());
             }
         }
@@ -183,7 +200,7 @@ public class BlockCasings5 extends BlockCasingsAbstract
 
     @Override
     public int getRenderType() {
-        return GTRendererBlock.mRenderID;
+        return GTRendererBlock.RENDER_ID;
     }
 
     @Override

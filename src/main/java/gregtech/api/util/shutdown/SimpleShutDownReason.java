@@ -74,8 +74,8 @@ public class SimpleShutDownReason implements ShutDownReason {
     }
 
     /**
-     * Creates new reason with critical state. Add your localized description with `GT5U.gui.text.{key}`.
-     * This is already registered to registry.
+     * Creates new reason with critical state. Add your localized description with `GT5U.gui.text.{key}`. This is
+     * already registered to registry.
      */
     @Nonnull
     public static ShutDownReason ofCritical(String key) {
@@ -83,11 +83,16 @@ public class SimpleShutDownReason implements ShutDownReason {
     }
 
     /**
-     * Creates new reason with normal state. Add your localized description with `GT5U.gui.text.{key}`.
-     * This is already registered to registry.
+     * Creates new reason with normal state. Add your localized description with `GT5U.gui.text.{key}`. This is already
+     * registered to registry.
      */
     @Nonnull
     public static ShutDownReason ofNormal(String key) {
         return new SimpleShutDownReason(key, false);
+    }
+
+    @Override
+    public String getKey() {
+        return key;
     }
 }

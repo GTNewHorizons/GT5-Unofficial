@@ -4,8 +4,6 @@ import static bartworks.system.material.WerkstoffLoader.Ruridit;
 import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.componentAssemblyLineRecipes;
 import static gregtech.api.enums.ItemList.*;
 import static gregtech.api.enums.Materials.*;
-import static gregtech.api.enums.MaterialsKevlar.Kevlar;
-import static gregtech.api.enums.MaterialsUEVplus.*;
 import static gregtech.api.enums.OrePrefixes.*;
 import static gregtech.api.enums.TierEU.RECIPE_EV;
 import static gregtech.api.enums.TierEU.RECIPE_HV;

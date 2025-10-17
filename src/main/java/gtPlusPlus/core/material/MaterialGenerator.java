@@ -327,6 +327,7 @@ public class MaterialGenerator {
 
             if (generateOre) {
                 tempBlock = new BlockBaseOre(matInfo, BlockTypes.ORE);
+                matInfo.setHasOre();
             }
 
             DustState aState = new DustState(generateDust, generateSmallTinyDusts, generateSmallTinyDusts);

@@ -5,7 +5,6 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsOreAlum;
 import gregtech.api.enums.TierEU;
 
 public class ElectromagneticSeparatorRecipes implements Runnable {
@@ -13,7 +12,7 @@ public class ElectromagneticSeparatorRecipes implements Runnable {
     @Override
     public void run() {
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialsOreAlum.SluiceSand.getDust(1))
+            .itemInputs(Materials.SluiceSand.getDust(1))
             .itemOutputs(Materials.Iron.getDust(1), Materials.Neodymium.getDust(1), Materials.Chrome.getDust(1))
             .outputChances(4000, 2000, 2000)
             .duration(10 * SECONDS)

@@ -59,6 +59,7 @@ import static bartworks.system.material.WerkstoffLoader.Sodiumsulfate;
 import static bartworks.system.material.WerkstoffLoader.ZincSulfate;
 import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.OrePrefixes.cell;
 import static gregtech.api.enums.OrePrefixes.crushed;
 import static gregtech.api.enums.OrePrefixes.crushedCentrifuged;
@@ -72,7 +73,20 @@ import static gregtech.api.enums.OrePrefixes.dustTiny;
 import static gregtech.api.enums.OrePrefixes.ingot;
 import static gregtech.api.enums.OrePrefixes.nugget;
 import static gregtech.api.enums.OrePrefixes.rawOre;
-import static gregtech.api.recipe.RecipeMaps.*;
+import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
+import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalReactorRecipes;
+import static gregtech.api.recipe.RecipeMaps.circuitAssemblerRecipes;
+import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidHeaterRecipes;
+import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
+import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
+import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
+import static gregtech.api.recipe.RecipeMaps.packagerRecipes;
+import static gregtech.api.recipe.RecipeMaps.replicatorRecipes;
+import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
+import static gregtech.api.recipe.RecipeMaps.unpackagerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
@@ -123,7 +137,8 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
-import gregtech.common.blocks.BlockOresAbstract;
+import gregtech.common.blocks.BlockFrameBox;
+import gregtech.common.blocks.GTBlockOre;
 import gregtech.mixin.interfaces.accessors.IRecipeMutableAccess;
 import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.item.base.BaseItemComponent;
@@ -1122,7 +1137,7 @@ public class PlatinumSludgeOverHaul {
             return true;
 
         if (Block.getBlockFromItem(stack.getItem()) instanceof GTGenericBlock
-            && !(Block.getBlockFromItem(stack.getItem()) instanceof BlockOresAbstract)) return true;
+            && !(Block.getBlockFromItem(stack.getItem()) instanceof GTBlockOre)) return true;
 
         for (ItemStack itemStack : ITEMLIST_VALUES) {
             if (!BWUtil.checkStackAndPrefix(stack) && GTUtility.areStacksEqual(itemStack, stack, true)) {
@@ -1149,6 +1164,9 @@ public class PlatinumSludgeOverHaul {
         if (Block.getBlockFromItem(stack.getItem()) instanceof BlockBaseModular) {
             return true;
         }
+        if (Block.getBlockFromItem(stack.getItem()) instanceof BlockFrameBox) {
+            return true;
+        }
         if (stack.getItem() == HELICOPTER.getDust(1)
             .getItem()) {
             return true;
@@ -1156,6 +1174,16 @@ public class PlatinumSludgeOverHaul {
         if (stack.getItem() == WHITE_METAL.getDust(1)
             .getItem()) {
             return true;
+        }
+        if (Railcraft.isModLoaded()) {
+            if (Block.getBlockFromItem(stack.getItem())
+                .getUnlocalizedName()
+                .equals("tile.railcraft.machine.zeta")
+                || Block.getBlockFromItem(stack.getItem())
+                    .getUnlocalizedName()
+                    .equals("tile.railcraft.machine.eta")) {
+                return true;
+            }
         }
         if (GalaxySpace.isModLoaded()) {
             if (stack.getItem() == GTModHandler.getModItem(GalaxySpace.ID, "metalsblock", 1L, 7)

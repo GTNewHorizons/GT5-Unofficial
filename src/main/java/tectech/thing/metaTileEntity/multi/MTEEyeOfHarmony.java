@@ -61,7 +61,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -988,12 +987,12 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
             .addInfo("Creates a pocket of spacetime that is bigger on the inside using transdimensional")
             .addInfo("engineering. Certified Time Lord regulation compliant. This multi uses too much EU")
             .addInfo("to be handled with conventional means. All EU requirements are handled directly by")
-            .addInfo("your wireless EU network.")
+            .addInfo("your wireless EU network")
             .addSeparator(EnumChatFormatting.GOLD, 87)
             .addInfo("This multiblock will constantly consume hydrogen and helium when it is not running a")
             .addInfo("recipe once per second. It will store this internally, you can see the totals by")
             .addInfo("using a scanner. This multi also has three tiered blocks with " + RED + 9 + GRAY + " tiers")
-            .addInfo("each. They are as follows and have the associated effects on the multi.")
+            .addInfo("each. They are as follows and have the associated effects on the multi:")
             .addInfo(BLUE + "Spacetime Compression Field Generator:")
             .addInfo("- The tier of this block determines what recipes can be run. If the multiblocks")
             .addInfo("  spacetime compression field block exceeds the requirements of the recipe it")
@@ -1002,13 +1001,13 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                     + formatNumbers(SPACETIME_CASING_DIFFERENCE_DISCOUNT_PERCENTAGE * 100)
                     + "%"
                     + GRAY
-                    + " per tier over the requirement (multiplicative).")
+                    + " per tier over the requirement (multiplicative)")
             .addInfo(BLUE + "Time Dilation Field Generator:")
             .addInfo(
                 "- Decreases the time required for a recipe by " + RED
                     + "50%"
                     + GRAY
-                    + " per tier of block (multiplicative).")
+                    + " per tier of block (multiplicative)")
             .addInfo(
                 "  Decreases the probability of a recipe succeeding by " + RED
                     + formatNumbers(TIME_ACCEL_DECREASE_CHANCE_PER_TIER * 100)
@@ -1021,45 +1020,42 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                     + formatNumbers(STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER * 100)
                     + "%"
                     + GRAY
-                    + " per tier (additive).")
+                    + " per tier (additive)")
             .addInfo(
                 "  Decreases the yield of a recipe by " + RED
                     + formatNumbers(STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER * 100)
                     + "%"
                     + GRAY
                     + " per tier (additive). ")
-            .addInfo("  > Low tier stabilisation field generators have a power output penalty.")
+            .addInfo("  > Low tier stabilisation field generators have a power output penalty")
             .addInfo(
                 "     The power output penalty for using Crude Stabilisation Field Generators is " + RED
                     + formatNumbers(
                         STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER * TOTAL_CASING_TIERS_WITH_POWER_PENALTY
                             * 100)
-                    + "%"
-                    + GRAY
-                    + ".")
+                    + "%")
             .addInfo(
                 "     This penalty decreases by " + RED
                     + formatNumbers(STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER * 100)
                     + "%"
                     + GRAY
-                    + " per tier (additive).")
+                    + " per tier (additive)")
             .addSeparator(EnumChatFormatting.GOLD, 87)
-            .addInfo("Going over a recipe requirement on hydrogen or helium has a penalty on yield and recipe chance.")
+            .addInfo("Going over a recipe requirement on hydrogen or helium has a penalty on yield and recipe chance")
             .addInfo("All stored hydrogen and helium is consumed during a craft. The associated formulas are:")
             .addInfo(GREEN + "Overflow ratio = (Stored fluid / Recipe requirement) - 1")
             .addInfo(GREEN + "Adjustment value = 1 - exp(-(30 * Overflow ratio)^2)")
-            .addInfo("The Adjustment value is then subtracted from the total yield and recipe chance.")
+            .addInfo("The Adjustment value is then subtracted from the total yield and recipe chance")
             .addSeparator(EnumChatFormatting.GOLD, 87)
             .addInfo("It should be noted that base recipe chance is determined per recipe and yield always starts")
             .addInfo("at 1 and subtracts depending on penalties. All fluid/item outputs are multiplied by the")
-            .addInfo("yield. Failure fluid is exempt.")
+            .addInfo("yield. Failure fluid is exempt")
             .addSeparator(EnumChatFormatting.GOLD, 87)
-            .addInfo("This multiblock can only output to ME output buses/hatches.")
+            .addInfo("This multiblock can only output to ME output buses/hatches")
             .addSeparator(EnumChatFormatting.GOLD, 87)
-            .addInfo("This multiblock can be overclocked by placing a programmed circuit into the input bus.")
-            .addInfo(
-                "E.g. A circuit of 2 will provide 2 OCs, 16x EU input and 0.25x the time. EU output is unaffected.")
-            .addInfo("All outputs are equal. All item and fluid output chances & amounts per recipe are unaffected.")
+            .addInfo("This multiblock can be overclocked by placing a programmed circuit into the input bus")
+            .addInfo("E.g. A circuit of 2 will provide 2 OCs, 16x EU input and 0.25x the time. EU output is unaffected")
+            .addInfo("All outputs are equal. All item and fluid output chances & amounts per recipe are unaffected")
             .addSeparator(EnumChatFormatting.GOLD, 87)
             .addInfo(
                 "If a recipe fails the EOH will output " + GREEN
@@ -1071,13 +1067,13 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                     + GRAY
                     + "L of molten")
             .addInfo(
-                MaterialsUEVplus.SpaceTime.getLocalizedNameForItem("%material")
-                    + " instead of fluid/item outputs and output as much EU as a successful recipe.")
+                Materials.SpaceTime.getLocalizedNameForItem("%material")
+                    + " instead of fluid/item outputs and output as much EU as a successful recipe")
             .addSeparator(EnumChatFormatting.GOLD, 87)
             .addInfo(
-                "This multiblock can perform parallel processing by placing Astral Array Fabricators into the input bus.")
+                "This multiblock can perform parallel processing by placing Astral Array Fabricators into the input bus")
             .addInfo(
-                "They are stored internally and can be retrieved via right-clicking the controller with a wire cutter.")
+                "They are stored internally and can be retrieved via right-clicking the controller with a wire cutter")
             .addInfo(
                 "The maximum amount of stored Astral Arrays is " + formatNumbers(ASTRAL_ARRAY_LIMIT)
                     + ". Parallel amount is calculated via these formulas:")
@@ -1088,7 +1084,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                     + formatNumbers(CONSTANT_FOR_LOG)
                     + "))")
             .addInfo(GREEN + "Parallel = 2^(Parallel exponent)")
-            .addInfo("If the EOH is running parallel recipes, the power calculation changes.")
+            .addInfo("If the EOH is running parallel recipes, the power calculation changes")
             .addInfo("The power needed for parallel processing is calculated as follows:")
             .addInfo(
                 GREEN + "total EU = ((EU output - EU input * "
@@ -1100,17 +1096,14 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                     + "^(Parallel exponent)")
             .addInfo(
                 "Furthermore, if parallel recipes are run, the recipes consume "
-                    + MaterialsUEVplus.RawStarMatter.getLocalizedNameForItem("%material"))
-            .addInfo("instead of helium and hydrogen. Overflow penalties still apply.")
+                    + Materials.RawStarMatter.getLocalizedNameForItem("%material"))
+            .addInfo("instead of helium and hydrogen. Overflow penalties still apply")
             .addInfo(
-                "The required amount of fluid to start a recipe is " + GREEN
-                    + "12.4 / 10^6 * Helium amount * Parallel"
-                    + GRAY
-                    + ".")
-            .addInfo("The success or failure of each parallel is determined independently.")
+                "The required amount of fluid to start a recipe is " + GREEN + "12.4 / 10^6 * Helium amount * Parallel")
+            .addInfo("The success or failure of each parallel is determined independently")
             .addSeparator(EnumChatFormatting.GOLD, 87)
-            .addInfo("Animations can be disabled by using a screwdriver on the multiblock.")
-            .addInfo("Planet block can be inserted directly by right-clicking the controller with planet block.")
+            .addInfo("Animations can be disabled by using a screwdriver on the multiblock")
+            .addInfo("Planet block can be inserted directly by right-clicking the controller with planet block")
             .beginStructureBlock(33, 33, 33, false)
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "896" + EnumChatFormatting.GRAY + " Reinforced Spatial Structure Casing.")
@@ -1168,7 +1161,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
         {
             put(Materials.Hydrogen.mGas, 0L);
             put(Materials.Helium.mGas, 0L);
-            put(MaterialsUEVplus.RawStarMatter.mFluid, 0L);
+            put(Materials.RawStarMatter.mFluid, 0L);
         }
     };
 
@@ -1238,7 +1231,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
     }
 
     private long getStellarPlasmaStored() {
-        return validFluidMap.get(MaterialsUEVplus.RawStarMatter.mFluid);
+        return validFluidMap.get(Materials.RawStarMatter.mFluid);
     }
 
     public CheckRecipeResult processRecipe(EyeOfHarmonyRecipe recipeObject) {
@@ -1360,7 +1353,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
 
         // Reduce internal storage by input fluid quantity required for recipe.
         if (parallelAmount > 1) {
-            validFluidMap.put(MaterialsUEVplus.RawStarMatter.mFluid, 0L);
+            validFluidMap.put(Materials.RawStarMatter.mFluid, 0L);
         } else {
             validFluidMap.put(Materials.Hydrogen.mGas, 0L);
             validFluidMap.put(Materials.Helium.mGas, 0L);
@@ -1452,7 +1445,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
         if (failedParallelAmount > 0) {
             // 2^Tier spacetime released upon recipe failure.
             outputFluidToAENetwork(
-                MaterialsUEVplus.SpaceTime.getMolten(1),
+                Materials.SpaceTime.getMolten(1),
                 (long) ((successChance * MOLTEN_SPACETIME_PER_FAILURE_TIER
                     * GTUtility.powInt(SPACETIME_FAILURE_BASE, currentRecipeRocketTier + 1)) * failedParallelAmount));
             if (parallelAmount == 1) {
@@ -1681,7 +1674,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                         YELLOW + formatNumbers(starMatterOutput.amount * 20.0 / currentMaxProgresstime) + RESET));
 
                 FluidStackLong stellarPlasmaOutput = new FluidStackLong(
-                    MaterialsUEVplus.RawStarMatter.getFluid(0),
+                    Materials.RawStarMatter.getFluid(0),
                     (long) (stellarPlasma.amount * yield * successChance * parallelAmount));
                 str.add(
                     StatCollector.translateToLocalFormatted(

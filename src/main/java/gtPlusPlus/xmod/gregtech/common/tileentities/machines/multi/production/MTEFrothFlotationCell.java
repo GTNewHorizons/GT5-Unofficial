@@ -69,7 +69,7 @@ public class MTEFrothFlotationCell extends GTPPMultiBlockBase<MTEFrothFlotationC
 
     @Override
     public String getMachineType() {
-        return "Flotation Cell";
+        return "Flotation Cell, FCR";
     }
 
     @Override
@@ -95,7 +95,7 @@ public class MTEFrothFlotationCell extends GTPPMultiBlockBase<MTEFrothFlotationC
 
     @Override
     protected SoundResource getProcessStartSound() {
-        return SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP;
+        return SoundResource.GTCEU_LOOP_HUM;
     }
 
     @Override
@@ -278,6 +278,11 @@ public class MTEFrothFlotationCell extends GTPPMultiBlockBase<MTEFrothFlotationC
     @Override
     public boolean isRecipeLockingEnabled() {
         return lockedMaterialName != null && !lockedMaterialName.isEmpty();
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
     }
 
     @Override

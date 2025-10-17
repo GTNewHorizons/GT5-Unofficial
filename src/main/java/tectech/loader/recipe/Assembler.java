@@ -19,7 +19,6 @@ import com.gtnewhorizon.structurelib.StructureLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
@@ -343,7 +342,7 @@ public class Assembler implements Runnable {
                     .itemInputs(
                         ItemList.Hatch_Dynamo_UMV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Quantium, 2),
-                        GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.SpaceTime, 2))
+                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.SpaceTime, 2))
                     .itemOutputs(CustomItemList.eM_dynamoMulti4_UMV.get(1))
                     .fluidInputs(Materials.Silver.getMolten(1 * STACKS))
                     .duration(5 * SECONDS)
@@ -355,8 +354,8 @@ public class Assembler implements Runnable {
                         ItemList.Hatch_Dynamo_UXV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.BlackPlutonium, 2),
                         GTOreDictUnificator
-                            .get(OrePrefixes.plate, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 1),
-                        GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.MagMatter, 1L))
+                            .get(OrePrefixes.plate, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 1),
+                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.MagMatter, 1L))
                     .itemOutputs(CustomItemList.eM_dynamoMulti4_UXV.get(1))
                     .fluidInputs(Materials.Silver.getMolten(1 * STACKS))
                     .duration(5 * SECONDS)
@@ -478,7 +477,7 @@ public class Assembler implements Runnable {
                         ItemList.Transformer_UXV_UMV.get(1),
                         CustomItemList.eM_dynamoMulti4_UMV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Quantium, 2),
-                        GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.SpaceTime, 4))
+                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.SpaceTime, 4))
                     .itemOutputs(CustomItemList.eM_dynamoMulti16_UMV.get(1))
                     .fluidInputs(Materials.Electrum.getMolten(1 * STACKS))
                     .duration(10 * SECONDS)
@@ -491,8 +490,8 @@ public class Assembler implements Runnable {
                         CustomItemList.eM_dynamoMulti4_UXV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.BlackPlutonium, 2),
                         GTOreDictUnificator
-                            .get(OrePrefixes.plate, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 2),
-                        GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.MagMatter, 2L))
+                            .get(OrePrefixes.plate, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 2),
+                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.MagMatter, 2L))
                     .itemOutputs(CustomItemList.eM_dynamoMulti16_UXV.get(1))
                     .fluidInputs(Materials.Electrum.getMolten(1 * STACKS))
                     .duration(10 * SECONDS)
@@ -576,7 +575,7 @@ public class Assembler implements Runnable {
                     .itemOutputs(CustomItemList.eM_dynamoMulti64_UHV.get(1))
                     .fluidInputs(Materials.Tungsten.getMolten(16 * INGOTS))
                     .duration(20 * SECONDS)
-                    .eut(TierEU.RECIPE_UHV)
+                    .eut(TierEU.RECIPE_UV)
                     .addTo(assemblerRecipes);
                 // Dynamo UEV 64A
                 GTValues.RA.stdBuilder()
@@ -614,7 +613,7 @@ public class Assembler implements Runnable {
                         ItemList.WetTransformer_UXV_UMV.get(1),
                         CustomItemList.eM_dynamoMulti16_UMV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.Quantium, 2),
-                        GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.SpaceTime, 6))
+                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.SpaceTime, 6))
                     .itemOutputs(CustomItemList.eM_dynamoMulti64_UMV.get(1))
                     .fluidInputs(Materials.Tungsten.getMolten(1 * STACKS))
                     .duration(20 * SECONDS)
@@ -627,8 +626,8 @@ public class Assembler implements Runnable {
                         CustomItemList.eM_dynamoMulti16_UXV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.BlackPlutonium, 2),
                         GTOreDictUnificator
-                            .get(OrePrefixes.plate, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 3),
-                        GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.MagMatter, 3L))
+                            .get(OrePrefixes.plate, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 3),
+                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.MagMatter, 3L))
                     .itemOutputs(CustomItemList.eM_dynamoMulti64_UXV.get(1))
                     .fluidInputs(Materials.Tungsten.getMolten(1 * STACKS))
                     .duration(20 * SECONDS)
@@ -744,7 +743,7 @@ public class Assembler implements Runnable {
                     .itemInputs(
                         ItemList.Hatch_Energy_UMV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Quantium, 2),
-                        GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.SpaceTime, 2))
+                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.SpaceTime, 2))
                     .itemOutputs(CustomItemList.eM_energyMulti4_UMV.get(1))
                     .fluidInputs(Materials.Silver.getMolten(1 * STACKS))
                     .duration(5 * SECONDS)
@@ -756,8 +755,8 @@ public class Assembler implements Runnable {
                         ItemList.Hatch_Energy_UXV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.BlackPlutonium, 2),
                         GTOreDictUnificator
-                            .get(OrePrefixes.plate, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 1),
-                        GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.MagMatter, 1L))
+                            .get(OrePrefixes.plate, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 1),
+                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.MagMatter, 1L))
                     .itemOutputs(CustomItemList.eM_energyMulti4_UXV.get(1))
                     .fluidInputs(Materials.Silver.getMolten(1 * STACKS))
                     .duration(5 * SECONDS)
@@ -879,7 +878,7 @@ public class Assembler implements Runnable {
                         ItemList.Transformer_UXV_UMV.get(1),
                         CustomItemList.eM_energyMulti4_UMV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Quantium, 2),
-                        GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.SpaceTime, 4))
+                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.SpaceTime, 4))
                     .itemOutputs(CustomItemList.eM_energyMulti16_UMV.get(1))
                     .fluidInputs(Materials.Electrum.getMolten(1 * STACKS))
                     .duration(10 * SECONDS)
@@ -892,8 +891,8 @@ public class Assembler implements Runnable {
                         CustomItemList.eM_energyMulti4_UXV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.BlackPlutonium, 2),
                         GTOreDictUnificator
-                            .get(OrePrefixes.plate, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 2),
-                        GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.MagMatter, 2L))
+                            .get(OrePrefixes.plate, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 2),
+                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.MagMatter, 2L))
                     .itemOutputs(CustomItemList.eM_energyMulti16_UXV.get(1))
                     .fluidInputs(Materials.Electrum.getMolten(1 * STACKS))
                     .duration(10 * SECONDS)
@@ -1015,7 +1014,7 @@ public class Assembler implements Runnable {
                         ItemList.WetTransformer_UXV_UMV.get(1),
                         CustomItemList.eM_energyMulti16_UMV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.Quantium, 2),
-                        GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.SpaceTime, 6))
+                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.SpaceTime, 6))
                     .itemOutputs(CustomItemList.eM_energyMulti64_UMV.get(1))
                     .fluidInputs(Materials.Tungsten.getMolten(1 * STACKS))
                     .duration(20 * SECONDS)
@@ -1028,8 +1027,8 @@ public class Assembler implements Runnable {
                         CustomItemList.eM_energyMulti16_UXV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.BlackPlutonium, 2),
                         GTOreDictUnificator
-                            .get(OrePrefixes.plate, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 3),
-                        GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.MagMatter, 3L))
+                            .get(OrePrefixes.plate, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 3),
+                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.MagMatter, 3L))
                     .itemOutputs(CustomItemList.eM_energyMulti64_UXV.get(1))
                     .fluidInputs(Materials.Tungsten.getMolten(1 * STACKS))
                     .duration(20 * SECONDS)

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.function.Function;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
@@ -42,6 +43,7 @@ import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.ItemMachines;
+import gregtech.common.config.Client;
 import ic2.api.tile.IWrenchable;
 
 public class BlockOverlayRenderer {
@@ -182,10 +184,14 @@ public class BlockOverlayRenderer {
         Rotation.sideRotations[tSideHit].glApply();
         // draw grid
         GL11.glTranslated(0.0D, -0.502D, 0.0D);
-        GL11.glLineWidth(2.5F);
+        GL11.glLineWidth(calculateLineWidth());
         final Tessellator tess = Tessellator.instance;
         tess.startDrawing(GL11.GL_LINES);
-        tess.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.5F);
+        int red = Client.blockoverlay.red;
+        int green = Client.blockoverlay.green;
+        int blue = Client.blockoverlay.blue;
+        int alpha = Client.blockoverlay.alpha;
+        tess.setColorRGBA(red, green, blue, alpha);
         tess.addVertex(+.50D, .0D, -.25D);
         tess.addVertex(-.50D, .0D, -.25D);
         tess.addVertex(+.50D, .0D, +.25D);
@@ -404,4 +410,13 @@ public class BlockOverlayRenderer {
         GL11.glPopMatrix();
     }
 
+    private static float calculateLineWidth() {
+        // Assume default resolution has the same height as a standard Full HD monitor
+        final float baseHeight = 1080F;
+
+        // Calculate deviation using the actual height of the application window,
+        // higher resolutions result in thicker lines,
+        // lower resolutions result in thinner lines.
+        return Client.blockoverlay.lineWidth * (Minecraft.getMinecraft().displayHeight / baseHeight);
+    }
 }

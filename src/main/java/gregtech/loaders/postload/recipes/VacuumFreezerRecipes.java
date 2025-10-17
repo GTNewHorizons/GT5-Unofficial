@@ -15,12 +15,12 @@ import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class VacuumFreezerRecipes implements Runnable {
 
     @Override
@@ -348,8 +348,8 @@ public class VacuumFreezerRecipes implements Runnable {
 
         // hot transcendent metal ingot cooling
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, MaterialsUEVplus.TranscendentMetal, 1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, MaterialsUEVplus.TranscendentMetal, 1L))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.TranscendentMetal, 1L))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.TranscendentMetal, 1L))
             .fluidInputs(
                 new FluidStack(FluidRegistry.getFluid("molten.titansteel"), 1 * INGOTS),
                 Materials.SuperCoolant.getFluid(1_000))
@@ -379,8 +379,8 @@ public class VacuumFreezerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Harmonic_Compound.get(2))
             .fluidInputs(GGMaterial.atomicSeparationCatalyst.getMolten(1 * INGOTS))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, MaterialsUEVplus.Mellion, 1L))
-            .fluidOutputs(MaterialsUEVplus.Creon.getMolten(1 * INGOTS))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Mellion, 1L))
+            .fluidOutputs(Materials.Creon.getMolten(1 * INGOTS))
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .addTo(vacuumFreezerRecipes);
@@ -390,10 +390,10 @@ public class VacuumFreezerRecipes implements Runnable {
         final int partFraction = (int) (prefix.mMaterialAmount * INGOTS / M);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(prefix, MaterialsUEVplus.HotProtoHalkonite, multiplier))
-            .itemOutputs(GTOreDictUnificator.get(prefix, MaterialsUEVplus.ProtoHalkonite, multiplier))
+            .itemInputs(GTOreDictUnificator.get(prefix, Materials.HotProtoHalkonite, multiplier))
+            .itemOutputs(GTOreDictUnificator.get(prefix, Materials.ProtoHalkonite, multiplier))
             .fluidInputs(
-                MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid((long) partFraction * multiplier / 4),
+                Materials.DimensionallyShiftedSuperfluid.getFluid((long) partFraction * multiplier / 4),
                 Materials.SuperCoolant.getFluid(partFraction * multiplier * 4L))
             .duration((int) (multiplier * (SECONDS * partFraction / (float) INGOTS)))
             .eut(TierEU.RECIPE_UIV)

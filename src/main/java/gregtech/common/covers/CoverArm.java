@@ -4,10 +4,16 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
+import org.jetbrains.annotations.NotNull;
+
+import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
 import gregtech.api.covers.CoverContext;
@@ -16,26 +22,27 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.cover.CoverArmGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.gui.mui1.cover.ArmUIFactory;
+import io.netty.buffer.ByteBuf;
 
-public class CoverArm extends CoverLegacyData {
+public class CoverArm extends Cover {
 
+    private boolean export;
+    private int internalSlotId;
+    private int externalSlotId;
     public final int mTickRate;
+    // TODO: REMOVE AFTER 2.9
     // msb converted, 2nd : direction (1=export)
     // right 14 bits: internalSlot, next 14 bits adjSlot, 0 = all, slot = -1
     public static final int EXPORT_MASK = 0x40000000;
     public static final int SLOT_ID_MASK = 0x3FFF;
-    protected static final int SLOT_ID_MIN = 0;
     public static final int CONVERTED_BIT = 0x80000000;
 
     public CoverArm(CoverContext context, int aTickRate, ITexture coverTexture) {
         super(context, coverTexture);
         this.mTickRate = aTickRate;
-    }
-
-    @Override
-    public boolean isRedstoneSensitive(long aTimer) {
-        return false;
     }
 
     @Override
@@ -51,16 +58,16 @@ public class CoverArm extends CoverLegacyData {
         final int toSlot;
         final int fromSlot;
 
-        if ((this.coverData & EXPORT_MASK) > 0) {
+        if (export) {
             fromTile = tileEntity;
             toTile = coverable.getTileEntityAtSide(coverSide);
-            fromSlot = this.coverData & SLOT_ID_MASK;
-            toSlot = (this.coverData >> 14) & SLOT_ID_MASK;
+            fromSlot = internalSlotId;
+            toSlot = externalSlotId;
         } else {
             fromTile = coverable.getTileEntityAtSide(coverSide);
             toTile = tileEntity;
-            fromSlot = (this.coverData >> 14) & SLOT_ID_MASK;
-            toSlot = this.coverData & SLOT_ID_MASK;
+            fromSlot = externalSlotId;
+            toSlot = internalSlotId;
         }
 
         if (fromSlot > 0 && toSlot > 0) {
@@ -77,9 +84,7 @@ public class CoverArm extends CoverLegacyData {
                     (byte) 64,
                     (byte) 1);
         } else if (toSlot > 0) {
-            final ForgeDirection toSide;
-            if ((this.coverData & EXPORT_MASK) > 0) toSide = coverSide;
-            else toSide = coverSide.getOpposite();
+            final ForgeDirection toSide = export ? coverSide : coverSide.getOpposite();
             GTUtility.moveOneItemStackIntoSlot(
                 fromTile,
                 toTile,
@@ -92,9 +97,7 @@ public class CoverArm extends CoverLegacyData {
                 (byte) 64,
                 (byte) 1);
         } else if (fromSlot > 0) {
-            final ForgeDirection toSide;
-            if ((this.coverData & EXPORT_MASK) > 0) toSide = coverSide;
-            else toSide = coverSide.getOpposite();
+            final ForgeDirection toSide = export ? coverSide : coverSide.getOpposite();
             if (fromTile instanceof IInventory fromInventory) GTUtility.moveFromSlotToSide(
                 fromInventory,
                 toTile,
@@ -107,15 +110,8 @@ public class CoverArm extends CoverLegacyData {
                 (byte) 64,
                 (byte) 1);
         } else {
-            final ForgeDirection fromSide;
-            final ForgeDirection toSide;
-            if ((this.coverData & EXPORT_MASK) > 0) {
-                fromSide = coverSide;
-                toSide = coverSide.getOpposite();
-            } else {
-                fromSide = coverSide.getOpposite();
-                toSide = coverSide;
-            }
+            final ForgeDirection fromSide = export ? coverSide : coverSide.getOpposite();
+            final ForgeDirection toSide = fromSide.getOpposite();
             GTUtility.moveOneItemStack(
                 fromTile,
                 toTile,
@@ -132,52 +128,64 @@ public class CoverArm extends CoverLegacyData {
 
     @Override
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        int step = 0;
         if (GTUtility.getClickedFacingCoords(coverSide, aX, aY, aZ)[0] >= 0.5F) {
-            step += aPlayer.isSneaking() ? 256 : 16;
+            internalSlotId += aPlayer.isSneaking() ? 16 : 1;
         } else {
-            step -= aPlayer.isSneaking() ? 256 : 16;
+            internalSlotId = Math.max(0, internalSlotId - (aPlayer.isSneaking() ? 16 : 1));
         }
-        int newCoverData = getNewVar(getVariable(), step);
-        sendMessageToPlayer(aPlayer, newCoverData);
-        coverData = newCoverData;
+        sendMessageToPlayer(aPlayer);
     }
 
     @Override
     public boolean onCoverRightClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         int step = (GTUtility.getClickedFacingCoords(coverSide, aX, aY, aZ)[0] >= 0.5F) ? 1 : -1;
-        int tCoverVariable = getNewVar(getVariable(), step);
-        sendMessageToPlayer(aPlayer, tCoverVariable);
-        coverData = tCoverVariable;
+        internalSlotId = Math.max(0, internalSlotId + step);
+        sendMessageToPlayer(aPlayer);
         return true;
     }
 
-    private void sendMessageToPlayer(EntityPlayer aPlayer, int var) {
-        if ((var & EXPORT_MASK) != 0) GTUtility.sendChatToPlayer(
-            aPlayer,
-            translateToLocal("gt.interact.desc.out_slot") + (((var >> 14) & SLOT_ID_MASK) - 1));
-        else GTUtility
-            .sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.in_slot") + ((var & SLOT_ID_MASK) - 1));
+    private void sendMessageToPlayer(EntityPlayer aPlayer) {
+        if (export) GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.out_slot") + externalSlotId);
+        else GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.in_slot") + internalSlotId);
     }
 
-    private int getNewVar(int var, int step) {
-        int intSlot = (var & SLOT_ID_MASK);
-        int adjSlot = (var >> 14) & SLOT_ID_MASK;
-        if ((var & EXPORT_MASK) == 0) {
-            int x = (intSlot + step);
-            if (x > SLOT_ID_MASK) return createVar(0, SLOT_ID_MASK, 0);
-            else if (x < 1) return createVar(-step - intSlot + 1, 0, EXPORT_MASK);
-            else return createVar(0, x, 0);
-        } else {
-            int x = (adjSlot - step);
-            if (x > SLOT_ID_MASK) return createVar(SLOT_ID_MASK, 0, EXPORT_MASK);
-            else if (x < 1) return createVar(0, step - adjSlot + 1, 0);
-            else return createVar(x, 0, EXPORT_MASK);
+    @Override
+    protected void writeDataToByteBuf(ByteBuf byteBuf) {
+        byteBuf.writeBoolean(export);
+        byteBuf.writeInt(internalSlotId);
+        byteBuf.writeInt(externalSlotId);
+    }
+
+    @Override
+    protected void readDataFromPacket(ByteArrayDataInput byteData) {
+        this.export = byteData.readBoolean();
+        this.internalSlotId = byteData.readInt();
+        this.externalSlotId = byteData.readInt();
+    }
+
+    @Override
+    protected void readDataFromNbt(NBTBase nbt) {
+        if (nbt instanceof NBTTagInt legacyData) {
+            int data = legacyData.func_150287_d();
+            this.export = getFlagExport(data);
+            this.internalSlotId = getFlagInternalSlot(data);
+            this.externalSlotId = getFlagExternalSlot(data);
+            return;
         }
+        NBTTagCompound tag = (NBTTagCompound) nbt;
+        this.export = tag.getBoolean("export");
+        this.internalSlotId = tag.getInteger("internalSlotId");
+        this.externalSlotId = tag.getInteger("externalSlotId");
     }
 
-    private int createVar(int adjSlot, int intSlot, int export) {
-        return CONVERTED_BIT | export | ((adjSlot & SLOT_ID_MASK) << 14) | (intSlot & SLOT_ID_MASK);
+    @Override
+    protected @NotNull NBTBase saveDataToNbt() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setBoolean("export", this.export);
+        tag.setInteger("internalSlotId", this.internalSlotId);
+        tag.setInteger("externalSlotId", this.externalSlotId);
+
+        return tag;
     }
 
     @Override
@@ -229,11 +237,51 @@ public class CoverArm extends CoverLegacyData {
         return this.mTickRate;
     }
 
+    public boolean isExport() {
+        return export;
+    }
+
+    public void setExport(boolean export) {
+        this.export = export;
+    }
+
+    public int getInternalSlotId() {
+        return internalSlotId;
+    }
+
+    public void setInternalSlotId(int internalSlotId) {
+        this.internalSlotId = internalSlotId;
+    }
+
+    public int getExternalSlotId() {
+        return externalSlotId;
+    }
+
+    public void setExternalSlotId(int externalSlotId) {
+        this.externalSlotId = externalSlotId;
+    }
+
+    private boolean getFlagExport(int coverVariable) {
+        return (coverVariable & CoverArm.EXPORT_MASK) != 0;
+    }
+
+    private int getFlagInternalSlot(int coverVariable) {
+        return coverVariable & CoverArm.SLOT_ID_MASK;
+    }
+
+    private int getFlagExternalSlot(int coverVariable) {
+        return (coverVariable >> 14) & CoverArm.SLOT_ID_MASK;
+    }
     // GUI stuff
 
     @Override
     public boolean hasCoverGUI() {
         return true;
+    }
+
+    @Override
+    protected @NotNull CoverBaseGui<?> getCoverGui() {
+        return new CoverArmGui(this);
     }
 
     @Override

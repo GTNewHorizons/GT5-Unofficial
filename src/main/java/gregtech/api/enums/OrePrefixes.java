@@ -10,6 +10,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -28,7 +30,6 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
 import gregtech.loaders.materialprocessing.ProcessingModSupport;
-import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectOpenCustomHashSet;
 import it.unimi.dsi.fastutil.objects.ObjectSet;
@@ -37,7 +38,7 @@ public enum OrePrefixes {
 
     // used for removed prefixes to prevent id shifts
     ___placeholder___("Placeholder", "", "", false, false, false, false, false, false, false, false, false, false, 0, 0,
-        1, -1),
+        64, -1),
 
     /** In case of an End-Ores Mod. Ore -> Material is a Oneway Operation! */
     oreBlackgranite("Black Granite Ores", "Granite ", " Ore", true, true, false, false, false, true, false, false,
@@ -181,7 +182,7 @@ public enum OrePrefixes {
     comb("Combs", "", " Comb", false, false, false, false, false, false, false, true, false, false, B[1] | B[2], M, 64,
         101),
     /** consisting out of a Bolt. */
-    screw("Screws", "", " Screw", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M / 9,
+    screw("Screws", "", " Screw", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M / 8,
         64, 27),
     /** consisting out of 1/2 Stick. */
     ring("Rings", "", " Ring", true, true, false, false, false, false, true, true, false, false, B[1], M / 4, 64, 28),
@@ -643,122 +644,10 @@ public enum OrePrefixes {
             }
         }
 
-        // These are only the important ones.
-        gem.mNotGeneratedItems.add(Materials.Coal);
-        gem.mNotGeneratedItems.add(Materials.Charcoal);
-        gem.mNotGeneratedItems.add(Materials.NetherStar);
-        gem.mNotGeneratedItems.add(Materials.Diamond);
-        gem.mNotGeneratedItems.add(Materials.Emerald);
-        gem.mNotGeneratedItems.add(Materials.NetherQuartz);
-        gem.mNotGeneratedItems.add(Materials.EnderPearl);
-        gem.mNotGeneratedItems.add(Materials.EnderEye);
-        gem.mNotGeneratedItems.add(Materials.Flint);
-        gem.mNotGeneratedItems.add(Materials.Lapis);
-        dust.mNotGeneratedItems.add(Materials.Bone);
-        dust.mNotGeneratedItems.add(Materials.Redstone);
-        dust.mNotGeneratedItems.add(Materials.Glowstone);
-        dust.mNotGeneratedItems.add(Materials.Gunpowder);
-        dust.mNotGeneratedItems.add(Materials.Sugar);
-        dust.mNotGeneratedItems.add(Materials.Blaze);
-        stick.mNotGeneratedItems.add(Materials.Wood);
-        stick.mNotGeneratedItems.add(Materials.Bone);
-        stick.mNotGeneratedItems.add(Materials.Blaze);
-        ingot.mNotGeneratedItems.add(Materials.Iron);
-        ingot.mNotGeneratedItems.add(Materials.Gold);
-        ingot.mNotGeneratedItems.add(Materials.Brick);
-        ingot.mNotGeneratedItems.add(Materials.BrickNether);
-        ingot.mNotGeneratedItems.add(Materials.WoodSealed);
-        ingot.mNotGeneratedItems.add(Materials.Wood);
-
-        frame.mNotGeneratedItems.add(MaterialsUEVplus.Universium);
-        frameGt.mNotGeneratedItems.add(MaterialsUEVplus.Universium);
-
-        cell.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
-        turbineBlade.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
-        dust.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
-        dustSmall.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
-        dustTiny.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
-
-        cell.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);;
-        turbineBlade.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
-        dust.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
-        dustSmall.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
-        dustTiny.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
-        spring.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
-        springSmall.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
-        nugget.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
-        itemCasing.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
-
-        cell.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
-        turbineBlade.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
-        dust.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
-        dustSmall.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
-        dustTiny.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
-        spring.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
-        springSmall.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
-        nugget.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
-        itemCasing.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
-
-        cell.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
-        turbineBlade.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
-        dust.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
-        dustSmall.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
-        dustTiny.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
-        spring.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
-        springSmall.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
-        nugget.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
-        itemCasing.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
-
-        cell.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
-        turbineBlade.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
-        dust.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
-        dustSmall.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
-        dustTiny.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
-        spring.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
-        springSmall.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
-        nugget.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
-        itemCasing.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
-
-        // When Exo-Halkonite is added, remove this.
-        plateSuperdense.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
-        plateSuperdense.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
-
-        cell.disableComponent(MaterialsUEVplus.GravitonShard);
+        cell.disableComponent(Materials.GravitonShard);
 
         // ingot.mNotGeneratedItems.add(Materials.Ichorium);
-        nugget.mNotGeneratedItems.add(Materials.Gold);
-        plate.mNotGeneratedItems.add(Materials.Paper);
-        cell.mNotGeneratedItems.add(Materials.Empty);
-        cell.mNotGeneratedItems.add(Materials.Water);
-        cell.mNotGeneratedItems.add(Materials.Lava);
-        cell.mNotGeneratedItems.add(Materials.ConstructionFoam);
-        cell.mNotGeneratedItems.add(Materials.UUMatter);
-        cell.mNotGeneratedItems.add(Materials.CoalFuel);
-        bucket.mNotGeneratedItems.add(Materials.Empty);
-        bucket.mNotGeneratedItems.add(Materials.Lava);
-        bucket.mNotGeneratedItems.add(Materials.Milk);
-        bucket.mNotGeneratedItems.add(Materials.Water);
-        bucketClay.mNotGeneratedItems.add(Materials.Empty);
-        bucketClay.mNotGeneratedItems.add(Materials.Lava);
-        bucketClay.mNotGeneratedItems.add(Materials.Milk);
-        bucketClay.mNotGeneratedItems.add(Materials.Water);
-        bottle.mNotGeneratedItems.add(Materials.Empty);
-        bottle.mNotGeneratedItems.add(Materials.Water);
-        bottle.mNotGeneratedItems.add(Materials.Milk);
-        block.mNotGeneratedItems.add(Materials.Iron);
-        block.mNotGeneratedItems.add(Materials.Gold);
-        block.mNotGeneratedItems.add(Materials.Lapis);
-        block.mNotGeneratedItems.add(Materials.Emerald);
-        block.mNotGeneratedItems.add(Materials.Redstone);
-        block.mNotGeneratedItems.add(Materials.Diamond);
-        block.mNotGeneratedItems.add(Materials.Coal);
-        stickLong.mNotGeneratedItems.add(Materials.Obsidian);
-        dust.mNotGeneratedItems.add(Materials.CertusQuartzCharged);
-        itemCasing.mNotGeneratedItems.add(Materials.HellishMetal);
-        nugget.mNotGeneratedItems.add(Materials.HellishMetal);
-        nugget.mNotGeneratedItems.add(Materials.Netherite);
-        spring.mNotGeneratedItems.add(Materials.Netherite);
-        springSmall.mNotGeneratedItems.add(Materials.Netherite);
+
         // -----
 
         dustImpure.mGeneratedItems.add(Materials.GraniteRed);
@@ -782,7 +671,7 @@ public enum OrePrefixes {
         plate.mGeneratedItems.add(Materials.Electrotine);
         plate.mGeneratedItems.add(Materials.Obsidian);
 
-        ingotHot.mGeneratedItems.add(MaterialsUEVplus.TranscendentMetal);
+        ingotHot.mGeneratedItems.add(Materials.TranscendentMetal);
 
         plate.mGeneratedItems.add(Materials.Paper);
         plateDouble.mGeneratedItems.add(Materials.Paper);
@@ -801,48 +690,48 @@ public enum OrePrefixes {
         nanite.mGeneratedItems.add(Materials.Iron);
         nanite.mGeneratedItems.add(Materials.Copper);
         nanite.mGeneratedItems.add(Materials.Silver);
-        nanite.mGeneratedItems.add(MaterialsUEVplus.TranscendentMetal);
+        nanite.mGeneratedItems.add(Materials.TranscendentMetal);
         nanite.mGeneratedItems.add(Materials.Neutronium);
-        nanite.mGeneratedItems.add(MaterialsUEVplus.Universium);
-        nanite.mGeneratedItems.add(MaterialsUEVplus.WhiteDwarfMatter);
-        nanite.mGeneratedItems.add(MaterialsUEVplus.BlackDwarfMatter);
+        nanite.mGeneratedItems.add(Materials.Universium);
+        nanite.mGeneratedItems.add(Materials.WhiteDwarfMatter);
+        nanite.mGeneratedItems.add(Materials.BlackDwarfMatter);
         nanite.mGeneratedItems.add(Materials.Glowstone);
-        nanite.mGeneratedItems.add(MaterialsUEVplus.Eternity);
-        nanite.mGeneratedItems.add(MaterialsUEVplus.SixPhasedCopper);
-        nanite.mGeneratedItems.add(MaterialsUEVplus.MagMatter);
+        nanite.mGeneratedItems.add(Materials.Eternity);
+        nanite.mGeneratedItems.add(Materials.SixPhasedCopper);
+        nanite.mGeneratedItems.add(Materials.MagMatter);
         // -----
 
-        gear.mGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
-        ingot.mGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
-        toolHeadHammer.mGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
-        frame.mGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
-        frameGt.mGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
+        gear.mGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+        ingot.mGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+        toolHeadHammer.mGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+        frame.mGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+        frameGt.mGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
 
-        gear.mGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
-        ingot.mGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
-        toolHeadHammer.mGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
-        frame.mGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
-        frameGt.mGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
+        gear.mGeneratedItems.add(Materials.HotProtoHalkonite);
+        ingot.mGeneratedItems.add(Materials.HotProtoHalkonite);
+        toolHeadHammer.mGeneratedItems.add(Materials.HotProtoHalkonite);
+        frame.mGeneratedItems.add(Materials.HotProtoHalkonite);
+        frameGt.mGeneratedItems.add(Materials.HotProtoHalkonite);
 
-        gear.mGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
-        ingot.mGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
-        toolHeadHammer.mGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
-        frame.mGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
-        frameGt.mGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+        gear.mGeneratedItems.add(Materials.ProtoHalkonite);
+        ingot.mGeneratedItems.add(Materials.ProtoHalkonite);
+        toolHeadHammer.mGeneratedItems.add(Materials.ProtoHalkonite);
+        frame.mGeneratedItems.add(Materials.ProtoHalkonite);
+        frameGt.mGeneratedItems.add(Materials.ProtoHalkonite);
 
-        gear.mGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
-        ingot.mGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
-        toolHeadHammer.mGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
-        frame.mGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
-        frameGt.mGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
+        gear.mGeneratedItems.add(Materials.HotExoHalkonite);
+        ingot.mGeneratedItems.add(Materials.HotExoHalkonite);
+        toolHeadHammer.mGeneratedItems.add(Materials.HotExoHalkonite);
+        frame.mGeneratedItems.add(Materials.HotExoHalkonite);
+        frameGt.mGeneratedItems.add(Materials.HotExoHalkonite);
 
-        gear.mGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
-        ingot.mGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
-        toolHeadHammer.mGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
-        frame.mGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
-        frameGt.mGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
+        gear.mGeneratedItems.add(Materials.ExoHalkonite);
+        ingot.mGeneratedItems.add(Materials.ExoHalkonite);
+        toolHeadHammer.mGeneratedItems.add(Materials.ExoHalkonite);
+        frame.mGeneratedItems.add(Materials.ExoHalkonite);
+        frameGt.mGeneratedItems.add(Materials.ExoHalkonite);
 
-        gem.mGeneratedItems.add(MaterialsUEVplus.GravitonShard);
+        gem.mGeneratedItems.add(Materials.GravitonShard);
 
         dust.mGeneratedItems.addAll(dustPure.mGeneratedItems);
         dust.mGeneratedItems.addAll(dustImpure.mGeneratedItems);
@@ -978,8 +867,8 @@ public enum OrePrefixes {
     public final List<TC_AspectStack> mAspects = new ArrayList<>();
     public final Collection<OrePrefixes> mFamiliarPrefixes = new HashSet<>();
     /**
-     * Used to determine the amount of Material this Prefix contains. Multiply or Divide GT_Values.M to
-     * get the Amounts in comparision to one Ingot. 0 = Null Negative = Undefined Amount
+     * Used to determine the amount of Material this Prefix contains. Multiply or Divide GT_Values.M to get the Amounts
+     * in comparision to one Ingot. 0 = Null Negative = Undefined Amount
      */
     public final long mMaterialAmount;
 
@@ -1126,10 +1015,48 @@ public enum OrePrefixes {
         return aOre;
     }
 
-    public static Pair<OrePrefixes, String> detectPrefix(String oredictName) {
+    public static class ParsedOreDictName {
+
+        public final OrePrefixes prefix;
+        public final String material;
+
+        public ParsedOreDictName(OrePrefixes prefix, String material) {
+            this.prefix = prefix;
+            this.material = material;
+        }
+
+        @Override
+        public String toString() {
+            return "ParsedOreDictName [prefix=" + prefix + ", material=" + material + "]";
+        }
+
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + ((prefix == null) ? 0 : prefix.hashCode());
+            result = prime * result + ((material == null) ? 0 : material.hashCode());
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) return true;
+            if (obj == null) return false;
+            if (getClass() != obj.getClass()) return false;
+            ParsedOreDictName other = (ParsedOreDictName) obj;
+            if (prefix != other.prefix) return false;
+            if (material == null) {
+                if (other.material != null) return false;
+            } else if (!material.equals(other.material)) return false;
+            return true;
+        }
+    }
+
+    public static ParsedOreDictName detectPrefix(String oredictName) {
         for (OrePrefixes prefix : values()) {
             if (oredictName.startsWith(prefix.name())) {
-                return Pair.of(
+                return new ParsedOreDictName(
                     prefix,
                     oredictName.substring(
                         prefix.name()
@@ -1140,11 +1067,11 @@ public enum OrePrefixes {
         return null;
     }
 
-    private static final ThreadLocal<Object2ObjectLinkedOpenHashMap<ItemId, ImmutableList<Pair<OrePrefixes, String>>>> PREFIX_CACHE = ThreadLocal
+    private static final ThreadLocal<Object2ObjectLinkedOpenHashMap<ItemId, ImmutableList<ParsedOreDictName>>> PREFIX_CACHE = ThreadLocal
         .withInitial(Object2ObjectLinkedOpenHashMap::new);
 
-    public static ImmutableList<Pair<OrePrefixes, String>> detectPrefix(ItemStack stack) {
-        Object2ObjectLinkedOpenHashMap<ItemId, ImmutableList<Pair<OrePrefixes, String>>> cache = PREFIX_CACHE.get();
+    public static List<ParsedOreDictName> detectPrefix(ItemStack stack) {
+        Object2ObjectLinkedOpenHashMap<ItemId, ImmutableList<ParsedOreDictName>> cache = PREFIX_CACHE.get();
 
         ItemId itemId = ItemId.create(stack);
 
@@ -1152,17 +1079,17 @@ public enum OrePrefixes {
 
         if (cacheResult != null) return cacheResult;
 
-        ImmutableList.Builder<Pair<OrePrefixes, String>> result = ImmutableList.builder();
+        ImmutableList.Builder<ParsedOreDictName> result = ImmutableList.builder();
 
         for (int id : OreDictionary.getOreIDs(stack)) {
-            Pair<OrePrefixes, String> p = detectPrefix(OreDictionary.getOreName(id));
+            ParsedOreDictName p = detectPrefix(OreDictionary.getOreName(id));
 
             if (p != null) {
                 result.add(p);
             }
         }
 
-        ImmutableList<Pair<OrePrefixes, String>> prefixes = result.build();
+        ImmutableList<ParsedOreDictName> prefixes = result.build();
 
         cache.putAndMoveToFirst(itemId, prefixes);
 
@@ -1182,13 +1109,23 @@ public enum OrePrefixes {
         return "";
     }
 
+    private static final Map<String, OrePrefixes> NAME_TO_OREPREFIX = new ConcurrentHashMap<>();
+
+    static {
+        for (OrePrefixes value : OrePrefixes.values()) {
+            NAME_TO_OREPREFIX.put(value.name(), value);
+        }
+    }
+
     public static OrePrefixes getPrefix(String aPrefixName) {
         return getPrefix(aPrefixName, null);
     }
 
     public static OrePrefixes getPrefix(String aPrefixName, OrePrefixes aReplacement) {
-        Object tObject = GTUtility.getFieldContent(OrePrefixes.class, aPrefixName, false, false);
-        if (tObject instanceof OrePrefixes) return (OrePrefixes) tObject;
+        final OrePrefixes value = NAME_TO_OREPREFIX.get(aPrefixName);
+        if (value != null) {
+            return value;
+        }
         return aReplacement;
     }
 
@@ -1233,11 +1170,27 @@ public enum OrePrefixes {
     }
 
     public boolean doGenerateItem(Materials aMaterial) {
-        return aMaterial != null && aMaterial != Materials._NULL
-            && ((aMaterial.mTypes & mMaterialGenerationBits) != 0 || mGeneratedItems.contains(aMaterial))
-            && !mNotGeneratedItems.contains(aMaterial)
-            && !mDisabledItems.contains(aMaterial)
-            && (mCondition == null || mCondition.isTrue(aMaterial));
+        if (aMaterial == null) return false;
+        if (aMaterial == Materials._NULL) return false;
+
+        // This only falls through, returning false, when the material has no overlap with `mMaterialGenerationBits`.
+        // spotless:off
+        if (!mGeneratedItems.contains(aMaterial))
+            if ((mMaterialGenerationBits & 1) == 0 || !aMaterial.hasDustItems())
+                if ((mMaterialGenerationBits & 2) == 0 || !aMaterial.hasMetalItems())
+                    if ((mMaterialGenerationBits & 4) == 0 || !aMaterial.hasGemItems())
+                        if ((mMaterialGenerationBits & 8) == 0 || !aMaterial.hasOresItems())
+                            if ((mMaterialGenerationBits & 16) == 0 || !aMaterial.hasCell())
+                                if ((mMaterialGenerationBits & 32) == 0 || !aMaterial.hasPlasma())
+                                    if ((mMaterialGenerationBits & 64) == 0 || !aMaterial.hasToolHeadItems())
+                                        if ((mMaterialGenerationBits & 128) == 0 || !aMaterial.hasGearItems())
+                                            if ((mMaterialGenerationBits & 256) == 0 || !aMaterial.hasEmpty())
+                                                return false;
+        // spotless:on
+
+        if (mNotGeneratedItems.contains(aMaterial)) return false;
+        if (mDisabledItems.contains(aMaterial)) return false;
+        return mCondition == null || mCondition.isTrue(aMaterial);
     }
 
     public boolean ignoreMaterials(Materials... aMaterials) {
@@ -1246,7 +1199,7 @@ public enum OrePrefixes {
     }
 
     public boolean isIgnored(Materials aMaterial) {
-        if (aMaterial != null && (!aMaterial.mUnificatable || aMaterial != aMaterial.mMaterialInto)) return true;
+        if (aMaterial != null && (!aMaterial.mUnifiable || aMaterial != aMaterial.mMaterialInto)) return true;
         return mIgnoredMaterials.contains(aMaterial);
     }
 
@@ -1401,6 +1354,19 @@ public enum OrePrefixes {
                 }
             }
         }
+
+        if (aMaterial.contains(SubTag.ICE_ORE) && (this == rawOre || this == ore)) {
+            return mLocalizedMaterialPre + "%material" + " Ice";
+        }
+
+        if (this == ore) {
+            return switch (aMaterial.mName) {
+                case "InfusedAir", "InfusedDull", "InfusedEarth", "InfusedEntropy", "InfusedFire", "InfusedOrder", "InfusedVis", "InfusedWater" -> "%material Infused Stone";
+                case "Vermiculite", "Bentonite", "Kaolinite", "Talc", "BasalticMineralSand", "GraniticMineralSand", "GlauconiteSand", "CassiteriteSand", "GarnetSand", "QuartzSand", "Pitchblende", "FullersEarth" -> "%material";
+                default -> mLocalizedMaterialPre + "%material" + mLocalizedMaterialPost;
+            };
+        }
+
         // Use Standard Localization
         return mLocalizedMaterialPre + "%material" + mLocalizedMaterialPost;
     }

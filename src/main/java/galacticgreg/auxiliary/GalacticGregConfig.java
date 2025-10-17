@@ -5,9 +5,11 @@ import java.io.File;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 
+import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
+import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import galacticgreg.GalacticGreg;
-import galacticgreg.api.BlockMetaComb;
 
 public class GalacticGregConfig extends ConfigManager {
 
@@ -27,7 +29,7 @@ public class GalacticGregConfig extends ConfigManager {
     public String LootChestItemOverride;
     public boolean QuietMode;
 
-    public BlockMetaComb CustomLootChest;
+    public ImmutableBlockMeta CustomLootChest;
 
     @Override
     protected void PreInit() {
@@ -106,7 +108,7 @@ public class GalacticGregConfig extends ConfigManager {
     }
 
     public boolean serverPostInit() {
-        CustomLootChest = new BlockMetaComb(Blocks.chest);
+        CustomLootChest = new BlockMeta(Blocks.chest);
         try {
             if (LootChestItemOverride != null && !LootChestItemOverride.isEmpty()) {
                 String[] args = LootChestItemOverride.split(":");
@@ -124,7 +126,7 @@ public class GalacticGregConfig extends ConfigManager {
                     if (tBlock != null) {
                         GalacticGreg.Logger
                             .debug("Found valid ChestOverride: %s. LootChest replaced", LootChestItemOverride);
-                        CustomLootChest = new BlockMetaComb(tBlock, tMeta);
+                        CustomLootChest = new BlockMeta(tBlock, tMeta);
                     }
                 }
             }

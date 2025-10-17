@@ -1,6 +1,7 @@
 package gregtech.common.items;
 
 import static gregtech.api.enums.GTValues.RA;
+import static gregtech.api.enums.Mods.EtFuturumRequiem;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ADVANCED_REDSTONE_RECEIVER;
@@ -178,6 +179,7 @@ import static gregtech.common.items.IDMetaItem02.Plank_Balsa;
 import static gregtech.common.items.IDMetaItem02.Plank_Baobab;
 import static gregtech.common.items.IDMetaItem02.Plank_Birch;
 import static gregtech.common.items.IDMetaItem02.Plank_Cherry;
+import static gregtech.common.items.IDMetaItem02.Plank_Cherry_EFR;
 import static gregtech.common.items.IDMetaItem02.Plank_Chestnut;
 import static gregtech.common.items.IDMetaItem02.Plank_Citrus;
 import static gregtech.common.items.IDMetaItem02.Plank_DarkOak;
@@ -232,7 +234,6 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
@@ -1946,6 +1947,12 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
             .set(addItem(Plank_Maple.ID, "Maple Plank", aTextCover, new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Citrus.set(
             addItem(Plank_Citrus.ID, "Citrus Plank", aTextCover, new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
+        ItemList.Plank_Cherry_EFR.set(
+            addItem(
+                Plank_Cherry_EFR.ID,
+                "Cherry Plank",
+                aTextCover,
+                new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.SFMixture.set(addItem(SFMixture.ID, "Super Fuel Binder", "Raw Material"));
         ItemList.MSFMixture.set(addItem(MSFMixture.ID, "Magic Super Fuel Binder", "Raw Material"));
 
@@ -2433,15 +2440,15 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
     public boolean isItemStackUsable(ItemStack aStack) {
         int aDamage = aStack.getItemDamage();
         Materials aMaterial = GregTechAPI.sGeneratedMaterials[(aDamage % 1000)];
-        if ((aDamage >= 25000) && (aDamage < 27000) && (aMaterial != null) && (aMaterial.mEnchantmentTools != null)) {
-            Enchantment tEnchant = aMaterial.mEnchantmentTools == Enchantment.fortune ? Enchantment.looting
-                : aMaterial.mEnchantmentTools;
+        if ((aDamage >= 25000) && (aDamage < 27000) && (aMaterial != null) && (aMaterial.mToolEnchantment != null)) {
+            Enchantment tEnchant = aMaterial.mToolEnchantment == Enchantment.fortune ? Enchantment.looting
+                : aMaterial.mToolEnchantment;
             if (tEnchant.type == EnumEnchantmentType.weapon) {
                 NBTTagCompound tNBT = GTUtility.ItemNBT.getNBT(aStack);
                 if (!tNBT.getBoolean("GT.HasBeenUpdated")) {
                     tNBT.setBoolean("GT.HasBeenUpdated", true);
                     GTUtility.ItemNBT.setNBT(aStack, tNBT);
-                    GTUtility.ItemNBT.addEnchantment(aStack, tEnchant, aMaterial.mEnchantmentToolsLevel);
+                    GTUtility.ItemNBT.addEnchantment(aStack, tEnchant, aMaterial.mToolEnchantmentLevel);
                 }
             }
         }
@@ -2495,6 +2502,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         setBurnValue(32000 + Plank_Plum.ID, 75);
         setBurnValue(32000 + Plank_Maple.ID, 75);
         setBurnValue(32000 + Plank_Citrus.ID, 75);
+        setBurnValue(32000 + Plank_Cherry_EFR.ID, 75);
         setBurnValue(32000 + Crop_Drop_Tine.ID, 100);
         setBurnValue(32000 + Crop_Drop_Mica.ID, 240);
     }
@@ -2868,7 +2876,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
 
         RA.stdBuilder()
             .itemInputs(ItemList.Tesseract.get(1))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.TranscendentMetal, 8L))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.TranscendentMetal, 8L))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .addTo(maceratorRecipes);
@@ -3025,6 +3033,13 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 23, new ItemStack(Blocks.planks, 1, 0))),
                 7));
+        CoverRegistry.registerDecorativeCover(
+            ItemList.Plank_Cherry_EFR.get(1L),
+            TextureFactory.of(
+                GTUtility.getBlockFromStack(
+                    GTModHandler
+                        .getModItem(EtFuturumRequiem.ID, "wood_planks", 1L, 3, new ItemStack(Blocks.planks, 1, 0))),
+                0));
 
         CoverRegistry.registerCover(
             ItemList.Cover_AdvancedRedstoneTransmitterExternal.get(1L),
