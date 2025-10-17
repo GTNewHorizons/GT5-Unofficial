@@ -8,7 +8,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static net.minecraft.util.EnumChatFormatting.*;
-import static net.minecraft.util.StatCollector.translateToLocal;
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.DynamoMulti;
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.InputData;
 
@@ -415,14 +414,14 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
         if (TooltipUtil.dysonLoreText != null) tt.addInfo(ITALIC + TooltipUtil.dysonLoreText);
 
         tt.addInfo(
-                "gt.blockmachines.multimachine.ig.dyson.desc1",
-                getDecimalFormat().format(IGConfig.dysonSwarm.euPerModule),
-                getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleChance),
-                getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleA),
-                getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleB),
-                getDecimalFormat().format(IGConfig.dysonSwarm.coolantConsumption),
-                IGConfig.dysonSwarm.getCoolantStack()
-                    .getLocalizedName())
+            "gt.blockmachines.multimachine.ig.dyson.desc1",
+            getDecimalFormat().format(IGConfig.dysonSwarm.euPerModule),
+            getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleChance),
+            getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleA),
+            getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleB),
+            getDecimalFormat().format(IGConfig.dysonSwarm.coolantConsumption),
+            IGConfig.dysonSwarm.getCoolantStack()
+                .getLocalizedName())
             .addTecTechHatchInfo()
             .beginStructureBlock(16, 20, 16, false)
             .addDynamoHatch("ig.dyson.structure.dynamo", 1)

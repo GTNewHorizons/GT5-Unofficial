@@ -2002,6 +2002,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
             this.mLocalizedName).replace("%temp", "%s");
     }
 
+    public String getLocalizedNameForItem() {
+        return getLocalizedNameForItem("%material");
+    }
+
     public boolean hasDustItems() {
         return mGenerateDustItems;
     }
