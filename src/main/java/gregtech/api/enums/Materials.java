@@ -1022,24 +1022,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     // GTNH Materials
     public static Materials Signalum;
     public static Materials Lumium;
-    public static Materials EnrichedCopper;
-    public static Materials DiamondCopper;
-    public static Materials TarPitch;
-    public static Materials LimePure;
-    public static Materials Wimalite;
-    public static Materials Yellorite;
-    public static Materials Turquoise;
-    public static Materials Tapazite;
-    public static Materials Thyrium;
-    public static Materials Tourmaline;
-    public static Materials Spinel;
-    public static Materials Starconium;
-    public static Materials Sugilite;
     public static Materials Prismarine;
-    public static Materials GraveyardDirt;
-    public static Materials Tennantite;
-    public static Materials Fairy;
-    public static Materials Ludicrite;
     public static Materials AquaRegia;
     public static Materials SolutionBlueVitriol;
     public static Materials SolutionNickelSulfate;

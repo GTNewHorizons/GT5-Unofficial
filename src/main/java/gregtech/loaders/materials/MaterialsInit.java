@@ -15712,24 +15712,7 @@ public class MaterialsInit {
     private static void loadGTNHMaterials() {
         Materials.Signalum = loadSignalum();
         Materials.Lumium = loadLumium();
-        Materials.EnrichedCopper = loadEnrichedCopper();
-        Materials.DiamondCopper = loadDiamondCopper();
-        Materials.TarPitch = loadTarPitch();
-        Materials.LimePure = loadLimePure();
-        Materials.Wimalite = loadWimalite();
-        Materials.Yellorite = loadYellorite();
-        Materials.Turquoise = loadTurquoise();
-        Materials.Tapazite = loadTapazite();
-        Materials.Thyrium = loadThyrium();
-        Materials.Tourmaline = loadTourmaline();
-        Materials.Spinel = loadSpinel();
-        Materials.Starconium = loadStarconium();
-        Materials.Sugilite = loadSugilite();
         Materials.Prismarine = loadPrismarine();
-        Materials.GraveyardDirt = loadGraveyardDirt();
-        Materials.Tennantite = loadTennantite();
-        Materials.Fairy = loadFairy();
-        Materials.Ludicrite = loadLudicrite();
         Materials.AquaRegia = loadAquaRegia();
         Materials.SolutionBlueVitriol = loadSolutionBlueVitriol();
         Materials.SolutionNickelSulfate = loadSolutionNickelSulfate();
@@ -15762,144 +15745,10 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadEnrichedCopper() {
-        return new MaterialBuilder().setName("EnrichedCopper")
-            .setDefaultLocalName("Enriched Copper")
-            .addDustItems()
-            .addMetalItems()
-            .addSubTag(SubTag.METAL)
-            .constructMaterial();
-    }
-
-    private static Materials loadDiamondCopper() {
-        return new MaterialBuilder().setName("DiamondCopper")
-            .setDefaultLocalName("Diamond Copper")
-            .addDustItems()
-            .addMetalItems()
-            .addSubTag(SubTag.METAL)
-            .constructMaterial();
-    }
-
-    private static Materials loadTarPitch() {
-        return new MaterialBuilder().setName("TarPitch")
-            .setDefaultLocalName("Tar Pitch")
-            .addDustItems()
-            .addMetalItems()
-            .addSubTag(SubTag.NO_SMASHING)
-            .constructMaterial();
-    }
-
-    private static Materials loadLimePure() {
-        return new MaterialBuilder().setName("LimePure")
-            .setDefaultLocalName("Pure Lime")
-            .setColor(Dyes.dyeLime)
-            .constructMaterial();
-    }
-
-    private static Materials loadWimalite() {
-        return new MaterialBuilder().setName("Wimalite")
-            .setDefaultLocalName("Wimalite")
-            .setColor(Dyes.dyeYellow)
-            .addOreItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadYellorite() {
-        return new MaterialBuilder().setName("Yellorite")
-            .setDefaultLocalName("Yellorite")
-            .setColor(Dyes.dyeYellow)
-            .addOreItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadTurquoise() {
-        return new MaterialBuilder().setName("Turquoise")
-            .setDefaultLocalName("Turquoise")
-            .addDustItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadTapazite() {
-        return new MaterialBuilder().setName("Tapazite")
-            .setDefaultLocalName("Tapazite")
-            .setColor(Dyes.dyeGreen)
-            .addDustItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadThyrium() {
-        return new MaterialBuilder().setName("Thyrium")
-            .setDefaultLocalName("Thyrium")
-            .addDustItems()
-            .addMetalItems()
-            .addOreItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadTourmaline() {
-        return new MaterialBuilder().setName("Tourmaline")
-            .setDefaultLocalName("Tourmaline")
-            .setIconSet(TextureSet.SET_RUBY)
-            .addDustItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadSpinel() {
-        return new MaterialBuilder().setName("Spinel")
-            .setDefaultLocalName("Spinel")
-            .constructMaterial();
-    }
-
-    private static Materials loadStarconium() {
-        return new MaterialBuilder().setName("Starconium")
-            .setDefaultLocalName("Starconium")
-            .addDustItems()
-            .addMetalItems()
-            .addOreItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadSugilite() {
-        return new MaterialBuilder().setName("Sugilite")
-            .setDefaultLocalName("Sugilite")
-            .addDustItems()
-            .constructMaterial();
-    }
-
     private static Materials loadPrismarine() {
         return new MaterialBuilder().setName("Prismarine")
             .setDefaultLocalName("Prismarine")
             .addSubTag(SubTag.NO_ORE_PROCESSING)
-            .constructMaterial();
-    }
-
-    private static Materials loadGraveyardDirt() {
-        return new MaterialBuilder().setName("GraveyardDirt")
-            .setDefaultLocalName("Graveyard Dirt")
-            .addDustItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadTennantite() {
-        return new MaterialBuilder().setName("Tennantite")
-            .setDefaultLocalName("Tennantite")
-            .addDustItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadFairy() {
-        return new MaterialBuilder().setName("Fairy")
-            .setDefaultLocalName("Fairy")
-            .addDustItems()
-            .addMetalItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadLudicrite() {
-        return new MaterialBuilder().setName("Ludicrite")
-            .setDefaultLocalName("Ludicrite")
-            .addDustItems()
-            .addMetalItems()
             .constructMaterial();
     }
 
