@@ -1195,7 +1195,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         String defaultLocalName,
         @Nullable Element element,
         @Nullable String chemicalFormula,
-        int metaItemSubID,
         boolean unifiable,
         TextureSet iconSet,
         Dyes color,
@@ -1242,7 +1241,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         mName = name;
         mDefaultLocalName = defaultLocalName;
         MATERIALS_MAP.put(mName, this);
-        mMetaItemSubID = metaItemSubID;
 
         // Set element
         if (element != null) {
