@@ -1491,6 +1491,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     }
 
     public static void init() {
+        new MaterialsIDMap().register();
+
         setToolEnchantments();
         setArmorEnchantments();
 

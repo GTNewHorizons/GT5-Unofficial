@@ -841,7 +841,6 @@ public class MaterialsInit {
         return new MaterialBuilder().setName("Iron")
             .setDefaultLocalName("Iron")
             .setElement(Element.Fe)
-            .setMetaItemSubID(32)
             .setIconSet(TextureSet.SET_METALLIC)
             .setColor(Dyes.dyeLightGray)
             .setARGB(0x00c8c8c8)
