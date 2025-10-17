@@ -1,4 +1,4 @@
-package gregtech.api.metatileentity.implementations.gui;
+package gregtech.common.gui.modularui.hatch;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -17,11 +17,11 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchPHSensor;
 
-public class MTEHatchPHSensorGuiBuilder {
+public class MTEHatchPHSensorGui {
 
     private final MTEHatchPHSensor sensor;
 
-    public MTEHatchPHSensorGuiBuilder(MTEHatchPHSensor sensor) {
+    public MTEHatchPHSensorGui(MTEHatchPHSensor sensor) {
         this.sensor = sensor;
     }
 
