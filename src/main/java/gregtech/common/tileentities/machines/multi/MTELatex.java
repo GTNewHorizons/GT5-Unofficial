@@ -41,6 +41,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -180,8 +181,9 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
                     ItemStack controllerStack = this.getControllerSlot();
                     discount = 0.0625 * itemPipeTier;
                     if (controllerStack != null && controllerStack.isItemEqual(
-                        Objects.requireNonNull(
-                            getModItem(UniversalSingularities.ID, "universal.rubber.singularity", 1L, 5)))) {
+                        UniversalSingularities.isModLoaded()
+                            ? getModItem(UniversalSingularities.ID, "universal.rubber.singularity", 1L, 5)
+                            : ItemList.Tool_DataStick.get(1))) {
                         discount = discount + 0.25;
                         base_parallel = 16;
                     }
@@ -295,6 +297,15 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 7, 0)) return false;
+        ItemStack controllerStack = this.getControllerSlot();
+        boolean singularity_present = (controllerStack != null && controllerStack.isItemEqual(
+            UniversalSingularities.isModLoaded()
+                ? getModItem(UniversalSingularities.ID, "universal.rubber.singularity", 1L, 5)
+                : ItemList.Tool_DataStick.get(1)));
+        if (!mExoticEnergyHatches.isEmpty()) {
+            if (!singularity_present) return false;
+            if (mExoticEnergyHatches.size() > 1) return false;
+        }
         return mCasingAmount >= 14;
     }
 
