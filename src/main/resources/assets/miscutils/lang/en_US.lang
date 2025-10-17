@@ -3979,6 +3979,7 @@ item.BasicGenericChemItem.33.name=Algagenic Growth Promoter Catalyst
 # Added 13/03/25
 item.BasicGenericChemItem.34.name=Hellish Force Catalyst
 item.BasicGenericChemItem.35.name=Crystal Colorization Catalyst
+item.BasicGenericChemItem.36.name=Teleportatium Catalyst
 
 # config gui
 gtpp.gui.config.general=General

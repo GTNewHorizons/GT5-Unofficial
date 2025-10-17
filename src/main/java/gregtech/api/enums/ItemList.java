@@ -1539,6 +1539,8 @@ public enum ItemList implements IItemContainer {
 
     Machine_Multi_IndustrialBrewery,
 
+    Machine_Multi_LocalityLockingLattice,
+
     Machine_Multi_ChamberCentrifuge,
     Chamber_Casing,
     Chamber_Grate,
@@ -2678,6 +2680,8 @@ public enum ItemList implements IItemContainer {
     Prismatic_Crystal,
     Radiation_Proof_Prismatic_Naquadah_Composite_Sheet,
     Naquarite_Universal_Insulator_Foil,
+
+    Teleportium_Stable_Seed,
 
     SpaceElevatorController,
     SpaceElevatorModuleAssemblerT1,

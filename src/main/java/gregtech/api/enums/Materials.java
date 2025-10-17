@@ -928,6 +928,23 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials PrismaticNaquadah;
     public static Materials PrismaticNaquadahCompositeSlurry;
 
+    // Ender line Materials
+
+    public static Materials EnderAir;
+    public static Materials EnderAirUnstable;
+    public static Materials EnderAirCryostable;
+    public static Materials EnderAirBalanced;
+    public static Materials EnderAirFortified;
+    public static Materials EnderAirPyrostable;
+    public static Materials TeleportatiumStable;
+    public static Materials TeleportatiumSemistable;
+    public static Materials TeleportatiumUnstableVolatile;
+    public static Materials TeleportatiumUnstableUnbalanced;
+    public static Materials TeleportatiumUnstableSemifluid;
+    public static Materials TeleportatiumUnstableHypercritical;
+    public static Materials TeleportatiumUnstableAmalgam;
+    public static Materials TeleportatiumEncased;
+
     // Magic Materials
     public static Materials ComplexityCatalyst;
     public static Materials EntropicCatalyst;
@@ -1484,6 +1501,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         MaterialsUEVplus.GravitonShard.renderer = new InfinityRenderer();
         MaterialsUEVplus.ExoHalkonite.renderer = new InfinityRenderer();
         MaterialsUEVplus.HotExoHalkonite.renderer = new InfinityRenderer();
+        Materials.TeleportatiumEncased.renderer = new GaiaSpiritRenderer();
         Materials.PrismaticNaquadah.renderer = new RainbowOverlayRenderer(Materials.PrismaticNaquadah.getRGBA());
     }
 
