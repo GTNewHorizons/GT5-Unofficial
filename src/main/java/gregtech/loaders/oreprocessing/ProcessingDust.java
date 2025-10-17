@@ -26,7 +26,6 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
@@ -133,7 +132,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         && (aMaterial != Materials.Obsidian)
                         && (aMaterial != Materials.Glowstone)
                         && (aMaterial != Materials.Paper)
-                        && (aMaterial != MaterialsUEVplus.TranscendentMetal)
+                        && (aMaterial != Materials.TranscendentMetal)
                         && (aMaterial != Materials.Clay)
                         && (aMaterial != Materials.Wood)
                         && (aMaterial != Materials.Carbon)) {
