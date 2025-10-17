@@ -27,8 +27,6 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import gregtech.api.util.tooltip.TooltipHelper;
-import gregtech.api.util.tooltip.TooltipTier;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -60,6 +58,8 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
+import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 
 public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implements ISurvivalConstructable {
@@ -264,9 +264,17 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
             .addDynamicParallelInfo(8, TooltipTier.ITEM_PIPE_CASING)
             .addStaticSpeedInfo(2F)
             .addStaticEuEffInfo(0.85F)
-            .addInfo("Recipes have a " + TooltipHelper.coloredText("6.25%", DARK_GREEN) +" rubber discount based on " + TooltipHelper.tierText(TooltipTier.ITEM_PIPE_CASING))
+            .addInfo(
+                "Recipes have a " + TooltipHelper.coloredText("6.25%", DARK_GREEN)
+                    + " rubber discount based on "
+                    + TooltipHelper.tierText(TooltipTier.ITEM_PIPE_CASING))
             .addInfo("An Elastic Singularity can be inserted into the controller to gain bonuses")
-            .addInfo("These bonuses are: " + TooltipHelper.parallelText("2x") + " parallels, " +TooltipHelper.coloredText("25%", DARK_GREEN) + " rubber discount, and the use of a singular " + TooltipHelper.coloredText("Multi-Amp energy hatch", GREEN))
+            .addInfo(
+                "These bonuses are: " + TooltipHelper.parallelText("2x")
+                    + " parallels, "
+                    + TooltipHelper.coloredText("25%", DARK_GREEN)
+                    + " rubber discount, and the use of a singular "
+                    + TooltipHelper.coloredText("Multi-Amp energy hatch", GREEN))
             .addSeparator()
             .addInfo(DARK_GRAY + "Make sure to cover up!")
             .beginStructureBlock(3, 5, 3, true)
