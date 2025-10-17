@@ -27,7 +27,6 @@ import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsGTNH;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
@@ -304,7 +303,7 @@ public class RecipeLoaderChemicalSkips {
         // Prismarine
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.shard, MaterialsGTNH.Prismarine, 12),
+                GTOreDictUnificator.get(OrePrefixes.shard, Materials.Prismarine, 12),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.NaquadahEnriched, 32))
             .fluidInputs(
                 Materials.Hydrogen.getGas(2_000),
@@ -601,7 +600,7 @@ public class RecipeLoaderChemicalSkips {
                 GTUtility.getIntegratedCircuit(10),
                 CI.getEmptyCatalyst(1),
                 Materials.PrismaticNaquadah.getDust(64),
-                GTOreDictUnificator.get(OrePrefixes.shard, MaterialsGTNH.Prismarine, 64),
+                GTOreDictUnificator.get(OrePrefixes.shard, Materials.Prismarine, 64),
                 Materials.Silver.getNanite(1))
             .itemOutputs(GregtechItemList.CrystalColorizationCatalyst.get(1))
             .fluidInputs(MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(1 * STACKS))
