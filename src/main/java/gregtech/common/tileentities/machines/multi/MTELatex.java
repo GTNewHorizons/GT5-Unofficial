@@ -144,7 +144,7 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
     private double discount = 0.0625 * itemPipeTier;
     private int base_parallel = 8;
     private static final FluidStack[] valid_rubbers = { Materials.Rubber.getMolten(1L),
-        Materials.Silicone.getMolten(1L), Materials.StyreneButadieneRubber.getMolten(1L)};
+        Materials.Silicone.getMolten(1L), Materials.StyreneButadieneRubber.getMolten(1L) };
 
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
@@ -181,7 +181,7 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
                     discount = 0.0625 * itemPipeTier;
                     if (controllerStack != null && controllerStack.isItemEqual(
                         Objects.requireNonNull(
-                            getModItem(UniversalSingularities.ID, "universal.elastic.singularity", 1L)))) {
+                            getModItem(UniversalSingularities.ID, "universal.rubber.singularity", 1L, 5)))) {
                         discount = discount + 0.25;
                         base_parallel = 16;
                     }
