@@ -12,8 +12,8 @@ import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.KeyProvider;
-import gregtech.common.gui.modularui.base.CoverBaseGui;
-import gregtech.common.gui.modularui.cover.redstone.CoverAdvancedRedstoneReceiverBaseGui;
+import gregtech.common.gui.modularui.cover.base.CoverAdvancedRedstoneReceiverBaseGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.gui.mui1.cover.AdvancedRedstoneReceiverBaseUIFactory;
 import io.netty.buffer.ByteBuf;
 

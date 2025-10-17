@@ -13,7 +13,7 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverItemFilter;
 import gregtech.common.covers.modes.FilterType;
-import gregtech.common.gui.modularui.base.CoverBaseGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.modularui2.widget.builder.EnumRowBuilder;
 
 public class CoverItemFilterGui extends CoverBaseGui<CoverItemFilter> {

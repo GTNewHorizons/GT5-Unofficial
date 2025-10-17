@@ -12,6 +12,7 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.covers.redstone.CoverWirelessDoesWorkDetector;
+import gregtech.common.gui.modularui.cover.base.CoverAdvancedRedstoneTransmitterBaseGui;
 import gregtech.common.modularui2.widget.builder.EnumRowBuilder;
 
 public class CoverWirelessDoesWorkDetectorGui

@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui.cover.redstone;
+package gregtech.common.gui.modularui.cover.base;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 

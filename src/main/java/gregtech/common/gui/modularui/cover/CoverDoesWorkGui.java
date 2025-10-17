@@ -16,7 +16,7 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.covers.CoverDoesWork;
 import gregtech.common.covers.modes.DetectionMode;
 import gregtech.common.covers.modes.RedstoneMode;
-import gregtech.common.gui.modularui.base.CoverBaseGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.modularui2.widget.builder.EnumRowBuilder;
 
 public class CoverDoesWorkGui extends CoverBaseGui<CoverDoesWork> {

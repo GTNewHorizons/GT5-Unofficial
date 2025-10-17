@@ -22,8 +22,8 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicBatteryBuffer;
 import gregtech.api.util.GTUtility;
-import gregtech.common.gui.modularui.base.CoverBaseGui;
 import gregtech.common.gui.modularui.cover.CoverEUMeterGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.gui.mui1.cover.EUMeterUIFactory;
 import io.netty.buffer.ByteBuf;
 

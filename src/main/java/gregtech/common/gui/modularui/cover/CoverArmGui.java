@@ -15,7 +15,7 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.covers.CoverArm;
-import gregtech.common.gui.modularui.base.CoverBaseGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.modularui2.sync.LinkedBoolValue;
 import gregtech.common.modularui2.widget.SelectButton;
 

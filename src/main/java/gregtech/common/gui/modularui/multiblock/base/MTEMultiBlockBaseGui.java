@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui.base;
+package gregtech.common.gui.modularui.multiblock.base;
 
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FORBIDDEN_TOOLTIP;
@@ -77,9 +77,9 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.common.gui.modularui.base.adapter.CheckRecipeResultAdapter;
-import gregtech.common.gui.modularui.base.adapter.ShutdownReasonAdapter;
-import gregtech.common.gui.modularui.base.adapter.StructureErrorAdapter;
+import gregtech.common.gui.modularui.adapter.CheckRecipeResultAdapter;
+import gregtech.common.gui.modularui.adapter.ShutdownReasonAdapter;
+import gregtech.common.gui.modularui.adapter.StructureErrorAdapter;
 import gregtech.common.gui.modularui.widget.ResizableItemDisplayWidget;
 import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
 import gregtech.common.modularui2.sync.Predicates;
@@ -633,8 +633,9 @@ public class MTEMultiBlockBaseGui {
      * @param tooltipFeatureEnabled  tooltip text to display when the feature is enabled
      * @param tooltipFeatureDisabled tooltip text to display when the feature is disabled
      *
-     * @see gregtech.api.interfaces.modularui.IControllerWithOptionalFeatures#addDynamicTooltipOfFeatureToButton(Widget,
-     *      Supplier, Supplier, String, String) For equivalent method but made for ModularUI
+     * @see gregtech.api.interfaces.modularui.IControllerWithOptionalFeatures#addDynamicTooltipOfFeatureToButton(com.gtnewhorizons.modularui.api.widget.Widget,
+     *      java.util.function.Supplier, java.util.function.Supplier, String, String)
+     *      For equivalent method but made for ModularUI
      */
     private void addDynamicTooltipOfFeatureToButton(RichTooltip tooltip, Supplier<Boolean> supportsFeature,
         Supplier<Boolean> isFeatureEnabled, String tooltipFeatureEnabled, String tooltipFeatureDisabled) {

@@ -14,8 +14,8 @@ import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.common.gui.modularui.base.CoverBaseGui;
-import gregtech.common.gui.modularui.cover.CoverIOBaseGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
+import gregtech.common.gui.modularui.cover.base.CoverIOBaseGui;
 import gregtech.common.gui.mui1.cover.ConveyorUIFactory;
 
 public class CoverConveyor extends CoverIOBase {

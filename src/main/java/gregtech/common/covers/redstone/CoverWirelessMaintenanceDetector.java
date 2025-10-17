@@ -19,7 +19,7 @@ import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.common.covers.CoverNeedMaintainance;
 import gregtech.common.covers.CoverPosition;
-import gregtech.common.gui.modularui.base.CoverBaseGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.gui.modularui.cover.redstone.CoverWirelessMaintenenceDetectorGui;
 import gregtech.common.gui.mui1.cover.WirelessMaintenanceDetectorUIFactory;
 import io.netty.buffer.ByteBuf;

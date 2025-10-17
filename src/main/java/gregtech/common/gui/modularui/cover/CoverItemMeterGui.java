@@ -26,7 +26,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.covers.CoverItemMeter;
-import gregtech.common.gui.modularui.base.CoverBaseGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 
 public class CoverItemMeterGui extends CoverBaseGui<CoverItemMeter> {
 

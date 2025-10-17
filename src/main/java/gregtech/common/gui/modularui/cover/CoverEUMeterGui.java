@@ -15,7 +15,7 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.common.covers.CoverEUMeter;
-import gregtech.common.gui.modularui.base.CoverBaseGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 
 public class CoverEUMeterGui extends CoverBaseGui<CoverEUMeter> {
 

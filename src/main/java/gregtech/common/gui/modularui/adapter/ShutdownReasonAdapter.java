@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui.base.adapter;
+package gregtech.common.gui.modularui.adapter;
 
 import java.io.IOException;
 

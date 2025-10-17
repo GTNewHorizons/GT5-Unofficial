@@ -21,8 +21,8 @@ import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.modes.MachineProcessingCondition;
 import gregtech.common.covers.modes.TransferMode;
-import gregtech.common.gui.modularui.base.CoverBaseGui;
 import gregtech.common.gui.modularui.cover.CoverFluidRegulatorGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.gui.mui1.cover.FluidRegulatorUIFactory;
 import io.netty.buffer.ByteBuf;
 

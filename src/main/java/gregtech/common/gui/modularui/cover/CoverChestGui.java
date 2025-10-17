@@ -11,7 +11,7 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.common.covers.CoverChest;
-import gregtech.common.gui.modularui.base.CoverBaseGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 
 public class CoverChestGui extends CoverBaseGui<CoverChest> {
 

@@ -7,7 +7,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
 import gregtech.common.covers.CoverFluidLimiter;
-import gregtech.common.gui.modularui.base.CoverBaseGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 
 public class CoverFluidLimiterGui extends CoverBaseGui<CoverFluidLimiter> {
 

@@ -25,8 +25,8 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.covers.modes.BlockMode;
 import gregtech.common.covers.modes.FilterDirectionMode;
 import gregtech.common.covers.modes.FilterType;
-import gregtech.common.gui.modularui.base.CoverBaseGui;
 import gregtech.common.gui.modularui.cover.CoverFluidfilterGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.gui.mui1.cover.FluidFilterUIFactory;
 import io.netty.buffer.ByteBuf;
 

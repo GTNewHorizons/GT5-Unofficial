@@ -23,7 +23,7 @@ import gregtech.common.covers.CoverFluidfilter;
 import gregtech.common.covers.modes.BlockMode;
 import gregtech.common.covers.modes.FilterDirectionMode;
 import gregtech.common.covers.modes.FilterType;
-import gregtech.common.gui.modularui.base.CoverBaseGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.modularui2.widget.builder.EnumRowBuilder;
 
 public class CoverFluidfilterGui extends CoverBaseGui<CoverFluidfilter> {

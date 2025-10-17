@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui.cover;
+package gregtech.common.gui.modularui.cover.base;
 
 import net.minecraft.item.ItemStack;
 
@@ -15,7 +15,6 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverFacadeBase;
-import gregtech.common.gui.modularui.base.CoverBaseGui;
 
 public class CoverFacadeBaseGui extends CoverBaseGui<CoverFacadeBase> {
 

@@ -19,7 +19,7 @@ import gregtech.common.tileentities.machines.multi.MTEBrickedBlastFurnace;
 public class MTEBrickedBlastFurnaceGui {
 
     /**
-     * Does not extend {@link gregtech.common.gui.modularui.base.MTEMultiBlockBaseGui} as
+     * Does not extend {@link gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui} as
      * {@link gregtech.common.tileentities.machines.multi.MTEBrickedBlastFurnace} is a MetaTileEntity,
      * and has a completely custom UI
      */

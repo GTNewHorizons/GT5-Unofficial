@@ -23,7 +23,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.common.covers.Cover;
-import gregtech.common.gui.modularui.base.CoverBaseGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.gui.mui1.cover.EnderFluidLinkUIFactory;
 import gtPlusPlus.core.tileentities.base.TileEntityBase;
 import io.netty.buffer.ByteBuf;
