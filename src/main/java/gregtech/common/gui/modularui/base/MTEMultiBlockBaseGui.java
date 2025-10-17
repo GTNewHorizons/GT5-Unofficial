@@ -73,7 +73,7 @@ import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.metatileentity.implementations.gui.ItemDisplayKey;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
-import gregtech.api.modularui2.widgets.ResizableItemDisplayWidget;
+import gregtech.common.gui.modularui.widget.ResizableItemDisplayWidget;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReason;

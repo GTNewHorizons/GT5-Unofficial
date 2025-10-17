@@ -1,4 +1,4 @@
-package gregtech.api.modularui2.widgets;
+package gregtech.common.gui.modularui.widget;
 
 import net.minecraft.item.ItemStack;
 
