@@ -6,6 +6,7 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
@@ -26,7 +27,6 @@ import com.cleanroommc.modularui.widgets.layout.Row;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 
 import goodgenerator.blocks.tileEntity.AntimatterGenerator;
-import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 
