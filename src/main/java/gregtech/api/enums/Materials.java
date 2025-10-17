@@ -1140,7 +1140,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public short mBlastFurnaceTemp = 0;
     public int mMeltingPoint = 0;
     public int mGasTemp = 0;
-    public int mMetaItemSubID;
+    public int mMetaItemSubID = -1;
     public int mFuelPower = 0;
     public int mFuelType = 0;
     public int mExtraData = 0;
@@ -1195,7 +1195,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         String defaultLocalName,
         @Nullable Element element,
         @Nullable String chemicalFormula,
-        int metaItemSubID,
         boolean unifiable,
         TextureSet iconSet,
         Dyes color,
@@ -1242,7 +1241,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         mName = name;
         mDefaultLocalName = defaultLocalName;
         MATERIALS_MAP.put(mName, this);
-        mMetaItemSubID = metaItemSubID;
 
         // Set element
         if (element != null) {
@@ -1491,6 +1489,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     }
 
     public static void init() {
+        new MaterialsIDMap().register();
+
         setToolEnchantments();
         setArmorEnchantments();
 
