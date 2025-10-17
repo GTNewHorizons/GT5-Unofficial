@@ -50,6 +50,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.widget.FluidLockWidget;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
+import mcp.mobius.waila.api.SpecialChars;
 
 public abstract class MTEDigitalTankBase extends MTEBasicTank
     implements IFluidLockable, IAddUIWidgets, IAddGregtechLogo {
@@ -483,11 +484,15 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
         if (fluid != null && fluid.amount >= 0) {
             currenttip.remove(0);
             currenttip.add(
-                0,
-                formatNumbers(fluid.amount) + " / "
-                    + formatNumbers(getRealCapacity())
-                    + " L "
-                    + fluid.getLocalizedName());
+                SpecialChars.getRenderString(
+                    "waila.fluid",
+                    fluid.getFluid()
+                        .getName(),
+                    formatNumbers(fluid.amount) + " / "
+                        + formatNumbers(getRealCapacity())
+                        + " L "
+                        + fluid.getLocalizedName(),
+                    ((double) fluid.amount / (double) getRealCapacity()) + ""));
         } else {
             currenttip.add(0, "Tank Empty");
         }
