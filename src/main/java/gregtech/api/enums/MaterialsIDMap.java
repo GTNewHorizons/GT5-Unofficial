@@ -1,8 +1,9 @@
 package gregtech.api.enums;
 
-import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import gregtech.GTMod;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
-public class MaterialsIDMap extends Object2IntOpenHashMap<Materials> {
+public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
 
     MaterialsIDMap() {
         // spotless:off
@@ -787,10 +788,12 @@ public class MaterialsIDMap extends Object2IntOpenHashMap<Materials> {
     }
 
     public void register() {
-        forEach((material, ID) -> material.mMetaItemSubID = ID);
+        forEach((ID, material) -> material.mMetaItemSubID = ID);
     }
 
     void r(int ID, Materials material) {
-        this.put(material, ID);
+        final Materials prevMaterial = put(ID, material);
+        if (prevMaterial == null) return;
+        GTMod.GT_FML_LOGGER.warn("Material '{}' with ID {} was replaced by '{}'.", prevMaterial, ID, material);
     }
 }
