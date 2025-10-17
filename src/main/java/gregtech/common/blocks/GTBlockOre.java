@@ -381,6 +381,14 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
     }
 
     @Override
+    public void onBlockHarvested(World world, int x, int y, int z, int meta, EntityPlayer player) {
+        super.onBlockHarvested(world, x, y, z, meta, player);
+
+        MinecraftForge.EVENT_BUS
+            .post(new OreInteractEvent(world, x, y, z, this, world.getBlockMetadata(x, y, z), player));
+    }
+
+    @Override
     protected boolean canSilkHarvest() {
         return false;
     }
