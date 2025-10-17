@@ -9,6 +9,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_GLOW;
 
 import java.util.function.Consumer;
 
+import gregtech.common.gui.modularui.singleblock.MTEMicrowaveEnergyTransmitterGui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -374,82 +375,8 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank implements IAddG
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings)
-            .doesAddGregTechLogo(false)
-            .build()
-            .child(
-                Flow.row()
-                    .child(
-                        Flow.column()
-                            .child(
-                                GTGuiTextures.OVERLAY_BUTTON_BOUNDING_BOX.asWidget()
-                                    .size(18, 18)
-                                    .topRel(0.5F))
-                            .heightRel(1)
-                            .coverChildrenWidth())
-                    .child(createSelectionColumn())
-                    .crossAxisAlignment(Alignment.CrossAxis.START)
-                    .pos(4, 6)
-                    .coverChildren());
+        return new MTEMicrowaveEnergyTransmitterGui(this).build(data,syncManager,uiSettings);
     }
-
-    public Flow createSelectionColumn() {
-        return Flow.column()
-            .child(
-                Flow.row()
-                    .child(
-                        new TextFieldWidget().setFormatAsInteger(true)
-                            .value(new IntSyncValue(() -> mTargetX, i -> mTargetX = i))
-                            .size(77, 12)
-                            .margin(2, 0))
-                    .child(
-                        IKey.lang("GT5U.gui.text.microwave_energy_transmitter.x")
-                            .asWidget())
-                    .coverChildren())
-            .child(
-                Flow.row()
-                    .child(
-                        new TextFieldWidget().setFormatAsInteger(true)
-                            .value(new IntSyncValue(() -> mTargetY, i -> mTargetY = i))
-                            .size(77, 12)
-                            .margin(2, 0))
-                    .child(
-                        IKey.lang("GT5U.gui.text.microwave_energy_transmitter.y")
-                            .asWidget())
-                    .coverChildren())
-            .child(
-                Flow.row()
-                    .child(
-                        new TextFieldWidget().setFormatAsInteger(true)
-                            .value(new IntSyncValue(() -> mTargetZ, i -> mTargetZ = i))
-                            .size(77, 12)
-                            .margin(2, 0))
-                    .child(
-                        IKey.lang("GT5U.gui.text.microwave_energy_transmitter.z")
-                            .asWidget())
-                    .coverChildren())
-            .child(
-                Flow.row()
-                    .child(
-                        new TextFieldWidget().setFormatAsInteger(true)
-                            .value(new IntSyncValue(() -> mTargetD, i -> mTargetD = i))
-                            .size(77, 12)
-                            .margin(2, 0))
-                    .child(
-                        IKey.lang("GT5U.gui.text.microwave_energy_transmitter.d")
-                            .asWidget())
-                    .child(
-                        new DynamicDrawable(
-                            () -> GTUtility.isRealDimension(mTargetD) ? GTGuiTextures.OVERLAY_BUTTON_CHECKMARK
-                                : GTGuiTextures.OVERLAY_BUTTON_CROSS).asWidget()
-                                    .size(16, 16))
-                    .coverChildren())
-            .crossAxisAlignment(Alignment.CrossAxis.START)
-            .childPadding(2)
-            .coverChildren();
-    }
-
-    protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
