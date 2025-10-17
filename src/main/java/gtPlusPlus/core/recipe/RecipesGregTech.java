@@ -64,7 +64,6 @@ import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -346,7 +345,7 @@ public class RecipesGregTech {
         // Rhugnor Mk5
         RA.stdBuilder()
             .fluidInputs(
-                MaterialsUEVplus.QuarkGluonPlasma.getFluid(1 * HALF_INGOTS),
+                Materials.QuarkGluonPlasma.getFluid(1 * HALF_INGOTS),
                 MaterialsAlloy.QUANTUM.getFluidStack(4 * INGOTS))
             .fluidOutputs(MaterialsElements.STANDALONE.RHUGNOR.getFluidStack(4 * INGOTS))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -951,8 +950,8 @@ public class RecipesGregTech {
                 GGMaterial.metastableOganesson.get(OrePrefixes.dust, 1),
                 Materials.Praseodymium.getDust(15),
                 Materials.SuperconductorUIVBase.getDust(6))
-            .fluidInputs(MaterialsUEVplus.PhononCrystalSolution.getFluid(4_000))
-            .fluidOutputs(MaterialsUEVplus.PhononMedium.getFluid(1_000))
+            .fluidInputs(Materials.PhononCrystalSolution.getFluid(4_000))
+            .fluidOutputs(Materials.PhononMedium.getFluid(1_000))
             .eut(TierEU.RECIPE_UIV)
             .duration(2 * MINUTES)
             .addTo(alloyBlastSmelterRecipes);
@@ -960,13 +959,13 @@ public class RecipesGregTech {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(5),
-                MaterialsUEVplus.TranscendentMetal.getDust(2),
+                Materials.TranscendentMetal.getDust(2),
                 GGMaterial.tairitsu.get(OrePrefixes.dust, 2),
                 Materials.Tartarite.getDust(2),
                 TITANSTEEL.getDust(1),
                 Materials.Infinity.getDust(1))
-            .fluidInputs(MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(1_000))
-            .fluidOutputs(MaterialsUEVplus.MoltenProtoHalkoniteBase.getFluid(8 * INGOTS))
+            .fluidInputs(Materials.DimensionallyTranscendentResidue.getFluid(1_000))
+            .fluidOutputs(Materials.MoltenProtoHalkoniteBase.getFluid(8 * INGOTS))
             .eut(TierEU.RECIPE_UEV)
             .duration(60 * SECONDS)
             .addTo(alloyBlastSmelterRecipes);
