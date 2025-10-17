@@ -2548,23 +2548,17 @@ public class MaterialsInit {
         Materials.Ammonium = loadAmmonium();
         Materials.Amordrine = loadAmordrine();
         Materials.Andesite = loadAndesite();
-        Materials.Angmallen = loadAngmallen();
         Materials.Ardite = loadArdite();
         Materials.Aredrite = loadAredrite();
-        Materials.Atlarus = loadAtlarus();
         Materials.Bitumen = loadBitumen();
         Materials.Black = loadBlack();
         Materials.Blizz = loadBlizz();
         Materials.Bloodstone = loadBloodstone();
-        Materials.Blueschist = loadBlueschist();
         Materials.Bluestone = loadBluestone();
         Materials.Blutonium = loadBlutonium();
-        Materials.Carmot = loadCarmot();
-        Materials.Celenegil = loadCelenegil();
         Materials.CertusQuartz = loadCertusQuartz();
         Materials.CertusQuartzCharged = loadCertusQuartzCharged();
         Materials.Ceruclase = loadCeruclase();
-        Materials.Chert = loadChert();
         Materials.Chimerite = loadChimerite();
         Materials.Chrysocolla = loadChrysocolla();
         Materials.Citrine = loadCitrine();
@@ -2574,7 +2568,6 @@ public class MaterialsInit {
         Materials.CrudeOil = loadCrudeOil();
         Materials.CrystalFlux = loadCrystalFlux();
         Materials.Cyanite = loadCyanite();
-        Materials.Dacite = loadDacite();
         Materials.DarkIron = loadDarkIron();
         Materials.DarkStone = loadDarkStone();
         Materials.Demonite = loadDemonite();
@@ -2583,12 +2576,10 @@ public class MaterialsInit {
         Materials.Draconic = loadDraconic();
         Materials.Drulloy = loadDrulloy();
         Materials.Duranium = loadDuranium();
-        Materials.Eclogite = loadEclogite();
         Materials.ElectrumFlux = loadElectrumFlux();
         Materials.Emery = loadEmery();
         Materials.EnderiumBase = loadEnderiumBase();
         Materials.Energized = loadEnergized();
-        Materials.Eximite = loadEximite();
         Materials.FierySteel = loadFierySteel();
         Materials.Firestone = loadFirestone();
         Materials.Fluorite = loadFluorite();
@@ -2596,21 +2587,13 @@ public class MaterialsInit {
         Materials.Force = loadForce();
         Materials.Forcicium = loadForcicium();
         Materials.Forcillium = loadForcillium();
-        Materials.Gabbro = loadGabbro();
         Materials.Glowstone = loadGlowstone();
-        Materials.Gneiss = loadGneiss();
         Materials.Graphene = loadGraphene();
         Materials.Graphite = loadGraphite();
-        Materials.Greenschist = loadGreenschist();
         Materials.Greenstone = loadGreenstone();
-        Materials.Greywacke = loadGreywacke();
-        Materials.Haderoth = loadHaderoth();
         Materials.Hematite = loadHematite();
-        Materials.Hepatizon = loadHepatizon();
         Materials.HSLA = loadHSLA();
-        Materials.Ignatius = loadIgnatius();
         Materials.Infernal = loadInfernal();
-        Materials.Infuscolium = loadInfuscolium();
         Materials.InfusedAir = loadInfusedAir();
         Materials.InfusedDull = loadInfusedDull();
         Materials.InfusedEarth = loadInfusedEarth();
@@ -2620,20 +2603,15 @@ public class MaterialsInit {
         Materials.InfusedOrder = loadInfusedOrder();
         Materials.InfusedVis = loadInfusedVis();
         Materials.InfusedWater = loadInfusedWater();
-        Materials.Inolashite = loadInolashite();
         Materials.Invisium = loadInvisium();
         Materials.Jade = loadJade();
-        Materials.Kalendrite = loadKalendrite();
-        Materials.Komatiite = loadKomatiite();
         Materials.Lava = loadLava();
-        Materials.Lemurite = loadLemurite();
         Materials.Limestone = loadLimestone();
         Materials.Magma = loadMagma();
         Materials.Mawsitsit = loadMawsitsit();
         Materials.Mercassium = loadMercassium();
         Materials.MeteoricSteel = loadMeteoricSteel();
         Materials.Meteorite = loadMeteorite();
-        Materials.Meutoite = loadMeutoite();
         Materials.Migmatite = loadMigmatite();
         Materials.Mimichite = loadMimichite();
         Materials.Moonstone = loadMoonstone();
@@ -2649,19 +2627,15 @@ public class MaterialsInit {
         Materials.Onyx = loadOnyx();
         Materials.Orichalcum = loadOrichalcum();
         Materials.Osmonium = loadOsmonium();
-        Materials.Oureclase = loadOureclase();
         Materials.Painite = loadPainite();
         Materials.Peanutwood = loadPeanutwood();
         Materials.Petroleum = loadPetroleum();
         Materials.Pewter = loadPewter();
         Materials.Phoenixite = loadPhoenixite();
-        Materials.Prometheum = loadPrometheum();
         Materials.Quartzite = loadQuartzite();
         Materials.Randomite = loadRandomite();
-        Materials.Rhyolite = loadRhyolite();
         Materials.Rubracium = loadRubracium();
         Materials.Sand = loadSand();
-        Materials.Sanguinite = loadSanguinite();
         Materials.Siltstone = loadSiltstone();
         Materials.Sunstone = loadSunstone();
         Materials.Tar = loadTar();
@@ -2803,20 +2777,6 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadAngmallen() {
-        return new MaterialBuilder().setName("Angmallen")
-            .setDefaultLocalName("Angmallen")
-            .setIconSet(TextureSet.SET_METALLIC)
-            .setARGB(0x00d7e18a)
-            .setTool(128, 2, 10.0f)
-            .addDustItems()
-            .addMetalItems()
-            .addOreItems()
-            .addToolHeadItems()
-            .addSubTag(SubTag.METAL)
-            .constructMaterial();
-    }
-
     private static Materials loadArdite() {
         return new MaterialBuilder().setName("Ardite")
             .setDefaultLocalName("Ardite")
@@ -2844,19 +2804,6 @@ public class MaterialsInit {
             .setDefaultLocalName("Aredrite")
             .setColor(Dyes.dyeYellow)
             .setARGB(0x00ff0000)
-            .setTool(64, 2, 6.0f)
-            .addDustItems()
-            .addMetalItems()
-            .addOreItems()
-            .addToolHeadItems()
-            .addSubTag(SubTag.METAL)
-            .constructMaterial();
-    }
-
-    private static Materials loadAtlarus() {
-        return new MaterialBuilder().setName("Atlarus")
-            .setDefaultLocalName("Atlarus")
-            .setIconSet(TextureSet.SET_METALLIC)
             .setTool(64, 2, 6.0f)
             .addDustItems()
             .addMetalItems()
@@ -2901,15 +2848,6 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadBlueschist() {
-        return new MaterialBuilder().setName("Blueschist")
-            .setDefaultLocalName("Blueschist")
-            .setIconSet(TextureSet.SET_DULL)
-            .setColor(Dyes.dyeLightBlue)
-            .addDustItems()
-            .constructMaterial();
-    }
-
     private static Materials loadBluestone() {
         return new MaterialBuilder().setName("Bluestone")
             .setDefaultLocalName("Bluestone")
@@ -2928,34 +2866,6 @@ public class MaterialsInit {
             .addDustItems()
             .addMetalItems()
             .addOreItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadCarmot() {
-        return new MaterialBuilder().setName("Carmot")
-            .setDefaultLocalName("Carmot")
-            .setIconSet(TextureSet.SET_METALLIC)
-            .setARGB(0x00d9cd8c)
-            .setTool(128, 1, 16.0f)
-            .addDustItems()
-            .addMetalItems()
-            .addOreItems()
-            .addToolHeadItems()
-            .addSubTag(SubTag.METAL)
-            .constructMaterial();
-    }
-
-    private static Materials loadCelenegil() {
-        return new MaterialBuilder().setName("Celenegil")
-            .setDefaultLocalName("Celenegil")
-            .setIconSet(TextureSet.SET_METALLIC)
-            .setARGB(0x0094cc48)
-            .setTool(4_096, 2, 10.0f)
-            .addDustItems()
-            .addMetalItems()
-            .addOreItems()
-            .addToolHeadItems()
-            .addSubTag(SubTag.METAL)
             .constructMaterial();
     }
 
@@ -3028,14 +2938,6 @@ public class MaterialsInit {
             .setBlastFurnaceRequired(true)
             .setAutoGenerateBlastFurnaceRecipes(false)
             .addSubTag(SubTag.METAL)
-            .constructMaterial();
-    }
-
-    private static Materials loadChert() {
-        return new MaterialBuilder().setName("Chert")
-            .setDefaultLocalName("Chert")
-            .setIconSet(TextureSet.SET_DULL)
-            .addDustItems()
             .constructMaterial();
     }
 
@@ -3124,15 +3026,6 @@ public class MaterialsInit {
         return new MaterialBuilder().setName("Cyanite")
             .setDefaultLocalName("Cyanite")
             .setColor(Dyes.dyeCyan)
-            .addDustItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadDacite() {
-        return new MaterialBuilder().setName("Dacite")
-            .setDefaultLocalName("Dacite")
-            .setIconSet(TextureSet.SET_DULL)
-            .setColor(Dyes.dyeLightGray)
             .addDustItems()
             .constructMaterial();
     }
@@ -3236,14 +3129,6 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadEclogite() {
-        return new MaterialBuilder().setName("Eclogite")
-            .setDefaultLocalName("Eclogite")
-            .setIconSet(TextureSet.SET_DULL)
-            .addDustItems()
-            .constructMaterial();
-    }
-
     private static Materials loadElectrumFlux() {
         return new MaterialBuilder().setName("ElectrumFlux")
             .setDefaultLocalName("Fluxed Electrum")
@@ -3304,20 +3189,6 @@ public class MaterialsInit {
     private static Materials loadEnergized() {
         return new MaterialBuilder().setName("Energized")
             .setDefaultLocalName("Energized")
-            .constructMaterial();
-    }
-
-    private static Materials loadEximite() {
-        return new MaterialBuilder().setName("Eximite")
-            .setDefaultLocalName("Eximite")
-            .setIconSet(TextureSet.SET_METALLIC)
-            .setARGB(0x007c5a96)
-            .setTool(2_560, 3, 5.0f)
-            .addDustItems()
-            .addMetalItems()
-            .addOreItems()
-            .addToolHeadItems()
-            .addSubTag(SubTag.METAL)
             .constructMaterial();
     }
 
@@ -3478,14 +3349,6 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadGabbro() {
-        return new MaterialBuilder().setName("Gabbro")
-            .setDefaultLocalName("Gabbro")
-            .setIconSet(TextureSet.SET_DULL)
-            .addDustItems()
-            .constructMaterial();
-    }
-
     private static Materials loadGlowstone() {
         return new MaterialBuilder().setName("Glowstone")
             .setDefaultLocalName("Glowstone")
@@ -3504,14 +3367,6 @@ public class MaterialsInit {
             .addSubTag(SubTag.STONE)
             .addSubTag(SubTag.UNBURNABLE)
             .removeOrePrefix(OrePrefixes.dust) // minecraft:glowstone_dust
-            .constructMaterial();
-    }
-
-    private static Materials loadGneiss() {
-        return new MaterialBuilder().setName("Gneiss")
-            .setDefaultLocalName("Gneiss")
-            .setIconSet(TextureSet.SET_DULL)
-            .addDustItems()
             .constructMaterial();
     }
 
@@ -3551,15 +3406,6 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadGreenschist() {
-        return new MaterialBuilder().setName("Greenschist")
-            .setDefaultLocalName("Green Schist")
-            .setIconSet(TextureSet.SET_DULL)
-            .setColor(Dyes.dyeGreen)
-            .addDustItems()
-            .constructMaterial();
-    }
-
     private static Materials loadGreenstone() {
         return new MaterialBuilder().setName("Greenstone")
             .setDefaultLocalName("Greenstone")
@@ -3569,49 +3415,12 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadGreywacke() {
-        return new MaterialBuilder().setName("Greywacke")
-            .setDefaultLocalName("Greywacke")
-            .setIconSet(TextureSet.SET_DULL)
-            .setColor(Dyes.dyeGray)
-            .addDustItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadHaderoth() {
-        return new MaterialBuilder().setName("Haderoth")
-            .setDefaultLocalName("Haderoth")
-            .setIconSet(TextureSet.SET_METALLIC)
-            .setARGB(0x0077341e)
-            .setTool(3_200, 3, 10.0f)
-            .addDustItems()
-            .addMetalItems()
-            .addOreItems()
-            .addToolHeadItems()
-            .addSubTag(SubTag.METAL)
-            .constructMaterial();
-    }
-
     private static Materials loadHematite() {
         return new MaterialBuilder().setName("Hematite")
             .setDefaultLocalName("Hematite")
             .addDustItems()
             .addMetalItems()
             .addOreItems()
-            .addSubTag(SubTag.METAL)
-            .constructMaterial();
-    }
-
-    private static Materials loadHepatizon() {
-        return new MaterialBuilder().setName("Hepatizon")
-            .setDefaultLocalName("Hepatizon")
-            .setIconSet(TextureSet.SET_METALLIC)
-            .setARGB(0x00755e75)
-            .setTool(128, 2, 12.0f)
-            .addDustItems()
-            .addMetalItems()
-            .addOreItems()
-            .addToolHeadItems()
             .addSubTag(SubTag.METAL)
             .constructMaterial();
     }
@@ -3638,35 +3447,9 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadIgnatius() {
-        return new MaterialBuilder().setName("Ignatius")
-            .setDefaultLocalName("Ignatius")
-            .setIconSet(TextureSet.SET_METALLIC)
-            .setARGB(0x00ffa953)
-            .setTool(512, 2, 12.0f)
-            .addDustItems()
-            .addMetalItems()
-            .addSubTag(SubTag.METAL)
-            .constructMaterial();
-    }
-
     private static Materials loadInfernal() {
         return new MaterialBuilder().setName("Infernal")
             .setDefaultLocalName("Infernal")
-            .constructMaterial();
-    }
-
-    private static Materials loadInfuscolium() {
-        return new MaterialBuilder().setName("Infuscolium")
-            .setDefaultLocalName("Infuscolium")
-            .setIconSet(TextureSet.SET_METALLIC)
-            .setARGB(0x00922156)
-            .setTool(64, 2, 6.0f)
-            .addDustItems()
-            .addMetalItems()
-            .addOreItems()
-            .addToolHeadItems()
-            .addSubTag(SubTag.METAL)
             .constructMaterial();
     }
 
@@ -3909,20 +3692,6 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadInolashite() {
-        return new MaterialBuilder().setName("Inolashite")
-            .setDefaultLocalName("Inolashite")
-            .setColor(Dyes.dyeGreen)
-            .setARGB(0x0094d8bb)
-            .setTool(2_304, 3, 8.0f)
-            .addDustItems()
-            .addMetalItems()
-            .addOreItems()
-            .addToolHeadItems()
-            .addSubTag(SubTag.METAL)
-            .constructMaterial();
-    }
-
     private static Materials loadInvisium() {
         return new MaterialBuilder().setName("Invisium")
             .setDefaultLocalName("Invisium")
@@ -3950,27 +3719,6 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadKalendrite() {
-        return new MaterialBuilder().setName("Kalendrite")
-            .setDefaultLocalName("Kalendrite")
-            .setIconSet(TextureSet.SET_METALLIC)
-            .setARGB(0x00aa5bbd)
-            .setTool(2_560, 3, 5.0f)
-            .addDustItems()
-            .addMetalItems()
-            .addSubTag(SubTag.METAL)
-            .constructMaterial();
-    }
-
-    private static Materials loadKomatiite() {
-        return new MaterialBuilder().setName("Komatiite")
-            .setDefaultLocalName("Komatiite")
-            .setIconSet(TextureSet.SET_DULL)
-            .setColor(Dyes.dyeYellow)
-            .addDustItems()
-            .constructMaterial();
-    }
-
     private static Materials loadLava() {
         return new MaterialBuilder().setName("Lava")
             .setDefaultLocalName("Lava")
@@ -3982,15 +3730,6 @@ public class MaterialsInit {
             .removeOrePrefix(OrePrefixes.cell) // IC2:itemCellEmpty:2
             .removeOrePrefix(OrePrefixes.bucket) // minecraft:lava_bucket
             .removeOrePrefix(OrePrefixes.bucketClay) // IguanaTweaksTConstruct:clayBucketLava
-            .constructMaterial();
-    }
-
-    private static Materials loadLemurite() {
-        return new MaterialBuilder().setName("Lemurite")
-            .setDefaultLocalName("Lemurite")
-            .setIconSet(TextureSet.SET_METALLIC)
-            .setARGB(0x00dbdbdb)
-            .addDustItems()
             .constructMaterial();
     }
 
@@ -4058,16 +3797,6 @@ public class MaterialsInit {
             .setDefaultLocalName("Meteorite")
             .setColor(Dyes.dyePurple)
             .setARGB(0x0050233c)
-            .addDustItems()
-            .addOreItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadMeutoite() {
-        return new MaterialBuilder().setName("Meutoite")
-            .setDefaultLocalName("Meutoite")
-            .setIconSet(TextureSet.SET_METALLIC)
-            .setARGB(0x005f5269)
             .addDustItems()
             .addOreItems()
             .constructMaterial();
@@ -4316,20 +4045,6 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadOureclase() {
-        return new MaterialBuilder().setName("Oureclase")
-            .setDefaultLocalName("Oureclase")
-            .setIconSet(TextureSet.SET_METALLIC)
-            .setARGB(0x00b76215)
-            .setTool(1_920, 3, 6.0f)
-            .addDustItems()
-            .addMetalItems()
-            .addOreItems()
-            .addToolHeadItems()
-            .addSubTag(SubTag.METAL)
-            .constructMaterial();
-    }
-
     private static Materials loadPainite() {
         return new MaterialBuilder().setName("Painite")
             .setDefaultLocalName("Painite")
@@ -4373,20 +4088,6 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadPrometheum() {
-        return new MaterialBuilder().setName("Prometheum")
-            .setDefaultLocalName("Prometheum")
-            .setIconSet(TextureSet.SET_METALLIC)
-            .setARGB(0x005a8156)
-            .setTool(512, 1, 8.0f)
-            .addDustItems()
-            .addMetalItems()
-            .addOreItems()
-            .addToolHeadItems()
-            .addSubTag(SubTag.METAL)
-            .constructMaterial();
-    }
-
     private static Materials loadQuartzite() {
         return new MaterialBuilder().setName("Quartzite")
             .setDefaultLocalName("Quartzite")
@@ -4415,14 +4116,6 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadRhyolite() {
-        return new MaterialBuilder().setName("Rhyolite")
-            .setDefaultLocalName("Rhyolite")
-            .setIconSet(TextureSet.SET_DULL)
-            .addDustItems()
-            .constructMaterial();
-    }
-
     private static Materials loadRubracium() {
         return new MaterialBuilder().setName("Rubracium")
             .setDefaultLocalName("Rubracium")
@@ -4447,19 +4140,6 @@ public class MaterialsInit {
             .setColor(Dyes.dyeYellow)
             .setSmeltingInto(() -> Materials.Glass)
             .addSubTag(SubTag.NO_RECYCLING)
-            .constructMaterial();
-    }
-
-    private static Materials loadSanguinite() {
-        return new MaterialBuilder().setName("Sanguinite")
-            .setDefaultLocalName("Sanguinite")
-            .setIconSet(TextureSet.SET_METALLIC)
-            .setARGB(0x00b90000)
-            .setTool(4_480, 4, 3.0f)
-            .addDustItems()
-            .addMetalItems()
-            .addOreItems()
-            .addSubTag(SubTag.METAL)
             .constructMaterial();
     }
 
@@ -16032,24 +15712,7 @@ public class MaterialsInit {
     private static void loadGTNHMaterials() {
         Materials.Signalum = loadSignalum();
         Materials.Lumium = loadLumium();
-        Materials.EnrichedCopper = loadEnrichedCopper();
-        Materials.DiamondCopper = loadDiamondCopper();
-        Materials.TarPitch = loadTarPitch();
-        Materials.LimePure = loadLimePure();
-        Materials.Wimalite = loadWimalite();
-        Materials.Yellorite = loadYellorite();
-        Materials.Turquoise = loadTurquoise();
-        Materials.Tapazite = loadTapazite();
-        Materials.Thyrium = loadThyrium();
-        Materials.Tourmaline = loadTourmaline();
-        Materials.Spinel = loadSpinel();
-        Materials.Starconium = loadStarconium();
-        Materials.Sugilite = loadSugilite();
         Materials.Prismarine = loadPrismarine();
-        Materials.GraveyardDirt = loadGraveyardDirt();
-        Materials.Tennantite = loadTennantite();
-        Materials.Fairy = loadFairy();
-        Materials.Ludicrite = loadLudicrite();
         Materials.AquaRegia = loadAquaRegia();
         Materials.SolutionBlueVitriol = loadSolutionBlueVitriol();
         Materials.SolutionNickelSulfate = loadSolutionNickelSulfate();
@@ -16082,144 +15745,10 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadEnrichedCopper() {
-        return new MaterialBuilder().setName("EnrichedCopper")
-            .setDefaultLocalName("Enriched Copper")
-            .addDustItems()
-            .addMetalItems()
-            .addSubTag(SubTag.METAL)
-            .constructMaterial();
-    }
-
-    private static Materials loadDiamondCopper() {
-        return new MaterialBuilder().setName("DiamondCopper")
-            .setDefaultLocalName("Diamond Copper")
-            .addDustItems()
-            .addMetalItems()
-            .addSubTag(SubTag.METAL)
-            .constructMaterial();
-    }
-
-    private static Materials loadTarPitch() {
-        return new MaterialBuilder().setName("TarPitch")
-            .setDefaultLocalName("Tar Pitch")
-            .addDustItems()
-            .addMetalItems()
-            .addSubTag(SubTag.NO_SMASHING)
-            .constructMaterial();
-    }
-
-    private static Materials loadLimePure() {
-        return new MaterialBuilder().setName("LimePure")
-            .setDefaultLocalName("Pure Lime")
-            .setColor(Dyes.dyeLime)
-            .constructMaterial();
-    }
-
-    private static Materials loadWimalite() {
-        return new MaterialBuilder().setName("Wimalite")
-            .setDefaultLocalName("Wimalite")
-            .setColor(Dyes.dyeYellow)
-            .addOreItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadYellorite() {
-        return new MaterialBuilder().setName("Yellorite")
-            .setDefaultLocalName("Yellorite")
-            .setColor(Dyes.dyeYellow)
-            .addOreItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadTurquoise() {
-        return new MaterialBuilder().setName("Turquoise")
-            .setDefaultLocalName("Turquoise")
-            .addDustItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadTapazite() {
-        return new MaterialBuilder().setName("Tapazite")
-            .setDefaultLocalName("Tapazite")
-            .setColor(Dyes.dyeGreen)
-            .addDustItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadThyrium() {
-        return new MaterialBuilder().setName("Thyrium")
-            .setDefaultLocalName("Thyrium")
-            .addDustItems()
-            .addMetalItems()
-            .addOreItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadTourmaline() {
-        return new MaterialBuilder().setName("Tourmaline")
-            .setDefaultLocalName("Tourmaline")
-            .setIconSet(TextureSet.SET_RUBY)
-            .addDustItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadSpinel() {
-        return new MaterialBuilder().setName("Spinel")
-            .setDefaultLocalName("Spinel")
-            .constructMaterial();
-    }
-
-    private static Materials loadStarconium() {
-        return new MaterialBuilder().setName("Starconium")
-            .setDefaultLocalName("Starconium")
-            .addDustItems()
-            .addMetalItems()
-            .addOreItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadSugilite() {
-        return new MaterialBuilder().setName("Sugilite")
-            .setDefaultLocalName("Sugilite")
-            .addDustItems()
-            .constructMaterial();
-    }
-
     private static Materials loadPrismarine() {
         return new MaterialBuilder().setName("Prismarine")
             .setDefaultLocalName("Prismarine")
             .addSubTag(SubTag.NO_ORE_PROCESSING)
-            .constructMaterial();
-    }
-
-    private static Materials loadGraveyardDirt() {
-        return new MaterialBuilder().setName("GraveyardDirt")
-            .setDefaultLocalName("Graveyard Dirt")
-            .addDustItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadTennantite() {
-        return new MaterialBuilder().setName("Tennantite")
-            .setDefaultLocalName("Tennantite")
-            .addDustItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadFairy() {
-        return new MaterialBuilder().setName("Fairy")
-            .setDefaultLocalName("Fairy")
-            .addDustItems()
-            .addMetalItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadLudicrite() {
-        return new MaterialBuilder().setName("Ludicrite")
-            .setDefaultLocalName("Ludicrite")
-            .addDustItems()
-            .addMetalItems()
             .constructMaterial();
     }
 
