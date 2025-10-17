@@ -1,4 +1,4 @@
-package gregtech.common.tileentities.machines.multi.gui;
+package gregtech.common.gui.modularui.hatch;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -17,11 +17,11 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.common.tileentities.machines.multi.compressor.MTEHeatSensor;
 
-public class MTEHeatSensorGuiBuilder {
+public class MTEHeatSensorGui {
 
     private final MTEHeatSensor sensor;
 
-    public MTEHeatSensorGuiBuilder(MTEHeatSensor sensor) {
+    public MTEHeatSensorGui(MTEHeatSensor sensor) {
         this.sensor = sensor;
     }
 
