@@ -5,6 +5,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import gregtech.common.gui.modularui.hatch.MTENeutronSensorGui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -234,49 +235,25 @@ public class MTENeutronSensor extends MTEHatch {
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings)
-            .build()
-            .child(
-                Flow.column()
-                    .child(createInvertButtonRow())
-                    .child(createThresholdFieldRow())
-                    .coverChildren()
-                    .crossAxisAlignment(com.cleanroommc.modularui.utils.Alignment.CrossAxis.START)
-                    .childPadding(2)
-                    .pos(8, 6));
+        return new MTENeutronSensorGui(this).build(data,syncManager,uiSettings);
     }
 
-    public Flow createInvertButtonRow() {
-        BooleanSyncValue invertedSyncer = new BooleanSyncValue(() -> inverted, val -> inverted = val);
-        return Flow.row()
-            .child(
-                new ToggleButton().value(invertedSyncer)
-                    .overlay(true, GTGuiTextures.OVERLAY_BUTTON_REDSTONE_ON)
-                    .overlay(false, GTGuiTextures.OVERLAY_BUTTON_REDSTONE_OFF)
-                    .size(16, 16))
-            .child(
-                IKey.dynamic(
-                    () -> invertedSyncer.getValue() ? translateToLocal("gt.interact.desc.inverted")
-                        : translateToLocal("gt.interact.desc.normal"))
-                    .asWidget())
-            .coverChildren()
-            .childPadding(2);
+    public int getThreshold() {
+        return threshold;
     }
 
-    public Flow createThresholdFieldRow() {
-        return Flow.row()
-            .child(
-                new TextFieldWidget().setFormatAsInteger(true)
-                    .setNumbers(0, 1200000000)
-                    .size(77, 12)
-                    .value(new IntSyncValue(() -> threshold, val -> threshold = val))
-                    .setFocusOnGuiOpen(true))
-            .child(
-                IKey.lang("gui.NeutronSensor.4")
-                    .asWidget())
-            .coverChildren()
-            .childPadding(2);
+    public void setThreshold(int threshold) {
+        this.threshold = threshold;
     }
+
+    public boolean isInverted() {
+        return inverted;
+    }
+
+    public void setInverted(boolean inverted) {
+        this.inverted = inverted;
+    }
+
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
