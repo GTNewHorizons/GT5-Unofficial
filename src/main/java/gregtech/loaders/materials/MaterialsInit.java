@@ -3373,6 +3373,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.STONE)
             .addSubTag(SubTag.UNBURNABLE)
             .addOrePrefix(OrePrefixes.nanite)
+            .addOrePrefix(OrePrefixes.plate)
             .removeOrePrefix(OrePrefixes.dust) // minecraft:glowstone_dust
             .constructMaterial();
     }
@@ -6767,6 +6768,7 @@ public class MaterialsInit {
             .addOreByproduct(() -> Materials.Olivine)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.STONE)
+            .addOrePrefix(OrePrefixes.plate)
             .removeOrePrefix(OrePrefixes.stickLong) // dreamcraft:item.LongObsidianRod
             .constructMaterial();
     }
@@ -9897,6 +9899,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.SMELTING_TO_FLUID)
             .addSubTag(SubTag.STONE)
+            .addOrePrefix(OrePrefixes.plate)
             .constructMaterial();
     }
 
@@ -10215,6 +10218,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.STONE)
             .addOrePrefix(OrePrefixes.dustImpure)
+            .addOrePrefix(OrePrefixes.plate)
             .constructMaterial();
     }
 
@@ -10524,6 +10528,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.STONE)
             .addOrePrefix(OrePrefixes.dustImpure)
+            .addOrePrefix(OrePrefixes.plate)
             .constructMaterial();
     }
 
@@ -10901,6 +10906,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.SMELTING_TO_FLUID)
             .addSubTag(SubTag.STONE)
             .addSubTag(SubTag.UNBURNABLE)
+            .addOrePrefix(OrePrefixes.plate)
             .removeOrePrefix(OrePrefixes.block) // minecraft:redstone_block
             .removeOrePrefix(OrePrefixes.dust) // minecraft:redstone
             .constructMaterial();
@@ -11507,6 +11513,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.STONE)
             .addOrePrefix(OrePrefixes.dustImpure)
+            .addOrePrefix(OrePrefixes.plate)
             .constructMaterial();
     }
 
@@ -11765,6 +11772,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.STONE)
             .addOrePrefix(OrePrefixes.dustImpure)
+            .addOrePrefix(OrePrefixes.plate)
             .constructMaterial();
     }
 
@@ -12512,6 +12520,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.SMELTING_TO_FLUID)
             .addSubTag(SubTag.STONE)
             .addSubTag(SubTag.UNBURNABLE)
+            .addOrePrefix(OrePrefixes.plate)
             .constructMaterial();
     }
 

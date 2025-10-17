@@ -649,16 +649,6 @@ public enum OrePrefixes {
         // ingot.mNotGeneratedItems.add(Materials.Ichorium);
 
         // -----
-        plate.mGeneratedItems.add(Materials.Redstone);
-        plate.mGeneratedItems.add(Materials.Concrete);
-        plate.mGeneratedItems.add(Materials.GraniteRed);
-        plate.mGeneratedItems.add(Materials.GraniteBlack);
-        plate.mGeneratedItems.add(Materials.Basalt);
-        plate.mGeneratedItems.add(Materials.Marble);
-        plate.mGeneratedItems.add(Materials.Glowstone);
-        plate.mGeneratedItems.add(Materials.Electrotine);
-        plate.mGeneratedItems.add(Materials.Obsidian);
-
         ingotHot.mGeneratedItems.add(Materials.TranscendentMetal);
 
         plate.mGeneratedItems.add(Materials.Paper);
