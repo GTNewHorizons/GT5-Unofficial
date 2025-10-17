@@ -4932,13 +4932,11 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.PAPER)
-            .addOrePrefix(OrePrefixes.plate)
             .addOrePrefix(OrePrefixes.plateDouble)
             .addOrePrefix(OrePrefixes.plateTriple)
             .addOrePrefix(OrePrefixes.plateQuadruple)
             .addOrePrefix(OrePrefixes.plateQuintuple)
             .addOrePrefix(OrePrefixes.ring)
-            .removeOrePrefix(OrePrefixes.plate) // minecraft:paper
             .constructMaterial();
     }
 
