@@ -1003,6 +1003,40 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials SapphireJuice;
     public static Materials RubyJuice;
 
+    // GTNH Materials
+    public static Materials Signalum;
+    public static Materials Lumium;
+    public static Materials EnrichedCopper;
+    public static Materials DiamondCopper;
+    public static Materials TarPitch;
+    public static Materials LimePure;
+    public static Materials Wimalite;
+    public static Materials Yellorite;
+    public static Materials Turquoise;
+    public static Materials Tapazite;
+    public static Materials Thyrium;
+    public static Materials Tourmaline;
+    public static Materials Spinel;
+    public static Materials Starconium;
+    public static Materials Sugilite;
+    public static Materials Prismarine;
+    public static Materials GraveyardDirt;
+    public static Materials Tennantite;
+    public static Materials Fairy;
+    public static Materials Ludicrite;
+    public static Materials AquaRegia;
+    public static Materials SolutionBlueVitriol;
+    public static Materials SolutionNickelSulfate;
+    public static Materials Lodestone;
+    public static Materials Luminite;
+    public static Materials Chlorite;
+    public static Materials Staurolite;
+    public static Materials Cordierite;
+    public static Materials Datolite;
+    public static Materials MetamorphicMineralMixture;
+    public static Materials Plagioclase;
+    public static Materials Epidote;
+
     public static final List<IMaterialHandler> mMaterialHandlers = new ArrayList<>();
     public static final Map<Fluid, Materials> FLUID_MAP = new LinkedHashMap<>();
     /** @deprecated This is for keeping compatibility with addons mods (Such as TinkersGregworks etc.) */
