@@ -169,11 +169,6 @@ public class MaterialBuilder {
         return this;
     }
 
-    public MaterialBuilder setMetaItemSubID(int metaItemSubID) {
-        this.metaItemSubID = metaItemSubID;
-        return this;
-    }
-
     public MaterialBuilder setUnifiable(boolean unifiable) {
         this.unifiable = unifiable;
         return this;
