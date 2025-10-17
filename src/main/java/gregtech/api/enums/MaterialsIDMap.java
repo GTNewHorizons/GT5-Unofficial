@@ -786,7 +786,7 @@ public class MaterialsIDMap extends Object2IntOpenHashMap<Materials> {
     }
 
     public void register() {
-        forEach((a, b) -> a.mMetaItemSubID = b);
+        forEach((material, ID) -> material.mMetaItemSubID = ID);
     }
 
     void r(int ID, Materials material) {
