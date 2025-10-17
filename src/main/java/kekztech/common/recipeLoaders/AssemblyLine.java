@@ -18,7 +18,6 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
@@ -103,8 +102,8 @@ public class AssemblyLine implements Runnable {
             .itemInputs(
                 ItemList.Quantum_Tank_IV.get(4),
                 ItemList.Machine_Multi_NeutroniumCompressor.get(2),
-                GTOreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.TranscendentMetal, 6),
-                GTOreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.ProtoHalkonite, 6),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.TranscendentMetal, 6),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.ProtoHalkonite, 6),
                 GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Infinity, 3),
                 ItemList.EnergisedTesseract.get(1),
                 HYPOGEN.getRotor(6),
@@ -125,10 +124,10 @@ public class AssemblyLine implements Runnable {
             .itemInputs(
                 ItemList.Quantum_Tank_IV.get(16),
                 ItemList.Machine_Multi_NeutroniumCompressor.get(4),
-                GTOreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.SpaceTime, 12),
-                GTOreDictUnificator.get(OrePrefixes.pipeNonuple, MaterialsUEVplus.SpaceTime, 3),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.SpaceTime, 12),
+                GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.SpaceTime, 3),
                 ItemList.EnergisedTesseract.get(6),
-                GTOreDictUnificator.get(OrePrefixes.rotor, MaterialsUEVplus.SpaceTime, 6),
+                GTOreDictUnificator.get(OrePrefixes.rotor, Materials.SpaceTime, 6),
                 ItemList.Field_Generator_UEV.get(16),
                 ItemList.Field_Generator_UIV.get(4),
                 new ItemStack(huiCircuit, 8, 4),

@@ -49,7 +49,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -110,9 +109,9 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
 
     private static final ArrayList<SubspaceCoolingFluid> SUBSPACE_COOLING_FLUIDS = new ArrayList<>(
         Arrays.asList(
-            new SubspaceCoolingFluid(MaterialsUEVplus.SpaceTime, 1, 7500),
-            new SubspaceCoolingFluid(MaterialsUEVplus.Space, 2, 5000),
-            new SubspaceCoolingFluid(MaterialsUEVplus.Eternity, 3, 2500)));
+            new SubspaceCoolingFluid(Materials.SpaceTime, 1, 7500),
+            new SubspaceCoolingFluid(Materials.Space, 2, 5000),
+            new SubspaceCoolingFluid(Materials.Eternity, 3, 2500)));
 
     private SubspaceCoolingFluid currentCoolingFluid = null;
 

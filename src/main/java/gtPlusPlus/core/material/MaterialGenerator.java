@@ -307,7 +307,6 @@ public class MaterialGenerator {
         generateOreMaterial(matInfo, true, true, true, matInfo.getRGBA());
     }
 
-    @SuppressWarnings("unused")
     public static void generateOreMaterial(final Material matInfo, boolean generateOre, boolean generateDust,
         boolean generateSmallTinyDusts, short[] customRGB) {
         try {
@@ -377,6 +376,7 @@ public class MaterialGenerator {
             final Integer Colour = Utils.rgbtoHexValue(C[0], C[1], C[2]);
 
             tempBlock = new BlockBaseOre(matInfo, BlockTypes.ORE);
+            matInfo.setHasOre();
             tempBlock = new BlockBaseModular(matInfo, BlockTypes.STANDARD);
             temp = new BaseItemIngot(matInfo);
             temp = new BaseItemDust(matInfo);

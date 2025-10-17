@@ -644,7 +644,7 @@ public enum OrePrefixes {
             }
         }
 
-        cell.disableComponent(MaterialsUEVplus.GravitonShard);
+        cell.disableComponent(Materials.GravitonShard);
 
         // ingot.mNotGeneratedItems.add(Materials.Ichorium);
 
@@ -671,7 +671,7 @@ public enum OrePrefixes {
         plate.mGeneratedItems.add(Materials.Electrotine);
         plate.mGeneratedItems.add(Materials.Obsidian);
 
-        ingotHot.mGeneratedItems.add(MaterialsUEVplus.TranscendentMetal);
+        ingotHot.mGeneratedItems.add(Materials.TranscendentMetal);
 
         plate.mGeneratedItems.add(Materials.Paper);
         plateDouble.mGeneratedItems.add(Materials.Paper);
@@ -690,48 +690,48 @@ public enum OrePrefixes {
         nanite.mGeneratedItems.add(Materials.Iron);
         nanite.mGeneratedItems.add(Materials.Copper);
         nanite.mGeneratedItems.add(Materials.Silver);
-        nanite.mGeneratedItems.add(MaterialsUEVplus.TranscendentMetal);
+        nanite.mGeneratedItems.add(Materials.TranscendentMetal);
         nanite.mGeneratedItems.add(Materials.Neutronium);
-        nanite.mGeneratedItems.add(MaterialsUEVplus.Universium);
-        nanite.mGeneratedItems.add(MaterialsUEVplus.WhiteDwarfMatter);
-        nanite.mGeneratedItems.add(MaterialsUEVplus.BlackDwarfMatter);
+        nanite.mGeneratedItems.add(Materials.Universium);
+        nanite.mGeneratedItems.add(Materials.WhiteDwarfMatter);
+        nanite.mGeneratedItems.add(Materials.BlackDwarfMatter);
         nanite.mGeneratedItems.add(Materials.Glowstone);
-        nanite.mGeneratedItems.add(MaterialsUEVplus.Eternity);
-        nanite.mGeneratedItems.add(MaterialsUEVplus.SixPhasedCopper);
-        nanite.mGeneratedItems.add(MaterialsUEVplus.MagMatter);
+        nanite.mGeneratedItems.add(Materials.Eternity);
+        nanite.mGeneratedItems.add(Materials.SixPhasedCopper);
+        nanite.mGeneratedItems.add(Materials.MagMatter);
         // -----
 
-        gear.mGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
-        ingot.mGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
-        toolHeadHammer.mGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
-        frame.mGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
-        frameGt.mGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
+        gear.mGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+        ingot.mGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+        toolHeadHammer.mGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+        frame.mGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+        frameGt.mGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
 
-        gear.mGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
-        ingot.mGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
-        toolHeadHammer.mGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
-        frame.mGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
-        frameGt.mGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
+        gear.mGeneratedItems.add(Materials.HotProtoHalkonite);
+        ingot.mGeneratedItems.add(Materials.HotProtoHalkonite);
+        toolHeadHammer.mGeneratedItems.add(Materials.HotProtoHalkonite);
+        frame.mGeneratedItems.add(Materials.HotProtoHalkonite);
+        frameGt.mGeneratedItems.add(Materials.HotProtoHalkonite);
 
-        gear.mGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
-        ingot.mGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
-        toolHeadHammer.mGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
-        frame.mGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
-        frameGt.mGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
+        gear.mGeneratedItems.add(Materials.ProtoHalkonite);
+        ingot.mGeneratedItems.add(Materials.ProtoHalkonite);
+        toolHeadHammer.mGeneratedItems.add(Materials.ProtoHalkonite);
+        frame.mGeneratedItems.add(Materials.ProtoHalkonite);
+        frameGt.mGeneratedItems.add(Materials.ProtoHalkonite);
 
-        gear.mGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
-        ingot.mGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
-        toolHeadHammer.mGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
-        frame.mGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
-        frameGt.mGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
+        gear.mGeneratedItems.add(Materials.HotExoHalkonite);
+        ingot.mGeneratedItems.add(Materials.HotExoHalkonite);
+        toolHeadHammer.mGeneratedItems.add(Materials.HotExoHalkonite);
+        frame.mGeneratedItems.add(Materials.HotExoHalkonite);
+        frameGt.mGeneratedItems.add(Materials.HotExoHalkonite);
 
-        gear.mGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
-        ingot.mGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
-        toolHeadHammer.mGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
-        frame.mGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
-        frameGt.mGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
+        gear.mGeneratedItems.add(Materials.ExoHalkonite);
+        ingot.mGeneratedItems.add(Materials.ExoHalkonite);
+        toolHeadHammer.mGeneratedItems.add(Materials.ExoHalkonite);
+        frame.mGeneratedItems.add(Materials.ExoHalkonite);
+        frameGt.mGeneratedItems.add(Materials.ExoHalkonite);
 
-        gem.mGeneratedItems.add(MaterialsUEVplus.GravitonShard);
+        gem.mGeneratedItems.add(Materials.GravitonShard);
 
         dust.mGeneratedItems.addAll(dustPure.mGeneratedItems);
         dust.mGeneratedItems.addAll(dustImpure.mGeneratedItems);
@@ -1172,6 +1172,8 @@ public enum OrePrefixes {
     public boolean doGenerateItem(Materials aMaterial) {
         if (aMaterial == null) return false;
         if (aMaterial == Materials._NULL) return false;
+        if (aMaterial.mMetaItemSubID == -1) return false;
+        if (!aMaterial.mHasParentMod) return false;
 
         // This only falls through, returning false, when the material has no overlap with `mMaterialGenerationBits`.
         // spotless:off
