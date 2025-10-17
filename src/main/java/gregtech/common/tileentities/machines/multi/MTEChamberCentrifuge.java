@@ -73,7 +73,7 @@ import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.blocks.BlockCasings12;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.misc.GTStructureChannels;
-import gregtech.common.tileentities.machines.multi.gui.MTEChamberCentrifugeGui;
+import gregtech.common.gui.modularui.multiblock.MTEChamberCentrifugeGui;
 import gregtech.common.tools.ToolTurbineHuge;
 import gregtech.common.tools.ToolTurbineLarge;
 import gregtech.common.tools.ToolTurbineNormal;
