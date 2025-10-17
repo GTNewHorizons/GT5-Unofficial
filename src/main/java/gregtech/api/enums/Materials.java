@@ -1140,7 +1140,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public short mBlastFurnaceTemp = 0;
     public int mMeltingPoint = 0;
     public int mGasTemp = 0;
-    public int mMetaItemSubID;
+    public int mMetaItemSubID = -1;
     public int mFuelPower = 0;
     public int mFuelType = 0;
     public int mExtraData = 0;
