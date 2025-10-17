@@ -281,6 +281,7 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(417, Materials.RubyJuice);
         r(425, Materials.MTBEMixtureAlt);
         r(460, Materials.HydricSulfide);
+        r(469, Materials.Greywacke);
         r(470, Materials.Epoxid);
         r(471, Materials.Silicone);
         r(472, Materials.Polycaprolactam);
@@ -680,7 +681,6 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(894, Materials.Cheese);
         r(895, Materials.Chili);
         r(896, Materials.RawRubber);
-        r(897, Materials.Greywacke);
         r(897, Materials.ComplexityCatalyst);
         r(898, Materials.Cryotheum);
         r(899, Materials.EntropicCatalyst);
