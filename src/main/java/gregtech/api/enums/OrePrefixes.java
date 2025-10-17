@@ -649,18 +649,6 @@ public enum OrePrefixes {
         // ingot.mNotGeneratedItems.add(Materials.Ichorium);
 
         // -----
-
-        dustImpure.mGeneratedItems.add(Materials.GraniteRed);
-        dustImpure.mGeneratedItems.add(Materials.GraniteBlack);
-        dustImpure.mGeneratedItems.add(Materials.Quartzite);
-        dustImpure.mGeneratedItems.add(Materials.Flint);
-        dustImpure.mGeneratedItems.add(Materials.Redrock);
-        dustImpure.mGeneratedItems.add(Materials.Basalt);
-        dustImpure.mGeneratedItems.add(Materials.Marble);
-        dustImpure.mGeneratedItems.add(Materials.Netherrack);
-        dustImpure.mGeneratedItems.add(Materials.Endstone);
-        dustImpure.mGeneratedItems.add(Materials.Stone);
-
         plate.mGeneratedItems.add(Materials.Redstone);
         plate.mGeneratedItems.add(Materials.Concrete);
         plate.mGeneratedItems.add(Materials.GraniteRed);

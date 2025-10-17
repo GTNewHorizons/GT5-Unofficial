@@ -4112,6 +4112,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.QUARTZ)
+            .addOrePrefix(OrePrefixes.dustImpure)
             .constructMaterial();
     }
 
@@ -5035,6 +5036,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_RECYCLING)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.STONE)
+            .addOrePrefix(OrePrefixes.dustImpure)
             .constructMaterial();
     }
 
@@ -5171,6 +5173,7 @@ public class MaterialsInit {
             .addOreByproduct(() -> Materials.Helium_3)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.STONE)
+            .addOrePrefix(OrePrefixes.dustImpure)
             .constructMaterial();
     }
 
@@ -5187,6 +5190,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.STONE)
             .addSubTag(SubTag.UNBURNABLE)
+            .addOrePrefix(OrePrefixes.dustImpure)
             .constructMaterial();
     }
 
@@ -10054,6 +10058,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.MORTAR_GRINDABLE)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.STONE)
+            .addOrePrefix(OrePrefixes.dustImpure)
             .removeOrePrefix(OrePrefixes.gem) // minecraft:flint
             .constructMaterial();
     }
@@ -10209,6 +10214,7 @@ public class MaterialsInit {
             .addOreByproduct(() -> Materials.Biotite)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.STONE)
+            .addOrePrefix(OrePrefixes.dustImpure)
             .constructMaterial();
     }
 
@@ -10517,6 +10523,7 @@ public class MaterialsInit {
             .addOreByproduct(() -> Materials.Calcite)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.STONE)
+            .addOrePrefix(OrePrefixes.dustImpure)
             .constructMaterial();
     }
 
@@ -10865,6 +10872,7 @@ public class MaterialsInit {
             .addOreByproduct(() -> Materials.Clay)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.STONE)
+            .addOrePrefix(OrePrefixes.dustImpure)
             .constructMaterial();
     }
 
@@ -11498,6 +11506,7 @@ public class MaterialsInit {
             .addOreByproduct(() -> Materials.DarkAsh)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.STONE)
+            .addOrePrefix(OrePrefixes.dustImpure)
             .constructMaterial();
     }
 
@@ -11755,6 +11764,7 @@ public class MaterialsInit {
             .addOreByproduct(() -> Materials.PotassiumFeldspar)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.STONE)
+            .addOrePrefix(OrePrefixes.dustImpure)
             .constructMaterial();
     }
 
