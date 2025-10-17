@@ -20,7 +20,6 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.RecipeCategories;
@@ -277,7 +276,7 @@ public class Pulverizer implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Casing_Coil_Eternal.get(1))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.SpaceTime, 9L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.SpaceTime, 9L),
                 MaterialsElements.STANDALONE.HYPOGEN.getDust(4),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.PrismaticNaquadah, 64),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Netherite, 8))

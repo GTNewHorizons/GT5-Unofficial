@@ -206,23 +206,17 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Ammonium;
     public static Materials Amordrine;
     public static Materials Andesite;
-    public static Materials Angmallen;
     public static Materials Ardite;
     public static Materials Aredrite;
-    public static Materials Atlarus;
     public static Materials Bitumen;
     public static Materials Black;
     public static Materials Blizz;
     public static Materials Bloodstone;
-    public static Materials Blueschist;
     public static Materials Bluestone;
     public static Materials Blutonium;
-    public static Materials Carmot;
-    public static Materials Celenegil;
     public static Materials CertusQuartz;
     public static Materials CertusQuartzCharged;
     public static Materials Ceruclase;
-    public static Materials Chert;
     public static Materials Chimerite;
     public static Materials Chrysocolla;
     public static Materials Citrine;
@@ -232,7 +226,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials CrudeOil;
     public static Materials CrystalFlux;
     public static Materials Cyanite;
-    public static Materials Dacite;
     public static Materials DarkIron;
     public static Materials DarkStone;
     public static Materials Demonite;
@@ -241,12 +234,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Draconic;
     public static Materials Drulloy;
     public static Materials Duranium;
-    public static Materials Eclogite;
     public static Materials ElectrumFlux;
     public static Materials Emery;
     public static Materials EnderiumBase;
     public static Materials Energized;
-    public static Materials Eximite;
     public static Materials FierySteel;
     public static Materials Firestone;
     public static Materials Fluorite;
@@ -254,21 +245,13 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Force;
     public static Materials Forcicium;
     public static Materials Forcillium;
-    public static Materials Gabbro;
     public static Materials Glowstone;
-    public static Materials Gneiss;
     public static Materials Graphene;
     public static Materials Graphite;
-    public static Materials Greenschist;
     public static Materials Greenstone;
-    public static Materials Greywacke;
-    public static Materials Haderoth;
     public static Materials Hematite;
-    public static Materials Hepatizon;
     public static Materials HSLA;
-    public static Materials Ignatius;
     public static Materials Infernal;
-    public static Materials Infuscolium;
     public static Materials InfusedAir;
     public static Materials InfusedDull;
     public static Materials InfusedEarth;
@@ -278,20 +261,15 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials InfusedOrder;
     public static Materials InfusedVis;
     public static Materials InfusedWater;
-    public static Materials Inolashite;
     public static Materials Invisium;
     public static Materials Jade;
-    public static Materials Kalendrite;
-    public static Materials Komatiite;
     public static Materials Lava;
-    public static Materials Lemurite;
     public static Materials Limestone;
     public static Materials Magma;
     public static Materials Mawsitsit;
     public static Materials Mercassium;
     public static Materials MeteoricSteel;
     public static Materials Meteorite;
-    public static Materials Meutoite;
     public static Materials Migmatite;
     public static Materials Mimichite;
     public static Materials Moonstone;
@@ -307,19 +285,15 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Onyx;
     public static Materials Orichalcum;
     public static Materials Osmonium;
-    public static Materials Oureclase;
     public static Materials Painite;
     public static Materials Peanutwood;
     public static Materials Petroleum;
     public static Materials Pewter;
     public static Materials Phoenixite;
-    public static Materials Prometheum;
     public static Materials Quartzite;
     public static Materials Randomite;
-    public static Materials Rhyolite;
     public static Materials Rubracium;
     public static Materials Sand;
-    public static Materials Sanguinite;
     public static Materials Siltstone;
     public static Materials Sunstone;
     public static Materials Tar;
@@ -390,7 +364,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Oil;
     public static Materials Paper;
     public static Materials Peat;
-    public static Materials Protomatter;
     public static Materials RareEarth;
     public static Materials Red;
     public static Materials Reinforced;
@@ -992,6 +965,77 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials TrimethylBorate;
     public static Materials SodiumMethoxide;
 
+    // Aluminium Ores
+    public static Materials BauxiteSlurry;
+    public static Materials HeatedBauxiteSlurry;
+    public static Materials SluiceJuice;
+    public static Materials SluiceSand;
+    public static Materials BauxiteSlag;
+    public static Materials IlmeniteSlag;
+    public static Materials GreenSapphireJuice;
+    public static Materials SapphireJuice;
+    public static Materials RubyJuice;
+
+    // UEV+ Materials
+    public static Materials DimensionallyTranscendentCrudeCatalyst;
+    public static Materials DimensionallyTranscendentProsaicCatalyst;
+    public static Materials DimensionallyTranscendentResplendentCatalyst;
+    public static Materials DimensionallyTranscendentExoticCatalyst;
+    public static Materials DimensionallyTranscendentStellarCatalyst;
+    public static Materials ExcitedDTCC;
+    public static Materials ExcitedDTPC;
+    public static Materials ExcitedDTRC;
+    public static Materials ExcitedDTEC;
+    public static Materials ExcitedDTSC;
+    public static Materials DimensionallyTranscendentResidue;
+    public static Materials SpaceTime;
+    public static Materials TranscendentMetal;
+    public static Materials MagnetohydrodynamicallyConstrainedStarMatter;
+    public static Materials RawStarMatter;
+    public static Materials WhiteDwarfMatter;
+    public static Materials BlackDwarfMatter;
+    public static Materials Time;
+    public static Materials Space;
+    public static Materials Universium;
+    public static Materials Eternity;
+    public static Materials PrimordialMatter;
+    public static Materials MagMatter;
+    public static Materials QuarkGluonPlasma;
+    public static Materials PhononMedium;
+    public static Materials PhononCrystalSolution;
+    public static Materials SixPhasedCopper;
+    public static Materials Mellion;
+    public static Materials Creon;
+    public static Materials GravitonShard;
+    public static Materials DimensionallyShiftedSuperfluid;
+    public static Materials MoltenProtoHalkoniteBase;
+    public static Materials HotProtoHalkonite;
+    public static Materials ProtoHalkonite;
+    public static Materials MoltenExoHalkoniteBase;
+    public static Materials HotExoHalkonite;
+    public static Materials ExoHalkonite;
+    public static Materials Protomatter;
+    public static Materials StargateCrystalSlurry;
+    public static Materials LumipodExtract;
+    public static Materials BiocatalyzedPropulsionFluid;
+
+    // GTNH Materials
+    public static Materials Signalum;
+    public static Materials Lumium;
+    public static Materials Prismarine;
+    public static Materials AquaRegia;
+    public static Materials SolutionBlueVitriol;
+    public static Materials SolutionNickelSulfate;
+    public static Materials Lodestone;
+    public static Materials Luminite;
+    public static Materials Chlorite;
+    public static Materials Staurolite;
+    public static Materials Cordierite;
+    public static Materials Datolite;
+    public static Materials MetamorphicMineralMixture;
+    public static Materials Plagioclase;
+    public static Materials Epidote;
+
     public static final List<IMaterialHandler> mMaterialHandlers = new ArrayList<>();
     public static final Map<Fluid, Materials> FLUID_MAP = new LinkedHashMap<>();
     /** @deprecated This is for keeping compatibility with addons mods (Such as TinkersGregworks etc.) */
@@ -1003,8 +1047,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
 
     static {
         MaterialsInit.load();
-        MaterialsOreAlum.load();
-        MaterialsUEVplus.load();
 
         setOreByproducts();
         setSmeltingInto();
@@ -1055,7 +1097,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public short mBlastFurnaceTemp = 0;
     public int mMeltingPoint = 0;
     public int mGasTemp = 0;
-    public int mMetaItemSubID;
+    public int mMetaItemSubID = -1;
     public int mFuelPower = 0;
     public int mFuelType = 0;
     public int mExtraData = 0;
@@ -1110,7 +1152,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         String defaultLocalName,
         @Nullable Element element,
         @Nullable String chemicalFormula,
-        int metaItemSubID,
         boolean unifiable,
         TextureSet iconSet,
         Dyes color,
@@ -1157,7 +1198,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         mName = name;
         mDefaultLocalName = defaultLocalName;
         MATERIALS_MAP.put(mName, this);
-        mMetaItemSubID = metaItemSubID;
 
         // Set element
         if (element != null) {
@@ -1406,6 +1446,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     }
 
     public static void init() {
+        new MaterialsIDMap().register();
+
         setToolEnchantments();
         setArmorEnchantments();
 
@@ -1453,27 +1495,27 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         OrePrefixes.ingotHot.disableComponent(Materials.PulsatingIron);
         OrePrefixes.ingotHot.disableComponent(Materials.CrudeSteel);
         OrePrefixes.ingotHot.disableComponent(Materials.Netherite);
-        OrePrefixes.ingotHot.disableComponent(MaterialsUEVplus.HotProtoHalkonite);
-        OrePrefixes.ingotHot.disableComponent(MaterialsUEVplus.ProtoHalkonite);
-        OrePrefixes.ingotHot.disableComponent(MaterialsUEVplus.HotExoHalkonite);
-        OrePrefixes.ingotHot.disableComponent(MaterialsUEVplus.ExoHalkonite);
+        OrePrefixes.ingotHot.disableComponent(Materials.HotProtoHalkonite);
+        OrePrefixes.ingotHot.disableComponent(Materials.ProtoHalkonite);
+        OrePrefixes.ingotHot.disableComponent(Materials.HotExoHalkonite);
+        OrePrefixes.ingotHot.disableComponent(Materials.ExoHalkonite);
     }
 
     /**
      * Init rendering properties. Will be called at pre init by GT client proxy.
      */
     public static void initClient() {
-        MaterialsUEVplus.TranscendentMetal.renderer = new TranscendentMetalRenderer();
+        Materials.TranscendentMetal.renderer = new TranscendentMetalRenderer();
         Materials.GaiaSpirit.renderer = new GaiaSpiritRenderer();
-        Infinity.renderer = new InfinityRenderer();
-        CosmicNeutronium.renderer = new CosmicNeutroniumRenderer();
-        MaterialsUEVplus.Universium.renderer = new UniversiumRenderer();
-        MaterialsUEVplus.Eternity.renderer = new InfinityRenderer();
-        MaterialsUEVplus.MagMatter.renderer = new InfinityRenderer();
-        MaterialsUEVplus.SixPhasedCopper.renderer = new GlitchEffectRenderer();
-        MaterialsUEVplus.GravitonShard.renderer = new InfinityRenderer();
-        MaterialsUEVplus.ExoHalkonite.renderer = new InfinityRenderer();
-        MaterialsUEVplus.HotExoHalkonite.renderer = new InfinityRenderer();
+        Materials.Infinity.renderer = new InfinityRenderer();
+        Materials.CosmicNeutronium.renderer = new CosmicNeutroniumRenderer();
+        Materials.Universium.renderer = new UniversiumRenderer();
+        Materials.Eternity.renderer = new InfinityRenderer();
+        Materials.MagMatter.renderer = new InfinityRenderer();
+        Materials.SixPhasedCopper.renderer = new GlitchEffectRenderer();
+        Materials.GravitonShard.renderer = new InfinityRenderer();
+        Materials.ExoHalkonite.renderer = new InfinityRenderer();
+        Materials.HotExoHalkonite.renderer = new InfinityRenderer();
         Materials.PrismaticNaquadah.renderer = new RainbowOverlayRenderer(Materials.PrismaticNaquadah.getRGBA());
     }
 
@@ -1509,20 +1551,20 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
                             : aMaterial.getMass() > Element.Tc.getMass() * 2 ? TungstenSteel
                                 : aMaterial.getMass() > Element.Tc.getMass() ? Steel : Wood);
 
-        if (aMaterial == MaterialsUEVplus.SpaceTime) {
+        if (aMaterial == Materials.SpaceTime) {
             aMaterial.mHandleMaterial = Materials.Infinity;
         }
 
-        if (aMaterial == MaterialsUEVplus.TranscendentMetal) {
+        if (aMaterial == Materials.TranscendentMetal) {
             aMaterial.mHandleMaterial = Materials.DraconiumAwakened;
         }
 
-        if (aMaterial == MaterialsUEVplus.Eternity) {
-            aMaterial.mHandleMaterial = MaterialsUEVplus.SpaceTime;
+        if (aMaterial == Materials.Eternity) {
+            aMaterial.mHandleMaterial = Materials.SpaceTime;
         }
 
-        if (aMaterial == MaterialsUEVplus.MagMatter) {
-            aMaterial.mHandleMaterial = MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter;
+        if (aMaterial == Materials.MagMatter) {
+            aMaterial.mHandleMaterial = Materials.MagnetohydrodynamicallyConstrainedStarMatter;
         }
     }
 

@@ -25,7 +25,6 @@ import gnu.trove.map.TMap;
 import gnu.trove.map.hash.TCustomHashMap;
 import gnu.trove.strategy.HashingStrategy;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IOreMaterial;
@@ -41,16 +40,16 @@ import tectech.util.ItemStackLong;
 public class EyeOfHarmonyRecipe {
 
     static final FluidStackLong[] SPECIAL_FLUIDS = new FluidStackLong[] {
-        new FluidStackLong(MaterialsUEVplus.WhiteDwarfMatter.getMolten(1_152), 1_152),
-        new FluidStackLong(MaterialsUEVplus.WhiteDwarfMatter.getMolten(1_152), 1_152),
-        new FluidStackLong(MaterialsUEVplus.WhiteDwarfMatter.getMolten(4_608), 4_608),
-        new FluidStackLong(MaterialsUEVplus.WhiteDwarfMatter.getMolten(18_432), 18_432),
-        new FluidStackLong(MaterialsUEVplus.BlackDwarfMatter.getMolten(1_152), 1_152),
-        new FluidStackLong(MaterialsUEVplus.BlackDwarfMatter.getMolten(4_608), 4_608),
-        new FluidStackLong(MaterialsUEVplus.BlackDwarfMatter.getMolten(18_432), 18_432),
-        new FluidStackLong(MaterialsUEVplus.Universium.getMolten(1_152), 1_152),
-        new FluidStackLong(MaterialsUEVplus.Universium.getMolten(4_608), 4_608),
-        new FluidStackLong(MaterialsUEVplus.Universium.getMolten(18_432), 18_432) };
+        new FluidStackLong(Materials.WhiteDwarfMatter.getMolten(1_152), 1_152),
+        new FluidStackLong(Materials.WhiteDwarfMatter.getMolten(1_152), 1_152),
+        new FluidStackLong(Materials.WhiteDwarfMatter.getMolten(4_608), 4_608),
+        new FluidStackLong(Materials.WhiteDwarfMatter.getMolten(18_432), 18_432),
+        new FluidStackLong(Materials.BlackDwarfMatter.getMolten(1_152), 1_152),
+        new FluidStackLong(Materials.BlackDwarfMatter.getMolten(4_608), 4_608),
+        new FluidStackLong(Materials.BlackDwarfMatter.getMolten(18_432), 18_432),
+        new FluidStackLong(Materials.Universium.getMolten(1_152), 1_152),
+        new FluidStackLong(Materials.Universium.getMolten(4_608), 4_608),
+        new FluidStackLong(Materials.Universium.getMolten(18_432), 18_432) };
 
     HashingStrategy<ItemStack> itemStackHashingStrategy = new HashingStrategy<>() {
 
@@ -170,7 +169,7 @@ public class EyeOfHarmonyRecipe {
         // Add a bonus fluid of compressed star matter.
         fluidStackLongArrayList.add(
             new FluidStackLong(
-                MaterialsUEVplus.RawStarMatter.getFluid((this.spacetimeCasingTierRequired + 1) * 100_000),
+                Materials.RawStarMatter.getFluid((this.spacetimeCasingTierRequired + 1) * 100_000),
                 (this.spacetimeCasingTierRequired + 1) * 100_000));
 
         // Tier 0 & 1 - 576 White

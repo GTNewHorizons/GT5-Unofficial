@@ -1737,7 +1737,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff PromethiumOreConcentrate = new Werkstoff(
         new short[] { 150, 255, 140 },
         "Promethium Ore Concentrate",
-        subscriptNumbers("Po?"),
+        subscriptNumbers("Pm?"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
