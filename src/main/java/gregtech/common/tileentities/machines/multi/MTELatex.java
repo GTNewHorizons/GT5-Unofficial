@@ -18,6 +18,8 @@ import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static net.minecraft.util.EnumChatFormatting.DARK_GRAY;
+import static net.minecraft.util.EnumChatFormatting.DARK_GREEN;
 import static net.minecraft.util.EnumChatFormatting.GREEN;
 
 import java.util.Objects;
@@ -25,6 +27,8 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.api.util.tooltip.TooltipTier;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -257,10 +261,14 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Cable Coater, LATEX")
             .addInfo(EnumChatFormatting.ITALIC + "AKA Laminated Application and Thermal Enclosure eXpert")
-            .addInfo("Always make sure to cover it up.")
-            .addInfo("Recipes have a 6.25% rubber discount based on casing tier.")
-            .addInfo("The Rubber Singularity grants an additional 25% rubber discount and 2x parallels.")
-            .addBulkMachineInfo(8, 2F, 0.85F)
+            .addDynamicParallelInfo(8, TooltipTier.ITEM_PIPE_CASING)
+            .addStaticSpeedInfo(2F)
+            .addStaticEuEffInfo(0.85F)
+            .addInfo("Recipes have a " + TooltipHelper.coloredText("6.25%", DARK_GREEN) +" rubber discount based on " + TooltipHelper.tierText(TooltipTier.ITEM_PIPE_CASING))
+            .addInfo("An Elastic Singularity can be inserted into the controller to gain bonuses")
+            .addInfo("These bonuses are: " + TooltipHelper.parallelText("2x") + " parallels, " +TooltipHelper.coloredText("25%", DARK_GREEN) + " rubber discount, and the use of a singular " + TooltipHelper.coloredText("Multi-Amp energy hatch", GREEN))
+            .addSeparator()
+            .addInfo(DARK_GRAY + "Make sure to cover up!")
             .beginStructureBlock(3, 5, 3, true)
             .addController("Front Center")
             .addCasingInfoMin("Chemically Inert Machine Casing", 14, false)
@@ -272,7 +280,6 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addInfo(GREEN + "Supports Multi-Amp energy hatches")
             .toolTipFinisher();
         return tt;
     }
