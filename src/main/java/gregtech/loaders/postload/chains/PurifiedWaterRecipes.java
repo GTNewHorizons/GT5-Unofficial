@@ -32,7 +32,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.maps.PurificationUnitParticleExtractorFrontend;
@@ -250,9 +249,9 @@ public class PurifiedWaterRecipes {
         for (int i = 0; i < catalystInputs.length; ++i) {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Quark_Catalyst_Housing.get(1), quarks[i])
-                .fluidInputs(MaterialsUEVplus.ExcitedDTRC.getFluid(10_000))
+                .fluidInputs(Materials.ExcitedDTRC.getFluid(10_000))
                 .itemOutputs(catalystInputs[i])
-                .fluidOutputs(MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(5_000))
+                .fluidOutputs(Materials.DimensionallyTranscendentResidue.getFluid(5_000))
                 .metadata(COIL_HEAT, 10800)
                 .eut(TierEU.RECIPE_UMV)
                 .duration(5 * MINUTES)
