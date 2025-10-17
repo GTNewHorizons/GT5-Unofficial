@@ -2897,6 +2897,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.QUARTZ)
+            .removeOrePrefix(OrePrefixes.lens)
             .constructMaterial();
     }
 
@@ -3724,6 +3725,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Oxygen, 6)
             .addAspect(TCAspects.LUCRUM, 6)
             .addAspect(TCAspects.VITREUS, 3)
+            .removeOrePrefix(OrePrefixes.lens)
             .constructMaterial();
     }
 
@@ -3966,6 +3968,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.QUARTZ)
             .removeOrePrefix(OrePrefixes.gem) // minecraft:quartz
+            .removeOrePrefix(OrePrefixes.lens)
             .constructMaterial();
     }
 
@@ -4114,6 +4117,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.QUARTZ)
             .addOrePrefix(OrePrefixes.dustImpure)
+            .removeOrePrefix(OrePrefixes.lens)
             .constructMaterial();
     }
 
@@ -5842,6 +5846,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
             .removeOrePrefix(OrePrefixes.gem) // minecraft:coal:1
+            .removeOrePrefix(OrePrefixes.lens)
             .constructMaterial();
     }
 
@@ -5945,6 +5950,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_SMELTING)
             .removeOrePrefix(OrePrefixes.block) // minecraft:coal_block
             .removeOrePrefix(OrePrefixes.gem) // minecraft:coal:0
+            .removeOrePrefix(OrePrefixes.lens)
             .constructMaterial();
     }
 
@@ -6450,6 +6456,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.CRYSTALLISABLE)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
+            .removeOrePrefix(OrePrefixes.lens)
             .constructMaterial();
     }
 
@@ -7302,6 +7309,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.CRYSTALLISABLE)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
+            .removeOrePrefix(OrePrefixes.lens)
             .constructMaterial();
     }
 
@@ -9626,6 +9634,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.CRYSTALLISABLE)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
+            .removeOrePrefix(OrePrefixes.lens)
             .constructMaterial();
     }
 
@@ -10401,6 +10410,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_SMELTING)
             .removeOrePrefix(OrePrefixes.block) // minecraft:lapis_block
             .removeOrePrefix(OrePrefixes.gem) // minecraft:dye:4
+            .removeOrePrefix(OrePrefixes.lens)
             .constructMaterial();
     }
 
@@ -10439,6 +10449,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.MORTAR_GRINDABLE)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
+            .removeOrePrefix(OrePrefixes.lens)
             .constructMaterial();
     }
 
@@ -10594,6 +10605,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
+            .removeOrePrefix(OrePrefixes.lens)
             .constructMaterial();
     }
 
@@ -10639,6 +10651,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.CRYSTAL)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
+            .removeOrePrefix(OrePrefixes.lens)
             .constructMaterial();
     }
 
@@ -11235,6 +11248,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.FLAMMABLE)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
+            .removeOrePrefix(OrePrefixes.lens)
             .constructMaterial();
     }
 
@@ -11389,6 +11403,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.PRAECANTATIO, 1)
             .addOreByproduct(() -> Materials.Vinteum)
             .addSubTag(SubTag.METAL)
+            .removeOrePrefix(OrePrefixes.lens)
             .constructMaterial();
     }
 
