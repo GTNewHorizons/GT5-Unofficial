@@ -651,9 +651,6 @@ public enum OrePrefixes {
         // -----
         ingotHot.mGeneratedItems.add(Materials.TranscendentMetal);
 
-        lens.mGeneratedItems.add(Materials.EnderPearl);
-        lens.mGeneratedItems.add(Materials.EnderEye);
-
         stickLong.mGeneratedItems.add(Materials.Blaze);
         // -----
 
