@@ -1819,6 +1819,7 @@ GT5U.multiblock.itemPipeTier=Item Pipe Tier
 GT5U.multiblock.coilLevel=Heating Coil Level
 GT5U.multiblock.preciseassemblercasing=Voltage limited by casing tier: %s
 GT5U.multiblock.runningMode=§eRunning Mode:
+GT5U.multiblock.startup=Starting up...
 
 # NEI recipe handlers
 GT5U.nei.heat_capacity=Heat Capacity: %s K (%s)

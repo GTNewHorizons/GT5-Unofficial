@@ -10,7 +10,6 @@ import java.util.stream.IntStream;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
@@ -567,7 +566,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .disableElectricDamage()
             .build();
         WireCableBuilder.builder()
-            .material(MaterialsUEVplus.SpaceTime)
+            .material(Materials.SpaceTime)
             .startId(2606)
             .lossWire(0)
             .amperage(1_000_000)
@@ -754,13 +753,13 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .heatCapacity(600)
             .build();
         FluidPipeBuilder.builder()
-            .material(MaterialsUEVplus.SpaceTime)
+            .material(Materials.SpaceTime)
             .startId(5300)
             .baseCapacity(250000)
             .heatCapacity(Integer.MAX_VALUE)
             .build();
         FluidPipeBuilder.builder()
-            .material(MaterialsUEVplus.TranscendentMetal)
+            .material(Materials.TranscendentMetal)
             .startId(5310)
             .baseCapacity(220000)
             .heatCapacity(Integer.MAX_VALUE)

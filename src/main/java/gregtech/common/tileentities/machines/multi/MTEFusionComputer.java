@@ -535,6 +535,11 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
     protected long clientEU;
 
     @Override
+    protected boolean useMui2() {
+        return false;
+    }
+
+    @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder
             .widget(

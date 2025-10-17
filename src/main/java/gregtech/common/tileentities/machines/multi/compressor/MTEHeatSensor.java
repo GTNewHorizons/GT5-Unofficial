@@ -26,8 +26,8 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
+import gregtech.common.gui.modularui.hatch.MTEHeatSensorGui;
 import gregtech.common.gui.modularui.widget.CoverCycleButtonWidget;
-import gregtech.common.tileentities.machines.multi.gui.MTEHeatSensorGuiBuilder;
 
 public class MTEHeatSensor extends MTEHatch {
 
@@ -167,7 +167,7 @@ public class MTEHeatSensor extends MTEHatch {
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new MTEHeatSensorGuiBuilder(this).build(data, syncManager, uiSettings);
+        return new MTEHeatSensorGui(this).build(data, syncManager, uiSettings);
     }
 
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
