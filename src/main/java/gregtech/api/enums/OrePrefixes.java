@@ -751,10 +751,6 @@ public enum OrePrefixes {
             new ICondition.Not<>(SubTag.PEARL),
             new ICondition.Not<>(SubTag.MAGICAL));
 
-        lens.mCondition = new ICondition.Or<>(
-            SubTag.MAGICAL,
-            new ICondition.And<>(SubTag.TRANSPARENT, SubTag.HAS_COLOR));
-
         plateDouble.mCondition = new ICondition.Or<>(
             SubTag.PAPER,
             new ICondition.Not<>(SubTag.NO_SMASHING),
