@@ -16189,8 +16189,7 @@ public class MaterialsInit {
     private static Materials loadPrismarine() {
         return new MaterialBuilder().setName("Prismarine")
             .setDefaultLocalName("Prismarine")
-            .addDustItems()
-            .addGemItems()
+            .addSubTag(SubTag.NO_ORE_PROCESSING)
             .constructMaterial();
     }
 
