@@ -34,6 +34,7 @@ public class MaterialsIDMap extends Object2IntOpenHashMap<Materials> {
         r( 29, Materials.Vanadium);
         r( 30, Materials.Chrome);
         r( 31, Materials.Manganese);
+        r( 32, Materials.Iron);
         r( 33, Materials.Cobalt);
         r( 34, Materials.Nickel);
         r( 35, Materials.Copper);
