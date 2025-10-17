@@ -73,23 +73,6 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
             }
         }
 
-        for (int matId = 0; matId < 1000; matId++) {
-            Materials mat = getMaterial(matId);
-
-            if (mat == null) continue;
-
-            GTLanguageManager
-                .addStringLocalization(mUnlocalizedName + "." + (matId) + ".name", getLocalizedNameFormat(mat));
-            GTLanguageManager.addStringLocalization(
-                mUnlocalizedName + "." + (matId + GTOreAdapter.SMALL_ORE_META_OFFSET) + ".name",
-                "Small " + getLocalizedNameFormat(mat));
-
-            GTLanguageManager.addStringLocalization(mUnlocalizedName + "." + (matId) + ".tooltip", mat.getToolTip());
-            GTLanguageManager.addStringLocalization(
-                mUnlocalizedName + "." + (matId + GTOreAdapter.SMALL_ORE_META_OFFSET) + ".tooltip",
-                mat.getToolTip());
-        }
-
         OreInfo<Materials> info = new OreInfo<>();
 
         for (int matId = 0; matId < 1000; matId++) {
