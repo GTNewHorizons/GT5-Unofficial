@@ -390,7 +390,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Oil;
     public static Materials Paper;
     public static Materials Peat;
-    public static Materials Protomatter;
     public static Materials RareEarth;
     public static Materials Red;
     public static Materials Reinforced;
@@ -1003,6 +1002,49 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials SapphireJuice;
     public static Materials RubyJuice;
 
+    // UEV+ Materials
+    public static Materials DimensionallyTranscendentCrudeCatalyst;
+    public static Materials DimensionallyTranscendentProsaicCatalyst;
+    public static Materials DimensionallyTranscendentResplendentCatalyst;
+    public static Materials DimensionallyTranscendentExoticCatalyst;
+    public static Materials DimensionallyTranscendentStellarCatalyst;
+    public static Materials ExcitedDTCC;
+    public static Materials ExcitedDTPC;
+    public static Materials ExcitedDTRC;
+    public static Materials ExcitedDTEC;
+    public static Materials ExcitedDTSC;
+    public static Materials DimensionallyTranscendentResidue;
+    public static Materials SpaceTime;
+    public static Materials TranscendentMetal;
+    public static Materials MagnetohydrodynamicallyConstrainedStarMatter;
+    public static Materials RawStarMatter;
+    public static Materials WhiteDwarfMatter;
+    public static Materials BlackDwarfMatter;
+    public static Materials Time;
+    public static Materials Space;
+    public static Materials Universium;
+    public static Materials Eternity;
+    public static Materials PrimordialMatter;
+    public static Materials MagMatter;
+    public static Materials QuarkGluonPlasma;
+    public static Materials PhononMedium;
+    public static Materials PhononCrystalSolution;
+    public static Materials SixPhasedCopper;
+    public static Materials Mellion;
+    public static Materials Creon;
+    public static Materials GravitonShard;
+    public static Materials DimensionallyShiftedSuperfluid;
+    public static Materials MoltenProtoHalkoniteBase;
+    public static Materials HotProtoHalkonite;
+    public static Materials ProtoHalkonite;
+    public static Materials MoltenExoHalkoniteBase;
+    public static Materials HotExoHalkonite;
+    public static Materials ExoHalkonite;
+    public static Materials Protomatter;
+    public static Materials StargateCrystalSlurry;
+    public static Materials LumipodExtract;
+    public static Materials BiocatalyzedPropulsionFluid;
+
     // GTNH Materials
     public static Materials Signalum;
     public static Materials Lumium;
@@ -1048,7 +1090,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
 
     static {
         MaterialsInit.load();
-        MaterialsUEVplus.load();
 
         setOreByproducts();
         setSmeltingInto();
@@ -1497,27 +1538,27 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         OrePrefixes.ingotHot.disableComponent(Materials.PulsatingIron);
         OrePrefixes.ingotHot.disableComponent(Materials.CrudeSteel);
         OrePrefixes.ingotHot.disableComponent(Materials.Netherite);
-        OrePrefixes.ingotHot.disableComponent(MaterialsUEVplus.HotProtoHalkonite);
-        OrePrefixes.ingotHot.disableComponent(MaterialsUEVplus.ProtoHalkonite);
-        OrePrefixes.ingotHot.disableComponent(MaterialsUEVplus.HotExoHalkonite);
-        OrePrefixes.ingotHot.disableComponent(MaterialsUEVplus.ExoHalkonite);
+        OrePrefixes.ingotHot.disableComponent(Materials.HotProtoHalkonite);
+        OrePrefixes.ingotHot.disableComponent(Materials.ProtoHalkonite);
+        OrePrefixes.ingotHot.disableComponent(Materials.HotExoHalkonite);
+        OrePrefixes.ingotHot.disableComponent(Materials.ExoHalkonite);
     }
 
     /**
      * Init rendering properties. Will be called at pre init by GT client proxy.
      */
     public static void initClient() {
-        MaterialsUEVplus.TranscendentMetal.renderer = new TranscendentMetalRenderer();
+        Materials.TranscendentMetal.renderer = new TranscendentMetalRenderer();
         Materials.GaiaSpirit.renderer = new GaiaSpiritRenderer();
-        Infinity.renderer = new InfinityRenderer();
-        CosmicNeutronium.renderer = new CosmicNeutroniumRenderer();
-        MaterialsUEVplus.Universium.renderer = new UniversiumRenderer();
-        MaterialsUEVplus.Eternity.renderer = new InfinityRenderer();
-        MaterialsUEVplus.MagMatter.renderer = new InfinityRenderer();
-        MaterialsUEVplus.SixPhasedCopper.renderer = new GlitchEffectRenderer();
-        MaterialsUEVplus.GravitonShard.renderer = new InfinityRenderer();
-        MaterialsUEVplus.ExoHalkonite.renderer = new InfinityRenderer();
-        MaterialsUEVplus.HotExoHalkonite.renderer = new InfinityRenderer();
+        Materials.Infinity.renderer = new InfinityRenderer();
+        Materials.CosmicNeutronium.renderer = new CosmicNeutroniumRenderer();
+        Materials.Universium.renderer = new UniversiumRenderer();
+        Materials.Eternity.renderer = new InfinityRenderer();
+        Materials.MagMatter.renderer = new InfinityRenderer();
+        Materials.SixPhasedCopper.renderer = new GlitchEffectRenderer();
+        Materials.GravitonShard.renderer = new InfinityRenderer();
+        Materials.ExoHalkonite.renderer = new InfinityRenderer();
+        Materials.HotExoHalkonite.renderer = new InfinityRenderer();
         Materials.PrismaticNaquadah.renderer = new RainbowOverlayRenderer(Materials.PrismaticNaquadah.getRGBA());
     }
 
@@ -1553,20 +1594,20 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
                             : aMaterial.getMass() > Element.Tc.getMass() * 2 ? TungstenSteel
                                 : aMaterial.getMass() > Element.Tc.getMass() ? Steel : Wood);
 
-        if (aMaterial == MaterialsUEVplus.SpaceTime) {
+        if (aMaterial == Materials.SpaceTime) {
             aMaterial.mHandleMaterial = Materials.Infinity;
         }
 
-        if (aMaterial == MaterialsUEVplus.TranscendentMetal) {
+        if (aMaterial == Materials.TranscendentMetal) {
             aMaterial.mHandleMaterial = Materials.DraconiumAwakened;
         }
 
-        if (aMaterial == MaterialsUEVplus.Eternity) {
-            aMaterial.mHandleMaterial = MaterialsUEVplus.SpaceTime;
+        if (aMaterial == Materials.Eternity) {
+            aMaterial.mHandleMaterial = Materials.SpaceTime;
         }
 
-        if (aMaterial == MaterialsUEVplus.MagMatter) {
-            aMaterial.mHandleMaterial = MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter;
+        if (aMaterial == Materials.MagMatter) {
+            aMaterial.mHandleMaterial = Materials.MagnetohydrodynamicallyConstrainedStarMatter;
         }
     }
 

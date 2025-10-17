@@ -32,7 +32,6 @@ import goodgenerator.util.ItemRefer;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.objects.ItemData;
@@ -341,7 +340,7 @@ public class Godforge implements Runnable {
             // Multi-step
             ItemStack[] solids_t2_xstep = { MaterialsElements.STANDALONE.HYPOGEN.getDust(1),
                 Materials.Tritanium.getDust(1), Materials.Flerovium.getDust(1), Materials.Neutronium.getDust(1),
-                Materials.Infinity.getDust(1), MaterialsUEVplus.SixPhasedCopper.getDust(1), };
+                Materials.Infinity.getDust(1), Materials.SixPhasedCopper.getDust(1), };
 
             FluidStack[] molten_t2_xstep = convertToFluid(solids_t2_xstep);
 
@@ -349,7 +348,7 @@ public class Godforge implements Runnable {
                 new FluidStack(MaterialsElements.STANDALONE.HYPOGEN.getPlasma(), 144),
                 Materials.Tritanium.getPlasma(1 * INGOTS), Materials.Flerovium.getPlasma(1 * INGOTS),
                 Materials.Neutronium.getPlasma(1 * INGOTS), Materials.Infinity.getPlasma(1 * INGOTS),
-                MaterialsUEVplus.SixPhasedCopper.getPlasma(1 * INGOTS), };
+                Materials.SixPhasedCopper.getPlasma(1 * INGOTS), };
 
             for (int i = 0; i < solids_t2_xstep.length; i++) {
                 GTValues.RA.stdBuilder()
@@ -444,7 +443,7 @@ public class Godforge implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(Materials.Iron.getDust(1))
                 .fluidInputs(Materials.Iron.getMolten(1))
-                .fluidOutputs(MaterialsUEVplus.QuarkGluonPlasma.getFluid(1_000))
+                .fluidOutputs(Materials.QuarkGluonPlasma.getFluid(1_000))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_MAX)
                 .metadata(FOG_EXOTIC_TIER, 1)
@@ -455,7 +454,7 @@ public class Godforge implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(Materials.Iron.getDust(1))
                 .fluidInputs(Materials.Iron.getMolten(1), Materials.Bismuth.getMolten(1))
-                .fluidOutputs(MaterialsUEVplus.MagMatter.getMolten(4 * INGOTS))
+                .fluidOutputs(Materials.MagMatter.getMolten(4 * INGOTS))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_MAX)
                 .metadata(FOG_EXOTIC_TIER, 1)
@@ -673,9 +672,9 @@ public class Godforge implements Runnable {
         }
         for (int i = 0; i < 21; i++) {
             magmatterTimeFluidItemsForNEI
-                .add(GTUtility.getFluidDisplayStack(MaterialsUEVplus.Time.getMolten(getRandomIntInRange(1, 50)), true));
-            magmatterSpaceFluidItemsForNEI.add(
-                GTUtility.getFluidDisplayStack(MaterialsUEVplus.Space.getMolten(getRandomIntInRange(51, 100)), true));
+                .add(GTUtility.getFluidDisplayStack(Materials.Time.getMolten(getRandomIntInRange(1, 50)), true));
+            magmatterSpaceFluidItemsForNEI
+                .add(GTUtility.getFluidDisplayStack(Materials.Space.getMolten(getRandomIntInRange(51, 100)), true));
         }
         magmatterItemsForNEI.addAll(exoticModuleMagmatterItemMap.keySet());
 
@@ -722,7 +721,7 @@ public class Godforge implements Runnable {
                 ItemList.Field_Generator_UEV.get(64L));
 
             ForgeOfGodsUpgrade.CD.addExtraCost(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SpaceTime, 64),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 64),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SuperconductorUMVBase, 64),
                 MaterialsElements.STANDALONE.HYPOGEN.getFrameBox(64),
                 MaterialsElements.STANDALONE.DRAGON_METAL.getFrameBox(64),
@@ -732,10 +731,10 @@ public class Godforge implements Runnable {
                 ItemList.Field_Generator_UMV.get(32));
 
             ForgeOfGodsUpgrade.EE.addExtraCost(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.WhiteDwarfMatter, 64),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.BlackDwarfMatter, 64),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.Eternity, 16),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.Universium, 2),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.WhiteDwarfMatter, 64),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.BlackDwarfMatter, 64),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Eternity, 16),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Universium, 2),
                 CustomItemList.EOH_Infinite_Energy_Casing.get(64),
                 CustomItemList.StabilisationFieldGeneratorTier5.get(16),
                 ItemList.ZPM6.get(6),
@@ -798,7 +797,7 @@ public class Godforge implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ArrayUtils.addAll(ForgeOfGodsUpgrade.QGPIU.getExtraCost()))
             .itemOutputs(CustomItemList.Machine_Multi_QuarkGluonPlasmaModule.get(1))
-            .fluidOutputs(MaterialsUEVplus.QuarkGluonPlasma.getFluid(1_000))
+            .fluidOutputs(Materials.QuarkGluonPlasma.getFluid(1_000))
             .duration(1)
             .eut(1)
             .metadata(FOG_UPGRADE_NAME_SHORT, ForgeOfGodsUpgrade.QGPIU.getShortNameText())
@@ -822,8 +821,8 @@ public class Godforge implements Runnable {
             .addTo(TecTechRecipeMaps.godforgeFakeUpgradeCostRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(ArrayUtils.addAll(ForgeOfGodsUpgrade.END.getExtraCost()))
-            .itemOutputs(MaterialsUEVplus.GravitonShard.getGems(1))
-            .fluidOutputs(MaterialsUEVplus.MagMatter.getMolten(4 * INGOTS), Materials.Neutronium.getPlasma(1_000))
+            .itemOutputs(Materials.GravitonShard.getGems(1))
+            .fluidOutputs(Materials.MagMatter.getMolten(4 * INGOTS), Materials.Neutronium.getPlasma(1_000))
             .duration(1)
             .eut(1)
             .metadata(FOG_UPGRADE_NAME_SHORT, ForgeOfGodsUpgrade.END.getShortNameText())
