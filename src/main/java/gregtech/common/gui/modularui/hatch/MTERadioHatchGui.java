@@ -1,7 +1,12 @@
 package gregtech.common.gui.modularui.hatch;
 
-import bartworks.common.tileentities.tiered.MTERadioHatch;
-import bartworks.util.MathUtils;
+import static gregtech.api.modularui2.GTGuis.createPopUpPanel;
+import static gregtech.common.modularui2.util.CommonGuiComponents.gridTemplate1by1;
+
+import java.util.function.Supplier;
+
+import net.minecraft.util.StatCollector;
+
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -18,22 +23,17 @@ import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
+
+import bartworks.common.tileentities.tiered.MTERadioHatch;
+import bartworks.util.MathUtils;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuis;
-import net.minecraft.util.StatCollector;
-import scala.Int;
-
-import java.util.function.Supplier;
-
-import static gregtech.api.modularui2.GTGuis.createPopUpPanel;
-import static gregtech.common.modularui2.util.CommonGuiComponents.gridTemplate1by1;
 
 public class MTERadioHatchGui {
 
-
     MTERadioHatch base;
-    public MTERadioHatchGui(MTERadioHatch base)
-    {
+
+    public MTERadioHatchGui(MTERadioHatch base) {
         this.base = base;
     }
 
@@ -42,23 +42,33 @@ public class MTERadioHatchGui {
         IPanelHandler popupPanel = syncManager.panel("popup", (manager, handler) -> createShutterUI(syncManager), true);
         syncManager.registerSlotGroup("item_inv", 1);
 
-        IntSyncValue massSyncer =  new IntSyncValue(() -> base.getMass(), value -> base.setMass((byte)value));
+        IntSyncValue massSyncer = new IntSyncValue(() -> base.getMass(), value -> base.setMass((byte) value));
         IntSyncValue sievertSyncer = new IntSyncValue(() -> base.getSievert(), base::setSievert);
-        IntSyncValue color1Syncer =new IntSyncValue(() -> base.getColorForGuiAtIndex(0), c -> base.setColorForGuiAtIndex((short)c,0));
-        IntSyncValue color2Syncer =new IntSyncValue(() -> base.getColorForGuiAtIndex(1), c -> base.setColorForGuiAtIndex((short)c,1));
-        IntSyncValue color3Syncer =new IntSyncValue(() -> base.getColorForGuiAtIndex(2), c -> base.setColorForGuiAtIndex((short)c,2));
-        IntSyncValue coverageSyncer =  new IntSyncValue(() -> base.getCoverage(), value ->base.setCoverage((short) value));
+        IntSyncValue color1Syncer = new IntSyncValue(
+            () -> base.getColorForGuiAtIndex(0),
+            c -> base.setColorForGuiAtIndex((short) c, 0));
+        IntSyncValue color2Syncer = new IntSyncValue(
+            () -> base.getColorForGuiAtIndex(1),
+            c -> base.setColorForGuiAtIndex((short) c, 1));
+        IntSyncValue color3Syncer = new IntSyncValue(
+            () -> base.getColorForGuiAtIndex(2),
+            c -> base.setColorForGuiAtIndex((short) c, 2));
+        IntSyncValue coverageSyncer = new IntSyncValue(
+            () -> base.getCoverage(),
+            value -> base.setCoverage((short) value));
         LongSyncValue timeSyncHandler = new LongSyncValue(() -> base.getTimer(), time -> base.setTimer(time));
-        LongSyncValue decayTimeSyncHandler = new LongSyncValue(() -> base.getDecayTime(), time -> base.setDecayTime(time));
+        LongSyncValue decayTimeSyncHandler = new LongSyncValue(
+            () -> base.getDecayTime(),
+            time -> base.setDecayTime(time));
 
         syncManager.syncValue("decayTime", decayTimeSyncHandler);
         syncManager.syncValue("timer", timeSyncHandler);
-        syncManager.syncValue("mass",massSyncer);
+        syncManager.syncValue("mass", massSyncer);
         syncManager.syncValue("sievert", sievertSyncer);
         syncManager.syncValue("color0", color1Syncer);
         syncManager.syncValue("color1", color2Syncer);
         syncManager.syncValue("color2", color3Syncer);
-        syncManager.syncValue("coverage", 0,coverageSyncer);
+        syncManager.syncValue("coverage", 0, coverageSyncer);
         return GTGuis.mteTemplatePanelBuilder(base, data, syncManager, uiSettings)
             .doesAddGregTechLogo(false)
             .build()
@@ -82,36 +92,38 @@ public class MTERadioHatchGui {
             .child(new IDrawable.DrawableWidget((context, x, y, width, height, widgetTheme) -> {
                 if (decayTimeSyncHandler.getLongValue() > 0) {
 
-                    int drawableHeight = MathUtils.ceilInt(48 * ((decayTimeSyncHandler.getLongValue() - timeSyncHandler.getLongValue() % decayTimeSyncHandler.getLongValue())
-                        / (float) decayTimeSyncHandler.getLongValue()));
+                    int drawableHeight = MathUtils.ceilInt(
+                        48 * ((decayTimeSyncHandler.getLongValue()
+                            - timeSyncHandler.getLongValue() % decayTimeSyncHandler.getLongValue())
+                            / (float) decayTimeSyncHandler.getLongValue()));
 
-                    new com.cleanroommc.modularui.drawable.Rectangle()
-                        .setColor(
-                            com.cleanroommc.modularui.utils.Color.rgb(
-                               color1Syncer.getIntValue(),
-                                color2Syncer.getIntValue(),
-                                color3Syncer.getIntValue()))
+                    new com.cleanroommc.modularui.drawable.Rectangle().setColor(
+                        com.cleanroommc.modularui.utils.Color
+                            .rgb(color1Syncer.getIntValue(), color2Syncer.getIntValue(), color3Syncer.getIntValue()))
                         .draw(context, new Area(0, 48 - drawableHeight, 16, drawableHeight), widgetTheme);
                 }
             }).pos(124, 18)
                 .size(18, 48))
             .child(createDurationMeterContainer(syncManager))
             .child(
-                IKey.dynamic(() -> StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.1", massSyncer.getIntValue()))
+                IKey.dynamic(
+                    () -> StatCollector
+                        .translateToLocalFormatted("BW.NEI.display.radhatch.1", massSyncer.getIntValue()))
                     .alignment(com.cleanroommc.modularui.utils.Alignment.Center)
                     .asWidget()
                     .pos(65, 62))
             .child(
                 IKey.dynamic(
-                        () -> StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.0", sievertSyncer.getIntValue()))
+                    () -> StatCollector
+                        .translateToLocalFormatted("BW.NEI.display.radhatch.0", sievertSyncer.getIntValue()))
                     .alignment(com.cleanroommc.modularui.utils.Alignment.CenterLeft)
                     .asWidget()
                     .pos(60, 72)
                     .size(80, 8))
             .child(new com.cleanroommc.modularui.widgets.ButtonWidget<>().onMousePressed(mouseButton -> {
-                    popupPanel.openPanel();
-                    return popupPanel.isPanelOpen();
-                })
+                popupPanel.openPanel();
+                return popupPanel.isPanelOpen();
+            })
                 .background(GTGuiTextures.BUTTON_STANDARD, GTGuiTextures.OVERLAY_BUTTON_SCREWDRIVER)
                 .disableHoverBackground()
                 .tooltip(tooltip -> tooltip.add("Radiation Shutter"))
@@ -129,7 +141,7 @@ public class MTERadioHatchGui {
     protected Supplier<Integer> COLOR_TITLE = () -> base.getTextColorOrDefault("title", 0x404040);
 
     private ModularPanel createShutterUI(PanelSyncManager syncManager) {
-        IntSyncValue coverageSyncer = (IntSyncValue) syncManager.getSyncHandler("coverage:0");
+        IntSyncValue coverageSyncer = (IntSyncValue) syncManager.getSyncHandlerFromMapKey("coverage:0");
         return createPopUpPanel("bw:radio_hatch_shutter", false, false).size(176, 107)
             .child(
                 IKey.str("Radiation Shutter Control")
@@ -141,7 +153,7 @@ public class MTERadioHatchGui {
                     .pos(14, 27)
                     .size(55, 54))
             .child(
-                new ProgressWidget().progress(() -> 1 - ((double) coverageSyncer.getValue()/ 100D))
+                new ProgressWidget().progress(() -> 1 - ((double) coverageSyncer.getValue() / 100D))
                     .texture(GTGuiTextures.PICTURE_TRANSPARENT, GTGuiTextures.PICTURE_RADIATION_SHUTTER_INSIDE, 50)
                     .direction(ProgressWidget.Direction.UP)
                     .pos(16, 29)
@@ -161,20 +173,17 @@ public class MTERadioHatchGui {
 
     private IWidget createDurationMeterContainer(PanelSyncManager syncManager) {
 
-
         IWidget widget = GTGuiTextures.PICTURE_DECAY_TIME_CONTAINER.asWidget()
             .tooltipBuilder(
                 tooltip -> tooltip.add(
                     StatCollector.translateToLocalFormatted(
                         "tooltip.tile.radhatch.10.name",
-                        base.getTimer() <= 1 ? 0 : (base.getDecayTime() - base.getTimer() ) / 20,
-                        base.getTimer()  <= 1 ? 0 : base.getDecayTime() / 20)))
+                        base.getTimer() <= 1 ? 0 : (base.getDecayTime() - base.getTimer()) / 20,
+                        base.getTimer() <= 1 ? 0 : base.getDecayTime() / 20)))
             .pos(120, 14)
             .size(24, 56);
 
-        LongSyncValue timeSyncHandler = (LongSyncValue) syncManager.getSyncHandler("timer:0");
-        LongSyncValue decayTimeSyncHandler = (LongSyncValue) syncManager.getSyncHandler("decayTime:0");
-
+        LongSyncValue timeSyncHandler = (LongSyncValue) syncManager.getSyncHandlerFromMapKey("timer:0");
         timeSyncHandler.setChangeListener(widget::markTooltipDirty);
         return widget;
     }

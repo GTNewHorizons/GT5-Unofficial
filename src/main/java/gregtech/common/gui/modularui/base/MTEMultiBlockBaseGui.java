@@ -238,7 +238,8 @@ public class MTEMultiBlockBaseGui {
     }
 
     protected IWidget createShutdownDurationWidget(PanelSyncManager syncManager) {
-        LongSyncValue shutdownDurationSyncer = (LongSyncValue) syncManager.getSyncHandler("shutdownDuration:0");
+        LongSyncValue shutdownDurationSyncer = (LongSyncValue) syncManager
+            .getSyncHandlerFromMapKey("shutdownDuration:0");
         return IKey.dynamic(() -> {
             Duration time = Duration.ofSeconds(shutdownDurationSyncer.getValue());
             return StatCollector.translateToLocalFormatted(
@@ -256,7 +257,8 @@ public class MTEMultiBlockBaseGui {
     }
 
     protected IWidget createShutdownReasonWidget(PanelSyncManager syncManager) {
-        StringSyncValue shutdownReasonSync = (StringSyncValue) syncManager.getSyncHandler("shutdownDisplayString:0");
+        StringSyncValue shutdownReasonSync = (StringSyncValue) syncManager
+            .getSyncHandlerFromMapKey("shutdownDisplayString:0");
         return IKey.dynamic(shutdownReasonSync::getValue)
             .asWidget()
             .widthRel(1)
@@ -288,11 +290,11 @@ public class MTEMultiBlockBaseGui {
     }
 
     private IWidget createRecipeInfoWidget(PanelSyncManager syncManager) {
-        IntSyncValue maxProgressTimeSyncer = (IntSyncValue) syncManager.getSyncHandler("maxProgressTime:0");
+        IntSyncValue maxProgressTimeSyncer = (IntSyncValue) syncManager.getSyncHandlerFromMapKey("maxProgressTime:0");
         GenericListSyncHandler<ItemStack> itemOutputSyncer = (GenericListSyncHandler<ItemStack>) syncManager
-            .getSyncHandler("itemOutput:0");
+            .getSyncHandlerFromMapKey("itemOutput:0");
         GenericListSyncHandler<FluidStack> fluidOutputSyncer = (GenericListSyncHandler<FluidStack>) syncManager
-            .getSyncHandler("fluidOutput:0");
+            .getSyncHandlerFromMapKey("fluidOutput:0");
 
         DynamicSyncHandler recipeHandler = new DynamicSyncHandler().widgetProvider((syncManager1, packet) -> {
             if (packet == null) {
@@ -424,13 +426,13 @@ public class MTEMultiBlockBaseGui {
     }
 
     private IWidget createRecipeInfoTextWidget(PanelSyncManager syncManager) {
-        return IKey.dynamic(() -> ((StringSyncValue) syncManager.getSyncHandler("recipeInfo:0")).getValue())
+        return IKey.dynamic(() -> ((StringSyncValue) syncManager.getSyncHandlerFromMapKey("recipeInfo:0")).getValue())
             .asWidget()
             .marginBottom(2)
             .widthRel(1)
             .setEnabledIf(
-                widget -> Predicates.isNonEmptyList(syncManager.getSyncHandler("itemOutput:0"))
-                    || Predicates.isNonEmptyList(syncManager.getSyncHandler("fluidOutput:0")));
+                widget -> Predicates.isNonEmptyList(syncManager.getSyncHandlerFromMapKey("itemOutput:0"))
+                    || Predicates.isNonEmptyList(syncManager.getSyncHandlerFromMapKey("fluidOutput:0")));
     }
 
     private ResizableItemDisplayWidget createItemDrawable(Item item, int damage) {
@@ -446,7 +448,7 @@ public class MTEMultiBlockBaseGui {
     private TextWidget<?> createHoverableTextForItem(Item item, int damage, long amount, PanelSyncManager syncManager) {
         // Second argument is stacksize, don't care about it
         ItemStack itemStack = new ItemStack(item, 1, damage);
-        IntSyncValue maxProgressTimeSyncer = (IntSyncValue) syncManager.getSyncHandler("maxProgressTime:0");
+        IntSyncValue maxProgressTimeSyncer = (IntSyncValue) syncManager.getSyncHandlerFromMapKey("maxProgressTime:0");
         String itemName = EnumChatFormatting.AQUA + itemStack.getDisplayName() + EnumChatFormatting.RESET;
 
         return new TextWidget<>(IKey.dynamic(() -> getItemTextLine(itemName, amount, maxProgressTimeSyncer)))
@@ -484,7 +486,7 @@ public class MTEMultiBlockBaseGui {
 
     private TextWidget<?> createHoverableTextForFluid(FluidStack fluidStack, long amount,
         PanelSyncManager syncManager) {
-        IntSyncValue maxProgressSyncer = (IntSyncValue) syncManager.getSyncHandler("maxProgressTime:0");
+        IntSyncValue maxProgressSyncer = (IntSyncValue) syncManager.getSyncHandlerFromMapKey("maxProgressTime:0");
         String fluidName = EnumChatFormatting.AQUA + fluidStack.getLocalizedName() + EnumChatFormatting.RESET;
 
         return new TextWidget<>(IKey.dynamic(() -> getFluidTextLine(fluidName, amount, maxProgressSyncer)))
@@ -524,7 +526,7 @@ public class MTEMultiBlockBaseGui {
     }
 
     protected IWidget createVoidExcessButton(PanelSyncManager syncManager) {
-        IntSyncValue voidExcessSyncer = (IntSyncValue) syncManager.getSyncHandler("voidExcess:0");
+        IntSyncValue voidExcessSyncer = (IntSyncValue) syncManager.getSyncHandlerFromMapKey("voidExcess:0");
         return new ButtonWidget<>().size(18, 18)
             .onMousePressed(mouseButton -> this.voidExcessOnMousePressed(mouseButton, voidExcessSyncer))
             .overlay(base.supportsVoidProtection() ? getVoidExcessOverlay() : getForcedVoidExcessOverlay())
@@ -568,7 +570,8 @@ public class MTEMultiBlockBaseGui {
     }
 
     protected IWidget createInputSeparationButton(PanelSyncManager syncManager) {
-        BooleanSyncValue inputSeparationSyncer = (BooleanSyncValue) syncManager.getSyncHandler("inputSeparation:0");
+        BooleanSyncValue inputSeparationSyncer = (BooleanSyncValue) syncManager
+            .getSyncHandlerFromMapKey("inputSeparation:0");
         return new ToggleButton() {
 
             @NotNull
@@ -656,7 +659,7 @@ public class MTEMultiBlockBaseGui {
     }
 
     protected IWidget createModeSwitchButton(PanelSyncManager syncManager) {
-        IntSyncValue machineModeSyncer = (IntSyncValue) syncManager.getSyncHandler("machineMode:0");
+        IntSyncValue machineModeSyncer = (IntSyncValue) syncManager.getSyncHandlerFromMapKey("machineMode:0");
         return new CycleButtonWidget().size(18, 18)
             .syncHandler("machineMode")
             .length(machineModeIcons.size())
@@ -675,7 +678,7 @@ public class MTEMultiBlockBaseGui {
     }
 
     protected IWidget createBatchModeButton(PanelSyncManager syncManager) {
-        BooleanSyncValue batchModeSyncer = (BooleanSyncValue) syncManager.getSyncHandler("batchMode:0");
+        BooleanSyncValue batchModeSyncer = (BooleanSyncValue) syncManager.getSyncHandlerFromMapKey("batchMode:0");
 
         return new ToggleButton() {
 
@@ -721,7 +724,7 @@ public class MTEMultiBlockBaseGui {
     }
 
     protected IWidget createLockToSingleRecipeButton(PanelSyncManager syncManager) {
-        BooleanSyncValue recipeLockSyncer = (BooleanSyncValue) syncManager.getSyncHandler("recipeLock:0");
+        BooleanSyncValue recipeLockSyncer = (BooleanSyncValue) syncManager.getSyncHandlerFromMapKey("recipeLock:0");
         return new ToggleButton() {
 
             @NotNull
@@ -898,7 +901,7 @@ public class MTEMultiBlockBaseGui {
     }
 
     protected IWidget createMaintIssueHoverableTerminal(PanelSyncManager syncManager) {
-        IntSyncValue maintSyncer = (IntSyncValue) syncManager.getSyncHandler("maintCount:0");
+        IntSyncValue maintSyncer = (IntSyncValue) syncManager.getSyncHandlerFromMapKey("maintCount:0");
         return new DynamicDrawable(
             () -> maintSyncer.getValue() == 0 ? GTGuiTextures.OVERLAY_NO_MAINTENANCE_ISSUES
                 : IKey.str(EnumChatFormatting.DARK_RED + String.valueOf(maintSyncer.getValue()))).asWidget()
@@ -940,8 +943,9 @@ public class MTEMultiBlockBaseGui {
     }
 
     protected IWidget createShutdownReasonHoverableTerminal(PanelSyncManager syncManager) {
-        BooleanSyncValue wasShutdownSyncer = (BooleanSyncValue) syncManager.getSyncHandler("wasShutdown:0");
-        StringSyncValue shutDownReasonSyncer = (StringSyncValue) syncManager.getSyncHandler("shutdownReasonKey:0");
+        BooleanSyncValue wasShutdownSyncer = (BooleanSyncValue) syncManager.getSyncHandlerFromMapKey("wasShutdown:0");
+        StringSyncValue shutDownReasonSyncer = (StringSyncValue) syncManager
+            .getSyncHandlerFromMapKey("shutdownReasonKey:0");
         return new HoverableIcon(new DynamicDrawable(() -> {
             if (wasShutdownSyncer.getBoolValue()) {
                 return getTextureForReason(shutDownReasonSyncer.getValue());

@@ -42,7 +42,7 @@ public class CoverWirelessMaintenenceDetectorGui
         // column contains 4 other rows, each has 2 enum values
         BooleanSyncValue physicalSyncer = new BooleanSyncValue(cover::isPhysical, cover::setPhysical);
         EnumSyncValue<CoverWirelessMaintenanceDetector.MaintenanceMode> maintenanceSync = (EnumSyncValue<CoverWirelessMaintenanceDetector.MaintenanceMode>) syncManager
-            .getSyncHandler("maintenanceMode:0");
+            .getSyncHandlerFromMapKey("maintenanceMode:0");
         final ICoverable tile = data.getCoverable();
         boolean usesTurbines = false;
 

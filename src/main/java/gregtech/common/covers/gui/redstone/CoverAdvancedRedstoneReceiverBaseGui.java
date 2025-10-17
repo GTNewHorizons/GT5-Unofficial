@@ -33,7 +33,7 @@ public class CoverAdvancedRedstoneReceiverBaseGui
     @Override
     protected Flow makeThirdFlow(PanelSyncManager syncManager, CoverGuiData data) {
         EnumSyncValue<CoverAdvancedRedstoneReceiverBase.GateMode> gateMode = (EnumSyncValue<CoverAdvancedRedstoneReceiverBase.GateMode>) syncManager
-            .getSyncHandler("gateMode:0");
+            .getSyncHandlerFromMapKey("gateMode:0");
         return Flow.row()
             .size(140, 18)
 

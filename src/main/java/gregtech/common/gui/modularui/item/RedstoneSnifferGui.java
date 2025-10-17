@@ -299,7 +299,8 @@ public class RedstoneSnifferGui {
     public List<IWidget> processAdvancedFrequencies(List<ItemRedstoneSniffer.SnifferEntry> entryList,
         ListWidget<IWidget, CategoryList.Root> listWidget, PanelSyncManager guiSyncManager, int scale, int textColor) {
         List<IWidget> result = new ArrayList<>();
-        BooleanSyncValue playerIsOpSyncer = (BooleanSyncValue) guiSyncManager.getSyncHandler("player_is_op:0");
+        BooleanSyncValue playerIsOpSyncer = (BooleanSyncValue) guiSyncManager
+            .getSyncHandlerFromMapKey("player_is_op:0");
         AtomicInteger bgStripe = new AtomicInteger(0);
         int stripe1 = Color.rgb(79, 82, 119);
         int stripe2 = Color.rgb(67, 58, 96);

@@ -1,5 +1,7 @@
 package gregtech.common.gui.modularui.hatch;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -10,21 +12,20 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
+
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTENeutronSensor;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuis;
 
-import static net.minecraft.util.StatCollector.translateToLocal;
-
 public class MTENeutronSensorGui {
+
     private final MTENeutronSensor sensor;
 
     public MTENeutronSensorGui(MTENeutronSensor sensor) {
         this.sensor = sensor;
     }
 
-    public ModularPanel build(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings)
-    {
+    public ModularPanel build(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         return GTGuis.mteTemplatePanelBuilder(sensor, data, syncManager, uiSettings)
             .build()
             .child(
@@ -47,8 +48,8 @@ public class MTENeutronSensorGui {
                     .size(16, 16))
             .child(
                 IKey.dynamic(
-                        () -> invertedSyncer.getValue() ? translateToLocal("gt.interact.desc.inverted")
-                            : translateToLocal("gt.interact.desc.normal"))
+                    () -> invertedSyncer.getValue() ? translateToLocal("gt.interact.desc.inverted")
+                        : translateToLocal("gt.interact.desc.normal"))
                     .asWidget())
             .coverChildren()
             .childPadding(2);

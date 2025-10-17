@@ -5,22 +5,15 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import gregtech.common.gui.modularui.hatch.MTENeutronSensorGui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
-import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
-import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widgets.ToggleButton;
-import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -36,9 +29,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.modularui2.GTGuis;
 import gregtech.api.render.TextureFactory;
+import gregtech.common.gui.modularui.hatch.MTENeutronSensorGui;
 import gregtech.common.gui.modularui.widget.CoverCycleButtonWidget;
 
 public class MTENeutronSensor extends MTEHatch {
@@ -235,7 +227,7 @@ public class MTENeutronSensor extends MTEHatch {
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new MTENeutronSensorGui(this).build(data,syncManager,uiSettings);
+        return new MTENeutronSensorGui(this).build(data, syncManager, uiSettings);
     }
 
     public int getThreshold() {
@@ -253,7 +245,6 @@ public class MTENeutronSensor extends MTEHatch {
     public void setInverted(boolean inverted) {
         this.inverted = inverted;
     }
-
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {

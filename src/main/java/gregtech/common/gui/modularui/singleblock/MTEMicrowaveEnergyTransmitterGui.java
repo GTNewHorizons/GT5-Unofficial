@@ -10,7 +10,7 @@ import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
-import com.gtnewhorizons.modularui.api.NumberFormatMUI;
+
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.util.GTUtility;
@@ -19,8 +19,8 @@ import gregtech.common.tileentities.machines.basic.MTEMicrowaveEnergyTransmitter
 public class MTEMicrowaveEnergyTransmitterGui {
 
     MTEMicrowaveEnergyTransmitter base;
-    public MTEMicrowaveEnergyTransmitterGui(MTEMicrowaveEnergyTransmitter base)
-    {
+
+    public MTEMicrowaveEnergyTransmitterGui(MTEMicrowaveEnergyTransmitter base) {
         this.base = base;
     }
 
@@ -29,17 +29,20 @@ public class MTEMicrowaveEnergyTransmitterGui {
         return GTGuis.mteTemplatePanelBuilder(base, data, syncManager, uiSettings)
             .doesAddGregTechLogo(false)
             .build()
-            .child(Flow.row()
-                .child(Flow.column()
-                    .child(GTGuiTextures.OVERLAY_BUTTON_BOUNDING_BOX.asWidget()
-                        .size(18, 18)
-                        .topRel(0.5F))
-                    .heightRel(1)
-                    .coverChildrenWidth())
-                .child(createSelectionColumn())
-                .crossAxisAlignment(Alignment.CrossAxis.START)
-                .pos(4, 6)
-                .coverChildren());
+            .child(
+                Flow.row()
+                    .child(
+                        Flow.column()
+                            .child(
+                                GTGuiTextures.OVERLAY_BUTTON_BOUNDING_BOX.asWidget()
+                                    .size(18, 18)
+                                    .topRel(0.5F))
+                            .heightRel(1)
+                            .coverChildrenWidth())
+                    .child(createSelectionColumn())
+                    .crossAxisAlignment(Alignment.CrossAxis.START)
+                    .pos(4, 6)
+                    .coverChildren());
     }
 
     public Flow createSelectionColumn() {
@@ -91,7 +94,7 @@ public class MTEMicrowaveEnergyTransmitterGui {
                         new DynamicDrawable(
                             () -> GTUtility.isRealDimension(base.mTargetD) ? GTGuiTextures.OVERLAY_BUTTON_CHECKMARK
                                 : GTGuiTextures.OVERLAY_BUTTON_CROSS).asWidget()
-                            .size(16, 16))
+                                    .size(16, 16))
                     .coverChildren())
             .crossAxisAlignment(Alignment.CrossAxis.START)
             .childPadding(2)

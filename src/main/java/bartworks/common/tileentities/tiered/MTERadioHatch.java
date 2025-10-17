@@ -16,12 +16,9 @@ package bartworks.common.tileentities.tiered;
 import static bartworks.common.loaders.RadioHatchMaterialLoader.getRadioHatchMaterialFromInput;
 import static bartworks.common.loaders.RadioHatchMaterialLoader.getRadioHatchMaterialList;
 import static gregtech.api.enums.GTValues.ticksBetweenSounds;
-import static gregtech.api.modularui2.GTGuis.createPopUpPanel;
-import static gregtech.common.modularui2.util.CommonGuiComponents.gridTemplate1by1;
 
 import java.util.Collections;
 
-import gregtech.common.gui.modularui.hatch.MTERadioHatchGui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -30,22 +27,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.cleanroommc.modularui.api.IPanelHandler;
-import com.cleanroommc.modularui.api.drawable.IDrawable;
-import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
-import com.cleanroommc.modularui.value.sync.IntSyncValue;
-import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.value.sync.StringSyncValue;
-import com.cleanroommc.modularui.widget.sizer.Area;
-import com.cleanroommc.modularui.widgets.ProgressWidget;
-import com.cleanroommc.modularui.widgets.slot.ItemSlot;
-import com.cleanroommc.modularui.widgets.slot.ModularSlot;
-import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.drawable.shapes.Rectangle;
@@ -80,13 +65,12 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.modularui2.GTGuis;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.hatch.MTERadioHatchGui;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
 
@@ -126,10 +110,10 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
         return this.sievert - MathUtils.ceilInt(this.sievert / 100f * this.coverage);
     }
 
-    public void setSievert(int b)
-    {
+    public void setSievert(int b) {
         this.sievert = b;
     }
+
     public short[] getColorForGUI() {
         if (this.colorForGUI != null) return this.colorForGUI;
         return this.colorForGUI = new short[] { 0xFA, 0xFA, 0xFF };
@@ -138,21 +122,19 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
     public byte getMass() {
         return this.mass;
     }
-    public void setMass(byte b)
-    {
+
+    public void setMass(byte b) {
         this.mass = b;
     }
 
-    public short getColorForGuiAtIndex(int i)
-    {
-        i = GTUtility.clamp(i,0,3);
+    public short getColorForGuiAtIndex(int i) {
+        i = GTUtility.clamp(i, 0, 3);
         return colorForGUI[i];
     }
 
-    public void setColorForGuiAtIndex(short c,int i)
-    {
-        i = GTUtility.clamp(i,0,3);
-        colorForGUI[i]=c;
+    public void setColorForGuiAtIndex(short c, int i) {
+        i = GTUtility.clamp(i, 0, 3);
+        colorForGUI[i] = c;
     }
 
     public byte getCoverage() {
@@ -398,8 +380,9 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new MTERadioHatchGui(this).build(data,syncManager,uiSettings);
+        return new MTERadioHatchGui(this).build(data, syncManager, uiSettings);
     }
+
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         buildContext.addSyncedWindow(RADIATION_SHUTTER_WINDOW_ID, this::createMui1ShutterWindow);

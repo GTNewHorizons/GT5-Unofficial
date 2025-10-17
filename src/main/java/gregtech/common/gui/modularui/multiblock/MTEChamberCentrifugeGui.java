@@ -82,11 +82,11 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui {
 
     private ModularPanel openInfoPanel(PanelSyncManager p_syncManager, ModularPanel parent,
         PanelSyncManager syncManager) {
-        IntSyncValue RPSync = (IntSyncValue) syncManager.getSyncHandler("RP:0");
-        IntSyncValue paraSync = (IntSyncValue) syncManager.getSyncHandler("Parallels:0");
-        StringSyncValue speedSync = (StringSyncValue) syncManager.getSyncHandler("Speed:0");
-        StringSyncValue typeSTRSync = (StringSyncValue) syncManager.getSyncHandler("modeString:0");
-        DoubleSyncValue typeVALSync = (DoubleSyncValue) syncManager.getSyncHandler("modeValue:0");
+        IntSyncValue RPSync = (IntSyncValue) syncManager.getSyncHandlerFromMapKey("RP:0");
+        IntSyncValue paraSync = (IntSyncValue) syncManager.getSyncHandlerFromMapKey("Parallels:0");
+        StringSyncValue speedSync = (StringSyncValue) syncManager.getSyncHandlerFromMapKey("Speed:0");
+        StringSyncValue typeSTRSync = (StringSyncValue) syncManager.getSyncHandlerFromMapKey("modeString:0");
+        DoubleSyncValue typeVALSync = (DoubleSyncValue) syncManager.getSyncHandlerFromMapKey("modeValue:0");
         return new ModularPanel("statsPanel").relative(parent)
             .leftRel(1)
             .topRel(0)
