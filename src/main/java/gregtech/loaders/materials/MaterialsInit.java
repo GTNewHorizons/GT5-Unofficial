@@ -10025,7 +10025,6 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.PEARL)
-            .addOrePrefix(OrePrefixes.lens)
             .removeOrePrefix(OrePrefixes.gem) // minecraft:ender_pearl
             .constructMaterial();
     }
@@ -11651,7 +11650,6 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.PEARL)
-            .addOrePrefix(OrePrefixes.lens)
             .removeOrePrefix(OrePrefixes.gem) // minecraft:ender_eye
             .constructMaterial();
     }
@@ -14100,6 +14098,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.TRANSPARENT)
             .removeOrePrefix(OrePrefixes.gem) // Botania:manaResource:2
+            .removeOrePrefix(OrePrefixes.lens)
             .constructMaterial();
     }
 
