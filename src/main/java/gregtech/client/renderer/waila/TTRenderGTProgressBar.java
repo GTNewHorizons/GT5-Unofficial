@@ -15,7 +15,8 @@ public class TTRenderGTProgressBar implements IWailaVariableWidthTooltipRenderer
 
     int maxStringW;
 
-    static final int width = DisplayUtil.getDisplayWidth("00.0s / 00.0s (00.0%)");
+    // Is usually shorter than the rest of the tooltip, so calculate only once for a 3 digit progress number
+    static final int width = DisplayUtil.getDisplayWidth("000.0s / 000.0s (00.0%)");
 
     @Override
     public Dimension getSize(String[] params, IWailaCommonAccessor accessor) {
@@ -35,7 +36,7 @@ public class TTRenderGTProgressBar implements IWailaVariableWidthTooltipRenderer
             -1);
         int progresstime = Integer.parseInt(params[0]);
         int maxProgresstime = Integer.parseInt(params[1]);
-        int progress = (int) (maxStringW * ((double) progresstime / maxProgresstime));
+        int progress = (int) ((maxStringW - 1) * ((double) progresstime / maxProgresstime));
         for (int xx = 1; xx < progress; xx++) {
             int color = (xx & 1) == 0 ? GTMod.proxy.wailaProgressBarColor1 : GTMod.proxy.wailaProgressBarColor2;
             drawVerticalLine(xx, 1, 12 - 1, color);
