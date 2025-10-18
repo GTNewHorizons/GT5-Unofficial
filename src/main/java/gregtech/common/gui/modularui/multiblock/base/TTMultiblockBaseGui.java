@@ -95,17 +95,17 @@ public class TTMultiblockBaseGui extends MTEMultiBlockBaseGui<TTMultiblockBase> 
             .panel("info_panel", (p_syncManager, syncHandler) -> getParameterPanel(panel, p_syncManager), true);
         return new ButtonWidget<>().overlay(new DynamicDrawable(() -> {
             if (multiblock instanceof IParametrized) {
-                return GTGuiTextures.OVERLAY_BUTTON_EDIT_PARAMETERS_DISABLED.asIcon()
+                return GTGuiTextures.OVERLAY_BUTTON_EDIT_PARAMETERS_ENABLED.asIcon()
                     .size(16, 16);
             } else {
-                return GTGuiTextures.OVERLAY_BUTTON_EDIT_PARAMETERS_ENABLED.asIcon()
+                return GTGuiTextures.OVERLAY_BUTTON_EDIT_PARAMETERS_DISABLED.asIcon()
                     .size(16, 16);
             }
         }))
             .tooltipBuilder(t -> t.add("Edit Parameters"))
             .size(18, 18)
             .onMousePressed(mouseData -> {
-                if (multiblock instanceof IParametrized) return false;
+                if (!(multiblock instanceof IParametrized)) return false;
                 if (!infoPanel.isPanelOpen()) {
                     infoPanel.openPanel();
                 } else {
