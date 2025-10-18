@@ -19,10 +19,10 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.util.GTUtility;
-import gregtech.common.covers.gui.CoverFluidRegulatorGui;
-import gregtech.common.covers.gui.CoverGui;
 import gregtech.common.covers.modes.MachineProcessingCondition;
 import gregtech.common.covers.modes.TransferMode;
+import gregtech.common.gui.modularui.cover.CoverFluidRegulatorGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.gui.mui1.cover.FluidRegulatorUIFactory;
 import io.netty.buffer.ByteBuf;
 
@@ -273,7 +273,7 @@ public class CoverFluidRegulator extends Cover {
     }
 
     @Override
-    protected @NotNull CoverGui<?> getCoverGui() {
+    protected @NotNull CoverBaseGui<?> getCoverGui() {
         return new CoverFluidRegulatorGui(this);
     }
 

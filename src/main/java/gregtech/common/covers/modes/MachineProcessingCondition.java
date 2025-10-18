@@ -1,24 +1,21 @@
 package gregtech.common.covers.modes;
 
-import com.cleanroommc.modularui.api.drawable.IKey;
-
 import gregtech.api.interfaces.modularui.KeyProvider;
-import gregtech.api.util.GTUtility;
 
 public enum MachineProcessingCondition implements KeyProvider {
 
-    ALWAYS(IKey.str(GTUtility.trans("224", "Always On"))),
-    CONDITIONAL(IKey.str(GTUtility.trans("343", "Use Machine Processing " + "State"))),
-    INVERTED(IKey.str(GTUtility.trans("343.1", "Use Inverted Machine " + "Processing State")));
+    ALWAYS("gt.interact.desc.Pump.AlwaysOn"),
+    CONDITIONAL("gt.interact.desc.Pump.MachProcState"),
+    INVERTED("gt.interact.desc.Pump.InvertedMachProcState");
 
-    private final IKey key;
+    private final String key;
 
-    MachineProcessingCondition(IKey key) {
+    MachineProcessingCondition(String key) {
         this.key = key;
     }
 
     @Override
-    public IKey getKey() {
+    public String getKey() {
         return this.key;
     }
 }

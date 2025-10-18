@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.function.LongConsumer;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
@@ -92,6 +91,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.StructureError;
 import gregtech.api.enums.VoidingMode;
@@ -108,7 +108,6 @@ import gregtech.api.interfaces.modularui.IControllerWithOptionalFeatures;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -129,6 +128,7 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.client.GTSoundLoop;
 import gregtech.common.config.MachineStats;
 import gregtech.common.data.GTCoilTracker;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.widget.CheckRecipeResultSyncer;
 import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
 import gregtech.common.items.MetaGeneratedTool01;
@@ -189,6 +189,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     protected boolean makePowerfailEvents = true;
     // for the wireless maintenance detector cover gui, to display / not display the turbine row.
     protected boolean usesTurbine = false;
+    protected boolean canBeMuffled = true;
 
     protected static final String INPUT_SEPARATION_NBT_KEY = "inputSeparation";
     protected static final String VOID_EXCESS_NBT_KEY = "voidExcess";
@@ -353,6 +354,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         aNBT.setBoolean("makePowerfailEvents", makePowerfailEvents);
         aNBT.setString(VOIDING_MODE_NBT_KEY, voidingMode.name);
         aNBT.setBoolean("usesTurbine", usesTurbine);
+        aNBT.setBoolean("canBeMuffled", canBeMuffled);
     }
 
     @Override
@@ -372,6 +374,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         powerPanelMaxParallel = aNBT.getInteger("powerPanelMaxParallel");
         makePowerfailEvents = !aNBT.hasKey("makePowerfailEvents") || aNBT.getBoolean("makePowerfailEvents");
         usesTurbine = aNBT.hasKey("usesTurbine") && aNBT.getBoolean("usesTurbine");
+        canBeMuffled = aNBT.hasKey("canBeMuffled") && aNBT.getBoolean("canBeMuffled");
         String checkRecipeResultID = aNBT.getString("checkRecipeResultID");
         if (CheckRecipeResultRegistry.isRegistered(checkRecipeResultID)) {
             CheckRecipeResult result = CheckRecipeResultRegistry.getSampleFromRegistry(checkRecipeResultID)
@@ -465,7 +468,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     @Override
     public byte getTileEntityBaseType() {
-        return 2;
+        return HarvestTool.WrenchLevel2.toTileEntityBaseType();
     }
 
     /**
@@ -2759,6 +2762,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             alwaysMaxParallel ? getMaxParallelRecipes() : Math.min(getMaxParallelRecipes(), powerPanelMaxParallel));
     }
 
+    public int getmStartUpCheck() {
+        return mStartUpCheck;
+    }
+
     @Override
     public Pos2d getVoidingModeButtonPos() {
         return new Pos2d(8, 91);
@@ -2919,13 +2926,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             setMachineModeIcons();
         }
         builder.widget(createPowerSwitchButton(builder))
-            .widget(createMuffleButton(builder))
             .widget(createVoidExcessButton(builder))
+            .widget(createMuffleButton(builder, this.canBeMuffled()))
             .widget(createInputSeparationButton(builder))
             .widget(createModeSwitchButton(builder))
             .widget(createBatchModeButton(builder))
             .widget(createLockToSingleRecipeButton(builder))
             .widget(createStructureUpdateButton(builder));
+
         if (supportsPowerPanel()) {
             builder.widget(createPowerPanelButton(builder));
             buildContext.addSyncedWindow(POWER_PANEL_WINDOW_ID, this::createPowerPanel);
@@ -2936,6 +2944,24 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     @Override
     public boolean supportsPowerPanel() {
         return true;
+    }
+
+    // For MUI2 corner column toggling
+
+    public boolean supportsTerminalCornerColumn() {
+        return true;
+    }
+
+    public boolean supportsLogo() {
+        return true;
+    }
+
+    public boolean supportsShutdownReasonHoverable() {
+        return true;
+    }
+
+    public boolean supportsMaintenanceIssueHoverable() {
+        return this.getDefaultHasMaintenanceChecks();
     }
 
     @Override
@@ -3037,6 +3063,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         return true;
     }
 
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
     public boolean shouldDisplayShutDownReason() {
         return true;
     }
@@ -3056,72 +3087,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         numberFormat.setMinimumFractionDigits(1);
         numberFormat.setMaximumFractionDigits(1);
         numberFormat.format((double) mProgresstime / mMaxProgresstime * 100, ret);
-        ret.append("%)\n");
+        ret.append("%)");
         numberFormat.setMinimumFractionDigits(0);
         numberFormat.setMaximumFractionDigits(2);
 
-        LongConsumer appendRate = (amount) -> {
-            double processPerTick = (double) amount / mMaxProgresstime * 20;
-            ret.append(" (");
-            if (processPerTick > 1) {
-                numberFormat.format(Math.round(processPerTick * 10) / 10.0, ret);
-                ret.append("/s)");
-            } else {
-                numberFormat.format(Math.round(1 / processPerTick * 10) / 10.0, ret);
-                ret.append("s/ea)");
-            }
-        };
-
-        int lines = 0;
-        int MAX_LINES = 10;
-
-        if (mOutputItems != null) {
-            HashMap<String, Long> nameToAmount = new HashMap<>();
-            for (var item : mOutputItems) {
-                if (item == null || item.stackSize <= 0) continue;
-                nameToAmount.merge(item.getDisplayName(), (long) item.stackSize, Long::sum);
-            }
-            for (Map.Entry<String, Long> entry : nameToAmount.entrySet()) {
-                if (lines >= MAX_LINES) {
-                    ret.append("...");
-                    return ret.toString();
-                }
-                lines++;
-                ret.append(EnumChatFormatting.AQUA)
-                    .append(entry.getKey())
-                    .append(EnumChatFormatting.WHITE)
-                    .append(" x ")
-                    .append(EnumChatFormatting.GOLD);
-                numberFormat.format(entry.getValue(), ret);
-                ret.append(EnumChatFormatting.WHITE);
-                appendRate.accept(entry.getValue());
-                ret.append('\n');
-            }
-        }
-        if (mOutputFluids != null) {
-            HashMap<String, Long> nameToAmount = new HashMap<>();
-            for (var fluid : mOutputFluids) {
-                if (fluid == null || fluid.amount <= 0) continue;
-                nameToAmount.merge(fluid.getLocalizedName(), (long) fluid.amount, Long::sum);
-            }
-            for (Map.Entry<String, Long> entry : nameToAmount.entrySet()) {
-                if (lines >= MAX_LINES) {
-                    ret.append("...");
-                    return ret.toString();
-                }
-                lines++;
-                ret.append(EnumChatFormatting.AQUA)
-                    .append(entry.getKey())
-                    .append(EnumChatFormatting.WHITE)
-                    .append(" x ")
-                    .append(EnumChatFormatting.GOLD);
-                numberFormat.format(entry.getValue(), ret);
-                ret.append("L")
-                    .append(EnumChatFormatting.WHITE);
-                appendRate.accept(entry.getValue());
-                ret.append('\n');
-            }
-        }
         return ret.toString();
     }
 
@@ -3664,5 +3633,17 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     public boolean usesTurbines() {
         return usesTurbine;
+    }
+
+    public boolean canBeMuffled() {
+        return canBeMuffled;
+    }
+
+    public boolean makesPowerfailEvents() {
+        return makePowerfailEvents;
+    }
+
+    public void setPowerfailEventCreationStatus(boolean status) {
+        makePowerfailEvents = status;
     }
 }

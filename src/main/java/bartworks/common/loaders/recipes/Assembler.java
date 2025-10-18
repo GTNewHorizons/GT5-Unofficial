@@ -90,7 +90,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder() // DEHP
             .itemInputs(
                 ItemList.OilDrill4.get(1),
-                GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Ultimate, 8),
+                GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.ZPM, 8),
                 GGMaterial.incoloy903.get(OrePrefixes.gearGt, 32),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Polytetrafluoroethylene, 16),
                 ItemList.Field_Generator_IV.get(1))

@@ -24,8 +24,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsKevlar;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
@@ -285,7 +283,7 @@ public class FluidSolidifierRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Spinneret.get(0L))
             .itemOutputs(ItemList.KevlarFiber.get(8L))
-            .fluidInputs(MaterialsKevlar.LiquidCrystalKevlar.getFluid(1 * INGOTS))
+            .fluidInputs(Materials.LiquidCrystalKevlar.getFluid(1 * INGOTS))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(fluidSolidifierRecipes);
@@ -330,7 +328,7 @@ public class FluidSolidifierRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Extruder_Bottle.get(1))
                 .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Bottle.get(1))
-                .fluidInputs(MaterialsUEVplus.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
+                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
                 .duration(whiteDwarfShapeSolidifierTime)
                 .eut(TierEU.RECIPE_UMV)
                 .addTo(fluidSolidifierRecipes);
@@ -338,7 +336,7 @@ public class FluidSolidifierRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Extruder_Plate.get(1))
                 .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Plate.get(1))
-                .fluidInputs(MaterialsUEVplus.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
+                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
                 .duration(whiteDwarfShapeSolidifierTime)
                 .eut(TierEU.RECIPE_UMV)
                 .addTo(fluidSolidifierRecipes);
@@ -346,7 +344,7 @@ public class FluidSolidifierRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Extruder_Cell.get(1))
                 .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Cell.get(1))
-                .fluidInputs(MaterialsUEVplus.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
+                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
                 .duration(whiteDwarfShapeSolidifierTime)
                 .eut(TierEU.RECIPE_UMV)
                 .addTo(fluidSolidifierRecipes);
@@ -354,7 +352,7 @@ public class FluidSolidifierRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Extruder_Ring.get(1))
                 .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Ring.get(1))
-                .fluidInputs(MaterialsUEVplus.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
+                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
                 .duration(whiteDwarfShapeSolidifierTime)
                 .eut(TierEU.RECIPE_UMV)
                 .addTo(fluidSolidifierRecipes);
@@ -362,7 +360,7 @@ public class FluidSolidifierRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Extruder_Rod.get(1))
                 .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Rod.get(1))
-                .fluidInputs(MaterialsUEVplus.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
+                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
                 .duration(whiteDwarfShapeSolidifierTime)
                 .eut(TierEU.RECIPE_UMV)
                 .addTo(fluidSolidifierRecipes);
@@ -370,7 +368,7 @@ public class FluidSolidifierRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Extruder_Bolt.get(1))
                 .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Bolt.get(1))
-                .fluidInputs(MaterialsUEVplus.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
+                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
                 .duration(whiteDwarfShapeSolidifierTime)
                 .eut(TierEU.RECIPE_UMV)
                 .addTo(fluidSolidifierRecipes);
@@ -378,7 +376,7 @@ public class FluidSolidifierRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Extruder_Ingot.get(1))
                 .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Ingot.get(1))
-                .fluidInputs(MaterialsUEVplus.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
+                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
                 .duration(whiteDwarfShapeSolidifierTime)
                 .eut(TierEU.RECIPE_UMV)
                 .addTo(fluidSolidifierRecipes);
@@ -386,7 +384,7 @@ public class FluidSolidifierRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Extruder_Wire.get(1))
                 .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Wire.get(1))
-                .fluidInputs(MaterialsUEVplus.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
+                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
                 .duration(whiteDwarfShapeSolidifierTime)
                 .eut(TierEU.RECIPE_UMV)
                 .addTo(fluidSolidifierRecipes);
@@ -394,7 +392,7 @@ public class FluidSolidifierRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Extruder_Casing.get(1))
                 .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Casing.get(1))
-                .fluidInputs(MaterialsUEVplus.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
+                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
                 .duration(whiteDwarfShapeSolidifierTime)
                 .eut(TierEU.RECIPE_UMV)
                 .addTo(fluidSolidifierRecipes);
@@ -402,7 +400,7 @@ public class FluidSolidifierRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Extruder_Pipe_Tiny.get(1))
                 .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Pipe_Tiny.get(1))
-                .fluidInputs(MaterialsUEVplus.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
+                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
                 .duration(whiteDwarfShapeSolidifierTime)
                 .eut(TierEU.RECIPE_UMV)
                 .addTo(fluidSolidifierRecipes);
@@ -410,7 +408,7 @@ public class FluidSolidifierRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Extruder_Pipe_Small.get(1))
                 .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Pipe_Small.get(1))
-                .fluidInputs(MaterialsUEVplus.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
+                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
                 .duration(whiteDwarfShapeSolidifierTime)
                 .eut(TierEU.RECIPE_UMV)
                 .addTo(fluidSolidifierRecipes);
@@ -418,7 +416,7 @@ public class FluidSolidifierRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Extruder_Pipe_Medium.get(1))
                 .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Pipe_Medium.get(1))
-                .fluidInputs(MaterialsUEVplus.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
+                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
                 .duration(whiteDwarfShapeSolidifierTime)
                 .eut(TierEU.RECIPE_UMV)
                 .addTo(fluidSolidifierRecipes);
@@ -426,7 +424,7 @@ public class FluidSolidifierRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Extruder_Pipe_Large.get(1))
                 .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Pipe_Large.get(1))
-                .fluidInputs(MaterialsUEVplus.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
+                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
                 .duration(whiteDwarfShapeSolidifierTime)
                 .eut(TierEU.RECIPE_UMV)
                 .addTo(fluidSolidifierRecipes);
@@ -434,7 +432,7 @@ public class FluidSolidifierRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Extruder_Pipe_Huge.get(1))
                 .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Pipe_Huge.get(1))
-                .fluidInputs(MaterialsUEVplus.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
+                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
                 .duration(whiteDwarfShapeSolidifierTime)
                 .eut(TierEU.RECIPE_UMV)
                 .addTo(fluidSolidifierRecipes);
@@ -442,7 +440,7 @@ public class FluidSolidifierRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Extruder_Block.get(1))
                 .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Block.get(1))
-                .fluidInputs(MaterialsUEVplus.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
+                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
                 .duration(whiteDwarfShapeSolidifierTime)
                 .eut(TierEU.RECIPE_UMV)
                 .addTo(fluidSolidifierRecipes);
@@ -450,7 +448,7 @@ public class FluidSolidifierRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Extruder_Sword.get(1))
                 .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Sword.get(1))
-                .fluidInputs(MaterialsUEVplus.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
+                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
                 .duration(whiteDwarfShapeSolidifierTime)
                 .eut(TierEU.RECIPE_UMV)
                 .addTo(fluidSolidifierRecipes);
@@ -458,7 +456,7 @@ public class FluidSolidifierRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Extruder_Pickaxe.get(1))
                 .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Pickaxe.get(1))
-                .fluidInputs(MaterialsUEVplus.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
+                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
                 .duration(whiteDwarfShapeSolidifierTime)
                 .eut(TierEU.RECIPE_UMV)
                 .addTo(fluidSolidifierRecipes);
@@ -466,7 +464,7 @@ public class FluidSolidifierRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Extruder_Shovel.get(1))
                 .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Shovel.get(1))
-                .fluidInputs(MaterialsUEVplus.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
+                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
                 .duration(whiteDwarfShapeSolidifierTime)
                 .eut(TierEU.RECIPE_UMV)
                 .addTo(fluidSolidifierRecipes);
@@ -474,7 +472,7 @@ public class FluidSolidifierRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Extruder_Axe.get(1))
                 .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Axe.get(1))
-                .fluidInputs(MaterialsUEVplus.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
+                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
                 .duration(whiteDwarfShapeSolidifierTime)
                 .eut(TierEU.RECIPE_UMV)
                 .addTo(fluidSolidifierRecipes);
@@ -482,7 +480,7 @@ public class FluidSolidifierRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Extruder_Hoe.get(1))
                 .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Hoe.get(1))
-                .fluidInputs(MaterialsUEVplus.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
+                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
                 .duration(whiteDwarfShapeSolidifierTime)
                 .eut(TierEU.RECIPE_UMV)
                 .addTo(fluidSolidifierRecipes);
@@ -490,7 +488,7 @@ public class FluidSolidifierRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Extruder_Hammer.get(1))
                 .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Hammer.get(1))
-                .fluidInputs(MaterialsUEVplus.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
+                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
                 .duration(whiteDwarfShapeSolidifierTime)
                 .eut(TierEU.RECIPE_UMV)
                 .addTo(fluidSolidifierRecipes);
@@ -498,7 +496,7 @@ public class FluidSolidifierRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Extruder_File.get(1))
                 .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_File.get(1))
-                .fluidInputs(MaterialsUEVplus.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
+                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
                 .duration(whiteDwarfShapeSolidifierTime)
                 .eut(TierEU.RECIPE_UMV)
                 .addTo(fluidSolidifierRecipes);
@@ -506,7 +504,7 @@ public class FluidSolidifierRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Extruder_Saw.get(1))
                 .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Saw.get(1))
-                .fluidInputs(MaterialsUEVplus.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
+                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
                 .duration(whiteDwarfShapeSolidifierTime)
                 .eut(TierEU.RECIPE_UMV)
                 .addTo(fluidSolidifierRecipes);
@@ -514,7 +512,7 @@ public class FluidSolidifierRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Extruder_Gear.get(1))
                 .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Gear.get(1))
-                .fluidInputs(MaterialsUEVplus.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
+                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
                 .duration(whiteDwarfShapeSolidifierTime)
                 .eut(TierEU.RECIPE_UMV)
                 .addTo(fluidSolidifierRecipes);
@@ -522,7 +520,7 @@ public class FluidSolidifierRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Extruder_Rotor.get(1))
                 .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Rotor.get(1))
-                .fluidInputs(MaterialsUEVplus.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
+                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
                 .duration(whiteDwarfShapeSolidifierTime)
                 .eut(TierEU.RECIPE_UMV)
                 .addTo(fluidSolidifierRecipes);
@@ -530,7 +528,7 @@ public class FluidSolidifierRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Extruder_Turbine_Blade.get(1))
                 .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Turbine_Blade.get(1))
-                .fluidInputs(MaterialsUEVplus.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
+                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
                 .duration(whiteDwarfShapeSolidifierTime)
                 .eut(TierEU.RECIPE_UMV)
                 .addTo(fluidSolidifierRecipes);
@@ -538,7 +536,7 @@ public class FluidSolidifierRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Extruder_Small_Gear.get(1))
                 .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Small_Gear.get(1))
-                .fluidInputs(MaterialsUEVplus.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
+                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
                 .duration(whiteDwarfShapeSolidifierTime)
                 .eut(TierEU.RECIPE_UMV)
                 .addTo(fluidSolidifierRecipes);
@@ -546,7 +544,7 @@ public class FluidSolidifierRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Extruder_ToolHeadDrill.get(1))
                 .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_ToolHeadDrill.get(1))
-                .fluidInputs(MaterialsUEVplus.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
+                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
                 .duration(whiteDwarfShapeSolidifierTime)
                 .eut(TierEU.RECIPE_UMV)
                 .addTo(fluidSolidifierRecipes);

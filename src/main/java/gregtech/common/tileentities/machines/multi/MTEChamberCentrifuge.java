@@ -45,7 +45,6 @@ import fox.spiteful.avaritia.blocks.LudicrousBlocks;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -71,9 +70,9 @@ import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.blocks.BlockCasings12;
+import gregtech.common.gui.modularui.multiblock.MTEChamberCentrifugeGui;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.misc.GTStructureChannels;
-import gregtech.common.tileentities.machines.multi.gui.MTEChamberCentrifugeGui;
 import gregtech.common.tools.ToolTurbineHuge;
 import gregtech.common.tools.ToolTurbineLarge;
 import gregtech.common.tools.ToolTurbineNormal;
@@ -244,7 +243,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
                     : ofBlock(GregTechAPI.sBlockMetal5, 3))) // t3 block, Infinity. fallback included for dev
         .addElement('f', ofFrame(Materials.Infinity)) // t3 frame, Infinity
         .addElement('g', ofBlock(GregTechAPI.sBlockMetal9, 6)) // t4 block, WDM.
-        .addElement('h', lazy(t -> ofFrame(MaterialsUEVplus.SpaceTime))) // t4 frame
+        .addElement('h', lazy(t -> ofFrame(Materials.SpaceTime))) // t4 frame
         .build();
 
     public MTEChamberCentrifuge(final int aID, final String aName, final String aNameRegional) {
@@ -663,7 +662,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
                                            // hatches
     {
         // checks for fluid in hatch, does not drain it.
-        FluidStack tFluid = tier2Fluid ? MaterialsUEVplus.BiocatalyzedPropulsionFluid.getFluid(amount)
+        FluidStack tFluid = tier2Fluid ? Materials.BiocatalyzedPropulsionFluid.getFluid(amount)
             : new FluidStack(GTPPFluids.Kerosene, amount);
         for (MTEHatchInput mInputHatch : mInputHatches) {
             if (drain(mInputHatch, tFluid, false)) {
@@ -723,7 +722,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         // might need a cleanup here
         if (ticker % 21 == 0) {
 
-            FluidStack tFluid = tier2Fluid ? MaterialsUEVplus.BiocatalyzedPropulsionFluid.getFluid(amountToDrain)
+            FluidStack tFluid = tier2Fluid ? Materials.BiocatalyzedPropulsionFluid.getFluid(amountToDrain)
                 : new FluidStack(GTPPFluids.Kerosene, amountToDrain); // gets fluid to drain
             for (MTEHatchInput mInputHatch : mInputHatches) {
                 if (drain(mInputHatch, tFluid, true)) {

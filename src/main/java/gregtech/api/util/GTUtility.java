@@ -12,6 +12,7 @@ import static gregtech.api.enums.Mods.Translocator;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 import static gregtech.common.UndergroundOil.undergroundOilReadInformation;
+import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraftforge.common.util.ForgeDirection.DOWN;
 import static net.minecraftforge.common.util.ForgeDirection.EAST;
 import static net.minecraftforge.common.util.ForgeDirection.NORTH;
@@ -127,7 +128,6 @@ import org.joml.Vector3i;
 import com.google.auto.value.AutoValue;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.common.collect.SetMultimap;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
@@ -177,8 +177,8 @@ import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.RunnableSound;
-import gregtech.common.blocks.BlockOresAbstract;
 import gregtech.common.items.ItemIntegratedCircuit;
+import gregtech.common.ores.OreManager;
 import gregtech.common.pollution.Pollution;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
@@ -492,7 +492,8 @@ public class GTUtility {
      */
     @Nonnull
     public static String getTierNameWithParentheses(long voltage) {
-        return "(" + GTValues.VN[getTier(voltage)] + ")";
+        String color = GTValues.TIER_COLORS[getTier(voltage)];
+        return "(" + color + GTValues.VN[getTier(voltage)] + EnumChatFormatting.RESET + ")";
     }
 
     public static void sendChatToPlayer(EntityPlayer player, String message) {
@@ -2451,6 +2452,26 @@ public class GTUtility {
         return false;
     }
 
+    public static <A, B> int indexOf(A[] array, B value) {
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] == value) return i;
+        }
+
+        return -1;
+    }
+
+    public static <A, B> boolean contains(A[] array, B value) {
+        return indexOf(array, value) != -1;
+    }
+
+    public static <T> T getIndexSafe(T[] array, int index) {
+        return index < 0 || index >= array.length ? null : array[index];
+    }
+
+    public static <T> T getIndexSafe(List<T> list, int index) {
+        return index < 0 || index >= list.size() ? null : list.get(index);
+    }
+
     public static Block getBlockFromStack(ItemStack itemStack) {
         if (isStackInvalid(itemStack)) return Blocks.air;
         return getBlockFromItem(itemStack.getItem());
@@ -2701,10 +2722,10 @@ public class GTUtility {
     public static int getRadioactivityLevel(ItemStack aStack) {
         ItemData tData = GTOreDictUnificator.getItemData(aStack);
         if (tData != null && tData.hasValidMaterialData()) {
-            if (tData.mMaterial.mMaterial.mEnchantmentArmors instanceof EnchantmentRadioactivity)
-                return tData.mMaterial.mMaterial.mEnchantmentArmorsLevel;
-            if (tData.mMaterial.mMaterial.mEnchantmentTools instanceof EnchantmentRadioactivity)
-                return tData.mMaterial.mMaterial.mEnchantmentToolsLevel;
+            if (tData.mMaterial.mMaterial.mArmorEnchantment instanceof EnchantmentRadioactivity)
+                return tData.mMaterial.mMaterial.mArmorEnchantmentLevel;
+            if (tData.mMaterial.mMaterial.mToolEnchantment instanceof EnchantmentRadioactivity)
+                return tData.mMaterial.mMaterial.mToolEnchantmentLevel;
         }
         return EnchantmentHelper.getEnchantmentLevel(EnchantmentRadioactivity.INSTANCE.effectId, aStack);
     }
@@ -3996,6 +4017,14 @@ public class GTUtility {
         return null;
     }
 
+    public static int hashCode(int... values) {
+        return Arrays.hashCode(values);
+    }
+
+    public static long hashCode(long... values) {
+        return Arrays.hashCode(values);
+    }
+
     public static boolean eraseBlockByFakePlayer(FakePlayer aPlayer, int aX, int aY, int aZ, boolean isSimulate) {
         if (aPlayer == null) return false;
         World aWorld = aPlayer.worldObj;
@@ -4455,16 +4484,12 @@ public class GTUtility {
             && GTOreDictUnificator.getAssociation(aStack).mPrefix.equals(aPrefix);
     }
 
-    public static final ImmutableSet<String> ORE_BLOCK_CLASSES = ImmutableSet.of(
-        "bartworks.system.material.BWMetaGeneratedOres",
-        "bartworks.system.material.BWMetaGeneratedSmallOres",
-        "gtPlusPlus.core.block.base.BlockBaseOre");
+    public static boolean isOre(Block block, int meta) {
+        OptionalBoolean isOre = OreManager.isOre(block, meta);
 
-    public static boolean isOre(Block aBlock, int aMeta) {
-        return (aBlock instanceof BlockOresAbstract) || isOre(new ItemStack(aBlock, 1, aMeta))
-            || ORE_BLOCK_CLASSES.contains(
-                aBlock.getClass()
-                    .getName());
+        if (isOre != OptionalBoolean.NONE) return isOre.getAsBoolean();
+
+        return isOre(new ItemStack(block, 1, meta));
     }
 
     public static boolean isOre(ItemStack aStack) {
@@ -5360,6 +5385,115 @@ public class GTUtility {
         } else {
             return text.substring(0, limit) + "...";
         }
+    }
+
+    // helper function (from MultiblockBase that creates a string of timed dates
+    public static String appendRate(boolean isLiquid, Long amount, boolean isFormatShortened, int maxProgressTicks) {
+        final StringBuffer ret = new StringBuffer();
+        final DecimalFormat df = new DecimalFormat("0.00");
+        final double progressTime = (double) maxProgressTicks / 20;
+        double perTick = amount / (double) maxProgressTicks;
+        double perSecond = amount / progressTime;
+        double perMinute = perSecond * 60;
+        double perHour = perSecond * 3_600;
+        double perDay = perSecond * 86_400;
+
+        final String amountText = translateToLocal("GT5U.gui.text.amount") + " ";
+        final String perTickText = translateToLocal("GT5U.gui.text.per_tick") + " ";
+        final String perSecondText = translateToLocal("GT5U.gui.text.per_second") + " ";
+        final String perMinuteText = translateToLocal("GT5U.gui.text.per_minute") + " ";
+        final String perHourText = translateToLocal("GT5U.gui.text.per_hour") + " ";
+        final String perDayText = translateToLocal("GT5U.gui.text.per_day") + " ";
+
+        final Function<Double, Double> roundNumber = (number) -> {
+            if (Math.abs(number) < 10) {
+                return Math.round(number * 100) / 100.0;
+            } else {
+                return Math.floor(number);
+            }
+        };
+
+        if (isFormatShortened) {
+            ret.append(" (");
+            ret.append(EnumChatFormatting.GRAY);
+            ret.append(perSecond > 1 ? formatShortenedLong((long) perSecond) : df.format(perSecond));
+            ret.append("/s");
+            ret.append(EnumChatFormatting.WHITE);
+            ret.append(")");
+        } else {
+            ret.append(EnumChatFormatting.RESET);
+            ret.append(
+                amountText + EnumChatFormatting.GOLD
+                    + formatNumbers(amount)
+                    + (isLiquid ? "L" : "")
+                    + EnumChatFormatting.RESET);
+            ret.append("\n");
+            ret.append(
+                perTickText + EnumChatFormatting.GOLD
+                    + formatNumbers(roundNumber.apply(perTick))
+                    + (isLiquid ? "L" : "")
+                    + (perSecond > 1_000_000
+                        ? EnumChatFormatting.WHITE + " ["
+                            + EnumChatFormatting.GRAY
+                            + formatShortenedLong((long) perTick)
+                            + EnumChatFormatting.WHITE
+                            + "]"
+                        : "")
+                    + EnumChatFormatting.RESET);
+            ret.append("\n");
+            ret.append(
+                perSecondText + EnumChatFormatting.GOLD
+                    + formatNumbers(roundNumber.apply(perSecond))
+                    + (isLiquid ? "L" : "")
+                    + (perSecond > 1_000_000
+                        ? EnumChatFormatting.WHITE + " ["
+                            + EnumChatFormatting.GRAY
+                            + formatShortenedLong((long) perSecond)
+                            + EnumChatFormatting.WHITE
+                            + "]"
+                        : "")
+                    + EnumChatFormatting.RESET);
+            ret.append("\n");
+            ret.append(
+                perMinuteText + EnumChatFormatting.GOLD
+                    + formatNumbers(roundNumber.apply(perMinute))
+                    + (isLiquid ? "L" : "")
+                    + (perMinute > 1_000_000
+                        ? EnumChatFormatting.WHITE + " ["
+                            + EnumChatFormatting.GRAY
+                            + formatShortenedLong((long) perMinute)
+                            + EnumChatFormatting.WHITE
+                            + "]"
+                        : "")
+                    + EnumChatFormatting.RESET);
+            ret.append("\n");
+            ret.append(
+                perHourText + EnumChatFormatting.GOLD
+                    + formatNumbers(roundNumber.apply(perHour))
+                    + (isLiquid ? "L" : "")
+                    + (perHour > 1_000_000
+                        ? EnumChatFormatting.WHITE + " ["
+                            + EnumChatFormatting.GRAY
+                            + formatShortenedLong((long) perHour)
+                            + EnumChatFormatting.WHITE
+                            + "]"
+                        : "")
+                    + EnumChatFormatting.RESET);
+            ret.append("\n");
+            ret.append(
+                perDayText + EnumChatFormatting.GOLD
+                    + formatNumbers(roundNumber.apply(perDay))
+                    + (isLiquid ? "L" : "")
+                    + (perDay > 1_000_000
+                        ? EnumChatFormatting.WHITE + " ["
+                            + EnumChatFormatting.GRAY
+                            + formatShortenedLong((long) perDay)
+                            + EnumChatFormatting.WHITE
+                            + "]"
+                        : "")
+                    + EnumChatFormatting.RESET);
+        }
+        return ret.toString();
     }
 
     public static boolean isRealPlayer(EntityLivingBase entity) {
