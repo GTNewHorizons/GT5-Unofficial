@@ -200,7 +200,7 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
         Materials material = getMaterial(aMetaData);
         OrePrefixes prefix = getOrePrefix(aMetaData);
         if (material != null && prefix != null) {
-            return material.mIconSet.mTextures[prefix.mTextureIndex];
+            return material.mIconSet.mTextures[prefix.getTextureIndex()];
         }
         return null;
     }

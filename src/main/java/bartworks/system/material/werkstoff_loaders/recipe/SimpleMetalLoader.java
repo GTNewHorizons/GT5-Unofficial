@@ -82,10 +82,13 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                     .addTo(hammerRecipes);
 
                 TextureSet texSet = werkstoff.getTexSet();
-                ITexture texture = SideReference.Side.Client ? TextureFactory.of(
-                    texSet.mTextures[PrefixTextureLinker.blockTexMap.getOrDefault(texSet, block.mTextureIndex)],
-                    werkstoff.getRGBA(),
-                    false) : TextureFactory.of(texSet.mTextures[block.mTextureIndex], werkstoff.getRGBA(), false);
+                ITexture texture = SideReference.Side.Client
+                    ? TextureFactory.of(
+                        texSet.mTextures[PrefixTextureLinker.blockTexMap
+                            .getOrDefault(texSet, (short) block.getTextureIndex())],
+                        werkstoff.getRGBA(),
+                        false)
+                    : TextureFactory.of(texSet.mTextures[block.getTextureIndex()], werkstoff.getRGBA(), false);
                 CoverRegistry.registerDecorativeCover(werkstoff.get(plate), texture);
 
                 return;

@@ -133,8 +133,8 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
      */
     public final IIconContainer getIconContainer(int aMetaData, Materials aMaterial) {
         return mGeneratedPrefixList[aMetaData / 1000] != null
-            && mGeneratedPrefixList[aMetaData / 1000].mTextureIndex >= 0
-                ? aMaterial.mIconSet.mTextures[mGeneratedPrefixList[aMetaData / 1000].mTextureIndex]
+            && mGeneratedPrefixList[aMetaData / 1000].getTextureIndex() >= 0
+                ? aMaterial.mIconSet.mTextures[mGeneratedPrefixList[aMetaData / 1000].getTextureIndex()]
                 : null;
     }
 

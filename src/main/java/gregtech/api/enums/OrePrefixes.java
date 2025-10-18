@@ -2212,6 +2212,10 @@ public class OrePrefixes {
         return materialAmount;
     }
 
+    public int getTextureIndex() {
+        return textureIndex;
+    }
+
     public static final ImmutableList<OrePrefixes> CELL_TYPES = ImmutableList.of(
         cell,
         cellMolten,

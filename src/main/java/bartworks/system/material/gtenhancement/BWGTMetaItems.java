@@ -113,10 +113,10 @@ public class BWGTMetaItems extends BWMetaGeneratedItems {
 
     @Override
     public IIconContainer getIconContainer(int aMetaData) {
-        if (this.orePrefixes.mTextureIndex == -1) return this.getIconContainerBartWorks(aMetaData);
+        if (this.orePrefixes.getTextureIndex() == -1) return this.getIconContainerBartWorks(aMetaData);
         Materials material = this.getMaterialFromMeta(aMetaData);
         if (material != null) {
-            return material.mIconSet.mTextures[this.orePrefixes.mTextureIndex];
+            return material.mIconSet.mTextures[this.orePrefixes.getTextureIndex()];
         }
         return null;
     }

@@ -175,9 +175,10 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
         ITexture oreTexture;
 
         if (material != null) {
-            oreTexture = TextureFactory.of(material.getTexSet().mTextures[prefix.mTextureIndex], material.getRGBA());
+            oreTexture = TextureFactory
+                .of(material.getTexSet().mTextures[prefix.getTextureIndex()], material.getRGBA());
         } else {
-            oreTexture = TextureFactory.of(gregtech.api.enums.TextureSet.SET_NONE.mTextures[prefix.mTextureIndex]);
+            oreTexture = TextureFactory.of(gregtech.api.enums.TextureSet.SET_NONE.mTextures[prefix.getTextureIndex()]);
         }
 
         ITexture[][] out = new ITexture[6][];

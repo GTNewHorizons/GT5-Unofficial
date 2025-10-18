@@ -151,9 +151,9 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
     @Override
     public IIconContainer getIconContainer(int aMetaData) {
         if (Werkstoff.werkstoffHashMap.get((short) aMetaData) == null) return null;
-        if (this.orePrefixes.mTextureIndex == -1) return this.getIconContainerBartWorks(aMetaData);
+        if (this.orePrefixes.getTextureIndex() == -1) return this.getIconContainerBartWorks(aMetaData);
         return Werkstoff.werkstoffHashMap.get((short) aMetaData)
-            .getTexSet().mTextures[this.orePrefixes.mTextureIndex];
+            .getTexSet().mTextures[this.orePrefixes.getTextureIndex()];
     }
 
     protected IIconContainer getIconContainerBartWorks(int aMetaData) {

@@ -123,8 +123,8 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
      */
     public final IIconContainer getIconContainer(final int aMetaData, final Materials aMaterial) {
         return (this.mGeneratedPrefixList[aMetaData / 1000] != null)
-            && (this.mGeneratedPrefixList[aMetaData / 1000].mTextureIndex >= 0)
-                ? aMaterial.mIconSet.mTextures[this.mGeneratedPrefixList[aMetaData / 1000].mTextureIndex]
+            && (this.mGeneratedPrefixList[aMetaData / 1000].getTextureIndex() >= 0)
+                ? aMaterial.mIconSet.mTextures[this.mGeneratedPrefixList[aMetaData / 1000].getTextureIndex()]
                 : null;
     }
 

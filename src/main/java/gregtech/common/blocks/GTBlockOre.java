@@ -201,7 +201,8 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
         if (mat != null) {
             ITexture iTexture = TextureFactory.builder()
                 .addIcon(
-                    mat.mIconSet.mTextures[small ? OrePrefixes.oreSmall.mTextureIndex : OrePrefixes.ore.mTextureIndex])
+                    mat.mIconSet.mTextures[small ? OrePrefixes.oreSmall.getTextureIndex()
+                        : OrePrefixes.ore.getTextureIndex()])
                 .setRGBA(mat.mRGBa)
                 .stdOrient()
                 .build();
@@ -209,7 +210,7 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
             textures = new ITexture[] { stoneType.getTexture(0), iTexture };
         } else {
             textures = new ITexture[] { stoneType.getTexture(0), TextureFactory.builder()
-                .addIcon(TextureSet.SET_NONE.mTextures[OrePrefixes.ore.mTextureIndex])
+                .addIcon(TextureSet.SET_NONE.mTextures[OrePrefixes.ore.getTextureIndex()])
                 .stdOrient()
                 .build() };
         }

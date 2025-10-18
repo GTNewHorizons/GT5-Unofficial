@@ -51,7 +51,7 @@ public abstract class MetaGeneratedItemX01 extends MetaGeneratedItem {
         super(aUnlocalized, (short) 32000, (short) 766);
         mPrefix = aGeneratedPrefix;
         mIconSetIndex = aIconSetIndex >= 0 ? aIconSetIndex
-            : aGeneratedPrefix.mTextureIndex >= 0 ? aGeneratedPrefix.mTextureIndex : 0;
+            : aGeneratedPrefix.getTextureIndex() >= 0 ? aGeneratedPrefix.getTextureIndex() : 0;
 
         for (int i = 0; i < GregTechAPI.sGeneratedMaterials.length; i++) {
             OrePrefixes tPrefix = mPrefix;
