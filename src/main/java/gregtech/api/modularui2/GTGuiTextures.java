@@ -370,6 +370,11 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .build();
 
+    public static final UITexture TT_OVERLAY_SLOT_MESH = UITexture.builder()
+        .location(MODID, "gui/overlay_slot/mesh")
+        .canApplyTheme()
+        .build();
+
     // endregion slot overlay
 
     // region progressbar
@@ -602,6 +607,10 @@ public final class GTGuiTextures {
         .name(GTTextureIds.PICTURE_RADIATION_SHUTTER_INSIDE)
         .build();
 
+    public static final UITexture TT_CONTROLLER_SLOT_HEAT_SINK = UITexture.builder()
+        .location(MODID, "gui/picture/heat_sink_small")
+        .canApplyTheme()
+        .build();
     // endregion picture
 
     // region machine modes
