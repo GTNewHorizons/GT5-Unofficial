@@ -2486,17 +2486,9 @@ public class OrePrefixes {
     }
 
     public final ArrayList<ItemStack> mPrefixedItems = new GTArrayList<>(false, 16);
-    public final short mTextureIndex;
-    public final String mLocalizedMaterialPre, mLocalizedMaterialPost;
-    public final boolean mIsUsedForOreProcessing, mIsEnchantable, mIsUnificatable, mIsMaterialBased, mIsSelfReferencing,
-        mIsContainer, mDontUnificateActively, mIsUsedForBlocks, mAllowNormalRecycling, mGenerateDefaultItem;
+
     public final List<TC_AspectStack> mAspects = new ArrayList<>();
     public final Collection<OrePrefixes> mFamiliarPrefixes = new HashSet<>();
-    /**
-     * Used to determine the amount of Material this Prefix contains. Multiply or Divide GT_Values.M to get the Amounts
-     * in comparision to one Ingot. 0 = Null Negative = Undefined Amount
-     */
-    public final long mMaterialAmount;
 
     public final Collection<Materials> mDisabledItems = new HashSet<>(), mNotGeneratedItems = new HashSet<>(),
         mIgnoredMaterials = new HashSet<>(), mGeneratedItems = new HashSet<>();
