@@ -204,6 +204,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             .addInfo("Does all ore processing in one step")
             .addStaticParallelInfo(1024)
             .addInfo("Every ore costs 30EU/t, 2L lubricant, 200L distilled water")
+            .addInfo("Recipes that need extra input require their extra inputs on top of the normal costs")
             .addInfo("Processing time is dependent on mode")
             .addInfo("Use a screwdriver to switch mode")
             .addInfo("Sneak click with screwdriver to void the stone dust")
