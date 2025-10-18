@@ -34,404 +34,601 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectOpenCustomHashSet;
 import it.unimi.dsi.fastutil.objects.ObjectSet;
 
-public enum OrePrefixes {
+public class OrePrefixes {
 
-    // used for removed prefixes to prevent id shifts
-    ___placeholder___("Placeholder", "", "", false, false, false, false, false, false, false, false, false, false, 0, 0,
-        64, -1),
+    /** Used for removed prefixes to prevent id shifts. */
+    public static final OrePrefixes ___placeholder___ = new OrePrefixBuilder().build();
+    // ___placeholder___("Placeholder", "", "", false, false, false, false, false, false, false, false, false, false, 0, 0, 64, -1)
 
     /** In case of an End-Ores Mod. Ore -> Material is a Oneway Operation! */
-    oreBlackgranite("Black Granite Ores", "Granite ", " Ore", true, true, false, false, false, true, false, false,
-        false, true, B[3], -1, 64, -1),
+    public static final OrePrefixes oreBlackgranite = new OrePrefixBuilder().build();
+    // oreBlackgranite("Black Granite Ores", "Granite ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1)
+
     /** In case of an End-Ores Mod. Ore -> Material is a Oneway Operation! */
-    oreRedgranite("Red Granite Ores", "Granite ", " Ore", true, true, false, false, false, true, false, false, false,
-        true, B[3], -1, 64, -1),
+    public static final OrePrefixes oreRedgranite = new OrePrefixBuilder().build();
+    // oreRedgranite("Red Granite Ores", "Granite ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1)
+
     /** In case of an End-Ores Mod. Ore -> Material is a Oneway Operation! */
-    oreMarble("Marble Ores", "Marble ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3],
-        -1, 64, -1),
+    public static final OrePrefixes oreMarble = new OrePrefixBuilder().build();
+    // oreMarble("Marble Ores", "Marble ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1)
+
     /** In case of an End-Ores Mod. Ore -> Material is a Oneway Operation! */
-    oreBasalt("Basalt Ores", "Basalt ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3],
-        -1, 64, -1),
+    public static final OrePrefixes oreBasalt = new OrePrefixBuilder().build();
+    // oreBasalt("Basalt Ores", "Basalt ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1)
+
     /** Prefix of the Nether-Ores Mod. Causes Ores to double. Ore -> Material is a Oneway Operation! */
-    oreNetherrack("Netherrack Ores", "Nether ", " Ore", true, true, false, false, false, true, false, false, false,
-        true, B[3], -1, 64, -1),
+    public static final OrePrefixes oreNetherrack = new OrePrefixBuilder().build();
+    // oreNetherrack("Netherrack Ores", "Nether ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1)
+
     /** Prefix of the Nether-Ores Mod. Causes Ores to double. Ore -> Material is a Oneway Operation! */
-    oreNether("Nether Ores", "Nether ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3],
-        -1, 64, -1),
+    public static final OrePrefixes oreNether = new OrePrefixBuilder().build();
+    // oreNether("Nether Ores", "Nether ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1)
+
     /** Prefix of the Dense-Ores Mod. Causes Ores to double. Ore -> Material is a Oneway Operation! */
-    oreDense("Dense Ores", "Dense ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1,
-        64, -1),
-    /** Prefix of TFC */
-    oreRich("Rich Ores", "Rich ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1,
-        64, -1),
-    /** Prefix of TFC */
-    oreNormal("Normal Ores", "Normal ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3],
-        -1, 64, -1),
-    /** Prefix of Railcraft. */
-    oreSmall("Small Ores", "Small ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1,
-        64, 67),
-    /** Prefix of Railcraft. */
-    orePoor("Poor Ores", "Poor ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1,
-        64, -1),
-    /** In case of an End-Ores Mod. Ore -> Material is a Oneway Operation! */
-    oreEndstone("Endstone Ores", "End ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3],
-        -1, 64, -1),
-    /** In case of an End-Ores Mod. Ore -> Material is a Oneway Operation! */
-    oreEnd("End Ores", "End ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64,
-        -1),
-    /** Regular Ore Prefix. Ore -> Material is a Oneway Operation! Introduced by Eloraam */
-    ore("Ores", "", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, 68),
-    crushedCentrifuged("Centrifuged Ores", "Centrifuged ", " Ore", true, true, false, false, false, false, false, true,
-        false, true, B[3], -1, 64, 7),
-    crushedPurified("Purified Ores", "Purified ", " Ore", true, true, false, false, false, false, false, true, false,
-        true, B[3], -1, 64, 6),
-    crushed("Crushed Ores", "Crushed ", " Ore", true, true, false, false, false, false, false, true, false, true, B[3],
-        -1, 64, 5),
-    rawOre("Raw Ore", "Raw ", " Ore", true, true, false, false, false, false, false, false, false, true, B[3], -1, 64,
-        64),
+    public static final OrePrefixes oreDense = new OrePrefixBuilder().build();
+    // oreDense("Dense Ores", "Dense ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1)
 
-    /** Introduced by Mekanism */
-    shard("Crystallised Shards", "", "", true, true, false, false, false, false, false, false, false, true, B[3], -1,
-        64, -1),
-    clump("Clumps", "", "", true, true, false, false, false, false, false, false, false, true, B[3], -1, 64, -1),
-    reduced("Reduced Gravels", "", "", true, true, false, false, false, false, false, false, false, true, B[3], -1, 64,
-        -1),
-    crystalline("Crystallised Metals", "", "", true, true, false, false, false, false, false, false, false, true, B[3],
-        -1, 64, -1),
-    cleanGravel("Clean Gravels", "", "", true, true, false, false, false, false, false, false, false, true, B[3], -1,
-        64, -1),
-    dirtyGravel("Dirty Gravels", "", "", true, true, false, false, false, false, false, false, false, true, B[3], -1,
-        64, -1),
+    /** Prefix of TFC */
+    public static final OrePrefixes oreRich = new OrePrefixBuilder().build();
+    // oreRich("Rich Ores", "Rich ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1)
+
+    /** Prefix of TFC */
+    public static final OrePrefixes oreNormal = new OrePrefixBuilder().build();
+    // oreNormal("Normal Ores", "Normal ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1)
+
+    /** Prefix of Railcraft. */
+    public static final OrePrefixes oreSmall = new OrePrefixBuilder().build();
+    // oreSmall("Small Ores", "Small ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, 67)
+
+    /** Prefix of Railcraft. */
+    public static final OrePrefixes orePoor = new OrePrefixBuilder().build();
+    // orePoor("Poor Ores", "Poor ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1)
+
+    /** In case of an End-Ores Mod. Ore -> Material is a Oneway Operation! */
+    public static final OrePrefixes oreEndstone = new OrePrefixBuilder().build();
+    // oreEndstone("Endstone Ores", "End ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1)
+
+    /** In case of an End-Ores Mod. Ore -> Material is a Oneway Operation! */
+    public static final OrePrefixes oreEnd = new OrePrefixBuilder().build();
+    // oreEnd("End Ores", "End ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1)
+
+    /** Regular Ore Prefix. Ore -> Material is a Oneway Operation! Introduced by Eloraam */
+    public static final OrePrefixes ore = new OrePrefixBuilder().build();
+    // ore("Ores", "", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, 68)
+
+    public static final OrePrefixes crushedCentrifuged = new OrePrefixBuilder().build();
+    // crushedCentrifuged("Centrifuged Ores", "Centrifuged ", " Ore", true, true, false, false, false, false, false, true, false, true, B[3], -1, 64, 7)
+
+    public static final OrePrefixes crushedPurified = new OrePrefixBuilder().build();
+    // crushedPurified("Purified Ores", "Purified ", " Ore", true, true, false, false, false, false, false, true, false, true, B[3], -1, 64, 6)
+
+    public static final OrePrefixes crushed = new OrePrefixBuilder().build();
+    // crushed("Crushed Ores", "Crushed ", " Ore", true, true, false, false, false, false, false, true, false, true, B[3], -1, 64, 5)
+
+    public static final OrePrefixes rawOre = new OrePrefixBuilder().build();
+    // rawOre("Raw Ore", "Raw ", " Ore", true, true, false, false, false, false, false, false, false, true, B[3], -1, 64, 64)
+
+    // Introduced by Mekanism
+    public static final OrePrefixes shard = new OrePrefixBuilder().build();
+    // shard("Crystallised Shards", "", "", true, true, false, false, false, false, false, false, false, true, B[3], -1, 64, -1)
+
+    public static final OrePrefixes clump = new OrePrefixBuilder().build();
+    // clump("Clumps", "", "", true, true, false, false, false, false, false, false, false, true, B[3], -1, 64, -1)
+
+    public static final OrePrefixes reduced = new OrePrefixBuilder().build();
+    // reduced("Reduced Gravels", "", "", true, true, false, false, false, false, false, false, false, true, B[3], -1, 64, -1)
+
+    public static final OrePrefixes crystalline = new OrePrefixBuilder().build();
+    // crystalline("Crystallised Metals", "", "", true, true, false, false, false, false, false, false, false, true, B[3], -1, 64, -1)
+
+    public static final OrePrefixes cleanGravel = new OrePrefixBuilder().build();
+    // cleanGravel("Clean Gravels", "", "", true, true, false, false, false, false, false, false, false, true, B[3], -1, 64, -1)
+
+    public static final OrePrefixes dirtyGravel = new OrePrefixBuilder().build();
+    // dirtyGravel("Dirty Gravels", "", "", true, true, false, false, false, false, false, false, false, true, B[3], -1, 64, -1)
+
     /** A hot Ingot, which has to be cooled down by a Vacuum Freezer. */
-    ingotHot("Hot Ingots", "Hot ", " Ingot", true, true, false, false, false, false, false, true, false, false, B[1],
-        M * 1, 64, 12),
+    public static final OrePrefixes ingotHot = new OrePrefixBuilder().build();
+    // ingotHot("Hot Ingots", "Hot ", " Ingot", true, true, false, false, false, false, false, true, false, false, B[1], M * 1, 64, 12)
+
     /** A regular Ingot. Introduced by Eloraam */
-    ingot("Ingots", "", " Ingot", true, true, false, false, false, false, false, true, false, false, B[1], M * 1, 64,
-        11),
+    public static final OrePrefixes ingot = new OrePrefixBuilder().build();
+    // ingot("Ingots", "", " Ingot", true, true, false, false, false, false, false, true, false, false, B[1], M * 1, 64, 11)
+
     /** A regular Gem worth one small Dust. Introduced by TerraFirmaCraft */
-    gemChipped("Chipped Gemstones", "Chipped ", "", true, true, true, false, false, false, true, true, false, false,
-        B[2], M / 4, 64, 59),
+    public static final OrePrefixes gemChipped = new OrePrefixBuilder().build();
+    // gemChipped("Chipped Gemstones", "Chipped ", "", true, true, true, false, false, false, true, true, false, false, B[2], M / 4, 64, 59)
+
     /** A regular Gem worth two small Dusts. Introduced by TerraFirmaCraft */
-    gemFlawed("Flawed Gemstones", "Flawed ", "", true, true, true, false, false, false, true, true, false, false, B[2],
-        M / 2, 64, 60),
+    public static final OrePrefixes gemFlawed = new OrePrefixBuilder().build();
+    // gemFlawed("Flawed Gemstones", "Flawed ", "", true, true, true, false, false, false, true, true, false, false, B[2], M / 2, 64, 60)
+
     /** A regular Gem worth two Dusts. Introduced by TerraFirmaCraft */
-    gemFlawless("Flawless Gemstones", "Flawless ", "", true, true, true, false, false, false, true, true, false, false,
-        B[2], M * 2, 64, 61),
+    public static final OrePrefixes gemFlawless = new OrePrefixBuilder().build();
+    // gemFlawless("Flawless Gemstones", "Flawless ", "", true, true, true, false, false, false, true, true, false, false, B[2], M * 2, 64, 61)
+
     /** A regular Gem worth four Dusts. Introduced by TerraFirmaCraft */
-    gemExquisite("Exquisite Gemstones", "Exquisite ", "", true, true, true, false, false, false, true, true, false,
-        false, B[2], M * 4, 64, 62),
+    public static final OrePrefixes gemExquisite = new OrePrefixBuilder().build();
+    // gemExquisite("Exquisite Gemstones", "Exquisite ", "", true, true, true, false, false, false, true, true, false, false, B[2], M * 4, 64, 62)
+
     /** A regular Gem worth one Dust. Introduced by Eloraam */
-    gem("Gemstones", "", "", true, true, true, false, false, false, true, true, false, false, B[2], M * 1, 64, 8),
+    public static final OrePrefixes gem = new OrePrefixBuilder().build();
+    // gem("Gemstones", "", "", true, true, true, false, false, false, true, true, false, false, B[2], M * 1, 64, 8)
+
     /** 1/9th of a Dust. */
-    dustTiny("Tiny Dusts", "Tiny Pile of ", " Dust", true, true, false, false, false, false, false, true, false, false,
-        B[0] | B[1] | B[2] | B[3], M / 9, 64, 0),
+    public static final OrePrefixes dustTiny = new OrePrefixBuilder().build();
+    // dustTiny("Tiny Dusts", "Tiny Pile of ", " Dust", true, true, false, false, false, false, false, true, false, false, B[0] | B[1] | B[2] | B[3], M / 9, 64, 0)
+
     /** 1/4th of a Dust. */
-    dustSmall("Small Dusts", "Small Pile of ", " Dust", true, true, false, false, false, false, false, true, false,
-        false, B[0] | B[1] | B[2] | B[3], M / 4, 64, 1),
+    public static final OrePrefixes dustSmall = new OrePrefixBuilder().build();
+    // dustSmall("Small Dusts", "Small Pile of ", " Dust", true, true, false, false, false, false, false, true, false, false, B[0] | B[1] | B[2] | B[3], M / 4, 64, 1)
+
     /** Dust with impurities. 1 Unit of Main Material and 1/9 - 1/4 Unit of secondary Material */
-    dustImpure("Impure Dusts", "Impure Pile of ", " Dust", true, true, false, false, false, false, false, true, false,
-        true, B[3], M * 1, 64, 3),
-    dustRefined("Refined Dusts", "Refined Pile of ", " Dust", true, true, false, false, false, false, false, true,
-        false, true, B[3], M * 1, 64, 2),
-    dustPure("Purified Dusts", "Purified Pile of ", " Dust", true, true, false, false, false, false, false, true, false,
-        true, B[3], M * 1, 64, 4),
+    public static final OrePrefixes dustImpure = new OrePrefixBuilder().build();
+    // dustImpure("Impure Dusts", "Impure Pile of ", " Dust", true, true, false, false, false, false, false, true, false, true, B[3], M * 1, 64, 3)
+
+    public static final OrePrefixes dustRefined = new OrePrefixBuilder().build();
+    // dustRefined("Refined Dusts", "Refined Pile of ", " Dust", true, true, false, false, false, false, false, true, false, true, B[3], M * 1, 64, 2)
+
+    public static final OrePrefixes dustPure = new OrePrefixBuilder().build();
+    // dustPure("Purified Dusts", "Purified Pile of ", " Dust", true, true, false, false, false, false, false, true, false, true, B[3], M * 1, 64, 4)
+
     /** Pure Dust worth of one Ingot or Gem. Introduced by Alblaka. */
-    dust("Dusts", "", " Dust", true, true, false, false, false, false, false, true, false, false,
-        B[0] | B[1] | B[2] | B[3], M * 1, 64, 2),
+    public static final OrePrefixes dust = new OrePrefixBuilder().build();
+    // dust("Dusts", "", " Dust", true, true, false, false, false, false, false, true, false, false, B[0] | B[1] | B[2] | B[3], M * 1, 64, 2)
+
     /** A Nugget. Introduced by Eloraam */
-    nugget("Nuggets", "", " Nugget", true, true, false, false, false, false, false, true, false, false, B[1], M / 9, 64,
-        9),
+    public static final OrePrefixes nugget = new OrePrefixBuilder().build();
+    // nugget("Nuggets", "", " Nugget", true, true, false, false, false, false, false, true, false, false, B[1], M / 9, 64, 9)
+
     /** Special Alloys have this prefix. */
-    plateAlloy("Alloy Plates", "", "", true, false, false, false, false, false, false, false, false, false, B[1], -1,
-        64, 17),
-    plateSteamcraft("Steamcraft Plates", "", "", false, false, false, false, false, false, false, false, false, false,
-        B[1], -1, 64, 17),
+    public static final OrePrefixes plateAlloy = new OrePrefixBuilder().build();
+    // plateAlloy("Alloy Plates", "", "", true, false, false, false, false, false, false, false, false, false, B[1], -1, 64, 17)
+
+    public static final OrePrefixes plateSteamcraft = new OrePrefixBuilder().build();
+    // plateSteamcraft("Steamcraft Plates", "", "", false, false, false, false, false, false, false, false, false, false, B[1], -1, 64, 17)
+
     /** 9 Plates combined in one Item. */
-    plateDense("Dense Plates", "Dense ", " Plate", true, true, false, false, false, false, true, true, false, false,
-        B[1], M * 9, 64, 22),
-    plateSuperdense("Superdense Plates", "Superdense ", " Plate", true, true, false, false, false, false, true, true,
-        false, false, B[1], M * 64, 64, 125),
-    plateQuintuple("5x Plates", "Quintuple ", " Plate", true, true, false, false, false, false, true, true, false,
-        false, B[1], M * 5, 64, 21),
-    plateQuadruple("4x Plates", "Quadruple ", " Plate", true, true, false, false, false, false, true, true, false,
-        false, B[1], M * 4, 64, 20),
-    plateTriple("3x Plates", "Triple ", " Plate", true, true, false, false, false, false, true, true, false, false,
-        B[1], M * 3, 64, 19),
-    plateDouble("2x Plates", "Double ", " Plate", true, true, false, false, false, false, true, true, false, false,
-        B[1], M * 2, 64, 18),
-    plate("Plates", "", " Plate", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M * 1,
-        64, 17),
+    public static final OrePrefixes plateDense = new OrePrefixBuilder().build();
+    // plateDense("Dense Plates", "Dense ", " Plate", true, true, false, false, false, false, true, true, false, false, B[1], M * 9, 64, 22)
+
+    public static final OrePrefixes plateSuperdense = new OrePrefixBuilder().build();
+    // plateSuperdense("Superdense Plates", "Superdense ", " Plate", true, true, false, false, false, false, true, true, false, false, B[1], M * 64, 64, 125)
+
+    public static final OrePrefixes plateQuintuple = new OrePrefixBuilder().build();
+    // plateQuintuple("5x Plates", "Quintuple ", " Plate", true, true, false, false, false, false, true, true, false, false, B[1], M * 5, 64, 21)
+
+    public static final OrePrefixes plateQuadruple = new OrePrefixBuilder().build();
+    // plateQuadruple("4x Plates", "Quadruple ", " Plate", true, true, false, false, false, false, true, true, false, false, B[1], M * 4, 64, 20)
+
+    public static final OrePrefixes plateTriple = new OrePrefixBuilder().build();
+    // plateTriple("3x Plates", "Triple ", " Plate", true, true, false, false, false, false, true, true, false, false, B[1], M * 3, 64, 19)
+
+    public static final OrePrefixes plateDouble = new OrePrefixBuilder().build();
+    // plateDouble("2x Plates", "Double ", " Plate", true, true, false, false, false, false, true, true, false, false, B[1], M * 2, 64, 18)
+
+    public static final OrePrefixes plate = new OrePrefixBuilder().build();
+    // plate("Plates", "", " Plate", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M * 1, 64, 17)
+
     /** Casing made of 1/2 Ingot/Dust */
-    itemCasing("Casings", "", " Casing", true, true, false, false, false, false, true, true, false, false, B[1] | B[2],
-        M / 2, 64, 10),
+    public static final OrePrefixes itemCasing = new OrePrefixBuilder().build();
+    // itemCasing("Casings", "", " Casing", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M / 2, 64, 10)
+
     /** Foil made of 1/4 Ingot/Dust. */
-    foil("Foils", "", " Foil", true, true, false, false, false, false, true, true, false, false, B[1], M / 4, 64, 29),
+    public static final OrePrefixes foil = new OrePrefixBuilder().build();
+    // foil("Foils", "", " Foil", true, true, false, false, false, false, true, true, false, false, B[1], M / 4, 64, 29)
+
     /** Stick made of an Ingot. */
-    stickLong("Long Sticks/Rods", "Long ", " Rod", true, true, false, false, false, false, true, true, false, false,
-        B[1] | B[2], M * 1, 64, 54),
+    public static final OrePrefixes stickLong = new OrePrefixBuilder().build();
+    // stickLong("Long Sticks/Rods", "Long ", " Rod", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M * 1, 64, 54)
+
     /** Stick made of half an Ingot. Introduced by Eloraam */
-    stick("Sticks/Rods", "", " Rod", true, true, false, false, false, false, true, true, false, false, B[1] | B[2],
-        M / 2, 64, 23),
+    public static final OrePrefixes stick = new OrePrefixBuilder().build();
+    // stick("Sticks/Rods", "", " Rod", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M / 2, 64, 23)
+
     /** consisting out of one Nugget. */
-    round("Rounds", "", " Round", true, true, false, false, false, false, true, true, false, false, B[1], M / 9, 64,
-        25),
+    public static final OrePrefixes round = new OrePrefixBuilder().build();
+    // round("Rounds", "", " Round", true, true, false, false, false, false, true, true, false, false, B[1], M / 9, 64, 25)
+
     /** consisting out of 1/8 Ingot or 1/4 Stick. */
-    bolt("Bolts", "", " Bolt", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M / 8, 64,
-        26),
+    public static final OrePrefixes bolt = new OrePrefixBuilder().build();
+    // bolt("Bolts", "", " Bolt", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M / 8, 64, 26)
+
     /** contain dusts */
-    comb("Combs", "", " Comb", false, false, false, false, false, false, false, true, false, false, B[1] | B[2], M, 64,
-        101),
+    public static final OrePrefixes comb = new OrePrefixBuilder().build();
+    // comb("Combs", "", " Comb", false, false, false, false, false, false, false, true, false, false, B[1] | B[2], M, 64, 101)
+
     /** consisting out of a Bolt. */
-    screw("Screws", "", " Screw", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M / 8,
-        64, 27),
+    public static final OrePrefixes screw = new OrePrefixBuilder().build();
+    // screw("Screws", "", " Screw", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M / 8, 64, 27)
+
     /** consisting out of 1/2 Stick. */
-    ring("Rings", "", " Ring", true, true, false, false, false, false, true, true, false, false, B[1], M / 4, 64, 28),
+    public static final OrePrefixes ring = new OrePrefixBuilder().build();
+    // ring("Rings", "", " Ring", true, true, false, false, false, false, true, true, false, false, B[1], M / 4, 64, 28)
+
     /** consisting out of 1 Fine Wire. */
-    springSmall("Small Springs", "Small ", " Spring", true, true, false, false, false, false, true, true, false, false,
-        B[1], M / 4, 64, 55),
+    public static final OrePrefixes springSmall = new OrePrefixBuilder().build();
+    // springSmall("Small Springs", "Small ", " Spring", true, true, false, false, false, false, true, true, false, false, B[1], M / 4, 64, 55)
+
     /** consisting out of 2 Sticks. */
-    spring("Springs", "", " Spring", true, true, false, false, false, false, true, true, false, false, B[1], M * 1, 64,
-        56),
+    public static final OrePrefixes spring = new OrePrefixBuilder().build();
+    // spring("Springs", "", " Spring", true, true, false, false, false, false, true, true, false, false, B[1], M * 1, 64, 56)
+
     /** consisting out of 1/8 Ingot or 1/4 Wire. */
-    wireFine("Fine Wires", "Fine ", " Wire", true, true, false, false, false, false, true, true, false, false, B[1],
-        M / 8, 64, 51),
+    public static final OrePrefixes wireFine = new OrePrefixBuilder().build();
+    // wireFine("Fine Wires", "Fine ", " Wire", true, true, false, false, false, false, true, true, false, false, B[1], M / 8, 64, 51)
+
     /** consisting out of 4 Plates, 1 Ring and 1 Screw. */
-    rotor("Rotors", "", " Rotor", true, true, false, false, false, false, true, true, false, false, B[7], M * 4 + M / 4,
-        64, 53),
-    gearGtSmall("Small Gears", "Small ", " Gear", true, true, false, false, false, false, true, true, false, false,
-        B[7], M * 1, 64, 52),
+    public static final OrePrefixes Rotor = new OrePrefixBuilder().build();
+    // Rotor("Rotors", "", " Rotor", true, true, false, false, false, false, true, true, false, false, B[7], M * 4 + M / 4, 64, 53)
+
+    public static final OrePrefixes gearGtSmall = new OrePrefixBuilder().build();
+    // gearGtSmall("Small Gears", "Small ", " Gear", true, true, false, false, false, false, true, true, false, false, B[7], M * 1, 64, 52)
+
     /** Introduced by me because BuildCraft has ruined the gear Prefix... */
-    gearGt("Gears", "", " Gear", true, true, false, false, false, false, true, true, false, false, B[7], M * 4, 64, 63),
+    public static final OrePrefixes gearGt = new OrePrefixBuilder().build();
+    // gearGt("Gears", "", " Gear", true, true, false, false, false, false, true, true, false, false, B[7], M * 4, 64, 63)
+
     /** 3/4 of a Plate or Gem used to shape a Lense. Normally only used on Transparent Materials. */
-    lens("Lenses", "", " Lens", true, true, false, false, false, false, true, true, false, false, B[2], (M * 3) / 4, 64,
-        24),
+    public static final OrePrefixes lens = new OrePrefixBuilder().build();
+    // lens("Lenses", "", " Lens", true, true, false, false, false, false, true, true, false, false, B[2], (M * 3) / 4, 64, 24)
+
     /** Hot Cell full of Plasma, which can be used in the Plasma Generator. */
-    cellPlasma("Cells of Plasma", "", " Plasma Cell", true, true, true, true, false, false, false, true, false, false,
-        B[5], M * 1, 64, 31),
+    public static final OrePrefixes cellPlasma = new OrePrefixBuilder().build();
+    // cellPlasma("Cells of Plasma", "", " Plasma Cell", true, true, true, true, false, false, false, true, false, false, B[5], M * 1, 64, 31)
+
     /** Hot Cell full of molten stuff, which can be used in the Plasma Generator. */
-    cellMolten("Cells of Molten stuff", "Molten ", " Cell", true, true, true, true, false, false, false, true, false,
-        false, 0, M * 1, 64, 31),
-    cell("Cells", "", " Cell", true, true, true, true, false, false, true, true, false, false, B[4] | B[8], M * 1, 64,
-        30),
+    public static final OrePrefixes cellMolten = new OrePrefixBuilder().build();
+    // cellMolten("Cells of Molten stuff", "Molten ", " Cell", true, true, true, true, false, false, false, true, false, false, 0, M * 1, 64, 31)
+
+    public static final OrePrefixes cell = new OrePrefixBuilder().build();
+    // cell("Cells", "", " Cell", true, true, true, true, false, false, true, true, false, false, B[4] | B[8], M * 1, 64, 30)
+
     /** A vanilla Iron Bucket filled with the Material. */
-    bucket("Buckets", "", " Bucket", true, true, true, true, false, false, true, false, false, false, B[4] | B[8],
-        M * 1, 64, -1),
+    public static final OrePrefixes bucket = new OrePrefixBuilder().build();
+    // bucket("Buckets", "", " Bucket", true, true, true, true, false, false, true, false, false, false, B[4] | B[8], M * 1, 64, -1)
+
     /** An Iguana Tweaks Clay Bucket filled with the Material. */
-    bucketClay("Clay Buckets", "", " Clay Bucket", true, true, true, true, false, false, true, false, false, false,
-        B[4] | B[8], M * 1, 64, -1),
+    public static final OrePrefixes bucketClay = new OrePrefixBuilder().build();
+    // bucketClay("Clay Buckets", "", " Clay Bucket", true, true, true, true, false, false, true, false, false, false, B[4] | B[8], M * 1, 64, -1)
+
     /** Glass Bottle containing a Fluid. */
-    bottle("Bottles", "", " Bottle", true, true, true, true, false, false, false, false, false, false, B[4] | B[8], -1,
-        64, -1),
-    capsule("Capsules", "", " Capsule", false, true, true, true, false, false, false, false, false, false, B[4] | B[8],
-        M * 1, 64, -1),
-    crystal("Crystals", "", " Crystal", false, true, false, false, false, false, true, false, false, false, B[2], M * 1,
-        64, -1),
-    bulletGtSmall("Small Bullets", "Small ", " Bullet", true, true, false, false, true, false, true, false, true, false,
-        B[6] | B[8], M / 9, 64, -1),
-    bulletGtMedium("Medium Bullets", "Medium ", " Bullet", true, true, false, false, true, false, true, false, true,
-        false, B[6] | B[8], M / 6, 64, -1),
-    bulletGtLarge("Large Bullets", "Large ", " Bullet", true, true, false, false, true, false, true, false, true, false,
-        B[6] | B[8], M / 3, 64, -1),
+    public static final OrePrefixes bottle = new OrePrefixBuilder().build();
+    // bottle("Bottles", "", " Bottle", true, true, true, true, false, false, false, false, false, false, B[4] | B[8], -1, 64, -1)
+
+    public static final OrePrefixes capsule = new OrePrefixBuilder().build();
+    // capsule("Capsules", "", " Capsule", false, true, true, true, false, false, false, false, false, false, B[4] | B[8], M * 1, 64, -1)
+
+    public static final OrePrefixes crystal = new OrePrefixBuilder().build();
+    // crystal("Crystals", "", " Crystal", false, true, false, false, false, false, true, false, false, false, B[2], M * 1, 64, -1)
+
+    public static final OrePrefixes bulletGtSmall = new OrePrefixBuilder().build();
+    // bulletGtSmall("Small Bullets", "Small ", " Bullet", true, true, false, false, true, false, true, false, true, false, B[6] | B[8], M / 9, 64, -1)
+
+    public static final OrePrefixes bulletGtMedium = new OrePrefixBuilder().build();
+    // bulletGtMedium("Medium Bullets", "Medium ", " Bullet", true, true, false, false, true, false, true, false, true, false, B[6] | B[8], M / 6, 64, -1)
+
+    public static final OrePrefixes bulletGtLarge = new OrePrefixBuilder().build();
+    // bulletGtLarge("Large Bullets", "Large ", " Bullet", true, true, false, false, true, false, true, false, true, false, B[6] | B[8], M / 3, 64, -1)
+
     /** consisting out of 2 Ingots. */
-    toolHeadFile("File Heads", "", " File Head", true, true, false, false, false, false, true, true, false, false, B[6],
-        M * 2, 64, 38),
+    public static final OrePrefixes toolHeadFile = new OrePrefixBuilder().build();
+    // toolHeadFile("File Heads", "", " File Head", true, true, false, false, false, false, true, true, false, false, B[6], M * 2, 64, 38)
+
     /** consisting out of 6 Ingots. */
-    toolHeadHammer("Hammer Heads", "", " Hammer Head", true, true, false, false, false, false, true, true, false, false,
-        B[6], M * 6, 64, 37),
+    public static final OrePrefixes toolHeadHammer = new OrePrefixBuilder().build();
+    // toolHeadHammer("Hammer Heads", "", " Hammer Head", true, true, false, false, false, false, true, true, false, false, B[6], M * 6, 64, 37)
+
     /** consisting out of 2 Ingots. */
-    toolHeadSaw("Saw Blades", "", " Saw Blade", true, true, false, false, false, false, true, true, false, false, B[6],
-        M * 2, 64, 39),
+    public static final OrePrefixes toolHeadSaw = new OrePrefixBuilder().build();
+    // toolHeadSaw("Saw Blades", "", " Saw Blade", true, true, false, false, false, false, true, true, false, false, B[6], M * 2, 64, 39)
+
     /** consisting out of 4 Ingots. */
-    toolHeadBuzzSaw("Buzzsaw Blades", "", " Buzzsaw Blade", true, true, false, false, false, false, true, true, false,
-        false, B[6], M * 4, 64, 48),
+    public static final OrePrefixes toolHeadBuzzSaw = new OrePrefixBuilder().build();
+    // toolHeadBuzzSaw("Buzzsaw Blades", "", " Buzzsaw Blade", true, true, false, false, false, false, true, true, false, false, B[6], M * 4, 64, 48)
+
     /** consisting out of 1 Ingots. */
-    toolHeadScrewdriver("Screwdriver Tips", "", " Screwdriver Tip", true, true, false, false, false, false, true, false,
-        false, false, B[6], M * 1, 64, 47),
+    public static final OrePrefixes toolHeadScrewdriver = new OrePrefixBuilder().build();
+    // toolHeadScrewdriver("Screwdriver Tips", "", " Screwdriver Tip", true, true, false, false, false, false, true, false, false, false, B[6], M * 1, 64, 47)
+
     /** consisting out of 4 Ingots. */
-    toolHeadDrill("Drill Tips", "", " Drill Tip", true, true, false, false, false, false, true, true, false, false,
-        B[6], M * 4, 64, 40),
+    public static final OrePrefixes toolHeadDrill = new OrePrefixBuilder().build();
+    // toolHeadDrill("Drill Tips", "", " Drill Tip", true, true, false, false, false, false, true, true, false, false, B[6], M * 4, 64, 40)
+
     /** consisting out of 2 Ingots. */
-    toolHeadChainsaw("Chainsaw Tips", "", " Chainsaw Tip", true, true, false, false, false, false, true, true, false,
-        false, B[6], M * 2, 64, 41),
+    public static final OrePrefixes toolHeadChainsaw = new OrePrefixBuilder().build();
+    // toolHeadChainsaw("Chainsaw Tips", "", " Chainsaw Tip", true, true, false, false, false, false, true, true, false, false, B[6], M * 2, 64, 41)
+
     /** consisting out of 4 Ingots. */
-    toolHeadWrench("Wrench Tips", "", " Wrench Tip", true, true, false, false, false, false, true, true, false, false,
-        B[6], M * 4, 64, 42),
+    public static final OrePrefixes toolHeadWrench = new OrePrefixBuilder().build();
+    // toolHeadWrench("Wrench Tips", "", " Wrench Tip", true, true, false, false, false, false, true, true, false, false, B[6], M * 4, 64, 42)
+
     /** consisting out of 6 Ingots. */
-    turbineBlade("Turbine Blades", "", " Turbine Blade", true, true, false, false, false, false, true, true, false,
-        false, B[6], M * 6, 64, 100),
+    public static final OrePrefixes turbineBlade = new OrePrefixBuilder().build();
+    // turbineBlade("Turbine Blades", "", " Turbine Blade", true, true, false, false, false, false, true, true, false, false, B[6], M * 6, 64, 100)
+
     /** vanilly Sword */
-    toolSword("Swords", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 2, 1, -1),
+    public static final OrePrefixes toolSword = new OrePrefixBuilder().build();
+    // toolSword("Swords", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 2, 1, -1)
+
     /** vanilly Pickaxe */
-    toolPickaxe("Pickaxes", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 3, 1,
-        -1),
+    public static final OrePrefixes toolPickaxe = new OrePrefixBuilder().build();
+    // toolPickaxe("Pickaxes", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 3, 1, -1)
+
     /** vanilly Shovel */
-    toolShovel("Shovels", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 1, 1,
-        -1),
+    public static final OrePrefixes toolShovel = new OrePrefixBuilder().build();
+    // toolShovel("Shovels", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 1, 1, -1)
+
     /** vanilly Axe */
-    toolAxe("Axes", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 3, 1, -1),
+    public static final OrePrefixes toolAxe = new OrePrefixBuilder().build();
+    // toolAxe("Axes", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 3, 1, -1)
+
     /** vanilly Hoe */
-    toolHoe("Hoes", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 2, 1, -1),
+    public static final OrePrefixes toolHoe = new OrePrefixBuilder().build();
+    // toolHoe("Hoes", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 2, 1, -1)
+
     /** vanilly Shears */
-    toolShears("Shears", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 2, 1, -1),
-    /**
-     * toolPot, toolSkillet, toolSaucepan, toolBakeware, toolCuttingboard, toolMortarandpestle, toolMixingbowl,
-     * toolJuicer
-     */
-    tool("Tools", "", "", false, false, false, false, false, false, false, false, true, false, B[6], -1, 1, -1),
-    compressedCobblestone("9^X Compressed Cobblestones", "", "", false, false, false, false, false, false, false, false,
-        false, false, 0, -1, 64, -1),
-    compressedStone("9^X Compressed Stones", "", "", false, false, false, false, false, false, false, false, false,
-        false, 0, -1, 64, -1),
-    compressedDirt("9^X Compressed Dirt", "", "", false, false, false, false, false, false, false, false, false, false,
-        0, -1, 64, -1),
-    compressedGravel("9^X Compressed Gravel", "", "", false, false, false, false, false, false, false, false, false,
-        false, 0, -1, 64, -1),
-    compressedSand("9^X Compressed Sand", "", "", false, false, false, false, false, false, false, false, false, false,
-        0, -1, 64, -1),
+    public static final OrePrefixes toolShears = new OrePrefixBuilder().build();
+    // toolShears("Shears", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 2, 1, -1)
+
+    /** toolPot, toolSkillet, toolSaucepan, toolBakeware, toolCuttingboard, toolMortarandpestle, toolMixingbowl, toolJuicer */
+    public static final OrePrefixes tool = new OrePrefixBuilder().build();
+    // tool("Tools", "", "", false, false, false, false, false, false, false, false, true, false, B[6], -1, 1, -1)
+
+    public static final OrePrefixes compressedCobblestone = new OrePrefixBuilder().build();
+    // compressedCobblestone("9^X Compressed Cobblestones", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes compressedStone = new OrePrefixBuilder().build();
+    // compressedStone("9^X Compressed Stones", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes compressedDirt = new OrePrefixBuilder().build();
+    // compressedDirt("9^X Compressed Dirt", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes compressedGravel = new OrePrefixBuilder().build();
+    // compressedGravel("9^X Compressed Gravel", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes compressedSand = new OrePrefixBuilder().build();
+    // compressedSand("9^X Compressed Sand", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
     /** Compressed Material, worth 1 Unit. Introduced by Galacticraft */
-    compressed("Compressed Materials", "Compressed ", "", true, true, false, false, false, false, true, false, false,
-        false, 0, M * 3, 64, -1),
-    glass("Glasses", "", "", false, false, true, false, true, false, false, false, false, false, 0, -1, 64, -1),
-    paneGlass("Glass Panes", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1),
-    blockGlass("Glass Blocks", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64,
-        -1),
-    blockWool("Wool Blocks", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1),
+    public static final OrePrefixes compressed = new OrePrefixBuilder().build();
+    // compressed("Compressed Materials", "Compressed ", "", true, true, false, false, false, false, true, false, false, false, 0, M * 3, 64, -1)
+
+    public static final OrePrefixes glass = new OrePrefixBuilder().build();
+    // glass("Glasses", "", "", false, false, true, false, true, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes paneGlass = new OrePrefixBuilder().build();
+    // paneGlass("Glass Panes", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes blockGlass = new OrePrefixBuilder().build();
+    // blockGlass("Glass Blocks", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64,-1)
+
+    public static final OrePrefixes blockWool = new OrePrefixBuilder().build();
+    // blockWool("Wool Blocks", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1)
+
     /** IGNORE */
-    block_("Random Blocks", "", "", false, false, false, false, false, true, false, false, false, false, 0, -1, 64, -1),
+    public static final OrePrefixes block_ = new OrePrefixBuilder().build();
+    // block_("Random Blocks", "", "", false, false, false, false, false, true, false, false, false, false, 0, -1, 64, -1)
+
     /** Storage Block consisting out of 9 Ingots/Gems/Dusts. Introduced by CovertJaguar */
-    block("Storage Blocks", "Block of ", "", true, true, false, false, false, true, true, false, false, false, 0, M * 9,
-        64, 71),
+    public static final OrePrefixes block = new OrePrefixBuilder().build();
+    // block("Storage Blocks", "Block of ", "", true, true, false, false, false, true, true, false, false, false, 0, M * 9, 64, 71)
+
     /** Special Prefix used mainly for the Crafting Handler. */
-    craftingTool("Crafting Tools", "", "", false, false, false, false, false, false, false, false, true, false, 0, -1,
-        64, -1),
+    public static final OrePrefixes craftingTool = new OrePrefixBuilder().build();
+    // craftingTool("Crafting Tools", "", "", false, false, false, false, false, false, false, false, true, false, 0, -1, 64, -1)
+
     /** Special Prefix used mainly for the Crafting Handler. */
-    crafting("Crafting Ingredients", "", "", false, false, false, false, false, false, false, false, false, false, 0,
-        -1, 64, -1),
+    public static final OrePrefixes crafting = new OrePrefixBuilder().build();
+    // crafting("Crafting Ingredients", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
     /** Special Prefix used mainly for the Crafting Handler. */
-    craft("Crafting Stuff?", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64,
-        -1),
+    public static final OrePrefixes craft = new OrePrefixBuilder().build();
+    // craft("Crafting Stuff?", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
     /** Prefix used for Logs. Usually as "logWood". Introduced by Eloraam */
-    log("Logs", "", "", false, false, false, false, false, true, false, false, false, false, 0, -1, 64, -1),
+    public static final OrePrefixes log = new OrePrefixBuilder().build();
+    // log("Logs", "", "", false, false, false, false, false, true, false, false, false, false, 0, -1, 64, -1)
+
     /** Prefix used for Slabs. Usually as "slabWood" or "slabStone". Introduced by SirSengir */
-    slab("Slabs", "", "", false, false, false, false, false, true, false, false, false, false, 0, -1, 64, -1),
+    public static final OrePrefixes slab = new OrePrefixBuilder().build();
+    // slab("Slabs", "", "", false, false, false, false, false, true, false, false, false, false, 0, -1, 64, -1)
+
     /** Prefix used for Stairs. Usually as "stairWood" or "stairStone". Introduced by SirSengir */
-    stair("Stairs", "", "", false, false, false, false, false, true, false, false, false, false, 0, -1, 64, -1),
+    public static final OrePrefixes stair = new OrePrefixBuilder().build();
+    // stair("Stairs", "", "", false, false, false, false, false, true, false, false, false, false, 0, -1, 64, -1)
+
     /** Prefix used for Fences. Usually as "fenceWood". Introduced by Forge */
-    fence("Fences", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
+    public static final OrePrefixes fence = new OrePrefixBuilder().build();
+    // fence("Fences", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
     /** Prefix for Planks. Usually "plankWood". Introduced by Eloraam */
-    plank("Planks", "", "", false, false, false, false, false, true, false, false, false, false, 0, -1, 64, -1),
+    public static final OrePrefixes plank = new OrePrefixBuilder().build();
+    // plank("Planks", "", "", false, false, false, false, false, true, false, false, false, false, 0, -1, 64, -1)
+
     /** Prefix for Saplings. */
-    treeSapling("Saplings", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1),
+    public static final OrePrefixes treeSapling = new OrePrefixBuilder().build();
+    // treeSapling("Saplings", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1)
+
     /** Prefix for Leaves. */
-    treeLeaves("Leaves", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1),
+    public static final OrePrefixes treeLeaves = new OrePrefixBuilder().build();
+    // treeLeaves("Leaves", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1)
+
     /** Prefix for Tree Parts. */
-    tree("Tree Parts", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
+    public static final OrePrefixes tree = new OrePrefixBuilder().build();
+    // tree("Tree Parts", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
     /** Cobblestone Prefix for all Cobblestones. */
-    stoneCobble("Cobblestones", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64,
-        -1),
+    public static final OrePrefixes stoneCobble = new OrePrefixBuilder().build();
+    // stoneCobble("Cobblestones", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1)
+
     /** Smoothstone Prefix. */
-    stoneSmooth("Smoothstones", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64,
-        -1),
+    public static final OrePrefixes stoneSmooth = new OrePrefixBuilder().build();
+    // stoneSmooth("Smoothstones", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1)
+
     /** Mossy Stone Bricks. */
-    stoneMossyBricks("mossy Stone Bricks", "", "", false, false, true, false, false, true, false, false, false, false,
-        0, -1, 64, -1),
+    public static final OrePrefixes stoneMossyBricks = new OrePrefixBuilder().build();
+    // stoneMossyBricks("mossy Stone Bricks", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1)
+
     /** Mossy Cobble. */
-    stoneMossy("Mossy Stones", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64,
-        -1),
+    public static final OrePrefixes stoneMossy = new OrePrefixBuilder().build();
+    // stoneMossy("Mossy Stones", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1)
+
     /** Stone Bricks. */
-    stoneBricks("Stone Bricks", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64,
-        -1),
+    public static final OrePrefixes stoneBricks = new OrePrefixBuilder().build();
+    // stoneBricks("Stone Bricks", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1)
+
     /** Cracked Bricks. */
-    stoneCracked("Cracked Stones", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1,
-        64, -1),
+    public static final OrePrefixes stoneCracked = new OrePrefixBuilder().build();
+    // stoneCracked("Cracked Stones", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1)
+
     /** Chiseled Stone. */
-    stoneChiseled("Chiseled Stones", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1,
-        64, -1),
+    public static final OrePrefixes stoneChiseled = new OrePrefixBuilder().build();
+    // stoneChiseled("Chiseled Stones", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1)
+
     /** Prefix to determine which kind of Rock this is. */
-    stone("Stones", "", "", false, true, true, false, true, true, false, false, false, false, 0, -1, 64, -1),
-    cobblestone("Cobblestones", "", "", false, true, true, false, false, true, false, false, false, false, 0, -1, 64,
-        -1),
+    public static final OrePrefixes stone = new OrePrefixBuilder().build();
+    // stone("Stones", "", "", false, true, true, false, true, true, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes cobblestone = new OrePrefixBuilder().build();
+    // cobblestone("Cobblestones", "", "", false, true, true, false, false, true, false, false, false, false, 0, -1, 64, -1)
+
     /** Prefix to determine which kind of Rock this is. */
-    rock("Rocks", "", "", false, true, true, false, true, true, false, false, false, false, 0, -1, 64, -1),
-    record("Records", "", "", false, false, true, false, false, false, false, false, false, false, 0, -1, 1, -1),
-    rubble("Rubbles", "", "", true, true, true, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    scraps("Scraps", "", "", true, true, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    scrap("Scraps", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
+    public static final OrePrefixes rock = new OrePrefixBuilder().build();
+    // rock("Rocks", "", "", false, true, true, false, true, true, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes record = new OrePrefixBuilder().build();
+    // record("Records", "", "", false, false, true, false, false, false, false, false, false, false, 0, -1, 1, -1)
+
+    public static final OrePrefixes rubble = new OrePrefixBuilder().build();
+    // rubble("Rubbles", "", "", true, true, true, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes scraps = new OrePrefixBuilder().build();
+    // scraps("Scraps", "", "", true, true, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes scrap = new OrePrefixBuilder().build();
+    // scrap("Scraps", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
     /** IGNORE */
-    item_("Items", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
+    public static final OrePrefixes item_ = new OrePrefixBuilder().build();
+    // item_("Items", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
     /** Random Item. Introduced by Alblaka */
-    item("Items", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
+    public static final OrePrefixes item = new OrePrefixBuilder().build();
+    // item("Items", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
     /** Used for Books of any kind. */
-    book("Books", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
+    public static final OrePrefixes book = new OrePrefixBuilder().build();
+    // book("Books", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
     /** Used for Papers of any kind. */
-    paper("Papers", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
+    public static final OrePrefixes paper = new OrePrefixBuilder().build();
+    // paper("Papers", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
     /** Used for the 16 dyes. Introduced by Eloraam */
-    dye("Dyes", "", "", false, false, true, false, false, false, false, false, false, false, 0, -1, 64, -1),
+    public static final OrePrefixes dye = new OrePrefixBuilder().build();
+    // dye("Dyes", "", "", false, false, true, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
     /** Used for the 16 colors of Stained Clay. Introduced by Forge */
-    stainedClay("Stained Clays", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64,
-        -1),
+    public static final OrePrefixes stainedClay = new OrePrefixBuilder().build();
+    // stainedClay("Stained Clays", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1)
+
     /** vanilly Helmet */
-    armorHelmet("Helmets", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 5, 1,
-        -1),
+    public static final OrePrefixes armorHelmet = new OrePrefixBuilder().build();
+    // armorHelmet("Helmets", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 5, 1, -1)
+
     /** vanilly Chestplate */
-    armorChestplate("Chestplates", "", "", false, true, false, false, false, false, true, false, true, false, B[6],
-        M * 8, 1, -1),
+    public static final OrePrefixes armorChestplate = new OrePrefixBuilder().build();
+    // armorChestplate("Chestplates", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 8, 1, -1)
+
     /** vanilly Pants */
-    armorLeggings("Leggings", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 7, 1,
-        -1),
+    public static final OrePrefixes armorLeggings = new OrePrefixBuilder().build();
+    // armorLeggings("Leggings", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 7, 1, -1)
+
     /** vanilly Boots */
-    armorBoots("Boots", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 4, 1, -1),
-    armor("Armor Parts", "", "", false, false, false, false, false, false, false, false, true, false, B[6], -1, 1, -1),
-    frameGt("Frame Boxes", "", "", true, true, false, false, true, false, true, false, false, false, 0, M * 2, 64, 83),
-    pipeTiny("Tiny Pipes", "Tiny ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M / 2,
-        64, 78),
-    pipeSmall("Small Pipes", "Small ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0,
-        M * 1, 64, 79),
-    pipeMedium("Medium Pipes", "Medium ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0,
-        M * 3, 64, 80),
-    pipeLarge("Large pipes", "Large ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0,
-        M * 6, 64, 81),
-    pipeHuge("Huge Pipes", "Huge ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0,
-        M * 12, 64, 82),
-    pipeQuadruple("Quadruple Pipes", "Quadruple ", " Pipe", true, true, false, false, true, false, true, false, false,
-        false, 0, M * 12, 64, 84),
-    pipeNonuple("Nonuple Pipes", "Nonuple ", " Pipe", true, true, false, false, true, false, true, false, false, false,
-        0, M * 9, 64, 85),
-    pipeRestrictiveTiny("Tiny Restrictive Pipes", "Tiny Restrictive ", " Pipe", true, true, false, false, true, false,
-        true, false, false, false, 0, M / 2, 64, 78),
-    pipeRestrictiveSmall("Small Restrictive Pipes", "Small Restrictive ", " Pipe", true, true, false, false, true,
-        false, true, false, false, false, 0, M * 1, 64, 79),
-    pipeRestrictiveMedium("Medium Restrictive Pipes", "Medium Restrictive ", " Pipe", true, true, false, false, true,
-        false, true, false, false, false, 0, M * 3, 64, 80),
-    pipeRestrictiveLarge("Large Restrictive Pipes", "Large Restrictive ", " Pipe", true, true, false, false, true,
-        false, true, false, false, false, 0, M * 6, 64, 81),
-    pipeRestrictiveHuge("Huge Restrictive Pipes", "Huge Restrictive ", " Pipe", true, true, false, false, true, false,
-        true, false, false, false, 0, M * 12, 64, 82),
-    pipe("Pipes", "", " Pipe", true, false, false, false, false, false, false, false, false, false, 0, -1, 64, 77),
-    wireGt16("16x Wires", "16x ", " Wire", true, true, false, false, false, false, true, false, false, false, 0, M * 8,
-        64, -1),
-    wireGt12("12x Wires", "12x ", " Wire", true, true, false, false, false, false, true, false, false, false, 0, M * 6,
-        64, -1),
-    wireGt08("8x Wires", "8x ", " Wire", true, true, false, false, false, false, true, false, false, false, 0, M * 4,
-        64, -1),
-    wireGt04("4x Wires", "4x ", " Wire", true, true, false, false, false, false, true, false, false, false, 0, M * 2,
-        64, -1),
-    wireGt02("2x Wires", "2x ", " Wire", true, true, false, false, false, false, true, false, false, false, 0, M * 1,
-        64, -1),
-    wireGt01("1x Wires", "1x ", " Wire", true, true, false, false, false, false, true, false, false, false, 0, M / 2,
-        64, -1),
-    cableGt16("16x Cables", "16x ", " Cable", true, true, false, false, false, false, true, false, false, false, 0,
-        M * 8, 64, -1),
-    cableGt12("12x Cables", "12x ", " Cable", true, true, false, false, false, false, true, false, false, false, 0,
-        M * 6, 64, -1),
-    cableGt08("8x Cables", "8x ", " Cable", true, true, false, false, false, false, true, false, false, false, 0, M * 4,
-        64, -1),
-    cableGt04("4x Cables", "4x ", " Cable", true, true, false, false, false, false, true, false, false, false, 0, M * 2,
-        64, -1),
-    cableGt02("2x Cables", "2x ", " Cable", true, true, false, false, false, false, true, false, false, false, 0, M * 1,
-        64, -1),
-    cableGt01("1x Cables", "1x ", " Cable", true, true, false, false, false, false, true, false, false, false, 0, M / 2,
-        64, -1),
+    public static final OrePrefixes armorBoots = new OrePrefixBuilder().build();
+    // armorBoots("Boots", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 4, 1, -1)
+
+    public static final OrePrefixes armor = new OrePrefixBuilder().build();
+    // armor("Armor Parts", "", "", false, false, false, false, false, false, false, false, true, false, B[6], -1, 1, -1)
+
+    public static final OrePrefixes frameGt = new OrePrefixBuilder().build();
+    // frameGt("Frame Boxes", "", "", true, true, false, false, true, false, true, false, false, false, 0, M * 2, 64, 83)
+
+    public static final OrePrefixes pipeTiny = new OrePrefixBuilder().build();
+    // pipeTiny("Tiny Pipes", "Tiny ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M / 2, 64, 78)
+
+    public static final OrePrefixes pipeSmall = new OrePrefixBuilder().build();
+    // pipeSmall("Small Pipes", "Small ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 1, 64, 79)
+
+    public static final OrePrefixes pipeMedium = new OrePrefixBuilder().build();
+    // pipeMedium("Medium Pipes", "Medium ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 3, 64, 80)
+
+    public static final OrePrefixes pipeLarge = new OrePrefixBuilder().build();
+    // pipeLarge("Large pipes", "Large ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 6, 64, 81)
+
+    public static final OrePrefixes pipeHuge = new OrePrefixBuilder().build();
+    // pipeHuge("Huge Pipes", "Huge ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 12, 64, 82)
+
+    public static final OrePrefixes pipeQuadruple = new OrePrefixBuilder().build();
+    // pipeQuadruple("Quadruple Pipes", "Quadruple ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 12, 64, 84)
+
+    public static final OrePrefixes pipeNonuple = new OrePrefixBuilder().build();
+    // pipeNonuple("Nonuple Pipes", "Nonuple ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 9, 64, 85)
+
+    public static final OrePrefixes pipeRestrictiveTiny = new OrePrefixBuilder().build();
+    // pipeRestrictiveTiny("Tiny Restrictive Pipes", "Tiny Restrictive ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M / 2, 64, 78)
+
+    public static final OrePrefixes pipeRestrictiveSmall = new OrePrefixBuilder().build();
+    // pipeRestrictiveSmall("Small Restrictive Pipes", "Small Restrictive ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 1, 64, 79)
+
+    public static final OrePrefixes pipeRestrictiveMedium = new OrePrefixBuilder().build();
+    // pipeRestrictiveMedium("Medium Restrictive Pipes", "Medium Restrictive ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 3, 64, 80)
+
+    public static final OrePrefixes pipeRestrictiveLarge = new OrePrefixBuilder().build();
+    // pipeRestrictiveLarge("Large Restrictive Pipes", "Large Restrictive ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 6, 64, 81)
+
+    public static final OrePrefixes pipeRestrictiveHuge = new OrePrefixBuilder().build();
+    // pipeRestrictiveHuge("Huge Restrictive Pipes", "Huge Restrictive ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 12, 64, 82)
+
+    public static final OrePrefixes pipe = new OrePrefixBuilder().build();
+    // pipe("Pipes", "", " Pipe", true, false, false, false, false, false, false, false, false, false, 0, -1, 64, 77)
+
+    public static final OrePrefixes wireGt16 = new OrePrefixBuilder().build();
+    // wireGt16("16x Wires", "16x ", " Wire", true, true, false, false, false, false, true, false, false, false, 0, M * 8, 64, -1)
+
+    public static final OrePrefixes wireGt12 = new OrePrefixBuilder().build();
+    // wireGt12("12x Wires", "12x ", " Wire", true, true, false, false, false, false, true, false, false, false, 0, M * 6, 64, -1)
+
+    public static final OrePrefixes wireGt08 = new OrePrefixBuilder().build();
+    // wireGt08("8x Wires", "8x ", " Wire", true, true, false, false, false, false, true, false, false, false, 0, M * 4, 64, -1)
+
+    public static final OrePrefixes wireGt04 = new OrePrefixBuilder().build();
+    // wireGt04("4x Wires", "4x ", " Wire", true, true, false, false, false, false, true, false, false, false, 0, M * 2, 64, -1)
+
+    public static final OrePrefixes wireGt02 = new OrePrefixBuilder().build();
+    // wireGt02("2x Wires", "2x ", " Wire", true, true, false, false, false, false, true, false, false, false, 0, M * 1, 64, -1)
+
+    public static final OrePrefixes wireGt01 = new OrePrefixBuilder().build();
+    // wireGt01("1x Wires", "1x ", " Wire", true, true, false, false, false, false, true, false, false, false, 0, M / 2, 64, -1)
+
+    public static final OrePrefixes cableGt16 = new OrePrefixBuilder().build();
+    // cableGt16("16x Cables", "16x ", " Cable", true, true, false, false, false, false, true, false, false, false, 0, M * 8, 64, -1)
+
+    public static final OrePrefixes cableGt12 = new OrePrefixBuilder().build();
+    // cableGt12("12x Cables", "12x ", " Cable", true, true, false, false, false, false, true, false, false, false, 0, M * 6, 64, -1)
+
+    public static final OrePrefixes cableGt08 = new OrePrefixBuilder().build();
+    // cableGt08("8x Cables", "8x ", " Cable", true, true, false, false, false, false, true, false, false, false, 0, M * 4,64, -1)
+
+    public static final OrePrefixes cableGt04 = new OrePrefixBuilder().build();
+    // cableGt04("4x Cables", "4x ", " Cable", true, true, false, false, false, false, true, false, false, false, 0, M * 2, 64, -1)
+
+    public static final OrePrefixes cableGt02 = new OrePrefixBuilder().build();
+    // cableGt02("2x Cables", "2x ", " Cable", true, true, false, false, false, false, true, false, false, false, 0, M * 1, 64, -1)
+
+    public static final OrePrefixes cableGt01 = new OrePrefixBuilder().build();
+    // cableGt01("1x Cables", "1x ", " Cable", true, true, false, false, false, false, true, false, false, false, 0, M / 2, 64, -1)
 
     /*
      * Electric Components. usual Materials for this are: Primitive (Tier 1) Basic (Tier 2) as used by UE as well : IC2
@@ -440,157 +637,341 @@ public enum OrePrefixes {
      * and Data Control Circuit Master (Tier 7) : Energy Flow Circuit and Lapotron Crystal Ultimate (Tier 8) : Data Orb
      * and Lapotronic Energy Orb Infinite (Cheaty)
      */
-    batterySingleuse("Single Use Batteries", "", "", false, true, false, false, false, false, false, false, false,
-        false, 0, -1, 64, -1),
-    battery("Reusable Batteries", "", "", false, true, false, false, false, false, false, false, false, false, 0, -1,
-        64, -1),
-    circuit("Circuits", "", "", true, true, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
+    public static final OrePrefixes batterySingleuse = new OrePrefixBuilder().build();
+    // batterySingleuse("Single Use Batteries", "", "", false, true, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes battery = new OrePrefixBuilder().build();
+    // battery("Reusable Batteries", "", "", false, true, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes circuit = new OrePrefixBuilder().build();
+    // circuit("Circuits", "", "", true, true, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
     /** Introduced by Buildcraft */
-    chipset("Chipsets", "", "", true, true, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
+    public static final OrePrefixes chipset = new OrePrefixBuilder().build();
+    // chipset("Chipsets", "", "", true, true, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
     /** A whole Computer. "computerMaster" = ComputerCube */
-    computer("Computers", "", "", true, true, false, false, true, false, false, false, false, false, 0, -1, 64, -1),
+    public static final OrePrefixes computer = new OrePrefixBuilder().build();
+    // computer("Computers", "", "", true, true, false, false, true, false, false, false, false, false, 0, -1, 64, -1)
 
     // random known prefixes without special abilities.
-    skull("Skulls", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    plating("Platings", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    dinosaur("Dinosaurs", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    travelgear("Travel Gear", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64,
-        -1),
-    bauble("Baubles", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    cluster("Clusters", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    grafter("Grafters", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    scoop("Scoops", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    frame("Frames", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    tome("Tomes", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    junk("Junk", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    bee("Bees", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    rod("Rods", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    dirt("Dirts", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    sand("Sands", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1),
-    grass("Grasses", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    gravel("Gravels", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    mushroom("Mushrooms", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
+    public static final OrePrefixes skull = new OrePrefixBuilder().build();
+    // skull("Skulls", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes plating = new OrePrefixBuilder().build();
+    // plating("Platings", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes dinosaur = new OrePrefixBuilder().build();
+    // dinosaur("Dinosaurs", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes travelgear = new OrePrefixBuilder().build();
+    // travelgear("Travel Gear", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes bauble = new OrePrefixBuilder().build();
+    // bauble("Baubles", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes cluster = new OrePrefixBuilder().build();
+    // cluster("Clusters", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes grafter = new OrePrefixBuilder().build();
+    // grafter("Grafters", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes scoop = new OrePrefixBuilder().build();
+    // scoop("Scoops", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes frame = new OrePrefixBuilder().build();
+    // frame("Frames", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes tome = new OrePrefixBuilder().build();
+    // tome("Tomes", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes junk = new OrePrefixBuilder().build();
+    // junk("Junk", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes bee = new OrePrefixBuilder().build();
+    // bee("Bees", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes rod = new OrePrefixBuilder().build();
+    // rod("Rods", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes dirt = new OrePrefixBuilder().build();
+    // dirt("Dirts", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes sand = new OrePrefixBuilder().build();
+    // sand("Sands", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes grass = new OrePrefixBuilder().build();
+    // grass("Grasses", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes gravel = new OrePrefixBuilder().build();
+    // gravel("Gravels", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes mushroom = new OrePrefixBuilder().build();
+    // mushroom("Mushrooms", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
     /** Introduced by Eloraam */
-    wood("Woods", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    drop("Drops", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    fuel("Fuels", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    panel("Panels", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    brick("Bricks", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    chunk("Chunks", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    wire("Wires", "", "", false, false, false, false, true, false, false, false, false, false, 0, -1, 64, -1),
-    seed("Seeds", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    reed("Reeds", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    sheetDouble("2x Sheets", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64,
-        -1),
-    sheet("Sheets", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    crop("Crops", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    plant("Plants", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    coin("Coins", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    lumar("Lumars", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    ground("Grounded Stuff", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64,
-        -1),
-    cable("Cables", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    component("Components", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64,
-        -1),
-    wax("Waxes", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    wall("Walls", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    tube("Tubes", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    list("Lists", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    food("Foods", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
+    public static final OrePrefixes wood = new OrePrefixBuilder().build();
+    // wood("Woods", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes drop = new OrePrefixBuilder().build();
+    // drop("Drops", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes fuel = new OrePrefixBuilder().build();
+    // fuel("Fuels", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes panel = new OrePrefixBuilder().build();
+    // panel("Panels", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes brick = new OrePrefixBuilder().build();
+    // brick("Bricks", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes chunk = new OrePrefixBuilder().build();
+    // chunk("Chunks", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes wire = new OrePrefixBuilder().build();
+    // wire("Wires", "", "", false, false, false, false, true, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes seed = new OrePrefixBuilder().build();
+    // seed("Seeds", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes reed = new OrePrefixBuilder().build();
+    // reed("Reeds", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes sheetDouble = new OrePrefixBuilder().build();
+    // sheetDouble("2x Sheets", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes sheet = new OrePrefixBuilder().build();
+    // sheet("Sheets", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes crop = new OrePrefixBuilder().build();
+    // crop("Crops", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes plant = new OrePrefixBuilder().build();
+    // plant("Plants", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes coin = new OrePrefixBuilder().build();
+    // coin("Coins", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes lumar = new OrePrefixBuilder().build();
+    // lumar("Lumars", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes ground = new OrePrefixBuilder().build();
+    // ground("Grounded Stuff", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes cable = new OrePrefixBuilder().build();
+    // cable("Cables", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes component = new OrePrefixBuilder().build();
+    // component("Components", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes wax = new OrePrefixBuilder().build();
+    // wax("Waxes", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes wall = new OrePrefixBuilder().build();
+    // wall("Walls", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes tube = new OrePrefixBuilder().build();
+    // tube("Tubes", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes list = new OrePrefixBuilder().build();
+    // list("Lists", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes food = new OrePrefixBuilder().build();
+    // food("Foods", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
     /** Introduced by SirSengir */
-    gear("Gears", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    coral("Corals", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    flower("Flowers", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    storage("Storages", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    material("Materials", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    plasma("Plasmas", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    element("Elements", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    molecule("Molecules", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    wafer("Wafers", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    orb("Orbs", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    handle("Handles", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    blade("Blades", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    head("Heads", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    motor("Motors", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    bit("Bits", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    shears("Shears", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    turbine("Turbines", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    fertilizer("Fertilizers", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64,
-        -1),
-    chest("Chests", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    raw("Raw Things", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    stainedGlass("Stained Glasses", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1,
-        64, -1),
-    mystic("Mystic Stuff", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    mana("Mana Stuff", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    rune("Runes", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    petal("Petals", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    pearl("Pearls", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    powder("Powders", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    soulsand("Soulsands", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    obsidian("Obsidians", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    glowstone("Glowstones", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64,
-        -1),
-    beans("Beans", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    br("br", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    essence("Essences", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    alloy("Alloys", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    cooking("Cooked Things", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64,
-        -1),
-    elven("Elven Stuff", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    reactor("Reactors", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    mffs("MFFS", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    projred("Project Red", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    ganys("Ganys Stuff", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    liquid("Liquids", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    bars("Bars", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    bar("Bars", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
+    public static final OrePrefixes gear = new OrePrefixBuilder().build();
+    // gear("Gears", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes coral = new OrePrefixBuilder().build();
+    // coral("Corals", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes flower = new OrePrefixBuilder().build();
+    // flower("Flowers", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes storage = new OrePrefixBuilder().build();
+    // storage("Storages", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes material = new OrePrefixBuilder().build();
+    // material("Materials", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes plasma = new OrePrefixBuilder().build();
+    // plasma("Plasmas", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes element = new OrePrefixBuilder().build();
+    // element("Elements", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes molecule = new OrePrefixBuilder().build();
+    // molecule("Molecules", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes wafer = new OrePrefixBuilder().build();
+    // wafer("Wafers", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes orb = new OrePrefixBuilder().build();
+    // orb("Orbs", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes handle = new OrePrefixBuilder().build();
+    // handle("Handles", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes blade = new OrePrefixBuilder().build();
+    // blade("Blades", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes head = new OrePrefixBuilder().build();
+    // head("Heads", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes motor = new OrePrefixBuilder().build();
+    // motor("Motors", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes bit = new OrePrefixBuilder().build();
+    // bit("Bits", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes shears = new OrePrefixBuilder().build();
+    // shears("Shears", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes turbine = new OrePrefixBuilder().build();
+    // turbine("Turbines", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes fertilizer = new OrePrefixBuilder().build();
+    // fertilizer("Fertilizers", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes chest = new OrePrefixBuilder().build();
+    // chest("Chests", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes raw = new OrePrefixBuilder().build();
+    // raw("Raw Things", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes stainedGlass = new OrePrefixBuilder().build();
+    // stainedGlass("Stained Glasses", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes mystic = new OrePrefixBuilder().build();
+    // mystic("Mystic Stuff", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes mana = new OrePrefixBuilder().build();
+    // mana("Mana Stuff", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes rune = new OrePrefixBuilder().build();
+    // rune("Runes", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes petal = new OrePrefixBuilder().build();
+    // petal("Petals", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes pearl = new OrePrefixBuilder().build();
+    // pearl("Pearls", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes powder = new OrePrefixBuilder().build();
+    // powder("Powders", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes soulsand = new OrePrefixBuilder().build();
+    // soulsand("Soulsands", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes obsidian = new OrePrefixBuilder().build();
+    // obsidian("Obsidians", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes glowstone = new OrePrefixBuilder().build();
+    // glowstone("Glowstones", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes beans = new OrePrefixBuilder().build();
+    // beans("Beans", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes br = new OrePrefixBuilder().build();
+    // br("br", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes essence = new OrePrefixBuilder().build();
+    // essence("Essences", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes alloy = new OrePrefixBuilder().build();
+    // alloy("Alloys", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes cooking = new OrePrefixBuilder().build();
+    // cooking("Cooked Things", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes elven = new OrePrefixBuilder().build();
+    // elven("Elven Stuff", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes reactor = new OrePrefixBuilder().build();
+    // reactor("Reactors", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes mffs = new OrePrefixBuilder().build();
+    // mffs("MFFS", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes projred = new OrePrefixBuilder().build();
+    // projred("Project Red", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes ganys = new OrePrefixBuilder().build();
+    // ganys("Ganys Stuff", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes liquid = new OrePrefixBuilder().build();
+    // liquid("Liquids", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes bars = new OrePrefixBuilder().build();
+    // bars("Bars", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes bar = new OrePrefixBuilder().build();
+    // bar("Bars", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
     /** Reverse Head consisting out of 6 Ingots. */
-    toolHeadMallet("Mallet Heads", "", " Mallet Head", true, true, false, false, false, false, true, true, false, false,
-        B[6], M * 6, 64, 127),
+    public static final OrePrefixes toolHeadMallet = new OrePrefixBuilder().build();
+    // toolHeadMallet("Mallet Heads", "", " Mallet Head", true, true, false, false, false, false, true, true, false, false, B[6], M * 6, 64, 127)
+
     /** Reverse Stick made of half an Ingot. Introduced by Eloraam */
-    handleMallet("Mallet Handle", "", " Handle", true, true, false, false, false, false, true, true, false, false,
-        B[1] | B[2], M / 2, 64, 126),
+    public static final OrePrefixes handleMallet = new OrePrefixBuilder().build();
+    // handleMallet("Mallet Handle", "", " Handle", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M / 2, 64, 126)
 
     // Cracked fluids
-    cellHydroCracked1("Cells", "Lightly Hydro-Cracked ", " Cell", true, true, true, true, false, false, false, true,
-        false, false, 0, M * 1, 64, 30),
-    cellHydroCracked2("Cells", "Moderately Hydro-Cracked ", " Cell", true, true, true, true, false, false, false, true,
-        false, false, 0, M * 1, 64, 30),
-    cellHydroCracked3("Cells", "Severely Hydro-Cracked ", " Cell", true, true, true, true, false, false, false, true,
-        false, false, 0, M * 1, 64, 30),
-    cellSteamCracked1("Cells", "Lightly Steam-Cracked ", " Cell", true, true, true, true, false, false, false, true,
-        false, false, 0, M * 1, 64, 30),
-    cellSteamCracked2("Cells", "Moderately Steam-Cracked ", " Cell", true, true, true, true, false, false, false, true,
-        false, false, 0, M * 1, 64, 30),
-    cellSteamCracked3("Cells", "Severely Steam-Cracked ", " Cell", true, true, true, true, false, false, false, true,
-        false, false, 0, M * 1, 64, 30),
+    public static final OrePrefixes cellHydroCracked1 = new OrePrefixBuilder().build();
+    // cellHydroCracked1("Cells", "Lightly Hydro-Cracked ", " Cell", true, true, true, true, false, false, false, true, false, false, 0, M * 1, 64, 30)
 
-    componentCircuit("Circuit Parts", "", "", true, true, false, false, false, false, false, false, false, false, 0, -1,
-        64, -1),
+    public static final OrePrefixes cellHydroCracked2 = new OrePrefixBuilder().build();
+    // cellHydroCracked2("Cells", "Moderately Hydro-Cracked ", " Cell", true, true, true, true, false, false, false, true, false, false, 0, M * 1, 64, 30)
 
-    apiaryUpgrade("Industrial Apiary Upgrade", "", "", false, false, true, false, false, false, false, false, false,
-        false, 0, -1, 64, -1),
-    beeComb("Bee Combs", "", "", true, false, true, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    nanite("Nanites", "", " Nanites", true, true, true, false, false, false, false, false, false, false, 0, -1, 64, 50),
+    public static final OrePrefixes cellHydroCracked3 = new OrePrefixBuilder().build();
+    // cellHydroCracked3("Cells", "Severely Hydro-Cracked ", " Cell", true, true, true, true, false, false, false, true, false, false, 0, M * 1, 64, 30)
+
+    public static final OrePrefixes cellSteamCracked1 = new OrePrefixBuilder().build();
+    // cellSteamCracked1("Cells", "Lightly Steam-Cracked ", " Cell", true, true, true, true, false, false, false, true, false, false, 0, M * 1, 64, 30)
+
+    public static final OrePrefixes cellSteamCracked2 = new OrePrefixBuilder().build();
+    // cellSteamCracked2("Cells", "Moderately Steam-Cracked ", " Cell", true, true, true, true, false, false, false, true, false, false, 0, M * 1, 64, 30)
+
+    public static final OrePrefixes cellSteamCracked3 = new OrePrefixBuilder().build();
+    // cellSteamCracked3("Cells", "Severely Steam-Cracked ", " Cell", true, true, true, true, false, false, false, true, false, false, 0, M * 1, 64, 30)
+
+    public static final OrePrefixes componentCircuit = new OrePrefixBuilder().build();
+    // componentCircuit("Circuit Parts", "", "", true, true, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes apiaryUpgrade = new OrePrefixBuilder().build();
+    // apiaryUpgrade("Industrial Apiary Upgrade", "", "", false, false, true, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes beeComb = new OrePrefixBuilder().build();
+    // beeComb("Bee Combs", "", "", true, false, true, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
+    public static final OrePrefixes nanite = new OrePrefixBuilder().build();
+    // nanite("Nanites", "", " Nanites", true, true, true, false, false, false, false, false, false, false, 0, -1, 64, 50)
+
     // migrated from GT++
-    milled("Milled Ores", "Milled ", " Ore", true, true, false, false, false, false, false, false, false, true, B[3],
-        -1, 64, -1),
+    public static final OrePrefixes milled = new OrePrefixBuilder().build();
+    // milled("Milled Ores", "Milled ", " Ore", true, true, false, false, false, false, false, false, false, true, B[3], -1, 64, -1)
+
     // migrated from bartworks
-    blockCasing("A Casing block for a Multiblock-Machine", "Bolted ", " Casing", true, true, true, true, false, true,
-        false, true, false, false, 0, M * 9, 64, -1),
-    blockCasingAdvanced("An Advanced Casing block for a Multiblock-Machine", "Rebolted ", " Casing", true, true, true,
-        true, false, true, false, true, false, false, 0, M * 9, 64, -1),
-    capsuleMolten("Capsule of Molten stuff", "Molten ", " Capsule", true, true, true, true, false, false, false, true,
-        false, false, 0, M * 1, 64, -1),
+    public static final OrePrefixes blockCasing = new OrePrefixBuilder().build();
+    // blockCasing("A Casing block for a Multiblock-Machine", "Bolted ", " Casing", true, true, true, true, false, true, false, true, false, false, 0, M * 9, 64, -1)
+
+    public static final OrePrefixes blockCasingAdvanced = new OrePrefixBuilder().build();
+    // blockCasingAdvanced("An Advanced Casing block for a Multiblock-Machine", "Rebolted ", " Casing", true, true, true, true, false, true, false, true, false, false, 0, M * 9, 64, -1)
+
+    public static final OrePrefixes capsuleMolten = new OrePrefixBuilder().build();
+    // capsuleMolten("Capsule of Molten stuff", "Molten ", " Capsule", true, true, true, true, false, false, false, true, false, false, 0, M * 1, 64, -1)
+
     // subatomic particles
-    particle("A Subatomic Particle", "", "", false, false, true, false, false, false, false, false, false, false, 0, -1,
-        64, -1),
+    public static final OrePrefixes particle = new OrePrefixBuilder().build();
+    // particle("A Subatomic Particle", "", "", false, false, true, false, false, false, false, false, false, false, 0, -1, 64, -1)
+
     // Beamline Masks
-    mask("A Photolithographic Mask", "", "", false, false, true, false, false, false, false, false, false, false, 0, -1,
-        1, -1),
-    wrapCircuit("A Circuit Wrap", "", "", false, false, true, false, false, false, false, false, false, false, 0, -1,
-        64, -1);
+    public static final OrePrefixes mask = new OrePrefixBuilder().build();
+    // mask("A Photolithographic Mask", "", "", false, false, true, false, false, false, false, false, false, false, 0, -1, 1, -1)
+
+    public static final OrePrefixes wrapCircuit = new OrePrefixBuilder().build();
+    // wrapCircuit("A Circuit Wrap", "", "", false, false, true, false, false, false, false, false, false, false, 0, -1, 64, -1)
 
     public static final ImmutableList<OrePrefixes> CELL_TYPES = ImmutableList.of(
         cell,
