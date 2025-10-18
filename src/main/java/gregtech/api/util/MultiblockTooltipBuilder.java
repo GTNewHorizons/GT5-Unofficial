@@ -59,7 +59,8 @@ public class MultiblockTooltipBuilder {
     private static final String TT_StaticEuEff = StatCollector.translateToLocal("GT5U.MBTT.EuDiscount.Base");
     private static final String TT_DynamicParallels = StatCollector.translateToLocal("GT5U.MBTT.Parallel.Additional");
     private static final String TT_SingularParallel = StatCollector.translateToLocal("GT5U.MBTT.Parallel.Singular");
-    private static final String TT_DynamicSpeed = StatCollector.translateToLocal("GT5U.MBTT.Speed.Additional");
+    private static final String TT_DynamicSpeedBonus = StatCollector.translateToLocal("GT5U.MBTT.Speed.Additional");
+    private static final String TT_DynamicSpeed = StatCollector.translateToLocal("GT5U.MBTT.Speed.Absolute");
     private static final String TT_DynamicEuEff = StatCollector.translateToLocal("GT5U.MBTT.EuDiscount.Additional");
     private static final String TT_Steam_StaticSteamEff = StatCollector
         .translateToLocal("GT5U.MBTT.SteamDiscount.Base");
@@ -211,12 +212,18 @@ public class MultiblockTooltipBuilder {
      * @param tier  Tiered object that determines bonus
      * @return Instance this method was called on.
      */
-    public MultiblockTooltipBuilder addDynamicSpeedInfo(float speed, TooltipTier tier) {
+    public MultiblockTooltipBuilder addDynamicSpeedBonusInfo(float speed, TooltipTier tier) {
         iLines.add(
             String.format(
-                TT_DynamicSpeed,
+                TT_DynamicSpeedBonus,
                 TooltipHelper.speedText("+" + percentageFormat.format(speed)),
                 tier.getValue()));
+        return this;
+    }
+
+    public MultiblockTooltipBuilder addDynamicSpeedInfo(float speed, TooltipTier tier) {
+        iLines.add(
+            String.format(TT_DynamicSpeed, TooltipHelper.speedText(percentageFormat.format(speed)), tier.getValue()));
         return this;
     }
 
