@@ -101,7 +101,7 @@ public class MTETypeFilter extends MTESpecialFilter {
     }
 
     private void cyclePrefix(boolean aRightClick) {
-        final OrePrefixes[] ORE_VALUES = OrePrefixes.values();
+        final OrePrefixes[] ORE_VALUES = OrePrefixes.VALUES.toArray(new OrePrefixes[0]);
         for (int i = 0; i < ORE_VALUES.length; i++) {
             if (this.mPrefix == ORE_VALUES[i]) {
                 for (this.mPrefix = null; this.mPrefix == null; this.mPrefix = ORE_VALUES[i]) {
