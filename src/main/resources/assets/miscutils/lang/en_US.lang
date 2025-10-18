@@ -97,6 +97,7 @@ gtpp.recipe.multidehydrator=Multiblock Dehydrator
 gtpp.recipe.semifluidgeneratorfuels=Semifluid Generator Fuels
 gtpp.recipe.flotationcell=Flotation Cell
 gtpp.recipe.treefarm=Tree Growth Simulator
+gt.recipe.cable=Cable Coating
 
 # Recipe categories
 gtpp.recipe.category.abs_non_alloy_recipes=ABS Non-Alloy Recipes

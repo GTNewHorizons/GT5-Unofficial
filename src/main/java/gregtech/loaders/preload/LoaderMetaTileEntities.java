@@ -168,6 +168,7 @@ import gregtech.common.tileentities.machines.multi.MTELargeTurbineGas;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbineHPSteam;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbinePlasma;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbineSteam;
+import gregtech.common.tileentities.machines.multi.MTELatex;
 import gregtech.common.tileentities.machines.multi.MTEMultiAutoclave;
 import gregtech.common.tileentities.machines.multi.MTEMultiCanner;
 import gregtech.common.tileentities.machines.multi.MTEMultiFurnace;
@@ -582,6 +583,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.DecayWarehouse.set(
             new MTEDecayWarehouse(DECAY_WAREHOUSE.ID, "multimachine.decay-warehouse", "Decay Warehouse")
                 .getStackForm(1));
+
+        ItemList.LATEX.set(new MTELatex(LATEX.ID, "multimachine.latex", "L.A.T.E.X.").getStackForm(1));
 
         if (Thaumcraft.isModLoaded()) {
             ItemList.ResearchCompleter.set(
@@ -11007,6 +11010,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerOven();
         registerNameRemover();
         registerAirFilters();
+        registerCableCoaters();
 
         ItemList.AdvDebugStructureWriter.set(
             new MTEAdvDebugStructureWriter(
@@ -11071,5 +11075,68 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 LargeMolecularAssembler.ID,
                 "largemolecularassembler",
                 "Large Molecular Assembler").getStackForm(1));
+    }
+
+    private static void registerCableCoaters() {
+
+        ItemList.Machine_LV_CableCoater.set(
+            new MTEBasicMachineWithRecipe(
+                CABLECOATER_LV.ID,
+                "basicmachine.cablecoater.tier.01",
+                "Basic Cable Coater",
+                1,
+                MachineType.CABLE_COATER.tooltipDescription(),
+                RecipeMaps.cableRecipes,
+                6,
+                1,
+                true,
+                SoundResource.GTCEU_LOOP_ASSEMBLER,
+                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
+                "CABLE_COATER").getStackForm(1L));
+
+        ItemList.Machine_MV_CableCoater.set(
+            new MTEBasicMachineWithRecipe(
+                CABLECOATER_MV.ID,
+                "basicmachine.cablecoater.tier.02",
+                "Advanced Cable Coater",
+                2,
+                MachineType.CABLE_COATER.tooltipDescription(),
+                RecipeMaps.cableRecipes,
+                6,
+                1,
+                true,
+                SoundResource.GTCEU_LOOP_ASSEMBLER,
+                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
+                "CABLE_COATER").getStackForm(1L));
+
+        ItemList.Machine_HV_CableCoater.set(
+            new MTEBasicMachineWithRecipe(
+                CABLECOATER_HV.ID,
+                "basicmachine.cablecoater.tier.03",
+                "Advanced Cable Coater II",
+                3,
+                MachineType.CABLE_COATER.tooltipDescription(),
+                RecipeMaps.cableRecipes,
+                6,
+                1,
+                true,
+                SoundResource.GTCEU_LOOP_ASSEMBLER,
+                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
+                "CABLE_COATER").getStackForm(1L));
+
+        ItemList.Machine_EV_CableCoater.set(
+            new MTEBasicMachineWithRecipe(
+                CABLECOATER_EV.ID,
+                "basicmachine.cablecoater.tier.04",
+                "Advanced Cable Coater III",
+                4,
+                MachineType.CABLE_COATER.tooltipDescription(),
+                RecipeMaps.cableRecipes,
+                6,
+                1,
+                true,
+                SoundResource.GTCEU_LOOP_ASSEMBLER,
+                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
+                "CABLE_COATER").getStackForm(1L));
     }
 }
