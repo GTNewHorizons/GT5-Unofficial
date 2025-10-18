@@ -41,59 +41,59 @@ public class OrePrefixes {
     // ___placeholder___("Placeholder", "", "", false, false, false, false, false, false, false, false, false, false, 0, 0, 64, -1)
 
     /** In case of an End-Ores Mod. Ore -> Material is a Oneway Operation! */
-    public static final OrePrefixes oreBlackgranite = new OrePrefixBuilder("oreBlackgranite").setDefaultLocalName("Black Granite Ores").setLocalMaterialPre("Granite ").setLocalMaterialPost(" Ore").setUnifiable().setMaterialBased().build();
+    public static final OrePrefixes oreBlackgranite = new OrePrefixBuilder("oreBlackgranite").setDefaultLocalName("Black Granite Ores").setLocalMaterialPre("Granite ").setLocalMaterialPost(" Ore").setUnifiable().setMaterialBased().setUsedForBlocks().build();
     // oreBlackgranite("Black Granite Ores", "Granite ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1)
 
     /** In case of an End-Ores Mod. Ore -> Material is a Oneway Operation! */
-    public static final OrePrefixes oreRedgranite = new OrePrefixBuilder("oreRedgranite").setDefaultLocalName("Red Granite Ores").setLocalMaterialPre("Granite ").setLocalMaterialPost(" Ore").setUnifiable().setMaterialBased().build();
+    public static final OrePrefixes oreRedgranite = new OrePrefixBuilder("oreRedgranite").setDefaultLocalName("Red Granite Ores").setLocalMaterialPre("Granite ").setLocalMaterialPost(" Ore").setUnifiable().setMaterialBased().setUsedForBlocks().build();
     // oreRedgranite("Red Granite Ores", "Granite ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1)
 
     /** In case of an End-Ores Mod. Ore -> Material is a Oneway Operation! */
-    public static final OrePrefixes oreMarble = new OrePrefixBuilder("oreMarble").setDefaultLocalName("Marble Ores").setLocalMaterialPre("Marble ").setLocalMaterialPost(" Ore").setUnifiable().setMaterialBased().build();
+    public static final OrePrefixes oreMarble = new OrePrefixBuilder("oreMarble").setDefaultLocalName("Marble Ores").setLocalMaterialPre("Marble ").setLocalMaterialPost(" Ore").setUnifiable().setMaterialBased().setUsedForBlocks().build();
     // oreMarble("Marble Ores", "Marble ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1)
 
     /** In case of an End-Ores Mod. Ore -> Material is a Oneway Operation! */
-    public static final OrePrefixes oreBasalt = new OrePrefixBuilder("oreBasalt").setDefaultLocalName("Basalt Ores").setLocalMaterialPre("Basalt ").setLocalMaterialPost(" Ore").setUnifiable().setMaterialBased().build();
+    public static final OrePrefixes oreBasalt = new OrePrefixBuilder("oreBasalt").setDefaultLocalName("Basalt Ores").setLocalMaterialPre("Basalt ").setLocalMaterialPost(" Ore").setUnifiable().setMaterialBased().setUsedForBlocks().build();
     // oreBasalt("Basalt Ores", "Basalt ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1)
 
     /** Prefix of the Nether-Ores Mod. Causes Ores to double. Ore -> Material is a Oneway Operation! */
-    public static final OrePrefixes oreNetherrack = new OrePrefixBuilder("oreNetherrack").setDefaultLocalName("Netherrack Ores").setLocalMaterialPre("Nether ").setLocalMaterialPost(" Ore").setUnifiable().setMaterialBased().build();
+    public static final OrePrefixes oreNetherrack = new OrePrefixBuilder("oreNetherrack").setDefaultLocalName("Netherrack Ores").setLocalMaterialPre("Nether ").setLocalMaterialPost(" Ore").setUnifiable().setMaterialBased().setUsedForBlocks().build();
     // oreNetherrack("Netherrack Ores", "Nether ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1)
 
     /** Prefix of the Nether-Ores Mod. Causes Ores to double. Ore -> Material is a Oneway Operation! */
-    public static final OrePrefixes oreNether = new OrePrefixBuilder("oreNether").setDefaultLocalName("Nether Ores").setLocalMaterialPre("Nether ").setLocalMaterialPost(" Ore").setUnifiable().setMaterialBased().build();
+    public static final OrePrefixes oreNether = new OrePrefixBuilder("oreNether").setDefaultLocalName("Nether Ores").setLocalMaterialPre("Nether ").setLocalMaterialPost(" Ore").setUnifiable().setMaterialBased().setUsedForBlocks().build();
     // oreNether("Nether Ores", "Nether ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1)
 
     /** Prefix of the Dense-Ores Mod. Causes Ores to double. Ore -> Material is a Oneway Operation! */
-    public static final OrePrefixes oreDense = new OrePrefixBuilder("oreDense").setDefaultLocalName("Dense Ores").setLocalMaterialPre("Dense ").setLocalMaterialPost(" Ore").setUnifiable().setMaterialBased().build();
+    public static final OrePrefixes oreDense = new OrePrefixBuilder("oreDense").setDefaultLocalName("Dense Ores").setLocalMaterialPre("Dense ").setLocalMaterialPost(" Ore").setUnifiable().setMaterialBased().setUsedForBlocks().build();
     // oreDense("Dense Ores", "Dense ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1)
 
     /** Prefix of TFC */
-    public static final OrePrefixes oreRich = new OrePrefixBuilder("oreRich").setDefaultLocalName("Rich Ores").setLocalMaterialPre("Rich ").setLocalMaterialPost(" Ore").setUnifiable().setMaterialBased().build();
+    public static final OrePrefixes oreRich = new OrePrefixBuilder("oreRich").setDefaultLocalName("Rich Ores").setLocalMaterialPre("Rich ").setLocalMaterialPost(" Ore").setUnifiable().setMaterialBased().setUsedForBlocks().build();
     // oreRich("Rich Ores", "Rich ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1)
 
     /** Prefix of TFC */
-    public static final OrePrefixes oreNormal = new OrePrefixBuilder("oreNormal").setDefaultLocalName("Normal Ores").setLocalMaterialPre("Normal ").setLocalMaterialPost(" Ore").setUnifiable().setMaterialBased().build();
+    public static final OrePrefixes oreNormal = new OrePrefixBuilder("oreNormal").setDefaultLocalName("Normal Ores").setLocalMaterialPre("Normal ").setLocalMaterialPost(" Ore").setUnifiable().setMaterialBased().setUsedForBlocks().build();
     // oreNormal("Normal Ores", "Normal ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1)
 
     /** Prefix of Railcraft. */
-    public static final OrePrefixes oreSmall = new OrePrefixBuilder("oreSmall").setDefaultLocalName("Small Ores").setLocalMaterialPre("Small ").setLocalMaterialPost(" Ore").setUnifiable().setMaterialBased().build();
+    public static final OrePrefixes oreSmall = new OrePrefixBuilder("oreSmall").setDefaultLocalName("Small Ores").setLocalMaterialPre("Small ").setLocalMaterialPost(" Ore").setUnifiable().setMaterialBased().setUsedForBlocks().build();
     // oreSmall("Small Ores", "Small ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, 67)
 
     /** Prefix of Railcraft. */
-    public static final OrePrefixes orePoor = new OrePrefixBuilder("orePoor").setDefaultLocalName("Poor Ores").setLocalMaterialPre("Poor ").setLocalMaterialPost(" Ore").setUnifiable().setMaterialBased().build();
+    public static final OrePrefixes orePoor = new OrePrefixBuilder("orePoor").setDefaultLocalName("Poor Ores").setLocalMaterialPre("Poor ").setLocalMaterialPost(" Ore").setUnifiable().setMaterialBased().setUsedForBlocks().build();
     // orePoor("Poor Ores", "Poor ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1)
 
     /** In case of an End-Ores Mod. Ore -> Material is a Oneway Operation! */
-    public static final OrePrefixes oreEndstone = new OrePrefixBuilder("oreEndstone").setDefaultLocalName("Endstone Ores").setLocalMaterialPre("End ").setLocalMaterialPost(" Ore").setUnifiable().setMaterialBased().build();
+    public static final OrePrefixes oreEndstone = new OrePrefixBuilder("oreEndstone").setDefaultLocalName("Endstone Ores").setLocalMaterialPre("End ").setLocalMaterialPost(" Ore").setUnifiable().setMaterialBased().setUsedForBlocks().build();
     // oreEndstone("Endstone Ores", "End ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1)
 
     /** In case of an End-Ores Mod. Ore -> Material is a Oneway Operation! */
-    public static final OrePrefixes oreEnd = new OrePrefixBuilder("oreEnd").setDefaultLocalName("End Ores").setLocalMaterialPre("End ").setLocalMaterialPost(" Ore").setUnifiable().setMaterialBased().build();
+    public static final OrePrefixes oreEnd = new OrePrefixBuilder("oreEnd").setDefaultLocalName("End Ores").setLocalMaterialPre("End ").setLocalMaterialPost(" Ore").setUnifiable().setMaterialBased().setUsedForBlocks().build();
     // oreEnd("End Ores", "End ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1)
 
     /** Regular Ore Prefix. Ore -> Material is a Oneway Operation! Introduced by Eloraam */
-    public static final OrePrefixes ore = new OrePrefixBuilder("ore").setDefaultLocalName("Ores").setLocalMaterialPost(" Ore").setUnifiable().setMaterialBased().build();
+    public static final OrePrefixes ore = new OrePrefixBuilder("ore").setDefaultLocalName("Ores").setLocalMaterialPost(" Ore").setUnifiable().setMaterialBased().setUsedForBlocks().build();
     // ore("Ores", "", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, 68)
 
     public static final OrePrefixes crushedCentrifuged = new OrePrefixBuilder("crushedCentrifuged").setDefaultLocalName("Centrifuged Ores").setLocalMaterialPre("Centrifuged ").setLocalMaterialPost(" Ore").setUnifiable().setMaterialBased().build();
@@ -397,21 +397,21 @@ public class OrePrefixes {
     public static final OrePrefixes glass = new OrePrefixBuilder("glass").setDefaultLocalName("Glasses").setSelfReferencing().setDoNotUnifyActively().build();
     // glass("Glasses", "", "", false, false, true, false, true, false, false, false, false, false, 0, -1, 64, -1)
 
-    public static final OrePrefixes paneGlass = new OrePrefixBuilder("paneGlass").setDefaultLocalName("Glass Panes").setSelfReferencing().build();
+    public static final OrePrefixes paneGlass = new OrePrefixBuilder("paneGlass").setDefaultLocalName("Glass Panes").setSelfReferencing().setUsedForBlocks().build();
     // paneGlass("Glass Panes", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1)
 
-    public static final OrePrefixes blockGlass = new OrePrefixBuilder("blockGlass").setDefaultLocalName("Glass Blocks").setSelfReferencing().build();
+    public static final OrePrefixes blockGlass = new OrePrefixBuilder("blockGlass").setDefaultLocalName("Glass Blocks").setSelfReferencing().setUsedForBlocks().build();
     // blockGlass("Glass Blocks", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64,-1)
 
-    public static final OrePrefixes blockWool = new OrePrefixBuilder("blockWool").setDefaultLocalName("Wool Blocks").setSelfReferencing().build();
+    public static final OrePrefixes blockWool = new OrePrefixBuilder("blockWool").setDefaultLocalName("Wool Blocks").setSelfReferencing().setUsedForBlocks().build();
     // blockWool("Wool Blocks", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1)
 
     /** IGNORE */
-    public static final OrePrefixes block_ = new OrePrefixBuilder("block_").setDefaultLocalName("Random Blocks").build();
+    public static final OrePrefixes block_ = new OrePrefixBuilder("block_").setDefaultLocalName("Random Blocks").setUsedForBlocks().build();
     // block_("Random Blocks", "", "", false, false, false, false, false, true, false, false, false, false, 0, -1, 64, -1)
 
     /** Storage Block consisting out of 9 Ingots/Gems/Dusts. Introduced by CovertJaguar */
-    public static final OrePrefixes block = new OrePrefixBuilder("block").setDefaultLocalName("Storage Blocks").setLocalMaterialPre("Block of ").setUnifiable().setMaterialBased().build();
+    public static final OrePrefixes block = new OrePrefixBuilder("block").setDefaultLocalName("Storage Blocks").setLocalMaterialPre("Block of ").setUnifiable().setMaterialBased().setUsedForBlocks().build();
     // block("Storage Blocks", "Block of ", "", true, true, false, false, false, true, true, false, false, false, 0, M * 9, 64, 71)
 
     /** Special Prefix used mainly for the Crafting Handler. */
@@ -427,15 +427,15 @@ public class OrePrefixes {
     // craft("Crafting Stuff?", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
 
     /** Prefix used for Logs. Usually as "logWood". Introduced by Eloraam */
-    public static final OrePrefixes log = new OrePrefixBuilder("log").setDefaultLocalName("Logs").build();
+    public static final OrePrefixes log = new OrePrefixBuilder("log").setDefaultLocalName("Logs").setUsedForBlocks().build();
     // log("Logs", "", "", false, false, false, false, false, true, false, false, false, false, 0, -1, 64, -1)
 
     /** Prefix used for Slabs. Usually as "slabWood" or "slabStone". Introduced by SirSengir */
-    public static final OrePrefixes slab = new OrePrefixBuilder("slab").setDefaultLocalName("Slabs").build();
+    public static final OrePrefixes slab = new OrePrefixBuilder("slab").setDefaultLocalName("Slabs").setUsedForBlocks().build();
     // slab("Slabs", "", "", false, false, false, false, false, true, false, false, false, false, 0, -1, 64, -1)
 
     /** Prefix used for Stairs. Usually as "stairWood" or "stairStone". Introduced by SirSengir */
-    public static final OrePrefixes stair = new OrePrefixBuilder("stair").setDefaultLocalName("Stairs").build();
+    public static final OrePrefixes stair = new OrePrefixBuilder("stair").setDefaultLocalName("Stairs").setUsedForBlocks().build();
     // stair("Stairs", "", "", false, false, false, false, false, true, false, false, false, false, 0, -1, 64, -1)
 
     /** Prefix used for Fences. Usually as "fenceWood". Introduced by Forge */
@@ -443,15 +443,15 @@ public class OrePrefixes {
     // fence("Fences", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
 
     /** Prefix for Planks. Usually "plankWood". Introduced by Eloraam */
-    public static final OrePrefixes plank = new OrePrefixBuilder("plank").setDefaultLocalName("Planks").build();
+    public static final OrePrefixes plank = new OrePrefixBuilder("plank").setDefaultLocalName("Planks").setUsedForBlocks().build();
     // plank("Planks", "", "", false, false, false, false, false, true, false, false, false, false, 0, -1, 64, -1)
 
     /** Prefix for Saplings. */
-    public static final OrePrefixes treeSapling = new OrePrefixBuilder("treeSapling").setDefaultLocalName("Saplings").setSelfReferencing().build();
+    public static final OrePrefixes treeSapling = new OrePrefixBuilder("treeSapling").setDefaultLocalName("Saplings").setSelfReferencing().setUsedForBlocks().build();
     // treeSapling("Saplings", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1)
 
     /** Prefix for Leaves. */
-    public static final OrePrefixes treeLeaves = new OrePrefixBuilder("treeLeaves").setDefaultLocalName("Leaves").setSelfReferencing().build();
+    public static final OrePrefixes treeLeaves = new OrePrefixBuilder("treeLeaves").setDefaultLocalName("Leaves").setSelfReferencing().setUsedForBlocks().build();
     // treeLeaves("Leaves", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1)
 
     /** Prefix for Tree Parts. */
@@ -459,42 +459,42 @@ public class OrePrefixes {
     // tree("Tree Parts", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
 
     /** Cobblestone Prefix for all Cobblestones. */
-    public static final OrePrefixes stoneCobble = new OrePrefixBuilder("stoneCobble").setDefaultLocalName("Cobblestones").setSelfReferencing().build();
+    public static final OrePrefixes stoneCobble = new OrePrefixBuilder("stoneCobble").setDefaultLocalName("Cobblestones").setSelfReferencing().setUsedForBlocks().build();
     // stoneCobble("Cobblestones", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1)
 
     /** Smoothstone Prefix. */
-    public static final OrePrefixes stoneSmooth = new OrePrefixBuilder("stoneSmooth").setDefaultLocalName("Smoothstones").setSelfReferencing().build();
+    public static final OrePrefixes stoneSmooth = new OrePrefixBuilder("stoneSmooth").setDefaultLocalName("Smoothstones").setSelfReferencing().setUsedForBlocks().build();
     // stoneSmooth("Smoothstones", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1)
 
     /** Mossy Stone Bricks. */
-    public static final OrePrefixes stoneMossyBricks = new OrePrefixBuilder("stoneMossyBricks").setDefaultLocalName("mossy Stone Bricks").setSelfReferencing().build();
+    public static final OrePrefixes stoneMossyBricks = new OrePrefixBuilder("stoneMossyBricks").setDefaultLocalName("mossy Stone Bricks").setSelfReferencing().setUsedForBlocks().build();
     // stoneMossyBricks("mossy Stone Bricks", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1)
 
     /** Mossy Cobble. */
-    public static final OrePrefixes stoneMossy = new OrePrefixBuilder("stoneMossy").setDefaultLocalName("Mossy Stones").setSelfReferencing().build();
+    public static final OrePrefixes stoneMossy = new OrePrefixBuilder("stoneMossy").setDefaultLocalName("Mossy Stones").setSelfReferencing().setUsedForBlocks().build();
     // stoneMossy("Mossy Stones", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1)
 
     /** Stone Bricks. */
-    public static final OrePrefixes stoneBricks = new OrePrefixBuilder("stoneBricks").setDefaultLocalName("Stone Bricks").setSelfReferencing().build();
+    public static final OrePrefixes stoneBricks = new OrePrefixBuilder("stoneBricks").setDefaultLocalName("Stone Bricks").setSelfReferencing().setUsedForBlocks().build();
     // stoneBricks("Stone Bricks", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1)
 
     /** Cracked Bricks. */
-    public static final OrePrefixes stoneCracked = new OrePrefixBuilder("stoneCracked").setDefaultLocalName("Cracked Stones").setSelfReferencing().build();
+    public static final OrePrefixes stoneCracked = new OrePrefixBuilder("stoneCracked").setDefaultLocalName("Cracked Stones").setSelfReferencing().setUsedForBlocks().build();
     // stoneCracked("Cracked Stones", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1)
 
     /** Chiseled Stone. */
-    public static final OrePrefixes stoneChiseled = new OrePrefixBuilder("stoneChiseled").setDefaultLocalName("Chiseled Stones").setSelfReferencing().build();
+    public static final OrePrefixes stoneChiseled = new OrePrefixBuilder("stoneChiseled").setDefaultLocalName("Chiseled Stones").setSelfReferencing().setUsedForBlocks().build();
     // stoneChiseled("Chiseled Stones", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1)
 
     /** Prefix to determine which kind of Rock this is. */
-    public static final OrePrefixes stone = new OrePrefixBuilder("stone").setDefaultLocalName("Stones").setSelfReferencing().setDoNotUnifyActively().build();
+    public static final OrePrefixes stone = new OrePrefixBuilder("stone").setDefaultLocalName("Stones").setSelfReferencing().setDoNotUnifyActively().setUsedForBlocks().build();
     // stone("Stones", "", "", false, true, true, false, true, true, false, false, false, false, 0, -1, 64, -1)
 
-    public static final OrePrefixes cobblestone = new OrePrefixBuilder("cobblestone").setDefaultLocalName("Cobblestones").setSelfReferencing().build();
+    public static final OrePrefixes cobblestone = new OrePrefixBuilder("cobblestone").setDefaultLocalName("Cobblestones").setSelfReferencing().setUsedForBlocks().build();
     // cobblestone("Cobblestones", "", "", false, true, true, false, false, true, false, false, false, false, 0, -1, 64, -1)
 
     /** Prefix to determine which kind of Rock this is. */
-    public static final OrePrefixes rock = new OrePrefixBuilder("rock").setDefaultLocalName("Rocks").setSelfReferencing().setDoNotUnifyActively().build();
+    public static final OrePrefixes rock = new OrePrefixBuilder("rock").setDefaultLocalName("Rocks").setSelfReferencing().setDoNotUnifyActively().setUsedForBlocks().build();
     // rock("Rocks", "", "", false, true, true, false, true, true, false, false, false, false, 0, -1, 64, -1)
 
     public static final OrePrefixes record = new OrePrefixBuilder("record").setDefaultLocalName("Records").setSelfReferencing().build();
@@ -530,7 +530,7 @@ public class OrePrefixes {
     // dye("Dyes", "", "", false, false, true, false, false, false, false, false, false, false, 0, -1, 64, -1)
 
     /** Used for the 16 colors of Stained Clay. Introduced by Forge */
-    public static final OrePrefixes stainedClay = new OrePrefixBuilder("stainedClay").setDefaultLocalName("Stained Clays").setSelfReferencing().build();
+    public static final OrePrefixes stainedClay = new OrePrefixBuilder("stainedClay").setDefaultLocalName("Stained Clays").setSelfReferencing().setUsedForBlocks().build();
     // stainedClay("Stained Clays", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1)
 
     /** vanilly Helmet */
@@ -697,7 +697,7 @@ public class OrePrefixes {
     public static final OrePrefixes dirt = new OrePrefixBuilder("dirt").setDefaultLocalName("Dirts").build();
     // dirt("Dirts", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
 
-    public static final OrePrefixes sand = new OrePrefixBuilder("sand").setDefaultLocalName("Sands").setSelfReferencing().build();
+    public static final OrePrefixes sand = new OrePrefixBuilder("sand").setDefaultLocalName("Sands").setSelfReferencing().setUsedForBlocks().build();
     // sand("Sands", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1)
 
     public static final OrePrefixes grass = new OrePrefixBuilder("grass").setDefaultLocalName("Grasses").build();
@@ -953,10 +953,10 @@ public class OrePrefixes {
     // milled("Milled Ores", "Milled ", " Ore", true, true, false, false, false, false, false, false, false, true, B[3], -1, 64, -1)
 
     // migrated from bartworks
-    public static final OrePrefixes blockCasing = new OrePrefixBuilder("blockCasing").setDefaultLocalName("A Casing block for a Multiblock-Machine").setLocalMaterialPre("Bolted ").setLocalMaterialPost(" Casing").setUnifiable().setMaterialBased().setSelfReferencing().setContainer().build();
+    public static final OrePrefixes blockCasing = new OrePrefixBuilder("blockCasing").setDefaultLocalName("A Casing block for a Multiblock-Machine").setLocalMaterialPre("Bolted ").setLocalMaterialPost(" Casing").setUnifiable().setMaterialBased().setSelfReferencing().setContainer().setUsedForBlocks().build();
     // blockCasing("A Casing block for a Multiblock-Machine", "Bolted ", " Casing", true, true, true, true, false, true, false, true, false, false, 0, M * 9, 64, -1)
 
-    public static final OrePrefixes blockCasingAdvanced = new OrePrefixBuilder("blockCasingAdvanced").setDefaultLocalName("An Advanced Casing block for a Multiblock-Machine").setLocalMaterialPre("Rebolted ").setLocalMaterialPost(" Casing").setUnifiable().setMaterialBased().setSelfReferencing().setContainer().build();
+    public static final OrePrefixes blockCasingAdvanced = new OrePrefixBuilder("blockCasingAdvanced").setDefaultLocalName("An Advanced Casing block for a Multiblock-Machine").setLocalMaterialPre("Rebolted ").setLocalMaterialPost(" Casing").setUnifiable().setMaterialBased().setSelfReferencing().setContainer().setUsedForBlocks().build();
     // blockCasingAdvanced("An Advanced Casing block for a Multiblock-Machine", "Rebolted ", " Casing", true, true, true, true, false, true, false, true, false, false, 0, M * 9, 64, -1)
 
     public static final OrePrefixes capsuleMolten = new OrePrefixBuilder("capsuleMolten").setDefaultLocalName("Capsule of Molten stuff").setLocalMaterialPre("Molten ").setLocalMaterialPost(" Capsule").setUnifiable().setMaterialBased().setSelfReferencing().setContainer().build();
@@ -982,6 +982,7 @@ public class OrePrefixes {
     private final boolean isSelfReferencing;
     private final boolean isContainer;
     private final boolean doNotUnifyActively;
+    private final boolean isUsedForBlocks;
 
     OrePrefixes(
         // spotless:off
@@ -993,7 +994,8 @@ public class OrePrefixes {
         boolean isMaterialBased,
         boolean isSelfReferencing,
         boolean isContainer,
-        boolean doNotUnifyActively
+        boolean doNotUnifyActively,
+        boolean isUsedForBlocks
         // spotless:on
     ) {
         this.name = name;
@@ -1005,6 +1007,7 @@ public class OrePrefixes {
         this.isSelfReferencing = isSelfReferencing;
         this.isContainer = isContainer;
         this.doNotUnifyActively = doNotUnifyActively;
+        this.isUsedForBlocks = isUsedForBlocks;
     }
 
 //    OrePrefixes(String aRegularLocalName, String aLocalizedMaterialPre, String aLocalizedMaterialPost,
