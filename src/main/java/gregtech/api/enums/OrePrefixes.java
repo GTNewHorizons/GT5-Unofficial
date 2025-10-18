@@ -18,7 +18,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableList;
 
@@ -2127,9 +2126,9 @@ public class OrePrefixes {
     OrePrefixes(
         // spotless:off
         @NotNull String name,
-        @Nullable String defaultLocalName,
-        @Nullable String materialPrefix,
-        @Nullable String materialPostfix,
+        @NotNull String defaultLocalName,
+        @NotNull String materialPrefix,
+        @NotNull String materialPostfix,
         boolean isUnifiable,
         boolean isMaterialBased,
         boolean isSelfReferencing,
@@ -2147,9 +2146,9 @@ public class OrePrefixes {
         // spotless:on
     ) {
         this.name = name;
-        this.defaultLocalName = defaultLocalName != null ? defaultLocalName : "";
-        this.materialPrefix = materialPrefix != null ? materialPrefix : "";
-        this.materialPostfix = materialPostfix != null ? materialPostfix : "";
+        this.defaultLocalName = defaultLocalName;
+        this.materialPrefix = materialPrefix;
+        this.materialPostfix = materialPostfix;
         this.isUnifiable = isUnifiable;
         this.isMaterialBased = isMaterialBased;
         this.isSelfReferencing = isSelfReferencing;

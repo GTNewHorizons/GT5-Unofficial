@@ -3,9 +3,9 @@ package gregtech.api.enums;
 public class OrePrefixBuilder {
 
     private final String name;
-    private String defaultLocalName;
-    private String materialPrefix;
-    private String materialPostfix;
+    private String defaultLocalName = "";
+    private String materialPrefix = "";
+    private String materialPostfix = "";
     private boolean isUnifiable = false;
     private boolean isMaterialBased = false;
     private boolean isSelfReferencing = false;
