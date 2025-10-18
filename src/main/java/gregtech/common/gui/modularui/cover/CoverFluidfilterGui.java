@@ -1,5 +1,6 @@
 package gregtech.common.gui.modularui.cover;
 
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -18,7 +19,6 @@ import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverFluidfilter;
 import gregtech.common.covers.modes.BlockMode;
 import gregtech.common.covers.modes.FilterDirectionMode;
@@ -78,13 +78,13 @@ public class CoverFluidfilterGui extends CoverBaseGui<CoverFluidfilter> {
                     new EnumRowBuilder<>(FilterDirectionMode.class).value(ioModeSyncValue)
                         .overlay(GTGuiTextures.OVERLAY_BUTTON_IMPORT, GTGuiTextures.OVERLAY_BUTTON_EXPORT)
                         .build(),
-                    IKey.str(GTUtility.trans("238", "Filter Direction"))
+                    IKey.lang("gt.interact.desc.FluidFilter.Direction")
                         .asWidget())
                 .row(
                     new EnumRowBuilder<>(FilterType.class).value(filterTypeSyncValue)
                         .overlay(GTGuiTextures.OVERLAY_BUTTON_WHITELIST, GTGuiTextures.OVERLAY_BUTTON_BLACKLIST)
                         .build(),
-                    IKey.str(GTUtility.trans("239", "Filter Type"))
+                    IKey.lang("gt.interact.desc.FluidFilter.Type")
                         .asWidget())
                 .row(
                     new EnumRowBuilder<>(BlockMode.class).value(blockModeSyncValue)
@@ -100,14 +100,14 @@ public class CoverFluidfilterGui extends CoverBaseGui<CoverFluidfilter> {
                         .tooltip(
                             IKey.dynamic(
                                 () -> ioModeSyncValue.getValue() == FilterDirectionMode.INPUT
-                                    ? GTUtility.trans("312", "Allow Output")
-                                    : GTUtility.trans("314", "Allow Input")),
+                                    ? StatCollector.translateToLocal("gt.interact.desc.FluidFilter.AllowOutput")
+                                    : StatCollector.translateToLocal("gt.interact.desc.FluidFilter.AllowInput")),
                             IKey.dynamic(
                                 () -> ioModeSyncValue.getValue() == FilterDirectionMode.INPUT
-                                    ? GTUtility.trans("311", "Block Output")
-                                    : GTUtility.trans("313", "Block Input")))
+                                    ? StatCollector.translateToLocal("gt.interact.desc.FluidFilter.BlockOutput")
+                                    : StatCollector.translateToLocal("gt.interact.desc.FluidFilter.BlockInput")))
                         .build(),
-                    IKey.str(GTUtility.trans("240", "Block Flow"))
+                    IKey.lang("gt.interact.desc.FluidFilter.BlockFlow")
                         .asWidget()))
             .child(
                 Flow.row()
@@ -124,7 +124,7 @@ public class CoverFluidfilterGui extends CoverBaseGui<CoverFluidfilter> {
                         if (fluidStack != null) {
                             return fluidStack.getLocalizedName();
                         }
-                        return GTUtility.trans("315", "Filter Empty");
+                        return StatCollector.translateToLocal("gt.interact.desc.FluidFilter.Empty");
                     })
                         .asWidget()));
     }
