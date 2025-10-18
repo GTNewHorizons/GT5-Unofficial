@@ -154,10 +154,6 @@ public class WerkstoffLoader {
     public static final SubTag NO_BLAST = SubTag.getNewSubTag("NoBlast");
 
     public static void setUp() {
-
-        OrePrefixes.cellMolten.mMaterialGenerationBits = 0b1000000;
-        OrePrefixes.capsuleMolten.mMaterialGenerationBits = 0b1000000;
-
         // add tiberium
         EnumUtils.createNewElement("Tr", 123L, 203L, 0L, -1L, null, "Tiberium", false);
 
@@ -1919,7 +1915,7 @@ public class WerkstoffLoader {
             }
             for (OrePrefixes p : OrePrefixes.VALUES) if (Materials.get(werkstoff.getDefaultName()) != null
                 && Materials.get(werkstoff.getDefaultName()).mMetaItemSubID != -1
-                && (werkstoff.getGenerationFeatures().toGenerate & p.mMaterialGenerationBits) != 0
+                && (werkstoff.getGenerationFeatures().toGenerate & p.getMaterialGenerationBits()) != 0
                 && OreDictHandler.getItemStack(werkstoff.getDefaultName(), p, 1) != null) {
                     DebugLog.log(
                         "Found: " + p

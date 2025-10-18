@@ -790,6 +790,7 @@ public class OrePrefixes {
         .selfReferencing()
         .container()
         .generateDefaultItem()
+        .materialGenerationBits(B[6])
         .materialAmount(M * 1)
         .textureIndex(31)
         .build();
@@ -2082,6 +2083,7 @@ public class OrePrefixes {
         .selfReferencing()
         .container()
         .generateDefaultItem()
+        .materialGenerationBits(B[6])
         .materialAmount(M * 1)
         .build();
 
@@ -2249,6 +2251,10 @@ public class OrePrefixes {
 
     public boolean isUsedForOreProcessing() {
         return isUsedForOreProcessing;
+    }
+
+    public int getMaterialGenerationBits() {
+        return materialGenerationBits;
     }
 
     public long getMaterialAmount() {
@@ -2489,10 +2495,6 @@ public class OrePrefixes {
             OrePrefixes.itemCasing,
             OrePrefixes.nanite,
             OrePrefixes.cell));
-    /**
-     * Yes this Value can be changed to add Bits for the MetaGenerated-Item-Check.
-     */
-    public int mMaterialGenerationBits = 0;
 
     public static boolean isInstanceOf(String aName, OrePrefixes aPrefix) {
         return aName != null && aName.startsWith(aPrefix.toString());
@@ -2679,15 +2681,15 @@ public class OrePrefixes {
         // This only falls through, returning false, when the material has no overlap with `mMaterialGenerationBits`.
         // spotless:off
         if (!mGeneratedItems.contains(aMaterial))
-            if ((mMaterialGenerationBits & 1) == 0 || !aMaterial.hasDustItems())
-                if ((mMaterialGenerationBits & 2) == 0 || !aMaterial.hasMetalItems())
-                    if ((mMaterialGenerationBits & 4) == 0 || !aMaterial.hasGemItems())
-                        if ((mMaterialGenerationBits & 8) == 0 || !aMaterial.hasOresItems())
-                            if ((mMaterialGenerationBits & 16) == 0 || !aMaterial.hasCell())
-                                if ((mMaterialGenerationBits & 32) == 0 || !aMaterial.hasPlasma())
-                                    if ((mMaterialGenerationBits & 64) == 0 || !aMaterial.hasToolHeadItems())
-                                        if ((mMaterialGenerationBits & 128) == 0 || !aMaterial.hasGearItems())
-                                            if ((mMaterialGenerationBits & 256) == 0 || !aMaterial.hasEmpty())
+            if ((materialGenerationBits & 1) == 0 || !aMaterial.hasDustItems())
+                if ((materialGenerationBits & 2) == 0 || !aMaterial.hasMetalItems())
+                    if ((materialGenerationBits & 4) == 0 || !aMaterial.hasGemItems())
+                        if ((materialGenerationBits & 8) == 0 || !aMaterial.hasOresItems())
+                            if ((materialGenerationBits & 16) == 0 || !aMaterial.hasCell())
+                                if ((materialGenerationBits & 32) == 0 || !aMaterial.hasPlasma())
+                                    if ((materialGenerationBits & 64) == 0 || !aMaterial.hasToolHeadItems())
+                                        if ((materialGenerationBits & 128) == 0 || !aMaterial.hasGearItems())
+                                            if ((materialGenerationBits & 256) == 0 || !aMaterial.hasEmpty())
                                                 return false;
         // spotless:on
 
