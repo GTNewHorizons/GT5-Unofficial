@@ -39,7 +39,7 @@ public class AspectLoader implements IWerkstoffRunnable {
             if (werkstoff.hasItemType(enabledOrePrefixes)) {
                 if (enabledOrePrefixes.mMaterialAmount >= 3628800L || enabledOrePrefixes == OrePrefixes.ore) {
                     DebugLog.log(
-                        "OrePrefix: " + enabledOrePrefixes.name()
+                        "OrePrefix: " + enabledOrePrefixes.getName()
                             + " mMaterialAmount: "
                             + enabledOrePrefixes.mMaterialAmount / 3628800L);
                     if (Objects.nonNull(WerkstoffLoader.items.get(enabledOrePrefixes)))

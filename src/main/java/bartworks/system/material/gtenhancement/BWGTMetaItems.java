@@ -57,12 +57,13 @@ public class BWGTMetaItems extends BWMetaGeneratedItems {
                     && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))
                 continue;
 
-            if (OreDictionary.doesOreNameExist(this.orePrefixes.name() + material.mDefaultLocalName.replace(" ", ""))) {
+            if (OreDictionary
+                .doesOreNameExist(this.orePrefixes.getName() + material.mDefaultLocalName.replace(" ", ""))) {
                 this.hiddenThings.add(i);
                 continue;
             }
             GTOreDictUnificator
-                .registerOre(this.orePrefixes.name() + material.mDefaultLocalName.replace(" ", ""), tStack);
+                .registerOre(this.orePrefixes.getName() + material.mDefaultLocalName.replace(" ", ""), tStack);
         }
 
         if (noSubIDMaterials != null) {
@@ -76,11 +77,12 @@ public class BWGTMetaItems extends BWMetaGeneratedItems {
                         && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))
                     continue;
 
-                if (OreDictionary.doesOreNameExist(this.orePrefixes.name() + w.mDefaultLocalName.replace(" ", ""))) {
+                if (OreDictionary.doesOreNameExist(this.orePrefixes.getName() + w.mDefaultLocalName.replace(" ", ""))) {
                     this.hiddenThings.add(i);
                     continue;
                 }
-                GTOreDictUnificator.registerOre(this.orePrefixes.name() + w.mDefaultLocalName.replace(" ", ""), tStack);
+                GTOreDictUnificator
+                    .registerOre(this.orePrefixes.getName() + w.mDefaultLocalName.replace(" ", ""), tStack);
             }
         }
     }

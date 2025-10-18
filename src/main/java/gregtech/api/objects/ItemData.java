@@ -117,6 +117,6 @@ public class ItemData {
     @Override
     public String toString() {
         if (mPrefix == null || mMaterial == null || mMaterial.mMaterial == null) return "";
-        return mPrefix.name() + mMaterial.mMaterial.mName;
+        return mPrefix.getName() + mMaterial.mMaterial.mName;
     }
 }

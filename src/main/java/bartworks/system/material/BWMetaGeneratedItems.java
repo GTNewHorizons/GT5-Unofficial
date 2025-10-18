@@ -62,7 +62,7 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
     protected final String itemTypeLocalizedName;
 
     public BWMetaGeneratedItems(OrePrefixes orePrefixes, Object unused) {
-        super("bwMetaGeneratedGTEnhancement" + orePrefixes.name(), (short) 32766, (short) 0);
+        super("bwMetaGeneratedGTEnhancement" + orePrefixes.getName(), (short) 32766, (short) 0);
         this.orePrefixes = orePrefixes;
         this.itemTypeLocalizedName = GTLanguageManager.addStringLocalization(
             "bw.itemtype." + orePrefixes,
@@ -70,7 +70,7 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
     }
 
     public BWMetaGeneratedItems(OrePrefixes orePrefixes) {
-        super("bwMetaGenerated" + orePrefixes.name(), (short) 32766, (short) 0);
+        super("bwMetaGenerated" + orePrefixes.getName(), (short) 32766, (short) 0);
         this.orePrefixes = orePrefixes;
         this.itemTypeLocalizedName = GTLanguageManager.addStringLocalization(
             "bw.itemtype." + orePrefixes,
@@ -79,7 +79,7 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
         for (Werkstoff w : Werkstoff.werkstoffHashSet) {
             ItemStack tStack = new ItemStack(this, 1, w.getmID());
             if (!w.hasItemType(this.orePrefixes)) continue;
-            GTOreDictUnificator.registerOre(this.orePrefixes.name() + w.getVarName(), tStack);
+            GTOreDictUnificator.registerOre(this.orePrefixes.getName() + w.getVarName(), tStack);
         }
     }
 

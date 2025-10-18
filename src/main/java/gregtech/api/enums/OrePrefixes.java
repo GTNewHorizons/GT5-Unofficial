@@ -2200,6 +2200,10 @@ public class OrePrefixes {
         new TC_AspectStack(TCAspects.MACHINA, 1).addToAspectList(mAspects);
     }
 
+    public @NotNull String getName() {
+        return name;
+    }
+
     public static final ImmutableList<OrePrefixes> CELL_TYPES = ImmutableList.of(
         cell,
         cellMolten,
