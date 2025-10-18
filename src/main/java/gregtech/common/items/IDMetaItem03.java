@@ -244,7 +244,13 @@ public enum IDMetaItem03 {
     Thermal_Superconductor(759),
     Relativistic_Heat_Capacitor(760),
     Phononic_Seed_Crystal(761),
-    Harmonic_Compound(762);
+    Harmonic_Compound(762),
+    Silicon_Seed_Crystal(763),
+    AlGaAs_Seed_Crystal(764),
+    AlGaAs_Monocrystal(765),
+    Raw_Crude_Si_Wafer(766),
+    Crude_Si_Wafer(767),
+    Diamond_Infused_Wire_Saw(768);
 
     public final int ID;
 

@@ -660,6 +660,14 @@ public class BlastFurnaceRecipes implements Runnable {
             .eut((int) TierEU.RECIPE_UMV)
             .metadata(COIL_HEAT, 14000)
             .addTo(blastFurnaceRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Raw_Crude_Si_Wafer.get(1))
+            .itemOutputs(ItemList.Crude_Si_Wafer.get(1))
+            .duration(25 * SECONDS)
+            .eut((int) TierEU.RECIPE_MV)
+            .metadata(COIL_HEAT, 1784)
+            .addTo(blastFurnaceRecipes);
     }
 
     public void registerPrimitiveBlastFurnaceRecipes() {

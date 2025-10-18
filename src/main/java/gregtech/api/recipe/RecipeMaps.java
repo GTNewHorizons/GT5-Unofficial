@@ -1307,4 +1307,9 @@ public final class RecipeMaps {
         .progressBar(GTUITextures.PROGRESSBAR_ARROW)
         .frontend(IsotopeDecayFrontend::new)
         .build();
+    public static final RecipeMap<RecipeMapBackend> czRecipes = RecipeMapBuilder.of("gt.recipe.czpuller")
+        .maxIO(1, 1, 1, 0)
+        .minInputs(1, 1)
+        .progressBar(GTUITextures.PROGRESSBAR_ASSEMBLE)
+        .build();
 }
