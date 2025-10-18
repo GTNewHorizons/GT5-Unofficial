@@ -606,15 +606,17 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
 
     @Override
     public ItemStack getStackInSlot(int slotIndex) {
-        if (!processingRecipe) return null;
+        // Used to offset the slot index due to recipe checks, when doing other things it will return 0,
+        // which allows for changing phantom circuit using mouse clicks
+        int virtualSlotOffset = processingRecipe ? SLOT_COUNT : 0;
 
         if (slotIndex < 0 || slotIndex >= getSizeInventory()) return null;
 
         // Put the circuit + manual slots at the end. The stocked slots come first, then the circuit, then the manual.
         // Since machines reverse this order prior to recipe checks, the actual order is: manual, then circuit, then
         // stocked.
-        if (slotIndex == getCircuitSlot() + SLOT_COUNT) return mInventory[getCircuitSlot()];
-        if (slotIndex == getManualSlot() + SLOT_COUNT) return mInventory[getManualSlot()];
+        if (slotIndex == getCircuitSlot() + virtualSlotOffset) return mInventory[getCircuitSlot()];
+        if (slotIndex == getManualSlot() + virtualSlotOffset) return mInventory[getManualSlot()];
 
         if (!isAllowedToWork()) {
             return null;
