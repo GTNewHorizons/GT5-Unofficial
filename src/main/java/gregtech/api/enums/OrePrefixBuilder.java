@@ -13,6 +13,7 @@ public class OrePrefixBuilder {
     private boolean doNotUnifyActively = false;
     private boolean isUsedForBlocks = false;
     private boolean allowNormalRecycling = false;
+    private boolean generateDefaultItem = false;
 
     protected OrePrefixBuilder(String name) {
         this.name = name;
@@ -31,7 +32,8 @@ public class OrePrefixBuilder {
             isContainer,
             doNotUnifyActively,
             isUsedForBlocks,
-            allowNormalRecycling
+            allowNormalRecycling,
+            generateDefaultItem
             // spotless:on
         );
     }
@@ -83,6 +85,11 @@ public class OrePrefixBuilder {
 
     protected OrePrefixBuilder setAllowNormalRecycling() {
         this.allowNormalRecycling = true;
+        return this;
+    }
+
+    protected OrePrefixBuilder setGenerateDefaultItem() {
+        this.generateDefaultItem = true;
         return this;
     }
 }
