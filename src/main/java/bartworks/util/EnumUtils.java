@@ -16,28 +16,10 @@ package bartworks.util;
 import net.minecraftforge.common.util.EnumHelper;
 
 import gregtech.api.enums.Element;
-import gregtech.api.enums.OrePrefixes;
 
 public class EnumUtils {
 
     private EnumUtils() {}
-
-    public static OrePrefixes addNewOrePrefix(String enumName, String aRegularLocalName, String aLocalizedMaterialPre,
-        String aLocalizedMaterialPost, boolean aIsUnificatable, boolean aIsMaterialBased, boolean aIsSelfReferencing,
-        boolean aIsContainer, boolean aDontUnificateActively, boolean aIsUsedForBlocks, boolean aAllowNormalRecycling,
-        boolean aGenerateDefaultItem, boolean aIsEnchantable, boolean aIsUsedForOreProcessing,
-        int aMaterialGenerationBits, long aMaterialAmount, int aDefaultStackSize, int aTextureindex) {
-        return EnumHelper.addEnum(
-            OrePrefixes.class,
-            enumName,
-            new Class<?>[] { String.class, String.class, String.class, boolean.class, boolean.class, boolean.class,
-                boolean.class, boolean.class, boolean.class, boolean.class, boolean.class, boolean.class, boolean.class,
-                int.class, long.class, int.class, int.class },
-            new Object[] { aRegularLocalName, aLocalizedMaterialPre, aLocalizedMaterialPost, aIsUnificatable,
-                aIsMaterialBased, aIsSelfReferencing, aIsContainer, aDontUnificateActively, aIsUsedForBlocks,
-                aAllowNormalRecycling, aGenerateDefaultItem, aIsEnchantable, aIsUsedForOreProcessing,
-                aMaterialGenerationBits, aMaterialAmount, aDefaultStackSize, aTextureindex });
-    }
 
     public static Element createNewElement(String enumName, long aProtons, long aNeutrons, long aAdditionalMass,
         long aHalfLifeSeconds, String aDecayTo, String aName, boolean aIsIsotope) {
