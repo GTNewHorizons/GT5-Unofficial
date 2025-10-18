@@ -51,8 +51,9 @@ public class ToolWrenchMV extends ToolWrenchLV {
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead
-            ? MetaGeneratedTool.getPrimaryMaterial(
-                aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadWrench.mTextureIndex]
+            ? MetaGeneratedTool
+                .getPrimaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadWrench
+                    .getTextureIndex()]
             : Textures.ItemIcons.POWER_UNIT_MV;
     }
 

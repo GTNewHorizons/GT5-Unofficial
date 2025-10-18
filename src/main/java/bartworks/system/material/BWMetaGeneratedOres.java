@@ -62,11 +62,11 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
         if (small) {
             this.blockTypeLocalizedName = GTLanguageManager.addStringLocalization(
                 blockName,
-                OrePrefixes.oreSmall.mLocalizedMaterialPre + "%material" + OrePrefixes.oreSmall.mLocalizedMaterialPost);
+                OrePrefixes.oreSmall.getMaterialPrefix() + "%material" + OrePrefixes.oreSmall.getMaterialPostfix());
         } else {
             this.blockTypeLocalizedName = GTLanguageManager.addStringLocalization(
                 blockName,
-                OrePrefixes.ore.mLocalizedMaterialPre + "%material" + OrePrefixes.ore.mLocalizedMaterialPost);
+                OrePrefixes.ore.getMaterialPrefix() + "%material" + OrePrefixes.ore.getMaterialPostfix());
         }
 
         this.blockName = blockName;
@@ -175,9 +175,10 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
         ITexture oreTexture;
 
         if (material != null) {
-            oreTexture = TextureFactory.of(material.getTexSet().mTextures[prefix.mTextureIndex], material.getRGBA());
+            oreTexture = TextureFactory
+                .of(material.getTexSet().mTextures[prefix.getTextureIndex()], material.getRGBA());
         } else {
-            oreTexture = TextureFactory.of(gregtech.api.enums.TextureSet.SET_NONE.mTextures[prefix.mTextureIndex]);
+            oreTexture = TextureFactory.of(gregtech.api.enums.TextureSet.SET_NONE.mTextures[prefix.getTextureIndex()]);
         }
 
         ITexture[][] out = new ITexture[6][];

@@ -62,8 +62,9 @@ public class ToolDrillHV extends ToolDrillLV {
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead
-            ? MetaGeneratedTool.getPrimaryMaterial(
-                aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadDrill.mTextureIndex]
+            ? MetaGeneratedTool
+                .getPrimaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadDrill
+                    .getTextureIndex()]
             : Textures.ItemIcons.POWER_UNIT_HV;
     }
 }

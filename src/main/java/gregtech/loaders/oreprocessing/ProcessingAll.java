@@ -9,16 +9,16 @@ public class ProcessingAll implements gregtech.api.interfaces.IOreRecipeRegistra
                                                                                       // PROCESSING CLASSES
 
     public ProcessingAll() {
-        for (OrePrefixes tPrefix : OrePrefixes.values()) tPrefix.add(this);
+        for (OrePrefixes tPrefix : OrePrefixes.VALUES) tPrefix.add(this);
     }
 
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
         if (((aStack.getItem() instanceof net.minecraft.item.ItemBlock))
-            && (aPrefix.mDefaultStackSize < aStack.getItem()
+            && (aPrefix.getDefaultStackSize() < aStack.getItem()
                 .getItemStackLimit(aStack)))
             aStack.getItem()
-                .setMaxStackSize(aPrefix.mDefaultStackSize);
+                .setMaxStackSize(aPrefix.getDefaultStackSize());
     }
 }

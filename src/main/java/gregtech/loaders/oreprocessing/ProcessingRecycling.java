@@ -16,8 +16,8 @@ import gregtech.api.util.GTUtility;
 public class ProcessingRecycling implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
     public ProcessingRecycling() {
-        for (OrePrefixes tPrefix : OrePrefixes.values())
-            if ((tPrefix.mIsMaterialBased) && (tPrefix.mMaterialAmount > 0L) && (tPrefix.mIsContainer))
+        for (OrePrefixes tPrefix : OrePrefixes.VALUES)
+            if ((tPrefix.isMaterialBased()) && (tPrefix.getMaterialAmount() > 0L) && (tPrefix.isContainer()))
                 tPrefix.add(this);
     }
 
@@ -31,11 +31,11 @@ public class ProcessingRecycling implements gregtech.api.interfaces.IOreRecipeRe
             recipeBuilder.itemInputs(aStack);
             if (GTUtility.getContainerItem(aStack, true) == null) {
                 recipeBuilder.itemOutputs(
-                    GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, aPrefix.mMaterialAmount / 3628800L));
+                    GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, aPrefix.getMaterialAmount() / 3628800L));
             } else {
                 recipeBuilder.itemOutputs(
                     GTUtility.getContainerItem(aStack, true),
-                    GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, aPrefix.mMaterialAmount / 3628800L));
+                    GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, aPrefix.getMaterialAmount() / 3628800L));
             }
             recipeBuilder.duration(((int) Math.max(aMaterial.getMass() / 2L, 1L)) * TICKS)
                 .eut(2)

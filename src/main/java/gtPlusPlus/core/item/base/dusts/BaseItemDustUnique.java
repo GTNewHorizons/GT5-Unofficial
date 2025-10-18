@@ -100,7 +100,7 @@ public class BaseItemDustUnique extends Item {
         if (aMap == null) {
             aMap = new HashMap<>();
         }
-        String aKey = OrePrefixes.dust.name();
+        String aKey = OrePrefixes.dust.getName();
         ItemStack x = aMap.get(aKey);
         if (x == null) {
             aMap.put(aKey, new ItemStack(this));

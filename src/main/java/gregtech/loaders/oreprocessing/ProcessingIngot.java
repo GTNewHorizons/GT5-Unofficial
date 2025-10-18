@@ -46,8 +46,8 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
         boolean aSpecialRecipeReq = aMaterial.mUnifiable && (aMaterial.mMaterialInto == aMaterial)
             && !aMaterial.contains(SubTag.NO_SMASHING);
 
-        switch (aPrefix) {
-            case ingot -> {
+        switch (aPrefix.getName()) {
+            case "ingot" -> {
                 // Fuel recipe
                 if (aMaterial.mFuelPower > 0) {
                     GTValues.RA.stdBuilder()
@@ -71,11 +71,11 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                 // Reverse recipes
                 {
                     GTRecipeRegistrator
-                        .registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null, false);
+                        .registerReverseFluidSmelting(aStack, aMaterial, aPrefix.getMaterialAmount(), null, false);
                     GTRecipeRegistrator.registerReverseMacerating(
                         aStack,
                         aMaterial,
-                        aPrefix.mMaterialAmount,
+                        aPrefix.getMaterialAmount(),
                         null,
                         null,
                         null,
@@ -85,7 +85,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                         GTRecipeRegistrator.registerReverseArcSmelting(
                             GTUtility.copyAmount(1, aStack),
                             aMaterial,
-                            aPrefix.mMaterialAmount,
+                            aPrefix.getMaterialAmount(),
                             null,
                             null,
                             null);
@@ -185,7 +185,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                     }
                 }
             }
-            case ingotHot -> {
+            case "ingotHot" -> {
                 if (aMaterial.mAutoGenerateVacuumFreezerRecipes
                     && GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L) != null) {
                     // Vacuum freezer recipes

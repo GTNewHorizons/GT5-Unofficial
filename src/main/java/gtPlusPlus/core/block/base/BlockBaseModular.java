@@ -105,8 +105,8 @@ public class BlockBaseModular extends BasicBlock {
             aMap = new HashMap<>();
         }
         int fx = getBlockTypeMeta();
-        String aKey = (fx == 0 ? OrePrefixes.block.name()
-            : (fx == 1 ? OrePrefixes.frameGt.name() : OrePrefixes.ore.name()));
+        String aKey = (fx == 0 ? OrePrefixes.block.getName()
+            : (fx == 1 ? OrePrefixes.frameGt.getName() : OrePrefixes.ore.getName()));
         ItemStack x = aMap.get(aKey);
         if (x == null) {
             aMap.put(aKey, new ItemStack(this));

@@ -99,7 +99,7 @@ public class BlockBaseOre extends BasicBlock implements IBlockWithTextures {
     @Nullable
     public ITexture[][] getTextures(int metadata) {
         ITexture oreTexture = TextureFactory
-            .of(blockMaterial.getTextureSet().mTextures[OrePrefixes.ore.mTextureIndex], blockMaterial.getRGBA());
+            .of(blockMaterial.getTextureSet().mTextures[OrePrefixes.ore.getTextureIndex()], blockMaterial.getRGBA());
 
         ITexture[][] out = new ITexture[6][];
 

@@ -69,7 +69,7 @@ public class RecipeGenRecycling implements Runnable {
 
         for (int r = 0; r < mValidPairs.length; r++) {
             ItemStack temp = getItemStackOfAmountFromOreDictNoBroken(
-                mValidPrefixesAsString[r].name() + StringUtils.sanitizeString(material.getLocalizedName()),
+                mValidPrefixesAsString[r].getName() + StringUtils.sanitizeString(material.getLocalizedName()),
                 1);
             if (temp != null) {
                 mValidPairs[mSlotIndex++] = Pair.of(mValidPrefixesAsString[r], temp.copy());
@@ -128,8 +128,12 @@ public class RecipeGenRecycling implements Runnable {
 
             // Fluid Extractor
             if (tempStack != null) {
-                int aFluidAmount = (int) ((144 * validPrefix.getKey().mMaterialAmount) / (M * tempStack.stackSize));
-                int aDuration = (int) Math.max(1, (24 * validPrefix.getKey().mMaterialAmount) / M);
+                int aFluidAmount = (int) ((144 * validPrefix.getKey()
+                    .getMaterialAmount()) / (M * tempStack.stackSize));
+                int aDuration = (int) Math.max(
+                    1,
+                    (24 * validPrefix.getKey()
+                        .getMaterialAmount()) / M);
                 FluidStack fluidOutput = material.getFluidStack(aFluidAmount);
                 if (fluidOutput != null) {
                     GTValues.RA.stdBuilder()
@@ -159,7 +163,7 @@ public class RecipeGenRecycling implements Runnable {
     }
 
     public static Pair<OrePrefixes, ItemStack> getDustData(final Material aMaterial, final OrePrefixes aPrefix) {
-        return getDustData(aMaterial, aPrefix.mMaterialAmount);
+        return getDustData(aMaterial, aPrefix.getMaterialAmount());
     }
 
     public static Pair<OrePrefixes, ItemStack> getDustData(final Material aMaterial, final long aMaterialAmount) {
@@ -194,7 +198,7 @@ public class RecipeGenRecycling implements Runnable {
     }
 
     public static ItemStack getDust(final Material aMaterial, final OrePrefixes aPrefix) {
-        return aMaterial == null ? null : getDust(aMaterial, aPrefix.mMaterialAmount);
+        return aMaterial == null ? null : getDust(aMaterial, aPrefix.getMaterialAmount());
     }
 
     public static ItemStack getDust(final Material aMaterial, final long aMaterialAmount) {
@@ -232,7 +236,7 @@ public class RecipeGenRecycling implements Runnable {
     public static ItemStack get(final OrePrefixes aPrefix, final Material aMaterial, final ItemStack aReplacement,
         final long aAmount) {
         return get(
-            aPrefix.name() + StringUtils.sanitizeString(aMaterial.getLocalizedName()),
+            aPrefix.getName() + StringUtils.sanitizeString(aMaterial.getLocalizedName()),
             aReplacement,
             aAmount,
             false,

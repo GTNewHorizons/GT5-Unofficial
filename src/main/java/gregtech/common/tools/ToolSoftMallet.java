@@ -79,10 +79,12 @@ public class ToolSoftMallet extends GTTool {
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead
-            ? MetaGeneratedTool.getPrimaryMaterial(
-                aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadMallet.mTextureIndex]
-            : MetaGeneratedTool.getSecondaryMaterial(
-                aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.handleMallet.mTextureIndex];
+            ? MetaGeneratedTool
+                .getPrimaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadMallet
+                    .getTextureIndex()]
+            : MetaGeneratedTool
+                .getSecondaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.handleMallet
+                    .getTextureIndex()];
     }
 
     @Override

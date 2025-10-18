@@ -101,7 +101,7 @@ public class MTETypeFilter extends MTESpecialFilter {
     }
 
     private void cyclePrefix(boolean aRightClick) {
-        final OrePrefixes[] ORE_VALUES = OrePrefixes.values();
+        final OrePrefixes[] ORE_VALUES = OrePrefixes.VALUES.toArray(new OrePrefixes[0]);
         for (int i = 0; i < ORE_VALUES.length; i++) {
             if (this.mPrefix == ORE_VALUES[i]) {
                 for (this.mPrefix = null; this.mPrefix == null; this.mPrefix = ORE_VALUES[i]) {
@@ -180,7 +180,7 @@ public class MTETypeFilter extends MTESpecialFilter {
     protected Function<List<String>, List<String>> getItemStackReplacementTooltip() {
         return (itemTooltip) -> {
             List<String> replacementTooltip = new ArrayList<>();
-            replacementTooltip.add("Filter set to " + mPrefix.mRegularLocalName);
+            replacementTooltip.add("Filter set to " + mPrefix.getDefaultLocalName());
             replacementTooltip.add("Ore prefix: §e" + mPrefix + "§r");
             replacementTooltip.add("Filter size: §e" + mPrefix.mPrefixedItems.size() + "§r");
             replacementTooltip.addAll(mTooltipCache.getData(REPRESENTATION_SLOT_TOOLTIP).text);

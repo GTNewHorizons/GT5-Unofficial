@@ -155,7 +155,9 @@ public class GTStructureUtility {
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
                 if (mIcons == null) {
                     mIcons = new IIcon[6];
-                    Arrays.fill(mIcons, aFrameMaterial.mIconSet.mTextures[OrePrefixes.frameGt.mTextureIndex].getIcon());
+                    Arrays.fill(
+                        mIcons,
+                        aFrameMaterial.mIconSet.mTextures[OrePrefixes.frameGt.getTextureIndex()].getIcon());
                 }
                 StructureLibAPI.hintParticleTinted(world, x, y, z, mIcons, aFrameMaterial.mRGBa);
                 return true;
@@ -732,7 +734,7 @@ public class GTStructureUtility {
 
     /**
      * like {@link #filterByMTEClass(java.util.List)}, but adds a blacklist check to the predicate
-     * 
+     *
      * @param list
      * @param blacklist
      * @return predicate of all multis of same type as hatchelement, with blacklist omitted

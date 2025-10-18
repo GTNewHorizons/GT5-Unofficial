@@ -3096,7 +3096,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
 
     @Override
     public boolean doesShowInCreative(OrePrefixes aPrefix, Materials aMaterial, boolean aDoShowAllItems) {
-        return (aDoShowAllItems) || (!aPrefix.name()
+        return (aDoShowAllItems) || (!aPrefix.getName()
             .startsWith("toolHead"));
     }
 

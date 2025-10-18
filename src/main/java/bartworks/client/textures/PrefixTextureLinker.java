@@ -58,9 +58,9 @@ public class PrefixTextureLinker implements Runnable {
     }
 
     private static void fillItemTexMap() {
-        Arrays.stream(OrePrefixes.values())
+        OrePrefixes.VALUES.stream()
             .filter(
-                prefixes -> prefixes != OrePrefixes.rod && prefixes.mTextureIndex == -1
+                prefixes -> prefixes != OrePrefixes.rod && prefixes.getTextureIndex() == -1
                     && Werkstoff.GenerationFeatures.getPrefixDataRaw(prefixes) != 0)
             .forEach(prefixes -> {
                 HashMap<TextureSet, Textures.ItemIcons.CustomIcon> curr = new HashMap<>();

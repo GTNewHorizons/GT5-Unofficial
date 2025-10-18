@@ -65,8 +65,8 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
                         : getDefaultLocalization(tPrefix, tMaterial, i));
                 GTLanguageManager.addStringLocalization(
                     getUnlocalizedName(tStack) + ".tooltip",
-                    tMaterial.getToolTip(tPrefix.mMaterialAmount / M));
-                if (tPrefix.mIsUnificatable) {
+                    tMaterial.getToolTip(tPrefix.getMaterialAmount() / M));
+                if (tPrefix.isUnifiable()) {
                     GTOreDictUnificator.set(tPrefix, tMaterial, tStack);
                 } else {
                     GTOreDictUnificator.registerOre(tPrefix.get(tMaterial), tStack);
@@ -133,8 +133,8 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
      */
     public final IIconContainer getIconContainer(int aMetaData, Materials aMaterial) {
         return mGeneratedPrefixList[aMetaData / 1000] != null
-            && mGeneratedPrefixList[aMetaData / 1000].mTextureIndex >= 0
-                ? aMaterial.mIconSet.mTextures[mGeneratedPrefixList[aMetaData / 1000].mTextureIndex]
+            && mGeneratedPrefixList[aMetaData / 1000].getTextureIndex() >= 0
+                ? aMaterial.mIconSet.mTextures[mGeneratedPrefixList[aMetaData / 1000].getTextureIndex()]
                 : null;
     }
 
@@ -218,8 +218,8 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
     @Override
     public int getItemStackLimit(ItemStack aStack) {
         int tDamage = getDamage(aStack);
-        if (tDamage < 32000 && mGeneratedPrefixList[tDamage / 1000] != null)
-            return Math.min(super.getItemStackLimit(aStack), mGeneratedPrefixList[tDamage / 1000].mDefaultStackSize);
+        if (tDamage < 32000 && mGeneratedPrefixList[tDamage / 1000] != null) return Math
+            .min(super.getItemStackLimit(aStack), mGeneratedPrefixList[tDamage / 1000].getDefaultStackSize());
         return super.getItemStackLimit(aStack);
     }
 }

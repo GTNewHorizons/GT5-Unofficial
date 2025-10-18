@@ -34,7 +34,7 @@ public class BWItemMetaGeneratedOre extends ItemBlock {
 
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        return "bw.blocktype." + getOrePrefix().name();
+        return "bw.blocktype." + getOrePrefix().getName();
     }
 
     @Override

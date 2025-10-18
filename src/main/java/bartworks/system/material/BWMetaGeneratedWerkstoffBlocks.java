@@ -34,7 +34,7 @@ public class BWMetaGeneratedWerkstoffBlocks extends BWMetaGeneratedBlocks {
         super(p_i45386_1_, tileEntity, blockName, OrePrefixes.block);
         this.blockTypeLocalizedName = GTLanguageManager.addStringLocalization(
             "bw.blocktype." + OrePrefixes.block,
-            OrePrefixes.block.mLocalizedMaterialPre + "%material" + OrePrefixes.block.mLocalizedMaterialPost);
+            OrePrefixes.block.getMaterialPrefix() + "%material" + OrePrefixes.block.getMaterialPostfix());
     }
 
     @Override

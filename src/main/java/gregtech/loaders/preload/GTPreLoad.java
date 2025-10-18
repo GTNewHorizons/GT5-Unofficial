@@ -500,8 +500,8 @@ public class GTPreLoad {
 
         // features
         GTMod.proxy.mUpgradeCount = Math.min(64, Math.max(1, Gregtech.features.upgradeStackSize));
-        for (OrePrefixes tPrefix : OrePrefixes.values()) {
-            if (tPrefix.mIsUsedForOreProcessing) {
+        for (OrePrefixes tPrefix : OrePrefixes.VALUES) {
+            if (tPrefix.isUsedForOreProcessing()) {
                 tPrefix.mDefaultStackSize = ((byte) Math.min(64, Math.max(1, Gregtech.features.maxOreStackSize)));
             } else if (tPrefix == OrePrefixes.plank) {
                 tPrefix.mDefaultStackSize = ((byte) Math.min(64, Math.max(16, Gregtech.features.maxPlankStackSize)));
@@ -509,7 +509,7 @@ public class GTPreLoad {
                 || (tPrefix == OrePrefixes.treeSapling)
                 || (tPrefix == OrePrefixes.log)) {
                     tPrefix.mDefaultStackSize = ((byte) Math.min(64, Math.max(16, Gregtech.features.maxLogStackSize)));
-                } else if (tPrefix.mIsUsedForBlocks) {
+                } else if (tPrefix.isUsedForBlocks()) {
                     tPrefix.mDefaultStackSize = ((byte) Math
                         .min(64, Math.max(16, Gregtech.features.maxOtherBlocksStackSize)));
                 }

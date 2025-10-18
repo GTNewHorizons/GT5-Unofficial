@@ -689,7 +689,7 @@ public class GTAchievements {
                 if (data.mMaterial.mMaterial != Materials.Gunpowder) {
                     issueAchievement(player, "cleandust");
                 }
-            } else if (data.mPrefix.name()
+            } else if (data.mPrefix.getName()
                 .startsWith("ore")) {
                     int data_getAllMaterialStacks_sS = data.getAllMaterialStacks()
                         .size();
