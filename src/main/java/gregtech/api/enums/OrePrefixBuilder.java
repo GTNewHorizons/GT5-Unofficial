@@ -17,6 +17,7 @@ public class OrePrefixBuilder {
     private boolean isEnchantable = false;
     private boolean isUsedForOreProcessing = false;
     private int materialGenerationBits = 0;
+    private long materialAmount = -1;
 
     protected OrePrefixBuilder(String name) {
         this.name = name;
@@ -39,7 +40,8 @@ public class OrePrefixBuilder {
             generateDefaultItem,
             isEnchantable,
             isUsedForOreProcessing,
-            materialGenerationBits
+            materialGenerationBits,
+            materialAmount
             // spotless:on
         );
     }
@@ -111,6 +113,11 @@ public class OrePrefixBuilder {
 
     protected OrePrefixBuilder setMaterialGenerationBits(int materialGenerationBits) {
         this.materialGenerationBits = materialGenerationBits;
+        return this;
+    }
+
+    protected OrePrefixBuilder setMaterialAmount(long materialAmount) {
+        this.materialAmount = materialAmount;
         return this;
     }
 }
