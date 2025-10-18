@@ -180,7 +180,7 @@ public class MTETypeFilter extends MTESpecialFilter {
     protected Function<List<String>, List<String>> getItemStackReplacementTooltip() {
         return (itemTooltip) -> {
             List<String> replacementTooltip = new ArrayList<>();
-            replacementTooltip.add("Filter set to " + mPrefix.mRegularLocalName);
+            replacementTooltip.add("Filter set to " + mPrefix.getDefaultLocalName());
             replacementTooltip.add("Ore prefix: §e" + mPrefix + "§r");
             replacementTooltip.add("Filter size: §e" + mPrefix.mPrefixedItems.size() + "§r");
             replacementTooltip.addAll(mTooltipCache.getData(REPRESENTATION_SLOT_TOOLTIP).text);

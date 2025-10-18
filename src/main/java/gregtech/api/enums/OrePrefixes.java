@@ -2203,6 +2203,10 @@ public class OrePrefixes {
         return name;
     }
 
+    public @NotNull String getDefaultLocalName() {
+        return defaultLocalName;
+    }
+
     public @NotNull String getMaterialPrefix() {
         return materialPrefix;
     }
