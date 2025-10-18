@@ -2162,38 +2162,37 @@ public class OrePrefixes {
         this.defaultStackSize = defaultStackSize;
         this.textureIndex = textureIndex;
 
-        // if (name().startsWith("ore")) {
-        // new TC_AspectStack(TCAspects.TERRA, 1).addToAspectList(mAspects);
-        // } else if (name().startsWith("wire") || name().startsWith("cable")) {
-        // new TC_AspectStack(TCAspects.ELECTRUM, 1).addToAspectList(mAspects);
-        // } else if (name().startsWith("dust")) {
-        // new TC_AspectStack(TCAspects.PERDITIO, 1).addToAspectList(mAspects);
-        // } else if (name().startsWith("crushed")) {
-        // new TC_AspectStack(TCAspects.PERFODIO, 1).addToAspectList(mAspects);
-        // } else if (name().startsWith("ingot") || name().startsWith("nugget")) {
-        // new TC_AspectStack(TCAspects.METALLUM, 1).addToAspectList(mAspects);
-        // } else if (name().startsWith("armor")) {
-        // new TC_AspectStack(TCAspects.TUTAMEN, 1).addToAspectList(mAspects);
-        // } else if (name().startsWith("stone")) {
-        // new TC_AspectStack(TCAspects.TERRA, 1).addToAspectList(mAspects);
-        // } else if (name().startsWith("pipe")) {
-        // new TC_AspectStack(TCAspects.ITER, 1).addToAspectList(mAspects);
-        // } else if (name().startsWith("gear")) {
-        // new TC_AspectStack(TCAspects.MOTUS, 1).addToAspectList(mAspects);
-        // new TC_AspectStack(TCAspects.MACHINA, 1).addToAspectList(mAspects);
-        // } else if (name().startsWith("frame") || name().startsWith("plate")) {
-        // new TC_AspectStack(TCAspects.FABRICO, 1).addToAspectList(mAspects);
-        // } else if (name().startsWith("tool")) {
-        // new TC_AspectStack(TCAspects.INSTRUMENTUM, 2).addToAspectList(mAspects);
-        // } else if (name().startsWith("gem") || name().startsWith("crystal") || name().startsWith("lens")) {
-        // new TC_AspectStack(TCAspects.VITREUS, 1).addToAspectList(mAspects);
-        // } else if (name().startsWith("circuit")) {
-        // new TC_AspectStack(TCAspects.COGNITIO, 1).addToAspectList(mAspects);
-        // } else if (name().startsWith("computer")) {
-        // new TC_AspectStack(TCAspects.COGNITIO, 4).addToAspectList(mAspects);
-        // } else if (name().startsWith("battery")) {
-        // new TC_AspectStack(TCAspects.ELECTRUM, 1).addToAspectList(mAspects);
-        // }
+        addAspectForName();
+    }
+
+    private void addAspectForName() {
+        // spotless:off
+        if      (name.startsWith(     "ore")) addAspect(       TCAspects.TERRA, 1);
+        else if (name.startsWith(    "wire")) addAspect(    TCAspects.ELECTRUM, 1);
+        else if (name.startsWith(   "cable")) addAspect(    TCAspects.ELECTRUM, 1);
+        else if (name.startsWith(    "dust")) addAspect(    TCAspects.PERDITIO, 1);
+        else if (name.startsWith( "crushed")) addAspect(    TCAspects.PERFODIO, 1);
+        else if (name.startsWith(   "ingot")) addAspect(    TCAspects.METALLUM, 1);
+        else if (name.startsWith(  "nugget")) addAspect(    TCAspects.METALLUM, 1);
+        else if (name.startsWith(   "armor")) addAspect(     TCAspects.TUTAMEN, 1);
+        else if (name.startsWith(   "stone")) addAspect(       TCAspects.TERRA, 1);
+        else if (name.startsWith(    "pipe")) addAspect(        TCAspects.ITER, 1);
+        else if (name.startsWith(    "gear")){addAspect(       TCAspects.MOTUS, 1);
+                                              addAspect(     TCAspects.MACHINA, 1);}
+        else if (name.startsWith(   "frame")) addAspect(     TCAspects.FABRICO, 1);
+        else if (name.startsWith(   "plate")) addAspect(     TCAspects.FABRICO, 1);
+        else if (name.startsWith(    "tool")) addAspect(TCAspects.INSTRUMENTUM, 2);
+        else if (name.startsWith(     "gem")) addAspect(     TCAspects.VITREUS, 1);
+        else if (name.startsWith( "crystal")) addAspect(     TCAspects.VITREUS, 1);
+        else if (name.startsWith(    "lens")) addAspect(     TCAspects.VITREUS, 1);
+        else if (name.startsWith( "circuit")) addAspect(    TCAspects.COGNITIO, 1);
+        else if (name.startsWith("computer")) addAspect(    TCAspects.COGNITIO, 4);
+        else if (name.startsWith( "battery")) addAspect(    TCAspects.ELECTRUM, 1);
+        // spotless:on
+    }
+
+    private void addAspect(TCAspects aspect, int amount) {
+        new TC_AspectStack(TCAspects.MACHINA, 1).addToAspectList(mAspects);
     }
 
     public static final ImmutableList<OrePrefixes> CELL_TYPES = ImmutableList.of(
