@@ -37,6 +37,7 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectOpenCustomHashSet;
 import it.unimi.dsi.fastutil.objects.ObjectSet;
 
+@SuppressWarnings({ "PointlessArithmeticExpression", "unused" })
 public class OrePrefixes {
 
     /** Used for removed prefixes to prevent id shifts. */
