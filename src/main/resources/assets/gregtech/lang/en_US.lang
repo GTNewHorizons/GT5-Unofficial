@@ -1975,10 +1975,10 @@ gt.interact.desc.FluidFilter.BlockInput=Block Input
 
 gt.interact.desc.FluidFilter.WhitelistFluid=Whitelist Fluid
 gt.interact.desc.FluidFilter.BlacklistFluid=Blacklist Fluid
-gt.interact.desc.FluidFilter.Direction=§8IFilter Direction
-gt.interact.desc.FluidFilter.Type=§8IFilter Type
-gt.interact.desc.FluidFilter.BlockFlow=§8IBlock Flow
-gt.interact.desc.FluidFilter.Empty=§8IFilter Empty
+gt.interact.desc.FluidFilter.Direction=§8Filter Direction
+gt.interact.desc.FluidFilter.Type=§8Filter Type
+gt.interact.desc.FluidFilter.BlockFlow=§8Block Flow
+gt.interact.desc.FluidFilter.Empty=§8Filter Empty
 
 ## Fluid Regulator
 gt.interact.desc.fluid_regulator.AlwaysOn=Always On
