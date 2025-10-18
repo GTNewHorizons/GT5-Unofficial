@@ -484,6 +484,7 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
         if (fluid != null && fluid.amount >= 0) {
             currenttip.remove(0);
             currenttip.add(
+                0,
                 SpecialChars.getRenderString(
                     "waila.fluid",
                     fluid.getFluid()
