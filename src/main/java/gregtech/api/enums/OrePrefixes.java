@@ -2216,6 +2216,10 @@ public class OrePrefixes {
         return isSelfReferencing;
     }
 
+    public boolean isMaterialBased() {
+        return isMaterialBased;
+    }
+
     public long getMaterialAmount() {
         return materialAmount;
     }

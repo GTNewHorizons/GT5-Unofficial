@@ -1642,7 +1642,7 @@ public class GTProxy implements IFuelHandler {
                     if (Character.isUpperCase(firstChar) || Character.isLowerCase(firstChar)
                         || firstChar == '_'
                         || Character.isDigit(firstChar)) {
-                        if (aPrefix.mIsMaterialBased) {
+                        if (aPrefix.isMaterialBased()) {
                             aMaterial = Materials.get(tName);
                             if (aMaterial != aMaterial.mMaterialInto) {
                                 GTOreDictUnificator.registerOre(aPrefix, aMaterial.mMaterialInto, aEvent.Ore);
