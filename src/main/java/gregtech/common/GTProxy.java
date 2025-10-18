@@ -1867,32 +1867,32 @@ public class GTProxy implements IFuelHandler {
                     aEvent.Ore.setStackDisplayName("Invalid OreDictionary Tag");
                     return;
                 }
-                switch (aPrefix) {
-                    case dye -> {
+                switch (aPrefix.getName()) {
+                    case "dye" -> {
                         if (GTUtility.isStringValid(tName)) {
                             GTOreDictUnificator.registerOre(OrePrefixes.dye, aEvent.Ore);
                         }
                     }
-                    case stoneSmooth -> GTOreDictUnificator.registerOre("stone", aEvent.Ore);
-                    case stoneCobble -> GTOreDictUnificator.registerOre("cobblestone", aEvent.Ore);
-                    case plank -> {
+                    case "stoneSmooth" -> GTOreDictUnificator.registerOre("stone", aEvent.Ore);
+                    case "stoneCobble" -> GTOreDictUnificator.registerOre("cobblestone", aEvent.Ore);
+                    case "plank" -> {
                         if (tName.equals("Wood")) {
                             GTOreDictUnificator.addItemData(aEvent.Ore, new ItemData(Materials.Wood, 3628800L));
                         }
                     }
-                    case slab -> {
+                    case "slab" -> {
                         if (tName.equals("Wood")) {
                             GTOreDictUnificator.addItemData(aEvent.Ore, new ItemData(Materials.Wood, 1814400L));
                         }
                     }
-                    case sheet -> {
+                    case "sheet" -> {
                         if (tName.equals("Plastic")) {
                             GTOreDictUnificator.registerOre(OrePrefixes.plate, Materials.Plastic, aEvent.Ore);
                         } else if (tName.equals("Rubber")) {
                             GTOreDictUnificator.registerOre(OrePrefixes.plate, Materials.Rubber, aEvent.Ore);
                         }
                     }
-                    case crafting -> {
+                    case "crafting" -> {
                         switch (tName) {
                             case "ToolSolderingMetal" -> GregTechAPI.registerSolderingMetal(aEvent.Ore);
                             case "IndustrialDiamond" -> GTOreDictUnificator.addToBlacklist(aEvent.Ore);
@@ -1900,12 +1900,12 @@ public class GTProxy implements IFuelHandler {
                                 .registerOre(OrePrefixes.wire, Materials.Copper, aEvent.Ore);
                         }
                     }
-                    case wood -> {
+                    case "wood" -> {
                         if (tName.equals("Rubber")) {
                             GTOreDictUnificator.registerOre("logRubber", aEvent.Ore);
                         }
                     }
-                    case food -> {
+                    case "food" -> {
                         if (tName.equals("Cocoapowder")) {
                             GTOreDictUnificator.registerOre(OrePrefixes.dust, Materials.Cocoa, aEvent.Ore);
                         }
