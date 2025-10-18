@@ -2102,6 +2102,8 @@ public class OrePrefixes {
         .selfReferencing()
         .build();
 
+    public static final List<OrePrefixes> VALUES = new ArrayList();
+
     private final String name;
     private final String defaultLocalName;
     private final String materialPrefix;
@@ -2163,6 +2165,8 @@ public class OrePrefixes {
         this.textureIndex = textureIndex;
 
         addAspectForName();
+
+        VALUES.add(this);
     }
 
     private void addAspectForName() {
@@ -2234,10 +2238,9 @@ public class OrePrefixes {
         ingot.addFamiliarPrefix(nugget);
         nugget.addFamiliarPrefix(ingot);
 
-        final OrePrefixes[] THIS_VALUES = values();
-        for (OrePrefixes tPrefix1 : THIS_VALUES) {
+        for (OrePrefixes tPrefix1 : VALUES) {
             if (tPrefix1.name.startsWith("ore")) {
-                for (OrePrefixes tPrefix2 : THIS_VALUES) {
+                for (OrePrefixes tPrefix2 : VALUES) {
                     if (tPrefix2.name.startsWith("ore")) {
                         tPrefix1.addFamiliarPrefix(tPrefix2);
                     }
@@ -2440,7 +2443,7 @@ public class OrePrefixes {
     }
 
     public static OrePrefixes getOrePrefix(String aOre) {
-        for (OrePrefixes tPrefix : values()) if (aOre.startsWith(tPrefix.toString())) {
+        for (OrePrefixes tPrefix : VALUES) if (aOre.startsWith(tPrefix.toString())) {
             if (tPrefix == oreNether && aOre.equals("oreNetherQuartz")) return ore;
             if (tPrefix == oreNether && aOre.equals("oreNetherStar")) return ore;
             if (tPrefix == oreBasalt && aOre.equals("oreBasalticMineralSand")) return ore;
@@ -2452,7 +2455,7 @@ public class OrePrefixes {
     }
 
     public static String stripPrefix(String aOre) {
-        for (OrePrefixes tPrefix : values()) {
+        for (OrePrefixes tPrefix : VALUES) {
             if (aOre.startsWith(tPrefix.toString())) {
                 return aOre.replaceFirst(tPrefix.toString(), "");
             }
@@ -2499,7 +2502,7 @@ public class OrePrefixes {
     }
 
     public static ParsedOreDictName detectPrefix(String oredictName) {
-        for (OrePrefixes prefix : values()) {
+        for (OrePrefixes prefix : VALUES) {
             if (oredictName.startsWith(prefix.name)) {
                 return new ParsedOreDictName(prefix, oredictName.substring(prefix.name.length()));
             }
@@ -2542,7 +2545,7 @@ public class OrePrefixes {
     }
 
     public static String replacePrefix(String aOre, OrePrefixes aPrefix) {
-        for (OrePrefixes tPrefix : values()) {
+        for (OrePrefixes tPrefix : VALUES) {
             if (aOre.startsWith(tPrefix.toString())) {
                 return aOre.replaceFirst(tPrefix.toString(), aPrefix.toString());
             }
@@ -2553,7 +2556,7 @@ public class OrePrefixes {
     private static final Map<String, OrePrefixes> NAME_TO_OREPREFIX = new ConcurrentHashMap<>();
 
     static {
-        for (OrePrefixes value : OrePrefixes.values()) {
+        for (OrePrefixes value : VALUES) {
             NAME_TO_OREPREFIX.put(value.name, value);
         }
     }
