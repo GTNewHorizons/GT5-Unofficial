@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import gregtech.common.pollution.FurnacePollution;
 import tconstruct.tools.logic.FurnaceLogic;
 
-@Mixin(FurnaceLogic.class)
+@Mixin(value = FurnaceLogic.class, remap = false)
 public abstract class MixinFurnaceLogicPollution extends TileEntity {
 
     @Shadow
