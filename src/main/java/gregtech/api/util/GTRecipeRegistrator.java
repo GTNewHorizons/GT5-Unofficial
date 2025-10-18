@@ -610,7 +610,9 @@ public class GTRecipeRegistrator {
                                 new ItemData(
                                     aItemData.mMaterial.mMaterial,
                                     aItemData.mMaterial.mAmount * tRecipe.amount1,
-                                    new MaterialStack(tMaterial, OrePrefixes.stick.mMaterialAmount * tRecipe.amount2)));
+                                    new MaterialStack(
+                                        tMaterial,
+                                        OrePrefixes.stick.getMaterialAmount() * tRecipe.amount2)));
 
                         if (aRecipeReplacing && aPlate != null && sShapesA[i] != null && sShapesA[i].length > 1) {
                             assert aItemData != null;

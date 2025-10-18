@@ -443,7 +443,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                 GTOreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L),
                                 GTOreDictUnificator.getDust(
                                     aMaterial,
-                                    aPrefix.mMaterialAmount - OrePrefixes.stickLong.mMaterialAmount))
+                                    aPrefix.getMaterialAmount() - OrePrefixes.stickLong.getMaterialAmount()))
                             .duration(((int) Math.max(aMaterialMass * 5L, 1L)) * TICKS)
                             .eut(16)
                             .addTo(latheRecipes);

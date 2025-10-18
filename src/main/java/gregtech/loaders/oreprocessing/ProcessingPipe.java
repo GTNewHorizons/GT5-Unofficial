@@ -91,11 +91,12 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                         GTOreDictUnificator.get(
                             OrePrefixes.ring,
                             Materials.Steel,
-                            aPrefix.mSecondaryMaterial.mAmount / OrePrefixes.ring.mMaterialAmount),
+                            aPrefix.mSecondaryMaterial.mAmount / OrePrefixes.ring.getMaterialAmount()),
                         GTOreDictUnificator.get(aOreDictName.replaceFirst("Restrictive", ""), null, 1L, false, true))
                     .itemOutputs(GTUtility.copyAmount(1, aStack))
                     .duration(
-                        ((int) (aPrefix.mSecondaryMaterial.mAmount * 400L / OrePrefixes.ring.mMaterialAmount)) * TICKS)
+                        ((int) (aPrefix.mSecondaryMaterial.mAmount * 400L / OrePrefixes.ring.getMaterialAmount()))
+                            * TICKS)
                     .eut(4)
                     .addTo(assemblerRecipes);
             }

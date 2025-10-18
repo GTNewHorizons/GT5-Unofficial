@@ -146,7 +146,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
     private void addWhiteDwarfMagnetoEICRecipe(final OrePrefixes part, final int multiplier,
         final int circuitMultiplier) {
 
-        final int partFraction = (int) (part.mMaterialAmount * INGOTS / M);
+        final int partFraction = (int) (part.getMaterialAmount() * INGOTS / M);
 
         GTValues.RA.stdBuilder()
             .itemInputs(

@@ -1157,7 +1157,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
     public void registerOreDict() {
         for (CombType comb : CombType.values()) {
             ItemStack tComb = getStackForType(comb);
-            GTOreDictUnificator.registerOre(OrePrefixes.beeComb.name(), tComb);
+            GTOreDictUnificator.registerOre(OrePrefixes.beeComb.getName(), tComb);
             OrePrefixes.beeComb.add(tComb);
             if (comb.voltage != null) GTOreDictUnificator.registerOre("comb" + comb.voltage.name(), tComb);
         }

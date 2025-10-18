@@ -2208,6 +2208,10 @@ public class OrePrefixes {
         return skipActiveUnification;
     }
 
+    public long getMaterialAmount() {
+        return materialAmount;
+    }
+
     public static final ImmutableList<OrePrefixes> CELL_TYPES = ImmutableList.of(
         cell,
         cellMolten,

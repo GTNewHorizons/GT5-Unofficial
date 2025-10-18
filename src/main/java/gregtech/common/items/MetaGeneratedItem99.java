@@ -92,7 +92,7 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
             cellMolten.getDefaultLocalNameFormatForItem(tMaterial));
         GTLanguageManager.addStringLocalization(
             getUnlocalizedName(tStack) + ".tooltip",
-            tMaterial.getToolTip(cellMolten.mMaterialAmount / M));
+            tMaterial.getToolTip(cellMolten.getMaterialAmount() / M));
 
         if (cellMolten.mIsUnificatable) {
             GTOreDictUnificator.set(cellMolten, tMaterial, tStack);
@@ -112,7 +112,7 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
                 prefix.getDefaultLocalNameFormatForItem(tMaterial));
             GTLanguageManager.addStringLocalization(
                 getUnlocalizedName(tStack) + ".tooltip",
-                tMaterial.getToolTip(prefix.mMaterialAmount / M));
+                tMaterial.getToolTip(prefix.getMaterialAmount() / M));
 
             if (prefix.mIsUnificatable) {
                 GTOreDictUnificator.set(prefix, tMaterial, tStack);

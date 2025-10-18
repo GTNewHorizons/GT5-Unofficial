@@ -1669,7 +1669,7 @@ public class GTProxy implements IFuelHandler {
                                     && !aPrefix.isIgnored(aMaterial)) {
                                     List<TC_AspectStack> tAspects = new ArrayList<>();
                                     for (TC_AspectStack tAspect : aPrefix.mAspects) tAspect.addToAspectList(tAspects);
-                                    if (aPrefix.mMaterialAmount >= 3628800 || aPrefix.mMaterialAmount < 0)
+                                    if (aPrefix.getMaterialAmount() >= 3628800 || aPrefix.getMaterialAmount() < 0)
                                         for (TC_AspectStack tAspect : aMaterial.mAspects)
                                             tAspect.addToAspectList(tAspects);
                                     GregTechAPI.sThaumcraftCompat.registerThaumcraftAspectsToItem(

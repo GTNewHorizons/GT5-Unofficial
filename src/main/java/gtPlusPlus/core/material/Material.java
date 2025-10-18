@@ -594,7 +594,7 @@ public class Material implements IOreMaterial {
 
             this.vChemicalSymbol = chemicalSymbol;
             if (this.vMaterialInput != null) {
-                this.vChemicalFormula = this.getToolTip(chemicalSymbol, OrePrefixes.dust.mMaterialAmount / M, true);
+                this.vChemicalFormula = this.getToolTip(chemicalSymbol, OrePrefixes.dust.getMaterialAmount() / M, true);
             } else if (!this.vChemicalSymbol.isEmpty()) {
                 Logger.MATERIALS("materialInput is null, using a valid chemical symbol.");
                 this.vChemicalFormula = this.vChemicalSymbol;

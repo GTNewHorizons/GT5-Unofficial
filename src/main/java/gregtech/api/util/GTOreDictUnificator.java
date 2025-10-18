@@ -476,7 +476,7 @@ public class GTOreDictUnificator {
     }
 
     public static ItemStack getGem(Materials aMaterial, OrePrefixes aPrefix) {
-        return aMaterial == null ? null : getGem(aMaterial, aPrefix.mMaterialAmount);
+        return aMaterial == null ? null : getGem(aMaterial, aPrefix.getMaterialAmount());
     }
 
     public static ItemStack getGem(Materials aMaterial, long aMaterialAmount) {
@@ -496,7 +496,7 @@ public class GTOreDictUnificator {
     }
 
     public static ItemStack getDust(Materials aMaterial, OrePrefixes aPrefix) {
-        return aMaterial == null ? null : getDust(aMaterial, aPrefix.mMaterialAmount);
+        return aMaterial == null ? null : getDust(aMaterial, aPrefix.getMaterialAmount());
     }
 
     public static ItemStack getDust(Materials aMaterial, long aMaterialAmount) {
@@ -516,7 +516,7 @@ public class GTOreDictUnificator {
     }
 
     public static ItemStack getIngot(Materials aMaterial, OrePrefixes aPrefix) {
-        return aMaterial == null ? null : getIngot(aMaterial, aPrefix.mMaterialAmount);
+        return aMaterial == null ? null : getIngot(aMaterial, aPrefix.getMaterialAmount());
     }
 
     public static ItemStack getIngot(Materials aMaterial, long aMaterialAmount) {

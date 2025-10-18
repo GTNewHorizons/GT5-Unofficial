@@ -65,7 +65,7 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
                         : getDefaultLocalization(tPrefix, tMaterial, i));
                 GTLanguageManager.addStringLocalization(
                     getUnlocalizedName(tStack) + ".tooltip",
-                    tMaterial.getToolTip(tPrefix.mMaterialAmount / M));
+                    tMaterial.getToolTip(tPrefix.getMaterialAmount() / M));
                 if (tPrefix.mIsUnificatable) {
                     GTOreDictUnificator.set(tPrefix, tMaterial, tStack);
                 } else {

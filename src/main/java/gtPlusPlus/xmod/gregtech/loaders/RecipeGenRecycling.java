@@ -128,8 +128,12 @@ public class RecipeGenRecycling implements Runnable {
 
             // Fluid Extractor
             if (tempStack != null) {
-                int aFluidAmount = (int) ((144 * validPrefix.getKey().mMaterialAmount) / (M * tempStack.stackSize));
-                int aDuration = (int) Math.max(1, (24 * validPrefix.getKey().mMaterialAmount) / M);
+                int aFluidAmount = (int) ((144 * validPrefix.getKey()
+                    .getMaterialAmount()) / (M * tempStack.stackSize));
+                int aDuration = (int) Math.max(
+                    1,
+                    (24 * validPrefix.getKey()
+                        .getMaterialAmount()) / M);
                 FluidStack fluidOutput = material.getFluidStack(aFluidAmount);
                 if (fluidOutput != null) {
                     GTValues.RA.stdBuilder()
@@ -159,7 +163,7 @@ public class RecipeGenRecycling implements Runnable {
     }
 
     public static Pair<OrePrefixes, ItemStack> getDustData(final Material aMaterial, final OrePrefixes aPrefix) {
-        return getDustData(aMaterial, aPrefix.mMaterialAmount);
+        return getDustData(aMaterial, aPrefix.getMaterialAmount());
     }
 
     public static Pair<OrePrefixes, ItemStack> getDustData(final Material aMaterial, final long aMaterialAmount) {
@@ -194,7 +198,7 @@ public class RecipeGenRecycling implements Runnable {
     }
 
     public static ItemStack getDust(final Material aMaterial, final OrePrefixes aPrefix) {
-        return aMaterial == null ? null : getDust(aMaterial, aPrefix.mMaterialAmount);
+        return aMaterial == null ? null : getDust(aMaterial, aPrefix.getMaterialAmount());
     }
 
     public static ItemStack getDust(final Material aMaterial, final long aMaterialAmount) {
