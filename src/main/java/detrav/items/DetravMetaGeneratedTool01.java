@@ -194,7 +194,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
                     + EnumChatFormatting.GRAY);
             aList.add(
                 tOffset + 1,
-                EnumChatFormatting.WHITE + tMaterial.getLocalizedNameForItem("%material") + EnumChatFormatting.GRAY);
+                EnumChatFormatting.WHITE + tMaterial.getLocalizedNameForItem() + EnumChatFormatting.GRAY);
             aList.add(
                 tOffset + 2,
                 EnumChatFormatting.WHITE + StatCollector
@@ -233,9 +233,8 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
                 + " / "
                 + tMaxDamage
                 + EnumChatFormatting.GRAY);
-        aList.add(
-            tOffset + 1,
-            EnumChatFormatting.WHITE + tMaterial.getLocalizedNameForItem("%material") + EnumChatFormatting.GRAY);
+        aList
+            .add(tOffset + 1, EnumChatFormatting.WHITE + tMaterial.getLocalizedNameForItem() + EnumChatFormatting.GRAY);
         aList.add(
             tOffset + 2,
             EnumChatFormatting.WHITE + StatCollector.translateToLocal("tooltip.detrav.scanner.range")

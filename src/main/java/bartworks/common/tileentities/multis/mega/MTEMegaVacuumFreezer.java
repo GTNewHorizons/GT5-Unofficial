@@ -34,9 +34,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -63,7 +63,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.blocks.BlockCasingsAbstract;
 
 public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreezer> implements ISurvivalConstructable {
@@ -232,77 +231,34 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Vacuum Freezer, MVF")
-            .addInfo(
-                TooltipHelper.coloredText(
-                    TooltipHelper.italicText("\"Handles all things cooling!\""),
-                    EnumChatFormatting.DARK_GRAY))
+        tt.addMachineType("machtype.mvf")
+            .addInfo("gt.mvf.tips.1")
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addSeparator()
             .addTecTechHatchInfo()
             .addUnlimitedTierSkips()
             .addSeparator()
-            .addInfo("Upgrade to Tier 2 to unlock " + EnumChatFormatting.DARK_AQUA + "Subspace Cooling.")
             .addInfo(
-                "Will gain " + EnumChatFormatting.GOLD
-                    + "perfect overclocks "
-                    + EnumChatFormatting.GRAY
-                    + "by "
-                    + EnumChatFormatting.GREEN
-                    + "consuming "
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "coolants:")
-            .addInfo(getCoolantTextFormatted("Molten Spacetime", "7500", 1))
-            .addInfo(getCoolantTextFormatted("Spatially Enlarged Fluid", "5000", 2))
-            .addInfo(getCoolantTextFormatted("Molten Eternity", "2500", 3))
+                "gt.mvf.tips.2",
+                Materials.SpaceTime.getLocalizedNameForItem(),
+                FluidRegistry.getFluidStack("spatialfluid", 1)
+                    .getLocalizedName(),
+                Materials.Eternity.getLocalizedNameForItem())
             .addSeparator()
-            .addInfo(
-                EnumChatFormatting.DARK_AQUA + "Reinforcing the structure allows the injection of exotic coolants,")
-            .addInfo(
-                EnumChatFormatting.DARK_AQUA + "enabling the capture of heat energy from miniature tears in spacetime,")
-            .addInfo(EnumChatFormatting.DARK_AQUA + "massively increasing the efficiency of the cooling process.")
+            .addInfo("gt.mvf.tips.3")
             .beginStructureBlock(15, 15, 15, true)
-            .addController("Front center")
-            .addEnergyHatch("Any Frost Proof Machine Casing", 1)
-            .addMaintenanceHatch("Any Frost Proof Machine Casing", 1)
-            .addInputHatch("Any Frost Proof Machine Casing", 1)
-            .addOutputHatch("Any Frost Proof Machine Casing", 1)
-            .addInputBus("Any Frost Proof Machine Casing", 1)
-            .addOutputBus("Any Frost Proof Machine Casing", 1)
-            .addStructureInfo(
-                EnumChatFormatting.BLUE + "Base Multi (Tier "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + 1
-                    + EnumChatFormatting.BLUE
-                    + "):")
-            .addCasingInfoMinColored(
-                "Frost Proof Machine Casing",
-                EnumChatFormatting.GRAY,
-                800,
-                EnumChatFormatting.GOLD,
-                false)
-            .addStructureInfo(
-                EnumChatFormatting.BLUE + "Tier "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + 2
-                    + EnumChatFormatting.BLUE
-                    + " (Upgrades from Tier "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + 1
-                    + EnumChatFormatting.BLUE
-                    + "):")
-            .addCasingInfoMinColored(
-                "Frost Proof Machine Casing",
-                EnumChatFormatting.GRAY,
-                700,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Infinity Cooled Casing",
-                EnumChatFormatting.GRAY,
-                384,
-                EnumChatFormatting.GOLD,
-                false)
+            .addController("front_center")
+            .addEnergyHatch("gt.mvf.info.1", 1)
+            .addMaintenanceHatch("gt.mvf.info.1", 1)
+            .addInputHatch("gt.mvf.info.1", 1)
+            .addOutputHatch("gt.mvf.info.1", 1)
+            .addInputBus("gt.mvf.info.1", 1)
+            .addOutputBus("gt.mvf.info.1", 1)
+            .addStructureInfo("gt.mvf.info.2")
+            .addCasingInfoMin("gt.blockcasings2.1.name", 800)
+            .addStructureInfo("gt.mvf.info.3")
+            .addCasingInfoMin("gt.blockcasings2.1.name", 700)
+            .addCasingInfoExactly("gt.blockcasings8.14.name", 384)
             .toolTipFinisher();
         return tt;
     }
@@ -522,18 +478,5 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
     @Override
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_MULTI_MEGA_VACUUM_FREEZER_LOOP;
-    }
-
-    private String getCoolantTextFormatted(String fluidType, String litersConsumed, int ocboost) {
-        return String.format(
-            "%s%s L/s%s : %s%d %s: %s%s",
-            EnumChatFormatting.GREEN,
-            litersConsumed,
-            EnumChatFormatting.GRAY,
-            EnumChatFormatting.GOLD,
-            ocboost,
-            EnumChatFormatting.GRAY,
-            EnumChatFormatting.LIGHT_PURPLE,
-            fluidType);
     }
 }

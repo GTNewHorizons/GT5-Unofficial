@@ -52,11 +52,8 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
             aNameRegional,
             aTier,
             4,
-            new String[] { "Fluid Output for Multiblocks",
-                "Capacity: " + GTUtility.formatNumbers(8000L * (1L << aTier)) + "L",
-                "Right click with screwdriver to restrict output",
-                "Can be restricted to put out Items and/or Steam/No Steam/1 specific Fluid",
-                "Restricted Output Hatches are given priority for Multiblock Fluid output" });
+            new String[] {
+                GTUtility.appendParams("gt.te.output_hatch.desc", GTUtility.formatNumbers(8000L * (1L << aTier))) });
     }
 
     public MTEHatchOutput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

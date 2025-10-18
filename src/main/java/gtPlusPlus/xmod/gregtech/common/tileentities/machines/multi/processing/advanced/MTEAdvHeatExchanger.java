@@ -124,107 +124,20 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Works as fast as 32 Large Heat Exchangers")
-            .addInfo(
-                "Inputs are" + EnumChatFormatting.RED
-                    + " Lava"
-                    + EnumChatFormatting.GRAY
-                    + ","
-                    + EnumChatFormatting.RED
-                    + " Hot Coolant"
-                    + EnumChatFormatting.GRAY
-                    + ", or"
-                    + EnumChatFormatting.RED
-                    + " Hot Solar Salt")
-            .addInfo(
-                "Outputs are" + EnumChatFormatting.BLUE
-                    + " Pahoehoe Lava"
-                    + EnumChatFormatting.GRAY
-                    + ","
-                    + EnumChatFormatting.BLUE
-                    + " IC2 Coolant"
-                    + EnumChatFormatting.GRAY
-                    + ", or"
-                    + EnumChatFormatting.BLUE
-                    + " Cold Solar Salt")
-            .addInfo(
-                "Converts Distilled Water into" + EnumChatFormatting.WHITE
-                    + " Steam"
-                    + EnumChatFormatting.GRAY
-                    + " or"
-                    + EnumChatFormatting.WHITE
-                    + " SH Steam"
-                    + EnumChatFormatting.GRAY
-                    + " in the process")
-            .addInfo(
-                "Outputs" + EnumChatFormatting.WHITE
-                    + " SH Steam"
-                    + EnumChatFormatting.GRAY
-                    + " if the input rate of hot fluid is above a certain"
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + " threshold")
+            .addInfo("gt.wwxl.tips.1")
             .addSeparator()
-            .addInfo(
-                EnumChatFormatting.RED + "Lava"
-                    + EnumChatFormatting.GRAY
-                    + " : SH Threshold"
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + " 32,000 L/s"
-                    + EnumChatFormatting.GRAY
-                    + " : Max Input"
-                    + EnumChatFormatting.RED
-                    + " 64,000 L/s"
-                    + EnumChatFormatting.GRAY
-                    + " : Max Output"
-                    + EnumChatFormatting.WHITE
-                    + " 5,120,000 SH Steam/s")
-            .addInfo(
-                EnumChatFormatting.RED + "Hot Coolant"
-                    + EnumChatFormatting.GRAY
-                    + " : SH Threshold"
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + " 25,600 L/s"
-                    + EnumChatFormatting.GRAY
-                    + " : Max Input"
-                    + EnumChatFormatting.RED
-                    + " 51,200 L/s"
-                    + EnumChatFormatting.GRAY
-                    + " : Max Output"
-                    + EnumChatFormatting.WHITE
-                    + " 10,240,000 SH Steam/s")
-            .addInfo(
-                EnumChatFormatting.RED + "Hot Solar Salt"
-                    + EnumChatFormatting.GRAY
-                    + " : SH Threshold"
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + " 5,120 L/s"
-                    + EnumChatFormatting.GRAY
-                    + " : Max Input"
-                    + EnumChatFormatting.RED
-                    + " 10,240 L/s"
-                    + EnumChatFormatting.GRAY
-                    + " : Max Output"
-                    + EnumChatFormatting.WHITE
-                    + " 10,240,000 SH Steam/s")
+            .addInfo("gt.wwxl.tips.2")
             .addSeparator()
-            .addInfo("A circuit in the controller lowers the SH threshold at the cost of steam")
-            .addInfo(
-                EnumChatFormatting.LIGHT_PURPLE + "3.75%"
-                    + EnumChatFormatting.GRAY
-                    + " reduced SH threshold and"
-                    + EnumChatFormatting.WHITE
-                    + " 1.5%"
-                    + EnumChatFormatting.GRAY
-                    + " reduced steam per circuit over 1")
+            .addInfo("gt.wwxl.tips.3")
             .beginStructureBlock(5, 9, 5, false)
-            .addController("Front bottom")
-            .addCasingInfoMin("Reinforced Heat Exchanger Casing", 90, false)
-            .addOtherStructurePart("Tungstensteel Pipe Casing", "Center 3x5x3 (45 blocks)")
-            .addMaintenanceHatch("Any casing", 1)
-            .addInputHatch("Hot fluid, bottom center casing", 2)
-            .addInputHatch("Distilled water, any bottom layer casing", 1)
-            .addOutputHatch("Cold fluid, top center casing", 3)
-            .addOutputHatch("Steam/SH Steam, any bottom layer casing", 1)
+            .addController("front_bottom_middle")
+            .addCasingInfoMin("gtplusplus.blockspecialcasings.1.14.name", 90)
+            .addStructurePart("gt.blockcasings2.15.name", "gt.wwxl.info.1")
+            .addMaintenanceHatch("GT5U.MBTT.AnyCasing", 1)
+            .addInputHatch("gt.wwxl.info.2", 2)
+            .addInputHatch("gt.wwxl.info.3", 1)
+            .addOutputHatch("gt.wwxl.info.4", 3)
+            .addOutputHatch("gt.wwxl.info.5", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -487,7 +400,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
 
     @Override
     public String getMachineType() {
-        return "Heat Exchanger, WWXL";
+        return "machtype.wwxl";
     }
 
     @Override
