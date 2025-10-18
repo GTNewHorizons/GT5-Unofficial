@@ -49,7 +49,6 @@ public class StaticRecipeChangeLoaders {
 
     public static void unificationRecipeEnforcer() {
         List<GTRecipe> toRemove = new ArrayList<>();
-        final OrePrefixes[] OREPREFIX_VALUES = OrePrefixes.values();
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
             StaticRecipeChangeLoaders.runMaterialLinker(werkstoff);
             if (werkstoff.getGenerationFeatures().enforceUnification) {
@@ -58,7 +57,7 @@ public class StaticRecipeChangeLoaders {
                 StaticRecipeChangeLoaders.runMoltenUnificationEnforcement(werkstoff);
                 StaticRecipeChangeLoaders.runUnficationDeleter(werkstoff);
                 for (String s : oreDictNames) {
-                    for (OrePrefixes prefixes : OREPREFIX_VALUES) {
+                    for (OrePrefixes prefixes : OrePrefixes.VALUES) {
                         if (!werkstoff.hasItemType(prefixes)) continue;
                         String fullOreName = prefixes + s;
                         List<ItemStack> ores = OreDictionary.getOres(fullOreName, false);
@@ -178,7 +177,7 @@ public class StaticRecipeChangeLoaders {
             Element.get(werkstoff.getToolTip()).mLinkedMaterials.add(werkstoff.getBridgeMaterial());
         }
 
-        for (OrePrefixes prefixes : OrePrefixes.values()) if (werkstoff.hasItemType(prefixes)) {
+        for (OrePrefixes prefixes : OrePrefixes.VALUES) if (werkstoff.hasItemType(prefixes)) {
             GTOreDictUnificator.set(prefixes, werkstoff.getBridgeMaterial(), werkstoff.get(prefixes), true, true);
             for (ItemStack stack : OreDictionary.getOres(prefixes + werkstoff.getVarName())) {
                 GTOreDictUnificator.addAssociation(prefixes, werkstoff.getBridgeMaterial(), stack, false);
@@ -195,7 +194,7 @@ public class StaticRecipeChangeLoaders {
             Element.get(werkstoff.getToolTip()).mLinkedMaterials.add(werkstoff.getBridgeMaterial());
         }
 
-        for (OrePrefixes prefixes : OrePrefixes.values())
+        for (OrePrefixes prefixes : OrePrefixes.VALUES)
             if (werkstoff.hasItemType(prefixes) && werkstoff.getBridgeMaterial() != null) {
                 GTOreDictUnificator.set(prefixes, werkstoff.getBridgeMaterial(), werkstoff.get(prefixes), true, true);
                 for (ItemStack stack : OreDictionary.getOres(prefixes + werkstoff.getVarName())) {

@@ -58,7 +58,7 @@ public class PrefixTextureLinker implements Runnable {
     }
 
     private static void fillItemTexMap() {
-        Arrays.stream(OrePrefixes.values())
+        OrePrefixes.VALUES.stream()
             .filter(
                 prefixes -> prefixes != OrePrefixes.rod && prefixes.mTextureIndex == -1
                     && Werkstoff.GenerationFeatures.getPrefixDataRaw(prefixes) != 0)
