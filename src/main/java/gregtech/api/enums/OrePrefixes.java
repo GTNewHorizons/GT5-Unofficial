@@ -646,12 +646,6 @@ public enum OrePrefixes {
 
         cell.disableComponent(Materials.GravitonShard);
 
-        gear.mGeneratedItems.add(Materials.ExoHalkonite);
-        ingot.mGeneratedItems.add(Materials.ExoHalkonite);
-        toolHeadHammer.mGeneratedItems.add(Materials.ExoHalkonite);
-        frame.mGeneratedItems.add(Materials.ExoHalkonite);
-        frameGt.mGeneratedItems.add(Materials.ExoHalkonite);
-
         gem.mGeneratedItems.add(Materials.GravitonShard);
 
         dust.mGeneratedItems.addAll(dustPure.mGeneratedItems);
