@@ -35,7 +35,6 @@ public class MaterialBuilder {
     private String defaultLocalName;
     private Element element;
     private String chemicalFormula;
-    private int metaItemSubID = -1;
     private boolean unifiable = true;
     private TextureSet iconSet = TextureSet.SET_NONE;
     private Dyes color = Dyes._NULL;
@@ -96,7 +95,6 @@ public class MaterialBuilder {
             defaultLocalName,
             element,
             chemicalFormula,
-            metaItemSubID,
             unifiable,
             iconSet,
             color,
@@ -166,11 +164,6 @@ public class MaterialBuilder {
     /** Set the chemical formula of the material. This overrides auto-generated formulas. */
     public MaterialBuilder setChemicalFormula(String chemicalFormula) {
         this.chemicalFormula = chemicalFormula;
-        return this;
-    }
-
-    public MaterialBuilder setMetaItemSubID(int metaItemSubID) {
-        this.metaItemSubID = metaItemSubID;
         return this;
     }
 

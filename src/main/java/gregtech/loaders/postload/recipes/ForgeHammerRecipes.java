@@ -16,7 +16,6 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
@@ -141,8 +140,8 @@ public class ForgeHammerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Tesseract.get(1L), GregtechItemList.Laser_Lens_Special.get(1))
-            .fluidInputs(MaterialsUEVplus.SpaceTime.getMolten(20 * INGOTS))
-            .fluidOutputs(MaterialsUEVplus.Space.getMolten(10 * INGOTS), MaterialsUEVplus.Time.getMolten(10 * INGOTS))
+            .fluidInputs(Materials.SpaceTime.getMolten(20 * INGOTS))
+            .fluidOutputs(Materials.Space.getMolten(10 * INGOTS), Materials.Time.getMolten(10 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UXV)
             .addTo(hammerRecipes);
