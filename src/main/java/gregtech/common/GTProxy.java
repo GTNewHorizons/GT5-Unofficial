@@ -1860,7 +1860,7 @@ public class GTProxy implements IFuelHandler {
                             aPrefix.add(GTUtility.copyAmount(1, aEvent.Ore));
                         }
                     }
-                } else if (aPrefix.mIsSelfReferencing) {
+                } else if (aPrefix.isSelfReferencing()) {
                     aPrefix.add(GTUtility.copyAmount(1, aEvent.Ore));
                 } else {
                     GTLog.ore.println(tModToName + " uses a Prefix as full OreDict Name, and is therefor invalid.");
