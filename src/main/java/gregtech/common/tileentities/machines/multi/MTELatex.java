@@ -18,9 +18,13 @@ import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static net.minecraft.util.EnumChatFormatting.AQUA;
+import static net.minecraft.util.EnumChatFormatting.BLUE;
+import static net.minecraft.util.EnumChatFormatting.DARK_AQUA;
 import static net.minecraft.util.EnumChatFormatting.DARK_GRAY;
 import static net.minecraft.util.EnumChatFormatting.DARK_GREEN;
 import static net.minecraft.util.EnumChatFormatting.GREEN;
+import static net.minecraft.util.EnumChatFormatting.RED;
 
 import java.util.Objects;
 
@@ -184,6 +188,7 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
                 if (tRecipe.mFluidInputs[i].isFluidEqual(rubber)) {
                     ItemStack controllerStack = this.getControllerSlot();
                     discount = 0.0625 * itemPipeTier;
+                    base_parallel = 8;
                     if (controllerStack != null && controllerStack.isItemEqual(
                         UniversalSingularities.isModLoaded()
                             ? getModItem(UniversalSingularities.ID, "universal.rubber.singularity", 1L, 5)
@@ -260,10 +265,8 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Cable Coater, LATEX")
-            .addInfo(EnumChatFormatting.ITALIC + "AKA Laminated Application and Thermal Enclosure eXpert")
-            .addDynamicParallelInfo(8, TooltipTier.ITEM_PIPE_CASING)
-            .addStaticSpeedInfo(2F)
-            .addStaticEuEffInfo(0.85F)
+            .addInfo(DARK_GRAY + "" + EnumChatFormatting.ITALIC + "AKA Laminated Application and Thermal Enclosure eXpert")
+            .addBulkMachineInfo(8, 2F, 0.85F)
             .addInfo(
                 "Recipes have a " + TooltipHelper.coloredText("6.25%", DARK_GREEN)
                     + " rubber discount based on "
@@ -276,7 +279,7 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
                     + " rubber discount, and the use of a singular "
                     + TooltipHelper.coloredText("Multi-Amp energy hatch", GREEN))
             .addSeparator()
-            .addInfo(DARK_GRAY + "Make sure to cover up!")
+            .addInfo(DARK_AQUA + "Make sure to cover up!")
             .beginStructureBlock(3, 5, 3, true)
             .addController("Front Center")
             .addCasingInfoMin("Chemically Inert Machine Casing", 14, false)
@@ -311,6 +314,9 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        itemPipeTier = -1;
+        mCasingAmount = 0;
+        clearHatches();
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 7, 0)) return false;
         ItemStack controllerStack = this.getControllerSlot();
         boolean singularity_present = (controllerStack != null && controllerStack.isItemEqual(
