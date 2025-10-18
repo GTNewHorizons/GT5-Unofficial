@@ -2102,7 +2102,7 @@ public class OrePrefixes {
         .selfReferencing()
         .build();
 
-    public static final List<OrePrefixes> VALUES = new ArrayList();
+    public static final List<OrePrefixes> VALUES = new ArrayList<>();
 
     private final String name;
     private final String defaultLocalName;
@@ -2740,26 +2740,26 @@ public class OrePrefixes {
             }
             case "Paper" -> {
                 if (name.startsWith("dust")) return materialPrefix + "Chad";
-                switch (this) {
-                    case plate -> {
+                switch (name) {
+                    case "plate" -> {
                         return "Sheet of Paper";
                     }
-                    case plateDouble -> {
+                    case "plateDouble" -> {
                         return "Paperboard";
                     }
-                    case plateTriple -> {
+                    case "plateTriple" -> {
                         return "Carton";
                     }
-                    case plateQuadruple -> {
+                    case "plateQuadruple" -> {
                         return "Cardboard";
                     }
-                    case plateQuintuple -> {
+                    case "plateQuintuple" -> {
                         return "Thick Cardboard";
                     }
-                    case plateDense -> {
+                    case "plateDense" -> {
                         return "Strong Cardboard";
                     }
-                    case plateSuperdense -> {
+                    case "plateSuperdense" -> {
                         return "Impossibly Strong Cardboard";
                     }
                 }
@@ -2775,11 +2775,11 @@ public class OrePrefixes {
             }
             case "Vermiculite", "Bentonite", "Kaolinite", "Talc", "BasalticMineralSand", "GraniticMineralSand", "GlauconiteSand", "CassiteriteSand", "GarnetSand", "QuartzSand", "Pitchblende", "FullersEarth" -> {
                 if (name.startsWith("dust")) return materialPrefix + "%material";
-                switch (this) {
-                    case crushedCentrifuged, crushedPurified -> {
+                switch (name) {
+                    case "crushedCentrifuged", "crushedPurified" -> {
                         return materialPrefix + "%material";
                     }
-                    case crushed -> {
+                    case "crushed" -> {
                         return "Ground " + "%material";
                     }
                 }
@@ -2792,8 +2792,8 @@ public class OrePrefixes {
                     if (name.startsWith("crystal")) return materialPrefix + "Shard of " + "%material";
                     if (name.startsWith("plate")) return materialPrefix + "%material" + " Crystal Plate";
                     if (name.startsWith("dust")) return materialPrefix + "%material" + " Crystal Powder";
-                    switch (this) {
-                        case crushedCentrifuged, crushedPurified, crushed -> {
+                    switch (name) {
+                        case "crushedCentrifuged", "crushedPurified", "crushed" -> {
                             return materialPrefix + "%material" + " Crystals";
                         }
                     }
