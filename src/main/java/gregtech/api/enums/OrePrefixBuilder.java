@@ -19,6 +19,7 @@ public class OrePrefixBuilder {
     private int materialGenerationBits = 0;
     private long materialAmount = -1;
     private int defaultStackSize = 64;
+    private int textureIndex = -1;
 
     protected OrePrefixBuilder(String name) {
         this.name = name;
@@ -43,7 +44,8 @@ public class OrePrefixBuilder {
             isUsedForOreProcessing,
             materialGenerationBits,
             materialAmount,
-            defaultStackSize
+            defaultStackSize,
+            textureIndex
             // spotless:on
         );
     }
@@ -125,6 +127,11 @@ public class OrePrefixBuilder {
 
     protected OrePrefixBuilder setDefaultStackSize(int defaultStackSize) {
         this.defaultStackSize = defaultStackSize;
+        return this;
+    }
+
+    protected OrePrefixBuilder setTextureIndex(int textureIndex) {
+        this.textureIndex = textureIndex;
         return this;
     }
 }

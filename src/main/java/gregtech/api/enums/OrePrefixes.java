@@ -79,7 +79,7 @@ public class OrePrefixes {
     // oreNormal("Normal Ores", "Normal ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1)
 
     /** Prefix of Railcraft. */
-    public static final OrePrefixes oreSmall = new OrePrefixBuilder("oreSmall").setDefaultLocalName("Small Ores").setLocalMaterialPre("Small ").setLocalMaterialPost(" Ore").setUnifiable().setMaterialBased().setUsedForBlocks().setIsUsedForOreProcessing().setMaterialGenerationBits(B[3]).build();
+    public static final OrePrefixes oreSmall = new OrePrefixBuilder("oreSmall").setDefaultLocalName("Small Ores").setLocalMaterialPre("Small ").setLocalMaterialPost(" Ore").setUnifiable().setMaterialBased().setUsedForBlocks().setIsUsedForOreProcessing().setMaterialGenerationBits(B[3]).setTextureIndex(67).build();
     // oreSmall("Small Ores", "Small ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, 67)
 
     /** Prefix of Railcraft. */
@@ -95,19 +95,19 @@ public class OrePrefixes {
     // oreEnd("End Ores", "End ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1)
 
     /** Regular Ore Prefix. Ore -> Material is a Oneway Operation! Introduced by Eloraam */
-    public static final OrePrefixes ore = new OrePrefixBuilder("ore").setDefaultLocalName("Ores").setLocalMaterialPost(" Ore").setUnifiable().setMaterialBased().setUsedForBlocks().setIsUsedForOreProcessing().setMaterialGenerationBits(B[3]).build();
+    public static final OrePrefixes ore = new OrePrefixBuilder("ore").setDefaultLocalName("Ores").setLocalMaterialPost(" Ore").setUnifiable().setMaterialBased().setUsedForBlocks().setIsUsedForOreProcessing().setMaterialGenerationBits(B[3]).setTextureIndex(68).build();
     // ore("Ores", "", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, 68)
 
-    public static final OrePrefixes crushedCentrifuged = new OrePrefixBuilder("crushedCentrifuged").setDefaultLocalName("Centrifuged Ores").setLocalMaterialPre("Centrifuged ").setLocalMaterialPost(" Ore").setUnifiable().setMaterialBased().setGenerateDefaultItem().setIsUsedForOreProcessing().setMaterialGenerationBits(B[3]).build();
+    public static final OrePrefixes crushedCentrifuged = new OrePrefixBuilder("crushedCentrifuged").setDefaultLocalName("Centrifuged Ores").setLocalMaterialPre("Centrifuged ").setLocalMaterialPost(" Ore").setUnifiable().setMaterialBased().setGenerateDefaultItem().setIsUsedForOreProcessing().setMaterialGenerationBits(B[3]).setTextureIndex(7).build();
     // crushedCentrifuged("Centrifuged Ores", "Centrifuged ", " Ore", true, true, false, false, false, false, false, true, false, true, B[3], -1, 64, 7)
 
-    public static final OrePrefixes crushedPurified = new OrePrefixBuilder("crushedPurified").setDefaultLocalName("Purified Ores").setLocalMaterialPre("Purified ").setLocalMaterialPost(" Ore").setUnifiable().setMaterialBased().setGenerateDefaultItem().setIsUsedForOreProcessing().setMaterialGenerationBits(B[3]).build();
+    public static final OrePrefixes crushedPurified = new OrePrefixBuilder("crushedPurified").setDefaultLocalName("Purified Ores").setLocalMaterialPre("Purified ").setLocalMaterialPost(" Ore").setUnifiable().setMaterialBased().setGenerateDefaultItem().setIsUsedForOreProcessing().setMaterialGenerationBits(B[3]).setTextureIndex(6).build();
     // crushedPurified("Purified Ores", "Purified ", " Ore", true, true, false, false, false, false, false, true, false, true, B[3], -1, 64, 6)
 
-    public static final OrePrefixes crushed = new OrePrefixBuilder("crushed").setDefaultLocalName("Crushed Ores").setLocalMaterialPre("Crushed ").setLocalMaterialPost(" Ore").setUnifiable().setMaterialBased().setGenerateDefaultItem().setIsUsedForOreProcessing().setMaterialGenerationBits(B[3]).build();
+    public static final OrePrefixes crushed = new OrePrefixBuilder("crushed").setDefaultLocalName("Crushed Ores").setLocalMaterialPre("Crushed ").setLocalMaterialPost(" Ore").setUnifiable().setMaterialBased().setGenerateDefaultItem().setIsUsedForOreProcessing().setMaterialGenerationBits(B[3]).setTextureIndex(5).build();
     // crushed("Crushed Ores", "Crushed ", " Ore", true, true, false, false, false, false, false, true, false, true, B[3], -1, 64, 5)
 
-    public static final OrePrefixes rawOre = new OrePrefixBuilder("rawOre").setDefaultLocalName("Raw Ore").setLocalMaterialPre("Raw ").setLocalMaterialPost(" Ore").setUnifiable().setMaterialBased().setIsUsedForOreProcessing().setMaterialGenerationBits(B[3]).build();
+    public static final OrePrefixes rawOre = new OrePrefixBuilder("rawOre").setDefaultLocalName("Raw Ore").setLocalMaterialPre("Raw ").setLocalMaterialPost(" Ore").setUnifiable().setMaterialBased().setIsUsedForOreProcessing().setMaterialGenerationBits(B[3]).setTextureIndex(64).build();
     // rawOre("Raw Ore", "Raw ", " Ore", true, true, false, false, false, false, false, false, false, true, B[3], -1, 64, 64)
 
     // Introduced by Mekanism
@@ -130,160 +130,160 @@ public class OrePrefixes {
     // dirtyGravel("Dirty Gravels", "", "", true, true, false, false, false, false, false, false, false, true, B[3], -1, 64, -1)
 
     /** A hot Ingot, which has to be cooled down by a Vacuum Freezer. */
-    public static final OrePrefixes ingotHot = new OrePrefixBuilder("ingotHot").setDefaultLocalName("Hot Ingots").setLocalMaterialPre("Hot ").setLocalMaterialPost(" Ingot").setUnifiable().setMaterialBased().setGenerateDefaultItem().setMaterialGenerationBits(B[1]).setMaterialAmount(M * 1).build();
+    public static final OrePrefixes ingotHot = new OrePrefixBuilder("ingotHot").setDefaultLocalName("Hot Ingots").setLocalMaterialPre("Hot ").setLocalMaterialPost(" Ingot").setUnifiable().setMaterialBased().setGenerateDefaultItem().setMaterialGenerationBits(B[1]).setMaterialAmount(M * 1).setTextureIndex(12).build();
     // ingotHot("Hot Ingots", "Hot ", " Ingot", true, true, false, false, false, false, false, true, false, false, B[1], M * 1, 64, 12)
 
     /** A regular Ingot. Introduced by Eloraam */
-    public static final OrePrefixes ingot = new OrePrefixBuilder("ingot").setDefaultLocalName("Ingots").setLocalMaterialPost(" Ingot").setUnifiable().setMaterialBased().setGenerateDefaultItem().setMaterialGenerationBits(B[1]).setMaterialAmount(M * 1).build();
+    public static final OrePrefixes ingot = new OrePrefixBuilder("ingot").setDefaultLocalName("Ingots").setLocalMaterialPost(" Ingot").setUnifiable().setMaterialBased().setGenerateDefaultItem().setMaterialGenerationBits(B[1]).setMaterialAmount(M * 1).setTextureIndex(11).build();
     // ingot("Ingots", "", " Ingot", true, true, false, false, false, false, false, true, false, false, B[1], M * 1, 64, 11)
 
     /** A regular Gem worth one small Dust. Introduced by TerraFirmaCraft */
-    public static final OrePrefixes gemChipped = new OrePrefixBuilder("gemChipped").setDefaultLocalName("Chipped Gemstones").setLocalMaterialPre("Chipped ").setUnifiable().setMaterialBased().setSelfReferencing().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[2]).setMaterialAmount(M / 4).build();
+    public static final OrePrefixes gemChipped = new OrePrefixBuilder("gemChipped").setDefaultLocalName("Chipped Gemstones").setLocalMaterialPre("Chipped ").setUnifiable().setMaterialBased().setSelfReferencing().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[2]).setTextureIndex(59).setMaterialAmount(M / 4).build();
     // gemChipped("Chipped Gemstones", "Chipped ", "", true, true, true, false, false, false, true, true, false, false, B[2], M / 4, 64, 59)
 
     /** A regular Gem worth two small Dusts. Introduced by TerraFirmaCraft */
-    public static final OrePrefixes gemFlawed = new OrePrefixBuilder("gemFlawed").setDefaultLocalName("Flawed Gemstones").setLocalMaterialPre("Flawed ").setUnifiable().setMaterialBased().setSelfReferencing().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[2]).setMaterialAmount(M / 2).build();
+    public static final OrePrefixes gemFlawed = new OrePrefixBuilder("gemFlawed").setDefaultLocalName("Flawed Gemstones").setLocalMaterialPre("Flawed ").setUnifiable().setMaterialBased().setSelfReferencing().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[2]).setMaterialAmount(M / 2).setTextureIndex(60).build();
     // gemFlawed("Flawed Gemstones", "Flawed ", "", true, true, true, false, false, false, true, true, false, false, B[2], M / 2, 64, 60)
 
     /** A regular Gem worth two Dusts. Introduced by TerraFirmaCraft */
-    public static final OrePrefixes gemFlawless = new OrePrefixBuilder("gemFlawless").setDefaultLocalName("Flawless Gemstones").setLocalMaterialPre("Flawless ").setUnifiable().setMaterialBased().setSelfReferencing().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[2]).setMaterialAmount(M * 2).build();
+    public static final OrePrefixes gemFlawless = new OrePrefixBuilder("gemFlawless").setDefaultLocalName("Flawless Gemstones").setLocalMaterialPre("Flawless ").setUnifiable().setMaterialBased().setSelfReferencing().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[2]).setMaterialAmount(M * 2).setTextureIndex(61).build();
     // gemFlawless("Flawless Gemstones", "Flawless ", "", true, true, true, false, false, false, true, true, false, false, B[2], M * 2, 64, 61)
 
     /** A regular Gem worth four Dusts. Introduced by TerraFirmaCraft */
-    public static final OrePrefixes gemExquisite = new OrePrefixBuilder("gemExquisite").setDefaultLocalName("Exquisite Gemstones").setLocalMaterialPre("Exquisite ").setUnifiable().setMaterialBased().setSelfReferencing().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[2]).setMaterialAmount(M * 4).build();
+    public static final OrePrefixes gemExquisite = new OrePrefixBuilder("gemExquisite").setDefaultLocalName("Exquisite Gemstones").setLocalMaterialPre("Exquisite ").setUnifiable().setMaterialBased().setSelfReferencing().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[2]).setMaterialAmount(M * 4).setTextureIndex(62).build();
     // gemExquisite("Exquisite Gemstones", "Exquisite ", "", true, true, true, false, false, false, true, true, false, false, B[2], M * 4, 64, 62)
 
     /** A regular Gem worth one Dust. Introduced by Eloraam */
-    public static final OrePrefixes gem = new OrePrefixBuilder("gem").setDefaultLocalName("Gemstones").setUnifiable().setMaterialBased().setSelfReferencing().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[2]).setMaterialAmount(M * 1).build();
+    public static final OrePrefixes gem = new OrePrefixBuilder("gem").setDefaultLocalName("Gemstones").setUnifiable().setMaterialBased().setSelfReferencing().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[2]).setMaterialAmount(M * 1).setTextureIndex(8).build();
     // gem("Gemstones", "", "", true, true, true, false, false, false, true, true, false, false, B[2], M * 1, 64, 8)
 
     /** 1/9th of a Dust. */
-    public static final OrePrefixes dustTiny = new OrePrefixBuilder("dustTiny").setDefaultLocalName("Tiny Dusts").setLocalMaterialPre("Tiny Pile of ").setLocalMaterialPost(" Dust").setUnifiable().setMaterialBased().setGenerateDefaultItem().setMaterialGenerationBits(B[0] | B[1] | B[2] | B[3]).setMaterialAmount(M / 9).build();
+    public static final OrePrefixes dustTiny = new OrePrefixBuilder("dustTiny").setDefaultLocalName("Tiny Dusts").setLocalMaterialPre("Tiny Pile of ").setLocalMaterialPost(" Dust").setUnifiable().setMaterialBased().setGenerateDefaultItem().setMaterialGenerationBits(B[0] | B[1] | B[2] | B[3]).setMaterialAmount(M / 9).setTextureIndex(0).build();
     // dustTiny("Tiny Dusts", "Tiny Pile of ", " Dust", true, true, false, false, false, false, false, true, false, false, B[0] | B[1] | B[2] | B[3], M / 9, 64, 0)
 
     /** 1/4th of a Dust. */
-    public static final OrePrefixes dustSmall = new OrePrefixBuilder("dustSmall").setDefaultLocalName("Small Dusts").setLocalMaterialPre("Small Pile of ").setLocalMaterialPost(" Dust").setUnifiable().setMaterialBased().setGenerateDefaultItem().setMaterialGenerationBits(B[0] | B[1] | B[2] | B[3]).setMaterialAmount(M / 4).build();
+    public static final OrePrefixes dustSmall = new OrePrefixBuilder("dustSmall").setDefaultLocalName("Small Dusts").setLocalMaterialPre("Small Pile of ").setLocalMaterialPost(" Dust").setUnifiable().setMaterialBased().setGenerateDefaultItem().setMaterialGenerationBits(B[0] | B[1] | B[2] | B[3]).setMaterialAmount(M / 4).setTextureIndex(1).build();
     // dustSmall("Small Dusts", "Small Pile of ", " Dust", true, true, false, false, false, false, false, true, false, false, B[0] | B[1] | B[2] | B[3], M / 4, 64, 1)
 
     /** Dust with impurities. 1 Unit of Main Material and 1/9 - 1/4 Unit of secondary Material */
-    public static final OrePrefixes dustImpure = new OrePrefixBuilder("dustImpure").setDefaultLocalName("Impure Dusts").setLocalMaterialPre("Impure Pile of ").setLocalMaterialPost(" Dust").setUnifiable().setMaterialBased().setGenerateDefaultItem().setIsUsedForOreProcessing().setMaterialGenerationBits(B[3]).setMaterialAmount(M * 1).build();
+    public static final OrePrefixes dustImpure = new OrePrefixBuilder("dustImpure").setDefaultLocalName("Impure Dusts").setLocalMaterialPre("Impure Pile of ").setLocalMaterialPost(" Dust").setUnifiable().setMaterialBased().setGenerateDefaultItem().setIsUsedForOreProcessing().setMaterialGenerationBits(B[3]).setMaterialAmount(M * 1).setTextureIndex(3).build();
     // dustImpure("Impure Dusts", "Impure Pile of ", " Dust", true, true, false, false, false, false, false, true, false, true, B[3], M * 1, 64, 3)
 
-    public static final OrePrefixes dustRefined = new OrePrefixBuilder("dustRefined").setDefaultLocalName("Refined Dusts").setLocalMaterialPre("Refined Pile of ").setLocalMaterialPost(" Dust").setUnifiable().setMaterialBased().setGenerateDefaultItem().setIsUsedForOreProcessing().setMaterialGenerationBits(B[3]).setMaterialAmount(M * 1).build();
+    public static final OrePrefixes dustRefined = new OrePrefixBuilder("dustRefined").setDefaultLocalName("Refined Dusts").setLocalMaterialPre("Refined Pile of ").setLocalMaterialPost(" Dust").setUnifiable().setMaterialBased().setGenerateDefaultItem().setIsUsedForOreProcessing().setMaterialGenerationBits(B[3]).setMaterialAmount(M * 1).setTextureIndex(2).build();
     // dustRefined("Refined Dusts", "Refined Pile of ", " Dust", true, true, false, false, false, false, false, true, false, true, B[3], M * 1, 64, 2)
 
-    public static final OrePrefixes dustPure = new OrePrefixBuilder("dustPure").setDefaultLocalName("Purified Dusts").setLocalMaterialPre("Purified Pile of ").setLocalMaterialPost(" Dust").setUnifiable().setMaterialBased().setGenerateDefaultItem().setIsUsedForOreProcessing().setMaterialGenerationBits(B[3]).setMaterialAmount(M * 1).build();
+    public static final OrePrefixes dustPure = new OrePrefixBuilder("dustPure").setDefaultLocalName("Purified Dusts").setLocalMaterialPre("Purified Pile of ").setLocalMaterialPost(" Dust").setUnifiable().setMaterialBased().setGenerateDefaultItem().setIsUsedForOreProcessing().setMaterialGenerationBits(B[3]).setMaterialAmount(M * 1).setTextureIndex(4).build();
     // dustPure("Purified Dusts", "Purified Pile of ", " Dust", true, true, false, false, false, false, false, true, false, true, B[3], M * 1, 64, 4)
 
     /** Pure Dust worth of one Ingot or Gem. Introduced by Alblaka. */
-    public static final OrePrefixes dust = new OrePrefixBuilder("dust").setDefaultLocalName("Dusts").setLocalMaterialPost(" Dust").setUnifiable().setMaterialBased().setGenerateDefaultItem().setMaterialGenerationBits(B[0] | B[1] | B[2] | B[3]).setMaterialAmount(M * 1).build();
+    public static final OrePrefixes dust = new OrePrefixBuilder("dust").setDefaultLocalName("Dusts").setLocalMaterialPost(" Dust").setUnifiable().setMaterialBased().setGenerateDefaultItem().setMaterialGenerationBits(B[0] | B[1] | B[2] | B[3]).setMaterialAmount(M * 1).setTextureIndex(2).build();
     // dust("Dusts", "", " Dust", true, true, false, false, false, false, false, true, false, false, B[0] | B[1] | B[2] | B[3], M * 1, 64, 2)
 
     /** A Nugget. Introduced by Eloraam */
-    public static final OrePrefixes nugget = new OrePrefixBuilder("nugget").setDefaultLocalName("Nuggets").setLocalMaterialPost(" Nugget").setUnifiable().setMaterialBased().setGenerateDefaultItem().setMaterialGenerationBits(B[1]).setMaterialAmount(M / 9).build();
+    public static final OrePrefixes nugget = new OrePrefixBuilder("nugget").setDefaultLocalName("Nuggets").setLocalMaterialPost(" Nugget").setUnifiable().setMaterialBased().setGenerateDefaultItem().setMaterialGenerationBits(B[1]).setMaterialAmount(M / 9).setTextureIndex(9).build();
     // nugget("Nuggets", "", " Nugget", true, true, false, false, false, false, false, true, false, false, B[1], M / 9, 64, 9)
 
     /** Special Alloys have this prefix. */
-    public static final OrePrefixes plateAlloy = new OrePrefixBuilder("plateAlloy").setDefaultLocalName("Alloy Plates").setUnifiable().setMaterialGenerationBits(B[1]).build();
+    public static final OrePrefixes plateAlloy = new OrePrefixBuilder("plateAlloy").setDefaultLocalName("Alloy Plates").setUnifiable().setMaterialGenerationBits(B[1]).setTextureIndex(17).build();
     // plateAlloy("Alloy Plates", "", "", true, false, false, false, false, false, false, false, false, false, B[1], -1, 64, 17)
 
-    public static final OrePrefixes plateSteamcraft = new OrePrefixBuilder("plateSteamcraft").setDefaultLocalName("Steamcraft Plates").setMaterialGenerationBits(B[1]).build();
+    public static final OrePrefixes plateSteamcraft = new OrePrefixBuilder("plateSteamcraft").setDefaultLocalName("Steamcraft Plates").setMaterialGenerationBits(B[1]).setTextureIndex(17).build();
     // plateSteamcraft("Steamcraft Plates", "", "", false, false, false, false, false, false, false, false, false, false, B[1], -1, 64, 17)
 
     /** 9 Plates combined in one Item. */
-    public static final OrePrefixes plateDense = new OrePrefixBuilder("plateDense").setDefaultLocalName("Dense Plates").setLocalMaterialPre("Dense ").setLocalMaterialPost(" Plate").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[1]).setMaterialAmount(M * 9).build();
+    public static final OrePrefixes plateDense = new OrePrefixBuilder("plateDense").setDefaultLocalName("Dense Plates").setLocalMaterialPre("Dense ").setLocalMaterialPost(" Plate").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[1]).setMaterialAmount(M * 9).setTextureIndex(22).build();
     // plateDense("Dense Plates", "Dense ", " Plate", true, true, false, false, false, false, true, true, false, false, B[1], M * 9, 64, 22)
 
-    public static final OrePrefixes plateSuperdense = new OrePrefixBuilder("plateSuperdense").setDefaultLocalName("Superdense Plates").setLocalMaterialPre("Superdense ").setLocalMaterialPost(" Plate").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[1]).setMaterialAmount(M * 64).build();
+    public static final OrePrefixes plateSuperdense = new OrePrefixBuilder("plateSuperdense").setDefaultLocalName("Superdense Plates").setLocalMaterialPre("Superdense ").setLocalMaterialPost(" Plate").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[1]).setMaterialAmount(M * 64).setTextureIndex(125).build();
     // plateSuperdense("Superdense Plates", "Superdense ", " Plate", true, true, false, false, false, false, true, true, false, false, B[1], M * 64, 64, 125)
 
-    public static final OrePrefixes plateQuintuple = new OrePrefixBuilder("plateQuintuple").setDefaultLocalName("5x Plates").setLocalMaterialPre("Quintuple ").setLocalMaterialPost(" Plate").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[1]).setMaterialAmount(M * 5).build();
+    public static final OrePrefixes plateQuintuple = new OrePrefixBuilder("plateQuintuple").setDefaultLocalName("5x Plates").setLocalMaterialPre("Quintuple ").setLocalMaterialPost(" Plate").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[1]).setMaterialAmount(M * 5).setTextureIndex(21).build();
     // plateQuintuple("5x Plates", "Quintuple ", " Plate", true, true, false, false, false, false, true, true, false, false, B[1], M * 5, 64, 21)
 
-    public static final OrePrefixes plateQuadruple = new OrePrefixBuilder("plateQuadruple").setDefaultLocalName("4x Plates").setLocalMaterialPre("Quadruple ").setLocalMaterialPost(" Plate").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[1]).setMaterialAmount(M * 4).build();
+    public static final OrePrefixes plateQuadruple = new OrePrefixBuilder("plateQuadruple").setDefaultLocalName("4x Plates").setLocalMaterialPre("Quadruple ").setLocalMaterialPost(" Plate").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[1]).setMaterialAmount(M * 4).setTextureIndex(20).build();
     // plateQuadruple("4x Plates", "Quadruple ", " Plate", true, true, false, false, false, false, true, true, false, false, B[1], M * 4, 64, 20)
 
-    public static final OrePrefixes plateTriple = new OrePrefixBuilder("plateTriple").setDefaultLocalName("3x Plates").setLocalMaterialPre("Triple ").setLocalMaterialPost(" Plate").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[1]).setMaterialAmount(M * 3).build();
+    public static final OrePrefixes plateTriple = new OrePrefixBuilder("plateTriple").setDefaultLocalName("3x Plates").setLocalMaterialPre("Triple ").setLocalMaterialPost(" Plate").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[1]).setMaterialAmount(M * 3).setTextureIndex(19).build();
     // plateTriple("3x Plates", "Triple ", " Plate", true, true, false, false, false, false, true, true, false, false, B[1], M * 3, 64, 19)
 
-    public static final OrePrefixes plateDouble = new OrePrefixBuilder("plateDouble").setDefaultLocalName("2x Plates").setLocalMaterialPre("Double ").setLocalMaterialPost(" Plate").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[1]).setMaterialAmount(M * 2).build();
+    public static final OrePrefixes plateDouble = new OrePrefixBuilder("plateDouble").setDefaultLocalName("2x Plates").setLocalMaterialPre("Double ").setLocalMaterialPost(" Plate").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[1]).setMaterialAmount(M * 2).setTextureIndex(18).build();
     // plateDouble("2x Plates", "Double ", " Plate", true, true, false, false, false, false, true, true, false, false, B[1], M * 2, 64, 18)
 
-    public static final OrePrefixes plate = new OrePrefixBuilder("plate").setDefaultLocalName("Plates").setLocalMaterialPost(" Plate").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[1] | B[2]).setMaterialAmount(M * 1).build();
+    public static final OrePrefixes plate = new OrePrefixBuilder("plate").setDefaultLocalName("Plates").setLocalMaterialPost(" Plate").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[1] | B[2]).setMaterialAmount(M * 1).setTextureIndex(17).build();
     // plate("Plates", "", " Plate", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M * 1, 64, 17)
 
     /** Casing made of 1/2 Ingot/Dust */
-    public static final OrePrefixes itemCasing = new OrePrefixBuilder("itemCasing").setDefaultLocalName("Casings").setLocalMaterialPost(" Casing").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[1] | B[2]).setMaterialAmount(M / 2).build();
+    public static final OrePrefixes itemCasing = new OrePrefixBuilder("itemCasing").setDefaultLocalName("Casings").setLocalMaterialPost(" Casing").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[1] | B[2]).setMaterialAmount(M / 2).setTextureIndex(10).build();
     // itemCasing("Casings", "", " Casing", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M / 2, 64, 10)
 
     /** Foil made of 1/4 Ingot/Dust. */
-    public static final OrePrefixes foil = new OrePrefixBuilder("foil").setDefaultLocalName("Foils").setLocalMaterialPost(" Foil").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[1]).setMaterialAmount(M / 4).build();
+    public static final OrePrefixes foil = new OrePrefixBuilder("foil").setDefaultLocalName("Foils").setLocalMaterialPost(" Foil").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[1]).setMaterialAmount(M / 4).setTextureIndex(29).build();
     // foil("Foils", "", " Foil", true, true, false, false, false, false, true, true, false, false, B[1], M / 4, 64, 29)
 
     /** Stick made of an Ingot. */
-    public static final OrePrefixes stickLong = new OrePrefixBuilder("stickLong").setDefaultLocalName("Long Sticks/Rods").setLocalMaterialPre("Long ").setLocalMaterialPost(" Rod").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[1] | B[2]).setMaterialAmount(M * 1).build();
+    public static final OrePrefixes stickLong = new OrePrefixBuilder("stickLong").setDefaultLocalName("Long Sticks/Rods").setLocalMaterialPre("Long ").setLocalMaterialPost(" Rod").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[1] | B[2]).setMaterialAmount(M * 1).setTextureIndex(54).build();
     // stickLong("Long Sticks/Rods", "Long ", " Rod", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M * 1, 64, 54)
 
     /** Stick made of half an Ingot. Introduced by Eloraam */
-    public static final OrePrefixes stick = new OrePrefixBuilder("stick").setDefaultLocalName("Sticks/Rods").setLocalMaterialPost(" Rod").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[1] | B[2]).setMaterialAmount(M / 2).build();
+    public static final OrePrefixes stick = new OrePrefixBuilder("stick").setDefaultLocalName("Sticks/Rods").setLocalMaterialPost(" Rod").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[1] | B[2]).setMaterialAmount(M / 2).setTextureIndex(23).build();
     // stick("Sticks/Rods", "", " Rod", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M / 2, 64, 23)
 
     /** consisting out of one Nugget. */
-    public static final OrePrefixes round = new OrePrefixBuilder("round").setDefaultLocalName("Rounds").setLocalMaterialPost(" Round").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[1]).setMaterialAmount(M / 9).build();
+    public static final OrePrefixes round = new OrePrefixBuilder("round").setDefaultLocalName("Rounds").setLocalMaterialPost(" Round").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[1]).setMaterialAmount(M / 9).setTextureIndex(25).build();
     // round("Rounds", "", " Round", true, true, false, false, false, false, true, true, false, false, B[1], M / 9, 64, 25)
 
     /** consisting out of 1/8 Ingot or 1/4 Stick. */
-    public static final OrePrefixes bolt = new OrePrefixBuilder("bolt").setDefaultLocalName("Bolts").setLocalMaterialPost(" Bolt").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[1] | B[2]).setMaterialAmount(M / 8).build();
+    public static final OrePrefixes bolt = new OrePrefixBuilder("bolt").setDefaultLocalName("Bolts").setLocalMaterialPost(" Bolt").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[1] | B[2]).setMaterialAmount(M / 8).setTextureIndex(26).build();
     // bolt("Bolts", "", " Bolt", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M / 8, 64, 26)
 
     /** contain dusts */
-    public static final OrePrefixes comb = new OrePrefixBuilder("comb").setDefaultLocalName("Combs").setLocalMaterialPost(" Comb").setGenerateDefaultItem().setMaterialGenerationBits(B[1] | B[2]).setMaterialAmount(M).build();
+    public static final OrePrefixes comb = new OrePrefixBuilder("comb").setDefaultLocalName("Combs").setLocalMaterialPost(" Comb").setGenerateDefaultItem().setMaterialGenerationBits(B[1] | B[2]).setMaterialAmount(M).setTextureIndex(101).build();
     // comb("Combs", "", " Comb", false, false, false, false, false, false, false, true, false, false, B[1] | B[2], M, 64, 101)
 
     /** consisting out of a Bolt. */
-    public static final OrePrefixes screw = new OrePrefixBuilder("screw").setDefaultLocalName("Screws").setLocalMaterialPost(" Screw").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[1] | B[2]).setMaterialAmount(M / 8).build();
+    public static final OrePrefixes screw = new OrePrefixBuilder("screw").setDefaultLocalName("Screws").setLocalMaterialPost(" Screw").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[1] | B[2]).setMaterialAmount(M / 8).setTextureIndex(27).build();
     // screw("Screws", "", " Screw", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M / 8, 64, 27)
 
     /** consisting out of 1/2 Stick. */
-    public static final OrePrefixes ring = new OrePrefixBuilder("ring").setDefaultLocalName("Rings").setLocalMaterialPost(" Ring").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[1]).setMaterialAmount(M / 4).build();
+    public static final OrePrefixes ring = new OrePrefixBuilder("ring").setDefaultLocalName("Rings").setLocalMaterialPost(" Ring").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[1]).setMaterialAmount(M / 4).setTextureIndex(28).build();
     // ring("Rings", "", " Ring", true, true, false, false, false, false, true, true, false, false, B[1], M / 4, 64, 28)
 
     /** consisting out of 1 Fine Wire. */
-    public static final OrePrefixes springSmall = new OrePrefixBuilder("springSmall").setDefaultLocalName("Small Springs").setLocalMaterialPre("Small ").setLocalMaterialPost(" Spring").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[1]).setMaterialAmount(M / 4).build();
+    public static final OrePrefixes springSmall = new OrePrefixBuilder("springSmall").setDefaultLocalName("Small Springs").setLocalMaterialPre("Small ").setLocalMaterialPost(" Spring").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[1]).setMaterialAmount(M / 4).setTextureIndex(55).build();
     // springSmall("Small Springs", "Small ", " Spring", true, true, false, false, false, false, true, true, false, false, B[1], M / 4, 64, 55)
 
     /** consisting out of 2 Sticks. */
-    public static final OrePrefixes spring = new OrePrefixBuilder("spring").setDefaultLocalName("Springs").setLocalMaterialPost(" Spring").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[1]).setMaterialAmount(M * 1).build();
+    public static final OrePrefixes spring = new OrePrefixBuilder("spring").setDefaultLocalName("Springs").setLocalMaterialPost(" Spring").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[1]).setMaterialAmount(M * 1).setTextureIndex(56).build();
     // spring("Springs", "", " Spring", true, true, false, false, false, false, true, true, false, false, B[1], M * 1, 64, 56)
 
     /** consisting out of 1/8 Ingot or 1/4 Wire. */
-    public static final OrePrefixes wireFine = new OrePrefixBuilder("wireFine").setDefaultLocalName("Fine Wires").setLocalMaterialPre("Fine ").setLocalMaterialPost(" Wire").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[1]).setMaterialAmount(M / 8).build();
+    public static final OrePrefixes wireFine = new OrePrefixBuilder("wireFine").setDefaultLocalName("Fine Wires").setLocalMaterialPre("Fine ").setLocalMaterialPost(" Wire").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[1]).setMaterialAmount(M / 8).setTextureIndex(51).build();
     // wireFine("Fine Wires", "Fine ", " Wire", true, true, false, false, false, false, true, true, false, false, B[1], M / 8, 64, 51)
 
     /** consisting out of 4 Plates, 1 Ring and 1 Screw. */
-    public static final OrePrefixes Rotor = new OrePrefixBuilder("Rotor").setDefaultLocalName("Rotors").setLocalMaterialPost(" Rotor").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[7]).setMaterialAmount(M * 4 + M / 4).build();
+    public static final OrePrefixes Rotor = new OrePrefixBuilder("Rotor").setDefaultLocalName("Rotors").setLocalMaterialPost(" Rotor").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[7]).setMaterialAmount(M * 4 + M / 4).setTextureIndex(53).build();
     // Rotor("Rotors", "", " Rotor", true, true, false, false, false, false, true, true, false, false, B[7], M * 4 + M / 4, 64, 53)
 
-    public static final OrePrefixes gearGtSmall = new OrePrefixBuilder("gearGtSmall").setDefaultLocalName("Small Gears").setLocalMaterialPre("Small ").setLocalMaterialPost(" Gear").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[7]).setMaterialAmount(M * 1).build();
+    public static final OrePrefixes gearGtSmall = new OrePrefixBuilder("gearGtSmall").setDefaultLocalName("Small Gears").setLocalMaterialPre("Small ").setLocalMaterialPost(" Gear").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[7]).setMaterialAmount(M * 1).setTextureIndex(52).build();
     // gearGtSmall("Small Gears", "Small ", " Gear", true, true, false, false, false, false, true, true, false, false, B[7], M * 1, 64, 52)
 
     /** Introduced by me because BuildCraft has ruined the gear Prefix... */
-    public static final OrePrefixes gearGt = new OrePrefixBuilder("gearGt").setDefaultLocalName("Gears").setLocalMaterialPost(" Gear").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[7]).setMaterialAmount(M * 4).build();
+    public static final OrePrefixes gearGt = new OrePrefixBuilder("gearGt").setDefaultLocalName("Gears").setLocalMaterialPost(" Gear").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[7]).setMaterialAmount(M * 4).setTextureIndex(63).build();
     // gearGt("Gears", "", " Gear", true, true, false, false, false, false, true, true, false, false, B[7], M * 4, 64, 63)
 
     /** 3/4 of a Plate or Gem used to shape a Lense. Normally only used on Transparent Materials. */
-    public static final OrePrefixes lens = new OrePrefixBuilder("lens").setDefaultLocalName("Lenses").setLocalMaterialPost(" Lens").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[2]).setMaterialAmount((M * 3) / 4).build();
+    public static final OrePrefixes lens = new OrePrefixBuilder("lens").setDefaultLocalName("Lenses").setLocalMaterialPost(" Lens").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[2]).setMaterialAmount((M * 3) / 4).setTextureIndex(24).build();
     // lens("Lenses", "", " Lens", true, true, false, false, false, false, true, true, false, false, B[2], (M * 3) / 4, 64, 24)
 
     /** Hot Cell full of Plasma, which can be used in the Plasma Generator. */
-    public static final OrePrefixes cellPlasma = new OrePrefixBuilder("cellPlasma").setDefaultLocalName("Cells of Plasma").setLocalMaterialPost(" Plasma Cell").setUnifiable().setMaterialBased().setSelfReferencing().setContainer().setGenerateDefaultItem().setMaterialGenerationBits(B[5]).setMaterialAmount(M * 1).build();
+    public static final OrePrefixes cellPlasma = new OrePrefixBuilder("cellPlasma").setDefaultLocalName("Cells of Plasma").setLocalMaterialPost(" Plasma Cell").setUnifiable().setMaterialBased().setSelfReferencing().setContainer().setGenerateDefaultItem().setMaterialGenerationBits(B[5]).setMaterialAmount(M * 1).setTextureIndex(31).build();
     // cellPlasma("Cells of Plasma", "", " Plasma Cell", true, true, true, true, false, false, false, true, false, false, B[5], M * 1, 64, 31)
 
     /** Hot Cell full of molten stuff, which can be used in the Plasma Generator. */
-    public static final OrePrefixes cellMolten = new OrePrefixBuilder("cellMolten").setDefaultLocalName("Cells of Molten stuff").setLocalMaterialPre("Molten ").setLocalMaterialPost(" Cell").setUnifiable().setMaterialBased().setSelfReferencing().setContainer().setGenerateDefaultItem().setMaterialAmount(M * 1).build();
+    public static final OrePrefixes cellMolten = new OrePrefixBuilder("cellMolten").setDefaultLocalName("Cells of Molten stuff").setLocalMaterialPre("Molten ").setLocalMaterialPost(" Cell").setUnifiable().setMaterialBased().setSelfReferencing().setContainer().setGenerateDefaultItem().setMaterialAmount(M * 1).setTextureIndex(31).build();
     // cellMolten("Cells of Molten stuff", "Molten ", " Cell", true, true, true, true, false, false, false, true, false, false, 0, M * 1, 64, 31)
 
-    public static final OrePrefixes cell = new OrePrefixBuilder("cell").setDefaultLocalName("Cells").setLocalMaterialPost(" Cell").setUnifiable().setMaterialBased().setSelfReferencing().setContainer().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[4] | B[8]).setMaterialAmount(M * 1).build();
+    public static final OrePrefixes cell = new OrePrefixBuilder("cell").setDefaultLocalName("Cells").setLocalMaterialPost(" Cell").setUnifiable().setMaterialBased().setSelfReferencing().setContainer().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[4] | B[8]).setMaterialAmount(M * 1).setTextureIndex(30).build();
     // cell("Cells", "", " Cell", true, true, true, true, false, false, true, true, false, false, B[4] | B[8], M * 1, 64, 30)
 
     /** A vanilla Iron Bucket filled with the Material. */
@@ -314,39 +314,39 @@ public class OrePrefixes {
     // bulletGtLarge("Large Bullets", "Large ", " Bullet", true, true, false, false, true, false, true, false, true, false, B[6] | B[8], M / 3, 64, -1)
 
     /** consisting out of 2 Ingots. */
-    public static final OrePrefixes toolHeadFile = new OrePrefixBuilder("toolHeadFile").setDefaultLocalName("File Heads").setLocalMaterialPost(" File Head").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[6]).setMaterialAmount(M * 2).build();
+    public static final OrePrefixes toolHeadFile = new OrePrefixBuilder("toolHeadFile").setDefaultLocalName("File Heads").setLocalMaterialPost(" File Head").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[6]).setMaterialAmount(M * 2).setTextureIndex(38).build();
     // toolHeadFile("File Heads", "", " File Head", true, true, false, false, false, false, true, true, false, false, B[6], M * 2, 64, 38)
 
     /** consisting out of 6 Ingots. */
-    public static final OrePrefixes toolHeadHammer = new OrePrefixBuilder("toolHeadHammer").setDefaultLocalName("Hammer Heads").setLocalMaterialPost(" Hammer Head").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[6]).setMaterialAmount(M * 6).build();
+    public static final OrePrefixes toolHeadHammer = new OrePrefixBuilder("toolHeadHammer").setDefaultLocalName("Hammer Heads").setLocalMaterialPost(" Hammer Head").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[6]).setMaterialAmount(M * 6).setTextureIndex(37).build();
     // toolHeadHammer("Hammer Heads", "", " Hammer Head", true, true, false, false, false, false, true, true, false, false, B[6], M * 6, 64, 37)
 
     /** consisting out of 2 Ingots. */
-    public static final OrePrefixes toolHeadSaw = new OrePrefixBuilder("toolHeadSaw").setDefaultLocalName("Saw Blades").setLocalMaterialPost(" Saw Blade").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[6]).setMaterialAmount(M * 2).build();
+    public static final OrePrefixes toolHeadSaw = new OrePrefixBuilder("toolHeadSaw").setDefaultLocalName("Saw Blades").setLocalMaterialPost(" Saw Blade").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[6]).setMaterialAmount(M * 2).setTextureIndex(39).build();
     // toolHeadSaw("Saw Blades", "", " Saw Blade", true, true, false, false, false, false, true, true, false, false, B[6], M * 2, 64, 39)
 
     /** consisting out of 4 Ingots. */
-    public static final OrePrefixes toolHeadBuzzSaw = new OrePrefixBuilder("toolHeadBuzzSaw").setDefaultLocalName("Buzzsaw Blades").setLocalMaterialPost(" Buzzsaw Blade").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[6]).setMaterialAmount(M * 4).build();
+    public static final OrePrefixes toolHeadBuzzSaw = new OrePrefixBuilder("toolHeadBuzzSaw").setDefaultLocalName("Buzzsaw Blades").setLocalMaterialPost(" Buzzsaw Blade").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[6]).setMaterialAmount(M * 4).setTextureIndex(48).build();
     // toolHeadBuzzSaw("Buzzsaw Blades", "", " Buzzsaw Blade", true, true, false, false, false, false, true, true, false, false, B[6], M * 4, 64, 48)
 
     /** consisting out of 1 Ingots. */
-    public static final OrePrefixes toolHeadScrewdriver = new OrePrefixBuilder("toolHeadScrewdriver").setDefaultLocalName("Screwdriver Tips").setLocalMaterialPost(" Screwdriver Tip").setUnifiable().setMaterialBased().setUsedForBlocks().setMaterialGenerationBits(B[6]).setMaterialAmount(M * 1).build();
+    public static final OrePrefixes toolHeadScrewdriver = new OrePrefixBuilder("toolHeadScrewdriver").setDefaultLocalName("Screwdriver Tips").setLocalMaterialPost(" Screwdriver Tip").setUnifiable().setMaterialBased().setUsedForBlocks().setMaterialGenerationBits(B[6]).setMaterialAmount(M * 1).setTextureIndex(47).build();
     // toolHeadScrewdriver("Screwdriver Tips", "", " Screwdriver Tip", true, true, false, false, false, false, true, false, false, false, B[6], M * 1, 64, 47)
 
     /** consisting out of 4 Ingots. */
-    public static final OrePrefixes toolHeadDrill = new OrePrefixBuilder("toolHeadDrill").setDefaultLocalName("Drill Tips").setLocalMaterialPost(" Drill Tip").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[6]).setMaterialAmount(M * 4).build();
+    public static final OrePrefixes toolHeadDrill = new OrePrefixBuilder("toolHeadDrill").setDefaultLocalName("Drill Tips").setLocalMaterialPost(" Drill Tip").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[6]).setMaterialAmount(M * 4).setTextureIndex(40).build();
     // toolHeadDrill("Drill Tips", "", " Drill Tip", true, true, false, false, false, false, true, true, false, false, B[6], M * 4, 64, 40)
 
     /** consisting out of 2 Ingots. */
-    public static final OrePrefixes toolHeadChainsaw = new OrePrefixBuilder("toolHeadChainsaw").setDefaultLocalName("Chainsaw Tips").setLocalMaterialPost(" Chainsaw Tip").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[6]).setMaterialAmount(M * 2).build();
+    public static final OrePrefixes toolHeadChainsaw = new OrePrefixBuilder("toolHeadChainsaw").setDefaultLocalName("Chainsaw Tips").setLocalMaterialPost(" Chainsaw Tip").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[6]).setMaterialAmount(M * 2).setTextureIndex(41).build();
     // toolHeadChainsaw("Chainsaw Tips", "", " Chainsaw Tip", true, true, false, false, false, false, true, true, false, false, B[6], M * 2, 64, 41)
 
     /** consisting out of 4 Ingots. */
-    public static final OrePrefixes toolHeadWrench = new OrePrefixBuilder("toolHeadWrench").setDefaultLocalName("Wrench Tips").setLocalMaterialPost(" Wrench Tip").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[6]).setMaterialAmount(M * 4).build();
+    public static final OrePrefixes toolHeadWrench = new OrePrefixBuilder("toolHeadWrench").setDefaultLocalName("Wrench Tips").setLocalMaterialPost(" Wrench Tip").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[6]).setMaterialAmount(M * 4).setTextureIndex(42).build();
     // toolHeadWrench("Wrench Tips", "", " Wrench Tip", true, true, false, false, false, false, true, true, false, false, B[6], M * 4, 64, 42)
 
     /** consisting out of 6 Ingots. */
-    public static final OrePrefixes turbineBlade = new OrePrefixBuilder("turbineBlade").setDefaultLocalName("Turbine Blades").setLocalMaterialPost(" Turbine Blade").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[6]).setMaterialAmount(M * 6).build();
+    public static final OrePrefixes turbineBlade = new OrePrefixBuilder("turbineBlade").setDefaultLocalName("Turbine Blades").setLocalMaterialPost(" Turbine Blade").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[6]).setMaterialAmount(M * 6).setTextureIndex(100).build();
     // turbineBlade("Turbine Blades", "", " Turbine Blade", true, true, false, false, false, false, true, true, false, false, B[6], M * 6, 64, 100)
 
     /** vanilly Sword */
@@ -413,7 +413,7 @@ public class OrePrefixes {
     // block_("Random Blocks", "", "", false, false, false, false, false, true, false, false, false, false, 0, -1, 64, -1)
 
     /** Storage Block consisting out of 9 Ingots/Gems/Dusts. Introduced by CovertJaguar */
-    public static final OrePrefixes block = new OrePrefixBuilder("block").setDefaultLocalName("Storage Blocks").setLocalMaterialPre("Block of ").setUnifiable().setMaterialBased().setUsedForBlocks().setUsedForBlocks().setMaterialAmount(M * 9).build();
+    public static final OrePrefixes block = new OrePrefixBuilder("block").setDefaultLocalName("Storage Blocks").setLocalMaterialPre("Block of ").setUnifiable().setMaterialBased().setUsedForBlocks().setUsedForBlocks().setMaterialAmount(M * 9).setTextureIndex(71).build();
     // block("Storage Blocks", "Block of ", "", true, true, false, false, false, true, true, false, false, false, 0, M * 9, 64, 71)
 
     /** Special Prefix used mainly for the Crafting Handler. */
@@ -554,46 +554,46 @@ public class OrePrefixes {
     public static final OrePrefixes armor = new OrePrefixBuilder("armor").setDefaultLocalName("Armor Parts").setIsEnchantable().setMaterialGenerationBits(B[6]).setDefaultStackSize(1).build();
     // armor("Armor Parts", "", "", false, false, false, false, false, false, false, false, true, false, B[6], -1, 1, -1)
 
-    public static final OrePrefixes frameGt = new OrePrefixBuilder("frameGt").setDefaultLocalName("Frame Boxes").setUnifiable().setMaterialBased().setDoNotUnifyActively().setUsedForBlocks().setMaterialAmount(M * 2).build();
+    public static final OrePrefixes frameGt = new OrePrefixBuilder("frameGt").setDefaultLocalName("Frame Boxes").setUnifiable().setMaterialBased().setDoNotUnifyActively().setUsedForBlocks().setMaterialAmount(M * 2).setTextureIndex(83).build();
     // frameGt("Frame Boxes", "", "", true, true, false, false, true, false, true, false, false, false, 0, M * 2, 64, 83)
 
-    public static final OrePrefixes pipeTiny = new OrePrefixBuilder("pipeTiny").setDefaultLocalName("Tiny Pipes").setLocalMaterialPre("Tiny ").setLocalMaterialPost(" Pipe").setUnifiable().setMaterialBased().setDoNotUnifyActively().setUsedForBlocks().setMaterialAmount(M / 2).build();
+    public static final OrePrefixes pipeTiny = new OrePrefixBuilder("pipeTiny").setDefaultLocalName("Tiny Pipes").setLocalMaterialPre("Tiny ").setLocalMaterialPost(" Pipe").setUnifiable().setMaterialBased().setDoNotUnifyActively().setUsedForBlocks().setMaterialAmount(M / 2).setTextureIndex(78).build();
     // pipeTiny("Tiny Pipes", "Tiny ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M / 2, 64, 78)
 
-    public static final OrePrefixes pipeSmall = new OrePrefixBuilder("pipeSmall").setDefaultLocalName("Small Pipes").setLocalMaterialPre("Small ").setLocalMaterialPost(" Pipe").setUnifiable().setMaterialBased().setDoNotUnifyActively().setUsedForBlocks().setMaterialAmount(M * 1).build();
+    public static final OrePrefixes pipeSmall = new OrePrefixBuilder("pipeSmall").setDefaultLocalName("Small Pipes").setLocalMaterialPre("Small ").setLocalMaterialPost(" Pipe").setUnifiable().setMaterialBased().setDoNotUnifyActively().setUsedForBlocks().setMaterialAmount(M * 1).setTextureIndex(79).build();
     // pipeSmall("Small Pipes", "Small ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 1, 64, 79)
 
-    public static final OrePrefixes pipeMedium = new OrePrefixBuilder("pipeMedium").setDefaultLocalName("Medium Pipes").setLocalMaterialPre("Medium ").setLocalMaterialPost(" Pipe").setUnifiable().setMaterialBased().setDoNotUnifyActively().setUsedForBlocks().setMaterialAmount(M * 3).build();
+    public static final OrePrefixes pipeMedium = new OrePrefixBuilder("pipeMedium").setDefaultLocalName("Medium Pipes").setLocalMaterialPre("Medium ").setLocalMaterialPost(" Pipe").setUnifiable().setMaterialBased().setDoNotUnifyActively().setUsedForBlocks().setMaterialAmount(M * 3).setTextureIndex(80).build();
     // pipeMedium("Medium Pipes", "Medium ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 3, 64, 80)
 
-    public static final OrePrefixes pipeLarge = new OrePrefixBuilder("pipeLarge").setDefaultLocalName("Large pipes").setLocalMaterialPre("Large ").setLocalMaterialPost(" Pipe").setUnifiable().setMaterialBased().setDoNotUnifyActively().setUsedForBlocks().setMaterialAmount(M * 6).build();
+    public static final OrePrefixes pipeLarge = new OrePrefixBuilder("pipeLarge").setDefaultLocalName("Large pipes").setLocalMaterialPre("Large ").setLocalMaterialPost(" Pipe").setUnifiable().setMaterialBased().setDoNotUnifyActively().setUsedForBlocks().setMaterialAmount(M * 6).setTextureIndex(81).build();
     // pipeLarge("Large pipes", "Large ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 6, 64, 81)
 
-    public static final OrePrefixes pipeHuge = new OrePrefixBuilder("pipeHuge").setDefaultLocalName("Huge Pipes").setLocalMaterialPre("Huge ").setLocalMaterialPost(" Pipe").setUnifiable().setMaterialBased().setDoNotUnifyActively().setUsedForBlocks().setMaterialAmount(M * 12).build();
+    public static final OrePrefixes pipeHuge = new OrePrefixBuilder("pipeHuge").setDefaultLocalName("Huge Pipes").setLocalMaterialPre("Huge ").setLocalMaterialPost(" Pipe").setUnifiable().setMaterialBased().setDoNotUnifyActively().setUsedForBlocks().setMaterialAmount(M * 12).setTextureIndex(82).build();
     // pipeHuge("Huge Pipes", "Huge ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 12, 64, 82)
 
-    public static final OrePrefixes pipeQuadruple = new OrePrefixBuilder("pipeQuadruple").setDefaultLocalName("Quadruple Pipes").setLocalMaterialPre("Quadruple ").setLocalMaterialPost(" Pipe").setUnifiable().setMaterialBased().setDoNotUnifyActively().setUsedForBlocks().setMaterialAmount(M * 12).build();
+    public static final OrePrefixes pipeQuadruple = new OrePrefixBuilder("pipeQuadruple").setDefaultLocalName("Quadruple Pipes").setLocalMaterialPre("Quadruple ").setLocalMaterialPost(" Pipe").setUnifiable().setMaterialBased().setDoNotUnifyActively().setUsedForBlocks().setMaterialAmount(M * 12).setTextureIndex(84).build();
     // pipeQuadruple("Quadruple Pipes", "Quadruple ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 12, 64, 84)
 
-    public static final OrePrefixes pipeNonuple = new OrePrefixBuilder("pipeNonuple").setDefaultLocalName("Nonuple Pipes").setLocalMaterialPre("Nonuple ").setLocalMaterialPost(" Pipe").setUnifiable().setMaterialBased().setDoNotUnifyActively().setUsedForBlocks().setMaterialAmount(M * 9).build();
+    public static final OrePrefixes pipeNonuple = new OrePrefixBuilder("pipeNonuple").setDefaultLocalName("Nonuple Pipes").setLocalMaterialPre("Nonuple ").setLocalMaterialPost(" Pipe").setUnifiable().setMaterialBased().setDoNotUnifyActively().setUsedForBlocks().setMaterialAmount(M * 9).setTextureIndex(85).build();
     // pipeNonuple("Nonuple Pipes", "Nonuple ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 9, 64, 85)
 
-    public static final OrePrefixes pipeRestrictiveTiny = new OrePrefixBuilder("pipeRestrictiveTiny").setDefaultLocalName("Tiny Restrictive Pipes").setLocalMaterialPre("Tiny Restrictive ").setLocalMaterialPost(" Pipe").setUnifiable().setMaterialBased().setDoNotUnifyActively().setUsedForBlocks().setMaterialAmount(M / 2).build();
+    public static final OrePrefixes pipeRestrictiveTiny = new OrePrefixBuilder("pipeRestrictiveTiny").setDefaultLocalName("Tiny Restrictive Pipes").setLocalMaterialPre("Tiny Restrictive ").setLocalMaterialPost(" Pipe").setUnifiable().setMaterialBased().setDoNotUnifyActively().setUsedForBlocks().setMaterialAmount(M / 2).setTextureIndex(78).build();
     // pipeRestrictiveTiny("Tiny Restrictive Pipes", "Tiny Restrictive ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M / 2, 64, 78)
 
-    public static final OrePrefixes pipeRestrictiveSmall = new OrePrefixBuilder("pipeRestrictiveSmall").setDefaultLocalName("Small Restrictive Pipes").setLocalMaterialPre("Small Restrictive ").setLocalMaterialPost(" Pipe").setUnifiable().setMaterialBased().setDoNotUnifyActively().setUsedForBlocks().setMaterialAmount(M * 1).build();
+    public static final OrePrefixes pipeRestrictiveSmall = new OrePrefixBuilder("pipeRestrictiveSmall").setDefaultLocalName("Small Restrictive Pipes").setLocalMaterialPre("Small Restrictive ").setLocalMaterialPost(" Pipe").setUnifiable().setMaterialBased().setDoNotUnifyActively().setUsedForBlocks().setMaterialAmount(M * 1).setTextureIndex(79).build();
     // pipeRestrictiveSmall("Small Restrictive Pipes", "Small Restrictive ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 1, 64, 79)
 
-    public static final OrePrefixes pipeRestrictiveMedium = new OrePrefixBuilder("pipeRestrictiveMedium").setDefaultLocalName("Medium Restrictive Pipes").setLocalMaterialPre("Medium Restrictive ").setLocalMaterialPost(" Pipe").setUnifiable().setMaterialBased().setDoNotUnifyActively().setUsedForBlocks().setMaterialAmount(M * 3).build();
+    public static final OrePrefixes pipeRestrictiveMedium = new OrePrefixBuilder("pipeRestrictiveMedium").setDefaultLocalName("Medium Restrictive Pipes").setLocalMaterialPre("Medium Restrictive ").setLocalMaterialPost(" Pipe").setUnifiable().setMaterialBased().setDoNotUnifyActively().setUsedForBlocks().setMaterialAmount(M * 3).setTextureIndex(80).build();
     // pipeRestrictiveMedium("Medium Restrictive Pipes", "Medium Restrictive ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 3, 64, 80)
 
-    public static final OrePrefixes pipeRestrictiveLarge = new OrePrefixBuilder("pipeRestrictiveLarge").setDefaultLocalName("Large Restrictive Pipes").setLocalMaterialPre("Large Restrictive ").setLocalMaterialPost(" Pipe").setUnifiable().setMaterialBased().setDoNotUnifyActively().setUsedForBlocks().setMaterialAmount(M * 6).build();
+    public static final OrePrefixes pipeRestrictiveLarge = new OrePrefixBuilder("pipeRestrictiveLarge").setDefaultLocalName("Large Restrictive Pipes").setLocalMaterialPre("Large Restrictive ").setLocalMaterialPost(" Pipe").setUnifiable().setMaterialBased().setDoNotUnifyActively().setUsedForBlocks().setMaterialAmount(M * 6).setTextureIndex(81).build();
     // pipeRestrictiveLarge("Large Restrictive Pipes", "Large Restrictive ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 6, 64, 81)
 
-    public static final OrePrefixes pipeRestrictiveHuge = new OrePrefixBuilder("pipeRestrictiveHuge").setDefaultLocalName("Huge Restrictive Pipes").setLocalMaterialPre("Huge Restrictive ").setLocalMaterialPost(" Pipe").setUnifiable().setMaterialBased().setDoNotUnifyActively().setUsedForBlocks().setMaterialAmount(M * 12).build();
+    public static final OrePrefixes pipeRestrictiveHuge = new OrePrefixBuilder("pipeRestrictiveHuge").setDefaultLocalName("Huge Restrictive Pipes").setLocalMaterialPre("Huge Restrictive ").setLocalMaterialPost(" Pipe").setUnifiable().setMaterialBased().setDoNotUnifyActively().setUsedForBlocks().setMaterialAmount(M * 12).setTextureIndex(82).build();
     // pipeRestrictiveHuge("Huge Restrictive Pipes", "Huge Restrictive ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 12, 64, 82)
 
-    public static final OrePrefixes pipe = new OrePrefixBuilder("pipe").setDefaultLocalName("Pipes").setLocalMaterialPost(" Pipe").setUnifiable().build();
+    public static final OrePrefixes pipe = new OrePrefixBuilder("pipe").setDefaultLocalName("Pipes").setLocalMaterialPost(" Pipe").setUnifiable().setTextureIndex(77).build();
     // pipe("Pipes", "", " Pipe", true, false, false, false, false, false, false, false, false, false, 0, -1, 64, 77)
 
     public static final OrePrefixes wireGt16 = new OrePrefixBuilder("wireGt16").setDefaultLocalName("16x Wires").setLocalMaterialPre("16x ").setLocalMaterialPost(" Wire").setUnifiable().setMaterialBased().setUsedForBlocks().setMaterialAmount(M * 8).build();
@@ -912,30 +912,30 @@ public class OrePrefixes {
     // bar("Bars", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1)
 
     /** Reverse Head consisting out of 6 Ingots. */
-    public static final OrePrefixes toolHeadMallet = new OrePrefixBuilder("toolHeadMallet").setDefaultLocalName("Mallet Heads").setLocalMaterialPost(" Mallet Head").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[6]).setMaterialAmount(M * 6).build();
+    public static final OrePrefixes toolHeadMallet = new OrePrefixBuilder("toolHeadMallet").setDefaultLocalName("Mallet Heads").setLocalMaterialPost(" Mallet Head").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[6]).setMaterialAmount(M * 6).setTextureIndex(127).build();
     // toolHeadMallet("Mallet Heads", "", " Mallet Head", true, true, false, false, false, false, true, true, false, false, B[6], M * 6, 64, 127)
 
     /** Reverse Stick made of half an Ingot. Introduced by Eloraam */
-    public static final OrePrefixes handleMallet = new OrePrefixBuilder("handleMallet").setDefaultLocalName("Mallet Handle").setLocalMaterialPost(" Handle").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[1] | B[2]).setMaterialAmount(M / 2).build();
+    public static final OrePrefixes handleMallet = new OrePrefixBuilder("handleMallet").setDefaultLocalName("Mallet Handle").setLocalMaterialPost(" Handle").setUnifiable().setMaterialBased().setUsedForBlocks().setGenerateDefaultItem().setMaterialGenerationBits(B[1] | B[2]).setMaterialAmount(M / 2).setTextureIndex(126).build();
     // handleMallet("Mallet Handle", "", " Handle", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M / 2, 64, 126)
 
     // Cracked fluids
-    public static final OrePrefixes cellHydroCracked1 = new OrePrefixBuilder("cellHydroCracked1").setDefaultLocalName("Cells").setLocalMaterialPre("Lightly Hydro-Cracked ").setLocalMaterialPost(" Cell").setUnifiable().setMaterialBased().setSelfReferencing().setContainer().setGenerateDefaultItem().setMaterialAmount(M * 1).build();
+    public static final OrePrefixes cellHydroCracked1 = new OrePrefixBuilder("cellHydroCracked1").setDefaultLocalName("Cells").setLocalMaterialPre("Lightly Hydro-Cracked ").setLocalMaterialPost(" Cell").setUnifiable().setMaterialBased().setSelfReferencing().setContainer().setGenerateDefaultItem().setMaterialAmount(M * 1).setTextureIndex(30).build();
     // cellHydroCracked1("Cells", "Lightly Hydro-Cracked ", " Cell", true, true, true, true, false, false, false, true, false, false, 0, M * 1, 64, 30)
 
-    public static final OrePrefixes cellHydroCracked2 = new OrePrefixBuilder("cellHydroCracked2").setDefaultLocalName("Cells").setLocalMaterialPre("Moderately Hydro-Cracked ").setLocalMaterialPost(" Cell").setUnifiable().setMaterialBased().setSelfReferencing().setContainer().setGenerateDefaultItem().setMaterialAmount(M * 1).build();
+    public static final OrePrefixes cellHydroCracked2 = new OrePrefixBuilder("cellHydroCracked2").setDefaultLocalName("Cells").setLocalMaterialPre("Moderately Hydro-Cracked ").setLocalMaterialPost(" Cell").setUnifiable().setMaterialBased().setSelfReferencing().setContainer().setGenerateDefaultItem().setMaterialAmount(M * 1).setTextureIndex(30).build();
     // cellHydroCracked2("Cells", "Moderately Hydro-Cracked ", " Cell", true, true, true, true, false, false, false, true, false, false, 0, M * 1, 64, 30)
 
-    public static final OrePrefixes cellHydroCracked3 = new OrePrefixBuilder("cellHydroCracked3").setDefaultLocalName("Cells").setLocalMaterialPre("Severely Hydro-Cracked ").setLocalMaterialPost(" Cell").setUnifiable().setMaterialBased().setSelfReferencing().setContainer().setGenerateDefaultItem().setMaterialAmount(M * 1).build();
+    public static final OrePrefixes cellHydroCracked3 = new OrePrefixBuilder("cellHydroCracked3").setDefaultLocalName("Cells").setLocalMaterialPre("Severely Hydro-Cracked ").setLocalMaterialPost(" Cell").setUnifiable().setMaterialBased().setSelfReferencing().setContainer().setGenerateDefaultItem().setMaterialAmount(M * 1).setTextureIndex(30).build();
     // cellHydroCracked3("Cells", "Severely Hydro-Cracked ", " Cell", true, true, true, true, false, false, false, true, false, false, 0, M * 1, 64, 30)
 
-    public static final OrePrefixes cellSteamCracked1 = new OrePrefixBuilder("cellSteamCracked1").setDefaultLocalName("Cells").setLocalMaterialPre("Lightly Steam-Cracked ").setLocalMaterialPost(" Cell").setUnifiable().setMaterialBased().setSelfReferencing().setContainer().setGenerateDefaultItem().setMaterialAmount(M * 1).build();
+    public static final OrePrefixes cellSteamCracked1 = new OrePrefixBuilder("cellSteamCracked1").setDefaultLocalName("Cells").setLocalMaterialPre("Lightly Steam-Cracked ").setLocalMaterialPost(" Cell").setUnifiable().setMaterialBased().setSelfReferencing().setContainer().setGenerateDefaultItem().setMaterialAmount(M * 1).setTextureIndex(30).build();
     // cellSteamCracked1("Cells", "Lightly Steam-Cracked ", " Cell", true, true, true, true, false, false, false, true, false, false, 0, M * 1, 64, 30)
 
-    public static final OrePrefixes cellSteamCracked2 = new OrePrefixBuilder("cellSteamCracked2").setDefaultLocalName("Cells").setLocalMaterialPre("Moderately Steam-Cracked ").setLocalMaterialPost(" Cell").setUnifiable().setMaterialBased().setSelfReferencing().setContainer().setGenerateDefaultItem().setMaterialAmount(M * 1).build();
+    public static final OrePrefixes cellSteamCracked2 = new OrePrefixBuilder("cellSteamCracked2").setDefaultLocalName("Cells").setLocalMaterialPre("Moderately Steam-Cracked ").setLocalMaterialPost(" Cell").setUnifiable().setMaterialBased().setSelfReferencing().setContainer().setGenerateDefaultItem().setMaterialAmount(M * 1).setTextureIndex(30).build();
     // cellSteamCracked2("Cells", "Moderately Steam-Cracked ", " Cell", true, true, true, true, false, false, false, true, false, false, 0, M * 1, 64, 30)
 
-    public static final OrePrefixes cellSteamCracked3 = new OrePrefixBuilder("cellSteamCracked3").setDefaultLocalName("Cells").setLocalMaterialPre("Severely Steam-Cracked ").setLocalMaterialPost(" Cell").setUnifiable().setMaterialBased().setSelfReferencing().setContainer().setGenerateDefaultItem().setMaterialAmount(M * 1).build();
+    public static final OrePrefixes cellSteamCracked3 = new OrePrefixBuilder("cellSteamCracked3").setDefaultLocalName("Cells").setLocalMaterialPre("Severely Steam-Cracked ").setLocalMaterialPost(" Cell").setUnifiable().setMaterialBased().setSelfReferencing().setContainer().setGenerateDefaultItem().setMaterialAmount(M * 1).setTextureIndex(30).build();
     // cellSteamCracked3("Cells", "Severely Steam-Cracked ", " Cell", true, true, true, true, false, false, false, true, false, false, 0, M * 1, 64, 30)
 
     public static final OrePrefixes componentCircuit = new OrePrefixBuilder("componentCircuit").setDefaultLocalName("Circuit Parts").setUnifiable().setMaterialBased().build();
@@ -947,7 +947,7 @@ public class OrePrefixes {
     public static final OrePrefixes beeComb = new OrePrefixBuilder("beeComb").setDefaultLocalName("Bee Combs").setUnifiable().setSelfReferencing().build();
     // beeComb("Bee Combs", "", "", true, false, true, false, false, false, false, false, false, false, 0, -1, 64, -1)
 
-    public static final OrePrefixes nanite = new OrePrefixBuilder("nanite").setDefaultLocalName("Nanites").setLocalMaterialPost(" Nanites").setUnifiable().setMaterialBased().setSelfReferencing().build();
+    public static final OrePrefixes nanite = new OrePrefixBuilder("nanite").setDefaultLocalName("Nanites").setLocalMaterialPost(" Nanites").setUnifiable().setMaterialBased().setSelfReferencing().setTextureIndex(50).build();
     // nanite("Nanites", "", " Nanites", true, true, true, false, false, false, false, false, false, false, 0, -1, 64, 50)
 
     // migrated from GT++
@@ -992,6 +992,7 @@ public class OrePrefixes {
     private final int materialGenerationBits;
     private final long materialAmount;
     private final int defaultStackSize;
+    private final int textureIndex;
 
     OrePrefixes(
         // spotless:off
@@ -1011,7 +1012,8 @@ public class OrePrefixes {
         boolean isUsedForOreProcessing,
         int materialGenerationBits,
         long materialAmount,
-        int defaultStackSize
+        int defaultStackSize,
+        int textureIndex
         // spotless:on
     ) {
         this.name = name;
@@ -1031,6 +1033,7 @@ public class OrePrefixes {
         this.materialGenerationBits = materialGenerationBits;
         this.materialAmount = materialAmount;
         this.defaultStackSize = defaultStackSize;
+        this.textureIndex = textureIndex;
     }
 
 //    OrePrefixes(String aRegularLocalName, String aLocalizedMaterialPre, String aLocalizedMaterialPost,
