@@ -407,11 +407,6 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
     }
 
     @Override
-    protected boolean useMui2() {
-        return true;
-    }
-
-    @Override
     protected @NotNull MTELargeBoilerGui getGui() {
         return new MTELargeBoilerGui(this);
     }
