@@ -617,6 +617,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         // stocked.
         if (slotIndex == getCircuitSlot() + virtualSlotOffset) return mInventory[getCircuitSlot()];
         if (slotIndex == getManualSlot() + virtualSlotOffset) return mInventory[getManualSlot()];
+        if (!processingRecipe) return null;
 
         if (!isAllowedToWork()) {
             return null;
