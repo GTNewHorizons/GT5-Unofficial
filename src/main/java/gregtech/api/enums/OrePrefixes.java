@@ -646,8 +646,6 @@ public enum OrePrefixes {
 
         cell.disableComponent(Materials.GravitonShard);
 
-        gem.mGeneratedItems.add(Materials.GravitonShard);
-
         dust.mGeneratedItems.addAll(dustPure.mGeneratedItems);
         dust.mGeneratedItems.addAll(dustImpure.mGeneratedItems);
         dust.mGeneratedItems.addAll(dustRefined.mGeneratedItems);
