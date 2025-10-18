@@ -18,6 +18,7 @@ public class OrePrefixBuilder {
     private boolean isUsedForOreProcessing = false;
     private int materialGenerationBits = 0;
     private long materialAmount = -1;
+    private int defaultStackSize = 64;
 
     protected OrePrefixBuilder(String name) {
         this.name = name;
@@ -41,7 +42,8 @@ public class OrePrefixBuilder {
             isEnchantable,
             isUsedForOreProcessing,
             materialGenerationBits,
-            materialAmount
+            materialAmount,
+            defaultStackSize
             // spotless:on
         );
     }
@@ -118,6 +120,11 @@ public class OrePrefixBuilder {
 
     protected OrePrefixBuilder setMaterialAmount(long materialAmount) {
         this.materialAmount = materialAmount;
+        return this;
+    }
+
+    protected OrePrefixBuilder setDefaultStackSize(int defaultStackSize) {
+        this.defaultStackSize = defaultStackSize;
         return this;
     }
 }
