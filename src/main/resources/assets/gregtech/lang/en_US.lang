@@ -1880,6 +1880,155 @@ GT5U.interface.coverTabs.redstone.west=west
 GT5U.interface.coverTabs.redstone.east=east
 GT5U.interface.coverTabs.redstone.unknown=<unknown>
 
+## Redstone Receiver
+GT5U.gui.tooltip.redstone_receiver.GateMode=§8Gate Mode
+GT5U.gui.tooltip.redstone_receiver.AND_Gate=AND Gate
+GT5U.gui.tooltip.redstone_receiver.NAND_Gate=NAND Gate
+GT5U.gui.tooltip.redstone_receiver.OR_Gate=OR Gate
+GT5U.gui.tooltip.redstone_receiver.NOR_Gate=NOR Gate
+
+## Arm
+gt.interact.desc.arm.any=Any
+gt.interact.desc.arm.Internal_Slot=§8Internal slot#
+gt.interact.desc.arm.Adjacent_Slot=§8Adjacent slot#
+
+## Machine Controller Cover
+gt.interact.desc.MachContr.EnRedstone=§8Enable with Redstone
+gt.interact.desc.MachContr.DisRedstone=§8Disable with Redstone
+gt.interact.desc.MachContr.DisMachine=§8Disable machine
+gt.interact.desc.MachContr.SafeMode=§8Safe Mode
+
+## Conveyor
+gt.interact.desc.conveyor.AlwaysOn=Always On
+gt.interact.desc.conveyor.MachProcState=Use Machine Processing State
+gt.interact.desc.conveyor.InvertedMachProcState=Use Inverted Machine Processing State
+gt.interact.desc.conveyor.AllowIn=Allow Input
+gt.interact.desc.conveyor.AllowOut=Allow Output
+gt.interact.desc.conveyor.BlockIn=Block Input
+gt.interact.desc.conveyor.BlockOut=Block Output
+gt.interact.desc.conveyor.ExpImp=§8Export/Import
+gt.interact.desc.conveyor.Conditional=§8Conditional
+gt.interact.desc.conveyor.InputBlock=§8Input Blocking
+gt.interact.desc.conveyor.OutputBlock=§8Output Blocking
+
+## DoesWorkUI
+gt.interact.desc.MachineEnabled=§8Machine enabled
+gt.interact.desc.MachineIdle=§8Machine idle
+gt.interact.desc.RecipeProgress=§8Recipe progress
+
+## EU MEter
+gt.interact.desc.EnergyThreshold=§8Energy threshold
+
+## Facade
+gt.interact.desc.facade.Redstone=§8Redstone
+gt.interact.desc.facade.Energy=§8Energy
+gt.interact.desc.facade.Fluids=§8Fluids
+gt.interact.desc.facade.Items=§8Items
+
+## FluidFilter
+gt.interact.desc.FluidFilter.FilterInput=Filter Input
+gt.interact.desc.FluidFilter.FilterOutput=Filter Output
+gt.interact.desc.FluidFilter.FilterChat=Filter Fluid:
+gt.interact.desc.FluidFilter.AllowOutput=Allow Output
+gt.interact.desc.FluidFilter.AllowInput=Allow Input
+gt.interact.desc.FluidFilter.BlockOutput=Block Output
+gt.interact.desc.FluidFilter.BlockInput=Block Input
+
+gt.interact.desc.FluidFilter.WhitelistFluid=Whitelist Fluid
+gt.interact.desc.FluidFilter.BlacklistFluid=Blacklist Fluid
+gt.interact.desc.FluidFilter.Direction=§8Filter Direction
+gt.interact.desc.FluidFilter.Type=§8Filter Type
+gt.interact.desc.FluidFilter.BlockFlow=§8Block Flow
+gt.interact.desc.FluidFilter.Empty=§8Filter Empty
+
+## Fluid Regulator
+gt.interact.desc.fluid_regulator.AlwaysOn=Always On
+gt.interact.desc.fluid_regulator.MachProcState=Use Machine Processing State
+gt.interact.desc.fluid_regulator.InvertedMachProcState=Use Inverted Machine Processing State
+
+gt.interact.desc.fluid_regulator.ExpImp=§8Export/Import
+gt.interact.desc.fluid_regulator.Conditional=§8Conditional
+gt.interact.desc.fluid_regulator.L=§8 L
+gt.interact.desc.fluid_regulator.Ticks=§8 ticks
+gt.interact.desc.fluid_regulator.Average=Average:
+gt.interact.desc.fluid_regulator.L_Sec=L/sec
+
+## Item Filter
+gt.interact.desc.Item_Filter.Whitelist_Mode=Whitelist Mode
+gt.interact.desc.Item_Filter.Blacklist_Mode=Blacklist Mode
+gt.interact.desc.Item_Filter.Filter=§8Filter:
+gt.interact.desc.Item_Filter.CheckMode=§8Check Mode
+
+## Item Meter
+gt.interact.desc.Item_Meter.All=All
+gt.interact.desc.Item_Meter.DetectSlot=§8Detect slot #
+gt.interact.desc.Item_Meter.ItemThreshold=§8Item threshold
+
+## Liquid Meter (Fluid meter)
+gt.interact.desc.Fluid_Meter.FluidThreshold=§8Fluid threshold
+
+## Player Detector
+gt.interact.desc.Player_Detector.Emit_Player_Close=Emit if any Player is close
+gt.interact.desc.Player_Detector.Emit_Player_No_Close=Emit if other Player is close
+gt.interact.desc.Player_Detector.Emit_You_Close=Emit if you are close
+gt.interact.desc.Player_Detector.Any_Player=§8Any player
+gt.interact.desc.Player_Detector.Other_Players=§8Other players
+gt.interact.desc.Player_Detector.Only_Owner=§8Only owner
+
+## Pump
+gt.interact.desc.Pump.AlwaysOn=Always On
+gt.interact.desc.Pump.MachProcState=Use Machine Processing State
+gt.interact.desc.Pump.InvertedMachProcState=Use Inverted Machine Processing State
+gt.interact.desc.Pump.AllowIn=Allow Input
+gt.interact.desc.Pump.AllowOut=Allow Output
+gt.interact.desc.Pump.BlockIn=Block Input
+gt.interact.desc.Pump.BlockOut=Block Output
+gt.interact.desc.Pump.ExpImp=§8Export/Import
+gt.interact.desc.Pump.Conditional=§8Conditional
+gt.interact.desc.Pump.InputBlock=§8Input Blocking
+gt.interact.desc.Pump.OutputBlock=§8Output Blocking
+
+## RedstoneWirelessBase
+gt.interact.desc.RedstoneWirelessBase.Use_Private_Freq=§8Use Private Frequency
+
+## Shutter
+gt.interact.desc.Shutter.Open_Enabled=§8Open if work enabled
+gt.interact.desc.Shutter.Open_Disabled=§8Open if work disabled
+gt.interact.desc.Shutter.OutAllow=§8Only Output allowed
+gt.interact.desc.Shutter.InAllow=§8Only Input allowed
+
+## Wireless Activity
+
+gt.interact.desc.Wireless_Activity.Enabled=§8Machine enabled
+gt.interact.desc.Wireless_Activity.Idle=§8Machine idle
+gt.interact.desc.Wireless_Activity.Recipe_Progress=§8Recipe progress
+
+gt.interact.tooltip.Wireless_Activity.Recipe_Progress=Recipe progress
+gt.interact.tooltip.Wireless_Activity.Idle=Machine idle
+gt.interact.tooltip.Wireless_Activity.Enabled=Machine enabled
+
+## Wireless Fluid Detector
+gt.interact.desc.Wireless_Fluid_Detector.FluidThreshold=§8Fluid threshold
+
+## Wireless Item Detector
+gt.interact.desc.Item_Item_Detector.All=All
+gt.interact.desc.Item_Item_Detector.ItemThreshold=§8Item threshold
+gt.interact.desc.Item_Item_Detector.DetectSlot=§8Detect slot #
+
+## Energy Detector
+gt.interact.desc.Energy_Detector.universal=§8Universal
+gt.interact.desc.Energy_Detector.universal.tooltip=§fUniversal Storage
+gt.interact.desc.Energy_Detector.electricity=§8Int. EU
+gt.interact.desc.Energy_Detector.electricity.tooltip=§fElectricity Storage
+gt.interact.desc.Energy_Detector.steam=§8Steam
+gt.interact.desc.Energy_Detector.steam.tooltip=§fSteam Storage
+gt.interact.desc.Energy_Detector.average_in=§8Avg. Input
+gt.interact.desc.Energy_Detector.average_in.tooltip=§fAverage Electric Input
+gt.interact.desc.Energy_Detector.average_out=§8Avg. Output
+gt.interact.desc.Energy_Detector.average_out.tooltip=§fAverage Electric Output
+gt.interact.desc.Energy_Detector.eu_stored=§8EU stored
+gt.interact.desc.Energy_Detector.eu_stored.tooltip=§fElectricity Storage(Including Batteries)
+
 # NEI Display
 GT5U.nei.display.steam_variant.bronze=Bronze
 GT5U.nei.display.steam_variant.steel=Steel

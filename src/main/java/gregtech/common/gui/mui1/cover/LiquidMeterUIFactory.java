@@ -66,7 +66,7 @@ public class LiquidMeterUIFactory extends CoverUIFactory<CoverLiquidMeter> {
                     .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX + spaceX * 1, 4 + startY + spaceY * 0))
             .widget(
-                new TextWidget(GTUtility.trans("222", "Fluid threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(StatCollector.translateToLocal("gt.interact.desc.Fluid_Meter.FluidThreshold"))
                     .setPos(startX + spaceX * 5 - 10, startY + spaceY * 1 + 4));
     }
 }

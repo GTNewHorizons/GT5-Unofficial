@@ -10,7 +10,6 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverControlsWork;
 import gregtech.common.covers.conditions.RedstoneCondition;
 import gregtech.common.modularui2.sync.LinkedBoolValue;
@@ -49,27 +48,27 @@ public class CoverControlsWorkGui extends CoverGui<CoverControlsWork> {
                         .value(LinkedBoolValue.of(conditionModeSyncValue, RedstoneCondition.ENABLE_WITH_REDSTONE))
                         .overlay(GTGuiTextures.OVERLAY_BUTTON_REDSTONE_ON)
                         .size(16),
-                    IKey.str(GTUtility.trans("243", "Enable with Redstone"))
+                    IKey.lang("gt.interact.desc.MachContr.EnRedstone")
                         .asWidget())
                 .row(
                     new SelectButton()
                         .value(LinkedBoolValue.of(conditionModeSyncValue, RedstoneCondition.DISABLE_WITH_REDSTONE))
                         .overlay(GTGuiTextures.OVERLAY_BUTTON_REDSTONE_OFF)
                         .size(16),
-                    IKey.str(GTUtility.trans("244", "Disable with Redstone"))
+                    IKey.lang("gt.interact.desc.MachContr.DisRedstone")
                         .asWidget())
                 .row(
                     new SelectButton().value(LinkedBoolValue.of(conditionModeSyncValue, RedstoneCondition.DISABLE))
                         .overlay(GTGuiTextures.OVERLAY_BUTTON_CROSS)
                         .size(16),
-                    IKey.str(GTUtility.trans("245", "Disable machine"))
+                    IKey.lang("gt.interact.desc.MachContr.DisMachine")
                         .asWidget())
                 .row(
                     new ToggleButton().value(safeModeSyncValue)
                         .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                         .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
                         .size(16),
-                    IKey.str(GTUtility.trans("507", "Safe Mode"))
+                    IKey.lang("gt.interact.desc.MachContr.SafeMode")
                         .asWidget()));
     }
 }

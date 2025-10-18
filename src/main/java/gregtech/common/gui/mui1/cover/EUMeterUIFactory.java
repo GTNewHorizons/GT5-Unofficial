@@ -86,7 +86,7 @@ public class EUMeterUIFactory extends CoverUIFactory<CoverEUMeter> {
                     .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX + spaceX, 4 + startY + spaceY))
             .widget(
-                new TextWidget(GTUtility.trans("222.1", "Energy threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(translateToLocal("gt.interact.desc.EnergyThreshold"))
                     .setPos(startX, startY + spaceY * 3 + 4))
 
             .widget(new FakeSyncWidget.LongSyncer(() -> {

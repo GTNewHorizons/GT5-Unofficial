@@ -111,7 +111,7 @@ public class ItemMeterUIFactory extends CoverUIFactory<CoverItemMeter> {
                 new TextWidget(GTUtility.trans("254", "Detect slot #")).setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX + spaceX * 4 + 9, 4 + startY + spaceY * 2))
             .widget(
-                new TextWidget(GTUtility.trans("221", "Item threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(StatCollector.translateToLocal("gt.interact.desc.Item_Meter.ItemThreshold"))
                     .setPos(startX + spaceX * 4 + 9, 4 + startY + spaceY));
     }
 

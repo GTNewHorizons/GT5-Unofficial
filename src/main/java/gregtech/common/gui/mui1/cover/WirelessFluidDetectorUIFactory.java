@@ -54,7 +54,7 @@ public class WirelessFluidDetectorUIFactory
         setMaxCapacity();
         super.addUIWidgets(builder);
         builder.widget(
-            new TextWidget(GTUtility.trans("222", "Fluid threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
+            new TextWidget(StatCollector.translateToLocal("gt.interact.desc.Wireless_Fluid_Detector.FluidThreshold"))
                 .setPos(startX + spaceX * 5, 4 + startY + spaceY * 2))
             .widget(
                 TextWidget

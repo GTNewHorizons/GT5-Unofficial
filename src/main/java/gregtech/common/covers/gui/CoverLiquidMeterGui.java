@@ -5,7 +5,7 @@ import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
-import gregtech.api.util.GTUtility;
+import gregtech.api.modularui2.CoverGuiData;
 import gregtech.common.covers.CoverLiquidMeter;
 
 public class CoverLiquidMeterGui extends CoverGui<CoverLiquidMeter> {
@@ -32,7 +32,7 @@ public class CoverLiquidMeterGui extends CoverGui<CoverLiquidMeter> {
                     .setNumbers(0, maxCapacity)
                     .setFocusOnGuiOpen(true))
             .child(
-                IKey.str(GTUtility.trans("222", "Fluid threshold"))
+                IKey.lang("gt.interact.desc.Fluid_Meter.FluidThreshold")
                     .asWidget());
     }
 }

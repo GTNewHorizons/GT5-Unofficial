@@ -9,7 +9,6 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverItemFilter;
 import gregtech.common.covers.modes.FilterType;
 import gregtech.common.modularui2.widget.builder.EnumRowBuilder;
@@ -47,10 +46,10 @@ public class CoverItemFilterGui extends CoverGui<CoverItemFilter> {
                                 .overlay(GTGuiTextures.OVERLAY_BUTTON_WHITELIST, GTGuiTextures.OVERLAY_BUTTON_BLACKLIST)
                                 .build())
                         .child(
-                            IKey.str(GTUtility.trans("318", "Check Mode"))
+                            IKey.lang("gt.interact.desc.Item_Filter.CheckMode")
                                 .asWidget()))
                 .child(
-                    IKey.str(GTUtility.trans("317", "Filter: "))
+                    IKey.lang("gt.interact.desc.Item_Filter.Filter")
                         .asWidget()
                         .marginTop(WIDGET_MARGIN))
                 .child(
