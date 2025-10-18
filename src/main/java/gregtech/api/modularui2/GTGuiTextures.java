@@ -1,6 +1,7 @@
 package gregtech.api.modularui2;
 
 import static com.cleanroommc.modularui.drawable.UITexture.fullImage;
+import static gregtech.api.enums.Mods.GTNHIntergalactic;
 import static gregtech.api.enums.Mods.GregTech;
 import static tectech.Reference.MODID;
 
@@ -514,6 +515,23 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_GATE_OR = fullImageGT("overlay_button/gate_or");
     public static final UITexture OVERLAY_BUTTON_GATE_NOR = fullImageGT("overlay_button/gate_nor");
     public static final UITexture OVERLAY_BUTTON_ANALOG = fullImageGT("overlay_button/analog");
+
+    public static final UITexture TT_OVERLAY_BUTTON_POWER_SWITCH_ON = UITexture
+        .fullImage(MODID, "gui/overlay_button/power_switch_on");
+    public static final UITexture TT_OVERLAY_BUTTON_POWER_SWITCH_OFF = UITexture
+        .fullImage(MODID, "gui/overlay_button/power_switch_off");
+    public static final UITexture TT_OVERLAY_BUTTON_POWER_SWITCH_DISABLED = UITexture
+        .fullImage(MODID, "gui/overlay_button/power_switch_disabled");
+    public static final UITexture OVERLAY_BUTTON_POWER_PASS_ON = UITexture
+        .fullImage(MODID, "gui/overlay_button/power_pass_on");
+    public static final UITexture OVERLAY_BUTTON_POWER_PASS_OFF = UITexture
+        .fullImage(MODID, "gui/overlay_button/power_pass_off");
+    public static final UITexture OVERLAY_BUTTON_POWER_PASS_DISABLED = UITexture
+        .fullImage(MODID, "gui/overlay_button/power_pass_disabled");
+    public static final UITexture OVERLAY_BUTTON_EDIT_PARAMETERS_ENABLED = UITexture
+        .fullImage(GTNHIntergalactic.ID, "gui/overlay_button/options");
+    public static final UITexture OVERLAY_BUTTON_EDIT_PARAMETERS_DISABLED = UITexture
+        .fullImage(GTNHIntergalactic.ID, "gui/overlay_button/options_disabled");
 
     // endregion button overlay
 
