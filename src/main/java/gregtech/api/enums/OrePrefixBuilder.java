@@ -7,6 +7,7 @@ public class OrePrefixBuilder {
     private String localMaterialPre;
     private String localMaterialPost;
     private boolean isUnifiable = false;
+    private boolean isMaterialBased = false;
 
     protected OrePrefixBuilder(String name) {
         this.name = name;
@@ -19,7 +20,8 @@ public class OrePrefixBuilder {
             defaultLocalName,
             localMaterialPre,
             localMaterialPost,
-            isUnifiable
+            isUnifiable,
+            isMaterialBased
             // spotless:on
         );
     }
@@ -41,6 +43,11 @@ public class OrePrefixBuilder {
 
     protected OrePrefixBuilder setUnifiable() {
         this.isUnifiable = true;
+        return this;
+    }
+
+    protected OrePrefixBuilder setMaterialBased() {
+        this.isMaterialBased = true;
         return this;
     }
 }
