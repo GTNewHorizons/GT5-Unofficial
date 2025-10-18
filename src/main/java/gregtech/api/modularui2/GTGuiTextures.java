@@ -2,6 +2,7 @@ package gregtech.api.modularui2;
 
 import static com.cleanroommc.modularui.drawable.UITexture.fullImage;
 import static gregtech.api.enums.Mods.GregTech;
+import static tectech.Reference.MODID;
 
 import com.cleanroommc.modularui.drawable.ColorType;
 import com.cleanroommc.modularui.drawable.UITexture;
@@ -72,6 +73,13 @@ public final class GTGuiTextures {
         .imageSize(142, 28)
         .adaptable(1)
         .name(GTTextureIds.BACKGROUND_TERMINAL_STANDARD)
+        .build();
+
+    public static final UITexture TT_BACKGROUND_TEXT_FIELD = UITexture.builder()
+        .location(MODID, "gui/background/screen_blue")
+        .imageSize(90, 72)
+        .adaptable(2)
+        .name(GTTextureIds.BACKGROUND_TERMINAL_TECTECH)
         .build();
 
     public static final UITexture BACKGROUND_REDSTONE_SNIFFER = UITexture.builder()
@@ -528,6 +536,11 @@ public final class GTGuiTextures {
             GTTextureIds.PICTURE_GT_LOGO_BRONZE,
             GTTextureIds.PICTURE_GT_LOGO_STEEL,
             GTTextureIds.PICTURE_GT_LOGO_PRIMITIVE)
+        .build();
+    public static final UITexture PICTURE_TECTECH_LOGO_DARK = UITexture.builder()
+        .location(MODID, "gui/picture/tectech_logo_dark")
+        .fullImage()
+        .name(GTTextureIds.PICTURE_TECTECH_LOGO_DARK)
         .build();
     public static final UITexture PICTURE_BARTWORKS_LOGO_STANDARD = UITexture.builder()
         .location(MainMod.MOD_ID, "GUI/picture/bw_logo_47x21")
