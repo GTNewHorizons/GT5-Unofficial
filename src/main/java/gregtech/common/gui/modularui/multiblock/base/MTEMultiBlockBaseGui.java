@@ -343,6 +343,10 @@ public class MTEMultiBlockBaseGui {
         Map<ItemDisplayKey, Long> itemDisplayMap = new HashMap<>(size);
         for (int i = 0; i < size; i++) {
             ItemStack item = NetworkUtils.readItemStack(packet);
+            // Some multiblocks set outputs to null
+            if (item == null) {
+                continue;
+            }
             itemDisplayMap
                 .merge(new ItemDisplayKey(item.getItem(), item.getItemDamage()), (long) item.stackSize, Long::sum);
         }
@@ -393,6 +397,10 @@ public class MTEMultiBlockBaseGui {
         final Map<FluidStack, Long> fluidDisplayMap = new HashMap<>(size);
         for (int i = 0; i < size; i++) {
             FluidStack fluidStack = NetworkUtils.readFluidStack(packet);
+            // Some multiblocks set outputs to null
+            if (fluidStack == null) {
+                continue;
+            }
             long amount = (long) fluidStack.amount;
             // map.merge requires the objects to be the same. fluidstacks with different stacksizes will be different.
             // set the amount to 1 to ensure fluid stacks of the same fluid get merged together
