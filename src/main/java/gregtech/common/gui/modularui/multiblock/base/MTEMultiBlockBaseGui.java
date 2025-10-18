@@ -84,9 +84,9 @@ import gregtech.common.gui.modularui.widget.ResizableItemDisplayWidget;
 import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
 import gregtech.common.modularui2.sync.Predicates;
 
-public class MTEMultiBlockBaseGui {
+public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
 
-    protected final MTEMultiBlockBase base;
+    protected final T multiblock;
     private final IGregTechTileEntity baseMetaTileEntity;
     protected List<UITexture> machineModeIcons = new ArrayList<>();
     protected Map<String, UITexture> customIcons = new HashMap<>();
@@ -96,9 +96,9 @@ public class MTEMultiBlockBaseGui {
     protected Map<String, UITexture> shutdownReasonTextureMap = new HashMap<>();
     protected Map<String, String> shutdownReasonTooltipMap = new HashMap<>();
 
-    public MTEMultiBlockBaseGui(MTEMultiBlockBase base) {
-        this.base = base;
-        this.baseMetaTileEntity = base.getBaseMetaTileEntity();
+    public MTEMultiBlockBaseGui(T multiblock) {
+        this.multiblock = multiblock;
+        this.baseMetaTileEntity = multiblock.getBaseMetaTileEntity();
         initCustomIcons();
         initShutdownMaps();
     }
@@ -149,12 +149,12 @@ public class MTEMultiBlockBaseGui {
     }
 
     protected ModularPanel getBasePanel(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new GTBaseGuiBuilder(base, guiData, syncManager, uiSettings).setWidth(getBasePanelWidth())
+        return new GTBaseGuiBuilder(multiblock, guiData, syncManager, uiSettings).setWidth(getBasePanelWidth())
             .setHeight(getBasePanelHeight())
             .doesAddGregTechLogo(false)
             // Has to be replaced with inventory row to fit buttons
             .doesBindPlayerInventory(false)
-            .doesAddMufflerButton(base.canBeMuffled())
+            .doesAddMufflerButton(multiblock.canBeMuffled())
             .build();
     }
 
@@ -179,17 +179,19 @@ public class MTEMultiBlockBaseGui {
                         createTerminalTextWidget(syncManager, panel)
                             .size(getTerminalWidgetWidth() - 4, getTerminalWidgetHeight() - 8)
                             .collapseDisabledChild())
-                    .childIf(base.supportsTerminalCornerColumn(), createTerminalCornerColumn(panel, syncManager)));
+                    .childIf(
+                        multiblock.supportsTerminalCornerColumn(),
+                        createTerminalCornerColumn(panel, syncManager)));
     }
 
     protected Flow createTerminalCornerColumn(ModularPanel panel, PanelSyncManager syncManager) {
         return new Column().coverChildren()
             .rightRel(0, 6, 0)
             .bottomRel(0, 6, 0)
-            .childIf(base.supportsShutdownReasonHoverable(), createShutdownReasonHoverableTerminal(syncManager))
-            .childIf(base.supportsMaintenanceIssueHoverable(), createMaintIssueHoverableTerminal(syncManager))
+            .childIf(multiblock.supportsShutdownReasonHoverable(), createShutdownReasonHoverableTerminal(syncManager))
+            .childIf(multiblock.supportsMaintenanceIssueHoverable(), createMaintIssueHoverableTerminal(syncManager))
             .childIf(
-                base.supportsLogo(),
+                multiblock.supportsLogo(),
                 new Widget<>().size(18, 18)
                     .marginTop(4)
                     .widgetTheme(GTWidgetThemes.PICTURE_LOGO));
@@ -200,7 +202,7 @@ public class MTEMultiBlockBaseGui {
     }
 
     protected int getTerminalRowHeight() {
-        return base.doesBindPlayerInventory() ? 94 : 174;
+        return multiblock.doesBindPlayerInventory() ? 94 : 174;
     }
 
     protected int getTerminalWidgetWidth() {
@@ -212,7 +214,7 @@ public class MTEMultiBlockBaseGui {
     }
 
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-        IntSyncValue startupCheckSyncer = new IntSyncValue(base::getmStartUpCheck);
+        IntSyncValue startupCheckSyncer = new IntSyncValue(multiblock::getmStartUpCheck);
         syncManager.syncValue("startupCheck", startupCheckSyncer);
 
         return new ListWidget<>().widthRel(1)
@@ -226,15 +228,15 @@ public class MTEMultiBlockBaseGui {
                     .widthRel(1))
             .child(
                 new TextWidget<>(GTUtility.trans("142", "Running perfectly.")).color(Color.WHITE.main)
-                    .setEnabledIf(widget -> base.getErrorDisplayID() == 0 && baseMetaTileEntity.isActive())
+                    .setEnabledIf(widget -> multiblock.getErrorDisplayID() == 0 && baseMetaTileEntity.isActive())
                     .marginBottom(2)
                     .widthRel(1))
             .child(createShutdownDurationWidget(syncManager))
             .child(createShutdownReasonWidget(syncManager))
             .child(createRecipeResultWidget())
-            .childIf(base.showRecipeTextInGUI(), createRecipeInfoTextWidget(syncManager))
+            .childIf(multiblock.showRecipeTextInGUI(), createRecipeInfoTextWidget(syncManager))
 
-            .childIf(base.showRecipeTextInGUI(), createRecipeInfoWidget(syncManager));
+            .childIf(multiblock.showRecipeTextInGUI(), createRecipeInfoWidget(syncManager));
     }
 
     protected IWidget createShutdownDurationWidget(PanelSyncManager syncManager) {
@@ -251,7 +253,7 @@ public class MTEMultiBlockBaseGui {
             .asWidget()
             .widthRel(1)
             .setEnabledIf(
-                widget -> base.shouldDisplayShutDownReason() && !baseMetaTileEntity.isActive()
+                widget -> multiblock.shouldDisplayShutDownReason() && !baseMetaTileEntity.isActive()
                     && !baseMetaTileEntity.isAllowedToWork());
 
     }
@@ -267,14 +269,14 @@ public class MTEMultiBlockBaseGui {
     }
 
     protected boolean shouldShutdownReasonBeDisplayed(String shutdownString) {
-        return base.shouldDisplayShutDownReason() && !baseMetaTileEntity.isActive()
+        return multiblock.shouldDisplayShutDownReason() && !baseMetaTileEntity.isActive()
             && !baseMetaTileEntity.isAllowedToWork()
             && GTUtility.isStringValid(shutdownString);
     }
 
     private IWidget createRecipeResultWidget() {
         return IKey.dynamic(
-            () -> base.getCheckRecipeResult()
+            () -> multiblock.getCheckRecipeResult()
                 .getDisplayString())
             .asWidget()
             .widthRel(1)
@@ -284,9 +286,9 @@ public class MTEMultiBlockBaseGui {
     }
 
     private boolean shouldRecipeResultBeDisplayed() {
-        CheckRecipeResult recipeResult = base.getCheckRecipeResult();
-        return base.shouldDisplayCheckRecipeResult() && GTUtility.isStringValid(recipeResult.getDisplayString())
-            && (base.isAllowedToWork() || baseMetaTileEntity.isActive() || recipeResult.persistsOnShutdown());
+        CheckRecipeResult recipeResult = multiblock.getCheckRecipeResult();
+        return multiblock.shouldDisplayCheckRecipeResult() && GTUtility.isStringValid(recipeResult.getDisplayString())
+            && (multiblock.isAllowedToWork() || baseMetaTileEntity.isActive() || recipeResult.persistsOnShutdown());
     }
 
     private IWidget createRecipeInfoWidget(PanelSyncManager syncManager) {
@@ -530,26 +532,26 @@ public class MTEMultiBlockBaseGui {
             .child(createBatchModeButton(syncManager))
             .child(createLockToSingleRecipeButton(syncManager))
             .childIf(!machineModeIcons.isEmpty(), createModeSwitchButton(syncManager))
-            .childIf(base.supportsPowerPanel(), createPowerPanelButton(syncManager, parent));
+            .childIf(multiblock.supportsPowerPanel(), createPowerPanelButton(syncManager, parent));
     }
 
     protected IWidget createVoidExcessButton(PanelSyncManager syncManager) {
         IntSyncValue voidExcessSyncer = (IntSyncValue) syncManager.getSyncHandlerFromMapKey("voidExcess:0");
         return new ButtonWidget<>().size(18, 18)
             .onMousePressed(mouseButton -> this.voidExcessOnMousePressed(mouseButton, voidExcessSyncer))
-            .overlay(base.supportsVoidProtection() ? getVoidExcessOverlay() : getForcedVoidExcessOverlay())
+            .overlay(multiblock.supportsVoidProtection() ? getVoidExcessOverlay() : getForcedVoidExcessOverlay())
             .tooltipBuilder(this::createVoidExcessTooltip);
     }
 
     private boolean voidExcessOnMousePressed(int mouseButton, IntSyncValue voidExcessSyncer) {
-        if (!base.supportsVoidProtection()) return false;
-        Set<VoidingMode> allowed = base.getAllowedVoidingModes();
+        if (!multiblock.supportsVoidProtection()) return false;
+        Set<VoidingMode> allowed = multiblock.getAllowedVoidingModes();
         int voidingMode = 0;
         switch (mouseButton) {
-            case 0 -> voidingMode = base.getVoidingMode()
+            case 0 -> voidingMode = multiblock.getVoidingMode()
                 .nextInCollection(allowed)
                 .ordinal();
-            case 1 -> voidingMode = base.getVoidingMode()
+            case 1 -> voidingMode = multiblock.getVoidingMode()
                 .previousInCollection(allowed)
                 .ordinal();
         }
@@ -558,11 +560,11 @@ public class MTEMultiBlockBaseGui {
     }
 
     private IDrawable getForcedVoidExcessOverlay() {
-        return new DrawableStack(base.getVoidingMode().buttonOverlay, GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN);
+        return new DrawableStack(multiblock.getVoidingMode().buttonOverlay, GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN);
     }
 
     private IDrawable getVoidExcessOverlay() {
-        return new DynamicDrawable(() -> base.getVoidingMode().buttonOverlay);
+        return new DynamicDrawable(() -> multiblock.getVoidingMode().buttonOverlay);
     }
 
     private void createVoidExcessTooltip(RichTooltip t) {
@@ -570,9 +572,9 @@ public class MTEMultiBlockBaseGui {
             .addLine(
                 IKey.dynamic(
                     () -> StatCollector.translateToLocal(
-                        base.getVoidingMode()
+                        multiblock.getVoidingMode()
                             .getTransKey())));
-        if (!base.supportsVoidProtection()) {
+        if (!multiblock.supportsVoidProtection()) {
             t.addLine(IKey.lang(BUTTON_FORBIDDEN_TOOLTIP));
         }
     }
@@ -585,27 +587,29 @@ public class MTEMultiBlockBaseGui {
             @NotNull
             @Override
             public Result onMousePressed(int mouseButton) {
-                if (!base.supportsInputSeparation()) return Result.IGNORE;
+                if (!multiblock.supportsInputSeparation()) return Result.IGNORE;
                 return super.onMousePressed(mouseButton);
             }
         }.size(18, 18)
             .value(getInputSeparationSyncValue(inputSeparationSyncer))
             .overlay(
-                base.supportsInputSeparation() ? getInputSeparationOverlay(inputSeparationSyncer)
+                multiblock.supportsInputSeparation() ? getInputSeparationOverlay(inputSeparationSyncer)
                     : getForcedInputSeparationOverlay())
             .tooltipBuilder(this::createInputSeparationTooltip);
     }
 
     private BooleanSyncValue getInputSeparationSyncValue(BooleanSyncValue inputSeparationSyncer) {
-        return new BooleanSyncValue(() -> inputSeparationSyncer.getValue() || !base.supportsInputSeparation(), bool -> {
-            if (base.supportsInputSeparation()) {
-                inputSeparationSyncer.setValue(bool);
-            }
-        });
+        return new BooleanSyncValue(
+            () -> inputSeparationSyncer.getValue() || !multiblock.supportsInputSeparation(),
+            bool -> {
+                if (multiblock.supportsInputSeparation()) {
+                    inputSeparationSyncer.setValue(bool);
+                }
+            });
     }
 
     private IDrawable getForcedInputSeparationOverlay() {
-        UITexture texture = base.isBatchModeEnabled() ? GTGuiTextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON_DISABLED
+        UITexture texture = multiblock.isBatchModeEnabled() ? GTGuiTextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON_DISABLED
             : GTGuiTextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF_DISABLED;
         return new DrawableStack(texture, GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN);
     }
@@ -619,8 +623,8 @@ public class MTEMultiBlockBaseGui {
     private void createInputSeparationTooltip(RichTooltip t) {
         addDynamicTooltipOfFeatureToButton(
             t,
-            base::supportsInputSeparation,
-            base::isInputSeparationEnabled,
+            multiblock::supportsInputSeparation,
+            multiblock::isInputSeparationEnabled,
             StatCollector.translateToLocal("GT5U.gui.button.input_separation_on"),
             StatCollector.translateToLocal("GT5U.gui.button.input_separation_off"));
     }
@@ -683,7 +687,7 @@ public class MTEMultiBlockBaseGui {
 
     private void createModeSwitchTooltip(RichTooltip t) {
         t.addLine(IKey.dynamic(() -> StatCollector.translateToLocal("GT5U.gui.button.mode_switch")))
-            .addLine(IKey.dynamic(base::getMachineModeName));
+            .addLine(IKey.dynamic(multiblock::getMachineModeName));
     }
 
     protected IWidget createBatchModeButton(PanelSyncManager syncManager) {
@@ -694,18 +698,19 @@ public class MTEMultiBlockBaseGui {
             @NotNull
             @Override
             public Result onMousePressed(int mouseButton) {
-                if (!base.supportsBatchMode()) return Result.IGNORE;
+                if (!multiblock.supportsBatchMode()) return Result.IGNORE;
                 return super.onMousePressed(mouseButton);
             }
         }.size(18, 18)
             .value(getBatchModeSyncValue(batchModeSyncer))
-            .overlay(base.supportsBatchMode() ? getBatchModeOverlay(batchModeSyncer) : getForcedBatchModeOverlay())
+            .overlay(
+                multiblock.supportsBatchMode() ? getBatchModeOverlay(batchModeSyncer) : getForcedBatchModeOverlay())
             .tooltipBuilder(this::createBatchModeTooltip);
     }
 
     private BooleanSyncValue getBatchModeSyncValue(BooleanSyncValue batchModeSyncer) {
-        return new BooleanSyncValue(() -> batchModeSyncer.getValue() || !base.supportsBatchMode(), bool -> {
-            if (base.supportsBatchMode()) {
+        return new BooleanSyncValue(() -> batchModeSyncer.getValue() || !multiblock.supportsBatchMode(), bool -> {
+            if (multiblock.supportsBatchMode()) {
                 batchModeSyncer.setValue(bool);
             }
         });
@@ -718,7 +723,7 @@ public class MTEMultiBlockBaseGui {
     }
 
     private IDrawable getForcedBatchModeOverlay() {
-        UITexture texture = base.isBatchModeEnabled() ? GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_ON_DISABLED
+        UITexture texture = multiblock.isBatchModeEnabled() ? GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_ON_DISABLED
             : GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED;
         return new DrawableStack(texture, GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN);
     }
@@ -726,8 +731,8 @@ public class MTEMultiBlockBaseGui {
     private void createBatchModeTooltip(RichTooltip t) {
         addDynamicTooltipOfFeatureToButton(
             t,
-            base::supportsBatchMode,
-            base::isBatchModeEnabled,
+            multiblock::supportsBatchMode,
+            multiblock::isBatchModeEnabled,
             StatCollector.translateToLocal("GT5U.gui.button.batch_mode_on"),
             StatCollector.translateToLocal("GT5U.gui.button.batch_mode_off"));
     }
@@ -739,27 +744,29 @@ public class MTEMultiBlockBaseGui {
             @NotNull
             @Override
             public Result onMousePressed(int mouseButton) {
-                if (!base.supportsSingleRecipeLocking()) return Result.IGNORE;
+                if (!multiblock.supportsSingleRecipeLocking()) return Result.IGNORE;
                 return super.onMousePressed(mouseButton);
             }
         }.size(18, 18)
             .value(getRecipeLockSyncValue(recipeLockSyncer))
             .overlay(
-                base.supportsSingleRecipeLocking() ? getRecipeLockOverlay(recipeLockSyncer)
+                multiblock.supportsSingleRecipeLocking() ? getRecipeLockOverlay(recipeLockSyncer)
                     : getForcedRecipeLockOverlay())
             .tooltipBuilder(this::createRecipeLockTooltip);
     }
 
     private BooleanSyncValue getRecipeLockSyncValue(BooleanSyncValue recipeLockSyncer) {
-        return new BooleanSyncValue(() -> recipeLockSyncer.getValue() || !base.supportsSingleRecipeLocking(), bool -> {
-            if (base.supportsSingleRecipeLocking()) {
-                recipeLockSyncer.setValue(bool);
-            }
-        });
+        return new BooleanSyncValue(
+            () -> recipeLockSyncer.getValue() || !multiblock.supportsSingleRecipeLocking(),
+            bool -> {
+                if (multiblock.supportsSingleRecipeLocking()) {
+                    recipeLockSyncer.setValue(bool);
+                }
+            });
     }
 
     private IDrawable getForcedRecipeLockOverlay() {
-        UITexture texture = base.mLockedToSingleRecipe ? GTGuiTextures.OVERLAY_BUTTON_RECIPE_LOCKED_DISABLED
+        UITexture texture = multiblock.mLockedToSingleRecipe ? GTGuiTextures.OVERLAY_BUTTON_RECIPE_LOCKED_DISABLED
             : GTGuiTextures.OVERLAY_BUTTON_RECIPE_UNLOCKED_DISABLED;
         return new DrawableStack(texture, GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN);
     }
@@ -773,8 +780,8 @@ public class MTEMultiBlockBaseGui {
     private void createRecipeLockTooltip(RichTooltip t) {
         addDynamicTooltipOfFeatureToButton(
             t,
-            base::supportsSingleRecipeLocking,
-            base::isRecipeLockingEnabled,
+            multiblock::supportsSingleRecipeLocking,
+            multiblock::isRecipeLockingEnabled,
             StatCollector.translateToLocal("GT5U.gui.button.lock_recipe_on"),
             StatCollector.translateToLocal("GT5U.gui.button.lock_recipe_off"));
     }
@@ -826,8 +833,8 @@ public class MTEMultiBlockBaseGui {
 
     private IWidget makePowerfailEventsToggleRow() {
         BooleanSyncValue powerfailSyncer = new BooleanSyncValue(
-            base::makesPowerfailEvents,
-            base::setPowerfailEventCreationStatus);
+            multiblock::makesPowerfailEvents,
+            multiblock::setPowerfailEventCreationStatus);
         return new Row().widthRel(1)
             .height(18)
             .paddingLeft(3)
@@ -844,10 +851,12 @@ public class MTEMultiBlockBaseGui {
     }
 
     private IWidget makeParallelConfigurator(PanelSyncManager syncManager) {
-        IntSyncValue maxParallelSyncer = new IntSyncValue(base::getMaxParallelRecipes, base::setMaxParallelForPanel);
+        IntSyncValue maxParallelSyncer = new IntSyncValue(
+            multiblock::getMaxParallelRecipes,
+            multiblock::setMaxParallelForPanel);
         BooleanSyncValue alwaysMaxParallelSyncer = new BooleanSyncValue(
-            base::isAlwaysMaxParallel,
-            base::setAlwaysMaxParallel);
+            multiblock::isAlwaysMaxParallel,
+            multiblock::setAlwaysMaxParallel);
         syncManager.syncValue("maxParallel", maxParallelSyncer);
         syncManager.syncValue("alwaysMaxParallel", alwaysMaxParallelSyncer);
 
@@ -855,8 +864,8 @@ public class MTEMultiBlockBaseGui {
         // Not sure how that works but trying to use .syncHandler instead of .value causes a crash because
         // This PanelSyncManager has no panel and the widget tries to get a syncHandler from "powerPanel"
         IntSyncValue powerPanelMaxParallelSyncer = new IntSyncValue(
-            base::getPowerPanelMaxParallel,
-            base::setPowerPanelMaxParallel);
+            multiblock::getPowerPanelMaxParallel,
+            multiblock::setPowerPanelMaxParallel);
         return new Row().widthRel(1)
             .marginBottom(4)
             .height(18)
@@ -925,27 +934,27 @@ public class MTEMultiBlockBaseGui {
             t.addLine(IKey.str(EnumChatFormatting.GREEN + "No maintenance issues!"));
             return;
         }
-        if (!base.mCrowbar) t.add(
+        if (!multiblock.mCrowbar) t.add(
             GTGuiTextures.OVERLAY_NEEDS_CROWBAR.asIcon()
                 .size(16, 16))
             .add(" ");
-        if (!base.mHardHammer) t.add(
+        if (!multiblock.mHardHammer) t.add(
             GTGuiTextures.OVERLAY_NEEDS_HARDHAMMER.asIcon()
                 .size(16, 16))
             .add(" ");
-        if (!base.mScrewdriver) t.add(
+        if (!multiblock.mScrewdriver) t.add(
             GTGuiTextures.OVERLAY_NEEDS_SCREWDRIVER.asIcon()
                 .size(16, 16))
             .add(" ");
-        if (!base.mSoftMallet) t.add(
+        if (!multiblock.mSoftMallet) t.add(
             GTGuiTextures.OVERLAY_NEEDS_SOFTHAMMER.asIcon()
                 .size(16, 16))
             .add(" ");
-        if (!base.mSolderingTool) t.add(
+        if (!multiblock.mSolderingTool) t.add(
             GTGuiTextures.OVERLAY_NEEDS_SOLDERING.asIcon()
                 .size(16, 16))
             .add(" ");
-        if (!base.mWrench) t.add(
+        if (!multiblock.mWrench) t.add(
             GTGuiTextures.OVERLAY_NEEDS_WRENCH.asIcon()
                 .size(16, 16))
             .add(" ");
@@ -975,7 +984,7 @@ public class MTEMultiBlockBaseGui {
             .height(76)
             .alignX(0)
             .childIf(
-                base.doesBindPlayerInventory(),
+                multiblock.doesBindPlayerInventory(),
                 SlotGroupWidget.playerInventory(false)
                     .marginLeft(4))
             .child(createButtonColumn(panel, syncManager));
@@ -988,9 +997,10 @@ public class MTEMultiBlockBaseGui {
             .child(createStructureUpdateButton(syncManager))
             .child(createPowerSwitchButton())
             .childIf(
-                base.doesBindPlayerInventory(),
-                new ItemSlot()
-                    .slot(new ModularSlot(base.inventoryHandler, base.getControllerSlotIndex()).slotGroup("item_inv")));
+                multiblock.doesBindPlayerInventory(),
+                new ItemSlot().slot(
+                    new ModularSlot(multiblock.inventoryHandler, multiblock.getControllerSlotIndex())
+                        .slotGroup("item_inv")));
     }
 
     protected IWidget createStructureUpdateButton(PanelSyncManager syncManager) {
@@ -1020,36 +1030,46 @@ public class MTEMultiBlockBaseGui {
         syncManager.syncValue(
             "errors",
             new GenericSyncValue<EnumSet<StructureError>>(
-                base::getStructureErrors,
-                base::setStructureErrors,
+                multiblock::getStructureErrors,
+                multiblock::setStructureErrors,
                 new StructureErrorAdapter()));
-        syncManager.syncValue("errorID", new IntSyncValue(base::getErrorDisplayID, base::setErrorDisplayID));
+        syncManager
+            .syncValue("errorID", new IntSyncValue(multiblock::getErrorDisplayID, multiblock::setErrorDisplayID));
         syncManager.syncValue(
             "machineActive",
             new BooleanSyncValue(baseMetaTileEntity::isActive, baseMetaTileEntity::setActive));
 
-        syncManager.syncValue("wrench", new BooleanSyncValue(() -> base.mWrench, val -> base.mWrench = val));
         syncManager
-            .syncValue("screwdriver", new BooleanSyncValue(() -> base.mScrewdriver, val -> base.mScrewdriver = val));
-        syncManager
-            .syncValue("softMallet", new BooleanSyncValue(() -> base.mSoftMallet, val -> base.mSoftMallet = val));
-        syncManager
-            .syncValue("hardHammer", new BooleanSyncValue(() -> base.mHardHammer, val -> base.mHardHammer = val));
+            .syncValue("wrench", new BooleanSyncValue(() -> multiblock.mWrench, val -> multiblock.mWrench = val));
+        syncManager.syncValue(
+            "screwdriver",
+            new BooleanSyncValue(() -> multiblock.mScrewdriver, val -> multiblock.mScrewdriver = val));
+        syncManager.syncValue(
+            "softMallet",
+            new BooleanSyncValue(() -> multiblock.mSoftMallet, val -> multiblock.mSoftMallet = val));
+        syncManager.syncValue(
+            "hardHammer",
+            new BooleanSyncValue(() -> multiblock.mHardHammer, val -> multiblock.mHardHammer = val));
         syncManager.syncValue(
             "solderingTool",
-            new BooleanSyncValue(() -> base.mSolderingTool, val -> base.mSolderingTool = val));
-        syncManager.syncValue("crowbar", new BooleanSyncValue(() -> base.mCrowbar, val -> base.mCrowbar = val));
-        syncManager.syncValue("machine", new BooleanSyncValue(() -> base.mMachine, val -> base.mMachine = val));
+            new BooleanSyncValue(() -> multiblock.mSolderingTool, val -> multiblock.mSolderingTool = val));
+        syncManager
+            .syncValue("crowbar", new BooleanSyncValue(() -> multiblock.mCrowbar, val -> multiblock.mCrowbar = val));
+        syncManager
+            .syncValue("machine", new BooleanSyncValue(() -> multiblock.mMachine, val -> multiblock.mMachine = val));
 
-        syncManager.syncValue("totalRunTime", new LongSyncValue(base::getTotalRunTime, base::setTotalRunTime));
-        syncManager.syncValue("lastWorkingTick", new LongSyncValue(base::getLastWorkingTick, base::setLastWorkingTick));
+        syncManager
+            .syncValue("totalRunTime", new LongSyncValue(multiblock::getTotalRunTime, multiblock::setTotalRunTime));
+        syncManager.syncValue(
+            "lastWorkingTick",
+            new LongSyncValue(multiblock::getLastWorkingTick, multiblock::setLastWorkingTick));
         BooleanSyncValue wasShutDown = new BooleanSyncValue(
             baseMetaTileEntity::wasShutdown,
             baseMetaTileEntity::setShutdownStatus);
         syncManager.syncValue("wasShutdown", wasShutDown);
 
         LongSyncValue shutdownDurationSyncer = new LongSyncValue(
-            () -> (base.getTotalRunTime() - base.getLastWorkingTick()) / 20);
+            () -> (multiblock.getTotalRunTime() - multiblock.getLastWorkingTick()) / 20);
         syncManager.syncValue("shutdownDuration", shutdownDurationSyncer);
 
         syncManager.syncValue(
@@ -1061,25 +1081,25 @@ public class MTEMultiBlockBaseGui {
         syncManager.syncValue(
             "shutdownDisplayString",
             new StringSyncValue(
-                () -> base.getBaseMetaTileEntity()
+                () -> multiblock.getBaseMetaTileEntity()
                     .getLastShutDownReason()
                     .getDisplayString()));
         syncManager.syncValue(
             "shutdownReasonKey",
             new StringSyncValue(
-                () -> base.getBaseMetaTileEntity()
+                () -> multiblock.getBaseMetaTileEntity()
                     .getLastShutDownReason()
                     .getKey()));
         syncManager.syncValue(
             "checkRecipeResult",
             new GenericSyncValue<CheckRecipeResult>(
-                base::getCheckRecipeResult,
-                base::setCheckRecipeResult,
+                multiblock::getCheckRecipeResult,
+                multiblock::setCheckRecipeResult,
                 new CheckRecipeResultAdapter()));
         syncManager.syncValue(
             "fluidOutput",
             new GenericListSyncHandler<FluidStack>(
-                () -> base.mOutputFluids != null ? Arrays.stream(base.mOutputFluids)
+                () -> multiblock.mOutputFluids != null ? Arrays.stream(multiblock.mOutputFluids)
                     .map(fluidStack -> {
                         if (fluidStack == null) return null;
                         return new FluidStack(fluidStack, fluidStack.amount) {
@@ -1091,88 +1111,95 @@ public class MTEMultiBlockBaseGui {
                         };
                     })
                     .collect(Collectors.toList()) : Collections.emptyList(),
-                val -> base.mOutputFluids = val.toArray(new FluidStack[0]),
+                val -> multiblock.mOutputFluids = val.toArray(new FluidStack[0]),
                 NetworkUtils::readFluidStack,
                 NetworkUtils::writeFluidStack,
                 (a, b) -> a.isFluidEqual(b) && a.amount == b.amount,
                 null));
 
-        syncManager
-            .syncValue("progressTime", new IntSyncValue(() -> base.mProgresstime, val -> base.mProgresstime = val));
+        syncManager.syncValue(
+            "progressTime",
+            new IntSyncValue(() -> multiblock.mProgresstime, val -> multiblock.mProgresstime = val));
 
         IntSyncValue maxProgressTimeSyncer = new IntSyncValue(
-            () -> base.mMaxProgresstime,
-            val -> base.mMaxProgresstime = val);
+            () -> multiblock.mMaxProgresstime,
+            val -> multiblock.mMaxProgresstime = val);
         syncManager.syncValue("maxProgressTime", maxProgressTimeSyncer);
 
         GenericListSyncHandler<ItemStack> itemOutputSyncer = new GenericListSyncHandler<>(
-            () -> base.mOutputItems != null ? Arrays.asList(base.mOutputItems) : Collections.emptyList(),
-            val -> base.mOutputItems = val.toArray(new ItemStack[0]),
+            () -> multiblock.mOutputItems != null ? Arrays.asList(multiblock.mOutputItems) : Collections.emptyList(),
+            val -> multiblock.mOutputItems = val.toArray(new ItemStack[0]),
             NetworkUtils::readItemStack,
             NetworkUtils::writeItemStack,
             (a, b) -> a.isItemEqual(b) && a.stackSize == b.stackSize,
             null);
         syncManager.syncValue("itemOutput", itemOutputSyncer);
 
-        StringSyncValue recipeInfoSyncer = new StringSyncValue(base::generateCurrentRecipeInfoString);
+        StringSyncValue recipeInfoSyncer = new StringSyncValue(multiblock::generateCurrentRecipeInfoString);
         syncManager.syncValue("recipeInfo", recipeInfoSyncer);
 
         // Widget Specific
-        BooleanSyncValue powerSwitchSyncer = new BooleanSyncValue(base::isAllowedToWork, bool -> {
+        BooleanSyncValue powerSwitchSyncer = new BooleanSyncValue(multiblock::isAllowedToWork, bool -> {
             if (isPowerSwitchDisabled()) return;
-            if (bool) base.enableWorking();
+            if (bool) multiblock.enableWorking();
             else {
-                if (base.maxProgresstime() > 0) base.disableWorking();
-                else base.stopMachine(ShutDownReasonRegistry.NONE);
+                if (multiblock.maxProgresstime() > 0) multiblock.disableWorking();
+                else multiblock.stopMachine(ShutDownReasonRegistry.NONE);
             }
         });
         syncManager.syncValue("powerSwitch", powerSwitchSyncer);
 
         IntSyncValue structureUpdateSyncer = new IntSyncValue(
-            base::getStructureUpdateTime,
-            base::setStructureUpdateTime);
+            multiblock::getStructureUpdateTime,
+            multiblock::setStructureUpdateTime);
         BooleanSyncValue structureUpdateButtonSyncer = new BooleanSyncValue(
             () -> structureUpdateSyncer.getValue() > -20,
             val -> { if (val) structureUpdateSyncer.setValue(1); });
         syncManager.syncValue("structureUpdate", structureUpdateSyncer);
         syncManager.syncValue("structureUpdateButton", structureUpdateButtonSyncer);
 
-        BooleanSyncValue recipeLockSyncer = new BooleanSyncValue(base::isRecipeLockingEnabled, base::setRecipeLocking);
+        BooleanSyncValue recipeLockSyncer = new BooleanSyncValue(
+            multiblock::isRecipeLockingEnabled,
+            multiblock::setRecipeLocking);
         syncManager.syncValue("recipeLock", recipeLockSyncer);
 
-        BooleanSyncValue batchModeSyncer = new BooleanSyncValue(base::isBatchModeEnabled, base::setBatchMode);
+        BooleanSyncValue batchModeSyncer = new BooleanSyncValue(
+            multiblock::isBatchModeEnabled,
+            multiblock::setBatchMode);
         syncManager.syncValue("batchMode", batchModeSyncer);
 
-        IntSyncValue machineModeSyncer = new IntSyncValue(base::getMachineMode, base::setMachineMode);
+        IntSyncValue machineModeSyncer = new IntSyncValue(multiblock::getMachineMode, multiblock::setMachineMode);
         syncManager.syncValue("machineMode", machineModeSyncer);
 
         BooleanSyncValue inputSeparationSyncer = new BooleanSyncValue(
-            base::isInputSeparationEnabled,
-            base::setInputSeparation);
+            multiblock::isInputSeparationEnabled,
+            multiblock::setInputSeparation);
         syncManager.syncValue("inputSeparation", inputSeparationSyncer);
 
         IntSyncValue voidExcessSyncer = new IntSyncValue(
-            () -> base.getVoidingMode()
+            () -> multiblock.getVoidingMode()
                 .ordinal(),
-            val -> { if (base.supportsVoidProtection()) base.setVoidingMode(VoidingMode.fromOrdinal(val)); });
+            val -> {
+                if (multiblock.supportsVoidProtection()) multiblock.setVoidingMode(VoidingMode.fromOrdinal(val));
+            });
         syncManager.syncValue("voidExcess", voidExcessSyncer);
 
         syncManager.registerSlotGroup("item_inv", 1);
 
         IntSyncValue maintSyncer = new IntSyncValue(() -> {
             int maintIsuses = 0;
-            maintIsuses += base.mCrowbar ? 0 : 1;
-            maintIsuses += base.mHardHammer ? 0 : 1;
-            maintIsuses += base.mScrewdriver ? 0 : 1;
-            maintIsuses += base.mSoftMallet ? 0 : 1;
-            maintIsuses += base.mSolderingTool ? 0 : 1;
-            maintIsuses += base.mWrench ? 0 : 1;
+            maintIsuses += multiblock.mCrowbar ? 0 : 1;
+            maintIsuses += multiblock.mHardHammer ? 0 : 1;
+            maintIsuses += multiblock.mScrewdriver ? 0 : 1;
+            maintIsuses += multiblock.mSoftMallet ? 0 : 1;
+            maintIsuses += multiblock.mSolderingTool ? 0 : 1;
+            maintIsuses += multiblock.mWrench ? 0 : 1;
             return maintIsuses;
         });
 
         syncManager.syncValue("maintCount", maintSyncer);
 
-        BooleanSyncValue mufflerSyncer = new BooleanSyncValue(base::isMuffled, base::setMuffled);
+        BooleanSyncValue mufflerSyncer = new BooleanSyncValue(multiblock::isMuffled, multiblock::setMuffled);
         syncManager.syncValue("mufflerSyncer", mufflerSyncer);
     }
 
