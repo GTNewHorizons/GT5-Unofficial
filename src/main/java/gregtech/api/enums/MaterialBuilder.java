@@ -35,7 +35,6 @@ public class MaterialBuilder {
     private String defaultLocalName;
     private Element element;
     private String chemicalFormula;
-    private int metaItemSubID = -1;
     private boolean unifiable = true;
     private TextureSet iconSet = TextureSet.SET_NONE;
     private Dyes color = Dyes._NULL;
@@ -96,7 +95,6 @@ public class MaterialBuilder {
             defaultLocalName,
             element,
             chemicalFormula,
-            metaItemSubID,
             unifiable,
             iconSet,
             color,
@@ -166,11 +164,6 @@ public class MaterialBuilder {
     /** Set the chemical formula of the material. This overrides auto-generated formulas. */
     public MaterialBuilder setChemicalFormula(String chemicalFormula) {
         this.chemicalFormula = chemicalFormula;
-        return this;
-    }
-
-    public MaterialBuilder setMetaItemSubID(int metaItemSubID) {
-        this.metaItemSubID = metaItemSubID;
         return this;
     }
 
@@ -304,6 +297,7 @@ public class MaterialBuilder {
      * <li>{@link OrePrefixes#bolt}</li>
      * <li>{@link OrePrefixes#comb}</li>
      * <li>{@link OrePrefixes#screw}</li>
+     * <li>{@link OrePrefixes#lens}</li>
      * <li>{@link OrePrefixes#crystal}</li>
      * <li>{@link OrePrefixes#handleMallet}</li>
      * </ul>
@@ -524,7 +518,7 @@ public class MaterialBuilder {
     }
 
     /** Adds an {@link OrePrefixes} that should not be generated. */
-    public MaterialBuilder addOrePrefixBlacklist(OrePrefixes prefix) {
+    public MaterialBuilder removeOrePrefix(OrePrefixes prefix) {
         this.orePrefixBlacklist.add(prefix);
         return this;
     }

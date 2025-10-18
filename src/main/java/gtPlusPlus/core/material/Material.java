@@ -97,6 +97,8 @@ public class Material implements IOreMaterial {
     /** A cache field for raw ores to prevent constant map lookups. */
     private ItemStack rawOre;
 
+    private boolean hasOre;
+
     public Material(final String materialName, final MaterialState defaultState, final MaterialStack... inputs) {
         this(materialName, defaultState, null, inputs);
     }
@@ -856,6 +858,11 @@ public class Material implements IOreMaterial {
         return "ERROR.BAD.TRANSLATED.NAME";
     }
 
+    @Override
+    public String toString() {
+        return "Material{" + "unlocalizedName='" + unlocalizedName + '\'' + '}';
+    }
+
     public final MaterialState getState() {
         return this.materialState;
     }
@@ -1131,6 +1138,14 @@ public class Material implements IOreMaterial {
         }
 
         return GTUtility.copyAmount(stacksize, ore);
+    }
+
+    public final boolean hasOre() {
+        return hasOre;
+    }
+
+    public void setHasOre() {
+        this.hasOre = true;
     }
 
     public final Block getOreBlock(final int stacksize) {
@@ -1445,7 +1460,7 @@ public class Material implements IOreMaterial {
 
         // This fluid does not exist at all, time to generate it.
         if (this.materialState == MaterialState.SOLID) {
-            return FluidUtils.addGTFluid(
+            return FluidUtils.addGTFluidMolten(
                 this.getUnlocalizedName(),
                 "Molten " + this.getLocalizedName(),
                 this.RGBA,
@@ -1456,7 +1471,7 @@ public class Material implements IOreMaterial {
                 1000,
                 this.vGenerateCells);
         } else if (this.materialState == MaterialState.LIQUID || this.materialState == MaterialState.PURE_LIQUID) {
-            return FluidUtils.addGTFluid(
+            return FluidUtils.addGTFluidMolten(
                 this.getUnlocalizedName(),
                 this.getLocalizedName(),
                 this.RGBA,

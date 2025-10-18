@@ -2130,6 +2130,11 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     private static byte LEDCounter = 0;
 
     @Override
+    protected boolean useMui2() {
+        return false;
+    }
+
+    @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         if (doesBindPlayerInventory()) {
             builder.widget(
