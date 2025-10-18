@@ -14114,7 +14114,6 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.TRANSPARENT)
             .removeOrePrefix(OrePrefixes.gem) // Botania:manaResource:2
-            .removeOrePrefix(OrePrefixes.lens)
             .constructMaterial();
     }
 
