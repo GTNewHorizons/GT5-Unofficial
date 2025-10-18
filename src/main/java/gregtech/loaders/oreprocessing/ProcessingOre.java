@@ -28,7 +28,7 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
     private final ArrayList<Materials> mAlreadyListedOres = new ArrayList<>(1000);
 
     public ProcessingOre() {
-        for (OrePrefixes tPrefix : OrePrefixes.values()) if ((tPrefix.name()
+        for (OrePrefixes tPrefix : OrePrefixes.VALUES) if ((tPrefix.getName()
             .startsWith("ore")) && (tPrefix != OrePrefixes.orePoor)
             && (tPrefix != OrePrefixes.oreSmall)
             && (tPrefix != OrePrefixes.oreRich)

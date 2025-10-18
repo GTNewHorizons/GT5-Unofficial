@@ -53,8 +53,8 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
             || aMaterial == Materials.Spodumene
             || aMaterial == Materials.NetherQuartz) return;
 
-        switch (aPrefix) {
-            case gem -> {
+        switch (aPrefix.getName()) {
+            case "gem" -> {
                 // fuel recipes
                 if (aFuelPower) {
                     GTValues.RA.stdBuilder()
@@ -246,7 +246,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     }
                 }
             }
-            case gemChipped -> {
+            case "gemChipped" -> {
                 // Fuel recipes
                 if (aFuelPower) {
                     GTValues.RA.stdBuilder()
@@ -313,7 +313,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
 
                 }
             }
-            case gemExquisite -> {
+            case "gemExquisite" -> {
                 // Fuel recipes
                 if (aFuelPower) {
                     GTValues.RA.stdBuilder()
@@ -347,7 +347,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         .addTo(hammerRecipes);
                 }
             }
-            case gemFlawed -> {
+            case "gemFlawed" -> {
                 // fuel recipes
                 if (aFuelPower) {
                     GTValues.RA.stdBuilder()
@@ -422,7 +422,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
 
                 }
             }
-            case gemFlawless -> {
+            case "gemFlawless" -> {
 
                 // Fuel recipes
                 if (aFuelPower) {

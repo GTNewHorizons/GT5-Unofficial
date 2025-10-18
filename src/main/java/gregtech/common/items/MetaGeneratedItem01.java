@@ -3607,14 +3607,14 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
     static ItemStack getCauldronWashingResult(final OrePrefixes oldPrefix, final Materials oldMaterial,
         final int stackSize) {
         if ((oldMaterial != null) && (oldMaterial != Materials.Empty) && (oldMaterial != Materials._NULL)) {
-            switch (oldPrefix) {
-                case dustImpure:
-                case dustPure:
+            switch (oldPrefix.getName()) {
+                case "dustImpure":
+                case "dustPure":
                     return GTOreDictUnificator
                         .get(OrePrefixes.dust, cauldronRemap.getOrDefault(oldMaterial, oldMaterial), stackSize);
-                case crushed:
+                case "crushed":
                     return GTOreDictUnificator.get(OrePrefixes.crushedPurified, oldMaterial, stackSize);
-                case dust:
+                case "dust":
                     if (oldMaterial == Materials.Wheat) {
                         return ItemList.Food_Dough.get(stackSize);
                     }

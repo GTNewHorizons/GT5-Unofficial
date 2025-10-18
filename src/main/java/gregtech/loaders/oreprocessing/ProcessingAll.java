@@ -9,7 +9,7 @@ public class ProcessingAll implements gregtech.api.interfaces.IOreRecipeRegistra
                                                                                       // PROCESSING CLASSES
 
     public ProcessingAll() {
-        for (OrePrefixes tPrefix : OrePrefixes.values()) tPrefix.add(this);
+        for (OrePrefixes tPrefix : OrePrefixes.VALUES) tPrefix.add(this);
     }
 
     @Override

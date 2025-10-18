@@ -38,8 +38,8 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
-        switch (aPrefix) {
-            case pipeHuge, pipeLarge, pipeMedium, pipeSmall, pipeTiny -> {
+        switch (aPrefix.getName()) {
+            case "pipeHuge", "pipeLarge", "pipeMedium", "pipeSmall", "pipeTiny" -> {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
 
                     GTModHandler.addCraftingRecipe(
@@ -85,7 +85,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                         new Object[] { "DhD", "D D", "DwD", 'D', OrePrefixes.plateDouble.get(aMaterial) });
                 }
             }
-            case pipeRestrictiveHuge, pipeRestrictiveLarge, pipeRestrictiveMedium, pipeRestrictiveSmall, pipeRestrictiveTiny -> {
+            case "pipeRestrictiveHuge", "pipeRestrictiveLarge", "pipeRestrictiveMedium", "pipeRestrictiveSmall", "pipeRestrictiveTiny" -> {
                 GTValues.RA.stdBuilder()
                     .itemInputs(
                         GTOreDictUnificator.get(
@@ -100,7 +100,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                     .eut(4)
                     .addTo(assemblerRecipes);
             }
-            case pipeQuadruple -> {
+            case "pipeQuadruple" -> {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
 
                     GTModHandler.addCraftingRecipe(
@@ -118,7 +118,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                     .eut(calculateRecipeEU(aMaterial, 4))
                     .addTo(assemblerRecipes);
             }
-            case pipeNonuple -> {
+            case "pipeNonuple" -> {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
 
                     GTModHandler.addCraftingRecipe(

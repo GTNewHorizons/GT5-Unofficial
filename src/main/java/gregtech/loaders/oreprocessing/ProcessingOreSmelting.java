@@ -66,10 +66,10 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
             } else {
                 OrePrefixes outputPrefix;
                 int outputSize;
-                switch (aPrefix) {
-                    case crushed:
-                    case crushedPurified:
-                    case crushedCentrifuged:
+                switch (aPrefix.getName()) {
+                    case "crushed":
+                    case "crushedPurified":
+                    case "crushedCentrifuged":
                         if (aMaterial.mDirectSmelting == aMaterial) {
                             outputSize = 10;
                             outputPrefix = OrePrefixes.nugget;
@@ -83,7 +83,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                             }
                         }
                         break;
-                    case dust:
+                    case "dust":
                         int outputAmount = GTMod.proxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre ? 2 : 3;
                         if (aMaterial.mDirectSmelting != aMaterial) {
                             if (!aMaterial.contains(SubTag.DONT_ADD_DEFAULT_BBF_RECIPE)
@@ -155,9 +155,9 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                                     .addTo(primitiveBlastRecipes);
                             }
                         }
-                    case dustImpure:
-                    case dustPure:
-                    case dustRefined:
+                    case "dustImpure":
+                    case "dustPure":
+                    case "dustRefined":
                         if (aMaterial.mDirectSmelting == aMaterial) {
                             outputPrefix = OrePrefixes.ingot;
                             outputSize = 1;

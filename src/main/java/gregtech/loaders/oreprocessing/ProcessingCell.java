@@ -36,8 +36,8 @@ public class ProcessingCell implements IOreRecipeRegistrator {
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
-        switch (aPrefix) {
-            case cell -> {
+        switch (aPrefix.getName()) {
+            case "cell" -> {
                 if (aMaterial == Materials.Empty) {
                     GTModHandler.removeRecipeByOutputDelayed(aStack);
                     if (aModName.equalsIgnoreCase("AtomicScience")) {
@@ -183,7 +183,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                     }
                 }
             }
-            case cellPlasma -> {
+            case "cellPlasma" -> {
                 if (aMaterial == Materials.Empty) {
                     GTModHandler.removeRecipeByOutputDelayed(aStack);
                 } else {

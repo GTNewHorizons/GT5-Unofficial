@@ -46,8 +46,8 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
         boolean aSpecialRecipeReq = aMaterial.mUnifiable && (aMaterial.mMaterialInto == aMaterial)
             && !aMaterial.contains(SubTag.NO_SMASHING);
 
-        switch (aPrefix) {
-            case ingot -> {
+        switch (aPrefix.getName()) {
+            case "ingot" -> {
                 // Fuel recipe
                 if (aMaterial.mFuelPower > 0) {
                     GTValues.RA.stdBuilder()
@@ -185,7 +185,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                     }
                 }
             }
-            case ingotHot -> {
+            case "ingotHot" -> {
                 if (aMaterial.mAutoGenerateVacuumFreezerRecipes
                     && GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L) != null) {
                     // Vacuum freezer recipes
