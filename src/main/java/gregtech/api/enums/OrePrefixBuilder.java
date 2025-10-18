@@ -14,6 +14,7 @@ public class OrePrefixBuilder {
     private boolean isUsedForBlocks = false;
     private boolean allowNormalRecycling = false;
     private boolean generateDefaultItem = false;
+    private boolean isEnchantable = false;
 
     protected OrePrefixBuilder(String name) {
         this.name = name;
@@ -33,7 +34,8 @@ public class OrePrefixBuilder {
             doNotUnifyActively,
             isUsedForBlocks,
             allowNormalRecycling,
-            generateDefaultItem
+            generateDefaultItem,
+            isEnchantable
             // spotless:on
         );
     }
@@ -90,6 +92,11 @@ public class OrePrefixBuilder {
 
     protected OrePrefixBuilder setGenerateDefaultItem() {
         this.generateDefaultItem = true;
+        return this;
+    }
+
+    protected OrePrefixBuilder setIsEnchantable() {
+        this.isEnchantable = true;
         return this;
     }
 }

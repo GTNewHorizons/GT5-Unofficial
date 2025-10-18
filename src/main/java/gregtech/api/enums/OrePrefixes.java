@@ -302,13 +302,13 @@ public class OrePrefixes {
     public static final OrePrefixes crystal = new OrePrefixBuilder("crystal").setDefaultLocalName("Crystals").setLocalMaterialPost(" Crystal").setUsedForBlocks().build();
     // crystal("Crystals", "", " Crystal", false, true, false, false, false, false, true, false, false, false, B[2], M * 1, 64, -1)
 
-    public static final OrePrefixes bulletGtSmall = new OrePrefixBuilder("bulletGtSmall").setDefaultLocalName("Small Bullets").setLocalMaterialPre("Small ").setLocalMaterialPost(" Bullet").setUnifiable().setMaterialBased().setDoNotUnifyActively().setUsedForBlocks().build();
+    public static final OrePrefixes bulletGtSmall = new OrePrefixBuilder("bulletGtSmall").setDefaultLocalName("Small Bullets").setLocalMaterialPre("Small ").setLocalMaterialPost(" Bullet").setUnifiable().setMaterialBased().setDoNotUnifyActively().setUsedForBlocks().setIsEnchantable().build();
     // bulletGtSmall("Small Bullets", "Small ", " Bullet", true, true, false, false, true, false, true, false, true, false, B[6] | B[8], M / 9, 64, -1)
 
-    public static final OrePrefixes bulletGtMedium = new OrePrefixBuilder("bulletGtMedium").setDefaultLocalName("Medium Bullets").setLocalMaterialPre("Medium ").setLocalMaterialPost(" Bullet").setUnifiable().setMaterialBased().setDoNotUnifyActively().setUsedForBlocks().build();
+    public static final OrePrefixes bulletGtMedium = new OrePrefixBuilder("bulletGtMedium").setDefaultLocalName("Medium Bullets").setLocalMaterialPre("Medium ").setLocalMaterialPost(" Bullet").setUnifiable().setMaterialBased().setDoNotUnifyActively().setUsedForBlocks().setIsEnchantable().build();
     // bulletGtMedium("Medium Bullets", "Medium ", " Bullet", true, true, false, false, true, false, true, false, true, false, B[6] | B[8], M / 6, 64, -1)
 
-    public static final OrePrefixes bulletGtLarge = new OrePrefixBuilder("bulletGtLarge").setDefaultLocalName("Large Bullets").setLocalMaterialPre("Large ").setLocalMaterialPost(" Bullet").setUnifiable().setMaterialBased().setDoNotUnifyActively().setUsedForBlocks().build();
+    public static final OrePrefixes bulletGtLarge = new OrePrefixBuilder("bulletGtLarge").setDefaultLocalName("Large Bullets").setLocalMaterialPre("Large ").setLocalMaterialPost(" Bullet").setUnifiable().setMaterialBased().setDoNotUnifyActively().setUsedForBlocks().setIsEnchantable().build();
     // bulletGtLarge("Large Bullets", "Large ", " Bullet", true, true, false, false, true, false, true, false, true, false, B[6] | B[8], M / 3, 64, -1)
 
     /** consisting out of 2 Ingots. */
@@ -348,31 +348,31 @@ public class OrePrefixes {
     // turbineBlade("Turbine Blades", "", " Turbine Blade", true, true, false, false, false, false, true, true, false, false, B[6], M * 6, 64, 100)
 
     /** vanilly Sword */
-    public static final OrePrefixes toolSword = new OrePrefixBuilder("toolSword").setDefaultLocalName("Swords").setUsedForBlocks().build();
+    public static final OrePrefixes toolSword = new OrePrefixBuilder("toolSword").setDefaultLocalName("Swords").setUsedForBlocks().setIsEnchantable().build();
     // toolSword("Swords", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 2, 1, -1)
 
     /** vanilly Pickaxe */
-    public static final OrePrefixes toolPickaxe = new OrePrefixBuilder("toolPickaxe").setDefaultLocalName("Pickaxes").setUsedForBlocks().build();
+    public static final OrePrefixes toolPickaxe = new OrePrefixBuilder("toolPickaxe").setDefaultLocalName("Pickaxes").setUsedForBlocks().setIsEnchantable().build();
     // toolPickaxe("Pickaxes", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 3, 1, -1)
 
     /** vanilly Shovel */
-    public static final OrePrefixes toolShovel = new OrePrefixBuilder("toolShovel").setDefaultLocalName("Shovels").setUsedForBlocks().build();
+    public static final OrePrefixes toolShovel = new OrePrefixBuilder("toolShovel").setDefaultLocalName("Shovels").setUsedForBlocks().setIsEnchantable().build();
     // toolShovel("Shovels", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 1, 1, -1)
 
     /** vanilly Axe */
-    public static final OrePrefixes toolAxe = new OrePrefixBuilder("toolAxe").setDefaultLocalName("Axes").setUsedForBlocks().build();
+    public static final OrePrefixes toolAxe = new OrePrefixBuilder("toolAxe").setDefaultLocalName("Axes").setUsedForBlocks().setIsEnchantable().build();
     // toolAxe("Axes", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 3, 1, -1)
 
     /** vanilly Hoe */
-    public static final OrePrefixes toolHoe = new OrePrefixBuilder("toolHoe").setDefaultLocalName("Hoes").setUsedForBlocks().build();
+    public static final OrePrefixes toolHoe = new OrePrefixBuilder("toolHoe").setDefaultLocalName("Hoes").setUsedForBlocks().setIsEnchantable().build();
     // toolHoe("Hoes", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 2, 1, -1)
 
     /** vanilly Shears */
-    public static final OrePrefixes toolShears = new OrePrefixBuilder("toolShears").setDefaultLocalName("Shears").setUsedForBlocks().build();
+    public static final OrePrefixes toolShears = new OrePrefixBuilder("toolShears").setDefaultLocalName("Shears").setUsedForBlocks().setIsEnchantable().build();
     // toolShears("Shears", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 2, 1, -1)
 
     /** toolPot, toolSkillet, toolSaucepan, toolBakeware, toolCuttingboard, toolMortarandpestle, toolMixingbowl, toolJuicer */
-    public static final OrePrefixes tool = new OrePrefixBuilder("tool").setDefaultLocalName("Tools").build();
+    public static final OrePrefixes tool = new OrePrefixBuilder("tool").setDefaultLocalName("Tools").setIsEnchantable().build();
     // tool("Tools", "", "", false, false, false, false, false, false, false, false, true, false, B[6], -1, 1, -1)
 
     public static final OrePrefixes compressedCobblestone = new OrePrefixBuilder("compressedCobblestone").setDefaultLocalName("9^X Compressed Cobblestones").build();
@@ -415,7 +415,7 @@ public class OrePrefixes {
     // block("Storage Blocks", "Block of ", "", true, true, false, false, false, true, true, false, false, false, 0, M * 9, 64, 71)
 
     /** Special Prefix used mainly for the Crafting Handler. */
-    public static final OrePrefixes craftingTool = new OrePrefixBuilder("craftingTool").setDefaultLocalName("Crafting Tools").build();
+    public static final OrePrefixes craftingTool = new OrePrefixBuilder("craftingTool").setDefaultLocalName("Crafting Tools").setIsEnchantable().build();
     // craftingTool("Crafting Tools", "", "", false, false, false, false, false, false, false, false, true, false, 0, -1, 64, -1)
 
     /** Special Prefix used mainly for the Crafting Handler. */
@@ -534,22 +534,22 @@ public class OrePrefixes {
     // stainedClay("Stained Clays", "", "", false, false, true, false, false, true, false, false, false, false, 0, -1, 64, -1)
 
     /** vanilly Helmet */
-    public static final OrePrefixes armorHelmet = new OrePrefixBuilder("armorHelmet").setDefaultLocalName("Helmets").setUsedForBlocks().build();
+    public static final OrePrefixes armorHelmet = new OrePrefixBuilder("armorHelmet").setDefaultLocalName("Helmets").setUsedForBlocks().setIsEnchantable().build();
     // armorHelmet("Helmets", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 5, 1, -1)
 
     /** vanilly Chestplate */
-    public static final OrePrefixes armorChestplate = new OrePrefixBuilder("armorChestplate").setDefaultLocalName("Chestplates").setUsedForBlocks().build();
+    public static final OrePrefixes armorChestplate = new OrePrefixBuilder("armorChestplate").setDefaultLocalName("Chestplates").setUsedForBlocks().setIsEnchantable().build();
     // armorChestplate("Chestplates", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 8, 1, -1)
 
     /** vanilly Pants */
-    public static final OrePrefixes armorLeggings = new OrePrefixBuilder("armorLeggings").setDefaultLocalName("Leggings").setUsedForBlocks().build();
+    public static final OrePrefixes armorLeggings = new OrePrefixBuilder("armorLeggings").setDefaultLocalName("Leggings").setUsedForBlocks().setIsEnchantable().build();
     // armorLeggings("Leggings", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 7, 1, -1)
 
     /** vanilly Boots */
-    public static final OrePrefixes armorBoots = new OrePrefixBuilder("armorBoots").setDefaultLocalName("Boots").setUsedForBlocks().build();
+    public static final OrePrefixes armorBoots = new OrePrefixBuilder("armorBoots").setDefaultLocalName("Boots").setUsedForBlocks().setIsEnchantable().build();
     // armorBoots("Boots", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 4, 1, -1)
 
-    public static final OrePrefixes armor = new OrePrefixBuilder("armor").setDefaultLocalName("Armor Parts").build();
+    public static final OrePrefixes armor = new OrePrefixBuilder("armor").setDefaultLocalName("Armor Parts").setIsEnchantable().build();
     // armor("Armor Parts", "", "", false, false, false, false, false, false, false, false, true, false, B[6], -1, 1, -1)
 
     public static final OrePrefixes frameGt = new OrePrefixBuilder("frameGt").setDefaultLocalName("Frame Boxes").setUnifiable().setMaterialBased().setDoNotUnifyActively().setUsedForBlocks().build();
@@ -985,6 +985,7 @@ public class OrePrefixes {
     private final boolean isUsedForBlocks;
     private final boolean allowNormalRecycling;
     private final boolean generateDefaultItem;
+    private final boolean isEnchantable;
 
     OrePrefixes(
         // spotless:off
@@ -999,7 +1000,8 @@ public class OrePrefixes {
         boolean doNotUnifyActively,
         boolean isUsedForBlocks,
         boolean allowNormalRecycling,
-        boolean generateDefaultItem
+        boolean generateDefaultItem,
+        boolean isEnchantable
         // spotless:on
     ) {
         this.name = name;
@@ -1014,6 +1016,7 @@ public class OrePrefixes {
         this.isUsedForBlocks = isUsedForBlocks;
         this.allowNormalRecycling = allowNormalRecycling;
         this.generateDefaultItem = generateDefaultItem;
+        this.isEnchantable = isEnchantable;
     }
 
 //    OrePrefixes(String aRegularLocalName, String aLocalizedMaterialPre, String aLocalizedMaterialPost,
