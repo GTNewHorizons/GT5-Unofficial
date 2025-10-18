@@ -12,7 +12,6 @@ public class OrePrefixBuilder {
     private boolean isContainer = false;
     private boolean skipActiveUnification = false;
     private boolean isRecyclable = false;
-    private boolean generateDefaultItem = false;
     private boolean isEnchantable = false;
     private int materialGenerationBits = 0;
     private long materialAmount = -1;
@@ -36,7 +35,6 @@ public class OrePrefixBuilder {
             isContainer,
             skipActiveUnification,
             isRecyclable,
-            generateDefaultItem,
             isEnchantable,
             materialGenerationBits,
             materialAmount,
@@ -88,11 +86,6 @@ public class OrePrefixBuilder {
 
     protected OrePrefixBuilder recyclable() {
         this.isRecyclable = true;
-        return this;
-    }
-
-    protected OrePrefixBuilder generateDefaultItem() {
-        this.generateDefaultItem = true;
         return this;
     }
 
