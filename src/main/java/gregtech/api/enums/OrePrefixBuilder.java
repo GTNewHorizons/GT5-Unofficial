@@ -8,6 +8,7 @@ public class OrePrefixBuilder {
     private String localMaterialPost;
     private boolean isUnifiable = false;
     private boolean isMaterialBased = false;
+    private boolean isSelfReferencing = false;
 
     protected OrePrefixBuilder(String name) {
         this.name = name;
@@ -21,7 +22,8 @@ public class OrePrefixBuilder {
             localMaterialPre,
             localMaterialPost,
             isUnifiable,
-            isMaterialBased
+            isMaterialBased,
+            isSelfReferencing
             // spotless:on
         );
     }
@@ -48,6 +50,11 @@ public class OrePrefixBuilder {
 
     protected OrePrefixBuilder setMaterialBased() {
         this.isMaterialBased = true;
+        return this;
+    }
+
+    protected OrePrefixBuilder setSelfReferencing() {
+        this.isSelfReferencing = true;
         return this;
     }
 }
