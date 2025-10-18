@@ -1309,10 +1309,8 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> cableRecipes = RecipeMapBuilder
         .of("gt.recipe.cable", RecipeMapBackend::new)
-        .maxIO(9, 1, 1, 0)
+        .maxIO(6, 1, 1, 0)
         .minInputs(1, 1)
-        .slotOverlays(
-            (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GTUITextures.OVERLAY_SLOT_CIRCUIT : null)
         .progressBar(GTUITextures.PROGRESSBAR_ARROW)
         .build();
 }
