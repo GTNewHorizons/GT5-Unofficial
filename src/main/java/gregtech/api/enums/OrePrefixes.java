@@ -2232,6 +2232,10 @@ public class OrePrefixes {
         return isContainer;
     }
 
+    public boolean isRecyclable() {
+        return isRecyclable;
+    }
+
     public long getMaterialAmount() {
         return materialAmount;
     }

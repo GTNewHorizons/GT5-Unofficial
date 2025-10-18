@@ -378,13 +378,13 @@ public class GTOreDictUnificator {
                 if (GregTechAPI.sLoadStarted) {
                     mRunThroughTheList = false;
                     for (Entry<ItemStack, ItemData> tEntry : sItemStack2DataMap.entrySet()) if (!tEntry.getValue()
-                        .hasValidPrefixData() || tEntry.getValue().mPrefix.mAllowNormalRecycling)
+                        .hasValidPrefixData() || tEntry.getValue().mPrefix.isRecyclable())
                         GTRecipeRegistrator.registerMaterialRecycling(
                             GTItemStack.internalCopyStack(tEntry.getKey()),
                             tEntry.getValue());
                 }
             } else {
-                if (!aData.hasValidPrefixData() || aData.mPrefix.mAllowNormalRecycling)
+                if (!aData.hasValidPrefixData() || aData.mPrefix.isRecyclable())
                     GTRecipeRegistrator.registerMaterialRecycling(aStack, aData);
             }
         } else {
