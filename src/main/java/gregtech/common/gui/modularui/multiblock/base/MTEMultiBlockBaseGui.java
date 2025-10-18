@@ -84,9 +84,9 @@ import gregtech.common.gui.modularui.widget.ResizableItemDisplayWidget;
 import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
 import gregtech.common.modularui2.sync.Predicates;
 
-public class MTEMultiBlockBaseGui {
+public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
 
-    protected final MTEMultiBlockBase multiblock;
+    protected final T multiblock;
     private final IGregTechTileEntity baseMetaTileEntity;
     protected List<UITexture> machineModeIcons = new ArrayList<>();
     protected Map<String, UITexture> customIcons = new HashMap<>();
@@ -96,7 +96,7 @@ public class MTEMultiBlockBaseGui {
     protected Map<String, UITexture> shutdownReasonTextureMap = new HashMap<>();
     protected Map<String, String> shutdownReasonTooltipMap = new HashMap<>();
 
-    public MTEMultiBlockBaseGui(MTEMultiBlockBase multiblock) {
+    public MTEMultiBlockBaseGui(T multiblock) {
         this.multiblock = multiblock;
         this.baseMetaTileEntity = multiblock.getBaseMetaTileEntity();
         initCustomIcons();
