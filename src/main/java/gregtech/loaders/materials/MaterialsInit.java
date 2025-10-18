@@ -9815,6 +9815,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.MORTAR_GRINDABLE)
             .addSubTag(SubTag.SMELTING_TO_FLUID)
             .addSubTag(SubTag.UNBURNABLE)
+            .addOrePrefix(OrePrefixes.stickLong)
             .removeOrePrefix(OrePrefixes.dust) // minecraft:blaze_powder
             .removeOrePrefix(OrePrefixes.stick) // minecraft:blaze_rod
             .constructMaterial();

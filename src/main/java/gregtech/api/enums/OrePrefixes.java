@@ -646,9 +646,6 @@ public enum OrePrefixes {
 
         cell.disableComponent(Materials.GravitonShard);
 
-        stickLong.mGeneratedItems.add(Materials.Blaze);
-        // -----
-
         gear.mGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
         ingot.mGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
         toolHeadHammer.mGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
