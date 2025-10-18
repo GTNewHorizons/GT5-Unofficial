@@ -4,15 +4,15 @@ public class OrePrefixBuilder {
 
     private final String name;
     private String defaultLocalName;
-    private String localMaterialPre;
-    private String localMaterialPost;
+    private String materialPrefix;
+    private String materialPostfix;
     private boolean isUnifiable = false;
     private boolean isMaterialBased = false;
     private boolean isSelfReferencing = false;
     private boolean isContainer = false;
-    private boolean doNotUnifyActively = false;
+    private boolean skipActiveUnification = false;
     private boolean isUsedForBlocks = false;
-    private boolean allowNormalRecycling = false;
+    private boolean isRecyclable = false;
     private boolean generateDefaultItem = false;
     private boolean isEnchantable = false;
     private boolean isUsedForOreProcessing = false;
@@ -30,15 +30,15 @@ public class OrePrefixBuilder {
             // spotless:off
             name,
             defaultLocalName,
-            localMaterialPre,
-            localMaterialPost,
+            materialPrefix,
+            materialPostfix,
             isUnifiable,
             isMaterialBased,
             isSelfReferencing,
             isContainer,
-            doNotUnifyActively,
+            skipActiveUnification,
             isUsedForBlocks,
-            allowNormalRecycling,
+            isRecyclable,
             generateDefaultItem,
             isEnchantable,
             isUsedForOreProcessing,
@@ -50,87 +50,88 @@ public class OrePrefixBuilder {
         );
     }
 
-    protected OrePrefixBuilder setDefaultLocalName(String defaultLocalName) {
+    protected OrePrefixBuilder withDefaultLocalName(String defaultLocalName) {
         this.defaultLocalName = defaultLocalName;
         return this;
     }
 
-    protected OrePrefixBuilder setLocalMaterialPre(String localMaterialPre) {
-        this.localMaterialPre = localMaterialPre;
+    protected OrePrefixBuilder withPrefix(String materialPrefix) {
+        this.materialPrefix = materialPrefix;
         return this;
     }
 
-    protected OrePrefixBuilder setLocalMaterialPost(String localMaterialPost) {
-        this.localMaterialPost = localMaterialPost;
+    protected OrePrefixBuilder withSuffix(String materialPostfix) {
+        this.materialPostfix = materialPostfix;
         return this;
     }
 
-    protected OrePrefixBuilder setUnifiable() {
+    protected OrePrefixBuilder unifiable() {
         this.isUnifiable = true;
         return this;
     }
 
-    protected OrePrefixBuilder setMaterialBased() {
+    protected OrePrefixBuilder materialBased() {
         this.isMaterialBased = true;
         return this;
     }
 
-    protected OrePrefixBuilder setSelfReferencing() {
+    protected OrePrefixBuilder selfReferencing() {
         this.isSelfReferencing = true;
         return this;
     }
 
-    protected OrePrefixBuilder setContainer() {
+    protected OrePrefixBuilder container() {
         this.isContainer = true;
         return this;
     }
 
-    protected OrePrefixBuilder setDoNotUnifyActively() {
-        this.doNotUnifyActively = true;
+    protected OrePrefixBuilder skipActiveUnification() {
+        this.skipActiveUnification = true;
         return this;
     }
 
-    protected OrePrefixBuilder setUsedForBlocks() {
+    protected OrePrefixBuilder usedForBlocks() {
         this.isUsedForBlocks = true;
         return this;
     }
 
-    protected OrePrefixBuilder setAllowNormalRecycling() {
-        this.allowNormalRecycling = true;
+    protected OrePrefixBuilder recyclable() {
+        this.isRecyclable = true;
         return this;
     }
 
-    protected OrePrefixBuilder setGenerateDefaultItem() {
+    protected OrePrefixBuilder generateDefaultItem() {
         this.generateDefaultItem = true;
         return this;
     }
 
-    protected OrePrefixBuilder setIsEnchantable() {
+    protected OrePrefixBuilder enchantable() {
         this.isEnchantable = true;
         return this;
     }
 
-    protected OrePrefixBuilder setIsUsedForOreProcessing() {
+    protected OrePrefixBuilder usedForOreProcessing() {
         this.isUsedForOreProcessing = true;
         return this;
     }
 
-    protected OrePrefixBuilder setMaterialGenerationBits(int materialGenerationBits) {
+    protected OrePrefixBuilder materialGenerationBits(int materialGenerationBits) {
         this.materialGenerationBits = materialGenerationBits;
         return this;
     }
 
-    protected OrePrefixBuilder setMaterialAmount(long materialAmount) {
+    protected OrePrefixBuilder materialAmount(long materialAmount) {
         this.materialAmount = materialAmount;
         return this;
     }
 
-    protected OrePrefixBuilder setDefaultStackSize(int defaultStackSize) {
+    @SuppressWarnings("SameParameterValue") // The only passed argument is defaultStackSize = 1
+    protected OrePrefixBuilder defaultStackSize(int defaultStackSize) {
         this.defaultStackSize = defaultStackSize;
         return this;
     }
 
-    protected OrePrefixBuilder setTextureIndex(int textureIndex) {
+    protected OrePrefixBuilder textureIndex(int textureIndex) {
         this.textureIndex = textureIndex;
         return this;
     }
