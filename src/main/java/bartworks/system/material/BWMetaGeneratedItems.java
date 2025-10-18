@@ -66,7 +66,7 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
         this.orePrefixes = orePrefixes;
         this.itemTypeLocalizedName = GTLanguageManager.addStringLocalization(
             "bw.itemtype." + orePrefixes,
-            orePrefixes.getMaterialPrefix() + "%material" + orePrefixes.mLocalizedMaterialPost);
+            orePrefixes.getMaterialPrefix() + "%material" + orePrefixes.getMaterialPostfix());
     }
 
     public BWMetaGeneratedItems(OrePrefixes orePrefixes) {
@@ -74,7 +74,7 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
         this.orePrefixes = orePrefixes;
         this.itemTypeLocalizedName = GTLanguageManager.addStringLocalization(
             "bw.itemtype." + orePrefixes,
-            orePrefixes.getMaterialPrefix() + "%material" + orePrefixes.mLocalizedMaterialPost);
+            orePrefixes.getMaterialPrefix() + "%material" + orePrefixes.getMaterialPostfix());
         this.setCreativeTab(BWMetaGeneratedItems.metaTab);
         for (Werkstoff w : Werkstoff.werkstoffHashSet) {
             ItemStack tStack = new ItemStack(this, 1, w.getmID());

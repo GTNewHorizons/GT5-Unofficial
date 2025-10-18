@@ -2208,6 +2208,10 @@ public class OrePrefixes {
         return materialPrefix;
     }
 
+    public @NotNull String getMaterialPostfix() {
+        return materialPostfix;
+    }
+
     public boolean skipActiveUnification() {
         return skipActiveUnification;
     }
