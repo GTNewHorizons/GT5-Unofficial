@@ -59,8 +59,8 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
         int cableWidth;
         OrePrefixes correspondingCable;
 
-        switch (aPrefix) {
-            case wireGt01 -> {
+        switch (aPrefix.getName()) {
+            case "wireGt01" -> {
                 cableWidth = 1;
                 correspondingCable = OrePrefixes.cableGt01;
                 if (!aMaterial.contains(SubTag.NO_SMASHING)) {
@@ -134,7 +134,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                         .addTo(assemblerRecipes);
                 }
             }
-            case wireGt02 -> {
+            case "wireGt02" -> {
                 cableWidth = 2;
                 correspondingCable = OrePrefixes.cableGt02;
                 // Shapeless crafting recipes
@@ -146,7 +146,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                     GTUtility.copyAmount(1, aStack),
                     new Object[] { OrePrefixes.wireGt01.get(aMaterial), OrePrefixes.wireGt01.get(aMaterial) });
             }
-            case wireGt04 -> {
+            case "wireGt04" -> {
                 cableWidth = 4;
                 correspondingCable = OrePrefixes.cableGt04;
                 // Shapeless crafting recipes
@@ -162,7 +162,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                     GTUtility.copyAmount(1, aStack),
                     new Object[] { OrePrefixes.wireGt02.get(aMaterial), OrePrefixes.wireGt02.get(aMaterial) });
             }
-            case wireGt08 -> {
+            case "wireGt08" -> {
                 cableWidth = 8;
                 correspondingCable = OrePrefixes.cableGt08;
                 // Shapeless crafting recipes
@@ -180,7 +180,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                     GTUtility.copyAmount(1, aStack),
                     new Object[] { OrePrefixes.wireGt04.get(aMaterial), OrePrefixes.wireGt04.get(aMaterial) });
             }
-            case wireGt12 -> {
+            case "wireGt12" -> {
                 cableWidth = 12;
                 correspondingCable = OrePrefixes.cableGt12;
                 // Shapeless crafting recipes
@@ -192,7 +192,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                     GTUtility.copyAmount(1, aStack),
                     new Object[] { OrePrefixes.wireGt08.get(aMaterial), OrePrefixes.wireGt04.get(aMaterial) });
             }
-            case wireGt16 -> {
+            case "wireGt16" -> {
                 cableWidth = 16;
                 correspondingCable = OrePrefixes.cableGt16;
                 // Shapeless crafting recipes
