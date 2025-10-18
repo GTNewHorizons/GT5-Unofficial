@@ -29,7 +29,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.net.GTPacketSetMold;
 import gregtech.api.util.GTUtility;
-import gregtech.common.gui.modularui.uifactory.SelectItemUIFactory;
+import gregtech.common.gui.modularui.base.ItemSelectBaseGui;
 
 public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationCircuitSupport {
 
@@ -183,7 +183,7 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
         final IItemHandlerModifiable inv = getInventoryHandler();
         if (inv == null) return;
         uiContext.openClientWindow(
-            player -> new SelectItemUIFactory(
+            player -> new ItemSelectBaseGui(
                 GTUtility.translate("GT5U.machines.select_mold"),
                 getStackForm(0),
                 this::onMoldSelected,

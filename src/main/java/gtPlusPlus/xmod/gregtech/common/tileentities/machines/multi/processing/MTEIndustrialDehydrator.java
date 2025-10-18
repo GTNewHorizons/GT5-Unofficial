@@ -44,6 +44,7 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -52,12 +53,12 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.gui.MTEIndustrialDehydratorGui;
 
 public class MTEIndustrialDehydrator extends GTPPMultiBlockBase<MTEIndustrialDehydrator>
     implements ISurvivalConstructable {
@@ -295,7 +296,9 @@ public class MTEIndustrialDehydrator extends GTPPMultiBlockBase<MTEIndustrialDeh
     }
 
     @Override
-    protected @NotNull MTEIndustrialDehydratorGui getGui() {
-        return new MTEIndustrialDehydratorGui(this);
+    protected @NotNull MTEMultiBlockBaseGui getGui() {
+        return new MTEMultiBlockBaseGui(this).withMachineModeIcons(
+            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_STEAM,
+            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
     }
 }
