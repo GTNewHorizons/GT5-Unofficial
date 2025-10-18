@@ -500,20 +500,6 @@ public class GTPreLoad {
 
         // features
         GTMod.proxy.mUpgradeCount = Math.min(64, Math.max(1, Gregtech.features.upgradeStackSize));
-        for (OrePrefixes tPrefix : OrePrefixes.VALUES) {
-            if (tPrefix.isUsedForOreProcessing()) {
-                tPrefix.mDefaultStackSize = ((byte) Math.min(64, Math.max(1, Gregtech.features.maxOreStackSize)));
-            } else if (tPrefix == OrePrefixes.plank) {
-                tPrefix.mDefaultStackSize = ((byte) Math.min(64, Math.max(16, Gregtech.features.maxPlankStackSize)));
-            } else if ((tPrefix == OrePrefixes.wood) || (tPrefix == OrePrefixes.treeLeaves)
-                || (tPrefix == OrePrefixes.treeSapling)
-                || (tPrefix == OrePrefixes.log)) {
-                    tPrefix.mDefaultStackSize = ((byte) Math.min(64, Math.max(16, Gregtech.features.maxLogStackSize)));
-                } else if (tPrefix.isUsedForBlocks()) {
-                    tPrefix.mDefaultStackSize = ((byte) Math
-                        .min(64, Math.max(16, Gregtech.features.maxOtherBlocksStackSize)));
-                }
-        }
 
         GTRecipeBuilder.onConfigLoad();
     }

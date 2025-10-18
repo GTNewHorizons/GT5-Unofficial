@@ -44,6 +44,9 @@ public class OrePrefixes {
     public static final List<OrePrefixes> VALUES = new ArrayList<>();
 
     private static final int ORE_STACK_SIZE = GTUtility.clamp(Gregtech.features.maxOreStackSize, 1, 64);
+    private static final int PLANK_STACK_SIZE = GTUtility.clamp(Gregtech.features.maxPlankStackSize, 16, 64);
+    private static final int LOG_STACK_SIZE = GTUtility.clamp(Gregtech.features.maxLogStackSize, 16, 64);
+    private static final int OTHER_STACK_SIZE = GTUtility.clamp(Gregtech.features.maxOtherBlocksStackSize, 16, 64);
 
     /** Used for removed prefixes to prevent id shifts. */
     public static final OrePrefixes ___placeholder___ = new OrePrefixBuilder("___placeholder___")
@@ -58,7 +61,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .usedForBlocks()
         .materialGenerationBits(B[3])
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
@@ -70,7 +72,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .usedForBlocks()
         .materialGenerationBits(B[3])
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
@@ -81,7 +82,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .usedForBlocks()
         .materialGenerationBits(B[3])
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
@@ -92,7 +92,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .usedForBlocks()
         .materialGenerationBits(B[3])
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
@@ -104,7 +103,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .usedForBlocks()
         .materialGenerationBits(B[3])
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
@@ -115,7 +113,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .usedForBlocks()
         .materialGenerationBits(B[3])
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
@@ -126,7 +123,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .usedForBlocks()
         .materialGenerationBits(B[3])
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
@@ -137,7 +133,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .usedForBlocks()
         .materialGenerationBits(B[3])
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
@@ -148,7 +143,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .usedForBlocks()
         .materialGenerationBits(B[3])
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
@@ -159,7 +153,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .usedForBlocks()
         .materialGenerationBits(B[3])
         .defaultStackSize(ORE_STACK_SIZE)
         .textureIndex(67)
@@ -171,7 +164,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .usedForBlocks()
         .materialGenerationBits(B[3])
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
@@ -183,7 +175,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .usedForBlocks()
         .materialGenerationBits(B[3])
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
@@ -194,7 +185,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .usedForBlocks()
         .materialGenerationBits(B[3])
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
@@ -204,7 +194,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .usedForBlocks()
         .materialGenerationBits(B[3])
         .defaultStackSize(ORE_STACK_SIZE)
         .textureIndex(68)
@@ -385,10 +374,10 @@ public class OrePrefixes {
         .unifiable()
         .materialBased()
         .selfReferencing()
-        .usedForBlocks()
         .generateDefaultItem()
         .materialGenerationBits(B[2])
         .materialAmount(M * 1)
+        .defaultStackSize(OTHER_STACK_SIZE)
         .textureIndex(8)
         .build();
 
@@ -1118,22 +1107,22 @@ public class OrePrefixes {
 
     public static final OrePrefixes paneGlass = new OrePrefixBuilder("paneGlass").withDefaultLocalName("Glass Panes")
         .selfReferencing()
-        .usedForBlocks()
+        .defaultStackSize(OTHER_STACK_SIZE)
         .build();
 
     public static final OrePrefixes blockGlass = new OrePrefixBuilder("blockGlass").withDefaultLocalName("Glass Blocks")
         .selfReferencing()
-        .usedForBlocks()
+        .defaultStackSize(OTHER_STACK_SIZE)
         .build();
 
     public static final OrePrefixes blockWool = new OrePrefixBuilder("blockWool").withDefaultLocalName("Wool Blocks")
         .selfReferencing()
-        .usedForBlocks()
+        .defaultStackSize(OTHER_STACK_SIZE)
         .build();
 
     /** IGNORE */
     public static final OrePrefixes block_ = new OrePrefixBuilder("block_").withDefaultLocalName("Random Blocks")
-        .usedForBlocks()
+        .defaultStackSize(OTHER_STACK_SIZE)
         .build();
 
     /** Storage Block consisting out of 9 Ingots/Gems/Dusts. Introduced by CovertJaguar */
@@ -1141,9 +1130,9 @@ public class OrePrefixes {
         .withPrefix("Block of ")
         .unifiable()
         .materialBased()
-        .usedForBlocks()
         .recyclable()
         .materialAmount(M * 9)
+        .defaultStackSize(OTHER_STACK_SIZE)
         .textureIndex(71)
         .build();
 
@@ -1164,17 +1153,17 @@ public class OrePrefixes {
 
     /** Prefix used for Logs. Usually as "logWood". Introduced by Eloraam */
     public static final OrePrefixes log = new OrePrefixBuilder("log").withDefaultLocalName("Logs")
-        .usedForBlocks()
+        .defaultStackSize(LOG_STACK_SIZE)
         .build();
 
     /** Prefix used for Slabs. Usually as "slabWood" or "slabStone". Introduced by SirSengir */
     public static final OrePrefixes slab = new OrePrefixBuilder("slab").withDefaultLocalName("Slabs")
-        .usedForBlocks()
+        .defaultStackSize(OTHER_STACK_SIZE)
         .build();
 
     /** Prefix used for Stairs. Usually as "stairWood" or "stairStone". Introduced by SirSengir */
     public static final OrePrefixes stair = new OrePrefixBuilder("stair").withDefaultLocalName("Stairs")
-        .usedForBlocks()
+        .defaultStackSize(OTHER_STACK_SIZE)
         .build();
 
     /** Prefix used for Fences. Usually as "fenceWood". Introduced by Forge */
@@ -1183,19 +1172,19 @@ public class OrePrefixes {
 
     /** Prefix for Planks. Usually "plankWood". Introduced by Eloraam */
     public static final OrePrefixes plank = new OrePrefixBuilder("plank").withDefaultLocalName("Planks")
-        .usedForBlocks()
+        .defaultStackSize(PLANK_STACK_SIZE)
         .build();
 
     /** Prefix for Saplings. */
     public static final OrePrefixes treeSapling = new OrePrefixBuilder("treeSapling").withDefaultLocalName("Saplings")
         .selfReferencing()
-        .usedForBlocks()
+        .defaultStackSize(LOG_STACK_SIZE)
         .build();
 
     /** Prefix for Leaves. */
     public static final OrePrefixes treeLeaves = new OrePrefixBuilder("treeLeaves").withDefaultLocalName("Leaves")
         .selfReferencing()
-        .usedForBlocks()
+        .defaultStackSize(LOG_STACK_SIZE)
         .build();
 
     /** Prefix for Tree Parts. */
@@ -1206,68 +1195,68 @@ public class OrePrefixes {
     public static final OrePrefixes stoneCobble = new OrePrefixBuilder("stoneCobble")
         .withDefaultLocalName("Cobblestones")
         .selfReferencing()
-        .usedForBlocks()
+        .defaultStackSize(OTHER_STACK_SIZE)
         .build();
 
     /** Smoothstone Prefix. */
     public static final OrePrefixes stoneSmooth = new OrePrefixBuilder("stoneSmooth")
         .withDefaultLocalName("Smoothstones")
         .selfReferencing()
-        .usedForBlocks()
+        .defaultStackSize(OTHER_STACK_SIZE)
         .build();
 
     /** Mossy Stone Bricks. */
     public static final OrePrefixes stoneMossyBricks = new OrePrefixBuilder("stoneMossyBricks")
         .withDefaultLocalName("mossy Stone Bricks")
         .selfReferencing()
-        .usedForBlocks()
+        .defaultStackSize(OTHER_STACK_SIZE)
         .build();
 
     /** Mossy Cobble. */
     public static final OrePrefixes stoneMossy = new OrePrefixBuilder("stoneMossy").withDefaultLocalName("Mossy Stones")
         .selfReferencing()
-        .usedForBlocks()
+        .defaultStackSize(OTHER_STACK_SIZE)
         .build();
 
     /** Stone Bricks. */
     public static final OrePrefixes stoneBricks = new OrePrefixBuilder("stoneBricks")
         .withDefaultLocalName("Stone Bricks")
         .selfReferencing()
-        .usedForBlocks()
+        .defaultStackSize(OTHER_STACK_SIZE)
         .build();
 
     /** Cracked Bricks. */
     public static final OrePrefixes stoneCracked = new OrePrefixBuilder("stoneCracked")
         .withDefaultLocalName("Cracked Stones")
         .selfReferencing()
-        .usedForBlocks()
+        .defaultStackSize(OTHER_STACK_SIZE)
         .build();
 
     /** Chiseled Stone. */
     public static final OrePrefixes stoneChiseled = new OrePrefixBuilder("stoneChiseled")
         .withDefaultLocalName("Chiseled Stones")
         .selfReferencing()
-        .usedForBlocks()
+        .defaultStackSize(OTHER_STACK_SIZE)
         .build();
 
     /** Prefix to determine which kind of Rock this is. */
     public static final OrePrefixes stone = new OrePrefixBuilder("stone").withDefaultLocalName("Stones")
         .selfReferencing()
         .skipActiveUnification()
-        .usedForBlocks()
+        .defaultStackSize(OTHER_STACK_SIZE)
         .build();
 
     public static final OrePrefixes cobblestone = new OrePrefixBuilder("cobblestone")
         .withDefaultLocalName("Cobblestones")
         .selfReferencing()
-        .usedForBlocks()
+        .defaultStackSize(OTHER_STACK_SIZE)
         .build();
 
     /** Prefix to determine which kind of Rock this is. */
     public static final OrePrefixes rock = new OrePrefixBuilder("rock").withDefaultLocalName("Rocks")
         .selfReferencing()
         .skipActiveUnification()
-        .usedForBlocks()
+        .defaultStackSize(OTHER_STACK_SIZE)
         .build();
 
     public static final OrePrefixes record = new OrePrefixBuilder("record").withDefaultLocalName("Records")
@@ -1314,7 +1303,7 @@ public class OrePrefixes {
     public static final OrePrefixes stainedClay = new OrePrefixBuilder("stainedClay")
         .withDefaultLocalName("Stained Clays")
         .selfReferencing()
-        .usedForBlocks()
+        .defaultStackSize(OTHER_STACK_SIZE)
         .build();
 
     /** vanilly Helmet */
@@ -1700,7 +1689,7 @@ public class OrePrefixes {
 
     public static final OrePrefixes sand = new OrePrefixBuilder("sand").withDefaultLocalName("Sands")
         .selfReferencing()
-        .usedForBlocks()
+        .defaultStackSize(OTHER_STACK_SIZE)
         .build();
 
     public static final OrePrefixes grass = new OrePrefixBuilder("grass").withDefaultLocalName("Grasses")
@@ -1714,6 +1703,7 @@ public class OrePrefixes {
 
     /** Introduced by Eloraam */
     public static final OrePrefixes wood = new OrePrefixBuilder("wood").withDefaultLocalName("Woods")
+        .defaultStackSize(LOG_STACK_SIZE)
         .build();
 
     public static final OrePrefixes drop = new OrePrefixBuilder("drop").withDefaultLocalName("Drops")
@@ -2062,9 +2052,9 @@ public class OrePrefixes {
         .materialBased()
         .selfReferencing()
         .container()
-        .usedForBlocks()
         .generateDefaultItem()
         .materialAmount(M * 9)
+        .defaultStackSize(OTHER_STACK_SIZE)
         .build();
 
     public static final OrePrefixes blockCasingAdvanced = new OrePrefixBuilder("blockCasingAdvanced")
@@ -2075,9 +2065,9 @@ public class OrePrefixes {
         .materialBased()
         .selfReferencing()
         .container()
-        .usedForBlocks()
         .generateDefaultItem()
         .materialAmount(M * 9)
+        .defaultStackSize(OTHER_STACK_SIZE)
         .build();
 
     public static final OrePrefixes capsuleMolten = new OrePrefixBuilder("capsuleMolten")
@@ -2119,7 +2109,6 @@ public class OrePrefixes {
     private final boolean isSelfReferencing;
     private final boolean isContainer;
     private final boolean skipActiveUnification;
-    private final boolean isUsedForBlocks;
     private final boolean isRecyclable;
     private final boolean generateDefaultItem;
     private final boolean isEnchantable;
@@ -2139,7 +2128,6 @@ public class OrePrefixes {
         boolean isSelfReferencing,
         boolean isContainer,
         boolean skipActiveUnification,
-        boolean isUsedForBlocks,
         boolean isRecyclable,
         boolean generateDefaultItem,
         boolean isEnchantable,
@@ -2158,7 +2146,6 @@ public class OrePrefixes {
         this.isSelfReferencing = isSelfReferencing;
         this.isContainer = isContainer;
         this.skipActiveUnification = skipActiveUnification;
-        this.isUsedForBlocks = isUsedForBlocks;
         this.isRecyclable = isRecyclable;
         this.generateDefaultItem = generateDefaultItem;
         this.isEnchantable = isEnchantable;
@@ -2244,10 +2231,6 @@ public class OrePrefixes {
 
     public boolean isEnchantable() {
         return isEnchantable;
-    }
-
-    public boolean isUsedForBlocks() {
-        return isUsedForBlocks;
     }
 
     public int getMaterialGenerationBits() {

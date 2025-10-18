@@ -11,7 +11,6 @@ public class OrePrefixBuilder {
     private boolean isSelfReferencing = false;
     private boolean isContainer = false;
     private boolean skipActiveUnification = false;
-    private boolean isUsedForBlocks = false;
     private boolean isRecyclable = false;
     private boolean generateDefaultItem = false;
     private boolean isEnchantable = false;
@@ -36,7 +35,6 @@ public class OrePrefixBuilder {
             isSelfReferencing,
             isContainer,
             skipActiveUnification,
-            isUsedForBlocks,
             isRecyclable,
             generateDefaultItem,
             isEnchantable,
@@ -85,11 +83,6 @@ public class OrePrefixBuilder {
 
     protected OrePrefixBuilder skipActiveUnification() {
         this.skipActiveUnification = true;
-        return this;
-    }
-
-    protected OrePrefixBuilder usedForBlocks() {
-        this.isUsedForBlocks = true;
         return this;
     }
 
