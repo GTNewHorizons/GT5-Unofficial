@@ -2147,9 +2147,9 @@ public class OrePrefixes {
         // spotless:on
     ) {
         this.name = name;
-        this.defaultLocalName = defaultLocalName;
-        this.materialPrefix = materialPrefix;
-        this.materialPostfix = materialPostfix;
+        this.defaultLocalName = defaultLocalName != null ? defaultLocalName : "";
+        this.materialPrefix = materialPrefix != null ? materialPrefix : "";
+        this.materialPostfix = materialPostfix != null ? materialPostfix : "";
         this.isUnifiable = isUnifiable;
         this.isMaterialBased = isMaterialBased;
         this.isSelfReferencing = isSelfReferencing;
@@ -2202,6 +2202,10 @@ public class OrePrefixes {
 
     public @NotNull String getName() {
         return name;
+    }
+
+    public @NotNull String getMaterialPrefix() {
+        return materialPrefix;
     }
 
     public boolean skipActiveUnification() {

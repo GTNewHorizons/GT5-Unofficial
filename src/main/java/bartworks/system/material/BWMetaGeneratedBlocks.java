@@ -59,7 +59,7 @@ public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer implem
         if (this.prefix != null) {
             this.blockTypeLocalizedName = GTLanguageManager.addStringLocalization(
                 "bw.blocktype." + this.prefix,
-                this.prefix.mLocalizedMaterialPre + "%material" + this.prefix.mLocalizedMaterialPost);
+                this.prefix.getMaterialPrefix() + "%material" + this.prefix.mLocalizedMaterialPost);
         }
         Werkstoff.werkstoffHashSet.forEach(this::doRegistrationStuff);
     }

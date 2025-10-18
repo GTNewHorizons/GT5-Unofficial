@@ -2275,7 +2275,7 @@ public class GTProxy implements IFuelHandler {
         for (int i = 0; i < 3; i++) {
             crackedFluids[i] = GTFluidFactory.builder(namePrefixes[i] + aMaterial.mName.toLowerCase(Locale.ENGLISH))
                 .withIconsFrom(uncrackedFluid)
-                .withLocalizedName(orePrefixes[i].mLocalizedMaterialPre + aMaterial.mDefaultLocalName)
+                .withLocalizedName(orePrefixes[i].getMaterialPrefix() + aMaterial.mDefaultLocalName)
                 .withColorRGBA(aMaterial.mRGBa)
                 .withStateAndTemperature(GAS, 775)
                 .buildAndRegister()
@@ -2336,7 +2336,7 @@ public class GTProxy implements IFuelHandler {
         for (int i = 0; i < 3; i++) {
             crackedFluids[i] = GTFluidFactory.builder(namePrefixes[i] + aMaterial.mName.toLowerCase(Locale.ENGLISH))
                 .withIconsFrom(uncrackedFluid)
-                .withLocalizedName(orePrefixes[i].mLocalizedMaterialPre + aMaterial.mDefaultLocalName)
+                .withLocalizedName(orePrefixes[i].getMaterialPrefix() + aMaterial.mDefaultLocalName)
                 .withColorRGBA(aMaterial.mRGBa)
                 .withStateAndTemperature(GAS, 775)
                 .buildAndRegister()

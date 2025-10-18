@@ -62,11 +62,11 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
         if (small) {
             this.blockTypeLocalizedName = GTLanguageManager.addStringLocalization(
                 blockName,
-                OrePrefixes.oreSmall.mLocalizedMaterialPre + "%material" + OrePrefixes.oreSmall.mLocalizedMaterialPost);
+                OrePrefixes.oreSmall.getMaterialPrefix() + "%material" + OrePrefixes.oreSmall.mLocalizedMaterialPost);
         } else {
             this.blockTypeLocalizedName = GTLanguageManager.addStringLocalization(
                 blockName,
-                OrePrefixes.ore.mLocalizedMaterialPre + "%material" + OrePrefixes.ore.mLocalizedMaterialPost);
+                OrePrefixes.ore.getMaterialPrefix() + "%material" + OrePrefixes.ore.mLocalizedMaterialPost);
         }
 
         this.blockName = blockName;

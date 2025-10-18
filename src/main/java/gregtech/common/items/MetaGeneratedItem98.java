@@ -291,7 +291,7 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
 
         GTLanguageManager.addStringLocalization(
             getUnlocalizedName(aCell.mStack) + ".name",
-            cellType.prefix.mLocalizedMaterialPre + fluid.getLocalizedName(fluidStack)
+            cellType.prefix.getMaterialPrefix() + fluid.getLocalizedName(fluidStack)
                 + cellType.prefix.mLocalizedMaterialPost);
 
         int color = fluid.getColor();
