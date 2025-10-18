@@ -1825,6 +1825,7 @@ public enum MetaTileEntityIDs {
     ColdTrap_IV(31033),
     ColdTrap_ZPM(31034),
     Controller_Sparge_Tower(31035),
+    Hatch_Input_Debug_Steam(31039),
     Hatch_Input_Steam(31040),
     Controller_SteamMaceratorMulti(31041),
     Hatch_Input_Bus_Steam(31046),
