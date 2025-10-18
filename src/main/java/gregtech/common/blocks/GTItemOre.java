@@ -6,14 +6,13 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
-
-import org.apache.commons.lang3.StringUtils;
 
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GTDataUtils;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
 @Optional.Interface(
@@ -50,14 +49,26 @@ public class GTItemOre extends ItemBlock implements IItemFirestoneBurning {
 
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
-        String aName = super.getItemStackDisplayName(stack);
-        return Materials.getLocalizedNameForItem(aName, blockOre.getMaterialIndex(stack.getItemDamage()));
+        Materials mat = GTDataUtils
+            .getIndexSafe(GregTechAPI.sGeneratedMaterials, blockOre.getMaterialIndex(stack.getItemDamage()));
+
+        if (mat == null) mat = Materials._NULL;
+
+        boolean small = blockOre.isSmallOre(stack.getItemDamage());
+
+        return (small ? OrePrefixes.oreSmall : OrePrefixes.ore).getDefaultLocalNameForItem(mat);
     }
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> desc, boolean advancedTooltips) {
-        String formula = StatCollector.translateToLocal(getUnlocalizedName(stack) + ".tooltip");
-        if (!StringUtils.isBlank(formula)) desc.add(formula);
+        Materials mat = GTDataUtils
+            .getIndexSafe(GregTechAPI.sGeneratedMaterials, blockOre.getMaterialIndex(stack.getItemDamage()));
+
+        if (mat == null) mat = Materials._NULL;
+
+        if (mat.mChemicalFormula != null && !mat.mChemicalFormula.isEmpty()) {
+            desc.add(mat.mChemicalFormula);
+        }
     }
 
     @Override
@@ -66,6 +77,6 @@ public class GTItemOre extends ItemBlock implements IItemFirestoneBurning {
         int metadata = itemStack.getItemDamage();
         int matId = blockOre.getMaterialIndex(metadata);
 
-        return GregTechAPI.sGeneratedMaterials[matId] == Materials.Firestone;
+        return matId == Materials.Firestone.mMetaItemSubID;
     }
 }
