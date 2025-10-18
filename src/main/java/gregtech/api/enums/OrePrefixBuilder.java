@@ -55,12 +55,12 @@ public class OrePrefixBuilder {
         return this;
     }
 
-    protected OrePrefixBuilder setLocalMaterialPre(String localMaterialPre){
+    protected OrePrefixBuilder setLocalMaterialPre(String localMaterialPre) {
         this.localMaterialPre = localMaterialPre;
         return this;
     }
 
-    protected OrePrefixBuilder setLocalMaterialPost(String localMaterialPost){
+    protected OrePrefixBuilder setLocalMaterialPost(String localMaterialPost) {
         this.localMaterialPost = localMaterialPost;
         return this;
     }
