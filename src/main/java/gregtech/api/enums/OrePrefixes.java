@@ -2105,10 +2105,10 @@ public class OrePrefixes {
 
     public static final List<OrePrefixes> VALUES = new ArrayList<>();
 
-    private final String name;
-    private final String defaultLocalName;
-    private final String materialPrefix;
-    private final String materialPostfix;
+    private final @NotNull String name;
+    private final @NotNull String defaultLocalName;
+    private final @NotNull String materialPrefix;
+    private final @NotNull String materialPostfix;
     private final boolean isUnifiable;
     private final boolean isMaterialBased;
     private final boolean isSelfReferencing;
