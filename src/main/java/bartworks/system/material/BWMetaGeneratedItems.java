@@ -214,7 +214,7 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
 
     @Override
     public int getItemStackLimit(ItemStack aStack) {
-        return this.orePrefixes.mDefaultStackSize;
+        return this.orePrefixes.getDefaultStackSize();
     }
 
     @Override

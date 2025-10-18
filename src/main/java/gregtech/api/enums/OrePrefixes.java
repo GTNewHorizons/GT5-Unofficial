@@ -840,6 +840,7 @@ public class OrePrefixes {
         .selfReferencing()
         .container()
         .materialGenerationBits(B[4] | B[8])
+        .defaultStackSize(1)
         .build();
 
     public static final OrePrefixes capsule = new OrePrefixBuilder("capsule").withDefaultLocalName("Capsules")
@@ -2257,6 +2258,10 @@ public class OrePrefixes {
         return materialGenerationBits;
     }
 
+    public int getDefaultStackSize() {
+        return defaultStackSize;
+    }
+
     public long getMaterialAmount() {
         return materialAmount;
     }
@@ -2448,7 +2453,6 @@ public class OrePrefixes {
     private final ArrayList<IOreRecipeRegistrator> mOreProcessing = new ArrayList<>();
     public ItemStack mContainerItem = null;
     public ICondition<ISubTagContainer> mCondition = null;
-    public byte mDefaultStackSize = 64;
     public MaterialStack mSecondaryMaterial = null;
     public OrePrefixes mPrefixInto = this;
     public float mHeatDamage = 0.0F; // Negative for Frost Damage

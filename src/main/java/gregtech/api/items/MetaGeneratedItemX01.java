@@ -189,7 +189,7 @@ public abstract class MetaGeneratedItemX01 extends MetaGeneratedItem {
 
     @Override
     public int getItemStackLimit(ItemStack aStack) {
-        return getDamage(aStack) < mOffset ? Math.min(super.getItemStackLimit(aStack), mPrefix.mDefaultStackSize)
+        return getDamage(aStack) < mOffset ? Math.min(super.getItemStackLimit(aStack), mPrefix.getDefaultStackSize())
             : super.getItemStackLimit(aStack);
     }
 

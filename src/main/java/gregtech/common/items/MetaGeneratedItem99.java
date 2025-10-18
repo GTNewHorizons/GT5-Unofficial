@@ -209,7 +209,7 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
     public int getItemStackLimit(ItemStack aStack) {
         OrePrefixes prefix = getOrePrefix(aStack.getItemDamage());
         if (prefix != null) {
-            return prefix.mDefaultStackSize;
+            return prefix.getDefaultStackSize();
         } else {
             return 64;
         }

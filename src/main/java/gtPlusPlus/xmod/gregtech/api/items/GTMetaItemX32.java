@@ -206,7 +206,7 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
         final int tDamage = this.getDamage(aStack);
         if ((tDamage < 32000) && (this.mGeneratedPrefixList[tDamage / 1000] != null)) {
             return Math
-                .min(super.getItemStackLimit(aStack), this.mGeneratedPrefixList[tDamage / 1000].mDefaultStackSize);
+                .min(super.getItemStackLimit(aStack), this.mGeneratedPrefixList[tDamage / 1000].getDefaultStackSize());
         }
         return super.getItemStackLimit(aStack);
     }
