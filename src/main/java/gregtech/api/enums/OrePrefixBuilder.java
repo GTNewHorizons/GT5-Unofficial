@@ -15,7 +15,6 @@ public class OrePrefixBuilder {
     private boolean isRecyclable = false;
     private boolean generateDefaultItem = false;
     private boolean isEnchantable = false;
-    private boolean isUsedForOreProcessing = false;
     private int materialGenerationBits = 0;
     private long materialAmount = -1;
     private int defaultStackSize = 64;
@@ -41,7 +40,6 @@ public class OrePrefixBuilder {
             isRecyclable,
             generateDefaultItem,
             isEnchantable,
-            isUsedForOreProcessing,
             materialGenerationBits,
             materialAmount,
             defaultStackSize,
@@ -107,11 +105,6 @@ public class OrePrefixBuilder {
 
     protected OrePrefixBuilder enchantable() {
         this.isEnchantable = true;
-        return this;
-    }
-
-    protected OrePrefixBuilder usedForOreProcessing() {
-        this.isUsedForOreProcessing = true;
         return this;
     }
 
