@@ -10,6 +10,7 @@ public class OrePrefixBuilder {
     private boolean isMaterialBased = false;
     private boolean isSelfReferencing = false;
     private boolean isContainer = false;
+    private boolean doNotUnifyActively = false;
 
     protected OrePrefixBuilder(String name) {
         this.name = name;
@@ -25,7 +26,8 @@ public class OrePrefixBuilder {
             isUnifiable,
             isMaterialBased,
             isSelfReferencing,
-            isContainer
+            isContainer,
+            doNotUnifyActively
             // spotless:on
         );
     }
@@ -62,6 +64,11 @@ public class OrePrefixBuilder {
 
     protected OrePrefixBuilder setContainer() {
         this.isContainer = true;
+        return this;
+    }
+
+    protected OrePrefixBuilder setDoNotUnifyActively() {
+        this.doNotUnifyActively = true;
         return this;
     }
 }
