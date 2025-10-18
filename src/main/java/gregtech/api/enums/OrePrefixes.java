@@ -2243,6 +2243,10 @@ public class OrePrefixes {
         return isUsedForBlocks;
     }
 
+    public boolean isUsedForOreProcessing() {
+        return isUsedForOreProcessing;
+    }
+
     public long getMaterialAmount() {
         return materialAmount;
     }
