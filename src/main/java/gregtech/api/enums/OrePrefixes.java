@@ -2220,6 +2220,10 @@ public class OrePrefixes {
         return isMaterialBased;
     }
 
+    public boolean isContainer() {
+        return isContainer;
+    }
+
     public long getMaterialAmount() {
         return materialAmount;
     }

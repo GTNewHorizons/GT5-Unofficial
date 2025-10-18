@@ -19,7 +19,7 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
 
     public ProcessingTransforming() {
         for (OrePrefixes tPrefix : OrePrefixes.VALUES)
-            if (((tPrefix.getMaterialAmount() > 0L) && (!tPrefix.mIsContainer) && (!tPrefix.mIsEnchantable))
+            if (((tPrefix.getMaterialAmount() > 0L) && (!tPrefix.isContainer()) && (!tPrefix.mIsEnchantable))
                 || (tPrefix == OrePrefixes.plank)) tPrefix.add(this);
     }
 
