@@ -2239,6 +2239,10 @@ public class OrePrefixes {
         return isEnchantable;
     }
 
+    public boolean isUsedForBlocks() {
+        return isUsedForBlocks;
+    }
+
     public long getMaterialAmount() {
         return materialAmount;
     }

@@ -509,7 +509,7 @@ public class GTPreLoad {
                 || (tPrefix == OrePrefixes.treeSapling)
                 || (tPrefix == OrePrefixes.log)) {
                     tPrefix.mDefaultStackSize = ((byte) Math.min(64, Math.max(16, Gregtech.features.maxLogStackSize)));
-                } else if (tPrefix.mIsUsedForBlocks) {
+                } else if (tPrefix.isUsedForBlocks()) {
                     tPrefix.mDefaultStackSize = ((byte) Math
                         .min(64, Math.max(16, Gregtech.features.maxOtherBlocksStackSize)));
                 }
