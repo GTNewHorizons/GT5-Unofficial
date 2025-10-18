@@ -179,7 +179,9 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                         createTerminalTextWidget(syncManager, panel)
                             .size(getTerminalWidgetWidth() - 4, getTerminalWidgetHeight() - 8)
                             .collapseDisabledChild())
-                    .childIf(multiblock.supportsTerminalCornerColumn(), createTerminalCornerColumn(panel, syncManager)));
+                    .childIf(
+                        multiblock.supportsTerminalCornerColumn(),
+                        createTerminalCornerColumn(panel, syncManager)));
     }
 
     protected Flow createTerminalCornerColumn(ModularPanel panel, PanelSyncManager syncManager) {
@@ -589,11 +591,13 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     }
 
     private BooleanSyncValue getInputSeparationSyncValue(BooleanSyncValue inputSeparationSyncer) {
-        return new BooleanSyncValue(() -> inputSeparationSyncer.getValue() || !multiblock.supportsInputSeparation(), bool -> {
-            if (multiblock.supportsInputSeparation()) {
-                inputSeparationSyncer.setValue(bool);
-            }
-        });
+        return new BooleanSyncValue(
+            () -> inputSeparationSyncer.getValue() || !multiblock.supportsInputSeparation(),
+            bool -> {
+                if (multiblock.supportsInputSeparation()) {
+                    inputSeparationSyncer.setValue(bool);
+                }
+            });
     }
 
     private IDrawable getForcedInputSeparationOverlay() {
@@ -691,7 +695,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             }
         }.size(18, 18)
             .value(getBatchModeSyncValue(batchModeSyncer))
-            .overlay(multiblock.supportsBatchMode() ? getBatchModeOverlay(batchModeSyncer) : getForcedBatchModeOverlay())
+            .overlay(
+                multiblock.supportsBatchMode() ? getBatchModeOverlay(batchModeSyncer) : getForcedBatchModeOverlay())
             .tooltipBuilder(this::createBatchModeTooltip);
     }
 
@@ -743,11 +748,13 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     }
 
     private BooleanSyncValue getRecipeLockSyncValue(BooleanSyncValue recipeLockSyncer) {
-        return new BooleanSyncValue(() -> recipeLockSyncer.getValue() || !multiblock.supportsSingleRecipeLocking(), bool -> {
-            if (multiblock.supportsSingleRecipeLocking()) {
-                recipeLockSyncer.setValue(bool);
-            }
-        });
+        return new BooleanSyncValue(
+            () -> recipeLockSyncer.getValue() || !multiblock.supportsSingleRecipeLocking(),
+            bool -> {
+                if (multiblock.supportsSingleRecipeLocking()) {
+                    recipeLockSyncer.setValue(bool);
+                }
+            });
     }
 
     private IDrawable getForcedRecipeLockOverlay() {
@@ -836,7 +843,9 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     }
 
     private IWidget makeParallelConfigurator(PanelSyncManager syncManager) {
-        IntSyncValue maxParallelSyncer = new IntSyncValue(multiblock::getMaxParallelRecipes, multiblock::setMaxParallelForPanel);
+        IntSyncValue maxParallelSyncer = new IntSyncValue(
+            multiblock::getMaxParallelRecipes,
+            multiblock::setMaxParallelForPanel);
         BooleanSyncValue alwaysMaxParallelSyncer = new BooleanSyncValue(
             multiblock::isAlwaysMaxParallel,
             multiblock::setAlwaysMaxParallel);
@@ -981,8 +990,9 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .child(createPowerSwitchButton())
             .childIf(
                 multiblock.doesBindPlayerInventory(),
-                new ItemSlot()
-                    .slot(new ModularSlot(multiblock.inventoryHandler, multiblock.getControllerSlotIndex()).slotGroup("item_inv")));
+                new ItemSlot().slot(
+                    new ModularSlot(multiblock.inventoryHandler, multiblock.getControllerSlotIndex())
+                        .slotGroup("item_inv")));
     }
 
     protected IWidget createStructureUpdateButton(PanelSyncManager syncManager) {
@@ -1015,26 +1025,36 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                 multiblock::getStructureErrors,
                 multiblock::setStructureErrors,
                 new StructureErrorAdapter()));
-        syncManager.syncValue("errorID", new IntSyncValue(multiblock::getErrorDisplayID, multiblock::setErrorDisplayID));
+        syncManager
+            .syncValue("errorID", new IntSyncValue(multiblock::getErrorDisplayID, multiblock::setErrorDisplayID));
         syncManager.syncValue(
             "machineActive",
             new BooleanSyncValue(baseMetaTileEntity::isActive, baseMetaTileEntity::setActive));
 
-        syncManager.syncValue("wrench", new BooleanSyncValue(() -> multiblock.mWrench, val -> multiblock.mWrench = val));
         syncManager
-            .syncValue("screwdriver", new BooleanSyncValue(() -> multiblock.mScrewdriver, val -> multiblock.mScrewdriver = val));
-        syncManager
-            .syncValue("softMallet", new BooleanSyncValue(() -> multiblock.mSoftMallet, val -> multiblock.mSoftMallet = val));
-        syncManager
-            .syncValue("hardHammer", new BooleanSyncValue(() -> multiblock.mHardHammer, val -> multiblock.mHardHammer = val));
+            .syncValue("wrench", new BooleanSyncValue(() -> multiblock.mWrench, val -> multiblock.mWrench = val));
+        syncManager.syncValue(
+            "screwdriver",
+            new BooleanSyncValue(() -> multiblock.mScrewdriver, val -> multiblock.mScrewdriver = val));
+        syncManager.syncValue(
+            "softMallet",
+            new BooleanSyncValue(() -> multiblock.mSoftMallet, val -> multiblock.mSoftMallet = val));
+        syncManager.syncValue(
+            "hardHammer",
+            new BooleanSyncValue(() -> multiblock.mHardHammer, val -> multiblock.mHardHammer = val));
         syncManager.syncValue(
             "solderingTool",
             new BooleanSyncValue(() -> multiblock.mSolderingTool, val -> multiblock.mSolderingTool = val));
-        syncManager.syncValue("crowbar", new BooleanSyncValue(() -> multiblock.mCrowbar, val -> multiblock.mCrowbar = val));
-        syncManager.syncValue("machine", new BooleanSyncValue(() -> multiblock.mMachine, val -> multiblock.mMachine = val));
+        syncManager
+            .syncValue("crowbar", new BooleanSyncValue(() -> multiblock.mCrowbar, val -> multiblock.mCrowbar = val));
+        syncManager
+            .syncValue("machine", new BooleanSyncValue(() -> multiblock.mMachine, val -> multiblock.mMachine = val));
 
-        syncManager.syncValue("totalRunTime", new LongSyncValue(multiblock::getTotalRunTime, multiblock::setTotalRunTime));
-        syncManager.syncValue("lastWorkingTick", new LongSyncValue(multiblock::getLastWorkingTick, multiblock::setLastWorkingTick));
+        syncManager
+            .syncValue("totalRunTime", new LongSyncValue(multiblock::getTotalRunTime, multiblock::setTotalRunTime));
+        syncManager.syncValue(
+            "lastWorkingTick",
+            new LongSyncValue(multiblock::getLastWorkingTick, multiblock::setLastWorkingTick));
         BooleanSyncValue wasShutDown = new BooleanSyncValue(
             baseMetaTileEntity::wasShutdown,
             baseMetaTileEntity::setShutdownStatus);
@@ -1089,8 +1109,9 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                 (a, b) -> a.isFluidEqual(b) && a.amount == b.amount,
                 null));
 
-        syncManager
-            .syncValue("progressTime", new IntSyncValue(() -> multiblock.mProgresstime, val -> multiblock.mProgresstime = val));
+        syncManager.syncValue(
+            "progressTime",
+            new IntSyncValue(() -> multiblock.mProgresstime, val -> multiblock.mProgresstime = val));
 
         IntSyncValue maxProgressTimeSyncer = new IntSyncValue(
             () -> multiblock.mMaxProgresstime,
@@ -1129,10 +1150,14 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         syncManager.syncValue("structureUpdate", structureUpdateSyncer);
         syncManager.syncValue("structureUpdateButton", structureUpdateButtonSyncer);
 
-        BooleanSyncValue recipeLockSyncer = new BooleanSyncValue(multiblock::isRecipeLockingEnabled, multiblock::setRecipeLocking);
+        BooleanSyncValue recipeLockSyncer = new BooleanSyncValue(
+            multiblock::isRecipeLockingEnabled,
+            multiblock::setRecipeLocking);
         syncManager.syncValue("recipeLock", recipeLockSyncer);
 
-        BooleanSyncValue batchModeSyncer = new BooleanSyncValue(multiblock::isBatchModeEnabled, multiblock::setBatchMode);
+        BooleanSyncValue batchModeSyncer = new BooleanSyncValue(
+            multiblock::isBatchModeEnabled,
+            multiblock::setBatchMode);
         syncManager.syncValue("batchMode", batchModeSyncer);
 
         IntSyncValue machineModeSyncer = new IntSyncValue(multiblock::getMachineMode, multiblock::setMachineMode);
@@ -1146,7 +1171,9 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         IntSyncValue voidExcessSyncer = new IntSyncValue(
             () -> multiblock.getVoidingMode()
                 .ordinal(),
-            val -> { if (multiblock.supportsVoidProtection()) multiblock.setVoidingMode(VoidingMode.fromOrdinal(val)); });
+            val -> {
+                if (multiblock.supportsVoidProtection()) multiblock.setVoidingMode(VoidingMode.fromOrdinal(val));
+            });
         syncManager.syncValue("voidExcess", voidExcessSyncer);
 
         syncManager.registerSlotGroup("item_inv", 1);

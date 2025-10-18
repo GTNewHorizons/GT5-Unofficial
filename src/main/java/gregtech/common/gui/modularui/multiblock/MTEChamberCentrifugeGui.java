@@ -164,7 +164,8 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui<MTEChamberCent
                                         'I',
                                         index -> {
                                             return new ItemSlot().slot(
-                                                new ModularSlot(multiblock.turbineHolder, index).filter(multiblock::isTurbine));
+                                                new ModularSlot(multiblock.turbineHolder, index)
+                                                    .filter(multiblock::isTurbine));
                                         })
                                     .build())
 
@@ -182,7 +183,10 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui<MTEChamberCent
                             .crossAxisAlignment(Alignment.CrossAxis.CENTER)
                             .child(
                                 new ToggleButton()
-                                    .value(new BooleanSyncValue(() -> multiblock.tier2Fluid, bool -> multiblock.tier2Fluid = bool))
+                                    .value(
+                                        new BooleanSyncValue(
+                                            () -> multiblock.tier2Fluid,
+                                            bool -> multiblock.tier2Fluid = bool))
                                     .overlay(true, GTGuiTextures.OVERLAY_BUTTON_REDSTONE_ON)
                                     .overlay(false, GTGuiTextures.OVERLAY_BUTTON_REDSTONE_OFF))
 
