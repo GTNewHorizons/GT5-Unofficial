@@ -14,8 +14,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.common.covers.CoverLiquidMeter;
 import gregtech.common.covers.CoverPosition;
-import gregtech.common.covers.gui.CoverGui;
-import gregtech.common.covers.gui.redstone.CoverWirelessFluidDetectorGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
+import gregtech.common.gui.modularui.cover.redstone.CoverWirelessFluidDetectorGui;
 import gregtech.common.gui.mui1.cover.WirelessFluidDetectorUIFactory;
 import io.netty.buffer.ByteBuf;
 
@@ -121,7 +121,7 @@ public class CoverWirelessFluidDetector extends CoverAdvancedRedstoneTransmitter
     }
 
     @Override
-    protected @NotNull CoverGui<?> getCoverGui() {
+    protected @NotNull CoverBaseGui<?> getCoverGui() {
         return new CoverWirelessFluidDetectorGui(this);
     }
 }

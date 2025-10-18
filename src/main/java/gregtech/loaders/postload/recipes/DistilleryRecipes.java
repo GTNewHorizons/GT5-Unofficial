@@ -15,7 +15,6 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsOreAlum;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
@@ -121,8 +120,8 @@ public class DistilleryRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(MaterialsOreAlum.SluiceSand.getDust(1))
-            .fluidInputs(MaterialsOreAlum.SluiceJuice.getFluid(1_000))
+            .itemOutputs(Materials.SluiceSand.getDust(1))
+            .fluidInputs(Materials.SluiceJuice.getFluid(1_000))
             .fluidOutputs(Materials.Water.getFluid(500))
             .duration(5 * SECONDS)
             .eut(16)

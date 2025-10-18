@@ -740,6 +740,11 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     private static final int PARALLEL_WINDOW_ID = 10;
 
     @Override
+    protected boolean useMui2() {
+        return false;
+    }
+
+    @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         buildContext.addSyncedWindow(PARALLEL_WINDOW_ID, this::createParallelWindow);
         builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {

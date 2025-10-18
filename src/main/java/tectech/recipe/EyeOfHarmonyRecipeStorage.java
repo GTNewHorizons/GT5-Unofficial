@@ -19,7 +19,6 @@ import galacticgreg.api.ModDimensionDef;
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -124,7 +123,7 @@ public class EyeOfHarmonyRecipeStorage {
                 .fluidInputs(
                     Materials.Hydrogen.getGas(0),
                     Materials.Helium.getGas(0),
-                    MaterialsUEVplus.RawStarMatter.getFluid(0))
+                    Materials.RawStarMatter.getFluid(0))
                 .fluidOutputs(outputFluids.toArray(new FluidStack[0]))
                 .duration(recipe.getRecipeTimeInTicks())
                 .eut(0)

@@ -923,6 +923,7 @@ public enum GregtechItemList implements IGregtechItemContainer {
     DehydratorCoilWireZPM,
     PersonalCloakingDevice,
     PersonalHealingDevice,
+    Hatch_Input_Debug_Steam,
 
     ;
 
