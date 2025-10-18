@@ -3634,6 +3634,7 @@ gt.channelfor.super_chest=Super Chest Tier
 machtype.bbf=Blast Furnace, BBF
 machtype.ebf=Blast Furnace, EBF
 machtype.vf=Vacuum Freezer, VF
+machtype.mvf=Vacuum Freezer, MVF
 machtype.lcr=Chemical Reactor, LCR
 machtype.purif_plant=Purification Plant, WPP
 machtype.fluid_tank=Fluid Tank
@@ -3672,6 +3673,13 @@ gt.mb.corepos.top_center=Top center
 gt.mb.hint_block=Hint block with dot %d
 
 # Multiblock Tooltip lines
+gt.mvf.tips.1=§8§o"Handles all things cooling!"
+gt.mvf.tips.2=Upgrade to Tier 2 to unlock §3Subspace Cooling\nWill gain §6perfect overclocks§7 by §aconsuming §dcoolants:\n§a7500 L/s§7 : §61§7 : §d%s\n§a5000 L/s§7 : §62§7 : §d%s\n§a2500 L/s§7 : §63§7 : §d%s
+gt.mvf.tips.3=§3Reinforcing the structure allows the injection of exotic coolants,\n§3enabling the capture of heat energy from miniature tears in spacetime,\n§3massively increasing the efficiency of the cooling process.
+gt.mvf.info.1=Any Frost Proof Machine Casing
+gt.mvf.info.2=§9Base Multi (Tier §51§9):
+gt.mvf.info.3=§9Tier §52§9 (Upgrades from Tier §51§9):
+
 gt.tfft.tips.1=High-Tech fluid tank that can hold up to 25 different fluids!\nHas 1/25th of the total capacity as capacity for each fluid\nRight clicking the controller with a screwdriver will turn on excess voiding\nFluid storage amount and running cost depends on the storage field blocks used
 gt.tfft.tips.2=Note on hatch locking:\nUse an Integrated Circuit in the GUI slot to limit which fluid is output\nThe index of a stored fluid can be obtained through the Tricorder
 gt.tfft.info.1=Energy hatch is not required when running cost is 0
