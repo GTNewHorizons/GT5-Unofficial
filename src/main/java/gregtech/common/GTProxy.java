@@ -1678,15 +1678,15 @@ public class GTProxy implements IFuelHandler {
                                         aEvent.Name);
                                 }
 
-                                switch (aPrefix) {
-                                    case crystal -> {
+                                switch (aPrefix.getName()) {
+                                    case "crystal" -> {
                                         if ((aMaterial == Materials.CertusQuartz)
                                             || (aMaterial == Materials.NetherQuartz)
                                             || (aMaterial == Materials.Fluix)) {
                                             GTOreDictUnificator.registerOre(OrePrefixes.gem, aMaterial, aEvent.Ore);
                                         }
                                     }
-                                    case gem -> {
+                                    case "gem" -> {
                                         if (aMaterial == Materials.Lapis || aMaterial == Materials.Sodalite) {
                                             GTOreDictUnificator.registerOre(Dyes.dyeBlue, aEvent.Ore);
                                         } else if (aMaterial == Materials.Lazurite) {
@@ -1721,7 +1721,7 @@ public class GTProxy implements IFuelHandler {
                                                                 .registerOre(OreDictNames.craftingQuartz, aEvent.Ore);
                                                         }
                                     }
-                                    case cableGt01 -> {
+                                    case "cableGt01" -> {
                                         if (aMaterial == Materials.Tin) {
                                             GTOreDictUnificator.registerOre(OreDictNames.craftingWireTin, aEvent.Ore);
                                         } else if (aMaterial == Materials.AnyCopper) {
@@ -1733,7 +1733,7 @@ public class GTProxy implements IFuelHandler {
                                             GTOreDictUnificator.registerOre(OreDictNames.craftingWireIron, aEvent.Ore);
                                         }
                                     }
-                                    case lens -> {
+                                    case "lens" -> {
                                         if ((aMaterial.contains(SubTag.TRANSPARENT))
                                             && (aMaterial.mColor != Dyes._NULL)) {
                                             GTOreDictUnificator.registerOre(
@@ -1742,7 +1742,7 @@ public class GTProxy implements IFuelHandler {
                                                 aEvent.Ore);
                                         }
                                     }
-                                    case plate -> {
+                                    case "plate" -> {
                                         if ((aMaterial == Materials.Plastic) || (aMaterial == Materials.Rubber)) {
                                             GTOreDictUnificator.registerOre(OrePrefixes.sheet, aMaterial, aEvent.Ore);
                                         } else if (aMaterial == Materials.Silicon) {
@@ -1752,14 +1752,14 @@ public class GTProxy implements IFuelHandler {
                                             GTOreDictUnificator.registerOre(OrePrefixes.plank, aMaterial, aEvent.Ore);
                                         }
                                     }
-                                    case cell -> {
+                                    case "cell" -> {
                                         if (aMaterial == Materials.Empty) {
                                             GTOreDictUnificator.addToBlacklist(aEvent.Ore);
                                         }
                                     }
-                                    case gearGt -> GTOreDictUnificator
+                                    case "gearGt" -> GTOreDictUnificator
                                         .registerOre(OrePrefixes.gear, aMaterial, aEvent.Ore);
-                                    case stick -> {
+                                    case "stick" -> {
                                         if (!GTRecipeRegistrator.sRodMaterialList.contains(aMaterial)) {
                                             GTRecipeRegistrator.sRodMaterialList.add(aMaterial);
                                         } else if (aMaterial == Materials.Wood) {
@@ -1770,7 +1770,7 @@ public class GTProxy implements IFuelHandler {
                                                     .registerOre(ToolDictNames.craftingToolSolderingMetal, aEvent.Ore);
                                             }
                                     }
-                                    case dust -> {
+                                    case "dust" -> {
                                         if (aMaterial == Materials.Salt) {
                                             GTOreDictUnificator.registerOre("itemSalt", aEvent.Ore);
                                         } else if (aMaterial == Materials.Wood) {
@@ -1794,7 +1794,7 @@ public class GTProxy implements IFuelHandler {
                                             GTOreDictUnificator.registerOre(Dyes.dyeYellow, aEvent.Ore);
                                         }
                                     }
-                                    case ingot -> {
+                                    case "ingot" -> {
                                         if (aMaterial == Materials.Rubber) {
                                             GTOreDictUnificator.registerOre("itemRubber", aEvent.Ore);
                                         } else if (aMaterial == Materials.FierySteel) {
