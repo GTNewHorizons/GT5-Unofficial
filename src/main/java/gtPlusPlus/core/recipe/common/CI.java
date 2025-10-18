@@ -115,10 +115,10 @@ public class CI {
             } else {
                 materialName = (StringUtils.sanitizeString(((Material) material).getLocalizedName()));
             }
-            Logger.INFO("Searching for a component named " + type.name() + materialName);
-            return (type.name() + materialName);
+            Logger.INFO("Searching for a component named " + type.getName() + materialName);
+            return (type.getName() + materialName);
         }
-        Logger.INFO("[Components] Failed getting a tiered component. " + type.name() + " | " + tier);
+        Logger.INFO("[Components] Failed getting a tiered component. " + type.getName() + " | " + tier);
         return null;
     }
 

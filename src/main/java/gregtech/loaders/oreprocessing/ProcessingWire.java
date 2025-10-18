@@ -211,7 +211,9 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
             }
             default -> {
                 GTLog.err.println(
-                    "OrePrefix " + aPrefix.name() + " cannot be registered as a cable for Material " + aMaterial.mName);
+                    "OrePrefix " + aPrefix.getName()
+                        + " cannot be registered as a cable for Material "
+                        + aMaterial.mName);
                 return;
             }
         }

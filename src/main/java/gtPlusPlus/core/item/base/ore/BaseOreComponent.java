@@ -71,14 +71,14 @@ public class BaseOreComponent extends Item {
         }
         String aKey = "Invalid";
         switch (componentType) {
-            case CRUSHED -> aKey = OrePrefixes.crushed.name();
-            case CRUSHEDCENTRIFUGED -> aKey = OrePrefixes.crushedCentrifuged.name();
-            case CRUSHEDPURIFIED -> aKey = OrePrefixes.crushedPurified.name();
-            case DUST -> aKey = OrePrefixes.dust.name();
-            case DUSTIMPURE -> aKey = OrePrefixes.dustImpure.name();
-            case DUSTPURE -> aKey = OrePrefixes.dustPure.name();
-            case MILLED -> aKey = OrePrefixes.milled.name();
-            case RAWORE -> aKey = OrePrefixes.rawOre.name();
+            case CRUSHED -> aKey = OrePrefixes.crushed.getName();
+            case CRUSHEDCENTRIFUGED -> aKey = OrePrefixes.crushedCentrifuged.getName();
+            case CRUSHEDPURIFIED -> aKey = OrePrefixes.crushedPurified.getName();
+            case DUST -> aKey = OrePrefixes.dust.getName();
+            case DUSTIMPURE -> aKey = OrePrefixes.dustImpure.getName();
+            case DUSTPURE -> aKey = OrePrefixes.dustPure.getName();
+            case MILLED -> aKey = OrePrefixes.milled.getName();
+            case RAWORE -> aKey = OrePrefixes.rawOre.getName();
         }
 
         ItemStack x = aMap.get(aKey);
@@ -232,7 +232,7 @@ public class BaseOreComponent extends Item {
         ComponentTypes(final String LocalName, final OrePrefixes orePrefix, final String prefix,
             final String DisplayName, final boolean overlay) {
             this.COMPONENT_NAME = LocalName;
-            this.orePrefix = orePrefix.name();
+            this.orePrefix = orePrefix.getName();
             this.PREFIX = prefix;
             this.DISPLAY_NAME = DisplayName;
             this.HAS_OVERLAY = overlay;

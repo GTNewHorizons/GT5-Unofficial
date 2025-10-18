@@ -18,7 +18,7 @@ import gregtech.api.util.GTUtility;
 public class ProcessingTransforming implements IOreRecipeRegistrator {
 
     public ProcessingTransforming() {
-        for (OrePrefixes tPrefix : OrePrefixes.values())
+        for (OrePrefixes tPrefix : OrePrefixes.VALUES)
             if (((tPrefix.getMaterialAmount() > 0L) && (!tPrefix.mIsContainer) && (!tPrefix.mIsEnchantable))
                 || (tPrefix == OrePrefixes.plank)) tPrefix.add(this);
     }

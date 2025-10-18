@@ -69,7 +69,7 @@ public class RecipeGenRecycling implements Runnable {
 
         for (int r = 0; r < mValidPairs.length; r++) {
             ItemStack temp = getItemStackOfAmountFromOreDictNoBroken(
-                mValidPrefixesAsString[r].name() + StringUtils.sanitizeString(material.getLocalizedName()),
+                mValidPrefixesAsString[r].getName() + StringUtils.sanitizeString(material.getLocalizedName()),
                 1);
             if (temp != null) {
                 mValidPairs[mSlotIndex++] = Pair.of(mValidPrefixesAsString[r], temp.copy());
@@ -236,7 +236,7 @@ public class RecipeGenRecycling implements Runnable {
     public static ItemStack get(final OrePrefixes aPrefix, final Material aMaterial, final ItemStack aReplacement,
         final long aAmount) {
         return get(
-            aPrefix.name() + StringUtils.sanitizeString(aMaterial.getLocalizedName()),
+            aPrefix.getName() + StringUtils.sanitizeString(aMaterial.getLocalizedName()),
             aReplacement,
             aAmount,
             false,

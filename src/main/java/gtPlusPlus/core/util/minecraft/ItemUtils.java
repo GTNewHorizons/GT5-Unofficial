@@ -374,7 +374,7 @@ public class ItemUtils {
 
         String mName = StringUtils.sanitizeString(mMat.getLocalizedName());
 
-        String mItemName = mPrefix.name() + mName;
+        String mItemName = mPrefix.getName() + mName;
         return ItemUtils.getItemStackOfAmountFromOreDictNoBroken(mItemName, mAmount);
     }
 

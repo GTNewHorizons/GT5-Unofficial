@@ -500,7 +500,7 @@ public class GTPreLoad {
 
         // features
         GTMod.proxy.mUpgradeCount = Math.min(64, Math.max(1, Gregtech.features.upgradeStackSize));
-        for (OrePrefixes tPrefix : OrePrefixes.values()) {
+        for (OrePrefixes tPrefix : OrePrefixes.VALUES) {
             if (tPrefix.mIsUsedForOreProcessing) {
                 tPrefix.mDefaultStackSize = ((byte) Math.min(64, Math.max(1, Gregtech.features.maxOreStackSize)));
             } else if (tPrefix == OrePrefixes.plank) {

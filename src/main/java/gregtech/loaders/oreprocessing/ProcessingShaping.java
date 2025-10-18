@@ -51,8 +51,8 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
 
                 if (aMaterial.contains(SubTag.NO_SMASHING)) {
                     tVoltageMultiplier /= 4;
-                } else if (aPrefix.name()
-                    .startsWith(OrePrefixes.dust.name())) {
+                } else if (aPrefix.getName()
+                    .startsWith(OrePrefixes.dust.getName())) {
                         return;
                     }
 
