@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.item.ItemStack;
@@ -2494,10 +2495,7 @@ public class OrePrefixes {
             if (getClass() != obj.getClass()) return false;
             ParsedOreDictName other = (ParsedOreDictName) obj;
             if (prefix != other.prefix) return false;
-            if (material == null) {
-                if (other.material != null) return false;
-            } else if (!material.equals(other.material)) return false;
-            return true;
+            return Objects.equals(material, other.material);
         }
     }
 
