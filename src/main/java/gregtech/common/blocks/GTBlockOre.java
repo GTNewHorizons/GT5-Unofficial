@@ -86,7 +86,8 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
 
                 info.stoneType = stoneType;
 
-                if (stoneType.getPrefix().mIsUnificatable) {
+                if (stoneType.getPrefix()
+                    .isUnifiable()) {
                     GTOreDictUnificator
                         .set(stoneType.getPrefix(), info.material, GTOreAdapter.INSTANCE.getStack(info, 1));
                 } else {

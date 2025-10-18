@@ -1833,7 +1833,7 @@ public class GTProxy implements IFuelHandler {
                                     }
                                     default -> {}
                                 }
-                                if (aPrefix.mIsUnificatable && !aMaterial.mUnifiable) {
+                                if (aPrefix.isUnifiable() && !aMaterial.mUnifiable) {
                                     return;
                                 }
                             } else {
@@ -2394,7 +2394,7 @@ public class GTProxy implements IFuelHandler {
     public void registerUnificationEntries() {
         GTOreDictUnificator.resetUnificationEntries();
         for (OreDictEventContainer tOre : this.oreDictEvents) {
-            if ((tOre.mPrefix != null) && (tOre.mPrefix.mIsUnificatable) && (tOre.mMaterial != null)) {
+            if ((tOre.mPrefix != null) && (tOre.mPrefix.isUnifiable()) && (tOre.mMaterial != null)) {
                 if (GTOreDictUnificator.isBlacklisted(tOre.mEvent.Ore)) {
                     GTOreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.Ore, true);
                 } else {

@@ -94,7 +94,7 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
             getUnlocalizedName(tStack) + ".tooltip",
             tMaterial.getToolTip(cellMolten.getMaterialAmount() / M));
 
-        if (cellMolten.mIsUnificatable) {
+        if (cellMolten.isUnifiable()) {
             GTOreDictUnificator.set(cellMolten, tMaterial, tStack);
         } else {
             GTOreDictUnificator.registerOre(cellMolten.get(tMaterial), tStack);
@@ -114,7 +114,7 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
                 getUnlocalizedName(tStack) + ".tooltip",
                 tMaterial.getToolTip(prefix.getMaterialAmount() / M));
 
-            if (prefix.mIsUnificatable) {
+            if (prefix.isUnifiable()) {
                 GTOreDictUnificator.set(prefix, tMaterial, tStack);
             } else {
                 GTOreDictUnificator.registerOre(prefix.get(tMaterial), tStack);

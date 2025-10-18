@@ -2208,6 +2208,10 @@ public class OrePrefixes {
         return skipActiveUnification;
     }
 
+    public boolean isUnifiable() {
+        return isUnifiable;
+    }
+
     public long getMaterialAmount() {
         return materialAmount;
     }
