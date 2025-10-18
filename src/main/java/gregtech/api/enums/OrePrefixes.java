@@ -718,7 +718,7 @@ public class OrePrefixes {
         .build();
 
     /** consisting out of 4 Plates, 1 Ring and 1 Screw. */
-    public static final OrePrefixes Rotor = new OrePrefixBuilder("Rotor").withDefaultLocalName("Rotors")
+    public static final OrePrefixes rotor = new OrePrefixBuilder("Rotor").withDefaultLocalName("Rotors")
         .withSuffix(" Rotor")
         .unifiable()
         .materialBased()
@@ -2161,64 +2161,40 @@ public class OrePrefixes {
         this.materialAmount = materialAmount;
         this.defaultStackSize = defaultStackSize;
         this.textureIndex = textureIndex;
-    }
 
-    // OrePrefixes(String aRegularLocalName, String aLocalizedMaterialPre, String aLocalizedMaterialPost,
-    // boolean aIsUnificatable, boolean aIsMaterialBased, boolean aIsSelfReferencing, boolean aIsContainer,
-    // boolean aDontUnificateActively, boolean aIsUsedForBlocks, boolean aAllowNormalRecycling,
-    // boolean aGenerateDefaultItem, boolean aIsEnchantable, boolean aIsUsedForOreProcessing,
-    // int aMaterialGenerationBits, long aMaterialAmount, int aDefaultStackSize, int aTextureindex) {
-    // mIsUnificatable = aIsUnificatable;
-    // mIsMaterialBased = aIsMaterialBased;
-    // mIsSelfReferencing = aIsSelfReferencing;
-    // mIsContainer = aIsContainer;
-    // mDontUnificateActively = aDontUnificateActively;
-    // mIsUsedForBlocks = aIsUsedForBlocks;
-    // mAllowNormalRecycling = aAllowNormalRecycling;
-    // mGenerateDefaultItem = aGenerateDefaultItem;
-    // mIsEnchantable = aIsEnchantable;
-    // mIsUsedForOreProcessing = aIsUsedForOreProcessing;
-    // mMaterialGenerationBits = aMaterialGenerationBits;
-    // mMaterialAmount = aMaterialAmount;
-    // mRegularLocalName = aRegularLocalName;
-    // mLocalizedMaterialPre = aLocalizedMaterialPre;
-    // mLocalizedMaterialPost = aLocalizedMaterialPost;
-    // mDefaultStackSize = (byte) aDefaultStackSize;
-    // mTextureIndex = (short) aTextureindex;
-    //
-    // if (name().startsWith("ore")) {
-    // new TC_AspectStack(TCAspects.TERRA, 1).addToAspectList(mAspects);
-    // } else if (name().startsWith("wire") || name().startsWith("cable")) {
-    // new TC_AspectStack(TCAspects.ELECTRUM, 1).addToAspectList(mAspects);
-    // } else if (name().startsWith("dust")) {
-    // new TC_AspectStack(TCAspects.PERDITIO, 1).addToAspectList(mAspects);
-    // } else if (name().startsWith("crushed")) {
-    // new TC_AspectStack(TCAspects.PERFODIO, 1).addToAspectList(mAspects);
-    // } else if (name().startsWith("ingot") || name().startsWith("nugget")) {
-    // new TC_AspectStack(TCAspects.METALLUM, 1).addToAspectList(mAspects);
-    // } else if (name().startsWith("armor")) {
-    // new TC_AspectStack(TCAspects.TUTAMEN, 1).addToAspectList(mAspects);
-    // } else if (name().startsWith("stone")) {
-    // new TC_AspectStack(TCAspects.TERRA, 1).addToAspectList(mAspects);
-    // } else if (name().startsWith("pipe")) {
-    // new TC_AspectStack(TCAspects.ITER, 1).addToAspectList(mAspects);
-    // } else if (name().startsWith("gear")) {
-    // new TC_AspectStack(TCAspects.MOTUS, 1).addToAspectList(mAspects);
-    // new TC_AspectStack(TCAspects.MACHINA, 1).addToAspectList(mAspects);
-    // } else if (name().startsWith("frame") || name().startsWith("plate")) {
-    // new TC_AspectStack(TCAspects.FABRICO, 1).addToAspectList(mAspects);
-    // } else if (name().startsWith("tool")) {
-    // new TC_AspectStack(TCAspects.INSTRUMENTUM, 2).addToAspectList(mAspects);
-    // } else if (name().startsWith("gem") || name().startsWith("crystal") || name().startsWith("lens")) {
-    // new TC_AspectStack(TCAspects.VITREUS, 1).addToAspectList(mAspects);
-    // } else if (name().startsWith("circuit")) {
-    // new TC_AspectStack(TCAspects.COGNITIO, 1).addToAspectList(mAspects);
-    // } else if (name().startsWith("computer")) {
-    // new TC_AspectStack(TCAspects.COGNITIO, 4).addToAspectList(mAspects);
-    // } else if (name().startsWith("battery")) {
-    // new TC_AspectStack(TCAspects.ELECTRUM, 1).addToAspectList(mAspects);
-    // }
-    // }
+        // if (name().startsWith("ore")) {
+        // new TC_AspectStack(TCAspects.TERRA, 1).addToAspectList(mAspects);
+        // } else if (name().startsWith("wire") || name().startsWith("cable")) {
+        // new TC_AspectStack(TCAspects.ELECTRUM, 1).addToAspectList(mAspects);
+        // } else if (name().startsWith("dust")) {
+        // new TC_AspectStack(TCAspects.PERDITIO, 1).addToAspectList(mAspects);
+        // } else if (name().startsWith("crushed")) {
+        // new TC_AspectStack(TCAspects.PERFODIO, 1).addToAspectList(mAspects);
+        // } else if (name().startsWith("ingot") || name().startsWith("nugget")) {
+        // new TC_AspectStack(TCAspects.METALLUM, 1).addToAspectList(mAspects);
+        // } else if (name().startsWith("armor")) {
+        // new TC_AspectStack(TCAspects.TUTAMEN, 1).addToAspectList(mAspects);
+        // } else if (name().startsWith("stone")) {
+        // new TC_AspectStack(TCAspects.TERRA, 1).addToAspectList(mAspects);
+        // } else if (name().startsWith("pipe")) {
+        // new TC_AspectStack(TCAspects.ITER, 1).addToAspectList(mAspects);
+        // } else if (name().startsWith("gear")) {
+        // new TC_AspectStack(TCAspects.MOTUS, 1).addToAspectList(mAspects);
+        // new TC_AspectStack(TCAspects.MACHINA, 1).addToAspectList(mAspects);
+        // } else if (name().startsWith("frame") || name().startsWith("plate")) {
+        // new TC_AspectStack(TCAspects.FABRICO, 1).addToAspectList(mAspects);
+        // } else if (name().startsWith("tool")) {
+        // new TC_AspectStack(TCAspects.INSTRUMENTUM, 2).addToAspectList(mAspects);
+        // } else if (name().startsWith("gem") || name().startsWith("crystal") || name().startsWith("lens")) {
+        // new TC_AspectStack(TCAspects.VITREUS, 1).addToAspectList(mAspects);
+        // } else if (name().startsWith("circuit")) {
+        // new TC_AspectStack(TCAspects.COGNITIO, 1).addToAspectList(mAspects);
+        // } else if (name().startsWith("computer")) {
+        // new TC_AspectStack(TCAspects.COGNITIO, 4).addToAspectList(mAspects);
+        // } else if (name().startsWith("battery")) {
+        // new TC_AspectStack(TCAspects.ELECTRUM, 1).addToAspectList(mAspects);
+        // }
+    }
 
     public static final ImmutableList<OrePrefixes> CELL_TYPES = ImmutableList.of(
         cell,
@@ -2443,46 +2419,46 @@ public class OrePrefixes {
 
         // -----
 
-        pipeRestrictiveTiny.mSecondaryMaterial = new MaterialStack(Materials.Steel, ring.mMaterialAmount);
-        pipeRestrictiveSmall.mSecondaryMaterial = new MaterialStack(Materials.Steel, ring.mMaterialAmount * 2);
-        pipeRestrictiveMedium.mSecondaryMaterial = new MaterialStack(Materials.Steel, ring.mMaterialAmount * 3);
-        pipeRestrictiveLarge.mSecondaryMaterial = new MaterialStack(Materials.Steel, ring.mMaterialAmount * 4);
-        pipeRestrictiveHuge.mSecondaryMaterial = new MaterialStack(Materials.Steel, ring.mMaterialAmount * 5);
-        cableGt16.mSecondaryMaterial = new MaterialStack(Materials.Rubber, plate.mMaterialAmount * 5);
-        cableGt12.mSecondaryMaterial = new MaterialStack(Materials.Rubber, plate.mMaterialAmount * 4);
-        cableGt08.mSecondaryMaterial = new MaterialStack(Materials.Rubber, plate.mMaterialAmount * 3);
-        cableGt04.mSecondaryMaterial = new MaterialStack(Materials.Rubber, plate.mMaterialAmount * 2);
-        cableGt02.mSecondaryMaterial = new MaterialStack(Materials.Rubber, plate.mMaterialAmount);
-        cableGt01.mSecondaryMaterial = new MaterialStack(Materials.Rubber, plate.mMaterialAmount);
-        bucket.mSecondaryMaterial = new MaterialStack(Materials.Iron, ingot.mMaterialAmount * 3);
-        bucketClay.mSecondaryMaterial = new MaterialStack(Materials.Clay, dust.mMaterialAmount * 5);
+        pipeRestrictiveTiny.mSecondaryMaterial = new MaterialStack(Materials.Steel, ring.materialAmount);
+        pipeRestrictiveSmall.mSecondaryMaterial = new MaterialStack(Materials.Steel, ring.materialAmount * 2);
+        pipeRestrictiveMedium.mSecondaryMaterial = new MaterialStack(Materials.Steel, ring.materialAmount * 3);
+        pipeRestrictiveLarge.mSecondaryMaterial = new MaterialStack(Materials.Steel, ring.materialAmount * 4);
+        pipeRestrictiveHuge.mSecondaryMaterial = new MaterialStack(Materials.Steel, ring.materialAmount * 5);
+        cableGt16.mSecondaryMaterial = new MaterialStack(Materials.Rubber, plate.materialAmount * 5);
+        cableGt12.mSecondaryMaterial = new MaterialStack(Materials.Rubber, plate.materialAmount * 4);
+        cableGt08.mSecondaryMaterial = new MaterialStack(Materials.Rubber, plate.materialAmount * 3);
+        cableGt04.mSecondaryMaterial = new MaterialStack(Materials.Rubber, plate.materialAmount * 2);
+        cableGt02.mSecondaryMaterial = new MaterialStack(Materials.Rubber, plate.materialAmount);
+        cableGt01.mSecondaryMaterial = new MaterialStack(Materials.Rubber, plate.materialAmount);
+        bucket.mSecondaryMaterial = new MaterialStack(Materials.Iron, ingot.materialAmount * 3);
+        bucketClay.mSecondaryMaterial = new MaterialStack(Materials.Clay, dust.materialAmount * 5);
         CELL_TYPES
-            .forEach(prefix -> prefix.mSecondaryMaterial = new MaterialStack(Materials.Tin, plate.mMaterialAmount * 2));
-        oreRedgranite.mSecondaryMaterial = new MaterialStack(Materials.GraniteRed, dust.mMaterialAmount);
-        oreBlackgranite.mSecondaryMaterial = new MaterialStack(Materials.GraniteBlack, dust.mMaterialAmount);
-        oreNetherrack.mSecondaryMaterial = new MaterialStack(Materials.Netherrack, dust.mMaterialAmount);
-        oreNether.mSecondaryMaterial = new MaterialStack(Materials.Netherrack, dust.mMaterialAmount);
-        oreEndstone.mSecondaryMaterial = new MaterialStack(Materials.Endstone, dust.mMaterialAmount);
-        oreEnd.mSecondaryMaterial = new MaterialStack(Materials.Endstone, dust.mMaterialAmount);
-        oreMarble.mSecondaryMaterial = new MaterialStack(Materials.Marble, dust.mMaterialAmount);
-        oreBasalt.mSecondaryMaterial = new MaterialStack(Materials.Basalt, dust.mMaterialAmount);
-        oreDense.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.mMaterialAmount);
-        orePoor.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.mMaterialAmount * 2);
-        oreSmall.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.mMaterialAmount * 2);
-        oreNormal.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.mMaterialAmount * 2);
-        rawOre.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.mMaterialAmount);
-        oreRich.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.mMaterialAmount * 2);
-        ore.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.mMaterialAmount);
-        crushed.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.mMaterialAmount);
+            .forEach(prefix -> prefix.mSecondaryMaterial = new MaterialStack(Materials.Tin, plate.materialAmount * 2));
+        oreRedgranite.mSecondaryMaterial = new MaterialStack(Materials.GraniteRed, dust.materialAmount);
+        oreBlackgranite.mSecondaryMaterial = new MaterialStack(Materials.GraniteBlack, dust.materialAmount);
+        oreNetherrack.mSecondaryMaterial = new MaterialStack(Materials.Netherrack, dust.materialAmount);
+        oreNether.mSecondaryMaterial = new MaterialStack(Materials.Netherrack, dust.materialAmount);
+        oreEndstone.mSecondaryMaterial = new MaterialStack(Materials.Endstone, dust.materialAmount);
+        oreEnd.mSecondaryMaterial = new MaterialStack(Materials.Endstone, dust.materialAmount);
+        oreMarble.mSecondaryMaterial = new MaterialStack(Materials.Marble, dust.materialAmount);
+        oreBasalt.mSecondaryMaterial = new MaterialStack(Materials.Basalt, dust.materialAmount);
+        oreDense.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.materialAmount);
+        orePoor.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.materialAmount * 2);
+        oreSmall.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.materialAmount * 2);
+        oreNormal.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.materialAmount * 2);
+        rawOre.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.materialAmount);
+        oreRich.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.materialAmount * 2);
+        ore.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.materialAmount);
+        crushed.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.materialAmount);
         toolHeadChainsaw.mSecondaryMaterial = new MaterialStack(
             Materials.Steel,
-            plate.mMaterialAmount * 4 + ring.mMaterialAmount * 2);
+            plate.materialAmount * 4 + ring.materialAmount * 2);
         toolHeadWrench.mSecondaryMaterial = new MaterialStack(
             Materials.Steel,
-            ring.mMaterialAmount + screw.mMaterialAmount * 2);
-        bulletGtSmall.mSecondaryMaterial = new MaterialStack(Materials.Brass, ingot.mMaterialAmount / 9);
-        bulletGtMedium.mSecondaryMaterial = new MaterialStack(Materials.Brass, ingot.mMaterialAmount / 6);
-        bulletGtLarge.mSecondaryMaterial = new MaterialStack(Materials.Brass, ingot.mMaterialAmount / 3);
+            ring.materialAmount + screw.materialAmount * 2);
+        bulletGtSmall.mSecondaryMaterial = new MaterialStack(Materials.Brass, ingot.materialAmount / 9);
+        bulletGtMedium.mSecondaryMaterial = new MaterialStack(Materials.Brass, ingot.materialAmount / 6);
+        bulletGtLarge.mSecondaryMaterial = new MaterialStack(Materials.Brass, ingot.materialAmount / 3);
     }
 
     public final ArrayList<ItemStack> mPrefixedItems = new GTArrayList<>(false, 16);
@@ -2782,7 +2758,7 @@ public class OrePrefixes {
             return;
         }
 
-        if (!((aMaterial != Materials._NULL || mIsSelfReferencing || !mIsMaterialBased)
+        if (!((aMaterial != Materials._NULL || isSelfReferencing || !isMaterialBased)
             && GTUtility.isStackValid(aStack))) {
             return;
         }
@@ -2814,45 +2790,45 @@ public class OrePrefixes {
         // Certain Materials have slightly different Localizations.
         switch (aMaterial.mName) {
             case "Glass", "BorosilicateGlass" -> {
-                if (name.startsWith("gem")) return mLocalizedMaterialPre + "%material" + " Crystal";
-                if (name.startsWith("plate")) return mLocalizedMaterialPre + "%material" + " Pane";
-                if (name.startsWith("ingot")) return mLocalizedMaterialPre + "%material" + " Bar";
-                if (name.startsWith("nugget")) return mLocalizedMaterialPre + "%material" + " Chip";
+                if (name.startsWith("gem")) return materialPrefix + "%material" + " Crystal";
+                if (name.startsWith("plate")) return materialPrefix + "%material" + " Pane";
+                if (name.startsWith("ingot")) return materialPrefix + "%material" + " Bar";
+                if (name.startsWith("nugget")) return materialPrefix + "%material" + " Chip";
             }
             case "Wheat" -> {
-                if (name.startsWith("dust")) return mLocalizedMaterialPre + "Flour";
+                if (name.startsWith("dust")) return materialPrefix + "Flour";
             }
             case "Ice" -> {
-                if (name.startsWith("dust")) return mLocalizedMaterialPre + "Crushed Ice";
+                if (name.startsWith("dust")) return materialPrefix + "Crushed Ice";
             }
             case "Wood", "WoodSealed" -> {
                 if (name.startsWith("bolt")) return "Short " + "%material" + " Stick";
-                if (name.startsWith("stick")) return mLocalizedMaterialPre + "%material" + " Stick";
-                if (name.startsWith("dust")) return mLocalizedMaterialPre + "%material" + " Pulp";
-                if (name.startsWith("nugget")) return mLocalizedMaterialPre + "%material" + " Chip";
-                if (name.startsWith("plate")) return mLocalizedMaterialPre + "%material" + " Plank";
+                if (name.startsWith("stick")) return materialPrefix + "%material" + " Stick";
+                if (name.startsWith("dust")) return materialPrefix + "%material" + " Pulp";
+                if (name.startsWith("nugget")) return materialPrefix + "%material" + " Chip";
+                if (name.startsWith("plate")) return materialPrefix + "%material" + " Plank";
             }
             case "Plastic", "Rubber", "Polyethylene", "Epoxid", "EpoxidFiberReinforced", "Polydimethylsiloxane", "Silicone", "Polysiloxane", "Polycaprolactam", "Polytetrafluoroethylene", "PolyvinylChloride", "Polystyrene", "StyreneButadieneRubber" -> {
-                if (name.startsWith("dust")) return mLocalizedMaterialPre + "%material" + " Pulp";
-                if (name.startsWith("plate")) return mLocalizedMaterialPre + "%material" + " Sheet";
-                if (name.startsWith("ingot")) return mLocalizedMaterialPre + "%material" + " Bar";
-                if (name.startsWith("nugget")) return mLocalizedMaterialPre + "%material" + " Chip";
+                if (name.startsWith("dust")) return materialPrefix + "%material" + " Pulp";
+                if (name.startsWith("plate")) return materialPrefix + "%material" + " Sheet";
+                if (name.startsWith("ingot")) return materialPrefix + "%material" + " Bar";
+                if (name.startsWith("nugget")) return materialPrefix + "%material" + " Chip";
                 if (name.startsWith("foil")) return "Thin " + "%material" + " Sheet";
             }
             case "FierySteel" -> {
-                if (mIsContainer) return mLocalizedMaterialPre + "Fiery Blood" + mLocalizedMaterialPost;
+                if (isContainer) return materialPrefix + "Fiery Blood" + materialPostfix;
             }
             case "Steeleaf" -> {
-                if (name.startsWith("ingot")) return mLocalizedMaterialPre + "%material";
+                if (name.startsWith("ingot")) return materialPrefix + "%material";
             }
             case "Bone" -> {
-                if (name.startsWith("dust")) return mLocalizedMaterialPre + "Bone Meal";
+                if (name.startsWith("dust")) return materialPrefix + "Bone Meal";
             }
             case "Blaze", "Milk", "Cocoa", "Chocolate", "Coffee", "Chili", "Cheese", "Snow" -> {
-                if (name.startsWith("dust")) return mLocalizedMaterialPre + "%material" + " Powder";
+                if (name.startsWith("dust")) return materialPrefix + "%material" + " Powder";
             }
             case "Paper" -> {
-                if (name.startsWith("dust")) return mLocalizedMaterialPre + "Chad";
+                if (name.startsWith("dust")) return materialPrefix + "Chad";
                 switch (this) {
                     case plate -> {
                         return "Sheet of Paper";
@@ -2878,19 +2854,19 @@ public class OrePrefixes {
                 }
             }
             case "MeatRaw" -> {
-                if (name.startsWith("dust")) return mLocalizedMaterialPre + "Mince Meat";
+                if (name.startsWith("dust")) return materialPrefix + "Mince Meat";
             }
             case "MeatCooked" -> {
-                if (name.startsWith("dust")) return mLocalizedMaterialPre + "Cooked Mince Meat";
+                if (name.startsWith("dust")) return materialPrefix + "Cooked Mince Meat";
             }
             case "Ash", "DarkAsh", "Gunpowder", "Sugar", "Salt", "RockSalt", "VolcanicAsh", "RareEarth" -> {
-                if (name.startsWith("dust")) return mLocalizedMaterialPre + "%material";
+                if (name.startsWith("dust")) return materialPrefix + "%material";
             }
             case "Vermiculite", "Bentonite", "Kaolinite", "Talc", "BasalticMineralSand", "GraniticMineralSand", "GlauconiteSand", "CassiteriteSand", "GarnetSand", "QuartzSand", "Pitchblende", "FullersEarth" -> {
-                if (name.startsWith("dust")) return mLocalizedMaterialPre + "%material";
+                if (name.startsWith("dust")) return materialPrefix + "%material";
                 switch (this) {
                     case crushedCentrifuged, crushedPurified -> {
-                        return mLocalizedMaterialPre + "%material";
+                        return materialPrefix + "%material";
                     }
                     case crushed -> {
                         return "Ground " + "%material";
@@ -2901,13 +2877,13 @@ public class OrePrefixes {
         if (ProcessingModSupport.aEnableThaumcraftMats) {
             switch (aMaterial.mName) {
                 case "InfusedAir", "InfusedDull", "InfusedEarth", "InfusedEntropy", "InfusedFire", "InfusedOrder", "InfusedVis", "InfusedWater" -> {
-                    if (name.startsWith("gem")) return mLocalizedMaterialPre + "Shard of " + "%material";
-                    if (name.startsWith("crystal")) return mLocalizedMaterialPre + "Shard of " + "%material";
-                    if (name.startsWith("plate")) return mLocalizedMaterialPre + "%material" + " Crystal Plate";
-                    if (name.startsWith("dust")) return mLocalizedMaterialPre + "%material" + " Crystal Powder";
+                    if (name.startsWith("gem")) return materialPrefix + "Shard of " + "%material";
+                    if (name.startsWith("crystal")) return materialPrefix + "Shard of " + "%material";
+                    if (name.startsWith("plate")) return materialPrefix + "%material" + " Crystal Plate";
+                    if (name.startsWith("dust")) return materialPrefix + "%material" + " Crystal Powder";
                     switch (this) {
                         case crushedCentrifuged, crushedPurified, crushed -> {
-                            return mLocalizedMaterialPre + "%material" + " Crystals";
+                            return materialPrefix + "%material" + " Crystals";
                         }
                     }
                 }
@@ -2915,18 +2891,18 @@ public class OrePrefixes {
         }
 
         if (aMaterial.contains(SubTag.ICE_ORE) && (this == rawOre || this == ore)) {
-            return mLocalizedMaterialPre + "%material" + " Ice";
+            return materialPrefix + "%material" + " Ice";
         }
 
         if (this == ore) {
             return switch (aMaterial.mName) {
                 case "InfusedAir", "InfusedDull", "InfusedEarth", "InfusedEntropy", "InfusedFire", "InfusedOrder", "InfusedVis", "InfusedWater" -> "%material Infused Stone";
                 case "Vermiculite", "Bentonite", "Kaolinite", "Talc", "BasalticMineralSand", "GraniticMineralSand", "GlauconiteSand", "CassiteriteSand", "GarnetSand", "QuartzSand", "Pitchblende", "FullersEarth" -> "%material";
-                default -> mLocalizedMaterialPre + "%material" + mLocalizedMaterialPost;
+                default -> materialPrefix + "%material" + materialPostfix;
             };
         }
 
         // Use Standard Localization
-        return mLocalizedMaterialPre + "%material" + mLocalizedMaterialPost;
+        return materialPrefix + "%material" + materialPostfix;
     }
 }
