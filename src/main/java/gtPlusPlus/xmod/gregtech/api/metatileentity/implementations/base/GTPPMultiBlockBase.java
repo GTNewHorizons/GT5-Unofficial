@@ -59,6 +59,7 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.metatileentity.implementations.MTEHatchEnergyDebug;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
@@ -343,8 +344,9 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
 
     public long getMaxInputEnergy() {
         long rEnergy = 0;
-        if (mEnergyHatches.size() == 1) // so it only takes 1 amp is only 1 hatch is present so it works like most gt
-                                        // multies
+        if (!debugEnergyPresent && mEnergyHatches.size() == 1) // so it only takes 1 amp is only 1 hatch is present so
+                                                               // it works like most gt
+            // multies
             return mEnergyHatches.get(0)
                 .getBaseMetaTileEntity()
                 .getInputVoltage();
@@ -616,6 +618,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             return addToMachineListInternal(mOutputBusses, aMetaTileEntity, aBaseCasingIndex);
         if (aMetaTileEntity instanceof MTEHatchEnergy) {
             boolean added = addToMachineListInternal(mEnergyHatches, aMetaTileEntity, aBaseCasingIndex);
+            if (aMetaTileEntity instanceof MTEHatchEnergyDebug) debugEnergyPresent = true;
             updateMasterEnergyHatchList(aMetaTileEntity);
             return added;
         }
