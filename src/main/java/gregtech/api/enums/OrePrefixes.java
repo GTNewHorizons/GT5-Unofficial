@@ -646,11 +646,6 @@ public enum OrePrefixes {
 
         cell.disableComponent(Materials.GravitonShard);
 
-        // ingot.mNotGeneratedItems.add(Materials.Ichorium);
-
-        // -----
-        ingotHot.mGeneratedItems.add(Materials.TranscendentMetal);
-
         stickLong.mGeneratedItems.add(Materials.Blaze);
         // -----
 

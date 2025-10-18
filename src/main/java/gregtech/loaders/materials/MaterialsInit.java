@@ -15216,6 +15216,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.AQUA, 1)
             .addSubTag(SubTag.BLACK_HOLE)
             .addSubTag(SubTag.TRANSPARENT)
+            .addOrePrefix(OrePrefixes.ingotHot)
             .addOrePrefix(OrePrefixes.nanite)
             .constructMaterial()
             .setProcessingMaterialTierEU(TierEU.RECIPE_UHV);
