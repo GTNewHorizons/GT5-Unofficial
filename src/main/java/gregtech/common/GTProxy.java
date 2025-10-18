@@ -1624,7 +1624,7 @@ public class GTProxy implements IFuelHandler {
                         GTLog.ore.println(tModToName + " is invalid due to the first character being uppercased.");
                     }
             } else {
-                if (aPrefix.mDontUnificateActively) {
+                if (aPrefix.skipActiveUnification()) {
                     GTOreDictUnificator.addToBlacklist(aEvent.Ore);
                 }
                 if (aPrefix != aPrefix.mPrefixInto) {

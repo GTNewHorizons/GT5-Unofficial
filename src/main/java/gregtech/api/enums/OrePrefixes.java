@@ -2204,6 +2204,10 @@ public class OrePrefixes {
         return name;
     }
 
+    public boolean skipActiveUnification() {
+        return skipActiveUnification;
+    }
+
     public static final ImmutableList<OrePrefixes> CELL_TYPES = ImmutableList.of(
         cell,
         cellMolten,
