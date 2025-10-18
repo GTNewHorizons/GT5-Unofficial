@@ -5,6 +5,7 @@ public class OrePrefixBuilder {
     private final String name;
     private String defaultLocalName;
     private String localMaterialPre;
+    private String localMaterialPost;
 
     protected OrePrefixBuilder(String name) {
         this.name = name;
@@ -15,7 +16,8 @@ public class OrePrefixBuilder {
             // spotless:off
             name,
             defaultLocalName,
-            localMaterialPre
+            localMaterialPre,
+            localMaterialPost
             // spotless:on
         );
     }
@@ -27,6 +29,11 @@ public class OrePrefixBuilder {
 
     protected OrePrefixBuilder setLocalMaterialPre(String localMaterialPre){
         this.localMaterialPre = localMaterialPre;
+        return this;
+    }
+
+    protected OrePrefixBuilder setLocalMaterialPost(String localMaterialPost){
+        this.localMaterialPost = localMaterialPost;
         return this;
     }
 }
