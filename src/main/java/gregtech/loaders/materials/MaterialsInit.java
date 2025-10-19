@@ -173,7 +173,6 @@ public class MaterialsInit {
             .addOreByproduct(() -> Materials.Bauxite)
             .addSubTag(SubTag.METAL)
             .addSubTag(SubTag.MULTI_PLATE)
-            .addSubTag(SubTag.TRANSMUTABLE_NUGGETS)
             .constructMaterial();
     }
 
