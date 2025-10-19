@@ -11139,5 +11139,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 SoundResource.GTCEU_LOOP_ASSEMBLER,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "CABLE_COATER").getStackForm(1L));
+
+        addItemTooltip(ItemList.Machine_LV_CableCoater.get(1), () -> EnumChatFormatting.DARK_RED + "Cable Recipes in the Assembler TO BE REMOVED in the next major update!");
     }
 }
