@@ -1,9 +1,7 @@
 package gregtech.common.covers;
 
-import static gregtech.api.modularui2.GTGuis.GLOBAL_SWITCH_MUI2;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
-import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
@@ -12,7 +10,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.cleanroommc.modularui.utils.item.LimitingItemStackHandler;
+import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
