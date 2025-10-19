@@ -269,10 +269,10 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
                 "Recipes have an additive " + TooltipHelper.coloredText("6.25%", DARK_GREEN)
                     + " rubber discount based on "
                     + TooltipHelper.tierText(TooltipTier.ITEM_PIPE_CASING))
-            .addInfo("An Elastic Singularity can be inserted into the controller to gain bonuses")
+            .addInfo("An Elastic Singularity can be inserted into the controller to gain the following bonuses")
             .addInfo(
-                "These bonuses are: " + TooltipHelper.parallelText("2x")
-                    + " parallels, "
+                TooltipHelper.parallelText("2x")
+                    + " parallels, +"
                     + TooltipHelper.coloredText("25%", DARK_GREEN)
                     + " rubber discount, and the use of a singular "
                     + TooltipHelper.coloredText("Multi-Amp energy hatch", GREEN))
