@@ -18,6 +18,7 @@ public final class GTTextureIds {
     public static final String BACKGROUND_TITLE_PRIMITIVE = "gregtech:bg_title_primitive";
 
     public static final String BACKGROUND_TERMINAL_STANDARD = "gregtech:bg_terminal_standard";
+    public static final String BACKGROUND_TERMINAL_TECTECH = "gregtech:bg_terminal_tectech";
     public static final String BACKGROUND_REDSTONE_SNIFFER = "gregtech:bg_redstone_sniffer";
 
     public static final String SLOT_ITEM_STANDARD = "gregtech:slot_item_standard";
@@ -101,6 +102,7 @@ public final class GTTextureIds {
     public static final String PICTURE_GT_LOGO_BRONZE = "gregtech:picture_gt_logo_bronze";
     public static final String PICTURE_GT_LOGO_STEEL = "gregtech:picture_gt_logo_steel";
     public static final String PICTURE_GT_LOGO_PRIMITIVE = "gregtech:picture_gt_logo_primitive";
+    public static final String PICTURE_TECTECH_LOGO_DARK = "tectech:picture_tt_logo_dark";
 
     public static final String PICTURE_TRANSPARENT = "gregtech:picture_transparent";
     public static final String PICTURE_BW_LOGO_STANDARD = "bartworks:picture_bw_logo";
