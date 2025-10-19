@@ -73,7 +73,7 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
 
     @Override
     public String getMachineType() {
-        return "machtype.replicator";
+        return "gt.recipe.replicator";
     }
 
     @Override

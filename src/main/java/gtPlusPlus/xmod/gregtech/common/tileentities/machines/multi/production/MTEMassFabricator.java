@@ -94,7 +94,7 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("machtype.massfab", "ic.recipe.recycler")
+        tt.addMachineType("gt.recipe.massfab", "ic.recipe.recycler")
             .addInfo("gt.massfab.tips.1")
             .addStaticSpeedInfo(1f)
             .addStaticEuEffInfo(0.8f)
