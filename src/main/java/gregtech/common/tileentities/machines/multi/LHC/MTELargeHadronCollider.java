@@ -3,6 +3,14 @@ package gregtech.common.tileentities.machines.multi.LHC;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.ExoticEnergy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE_GLOW;
@@ -20,6 +28,11 @@ import java.util.ArrayList;
 import javax.annotation.Nullable;
 
 import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
+import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.blocks.BlockCasings10;
+import gregtech.common.blocks.BlockCasings13;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialBrewery;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -2393,7 +2406,14 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
         //</editor-fold>
 
         //spotless:on
-        .addElement('C', ofBlock(GregTechAPI.sBlockCasings13, 10)) // collider casing
+        .addElement(
+            'C', // collider casing
+            buildHatchAdder(MTELargeHadronCollider.class)
+                .atLeast(Energy, ExoticEnergy)
+                .casingIndex(((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(10))
+                .dot(1)
+                .buildAndChain(GregTechAPI.sBlockCasings13,10)
+        )
         .addElement('A', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
         .addElement('D', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 0))
         .addElement('E', lazy(t -> { // neonite saffron mango or whatever
@@ -2692,7 +2712,8 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
         strongEnabled = checkPiece(LHCModules.Strong.structurePiece, 57, -1, -61);
         gravEnabled = checkPiece(LHCModules.Grav.structurePiece, -47, -1, -61);
 
-        return checkPiece(STRUCTURE_PIECE_MAIN, 54, 4, 1);
+        return checkPiece(STRUCTURE_PIECE_MAIN, 54, 4, 1)
+            && ((mExoticEnergyHatches.size()==1) ^ (mEnergyHatches.size()==1));
 
     }
 
@@ -2739,10 +2760,29 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
 
     }
 
+    public long calculateEnergyCostAccelerator(){
 
+        return (long) (131072 * Math.pow(accelerationCycleCounter+1, 2));
+        //todo replace 131072 with hatch voltage tier
+
+    }
+
+    public long calculateEnergyCostCollider(){
+        return 131072; //todo make gooder
+    }
+
+    @Override
+    public void stopMachine(@NotNull ShutDownReason reason) {
+        initialParticleInfo = null;
+        cachedOutputParticle = null;
+        accelerationCycleCounter = 0;
+        super.stopMachine(reason);
+    }
 
     BeamInformation initialParticleInfo = null;
     BeamInformation cachedOutputParticle = null;
+    int accelerationCycleCounter = 0;
+    final int MAX_ACCELERATION_CYCLES = 120;
 
     @NotNull
     @Override
@@ -2752,24 +2792,43 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
         if (inputInfo == null) return CheckRecipeResultRegistry.NO_RECIPE;
 
         if (machineMode == MACHINEMODE_ACCELERATOR){
+
+            this.mEfficiency = 10000;
+            this.mEfficiencyIncrease = 10000;
+            this.mMaxProgresstime = TickTime.SECOND;
+
             if (cachedOutputParticle == null){
                 // assign cachedOutputParticle, which will be accelerated in consequent processing cycles
                 // also assign initialParticleInfo, which inputInfo is compared against every cycle
                 cachedOutputParticle = inputInfo.copy();
                 initialParticleInfo = inputInfo.copy();
+                accelerationCycleCounter = 0;
             }
             else{
                 if (!initialParticleInfo.isEqual(inputInfo)){
                     stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.noaccel"));
-                    cachedOutputParticle = null;
                     // todo: new shutdown reason
                     return CheckRecipeResultRegistry.NO_RECIPE;
                 }
                 else {
-                    cachedOutputParticle = accelerateParticle(cachedOutputParticle);
+
+                    if (accelerationCycleCounter < MAX_ACCELERATION_CYCLES){
+                        cachedOutputParticle = accelerateParticle(cachedOutputParticle);
+                        accelerationCycleCounter += 1;
+                    }
+
+                    long energyCost = calculateEnergyCostAccelerator();
+
+                    if (!drainEnergyInput(energyCost)) {
+                        stopMachine(ShutDownReasonRegistry.POWER_LOSS);
+                        endRecipeProcessing();
+                        return CheckRecipeResultRegistry.insufficientPower(energyCost);
+                    }
                 }
             }
         }
+
+
         else {
 
             float inputEnergy = inputInfo.getEnergy();
