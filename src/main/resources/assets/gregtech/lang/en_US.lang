@@ -793,6 +793,7 @@ GT5U.MBTT.Parallel.Additional=%s Parallels per %s Tier
 GT5U.MBTT.Parallel.Singular=%s Parallel
 GT5U.MBTT.Speed.Base=%s Speed
 GT5U.MBTT.Speed.Additional=%s Speed per %s Tier
+GT5U.MBTT.Speed.Absolute=Speed is %s times %s Tier
 GT5U.MBTT.EuDiscount.Base=%s EU Usage
 GT5U.MBTT.EuDiscount.Additional=%s EU Usage per %s Tier
 GT5U.MBTT.SteamDiscount.Base=%s Steam Usage
