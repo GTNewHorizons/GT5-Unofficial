@@ -810,6 +810,7 @@ GT5U.MBTT.Parallel.Additional=%s Parallels per %s Tier
 GT5U.MBTT.Parallel.Singular=%s Parallel
 GT5U.MBTT.Speed.Base=%s Speed
 GT5U.MBTT.Speed.Additional=%s Speed per %s Tier
+GT5U.MBTT.Speed.Absolute=Speed is %s times %s Tier
 GT5U.MBTT.EuDiscount.Base=%s EU Usage
 GT5U.MBTT.EuDiscount.Additional=%s EU Usage per %s Tier
 GT5U.MBTT.SteamDiscount.Base=%s Steam Usage
@@ -1956,7 +1957,7 @@ gt.interact.desc.MachineIdle=§8Machine idle
 gt.interact.desc.RecipeProgress=§8Recipe progress
 
 ## EU MEter
-gt.interact.desc.EnergyTHR=§8Energy threshold
+gt.interact.desc.EnergyThreshold=§8Energy threshold
 
 ## Facade
 gt.interact.desc.facade.Redstone=§8Redstone
@@ -1967,14 +1968,18 @@ gt.interact.desc.facade.Items=§8Items
 ## FluidFilter
 gt.interact.desc.FluidFilter.FilterInput=Filter Input
 gt.interact.desc.FluidFilter.FilterOutput=Filter Output
-gt.interact.desc.FluidFilter.BlockOutput=Block Output
+gt.interact.desc.FluidFilter.FilterChat=Filter Fluid:
 gt.interact.desc.FluidFilter.AllowOutput=Allow Output
+gt.interact.desc.FluidFilter.AllowInput=Allow Input
+gt.interact.desc.FluidFilter.BlockOutput=Block Output
+gt.interact.desc.FluidFilter.BlockInput=Block Input
+
 gt.interact.desc.FluidFilter.WhitelistFluid=Whitelist Fluid
 gt.interact.desc.FluidFilter.BlacklistFluid=Blacklist Fluid
-gt.interact.desc.FluidFilter.Direction=§8IFilter Direction
-gt.interact.desc.FluidFilter.Type=§8IFilter Type
-gt.interact.desc.FluidFilter.BlockFlow=§8IBlock Flow
-gt.interact.desc.FluidFilter.Empty=§8IFilter Empty
+gt.interact.desc.FluidFilter.Direction=§8Filter Direction
+gt.interact.desc.FluidFilter.Type=§8Filter Type
+gt.interact.desc.FluidFilter.BlockFlow=§8Block Flow
+gt.interact.desc.FluidFilter.Empty=§8Filter Empty
 
 ## Fluid Regulator
 gt.interact.desc.fluid_regulator.AlwaysOn=Always On
@@ -1991,16 +1996,16 @@ gt.interact.desc.fluid_regulator.L_Sec=L/sec
 ## Item Filter
 gt.interact.desc.Item_Filter.Whitelist_Mode=Whitelist Mode
 gt.interact.desc.Item_Filter.Blacklist_Mode=Blacklist Mode
-gt.interact.desc.Item_Filter.Filter=§8Filter
+gt.interact.desc.Item_Filter.Filter=§8Filter:
 gt.interact.desc.Item_Filter.CheckMode=§8Check Mode
 
 ## Item Meter
 gt.interact.desc.Item_Meter.All=All
 gt.interact.desc.Item_Meter.DetectSlot=§8Detect slot #
-gt.interact.desc.Item_Meter.ItemTHR=§8Item threshold
+gt.interact.desc.Item_Meter.ItemThreshold=§8Item threshold
 
 ## Liquid Meter (Fluid meter)
-gt.interact.desc.Fluid_Meter.FluidTHR=§8Fluid threshold
+gt.interact.desc.Fluid_Meter.FluidThreshold=§8Fluid threshold
 
 ## Player Detector
 gt.interact.desc.Player_Detector.Emit_Player_Close=Emit if any Player is close
@@ -2043,11 +2048,11 @@ gt.interact.tooltip.Wireless_Activity.Idle=Machine idle
 gt.interact.tooltip.Wireless_Activity.Enabled=Machine enabled
 
 ## Wireless Fluid Detector
-gt.interact.desc.Wireless_Fluid_Detector.FluidTHR=§8Fluid threshold
+gt.interact.desc.Wireless_Fluid_Detector.FluidThreshold=§8Fluid threshold
 
 ## Wireless Item Detector
 gt.interact.desc.Item_Item_Detector.All=All
-gt.interact.desc.Item_Item_Detector.ItemTHR=§8Item threshold
+gt.interact.desc.Item_Item_Detector.ItemThreshold=§8Item threshold
 gt.interact.desc.Item_Item_Detector.DetectSlot=§8Detect slot #
 
 ## Energy Detector
