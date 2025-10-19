@@ -1867,6 +1867,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.RADIO, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.TRANSMUTABLE_NUGGETS)
             .constructMaterial();
     }
 
