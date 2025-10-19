@@ -23,6 +23,8 @@ import static gregtech.client.GTTooltipHandler.Tier.UXV;
 import static gregtech.client.GTTooltipHandler.Tier.ZPM;
 import static gregtech.client.GTTooltipHandler.registerTieredTooltip;
 import static gregtech.common.items.IDMetaItem03.Activated_Carbon_Filter_Mesh;
+import static gregtech.common.items.IDMetaItem03.AlGaAs_Monocrystal;
+import static gregtech.common.items.IDMetaItem03.AlGaAs_Seed_Crystal;
 import static gregtech.common.items.IDMetaItem03.Brittle_Netherite_Scrap;
 import static gregtech.common.items.IDMetaItem03.Circuit_Biomainframe;
 import static gregtech.common.items.IDMetaItem03.Circuit_Bioprocessor;
@@ -159,6 +161,8 @@ import static gregtech.common.items.IDMetaItem03.Cover_Metrics_Transmitter;
 import static gregtech.common.items.IDMetaItem03.Cover_SolarPanel_UEV;
 import static gregtech.common.items.IDMetaItem03.Cover_SolarPanel_UHV;
 import static gregtech.common.items.IDMetaItem03.Cover_SolarPanel_UIV;
+import static gregtech.common.items.IDMetaItem03.Crude_Si_Wafer;
+import static gregtech.common.items.IDMetaItem03.Diamond_Infused_Wire_Saw;
 import static gregtech.common.items.IDMetaItem03.EV_Coil;
 import static gregtech.common.items.IDMetaItem03.GalliumArsenideCrystal;
 import static gregtech.common.items.IDMetaItem03.GalliumArsenideCrystalSmallPart;
@@ -225,7 +229,9 @@ import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Top;
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Unaligned;
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Up;
 import static gregtech.common.items.IDMetaItem03.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet;
+import static gregtech.common.items.IDMetaItem03.Raw_Crude_Si_Wafer;
 import static gregtech.common.items.IDMetaItem03.Relativistic_Heat_Capacitor;
+import static gregtech.common.items.IDMetaItem03.Silicon_Seed_Crystal;
 import static gregtech.common.items.IDMetaItem03.Spinneret;
 import static gregtech.common.items.IDMetaItem03.Thermal_Superconductor;
 import static gregtech.common.items.IDMetaItem03.Timepiece;
@@ -1283,6 +1289,15 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Naquarite_Universal_Insulator_Foil.ID,
                 "Naquarite Universal Insulator Foil",
                 String.join("/n ", "The Perfect Insulator!", "Absorbs all heat, radiation and electricity.")));
+
+        ItemList.Silicon_Seed_Crystal
+            .set(addItem(Silicon_Seed_Crystal.ID, "Silicon Seed Crystal", "Something to begin with"));
+        ItemList.AlGaAs_Seed_Crystal
+            .set(addItem(AlGaAs_Seed_Crystal.ID, "AlGaAs Seed Crystal", "The seed of the new era"));
+        ItemList.AlGaAs_Monocrystal.set(addItem(AlGaAs_Monocrystal.ID, "AlGaAs Monocrystal", "Perfection"));
+        ItemList.Raw_Crude_Si_Wafer.set(addItem(Raw_Crude_Si_Wafer.ID, "Raw Crude Si Wafer", ""));
+        ItemList.Crude_Si_Wafer.set(addItem(Crude_Si_Wafer.ID, "Crude Si Wafer", ""));
+        ItemList.Diamond_Infused_Wire_Saw.set(addItem(Diamond_Infused_Wire_Saw.ID, "Diamond Infused Wire", ""));
 
         ItemList.White_Dwarf_Shape_Extruder_Plate.set(
             addItem(
