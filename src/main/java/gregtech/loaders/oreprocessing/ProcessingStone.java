@@ -113,29 +113,6 @@ public class ProcessingStone implements IOreRecipeRegistrator {
                     .eut(2)
                     .addTo(maceratorRecipes);
                 break;
-            case "Rhyolite":
-                GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.copyAmount(1, aStack))
-                    .itemOutputs(
-                        GTOreDictUnificator.get(OrePrefixes.dust, Materials.PotassiumFeldspar, 1L),
-                        GTOreDictUnificator.get(OrePrefixes.dust, Materials.Quartz, 1L))
-                    .outputChances(10000, 2000)
-                    .duration(20 * SECONDS)
-                    .eut(2)
-                    .addTo(maceratorRecipes);
-                break;
-            case "Komatiite":
-                GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.copyAmount(1, aStack))
-                    .itemOutputs(
-                        GTOreDictUnificator.get(OrePrefixes.dust, Materials.Biotite, 1L),
-                        GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Uranium, 1L))
-                    .outputChances(10000, 500)
-                    .duration(20 * SECONDS)
-                    .eut(2)
-                    .addTo(maceratorRecipes);
-                break;
-            case "Dacite":
             case "Andesite":
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack))
@@ -143,28 +120,6 @@ public class ProcessingStone implements IOreRecipeRegistrator {
                         GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 1L),
                         GTOreDictUnificator.get(OrePrefixes.dust, Materials.Obsidian, 1L))
                     .outputChances(10000, 2000)
-                    .duration(20 * SECONDS)
-                    .eut(2)
-                    .addTo(maceratorRecipes);
-                break;
-            case "Gabbro":
-                GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.copyAmount(1, aStack))
-                    .itemOutputs(
-                        GTOreDictUnificator.get(OrePrefixes.dust, Materials.PotassiumFeldspar, 1L),
-                        GTOreDictUnificator.get(OrePrefixes.dust, Materials.Pyrite, 1L))
-                    .outputChances(10000, 2000)
-                    .duration(20 * SECONDS)
-                    .eut(2)
-                    .addTo(maceratorRecipes);
-                break;
-            case "Eclogite":
-                GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.copyAmount(1, aStack))
-                    .itemOutputs(
-                        GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 1L),
-                        GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Rutile, 1L))
-                    .outputChances(10000, 1000)
                     .duration(20 * SECONDS)
                     .eut(2)
                     .addTo(maceratorRecipes);
@@ -180,19 +135,6 @@ public class ProcessingStone implements IOreRecipeRegistrator {
                     .eut(2)
                     .addTo(maceratorRecipes);
                 break;
-            case "Greenschist":
-            case "Blueschist":
-                GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.copyAmount(1, aStack))
-                    .itemOutputs(
-                        GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Glauconite, 2L),
-                        GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Basalt, 1L))
-                    .outputChances(10000, 1000)
-                    .duration(20 * SECONDS)
-                    .eut(2)
-                    .addTo(maceratorRecipes);
-                break;
-            case "Gneiss":
             case "Migmatite":
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack))

@@ -29,7 +29,6 @@ import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsGTNH;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.metadata.CompressionTierKey;
@@ -57,7 +56,7 @@ public class NetheriteRecipes {
                     GregtechItemList.RedAlgaeBiomass.get(32),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.CertusQuartz, 32))
                 .fluidInputs(Materials.Grade1PurifiedWater.getFluid(8000))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.shard, MaterialsGTNH.Prismarine, 8))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.shard, Materials.Prismarine, 8))
                 .duration(15 * SECONDS)
                 .eut(TierEU.RECIPE_LuV)
                 .addTo(autoclaveRecipes);
@@ -68,14 +67,14 @@ public class NetheriteRecipes {
                         GregtechItemList.RedAlgaeBiomass.get(32),
                         GTBees.combs.getStackForType(CombType.PRISMATIC, 32))
                     .fluidInputs(Materials.Grade1PurifiedWater.getFluid(8000))
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.shard, MaterialsGTNH.Prismarine, 16))
+                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.shard, Materials.Prismarine, 16))
                     .duration(15 * SECONDS)
                     .eut(TierEU.RECIPE_LuV)
                     .addTo(autoclaveRecipes);
             }
 
             GTValues.RA.stdBuilder() // Leaching
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.shard, MaterialsGTNH.Prismarine, 24))
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.shard, Materials.Prismarine, 24))
                 .fluidInputs(
                     FluidUtils.getHydrofluoricAcid(4000), // Industrial Strength Hydrofluoric Acid
                     FluidRegistry.getFluidStack("fluid.hydrogenperoxide", 4000)) // Hydrogen Peroxide
@@ -87,7 +86,7 @@ public class NetheriteRecipes {
                 .addTo(dissolutionTankRecipes);
 
             GTValues.RA.stdBuilder() // Looped Leaching
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.shard, MaterialsGTNH.Prismarine, 6))
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.shard, Materials.Prismarine, 6))
                 .fluidInputs(
                     Materials.PrismarineContaminatedHydrogenPeroxide.getFluid(6000),
                     FluidRegistry.getFluidStack("fluid.hydrogenperoxide", 2000)) // Hydrogen Peroxide
