@@ -33,11 +33,14 @@ public class CoverChestGui extends CoverBaseGui<CoverChest> {
 
     @Override
     protected int getGUIHeight() {
-        int inventoryRows = 4;
-        int rows = cover.getSlotCount() / 3 + inventoryRows;
+        int borderRadius = 4;
+        int panelMargin = 2;
+        int titleRowHeight = 16;
+        int titleMargin = 4;
+        int rows = cover.getSlotCount() / 3;
         int heightPerSlot = 18;
-        int additionalSpace = 40;
-        return rows * heightPerSlot + additionalSpace;
+
+        return borderRadius * 2 + panelMargin * 2 + titleRowHeight + titleMargin + rows * heightPerSlot;
     }
 
     @Override
