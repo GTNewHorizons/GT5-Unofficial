@@ -52,8 +52,9 @@ public class RecipeGenRecycling implements Runnable {
     }
 
     public static void generateRecipes(final Material material) {
+        if (material == null) return;
 
-        if (material != null) Logger.WARNING("Generating Recycling recipes for " + material.getLocalizedName());
+        Logger.WARNING("Generating Recycling recipes for " + material.getLocalizedName());
 
         final OrePrefixes[] mValidPrefixesAsString = { OrePrefixes.ingot, OrePrefixes.ingotHot, OrePrefixes.nugget,
             OrePrefixes.plate, OrePrefixes.plateDense, OrePrefixes.plateDouble, OrePrefixes.plateTriple,
@@ -102,7 +103,6 @@ public class RecipeGenRecycling implements Runnable {
         }
 
         for (final Pair<OrePrefixes, ItemStack> validPrefix : mValidPairs) {
-            if (material == null) continue;
             if (validPrefix == null) continue;
 
             final OrePrefixes orePrefix = validPrefix.getKey();
