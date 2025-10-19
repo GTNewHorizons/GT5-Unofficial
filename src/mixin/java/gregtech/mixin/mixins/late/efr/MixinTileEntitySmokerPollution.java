@@ -16,7 +16,7 @@ import gregtech.common.pollution.FurnacePollution;
 @Mixin(TileEntitySmoker.class)
 public abstract class MixinTileEntitySmokerPollution extends TileEntity {
 
-    @Shadow
+    @Shadow(remap = false)
     public abstract boolean isBurning();
 
     @Inject(method = "updateEntity", at = @At("TAIL"))
