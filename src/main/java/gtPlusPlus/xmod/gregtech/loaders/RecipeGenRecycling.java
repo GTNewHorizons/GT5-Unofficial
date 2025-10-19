@@ -4,6 +4,7 @@ import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.GTValues.RA;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
@@ -101,14 +102,16 @@ public class RecipeGenRecycling implements Runnable {
         }
 
         for (final Pair<OrePrefixes, ItemStack> validPrefix : mValidPairs) {
+            final OrePrefixes orePrefix = validPrefix.getKey();
+
             if (material == null || validPrefix == null
                 || (material.getState() != MaterialState.SOLID && material.getState() != MaterialState.LIQUID)
-                || validPrefix.getKey() == OrePrefixes.ingotHot) {
+                || orePrefix == OrePrefixes.ingotHot) {
                 continue;
             }
 
             final ItemStack tempStack = validPrefix.getValue();
-            final ItemStack mDust = getDust(material, validPrefix.getKey());
+            final ItemStack mDust = getDust(material, orePrefix);
 
             // Maceration
             if (tempStack != null && mDust != null) {
@@ -118,6 +121,7 @@ public class RecipeGenRecycling implements Runnable {
                     .eut(2)
                     .duration(20 * SECONDS)
                     .addTo(maceratorRecipes);
+
                 Logger.WARNING(
                     "Recycle Recipe: " + material.getLocalizedName()
                         + " - Success - Recycle "
@@ -127,37 +131,35 @@ public class RecipeGenRecycling implements Runnable {
             }
 
             // Fluid Extractor
-            if (tempStack != null) {
-                int aFluidAmount = (int) ((144 * validPrefix.getKey()
-                    .getMaterialAmount()) / (M * tempStack.stackSize));
-                int aDuration = (int) Math.max(
-                    1,
-                    (24 * validPrefix.getKey()
-                        .getMaterialAmount()) / M);
-                FluidStack fluidOutput = material.getFluidStack(aFluidAmount);
-                if (fluidOutput != null) {
-                    GTValues.RA.stdBuilder()
-                        .itemInputs(tempStack)
-                        .fluidOutputs(fluidOutput)
-                        .duration(aDuration)
-                        .eut(material.vVoltageMultiplier)
-                        .addTo(fluidExtractionRecipes);
+            if (tempStack == null) continue;
 
-                    Logger.WARNING(
-                        "Fluid Recycle Recipe: " + material.getLocalizedName()
-                            + " - Success - Recycle "
-                            + tempStack.getDisplayName()
-                            + " and obtain "
-                            + aFluidAmount
-                            + "mb of "
-                            + material.getFluidStack(1)
-                                .getLocalizedName()
-                            + ". Time: "
-                            + aDuration
-                            + ", Voltage: "
-                            + material.vVoltageMultiplier);
-                }
-            }
+            final long materialAmount = orePrefix.getMaterialAmount();
+            final int aFluidAmount = (int) ((materialAmount * INGOTS) / (M * tempStack.stackSize));
+            final int aDuration = (int) Math.max(1, (24 * materialAmount) / M);
+            final FluidStack fluidOutput = material.getFluidStack(aFluidAmount);
+
+            if (fluidOutput == null) continue;
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(tempStack)
+                .fluidOutputs(fluidOutput)
+                .duration(aDuration)
+                .eut(material.vVoltageMultiplier)
+                .addTo(fluidExtractionRecipes);
+
+            Logger.WARNING(
+                "Fluid Recycle Recipe: " + material.getLocalizedName()
+                    + " - Success - Recycle "
+                    + tempStack.getDisplayName()
+                    + " and obtain "
+                    + aFluidAmount
+                    + "mb of "
+                    + material.getFluidStack(1)
+                        .getLocalizedName()
+                    + ". Time: "
+                    + aDuration
+                    + ", Voltage: "
+                    + material.vVoltageMultiplier);
         }
 
     }
