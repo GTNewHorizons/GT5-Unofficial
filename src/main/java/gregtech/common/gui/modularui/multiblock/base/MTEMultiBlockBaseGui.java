@@ -306,7 +306,9 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                 .coverChildren()
                 .child(createItemRecipeInfo(packet, syncManager))
                 .child(createFluidRecipeInfo(packet, syncManager));
-        });
+        })
+            .onWidgetUpdate(w -> {});
+        syncManager.syncValue("recipeHandler", recipeHandler);
 
         itemOutputSyncer
             .setChangeListener(() -> notifyRecipeHandler(recipeHandler, itemOutputSyncer, fluidOutputSyncer));
@@ -314,7 +316,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .setChangeListener(() -> notifyRecipeHandler(recipeHandler, itemOutputSyncer, fluidOutputSyncer));
         return new DynamicSyncedWidget<>().widthRel(0.85f)
             .coverChildrenHeight()
-            .syncHandler(recipeHandler);
+            .syncHandler("recipeHandler");
 
     }
 
