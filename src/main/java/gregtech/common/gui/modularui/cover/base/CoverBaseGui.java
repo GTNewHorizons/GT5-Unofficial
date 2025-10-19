@@ -59,6 +59,11 @@ public class CoverBaseGui<T extends Cover> {
         CoverGuiData data) {
         ModularPanel basePanel = createBasePanel("standalone.cover", syncManager, uiSettings, data);
         if (doesBindPlayerInventory()) {
+            int slotHeight = 18;
+            int inventoryRows = 4;
+            int hotbarToInventoryGap = 4;
+            int inventoryMargin = 4;
+            basePanel.height(getGUIHeight() + slotHeight * inventoryRows + hotbarToInventoryGap + inventoryMargin);
             basePanel.bindPlayerInventory();
         }
         return basePanel;
