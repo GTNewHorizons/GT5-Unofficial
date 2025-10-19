@@ -51,12 +51,13 @@ public class CoverChestGui extends CoverBaseGui<CoverChest> {
         column.child(
             // A bit of a hack to force the flow to be the same width as the window so the slot group gets centered
             Flow.row()
-                .width((getGUIWidth() - 10)))
+                .width((getGUIWidth() - 10))
+                .height(0))
             .child(
                 SlotGroupWidget.builder()
                     .matrix(matrix)
                     .key('x', i -> new ItemSlot().slot(new ModularSlot(handler, i)))
                     .build()
-                    .rightRel(0.5f));
+                    .alignX(0.5f));
     }
 }
