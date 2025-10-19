@@ -11144,5 +11144,18 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             ItemList.Machine_LV_CableCoater.get(1),
             () -> EnumChatFormatting.DARK_RED
                 + "Cable Recipes in the Assembler TO BE REMOVED in the next major update!");
+        addItemTooltip(
+            ItemList.Machine_MV_CableCoater.get(1),
+            () -> EnumChatFormatting.DARK_RED
+                + "Cable Recipes in the Assembler TO BE REMOVED in the next major update!");
+        addItemTooltip(
+            ItemList.Machine_HV_CableCoater.get(1),
+            () -> EnumChatFormatting.DARK_RED
+                + "Cable Recipes in the Assembler TO BE REMOVED in the next major update!");
+        addItemTooltip(
+            ItemList.Machine_EV_CableCoater.get(1),
+            () -> EnumChatFormatting.DARK_RED
+                + "Cable Recipes in the Assembler TO BE REMOVED in the next major update!");
+
     }
 }
