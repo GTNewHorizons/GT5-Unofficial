@@ -3666,6 +3666,7 @@ machtype.windmill=Windmill
 machtype.adv_nt_compressor=Advanced Neutronium Compressor
 machtype.bhc=BHC
 machtype.cleanroom=Cleanroom
+machtype.ore_factory=Ore Processor, IOF
 
 # Used in addController. These are some commonly used shared ones
 # CONTEXT: Controller: (corepos)
@@ -3676,6 +3677,22 @@ gt.mb.corepos.top_center=Top center
 gt.mb.hint_block=Hint block with dot %d
 
 # Multiblock Tooltip lines
+
+gt.ore_factory.tips.1=Does all ore processing in one step
+gt.ore_factory.tips.2=Every ore costs 30EU/t, 2L lubricant, 200L distilled water\nRecipes that need extra input require their extra inputs on top of the normal costs\nProcessing time is dependent on mode\nUse a screwdriver to switch mode\nSneak click with screwdriver to void the stone dust
+gt.ore_factory.tips.3=§aOP stands for Ore Processor ;)
+gt.ore_factory.info.1=The third layer
+gt.ore_factory.info.2=Input ore/crushed ore
+gt.ore_factory.info.3=Input lubricant/distilled water/washing chemicals
+gt.ore_factory.info.4=Output Pollution
+gt.ore_factory.info.5=Output products
+
+gt.advdistill.tips.1=Stats dictated by tower mode\nRight click the controller with screwdriver to change mode
+gt.advdistill.tips.2=Distillery Mode (requires full height tower)\n§68 * Voltage Tier§7 Parallels
+gt.advdistill.tips.3=Distillation Tower Mode
+gt.advdistill.info.1=One per layer except bottom
+gt.advdistill.info.2=Top Casing
+
 gt.mvf.tips.1=§8§o"Handles all things cooling!"
 gt.mvf.tips.2=Upgrade to Tier 2 to unlock §3Subspace Cooling\nWill gain §6perfect overclocks§7 by §aconsuming §dcoolants:\n§a7500 L/s§7 : §61§7 : §d%s\n§a5000 L/s§7 : §62§7 : §d%s\n§a2500 L/s§7 : §63§7 : §d%s
 gt.mvf.tips.3=§3Reinforcing the structure allows the injection of exotic coolants,\n§3enabling the capture of heat energy from miniature tears in spacetime,\n§3massively increasing the efficiency of the cooling process.
