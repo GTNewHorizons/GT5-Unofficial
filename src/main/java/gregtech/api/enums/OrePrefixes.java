@@ -2124,9 +2124,6 @@ public class OrePrefixes {
         new TC_AspectStack(TCAspects.MACHINA, 1).addToAspectList(mAspects);
     }
 
-    public @NotNull String getName() {
-        return name;
-    }
 
     public @NotNull String getDefaultLocalName() {
         return defaultLocalName;
@@ -2182,6 +2179,22 @@ public class OrePrefixes {
 
     public int getTextureIndex() {
         return textureIndex;
+    }
+
+
+    public @NotNull String getName() {
+        return name;
+    }
+
+    @Override
+    public String toString() {
+        return getName();
+    }
+
+    /** @deprecated Use {@link OrePrefixes#getName()} instead. */
+    @Deprecated
+    public String name() {
+        return getName();
     }
 
     public static final ImmutableList<OrePrefixes> CELL_TYPES = ImmutableList.of(
