@@ -266,7 +266,7 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
                 DARK_GRAY + "" + EnumChatFormatting.ITALIC + "AKA Laminated Application and Thermal Enclosure eXpert")
             .addBulkMachineInfo(8, 2F, 0.85F)
             .addInfo(
-                "Recipes have a " + TooltipHelper.coloredText("6.25%", DARK_GREEN)
+                "Recipes have an additive " + TooltipHelper.coloredText("6.25%", DARK_GREEN)
                     + " rubber discount based on "
                     + TooltipHelper.tierText(TooltipTier.ITEM_PIPE_CASING))
             .addInfo("An Elastic Singularity can be inserted into the controller to gain bonuses")
