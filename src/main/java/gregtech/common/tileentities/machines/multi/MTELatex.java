@@ -23,7 +23,6 @@ import static net.minecraft.util.EnumChatFormatting.DARK_GRAY;
 import static net.minecraft.util.EnumChatFormatting.DARK_GREEN;
 import static net.minecraft.util.EnumChatFormatting.DARK_RED;
 import static net.minecraft.util.EnumChatFormatting.GREEN;
-import static net.minecraft.util.EnumChatFormatting.RED;
 
 import java.util.Objects;
 
@@ -273,8 +272,7 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
                     + TooltipHelper.tierText(TooltipTier.ITEM_PIPE_CASING))
             .addInfo("An Elastic Singularity can be inserted into the controller to gain the following bonuses")
             .addInfo(
-                TooltipHelper.parallelText("2x")
-                    + " parallels, +"
+                TooltipHelper.parallelText("2x") + " parallels, +"
                     + TooltipHelper.coloredText("25%", DARK_GREEN)
                     + " rubber discount, and the use of a singular "
                     + TooltipHelper.coloredText("Multi-Amp energy hatch", GREEN))

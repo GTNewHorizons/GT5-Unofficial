@@ -279,7 +279,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                             .eut(8)
                             .addTo(cableRecipes);
 
-                        //Assembler Recipes to be removed in the next Major Update
+                        // Assembler Recipes to be removed in the next Major Update
 
                         GTValues.RA.stdBuilder()
                             .itemInputs(aStack, GTUtility.getIntegratedCircuit(24))
@@ -330,7 +330,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                                     .eut(8)
                                     .addTo(cableRecipes);
 
-                                //Assembler Recipes to be removed in the next Major Update
+                                // Assembler Recipes to be removed in the next Major Update
 
                                 GTValues.RA.stdBuilder()
                                     .itemInputs(GTUtility.copyAmount(4, aStack), dielectric.getDust(costMultiplier))
@@ -347,7 +347,6 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                                     .duration(5 * SECONDS)
                                     .eut(8)
                                     .addTo(assemblerRecipes);
-
 
                             }
                         }
@@ -413,7 +412,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                     .eut(8)
                     .addTo(cableRecipes);
 
-                //Assembler Recipes to be removed in the next Major Update
+                // Assembler Recipes to be removed in the next Major Update
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(aStack, GTUtility.getIntegratedCircuit(24))
@@ -457,7 +456,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                             .eut(8)
                             .addTo(cableRecipes);
 
-                        //Assembler Recipes to be removed in the next Major Update
+                        // Assembler Recipes to be removed in the next Major Update
 
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(4, aStack), dielectric.getDust(costMultiplier))
@@ -496,7 +495,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                     .eut(calculateRecipeEU(aMaterial, 8))
                     .addTo(cableRecipes);
 
-                //Assembler Recipes to be removed in the next Major Update
+                // Assembler Recipes to be removed in the next Major Update
                 GTValues.RA.stdBuilder()
                     .itemInputs(
                         aStack,
@@ -507,7 +506,6 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                     .duration(5 * SECONDS)
                     .eut(calculateRecipeEU(aMaterial, 8))
                     .addTo(assemblerRecipes);
-
 
                 for (Materials dielectric : dielectrics) {
                     for (Materials syntheticRubber : syntheticRubbers) {
@@ -534,7 +532,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                             .eut(calculateRecipeEU(aMaterial, 8))
                             .addTo(cableRecipes);
 
-                        //Assembler Recipes to be removed in the next Major Update
+                        // Assembler Recipes to be removed in the next Major Update
 
                         GTValues.RA.stdBuilder()
                             .itemInputs(
