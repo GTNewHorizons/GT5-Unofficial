@@ -12666,6 +12666,7 @@ public class MaterialsInit {
             .addToolHeadItems()
             .addGearItems()
             .addSubTag(SubTag.MULTI_PLATE)
+            .addSubTag(SubTag.TRANSMUTABLE_NUGGETS)
             .constructMaterial();
     }
 
