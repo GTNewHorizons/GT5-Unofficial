@@ -25,6 +25,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -2706,6 +2707,43 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
         return false;
     }
 
+    private String clientLocale = "en_US";
+    @Override
+    public String[] getInfoData() {
+
+        BeamLinePacket dataPacket = new BeamLinePacket(cachedOutputParticle);
+
+        return new String[] {
+            translateToLocalFormatted("tt.keyword.Content", this.clientLocale) + ": "
+                + EnumChatFormatting.AQUA
+                + (dataPacket != null ? dataPacket.getContentString() : 0),
+            translateToLocalFormatted("tt.keyword.PacketHistory", this.clientLocale) + ": "
+                + EnumChatFormatting.RED
+                + (dataPacket != null ? dataPacket.getTraceSize() : 0), };
+    }
+
+
+    public final float MAXIMUM_PARTICLE_ENERGY = 500000000;
+
+    public BeamInformation accelerateParticle(BeamInformation particle) {
+
+        float inputEnergy = particle.getEnergy();
+        float outEnergy = inputEnergy;
+        if (inputEnergy <= MAXIMUM_PARTICLE_ENERGY) {
+            outEnergy = inputEnergy + 1000; //todo use better formula
+            System.out.println(particle.getEnergy());
+        }
+
+        return new BeamInformation(outEnergy,
+            particle.getRate(),particle.getParticleId(),particle.getFocus());
+
+    }
+
+
+
+    BeamInformation initialParticleInfo = null;
+    BeamInformation cachedOutputParticle = null;
+
     @NotNull
     @Override
     public CheckRecipeResult checkProcessing() {
@@ -2713,52 +2751,74 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
         BeamInformation inputInfo = this.getInputInformation();
         if (inputInfo == null) return CheckRecipeResultRegistry.NO_RECIPE;
 
-        float inputEnergy = inputInfo.getEnergy();
-        Particle inputParticle = Particle.getParticleFromId(inputInfo.getParticleId());
-        int inputRate = inputInfo.getRate();
-
-        if (inputEnergy == 0) return CheckRecipeResultRegistry.NO_RECIPE;
-        float inputFocus = inputInfo.getFocus();
-
-        if (!inputParticle.canAccelerate()) {
-            stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.noaccel"));
-            return CheckRecipeResultRegistry.NO_RECIPE;
+        if (machineMode == MACHINEMODE_ACCELERATOR){
+            if (cachedOutputParticle == null){
+                // assign cachedOutputParticle, which will be accelerated in consequent processing cycles
+                // also assign initialParticleInfo, which inputInfo is compared against every cycle
+                cachedOutputParticle = inputInfo.copy();
+                initialParticleInfo = inputInfo.copy();
+            }
+            else{
+                if (!initialParticleInfo.isEqual(inputInfo)){
+                    stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.noaccel"));
+                    cachedOutputParticle = null;
+                    // todo: new shutdown reason
+                    return CheckRecipeResultRegistry.NO_RECIPE;
+                }
+                else {
+                    cachedOutputParticle = accelerateParticle(cachedOutputParticle);
+                }
+            }
         }
+        else {
 
-        this.mEfficiency = 10000;
-        this.mEfficiencyIncrease = 10000;
-        this.mMaxProgresstime = TickTime.SECOND;
+            float inputEnergy = inputInfo.getEnergy();
+            Particle inputParticle = Particle.getParticleFromId(inputInfo.getParticleId());
+            int inputRate = inputInfo.getRate();
 
-        // todo: // energy this.lEUt = -GTValues.VP[GTUtility.getTier(this.getAverageInputVoltage())] *
-        // this.getMaxInputAmps();
+            if (inputEnergy == 0) return CheckRecipeResultRegistry.NO_RECIPE;
+            float inputFocus = inputInfo.getFocus();
 
-        // todo: same^ // long voltage = this.getMaxInputEu();
-        // todo: same^ // float voltageFactor = getVoltageFactor(voltage);
-        // todo: same^ // this.outputEnergy = (float) calculateOutputParticleEnergy(voltage, inputEnergy,
-        // this.antennaeTier);
+            if (!inputParticle.canAccelerate()) {
+                stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.noaccel"));
+                return CheckRecipeResultRegistry.NO_RECIPE;
+            }
 
-        // Generate output particle:
+            this.mEfficiency = 10000;
+            this.mEfficiencyIncrease = 10000;
+            this.mMaxProgresstime = TickTime.SECOND;
 
-        // 1. Determine output energy (= collision energy)
-        this.outputEnergy = (float) (inputEnergy) / 2; // output energy = collision energy = input energy * 0.5
+            // todo: // energy this.lEUt = -GTValues.VP[GTUtility.getTier(this.getAverageInputVoltage())] *
+            // this.getMaxInputAmps();
 
-        // 2. Use collision energy to generate particle ID
-        this.outputParticleID = GenerateOutputParticleID(this.outputEnergy);
+            // todo: same^ // long voltage = this.getMaxInputEu();
+            // todo: same^ // float voltageFactor = getVoltageFactor(voltage);
+            // todo: same^ // this.outputEnergy = (float) calculateOutputParticleEnergy(voltage, inputEnergy,
+            // this.antennaeTier);
 
-        // 3. Use input rate and output particle rest mass to determine output rate
-        Particle outputParticle = Particle.getParticleFromId(this.outputParticleID);
-        float outputMass = outputParticle.getMass();
-        this.outputRate = (int) max(0, (1 - (outputMass / this.outputEnergy)) * (inputRate));
+            // Generate output particle:
 
-        // 4. Focus is unused
-        this.outputFocus = (int) (inputFocus);
+            // 1. Determine output energy (= collision energy)
+            this.outputEnergy = (float) (inputEnergy) / 2; // output energy = collision energy = input energy * 0.5
 
-        if (this.outputRate == 0) {
-            stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.low_input_eut"));
-            return CheckRecipeResultRegistry.NO_RECIPE;
+            // 2. Use collision energy to generate particle ID
+            this.outputParticleID = GenerateOutputParticleID(this.outputEnergy);
+
+            // 3. Use input rate and output particle rest mass to determine output rate
+            Particle outputParticle = Particle.getParticleFromId(this.outputParticleID);
+            float outputMass = outputParticle.getMass();
+            this.outputRate = (int) max(0, (1 - (outputMass / this.outputEnergy)) * (inputRate));
+
+            // 4. Focus is unused
+            this.outputFocus = (int) (inputFocus);
+
+            if (this.outputRate == 0) {
+                stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.low_input_eut"));
+                return CheckRecipeResultRegistry.NO_RECIPE;
+            }
+
+            outputPacketAfterRecipe();
         }
-
-        outputPacketAfterRecipe();
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
