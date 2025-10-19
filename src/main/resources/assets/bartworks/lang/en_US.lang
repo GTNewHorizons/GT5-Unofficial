@@ -140,8 +140,6 @@ tooltip.bw.tier.name=Tier:
 tooltip.bw.empty.name=Empty
 tooltip.bw.mb_via.name=%s§7 via §2BartWorks
 
-tooltip.bw.high_temp_gas_cooled_reactor.material=Material for High Temperature Gas-cooled Reactor
-
 tooltip.bw.item.circuit.tagged=a circuit
 tooltip.bw.item.circuit.tagged.imprint=An imprint for: %s
 tooltip.bw.item.circuit.tagged.sliced=A sliced %s
@@ -245,16 +243,6 @@ BW.infoData.BioVat.production=Production
 
 BW.infoData.htr.helium_level=Helium-Level: %sL / %sL
 BW.infoData.htr.problems=Problems: %s
-
-BW.infoData.htgr.mode=Mode: %s
-BW.infoData.htgr.mode.emptying=Emptying
-BW.infoData.htgr.mode.normal=Normal
-BW.infoData.htgr.progress=Progress: %ss / %ss
-BW.infoData.htgr.fuel_type=Fuel type: %s
-BW.infoData.htgr.fuel_type.none=NONE
-BW.infoData.htgr.fuel_type.triso=TRISO (%s)
-BW.infoData.htgr.fuel_amount=Fuel amount: %s pcs.
-BW.infoData.htgr.coolant=Coolant: %sL/s
 
 BW.infoData.thtr.progress=Progress: %ssecs / %ssecs
 BW.infoData.thtr.triso_pebbles=TRISO-Pebbles: %spcs. / %spcs.

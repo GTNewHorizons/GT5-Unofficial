@@ -1422,7 +1422,7 @@ public enum MetaTileEntityIDs {
     VoidMinerIII(12739),
     VoidMinerII(12740),
     VoidMinerI(12741),
-    HighTemperatureGasCooledReactor(12791),
+    HighTemperatureGasCooledReactorController(12791),
     ExtremeIndustrialGreenhouseController(12792),
     AcidGeneratorLV(12793),
     HumongousInputHatch(12799),
