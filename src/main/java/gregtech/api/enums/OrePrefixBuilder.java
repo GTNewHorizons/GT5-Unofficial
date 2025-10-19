@@ -108,7 +108,6 @@ public class OrePrefixBuilder {
         return this;
     }
 
-    @SuppressWarnings("SameParameterValue") // The only passed argument is defaultStackSize = 1
     public OrePrefixBuilder defaultStackSize(int defaultStackSize) {
         this.defaultStackSize = defaultStackSize;
         return this;
