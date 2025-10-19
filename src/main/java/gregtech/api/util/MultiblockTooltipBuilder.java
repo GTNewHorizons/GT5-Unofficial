@@ -208,11 +208,16 @@ public class MultiblockTooltipBuilder {
      * @param tier  Tiered object that determines bonus
      * @return Instance this method was called on.
      */
-    public MultiblockTooltipBuilder addDynamicSpeedInfo(float speed, TooltipTier tier) {
+    public MultiblockTooltipBuilder addDynamicSpeedBonusInfo(float speed, TooltipTier tier) {
         addInfo(
             "GT5U.MBTT.Speed.Additional",
             TooltipHelper.speedText("+" + percentageFormat.format(speed)),
             tier.getValue());
+        return this;
+    }
+
+    public MultiblockTooltipBuilder addDynamicSpeedInfo(float speed, TooltipTier tier) {
+        addInfo("GT5U.MBTT.Speed.Absolute", TooltipHelper.speedText(percentageFormat.format(speed)), tier.getValue());
         return this;
     }
 
