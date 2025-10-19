@@ -240,10 +240,10 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
             .addSeparator()
             .addInfo(
                 "gt.mvf.tips.2",
-                Materials.SpaceTime.getLocalizedNameForItem(),
+                Materials.SpaceTime.getLocalizedName(),
                 FluidRegistry.getFluidStack("spatialfluid", 1)
                     .getLocalizedName(),
-                Materials.Eternity.getLocalizedNameForItem())
+                Materials.Eternity.getLocalizedName())
             .addSeparator()
             .addInfo("gt.mvf.tips.3")
             .beginStructureBlock(15, 15, 15, true)

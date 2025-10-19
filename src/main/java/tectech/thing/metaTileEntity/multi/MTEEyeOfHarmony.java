@@ -999,7 +999,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                 "gt.eoh.tips.7",
                 formatNumbers(MOLTEN_SPACETIME_PER_FAILURE_TIER),
                 SPACETIME_FAILURE_BASE,
-                Materials.SpaceTime.getLocalizedNameForItem())
+                Materials.SpaceTime.getLocalizedName())
             .addSeparator(GOLD)
             .addInfo(
                 "gt.eoh.tips.8",
@@ -1009,7 +1009,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                 formatNumbers(PARALLEL_MULTIPLIER_CONSTANT),
                 formatNumbers(POWER_DIVISION_CONSTANT),
                 formatNumbers(POWER_INCREASE_CONSTANT),
-                Materials.RawStarMatter.getLocalizedNameForItem())
+                Materials.RawStarMatter.getLocalizedName())
             .addSeparator(GOLD)
             .addInfo("gt.eoh.tips.9")
             .beginStructureBlock(33, 33, 33, false)
