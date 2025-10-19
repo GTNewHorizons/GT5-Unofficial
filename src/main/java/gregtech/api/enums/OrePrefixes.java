@@ -165,7 +165,7 @@ public class OrePrefixes {
         .materialBased()
         .materialGenerationBits(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
-        .textureIndex(67)
+        .textureIndex(OrePrefixTextureID.ORE_SMALL)
         .build();
 
     /** Prefix of Railcraft. */
@@ -206,7 +206,7 @@ public class OrePrefixes {
         .materialBased()
         .materialGenerationBits(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
-        .textureIndex(68)
+        .textureIndex(OrePrefixTextureID.ORE)
         .build();
 
     public static final OrePrefixes crushedCentrifuged = new OrePrefixBuilder("crushedCentrifuged")
@@ -217,7 +217,7 @@ public class OrePrefixes {
         .materialBased()
         .materialGenerationBits(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
-        .textureIndex(7)
+        .textureIndex(OrePrefixTextureID.CRUSHED_CENTRIFUGED)
         .build();
 
     public static final OrePrefixes crushedPurified = new OrePrefixBuilder("crushedPurified")
@@ -228,7 +228,7 @@ public class OrePrefixes {
         .materialBased()
         .materialGenerationBits(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
-        .textureIndex(6)
+        .textureIndex(OrePrefixTextureID.CRUSHED_PURIFIED)
         .build();
 
     public static final OrePrefixes crushed = new OrePrefixBuilder("crushed").withDefaultLocalName("Crushed Ores")
@@ -238,7 +238,7 @@ public class OrePrefixes {
         .materialBased()
         .materialGenerationBits(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
-        .textureIndex(5)
+        .textureIndex(OrePrefixTextureID.CRUSHED)
         .build();
 
     public static final OrePrefixes rawOre = new OrePrefixBuilder("rawOre").withDefaultLocalName("Raw Ore")
@@ -248,7 +248,7 @@ public class OrePrefixes {
         .materialBased()
         .materialGenerationBits(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
-        .textureIndex(64)
+        .textureIndex(OrePrefixTextureID.ORE_RAW)
         .build();
 
     // Introduced by Mekanism
@@ -305,7 +305,7 @@ public class OrePrefixes {
         .materialBased()
         .materialGenerationBits(METAL)
         .materialAmount(M * 1)
-        .textureIndex(12)
+        .textureIndex(OrePrefixTextureID.INGOT_HOT)
         .build();
 
     /** A regular Ingot. Introduced by Eloraam */
@@ -315,7 +315,7 @@ public class OrePrefixes {
         .materialBased()
         .materialGenerationBits(METAL)
         .materialAmount(M * 1)
-        .textureIndex(11)
+        .textureIndex(OrePrefixTextureID.INGOT)
         .build();
 
     /** A regular Gem worth one small Dust. Introduced by TerraFirmaCraft */
@@ -327,8 +327,8 @@ public class OrePrefixes {
         .selfReferencing()
         .recyclable()
         .materialGenerationBits(GEM)
-        .textureIndex(59)
         .materialAmount(M / 4)
+        .textureIndex(OrePrefixTextureID.GEM_CHIPPED)
         .build();
 
     /** A regular Gem worth two small Dusts. Introduced by TerraFirmaCraft */
@@ -341,7 +341,7 @@ public class OrePrefixes {
         .recyclable()
         .materialGenerationBits(GEM)
         .materialAmount(M / 2)
-        .textureIndex(60)
+        .textureIndex(OrePrefixTextureID.GEM_FLAWED)
         .build();
 
     /** A regular Gem worth two Dusts. Introduced by TerraFirmaCraft */
@@ -354,7 +354,7 @@ public class OrePrefixes {
         .recyclable()
         .materialGenerationBits(GEM)
         .materialAmount(M * 2)
-        .textureIndex(61)
+        .textureIndex(OrePrefixTextureID.GEM_FLAWLESS)
         .build();
 
     /** A regular Gem worth four Dusts. Introduced by TerraFirmaCraft */
@@ -367,7 +367,7 @@ public class OrePrefixes {
         .recyclable()
         .materialGenerationBits(GEM)
         .materialAmount(M * 4)
-        .textureIndex(62)
+        .textureIndex(OrePrefixTextureID.GEM_EXQUISITE)
         .build();
 
     /** A regular Gem worth one Dust. Introduced by Eloraam */
@@ -378,7 +378,7 @@ public class OrePrefixes {
         .materialGenerationBits(GEM)
         .materialAmount(M * 1)
         .defaultStackSize(OTHER_STACK_SIZE)
-        .textureIndex(8)
+        .textureIndex(OrePrefixTextureID.GEM)
         .build();
 
     /** 1/9th of a Dust. */
@@ -389,7 +389,7 @@ public class OrePrefixes {
         .materialBased()
         .materialGenerationBits(DUST | METAL | GEM | ORE)
         .materialAmount(M / 9)
-        .textureIndex(0)
+        .textureIndex(OrePrefixTextureID.DUST_TINY)
         .build();
 
     /** 1/4th of a Dust. */
@@ -400,7 +400,7 @@ public class OrePrefixes {
         .materialBased()
         .materialGenerationBits(DUST | METAL | GEM | ORE)
         .materialAmount(M / 4)
-        .textureIndex(1)
+        .textureIndex(OrePrefixTextureID.DUST_SMALL)
         .build();
 
     /** Dust with impurities. 1 Unit of Main Material and 1/9 - 1/4 Unit of secondary Material */
@@ -412,7 +412,7 @@ public class OrePrefixes {
         .materialGenerationBits(ORE)
         .materialAmount(M * 1)
         .defaultStackSize(ORE_STACK_SIZE)
-        .textureIndex(3)
+        .textureIndex(OrePrefixTextureID.DUST_IMPURE)
         .build();
 
     public static final OrePrefixes dustRefined = new OrePrefixBuilder("dustRefined")
@@ -424,7 +424,7 @@ public class OrePrefixes {
         .materialGenerationBits(ORE)
         .materialAmount(M * 1)
         .defaultStackSize(ORE_STACK_SIZE)
-        .textureIndex(2)
+        .textureIndex(OrePrefixTextureID.DUST)
         .build();
 
     public static final OrePrefixes dustPure = new OrePrefixBuilder("dustPure").withDefaultLocalName("Purified Dusts")
@@ -435,7 +435,7 @@ public class OrePrefixes {
         .materialGenerationBits(ORE)
         .materialAmount(M * 1)
         .defaultStackSize(ORE_STACK_SIZE)
-        .textureIndex(4)
+        .textureIndex(OrePrefixTextureID.DUST_PURE)
         .build();
 
     /** Pure Dust worth of one Ingot or Gem. Introduced by Alblaka. */
@@ -445,7 +445,7 @@ public class OrePrefixes {
         .materialBased()
         .materialGenerationBits(DUST | METAL | GEM | ORE)
         .materialAmount(M * 1)
-        .textureIndex(2)
+        .textureIndex(OrePrefixTextureID.DUST)
         .build();
 
     /** A Nugget. Introduced by Eloraam */
@@ -455,20 +455,20 @@ public class OrePrefixes {
         .materialBased()
         .materialGenerationBits(METAL)
         .materialAmount(M / 9)
-        .textureIndex(9)
+        .textureIndex(OrePrefixTextureID.NUGGET)
         .build();
 
     /** Special Alloys have this prefix. */
     public static final OrePrefixes plateAlloy = new OrePrefixBuilder("plateAlloy").withDefaultLocalName("Alloy Plates")
         .unifiable()
         .materialGenerationBits(METAL)
-        .textureIndex(17)
+        .textureIndex(OrePrefixTextureID.PLATE)
         .build();
 
     public static final OrePrefixes plateSteamcraft = new OrePrefixBuilder("plateSteamcraft")
         .withDefaultLocalName("Steamcraft Plates")
         .materialGenerationBits(METAL)
-        .textureIndex(17)
+        .textureIndex(OrePrefixTextureID.PLATE)
         .build();
 
     /** 9 Plates combined in one Item. */
@@ -480,7 +480,7 @@ public class OrePrefixes {
         .recyclable()
         .materialGenerationBits(METAL)
         .materialAmount(M * 9)
-        .textureIndex(22)
+        .textureIndex(OrePrefixTextureID.PLATE_DENSE)
         .build();
 
     public static final OrePrefixes plateSuperdense = new OrePrefixBuilder("plateSuperdense")
@@ -492,7 +492,7 @@ public class OrePrefixes {
         .recyclable()
         .materialGenerationBits(METAL)
         .materialAmount(M * 64)
-        .textureIndex(125)
+        .textureIndex(OrePrefixTextureID.PLATE_SUPERDENSE)
         .build();
 
     public static final OrePrefixes plateQuintuple = new OrePrefixBuilder("plateQuintuple")
@@ -504,7 +504,7 @@ public class OrePrefixes {
         .recyclable()
         .materialGenerationBits(METAL)
         .materialAmount(M * 5)
-        .textureIndex(21)
+        .textureIndex(OrePrefixTextureID.PLATE_QUINTUPLE)
         .build();
 
     public static final OrePrefixes plateQuadruple = new OrePrefixBuilder("plateQuadruple")
@@ -516,7 +516,7 @@ public class OrePrefixes {
         .recyclable()
         .materialGenerationBits(METAL)
         .materialAmount(M * 4)
-        .textureIndex(20)
+        .textureIndex(OrePrefixTextureID.PLATE_QUADRUPLE)
         .build();
 
     public static final OrePrefixes plateTriple = new OrePrefixBuilder("plateTriple").withDefaultLocalName("3x Plates")
@@ -527,7 +527,7 @@ public class OrePrefixes {
         .recyclable()
         .materialGenerationBits(METAL)
         .materialAmount(M * 3)
-        .textureIndex(19)
+        .textureIndex(OrePrefixTextureID.PLATE_TRIPLE)
         .build();
 
     public static final OrePrefixes plateDouble = new OrePrefixBuilder("plateDouble").withDefaultLocalName("2x Plates")
@@ -538,7 +538,7 @@ public class OrePrefixes {
         .recyclable()
         .materialGenerationBits(METAL)
         .materialAmount(M * 2)
-        .textureIndex(18)
+        .textureIndex(OrePrefixTextureID.PLATE_DOUBLE)
         .build();
 
     public static final OrePrefixes plate = new OrePrefixBuilder("plate").withDefaultLocalName("Plates")
@@ -548,7 +548,7 @@ public class OrePrefixes {
         .recyclable()
         .materialGenerationBits(METAL | GEM)
         .materialAmount(M * 1)
-        .textureIndex(17)
+        .textureIndex(OrePrefixTextureID.PLATE)
         .build();
 
     /** Casing made of 1/2 Ingot/Dust */
@@ -559,7 +559,7 @@ public class OrePrefixes {
         .recyclable()
         .materialGenerationBits(METAL | GEM)
         .materialAmount(M / 2)
-        .textureIndex(10)
+        .textureIndex(OrePrefixTextureID.CASING_SMALL)
         .build();
 
     /** Foil made of 1/4 Ingot/Dust. */
@@ -570,7 +570,7 @@ public class OrePrefixes {
         .recyclable()
         .materialGenerationBits(METAL)
         .materialAmount(M / 4)
-        .textureIndex(29)
+        .textureIndex(OrePrefixTextureID.FOIL)
         .build();
 
     /** Stick made of an Ingot. */
@@ -583,7 +583,7 @@ public class OrePrefixes {
         .recyclable()
         .materialGenerationBits(METAL | GEM)
         .materialAmount(M * 1)
-        .textureIndex(54)
+        .textureIndex(OrePrefixTextureID.STICK_LONG)
         .build();
 
     /** Stick made of half an Ingot. Introduced by Eloraam */
@@ -594,7 +594,7 @@ public class OrePrefixes {
         .recyclable()
         .materialGenerationBits(METAL | GEM)
         .materialAmount(M / 2)
-        .textureIndex(23)
+        .textureIndex(OrePrefixTextureID.STICK)
         .build();
 
     /** consisting out of one Nugget. */
@@ -605,7 +605,7 @@ public class OrePrefixes {
         .recyclable()
         .materialGenerationBits(METAL)
         .materialAmount(M / 9)
-        .textureIndex(25)
+        .textureIndex(OrePrefixTextureID.ROUND)
         .build();
 
     /** consisting out of 1/8 Ingot or 1/4 Stick. */
@@ -616,7 +616,7 @@ public class OrePrefixes {
         .recyclable()
         .materialGenerationBits(METAL | GEM)
         .materialAmount(M / 8)
-        .textureIndex(26)
+        .textureIndex(OrePrefixTextureID.BOLT)
         .build();
 
     /** contain dusts */
@@ -624,7 +624,7 @@ public class OrePrefixes {
         .withSuffix(" Comb")
         .materialGenerationBits(METAL | GEM)
         .materialAmount(M)
-        .textureIndex(101)
+        .textureIndex(OrePrefixTextureID.COMB)
         .build();
 
     /** consisting out of a Bolt. */
@@ -635,7 +635,7 @@ public class OrePrefixes {
         .recyclable()
         .materialGenerationBits(METAL | GEM)
         .materialAmount(M / 8)
-        .textureIndex(27)
+        .textureIndex(OrePrefixTextureID.SCREW)
         .build();
 
     /** consisting out of 1/2 Stick. */
@@ -646,7 +646,7 @@ public class OrePrefixes {
         .recyclable()
         .materialGenerationBits(METAL)
         .materialAmount(M / 4)
-        .textureIndex(28)
+        .textureIndex(OrePrefixTextureID.RING)
         .build();
 
     /** consisting out of 1 Fine Wire. */
@@ -659,7 +659,7 @@ public class OrePrefixes {
         .recyclable()
         .materialGenerationBits(METAL)
         .materialAmount(M / 4)
-        .textureIndex(55)
+        .textureIndex(OrePrefixTextureID.SPRING_SMALL)
         .build();
 
     /** consisting out of 2 Sticks. */
@@ -670,7 +670,7 @@ public class OrePrefixes {
         .recyclable()
         .materialGenerationBits(METAL)
         .materialAmount(M * 1)
-        .textureIndex(56)
+        .textureIndex(OrePrefixTextureID.SPRING)
         .build();
 
     /** consisting out of 1/8 Ingot or 1/4 Wire. */
@@ -682,7 +682,7 @@ public class OrePrefixes {
         .recyclable()
         .materialGenerationBits(METAL)
         .materialAmount(M / 8)
-        .textureIndex(51)
+        .textureIndex(OrePrefixTextureID.WIRE_FINE)
         .build();
 
     /** consisting out of 4 Plates, 1 Ring and 1 Screw. */
@@ -693,7 +693,7 @@ public class OrePrefixes {
         .recyclable()
         .materialGenerationBits(GEAR)
         .materialAmount(M * 4 + M / 4)
-        .textureIndex(53)
+        .textureIndex(OrePrefixTextureID.ROTOR)
         .build();
 
     public static final OrePrefixes gearGtSmall = new OrePrefixBuilder("gearGtSmall")
@@ -705,7 +705,7 @@ public class OrePrefixes {
         .recyclable()
         .materialGenerationBits(GEAR)
         .materialAmount(M * 1)
-        .textureIndex(52)
+        .textureIndex(OrePrefixTextureID.GEAR_GT_SMALL)
         .build();
 
     /** Introduced by me because BuildCraft has ruined the gear Prefix... */
@@ -716,7 +716,7 @@ public class OrePrefixes {
         .recyclable()
         .materialGenerationBits(GEAR)
         .materialAmount(M * 4)
-        .textureIndex(63)
+        .textureIndex(OrePrefixTextureID.GEAR_GT)
         .build();
 
     /** 3/4 of a Plate or Gem used to shape a Lense. Normally only used on Transparent Materials. */
@@ -727,7 +727,7 @@ public class OrePrefixes {
         .recyclable()
         .materialGenerationBits(GEM)
         .materialAmount((M * 3) / 4)
-        .textureIndex(24)
+        .textureIndex(OrePrefixTextureID.LENS)
         .build();
 
     /** Hot Cell full of Plasma, which can be used in the Plasma Generator. */
@@ -740,7 +740,7 @@ public class OrePrefixes {
         .container()
         .materialGenerationBits(PLASMA)
         .materialAmount(M * 1)
-        .textureIndex(31)
+        .textureIndex(OrePrefixTextureID.CELL_PLASMA)
         .build();
 
     /** Hot Cell full of molten stuff, which can be used in the Plasma Generator. */
@@ -754,7 +754,7 @@ public class OrePrefixes {
         .container()
         .materialGenerationBits(TOOL)
         .materialAmount(M * 1)
-        .textureIndex(31)
+        .textureIndex(OrePrefixTextureID.CELL_PLASMA)
         .build();
 
     public static final OrePrefixes cell = new OrePrefixBuilder("cell").withDefaultLocalName("Cells")
@@ -766,7 +766,7 @@ public class OrePrefixes {
         .recyclable()
         .materialGenerationBits(CELL | EMPTY)
         .materialAmount(M * 1)
-        .textureIndex(30)
+        .textureIndex(OrePrefixTextureID.CELL)
         .build();
 
     /** A vanilla Iron Bucket filled with the Material. */
@@ -867,7 +867,7 @@ public class OrePrefixes {
         .recyclable()
         .materialGenerationBits(TOOL)
         .materialAmount(M * 2)
-        .textureIndex(38)
+        .textureIndex(OrePrefixTextureID.TOOL_HEAD_FILE)
         .build();
 
     /** consisting out of 6 Ingots. */
@@ -879,7 +879,7 @@ public class OrePrefixes {
         .recyclable()
         .materialGenerationBits(TOOL)
         .materialAmount(M * 6)
-        .textureIndex(37)
+        .textureIndex(OrePrefixTextureID.TOOL_HEAD_HAMMER)
         .build();
 
     /** consisting out of 2 Ingots. */
@@ -890,7 +890,7 @@ public class OrePrefixes {
         .recyclable()
         .materialGenerationBits(TOOL)
         .materialAmount(M * 2)
-        .textureIndex(39)
+        .textureIndex(OrePrefixTextureID.TOOL_HEAD_SAW)
         .build();
 
     /** consisting out of 4 Ingots. */
@@ -902,7 +902,7 @@ public class OrePrefixes {
         .recyclable()
         .materialGenerationBits(TOOL)
         .materialAmount(M * 4)
-        .textureIndex(48)
+        .textureIndex(OrePrefixTextureID.TOOL_HEAD_BUZZ_SAW)
         .build();
 
     /** consisting out of 1 Ingots. */
@@ -914,7 +914,7 @@ public class OrePrefixes {
         .recyclable()
         .materialGenerationBits(TOOL)
         .materialAmount(M * 1)
-        .textureIndex(47)
+        .textureIndex(OrePrefixTextureID.TOOL_HEAD_SCREWDRIVER)
         .build();
 
     /** consisting out of 4 Ingots. */
@@ -926,7 +926,7 @@ public class OrePrefixes {
         .recyclable()
         .materialGenerationBits(TOOL)
         .materialAmount(M * 4)
-        .textureIndex(40)
+        .textureIndex(OrePrefixTextureID.TOOL_HEAD_DRILL)
         .build();
 
     /** consisting out of 2 Ingots. */
@@ -938,7 +938,7 @@ public class OrePrefixes {
         .recyclable()
         .materialGenerationBits(TOOL)
         .materialAmount(M * 2)
-        .textureIndex(41)
+        .textureIndex(OrePrefixTextureID.TOOL_HEAD_CHAINSAW)
         .build();
 
     /** consisting out of 4 Ingots. */
@@ -950,7 +950,7 @@ public class OrePrefixes {
         .recyclable()
         .materialGenerationBits(TOOL)
         .materialAmount(M * 4)
-        .textureIndex(42)
+        .textureIndex(OrePrefixTextureID.TOOL_HEAD_WRENCH)
         .build();
 
     /** consisting out of 6 Ingots. */
@@ -962,7 +962,7 @@ public class OrePrefixes {
         .recyclable()
         .materialGenerationBits(TOOL)
         .materialAmount(M * 6)
-        .textureIndex(100)
+        .textureIndex(OrePrefixTextureID.TURBINE_BLADE)
         .build();
 
     /** vanilly Sword */
@@ -1092,7 +1092,7 @@ public class OrePrefixes {
         .recyclable()
         .materialAmount(M * 9)
         .defaultStackSize(OTHER_STACK_SIZE)
-        .textureIndex(71)
+        .textureIndex(OrePrefixTextureID.BLOCK)
         .build();
 
     /** Special Prefix used mainly for the Crafting Handler. */
@@ -1315,7 +1315,7 @@ public class OrePrefixes {
         .skipActiveUnification()
         .recyclable()
         .materialAmount(M * 2)
-        .textureIndex(83)
+        .textureIndex(OrePrefixTextureID.FRAME_GT)
         .build();
 
     public static final OrePrefixes pipeTiny = new OrePrefixBuilder("pipeTiny").withDefaultLocalName("Tiny Pipes")
@@ -1326,7 +1326,7 @@ public class OrePrefixes {
         .skipActiveUnification()
         .recyclable()
         .materialAmount(M / 2)
-        .textureIndex(78)
+        .textureIndex(OrePrefixTextureID.PIPE_TINY)
         .build();
 
     public static final OrePrefixes pipeSmall = new OrePrefixBuilder("pipeSmall").withDefaultLocalName("Small Pipes")
@@ -1337,7 +1337,7 @@ public class OrePrefixes {
         .skipActiveUnification()
         .recyclable()
         .materialAmount(M * 1)
-        .textureIndex(79)
+        .textureIndex(OrePrefixTextureID.PIPE_SMALL)
         .build();
 
     public static final OrePrefixes pipeMedium = new OrePrefixBuilder("pipeMedium").withDefaultLocalName("Medium Pipes")
@@ -1348,7 +1348,7 @@ public class OrePrefixes {
         .skipActiveUnification()
         .recyclable()
         .materialAmount(M * 3)
-        .textureIndex(80)
+        .textureIndex(OrePrefixTextureID.PIPE_MEDIUM)
         .build();
 
     public static final OrePrefixes pipeLarge = new OrePrefixBuilder("pipeLarge").withDefaultLocalName("Large pipes")
@@ -1359,7 +1359,7 @@ public class OrePrefixes {
         .skipActiveUnification()
         .recyclable()
         .materialAmount(M * 6)
-        .textureIndex(81)
+        .textureIndex(OrePrefixTextureID.PIPE_LARGE)
         .build();
 
     public static final OrePrefixes pipeHuge = new OrePrefixBuilder("pipeHuge").withDefaultLocalName("Huge Pipes")
@@ -1370,7 +1370,7 @@ public class OrePrefixes {
         .skipActiveUnification()
         .recyclable()
         .materialAmount(M * 12)
-        .textureIndex(82)
+        .textureIndex(OrePrefixTextureID.PIPE_HUGE)
         .build();
 
     public static final OrePrefixes pipeQuadruple = new OrePrefixBuilder("pipeQuadruple")
@@ -1382,7 +1382,7 @@ public class OrePrefixes {
         .skipActiveUnification()
         .recyclable()
         .materialAmount(M * 12)
-        .textureIndex(84)
+        .textureIndex(OrePrefixTextureID.PIPE_QUADRUPLE)
         .build();
 
     public static final OrePrefixes pipeNonuple = new OrePrefixBuilder("pipeNonuple")
@@ -1394,7 +1394,7 @@ public class OrePrefixes {
         .skipActiveUnification()
         .recyclable()
         .materialAmount(M * 9)
-        .textureIndex(85)
+        .textureIndex(OrePrefixTextureID.PIPE_NONUPLE)
         .build();
 
     public static final OrePrefixes pipeRestrictiveTiny = new OrePrefixBuilder("pipeRestrictiveTiny")
@@ -1406,7 +1406,7 @@ public class OrePrefixes {
         .skipActiveUnification()
         .recyclable()
         .materialAmount(M / 2)
-        .textureIndex(78)
+        .textureIndex(OrePrefixTextureID.PIPE_TINY)
         .build();
 
     public static final OrePrefixes pipeRestrictiveSmall = new OrePrefixBuilder("pipeRestrictiveSmall")
@@ -1418,7 +1418,7 @@ public class OrePrefixes {
         .skipActiveUnification()
         .recyclable()
         .materialAmount(M * 1)
-        .textureIndex(79)
+        .textureIndex(OrePrefixTextureID.PIPE_SMALL)
         .build();
 
     public static final OrePrefixes pipeRestrictiveMedium = new OrePrefixBuilder("pipeRestrictiveMedium")
@@ -1430,7 +1430,7 @@ public class OrePrefixes {
         .skipActiveUnification()
         .recyclable()
         .materialAmount(M * 3)
-        .textureIndex(80)
+        .textureIndex(OrePrefixTextureID.PIPE_MEDIUM)
         .build();
 
     public static final OrePrefixes pipeRestrictiveLarge = new OrePrefixBuilder("pipeRestrictiveLarge")
@@ -1442,7 +1442,7 @@ public class OrePrefixes {
         .skipActiveUnification()
         .recyclable()
         .materialAmount(M * 6)
-        .textureIndex(81)
+        .textureIndex(OrePrefixTextureID.PIPE_LARGE)
         .build();
 
     public static final OrePrefixes pipeRestrictiveHuge = new OrePrefixBuilder("pipeRestrictiveHuge")
@@ -1454,13 +1454,13 @@ public class OrePrefixes {
         .skipActiveUnification()
         .recyclable()
         .materialAmount(M * 12)
-        .textureIndex(82)
+        .textureIndex(OrePrefixTextureID.PIPE_HUGE)
         .build();
 
     public static final OrePrefixes pipe = new OrePrefixBuilder("pipe").withDefaultLocalName("Pipes")
         .withSuffix(" Pipe")
         .unifiable()
-        .textureIndex(77)
+        .textureIndex(OrePrefixTextureID.PIPE_SIDE)
         .build();
 
     public static final OrePrefixes wireGt16 = new OrePrefixBuilder("wireGt16").withDefaultLocalName("16x Wires")
@@ -1872,7 +1872,7 @@ public class OrePrefixes {
         .recyclable()
         .materialGenerationBits(TOOL)
         .materialAmount(M * 6)
-        .textureIndex(127)
+        .textureIndex(OrePrefixTextureID.TOOL_HEAD_MALLET)
         .build();
 
     /** Reverse Stick made of half an Ingot. Introduced by Eloraam */
@@ -1884,7 +1884,7 @@ public class OrePrefixes {
         .recyclable()
         .materialGenerationBits(METAL | GEM)
         .materialAmount(M / 2)
-        .textureIndex(126)
+        .textureIndex(OrePrefixTextureID.HANDLE_MALLET)
         .build();
 
     // Cracked fluids
@@ -1897,7 +1897,7 @@ public class OrePrefixes {
         .selfReferencing()
         .container()
         .materialAmount(M * 1)
-        .textureIndex(30)
+        .textureIndex(OrePrefixTextureID.CELL)
         .build();
 
     public static final OrePrefixes cellHydroCracked2 = new OrePrefixBuilder("cellHydroCracked2")
@@ -1909,7 +1909,7 @@ public class OrePrefixes {
         .selfReferencing()
         .container()
         .materialAmount(M * 1)
-        .textureIndex(30)
+        .textureIndex(OrePrefixTextureID.CELL)
         .build();
 
     public static final OrePrefixes cellHydroCracked3 = new OrePrefixBuilder("cellHydroCracked3")
@@ -1921,7 +1921,7 @@ public class OrePrefixes {
         .selfReferencing()
         .container()
         .materialAmount(M * 1)
-        .textureIndex(30)
+        .textureIndex(OrePrefixTextureID.CELL)
         .build();
 
     public static final OrePrefixes cellSteamCracked1 = new OrePrefixBuilder("cellSteamCracked1")
@@ -1933,7 +1933,7 @@ public class OrePrefixes {
         .selfReferencing()
         .container()
         .materialAmount(M * 1)
-        .textureIndex(30)
+        .textureIndex(OrePrefixTextureID.CELL)
         .build();
 
     public static final OrePrefixes cellSteamCracked2 = new OrePrefixBuilder("cellSteamCracked2")
@@ -1945,7 +1945,7 @@ public class OrePrefixes {
         .selfReferencing()
         .container()
         .materialAmount(M * 1)
-        .textureIndex(30)
+        .textureIndex(OrePrefixTextureID.CELL)
         .build();
 
     public static final OrePrefixes cellSteamCracked3 = new OrePrefixBuilder("cellSteamCracked3")
@@ -1957,7 +1957,7 @@ public class OrePrefixes {
         .selfReferencing()
         .container()
         .materialAmount(M * 1)
-        .textureIndex(30)
+        .textureIndex(OrePrefixTextureID.CELL)
         .build();
 
     public static final OrePrefixes componentCircuit = new OrePrefixBuilder("componentCircuit")
@@ -1981,7 +1981,7 @@ public class OrePrefixes {
         .unifiable()
         .materialBased()
         .selfReferencing()
-        .textureIndex(50)
+        .textureIndex(OrePrefixTextureID.NANITES)
         .build();
 
     // migrated from GT++
