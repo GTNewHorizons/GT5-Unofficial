@@ -173,6 +173,7 @@ public class MaterialsInit {
             .addOreByproduct(() -> Materials.Bauxite)
             .addSubTag(SubTag.METAL)
             .addSubTag(SubTag.MULTI_PLATE)
+            .addSubTag(SubTag.TRANSMUTABLE_NUGGETS)
             .constructMaterial();
     }
 
@@ -281,6 +282,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.LUCRUM, 1)
             .addOreByproduct(() -> Materials.Emerald)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.TRANSMUTABLE_NUGGETS)
             .constructMaterial();
     }
 
@@ -1041,6 +1043,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.BLASTFURNACE_CALCITE_TRIPLE)
             .addSubTag(SubTag.METAL)
             .addSubTag(SubTag.MULTI_PLATE)
+            .addSubTag(SubTag.TRANSMUTABLE_NUGGETS)
             .constructMaterial();
     }
 
@@ -1115,6 +1118,7 @@ public class MaterialsInit {
             .addOreByproduct(() -> Materials.Monazite)
             .addOreByproduct(() -> Materials.RareEarth)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.TRANSMUTABLE_NUGGETS)
             .constructMaterial();
     }
 
@@ -10882,6 +10886,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Arsenic, 4)
             .addMaterial(Materials.Sulfur, 4)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.TRANSMUTABLE_NUGGETS)
             .constructMaterial();
     }
 
@@ -12708,6 +12713,7 @@ public class MaterialsInit {
             .addToolHeadItems()
             .addGearItems()
             .addSubTag(SubTag.MULTI_PLATE)
+            .addSubTag(SubTag.TRANSMUTABLE_NUGGETS)
             .constructMaterial();
     }
 
@@ -12752,6 +12758,7 @@ public class MaterialsInit {
             .addOreByproduct(() -> Materials.Samarium)
             .addOreByproduct(() -> Materials.Zinc)
             .addSubTag(SubTag.MULTI_PLATE)
+            .addSubTag(SubTag.TRANSMUTABLE_NUGGETS)
             .constructMaterial();
     }
 
@@ -12901,6 +12908,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.METAL)
             .addSubTag(SubTag.MULTI_PLATE)
             .addSubTag(SubTag.WASHING_MERCURY)
+            .addSubTag(SubTag.TRANSMUTABLE_NUGGETS)
             .constructMaterial();
     }
 
@@ -12927,6 +12935,7 @@ public class MaterialsInit {
             .addOreByproduct(() -> Materials.Iron)
             .addSubTag(SubTag.BLASTFURNACE_CALCITE_TRIPLE)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.TRANSMUTABLE_NUGGETS)
             .constructMaterial();
     }
 
