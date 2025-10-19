@@ -1,5 +1,7 @@
 package gregtech.api.enums;
 
+import org.intellij.lang.annotations.MagicConstant;
+
 public class OrePrefixBuilder {
 
     private final String name;
@@ -94,7 +96,8 @@ public class OrePrefixBuilder {
         return this;
     }
 
-    public OrePrefixBuilder materialGenerationBits(int materialGenerationBits) {
+    public OrePrefixBuilder materialGenerationBits(
+        @MagicConstant(flagsFromClass = OrePrefixes.class) int materialGenerationBits) {
         this.materialGenerationBits = materialGenerationBits;
         return this;
     }
@@ -113,7 +116,7 @@ public class OrePrefixBuilder {
         return this;
     }
 
-    public OrePrefixBuilder textureIndex(int textureIndex) {
+    public OrePrefixBuilder textureIndex(@MagicConstant(flagsFromClass = OrePrefixTextureID.class) int textureIndex) {
         this.textureIndex = textureIndex;
         return this;
     }
