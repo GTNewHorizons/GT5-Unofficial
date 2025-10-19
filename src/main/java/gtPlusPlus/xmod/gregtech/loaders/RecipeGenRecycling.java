@@ -102,13 +102,13 @@ public class RecipeGenRecycling implements Runnable {
         }
 
         for (final Pair<OrePrefixes, ItemStack> validPrefix : mValidPairs) {
+            if (material == null) continue;
+            if (validPrefix == null) continue;
+
             final OrePrefixes orePrefix = validPrefix.getKey();
 
-            if (material == null || validPrefix == null
-                || (material.getState() != MaterialState.SOLID && material.getState() != MaterialState.LIQUID)
-                || orePrefix == OrePrefixes.ingotHot) {
-                continue;
-            }
+            if (material.getState() != MaterialState.SOLID && material.getState() != MaterialState.LIQUID) continue;
+            if (orePrefix == OrePrefixes.ingotHot) continue;
 
             final ItemStack tempStack = validPrefix.getValue();
             final ItemStack mDust = getDust(material, orePrefix);
