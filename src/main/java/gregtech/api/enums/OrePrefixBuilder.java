@@ -18,11 +18,11 @@ public class OrePrefixBuilder {
     private int defaultStackSize = 64;
     private int textureIndex = -1;
 
-    protected OrePrefixBuilder(String name) {
+    public OrePrefixBuilder(String name) {
         this.name = name;
     }
 
-    protected OrePrefixes build() {
+    public OrePrefixes build() {
         return new OrePrefixes(
             // spotless:off
             name,
@@ -44,57 +44,57 @@ public class OrePrefixBuilder {
         );
     }
 
-    protected OrePrefixBuilder withDefaultLocalName(String defaultLocalName) {
+    public OrePrefixBuilder withDefaultLocalName(String defaultLocalName) {
         this.defaultLocalName = defaultLocalName;
         return this;
     }
 
-    protected OrePrefixBuilder withPrefix(String materialPrefix) {
+    public OrePrefixBuilder withPrefix(String materialPrefix) {
         this.materialPrefix = materialPrefix;
         return this;
     }
 
-    protected OrePrefixBuilder withSuffix(String materialPostfix) {
+    public OrePrefixBuilder withSuffix(String materialPostfix) {
         this.materialPostfix = materialPostfix;
         return this;
     }
 
-    protected OrePrefixBuilder unifiable() {
+    public OrePrefixBuilder unifiable() {
         this.isUnifiable = true;
         return this;
     }
 
-    protected OrePrefixBuilder materialBased() {
+    public OrePrefixBuilder materialBased() {
         this.isMaterialBased = true;
         return this;
     }
 
-    protected OrePrefixBuilder selfReferencing() {
+    public OrePrefixBuilder selfReferencing() {
         this.isSelfReferencing = true;
         return this;
     }
 
-    protected OrePrefixBuilder container() {
+    public OrePrefixBuilder container() {
         this.isContainer = true;
         return this;
     }
 
-    protected OrePrefixBuilder skipActiveUnification() {
+    public OrePrefixBuilder skipActiveUnification() {
         this.skipActiveUnification = true;
         return this;
     }
 
-    protected OrePrefixBuilder recyclable() {
+    public OrePrefixBuilder recyclable() {
         this.isRecyclable = true;
         return this;
     }
 
-    protected OrePrefixBuilder enchantable() {
+    public OrePrefixBuilder enchantable() {
         this.isEnchantable = true;
         return this;
     }
 
-    protected OrePrefixBuilder materialGenerationBits(int materialGenerationBits) {
+    public OrePrefixBuilder materialGenerationBits(int materialGenerationBits) {
         this.materialGenerationBits = materialGenerationBits;
         return this;
     }
@@ -103,18 +103,18 @@ public class OrePrefixBuilder {
      * Used to determine the amount of Material this Prefix contains. Multiply or Divide GT_Values.M to get the Amounts
      * in comparision to one Ingot. 0 = Null Negative = Undefined Amount
      */
-    protected OrePrefixBuilder materialAmount(long materialAmount) {
+    public OrePrefixBuilder materialAmount(long materialAmount) {
         this.materialAmount = materialAmount;
         return this;
     }
 
     @SuppressWarnings("SameParameterValue") // The only passed argument is defaultStackSize = 1
-    protected OrePrefixBuilder defaultStackSize(int defaultStackSize) {
+    public OrePrefixBuilder defaultStackSize(int defaultStackSize) {
         this.defaultStackSize = defaultStackSize;
         return this;
     }
 
-    protected OrePrefixBuilder textureIndex(int textureIndex) {
+    public OrePrefixBuilder textureIndex(int textureIndex) {
         this.textureIndex = textureIndex;
         return this;
     }
