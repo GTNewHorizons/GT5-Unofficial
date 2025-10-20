@@ -68,11 +68,11 @@ public class SoundLoopAnyBlock extends MovingSound {
 
         World world = Minecraft.getMinecraft().thePlayer.worldObj;
         donePlaying = world.provider.dimensionId != worldID
-            || !world.checkChunksExist((int) xPosF, (int) yPosF, (int) zPosF, (int) xPosF, (int) yPosF, (int) zPosF);
+            || !world.checkChunksExist(tileX, tileY, tileZ, tileX, tileY, tileZ);
 
         if (donePlaying) return;
 
-        Block blockAtSoundLocation = world.getBlock((int) xPosF, (int) yPosF, (int) zPosF);
+        Block blockAtSoundLocation = world.getBlock(tileX, tileY, tileZ);
         if (blockToTriggerEnd != null) {
             donePlaying = blockAtSoundLocation == blockToTriggerEnd;
         }
