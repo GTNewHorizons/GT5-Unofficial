@@ -1,0 +1,118 @@
+package gregtech.common.gui.modularui.item;
+
+import net.minecraft.nbt.NBTTagCompound;
+
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.factory.GuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
+import com.cleanroommc.modularui.widgets.ButtonWidget;
+import com.cleanroommc.modularui.widgets.TextWidget;
+import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
+
+import gregtech.api.enums.GTValues;
+import gregtech.api.net.PacketDebugRedstoneCover;
+
+public class ChaosLocatorGui {
+
+    private final GuiData guiData;
+
+    public ChaosLocatorGui(GuiData guiData) {
+        this.guiData = guiData;
+    }
+
+    public ModularPanel build() {
+        ModularPanel panel = ModularPanel.defaultPanel("chaos_locator");
+        IntSyncValue xSyncer = new IntSyncValue(
+            () -> guiData.getMainHandItem()
+                .getTagCompound() != null ? guiData.getMainHandItem()
+                    .getTagCompound()
+                    .getInteger("xCoordinate") : 0,
+            (x) -> {
+                if (guiData.getMainHandItem()
+                    .getTagCompound() == null)
+                    guiData.getMainHandItem()
+                        .setTagCompound(new NBTTagCompound());
+                NBTTagCompound tag = guiData.getMainHandItem()
+                    .getTagCompound();
+                tag.setInteger("xCoordinate", x);
+            });
+
+        IntSyncValue zSyncer = new IntSyncValue(
+            () -> guiData.getMainHandItem()
+                .getTagCompound() != null ? guiData.getMainHandItem()
+                    .getTagCompound()
+                    .getInteger("zCoordinate") : 0,
+            (z) -> {
+                if (guiData.getMainHandItem()
+                    .getTagCompound() == null)
+                    guiData.getMainHandItem()
+                        .setTagCompound(new NBTTagCompound());
+                NBTTagCompound tag = guiData.getMainHandItem()
+                    .getTagCompound();
+                tag.setInteger("zCoordinate", z);
+            });
+
+        panel.flex()
+            .size(100, 100);
+
+        panel.child(
+            new TextWidget<>("Enter Coordinates").sizeRel(1f, 0.2f)
+                .posRel(0f, 0.1f)
+                .alignment(Alignment.Center));
+
+        panel.child(
+            Flow.row()
+                .child(
+                    Flow.column()
+                        .sizeRel(0.4f, 0.5f)
+                        .posRel(0.05f, 0.6f)
+                        .child(
+                            new TextFieldWidget().sizeRel(1f, 0.4f)
+                                .setTextAlignment(Alignment.Center)
+                                .setFormatAsInteger(true)
+                                .setNumbers(-1000, 1000)
+                                .value(xSyncer)
+                                .setDefaultNumber(0))
+                        .child(
+                            new TextWidget<>("X * 10k").sizeRel(1f, 0.2f)
+                                .alignment(Alignment.Center))
+                        .childPadding(2))
+                .child(
+                    Flow.column()
+                        .sizeRel(0.4f, 0.5f)
+                        .posRel(0.95f, 0.6f)
+                        .child(
+                            new TextFieldWidget().sizeRel(1f, 0.4f)
+                                .setTextAlignment(Alignment.Center)
+                                .setFormatAsInteger(true)
+                                .setNumbers(-1000, 1000)
+                                .value(zSyncer)
+                                .setDefaultNumber(0))
+                        .child(
+                            new TextWidget<>("Z * 10k").sizeRel(1f, 0.2f)
+                                .alignment(Alignment.Center))
+                        .childPadding(2)));
+
+        panel.child(
+            new ButtonWidget<>().sizeRel(0.4f, 0.2f)
+                .posRel(0.5f, 0.85f)
+                .tooltip(tooltip -> { tooltip.addLine("Can only warp while in the end dimension"); })
+                .overlay(IKey.lang("gt.item.chaos_locator.warp"))
+                .onMousePressed(mouseButton -> {
+                    int xToTeleportTo = guiData.getMainHandItem()
+                        .getTagCompound()
+                        .getInteger("xCoordinate") * 10_000;
+                    int zToTeleportTo = guiData.getMainHandItem()
+                        .getTagCompound()
+                        .getInteger("zCoordinate") * 10_000;
+
+                    GTValues.NW.sendToServer(new PacketDebugRedstoneCover(1, xToTeleportTo, 200, zToTeleportTo, true));
+                    return true;
+                }));
+
+        return panel;
+    }
+}
