@@ -687,10 +687,10 @@ public class GTModHandler {
                     case 3    -> OrePrefixes.pipeMedium.get(Materials.StainlessSteel);
                     case 4    -> OrePrefixes.pipeMedium.get(Materials.Titanium);
                     case 5    -> OrePrefixes.pipeMedium.get(Materials.TungstenSteel);
-                    case 6    -> OrePrefixes.pipeSmall.get(Materials.Ultimate);
-                    case 7    -> OrePrefixes.pipeMedium.get(Materials.Ultimate);
-                    case 8    -> OrePrefixes.pipeLarge.get(Materials.Ultimate);
-                    default   -> OrePrefixes.pipeHuge.get(Materials.Ultimate);
+                    case 6    -> OrePrefixes.pipeSmall.get(Materials.ZPM);
+                    case 7    -> OrePrefixes.pipeMedium.get(Materials.ZPM);
+                    case 8    -> OrePrefixes.pipeLarge.get(Materials.ZPM);
+                    default   -> OrePrefixes.pipeHuge.get(Materials.ZPM);
                 };
 
                 case COIL_HEATING -> switch (machineTier) {

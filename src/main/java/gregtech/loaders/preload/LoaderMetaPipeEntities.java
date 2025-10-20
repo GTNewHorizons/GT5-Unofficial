@@ -10,7 +10,6 @@ import java.util.stream.IntStream;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
@@ -39,7 +38,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             Materials material = GregTechAPI.sGeneratedMaterials[meta];
             // This check is separated out because IntelliJ thinks Materials.Wood can be null.
             if (material == null) continue;
-            if ((material.mTypes & 0x2) != 0 || material == Materials.Wood) {
+            if (material.hasMetalItems() || material == Materials.Wood) {
                 new MTEFrame(
                     4096 + meta,
                     "GT_Frame_" + material,
@@ -567,7 +566,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .disableElectricDamage()
             .build();
         WireCableBuilder.builder()
-            .material(MaterialsUEVplus.SpaceTime)
+            .material(Materials.SpaceTime)
             .startId(2606)
             .lossWire(0)
             .amperage(1_000_000)
@@ -652,7 +651,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .build();
 
         GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeSmall.get(Materials.Ultimate),
+            OrePrefixes.pipeSmall.get(Materials.ZPM),
             new MTEFluidPipe(
                 5165,
                 "GT_Pipe_HighPressure_Small",
@@ -663,7 +662,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
                 1500,
                 true).getStackForm(1L));
         GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeMedium.get(Materials.Ultimate),
+            OrePrefixes.pipeMedium.get(Materials.ZPM),
             new MTEFluidPipe(
                 5166,
                 "GT_Pipe_HighPressure",
@@ -674,7 +673,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
                 1500,
                 true).getStackForm(1L));
         GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeLarge.get(Materials.Ultimate),
+            OrePrefixes.pipeLarge.get(Materials.ZPM),
             new MTEFluidPipe(
                 5167,
                 "GT_Pipe_HighPressure_Large",
@@ -754,13 +753,13 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .heatCapacity(600)
             .build();
         FluidPipeBuilder.builder()
-            .material(MaterialsUEVplus.SpaceTime)
+            .material(Materials.SpaceTime)
             .startId(5300)
             .baseCapacity(250000)
             .heatCapacity(Integer.MAX_VALUE)
             .build();
         FluidPipeBuilder.builder()
-            .material(MaterialsUEVplus.TranscendentMetal)
+            .material(Materials.TranscendentMetal)
             .startId(5310)
             .baseCapacity(220000)
             .heatCapacity(Integer.MAX_VALUE)

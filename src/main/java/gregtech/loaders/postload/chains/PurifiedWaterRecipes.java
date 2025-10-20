@@ -1,7 +1,6 @@
 package gregtech.loaders.postload.chains;
 
 import static bartworks.system.material.WerkstoffLoader.FluorBuergerit;
-import static gregtech.api.enums.MaterialsBotania.ManaDiamond;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
@@ -33,7 +32,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.maps.PurificationUnitParticleExtractorFrontend;
@@ -182,7 +180,8 @@ public class PurifiedWaterRecipes {
         MTEPurificationUnitUVTreatment.LENS_ITEMS
             .add(GTOreDictUnificator.get(OrePrefixes.lens, Materials.InfusedAir, 1));
         MTEPurificationUnitUVTreatment.LENS_ITEMS.add(GTOreDictUnificator.get(OrePrefixes.lens, Materials.Emerald, 1));
-        MTEPurificationUnitUVTreatment.LENS_ITEMS.add(GTOreDictUnificator.get(OrePrefixes.lens, ManaDiamond, 1));
+        MTEPurificationUnitUVTreatment.LENS_ITEMS
+            .add(GTOreDictUnificator.get(OrePrefixes.lens, Materials.ManaDiamond, 1));
         MTEPurificationUnitUVTreatment.LENS_ITEMS
             .add(GTOreDictUnificator.get(OrePrefixes.lens, Materials.BlueTopaz, 1));
         MTEPurificationUnitUVTreatment.LENS_ITEMS.add(GTOreDictUnificator.get(OrePrefixes.lens, Materials.Amethyst, 1));
@@ -250,9 +249,9 @@ public class PurifiedWaterRecipes {
         for (int i = 0; i < catalystInputs.length; ++i) {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Quark_Catalyst_Housing.get(1), quarks[i])
-                .fluidInputs(MaterialsUEVplus.ExcitedDTRC.getFluid(10_000))
+                .fluidInputs(Materials.ExcitedDTRC.getFluid(10_000))
                 .itemOutputs(catalystInputs[i])
-                .fluidOutputs(MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(5_000))
+                .fluidOutputs(Materials.DimensionallyTranscendentResidue.getFluid(5_000))
                 .metadata(COIL_HEAT, 10800)
                 .eut(TierEU.RECIPE_UMV)
                 .duration(5 * MINUTES)

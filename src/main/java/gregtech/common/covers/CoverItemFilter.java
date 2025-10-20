@@ -22,9 +22,9 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTByteBuffer;
 import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTUtility;
-import gregtech.common.covers.gui.CoverGui;
-import gregtech.common.covers.gui.CoverItemFilterGui;
 import gregtech.common.covers.modes.FilterType;
+import gregtech.common.gui.modularui.cover.CoverItemFilterGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.gui.mui1.cover.ItemFilterUIFactory;
 import io.netty.buffer.ByteBuf;
 
@@ -193,7 +193,7 @@ public class CoverItemFilter extends Cover {
     // GUI stuff
 
     @Override
-    protected @NotNull CoverGui<?> getCoverGui() {
+    protected @NotNull CoverBaseGui<?> getCoverGui() {
         return new CoverItemFilterGui(this);
     }
 

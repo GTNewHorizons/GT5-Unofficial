@@ -189,8 +189,8 @@ gt.interact.desc.deny_i_invert_o=Deny input, Invert output
 gt.interact.desc.any_i_filter_o=Permit any input, Filter output
 gt.interact.desc.any_i_invert_o=Permit any input, Invert output
 gt.interact.desc.mb.idle.1=Hit with Soft Mallet
-gt.interact.desc.mb.idle.2=to (re-)start the Machine
-gt.interact.desc.mb.idle.3=if it doesn't start.
+gt.interact.desc.mb.idle.2= to (re-)start the Machine
+gt.interact.desc.mb.idle.3= if it doesn't start.
 gt.interact.desc.mb.running=Running perfectly.
 gt.interact.desc.mb.incomplete=Incomplete Structure.
 gt.interact.desc.mb.locking_on=Single recipe locking enabled. Will lock to next recipe.
@@ -198,6 +198,8 @@ gt.interact.desc.mb.locking_off=Single recipe locking disabled.
 gt.interact.desc.mb.mode=§fRunning mode: §6%s
 gt.interact.desc.export=Export
 gt.interact.desc.import=Import
+gt.interact.desc.export.tooltip=Export
+gt.interact.desc.import.tooltip=Import
 gt.interact.desc.export_cond=Export (conditional)
 gt.interact.desc.import_cond=Import (conditional)
 gt.interact.desc.export_invert_cond=Export (invert cond)
@@ -808,6 +810,7 @@ GT5U.MBTT.Parallel.Additional=%s Parallels per %s Tier
 GT5U.MBTT.Parallel.Singular=%s Parallel
 GT5U.MBTT.Speed.Base=%s Speed
 GT5U.MBTT.Speed.Additional=%s Speed per %s Tier
+GT5U.MBTT.Speed.Absolute=Speed is %s times %s Tier
 GT5U.MBTT.EuDiscount.Base=%s EU Usage
 GT5U.MBTT.EuDiscount.Additional=%s EU Usage per %s Tier
 GT5U.MBTT.SteamDiscount.Base=%s Steam Usage
@@ -1415,6 +1418,7 @@ GT5U.gui.text.lockedvalue=Locked: %s
 GT5U.gui.text.success=§aProcessing recipe
 GT5U.gui.text.progress=§fProgress:
 GT5U.gui.text.amount=§fAmount:
+GT5U.gui.text.per_tick=§fPer tick:
 GT5U.gui.text.per_second=§fPer second:
 GT5U.gui.text.per_minute=§fPer minute:
 GT5U.gui.text.per_hour=§fPer hour:
@@ -1494,6 +1498,7 @@ GT5U.gui.text.out_of_fluid=§4No following fluids supplied: §b%s§f x §6%s L
 GT5U.gui.text.out_of_item=§4No following items supplied: §b%s§f x §6%s
 GT5U.gui.text.out_of_stuff=§4No following stuffs supplied: §b%s§f x §6%s
 GT5U.gui.text.power_loss=§4Shut down due to power loss.
+GT5U.gui.text.no_void_mining=§4Cannot void mine this dimension (%s).
 GT5U.gui.text.pollution_fail=§4Failed to output the pollution.
 GT5U.gui.text.structure_incomplete=§4Shut down due to incomplete structure.
 GT5U.gui.text.no_repair=§4Shut down due to machine damage.
@@ -1545,6 +1550,14 @@ GT5U.gui.text.beta-minus=Beta Minus Decay
 GT5U.gui.text.beta-plus=Beta Plus Decay
 GT5U.gui.text.invalidfluidsup=Invalid Fluid Supplied
 
+
+GT5U.gui.hoverable.runningfine=Running Fine.
+GT5U.gui.hoverable.incomplete=Structure incomplete.
+GT5U.gui.hoverable.powerloss=Lost Power.
+GT5U.gui.hoverable.norepair=Machine too damaged.
+GT5U.gui.hoverable.manualshutdown=Manual shutdown (get it?).
+GT5U.gui.hoverable.error=ERROR! REPORT ME!
+
 GT5U.gui.config.client=Client
 GT5U.gui.config.client.color_modulation=Color Modulation
 GT5U.gui.config.client.color_modulation.cable_insulation=Cable Insulation
@@ -1573,7 +1586,6 @@ GT5U.gui.config.machine_stats.mass_fabricator=Mass Fabricator
 GT5U.gui.config.machine_stats.teleporter=Teleporter
 GT5U.gui.config.machine_stats.cleanroom=Cleanroom
 GT5U.gui.config.worldgen=Worldgen
-GT5U.gui.config.worldgen.end_asteroids=End Asteroids
 GT5U.gui.config.worldgen.general=General
 
 GT5U.gui.text.cannot_change_when_running=Can't change configuration when running!
@@ -1808,6 +1820,7 @@ GT5U.multiblock.itemPipeTier=Item Pipe Tier
 GT5U.multiblock.coilLevel=Heating Coil Level
 GT5U.multiblock.preciseassemblercasing=Voltage limited by casing tier: %s
 GT5U.multiblock.runningMode=§eRunning Mode:
+GT5U.multiblock.startup=Starting up...
 
 # NEI recipe handlers
 GT5U.nei.heat_capacity=Heat Capacity: %s K (%s)
@@ -1944,7 +1957,7 @@ gt.interact.desc.MachineIdle=§8Machine idle
 gt.interact.desc.RecipeProgress=§8Recipe progress
 
 ## EU MEter
-gt.interact.desc.EnergyTHR=§8Energy threshold
+gt.interact.desc.EnergyThreshold=§8Energy threshold
 
 ## Facade
 gt.interact.desc.facade.Redstone=§8Redstone
@@ -1955,14 +1968,18 @@ gt.interact.desc.facade.Items=§8Items
 ## FluidFilter
 gt.interact.desc.FluidFilter.FilterInput=Filter Input
 gt.interact.desc.FluidFilter.FilterOutput=Filter Output
-gt.interact.desc.FluidFilter.BlockOutput=Block Output
+gt.interact.desc.FluidFilter.FilterChat=Filter Fluid:
 gt.interact.desc.FluidFilter.AllowOutput=Allow Output
+gt.interact.desc.FluidFilter.AllowInput=Allow Input
+gt.interact.desc.FluidFilter.BlockOutput=Block Output
+gt.interact.desc.FluidFilter.BlockInput=Block Input
+
 gt.interact.desc.FluidFilter.WhitelistFluid=Whitelist Fluid
 gt.interact.desc.FluidFilter.BlacklistFluid=Blacklist Fluid
-gt.interact.desc.FluidFilter.Direction=§8IFilter Direction
-gt.interact.desc.FluidFilter.Type=§8IFilter Type
-gt.interact.desc.FluidFilter.BlockFlow=§8IBlock Flow
-gt.interact.desc.FluidFilter.Empty=§8IFilter Empty
+gt.interact.desc.FluidFilter.Direction=§8Filter Direction
+gt.interact.desc.FluidFilter.Type=§8Filter Type
+gt.interact.desc.FluidFilter.BlockFlow=§8Block Flow
+gt.interact.desc.FluidFilter.Empty=§8Filter Empty
 
 ## Fluid Regulator
 gt.interact.desc.fluid_regulator.AlwaysOn=Always On
@@ -1979,16 +1996,16 @@ gt.interact.desc.fluid_regulator.L_Sec=L/sec
 ## Item Filter
 gt.interact.desc.Item_Filter.Whitelist_Mode=Whitelist Mode
 gt.interact.desc.Item_Filter.Blacklist_Mode=Blacklist Mode
-gt.interact.desc.Item_Filter.Filter=§8Filter
+gt.interact.desc.Item_Filter.Filter=§8Filter:
 gt.interact.desc.Item_Filter.CheckMode=§8Check Mode
 
 ## Item Meter
 gt.interact.desc.Item_Meter.All=All
 gt.interact.desc.Item_Meter.DetectSlot=§8Detect slot #
-gt.interact.desc.Item_Meter.ItemTHR=§8Item threshold
+gt.interact.desc.Item_Meter.ItemThreshold=§8Item threshold
 
 ## Liquid Meter (Fluid meter)
-gt.interact.desc.Fluid_Meter.FluidTHR=§8Fluid threshold
+gt.interact.desc.Fluid_Meter.FluidThreshold=§8Fluid threshold
 
 ## Player Detector
 gt.interact.desc.Player_Detector.Emit_Player_Close=Emit if any Player is close
@@ -2031,11 +2048,11 @@ gt.interact.tooltip.Wireless_Activity.Idle=Machine idle
 gt.interact.tooltip.Wireless_Activity.Enabled=Machine enabled
 
 ## Wireless Fluid Detector
-gt.interact.desc.Wireless_Fluid_Detector.FluidTHR=§8Fluid threshold
+gt.interact.desc.Wireless_Fluid_Detector.FluidThreshold=§8Fluid threshold
 
 ## Wireless Item Detector
 gt.interact.desc.Item_Item_Detector.All=All
-gt.interact.desc.Item_Item_Detector.ItemTHR=§8Item threshold
+gt.interact.desc.Item_Item_Detector.ItemThreshold=§8Item threshold
 gt.interact.desc.Item_Item_Detector.DetectSlot=§8Detect slot #
 
 ## Energy Detector
