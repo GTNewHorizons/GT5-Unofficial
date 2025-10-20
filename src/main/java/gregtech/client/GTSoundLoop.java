@@ -24,9 +24,9 @@ public class GTSoundLoop extends MovingSound {
         super(p_i45104_1_);
         this.whileActive = stopWhenActive;
         this.whileInactive = stopWhenInactive;
-        xPosF = base.getXCoord();
-        yPosF = base.getYCoord();
-        zPosF = base.getZCoord();
+        xPosF = base.getXCoord() + .5f;
+        yPosF = base.getYCoord() + .5f;
+        zPosF = base.getZCoord() + .5f;
         worldID = base.getWorld().provider.dimensionId;
         repeat = true;
         volume = VOLUME_RAMP;
@@ -57,5 +57,13 @@ public class GTSoundLoop extends MovingSound {
         }
 
         donePlaying = true;
+    }
+
+    public void setDonePlaying(boolean value) {
+        donePlaying = value;
+    }
+
+    public void setFadeMe(boolean value) {
+        fadeMe = value;
     }
 }

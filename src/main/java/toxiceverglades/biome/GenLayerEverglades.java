@@ -5,6 +5,8 @@ import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.GenLayerVoronoiZoom;
 import net.minecraft.world.gen.layer.GenLayerZoom;
 
+import gregtech.api.enums.GTValues;
+
 public class GenLayerEverglades extends GenLayer {
 
     public GenLayerEverglades(long seed) {
@@ -27,6 +29,6 @@ public class GenLayerEverglades extends GenLayer {
 
     @Override
     public int[] getInts(int p_75904_1_, int p_75904_2_, int p_75904_3_, int p_75904_4_) {
-        return new int[] {};
+        return GTValues.emptyIntArray;
     }
 }

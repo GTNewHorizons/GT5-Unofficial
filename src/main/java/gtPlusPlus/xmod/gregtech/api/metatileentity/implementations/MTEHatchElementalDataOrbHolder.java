@@ -29,9 +29,9 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.render.TextureFactory;
+import gregtech.common.items.ItemIntegratedCircuit;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigurationCircuitSupport {
@@ -63,11 +63,6 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
 
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
         return true;
     }
 
@@ -119,14 +114,11 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {}
-
-    @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         Logger.INFO("Checking if we can pull " + aStack.getDisplayName() + " from slot " + aIndex);
-        return aIndex == mInventory.length - 1 && ItemUtils.isControlCircuit(aStack)
+        return aIndex == mInventory.length - 1 && aStack != null
+            && aStack.getItem() instanceof ItemIntegratedCircuit
             && side == getBaseMetaTileEntity().getFrontFacing();
     }
 
@@ -134,7 +126,8 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         Logger.INFO("Checking if we can put " + aStack.getDisplayName() + " into slot " + aIndex);
-        return aIndex == mInventory.length - 1 && ItemUtils.isControlCircuit(aStack)
+        return aIndex == mInventory.length - 1 && aStack != null
+            && aStack.getItem() instanceof ItemIntegratedCircuit
             && side == getBaseMetaTileEntity().getFrontFacing();
     }
 
@@ -149,7 +142,7 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
 
     public ItemStack getOrbByCircuit() {
         ItemStack aCirc = getBaseMetaTileEntity().getStackInSlot(getCircuitSlot());
-        if (ItemUtils.isControlCircuit(aCirc)) {
+        if (aCirc != null && aCirc.getItem() instanceof ItemIntegratedCircuit) {
             int slot = aCirc.getItemDamage() - 1; // slots are 0 indexed but there's no 0 circuit
             if (slot < getBaseMetaTileEntity().getSizeInventory() - 1) {
                 return getBaseMetaTileEntity().getStackInSlot(slot);
@@ -163,7 +156,8 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
 
     @Override
     public boolean canInsertItem(int aIndex, ItemStack aStack, int ordinalSide) {
-        if (aIndex == mInventory.length - 1 && ItemUtils.isControlCircuit(aStack)
+        if (aIndex == mInventory.length - 1 && aStack != null
+            && aStack.getItem() instanceof ItemIntegratedCircuit
             && ordinalSide == getBaseMetaTileEntity().getFrontFacing()
                 .ordinal()) {
             Logger.INFO("Putting " + aStack.getDisplayName() + " into slot " + aIndex);
@@ -174,7 +168,7 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
 
     @Override
     public boolean canExtractItem(int aIndex, ItemStack aStack, int ordinalSide) {
-        if (aIndex == mInventory.length - 1 && ItemUtils.isControlCircuit(aStack)) {
+        if (aIndex == mInventory.length - 1 && aStack != null && aStack.getItem() instanceof ItemIntegratedCircuit) {
             Logger.INFO("Pulling " + aStack.getDisplayName() + " from slot " + aIndex);
             return true;
         }

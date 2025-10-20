@@ -24,18 +24,21 @@ import gregtech.api.casing.ICasingGroup;
 import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
+import gregtech.api.util.GTDataUtils;
+import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.HatchElementBuilder;
+import gregtech.api.util.IGTHatchAdder;
 import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.chars.Char2IntArrayMap;
 import it.unimi.dsi.fastutil.chars.Char2ObjectArrayMap;
 
 /**
- * A wrapper that helps reduce structure check boilerplate.
- * This should only be created in the prototype MTE, then shared among the instance MTEs.
+ * A wrapper that helps reduce structure check boilerplate. This should only be created in the prototype MTE, then
+ * shared among the instance MTEs.
  *
- * Definitions:
- * Prototype MTE: An MTE that does not exist in the world and whose main purpose is to make instance MTEs
+ * Definitions: Prototype MTE: An MTE that does not exist in the world and whose main purpose is to make instance MTEs
  * Instance MTE: An MTE that exists in the world
  */
 public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStructureProvider<MTE>> {
@@ -49,6 +52,8 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
     public Vec3Impl controllerOffset, minSize, maxSize;
     public Char2ObjectArrayMap<CasingInfo<MTE>> casings;
     public Char2IntArrayMap minCasingCounts, maxCasingCounts;
+
+    public Function<MTE, IStructureInstance<MTE>> instanceExtractor;
 
     public StructureWrapper(IStructureProvider<MTE> provider) {
         this.provider = provider;
@@ -167,8 +172,8 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
     }
 
     /**
-     * Checks if the given piece exists at the given offset.
-     * The offset's coordinate system is in multi space, not world space.
+     * Checks if the given piece exists at the given offset. The offset's coordinate system is in multi space, not world
+     * space.
      */
     public boolean checkStructure(MTE instance, String piece, Vec3Impl pieceOffset) {
         ensureStructureLoaded();
@@ -209,8 +214,8 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
     }
 
     /**
-     * Creatively constructs the given piece at the given offset.
-     * The offset's coordinate system is in multi space, not world space.
+     * Creatively constructs the given piece at the given offset. The offset's coordinate system is in multi space, not
+     * world space.
      */
     public void construct(MTE instance, ItemStack trigger, boolean hintsOnly, String piece, Vec3Impl pieceOffset) {
         ensureStructureLoaded();
@@ -252,8 +257,8 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
     }
 
     /**
-     * Survival constructs the given piece at the given offset.
-     * The offset's coordinate system is in multi space, not world space.
+     * Survival constructs the given piece at the given offset. The offset's coordinate system is in multi space, not
+     * world space.
      */
     public int survivalConstruct(MTE instance, ItemStack trigger, int elementBudget, ISurvivalBuildEnvironment env,
         String piece, Vec3Impl pieceOffset) {
@@ -302,6 +307,7 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
 
     // #endregion
 
+    @SuppressWarnings("unchecked")
     public IStructureElement<MTE> getStructureElement(char c) {
         CasingInfo<MTE> casing = casings.get(c);
 
@@ -315,15 +321,24 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
             element = onElementPass(
                 instance -> instance.getStructureInstance()
                     .onCasingEncountered(c),
-                casing.casing.asElement(() -> casing.casingGroup));
+                casing.casing.asElement(casing));
+
+            IHatchElement<? super MTE>[] hatches = casing.hatches;
+
+            if (casing.casing.isTiered()) {
+                // If the casing is tiered, we want to keep track of valid hatches so that we can update their
+                // background texture to the correct index after the casing tier is established.
+                hatches = GTDataUtils
+                    .mapToArray(casing.hatches, IHatchElement[]::new, hatch -> new HatchInterceptor<>(casing, hatch));
+            }
 
             element = HatchElementBuilder.<MTE>builder()
-                .atLeast(casing.hatches)
+                .atLeast(hatches)
                 .casingIndex(casing.casing.getTextureId())
                 .dot(casing.dot)
                 .buildAndChain(element);
         } else {
-            element = casing.casing.asElement(() -> casing.casingGroup);
+            element = casing.casing.asElement(casing);
         }
 
         if (casing.channel != null) {
@@ -335,6 +350,37 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
         }
 
         return element;
+    }
+
+    /**
+     * A hatch proxy that adds valid hatches to the structure's pending hatch list.
+     */
+    static class HatchInterceptor<T> extends GTStructureUtility.ProxyHatchElement<T> {
+
+        private final CasingInfo<T> casing;
+
+        public HatchInterceptor(CasingInfo<T> casing, IHatchElement<? super T> element) {
+            super(element);
+            this.casing = casing;
+        }
+
+        @Override
+        public IGTHatchAdder<? super T> adder() {
+            IGTHatchAdder<? super T> realAdder = super.adder();
+
+            return (t, hatch, textureId) -> {
+                if (realAdder.apply(t, hatch, textureId)) {
+                    if (hatch.getMetaTileEntity() instanceof MTEHatch hatch2) {
+                        casing.getInstance(t)
+                            .addTieredHatch(hatch2, casing.casing, casing);
+                    }
+
+                    return true;
+                } else {
+                    return false;
+                }
+            };
+        }
     }
 
     public int getCasingMin(char c) {
@@ -378,6 +424,7 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
 
         casingInfo.casing = casing;
         casingInfo.casingGroup = ICasingGroup.ofCasing(casing);
+        casingInfo.instanceExtractor = instanceExtractor;
 
         casings.put(c, casingInfo);
 

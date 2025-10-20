@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.thermalfoundation.recipe;
 import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
@@ -16,6 +17,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
+import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 
 public class TFGregtechRecipes {
 
@@ -29,7 +31,7 @@ public class TFGregtechRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.ore, Materials.Cinnabar, 1L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cinnabar, 3L))
-            .fluidInputs(getFluidStack("cryotheum", 144))
+            .fluidInputs(new FluidStack(TFFluids.fluidCryotheum, 1 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(chemicalBathRecipes);

@@ -23,6 +23,9 @@ import static gregtech.client.GTTooltipHandler.Tier.UXV;
 import static gregtech.client.GTTooltipHandler.Tier.ZPM;
 import static gregtech.client.GTTooltipHandler.registerTieredTooltip;
 import static gregtech.common.items.IDMetaItem03.Activated_Carbon_Filter_Mesh;
+import static gregtech.common.items.IDMetaItem03.Alumina_Support_Ring;
+import static gregtech.common.items.IDMetaItem03.Alumina_Support_Ring_Raw;
+import static gregtech.common.items.IDMetaItem03.Beryllium_Shielding_Plate;
 import static gregtech.common.items.IDMetaItem03.Brittle_Netherite_Scrap;
 import static gregtech.common.items.IDMetaItem03.Circuit_Biomainframe;
 import static gregtech.common.items.IDMetaItem03.Circuit_Bioprocessor;
@@ -204,7 +207,9 @@ import static gregtech.common.items.IDMetaItem03.KevlarFiber;
 import static gregtech.common.items.IDMetaItem03.LV_Coil;
 import static gregtech.common.items.IDMetaItem03.LuV_Coil;
 import static gregtech.common.items.IDMetaItem03.MV_Coil;
+import static gregtech.common.items.IDMetaItem03.Manafly;
 import static gregtech.common.items.IDMetaItem03.NandChip;
+import static gregtech.common.items.IDMetaItem03.Naquarite_Universal_Insulator_Foil;
 import static gregtech.common.items.IDMetaItem03.Netherite_Nanoparticles;
 import static gregtech.common.items.IDMetaItem03.Netherite_Scrap_Seed;
 import static gregtech.common.items.IDMetaItem03.NuclearStar;
@@ -212,6 +217,8 @@ import static gregtech.common.items.IDMetaItem03.Optical_Cpu_Containment_Housing
 import static gregtech.common.items.IDMetaItem03.Optically_Compatible_Memory;
 import static gregtech.common.items.IDMetaItem03.Optically_Perfected_CPU;
 import static gregtech.common.items.IDMetaItem03.Phononic_Seed_Crystal;
+import static gregtech.common.items.IDMetaItem03.Prismarine_Precipitate;
+import static gregtech.common.items.IDMetaItem03.Prismatic_Crystal;
 import static gregtech.common.items.IDMetaItem03.Quark_Catalyst_Housing;
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Bottom;
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Charm;
@@ -220,6 +227,7 @@ import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Strange
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Top;
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Unaligned;
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Up;
+import static gregtech.common.items.IDMetaItem03.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet;
 import static gregtech.common.items.IDMetaItem03.Relativistic_Heat_Capacitor;
 import static gregtech.common.items.IDMetaItem03.Spinneret;
 import static gregtech.common.items.IDMetaItem03.Thermal_Superconductor;
@@ -278,11 +286,15 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.covers.CoverMetricsTransmitter;
 import gregtech.common.covers.CoverSolarPanel;
+import gregtech.common.powergoggles.ItemPowerGoggles;
 import gregtech.common.render.items.GlitchEffectMetaItemRenderer;
 import gregtech.common.render.items.InfinityMetaItemRenderer;
+import gregtech.common.render.items.RainbowOverlayMetaItemRenderer;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
-@Optional.Interface(iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning", modid = Mods.Names.RAILCRAFT)
+@Optional.Interface(
+    iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning",
+    modid = Mods.ModIDs.RAILCRAFT)
 public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFirestoneBurning {
 
     public static MetaGeneratedItem03 INSTANCE;
@@ -298,7 +310,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
             OrePrefixes.rawOre,
             OrePrefixes.plateSuperdense);
         INSTANCE = this;
-        Object[] o = new Object[0];
+        Object[] o = GTValues.emptyObjectArray;
         ItemList.Item_Power_Goggles.set(
             new ItemPowerGoggles("Power_Goggles", "Power Goggles", "For when you need to look at power storage 24/7"));
         /*
@@ -396,11 +408,9 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
         /*
          * ICs Lenses made from perfect crystals first instead of plates Monocrystalline silicon ingot
          * (normal+glowstone+naquadah) EBF, normal silicon no EBF need anymore wafer(normal+glowstone+naquadah) cut mono
-         * silicon ingot in cutting machine
-         * Integrated Logic Circuit(8bit DIP) RAM NAND Memory NOR Memory CPU (4 sizes) SoCs(2 sizes, high tier cheap low
-         * tech component) Power IC/High Power IC/Ultra High power
-         * nanotube interconnected circuit (H-IC + nanotubes)
-         * quantum chips
+         * silicon ingot in cutting machine Integrated Logic Circuit(8bit DIP) RAM NAND Memory NOR Memory CPU (4 sizes)
+         * SoCs(2 sizes, high tier cheap low tech component) Power IC/High Power IC/Ultra High power nanotube
+         * interconnected circuit (H-IC + nanotubes) quantum chips
          */
 
         final String RAW = "Raw Circuit";
@@ -1262,6 +1272,32 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Intensely_Bonded_Netherite_Nanoparticles
             .set(addItem(Intensely_Bonded_Netherite_Nanoparticles.ID, "Intensely Bonded Netherite Nanoparticles", ""));
         ItemList.Hot_Netherite_Scrap.set(addItem(Hot_Netherite_Scrap.ID, "Hot Netherite Scrap", "Activated?"));
+        ItemList.Beryllium_Shielding_Plate.set(
+            addItem(
+                Beryllium_Shielding_Plate.ID,
+                "Beryllium Shielding Plate",
+                "A plate made of Beryllium, used for reactor shielding"));
+        ItemList.Alumina_Support_Ring.set(
+            addItem(Alumina_Support_Ring.ID, "Alumina Support Ring", "A support ring used for insulated fluid pipes"));
+        ItemList.Alumina_Support_Ring_Raw.set(
+            addItem(
+                Alumina_Support_Ring_Raw.ID,
+                "Raw Alumina Support Ring",
+                "An unfired support ring used for insulated fluid pipes"));
+        ItemList.Prismarine_Precipitate.set(addItem(Prismarine_Precipitate.ID, "Prismarine Precipitate", ""));
+        ItemList.Prismatic_Crystal.set(addItem(Prismatic_Crystal.ID, "Prismatic Crystal", ""));
+        ItemList.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet
+            .set(
+                addItem(
+                    Radiation_Proof_Prismatic_Naquadah_Composite_Sheet.ID,
+                    "Radiation-Proof Prismatic Naquadah Composite Sheet",
+                    "Attenuates all forms of radiation almost perfectly"))
+            .setRender(new RainbowOverlayMetaItemRenderer(new short[] { 255, 255, 255, 255 }));
+        ItemList.Naquarite_Universal_Insulator_Foil.set(
+            addItem(
+                Naquarite_Universal_Insulator_Foil.ID,
+                "Naquarite Universal Insulator Foil",
+                String.join("/n ", "The Perfect Insulator!", "Absorbs all heat, radiation and electricity.")));
 
         ItemList.White_Dwarf_Shape_Extruder_Plate.set(
             addItem(
@@ -1403,6 +1439,14 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 White_Dwarf_Shape_Extruder_ToolHeadDrill.ID,
                 "White Dwarf Extruder Shape (Drill Head)",
                 "White Dwarf Extruder Shape for a Drill Head"));
+        ItemList.ManaFly.set(
+            addItem(
+                Manafly.ID,
+                "Manafly",
+                "If you sift this, you're a monster",
+                new TCAspects.TC_AspectStack(TCAspects.AQUA, 10L),
+                new TCAspects.TC_AspectStack(TCAspects.HERBA, 10L)));
+
         registerAllTieredTooltips();
         registerAllAnimatedTooltips();
         initOrePrefixes();
@@ -1563,7 +1607,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
     }
 
     @Override
-    @Optional.Method(modid = Mods.Names.RAILCRAFT)
+    @Optional.Method(modid = Mods.ModIDs.RAILCRAFT)
     public boolean shouldBurn(ItemStack itemStack) {
         ItemData data = GTOreDictUnificator.getAssociation(itemStack);
         if (data == null || data.mMaterial == null || data.mPrefix == null) {

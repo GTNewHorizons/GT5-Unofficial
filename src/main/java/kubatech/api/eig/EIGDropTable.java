@@ -11,6 +11,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 
 public class EIGDropTable {
@@ -18,7 +20,7 @@ public class EIGDropTable {
     private static final String NBT_DROP_TABLE_ITEM_KEY = "item";
     private static final String NBT_DROP_TABLE_COUNT_KEY = "count";
 
-    private final ItemStackMap<Double> dropTable;
+    private final @NotNull ItemStackMap<Double> dropTable;
 
     /**
      * Initialises a new empty drop table.
@@ -33,7 +35,7 @@ public class EIGDropTable {
      * @param nbt The nbt tag that contains the key for a drop table
      * @param key The name of the key name for the drop table.
      */
-    public EIGDropTable(NBTTagCompound nbt, String key) {
+    public EIGDropTable(@NotNull NBTTagCompound nbt, String key) {
         // should create an empty table if no drops are found.
         this(nbt.getTagList(key, 10));
     }
@@ -43,7 +45,7 @@ public class EIGDropTable {
      *
      * @param nbt The nbt tag that contains the key for a drop table
      */
-    public EIGDropTable(NBTTagList nbt) {
+    public EIGDropTable(@NotNull NBTTagList nbt) {
         this();
         for (int i = 0; i < nbt.tagCount(); i++) {
             NBTTagCompound drop = nbt.getCompoundTagAt(i);
@@ -59,7 +61,7 @@ public class EIGDropTable {
      *
      * @return The serialised drop table.
      */
-    public NBTTagList save() {
+    public @NotNull NBTTagList save() {
         NBTTagList nbt = new NBTTagList();
         for (Map.Entry<ItemStack, Double> entry : this.dropTable.entrySet()) {
             NBTTagCompound entryNBT = new NBTTagCompound();
@@ -76,7 +78,7 @@ public class EIGDropTable {
      * @param itemStack The item to add to the table.
      * @param amount    The amount to add to the table.
      */
-    public void addDrop(ItemStack itemStack, double amount) {
+    public void addDrop(@NotNull ItemStack itemStack, double amount) {
         ItemStack key = itemStack.copy();
         key.stackSize = 1;
         this.dropTable.merge(key, amount, Double::sum);
@@ -89,7 +91,7 @@ public class EIGDropTable {
      * @param variance How much to vary the amounts of this drop table to, 0 < x < 1 plz
      * @param rand     The random source for the variance.
      */
-    public void addTo(EIGDropTable target, double variance, Random rand) {
+    public void addTo(@NotNull EIGDropTable target, double variance, @NotNull Random rand) {
         this.addTo(target, 1.0, variance, rand);
     }
 
@@ -102,7 +104,7 @@ public class EIGDropTable {
      * @param variance   How much to vary the amounts of this drop table to, 0 < x < 1 plz.
      * @param rand       The random source for the variance.
      */
-    public void addTo(EIGDropTable target, double multiplier, double variance, Random rand) {
+    public void addTo(@NotNull EIGDropTable target, double multiplier, double variance, @NotNull Random rand) {
         this.addTo(target, variance * (rand.nextDouble() - 0.5) * multiplier);
     }
 
@@ -111,7 +113,7 @@ public class EIGDropTable {
      *
      * @param target The drop table that you want to add the value to.
      */
-    public void addTo(EIGDropTable target) {
+    public void addTo(@NotNull EIGDropTable target) {
         this.addTo(target, 1.0);
     }
 
@@ -121,7 +123,7 @@ public class EIGDropTable {
      * @param target     The drop table that you want to add the value to.
      * @param multiplier A multiplier to apply to all amounts from this drop table.
      */
-    public void addTo(EIGDropTable target, double multiplier) {
+    public void addTo(@NotNull EIGDropTable target, double multiplier) {
         for (Map.Entry<ItemStack, Double> entry : this.dropTable.entrySet()) {
             target.dropTable.merge(entry.getKey(), entry.getValue() * multiplier, Double::sum);
         }
@@ -141,7 +143,7 @@ public class EIGDropTable {
      *
      * @return ItemStack -> amount
      */
-    public Set<Map.Entry<ItemStack, Double>> entrySet() {
+    public @NotNull Set<Map.Entry<ItemStack, Double>> entrySet() {
         return this.dropTable.entrySet();
     }
 
@@ -183,7 +185,7 @@ public class EIGDropTable {
      * @param with The drop table to intersect with.
      * @return The result of the intersection.
      */
-    public EIGDropTable intersect(EIGDropTable with) {
+    public @NotNull EIGDropTable intersect(@NotNull EIGDropTable with) {
         EIGDropTable ret = new EIGDropTable();
         for (ItemStack key : with.dropTable.keySet()) {
             if (this.dropTable.containsKey(key)) {
@@ -198,7 +200,7 @@ public class EIGDropTable {
      *
      * @return The list of consumed items;
      */
-    public ItemStack[] getDrops() {
+    public ItemStack @NotNull [] getDrops() {
         // doesn't need to filter for less than 0 so that the EIG displays the progress of incomplete items.
         return this.dropTable.entrySet()
             .parallelStream()
@@ -212,7 +214,7 @@ public class EIGDropTable {
      * @param entry The entry to consume from
      * @return The item tha twas removed.
      */
-    private static ItemStack computeDrops(Map.Entry<ItemStack, Double> entry) {
+    private static @NotNull ItemStack computeDrops(Map.@NotNull Entry<ItemStack, Double> entry) {
         ItemStack copied = entry.getKey()
             .copy();
         copied.stackSize = (int) Math.floor(entry.getValue());

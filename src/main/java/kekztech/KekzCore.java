@@ -9,7 +9,6 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import gregtech.GT_Version;
-import gregtech.api.enums.Mods;
 import kekztech.common.CommonProxy;
 
 /**
@@ -30,15 +29,11 @@ import kekztech.common.CommonProxy;
 public class KekzCore {
 
     public static final String NAME = "KekzTech";
-    public static final String MODID = Mods.Names.KEKZ_TECH;
+    public static final String MODID = "kekztech";
     public static final String VERSION = GT_Version.VERSION;
-
     public static final Logger LOGGER = LogManager.getLogger(NAME);
 
-    public static boolean isThaumcraftLoaded = false;
-    public static boolean isThaumicTiinkererLoaded = false;
-
-    @Mod.Instance(Mods.Names.KEKZ_TECH)
+    @Mod.Instance(MODID)
     public static KekzCore instance;
 
     @SidedProxy(clientSide = "kekztech.client.ClientProxy", serverSide = "kekztech.ServerProxy")

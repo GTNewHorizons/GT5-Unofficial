@@ -12,6 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
+import gregtech.api.enums.GTValues;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.CoreItem;
 
@@ -27,7 +28,7 @@ public abstract class BaseItemParticle extends CoreItem {
             AddToCreativeTab.tabOther,
             64,
             0,
-            new String[] {},
+            GTValues.emptyStringArray,
             aRarity,
             EnumChatFormatting.DARK_AQUA,
             false,

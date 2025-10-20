@@ -46,11 +46,6 @@ public class MTEMagicEnergyConverter extends MTEBasicGenerator {
     }
 
     @Override
-    public int getCapacity() {
-        return 16000;
-    }
-
-    @Override
     public int getEfficiency() {
         return 100 - this.mTier * 5;
     }
@@ -62,7 +57,7 @@ public class MTEMagicEnergyConverter extends MTEBasicGenerator {
                 .addIcon(MACHINE_CASING_MAGIC_GLOW)
                 .glow()
                 .build(),
-            OVERLAYS_ENERGY_OUT[mTier] };
+            OVERLAYS_ENERGY_OUT[mTier + 1] };
     }
 
     @Override
@@ -108,7 +103,7 @@ public class MTEMagicEnergyConverter extends MTEBasicGenerator {
                 .addIcon(MACHINE_CASING_MAGIC_ACTIVE_GLOW)
                 .glow()
                 .build(),
-            OVERLAYS_ENERGY_OUT[mTier] };
+            OVERLAYS_ENERGY_OUT[mTier + 1] };
     }
 
     @Override

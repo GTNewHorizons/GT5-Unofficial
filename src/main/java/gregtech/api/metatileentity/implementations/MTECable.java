@@ -22,6 +22,7 @@ import cofh.api.energy.IEnergyReceiver;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
@@ -90,7 +91,8 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
 
     @Override
     public byte getTileEntityBaseType() {
-        return (byte) (mInsulated ? 9 : 8);
+        if (mInsulated) return HarvestTool.CutterLevel1.toTileEntityBaseType();
+        return HarvestTool.CutterLevel0.toTileEntityBaseType();
     }
 
     @Override
@@ -113,46 +115,47 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
             .of(mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], Dyes.getModulation(colorIndex, mMaterial.mRGBa)) };
         if (active) {
             float tThickNess = getThickness();
-            if (tThickNess < 0.124F) return new ITexture[] { TextureFactory
-                .of(Textures.BlockIcons.INSULATION_FULL, Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
+            if (tThickNess < 0.124F) return new ITexture[] { TextureFactory.of(
+                Textures.BlockIcons.INSULATION_FULL,
+                Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION.getRGBA())) };
             if (tThickNess < 0.374F) // 0.375 x1
                 return new ITexture[] {
                     TextureFactory.of(mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], mMaterial.mRGBa),
                     TextureFactory.of(
                         Textures.BlockIcons.INSULATION_TINY,
-                        Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
+                        Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION.getRGBA())) };
             if (tThickNess < 0.499F) // 0.500 x2
                 return new ITexture[] {
                     TextureFactory.of(mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], mMaterial.mRGBa),
                     TextureFactory.of(
                         Textures.BlockIcons.INSULATION_SMALL,
-                        Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
+                        Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION.getRGBA())) };
             if (tThickNess < 0.624F) // 0.625 x4
                 return new ITexture[] {
                     TextureFactory.of(mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], mMaterial.mRGBa),
                     TextureFactory.of(
                         Textures.BlockIcons.INSULATION_MEDIUM,
-                        Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
+                        Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION.getRGBA())) };
             if (tThickNess < 0.749F) // 0.750 x8
                 return new ITexture[] {
                     TextureFactory.of(mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], mMaterial.mRGBa),
                     TextureFactory.of(
                         Textures.BlockIcons.INSULATION_MEDIUM_PLUS,
-                        Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
+                        Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION.getRGBA())) };
             if (tThickNess < 0.874F) // 0.825 x12
                 return new ITexture[] {
                     TextureFactory.of(mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], mMaterial.mRGBa),
                     TextureFactory.of(
                         Textures.BlockIcons.INSULATION_LARGE,
-                        Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
+                        Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION.getRGBA())) };
             return new ITexture[] {
                 TextureFactory.of(mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], mMaterial.mRGBa),
                 TextureFactory.of(
                     Textures.BlockIcons.INSULATION_HUGE,
-                    Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
+                    Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION.getRGBA())) };
         }
         return new ITexture[] { TextureFactory
-            .of(Textures.BlockIcons.INSULATION_FULL, Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
+            .of(Textures.BlockIcons.INSULATION_FULL, Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION.getRGBA())) };
     }
 
     @Override
@@ -205,7 +208,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
         if (!isConnectedAtSide(side) && side != ForgeDirection.UNKNOWN) return 0;
         if (!getBaseMetaTileEntity().getCoverAtSide(side)
             .letsEnergyIn()) return 0;
-        return transferElectricity(side, voltage, amperage, (HashSet<TileEntity>) null);
+        return transferElectricity(side, voltage, amperage, null);
     }
 
     @Override
@@ -233,8 +236,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (aTick % 20 == 0 && aBaseMetaTileEntity.isServerSide()
-            && (!GTMod.gregtechproxy.gt6Cable || mCheckConnections)) {
+        if (aTick % 20 == 0 && aBaseMetaTileEntity.isServerSide() && (!GTMod.proxy.gt6Cable || mCheckConnections)) {
             checkConnections();
         }
     }
@@ -390,12 +392,12 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
-        if (GTMod.gregtechproxy.gt6Cable
+        if (GTMod.proxy.gt6Cable
             && GTModHandler.damageOrDechargeItem(aPlayer.inventory.getCurrentItem(), 1, 500, aPlayer)) {
             if (isConnectedAtSide(wrenchingSide)) {
                 disconnect(wrenchingSide);
                 GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("215", "Disconnected"));
-            } else if (!GTMod.gregtechproxy.costlyCableConnection) {
+            } else if (!GTMod.proxy.costlyCableConnection) {
                 if (connect(wrenchingSide) > 0)
                     GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("214", "Connected"));
             }
@@ -407,12 +409,12 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
-        if (GTMod.gregtechproxy.gt6Cable
+        if (GTMod.proxy.gt6Cable
             && GTModHandler.damageOrDechargeItem(aPlayer.inventory.getCurrentItem(), 1, 500, aPlayer)) {
             if (isConnectedAtSide(wrenchingSide)) {
                 disconnect(wrenchingSide);
                 GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("215", "Disconnected"));
-            } else if (!GTMod.gregtechproxy.costlyCableConnection || GTModHandler.consumeSolderingMaterial(aPlayer)) {
+            } else if (!GTMod.proxy.costlyCableConnection || GTModHandler.consumeSolderingMaterial(aPlayer)) {
                 if (connect(wrenchingSide) > 0)
                     GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("214", "Connected"));
             }
@@ -469,7 +471,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
                 && ((IEnergySink) ic2Energy).acceptsEnergyFrom((TileEntity) baseMetaTile, oppositeSide)) return true;
 
             // IC2 Source Compat
-            if (GTMod.gregtechproxy.ic2EnergySourceCompat && (ic2Energy instanceof IEnergySource)) {
+            if (GTMod.proxy.ic2EnergySourceCompat && (ic2Energy instanceof IEnergySource)) {
                 if (((IEnergySource) ic2Energy).emitsEnergyTo((TileEntity) baseMetaTile, oppositeSide)) {
                     return true;
                 }
@@ -487,7 +489,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
     @Override
     public boolean getGT6StyleConnection() {
         // Yes if GT6 Cables are enabled
-        return GTMod.gregtechproxy.gt6Cable;
+        return GTMod.proxy.gt6Cable;
     }
 
     @Override
@@ -532,12 +534,12 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        if (GTMod.gregtechproxy.gt6Cable) aNBT.setByte("mConnections", mConnections);
+        if (GTMod.proxy.gt6Cable) aNBT.setByte("mConnections", mConnections);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        if (GTMod.gregtechproxy.gt6Cable) {
+        if (GTMod.proxy.gt6Cable) {
             mConnections = aNBT.getByte("mConnections");
         }
     }
@@ -552,11 +554,11 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
         final BaseMetaPipeEntity base = (BaseMetaPipeEntity) getBaseMetaTileEntity();
         final PowerNodePath path = (PowerNodePath) base.getNodePath();
 
-        path.reloadLocks();
-
         if (path == null)
             return new String[] { EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.infodata.cable.failed")
                 + EnumChatFormatting.RESET };
+
+        path.reloadLocks();
 
         final long currAmp = path.getAmperage();
         final long currVoltage = path.getVoltage();
@@ -585,7 +587,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
 
     @Override
     public boolean shouldJoinIc2Enet() {
-        if (!GTMod.gregtechproxy.ic2EnergySourceCompat) return false;
+        if (!GTMod.proxy.ic2EnergySourceCompat) return false;
 
         if (mConnections != 0) {
             final IGregTechTileEntity baseMeta = getBaseMetaTileEntity();

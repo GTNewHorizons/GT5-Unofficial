@@ -332,8 +332,8 @@ public class TileEntityHeatedWaterPump extends TileEntity implements ITileDropsC
         return new String[] {
             StatCollector.translateToLocal("tooltip.tile.waterpump.0.name") + " "
                 + GTUtility.formatNumbers(Configuration.singleBlocks.mbWaterperSec)
-                + String.format(
-                    StatCollector.translateToLocal("tooltip.tile.waterpump.1.name"),
+                + StatCollector.translateToLocalFormatted(
+                    "tooltip.tile.waterpump.1.name",
                     PollutionConfig.pollutionHeatedWaterPumpSecond),
             StatCollector.translateToLocal("tooltip.tile.waterpump.2.name") };
     }

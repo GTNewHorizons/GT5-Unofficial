@@ -9,11 +9,8 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.UUID;
 
 import net.minecraft.block.Block;
@@ -48,14 +45,12 @@ import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
@@ -63,6 +58,8 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import kekztech.client.gui.KTUITextures;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
 
 public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
@@ -136,13 +133,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     }
 
     @Override
-    public RecipeMap<?> getRecipeMap() {
-        return null;
-    }
-
-    @Override
     public CheckRecipeResult checkProcessing() {
-        startRecipeProcessing();
         List<FluidStack> inputFluids = getStoredFluids();
         long containedAntimatter = 0;
         FluidStack catalystFluid = null;
@@ -150,7 +141,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
 
         while (i < inputFluids.size()) {
             FluidStack inputFluid = inputFluids.get(i);
-            if (inputFluid.isFluidEqual(MaterialsUEVplus.Antimatter.getFluid(1))) {
+            if (inputFluid.isFluidEqual(Materials.Antimatter.getFluid(1))) {
                 containedAntimatter += inputFluid.amount;
             } else {
                 catalystFluid = inputFluid.copy();
@@ -170,7 +161,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             setAvgEff(0f);
         }
 
-        endRecipeProcessing();
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
@@ -296,14 +286,14 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             .addInfo("Annihilating Antimatter like it's 2205!")
             .addSeparator()
             .addInfo(
-                "Generates energy by reacting " + EnumChatFormatting.DARK_AQUA
+                "Generates energy by reacting " + EnumChatFormatting.AQUA
                     + "Semi-Stable Antimatter"
                     + EnumChatFormatting.GRAY
                     + " with "
                     + EnumChatFormatting.GOLD
                     + "Matter")
             .addInfo(
-                "Annihilation uses an equal amount of " + EnumChatFormatting.DARK_AQUA
+                "Annihilation uses an equal amount of " + EnumChatFormatting.AQUA
                     + "Antimatter"
                     + EnumChatFormatting.GRAY
                     + " and "
@@ -315,9 +305,9 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                     + EnumChatFormatting.GRAY
                     + " every processing cycle")
             .addInfo(EnumChatFormatting.RED + "Voids any invalid fluid!")
-            .addInfo("A cycle lasts 1 tick")
+            .addInfo("A cycle lasts 1 second")
             .addInfo(
-                "Imbalance between " + EnumChatFormatting.DARK_AQUA
+                "Imbalance between " + EnumChatFormatting.AQUA
                     + "Antimatter"
                     + EnumChatFormatting.GRAY
                     + " and "
@@ -327,7 +317,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                     + " will decrease efficiency!"
                     + EnumChatFormatting.GRAY)
             .addInfo(
-                "Efficiency formula: Min(" + EnumChatFormatting.DARK_AQUA
+                "Efficiency formula: Min(" + EnumChatFormatting.AQUA
                     + "Antimatter"
                     + EnumChatFormatting.GRAY
                     + "/"
@@ -339,11 +329,16 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                     + "Matter"
                     + EnumChatFormatting.GRAY
                     + "/"
-                    + EnumChatFormatting.DARK_AQUA
+                    + EnumChatFormatting.AQUA
                     + "Antimatter"
                     + EnumChatFormatting.GRAY
                     + ")")
             .addInfo("Any excess EU generated will be " + EnumChatFormatting.RED + "voided!" + EnumChatFormatting.GRAY)
+            .addInfo(
+                "Cannot produce more than " + EnumChatFormatting.GREEN
+                    + GTUtility.scientificFormat(Long.MAX_VALUE)
+                    + EnumChatFormatting.GRAY
+                    + " EU per cycle")
             .addSeparator()
             .addInfo(
                 "Energy production formula: " + EnumChatFormatting.GREEN
@@ -352,19 +347,18 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                     + "A"
                     + EnumChatFormatting.RESET
                     + EnumChatFormatting.GRAY
-                    + "*("
-                    + EnumChatFormatting.DARK_AQUA
+                    + " * ("
+                    + EnumChatFormatting.AQUA
                     + "Antimatter"
                     + EnumChatFormatting.GRAY
-                    + ")^"
+                    + " ^ "
                     + EnumChatFormatting.GOLD
                     + EnumChatFormatting.BOLD
                     + EnumChatFormatting.UNDERLINE
                     + "E"
                     + EnumChatFormatting.RESET
                     + EnumChatFormatting.GRAY
-                    + " EU/Cycle")
-            .addInfo("Cannot produce more than " + GTUtility.formatNumbers(9.2e18) + " EU per cycle")
+                    + ") EU/Cycle")
             .addInfo(
                 "" + EnumChatFormatting.GREEN
                     + EnumChatFormatting.BOLD
@@ -374,9 +368,9 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                     + EnumChatFormatting.GREEN
                     + "ntimatter energy"
                     + EnumChatFormatting.GRAY
-                    + " base value : "
+                    + " base value: "
                     + EnumChatFormatting.GREEN
-                    + GTUtility.formatNumbers(ANTIMATTER_FUEL_VALUE)
+                    + GTUtility.scientificFormat(ANTIMATTER_FUEL_VALUE)
                     + EnumChatFormatting.GRAY
                     + " EU/L")
             .addInfo(
@@ -468,7 +462,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
         if (maxEnergy < 0) maxEnergy = Long.MAX_VALUE;
 
         return new String[] {
-            EnumChatFormatting.BLUE + StatCollector.translateToLocal("gg.info.antimatter_forge")
+            EnumChatFormatting.BLUE + StatCollector.translateToLocal("gg.scanner.info.antimatter_generator")
                 + " "
                 + EnumChatFormatting.GRAY,
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
@@ -541,12 +535,9 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     protected float avgEffCache;
     protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
-    protected static DecimalFormat standardFormat;
-
-    static {
-        DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.US);
-        dfs.setExponentSeparator("e");
-        standardFormat = new DecimalFormat("0.00E0", dfs);
+    @Override
+    protected boolean useMui2() {
+        return false;
     }
 
     @Override
@@ -559,7 +550,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                     .setStringSupplier(
                         () -> StatCollector.translateToLocal("gui.AntimatterGenerator.0") + ": "
                             + EnumChatFormatting.BLUE
-                            + standardFormat.format(energyProducedCache)
+                            + GTUtility.scientificFormat(energyProducedCache)
                             + EnumChatFormatting.WHITE
                             + " EU")
                     .setTextAlignment(Alignment.CenterLeft)
@@ -595,6 +586,30 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     }
 
     @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currentTip, accessor, config);
+        currentTip.add(
+            StatCollector.translateToLocal("gui.AntimatterGenerator.0") + ": "
+                + EnumChatFormatting.BLUE
+                + GTUtility.scientificFormat(energyProducedCache)
+                + EnumChatFormatting.WHITE
+                + " EU");
+        currentTip.add(
+            StatCollector.translateToLocal("gui.AntimatterGenerator.1") + ": "
+                + EnumChatFormatting.RED
+                + numberFormat.format(Math.ceil(efficiencyCache * 100))
+                + EnumChatFormatting.WHITE
+                + " %");
+        currentTip.add(
+            StatCollector.translateToLocal("gui.AntimatterGenerator.1") + ": ⟨ "
+                + EnumChatFormatting.RED
+                + numberFormat.format(Math.ceil(avgEffCache * 100))
+                + EnumChatFormatting.WHITE
+                + " % ⟩₁₀");
+    }
+
+    @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) return new ITexture[] { TextureFactory.builder()
@@ -626,14 +641,10 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     }
 
     public Block getCoilBlock(int type) {
-        switch (type) {
-            case 1:
-                return Loaders.antimatterAnnihilationMatrix;
-            case 2:
-                return Loaders.protomatterActivationCoil;
-            default:
-                return Loaders.antimatterAnnihilationMatrix;
+        if (type == 2) {
+            return Loaders.protomatterActivationCoil;
         }
+        return Loaders.antimatterAnnihilationMatrix;
     }
 
     public int getCoilMeta(int type) {
@@ -641,14 +652,8 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     }
 
     public Block getCasingBlock(int type) {
-        switch (type) {
-            case 1:
-                return Loaders.magneticFluxCasing;
-            case 2:
-                return Loaders.gravityStabilizationCasing;
-            default:
-                return Loaders.magneticFluxCasing;
-        }
+        if (type == 2) return Loaders.gravityStabilizationCasing;
+        return Loaders.magneticFluxCasing;
     }
 
     public int getCasingMeta(int type) {
@@ -672,14 +677,10 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     }
 
     public int textureIndex(int type) {
-        switch (type) {
-            case 1:
-                return (12 << 7) + 9;
-            case 2:
-                return (12 << 7) + 10;
-            default:
-                return (12 << 7) + 9;
+        if (type == 2) {
+            return (12 << 7) + 10;
         }
+        return (12 << 7) + 9;
     }
 
     @Override

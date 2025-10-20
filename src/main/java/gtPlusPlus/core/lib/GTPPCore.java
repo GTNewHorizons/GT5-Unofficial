@@ -14,10 +14,8 @@ import net.minecraft.util.StatCollector;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.GT_Version;
 import gregtech.api.objects.XSTR;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.MTETesseractGenerator;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.MTETesseractTerminal;
 
@@ -53,24 +51,4 @@ public class GTPPCore {
 
     // BookMap
     public static final Map<String, ItemStack> sBookList = new ConcurrentHashMap<>();
-
-    public static void crash() {
-        crash("Generic Crash");
-    }
-
-    public static void crash(String aReason) {
-        try {
-            Logger.INFO("==========================================================");
-            Logger.INFO("[GT++ CRASH]");
-            Logger.INFO("==========================================================");
-            Logger.INFO("Oooops...");
-            Logger.INFO("This should only happen in a development environment or when something really bad happens.");
-            Logger.INFO("Reason: " + aReason);
-            Logger.INFO("==========================================================");
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
-        FMLCommonHandler.instance()
-            .exitJava(0, true);
-    }
 }

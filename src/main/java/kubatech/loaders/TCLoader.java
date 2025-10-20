@@ -35,7 +35,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GTUtility.ItemId;
 import kubatech.api.enums.ItemList;
-import kubatech.loaders.item.items.ItemTeaUltimate;
+import kubatech.loaders.item.kubaitem.items.ItemTeaUltimate;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
@@ -51,10 +51,8 @@ public class TCLoader {
 
     public static void init() {
         /*
-         * ResearchCategories.registerCategory(
-         * TCCategoryKey,
-         * new ResourceLocation(Tags.MODID, "textures/gui/green_tea.png"),
-         * new ResourceLocation("thaumcraft", "textures/gui/gui_researchback.png"));
+         * ResearchCategories.registerCategory( TCCategoryKey, new ResourceLocation(Tags.MODID,
+         * "textures/gui/green_tea.png"), new ResourceLocation("thaumcraft", "textures/gui/gui_researchback.png"));
          */
         if (!NewHorizonsCoreMod.isModLoaded() || !DraconicEvolution.isModLoaded()) return;
         registerRecipe();

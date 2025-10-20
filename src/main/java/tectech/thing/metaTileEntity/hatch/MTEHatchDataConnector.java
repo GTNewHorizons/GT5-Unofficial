@@ -132,11 +132,6 @@ public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTE
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public boolean isLiquidInput(ForgeDirection side) {
         return false;
     }

@@ -31,6 +31,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import bartworks.common.configs.Configuration;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.TAE;
@@ -50,6 +51,8 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
@@ -166,7 +169,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                if (glassTier < GTUtility.getTier(recipe.mEUt)) {
+                if (glassTier < VoltageIndex.UMV && glassTier < GTUtility.getTier(recipe.mEUt)) {
                     return CheckRecipeResultRegistry.insufficientMachineTier(GTUtility.getTier(recipe.mEUt));
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
@@ -191,6 +194,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setAvailableVoltage(getMaxInputEu());
         logic.setAvailableAmperage(1);
+        logic.setUnlimitedTierSkips();
     }
 
     @Override
@@ -207,7 +211,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
         if (!checkPiece("main", 5, 16, 0)) return false;
         if (coilType == CoilType.BasicCoil) coilLevel = HeatingCoilLevel.None;
         if (mMufflerHatches.size() != 1) return false;
-        if (this.glassTier < VoltageIndex.UEV && !getExoticAndNormalEnergyHatchList().isEmpty()) {
+        if (this.glassTier < VoltageIndex.UMV && !getExoticAndNormalEnergyHatchList().isEmpty()) {
             for (MTEHatch hatchEnergy : getExoticAndNormalEnergyHatchList()) {
                 if (this.glassTier < hatchEnergy.mTier) {
                     return false;
@@ -242,7 +246,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
             energyDiscount = 1;
             return;
         }
-        energyDiscount = Math.pow(0.95, tierDifference);
+        energyDiscount = GTUtility.powInt(0.95, tierDifference);
     }
 
     @Override
@@ -265,35 +269,30 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fluid Alloy Cooker, MABS")
             .addInfo(
-                "Runs the same recipes as the normal ABS, except with up to " + EnumChatFormatting.BOLD
-                    + EnumChatFormatting.UNDERLINE
-                    + MAX_PARALLELS
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY
-                    + " parallels.")
+                TooltipHelper.coloredText(
+                    TooltipHelper.italicText("\"all it does is make metals hot\""),
+                    EnumChatFormatting.DARK_GRAY))
+            .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addInfo(
-                "Every coil tier above TPV grants a speed bonus if the equivalent or better glass tier is present.")
+                TooltipHelper.speedText("-5%") + " Recipe Time per "
+                    + TooltipHelper.tierText(TooltipTier.COIL)
+                    + " Tier above TPV (additive)")
+            .addInfo("if the equivalent or better " + TooltipHelper.tierText(TooltipTier.GLASS) + " is present")
             .addInfo(
-                EnumChatFormatting.YELLOW + "Speed Bonus"
-                    + EnumChatFormatting.GRAY
-                    + ": 5% lower recipe time per tier (additive)")
-            .addInfo("Furthermore, an energy discount is granted for using coils above the recipe tier.")
+                TooltipHelper.effText("-5%") + " EU Usage per "
+                    + TooltipHelper.tierText(TooltipTier.COIL)
+                    + " Tier above the Recipe Tier (multiplicative)")
+            .addSeparator()
             .addInfo(
-                EnumChatFormatting.YELLOW + "Energy Discount"
-                    + EnumChatFormatting.GRAY
-                    + ": 5% lower energy consumption per tier (multiplicative)")
-            .addInfo(
-                EnumChatFormatting.ITALIC
-                    + "Can also use normal ABS coils in their place instead, if you don't like the bonuses :)"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY)
-            .addGlassEnergyLimitInfo(VoltageIndex.UEV)
+                "Recipe Tier limited by " + TooltipHelper.tierText(TooltipTier.GLASS)
+                    + " Tier, "
+                    + TooltipHelper.voltageText(VoltageIndex.UMV)
+                    + " unlocks all")
+            .addInfo("Can also use normal ABS coils in their place instead, if you don't like the bonuses :)")
+            .addSeparator()
             .addTecTechHatchInfo()
             .addMinGlassForLaser(VoltageIndex.UV)
-            .addInfo(
-                EnumChatFormatting.ITALIC + "\"all it does is make metals hot\""
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY)
+            .addGlassEnergyLimitInfo(VoltageIndex.UMV)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(11, 20, 11, false)
             .addController("Mid of the fourth layer")
@@ -448,13 +447,16 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
-        batchMode = !batchMode;
-        if (batchMode) {
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
-        } else {
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+        if (aPlayer.isSneaking()) {
+            batchMode = !batchMode;
+            if (batchMode) {
+                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+            } else {
+                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+            }
+            return true;
         }
-        return true;
+        return false;
     }
 
     @Override

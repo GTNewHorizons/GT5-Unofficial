@@ -33,7 +33,7 @@ public class MTELightningRod extends MTETieredMachineBlock {
         ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         if (sideDirection != ForgeDirection.UP) {
             return new ITexture[] { BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1],
-                BlockIcons.OVERLAYS_ENERGY_OUT_POWER[mTier] };
+                BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_64A[mTier + 1] };
         }
         if (!active) return new ITexture[] { BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1],
             TextureFactory.of(BlockIcons.MACHINE_CASING_FUSION_GLASS) };
@@ -129,11 +129,6 @@ public class MTELightningRod extends MTETieredMachineBlock {
     @Override
     public boolean isEnetOutput() {
         return true;
-    }
-
-    @Override
-    public boolean isEnetInput() {
-        return false;
     }
 
     @Override

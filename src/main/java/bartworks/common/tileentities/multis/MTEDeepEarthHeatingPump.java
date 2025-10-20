@@ -15,13 +15,15 @@ package bartworks.common.tileentities.multis;
 
 import static bartworks.util.BWTooltipReference.MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS;
 import static gregtech.api.enums.GTValues.VN;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.Arrays;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -30,7 +32,6 @@ import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 
-import bartworks.common.tileentities.multis.gui.MTEDeepEarthHeatingPumpGui;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
@@ -38,10 +39,12 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.MTEDrillerBase;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
 
@@ -89,10 +92,26 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
 
         tt.addInfo("Direct Steam and Coolant Heating")
             .addInfo(
-                "Direct Steam Mode: Consumes Distilled Water to produce " + (long) (25600 * 20)
-                    + "L/s of Superheated Steam")
-            .addInfo("Coolant Heating Mode: Converts " + (long) (192 * 20) + "L/s Coolant to Hot Coolant")
-            .addInfo("Each maintenance issue lowers output efficiency by 10%")
+                "Direct Steam Mode: Consumes " + EnumChatFormatting.BLUE
+                    + "Distilled Water"
+                    + EnumChatFormatting.GRAY
+                    + " to produce "
+                    + EnumChatFormatting.WHITE
+                    + (long) (25600 * 20)
+                    + EnumChatFormatting.GRAY
+                    + "L/s of "
+                    + EnumChatFormatting.WHITE
+                    + "Superheated Steam")
+            .addInfo(
+                "Coolant Heating Mode: Converts " + (long) (192 * 20)
+                    + "L/s "
+                    + EnumChatFormatting.AQUA
+                    + "Coolant"
+                    + EnumChatFormatting.GRAY
+                    + " to "
+                    + EnumChatFormatting.RED
+                    + "Hot Coolant")
+            .addInfo("Each maintenance issue lowers output efficiency by " + EnumChatFormatting.GREEN + "10%")
             .addInfo("Explodes when it runs out of Distilled Water/Coolant")
             .addInfo("Base cycle time: 1 tick");
 
@@ -139,14 +158,13 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
 
     @Override
     public void setMachineModeIcons() {
-        machineModeIcons.clear();
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_STEAM);
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
     }
 
     @Override
     public String getMachineModeName() {
-        return StatCollector.translateToLocal("GT5U.DEHP.mode." + machineMode);
+        return translateToLocal("GT5U.DEHP.mode." + machineMode);
     }
 
     @Override
@@ -204,9 +222,8 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         setMachineMode(nextMachineMode());
-        PlayerUtils.messagePlayer(
-            aPlayer,
-            String.format(StatCollector.translateToLocal("GT5U.MULTI_MACHINE_CHANGE"), getMachineModeName()));
+        GTUtility
+            .sendChatToPlayer(aPlayer, translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
     }
 
     @Override
@@ -231,9 +248,15 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
                 return false;
             }
         } else if (this.machineMode == 1) {
-            long coolantConverted = (long) (192L * this.mEfficiency / 10000L);
-            if (this.getFluidFromHatches(FluidRegistry.getFluid("ic2coolant")) - coolantConverted > 0) {
-                this.consumeFluid(FluidRegistry.getFluid("ic2coolant"), coolantConverted);
+            long coolantConverted = 192L * this.mEfficiency / 10_000L;
+            if (this.getFluidFromHatches(
+                GTModHandler.getIC2Coolant(0)
+                    .getFluid())
+                - coolantConverted > 0) {
+                this.consumeFluid(
+                    GTModHandler.getIC2Coolant(0)
+                        .getFluid(),
+                    coolantConverted);
                 this.addOutput(FluidRegistry.getFluidStack("ic2hotcoolant", (int) coolantConverted));
             } else {
                 this.explodeMultiblock();
@@ -307,7 +330,9 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     }
 
     @Override
-    protected @NotNull MTEDeepEarthHeatingPumpGui getGui() {
-        return new MTEDeepEarthHeatingPumpGui(this);
+    protected @NotNull MTEMultiBlockBaseGui getGui() {
+        return new MTEMultiBlockBaseGui(this).withMachineModeIcons(
+            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_STEAM,
+            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
     }
 }

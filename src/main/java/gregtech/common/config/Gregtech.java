@@ -5,7 +5,7 @@ import com.gtnewhorizon.gtnhlib.config.Config;
 import gregtech.api.enums.Mods;
 import gregtech.common.GTProxy;
 
-@Config(modid = Mods.Names.GREG_TECH, category = "gregtech", configSubDirectory = "GregTech", filename = "GregTech")
+@Config(modid = Mods.ModIDs.GREG_TECH, category = "gregtech", configSubDirectory = "GregTech", filename = "GregTech")
 @Config.LangKey("GT5U.gui.config.gregtech")
 public class Gregtech {
 
@@ -26,6 +26,9 @@ public class Gregtech {
 
     @Config.Comment("Ore drop behavior section")
     public static final OreDropBehavior oreDropBehavior = new OreDropBehavior();
+
+    @Config.Comment("Void miners")
+    public static final VoidMiners voidMiners = new VoidMiners();
 
     @Config.LangKey("GT5U.gui.config.gregtech.debug")
     public static class Debug {
@@ -128,10 +131,19 @@ public class Gregtech {
         @Config.DefaultInt(4)
         @Config.RequiresMcRestart
         public int upgradeStackSize;
+
+        @Config.Comment("Speed up machine update thread by skipping cables. Warning: this can cause weird side effects.")
+        @Config.DefaultBoolean(false)
+        @Config.RequiresMcRestart
+        public boolean speedupMachineUpdateThread;
     }
 
     @Config.LangKey("GT5U.gui.config.gregtech.general")
     public static class General {
+
+        @Config.Comment("if true, batch mode will initially be enabled when multiblocks are placed in the world.")
+        @Config.DefaultBoolean(true)
+        public boolean batchModeInitialValue;
 
         @Config.Comment("Control percentage of filled 3x3 chunks. Lower number means less oreveins spawn.")
         @Config.DefaultInt(100)
@@ -247,11 +259,6 @@ public class Gregtech {
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart
         public boolean achievements;
-
-        @Config.Comment("if true, hides unused ores.")
-        @Config.DefaultBoolean(false)
-        @Config.RequiresMcRestart
-        public boolean hideUnusedOres;
 
         @Config.Comment("if true, enables all the materials in GT5U.")
         @Config.DefaultBoolean(false)
@@ -372,6 +379,21 @@ public class Gregtech {
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart
         public boolean loggingExplosions;
+
+        @Config.Comment("The maximum number of nanoseconds that the cooperative scheduler will run for each tick.")
+        @Config.DefaultInt(10_000_000) // 10 ms
+        @Config.Name("Scheduler Max Duration (ns)")
+        public int schedulerDuration;
+
+        @Config.Comment("The maximum number of tasks that the scheduler will try to run per tick (not a hard limit).")
+        @Config.DefaultInt(5)
+        @Config.Name("Scheduler Target Task Count")
+        public int maxTaskCount;
+
+        @Config.Comment("0 = No Profiling. 1 = Print the time taken by the scheduler. 2 = Print the time taken by each task.")
+        @Config.DefaultInt(0)
+        @Config.Name("Scheduler Profiling")
+        public int schedulerProfileLevel;
     }
 
     @Config.LangKey("GT5U.gui.config.gregtech.harvest_level")
@@ -529,6 +551,15 @@ public class Gregtech {
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart
         public boolean useMachineMetal;
+
+        @Config.Comment("If true, Crafting Input Bus/Buffer will drop items and fluids if they cannot be returned to the AE network.")
+        @Config.DefaultBoolean(true)
+        public boolean allowCribDropItems;
+
+        @Config.Comment("Enables the powerfail notification system.")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Enable Powerfail Notifications")
+        public boolean enablePowerfailNotifications;
     }
 
     @Config.LangKey("GT5U.gui.config.gregtech.ore_drop_behavior")
@@ -544,5 +575,21 @@ public class Gregtech {
         @Config.DefaultEnum("FortuneItem")
         @Config.RequiresMcRestart
         public GTProxy.OreDropSystem setting = GTProxy.OreDropSystem.FortuneItem;
+    }
+
+    @Config.LangKey("GT5U.gui.config.gregtech.void_miners")
+    public static class VoidMiners {
+
+        @Config.Comment("List of GregTech material names to adjust weight. Example line: \"Aluminium : 0.3\". Intervening whitespace will be ignored. Use the debug options to get valid names. Use weight <= 0 to disable an ore entirely. Anything not specified in the list will have weight 1. See: gregtech.api.enums.Materials")
+        @Config.Name("Deep Dark GT Ore Weights")
+        public String[] gregtechWeightsDD;
+
+        @Config.Comment("List of BartWorks material names to adjust weight. Example line: \"Bismutite : 0.3\". Intervening whitespace will be ignored. Use the debug options to get valid names. Use weight <= 0 to disable an ore entirely. Anything not specified in the list will have weight 1. See: bartworks.system.material.Werkstoff")
+        @Config.Name("Deep Dark BW Ore Weights")
+        public String[] bartworksWeightsDD;
+
+        @Config.Comment("List of GT++ material names to adjust weight. Example line: \"Cerite : 0.3\". Intervening whitespace will be ignored. Use the debug options to get valid names. Use weight <= 0 to disable an ore entirely. Anything not specified in the list will have weight 1. See: gtPlusPlus.core.material.ORES")
+        @Config.Name("Deep Dark GT++ Ore Weights")
+        public String[] gtppWeightsDD;
     }
 }

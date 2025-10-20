@@ -1,5 +1,7 @@
 package gregtech.common.covers;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -60,10 +62,10 @@ public class CoverDrain extends CoverLegacyData {
                 if (tBlock != null) {
                     if (((tBlock == Blocks.water) || (tBlock == Blocks.flowing_water))
                         && (coverable.getMetaIDAtSide(coverSide) == 0)) {
-                        tLiquid = Materials.Water.getFluid(1000L);
+                        tLiquid = Materials.Water.getFluid(1_000);
                     } else if (((tBlock == Blocks.lava) || (tBlock == Blocks.flowing_lava))
                         && (coverable.getMetaIDAtSide(coverSide) == 0)) {
-                            tLiquid = Materials.Lava.getFluid(1000L);
+                            tLiquid = Materials.Lava.getFluid(1_000);
                         } else if ((tBlock instanceof IFluidBlock)) {
                             tLiquid = ((IFluidBlock) tBlock).drain(
                                 coverable.getWorld(),
@@ -112,12 +114,12 @@ public class CoverDrain extends CoverLegacyData {
             this.coverData = 5;
         }
         switch (this.coverData) {
-            case 0 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("022", "Import"));
-            case 1 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("023", "Import (conditional)"));
-            case 2 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("024", "Import (invert cond)"));
-            case 3 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("025", "Keep Liquids Away"));
-            case 4 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("026", "Keep Liquids Away (conditional)"));
-            case 5 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("027", "Keep Liquids Away (invert cond)"));
+            case 0 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.import"));
+            case 1 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.import_cond"));
+            case 2 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.import_invert_cond"));
+            case 3 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.no_fluid"));
+            case 4 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.no_fluid_cond"));
+            case 5 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.no_fluid_invert_cond"));
         }
     }
 

@@ -81,7 +81,7 @@ import gregtech.common.tools.ToolSaw;
 import gregtech.common.tools.ToolScoop;
 import gregtech.common.tools.ToolScrewdriver;
 import gregtech.common.tools.ToolScrewdriverLV;
-import gregtech.common.tools.ToolSoftHammer;
+import gregtech.common.tools.ToolSoftMallet;
 import gregtech.common.tools.ToolSolderingIron;
 import gregtech.common.tools.ToolTrowel;
 import gregtech.common.tools.ToolTurbineHuge;
@@ -134,11 +134,11 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
                 SOFTMALLET.ID,
                 "Soft Mallet",
                 "",
-                new ToolSoftHammer(),
-                ToolDictNames.craftingToolSoftHammer,
+                new ToolSoftMallet(),
+                ToolDictNames.craftingToolSoftMallet,
                 new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.LIMUS, 4L)),
-            GregTechAPI.sSoftHammerList);
+            GregTechAPI.sSoftMalletList);
         GregTechAPI.registerTool(
             addTool(
                 WRENCH.ID,

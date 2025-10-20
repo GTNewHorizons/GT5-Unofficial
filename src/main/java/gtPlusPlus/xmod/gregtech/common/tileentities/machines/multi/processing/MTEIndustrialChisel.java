@@ -19,13 +19,13 @@ import javax.annotation.Nullable;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -39,7 +39,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchChiselBus;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -77,11 +76,11 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
+            .addBulkMachineInfo(16, 3f, 0.75f)
             .addInfo("Factory Grade Auto Chisel")
             .addInfo("Target block goes in Controller slot for common Input Buses")
             .addInfo("You can also set a target block in each Chisel Input Bus and use them as an Input Bus")
             .addInfo("If no target is provided for common buses, the result of the first chisel is used")
-            .addInfo("Speed: +200% | EU Usage: 75% | Parallel: Tier x 16")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")
@@ -229,12 +228,12 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
                 // We can chisel this
                 GTRecipe aRecipe = new GTRecipe(
                     false,
-                    new ItemStack[] { ItemUtils.getSimpleStack(aInput, 1) },
-                    new ItemStack[] { ItemUtils.getSimpleStack(tOutput, 1) },
+                    new ItemStack[] { GTUtility.copyAmount(1, aInput) },
+                    new ItemStack[] { GTUtility.copyAmount(1, tOutput) },
                     null,
                     new int[] { 10000 },
-                    new FluidStack[] {},
-                    new FluidStack[] {},
+                    GTValues.emptyFluidStackArray,
+                    GTValues.emptyFluidStackArray,
                     20,
                     16,
                     0);
@@ -288,7 +287,8 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
             protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
                 return GTStreamUtil.ofNullable(getRecipe());
             }
-        }.setSpeedBonus(1F / 3F)
+        }.noRecipeCaching()
+            .setSpeedBonus(1F / 3F)
             .setEuModifier(0.75F)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
@@ -326,5 +326,4 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
     public int getPollutionPerSecond(ItemStack aStack) {
         return PollutionConfig.pollutionPerSecondMultiIndustrialChisel;
     }
-
 }

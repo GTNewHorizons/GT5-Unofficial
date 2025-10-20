@@ -239,7 +239,7 @@ public abstract class MapGenRuins extends WorldGenerator {
                         if (dy == 0) {
                             Pair<Block, Integer> floor = this.ToBuildWith[0][this.statBlocks[0]];
                             this.setBlock(worldObj, x + dx, y + 0, z + dz, floor.getKey(), floor.getValue());
-                        } else if (dy > 0 && dy < 4) {
+                        } else if (dy < 4) {
                             if (Math.abs(dx) == 5 && Math.abs(dz) == 5) {
                                 this.setRandomBlockWAirChance(
                                     worldObj,

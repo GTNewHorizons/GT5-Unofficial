@@ -1,5 +1,7 @@
 package gregtech.common.items;
 
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
+
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -178,8 +180,8 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
     private enum CellType {
 
         REGULAR(1_000, OrePrefixes.cell),
-        SMALL(144, OrePrefixes.cell),
-        MOLTEN(144, OrePrefixes.cellMolten),
+        SMALL(1 * INGOTS, OrePrefixes.cell),
+        MOLTEN(1 * INGOTS, OrePrefixes.cellMolten),
         PLASMA(1_000, OrePrefixes.cellPlasma);
 
         private final int capacity;

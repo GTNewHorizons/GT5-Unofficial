@@ -21,8 +21,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -93,12 +91,9 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
 
     private float currentHumidity;
 
-    private static final Fluid water = FluidRegistry.getFluid("water");
-
     private FluidStack[] getWater() {
-        return new FluidStack[] { new FluidStack(
-            water,
-            (calculateFinalWaterOutput() <= 250 && isMinWaterAllowedDim() ? 250 : calculateFinalWaterOutput())) };
+        return new FluidStack[] { Materials.Water.getFluid(
+            calculateFinalWaterOutput() <= 250 && isMinWaterAllowedDim() ? 250 : calculateFinalWaterOutput()) };
     }
 
     private int mCountCasing;
@@ -252,7 +247,7 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
                     + BASE_WATER_PER_SECOND
                     + " L/s"
                     + EnumChatFormatting.AQUA
-                    + " of Water, to a minimum of 250L/s."
+                    + " of Water, to a minimum of 250L/s"
                     + EnumChatFormatting.RESET)
             .addInfo(
                 EnumChatFormatting.RED + "Consumes: "
@@ -260,7 +255,7 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
                     + BASE_STEAM_PER_SECOND
                     + " L/s"
                     + EnumChatFormatting.RED
-                    + " of Steam."
+                    + " of Steam"
                     + EnumChatFormatting.RESET)
             .beginStructureBlock(3, 3, 4, false)
             .addOutputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
@@ -367,11 +362,6 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         mSetTier = aNBT.getInteger("mSetTier");
-    }
-
-    @Override
-    public int getMaxParallelRecipes() {
-        return 1;
     }
 
     @Override

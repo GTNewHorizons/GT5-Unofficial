@@ -19,6 +19,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
@@ -71,7 +72,17 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
 
     @Override
     public byte getTileEntityBaseType() {
-        return (byte) (mMaterial == null ? 4 : (byte) (4) + Math.max(0, Math.min(3, mMaterial.mToolQuality)));
+        final int level = (mMaterial == null) ? 0 : GTUtility.clamp(mMaterial.mToolQuality, 0, 3);
+
+        HarvestTool tool = switch (level) {
+            case 0 -> HarvestTool.WrenchPipeLevel0;
+            case 1 -> HarvestTool.WrenchPipeLevel1;
+            case 2 -> HarvestTool.WrenchPipeLevel2;
+            case 3 -> HarvestTool.WrenchPipeLevel3;
+            default -> throw new IllegalStateException("Unexpected tool quality level: " + level);
+        };
+
+        return tool.toTileEntityBaseType();
     }
 
     @Override
@@ -170,13 +181,13 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setByte("mLastReceivedFrom", (byte) mLastReceivedFrom.ordinal());
-        if (GTMod.gregtechproxy.gt6Pipe) aNBT.setByte("mConnections", mConnections);
+        if (GTMod.proxy.gt6Pipe) aNBT.setByte("mConnections", mConnections);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         mLastReceivedFrom = ForgeDirection.getOrientation(aNBT.getByte("mLastReceivedFrom"));
-        if (GTMod.gregtechproxy.gt6Pipe) {
+        if (GTMod.proxy.gt6Pipe) {
             mConnections = aNBT.getByte("mConnections");
         }
     }
@@ -190,7 +201,7 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
                 mCurrentTransferStartTick = 0;
             }
 
-            if (!GTMod.gregtechproxy.gt6Pipe || mCheckConnections) checkConnections();
+            if (!GTMod.proxy.gt6Pipe || mCheckConnections) checkConnections();
 
             doTickProfilingInThisTick = true;
             if (oLastReceivedFrom == mLastReceivedFrom) {
@@ -222,7 +233,7 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
     @Override
     public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
-        if (GTMod.gregtechproxy.gt6Pipe) {
+        if (GTMod.proxy.gt6Pipe) {
             final ForgeDirection tSide = GTUtility.determineWrenchingSide(side, aX, aY, aZ);
             if (isConnectedAtSide(tSide)) {
                 disconnect(tSide);
@@ -278,7 +289,7 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
     @Override
     public boolean getGT6StyleConnection() {
         // Yes if GT6 pipes are enabled
-        return GTMod.gregtechproxy.gt6Pipe;
+        return GTMod.proxy.gt6Pipe;
     }
 
     @Override

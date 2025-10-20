@@ -15,6 +15,8 @@ import static goodgenerator.util.ItemRefer.Compassline_Casing_UXV;
 import static goodgenerator.util.ItemRefer.Compassline_Casing_ZPM;
 import static goodgenerator.util.ItemRefer.Component_Assembly_Line;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
+import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
@@ -26,8 +28,6 @@ import java.util.HashMap;
 import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.system.material.WerkstoffLoader;
@@ -35,12 +35,13 @@ import goodgenerator.util.StackUtils;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
+import gtPlusPlus.core.material.MaterialMisc;
+import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.recipe.common.CI;
 import tectech.recipe.TTRecipeAdder;
 
@@ -80,9 +81,9 @@ public class ComponentAssemblyLineMiscRecipes {
                 getALCircuit(7, 20),
                 getALCircuit(6, 24))
             .fluidInputs(
-                new FluidStack(FluidRegistry.getFluid("molten.indalloy140"), 144 * 12),
-                Materials.Naquadria.getMolten(144 * 16),
-                Materials.Lubricant.getFluid(5000))
+                MaterialsAlloy.INDALLOY_140.getFluidStack(12 * INGOTS),
+                Materials.Naquadria.getMolten(16 * INGOTS),
+                Materials.Lubricant.getFluid(5_000))
             .itemOutputs(Component_Assembly_Line.get(1))
             .eut(TierEU.RECIPE_UHV / 2)
             .duration(30 * SECONDS)
@@ -106,7 +107,7 @@ public class ComponentAssemblyLineMiscRecipes {
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Steel, 4),
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Tin, 6),
                 getCircuit(t, 16))
-            .fluidInputs(Materials.SolderingAlloy.getMolten(144 * (t + 1)))
+            .fluidInputs(Materials.SolderingAlloy.getMolten((t + 1) * INGOTS))
             .itemOutputs(Compassline_Casing_LV.get(1))
             .duration(16 * SECONDS)
             .eut(GTValues.VP[t])
@@ -127,7 +128,7 @@ public class ComponentAssemblyLineMiscRecipes {
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.AnyCopper, 6),
                 getCircuit(t, 8),
                 getCircuit(t - 1, 16))
-            .fluidInputs(Materials.SolderingAlloy.getMolten(144 * (t + 1)))
+            .fluidInputs(Materials.SolderingAlloy.getMolten((t + 1) * INGOTS))
             .itemOutputs(Compassline_Casing_MV.get(1))
             .duration(16 * SECONDS)
             .eut(GTValues.VP[t])
@@ -148,7 +149,7 @@ public class ComponentAssemblyLineMiscRecipes {
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Gold, 6),
                 getCircuit(t, 8),
                 getCircuit(t - 1, 16))
-            .fluidInputs(Materials.SolderingAlloy.getMolten(144 * (t + 1)))
+            .fluidInputs(Materials.SolderingAlloy.getMolten((t + 1) * INGOTS))
             .itemOutputs(Compassline_Casing_HV.get(1))
             .duration(16 * SECONDS)
             .eut(GTValues.VP[t])
@@ -169,7 +170,7 @@ public class ComponentAssemblyLineMiscRecipes {
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Aluminium, 6),
                 getCircuit(t, 8),
                 getCircuit(t - 1, 16))
-            .fluidInputs(Materials.SolderingAlloy.getMolten(144 * (t + 1)))
+            .fluidInputs(Materials.SolderingAlloy.getMolten((t + 1) * INGOTS))
             .itemOutputs(Compassline_Casing_EV.get(1))
             .duration(16 * SECONDS)
             .eut(GTValues.VP[t])
@@ -190,13 +191,11 @@ public class ComponentAssemblyLineMiscRecipes {
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Tungsten, 6),
                 getCircuit(t, 8),
                 getCircuit(t - 1, 16))
-            .fluidInputs(Materials.SolderingAlloy.getMolten(144 * (t + 1)))
+            .fluidInputs(Materials.SolderingAlloy.getMolten((t + 1) * INGOTS))
             .itemOutputs(Compassline_Casing_IV.get(1))
             .duration(16 * SECONDS)
             .eut(GTValues.VP[t])
             .addTo(assemblerRecipes);
-
-        Fluid sold = FluidRegistry.getFluid("molten.indalloy140");
         // Assline Recipes!
         // luv 6
         t++;
@@ -218,9 +217,9 @@ public class ComponentAssemblyLineMiscRecipes {
                 getALCircuit(t, 8),
                 getALCircuit(t - 1, 16))
             .fluidInputs(
-                new FluidStack(sold, 144 * t * 4),
-                CI.getTieredFluid(t, 144 * t * 2),
-                StackUtils.getTieredFluid(t, 144 * t),
+                MaterialsAlloy.INDALLOY_140.getFluidStack(t * 4 * INGOTS),
+                CI.getTieredFluid(t, t * 2 * INGOTS),
+                StackUtils.getTieredFluid(t, t * INGOTS),
                 Materials.Lubricant.getFluid(1000 * (t - 2)))
             .itemOutputs(Compassline_Casing_LuV.get(1))
             .eut(TierEU.RECIPE_IV)
@@ -246,9 +245,9 @@ public class ComponentAssemblyLineMiscRecipes {
                 getALCircuit(t, 8),
                 getALCircuit(t - 1, 16))
             .fluidInputs(
-                new FluidStack(sold, 144 * t * 4),
-                CI.getTieredFluid(t, 144 * t * 2),
-                StackUtils.getTieredFluid(t, 144 * t),
+                MaterialsAlloy.INDALLOY_140.getFluidStack(t * 4 * INGOTS),
+                CI.getTieredFluid(t, t * 2 * INGOTS),
+                StackUtils.getTieredFluid(t, t * INGOTS),
                 Materials.Lubricant.getFluid(1000 * (t - 2)))
             .itemOutputs(Compassline_Casing_ZPM.get(1))
             .eut(TierEU.RECIPE_LuV)
@@ -275,9 +274,9 @@ public class ComponentAssemblyLineMiscRecipes {
                 getALCircuit(t, 8),
                 getALCircuit(t - 1, 16))
             .fluidInputs(
-                new FluidStack(sold, 144 * t * 4),
-                CI.getTieredFluid(t, 144 * t * 2),
-                StackUtils.getTieredFluid(t, 144 * t),
+                MaterialsAlloy.INDALLOY_140.getFluidStack(t * 4 * INGOTS),
+                CI.getTieredFluid(t, t * 2 * INGOTS),
+                StackUtils.getTieredFluid(t, t * INGOTS),
                 Materials.Lubricant.getFluid(1000 * (t - 2)))
             .itemOutputs(Compassline_Casing_UV.get(1))
             .eut(TierEU.RECIPE_ZPM)
@@ -303,12 +302,12 @@ public class ComponentAssemblyLineMiscRecipes {
                 GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.CosmicNeutronium, 16),
                 GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Bedrockium, 8), getALCircuit(t, 8),
                 getALCircuit(t - 1, 16) },
-            new FluidStack[] { new FluidStack(sold, 144 * t * 4), CI.getTieredFluid(t, 144 * t * 2),
-                StackUtils.getTieredFluid(t, 144 * t), Materials.Lubricant.getFluid(1000 * (t - 2)) },
+            new FluidStack[] { MaterialsAlloy.INDALLOY_140.getFluidStack(t * 4 * INGOTS),
+                CI.getTieredFluid(t, t * 2 * INGOTS), StackUtils.getTieredFluid(t, t * INGOTS),
+                Materials.Lubricant.getFluid(1000 * (t - 2)) },
             Compassline_Casing_UHV.get(1),
             50 * SECONDS,
             (int) TierEU.RECIPE_UV);
-        sold = FluidRegistry.getFluid("molten.mutatedlivingsolder");
         // uev 10
         t++;
         TTRecipeAdder.addResearchableAssemblylineRecipe(
@@ -329,8 +328,9 @@ public class ComponentAssemblyLineMiscRecipes {
                 GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Infinity, 16),
                 GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Draconium, 8), getALCircuit(t, 8),
                 getALCircuit(t - 1, 16) },
-            new FluidStack[] { new FluidStack(sold, 144 * t * 4), CI.getTieredFluid(t, 144 * t * 2),
-                StackUtils.getTieredFluid(t, 144 * t), Materials.Lubricant.getFluid(1000 * (t - 2)) },
+            new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(t * 4 * INGOTS),
+                CI.getTieredFluid(t, t * 2 * INGOTS), StackUtils.getTieredFluid(t, t * INGOTS),
+                Materials.Lubricant.getFluid(1000 * (t - 2)) },
             Compassline_Casing_UEV.get(1),
             50 * SECONDS,
             (int) TierEU.RECIPE_UHV);
@@ -342,21 +342,21 @@ public class ComponentAssemblyLineMiscRecipes {
             1 << (t - 3),
             (int) TierEU.RECIPE_UEV,
             1,
-            new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.ProtoHalkonite, 1),
-                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, MaterialsUEVplus.TranscendentMetal, 1),
+            new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.ProtoHalkonite, 1),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.TranscendentMetal, 1),
                 ComponentType.Robot_Arm.getComponent(t)
                     .get(8),
                 ComponentType.Electric_Piston.getComponent(t)
                     .get(10),
                 ComponentType.Electric_Motor.getComponent(t)
                     .get(16),
-                GTOreDictUnificator.get(OrePrefixes.gearGt, MaterialsUEVplus.TranscendentMetal, 4),
-                GTOreDictUnificator.get(OrePrefixes.gearGtSmall, MaterialsUEVplus.ProtoHalkonite, 16),
+                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.TranscendentMetal, 4),
+                GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.ProtoHalkonite, 16),
                 GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.NetherStar, 8), getALCircuit(t, 8),
                 getALCircuit(t - 1, 16) },
-            new FluidStack[] { new FluidStack(sold, 144 * t * 4), CI.getTieredFluid(t, 144 * t * 2),
-                StackUtils.getTieredFluid(t, 144 * t),
-                MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(1000 * (t - 2)) },
+            new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(t * 4 * INGOTS),
+                CI.getTieredFluid(t, t * 2 * INGOTS), StackUtils.getTieredFluid(t, t * INGOTS),
+                Materials.DimensionallyShiftedSuperfluid.getFluid(1000 * (t - 2)) },
             Compassline_Casing_UIV.get(1),
             50 * SECONDS,
             (int) TierEU.RECIPE_UEV);
@@ -368,21 +368,21 @@ public class ComponentAssemblyLineMiscRecipes {
             1 << (t - 3),
             (int) TierEU.RECIPE_UIV,
             1,
-            new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SpaceTime, 1),
-                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, MaterialsUEVplus.SpaceTime, 1),
+            new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 1),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.SpaceTime, 1),
                 ComponentType.Robot_Arm.getComponent(t)
                     .get(8),
                 ComponentType.Electric_Piston.getComponent(t)
                     .get(10),
                 ComponentType.Electric_Motor.getComponent(t)
                     .get(16),
-                GTOreDictUnificator.get(OrePrefixes.gearGt, MaterialsUEVplus.SpaceTime, 4),
-                GTOreDictUnificator.get(OrePrefixes.gearGtSmall, MaterialsUEVplus.SpaceTime, 16),
+                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.SpaceTime, 4),
+                GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.SpaceTime, 16),
                 GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Quantium, 8), getALCircuit(t, 8),
                 getALCircuit(t - 1, 16) },
-            new FluidStack[] { new FluidStack(sold, 144 * t * 4), CI.getTieredFluid(t - 1, 144 * t * 2),
-                StackUtils.getTieredFluid(t, 144 * t),
-                MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(1000 * (t - 2)) },
+            new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(t * 4 * INGOTS),
+                CI.getTieredFluid(t - 1, t * 2 * INGOTS), StackUtils.getTieredFluid(t, t * INGOTS),
+                Materials.DimensionallyShiftedSuperfluid.getFluid(1000 * (t - 2)) },
             Compassline_Casing_UMV.get(1),
             50 * 20,
             (int) TierEU.RECIPE_UIV);
@@ -395,28 +395,26 @@ public class ComponentAssemblyLineMiscRecipes {
             (int) TierEU.RECIPE_UMV,
             1,
             new Object[] {
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 1),
                 GTOreDictUnificator
-                    .get(OrePrefixes.frameGt, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 1),
-                GTOreDictUnificator
-                    .get(OrePrefixes.plateDense, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 3),
-                GTOreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.MagMatter, 3),
+                    .get(OrePrefixes.plateDense, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 3),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.MagMatter, 3),
                 ComponentType.Robot_Arm.getComponent(t)
                     .get(8),
                 ComponentType.Electric_Piston.getComponent(t)
                     .get(10),
                 ComponentType.Electric_Motor.getComponent(t)
                     .get(16),
+                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 2),
+                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.MagMatter, 2),
                 GTOreDictUnificator
-                    .get(OrePrefixes.gearGt, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 2),
-                GTOreDictUnificator.get(OrePrefixes.gearGt, MaterialsUEVplus.MagMatter, 2),
-                GTOreDictUnificator
-                    .get(OrePrefixes.gearGtSmall, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 8),
-                GTOreDictUnificator.get(OrePrefixes.gearGtSmall, MaterialsUEVplus.MagMatter, 8),
-                GTOreDictUnificator.get(OrePrefixes.wireGt04, MaterialsUEVplus.SpaceTime, 8), getALCircuit(t, 8),
+                    .get(OrePrefixes.gearGtSmall, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 8),
+                GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.MagMatter, 8),
+                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SpaceTime, 8), getALCircuit(t, 8),
                 getALCircuit(t - 1, 16) },
-            new FluidStack[] { new FluidStack(sold, 144 * t * 4),
-                MaterialsUEVplus.BlackDwarfMatter.getMolten(144 * t * 2), MaterialsUEVplus.Eternity.getMolten(144 * t),
-                MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(1000 * (t - 2)) },
+            new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(t * 4 * INGOTS),
+                Materials.BlackDwarfMatter.getMolten(t * 2 * INGOTS), Materials.Eternity.getMolten(t * INGOTS),
+                Materials.DimensionallyShiftedSuperfluid.getFluid(1000 * (t - 2)) },
             Compassline_Casing_UXV.get(1),
             50 * SECONDS,
             (int) TierEU.RECIPE_UMV);
@@ -426,7 +424,7 @@ public class ComponentAssemblyLineMiscRecipes {
         for (int i = 0; i <= 11; i++) {
             GTValues.RA.stdBuilder()
                 .itemInputs(getCircuit(i, 16), GTUtility.getIntegratedCircuit(16))
-                .fluidInputs(Materials.SolderingAlloy.getMolten(72L))
+                .fluidInputs(Materials.SolderingAlloy.getMolten(1 * HALF_INGOTS))
                 .itemOutputs(new ItemStack(Loaders.circuitWrap, 1, i))
                 .duration(30 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -436,7 +434,7 @@ public class ComponentAssemblyLineMiscRecipes {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UMV, 16),
                 GTUtility.getIntegratedCircuit(16))
-            .fluidInputs(Materials.SolderingAlloy.getMolten(72L))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(1 * HALF_INGOTS))
             .itemOutputs(new ItemStack(Loaders.circuitWrap, 1, 12))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -445,7 +443,7 @@ public class ComponentAssemblyLineMiscRecipes {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UXV, 16),
                 GTUtility.getIntegratedCircuit(16))
-            .fluidInputs(Materials.SolderingAlloy.getMolten(72L))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(1 * HALF_INGOTS))
             .itemOutputs(new ItemStack(Loaders.circuitWrap, 1, 13))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)

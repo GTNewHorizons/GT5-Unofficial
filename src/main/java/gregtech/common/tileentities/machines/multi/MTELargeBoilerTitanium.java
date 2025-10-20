@@ -11,12 +11,12 @@ public class MTELargeBoilerTitanium extends MTELargeBoiler {
 
     public MTELargeBoilerTitanium(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
-        pollutionPerSecond = GTMod.gregtechproxy.mPollutionLargeTitaniumBoilerPerSecond;
+        pollutionPerSecond = GTMod.proxy.mPollutionLargeTitaniumBoilerPerSecond;
     }
 
     public MTELargeBoilerTitanium(String aName) {
         super(aName);
-        pollutionPerSecond = GTMod.gregtechproxy.mPollutionLargeTitaniumBoilerPerSecond;
+        pollutionPerSecond = GTMod.proxy.mPollutionLargeTitaniumBoilerPerSecond;
     }
 
     public static final int EUT_GENERATED = 4000;

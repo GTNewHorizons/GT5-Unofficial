@@ -16,12 +16,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
@@ -32,8 +30,7 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gregtech.common.blocks.BlockOresAbstract;
-import gregtech.common.blocks.TileEntityOres;
+import gregtech.common.ores.OreManager;
 import ic2.core.Ic2Items;
 
 public class MTEAdvSeismicProspector extends MTEBasicMachine {
@@ -74,7 +71,7 @@ public class MTEAdvSeismicProspector extends MTEBasicMachine {
     @Override
     public String[] getDescription() {
         return new String[] { "Place, activate with explosives",
-            "2 Powderbarrels, " + "4 Glyceryl Trinitrate, " + "16 TNT, or " + "8 ITNT",
+            "2 Powder Barrels, " + "4 Glyceryl Trinitrate, " + "16 TNT, or " + "8 ITNT",
             "Use Data Stick, Scan Data Stick, Print Data Stick, Bind Pages into Book",
             "Ore prospecting area = " + radius * 2 + "x" + radius * 2 + " ONLY blocks below prospector",
             "Oil prospecting area 3x3 oilfields, each is 8x8 chunks" };
@@ -226,21 +223,12 @@ public class MTEAdvSeismicProspector extends MTEBasicMachine {
     private String checkForOre(int x, int y, int z) {
         Block tBlock = this.getBaseMetaTileEntity()
             .getBlock(x, y, z);
+        int tMetaID = getBaseMetaTileEntity().getWorld()
+            .getBlockMetadata(x, y, z);
 
-        if (tBlock instanceof BlockOresAbstract) {
-            TileEntity tTileEntity = getBaseMetaTileEntity().getWorld()
-                .getTileEntity(x, y, z);
-
-            if ((tTileEntity instanceof TileEntityOres) && (((TileEntityOres) tTileEntity).mMetaData < 16000)) { // Filtering
-                                                                                                                 // small
-                                                                                                                 // ores
-                Materials tMaterial = GregTechAPI.sGeneratedMaterials[((TileEntityOres) tTileEntity).mMetaData % 1000];
-
-                if ((tMaterial != null) && (tMaterial != Materials._NULL)) return tMaterial.mDefaultLocalName;
-            }
+        if (OreManager.getMaterial(tBlock, tMetaID) instanceof Materials gtMat) {
+            return gtMat.mDefaultLocalName;
         } else {
-            int tMetaID = getBaseMetaTileEntity().getWorld()
-                .getBlockMetadata(x, y, z);
             ItemStack is = new ItemStack(tBlock, 1, tMetaID);
             ItemData association = GTOreDictUnificator.getAssociation(is);
             if ((association != null) && (association.mPrefix.toString()

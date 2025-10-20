@@ -9,6 +9,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 
@@ -50,6 +51,7 @@ public final class FindRecipeQuery {
     private boolean notUnificated;
     private boolean dontCheckStackSizes;
     private boolean forCollisionCheck;
+    private boolean caching = false;
 
     FindRecipeQuery(RecipeMap<?> recipeMap) {
         this.recipeMap = recipeMap;
@@ -71,10 +73,10 @@ public final class FindRecipeQuery {
      */
     public Stream<GTRecipe> findAll() {
         if (items == null) {
-            items = new ItemStack[0];
+            items = GTValues.emptyItemStackArray;
         }
         if (fluids == null) {
-            fluids = new FluidStack[0];
+            fluids = GTValues.emptyFluidStackArray;
         }
 
         return recipeMap.getBackend()
@@ -86,7 +88,12 @@ public final class FindRecipeQuery {
                 notUnificated,
                 dontCheckStackSizes,
                 forCollisionCheck)
-            .filter(recipe -> voltage * recipeMap.getAmperage() >= recipe.mEUt && filter.test(recipe));
+            .filter(recipe -> voltage * recipeMap.getAmperage() >= recipe.mEUt && filter.test(recipe))
+            .peek(
+                recipe -> {
+                    if (caching) recipeMap.getBackend()
+                        .cache(items, fluids, recipe);
+                });
     }
 
     /**
@@ -122,9 +129,9 @@ public final class FindRecipeQuery {
     }
 
     /**
-     * @param specialSlot Content of the special slot. Normal recipemaps don't need this, but some do.
-     *                    Set {@link RecipeMapBuilder#specialSlotSensitive} to make it actually functional.
-     *                    Alternatively overriding {@link RecipeMapBackend#filterFindRecipe} will also work.
+     * @param specialSlot Content of the special slot. Normal recipemaps don't need this, but some do. Set
+     *                    {@link RecipeMapBuilder#specialSlotSensitive} to make it actually functional. Alternatively
+     *                    overriding {@link RecipeMapBackend#filterFindRecipe} will also work.
      */
     public FindRecipeQuery specialSlot(@Nullable ItemStack specialSlot) {
         this.specialSlot = specialSlot;
@@ -132,8 +139,8 @@ public final class FindRecipeQuery {
     }
 
     /**
-     * @param filter Matched recipe will be tested by this function. If it returns false, the query will attempt to
-     *               find next recipe.
+     * @param filter Matched recipe will be tested by this function. If it returns false, the query will attempt to find
+     *               next recipe.
      */
     public FindRecipeQuery filter(Predicate<GTRecipe> filter) {
         this.filter = filter;
@@ -141,8 +148,8 @@ public final class FindRecipeQuery {
     }
 
     /**
-     * @param voltage Recipes that exceed this voltage won't match. It will be automatically multiplied by amperage
-     *                of the recipemap. By default, voltage is set to max Integer, meaning no voltage check.
+     * @param voltage Recipes that exceed this voltage won't match. It will be automatically multiplied by amperage of
+     *                the recipemap. By default, voltage is set to max Integer, meaning no voltage check.
      */
     public FindRecipeQuery voltage(long voltage) {
         this.voltage = voltage;
@@ -166,11 +173,19 @@ public final class FindRecipeQuery {
     }
 
     /**
-     * @param dontCheckStackSizes If this is set to true, the query won't check item count and fluid amount
-     *                            for the matched recipe.
+     * @param dontCheckStackSizes If this is set to true, the query won't check item count and fluid amount for the
+     *                            matched recipe.
      */
     public FindRecipeQuery dontCheckStackSizes(boolean dontCheckStackSizes) {
         this.dontCheckStackSizes = dontCheckStackSizes;
+        return this;
+    }
+
+    /**
+     * @param caching If this is set to true, the query will cache matched recipes.
+     */
+    public FindRecipeQuery caching(boolean caching) {
+        this.caching = caching;
         return this;
     }
 

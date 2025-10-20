@@ -447,8 +447,14 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
 
         // Randomly generate ore stacks with the given chances, ores and size
         Map<GTUtility.ItemId, Long> outputs = new HashMap<>();
-        int totalChance = Arrays.stream(tRecipe.mChances)
-            .sum();
+
+        int totalChance = 0;
+        if (tRecipe.mChances == null) {
+            totalChance = tRecipe.mOutputs.length * 10000;
+        } else {
+            for (int mChance : tRecipe.mChances) totalChance += mChance;
+        }
+
         try {
             for (int i = 0; i < data.maxSize * parallels; i++) {
                 int bonusStackChance = 0;
@@ -518,7 +524,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             <= ItemMiningDrones.DroneTiers.UXV.ordinal(); ++tier) {
             if (Arrays.stream(SpaceMiningRecipes.getTieredInputs(tier))
                 .allMatch(
-                    input -> itemCounts.getOrDefault(GTUtility.ItemId.createWithoutNBT(input), 0l)
+                    input -> itemCounts.getOrDefault(GTUtility.ItemId.createWithoutNBT(input), 0L)
                         >= Math.max(input.stackSize, 1))) {
                 res |= 1 << tier;
             }
@@ -590,7 +596,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         // T5: 0.578
         // The whole chance is multiplied by 2 - overdrive setting
         return Math.min(
-            (int) ((Math.pow((double) plasmaTier / 6, 3) * 10000) * (2.0D - overdriveSetting.get())),
+            (int) ((GTUtility.powInt((double) plasmaTier / 6, 3) * 10000) * (2.0D - overdriveSetting.get())),
             BONUS_STACK_MAX_CHANCE);
     }
 
@@ -1069,34 +1075,35 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-            tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.module.name"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc0")) // Module
-                                                                                                       // that
+            tt.addMachineType(GTUtility.translate("gt.blockmachines.module.name"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc0")) // Module
+                                                                                                      // that
                 // adds Space
                 // Mining
                 // Operations to the
                 .addInfo(
                     EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                        + GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.t1.desc1")) // Does
+                        + GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.t1.desc1")) // Does
                 // this
                 // violate
                 // drone rights?
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.desc2"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc3"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc4"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc5"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc5.1"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.t1.desc5"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT1"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc6"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.desc2"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc3"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc4"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc5"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc5.1"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc5.2"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.t1.desc5"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.motorT1"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc6"))
                 .beginStructureBlock(1, 5, 2, false)
-                .addCasingInfoRange(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
-                .addInputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addOutputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addInputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addCasingInfoRange(GTUtility.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
+                .addInputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addOutputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addInputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
                 .addOtherStructurePart(
-                    GCCoreUtil.translate("ig.elevator.structure.OpticalConnector"),
-                    GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"),
+                    GTUtility.translate("ig.elevator.structure.OpticalConnector"),
+                    GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"),
                     1)
                 .toolTipFinisher();
             return tt;
@@ -1167,34 +1174,35 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-            tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.module.name"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc0")) // Module
-                                                                                                       // that
+            tt.addMachineType(GTUtility.translate("gt.blockmachines.module.name"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc0")) // Module
+                                                                                                      // that
                 // adds Space
                 // Mining
                 // Operations to the
                 .addInfo(
                     EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                        + GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.t2.desc1")) // This
+                        + GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.t2.desc1")) // This
                 // definitely
                 // violates
                 // drone rights.
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.desc2"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc3"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc4"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc5"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc5.1"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.t2.desc5"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT2"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc6"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.desc2"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc3"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc4"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc5"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc5.1"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc5.2"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.t2.desc5"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.motorT2"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc6"))
                 .beginStructureBlock(1, 5, 2, false)
-                .addCasingInfoRange(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
-                .addInputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addOutputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addInputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addCasingInfoRange(GTUtility.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
+                .addInputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addOutputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addInputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
                 .addOtherStructurePart(
-                    GCCoreUtil.translate("ig.elevator.structure.OpticalConnector"),
-                    GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"),
+                    GTUtility.translate("ig.elevator.structure.OpticalConnector"),
+                    GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"),
                     1)
                 .toolTipFinisher();
             return tt;
@@ -1265,34 +1273,35 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-            tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.module.name"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc0")) // Module
-                                                                                                       // that
+            tt.addMachineType(GTUtility.translate("gt.blockmachines.module.name"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc0")) // Module
+                                                                                                      // that
                 // adds Space
                 // Mining
                 // Operations to the
                 .addInfo(
                     EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                        + GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.t3.desc1")) // Great
+                        + GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.t3.desc1")) // Great
                 // treasures
                 // beyond
                 // your imagination await!
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.desc2"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc3"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc4"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc5"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc5.1"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.t3.desc5"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT3"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc6"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.desc2"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc3"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc4"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc5"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc5.1"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc5.2"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.t3.desc5"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.motorT3"))
+                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc6"))
                 .beginStructureBlock(1, 5, 2, false)
-                .addCasingInfoRange(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
-                .addInputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addOutputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addInputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addCasingInfoRange(GTUtility.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
+                .addInputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addOutputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addInputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
                 .addOtherStructurePart(
-                    GCCoreUtil.translate("ig.elevator.structure.OpticalConnector"),
-                    GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"),
+                    GTUtility.translate("ig.elevator.structure.OpticalConnector"),
+                    GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"),
                     1)
                 .toolTipFinisher();
             return tt;

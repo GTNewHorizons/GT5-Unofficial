@@ -8,6 +8,7 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBackend;
@@ -79,7 +80,7 @@ public class LanthanidesRecipeMaps {
         })
         .neiItemOutputsGetter(recipe -> {
             SourceChamberMetadata metadata = recipe.getMetadata(SOURCE_CHAMBER_METADATA);
-            if (metadata == null) return new ItemStack[0];
+            if (metadata == null) return GTValues.emptyItemStackArray;
             ItemStack particleStack = new ItemStack(LanthItemList.PARTICLE_ITEM, 1, metadata.particleID);
             List<ItemStack> ret = new ArrayList<>(Arrays.asList(recipe.mOutputs));
             ret.add(particleStack);
@@ -123,7 +124,7 @@ public class LanthanidesRecipeMaps {
         }))
         .neiItemInputsGetter(recipe -> {
             TargetChamberMetadata metadata = recipe.getMetadata(TARGET_CHAMBER_METADATA);
-            if (metadata == null) return new ItemStack[0];
+            if (metadata == null) return GTValues.emptyItemStackArray;
             ItemStack particleStack = new ItemStack(LanthItemList.PARTICLE_ITEM, 1, metadata.particleID);
             List<ItemStack> ret = new ArrayList<>();
             ret.add(particleStack);

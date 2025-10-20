@@ -2,6 +2,7 @@ package tectech.thing.metaTileEntity.single;
 
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.VN;
+import static gregtech.api.enums.Textures.BlockIcons.*;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.function.Consumer;
@@ -11,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
@@ -73,12 +75,11 @@ public class MTEBuckConverter extends MTETieredMachineBlock implements IAddUIWid
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
-        return new ITexture[] { tectech.thing.metaTileEntity.Textures.MACHINE_CASINGS_TT[mTier][colorIndex + 1],
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1],
             side == facing ? (aActive ? BUCK_ACTIVE : BUCK)
-                : (side == facing.getOpposite()
-                    ? tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_POWER_TT[mTier]
-                    : (aActive ? tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_OUT_POWER_TT[mTier]
-                        : tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_POWER_TT[mTier])) };
+                : (side == facing.getOpposite() ? Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_16A[mTier + 1]
+                    : (aActive ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_16A[mTier + 1]
+                        : Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_16A[mTier + 1])) };
     }
 
     @Override
@@ -119,16 +120,6 @@ public class MTEBuckConverter extends MTETieredMachineBlock implements IAddUIWid
 
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
-    public boolean isElectric() {
         return true;
     }
 
@@ -211,19 +202,29 @@ public class MTEBuckConverter extends MTETieredMachineBlock implements IAddUIWid
                 .setSize(90, 72)
                 .setPos(43, 4))
             .widget(
-                new TextWidget().setStringSupplier(() -> "EUT: " + numberFormat.format(EUT))
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector.translateToLocal("tt.gui.text.debug.eut") + " " + numberFormat.format(EUT))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(46, 8))
             .widget(
-                new TextWidget().setStringSupplier(() -> "TIER: " + VN[GTUtility.getTier(Math.abs(EUT))])
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector
+                            .translateToLocalFormatted("tt.gui.text.debug.tier", VN[GTUtility.getTier(Math.abs(EUT))]))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(46, 16))
             .widget(
-                new TextWidget().setStringSupplier(() -> "AMP: " + numberFormat.format(AMP))
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector.translateToLocal("tt.gui.text.debug.amp") + " " + numberFormat.format(AMP))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(46, 24))
             .widget(
-                new TextWidget().setStringSupplier(() -> "SUM: " + numberFormat.format((long) AMP * EUT))
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector
+                            .translateToLocalFormatted("tt.gui.text.debug.sum", numberFormat.format((long) AMP * EUT)))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(46, 32));
 

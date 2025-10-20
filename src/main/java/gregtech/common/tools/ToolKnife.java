@@ -17,16 +17,6 @@ import gregtech.api.util.GTToolHarvestHelper;
 public class ToolKnife extends GTTool {
 
     @Override
-    public int getToolDamagePerBlockBreak() {
-        return 100;
-    }
-
-    @Override
-    public int getToolDamagePerDropConversion() {
-        return 100;
-    }
-
-    @Override
     public int getToolDamagePerContainerCraft() {
         return 100;
     }
@@ -52,18 +42,8 @@ public class ToolKnife extends GTTool {
     }
 
     @Override
-    public float getMaxDurabilityMultiplier() {
-        return 1.0F;
-    }
-
-    @Override
     public boolean canBlock() {
         return true;
-    }
-
-    @Override
-    public boolean isCrowbar() {
-        return false;
     }
 
     @Override

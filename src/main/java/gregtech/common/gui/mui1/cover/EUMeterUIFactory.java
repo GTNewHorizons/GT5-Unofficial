@@ -1,12 +1,13 @@
 package gregtech.common.gui.mui1.cover;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverEUMeter;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
@@ -36,9 +37,6 @@ public class EUMeterUIFactory extends CoverUIFactory<CoverEUMeter> {
     @SuppressWarnings("PointlessArithmeticExpression")
     @Override
     protected void addUIWidgets(ModularWindow.Builder builder) {
-        final String INVERTED = GTUtility.trans("INVERTED", "Inverted");
-        final String NORMAL = GTUtility.trans("NORMAL", "Normal");
-
         final CoverDataFollowerNumericWidget<CoverEUMeter> numericWidget = new CoverDataFollowerNumericWidget<>();
 
         builder
@@ -59,8 +57,8 @@ public class EUMeterUIFactory extends CoverUIFactory<CoverEUMeter> {
                         CoverDataFollowerToggleButtonWidget.ofRedstone(),
                         CoverEUMeter::isInverted,
                         CoverEUMeter::setInverted,
-                        widget -> widget.addTooltip(0, NORMAL)
-                            .addTooltip(1, INVERTED)
+                        widget -> widget.addTooltip(0, translateToLocal("gt.interact.desc.normal.tooltip"))
+                            .addTooltip(1, translateToLocal("gt.interact.desc.inverted.tooltip"))
                             .setPos(spaceX * 0, spaceY * 1))
                     .addFollower(
                         numericWidget,
@@ -79,11 +77,14 @@ public class EUMeterUIFactory extends CoverUIFactory<CoverEUMeter> {
                     .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX + spaceX, 4 + startY))
             .widget(
-                new TextWidget().setStringSupplier(getCoverString(c -> c.isInverted() ? INVERTED : NORMAL))
-                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget()
+                    .setStringSupplier(
+                        getCoverString(
+                            c -> c.isInverted() ? translateToLocal("gt.interact.desc.inverted")
+                                : translateToLocal("gt.interact.desc.normal")))
                     .setPos(startX + spaceX, 4 + startY + spaceY))
             .widget(
-                new TextWidget(GTUtility.trans("222.1", "Energy threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(translateToLocal("gt.interact.desc.EnergyThreshold"))
                     .setPos(startX, startY + spaceY * 3 + 4))
 
             .widget(new FakeSyncWidget.LongSyncer(() -> {

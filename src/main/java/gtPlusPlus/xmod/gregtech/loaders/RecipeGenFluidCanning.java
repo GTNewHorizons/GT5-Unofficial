@@ -11,7 +11,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTRecipe;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class RecipeGenFluidCanning implements Runnable {
@@ -43,7 +42,7 @@ public class RecipeGenFluidCanning implements Runnable {
 
     private static void addRunnableToRecipeCache(RecipeGenFluidCanning r) {
         if (mHasRun) {
-            GTPPCore.crash();
+            throw new IllegalArgumentException();
         }
         mCache.add(r);
     }
@@ -149,39 +148,10 @@ public class RecipeGenFluidCanning implements Runnable {
     private void generateRecipes() {
         if (isValid && recipe != null) {
             if (this.disableOptional) {
-                addFluidExtractionRecipe(recipe);
+                throw new IllegalArgumentException();
             } else {
                 addFluidCannerRecipe(recipe);
             }
-        }
-    }
-
-    private void addFluidExtractionRecipe(GTRecipe aRecipe) {
-        GTPPCore.crash();
-        Logger.INFO(
-            "[FE-Debug] " + aRecipe.mFluidOutputs[0].amount
-                + "L of "
-                + aRecipe.mFluidOutputs[0].getLocalizedName()
-                + " fluid extractor from 1 "
-                + aRecipe.mInputs[0].getDisplayName()
-                + " - Success. Time: "
-                + aRecipe.mDuration
-                + ", Voltage: "
-                + aRecipe.mEUt);
-        int aCount1 = getMapSize(RecipeMaps.fluidExtractionRecipes);
-        int aCount2 = aCount1;
-        RecipeMaps.fluidExtractionRecipes.addRecipe(aRecipe);
-        aCount1 = getMapSize(RecipeMaps.fluidExtractionRecipes);
-        if (aCount1 <= aCount2) {
-            Logger.INFO(
-                "[ERROR] Failed adding Extraction recipe for " + ItemUtils.getArrayStackNames(aRecipe.mInputs)
-                    + ", "
-                    + ItemUtils.getArrayStackNames(aRecipe.mOutputs)
-                    + ", "
-                    + ItemUtils.getArrayStackNames(aRecipe.mFluidInputs)
-                    + ", "
-                    + ItemUtils.getArrayStackNames(aRecipe.mFluidOutputs));
-            dumpStack();
         }
     }
 

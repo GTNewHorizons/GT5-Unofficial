@@ -2,6 +2,7 @@ package gregtech.common.tileentities.boilers;
 
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -12,18 +13,10 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
-import com.cleanroommc.modularui.utils.Alignment;
-import com.cleanroommc.modularui.utils.fluid.FluidStackTank;
-import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
-import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widgets.ProgressWidget;
-import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
@@ -31,10 +24,13 @@ import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.Widget;
+import com.gtnewhorizons.modularui.common.fluid.FluidStackTank;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
@@ -50,13 +46,13 @@ import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.modularui2.GTGuiTheme;
-import gregtech.api.modularui2.GTGuis;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
-import gregtech.common.modularui2.widget.GTProgressWidget;
+import gregtech.client.GTSoundLoop;
+import gregtech.common.gui.modularui.singleblock.MTEBoilerGui;
 import gregtech.common.pollution.Pollution;
 
 public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, IAddUIWidgets {
@@ -72,6 +68,11 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
         this::getSteamCapacity);
     public boolean mHadNoWater = false;
     private int mExcessWater = 0;
+    public boolean playBoiling = false;
+    @SideOnly(Side.CLIENT)
+    protected GTSoundLoop mHeatingSound;
+    @SideOnly(Side.CLIENT)
+    protected GTSoundLoop mBoilingSound;
 
     public MTEBoiler(int aID, String aName, String aNameRegional, String aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, 0, 4, aDescription, aTextures);
@@ -109,11 +110,6 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
     @Override
     public boolean isFacingValid(ForgeDirection facingDirection) {
         return (facingDirection.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
     }
 
     @Override
@@ -233,12 +229,16 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
         if (GTModHandler.isSteam(this.mSteam)) {
             this.mSteam.amount += aAmount;
         } else {
-            this.mSteam = GTModHandler.getSteam(aAmount);
+            this.mSteam = Materials.Steam.getGas(aAmount);
         }
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (aBaseMetaTileEntity.isClientSide()) {
+            updateSoundLoops(playBoiling);
+        }
+
         pollute(aTick);
 
         if (isNotAllowedToWork(aBaseMetaTileEntity, aTick)) return;
@@ -254,6 +254,56 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
         ventSteamIfTankIsFull();
         updateFuelTimed(aBaseMetaTileEntity, aTick);
         calculateHeatUp(aBaseMetaTileEntity, aTick);
+
+    }
+
+    @Override
+    public void onValueUpdate(byte aValue) {
+        byte oSoundStatus = playBoiling ? (byte) 1 : 0;
+        playBoiling = (aValue == 1);
+    }
+
+    @Override
+    public byte getUpdateData() {
+        return (byte) (playBoiling ? 1 : 0);
+    }
+
+    @SideOnly(Side.CLIENT)
+    protected void updateSoundLoops(boolean playBoiling) {
+        if (playBoiling && !getBaseMetaTileEntity().isMuffled()) {
+            if (mBoilingSound == null) {
+                mBoilingSound = new GTSoundLoop(
+                    SoundResource.GTCEU_LOOP_BOILER.resourceLocation,
+                    getBaseMetaTileEntity(),
+                    false,
+                    false);
+                Minecraft.getMinecraft()
+                    .getSoundHandler()
+                    .playSound(mBoilingSound);
+            }
+        } else {
+            if (mBoilingSound != null) {
+                mBoilingSound.setFadeMe(true);
+                mBoilingSound = null;
+            }
+        }
+        if (getBaseMetaTileEntity().isActive() && !getBaseMetaTileEntity().isMuffled()) {
+            if (mHeatingSound == null) {
+                mHeatingSound = new GTSoundLoop(
+                    SoundResource.GTCEU_LOOP_FURNACE.resourceLocation,
+                    getBaseMetaTileEntity(),
+                    false,
+                    true);
+                Minecraft.getMinecraft()
+                    .getSoundHandler()
+                    .playSound(mHeatingSound);
+            }
+        } else {
+            if (mHeatingSound != null) {
+                mHeatingSound.setFadeMe(true);
+                mHeatingSound = null;
+            }
+        }
     }
 
     private boolean isNotAllowedToWork(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
@@ -267,8 +317,9 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
     }
 
     private void calculateHeatUp(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if ((this.mTemperature < getMaxTemperature()) && (this.mProcessingEnergy > 0)
-            && (aTick % getHeatUpRate() == 0L)) {
+        boolean wasHeating = (this.mTemperature < getMaxTemperature()) && (this.mProcessingEnergy > 0)
+            && (aTick % getHeatUpRate() == 0L);
+        if (wasHeating) {
             this.mProcessingEnergy -= getEnergyConsumption();
             this.mTemperature += getHeatUpAmount();
         }
@@ -302,9 +353,11 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
                     return true;
                 }
                 produceSteam(getProductionPerSecond() / 2);
+                playBoiling = true;
             }
         } else {
             this.mHadNoWater = false;
+            playBoiling = false;
         }
         return false;
     }
@@ -352,7 +405,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
     }
 
     protected boolean isAutomatable() {
-        return GTMod.gregtechproxy.mAllowSmallBoilerAutomation;
+        return GTMod.proxy.mAllowSmallBoilerAutomation;
     }
 
     @Override
@@ -420,89 +473,36 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
     @Override
     protected abstract GTGuiTheme getGuiTheme();
 
-    @Override
-    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        syncManager.registerSlotGroup("item_inv", 0);
-        IWidget waterSlots = Flow.column()
-            .coverChildren()
-            .child(
-                new ItemSlot().slot(
-                    new ModularSlot(inventoryHandler, 0).slotGroup("item_inv")
-                        .filter(this::isValidFluidInputSlotItem))
-                    .widgetTheme(GTWidgetThemes.OVERLAY_ITEM_SLOT_IN))
-            .child(
-                new com.cleanroommc.modularui.widget.Widget<>().widgetTheme(GTWidgetThemes.PICTURE_CANISTER)
-                    .size(18))
-            .child(
-                new ItemSlot().slot(
-                    new ModularSlot(inventoryHandler, 1).slotGroup("item_inv")
-                        .accessibility(false, true))
-                    .widgetTheme(GTWidgetThemes.OVERLAY_ITEM_SLOT_OUT));
-        IWidget indicators = Flow.row()
-            .coverChildren()
-            .crossAxisAlignment(Alignment.CrossAxis.CENTER)
-            .childPadding(3)
-            .child(
-                new FluidSlot().syncHandler(
-                    new FluidSlotSyncHandler(steamTank).canDrainSlot(false)
-                        .canFillSlot(false)
-                        .controlsAmount(false))
-                    .alwaysShowFull(false)
-                    .size(10, 54))
-            .child(
-                new FluidSlot().syncHandler(
-                    new FluidSlotSyncHandler(fluidTank).canDrainSlot(false)
-                        .canFillSlot(false)
-                        .controlsAmount(false))
-                    .alwaysShowFull(false)
-                    .size(10, 54))
-            .child(
-                new GTProgressWidget().value(new DoubleSyncValue(() -> (float) mTemperature / maxProgresstime()))
-                    .direction(ProgressWidget.Direction.UP)
-                    .widgetTheme(GTWidgetThemes.PROGRESSBAR_BOILER_HEAT)
-                    .size(10, 54));
-        IWidget fuelSlots = Flow.column()
-            .coverChildren()
-            .childIf(doesAddAshSlot(), createAshSlot())
-            .child(
-                new GTProgressWidget()
-                    .value(
-                        new DoubleSyncValue(
-                            () -> mProcessingEnergy > 0 ? Math.max((float) mProcessingEnergy / 1000, 1f / 5) : 0))
-                    .direction(ProgressWidget.Direction.UP)
-                    .widgetTheme(GTWidgetThemes.PROGRESSBAR_FUEL)
-                    .size(14)
-                    .margin(2))
-            .childIf(doesAddFuelSlot(), createFuelSlot());
-        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings)
-            .build()
-            .child(
-                Flow.row()
-                    .alignX(0.5f)
-                    .top(25)
-                    .coverChildren()
-                    .childPadding(9)
-                    .child(waterSlots)
-                    .child(indicators)
-                    .child(fuelSlots));
+    // this is the mui1 fluid tank, but mui2 has compat with it
+    public FluidStackTank getFluidStackTank() {
+        return this.fluidTank;
     }
 
-    protected boolean doesAddFuelSlot() {
+    public FluidStackTank getSteamTank() {
+        return this.steamTank;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEBoilerGui(this).build(data, syncManager, uiSettings);
+    }
+
+    public boolean doesAddFuelSlot() {
         return true;
     }
 
-    protected com.cleanroommc.modularui.widget.Widget<?> createFuelSlot() {
+    public com.cleanroommc.modularui.widget.Widget<?> createFuelSlot() {
         return new ItemSlot().slot(
             new ModularSlot(inventoryHandler, 2).slotGroup("item_inv")
                 .filter(this::isItemValidFuel))
             .widgetTheme(GTWidgetThemes.OVERLAY_ITEM_SLOT_COAL);
     }
 
-    protected boolean doesAddAshSlot() {
+    public boolean doesAddAshSlot() {
         return true;
     }
 
-    protected com.cleanroommc.modularui.widget.Widget<?> createAshSlot() {
+    public com.cleanroommc.modularui.widget.Widget<?> createAshSlot() {
         return new ItemSlot().slot(
             new ModularSlot(inventoryHandler, 3).slotGroup("item_inv")
                 .accessibility(false, true))
@@ -534,6 +534,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
                 new SlotWidget(inventoryHandler, 1).setAccess(true, false)
                     .setPos(43, 61)
                     .setBackground(getGUITextureSet().getItemSlot(), getOverlaySlotOut()))
+            .widget(createMuffleButton())
             .widget(createFuelSlotMui1())
             .widget(createAshSlotMui1())
             .widget(
@@ -568,8 +569,8 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
                     .setSize(18, 18));
     }
 
-    private boolean isValidFluidInputSlotItem(@NotNull ItemStack stack) {
-        return GTUtility.fillFluidContainer(GTModHandler.getSteam(getSteamCapacity()), stack, false, true) != null
+    public boolean isValidFluidInputSlotItem(@NotNull ItemStack stack) {
+        return GTUtility.fillFluidContainer(Materials.Steam.getGas(getSteamCapacity()), stack, false, true) != null
             || isFluidInputAllowed(GTUtility.getFluidForFilledItem(stack, true));
     }
 

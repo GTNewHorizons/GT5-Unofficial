@@ -12,6 +12,7 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class FermenterRecipes implements Runnable {
 
     @Override
@@ -32,7 +33,7 @@ public class FermenterRecipes implements Runnable {
             .addTo(fermentingRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(getFluidStack("milk", 50))
+            .fluidInputs(Materials.Milk.getFluid(50))
             .fluidOutputs(getFluidStack("potion.mundane", 25))
             .duration(51 * SECONDS + 4 * TICKS)
             .eut(2)

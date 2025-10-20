@@ -1,9 +1,12 @@
 package gregtech.common.gui.mui1.cover;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import java.text.FieldPosition;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -12,7 +15,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverItemMeter;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
@@ -36,7 +38,7 @@ public class ItemMeterUIFactory extends CoverUIFactory<CoverItemMeter> {
         @Override
         public StringBuffer format(double number, StringBuffer toAppendTo, FieldPosition pos) {
             if (number < 0) {
-                return toAppendTo.append(GTUtility.trans("ALL", "All"));
+                return toAppendTo.append(StatCollector.translateToLocal("gt.interact.desc.Item_Meter.All"));
             } else {
                 return super.format(number, toAppendTo, pos);
             }
@@ -61,9 +63,6 @@ public class ItemMeterUIFactory extends CoverUIFactory<CoverItemMeter> {
 
     @Override
     protected void addUIWidgets(ModularWindow.Builder builder) {
-        final String INVERTED = GTUtility.trans("INVERTED", "Inverted");
-        final String NORMAL = GTUtility.trans("NORMAL", "Normal");
-
         setMaxSlot();
         setMaxThreshold();
 
@@ -74,13 +73,13 @@ public class ItemMeterUIFactory extends CoverUIFactory<CoverItemMeter> {
                         CoverDataFollowerToggleButtonWidget.ofRedstone(),
                         CoverItemMeter::isInverted,
                         CoverItemMeter::setInverted,
-                        widget -> widget.addTooltip(0, NORMAL)
-                            .addTooltip(1, INVERTED)
+                        widget -> widget.addTooltip(0, translateToLocal("gt.interact.desc.normal.tooltip"))
+                            .addTooltip(1, translateToLocal("gt.interact.desc.inverted.tooltip"))
                             .setPos(0, 0))
                     .addFollower(
                         new CoverDataFollowerNumericWidget<>(),
                         coverData -> (double) coverData.getThreshold(),
-                        (coverData, state) -> coverData.setThresdhold(state.intValue()),
+                        (coverData, state) -> coverData.setThreshold(state.intValue()),
                         widget -> widget.setBounds(0, maxThreshold)
                             .setScrollValues(1, 64, 1000)
                             .setFocusOnGuiOpen(true)
@@ -101,14 +100,17 @@ public class ItemMeterUIFactory extends CoverUIFactory<CoverItemMeter> {
                 new ItemWatcherSlotWidget().setGetter(this::getTargetItem)
                     .setPos(startX + spaceX * 3 + 8, startY + spaceY * 2))
             .widget(
-                new TextWidget().setStringSupplier(getCoverString(c -> c.isInverted() ? INVERTED : NORMAL))
-                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget()
+                    .setStringSupplier(
+                        getCoverString(
+                            c -> c.isInverted() ? translateToLocal("gt.interact.desc.inverted")
+                                : translateToLocal("gt.interact.desc.normal")))
                     .setPos(startX + spaceX, 4 + startY))
             .widget(
-                new TextWidget(GTUtility.trans("254", "Detect slot #")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(StatCollector.translateToLocal("gt.interact.desc.Item_Meter.DetectSlot"))
                     .setPos(startX + spaceX * 4 + 9, 4 + startY + spaceY * 2))
             .widget(
-                new TextWidget(GTUtility.trans("221", "Item threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(StatCollector.translateToLocal("gt.interact.desc.Item_Meter.ItemThreshold"))
                     .setPos(startX + spaceX * 4 + 9, 4 + startY + spaceY));
     }
 

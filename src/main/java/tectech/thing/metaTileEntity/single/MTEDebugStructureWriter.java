@@ -76,7 +76,7 @@ public class MTEDebugStructureWriter extends MTETieredMachineBlock implements IA
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
-        return new ITexture[] { tectech.thing.metaTileEntity.Textures.MACHINE_CASINGS_TT[mTier][colorIndex + 1],
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1],
             side != facing ? TextureFactory.of(Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE) : MARK };
     }
 
@@ -184,11 +184,6 @@ public class MTEDebugStructureWriter extends MTETieredMachineBlock implements IA
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public boolean isGivingInformation() {
         return true;
     }
@@ -213,11 +208,16 @@ public class MTEDebugStructureWriter extends MTETieredMachineBlock implements IA
                 .setSize(90, 72)
                 .setPos(43, 4))
             .widget(
-                new TextWidget().setStringSupplier(() -> size ? "Structure size" : "My position")
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> size ? StatCollector.translateToLocal("tt.gui.text.debug_structure_writer.structure_size")
+                            : StatCollector.translateToLocal("tt.gui.text.debug_structure_writer.my_position"))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(46, 8))
             .widget(
-                new TextWidget().setStringSupplier(() -> size ? "(Changing scan size)" : "(Moving origin)")
+                new TextWidget().setStringSupplier(
+                    () -> size ? StatCollector.translateToLocal("tt.gui.text.debug_structure_writer.changing_scan_size")
+                        : StatCollector.translateToLocal("tt.gui.text.debug_structure_writer.moving_origin"))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(46, 16))
             .widget(

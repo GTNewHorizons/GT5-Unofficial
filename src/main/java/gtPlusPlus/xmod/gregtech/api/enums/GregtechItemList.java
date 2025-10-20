@@ -1,6 +1,6 @@
 package gtPlusPlus.xmod.gregtech.api.enums;
 
-import static gregtech.api.enums.GTValues.W;
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -82,8 +82,7 @@ public enum GregtechItemList implements IGregtechItemContainer {
     // Pellet Mold
     Pellet_Mold,
 
-    // Upgrade chip for Distillus
-    Distillus_Upgrade_Chip,
+    // Upgrade chip for Maceration Stack
     Maceration_Upgrade_Chip,
 
     // Milling Balls
@@ -257,8 +256,6 @@ public enum GregtechItemList implements IGregtechItemContainer {
     Industrial_Extruder,
     Casing_Extruder,
 
-    // Multi-Machine
-    Industrial_MultiMachine,
     Casing_Multi_Use,
 
     // Bedrock Mining Platforms
@@ -334,7 +331,7 @@ public enum GregtechItemList implements IGregtechItemContainer {
     Casing_RocketEngine,
     Controller_RocketEngine,
 
-    // Large Semi-Fluid
+    // Large Semifluid
     Controller_LargeSemifluidGenerator,
 
     // IsaMill
@@ -378,6 +375,10 @@ public enum GregtechItemList implements IGregtechItemContainer {
     Controller_SteamMixerMulti,
     // Big Steam Mixer
     Controller_SteamCompressorMulti,
+    // Big Steam Alloy Smelter
+    Controller_SteamAlloySmelterMulti,
+    // Big Steam Furnace
+    Controller_SteamFurnaceMulti,
 
     // Industrial Rock Breaker
     Controller_IndustrialRockBreaker,
@@ -636,7 +637,7 @@ public enum GregtechItemList implements IGregtechItemContainer {
     Transformer_HA_UV_ZPM,
     Transformer_HA_MAX_UV,
 
-    // Semi-Fluid generators
+    // Semifluid generators
     Generator_SemiFluid_LV,
     Generator_SemiFluid_MV,
     Generator_SemiFluid_HV,
@@ -719,6 +720,7 @@ public enum GregtechItemList implements IGregtechItemContainer {
     RareEarthGroupCatalyst,
     SimpleNaquadahCatalyst,
     HellishForceCatalyst,
+    CrystalColorizationCatalyst,
     AdvancedNaquadahCatalyst,
     RawIntelligenceCatalyst,
     UltimatePlasticCatalyst,
@@ -910,6 +912,19 @@ public enum GregtechItemList implements IGregtechItemContainer {
     SmallAmmoniumNitrateDust,
     TinyAmmoniumNitrateDust,
 
+    SimpleHandPump,
+    AdvancedHandPump,
+    SuperHandPump,
+    UltimateHandPump,
+    ExpandableHandPump,
+    DehydratorCoilWireEV,
+    DehydratorCoilWireIV,
+    DehydratorCoilWireLuV,
+    DehydratorCoilWireZPM,
+    PersonalCloakingDevice,
+    PersonalHealingDevice,
+    Hatch_Input_Debug_Steam,
+
     ;
 
     private ItemStack mStack;
@@ -995,7 +1010,7 @@ public enum GregtechItemList implements IGregtechItemContainer {
         if (GTUtility.isStackInvalid(this.mStack)) {
             return GTUtility.copyAmount(aAmount, aReplacements);
         }
-        return GTUtility.copyAmountAndMetaData(aAmount, W, GTOreDictUnificator.get(this.mStack));
+        return GTUtility.copyAmountAndMetaData(aAmount, WILDCARD, GTOreDictUnificator.get(this.mStack));
     }
 
     @Override

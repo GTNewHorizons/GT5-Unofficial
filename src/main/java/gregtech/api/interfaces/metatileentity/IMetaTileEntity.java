@@ -1,13 +1,10 @@
 package gregtech.api.interfaces.metatileentity;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,7 +13,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
@@ -36,7 +33,8 @@ import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
-import gregtech.api.util.GTUtil;
+import gregtech.api.render.ISBRInventoryContext;
+import gregtech.api.render.ISBRWorldContext;
 
 /**
  * Warning, this Interface has just been made to be able to add multiple kinds of MetaTileEntities (Cables, Pipes,
@@ -50,13 +48,21 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     /**
      * This determines the BaseMetaTileEntity belonging to this MetaTileEntity by using the Meta ID of the Block itself.
      * <p/>
-     * 0 = BaseMetaTileEntity, Wrench lvl 0 to dismantle 1 = BaseMetaTileEntity, Wrench lvl 1 to dismantle 2 =
-     * BaseMetaTileEntity, Wrench lvl 2 to dismantle 3 = BaseMetaTileEntity, Wrench lvl 3 to dismantle 4 =
-     * BaseMetaPipeEntity, Wrench lvl 0 to dismantle 5 = BaseMetaPipeEntity, Wrench lvl 1 to dismantle 6 =
-     * BaseMetaPipeEntity, Wrench lvl 2 to dismantle 7 = BaseMetaPipeEntity, Wrench lvl 3 to dismantle 8 =
-     * BaseMetaPipeEntity, Cutter lvl 0 to dismantle 9 = BaseMetaPipeEntity, Cutter lvl 1 to dismantle 10 =
-     * BaseMetaPipeEntity, Cutter lvl 2 to dismantle 11 = BaseMetaPipeEntity, Cutter lvl 3 to dismantle 12 = GT++ 13 =
-     * GT++ 14 = GT++ 15 = GT++
+     * // spotless:off
+     * 0 = BaseMetaTileEntity, Wrench lvl 0 to dismantle
+     * 1 = BaseMetaTileEntity, Wrench lvl 1 to dismantle
+     * 2 = BaseMetaTileEntity, Wrench lvl 2 to dismantle
+     * 3 = BaseMetaTileEntity, Wrench lvl 3 to dismantle
+     * 4 = BaseMetaPipeEntity, Wrench lvl 0 to dismantle
+     * 5 = BaseMetaPipeEntity, Wrench lvl 1 to dismantle
+     * 6 = BaseMetaPipeEntity, Wrench lvl 2 to dismantle
+     * 7 = BaseMetaPipeEntity, Wrench lvl 3 to dismantle
+     * 8 = BaseMetaPipeEntity, Cutter lvl 0 to dismantle
+     * 9 = BaseMetaPipeEntity, Cutter lvl 1 to dismantle
+     * 10 = BaseMetaPipeEntity, Cutter lvl 2 to dismantle
+     * 11 = BaseMetaPipeEntity, Cutter lvl 3 to dismantle
+     * 12 = GT++ 13 = GT++ 14 = GT++ 15 = GT++
+     * // spotless:on
      */
     byte getTileEntityBaseType();
 
@@ -106,17 +112,6 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * Called in the registered MetaTileEntity when the Server starts, to reset static variables
      */
     void onServerStart();
-
-    /**
-     * Called in the registered MetaTileEntity when the Server ticks a World the first time, to load things from the
-     * World Save
-     */
-    void onWorldLoad(File aSaveDirectory);
-
-    /**
-     * Called in the registered MetaTileEntity when the Server stops, to save the Game.
-     */
-    void onWorldSave(File aSaveDirectory);
 
     /**
      * Called to set Configuration values for this MetaTileEntity. Use aConfig.get(ConfigCategories.machineconfig,
@@ -367,13 +362,13 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * @return true if you override the Rendering.
      */
     @SideOnly(Side.CLIENT)
-    boolean renderInInventory(Block aBlock, int aMeta, RenderBlocks aRenderer);
+    boolean renderInInventory(ISBRInventoryContext ctx);
 
     /**
      * @return true if you override the Rendering.
      */
     @SideOnly(Side.CLIENT)
-    boolean renderInWorld(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, RenderBlocks aRenderer);
+    boolean renderInWorld(ISBRWorldContext ctx);
 
     /**
      * Gets the Output for the comparator on the given Side
@@ -405,7 +400,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
         if (getBaseMetaTileEntity() != null) {
             return getBaseMetaTileEntity().getGUIColorization();
         } else {
-            return GTUtil.getRGBInt(Dyes.MACHINE_METAL.getRGBA());
+            return Dyes.MACHINE_METAL.toInt();
         }
     }
 
@@ -475,7 +470,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     }
 
     default String getLocalName() {
-        return "Unknown";
+        return StatCollector.translateToLocal("GT5U.gui.title.unknown");
     }
 
     default boolean doesBindPlayerInventory() {
@@ -502,8 +497,8 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     /**
      * Gets items to be displayed for HoloInventory mod.
      *
-     * @return null if default implementation should be used, i.e. {@link IInventory#getStackInSlot}.
-     *         Otherwise, a list of items to be displayed. Null element may be contained.
+     * @return null if default implementation should be used, i.e. {@link IInventory#getStackInSlot}. Otherwise, a list
+     *         of items to be displayed. Null element may be contained.
      */
     @Nullable
     default List<ItemStack> getItemsForHoloGlasses() {

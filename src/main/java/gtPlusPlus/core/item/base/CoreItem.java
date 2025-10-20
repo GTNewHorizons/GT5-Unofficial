@@ -16,9 +16,9 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.GTValues;
 import gregtech.api.util.GTLanguageManager;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class CoreItem extends Item {
 
@@ -112,7 +112,7 @@ public class CoreItem extends Item {
 
     public CoreItem(final String unlocalizedName, final CreativeTabs creativeTab, final int stackSize,
         final int maxDmg) {
-        this(unlocalizedName, creativeTab, stackSize, maxDmg, new String[] {}); // Calls 4
+        this(unlocalizedName, creativeTab, stackSize, maxDmg, GTValues.emptyStringArray); // Calls 4
     }
 
     // 4 //Not Rare + basic tooltip
@@ -269,7 +269,7 @@ public class CoreItem extends Item {
     }
 
     public ItemStack getStack() {
-        return ItemUtils.getSimpleStack(this);
+        return new ItemStack(this);
     }
 
     public void setItemDescription(String[] description) {

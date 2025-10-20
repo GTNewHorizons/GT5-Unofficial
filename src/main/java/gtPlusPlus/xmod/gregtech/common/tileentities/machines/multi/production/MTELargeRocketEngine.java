@@ -30,6 +30,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -47,7 +48,7 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.METHatchAirIntake;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchAirIntake;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -226,7 +227,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
 
     public static void setAir() {
         if (sAirFluidStack == null) {
-            sAirFluidStack = FluidUtils.getFluidStack("air", 1);
+            sAirFluidStack = Materials.Air.getGas(1);
         }
         if (sAirFluid == null && sAirFluidStack != null) {
             sAirFluid = sAirFluidStack.getFluid();
@@ -239,7 +240,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
             return 0;
         } else {
             int totalAir = 0;
-            for (METHatchAirIntake u : this.mAirIntakes) {
+            for (MTEHatchAirIntake u : this.mAirIntakes) {
                 if (u != null && u.mFluid != null) {
                     FluidStack f = u.mFluid;
                     if (f.isFluidEqual(sAirFluidStack)) {
@@ -267,7 +268,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
             return SimpleCheckRecipeResult.ofFailure("no_air");
         } else {
             int aTotalAir = 0;
-            for (METHatchAirIntake aAirHatch : this.mAirIntakes) {
+            for (MTEHatchAirIntake aAirHatch : this.mAirIntakes) {
                 if (aAirHatch.mFluid != null) {
                     aTotalAir += aAirHatch.getFluidAmount();
                 }
@@ -275,7 +276,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
             if (aTotalAir >= aAirToConsume) {
                 int aSplitAmount = (aAirToConsume / this.mAirIntakes.size());
                 if (aSplitAmount > 0) {
-                    for (METHatchAirIntake aAirHatch : mAirIntakes) {
+                    for (MTEHatchAirIntake aAirHatch : mAirIntakes) {
                         boolean hasIntakeAir = aAirHatch.drain(aSplitAmount, true) != null;
                         if (!hasIntakeAir) {
                             this.freeFuelTicks = 0;
@@ -448,6 +449,10 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
         return injected > 0;
     }
 
+    protected boolean requiresMuffler() {
+        return true;
+    }
+
     public Block getCasingBlock() {
         return ModBlocks.blockCasings4Misc;
     }
@@ -518,18 +523,8 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
     }
 
     @Override
-    public boolean isGivingInformation() {
-        return true;
-    }
-
-    @Override
     public String getMachineType() {
         return "Rocket Engine";
-    }
-
-    @Override
-    public int getMaxParallelRecipes() {
-        return 1;
     }
 
     @Override

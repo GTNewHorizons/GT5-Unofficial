@@ -453,12 +453,12 @@ import static gregtech.common.items.IDMetaItem01.Tool_MatchBox_Used;
 import static gregtech.common.items.IDMetaItem01.Tool_Matches;
 import static gregtech.common.items.IDMetaItem01.Tool_Scanner;
 import static gregtech.common.items.IDMetaItem01.Upgrade_Lock;
-import static gregtech.common.items.IDMetaItem01.Upgrade_Muffler;
 import static gregtech.common.items.IDMetaItem01.ZPM2;
 import static gregtech.common.items.IDMetaItem01.ZPM3;
 import static gregtech.common.items.IDMetaItem01.ZPM4;
 import static gregtech.common.items.IDMetaItem01.ZPM5;
 import static gregtech.common.items.IDMetaItem01.ZPM6;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.HashMap;
 import java.util.List;
@@ -474,6 +474,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.World;
 
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTechAPI;
@@ -498,7 +499,6 @@ import gregtech.api.objects.MaterialStack;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTFoodStat;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
@@ -545,15 +545,16 @@ import gregtech.common.items.behaviors.BehaviourWrittenBook;
 import gregtech.common.render.items.CosmicNeutroniumMetaItemRenderer;
 import gregtech.common.render.items.InfinityMetaItemRenderer;
 import gregtech.common.render.items.TranscendentalMetaItemRenderer;
+import gregtech.common.render.items.WireFrameTesseractRenderer;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator.MagnetTiers;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
-@Optional.Interface(iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning", modid = Mods.Names.RAILCRAFT)
+@Optional.Interface(
+    iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning",
+    modid = Mods.ModIDs.RAILCRAFT)
 public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFirestoneBurning {
 
     public static MetaGeneratedItem01 INSTANCE;
-    private final String mToolTipPurify = GTLanguageManager
-        .addStringLocalization("metaitem.01.tooltip.purify", "Throw into Cauldron to get clean Dust");
     private static final String aTextEmptyRow = "   ";
     private static final String aTextShape = " P ";
     private static final String PartCoverText = " L/t (";
@@ -1705,28 +1706,32 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)));
 
-        ItemList.Tesseract.set(
-            addItem(
-                Tesseract.ID,
-                "Raw Tesseract",
-                "",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)));
+        ItemList.Tesseract
+            .set(
+                addItem(
+                    Tesseract.ID,
+                    "Raw Tesseract",
+                    "",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
+                    new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)))
+            .setRender(new WireFrameTesseractRenderer(0, 0, 0));
         ItemList.GigaChad.set(
             addItem(
                 GigaChad.ID,
                 "Giga Chad Token",
                 "You are worthy",
                 new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 1000L)));
-        ItemList.EnergisedTesseract.set(
-            addItem(
-                EnergisedTesseract.ID,
-                "Energised Tesseract",
-                "Higher dimensional engineering",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 10L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)));
+        ItemList.EnergisedTesseract
+            .set(
+                addItem(
+                    EnergisedTesseract.ID,
+                    "Energised Tesseract",
+                    "Higher dimensional engineering",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 10L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
+                    new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)))
+            .setRender(new WireFrameTesseractRenderer(23, 129, 166));
 
         ItemList.Electric_Piston_LV.set(
             addItem(
@@ -2908,13 +2913,6 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 6L),
                 OreDictNames.craftingGrinder));
 
-        ItemList.Upgrade_Muffler.set(
-            addItem(
-                Upgrade_Muffler.ID,
-                "Muffler Upgrade",
-                "Makes Machines silent",
-                new TCAspects.TC_AspectStack(TCAspects.SENSUS, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2L)));
         ItemList.Upgrade_Lock.set(
             addItem(
                 Upgrade_Lock.ID,
@@ -3540,6 +3538,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                         aItemEntity.setEntityItemStack(
                             GTOreDictUnificator
                                 .get(OrePrefixes.dust, aMaterial, aItemEntity.getEntityItem().stackSize));
+                        aItemEntity.delayBeforeCanPickup = 0;
+                        cancelMovementAndTeleport(aItemEntity, tX, tY, tZ);
                         aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
                         return true;
                     }
@@ -3550,6 +3550,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                         aItemEntity.setEntityItemStack(
                             GTOreDictUnificator
                                 .get(OrePrefixes.crushedPurified, aMaterial, aItemEntity.getEntityItem().stackSize));
+                        aItemEntity.delayBeforeCanPickup = 0;
+                        cancelMovementAndTeleport(aItemEntity, tX, tY, tZ);
                         aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
                         return true;
                     }
@@ -3558,6 +3560,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                     int tMetaData = aItemEntity.worldObj.getBlockMetadata(tX, tY, tZ);
                     if ((tBlock == Blocks.cauldron) && (tMetaData > 0)) {
                         aItemEntity.setEntityItemStack(ItemList.Food_Dough.get(aItemEntity.getEntityItem().stackSize));
+                        aItemEntity.delayBeforeCanPickup = 0;
+                        cancelMovementAndTeleport(aItemEntity, tX, tY, tZ);
                         aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
                         return true;
                     }
@@ -3565,6 +3569,76 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean onItemUse(final ItemStack oldItemStack, final EntityPlayer player, final World world, final int x,
+        final int y, final int z, final int ordinalSide, final float hitX, final float hitY, final float hitZ) {
+        final Block blockClicked = world.getBlock(x, y, z);
+        final int metadata = world.getBlockMetadata(x, y, z);
+
+        if (blockClicked == Blocks.cauldron && metadata > 0) {
+            final int damage = oldItemStack.getItemDamage();
+
+            if ((damage < 32000) && (damage >= 0)) {
+                final Materials oldMaterial = GregTechAPI.sGeneratedMaterials[(damage % 1000)];
+                final OrePrefixes oldPrefix = this.mGeneratedPrefixList[(damage / 1000)];
+                final ItemStack newItemStack = getCauldronWashingResult(oldPrefix, oldMaterial, oldItemStack.stackSize);
+
+                if (newItemStack != null) {
+                    world.setBlockMetadataWithNotify(x, y, z, metadata - 1, 3);
+                    player.inventory.setInventorySlotContents(player.inventory.currentItem, newItemStack);
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns a function to get a new ItemStack after washing.
+     *
+     * @param oldPrefix   The old prefix of the stack being converted
+     * @param oldMaterial The old material to be converted
+     * @param stackSize   The stack size to be returned
+     * @return the new ItemStack after washing, or null if the material/prefix was invalid
+     */
+    static ItemStack getCauldronWashingResult(final OrePrefixes oldPrefix, final Materials oldMaterial,
+        final int stackSize) {
+        if ((oldMaterial != null) && (oldMaterial != Materials.Empty) && (oldMaterial != Materials._NULL)) {
+            switch (oldPrefix) {
+                case dustImpure:
+                case dustPure:
+                    return GTOreDictUnificator
+                        .get(OrePrefixes.dust, cauldronRemap.getOrDefault(oldMaterial, oldMaterial), stackSize);
+                case crushed:
+                    return GTOreDictUnificator.get(OrePrefixes.crushedPurified, oldMaterial, stackSize);
+                case dust:
+                    if (oldMaterial == Materials.Wheat) {
+                        return ItemList.Food_Dough.get(stackSize);
+                    }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Cancels the movement of an EntityItem and teleports it above the cauldron.
+     *
+     * @param entityItem The item entity to move
+     * @param x          The X coordinate of the cauldron
+     * @param y          The Y coordinate of the cauldron
+     * @param z          The Z coordinate of the cauldron
+     */
+    static void cancelMovementAndTeleport(EntityItem entityItem, int x, int y, int z) {
+        entityItem.motionX = 0;
+        entityItem.motionY = 0;
+        entityItem.motionZ = 0;
+        entityItem.posX = x + 0.5;
+        entityItem.posY = y + 1.5;
+        entityItem.posZ = z + 0.5;
     }
 
     @Override
@@ -3576,7 +3650,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             if ((aMaterial != null) && (aMaterial != Materials.Empty) && (aMaterial != Materials._NULL)) {
                 OrePrefixes aPrefix = this.mGeneratedPrefixList[(aDamage / 1000)];
                 if ((aPrefix == OrePrefixes.dustImpure) || (aPrefix == OrePrefixes.dustPure)) {
-                    aList.add(this.mToolTipPurify);
+                    aList.add(translateToLocal("GT5U.tooltip.purify.1"));
                 }
             }
         }
@@ -3585,7 +3659,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
     public boolean isPlasmaCellUsed(OrePrefixes aPrefix, Materials aMaterial) {
         // Materials has a plasma fluid
         if (aPrefix == OrePrefixes.cellPlasma && aMaterial.getPlasma(1L) != null) {
-            if (aMaterial.mHasPlasma) return true;
+            if (aMaterial.hasPlasma()) return true;
             // Loop through fusion recipes
             for (GTRecipe recipe : RecipeMaps.fusionRecipes.getAllRecipes()) {
                 // Make sure fluid output can't be null (not sure if possible)
@@ -4057,8 +4131,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             int tier = i + 1;
             CoverRegistry.registerCover(
                 ItemList.WIRELESS_ENERGY_COVERS[i].get(1),
-                TextureFactory
-                    .of(MACHINE_CASINGS[i + 1][0], Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[0]),
+                TextureFactory.of(MACHINE_CASINGS[i + 1][0], Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS[0]),
                 context -> new CoverEnergyWireless(context, (int) GTValues.V[tier]),
                 CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         }
@@ -4774,7 +4847,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
     }
 
     @Override
-    @Optional.Method(modid = Mods.Names.RAILCRAFT)
+    @Optional.Method(modid = Mods.ModIDs.RAILCRAFT)
     public boolean shouldBurn(ItemStack itemStack) {
         ItemData data = GTOreDictUnificator.getAssociation(itemStack);
         if (data == null || data.mMaterial == null

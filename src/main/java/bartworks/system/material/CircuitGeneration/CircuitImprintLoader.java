@@ -22,9 +22,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
@@ -48,7 +45,8 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
-import gregtech.mixin.hooks.BWCoreStaticReplacementMethodes;
+import gtPlusPlus.core.material.MaterialMisc;
+import gtPlusPlus.core.material.MaterialsAlloy;
 
 public class CircuitImprintLoader {
 
@@ -96,17 +94,9 @@ public class CircuitImprintLoader {
             CircuitImprintLoader.recipeTagMap
                 .put(CircuitImprintLoader.getTagFromStack(outputs[0]), circuitRecipe.copy());
 
-            Fluid solderIndalloy = FluidRegistry.getFluid("molten.indalloy140") != null
-                ? FluidRegistry.getFluid("molten.indalloy140")
-                : FluidRegistry.getFluid("molten.solderingalloy");
-
-            Fluid solderUEV = FluidRegistry.getFluid("molten.mutatedlivingsolder") != null
-                ? FluidRegistry.getFluid("molten.mutatedlivingsolder")
-                : FluidRegistry.getFluid("molten.solderingalloy");
-
             if (circuitRecipe.mFluidInputs[0].isFluidEqual(Materials.SolderingAlloy.getMolten(0))
-                || circuitRecipe.mFluidInputs[0].isFluidEqual(new FluidStack(solderIndalloy, 0))
-                || circuitRecipe.mFluidInputs[0].isFluidEqual(new FluidStack(solderUEV, 0))) {
+                || circuitRecipe.mFluidInputs[0].isFluidEqual(MaterialsAlloy.INDALLOY_140.getFluidStack(0))
+                || circuitRecipe.mFluidInputs[0].isFluidEqual(MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(0))) {
                 GTRecipe newRecipe = CircuitImprintLoader.reBuildRecipe(circuitRecipe);
                 if (newRecipe != null) BartWorksRecipeMaps.circuitAssemblyLineRecipes.addRecipe(newRecipe);
                 addCutoffRecipeToSets(toRem, toAdd, circuitRecipe);
@@ -241,7 +231,7 @@ public class CircuitImprintLoader {
                         in[index] = GTOreDictUnificator.get(
                             OrePrefixes.wireFine,
                             GTOreDictUnificator.getAssociation(original.mInputs[index]).mMaterial.mMaterial,
-                            original.mInputs[index].stackSize * 16);
+                            original.mInputs[index].stackSize * 16L);
                     }
                     // other components
                 } else {
@@ -258,7 +248,7 @@ public class CircuitImprintLoader {
         removeOldRecipesFromRegistries();
         CircuitImprintLoader.recipeTagMap.keySet()
             .forEach(e -> {
-                makeAndAddSlicingRecipe(e);
+                makeAndAddCutterRecipe(e);
                 makeAndAddCraftingRecipes(e);
             });
     }
@@ -276,7 +266,6 @@ public class CircuitImprintLoader {
         recipeWorldCache.forEach(
             CraftingManager.getInstance()
                 .getRecipeList()::remove);
-        BWCoreStaticReplacementMethodes.clearRecentlyUsedRecipes();
         RecipeMaps.slicerRecipes.getBackend()
             .removeRecipes(gtrecipeWorldCache);
         GTModHandler.sBufferRecipeList.removeAll(recipeWorldCache);
@@ -284,7 +273,7 @@ public class CircuitImprintLoader {
         gtrecipeWorldCache.clear();
     }
 
-    private static void makeAndAddSlicingRecipe(NBTTagCompound tag) {
+    private static void makeAndAddCutterRecipe(NBTTagCompound tag) {
         ItemStack stack = CircuitImprintLoader.getStackFromTag(tag);
         int eut = Integer.MAX_VALUE;
 
@@ -300,7 +289,7 @@ public class CircuitImprintLoader {
                         OreDictionary.getOreIDs(stack) != null && OreDictionary.getOreIDs(stack).length > 0
                             ? OreDictionary.getOreIDs(stack)[0]
                             : -1))));
-        GTRecipe slicingRecipe = new GTRecipe(
+        GTRecipe cutterRecipe = new GTRecipe(
             true,
             new ItemStack[] { stack, ItemList.Shape_Slicer_Flat.get(0) },
             new ItemStack[] { BWMetaItems.getCircuitParts()
@@ -312,8 +301,8 @@ public class CircuitImprintLoader {
             300,
             eut,
             BWUtil.CLEANROOM);
-        gtrecipeWorldCache.add(slicingRecipe);
-        RecipeMaps.slicerRecipes.add(slicingRecipe);
+        gtrecipeWorldCache.add(cutterRecipe);
+        RecipeMaps.cutterRecipes.add(cutterRecipe);
     }
 
     private static void makeAndAddCraftingRecipes(NBTTagCompound tag) {

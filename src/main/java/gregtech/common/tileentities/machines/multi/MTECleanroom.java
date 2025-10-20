@@ -68,9 +68,9 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
     public static final int MAX_HEIGHT = 15;
 
     /**
-     * List of other blocks allowed in the cleanroom.
-     * Format of entries is either just the block's unlocalized name, or <unlocalized name>:<meta>. The former matches
-     * all blocks of that name regardless of meta value. Read from config file.
+     * List of other blocks allowed in the cleanroom. Format of entries is either just the block's unlocalized name, or
+     * <unlocalized name>:<meta>. The former matches all blocks of that name regardless of meta value. Read from config
+     * file.
      */
     public static final HashSet<String> ALLOWED_BLOCKS = new HashSet<>();
 
@@ -117,7 +117,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
         mEfficiency = 0;
         mWrench = false;
         mScrewdriver = false;
-        mSoftHammer = false;
+        mSoftMallet = false;
         mHardHammer = false;
         mSolderingTool = false;
         mCrowbar = false;
@@ -127,37 +127,36 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Cleanroom")
-            .addInfo("Consumes 40 EU/t when first turned on, and 4 EU/t once at 100% efficiency.")
-            .addInfo("Can accept 2A from an LV energy hatch.")
-            .addInfo("Will overclock and gain efficiency faster starting from HV.")
+            .addInfo("Consumes 40 EU/t when first turned on, and 4 EU/t once at 100% efficiency")
+            .addInfo("Can accept 2A from an LV energy hatch")
+            .addInfo("Will overclock and gain efficiency faster starting from HV")
             .addSeparator()
             .addInfo(EnumChatFormatting.RED + "Warning:")
             .addInfo("Below 100% efficiency machines inside have a chance to void outputs!")
-            .addInfo("Each maintenance issue reduces maximum efficiency by 10%.")
-            .addInfo("Generating any pollution inside causes the cleanroom to shut down.")
+            .addInfo("Each maintenance issue reduces maximum efficiency by 10%")
+            .addInfo("Generating any pollution inside causes the cleanroom to shut down")
             .beginVariableStructureBlock(3, MAX_WIDTH, 4, MAX_HEIGHT, 3, MAX_WIDTH, true)
-            .addController("Top center.")
-            .addStructureInfo("  If width or length is even, it can be in either of the two middle positions.")
-            .addOtherStructurePart("Filter Machine Casing", "Top layer, except for edges.")
+            .addController("Top center")
+            .addStructureInfo("  If width or length is even, it can be in either of the two middle positions")
+            .addOtherStructurePart("Filter Machine Casing", "Top layer, except for edges")
             .addOtherStructurePart(
                 "Plascrete Blocks",
                 "Edges of top layer, all walls and floor. Minimum " + EnumChatFormatting.GOLD
                     + MachineStats.cleanroom.minCasingCount
                     + EnumChatFormatting.GRAY
                     + ".")
-            .addEnergyHatch("Any Plascrete Block. Exactly one.")
-            .addMaintenanceHatch("Any Plascrete Block. Exactly one.")
+            .addEnergyHatch("Any Plascrete Block. Exactly one")
+            .addMaintenanceHatch("Any Plascrete Block. Exactly one")
             .addStructureInfo("")
             .addStructureInfo(
                 "Up to " + EnumChatFormatting.GOLD
                     + MachineStats.cleanroom.maxReplacementPercentage
                     + "%"
                     + EnumChatFormatting.GRAY
-                    + " of plascrete blocks can be replaced by other valid blocks.")
+                    + " of plascrete blocks can be replaced by other valid blocks")
             .addStructureInfo("Try some of the following:")
-            .addStructureInfo(
-                "- Any " + EnumChatFormatting.DARK_GRAY + "EV+" + EnumChatFormatting.GRAY + " tier glass.")
-            .addStructureInfo("- Machine hulls or diodes for item and power transfer.")
+            .addStructureInfo("- Any " + EnumChatFormatting.DARK_GRAY + "EV+" + EnumChatFormatting.GRAY + " tier glass")
+            .addStructureInfo("- Machine hulls or diodes for item and power transfer")
             .addStructureInfo(
                 "- Reinforced Doors (" + EnumChatFormatting.ITALIC
                     + "IC2"
@@ -174,12 +173,12 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
                     + "EnderIO"
                     + EnumChatFormatting.RESET
                     + EnumChatFormatting.GRAY
-                    + ").")
+                    + ")")
             .addStructureInfo(
                 "See " + EnumChatFormatting.DARK_GRAY
                     + "config/GregTech/MachineStats.cfg"
                     + EnumChatFormatting.GRAY
-                    + " for more valid blocks.")
+                    + " for more valid blocks")
             .addStructureInfo(
                 EnumChatFormatting.YELLOW
                     + "All non-plascrete blocks now share the same limit. Feel free to mix and match!")
@@ -488,7 +487,6 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
             for (int dz = dzMin; dz <= dzMax; ++dz) {
                 if (dx == 0 && dz == 0) {
                     // Controller.
-                    continue;
                 } else if (dx == dxMin || dx == dxMax || dz == dzMin || dz == dzMax) {
                     // Edge.
                     if (!addStructureBlock(aBaseMetaTileEntity, dx, 0, dz, MASK_CEILING_EDGE)) return false;
@@ -740,20 +738,15 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
 
     /**
      * Doors are funny. So the meta value of the bottom part of the door determines where in the block the door is, when
-     * in the "closed" (inactive) position.
-     * 0 = lower x coordinate (west).
-     * 1 = lower z coordinate (north).
-     * 2 = upper x coordinate (east).
-     * 3 = upper z coordinate (south).
-     * If the door is opened, a 4 is added to this value.
+     * in the "closed" (inactive) position. 0 = lower x coordinate (west). 1 = lower z coordinate (north). 2 = upper x
+     * coordinate (east). 3 = upper z coordinate (south). If the door is opened, a 4 is added to this value.
      * <p>
-     * The meta of the top part of the door determines which way the door opens.
-     * 8 = opens counterclockwise.
-     * 9 = opens clockwise.
+     * The meta of the top part of the door determines which way the door opens. 8 = opens counterclockwise. 9 = opens
+     * clockwise.
      * <p>
-     * Therefore, to find out where in the block the door currently is, we need to know both the top and the
-     * bottom part, as a door that is "closed" on the north side can "open" to either the west or east side.
-     * In both cases the meta of the bottom part will be the same (5).
+     * Therefore, to find out where in the block the door currently is, we need to know both the top and the bottom
+     * part, as a door that is "closed" on the north side can "open" to either the west or east side. In both cases the
+     * meta of the bottom part will be the same (5).
      * <p>
      * This method takes the coordinates of a door block (it is already assumed that this is a door), and returns the
      * direction where the door is. Return value is the same as a default closed door: 0 = west, 1 = north, 2 = east, 3
@@ -802,6 +795,11 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
         }
         // Invalid combination?
         return -1;
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
     }
 
     @Override

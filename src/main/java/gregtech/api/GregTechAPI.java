@@ -68,8 +68,7 @@ import gregtech.common.covers.CoverPosition;
 public class GregTechAPI {
 
     /**
-     * Fixes the HashMap Mappings for ItemStacks once the Server started
-     * <br>
+     * Fixes the HashMap Mappings for ItemStacks once the Server started <br>
      * <br>
      * NOTE: We use wildcards generics for the key because it could be for example {@link ItemStack} or
      * {@link GTItemStack}
@@ -125,7 +124,7 @@ public class GregTechAPI {
      * The List of Tools, which can be used. Accepts regular damageable Items and Electric Items
      */
     public static final GTHashSet sToolList = new GTHashSet(), sCrowbarList = new GTHashSet(),
-        sScrewdriverList = new GTHashSet(), sWrenchList = new GTHashSet(), sSoftHammerList = new GTHashSet(),
+        sScrewdriverList = new GTHashSet(), sWrenchList = new GTHashSet(), sSoftMalletList = new GTHashSet(),
         sHardHammerList = new GTHashSet(), sWireCutterList = new GTHashSet(), sSolderingToolList = new GTHashSet(),
         sSolderingMetalList = new GTHashSet(), sJackhammerList = new GTHashSet();
 
@@ -153,10 +152,10 @@ public class GregTechAPI {
      */
     public static IThaumcraftCompat sThaumcraftCompat;
     /**
-     * The Lists below are executed at their respective timings. Useful to do things at a particular moment in time.
-     * The Lists are not Threaded - a native Java interface is used for their execution.
-     * Add your "commands" in the constructor or in the static-code-block of your mod's Main class.
-     * Implement the method {@code run()}, and everything should work.
+     * The Lists below are executed at their respective timings. Useful to do things at a particular moment in time. The
+     * Lists are not Threaded - a native Java interface is used for their execution. Add your "commands" in the
+     * constructor or in the static-code-block of your mod's Main class. Implement the method {@code run()}, and
+     * everything should work.
      */
     public static List<Runnable> sBeforeGTPreload = new ArrayList<>(), sAfterGTPreload = new ArrayList<>(),
         sBeforeGTLoad = new ArrayList<>(), sAfterGTLoad = new ArrayList<>(), sBeforeGTPostload = new ArrayList<>(),
@@ -177,14 +176,15 @@ public class GregTechAPI {
      */
     public static Block sBlockMachines;
 
-    public static Block sBlockOres1, sBlockOresUb1, sBlockOresUb2, sBlockOresUb3,
+    public static Block sBlockOres1,
         /* sBlockGem, */
         sBlockMetal1, sBlockMetal2, sBlockMetal3, sBlockMetal4, sBlockMetal5, sBlockMetal6, sBlockMetal7, sBlockMetal8,
         sBlockMetal9, sBlockGem1, sBlockGem2, sBlockGem3, sBlockReinforced;
     public static Block sBlockGranites, sBlockConcretes, sBlockStones;
     public static Block sBlockCasings1, sBlockCasings2, sBlockCasings3, sBlockCasings4, sBlockCasings5, sBlockCasings6,
-        sBlockCasings8, sBlockCasings9, sBlockCasings10, sBlockCasings11, sBlockCasings12, sSolenoidCoilCasings,
-        sBlockCasingsNH, sBlockCasingsSE, sBlockCasingsSEMotor, sBlockCasingsDyson, sBlockCasingsSiphon;
+        sBlockCasings8, sBlockCasings9, sBlockCasings10, sBlockCasings11, sBlockCasings12, sBlockCasings13,
+        sSolenoidCoilCasings, sBlockCasingsNH, sBlockCasingsSE, sBlockCasingsSEMotor, sBlockCasingsDyson,
+        sBlockCasingsSiphon;
     public static Block sBlockLongDistancePipes;
     public static Block sDroneRender;
     public static Block sBlockFrames;
@@ -194,6 +194,7 @@ public class GregTechAPI {
     public static Block sWormholeRender;
     public static Block sBlackholeRender;
     public static Block sSpaceElevatorCable;
+    public static Block nanoForgeRender;
     /**
      * Getting assigned by the Config
      */
@@ -401,8 +402,8 @@ public class GregTechAPI {
      * You need to register Tools in the Load Phase, because otherwise the Auto-detection will assign a Tool Type in
      * certain Cases during postload (When IToolWrench or similar Interfaces are implemented).
      */
-    public static boolean registerSoftHammer(ItemStack aTool) {
-        return registerTool(aTool, sSoftHammerList);
+    public static boolean registerSoftMallet(ItemStack aTool) {
+        return registerTool(aTool, sSoftMalletList);
     }
 
     /**

@@ -98,7 +98,7 @@ public class CrushedLoader implements IWerkstoffRunnable {
                 werkstoff.getOreByProduct(0, dust),
                 GTOreDictUnificator.get(dust, Materials.Stone, 1L))
             .outputChances(100_00, 11_11, 100_00)
-            .fluidInputs(GTModHandler.getWater(1000))
+            .fluidInputs(Materials.Water.getFluid(1_000))
             .duration(25 * SECONDS)
             .eut(16)
             .addTo(oreWasherRecipes);
@@ -193,7 +193,7 @@ public class CrushedLoader implements IWerkstoffRunnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(dustPure))
                 .itemOutputs(werkstoff.get(gem))
-                .outputChances(9000)
+                .outputChances(9500)
                 .fluidInputs(Materials.Water.getFluid(200L))
                 .duration(1 * MINUTES + 40 * SECONDS)
                 .eut(24)
@@ -211,7 +211,7 @@ public class CrushedLoader implements IWerkstoffRunnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(dustPure))
                 .itemOutputs(werkstoff.get(gem))
-                .outputChances(9500)
+                .outputChances(10000)
                 .fluidInputs(GTModHandler.getDistilledWater(200L))
                 .duration(1 * MINUTES + 15 * SECONDS)
                 .eut(24)
@@ -236,7 +236,7 @@ public class CrushedLoader implements IWerkstoffRunnable {
                     werkstoff.getOreByProduct(1, dust),
                     GTOreDictUnificator.get(dust, Materials.Stone, 1L))
                 .outputChances(10000, 7000, 4000)
-                .fluidInputs(Materials.Mercury.getFluid(1000L))
+                .fluidInputs(Materials.Mercury.getFluid(1_000))
                 .duration(40 * SECONDS)
                 .eut(8)
                 .addTo(chemicalBathRecipes);

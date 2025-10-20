@@ -11,7 +11,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -452,42 +451,28 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
     public boolean getConnectedSolarReflectors() {
 
         resetSolarHeaters();
-        int aRing = 1;
 
         if (this.mSolarHeaters.size() < 36) {
             // 15x15
-            boolean aRing1 = checkPiece(SOLAR_HEATER_RING_1, 7, 7, -27);
-            if (aRing1) {
-                // log("Found Ring: "+(aRing++)+", Total: "+this.mSolarHeaters.size());
-            }
+            checkPiece(SOLAR_HEATER_RING_1, 7, 7, -27);
+
         }
         if (this.mSolarHeaters.size() < 88) {
             // 17x17
-            boolean aRing2 = checkPiece(SOLAR_HEATER_RING_2, 9, 9, -27);
-            if (aRing2) {
-                // log("Found Ring: "+(aRing++)+", Total: "+this.mSolarHeaters.size());
-            }
+            checkPiece(SOLAR_HEATER_RING_2, 9, 9, -27);
+
         }
         if (this.mSolarHeaters.size() < 156) {
             // 19x19
-            boolean aRing3 = checkPiece(SOLAR_HEATER_RING_3, 11, 11, -27);
-            if (aRing3) {
-                // log("Found Ring: "+(aRing++)+", Total: "+this.mSolarHeaters.size());
-            }
+            checkPiece(SOLAR_HEATER_RING_3, 11, 11, -27);
         }
         if (this.mSolarHeaters.size() < 240) {
             // 21x21
-            boolean aRing4 = checkPiece(SOLAR_HEATER_RING_4, 13, 13, -27);
-            if (aRing4) {
-                // log("Found Ring: "+(aRing++)+", Total: "+this.mSolarHeaters.size());
-            }
+            checkPiece(SOLAR_HEATER_RING_4, 13, 13, -27);
         }
         if (this.mSolarHeaters.size() < 340) {
             // 23x23
-            boolean aRing5 = checkPiece(SOLAR_HEATER_RING_5, 15, 15, -27);
-            if (aRing5) {
-                // log("Found Ring: "+(aRing++)+", Total: "+this.mSolarHeaters.size());
-            }
+            checkPiece(SOLAR_HEATER_RING_5, 15, 15, -27);
         }
         return !mSolarHeaters.isEmpty();
     }
@@ -586,11 +571,6 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
         return CheckRecipeResultRegistry.GENERATING;
     }
 
-    @Override
-    public int getMaxParallelRecipes() {
-        return 1;
-    }
-
     public Block getCasingBlock() {
         return ModBlocks.blockSpecialMultiCasings;
     }
@@ -618,9 +598,6 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
     public byte getCasingTextureIndex() {
         return (byte) mCasingTextureID;
     }
-
-    @Override
-    public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {}
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {

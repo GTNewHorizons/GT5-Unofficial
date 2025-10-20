@@ -67,8 +67,8 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Engine Intake Casings must not be obstructed in front (only air blocks)")
-            .addInfo("Supply Semifluid Fuels and 2000L of Lubricant per hour to run.")
-            .addInfo("Supply 80L of Oxygen per second to boost output (optional).")
+            .addInfo("Supply Semifluid Fuels and 2000L of Lubricant per hour to run")
+            .addInfo("Supply 80L of Oxygen per second to boost output (optional)")
             .addInfo("Default: Produces 2048EU/t at 100% efficiency")
             .addInfo("Boosted: Produces 6144EU/t at 150% efficiency")
             .addPollutionAmount(getPollutionPerSecond(null))
@@ -146,7 +146,7 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
             GTRecipe aFuel = GTPPRecipeMaps.semiFluidFuels.getBackend()
                 .findFuel(hatchFluid);
             if (aFuel == null) {
-                // Not a valid semi-fluid fuel.
+                // Not a valid semifluid fuel.
                 continue;
             }
 
@@ -327,13 +327,8 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
     }
 
     @Override
-    public boolean isGivingInformation() {
-        return true;
-    }
-
-    @Override
     public String getMachineType() {
-        return "Semifluid Generator";
+        return "Semifluid Generator, LSB";
     }
 
     @Override

@@ -16,6 +16,8 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
 
+import org.jetbrains.annotations.Range;
+
 import gregtech.api.items.MetaGeneratedTool;
 
 /**
@@ -37,7 +39,7 @@ public interface IToolStats {
 
     /**
      * @implNote if you are only modifying drops, override
-     *           {@link #convertBlockDrops(List, ItemStack, EntityPlayer, Block, int, int, int, byte, int, boolean, BlockEvent.HarvestDropsEvent)}
+     *           {@link #convertBlockDrops(List, ItemStack, EntityPlayer, Block, int, int, int, int, int, boolean, BlockEvent.HarvestDropsEvent)}
      * @param player   The player
      * @param x        Block pos
      * @param y        Block pos
@@ -159,7 +161,7 @@ public interface IToolStats {
     /**
      * {@link Block#getHarvestTool(int)} can return the following Values for example. "axe", "pickaxe", "sword",
      * "shovel", "hoe", "grafter", "saw", "wrench", "crowbar", "file", "hammer", "plow", "plunger", "scoop",
-     * "screwdriver", "sense", "scythe", "softhammer", "cutter", "plasmatorch"
+     * "screwdriver", "sense", "scythe", "softmallet", "cutter", "plasmatorch"
      *
      * @return If this is a minable Block. Tool Quality checks (like Diamond Tier or something) are separate from this
      *         check.
@@ -196,10 +198,31 @@ public interface IToolStats {
     float getMiningSpeed(Block aBlock, int aMetaData, float aDefault, EntityPlayer aPlayer, World worldObj, int aX,
         int aY, int aZ);
 
+    /**
+     * Get the overridden block strength for this tool.
+     *
+     * @param block                the block to break
+     * @param player               the player breaking the block
+     * @param world                the world the block is in
+     * @param x                    the x coordinate of the block
+     * @param y                    the y coordinate of the block
+     * @param z                    the z coordinate of the block
+     * @param defaultBlockStrength the default block strength (the default return value)
+     * @return the new block strength
+     */
+    default float getBlockStrength(ItemStack tool, Block block, EntityPlayer player, World world, int x, int y, int z,
+        float defaultBlockStrength) {
+        return defaultBlockStrength;
+    }
+
     default String getToolTypeName() {
         return null;
     }
 
+    /**
+     * @return the amount of the modes this tool has.
+     */
+    @Range(from = 1, to = Byte.MAX_VALUE)
     default byte getMaxMode() {
         return 1;
     }

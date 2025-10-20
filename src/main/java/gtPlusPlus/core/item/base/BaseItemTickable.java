@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.GTValues;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.Utils;
@@ -32,12 +33,12 @@ public class BaseItemTickable extends CoreItem {
     public IIcon[] mIcon = new IIcon[2];
 
     public BaseItemTickable(boolean twoPass, final String unlocalName, final int colour, final int maxTicks) {
-        this(false, twoPass, unlocalName, colour, maxTicks, new String[] {});
+        this(false, twoPass, unlocalName, colour, maxTicks, GTValues.emptyStringArray);
     }
 
     public BaseItemTickable(boolean containerTick, boolean twoPass, final String unlocalName, final int colour,
         final int maxTicks) {
-        this(containerTick, twoPass, unlocalName, colour, maxTicks, new String[] {});
+        this(containerTick, twoPass, unlocalName, colour, maxTicks, GTValues.emptyStringArray);
     }
 
     public BaseItemTickable(boolean containerTick, boolean twoPass, final String unlocalName, final int colour,
@@ -134,11 +135,6 @@ public class BaseItemTickable extends CoreItem {
         tagNBT.setLong("Tick", 0);
         tagNBT.setLong("maxTick", getMaxTicks(rStack));
         tagNBT.setBoolean("isActive", true);
-
-        // Try set world time
-        if (world != null) {
-            // tagNBT.setLong("CreationDate", world.getTotalWorldTime());
-        }
 
         tagMain.setTag("TickableItem", tagNBT);
         rStack.setTagCompound(tagMain);

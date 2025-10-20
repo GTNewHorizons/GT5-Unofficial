@@ -1,7 +1,6 @@
 package bartworks.common.loaders;
 
 import static bartworks.API.recipe.BartWorksRecipeMaps.radioHatchFakeRecipes;
-import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.util.GTRecipeConstants.MASS;
 import static gregtech.api.util.GTRecipeConstants.SIEVERT;
 
@@ -10,14 +9,12 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 
-import bartworks.system.material.BWNonMetaMaterialItems;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.Sievert;
 
@@ -95,7 +92,7 @@ public class RadioHatchMaterialLoader {
                 radioHatchMaterialAdder(
                     GTOreDictUnificator.get(OrePrefixes.stick, specialMaterial[i], 1),
                     specialValue[i],
-                    (byte) 2);
+                    (byte) 1);
             }
 
             if (GTOreDictUnificator.get(OrePrefixes.stickLong, specialMaterial[i], 1) != null) {
@@ -106,95 +103,89 @@ public class RadioHatchMaterialLoader {
             }
         }
 
-        radioHatchMaterialAdder(ItemList.ThoriumCell_1.get(1), (int) Materials.Thorium.getProtons(), (byte) 3);
-        radioHatchMaterialAdder(ItemList.ThoriumCell_2.get(1), (int) Materials.Thorium.getProtons(), (byte) 6);
-        radioHatchMaterialAdder(ItemList.ThoriumCell_4.get(1), (int) Materials.Thorium.getProtons(), (byte) 12);
-        radioHatchMaterialAdder(ItemList.NaquadahCell_1.get(1), 140, (byte) 3);
-        radioHatchMaterialAdder(ItemList.NaquadahCell_2.get(1), 140, (byte) 6);
-        radioHatchMaterialAdder(ItemList.NaquadahCell_4.get(1), 140, (byte) 12);
-        radioHatchMaterialAdder(ItemList.Moxcell_1.get(1), (int) Materials.Plutonium.getProtons(), (byte) 3);
-        radioHatchMaterialAdder(ItemList.Moxcell_2.get(1), (int) Materials.Plutonium.getProtons(), (byte) 6);
-        radioHatchMaterialAdder(ItemList.Moxcell_4.get(1), (int) Materials.Plutonium.getProtons(), (byte) 12);
-        radioHatchMaterialAdder(ItemList.Uraniumcell_1.get(1), (int) Materials.Uranium.getProtons(), (byte) 3);
-        radioHatchMaterialAdder(ItemList.Uraniumcell_2.get(1), (int) Materials.Uranium.getProtons(), (byte) 6);
-        radioHatchMaterialAdder(ItemList.Uraniumcell_4.get(1), (int) Materials.Uranium.getProtons(), (byte) 12);
+        radioHatchMaterialAdder(ItemList.RodThorium.get(1), (int) Materials.Thorium.getProtons(), (byte) 3);
+        radioHatchMaterialAdder(ItemList.RodThorium2.get(1), (int) Materials.Thorium.getProtons(), (byte) 6);
+        radioHatchMaterialAdder(ItemList.RodThorium4.get(1), (int) Materials.Thorium.getProtons(), (byte) 12);
+        radioHatchMaterialAdder(ItemList.RodNaquadah.get(1), 140, (byte) 3);
+        radioHatchMaterialAdder(ItemList.RodNaquadah2.get(1), 140, (byte) 6);
+        radioHatchMaterialAdder(ItemList.RodNaquadah4.get(1), 140, (byte) 12);
+        radioHatchMaterialAdder(ItemList.RodMOX.get(1), (int) Materials.Plutonium.getProtons(), (byte) 3);
+        radioHatchMaterialAdder(ItemList.RodMOX2.get(1), (int) Materials.Plutonium.getProtons(), (byte) 6);
+        radioHatchMaterialAdder(ItemList.RodMOX4.get(1), (int) Materials.Plutonium.getProtons(), (byte) 12);
+        radioHatchMaterialAdder(ItemList.RodUranium.get(1), (int) Materials.Uranium.getProtons(), (byte) 3);
+        radioHatchMaterialAdder(ItemList.RodUranium2.get(1), (int) Materials.Uranium.getProtons(), (byte) 6);
+        radioHatchMaterialAdder(ItemList.RodUranium4.get(1), (int) Materials.Uranium.getProtons(), (byte) 12);
         radioHatchMaterialAdder(
-            BWNonMetaMaterialItems.TiberiumCell_1.get(1),
+            ItemList.RodTiberium.get(1),
             (int) WerkstoffLoader.Tiberium.getBridgeMaterial()
                 .getProtons(),
             (byte) 3);
         radioHatchMaterialAdder(
-            BWNonMetaMaterialItems.TiberiumCell_2.get(1),
+            ItemList.RodTiberium2.get(1),
             (int) WerkstoffLoader.Tiberium.getBridgeMaterial()
                 .getProtons(),
             (byte) 6);
         radioHatchMaterialAdder(
-            BWNonMetaMaterialItems.TiberiumCell_4.get(1),
+            ItemList.RodTiberium4.get(1),
             (int) WerkstoffLoader.Tiberium.getBridgeMaterial()
                 .getProtons(),
             (byte) 12);
         radioHatchMaterialAdder(
-            ItemList.Depleted_Thorium_1.get(1),
+            ItemList.DepletedRodThorium.get(1),
             (int) Materials.Thorium.getProtons() / 10,
             (byte) 3);
         radioHatchMaterialAdder(
-            ItemList.Depleted_Thorium_2.get(1),
+            ItemList.DepletedRodThorium2.get(1),
             (int) Materials.Thorium.getProtons() / 10,
             (byte) 6);
         radioHatchMaterialAdder(
-            ItemList.Depleted_Thorium_4.get(1),
+            ItemList.DepletedRodThorium4.get(1),
             (int) Materials.Thorium.getProtons() / 10,
             (byte) 12);
-        radioHatchMaterialAdder(BWNonMetaMaterialItems.TheCoreCell.get(1), 140, (byte) 96);
-        radioHatchMaterialAdder(ItemList.Depleted_Naquadah_1.get(1), 14, (byte) 3);
-        radioHatchMaterialAdder(ItemList.Depleted_Naquadah_2.get(1), 14, (byte) 6);
-        radioHatchMaterialAdder(ItemList.Depleted_Naquadah_4.get(1), 14, (byte) 12);
+        radioHatchMaterialAdder(ItemList.RodNaquadah32.get(1), 140, (byte) 96);
+        radioHatchMaterialAdder(ItemList.DepletedRodNaquadah.get(1), 14, (byte) 3);
+        radioHatchMaterialAdder(ItemList.DepletedRodNaquadah2.get(1), 14, (byte) 6);
+        radioHatchMaterialAdder(ItemList.DepletedRodNaquadah4.get(1), 14, (byte) 12);
+        radioHatchMaterialAdder(ItemList.DepletedRodMOX.get(1), (int) Materials.Plutonium.getProtons() / 10, (byte) 3);
+        radioHatchMaterialAdder(ItemList.DepletedRodMOX2.get(1), (int) Materials.Plutonium.getProtons() / 10, (byte) 6);
         radioHatchMaterialAdder(
-            GTModHandler.getModItem(IndustrialCraft2.ID, "reactorMOXSimpledepleted", 1),
-            (int) Materials.Plutonium.getProtons() / 10,
-            (byte) 3);
-        radioHatchMaterialAdder(
-            GTModHandler.getModItem(IndustrialCraft2.ID, "reactorMOXDualdepleted", 1),
-            (int) Materials.Plutonium.getProtons() / 10,
-            (byte) 6);
-        radioHatchMaterialAdder(
-            GTModHandler.getModItem(IndustrialCraft2.ID, "reactorMOXQuaddepleted", 1),
+            ItemList.DepletedRodMOX4.get(1),
             (int) Materials.Plutonium.getProtons() / 10,
             (byte) 12);
         radioHatchMaterialAdder(
-            GTModHandler.getModItem(IndustrialCraft2.ID, "reactorUraniumSimpledepleted", 1),
+            ItemList.DepletedRodUranium.get(1),
             (int) Materials.Uranium.getProtons() / 10,
             (byte) 3);
         radioHatchMaterialAdder(
-            GTModHandler.getModItem(IndustrialCraft2.ID, "reactorUraniumDualdepleted", 1),
+            ItemList.DepletedRodUranium2.get(1),
             (int) Materials.Uranium.getProtons() / 10,
             (byte) 6);
         radioHatchMaterialAdder(
-            GTModHandler.getModItem(IndustrialCraft2.ID, "reactorUraniumQuaddepleted", 1),
+            ItemList.DepletedRodUranium4.get(1),
             (int) Materials.Uranium.getProtons() / 10,
             (byte) 12);
         radioHatchMaterialAdder(
-            BWNonMetaMaterialItems.Depleted_Tiberium_1.get(1),
+            ItemList.DepletedRodTiberium.get(1),
             (int) WerkstoffLoader.Tiberium.getBridgeMaterial()
                 .getProtons() / 10,
             (byte) 3);
         radioHatchMaterialAdder(
-            BWNonMetaMaterialItems.Depleted_Tiberium_2.get(1),
+            ItemList.DepletedRodTiberium2.get(1),
             (int) WerkstoffLoader.Tiberium.getBridgeMaterial()
                 .getProtons() / 10,
             (byte) 6);
         radioHatchMaterialAdder(
-            BWNonMetaMaterialItems.Depleted_Tiberium_4.get(1),
+            ItemList.DepletedRodTiberium4.get(1),
             (int) WerkstoffLoader.Tiberium.getBridgeMaterial()
                 .getProtons() / 10,
             (byte) 12);
-        radioHatchMaterialAdder(BWNonMetaMaterialItems.Depleted_TheCoreCell.get(1), 13, (byte) 96);
-        radioHatchMaterialAdder(ItemList.MNqCell_1.get(1), 150, (byte) 3);
-        radioHatchMaterialAdder(ItemList.MNqCell_2.get(1), 150, (byte) 6);
-        radioHatchMaterialAdder(ItemList.MNqCell_4.get(1), 150, (byte) 12);
-        radioHatchMaterialAdder(ItemList.Depleted_MNq_1.get(1), 15, (byte) 3);
-        radioHatchMaterialAdder(ItemList.Depleted_MNq_2.get(1), 15, (byte) 6);
-        radioHatchMaterialAdder(ItemList.Depleted_MNq_4.get(1), 15, (byte) 12);
+        radioHatchMaterialAdder(ItemList.DepletedRodNaquadah32.get(1), 13, (byte) 96);
+        radioHatchMaterialAdder(ItemList.RodNaquadria.get(1), 150, (byte) 3);
+        radioHatchMaterialAdder(ItemList.RodNaquadria2.get(1), 150, (byte) 6);
+        radioHatchMaterialAdder(ItemList.RodNaquadria4.get(1), 150, (byte) 12);
+        radioHatchMaterialAdder(ItemList.DepletedRodNaquadria.get(1), 15, (byte) 3);
+        radioHatchMaterialAdder(ItemList.DepletedRodNaquadria2.get(1), 15, (byte) 6);
+        radioHatchMaterialAdder(ItemList.DepletedRodNaquadria4.get(1), 15, (byte) 12);
     }
 
     public static void loadRadioHatchNEI() {

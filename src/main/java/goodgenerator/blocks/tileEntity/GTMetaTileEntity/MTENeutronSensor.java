@@ -1,14 +1,19 @@
 package goodgenerator.blocks.tileEntity.GTMetaTileEntity;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -25,7 +30,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.hatch.MTENeutronSensorGui;
 import gregtech.common.gui.modularui.widget.CoverCycleButtonWidget;
 
 public class MTENeutronSensor extends MTEHatch {
@@ -109,30 +114,22 @@ public class MTENeutronSensor extends MTEHatch {
         }
 
         switch (operator) {
-            case "<":
+            case "<" -> {
                 threshold = newThreshold;
                 inverted = true;
-                break;
-            case ">":
+            }
+            case ">", "!=" -> {
                 threshold = newThreshold + 1;
                 inverted = false;
-                break;
-            case "<=":
+            }
+            case "<=", "==" -> {
                 threshold = newThreshold + 1;
                 inverted = true;
-                break;
-            case ">=":
+            }
+            case ">=" -> {
                 threshold = newThreshold;
                 inverted = false;
-                break;
-            case "==": // Interpret as <= to keep "==0eV" working as before.
-                threshold = newThreshold + 1;
-                inverted = true;
-                break;
-            case "!=": // Interpret as > to keep "!=0eV" working as before.
-                threshold = newThreshold + 1;
-                inverted = false;
-                break;
+            }
         }
     }
 
@@ -155,11 +152,6 @@ public class MTENeutronSensor extends MTEHatch {
 
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
         return true;
     }
 
@@ -229,20 +221,46 @@ public class MTENeutronSensor extends MTEHatch {
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        final String INVERTED = GTUtility.trans("INVERTED", "Inverted");
-        final String NORMAL = GTUtility.trans("NORMAL", "Normal");
+    protected boolean useMui2() {
+        return true;
+    }
 
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTENeutronSensorGui(this).build(data, syncManager, uiSettings);
+    }
+
+    public int getThreshold() {
+        return threshold;
+    }
+
+    public void setThreshold(int threshold) {
+        this.threshold = threshold;
+    }
+
+    public boolean isInverted() {
+        return inverted;
+    }
+
+    public void setInverted(boolean inverted) {
+        this.inverted = inverted;
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
             new CoverCycleButtonWidget().setToggle(() -> inverted, (val) -> inverted = val)
                 .setTextureGetter(
                     (state) -> state == 1 ? GTUITextures.OVERLAY_BUTTON_REDSTONE_ON
                         : GTUITextures.OVERLAY_BUTTON_REDSTONE_OFF)
-                .addTooltip(0, NORMAL)
-                .addTooltip(1, INVERTED)
+                .addTooltip(0, translateToLocal("gt.interact.desc.normal.tooltip"))
+                .addTooltip(1, translateToLocal("gt.interact.desc.inverted.tooltip"))
                 .setPos(10, 8))
             .widget(
-                new TextWidget().setStringSupplier(() -> inverted ? INVERTED : NORMAL)
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> inverted ? translateToLocal("gt.interact.desc.inverted")
+                            : translateToLocal("gt.interact.desc.normal"))
                     .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setTextAlignment(Alignment.CenterLeft)
                     .setPos(28, 12))
@@ -258,8 +276,7 @@ public class MTENeutronSensor extends MTEHatch {
                     .setPos(10, 28)
                     .setSize(77, 12))
             .widget(
-                new TextWidget(StatCollector.translateToLocal("gui.NeutronSensor.4"))
-                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(translateToLocal("gui.NeutronSensor.4")).setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setTextAlignment(Alignment.CenterLeft)
                     .setPos(90, 30));
     }

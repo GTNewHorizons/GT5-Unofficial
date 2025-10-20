@@ -64,7 +64,7 @@ public class GuiHandler implements IGuiHandler {
         if (te != null) {
             if (ID == GUI1) {
                 return new ContainerProjectTable(player.inventory, (TileEntityProjectTable) te);
-            } else if (ID == GUI2) {}
+            }
         }
 
         if (te != null) {

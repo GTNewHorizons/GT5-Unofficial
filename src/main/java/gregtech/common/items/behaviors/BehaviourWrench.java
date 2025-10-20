@@ -71,10 +71,8 @@ public class BehaviourWrench extends BehaviourNone {
 
     /**
      * <p>
-     * A class to simplify wrenching operation,
-     * stopping "checking creative", "trying to damage tool",
-     * "doing the logic" and "playing sound" again and again.
-     * This should have been a record, but it's not available in Java 8.
+     * A class to simplify wrenching operation, stopping "checking creative", "trying to damage tool", "doing the logic"
+     * and "playing sound" again and again. This should have been a record, but it's not available in Java 8.
      * </p>
      * <p>
      * {@link WrenchHandler#handle()} is the entry point of main logic.
@@ -232,7 +230,7 @@ public class BehaviourWrench extends BehaviourNone {
             if (player.capabilities.isCreativeMode || item.canWrench(player, x, y, z)) {
                 if (operation.getAsBoolean()) {
                     item.doDamage(stack, damage);
-                    GTUtility.sendSoundToPlayers(world, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1.0F, x, y, z);
+                    GTUtility.sendSoundToPlayers(world, SoundResource.GTCEU_OP_WRENCH, 1.0F, 1.0F, x, y, z);
                     return true;
                 }
             }

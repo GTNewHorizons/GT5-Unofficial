@@ -20,10 +20,10 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.state.MaterialState;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class RecipeGenRecycling implements Runnable {
@@ -69,7 +69,7 @@ public class RecipeGenRecycling implements Runnable {
 
         for (int r = 0; r < mValidPairs.length; r++) {
             ItemStack temp = getItemStackOfAmountFromOreDictNoBroken(
-                mValidPrefixesAsString[r].name() + Utils.sanitizeString(material.getLocalizedName()),
+                mValidPrefixesAsString[r].name() + StringUtils.sanitizeString(material.getLocalizedName()),
                 1);
             if (temp != null) {
                 mValidPairs[mSlotIndex++] = Pair.of(mValidPrefixesAsString[r], temp.copy());
@@ -111,7 +111,7 @@ public class RecipeGenRecycling implements Runnable {
             final ItemStack mDust = getDust(material, validPrefix.getKey());
 
             // Maceration
-            if (ItemUtils.checkForInvalidItems(tempStack) && mDust != null) {
+            if (tempStack != null && mDust != null) {
                 RA.stdBuilder()
                     .itemInputs(tempStack)
                     .itemOutputs(mDust)
@@ -127,7 +127,7 @@ public class RecipeGenRecycling implements Runnable {
             }
 
             // Fluid Extractor
-            if (ItemUtils.checkForInvalidItems(tempStack)) {
+            if (tempStack != null) {
                 int aFluidAmount = (int) ((144 * validPrefix.getKey().mMaterialAmount) / (M * tempStack.stackSize));
                 int aDuration = (int) Math.max(1, (24 * validPrefix.getKey().mMaterialAmount) / M);
                 FluidStack fluidOutput = material.getFluidStack(aFluidAmount);
@@ -232,7 +232,7 @@ public class RecipeGenRecycling implements Runnable {
     public static ItemStack get(final OrePrefixes aPrefix, final Material aMaterial, final ItemStack aReplacement,
         final long aAmount) {
         return get(
-            aPrefix.name() + Utils.sanitizeString(aMaterial.getLocalizedName()),
+            aPrefix.name() + StringUtils.sanitizeString(aMaterial.getLocalizedName()),
             aReplacement,
             aAmount,
             false,
@@ -288,9 +288,9 @@ public class RecipeGenRecycling implements Runnable {
 
     public static ItemStack getItemStackOfAmountFromOreDictNoBroken(String oredictName, final int amount) {
         if (oredictName.contains("-") || oredictName.contains("_")) {
-            oredictName = Utils.sanitizeString(oredictName, new char[] { '-', '_' });
+            oredictName = StringUtils.sanitizeStringKeepDashes(oredictName);
         } else {
-            oredictName = Utils.sanitizeString(oredictName);
+            oredictName = StringUtils.sanitizeString(oredictName);
         }
 
         // Adds a check to grab dusts using GT methodology if possible.
@@ -301,15 +301,15 @@ public class RecipeGenRecycling implements Runnable {
                 .replace("dust", "");
             final Materials m = Materials.get(MaterialName);
             if (m != null && m != Materials._NULL) {
-                returnValue = ItemUtils.getGregtechDust(m, amount);
-                if (ItemUtils.checkForInvalidItems(returnValue)) {
+                returnValue = GTOreDictUnificator.get(OrePrefixes.dust, m, 1L);
+                if (returnValue != null) {
                     return returnValue;
                 }
             }
         }
         if (returnValue == null) {
             returnValue = getItemStackOfAmountFromOreDict(oredictName, amount);
-            if (ItemUtils.checkForInvalidItems(returnValue)) {
+            if (returnValue != null) {
                 return returnValue.copy();
             }
         }
@@ -322,7 +322,7 @@ public class RecipeGenRecycling implements Runnable {
 
         if (oredictName.toLowerCase()
             .contains("ingotclay")) {
-            return ItemUtils.getSimpleStack(Items.clay_ball, amount);
+            return new ItemStack(Items.clay_ball, amount);
         }
 
         final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(oredictName);

@@ -49,7 +49,6 @@ public class AveragePerTickCounter {
 
             values.addLast(new Measurement(currTick, value));
             isCachedAverageValid = false;
-            return;
         }
     }
 

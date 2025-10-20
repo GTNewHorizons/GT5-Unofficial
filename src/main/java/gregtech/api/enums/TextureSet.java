@@ -71,7 +71,13 @@ public class TextureSet {
     public static final TextureSet SET_DARKSTEEL = new TextureSet("darksteel", true),
         SET_ENERGETIC = new TextureSet("energetic", true), SET_VIBRANT = new TextureSet("vibrant", true),
         SET_CRYSTALLINE = new TextureSet("crystalline", true), SET_MELODIC = new TextureSet("melodic", true),
-        SET_STELLAR = new TextureSet("stellar", true), SET_VIVID = new TextureSet("vivid", true);
+        SET_STELLAR = new TextureSet("stellar", true), SET_VIVID = new TextureSet("vivid", true),
+        SET_DRACONIUM = new TextureSet("draconium", false),
+        SET_AWOKEN_DRACONIUM = new TextureSet("awakeneddraconium", false),
+        SET_ELECTROTINE = new TextureSet("electrotine", false), SET_REDSTONE = new TextureSet("redstone", false),
+        SET_GLOWSTONE = new TextureSet("glowstone", false), SET_PYROTHEUM = new TextureSet("pyrotheum", false),
+        SET_CRYOTHEUM = new TextureSet("cryotheum", false), SET_BLAZE = new TextureSet("blaze", false),
+        SET_BLIZZ = new TextureSet("blizz", false);
 
     /**
      * For the Indices of OrePrefixes you need to look into the OrePrefix Enum.
@@ -86,7 +92,12 @@ public class TextureSet {
         mSetName = aSetName;
         for (int i = 0; i < 128; i++) {
             if (IS_BLOCK_TEXTURE[i] == TextureType.BLOCK) {
-                mTextures[i] = new Textures.BlockIcons.CustomIcon(aTextMatIconDir + aSetName + SUFFIXES[i]);
+                switch (SUFFIXES[i]) {
+                    case "/ore", "/oreSmall" -> mTextures[i] = new Textures.BlockIcons.CustomAlphaIcon(
+                        aTextMatIconDir + aSetName + SUFFIXES[i]);
+                    default -> mTextures[i] = new Textures.BlockIcons.CustomIcon(
+                        aTextMatIconDir + aSetName + SUFFIXES[i]);
+                }
             } else {
                 // Check nanites folder for nanites texture to avoid copy pasting large file multiple times.
                 // Exemption for CUSTOM textures so they can be overriden as normal by placing nanite image in

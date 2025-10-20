@@ -25,15 +25,14 @@ import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.IElectricItemManager;
 
 @Optional.InterfaceList(
-    value = { @Optional.Interface(iface = "baubles.api.IBauble", modid = Mods.Names.BAUBLES),
-        @Optional.Interface(iface = "baubles.api.BaubleType", modid = Mods.Names.BAUBLES) })
+    value = { @Optional.Interface(iface = "baubles.api.IBauble", modid = Mods.ModIDs.BAUBLES),
+        @Optional.Interface(iface = "baubles.api.BaubleType", modid = Mods.ModIDs.BAUBLES) })
 public class ItemHealingDevice extends Item implements IElectricItem, IElectricItemManager, IBauble {
 
     private final String unlocalizedName = "personalHealingDevice";
@@ -246,101 +245,90 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
 
     @Override // TODO
     public void onWornTick(final ItemStack baubleStack, final EntityLivingBase arg1) {
-        if (arg1 != null && arg1.worldObj != null && !arg1.worldObj.isRemote) {
+        if (arg1 == null || arg1.worldObj == null || arg1.worldObj.isRemote || !(arg1 instanceof EntityPlayer g))
+            return;
+        // Try Charge First
 
-            // Try Charge First
-
-            // Inv Slots
-            for (final ItemStack aInvStack : ((EntityPlayer) arg1).inventory.mainInventory) {
-                if (aInvStack == baubleStack) {
-                    continue;
-                }
-
-                if (this.getCharge(baubleStack) == this.getMaxCharge(baubleStack)) {
-                    break;
-                }
-
-                if (aInvStack != null && aInvStack.getItem() instanceof IElectricItem electricItem) {
-
-                    double aTransferRate;
-                    double aCurrentChargeForThisBauble;
-                    int mTier;
-
-                    aTransferRate = electricItem.getTransferLimit(aInvStack);
-                    mTier = electricItem.getTier(aInvStack);
-                    aCurrentChargeForThisBauble = ElectricItem.manager.getCharge(baubleStack);
-
-                    if (aCurrentChargeForThisBauble < maxValueEU) {
-                        if ((ElectricItem.manager.getCharge(aInvStack) >= aTransferRate)) {
-                            if (electricItem.canProvideEnergy(aInvStack)) {
-                                double d = ElectricItem.manager
-                                    .discharge(aInvStack, aTransferRate, mTier, false, true, false);
-                                // Logger.INFO("Charging from "+aInvStack.getDisplayName() +" | "+d);
-                                ElectricItem.manager.charge(baubleStack, d, mTier, true, false);
-                            }
-                        }
-                    }
-
-                }
-                if (!(this.getCharge(baubleStack)
-                    <= (this.getMaxCharge(baubleStack) - getTransferLimit(baubleStack)))) {
-                    break;
-                }
+        // Inv Slots
+        for (final ItemStack aInvStack : ((EntityPlayer) arg1).inventory.mainInventory) {
+            if (aInvStack == baubleStack) {
+                continue;
             }
 
-            // Try Heal
-            if (this.getCharge(baubleStack) > 0) {
+            if (this.getCharge(baubleStack) == this.getMaxCharge(baubleStack)) {
+                break;
+            }
 
-                if (!(arg1 instanceof EntityPlayer g)) {
-                    return;
-                }
-                // health Check
-                float hp = 0;
-                if (arg1.getHealth() < arg1.getMaxHealth()) {
-                    final float rx = arg1.getMaxHealth() - arg1.getHealth();
-                    Logger.INFO("rx:" + rx);
-                    arg1.heal(rx * 2);
-                    hp = rx;
-                    this.discharge(baubleStack, (1638400) * rx, 6, true, true, false);
-                }
+            if (aInvStack != null && aInvStack.getItem() instanceof IElectricItem electricItem) {
 
-                int hunger = 0;
-                float saturation = 0;
-                FoodStats aFood = g.getFoodStats();
-                if (aFood != null) {
-                    // Hunger Check
-                    hunger = 20 - aFood.getFoodLevel();
-                    // Saturation Check
-                    if (hunger > 0) {
-                        saturation = 20f - aFood.getSaturationLevel();
-                        saturation /= hunger * 2f;
-                        this.discharge(baubleStack, (1638400) * (hunger + saturation), 6, true, true, false);
-                        aFood.addStats(hunger, saturation);
-                    }
+                double aTransferRate;
+                double aCurrentChargeForThisBauble;
+                int mTier;
+
+                aTransferRate = electricItem.getTransferLimit(aInvStack);
+                mTier = electricItem.getTier(aInvStack);
+                aCurrentChargeForThisBauble = ElectricItem.manager.getCharge(baubleStack);
+
+                if (aCurrentChargeForThisBauble < maxValueEU
+                    && (ElectricItem.manager.getCharge(aInvStack) >= aTransferRate)
+                    && electricItem.canProvideEnergy(aInvStack)) {
+                    double d = ElectricItem.manager.discharge(aInvStack, aTransferRate, mTier, false, true, false);
+                    ElectricItem.manager.charge(baubleStack, d, mTier, true, false);
                 }
 
-                // Only show Messages if they're enabled.
-                if (getShowMessages(baubleStack)) {
-                    if (hp > 0 || hunger > 0 || saturation > 0) PlayerUtils
-                        .messagePlayer((EntityPlayer) arg1, "Your NanoBooster Whirs! Leaving you feeling stronger.");
-
-                    if (hp > 0) PlayerUtils
-                        .messagePlayer((EntityPlayer) arg1, "Healed " + GTUtility.formatNumbers(hp) + " hp.");
-
-                    if (hunger > 0) PlayerUtils
-                        .messagePlayer((EntityPlayer) arg1, "Healed " + GTUtility.formatNumbers(hunger) + " hunger.");
-
-                    if (saturation > 0) PlayerUtils.messagePlayer(
-                        (EntityPlayer) arg1,
-                        "Satured Hunger by " + GTUtility.formatNumbers(saturation) + ".");
-
-                    if (hp > 0 || hunger > 0 || saturation > 0) PlayerUtils.messagePlayer(
-                        (EntityPlayer) arg1,
-                        "You check it's remaining uses, it has " + GTUtility.formatNumbers(secondsLeft(baubleStack))
-                            + " seconds left.");
-                }
+            }
+            if (!(this.getCharge(baubleStack) <= (this.getMaxCharge(baubleStack) - getTransferLimit(baubleStack)))) {
+                break;
             }
         }
+
+        // Try Heal
+        if (this.getCharge(baubleStack) <= 0) return;
+
+        // health Check
+        float hp = 0;
+        if (arg1.getHealth() < arg1.getMaxHealth()) {
+            final float rx = arg1.getMaxHealth() - arg1.getHealth();
+            Logger.INFO("rx:" + rx);
+            arg1.heal(rx * 2);
+            hp = rx;
+            this.discharge(baubleStack, (1638400) * rx, 6, true, true, false);
+        }
+
+        int hunger = 0;
+        float saturation = 0;
+        FoodStats aFood = g.getFoodStats();
+        if (aFood != null) {
+            // Hunger Check
+            hunger = 20 - aFood.getFoodLevel();
+            // Saturation Check
+            if (hunger > 0) {
+                saturation = 20f - aFood.getSaturationLevel();
+                saturation /= hunger * 2f;
+                this.discharge(baubleStack, (1638400) * (hunger + saturation), 6, true, true, false);
+                aFood.addStats(hunger, saturation);
+            }
+        }
+
+        // Only show Messages if they're enabled.
+        if (!getShowMessages(baubleStack)) return;
+
+        if (hp > 0 || hunger > 0 || saturation > 0)
+            GTUtility.sendChatToPlayer((EntityPlayer) arg1, "Your NanoBooster Whirs! Leaving you feeling stronger.");
+
+        if (hp > 0) GTUtility.sendChatToPlayer((EntityPlayer) arg1, "Healed " + GTUtility.formatNumbers(hp) + " hp.");
+
+        if (hunger > 0)
+            GTUtility.sendChatToPlayer((EntityPlayer) arg1, "Healed " + GTUtility.formatNumbers(hunger) + " hunger.");
+
+        if (saturation > 0) GTUtility
+            .sendChatToPlayer((EntityPlayer) arg1, "Satured Hunger by " + GTUtility.formatNumbers(saturation) + ".");
+
+        if (hp > 0 || hunger > 0 || saturation > 0) GTUtility.sendChatToPlayer(
+            (EntityPlayer) arg1,
+            "You check it's remaining uses, it has " + GTUtility.formatNumbers(secondsLeft(baubleStack))
+                + " seconds left.");
+
     }
 
     private static boolean createNBT(ItemStack rStack) {
@@ -400,7 +388,7 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
             boolean oldState = getShowMessages(superStack);
             boolean newState = !oldState;
             ItemHealingDevice.setShowMessages(superStack, newState);
-            PlayerUtils.messagePlayer(aPlayer, (!oldState ? "Showing info messages" : "Hiding info messages"));
+            GTUtility.sendChatToPlayer(aPlayer, (!oldState ? "Showing info messages" : "Hiding info messages"));
         }
         return superStack;
     }

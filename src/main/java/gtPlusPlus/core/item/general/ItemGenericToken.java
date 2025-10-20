@@ -145,11 +145,6 @@ public class ItemGenericToken extends CoreItem {
     }
 
     @Override
-    public int getMetadata(int p_77647_1_) {
-        return 0;
-    }
-
-    @Override
     public boolean showDurabilityBar(ItemStack stack) {
         return false;
     }

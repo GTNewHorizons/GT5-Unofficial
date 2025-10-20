@@ -18,6 +18,7 @@ import org.mockito.MockedStatic;
 
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.HarvestTool;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -87,7 +88,7 @@ public class BlockMachinesSubclassTest {
 
         @Override
         public byte getTileEntityBaseType() {
-            return 0;
+            return HarvestTool.WrenchLevel0.toTileEntityBaseType();
         }
 
         @Override
@@ -134,10 +135,11 @@ public class BlockMachinesSubclassTest {
         templateInstance = MyMTE.createTemplateInstance();
 
         // Mocked GameRegistry for the block construction.
-        // And apparently the mocked getWater is enough to let us instantiate real BaseMetaTileEntity classes. Huzzah!
+        // And apparently the mocked getIC2Coolant is enough to let us instantiate real BaseMetaTileEntity classes.
+        // Huzzah!
         try (MockedStatic<GameRegistry> gameRegistry = mockStatic(GameRegistry.class);
             MockedStatic<GTModHandler> modHandler = mockStatic(GTModHandler.class)) {
-            modHandler.when(() -> GTModHandler.getWater(anyLong()))
+            modHandler.when(() -> GTModHandler.getIC2Coolant(anyLong()))
                 .thenReturn(mock(FluidStack.class));
 
             MyBlockMachines block = new MyBlockMachines();

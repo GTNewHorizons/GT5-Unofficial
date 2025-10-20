@@ -420,7 +420,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
 
     @Override
     public String[] getInfoData() {
-        return canAccessData() ? getMetaTileEntity().getInfoData() : new String[] {};
+        return canAccessData() ? getMetaTileEntity().getInfoData() : GTValues.emptyStringArray;
     }
 
     @Override
@@ -688,6 +688,11 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
 
     @Override
     public ITexture[] getTexture(Block aBlock, ForgeDirection side) {
+        return getTexture(side);
+    }
+
+    @Override
+    public ITexture[] getTexture(ForgeDirection side) {
         final ITexture rIcon = getCoverTexture(side);
         if (rIcon != null) return new ITexture[] { rIcon };
         return getTextureUncovered(side);
@@ -709,21 +714,24 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
 
     @Override
     public ITexture[] getTextureUncovered(ForgeDirection sideDirection) {
-        int tConnections = mConnections;
-        if (tConnections == IConnectable.CONNECTED_WEST || tConnections == IConnectable.CONNECTED_EAST)
-            tConnections = IConnectable.CONNECTED_WEST | IConnectable.CONNECTED_EAST;
-        else if (tConnections == IConnectable.CONNECTED_DOWN || tConnections == IConnectable.CONNECTED_UP)
-            tConnections = IConnectable.CONNECTED_DOWN | IConnectable.CONNECTED_UP;
-        else if (tConnections == IConnectable.CONNECTED_NORTH || tConnections == IConnectable.CONNECTED_SOUTH)
-            tConnections = IConnectable.CONNECTED_NORTH | IConnectable.CONNECTED_SOUTH;
-        if (hasValidMetaTileEntity()) return mMetaTileEntity.getTexture(
+        if (!hasValidMetaTileEntity()) return Textures.BlockIcons.ERROR_RENDERING;
+        final int tConnections, connexions = mConnections;
+        tConnections = switch (connexions) {
+            case IConnectable.CONNECTED_WEST, IConnectable.CONNECTED_EAST -> IConnectable.CONNECTED_WEST
+                | IConnectable.CONNECTED_EAST;
+            case IConnectable.CONNECTED_DOWN, IConnectable.CONNECTED_UP -> IConnectable.CONNECTED_DOWN
+                | IConnectable.CONNECTED_UP;
+            case IConnectable.CONNECTED_NORTH, IConnectable.CONNECTED_SOUTH -> IConnectable.CONNECTED_NORTH
+                | IConnectable.CONNECTED_SOUTH;
+            default -> connexions;
+        };
+        return mMetaTileEntity.getTexture(
             this,
             sideDirection,
             tConnections,
             mColor - 1,
             tConnections == 0 || (tConnections & sideDirection.flag) != 0,
             getOutputRedstoneSignal(sideDirection) > 0);
-        return Textures.BlockIcons.ERROR_RENDERING;
     }
 
     @Override
@@ -780,7 +788,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                     if (mMetaTileEntity.onWrenchRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
                         mMetaTileEntity.markDirty();
                         GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);
-                        sendSoundToPlayers(SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1);
+                        sendSoundToPlayers(SoundResource.GTCEU_OP_WRENCH, 1.0F, 1);
                     }
                     return true;
                 }
@@ -790,14 +798,14 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                             getCoverAtSide(wrenchingSide).onCoverScrewdriverClick(aPlayer, 0.5F, 0.5F, 0.5F);
                             mMetaTileEntity.onScrewdriverRightClick(wrenchingSide, aPlayer, aX, aY, aZ, tCurrentItem);
                             mMetaTileEntity.markDirty();
-                            sendSoundToPlayers(SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1);
+                            sendSoundToPlayers(SoundResource.GTCEU_OP_SCREWDRIVER, 1.0F, 1);
                         }
                     } else {
                         if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
                             getCoverAtSide(side).onCoverScrewdriverClick(aPlayer, aX, aY, aZ);
                             mMetaTileEntity.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, tCurrentItem);
                             mMetaTileEntity.markDirty();
-                            sendSoundToPlayers(SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1);
+                            sendSoundToPlayers(SoundResource.GTCEU_OP_SCREWDRIVER, 1.0F, 1);
                         }
                     }
                     return true;
@@ -807,7 +815,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                     return true;
                 }
 
-                if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSoftHammerList)) {
+                if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSoftMalletList)) {
                     if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
                         if (mWorks) disableWorking();
                         else enableWorking();
@@ -817,7 +825,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                             GTUtility.trans("090", "Machine Processing: ")
                                 + (isAllowedToWork() ? GTUtility.trans("088", "Enabled")
                                     : GTUtility.trans("087", "Disabled")));
-                        sendSoundToPlayers(SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE, 1.0F, -1);
+                        sendSoundToPlayers(SoundResource.GTCEU_OP_SOFT_HAMMER, 1.0F, 1);
                     }
                     return true;
                 }
@@ -827,7 +835,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                         .onWireCutterRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
                         mMetaTileEntity.markDirty();
                         // logic handled internally
-                        sendSoundToPlayers(SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1);
+                        sendSoundToPlayers(SoundResource.GTCEU_OP_WIRECUTTER, 1.0F, 1);
                     }
                     doEnetUpdate();
                     return true;
@@ -866,7 +874,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
 
                             mMetaTileEntity.markDirty();
                             if (!aPlayer.capabilities.isCreativeMode) tCurrentItem.stackSize--;
-                            sendSoundToPlayers(SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1);
+                            sendSoundToPlayers(SoundResource.GTCEU_OP_WRENCH, 1.0F, 1);
                             sendClientData();
                         }
                         return true;
@@ -1111,7 +1119,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                 || (mMetaTileEntity.isLiquidOutput(side) && cover.letsFluidOut(null))
             // Doesn't need to be connected to get Tank Info -- otherwise things can't connect
             )) return mMetaTileEntity.getTankInfo(side);
-        return new FluidTankInfo[] {};
+        return GTValues.emptyFluidTankInfo;
     }
 
     @Override
@@ -1173,7 +1181,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     }
 
     @Override
-    public boolean hasMufflerUpgrade() {
+    public boolean isMuffled() {
         return false;
     }
 

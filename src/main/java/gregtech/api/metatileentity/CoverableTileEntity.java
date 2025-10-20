@@ -55,7 +55,6 @@ import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
 import gregtech.api.net.GTPacketRequestCoverData;
 import gregtech.api.net.GTPacketSendCoverData;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.common.GTClient;
 import gregtech.common.covers.Cover;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -212,7 +211,8 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     public final ITexture getCoverTexture(ForgeDirection side) {
         final Cover cover = getCoverAtSide(side);
         if (!cover.isValid()) return null;
-        if (GTMod.instance.isClientSide() && GTClient.shouldHideThings()) {
+        if (GTMod.GT.isClientSide() && GTMod.clientProxy()
+            .shouldHideThings()) {
             return Textures.BlockIcons.HIDDEN_TEXTURE[0]; // See through
         }
         final ITexture coverTexture = this instanceof BaseMetaPipeEntity ? cover.getSpecialFaceTexture()
@@ -565,13 +565,13 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     public void addCoverTabs(ModularWindow.Builder builder, UIBuildContext buildContext) {
         final int COVER_TAB_LEFT = -16, COVER_TAB_TOP = 1, COVER_TAB_HEIGHT = 20, COVER_TAB_WIDTH = 18,
             COVER_TAB_SPACING = 2, ICON_SIZE = 16;
-        final boolean flipHorizontally = GTMod.gregtechproxy.mCoverTabsFlipped;
+        final boolean flipHorizontally = GTMod.proxy.mCoverTabsFlipped;
 
         final Column columnWidget = new Column();
         builder.widget(columnWidget);
         final int xPos = flipHorizontally ? (getGUIWidth() - COVER_TAB_LEFT - COVER_TAB_WIDTH) : COVER_TAB_LEFT;
-        if (GTMod.gregtechproxy.mCoverTabsVisible) {
-            columnWidget.setPos(xPos, COVER_TAB_TOP)
+        if (GTMod.proxy.mCoverTabsVisible) {
+            columnWidget.setPos(xPos, COVER_TAB_TOP + getCoverTabHeightOffset())
                 .setEnabled(
                     widget -> ((Column) widget).getChildren()
                         .stream()
@@ -620,6 +620,10 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
                             (COVER_TAB_HEIGHT - ICON_SIZE) / 2))
                 .setEnabled(widget -> getCoverItemAtSide(direction) != null));
         }
+    }
+
+    protected int getCoverTabHeightOffset() {
+        return 0;
     }
 
     @SideOnly(Side.CLIENT)

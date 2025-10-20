@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GTValues.AuthorBlueWeabo;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -17,6 +16,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,12 +29,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableList;
+import com.gtnewhorizon.structurelib.alignment.constructable.ChannelDataAccessor;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
@@ -93,12 +95,15 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.blocks.BlockCasings8;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     implements ISurvivalConstructable, INEIPreviewModifier {
 
+    private static final String xOffsetText = "GT5U.MBTT.PCB.XOffset";
+    private static final String zOffsetText = "GT5U.MBTT.PCB.ZOffset";
     private static final String tier1 = "tier1";
     private static final String tier2 = "tier2";
     private static final String tier3 = "tier3";
@@ -109,7 +114,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     private int mTier = 1;
     private int mSetTier = 1;
     private int mUpgradesInstalled = 0;
-    private final int mCurrentParallel = 0;
     private int mMaxParallel = 0;
     private boolean mBioUpgrade = false, mBioRotate = false, mOCTier1 = false, mOCTier2 = false;
     private final int[] mBioOffsets = new int[] { -5, -1 };
@@ -231,29 +235,42 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                         {"RGGGR","GGGGG","GGSGG","GGGGG","RGGGR"}
                         //spotless:on
                 }))
-        .addElement('E', ofFrame(Materials.DamascusSteel))
-        .addElement('C', ofBlock(GregTechAPI.sBlockCasings8, 11))
-        .addElement('D', ofBlock(GregTechAPI.sBlockReinforced, 2))
         .addElement('A', chainAllGlasses())
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings3, 10))
+        .addElement(
+            'C',
+            withChannel(
+                "enableBioUpgrade",
+                ofBlocksTiered(
+                    (block, meta) -> block == GregTechAPI.sBlockCasings8 && meta == 11 ? 1 : null,
+                    ImmutableList.of(Pair.of(GregTechAPI.sBlockCasings8, 11)),
+                    -1,
+                    (t, m) -> {},
+                    t -> -1)))
+        .addElement(
+            'D',
+            withChannel(
+                "enableOCTier1",
+                ofBlocksTiered(
+                    (block, meta) -> block == GregTechAPI.sBlockReinforced && meta == 2 ? 1 : null,
+                    ImmutableList.of(Pair.of(GregTechAPI.sBlockReinforced, 2)),
+                    -1,
+                    (t, m) -> {},
+                    t -> -1)))
+        .addElement('E', ofFrame(Materials.DamascusSteel))
         .addElement('F', ofFrame(Materials.VibrantAlloy))
         .addElement(
-            'P',
-            buildHatchAdder(MTEPCBFactory.class)
-                .atLeast(
-                    InputHatch,
-                    OutputBus,
-                    InputBus,
-                    Maintenance,
-                    Energy.or(ExoticEnergy),
-                    SpecialHatchElement.NaniteBus)
-                .dot(1)
-                .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(11))
-                .buildAndChain(GregTechAPI.sBlockCasings8, 11))
+            'G',
+            withChannel(
+                "enableOCTier2",
+                ofBlocksTiered(
+                    (block, meta) -> block == GregTechAPI.sBlockCasings8 && meta == 12 ? 1 : null,
+                    ImmutableList.of(Pair.of(GregTechAPI.sBlockCasings8, 12)),
+                    -1,
+                    (t, m) -> {},
+                    t -> -1)))
         .addElement('H', ofFrame(Materials.Duranium))
-        .addElement('G', ofBlock(GregTechAPI.sBlockCasings8, 12))
         .addElement('I', ofBlock(GregTechAPI.sBlockCasings8, 13))
-        .addElement('K', ofBlock(GregTechAPI.sBlockCasings8, 10))
         .addElement(
             'J',
             buildHatchAdder(MTEPCBFactory.class)
@@ -267,6 +284,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                 .dot(1)
                 .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(13))
                 .buildAndChain(GregTechAPI.sBlockCasings8, 13))
+        .addElement('K', ofBlock(GregTechAPI.sBlockCasings8, 10))
         .addElement('L', ofBlock(GregTechAPI.sBlockCasings4, 1))
         .addElement(
             'M',
@@ -278,14 +296,27 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         .addElement('N', ofBlock(GregTechAPI.sBlockCasings2, 15))
         .addElement('O', ofBlock(GregTechAPI.sBlockCasings8, 4))
         .addElement(
+            'P',
+            buildHatchAdder(MTEPCBFactory.class)
+                .atLeast(
+                    InputHatch,
+                    OutputBus,
+                    InputBus,
+                    Maintenance,
+                    Energy.or(ExoticEnergy),
+                    SpecialHatchElement.NaniteBus)
+                .dot(1)
+                .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(11))
+                .buildAndChain(GregTechAPI.sBlockCasings8, 11))
+        .addElement('Q', ofBlock(GregTechAPI.sBlockCasings8, 14))
+        .addElement('R', ofFrame(Materials.Americium))
+        .addElement(
             'S',
             buildHatchAdder(MTEPCBFactory.class).hatchClass(MTEHatchInput.class)
                 .adder(MTEPCBFactory::addCoolantInputToMachineList)
                 .casingIndex(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 12))
                 .dot(2)
                 .buildAndChain(GregTechAPI.sBlockCasings8, 12))
-        .addElement('R', ofFrame(Materials.Americium))
-        .addElement('Q', ofBlock(GregTechAPI.sBlockCasings8, 14))
         .addElement('T', ofBlock(GregTechAPI.sBlockCasings1, 15))
         .build();
 
@@ -610,7 +641,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     }
 
     private double getDurationMultiplierFromRoughness() {
-        return Math.pow(mRoughnessMultiplier, 2);
+        return mRoughnessMultiplier * mRoughnessMultiplier;
     }
 
     private int ticker = 0;
@@ -760,9 +791,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         inputSeparation = !inputSeparation;
-        GTUtility.sendChatToPlayer(
-            aPlayer,
-            StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + inputSeparation);
+        GTUtility.sendChatToPlayer(aPlayer, translateToLocal("GT5U.machines.separatebus") + " " + inputSeparation);
     }
 
     @Override
@@ -778,8 +807,9 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         long voltage = getAverageInputVoltage();
         long amps = getMaxInputAmps();
 
+        int mCurrentParallel = 0;
         return new String[] {
-            /* 1 */ StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
+            /* 1 */ translateToLocal("GT5U.multiblock.Progress") + ": "
                 + EnumChatFormatting.GREEN
                 + GTUtility.formatNumbers(mProgresstime / 20)
                 + EnumChatFormatting.RESET
@@ -788,7 +818,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                 + GTUtility.formatNumbers(mMaxProgresstime / 20)
                 + EnumChatFormatting.RESET
                 + " s",
-            /* 2 */ StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
+            /* 2 */ translateToLocal("GT5U.multiblock.energy") + ": "
                 + EnumChatFormatting.GREEN
                 + GTUtility.formatNumbers(storedEnergy)
                 + EnumChatFormatting.RESET
@@ -797,43 +827,41 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                 + GTUtility.formatNumbers(maxEnergy)
                 + EnumChatFormatting.RESET
                 + " EU",
-            /* 3 */ StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
+            /* 3 */ translateToLocal("GT5U.multiblock.usage") + ": "
                 + EnumChatFormatting.RED
                 + GTUtility.formatNumbers(getActualEnergyUsage())
                 + EnumChatFormatting.RESET
                 + " EU/t",
-            /* 4 */ StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
+            /* 4 */ translateToLocal("GT5U.multiblock.mei") + ": "
                 + EnumChatFormatting.YELLOW
                 + GTUtility.formatNumbers(voltage)
                 + EnumChatFormatting.RESET
                 + " EU/t(*"
                 + amps
                 + " A)"
-                + StatCollector.translateToLocal("GT5U.machines.tier")
+                + translateToLocal("GT5U.machines.tier")
                 + ": "
                 + EnumChatFormatting.YELLOW
                 + VN[GTUtility.getTier(voltage)]
                 + EnumChatFormatting.RESET,
-            /* 5 */ StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
+            /* 5 */ translateToLocal("GT5U.multiblock.problems") + ": "
                 + EnumChatFormatting.RED
                 + (getIdealStatus() - getRepairStatus())
                 + EnumChatFormatting.RESET
                 + " "
-                + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
+                + translateToLocal("GT5U.multiblock.efficiency")
                 + ": "
                 + EnumChatFormatting.YELLOW
                 + mEfficiency / 100.0F
                 + EnumChatFormatting.RESET
                 + " %",
-            /* 6 */ StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
+            /* 6 */ translateToLocal("GT5U.multiblock.pollution") + ": "
                 + EnumChatFormatting.GREEN
                 + getAveragePollutionPercentage()
                 + EnumChatFormatting.RESET
                 + " %",
-            /* 7 */ StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
-                + EnumChatFormatting.GREEN
-                + mMaxParallel,
-            /* 8 */ StatCollector.translateToLocal("GT5U.multiblock.curparallelism") + ": "
+            /* 7 */ translateToLocal("GT5U.multiblock.parallelism") + ": " + EnumChatFormatting.GREEN + mMaxParallel,
+            /* 8 */ translateToLocal("GT5U.multiblock.curparallelism") + ": "
                 + EnumChatFormatting.GREEN
                 + mCurrentParallel };
     }
@@ -845,20 +873,40 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             .addInfo(
                 EnumChatFormatting.GOLD.toString() + EnumChatFormatting.BOLD
                     + "IMPORTANT!"
-                    + " Check the configuration menu before building.")
-            .addInfo("Tier of the machine determines the available recipes.")
-            .addInfo("Machine tier (1-3) is set in the controller GUI.")
-            .addInfo("The configuration menu can be used to add upgrades.")
-            .addInfo("Each tier and upgrade requires additional structures.")
-            .addInfo("Power consumption is multiplied by Sqrt(structures).")
-            .addInfo("Tier 2 and 3 allow parallel by using extra nanites.")
-            .addInfo("Nanites have to be placed in a Nanite Containment Bus.")
-            .addInfo("The formula for parallels is the amount of nanites^0.75, rounded up.")
-            .addInfo("Maximum parallel is 256.")
-            .addInfo("Recipes require a cooling upgrade to be overclocked.")
-            .addInfo("Liquid Cooling uses 10 L/s of distilled water and enables default overclocks.")
-            .addInfo("Thermosink uses 10 L/s of Super Coolant and enables perfect overclocks.")
-            .addInfo("Trace size can be changed to modify the material usage and machine speed.")
+                    + " Check the configuration menu before building!")
+            .addInfo("Tier of the machine determines the available recipes")
+            .addInfo("Machine tier (1-3) is set in the controller GUI")
+            .addInfo("The configuration menu can be used to add upgrades")
+            .addInfo("Each tier and upgrade requires additional structures")
+            .addInfo("Power consumption is multiplied by Sqrt(structures)")
+            .addInfo("Tier 2 and 3 allow parallel by using extra nanites")
+            .addInfo("Nanites have to be placed in a Nanite Containment Bus")
+            .addInfo(
+                "The formula for parallels is the " + TooltipHelper.parallelText("amount of nanites^0.75")
+                    + ", rounded up")
+            .addInfo("Maximum parallel is " + TooltipHelper.parallelText("256"))
+            .addInfo("Recipes require a cooling upgrade to be overclocked")
+            .addInfo(
+                "Liquid Cooling uses " + EnumChatFormatting.BLUE
+                    + "10 L/s"
+                    + EnumChatFormatting.GRAY
+                    + " of "
+                    + EnumChatFormatting.BLUE
+                    + "distilled water"
+                    + EnumChatFormatting.GRAY
+                    + " and enables default overclocks")
+            .addInfo(
+                "Thermosink uses " + EnumChatFormatting.AQUA
+                    + "10 L/s"
+                    + EnumChatFormatting.GRAY
+                    + " of "
+                    + EnumChatFormatting.AQUA
+                    + "Super Coolant"
+                    + EnumChatFormatting.GRAY
+                    + " and enables "
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + "perfect overclocks")
+            .addInfo("Trace size can be changed to modify the material usage and machine speed")
             .addTecTechHatchInfo()
             .beginStructureBlock(30, 38, 13, false)
             .addMaintenanceHatch(EnumChatFormatting.GOLD + "1", 1)
@@ -873,7 +921,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     + EnumChatFormatting.GOLD
                     + "1"
                     + EnumChatFormatting.GRAY
-                    + " TT energy hatch.",
+                    + " TT energy hatch",
                 1)
             .addInputBus(EnumChatFormatting.GOLD + "0" + EnumChatFormatting.GRAY + "+", 1)
             .addOutputBus(EnumChatFormatting.GOLD + "0" + EnumChatFormatting.GRAY + "+", 1)
@@ -898,7 +946,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     + "):")
             .addStructureInfo(EnumChatFormatting.GOLD + "40" + EnumChatFormatting.GRAY + " Damascus Steel Frame Box")
             .addStructureInfo(EnumChatFormatting.GOLD + "9" + EnumChatFormatting.GRAY + " Vibrant Alloy Frame Box")
-            .addStructureInfo(EnumChatFormatting.GOLD + "25" + EnumChatFormatting.GRAY + " Reinforced Glass")
+            .addStructureInfo(EnumChatFormatting.GOLD + "25" + EnumChatFormatting.GRAY + " Any Tiered Glass")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "77" + EnumChatFormatting.GRAY + " Basic Photolithography Framework Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "12" + EnumChatFormatting.GRAY + " Grate Machine Casing")
@@ -930,7 +978,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "68" + EnumChatFormatting.GRAY + " Clean Stainless Steel Machine Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "40" + EnumChatFormatting.GRAY + " Damascus Steel Frame Box")
-            .addStructureInfo(EnumChatFormatting.GOLD + "72" + EnumChatFormatting.GRAY + " Reinforced Glass")
+            .addStructureInfo(EnumChatFormatting.GOLD + "72" + EnumChatFormatting.GRAY + " Any Tiered Glass")
             .addStructureInfo(
                 EnumChatFormatting.BLUE + "Liquid Cooling Tower (Tier "
                     + EnumChatFormatting.DARK_PURPLE
@@ -1005,7 +1053,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
     @Override
     protected SoundResource getProcessStartSound() {
-        return SoundResource.IC2_MACHINES_MAGNETIZER_LOOP;
+        return SoundResource.GTCEU_LOOP_ASSEMBLER;
     }
 
     @Override
@@ -1044,6 +1092,11 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     }
 
     @Override
+    protected boolean useMui2() {
+        return false;
+    }
+
+    @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
         buildContext.addSyncedWindow(10, this::createConfigurationWindow);
@@ -1060,10 +1113,10 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     ret.add(GTUITextures.OVERLAY_BUTTON_CYCLIC);
                     return ret.toArray(new IDrawable[0]);
                 })
-                .addTooltip("Configuration Menu")
+                .addTooltip(translateToLocal("GT5U.MBTT.ConfigMenu"))
                 .setPos(174, 130))
             .widget(
-                new TextWidget(new Text("Tier")).setTextAlignment(Alignment.Center)
+                new TextWidget(new Text(translateToLocal("GT5U.machines.tier"))).setTextAlignment(Alignment.Center)
                     .setScale(0.91f)
                     .setSize(20, 16)
                     .setPos(173, 98))
@@ -1073,7 +1126,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     .setBounds(1, 3)
                     .setTextColor(Color.WHITE.normal)
                     .setTextAlignment(Alignment.Center)
-                    .addTooltip("PCB Factory Tier")
+                    .addTooltip(translateToLocal("GT5U.MBTT.PCB.Tier"))
                     .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
                     .setSize(18, 18)
                     .setPos(173, 110));
@@ -1087,7 +1140,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CYCLIC)
                 .setPos(5, 5)
                 .setSize(16, 16))
-            .widget(new TextWidget("Configuration Menu").setPos(25, 9))
+            .widget(new TextWidget(translateToLocal("GT5U.MBTT.ConfigMenu")).setPos(25, 9))
             .widget(
                 ButtonWidget.closeWindowButton(true)
                     .setPos(185, 3))
@@ -1097,84 +1150,79 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                         new MultiChildWidget().addChild(new CycleButtonWidget().setToggle(() -> mBioUpgrade, val -> {
                             mBioUpgrade = val;
                             if (!mBioUpgrade) {
-                                GTUtility
-                                    .sendChatToPlayer(player, GTUtility.trans("339.1", "Biochamber Upgrade Disabled"));
+                                GTUtility.sendChatToPlayer(player, translateToLocal("GT5U.MBTT.PCB.BioOff"));
                             } else {
-                                GTUtility
-                                    .sendChatToPlayer(player, GTUtility.trans("339", "Biochamber Upgrade Enabled"));
+                                GTUtility.sendChatToPlayer(player, translateToLocal("GT5U.MBTT.PCB.BioOn"));
                             }
                         })
                             .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
                             .setSize(90, 18)
-                            .addTooltip(
-                                "Enables nanites to construct organic circuitry. Required for Bioware and Wetware boards."))
+                            .addTooltip(translateToLocal("GT5U.MBTT.PCB.Tooltip.1")))
                             .addChild(
                                 new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CYCLIC)
                                     .setSize(18, 18))
                             .addChild(
-                                new TextWidget("Biochamber").setTextAlignment(Alignment.Center)
+                                new TextWidget(translateToLocal("GT5U.MBTT.PCB.Bio")).setTextAlignment(Alignment.Center)
                                     .setPos(23, 5))
                             .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                     .widget(new MultiChildWidget().addChild(new CycleButtonWidget().setToggle(() -> mBioRotate, val -> {
                         mBioRotate = val;
                         if (!mBioRotate) {
-                            GTUtility.sendChatToPlayer(player, GTUtility.trans("340.1", "Rotated biochamber disabled"));
+                            GTUtility.sendChatToPlayer(player, translateToLocal("GT5U.MBTT.PCB.RotBioOff"));
                         } else {
-                            GTUtility.sendChatToPlayer(player, GTUtility.trans("340", "Rotated biochamber enabled"));
+                            GTUtility.sendChatToPlayer(player, translateToLocal("GT5U.MBTT.PCB.RotBioOn"));
                         }
                     })
                         .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
                         .setSize(90, 18)
-                        .addTooltip("Rotates the biochamber by 90 degrees."))
+                        .addTooltip(translateToLocal("GT5U.MBTT.PCB.Tooltip.2")))
                         .addChild(
                             new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CYCLIC)
                                 .setSize(18, 18))
                         .addChild(
-                            new TextWidget("Bio Rotation").setTextAlignment(Alignment.Center)
+                            new TextWidget(translateToLocal("GT5U.MBTT.PCB.RotBio")).setTextAlignment(Alignment.Center)
                                 .setPos(23, 5))
                         .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                     .widget(new MultiChildWidget().addChild(new CycleButtonWidget().setToggle(() -> mOCTier1, val -> {
                         mOCTier1 = val;
                         mOCTier2 = false;
                         if (!mOCTier1) {
-                            GTUtility.sendChatToPlayer(player, GTUtility.trans("341.1", "Tier 1 cooling disabled"));
+                            GTUtility.sendChatToPlayer(player, translateToLocal("GT5U.MBTT.PCB.T1CoolOff"));
                         } else {
-                            GTUtility.sendChatToPlayer(player, GTUtility.trans("341", "Tier 1 cooling enabled"));
+                            GTUtility.sendChatToPlayer(player, translateToLocal("GT5U.MBTT.PCB.T1CoolOn"));
                         }
                     })
                         .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
                         .setSize(90, 18)
-                        .addTooltip(
-                            "Allows for overclocking. Requires 10 L/s of distilled water. Cooling upgrades are mutually exclusive."))
+                        .addTooltip(translateToLocal("GT5U.MBTT.PCB.Tooltip.3")))
                         .addChild(
                             new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CYCLIC)
                                 .setSize(18, 18))
                         .addChild(
-                            new TextWidget("Liquid Cooling").setTextAlignment(Alignment.Center)
+                            new TextWidget(translateToLocal("GT5U.MBTT.PCB.LiqCool")).setTextAlignment(Alignment.Center)
                                 .setPos(20, 5))
                         .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                     .widget(new MultiChildWidget().addChild(new CycleButtonWidget().setToggle(() -> mOCTier2, val -> {
                         mOCTier2 = val;
                         mOCTier1 = false;
                         if (!mOCTier2) {
-                            GTUtility.sendChatToPlayer(player, GTUtility.trans("342.1", "Tier 2 cooling disabled"));
+                            GTUtility.sendChatToPlayer(player, translateToLocal("GT5U.MBTT.PCB.T2CoolOff"));
                         } else {
-                            GTUtility.sendChatToPlayer(player, GTUtility.trans("342", "Tier 2 cooling enabled"));
+                            GTUtility.sendChatToPlayer(player, translateToLocal("GT5U.MBTT.PCB.T2CoolOn"));
                         }
                     })
                         .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
                         .setSize(90, 18)
-                        .addTooltip(
-                            "Enables perfect overclocking by allowing nanites to work with extreme speed and efficiency. Uses 10 L/s of Super Coolant."))
+                        .addTooltip(translateToLocal("GT5U.MBTT.PCB.Tooltip.4")))
                         .addChild(
                             new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CYCLIC)
                                 .setSize(18, 18))
                         .addChild(
-                            new TextWidget("Thermosink").setTextAlignment(Alignment.Center)
+                            new TextWidget(translateToLocal("GT5U.MBTT.PCB.Sink")).setTextAlignment(Alignment.Center)
                                 .setPos(20, 5))
                         .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                     .widget(
-                        new TextWidget(new Text("Trace Size")).setSize(90, 18)
+                        new TextWidget(new Text(translateToLocal("GT5U.MBTT.PCB.Size"))).setSize(90, 18)
                             .setEnabled(widget -> !getBaseMetaTileEntity().isActive())
                             .setPos(0, 4))
                     .widget(
@@ -1183,20 +1231,19 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                             .setBounds(50, 200)
                             .setTextColor(Color.WHITE.normal)
                             .setTextAlignment(Alignment.Center)
-                            .addTooltip(
-                                "Set the trace size. Smaller traces allow material savings but take longer to fabricate. Larger traces waste material but are fast. 50-200 μm.")
+                            .addTooltip(translateToLocal("GT5U.MBTT.PCB.Tooltip.5"))
                             .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
                             .setSize(90, 16))
                     .widget(
                         new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CROSS)
                             .setSize(18, 18)
-                            .addTooltip(new Text("Can't change configuration when running !").color(Color.RED.dark(3)))
+                            .addTooltip(new Text(translateToLocal("GT5U.MBTT.PCB.Tooltip.6")).color(Color.RED.dark(3)))
                             .setEnabled(widget -> getBaseMetaTileEntity().isActive()))
                     .setPos(10, 25))
             .widget(
                 new DynamicPositionedColumn().setSynced(false)
                     .widget(
-                        new TextWidget(new Text("Bio Upgrade Offsets")).setSize(72, 18)
+                        new TextWidget(new Text(translateToLocal("GT5U.MBTT.PCB.Offsets"))).setSize(72, 18)
                             .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                     .widget(
                         new DynamicPositionedRow().setSynced(false)
@@ -1206,7 +1253,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                                     .setBounds(-16, 16)
                                     .setTextColor(Color.WHITE.normal)
                                     .setTextAlignment(Alignment.Center)
-                                    .addTooltip("X Offset")
+                                    .addTooltip(translateToLocal(xOffsetText))
                                     .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
                                     .setSize(36, 18))
                             .widget(
@@ -1215,12 +1262,12 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                                     .setBounds(-16, 16)
                                     .setTextColor(Color.WHITE.normal)
                                     .setTextAlignment(Alignment.Center)
-                                    .addTooltip("Z Offset")
+                                    .addTooltip(translateToLocal(zOffsetText))
                                     .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
                                     .setSize(36, 18))
                             .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                     .widget(
-                        new TextWidget(new Text("Cooler Tier 1 Offsets")).setSize(72, 18)
+                        new TextWidget(new Text(translateToLocal("GT5U.MBTT.PCB.T1CoolOffset"))).setSize(72, 18)
                             .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                     .widget(
                         new DynamicPositionedRow().setSynced(false)
@@ -1230,7 +1277,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                                     .setBounds(-16, 16)
                                     .setTextColor(Color.WHITE.normal)
                                     .setTextAlignment(Alignment.Center)
-                                    .addTooltip("X Offset")
+                                    .addTooltip(translateToLocal(xOffsetText))
                                     .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
                                     .setSize(36, 18))
                             .widget(
@@ -1239,12 +1286,12 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                                     .setBounds(-16, 16)
                                     .setTextColor(Color.WHITE.normal)
                                     .setTextAlignment(Alignment.Center)
-                                    .addTooltip("Z Offset")
+                                    .addTooltip(translateToLocal(zOffsetText))
                                     .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
                                     .setSize(36, 18))
                             .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                     .widget(
-                        new TextWidget(new Text("Cooler Tier 2 Offsets")).setSize(72, 18)
+                        new TextWidget(new Text(translateToLocal("GT5U.MBTT.PCB.T2CoolOffset"))).setSize(72, 18)
                             .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                     .widget(
                         new DynamicPositionedRow().setSynced(false)
@@ -1254,7 +1301,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                                     .setBounds(-16, 16)
                                     .setTextColor(Color.WHITE.normal)
                                     .setTextAlignment(Alignment.Center)
-                                    .addTooltip("X Offset")
+                                    .addTooltip(translateToLocal(xOffsetText))
                                     .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
                                     .setSize(36, 18))
                             .widget(
@@ -1263,7 +1310,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                                     .setBounds(-16, 16)
                                     .setTextColor(Color.WHITE.normal)
                                     .setTextAlignment(Alignment.Center)
-                                    .addTooltip("Z Offset")
+                                    .addTooltip(translateToLocal(zOffsetText))
                                     .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
                                     .setSize(36, 18))
                             .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
@@ -1334,5 +1381,13 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     @Override
     public void onPreviewConstruct(@NotNull ItemStack trigger) {
         mSetTier = trigger.stackSize;
+        if (ChannelDataAccessor.hasSubChannel(trigger, "enableBioUpgrade")) {
+            buildPiece(bioUpgrade, trigger, false, -5, 6, 0);
+        }
+        if (ChannelDataAccessor.hasSubChannel(trigger, "enableOCTier2")) {
+            buildPiece(ocTier2Upgrade, trigger, false, 2, 9, -11);
+        } else if (ChannelDataAccessor.hasSubChannel(trigger, "enableOCTier1")) {
+            buildPiece(ocTier1Upgrade, trigger, false, 2, 9, -11);
+        }
     }
 }
