@@ -983,7 +983,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     // TODO: figure out why isActive doesnt send to client by default???
     @Override
     public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
-
+/*
         if (!shouldRender || !getBaseMetaTileEntity().isActive()) return;
 
         if (!renderInitialized) {
@@ -998,7 +998,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         renderRingTwo(x, y, z, timeSinceLastTick, modules[1].rgbArr);
         renderRingThree(x, y, z, timeSinceLastTick, modules[2].rgbArr);
         renderRingFour(x, y, z, timeSinceLastTick, modules[3].rgbArr);
-
+*/
     }
 
     private void initializeRender() {
