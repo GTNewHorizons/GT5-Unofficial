@@ -1019,7 +1019,7 @@ public class RecipeLoader2 {
             GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "EPE", "PHP", "SPS", 'P',
                 GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.TungstenSteel, 1), 'H',
-                ItemList.Hull_IV.get(1), 'S', GGMaterial.marM200.get(OrePrefixes.plate, 1), 'E',
+                ItemList.Hull_IV.get(1), 'S', GGMaterial.marCeM200.get(OrePrefixes.plate, 1), 'E',
                 GTModHandler.getIC2Item("reactorHeatSwitchDiamond", 1L, 1) });
 
         GTValues.RA.stdBuilder()

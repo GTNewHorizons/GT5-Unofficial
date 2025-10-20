@@ -245,6 +245,7 @@ public class MaterialsInit {
             .addPlasma()
             .setMeltingPoint(1_090)
             .addAspect(TCAspects.VENENUM, 3)
+            .addSubTag(SubTag.TRANSMUTABLE_NUGGETS)
             .constructMaterial();
     }
 
@@ -280,6 +281,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.LUCRUM, 1)
             .addOreByproduct(() -> Materials.Emerald)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.TRANSMUTABLE_NUGGETS)
             .constructMaterial();
     }
 
@@ -334,6 +336,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.RADIO, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.TRANSMUTABLE_NUGGETS)
             .constructMaterial();
     }
 
@@ -449,6 +452,7 @@ public class MaterialsInit {
             .addOreByproduct(() -> Materials.Magnesium)
             .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_IRON)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.TRANSMUTABLE_NUGGETS)
             .constructMaterial();
     }
 
@@ -673,6 +677,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.ELECTRUM, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.TRANSMUTABLE_NUGGETS)
             .constructMaterial();
     }
 
@@ -899,6 +904,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.VITREUS, 1)
             .addAspect(TCAspects.POTENTIA, 2)
             .addOreByproduct(() -> Materials.Lithium)
+            .addSubTag(SubTag.TRANSMUTABLE_NUGGETS)
             .constructMaterial();
     }
 
@@ -963,6 +969,7 @@ public class MaterialsInit {
             .addOreByproduct(() -> Materials.Olivine)
             .addSubTag(SubTag.METAL)
             .addSubTag(SubTag.MULTI_PLATE)
+            .addSubTag(SubTag.TRANSMUTABLE_NUGGETS)
             .constructMaterial();
     }
 
@@ -985,6 +992,7 @@ public class MaterialsInit {
             .addOreByproduct(() -> Materials.Iron)
             .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_IRON)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.TRANSMUTABLE_NUGGETS)
             .constructMaterial();
     }
 
@@ -1034,6 +1042,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.BLASTFURNACE_CALCITE_TRIPLE)
             .addSubTag(SubTag.METAL)
             .addSubTag(SubTag.MULTI_PLATE)
+            .addSubTag(SubTag.TRANSMUTABLE_NUGGETS)
             .constructMaterial();
     }
 
@@ -1054,6 +1063,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.INSTRUMENTUM, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.TRANSMUTABLE_NUGGETS)
             .constructMaterial();
     }
 
@@ -1107,6 +1117,7 @@ public class MaterialsInit {
             .addOreByproduct(() -> Materials.Monazite)
             .addOreByproduct(() -> Materials.RareEarth)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.TRANSMUTABLE_NUGGETS)
             .constructMaterial();
     }
 
@@ -1462,6 +1473,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.VITREUS, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.TRANSMUTABLE_NUGGETS)
             .constructMaterial();
     }
 
@@ -1502,6 +1514,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.RADIO, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.TRANSMUTABLE_NUGGETS)
             .constructMaterial();
     }
 
@@ -1584,6 +1597,7 @@ public class MaterialsInit {
             .setMeltingPoint(1_050)
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.STRONTIO, 1)
+            .addSubTag(SubTag.TRANSMUTABLE_NUGGETS)
             .constructMaterial();
     }
 
@@ -1625,6 +1639,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.VINCULUM, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.TRANSMUTABLE_NUGGETS)
             .constructMaterial();
     }
 
@@ -1851,6 +1866,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.RADIO, 1)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.TRANSMUTABLE_NUGGETS)
             .constructMaterial();
     }
 
@@ -2802,6 +2818,7 @@ public class MaterialsInit {
             .setBlastFurnaceRequired(true)
             .setAutoGenerateBlastFurnaceRecipes(false)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.TRANSMUTABLE_NUGGETS)
             .constructMaterial();
     }
 
@@ -6825,6 +6842,7 @@ public class MaterialsInit {
             .setArcSmeltingInto(() -> Materials.WroughtIron)
             .addSubTag(SubTag.BLASTFURNACE_CALCITE_TRIPLE)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.TRANSMUTABLE_NUGGETS)
             .constructMaterial();
     }
 
@@ -9079,6 +9097,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.METAL)
             .addSubTag(SubTag.MORTAR_GRINDABLE)
             .addSubTag(SubTag.MULTI_PLATE)
+            .addSubTag(SubTag.TRANSMUTABLE_NUGGETS)
             .constructMaterial();
     }
 
@@ -10867,6 +10886,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Arsenic, 4)
             .addMaterial(Materials.Sulfur, 4)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.TRANSMUTABLE_NUGGETS)
             .constructMaterial();
     }
 
@@ -12651,6 +12671,7 @@ public class MaterialsInit {
             .addToolHeadItems()
             .addGearItems()
             .addSubTag(SubTag.MULTI_PLATE)
+            .addSubTag(SubTag.TRANSMUTABLE_NUGGETS)
             .constructMaterial();
     }
 
@@ -12692,6 +12713,7 @@ public class MaterialsInit {
             .addToolHeadItems()
             .addGearItems()
             .addSubTag(SubTag.MULTI_PLATE)
+            .addSubTag(SubTag.TRANSMUTABLE_NUGGETS)
             .constructMaterial();
     }
 
@@ -12736,6 +12758,7 @@ public class MaterialsInit {
             .addOreByproduct(() -> Materials.Samarium)
             .addOreByproduct(() -> Materials.Zinc)
             .addSubTag(SubTag.MULTI_PLATE)
+            .addSubTag(SubTag.TRANSMUTABLE_NUGGETS)
             .constructMaterial();
     }
 
@@ -12885,6 +12908,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.METAL)
             .addSubTag(SubTag.MULTI_PLATE)
             .addSubTag(SubTag.WASHING_MERCURY)
+            .addSubTag(SubTag.TRANSMUTABLE_NUGGETS)
             .constructMaterial();
     }
 
@@ -12911,6 +12935,7 @@ public class MaterialsInit {
             .addOreByproduct(() -> Materials.Iron)
             .addSubTag(SubTag.BLASTFURNACE_CALCITE_TRIPLE)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.TRANSMUTABLE_NUGGETS)
             .constructMaterial();
     }
 
@@ -12983,6 +13008,7 @@ public class MaterialsInit {
             .addMaterial(Materials.SiliconDioxide, 26_244)
             .addMaterial(Materials.Diamond, 9)
             .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.TRANSMUTABLE_NUGGETS)
             .constructMaterial()
             .setProcessingMaterialTierEU(TierEU.RECIPE_EV);
     }

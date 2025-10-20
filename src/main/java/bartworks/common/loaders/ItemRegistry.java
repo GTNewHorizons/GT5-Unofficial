@@ -112,7 +112,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.EnergyDistributor_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.EnergyDistributor_UXV;
 import static gregtech.api.enums.MetaTileEntityIDs.EnergyDistributor_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.GiantOutputHatch;
-import static gregtech.api.enums.MetaTileEntityIDs.HighTemperatureGasCooledReactor;
 import static gregtech.api.enums.MetaTileEntityIDs.HumongousInputHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.MegaBlastFurnace;
 import static gregtech.api.enums.MetaTileEntityIDs.MegaChemicalReactor;
@@ -151,7 +150,6 @@ import bartworks.common.tileentities.debug.MTECreativeScanner;
 import bartworks.common.tileentities.multis.MTECircuitAssemblyLine;
 import bartworks.common.tileentities.multis.MTEDeepEarthHeatingPump;
 import bartworks.common.tileentities.multis.MTEElectricImplosionCompressor;
-import bartworks.common.tileentities.multis.MTEHighTempGasCooledReactor;
 import bartworks.common.tileentities.multis.MTEThoriumHighTempReactor;
 import bartworks.common.tileentities.multis.mega.MTEMegaBlastFurnace;
 import bartworks.common.tileentities.multis.mega.MTEMegaChemicalReactor;
@@ -176,6 +174,7 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
 import ic2.api.item.IKineticRotor;
+import kubatech.tileentity.gregtech.multiblock.MTEHighTempGasCooledReactor;
 
 public class ItemRegistry {
 
@@ -324,7 +323,6 @@ public class ItemRegistry {
     public static ItemStack dehp;
     public static ItemStack[] voidminer = new ItemStack[3];
     public static ItemStack THTR;
-    public static ItemStack HTGR;
     public static ItemStack eic;
     public static ItemStack cal;
     public static ItemStack compressedHatch;
@@ -387,10 +385,6 @@ public class ItemRegistry {
             "THTR",
             "Thorium High Temperature Reactor").getStackForm(1L);
         MTEThoriumHighTempReactor.THTRMaterials.registeraTHR_Materials();
-        ItemRegistry.HTGR = new MTEHighTempGasCooledReactor(
-            HighTemperatureGasCooledReactor.ID,
-            "HTGR",
-            "High Temperature Gas-cooled Reactor").getStackForm(1L);
         MTEHighTempGasCooledReactor.HTGRMaterials.registeraTHR_Materials();
 
         // ID 12728 + 15 + 49 IS TAKEN !!! (12792)
