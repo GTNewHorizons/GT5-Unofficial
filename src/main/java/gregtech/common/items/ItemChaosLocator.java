@@ -1,6 +1,9 @@
 package gregtech.common.items;
 
-import com.cleanroommc.modularui.api.drawable.IKey;
+import static net.minecraft.util.StatCollector.translateToLocal;
+
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -14,10 +17,6 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.items.GTGenericItem;
 import gregtech.common.gui.modularui.item.ChaosLocatorGui;
-
-import java.util.List;
-
-import static net.minecraft.util.StatCollector.translateToLocal;
 
 public class ItemChaosLocator extends GTGenericItem implements IGuiHolder<GuiData> {
 
