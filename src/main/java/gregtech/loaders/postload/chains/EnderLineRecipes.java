@@ -216,7 +216,7 @@ public class EnderLineRecipes {
                     GTOreDictUnificator.get(OrePrefixes.round, Materials.Netherite, 1L),
                     ItemRefer.Neutron_Source.get(8))
                 .itemOutputs(
-                    ItemList.Teleportium_Stable_Seed.get(8),
+                    ItemList.Resonant_Stable_Seed.get(8),
                     getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 8, 6, missing),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.EnderPearl, 4L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.HeeEndium, 2L))
@@ -248,7 +248,7 @@ public class EnderLineRecipes {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    ItemList.Teleportium_Stable_Seed.get(1),
+                    ItemList.Resonant_Stable_Seed.get(1),
                     getModItem(HardcoreEnderExpansion.ID, "stardust", 1L, 0))
                 .fluidInputs(
                     Materials.EnderAirPyrostable.getFluid(20_000),
@@ -381,7 +381,7 @@ public class EnderLineRecipes {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     getModItem(EtFuturumRequiem.ID, "chorus_fruit_popped", 8, 0),
-                    ItemList.Teleportium_Stable_Seed.get(1))
+                    ItemList.Resonant_Stable_Seed.get(1))
                 .fluidInputs(
                     Materials.Grade4PurifiedWater.getFluid(4_000),
                     Materials.TeleportatiumSemistable.getFluid(10_000))

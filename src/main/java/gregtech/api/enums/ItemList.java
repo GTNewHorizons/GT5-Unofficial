@@ -2681,7 +2681,7 @@ public enum ItemList implements IItemContainer {
     Radiation_Proof_Prismatic_Naquadah_Composite_Sheet,
     Naquarite_Universal_Insulator_Foil,
 
-    Teleportium_Stable_Seed,
+    Resonant_Stable_Seed,
 
     SpaceElevatorController,
     SpaceElevatorModuleAssemblerT1,

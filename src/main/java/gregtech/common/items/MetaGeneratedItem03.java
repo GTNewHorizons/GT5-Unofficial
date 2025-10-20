@@ -226,8 +226,8 @@ import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Unalign
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Up;
 import static gregtech.common.items.IDMetaItem03.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet;
 import static gregtech.common.items.IDMetaItem03.Relativistic_Heat_Capacitor;
+import static gregtech.common.items.IDMetaItem03.Resonant_Stable_Seed;
 import static gregtech.common.items.IDMetaItem03.Spinneret;
-import static gregtech.common.items.IDMetaItem03.Teleportium_Stable_Seed;
 import static gregtech.common.items.IDMetaItem03.Thermal_Superconductor;
 import static gregtech.common.items.IDMetaItem03.Timepiece;
 import static gregtech.common.items.IDMetaItem03.Transdimensional_Alignment_Matrix;
@@ -1272,7 +1272,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Hot_Netherite_Scrap.set(addItem(Hot_Netherite_Scrap.ID, "Hot Netherite Scrap", "Activated?"));
         ItemList.Prismarine_Precipitate.set(addItem(Prismarine_Precipitate.ID, "Prismarine Precipitate", ""));
         ItemList.Prismatic_Crystal.set(addItem(Prismatic_Crystal.ID, "Prismatic Crystal", ""));
-        ItemList.Teleportium_Stable_Seed.set(addItem(Teleportium_Stable_Seed.ID, "Teleportium Seed", ""));
+        ItemList.Resonant_Stable_Seed.set(addItem(Resonant_Stable_Seed.ID, "Resonant Seed", ""));
         ItemList.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet
             .set(
                 addItem(
