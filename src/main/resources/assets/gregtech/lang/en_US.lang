@@ -3664,3 +3664,15 @@ entity.gregtech.PowderBarrelPrimed.name=Lit Powder Barrel
 mui.button.close=x
 
 #Let's start the Pain
+
+# MachineTooltipsLoader
+gt.tooltip.volt_in=Voltage IN: #Space
+gt.tooltip.volt_out=Voltage OUT: #Space
+gt.tooltip.amp=Amperage: #Space
+gt.tooltip.capacity=Capacity: #Space
+gt.tooltip.contains_fluid=Contains Fluid: #Space
+gt.tooltip.fluid_amount=Fluid Amount: #Space
+gt.tooltip.contains_item=Contains Item: #Space
+gt.tooltip.item_amount=Item Amount: #Space
+gt.tooltip.has_muffler=has Muffler Upgrade
+gt.tooltip.steam_tank_upgrades=Steam Tank Upgrades

@@ -80,8 +80,6 @@ languagefile {
     S:"Book.Thermal Boiler Manual.Page15"=It might be useful to use the Screwdriver on the Output Hatches to determine what is outputted where.
     S:"Escherichia cadaver"=Rotten Flesh Bacteria
     S:"Escherichia koli"=eColi Bacteria
-    S:GT_TileEntity_MUFFLER=has Muffler Upgrade
-    S:GT_TileEntity_STEAMTANKS=Steam Tank Upgrades
     S:Interaction_DESCRIPTION_Index_047=Filter Fluid: 
     S:Interaction_DESCRIPTION_Index_048=Pump speed: 
     S:Interaction_DESCRIPTION_Index_049=L/tick 
@@ -1745,8 +1743,6 @@ languagefile {
     S:"Saccharomyces cerevisiae var bayanus"=Whine Yeast
     S:"Saccharomyces cerevisiae var cerevisiae"=Beer Yeast
     S:"Saccharomyces escherichia"=General Purpose Fermenting Bacteria
-    S:TileEntity_CHEST_AMOUNT=Item Amount: 
-    S:TileEntity_CHEST_INFO=Contains Item: 
     S:TileEntity_DESCRIPTION_00001_Index_00=For your first Steam Machines
     S:TileEntity_DESCRIPTION_00002_Index_00=For your first Steam Machines
     S:TileEntity_DESCRIPTION_00003_Index_00=For improved Steam Machines
@@ -15882,12 +15878,6 @@ languagefile {
     S:TileEntity_DESCRIPTION_32765_Index_03=§cDO NOT OBSTRUCT THE INPUT!
     S:TileEntity_DESCRIPTION_32765_Index_04=Draws in Air from the surrounding environment
     S:TileEntity_DESCRIPTION_32765_Index_05=Completelly fills up every 20 ticks
-    S:TileEntity_EUp_AMOUNT=Amperage: 
-    S:TileEntity_EUp_IN=Voltage IN: 
-    S:TileEntity_EUp_OUT=Voltage OUT: 
-    S:TileEntity_EUp_STORE=Capacity: 
-    S:TileEntity_TANK_AMOUNT=Fluid Amount: 
-    S:TileEntity_TANK_INFO=Contains Fluid: 
     S:achievement.item.HeavyDutyAlloyIngotT4=Rocket Plate Tier 4!
     S:achievement.item.HeavyDutyAlloyIngotT4.desc=On your way to the T4 Dims!
     S:achievement.item.HeavyDutyAlloyIngotT5=Rocket Plate Tier 5!
