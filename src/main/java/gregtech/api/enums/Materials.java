@@ -1526,13 +1526,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         Materials.GaiaSpirit.renderer = new GaiaSpiritRenderer();
         Infinity.renderer = new InfinityRenderer();
         CosmicNeutronium.renderer = new CosmicNeutroniumRenderer();
-        MaterialsUEVplus.Universium.renderer = new UniversiumRenderer();
-        MaterialsUEVplus.Eternity.renderer = new InfinityRenderer();
-        MaterialsUEVplus.MagMatter.renderer = new InfinityRenderer();
-        MaterialsUEVplus.SixPhasedCopper.renderer = new GlitchEffectRenderer();
-        MaterialsUEVplus.GravitonShard.renderer = new InfinityRenderer();
-        MaterialsUEVplus.ExoHalkonite.renderer = new InfinityRenderer();
-        MaterialsUEVplus.HotExoHalkonite.renderer = new InfinityRenderer();
         Materials.TeleportatiumEncased.renderer = new GaiaSpiritRenderer();
         Materials.Infinity.renderer = new InfinityRenderer();
         Materials.CosmicNeutronium.renderer = new CosmicNeutroniumRenderer();
