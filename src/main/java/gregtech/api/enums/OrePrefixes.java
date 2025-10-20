@@ -644,94 +644,7 @@ public enum OrePrefixes {
             }
         }
 
-        cell.disableComponent(MaterialsUEVplus.GravitonShard);
-
-        // ingot.mNotGeneratedItems.add(Materials.Ichorium);
-
-        // -----
-
-        dustImpure.mGeneratedItems.add(Materials.GraniteRed);
-        dustImpure.mGeneratedItems.add(Materials.GraniteBlack);
-        dustImpure.mGeneratedItems.add(Materials.Quartzite);
-        dustImpure.mGeneratedItems.add(Materials.Flint);
-        dustImpure.mGeneratedItems.add(Materials.Redrock);
-        dustImpure.mGeneratedItems.add(Materials.Basalt);
-        dustImpure.mGeneratedItems.add(Materials.Marble);
-        dustImpure.mGeneratedItems.add(Materials.Netherrack);
-        dustImpure.mGeneratedItems.add(Materials.Endstone);
-        dustImpure.mGeneratedItems.add(Materials.Stone);
-
-        plate.mGeneratedItems.add(Materials.Redstone);
-        plate.mGeneratedItems.add(Materials.Concrete);
-        plate.mGeneratedItems.add(Materials.GraniteRed);
-        plate.mGeneratedItems.add(Materials.GraniteBlack);
-        plate.mGeneratedItems.add(Materials.Basalt);
-        plate.mGeneratedItems.add(Materials.Marble);
-        plate.mGeneratedItems.add(Materials.Glowstone);
-        plate.mGeneratedItems.add(Materials.Electrotine);
-        plate.mGeneratedItems.add(Materials.Obsidian);
-
-        ingotHot.mGeneratedItems.add(MaterialsUEVplus.TranscendentMetal);
-
-        plate.mGeneratedItems.add(Materials.Paper);
-        plateDouble.mGeneratedItems.add(Materials.Paper);
-        plateTriple.mGeneratedItems.add(Materials.Paper);
-        plateQuadruple.mGeneratedItems.add(Materials.Paper);
-        plateQuintuple.mGeneratedItems.add(Materials.Paper);
-        ring.mGeneratedItems.add(Materials.Paper);
-
-        lens.mGeneratedItems.add(Materials.EnderPearl);
-        lens.mGeneratedItems.add(Materials.EnderEye);
-
-        stickLong.mGeneratedItems.add(Materials.Blaze);
-
-        nanite.mGeneratedItems.add(Materials.Carbon);
-        nanite.mGeneratedItems.add(Materials.Gold);
-        nanite.mGeneratedItems.add(Materials.Iron);
-        nanite.mGeneratedItems.add(Materials.Copper);
-        nanite.mGeneratedItems.add(Materials.Silver);
-        nanite.mGeneratedItems.add(MaterialsUEVplus.TranscendentMetal);
-        nanite.mGeneratedItems.add(Materials.Neutronium);
-        nanite.mGeneratedItems.add(MaterialsUEVplus.Universium);
-        nanite.mGeneratedItems.add(MaterialsUEVplus.WhiteDwarfMatter);
-        nanite.mGeneratedItems.add(MaterialsUEVplus.BlackDwarfMatter);
-        nanite.mGeneratedItems.add(Materials.Glowstone);
-        nanite.mGeneratedItems.add(MaterialsUEVplus.Eternity);
-        nanite.mGeneratedItems.add(MaterialsUEVplus.SixPhasedCopper);
-        nanite.mGeneratedItems.add(MaterialsUEVplus.MagMatter);
-        // -----
-
-        gear.mGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
-        ingot.mGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
-        toolHeadHammer.mGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
-        frame.mGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
-        frameGt.mGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
-
-        gear.mGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
-        ingot.mGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
-        toolHeadHammer.mGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
-        frame.mGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
-        frameGt.mGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
-
-        gear.mGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
-        ingot.mGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
-        toolHeadHammer.mGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
-        frame.mGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
-        frameGt.mGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
-
-        gear.mGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
-        ingot.mGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
-        toolHeadHammer.mGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
-        frame.mGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
-        frameGt.mGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
-
-        gear.mGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
-        ingot.mGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
-        toolHeadHammer.mGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
-        frame.mGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
-        frameGt.mGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
-
-        gem.mGeneratedItems.add(MaterialsUEVplus.GravitonShard);
+        cell.disableComponent(Materials.GravitonShard);
 
         dust.mGeneratedItems.addAll(dustPure.mGeneratedItems);
         dust.mGeneratedItems.addAll(dustImpure.mGeneratedItems);
@@ -797,10 +710,6 @@ public enum OrePrefixes {
             new ICondition.Not<>(SubTag.QUARTZ),
             new ICondition.Not<>(SubTag.PEARL),
             new ICondition.Not<>(SubTag.MAGICAL));
-
-        lens.mCondition = new ICondition.Or<>(
-            SubTag.MAGICAL,
-            new ICondition.And<>(SubTag.TRANSPARENT, SubTag.HAS_COLOR));
 
         plateDouble.mCondition = new ICondition.Or<>(
             SubTag.PAPER,
@@ -1172,6 +1081,8 @@ public enum OrePrefixes {
     public boolean doGenerateItem(Materials aMaterial) {
         if (aMaterial == null) return false;
         if (aMaterial == Materials._NULL) return false;
+        if (aMaterial.mMetaItemSubID == -1) return false;
+        if (!aMaterial.mHasParentMod) return false;
 
         // This only falls through, returning false, when the material has no overlap with `mMaterialGenerationBits`.
         // spotless:off
