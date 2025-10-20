@@ -3248,7 +3248,7 @@ GT5U.tooltip.volumetric_flask.empty=Empty
 GT5U.tooltip.volumetric_flask.set_volume=Rightclick on air to set volume (only while empty)
 
 GT5U.tooltip.purify.1=Throw into Cauldron to get clean Dust
-GT5U.tooltip.purify.2=Can be used as Enriched Naquadah Fuel Substitute
+GT5U.tooltip.purify.2=Throw into Cauldron to get clean crushed Ore
 GT5U.tooltip.nqgen=Can be used as Enriched Naquadah Fuel Substitute
 
 # info data
