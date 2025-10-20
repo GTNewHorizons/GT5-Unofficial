@@ -15,6 +15,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.cleanroommc.modularui.api.drawable.IKey;
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
@@ -199,8 +200,9 @@ public class CoverFluidfilter extends Cover {
                 final int aFluid = tFluid.getFluidID();
                 mFluidID = aFluid;
                 final FluidStack sFluid = new FluidStack(FluidRegistry.getFluid(aFluid), 1000);
-                GTUtility
-                    .sendChatToPlayer(aPlayer, GTUtility.trans("047", "Filter Fluid: ") + sFluid.getLocalizedName());
+                GTUtility.sendChatToPlayer(
+                    aPlayer,
+                    IKey.lang("gt.chat.interact.desc.filter_fluid") + sFluid.getLocalizedName());
             }
             return true;
         }

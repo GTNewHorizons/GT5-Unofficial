@@ -1,6 +1,5 @@
-# Configuration file
 
-languagefile {
+## I have no idea how to approach that 
     S:"Book.How to: Modular Baubles.Name"=How to: Modular Baubles
     S:"Book.How to: Modular Baubles.Page00"=Concept: This idea came from wanting flexibility. <BR>First step, Build a Modularity table to begin customisation of your Bauble. <BR> After this has been constructed, you can now combine the upgrades listed within this book to improve the baubles level/100.
     S:"Book.How to: Modular Baubles.Page01"=Defence:<BR>Can be upgraded by combining metal plates with the bauble. <BR> | +1 | Aluminium <BR> | +2 | Stainless Steel <BR> | +3 | Tungsten <BR> | +4 | Tungsten Steel <BR> | +5 | Naquadah <BR>
@@ -78,13 +77,10 @@ languagefile {
     S:"Book.Thermal Boiler Manual.Page13"=A Thermal Boiler is worth about 33 small Thermal Generators, and as the Boilers get much less Efficient, when not having enough Fuel, you should consider making a large Nether Pump for Lava, or a good Nuclear Reactor for molten Salt.
     S:"Book.Thermal Boiler Manual.Page14"=Input and Output Slots are fully optional, you can place multiple ones of them or even none on the Machine. A Machine without Input couldn't process any Recipes, while a Machine without Output just voids all outputted Items and Liquids.
     S:"Book.Thermal Boiler Manual.Page15"=It might be useful to use the Screwdriver on the Output Hatches to determine what is outputted where.
+	
     S:"Escherichia cadaver"=Rotten Flesh Bacteria
     S:"Escherichia koli"=eColi Bacteria
-    S:Interaction_DESCRIPTION_Index_047=Filter Fluid: 
-    S:Interaction_DESCRIPTION_Index_048=Pump speed: 
-    S:Interaction_DESCRIPTION_Index_049=L/tick 
-    S:Interaction_DESCRIPTION_Index_050=L/sec
-    S:Interaction_DESCRIPTION_Index_053=Slot: 
+	
     S:Interaction_DESCRIPTION_Index_068.1=Emit if any Player is close
     S:Interaction_DESCRIPTION_Index_069.1=Emit if other Player is close
     S:Interaction_DESCRIPTION_Index_070=Emit if you are close
@@ -216,7 +212,6 @@ languagefile {
     S:Interaction_DESCRIPTION_Index_203= gibbl
     S:Interaction_DESCRIPTION_Index_204=No Pollution in Chunk! HAYO!
     S:Interaction_DESCRIPTION_Index_206=Scan for Assembly Line
-    S:Interaction_DESCRIPTION_Index_207=Pump speed: %dL every %d ticks, %.2f L/sec on average
     S:Interaction_DESCRIPTION_Index_208= L
     S:Interaction_DESCRIPTION_Index_209= ticks
     S:Interaction_DESCRIPTION_Index_209.1= tick
@@ -291,7 +286,6 @@ languagefile {
     S:Interaction_DESCRIPTION_Index_313=Block Input
     S:Interaction_DESCRIPTION_Index_314=Allow Input
     S:Interaction_DESCRIPTION_Index_315=Filter Empty
-    S:Interaction_DESCRIPTION_Index_316=Pump speed limit reached!
     S:Interaction_DESCRIPTION_Index_317=Filter: 
     S:Interaction_DESCRIPTION_Index_318=Check Mode
     S:Interaction_DESCRIPTION_Index_319=Any player
@@ -327,7 +321,6 @@ languagefile {
     S:Interaction_DESCRIPTION_Index_756=Connectable: 
     S:Interaction_DESCRIPTION_Index_ALL=All
     S:Interaction_DESCRIPTION_Index_ANY=Any
-    S:Interaction_DESCRIPTION_Index_SIDE=Side: 
     S:MU-metaitem.01.32040.name=Extruder Shape (Shaft)
     S:MU-metaitem.01.32040.tooltip=Extruder Shape for making Windmill Shafts
     S:MU-metaitem.01.32041.name=Pu Pellet

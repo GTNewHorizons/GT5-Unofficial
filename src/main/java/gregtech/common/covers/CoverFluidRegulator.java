@@ -3,6 +3,7 @@ package gregtech.common.covers;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -170,16 +171,16 @@ public class CoverFluidRegulator extends Cover {
 
     private String getScredriverClickChat() {
         if (Math.abs(speed) == getMaxSpeed()) {
-            return GTUtility.trans("316", "Pump speed limit reached!");
+            return StatCollector.translateToLocal("gt.interact.desc.pump_speed_limit_reached");
         }
         if (tickRate == 1) {
-            return GTUtility.trans("048", "Pump speed: ") + speed
-                + GTUtility.trans("049", "L/tick ")
+            return StatCollector.translateToLocal("gt.interact.desc.pump_speed") + speed
+                + StatCollector.translateToLocal("gt.interact.desc.l_tick")
                 + speed * 20
-                + GTUtility.trans("050", "L/sec");
+                + StatCollector.translateToLocal("gt.interact.desc.l_sec");
         }
         return String.format(
-            GTUtility.trans("207", "Pump speed: %dL every %d ticks, %.2f L/sec on average"),
+            StatCollector.translateToLocal("gt.interact.desc.pump_speed_every_tick"),
             speed,
             tickRate,
             speed * 20d / tickRate);

@@ -180,14 +180,6 @@ gt.interact.desc.signal_inverted=Disable with Signal
 gt.interact.desc.signal_off=Disabled
 gt.interact.desc.signal_on_safe=Enable with Signal (Safe)
 gt.interact.desc.signal_inverted_safe=Disable with Signal (Safe)
-gt.interact.desc.filter_i_deny_o=Filter input, Deny output
-gt.interact.desc.invert_i_deny_o=Invert input, Deny output
-gt.interact.desc.filter_i_any_o=Filter input, Permit any output
-gt.interact.desc.invert_i_any_o=Invert input, Permit any output
-gt.interact.desc.deny_i_filter_o=Deny input, Filter output
-gt.interact.desc.deny_i_invert_o=Deny input, Invert output
-gt.interact.desc.any_i_filter_o=Permit any input, Filter output
-gt.interact.desc.any_i_invert_o=Permit any input, Invert output
 gt.interact.desc.mb.idle.1=Hit with Soft Mallet
 gt.interact.desc.mb.idle.2= to (re-)start the Machine
 gt.interact.desc.mb.idle.3= if it doesn't start.
@@ -3665,7 +3657,7 @@ mui.button.close=x
 
 #Let's start the Pain
 
-# MachineTooltipsLoader
+# Machine tooltips loader
 gt.tooltip.volt_in=Voltage IN: #Space
 gt.tooltip.volt_out=Voltage OUT: #Space
 gt.tooltip.amp=Amperage: #Space
@@ -3676,3 +3668,33 @@ gt.tooltip.contains_item=Contains Item: #Space
 gt.tooltip.item_amount=Item Amount: #Space
 gt.tooltip.has_muffler=has Muffler Upgrade
 gt.tooltip.steam_tank_upgrades=Steam Tank Upgrades
+
+# Machine interact chat description
+gt.chat.interact.desc.filter_fluid=Filter Fluid: #Space
+gt.chat.interact.desc.slot=Slot: #Space
+gt.chat.interact.desc.side=Side: #Space
+
+
+# Machine interact description
+gt.interact.desc.filter_i_deny_o=Filter input, Deny output
+gt.interact.desc.invert_i_deny_o=Invert input, Deny output
+gt.interact.desc.filter_i_any_o=Filter input, Permit any output
+gt.interact.desc.invert_i_any_o=Invert input, Permit any output
+gt.interact.desc.deny_i_filter_o=Deny input, Filter output
+gt.interact.desc.deny_i_invert_o=Deny input, Invert output
+gt.interact.desc.any_i_filter_o=Permit any input, Filter output
+gt.interact.desc.any_i_invert_o=Permit any input, Invert output
+gt.interact.desc.pump_speed=Pump speed: #Space
+gt.interact.desc.l_tick=L/tick #Space
+gt.interact.desc.l_sec=L/sec #Space
+gt.interact.desc.pump_speed_limit_reached=Pump speed limit reached!
+gt.interact.desc.pump_speed_every_tick=Pump speed: %dL every %d ticks, %.2f L/sec on average
+
+
+
+
+StatCollector.translateToLocal("xxxx")
+import net.minecraft.util.StatCollector;
+
+IKey.lang("xxxx")
+import com.cleanroommc.modularui.api.drawable.IKey;
