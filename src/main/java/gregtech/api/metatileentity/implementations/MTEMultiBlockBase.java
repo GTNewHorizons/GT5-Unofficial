@@ -108,7 +108,6 @@ import gregtech.api.interfaces.modularui.IControllerWithOptionalFeatures;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -129,6 +128,7 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.client.GTSoundLoop;
 import gregtech.common.config.MachineStats;
 import gregtech.common.data.GTCoilTracker;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.widget.CheckRecipeResultSyncer;
 import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
 import gregtech.common.items.MetaGeneratedTool01;
@@ -2744,6 +2744,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             alwaysMaxParallel ? getMaxParallelRecipes() : Math.min(getMaxParallelRecipes(), powerPanelMaxParallel));
     }
 
+    public int getmStartUpCheck() {
+        return mStartUpCheck;
+    }
+
     @Override
     public Pos2d getVoidingModeButtonPos() {
         return new Pos2d(8, 91);
@@ -3038,6 +3042,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     }
 
     public boolean shouldDisplayCheckRecipeResult() {
+        return true;
+    }
+
+    @Override
+    protected boolean useMui2() {
         return true;
     }
 
@@ -3527,8 +3536,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         return getGui().build(guiData, syncManager, uiSettings);
     }
 
-    protected @NotNull MTEMultiBlockBaseGui getGui() {
-        return new MTEMultiBlockBaseGui(this);
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEMultiBlockBaseGui<>(this);
     }
 
     public boolean getDefaultHasMaintenanceChecks() {

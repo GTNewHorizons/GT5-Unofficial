@@ -3653,7 +3653,7 @@ item.CarbonMonoxide.name=Carbon Monoxide Cell
 item.itemCellCarbonMonoxide.name=Carbon Monoxide Cell
 item.acetone.name=Acetone Cell
 item.saltwater.name=Salt Water Cell
-item.BasicAgrichemItem.22.name=Mold (Pellet)
+item.BasicAgrichemItem.22.name=Extruder Shape (Pellet)
 item.BasicAgrichemItem.23.name=Clean Aluminium Mix
 
 # Added 12/12/19
