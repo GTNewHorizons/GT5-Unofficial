@@ -22,6 +22,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.Nullable;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
@@ -37,6 +39,7 @@ import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.items.GTGenericBlock;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -68,23 +71,6 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
             if (stoneType != null) {
                 GTOreAdapter.INSTANCE.registerOre(stoneType, this);
             }
-        }
-
-        for (int matId = 0; matId < 1000; matId++) {
-            Materials mat = getMaterial(matId);
-
-            if (mat == null) continue;
-
-            GTLanguageManager
-                .addStringLocalization(mUnlocalizedName + "." + (matId) + ".name", getLocalizedNameFormat(mat));
-            GTLanguageManager.addStringLocalization(
-                mUnlocalizedName + "." + (matId + GTOreAdapter.SMALL_ORE_META_OFFSET) + ".name",
-                "Small " + getLocalizedNameFormat(mat));
-
-            GTLanguageManager.addStringLocalization(mUnlocalizedName + "." + (matId) + ".tooltip", mat.getToolTip());
-            GTLanguageManager.addStringLocalization(
-                mUnlocalizedName + "." + (matId + GTOreAdapter.SMALL_ORE_META_OFFSET) + ".tooltip",
-                mat.getToolTip());
         }
 
         OreInfo<Materials> info = new OreInfo<>();
@@ -378,6 +364,14 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
     }
 
     @Override
+    public void onBlockHarvested(World world, int x, int y, int z, int meta, EntityPlayer player) {
+        super.onBlockHarvested(world, x, y, z, meta, player);
+
+        MinecraftForge.EVENT_BUS
+            .post(new OreInteractEvent(world, x, y, z, this, world.getBlockMetadata(x, y, z), player));
+    }
+
+    @Override
     protected boolean canSilkHarvest() {
         return false;
     }
@@ -390,10 +384,14 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
     public static final int SMALL_ORE_META_OFFSET = 16000, NATURAL_ORE_META_OFFSET = 8000;
 
     public int getMaterialIndex(int meta) {
+        if (meta < 0) return 0;
+
         return meta % 1000;
     }
 
     public int getStoneIndex(int meta) {
+        if (meta < 0) return 0;
+
         meta %= SMALL_ORE_META_OFFSET;
         meta %= NATURAL_ORE_META_OFFSET;
 
@@ -408,15 +406,13 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
         return (meta % SMALL_ORE_META_OFFSET) >= NATURAL_ORE_META_OFFSET;
     }
 
+    @Nullable
     public Materials getMaterial(int meta) {
-        return GregTechAPI.sGeneratedMaterials[getMaterialIndex(meta)];
+        return GTDataUtils.getIndexSafe(GregTechAPI.sGeneratedMaterials, getMaterialIndex(meta));
     }
 
+    @Nullable
     public StoneType getStoneType(int meta) {
-        int stoneType = getStoneIndex(meta);
-
-        if (stoneType < 0 || stoneType >= stoneTypes.size()) return null;
-
-        return stoneTypes.get(stoneType);
+        return GTDataUtils.getIndexSafe(stoneTypes, getStoneIndex(meta));
     }
 }

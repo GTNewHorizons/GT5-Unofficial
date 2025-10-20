@@ -34,8 +34,6 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsKevlar;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
@@ -856,11 +854,11 @@ public class LoaderGTBlockFluid implements Runnable {
 
         GregTechAPI.sBlockMetal9 = new BlockMetal(
             "gt.blockmetal9",
-            new Materials[] { Materials.Cryolite, Materials.SiliconSG, MaterialsKevlar.NickelAluminide,
-                MaterialsUEVplus.SpaceTime, MaterialsUEVplus.TranscendentMetal, Materials.Oriharukon,
-                MaterialsUEVplus.WhiteDwarfMatter, MaterialsUEVplus.BlackDwarfMatter, MaterialsUEVplus.Universium,
-                MaterialsUEVplus.Eternity, MaterialsUEVplus.MagMatter, MaterialsUEVplus.SixPhasedCopper,
-                Materials.HellishMetal, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter },
+            new Materials[] { Materials.Cryolite, Materials.SiliconSG, Materials.NickelAluminide, Materials.SpaceTime,
+                Materials.TranscendentMetal, Materials.Oriharukon, Materials.WhiteDwarfMatter,
+                Materials.BlackDwarfMatter, Materials.Universium, Materials.Eternity, Materials.MagMatter,
+                Materials.SixPhasedCopper, Materials.HellishMetal,
+                Materials.MagnetohydrodynamicallyConstrainedStarMatter },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS12);
 
@@ -1393,130 +1391,130 @@ public class LoaderGTBlockFluid implements Runnable {
             .withLocalizedName("Dimensionally Transcendent Residue")
             .withStateAndTemperature(LIQUID, 2000000000)
             .buildAndRegister()
-            .configureMaterials(MaterialsUEVplus.DimensionallyTranscendentResidue)
+            .configureMaterials(Materials.DimensionallyTranscendentResidue)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.DimensionallyTranscendentResidue, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.DimensionallyTranscendentResidue, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("ExcitedDTCC")
             .withLocalizedName("Excited Dimensionally Transcendent Crude Catalyst")
             .withStateAndTemperature(LIQUID, 500000000)
             .buildAndRegister()
-            .configureMaterials(MaterialsUEVplus.ExcitedDTCC)
+            .configureMaterials(Materials.ExcitedDTCC)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.ExcitedDTCC, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.ExcitedDTCC, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("ExcitedDTPC")
             .withLocalizedName("Excited Dimensionally Transcendent Prosaic Catalyst")
             .withStateAndTemperature(LIQUID, 500000000)
             .buildAndRegister()
-            .configureMaterials(MaterialsUEVplus.ExcitedDTPC)
+            .configureMaterials(Materials.ExcitedDTPC)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.ExcitedDTPC, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.ExcitedDTPC, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("ExcitedDTRC")
             .withLocalizedName("Excited Dimensionally Transcendent Resplendent Catalyst")
             .withStateAndTemperature(LIQUID, 500000000)
             .buildAndRegister()
-            .configureMaterials(MaterialsUEVplus.ExcitedDTRC)
+            .configureMaterials(Materials.ExcitedDTRC)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.ExcitedDTRC, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.ExcitedDTRC, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("ExcitedDTEC")
             .withLocalizedName("Excited Dimensionally Transcendent Exotic Catalyst")
             .withStateAndTemperature(LIQUID, 500000000)
             .buildAndRegister()
-            .configureMaterials(MaterialsUEVplus.ExcitedDTEC)
+            .configureMaterials(Materials.ExcitedDTEC)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.ExcitedDTEC, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.ExcitedDTEC, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("ExcitedDTSC")
             .withLocalizedName("Excited Dimensionally Transcendent Stellar Catalyst")
             .withStateAndTemperature(LIQUID, 500000000)
             .buildAndRegister()
-            .configureMaterials(MaterialsUEVplus.ExcitedDTSC)
+            .configureMaterials(Materials.ExcitedDTSC)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.ExcitedDTSC, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.ExcitedDTSC, 1L),
                 ItemList.Cell_Empty.get(1L));
 
-        GTFluidFactory.builder(MaterialsUEVplus.RawStarMatter.mName)
-            .withLocalizedName(MaterialsUEVplus.RawStarMatter.mLocalizedName)
+        GTFluidFactory.builder(Materials.RawStarMatter.mName)
+            .withLocalizedName(Materials.RawStarMatter.mLocalizedName)
             .withStateAndTemperature(LIQUID, 10_000_000)
             .buildAndRegister()
-            .configureMaterials(MaterialsUEVplus.RawStarMatter)
+            .configureMaterials(Materials.RawStarMatter)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.RawStarMatter, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.RawStarMatter, 1L),
                 ItemList.Cell_Empty.get(1L));
 
-        GTFluidFactory.builder(MaterialsUEVplus.Space.mName)
-            .withLocalizedName(MaterialsUEVplus.Space.mLocalizedName)
+        GTFluidFactory.builder(Materials.Space.mName)
+            .withLocalizedName(Materials.Space.mLocalizedName)
             .withStateAndTemperature(MOLTEN, 0)
             .buildAndRegister()
-            .configureMaterials(MaterialsUEVplus.Space)
+            .configureMaterials(Materials.Space)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.Space, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Space, 1L),
                 ItemList.Cell_Empty.get(1L));
 
-        GTFluidFactory.builder(MaterialsUEVplus.Time.mName)
-            .withLocalizedName(MaterialsUEVplus.Time.mLocalizedName)
+        GTFluidFactory.builder(Materials.Time.mName)
+            .withLocalizedName(Materials.Time.mLocalizedName)
             .withStateAndTemperature(MOLTEN, 0)
             .buildAndRegister()
-            .configureMaterials(MaterialsUEVplus.Time)
+            .configureMaterials(Materials.Time)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.Time, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Time, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("PrimordialMatter")
-            .withLocalizedName(MaterialsUEVplus.PrimordialMatter.mLocalizedName)
+            .withLocalizedName(Materials.PrimordialMatter.mLocalizedName)
             .withStateAndTemperature(LIQUID, 2_000_000_000)
             .buildAndRegister()
-            .configureMaterials(MaterialsUEVplus.PrimordialMatter)
+            .configureMaterials(Materials.PrimordialMatter)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.PrimordialMatter, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.PrimordialMatter, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("QuarkGluonPlasma")
-            .withLocalizedName(MaterialsUEVplus.QuarkGluonPlasma.mLocalizedName)
+            .withLocalizedName(Materials.QuarkGluonPlasma.mLocalizedName)
             .withStateAndTemperature(LIQUID, 2_000_000_000)
             .buildAndRegister()
-            .configureMaterials(MaterialsUEVplus.QuarkGluonPlasma)
+            .configureMaterials(Materials.QuarkGluonPlasma)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.QuarkGluonPlasma, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.QuarkGluonPlasma, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("PhononMedium")
-            .withLocalizedName(MaterialsUEVplus.PhononMedium.mLocalizedName)
+            .withLocalizedName(Materials.PhononMedium.mLocalizedName)
             .withStateAndTemperature(LIQUID, 500)
             .buildAndRegister()
-            .configureMaterials(MaterialsUEVplus.PhononMedium)
+            .configureMaterials(Materials.PhononMedium)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.PhononMedium, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.PhononMedium, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("PhononCrystalSolution")
-            .withLocalizedName(MaterialsUEVplus.PhononCrystalSolution.mLocalizedName)
+            .withLocalizedName(Materials.PhononCrystalSolution.mLocalizedName)
             .withStateAndTemperature(LIQUID, 500)
             .buildAndRegister()
-            .configureMaterials(MaterialsUEVplus.PhononCrystalSolution)
+            .configureMaterials(Materials.PhononCrystalSolution)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.PhononCrystalSolution, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.PhononCrystalSolution, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("antimatter")
-            .withLocalizedName(MaterialsUEVplus.Antimatter.mLocalizedName)
+            .withLocalizedName(Materials.Antimatter.mLocalizedName)
             .withStateAndTemperature(LIQUID, 1000000)
             .buildAndRegister()
-            .configureMaterials(MaterialsUEVplus.Antimatter)
+            .configureMaterials(Materials.Antimatter)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.Antimatter, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Antimatter, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("protomatter")
-            .withLocalizedName(MaterialsUEVplus.Protomatter.mLocalizedName)
+            .withLocalizedName(Materials.Protomatter.mLocalizedName)
             .withStateAndTemperature(LIQUID, 1)
             .buildAndRegister()
-            .configureMaterials(MaterialsUEVplus.Protomatter)
+            .configureMaterials(Materials.Protomatter)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.Protomatter, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Protomatter, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("plasma.infinity")
