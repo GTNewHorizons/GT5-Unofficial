@@ -15,6 +15,11 @@ public class BlockCasings13 extends BlockCasingsAbstract {
 
     public BlockCasings13() {
         super(ItemCasings.class, "gt.blockcasings13", MaterialCasings.INSTANCE, 16);
+        register(0, ItemList.Casing_Cable, "Cable Casing");
+        register(1, ItemList.Casing_Graphite_Moderator, "Graphite Moderator Casing");
+        register(2, ItemList.Casing_Insulated_Fluid_Pipe, "Insulated Fluid Pipe Casing");
+        register(3, ItemList.Casing_Beryllium_Integrated_Reactor, "Beryllium Integrated Reactor Casing");
+        register(4, ItemList.Casing_Refined_Graphite, "Refined Graphite Block");
         register(5, ItemList.PrecisionFieldSyncCasing, "Precision Field Sync Casing");
         register(6, ItemList.MagneticAnchorCasing, "Magnetic Anchor Casing");
         register(7, ItemList.FieldEnergyAbsorberCasing, "Field Energy Absorber Casing");
@@ -31,6 +36,11 @@ public class BlockCasings13 extends BlockCasingsAbstract {
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int ordinalSide, int aMeta) {
         return switch (aMeta) {
+            case 0 -> Textures.BlockIcons.MACHINE_CASING_CABLE.getIcon();
+            case 1 -> Textures.BlockIcons.MACHINE_CASING_GRAPHITE_MODERATOR.getIcon();
+            case 2 -> Textures.BlockIcons.MACHINE_CASING_INSULATED_FLUID_PIPE.getIcon();
+            case 3 -> Textures.BlockIcons.MACHINE_CASING_BERYLLIUM_INTEGRATED_REACTOR.getIcon();
+            case 4 -> Textures.BlockIcons.MACHINE_CASING_REFINED_GRAPHITE.getIcon();
             case 5 -> Textures.BlockIcons.NANO_FORGE_CASING_1.getIcon();
             case 6 -> Textures.BlockIcons.NANO_FORGE_CASING_2.getIcon();
             case 7 -> Textures.BlockIcons.NANO_FORGE_CASING_3.getIcon();
