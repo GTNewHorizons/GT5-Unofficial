@@ -128,11 +128,11 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     }
 
     protected IItemSink getItemSink(ForgeDirection side) {
-        return new GTItemSink(this, side);
+        return getSizeInventory() == 0 ? null : new GTItemSink(this, side);
     }
 
     protected IItemSource getItemSource(ForgeDirection side) {
-        return new InventoryItemSource(this, side);
+        return getSizeInventory() == 0 ? null : new InventoryItemSource(this, side);
     }
 
     protected IItemIO getItemIO(ForgeDirection side) {
