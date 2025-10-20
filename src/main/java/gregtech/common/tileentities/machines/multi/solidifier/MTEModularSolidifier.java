@@ -58,7 +58,6 @@ import goodgenerator.loader.Loaders;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
@@ -80,6 +79,7 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.blocks.BlockCasingsFoundry;
+import gregtech.common.gui.modularui.multiblock.MTEModularSolidifierGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.render.IMTERenderer;
 import gtPlusPlus.core.block.ModBlocks;
@@ -92,8 +92,8 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
 
     private static final List<CoolingFluid> COOLING_FLUIDS = ImmutableList.of(
         new CoolingFluid(Materials.SuperCoolant, 1, 100),
-        new CoolingFluid(MaterialsUEVplus.SpaceTime, 2, 50),
-        new CoolingFluid(MaterialsUEVplus.Eternity, 3, 25));
+        new CoolingFluid(Materials.SpaceTime, 2, 50),
+        new CoolingFluid(Materials.Eternity, 3, 25));
 
     private final ArrayList<MTEHatchInput> mCoolantInputHatches = new ArrayList<>();
     private CoolingFluid currentCoolingFluid = null;
@@ -269,7 +269,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         .addElement('A', chainAllGlasses())
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings11, 7))
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings5, 12))
-        .addElement('D', ofFrame(MaterialsUEVplus.TranscendentMetal))
+        .addElement('D', ofFrame(Materials.TranscendentMetal))
         .addElement('E', lazy(() -> ofBlock(GodforgeCasings, 0)))
         .addElement(
             'F',

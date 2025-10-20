@@ -1413,6 +1413,7 @@ GT5U.gui.button.power_panel=Open Power Panel
 GT5U.gui.button.turbinemenu=Open Chamber Controller
 GT5U.gui.button.machineinfo=Display Machine Information
 GT5U.gui.button.max_parallel=Always use maximum
+GT5U.gui.button.foundrymoduleselect=Toggle Module Selection Terminal
 GT5U.gui.text.rangedvalue=Range: %s-%s
 GT5U.gui.text.lockedvalue=Locked: %s
 GT5U.gui.text.success=§aProcessing recipe

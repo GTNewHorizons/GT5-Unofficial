@@ -1,4 +1,4 @@
-package gregtech.common.tileentities.machines.multi.solidifier;
+package gregtech.common.gui.modularui.multiblock;
 
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
@@ -32,9 +32,11 @@ import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
 
-import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.tileentities.machines.multi.solidifier.MTEModularSolidifier;
+import gregtech.common.tileentities.machines.multi.solidifier.SolidifierModules;
 
 public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
 
@@ -103,7 +105,7 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
                 }
                 return true;
             })
-            .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.centrifugestatsmenu")))
+            .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.machineinfo")))
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
@@ -112,56 +114,61 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
         Area area = parent.getArea();
         int x = area.x + area.width;
         int y = area.y;
-        StringSyncValue speedSync = (StringSyncValue) syncManager.getSyncHandler("Speed:0");
-        StringSyncValue parallelSync = (StringSyncValue) syncManager.getSyncHandler("Parallels:0");
-        StringSyncValue euEffBaseSync = (StringSyncValue) syncManager.getSyncHandler("EuEFF:0");
-        StringSyncValue ocFactorSync = (StringSyncValue) syncManager.getSyncHandler("OCFactor:0");
+        StringSyncValue speedSync = syncManager.findSyncHandler("Speed", StringSyncValue.class);
+        StringSyncValue parallelSync = syncManager.findSyncHandler("Parallels", StringSyncValue.class);
+        StringSyncValue euEffBaseSync = syncManager.findSyncHandler("EuEFF", StringSyncValue.class);
+        StringSyncValue ocFactorSync = syncManager.findSyncHandler("OCFactor", StringSyncValue.class);
         return new ModularPanel("statsPanel").pos(x, y)
             .size(130, 120)
             .widgetTheme("backgroundPopup")
             .child(
                 new Column().sizeRel(1)
+                    .paddingTop(4)
                     .child(
-                        new TextWidget<>("Stats").size(60, 18)
-                            .align(Alignment.Center))
+                        new TextWidget<>("Stats").alignment(Alignment.TopCenter)
+                            .height(9))
                     .widgetTheme("backgroundPopup")
                     .child(
                         new TextWidget<>(
                             IKey.dynamic(
                                 () -> EnumChatFormatting.DARK_PURPLE + "Speed: "
                                     + EnumChatFormatting.WHITE
-                                    + speedSync.getValue())).size(120, 20))
+                                    + speedSync.getValue())).size(120, 20)
+                                        .marginBottom(2))
                     .child(
                         new TextWidget<>(
                             IKey.dynamic(
                                 () -> EnumChatFormatting.DARK_PURPLE + "Parallels Per Tier: "
                                     + EnumChatFormatting.WHITE
-                                    + parallelSync.getValue())).size(120, 20))
+                                    + parallelSync.getValue())).size(120, 20)
+                                        .marginBottom(2))
                     .child(
                         new TextWidget<>(
                             IKey.dynamic(
                                 () -> EnumChatFormatting.DARK_PURPLE + "EU Consumption: "
                                     + EnumChatFormatting.WHITE
-                                    + euEffBaseSync.getValue())).size(120, 20))
+                                    + euEffBaseSync.getValue())).size(120, 20)
+                                        .marginBottom(2))
                     .child(
                         new TextWidget<>(
                             IKey.dynamic(
                                 () -> EnumChatFormatting.DARK_PURPLE + "OC Factor: "
                                     + EnumChatFormatting.WHITE
-                                    + ocFactorSync.getValue())).size(120, 20)));
+                                    + ocFactorSync.getValue())).size(120, 20)
+                                        .marginBottom(2)));
 
     }
 
     protected IWidget createConfigButton(PanelSyncManager syncManager, ModularPanel parent) {
         return new ButtonWidget<>().size(18, 18)
-            .rightRel(0, 28, 0)
+            .right(2 + 18 + 4)
             .marginTop(4)
             .overlay(GuiTextures.GEAR)
             .onMousePressed(d -> {
                 base.terminalSwitch = !base.terminalSwitch;
                 return true;
             })
-            .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.turbinemenu")))
+            .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.foundrymoduleselect")))
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
@@ -170,16 +177,22 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
         return new Row().size(getTerminalRowWidth(), getTerminalRowHeight())
             .child(
                 new ParentWidget<>().size(getTerminalWidgetWidth(), getTerminalWidgetHeight())
-                    .padding(4)
+                    .paddingTop(4)
+                    .paddingBottom(4)
+                    .paddingLeft(4)
+                    .paddingRight(0)
                     .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
+                    .child(
+                        (IWidget) createTerminalTextWidget(syncManager, panel).collapseDisabledChild()
+                            .setEnabledIf(widget -> !base.terminalSwitch)
+                            .size(getTerminalWidgetWidth() - 4, getTerminalWidgetHeight() - 8))
                     .child(
                         createModuleTerminalTextWidget(syncManager, panel).setEnabledIf(widget -> base.terminalSwitch)
                             .size(getTerminalWidgetWidth() - 10, getTerminalWidgetHeight() - 8)
                             .collapseDisabledChild())
-                    .child(
-                        createTerminalTextWidget(syncManager, panel).setEnabledIf(widget -> !base.terminalSwitch)
-                            .size(getTerminalWidgetWidth() - 10, getTerminalWidgetHeight() - 8)
-                            .collapseDisabledChild()));
+                    .childIf(multiblock.supportsTerminalCornerColumn(), createTerminalCornerColumn(panel, syncManager))
+
+            );
     }
 
     protected IWidget createModuleSelectButton(PanelSyncManager syncManager, ModularPanel parent, int index) {
@@ -187,7 +200,7 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
             "moduleSelectPanel" + index,
             (p_syncManager, syncHandler) -> openModuleConfigPanel(p_syncManager, parent, syncManager, index),
             true);
-        IntSyncValue moduleSync = (IntSyncValue) syncManager.getSyncHandler("Module" + (index + 1) + ":0");
+        IntSyncValue moduleSync = syncManager.findSyncHandler("Module" + (index + 1), IntSyncValue.class);
         return new Row().size(30, 16)
             .marginBottom(index != 0 ? 2 : 0)
             .child(
@@ -221,18 +234,17 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
         Area area = parent.getArea();
         int x = area.x + area.width;
         int y = area.y;
-        IntSyncValue moduleSync = (IntSyncValue) syncManager.getSyncHandler("Module" + (index + 1) + ":0");
+        IntSyncValue moduleSync = syncManager.findSyncHandler("Module" + (index + 1), IntSyncValue.class);
         return new ModularPanel("moduleSelectPanel" + index).pos(x, y)
             .size(140, 130)
             .widgetTheme("backgroundPopup")
             .child(
                 new Column().sizeRel(1)
-                    .padding(2)
                     .widgetTheme("backgroundPopup")
                     .child(
-                        new TextWidget<>("Select Module " + (index + 1)).size(60, 18)
-                            .align(Alignment.Center)
-                            .marginBottom(5))
+                        new TextWidget<>("Select Module " + (index + 1)).size(80, 18)
+                            .align(Alignment.TopCenter)
+                            .marginBottom(2))
                     .child(
                         SlotGroupWidget.builder()
                             .row(" I I ")
@@ -258,14 +270,13 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
     }
 
     protected Flow createModuleTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-        IntSyncValue module1Sync = (IntSyncValue) syncManager.getSyncHandler("Module1:0");
-        IntSyncValue module2Sync = (IntSyncValue) syncManager.getSyncHandler("Module2:0");
-        IntSyncValue module3Sync = (IntSyncValue) syncManager.getSyncHandler("Module3:0");
-        IntSyncValue module4Sync = (IntSyncValue) syncManager.getSyncHandler("Module4:0");
+        IntSyncValue module1Sync = syncManager.findSyncHandler("Module1", IntSyncValue.class);
+        IntSyncValue module2Sync = syncManager.findSyncHandler("Module2", IntSyncValue.class);
+        IntSyncValue module3Sync = syncManager.findSyncHandler("Module3", IntSyncValue.class);
+        IntSyncValue module4Sync = syncManager.findSyncHandler("Module4", IntSyncValue.class);
         return new Row().sizeRel(1)
             .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
-            // need the awesome graphic with overlays here
-
+            .background(IDrawable.EMPTY)
             .child(
                 GTGuiTextures.MODULAR_SOLIDIFIER_BASE.asWidget()
                     .size(60, 80)
