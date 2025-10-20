@@ -2744,31 +2744,42 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
     }
 
 
-    public final float MAXIMUM_PARTICLE_ENERGY = 500000000;
+    public final float MAXIMUM_PARTICLE_ENERGY_keV = 2_000_000_000; // 2TeV max
+    public final double keVEURatio = 0.1*1000; // 1 eV = 0.1 EU, so 1 keV = 100 EU
+    public final int ZPM = 131072; // todo use any voltage hatch
+    public int playerTargetBeamEnergykeV = 1_000_000; // todo parse player input
+
+    //todo: seriously test values, since unit conversion between eV, keV, MeV is a bit of a mess
 
     public BeamInformation accelerateParticle(BeamInformation particle) {
 
         float inputEnergy = particle.getEnergy();
+        int inputRate = particle.getRate();
+
         float outEnergy = inputEnergy;
-        if (inputEnergy <= MAXIMUM_PARTICLE_ENERGY) {
-            outEnergy = inputEnergy + 1000; //todo use better formula
-            System.out.println(particle.getEnergy());
+        int outRate = inputRate;
+
+        if (inputEnergy <= MAXIMUM_PARTICLE_ENERGY_keV) { // todo distinguish between maximum energy and player goal
+            outEnergy += (float) (Math.pow(accelerationCycleCounter+1,2) * inputRate *
+                this.mMaxProgresstime * ZPM * keVEURatio);
+            //todo replace ZPM with hatch voltage tier
         }
+        //todo add logic for what happens if player goal is met
 
         return new BeamInformation(outEnergy,
-            particle.getRate(),particle.getParticleId(),particle.getFocus());
+            outRate,particle.getParticleId(),particle.getFocus());
 
     }
 
-    public long calculateEnergyCostAccelerator(){
+    public long calculateEnergyCostAccelerator(BeamInformation particle){
 
-        return (long) (131072 * Math.pow(accelerationCycleCounter+1, 2));
-        //todo replace 131072 with hatch voltage tier
+        return (long) (ZPM * Math.pow(accelerationCycleCounter+1, 2) * particle.getRate()); // counter starts at 0, so +1
+        //todo replace ZPM with hatch voltage tier
 
     }
 
     public long calculateEnergyCostCollider(){
-        return 131072; //todo make gooder
+        return ZPM; //todo make gooder
     }
 
     @Override
@@ -2782,7 +2793,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
     BeamInformation initialParticleInfo = null;
     BeamInformation cachedOutputParticle = null;
     int accelerationCycleCounter = 0;
-    final int MAX_ACCELERATION_CYCLES = 120;
+    final int MAX_ACCELERATION_CYCLES = 10;
 
     @NotNull
     @Override
@@ -2805,7 +2816,9 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 accelerationCycleCounter = 0;
             }
             else{
+                // if cachedOutputParticle exists, then apply acceleration cycle logic
                 if (!initialParticleInfo.isEqual(inputInfo)){
+                    // if the input beam is ever modified or interrupted, crash the LHC
                     stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.noaccel"));
                     // todo: new shutdown reason
                     return CheckRecipeResultRegistry.NO_RECIPE;
@@ -2817,7 +2830,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                         accelerationCycleCounter += 1;
                     }
 
-                    long energyCost = calculateEnergyCostAccelerator();
+                    long energyCost = calculateEnergyCostAccelerator(cachedOutputParticle);
 
                     if (!drainEnergyInput(energyCost)) {
                         stopMachine(ShutDownReasonRegistry.POWER_LOSS);
