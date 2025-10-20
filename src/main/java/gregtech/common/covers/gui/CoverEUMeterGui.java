@@ -2,8 +2,6 @@ package gregtech.common.covers.gui;
 
 import static gregtech.api.modularui2.GTGuiTextures.OVERLAY_BUTTON_CYCLIC;
 
-import net.minecraft.util.StatCollector;
-
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.drawable.IKey;

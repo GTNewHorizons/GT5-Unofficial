@@ -5,7 +5,6 @@ import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
-import gregtech.api.modularui2.CoverGuiData;
 import gregtech.common.covers.CoverLiquidMeter;
 
 public class CoverLiquidMeterGui extends CoverGui<CoverLiquidMeter> {
