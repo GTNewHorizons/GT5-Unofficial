@@ -98,9 +98,9 @@ public class FusionReactorRecipes implements Runnable {
             .addTo(fusionRecipes); // FT1 - utility
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Promethium.getMolten(1 * NUGGETS), Materials.Hydrogen.getGas(3 * NUGGETS))
-            .fluidOutputs(Materials.Europium.getMolten(1 * NUGGETS))
-            .duration(4 * TICKS)
+            .fluidInputs(Materials.Neodymium.getMolten(2 * NUGGETS), Materials.Promethium.getMolten(1 * NUGGETS))
+            .fluidOutputs(Materials.Europium.getMolten(2 * NUGGETS))
+            .duration(8 * TICKS)
             .eut(24576)
             .metadata(FUSION_THRESHOLD, 150_000_000L)
             .addTo(fusionRecipes); // FT1 - alternative europium
@@ -114,9 +114,9 @@ public class FusionReactorRecipes implements Runnable {
             .addTo(fusionRecipes); // FT2 - utility
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Lutetium.getMolten(1 * NUGGETS), Materials.Promethium.getMolten(1 * NUGGETS))
-            .fluidOutputs(Materials.Americium.getMolten(1 * NUGGETS))
-            .duration(12 * TICKS)
+            .fluidInputs(Materials.Lutetium.getMolten(2 * NUGGETS), Materials.Promethium.getMolten(1 * NUGGETS))
+            .fluidOutputs(Materials.Americium.getMolten(2 * NUGGETS))
+            .duration(24 * TICKS)
             .eut(38764)
             .metadata(FUSION_THRESHOLD, 200_000_000L)
             .addTo(fusionRecipes); // FT2 - alternative americium
