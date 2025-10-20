@@ -122,7 +122,13 @@ public class CoverItemFilter extends Cover {
             transfer.pull(coverable, coverSide);
         }
 
-        transfer.setFilter(ItemStackPredicate.matches(this.filter.getStackInSlot(0)));
+        if (mWhitelist) {
+            transfer.setFilter(ItemStackPredicate.matches(this.filter.getStackInSlot(0)));
+        } else {
+            transfer.setFilter(
+                ItemStackPredicate.matches(this.filter.getStackInSlot(0))
+                    .negate());
+        }
 
         transfer.setStacksToTransfer(64);
 
