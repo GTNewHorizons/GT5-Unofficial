@@ -74,7 +74,6 @@ import gregtech.api.util.GTUtility;
  * </ul>
  * Circuit Numbers (IV+ only):
  * <ul>
- *     <li>None: Field Generator
  *     <li>1: Motor
  *     <li>2: Piston
  *     <li>3: Pump
