@@ -688,8 +688,8 @@ GTPP.algae.tooltip.lifespan=Lifespan in days: %d
 GTPP.algae.tooltip.generation=Generation: %d
 
 # Power Goggles
-GT5U.power_goggles.open_config_gui=Open Goggles Config
-GT5U.power_goggles.toggle_power_chart=Toggle Power Chart
+GT5U.power_goggles.open_config_gui=Open Power Goggles Config
+GT5U.power_goggles.toggle_power_chart=Toggle Power Goggles Chart
 GT5U.power_goggles.link_lsc=Goggles linked to LSC at %d,%d,%d.
 GT5U.power_goggles.link_fail=That's not an LSC...
 GT5U.power_goggles.unlink=Goggles Unlinked.
