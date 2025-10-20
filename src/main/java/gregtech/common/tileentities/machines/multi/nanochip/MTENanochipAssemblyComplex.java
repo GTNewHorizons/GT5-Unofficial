@@ -49,7 +49,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
-import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -447,7 +447,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                             ItemStack toOutput = GTUtility
                                 .copyAmountUnsafe((int) Math.min(Integer.MAX_VALUE, amount), component.realCircuit);
                             // Add output and deplete from hatch
-                            addOutput(toOutput);
+                            addItemOutputs(new ItemStack[]{toOutput});
                             contents.remove(component);
                         }
                     }

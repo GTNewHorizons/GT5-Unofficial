@@ -52,11 +52,6 @@ public final class GTGuiTextures {
             GTTextureIds.BACKGROUND_TITLE_PRIMITIVE)
         .build();
 
-    public static final UITexture BACKGROUND_TEXT_FIELD = UITexture.builder()
-        .location(GregTech.ID, "gui/background/text_field")
-        .adaptable(1)
-        .name(GTTextureIds.BACKGROUND_TEXT_FIELD)
-        .build();
     public static final UITexture BACKGROUND_TEXT_FIELD_LIGHT_GRAY = UITexture.builder()
         .location(GregTech.ID, "gui/background/text_field_light_gray")
         .adaptable(1)

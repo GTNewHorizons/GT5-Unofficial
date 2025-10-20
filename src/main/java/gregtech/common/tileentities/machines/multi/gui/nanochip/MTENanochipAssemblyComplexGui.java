@@ -31,7 +31,7 @@ import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
-import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.modularui2.widget.TerminalWidget;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
@@ -41,6 +41,11 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
 
     private final MTENanochipAssemblyComplex base;
 
+    private GenericListSyncHandler<String> conversationHandler;
+    private DoubleSyncValue moodSyncer;
+    private DoubleSyncValue efficiencySyncer;
+    private DoubleSyncValue speedSyncer;
+
     public MTENanochipAssemblyComplexGui(MTENanochipAssemblyComplex base) {
         super(base);
         this.base = base;
@@ -48,6 +53,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
 
     @Override
     public ModularPanel build(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        registerGREGOSSyncValues(syncManager);
         ModularPanel ui = super.build(data, syncManager, uiSettings);
         IPanelHandler popupPanel = syncManager.panel("popup", (m, h) -> createGREGOSPanel(syncManager), true);
 
@@ -66,25 +72,28 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
             .size(18, 18));
     }
 
-    public ModularPanel createGREGOSPanel(PanelSyncManager syncManager) {
-        ModularPanel ui = createPopUpPanel("gt:nac:gregos", false, false).size(176, 136);
-
+    protected void registerGREGOSSyncValues(PanelSyncManager syncManager) {
         // TODO: figure out if we should save the conversation to nbt and stuff or not
-        GenericListSyncHandler<String> conversationHandler = new GenericListSyncHandler<String>(
+        conversationHandler = new GenericListSyncHandler<String>(
             () -> base.gregosConversation,
             null,
             ByteBufAdapters.STRING,
             ByteBufAdapters.STRING,
             ByteBufAdapters.STRING,
             null);
-        DoubleSyncValue moodSyncer = new DoubleSyncValue(() -> base.gregosMood, dub -> base.gregosMood = dub);
-        DoubleSyncValue efficiencySyncer = new DoubleSyncValue(() -> base.efficiency, dub -> base.efficiency = dub);
-        DoubleSyncValue speedSyncer = new DoubleSyncValue(() -> base.moduleSpeed, dub -> base.moduleSpeed = dub);
+        moodSyncer = new DoubleSyncValue(() -> base.gregosMood, dub -> base.gregosMood = dub);
+        efficiencySyncer = new DoubleSyncValue(() -> base.efficiency, dub -> base.efficiency = dub);
+        speedSyncer = new DoubleSyncValue(() -> base.moduleSpeed, dub -> base.moduleSpeed = dub);
 
         syncManager.syncValue("conversationSyncer", conversationHandler);
         syncManager.syncValue("Mood", moodSyncer);
         syncManager.syncValue("Efficiency", efficiencySyncer);
         syncManager.syncValue("Speed", speedSyncer);
+    }
+
+    public ModularPanel createGREGOSPanel(PanelSyncManager syncManager) {
+        ModularPanel ui = createPopUpPanel("gt:nac:gregos", false, false).size(176, 136);
+
 
         PagedWidget.Controller tabController = new PagedWidget.Controller();
         PagedWidget<?> pagedWidget = new PagedWidget<>().controller(tabController);
@@ -151,7 +160,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
                 .pos(25 + xOffset, 20)
                 .size(16, 48))
             .child(
-                new TextWidget(name).alignment(Alignment.Center)
+                (IWidget) new TextWidget(name).alignment(Alignment.Center)
                     .pos(1 + xOffset, 5)
                     .size(64, 8))
             // For debug

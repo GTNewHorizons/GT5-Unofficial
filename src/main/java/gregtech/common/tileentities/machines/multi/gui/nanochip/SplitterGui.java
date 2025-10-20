@@ -29,7 +29,7 @@ import com.cleanroommc.modularui.widgets.ListWidget;
 import com.google.common.collect.ImmutableList;
 
 import gregtech.api.enums.Dyes;
-import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.modularui2.widget.ColorGridWidget;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.Splitter;
@@ -67,7 +67,9 @@ public class SplitterGui extends MTEMultiBlockBaseGui {
     }
 
     public ModularPanel createRuleManagerPanel(PanelSyncManager syncManager) {
-        ModularPanel ui = createPopUpPanel("gt:splitter:rules_manager", false, false);
+        ModularPanel ui = createPopUpPanel("gt:splitter:rules_manager", false, false)
+            .size(176, 164).background(GTGuiTextures.BACKGROUND_POPUP_STANDARD);
+
 
         ListWidget<IWidget, ?> list = new ListWidget<>();
         list.childSeparator(IIcon.EMPTY_2PX);
@@ -82,7 +84,8 @@ public class SplitterGui extends MTEMultiBlockBaseGui {
             list.child(createColorManager(syncManager, rule.getInputColors(), rule.getOutputColors(), id));
         }
 
-        return ui.child(list)
+        return ui
+            .child(list)
             .child(new ButtonWidget<>().onMousePressed(mouseButton -> {
                 list.child(createColorManager(syncManager, null, null, null));
                 WidgetTree.resize(ui);

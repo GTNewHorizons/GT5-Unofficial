@@ -159,7 +159,7 @@ public class MTEVacuumConveyorPipe extends MetaPipeEntity implements IConnectsTo
                     }
                 }
             }
-        } else if (aBaseMetaTileEntity.isClientSide() && GTClient.changeDetected == 4) {
+        } else if (aBaseMetaTileEntity.isClientSide() && GTMod.clientProxy().changeDetected() == 4) {
             aBaseMetaTileEntity.issueTextureUpdate();
         }
     }
@@ -266,7 +266,7 @@ public class MTEVacuumConveyorPipe extends MetaPipeEntity implements IConnectsTo
 
     @Override
     public float getCollisionThickness() {
-        if (GTMod.instance.isClientSide() && GTClient.shouldHideThings()) {
+        if (GTMod.GT.isClientSide() && GTMod.clientProxy().shouldHideThings()) {
             return 0.0625F;
         }
         return 0.375f;

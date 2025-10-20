@@ -462,7 +462,6 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         return false;
     }
 
-    @Override
     public boolean addOutput(ItemStack aStack) {
         // We need to override this because outputs are produced in vacuum conveyor outputs, not as real items
         if (GTUtility.isStackInvalid(aStack)) return false;
