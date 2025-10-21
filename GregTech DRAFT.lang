@@ -81,29 +81,7 @@
     S:"Escherichia cadaver"=Rotten Flesh Bacteria
     S:"Escherichia koli"=eColi Bacteria
 	
-    S:Interaction_DESCRIPTION_Index_071=Conducts strongest Input
-    S:Interaction_DESCRIPTION_Index_072=Conducts from bottom Input
-    S:Interaction_DESCRIPTION_Index_073=Conducts from top Input
-    S:Interaction_DESCRIPTION_Index_074=Conducts from north Input
-    S:Interaction_DESCRIPTION_Index_075=Conducts from south Input
-    S:Interaction_DESCRIPTION_Index_076=Conducts from west Input
-    S:Interaction_DESCRIPTION_Index_077=Conducts from east Input
-    S:Interaction_DESCRIPTION_Index_078=Signal = 
-    S:Interaction_DESCRIPTION_Index_079=Conditional Signal = 
-    S:Interaction_DESCRIPTION_Index_080=Inverted Conditional Signal = 
-    S:Interaction_DESCRIPTION_Index_082=Open if work enabled
-    S:Interaction_DESCRIPTION_Index_083=Open if work disabled
-    S:Interaction_DESCRIPTION_Index_084=Only Output allowed
-    S:Interaction_DESCRIPTION_Index_085=Only Input allowed
-    S:Interaction_DESCRIPTION_Index_086=Auto-Input: 
-    S:Interaction_DESCRIPTION_Index_087=Disabled
-    S:Interaction_DESCRIPTION_Index_088=Enabled
-    S:Interaction_DESCRIPTION_Index_089=  Auto-Output: 
-    S:Interaction_DESCRIPTION_Index_090=Machine Processing: 
-    S:Interaction_DESCRIPTION_Index_091=Redstone Output at Side 
-    S:Interaction_DESCRIPTION_Index_092= set to: 
-    S:Interaction_DESCRIPTION_Index_093=Strong
-    S:Interaction_DESCRIPTION_Index_094=Weak
+	
     S:Interaction_DESCRIPTION_Index_094.1=Not enough soldering material!
     S:Interaction_DESCRIPTION_Index_098=Do not regulate Item Stack Size
     S:Interaction_DESCRIPTION_Index_099=Regulate Item Stack Size to: 

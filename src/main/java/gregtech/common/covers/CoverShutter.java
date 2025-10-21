@@ -48,10 +48,14 @@ public class CoverShutter extends CoverLegacyData {
             this.coverData = 3;
         }
         switch (this.coverData) {
-            case 0 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("082", "Open if work enabled"));
-            case 1 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("083", "Open if work disabled"));
-            case 2 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("084", "Only Output allowed"));
-            case 3 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("085", "Only Input allowed"));
+            case 0 -> GTUtility
+                .sendChatToPlayer(aPlayer, GTUtility.translate("gt.chat.interact.desc.shutter.open_enabled"));
+            case 1 -> GTUtility
+                .sendChatToPlayer(aPlayer, GTUtility.translate("gt.chat.interact.desc.shutter.open_disabled"));
+            case 2 -> GTUtility
+                .sendChatToPlayer(aPlayer, GTUtility.translate("gt.chat.interact.desc.shutter.out_allow"));
+            case 3 -> GTUtility
+                .sendChatToPlayer(aPlayer, GTUtility.translate("gt.chat.interact.desc.shutter.in_allow"));
         }
         if (coveredTile.get() instanceof BaseMetaPipeEntity bmpe) {
             bmpe.reloadLocks();

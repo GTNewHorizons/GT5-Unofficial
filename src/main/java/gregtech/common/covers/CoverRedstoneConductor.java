@@ -43,16 +43,18 @@ public class CoverRedstoneConductor extends CoverLegacyData {
         }
         switch (this.coverData) {
             case 0 -> GTUtility
-                .sendChatToPlayer(aPlayer, GTUtility.translate("gt.chat.interact.desc.conducts_strongest_i"));
+                .sendChatToPlayer(aPlayer, GTUtility.translate("gt.chat.interact.desc.conducts_strongest_in"));
             case 1 -> GTUtility
-                .sendChatToPlayer(aPlayer, GTUtility.translate("gt.chat.interact.desc.conducts_bottom_i"));
-            case 2 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.translate("gt.chat.interact.desc.conducts_top_i"));
+                .sendChatToPlayer(aPlayer, GTUtility.translate("gt.chat.interact.desc.conducts_bottom_in"));
+            case 2 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.translate("gt.chat.interact.desc.conducts_top_in"));
             case 3 -> GTUtility
-                .sendChatToPlayer(aPlayer, GTUtility.translate("gt.chat.interact.desc.conducts_north_i"));
+                .sendChatToPlayer(aPlayer, GTUtility.translate("gt.chat.interact.desc.conducts_north_in"));
             case 4 -> GTUtility
-                .sendChatToPlayer(aPlayer, GTUtility.translate("gt.chat.interact.desc.conducts_south_i"));
-            case 5 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.translate("gt.chat.interact.desc.conducts_west_i"));
-            case 6 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.translate("gt.chat.interact.desc.conducts_east_i"));
+                .sendChatToPlayer(aPlayer, GTUtility.translate("gt.chat.interact.desc.conducts_south_in"));
+            case 5 -> GTUtility
+                .sendChatToPlayer(aPlayer, GTUtility.translate("gt.chat.interact.desc.conducts_west_in"));
+            case 6 -> GTUtility
+                .sendChatToPlayer(aPlayer, GTUtility.translate("gt.chat.interact.desc.conducts_east_in"));
         }
     }
 

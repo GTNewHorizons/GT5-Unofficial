@@ -26,7 +26,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -1405,18 +1404,21 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                                 if (mInputDisabled) mOutputDisabled = !mOutputDisabled;
                                 GTUtility.sendChatToPlayer(
                                     aPlayer,
-                                    GTUtility.trans("086", "Auto-Input: ") + (mInputDisabled
-                                        ? GTUtility.trans("087", "Disabled")
-                                        : GTUtility.trans("088", "Enabled") + GTUtility.trans("089", "  Auto-Output: ")
-                                            + (mOutputDisabled ? GTUtility.trans("087", "Disabled")
-                                                : GTUtility.trans("088", "Enabled"))));
+                                    GTUtility.translate("gt.chat.interact.desc.auto_in")
+                                        + (mInputDisabled ? GTUtility.translate("gt.chat.interact.desc.disabled")
+                                            : GTUtility.translate("gt.chat.interact.desc.enabled")
+                                                + GTUtility.translate("gt.chat.interact.desc.auto_out")
+                                                + (mOutputDisabled
+                                                    ? GTUtility.translate("gt.chat.interact.desc.disabled")
+                                                    : GTUtility.translate("gt.chat.interact.desc.enabled"))));
                                 sendSoundToPlayers(SoundResource.GTCEU_LOOP_FORGE_HAMMER, 1.0F, 1);
                             } else {
                                 mMuffler = !mMuffler;
                                 GTUtility.sendChatToPlayer(
                                     aPlayer,
-                                    StatCollector.translateToLocal(
-                                        mMuffler ? "GT5U.machines.muffled.on" : "GT5U.machines.muffled.off"));
+                                    GTUtility.translate(
+                                        mMuffler ? "gt.chat.interact.desc.muffled_on"
+                                            : "gt.chat.interact.desc.muffled_off"));
                             }
                             if (tCurrentItem.stackSize == 0)
                                 ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
@@ -1429,9 +1431,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                             if (mWorks) disableWorking();
                             else enableWorking();
                             {
-                                String tChat = GTUtility.trans("090", "Machine Processing: ")
-                                    + (isAllowedToWork() ? GTUtility.trans("088", "Enabled")
-                                        : GTUtility.trans("087", "Disabled"));
+                                String tChat = GTUtility.translate("gt.chat.interact.desc.machine_processing")
+                                    + (isAllowedToWork() ? GTUtility.translate("gt.chat.interact.desc.enabled")
+                                        : GTUtility.translate("gt.chat.interact.desc.disabled"));
                                 if (getMetaTileEntity() != null && getMetaTileEntity().hasAlternativeModeText())
                                     tChat = getMetaTileEntity().getAlternativeModeText();
                                 GTUtility.sendChatToPlayer(aPlayer, tChat);
@@ -1452,10 +1454,11 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                             mStrongRedstone ^= wrenchingSide.flag;
                             GTUtility.sendChatToPlayer(
                                 aPlayer,
-                                GTUtility.trans("091", "Redstone Output at Side ") + wrenchingSide
-                                    + GTUtility.trans("092", " set to: ")
-                                    + ((mStrongRedstone & wrenchingSide.flag) != 0 ? GTUtility.trans("093", "Strong")
-                                        : GTUtility.trans("094", "Weak")));
+                                GTUtility.translate("gt.chat.interact.desc.redstone_out_at_side") + wrenchingSide
+                                    + GTUtility.translate("gt.chat.interact.desc.redstone_set_to")
+                                    + ((mStrongRedstone & wrenchingSide.flag) != 0
+                                        ? GTUtility.translate("gt.chat.interact.desc.redstone_set_to_strong")
+                                        : GTUtility.translate("gt.chat.interact.desc.redstone_set_to_weak")));
                             sendSoundToPlayers(SoundResource.IC2_TOOLS_BATTERY_USE, 3.0F, -1);
                             issueBlockUpdate();
                         }
@@ -1513,7 +1516,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                                     } else {
                                         GTUtility.sendChatToPlayer(
                                             aPlayer,
-                                            StatCollector.translateToLocal("gt.cover.info.chat.tick_rate_not_allowed"));
+                                            GTUtility.translate("gt.chat.interact.desc.tick_rate_not_allowed"));
                                     }
                                     if (tCurrentItem.stackSize == 0)
                                         ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);

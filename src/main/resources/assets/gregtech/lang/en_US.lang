@@ -1112,8 +1112,6 @@ GT5U.machines.pumpareaset=Pumping area set to
 GT5U.machines.oilfluidpump=Oil/Fluid Pump
 GT5U.machines.minermulti=Multiblock Miner
 GT5U.machines.muffled=Sound Muffling
-GT5U.machines.muffled.on=Sound Muffling: §aEnabled§r
-GT5U.machines.muffled.off=Sound Muffling: §cDisabled§r
 GT5U.machines.digitalchest.voidoverflow.enabled=Overflow Voiding Mode §aOn§r
 GT5U.machines.digitalchest.voidoverflow.disabled=Overflow Voiding Mode §cOff§r
 GT5U.machines.digitalchest.inputfilter.enabled=Input Filter §aOn§r
@@ -2021,12 +2019,6 @@ gt.interact.desc.Pump.OutputBlock=§8Output Blocking
 
 ## RedstoneWirelessBase
 gt.interact.desc.RedstoneWirelessBase.Use_Private_Freq=§8Use Private Frequency
-
-## Shutter
-gt.interact.desc.Shutter.Open_Enabled=§8Open if work enabled
-gt.interact.desc.Shutter.Open_Disabled=§8Open if work disabled
-gt.interact.desc.Shutter.OutAllow=§8Only Output allowed
-gt.interact.desc.Shutter.InAllow=§8Only Input allowed
 
 ## Wireless Activity
 
@@ -3012,7 +3004,6 @@ gt.item.redstone_sniffer.wrong_dim_message=Cannot highlight because you're not i
 
 gt.cover.info.format.tick_rate=§b%s§r %s
 gt.cover.info.chat.tick_rate=Cover tick rate set to %s
-gt.cover.info.chat.tick_rate_not_allowed=Cannot adjust tick rate of this cover type with a jackhammer
 gt.cover.info.button.tick_rate.1=Current tick rate: Every %s%s
 gt.cover.info.button.tick_rate.2=Left click to increase, right click to decrease
 gt.cover.info.button.tick_rate.3=Hold Ctrl to adjust by more steps per click
@@ -3673,17 +3664,32 @@ gt.chat.interact.desc.side=Side: #Space
 gt.chat.interact.desc.emit_player_close=Emit if any Player is close
 gt.chat.interact.desc.emit_player_no_close=Emit if other Player is close
 gt.chat.interact.desc.emit_you_close=Emit if you are close
-gt.chat.interact.desc.conducts_strongest_i=Conducts strongest Input
-gt.chat.interact.desc.conducts_bottom_i=Conducts from bottom Input
-gt.chat.interact.desc.conducts_top_i=Conducts from top Input
-gt.chat.interact.desc.conducts_north_i=Conducts from north Input
-gt.chat.interact.desc.conducts_south_i=Conducts from south Input
-gt.chat.interact.desc.conducts_west_i=Conducts from west Input
-gt.chat.interact.desc.conducts_east_i=Conducts from east Input
-
-
-
-
+gt.chat.interact.desc.conducts_strongest_ni=Conducts strongest Input
+gt.chat.interact.desc.conducts_bottom_in=Conducts from bottom Input
+gt.chat.interact.desc.conducts_top_in=Conducts from top Input
+gt.chat.interact.desc.conducts_north_in=Conducts from north Input
+gt.chat.interact.desc.conducts_south_in=Conducts from south Input
+gt.chat.interact.desc.conducts_west_in=Conducts from west Input
+gt.chat.interact.desc.conducts_east_in=Conducts from east Input
+gt.chat.interact.desc.signal_normal=Signal = #Space
+gt.chat.interact.desc.signal_conditional=Conditional Signal = #Space
+gt.chat.interact.desc.signal_conditional_inverted=Inverted Conditional Signal = #Space
+gt.chat.interact.desc.shutter.open_enabled=Open if work enabled
+gt.chat.interact.desc.shutter.open_disabled=Open if work disabled
+gt.chat.interact.desc.shutter.out_allow=Only Output allowed
+gt.chat.interact.desc.shutter.in_allow=Only Input allowed
+gt.chat.interact.desc.auto_in=Auto-Input: #Space
+gt.chat.interact.desc.disabled=Disabled
+gt.chat.interact.desc.enabled=Enabled
+gt.chat.interact.desc.auto_out=  Auto-Output: #Space
+gt.chat.interact.desc.muffled_on=Sound Muffling: §aEnabled§r
+gt.chat.interact.desc.muffled_off=Sound Muffling: §cDisabled§r
+gt.chat.interact.desc.machine_processing=Machine Processing: #Space
+gt.chat.interact.desc.redstone_out_at_side=Redstone Output at Side #Space
+gt.chat.interact.desc.redstone_set_to= set to: #Space
+gt.chat.interact.desc.redstone_set_to_weak=Weak
+gt.chat.interact.desc.redstone_set_to_strong=Strong
+gt.chat.interact.desc.tick_rate_not_allowed=Cannot adjust tick rate of this cover type with a jackhammer
 
 
 # Machine interact description
