@@ -517,6 +517,10 @@ public class GTValues {
         + EnumChatFormatting.BOLD
         + "0";
 
+    public static final String AuthorPxx500 = "" + EnumChatFormatting.DARK_BLUE
+        + EnumChatFormatting.BOLD
+        + "Pxx500";
+    
     public static final String AuthorBlueWeabo = "" + EnumChatFormatting.BLUE
         + EnumChatFormatting.BOLD
         + "Blue"
@@ -619,6 +623,15 @@ public class GTValues {
             EnumChatFormatting.WHITE + BOLD,
             EnumChatFormatting.BLUE + BOLD,
             EnumChatFormatting.GOLD + BOLD));
+
+    public static final Supplier<String> AuthorThree = chain(
+        animatedText(
+            "Three",
+            0,
+            1000,
+            EnumChatFormatting.BLUE + BOLD,
+            EnumChatFormatting.RED + BOLD,
+            EnumChatFormatting.YELLOW + BOLD));
 
     private static final long[] EXPLOSION_LOOKUP_V = new long[] { V[0], V[1], V[2], V[3], V[4], V[4] * 2, V[5], V[6],
         V[7], V[8], V[8] * 2, V[9], V[10], V[11], V[12], V[12] * 2, V[13], V[14], V[15] };
