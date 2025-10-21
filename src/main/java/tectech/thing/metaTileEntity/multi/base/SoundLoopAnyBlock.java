@@ -41,9 +41,9 @@ public class SoundLoopAnyBlock extends MovingSound {
         tileX = tileEntity.getXCoord();
         tileY = tileEntity.getYCoord();
         tileZ = tileEntity.getZCoord();
-        xPosF = tileX + offset[0];
-        yPosF = tileY + offset[1];
-        zPosF = tileZ + offset[2];
+        xPosF = tileX + offset[0] + .5f;
+        yPosF = tileY + offset[1] + .5f;
+        zPosF = tileZ + offset[2] + .5f;
         worldID = tileEntity.getWorld().provider.dimensionId;
         repeat = true;
         volume = 0.0625f;

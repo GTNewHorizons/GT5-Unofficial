@@ -91,8 +91,8 @@ public class GTSoundLoop extends MovingSound {
             || !world.checkChunksExist(tileX, tileY, tileZ, tileX, tileY, tileZ);
         if (donePlaying) return;
         TileEntity tile = world.getTileEntity(tileX, tileY, tileZ);
-        if ((tile instanceof IGregTechTileEntity)) {
-            fadeMe |= ((IGregTechTileEntity) tile).isActive() ? whileActive : whileInactive;
+        if ((tile instanceof IGregTechTileEntity iGregTechTileEntity)) {
+            fadeMe |= iGregTechTileEntity.isActive() ? whileActive : whileInactive;
             return;
         }
 
