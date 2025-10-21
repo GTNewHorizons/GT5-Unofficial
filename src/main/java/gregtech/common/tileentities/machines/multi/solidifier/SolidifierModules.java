@@ -23,7 +23,7 @@ public enum SolidifierModules {
         new float[] { 0f / 255f, 143f / 255f, 38f / 255f, 0.7f }),
     TRANSCENDENT_REINFORCEMENT("Transcendent Reinforcement", "T.R", "transcendent_reinforcement",
         ItemList.Transcendent_Reinforcement_Solidifier_Modular.get(1), GTGuiTextures.MODULAR_SOLIDIFIER_TR_RE,
-        new float[] { 150f/255f, 0, 150f/255f, 0.7f }),
+        new float[] { 150f / 255f, 0, 150f / 255f, 0.7f }),
     EXTRA_CASTING_BASINS("Extra Casting Basins", "E.C.B", "extra_casting_basins",
         ItemList.Extra_Casting_Basins_Solidifier_Modular.get(1), GTGuiTextures.OVERLAY_BUTTON_CYCLIC,
         new float[] { 58f / 255f, 58f / 255f, 34f / 255f, 0.7f }),
