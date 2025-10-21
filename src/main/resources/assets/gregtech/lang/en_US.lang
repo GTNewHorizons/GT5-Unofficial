@@ -197,8 +197,6 @@ gt.interact.desc.no_fluid_cond=Keep Fluids Away (conditional)
 gt.interact.desc.no_fluid_invert_cond=Keep Fluids Away (invert cond)
 gt.interact.desc.export_allow=Export allow Input
 gt.interact.desc.import_allow=Import allow Output
-gt.interact.desc.input_from_output_on=Input from Output Side allowed
-gt.interact.desc.input_from_output_off=Input from Output Side forbidden
 gt.interact.desc.public=Public
 gt.interact.desc.private=Private
 gt.interact.desc.privfreq=Use Private Frequency
@@ -859,17 +857,6 @@ GT5U.MBTT.subchannel=Uses sub channel §6%s§r§7 for §6%s
 
 GT5U.cracker.io_side=Input/Output Hatches must be on opposite sides!
 
-GT5U.turbine.running.true=Turbine running
-GT5U.turbine.running.false=Turbine stopped
-GT5U.turbine.maintenance.false=No Maintenance issues
-GT5U.turbine.maintenance.true=Needs Maintenance
-GT5U.turbine.efficiency=Current Speed
-GT5U.turbine.flow=Optimal Flow
-GT5U.turbine.fuel=Fuel Remaining
-GT5U.turbine.dmg=Turbine Damage
-GT5U.turbine.loose=Loose
-GT5U.turbine.tight=Tight
-
 GT5U.engine.output=Current Output
 GT5U.engine.consumption=Fuel Consumption
 GT5U.engine.value=Fuel Value
@@ -1103,24 +1090,6 @@ GT5U.machines.pumpareaset=Pumping area set to
 GT5U.machines.oilfluidpump=Oil/Fluid Pump
 GT5U.machines.minermulti=Multiblock Miner
 GT5U.machines.muffled=Sound Muffling
-GT5U.machines.digitalchest.voidoverflow.enabled=Overflow Voiding Mode §aOn§r
-GT5U.machines.digitalchest.voidoverflow.disabled=Overflow Voiding Mode §cOff§r
-GT5U.machines.digitalchest.inputfilter.enabled=Input Filter §aOn§r
-GT5U.machines.digitalchest.inputfilter.disabled=Input Filter §cOff§r
-GT5U.machines.digitaltank.tooltip=Stores %sL of fluid
-GT5U.machines.digitaltank.tooltip1=Will keep its contents when harvested
-GT5U.machines.digitaltank.autooutput.tooltip=Fluid Auto-Output
-GT5U.machines.digitaltank.fluid.amount=Fluid Amount
-GT5U.machines.digitaltank.lockfluid.label=Locked Fluid
-GT5U.machines.digitaltank.lockfluid.empty=None
-GT5U.machines.digitaltank.lockfluid.tooltip=Lock Fluid Mode
-GT5U.machines.digitaltank.lockfluid.tooltip.1=§7This tank will be locked to only accept one type of fluid
-GT5U.machines.digitaltank.lockfluid.tooltip.2=§7It will be locked to the first fluid type that enters the tank
-GT5U.machines.digitaltank.voidoverflow.tooltip=Overflow Voiding Mode
-GT5U.machines.digitaltank.voidoverflow.tooltip.1=§7Voids all fluid excess if the tank is full
-GT5U.machines.digitaltank.voidfull.tooltip=Void Full Mode
-GT5U.machines.digitaltank.voidfull.tooltip.1=§7Voids all fluids that enter the tank
-GT5U.machines.digitaltank.inputfromoutput.tooltip=Input Fluid from Output Side
 GT5U.machines.select_circuit=Configure Circuit
 GT5U.machines.select_circuit.tooltip=Ghost Circuit Slot
 GT5U.machines.select_circuit.tooltip.configuration=§aConfiguration: §f%s§r
@@ -1349,14 +1318,11 @@ GT5U.gui.button.down_tier=Down Tier
 GT5U.gui.button.tier=Tier:
 GT5U.gui.button.forbidden=§4Cannot change mode for this machine
 GT5U.gui.button.forbidden_while_running=§4Cannot change mode while running
-GT5U.gui.button.chunk_loading_on=§7Chunk Loading: §aON
-GT5U.gui.button.chunk_loading_off=§7Chunk Loading: §4OFF
+
 GT5U.gui.button.ore_drill_radius_1=§7Current Radius: §a%s
 GT5U.gui.button.ore_drill_radius_2=§7Left-click to increment, right-click to decrement
 GT5U.gui.button.ore_drill_cobblestone_on=§7Replace with cobblestone: §aON
 GT5U.gui.button.ore_drill_cobblestone_off=§7Replace with cobblestone: §4OFF
-GT5U.gui.button.drill_retract_pipes=§7Abort and retract mining pipes
-GT5U.gui.button.drill_retract_pipes_active=§4Cannot interrupt abort procedure
 GT5U.gui.button.drone_setname=Set custom name for machine
 GT5U.gui.button.drone_highlight=Highlight machine in the world
 GT5U.gui.button.drone_outofrange=§4Machine is too far, drone control system not available!
@@ -1681,7 +1647,6 @@ GT5U.item.cable.max_amperage=Max Amperage
 GT5U.item.cable.loss=Loss/Meter/Ampere
 GT5U.item.cable.eu_volt=EU-Volt
 GT5U.item.cable.swapped=Cable swapped:
-GT5U.item.tank.locked_to=Content locked to %s
 
 GT5U.item.pipe.empty=Empty
 
@@ -3575,13 +3540,35 @@ gt.tooltip.power_switch=Power Switch
 gt.tooltip.hoverable_error=ERROR! REPORT ME!
 gt.tooltip.chance=Chance: #Space
 gt.tooltip.not_consumed_in_process=Does not get consumed in the process
+gt.tooltip.chunk_loading_on=§7Chunk Loading: §aON
+gt.tooltip.chunk_loading_off=§7Chunk Loading: §4OFF
+gt.tooltip.drill_retract_pipes=§7Abort and retract mining pipes
+gt.tooltip.drill_retract_pipes_active=§4Cannot interrupt abort procedure
+
+
+gt.tooltip.digitaltank.tooltip=Stores %sL of fluid
+gt.tooltip.digitaltank.tooltip1=Will keep its contents when harvested
+gt.tooltip.digitaltank.locked_to=Content locked to %s
+gt.tooltip.digitaltank.fluid_amount= / #space
+gt.tooltip.digitaltank.liters= L #space
+gt.tooltip.digitaltank.empty=Tank Empty
+gt.tooltip.digitaltank.fluid_amount=Fluid Amount
+gt.tooltip.digitaltank.lockfluid_label=Locked Fluid
+gt.tooltip.digitaltank.lockfluid_empty=None
+gt.tooltip.digitaltank.autooutput_tooltip=Fluid Auto-Output
+gt.tooltip.digitaltank.lockfluid_tooltip=Lock Fluid Mode
+gt.tooltip.digitaltank.inputfromoutput_tooltip=Input Fluid from Output Side
+gt.tooltip.digitaltank.voidoverflow_tooltip=Overflow Voiding Mode
+gt.tooltip.digitaltank.void_full_mode_disabled=Void Full Mode Disable
+gt.tooltip.digitaltank.void_full_mode_enabled=Void Full Mode Enabled
+gt.tooltip.digitaltank.voidfull_tooltip=Void Full Mode
 
 
 
 
 # Behaviour tooltips
 gt.tooltip.behaviour.prospecting=Usable for Prospecting
-
+gt.tooltip.behaviour.sneak_switch_mode=Sneak Rightclick to switch Mode
 
 # Machine interact chat description
 gt.chat.interact.desc.filter_fluid=Filter Fluid: #Space
@@ -3660,6 +3647,28 @@ gt.chat.interact.desc.in_enabled=Input enabled
 gt.chat.interact.desc.in_disabled=Input disabled
 gt.chat.interact.desc.connected=Connected
 gt.chat.interact.desc.disconnected=Disconnected
+gt.chat.interact.desc.fluid_auto_out_disabled=Fluid Auto Output Disabled
+gt.chat.interact.desc.fluid_auto_out_enabled=Fluid Auto Output Enabled
+gt.chat.interact.desc.input_from_output_on=Input from Output Side allowed
+gt.chat.interact.desc.input_from_output_off=Input from Output Side forbidden
+gt.chat.interact.desc.one_spec_fluid=1 specific Fluid
+gt.chat.interact.desc.lock_fluid_disabled=Lock Fluid Mode Disabled
+gt.chat.interact.desc.fitting_more_flow=Fitting: Loose - More Flow
+gt.chat.interact.desc.fitting_more_efficiency=Fitting: Tight - More Efficiency
+gt.chat.interact.desc.mining_chunk_enabled=Mining chunk loading enabled
+gt.chat.interact.desc.mining_chunk_disabled=Mining chunk loading disabled
+gt.chat.interact.desc.connectable=Connectable: #space
+
+
+
+
+## Digital Tank/Digital Chest
+gt.chat.digitaltank.overflow_disabled=Overflow Voiding Mode Disabled
+gt.chat.digitaltank.overflow_enabled=Overflow Voiding Mode Enabled
+gt.chat.digitalchest.voidoverflow.enabled=Overflow Voiding Mode §aOn§r
+gt.chat.digitalchest.voidoverflow.disabled=Overflow Voiding Mode §cOff§r
+gt.chat.digitalchest.inputfilter_disabled=Input Filter §cOff§r
+gt.chat.digitalchest.inputfilter_enabled=Input Filter §aOn§r
 
 ## Pipe stuff
 gt.chat.interact.desc.pipe.l_s_1=L/seconds → #Space
@@ -3719,6 +3728,18 @@ gt.infodata.multiblock.efficiency=Efficiency
 gt.infodata.multiblock.pollution=Pollution reduced to
 gt.infodata.multiblock.purification_plant.status_title=§lPurification Unit Status
 
+gt.infodata.turbine.running.true=Turbine running
+gt.infodata.turbine.running.false=Turbine stopped
+gt.infodata.turbine.maintenance.false=No Maintenance issues
+gt.infodata.turbine.maintenance.true=Needs Maintenance
+gt.infodata.turbine.efficiency=Current Speed: #space
+gt.infodata.turbine.flow=Optimal Flow: #space
+gt.infodata.turbine.fuel=Fuel Remaining: #space
+gt.infodata.turbine.dmg=Turbine Damage: #space
+gt.infodata.turbine.loose=Loose
+gt.infodata.turbine.tight=Tight
+
+
 # Recipe
 gt.recipe.original_by=Original Recipe by: #space
 gt.recipe.modified_by=Modified by: #space
@@ -3733,6 +3754,13 @@ gt.recipe.needs_cleanroom=Needs Cleanroom
 gt.recipe.scan_ass_line=Scan for Assembly Line
 gt.recipe.needs_cleanroom_and_low_gravity=Needs Cleanroom & LowGrav
 gt.recipe.deprecated_recipe=Deprecated Recipe
+gt.recipe.pcb_factory_tier=PCB Factory Tier: #space
+gt.recipe.pcb_factory_upgrade_requirement=Upgrade Required: #space
+gt.recipe.pcb_factory_upgrade_bio=Bio
+gt.recipe.compression_require_hip=Requires HIP Unit
+gt.recipe.compression_require_stabilized_black_hole=Requires Stabilized Black Hole
+gt.recipe.require_tier=Tier required: %s
+
 
 # Gui
 gt.gui.hatch_output.lock_fluid=Locked Fluid

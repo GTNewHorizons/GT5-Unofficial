@@ -45,7 +45,8 @@ public class CoverToggleVisual extends CoverLegacyData {
 
     @Override
     public boolean onCoverRightClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("756", "Connectable: ") + getConnectionState());
+        GTUtility
+            .sendChatToPlayer(aPlayer, GTUtility.translate("gt.chat.interact.desc.connectable") + getConnectionState());
         return super.onCoverRightClick(aPlayer, aX, aY, aZ);
     }
 

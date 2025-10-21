@@ -45,7 +45,6 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.widget.FluidLockWidget;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -66,8 +65,8 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
             aTier,
             3,
             new String[] {
-                translateToLocalFormatted("GT5U.machines.digitaltank.tooltip", formatNumbers(commonSizeCompute(aTier))),
-                translateToLocal("GT5U.machines.digitaltank.tooltip1"), });
+                translateToLocalFormatted("gt.tooltip.digitaltank.tooltip", formatNumbers(commonSizeCompute(aTier))),
+                translateToLocal("gt.tooltip.digitaltank.tooltip1"), });
     }
 
     protected static int commonSizeCompute(int tier) {
@@ -116,15 +115,14 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                 .loadFluidStackFromNBT(stack.stackTagCompound.getCompoundTag("mFluid"));
             if (tContents != null && tContents.amount > 0) {
                 tooltip.add(
-                    GTLanguageManager.addStringLocalization("TileEntity_TANK_INFO", "Contains Fluid: ")
-                        + EnumChatFormatting.YELLOW
+                    GTUtility.translate("gt.tooltip.contains_fluid") + EnumChatFormatting.YELLOW
                         + tContents.getLocalizedName()
                         + EnumChatFormatting.GRAY);
                 tooltip.add(
-                    GTLanguageManager.addStringLocalization("TileEntity_TANK_AMOUNT", "Fluid Amount: ")
-                        + EnumChatFormatting.GREEN
+                    GTUtility.translate("gt.tooltip.fluid_amount") + EnumChatFormatting.GREEN
                         + formatNumbers(tContents.amount)
-                        + " L"
+                        + " "
+                        + GTUtility.translate("gt.info.liters")
                         + EnumChatFormatting.GRAY);
             } else if (stack.stackTagCompound.hasKey("lockedFluidName")) {
                 String fluidName = stack.stackTagCompound.getString("lockedFluidName");
@@ -133,7 +131,7 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                 // noinspection deprecation
                 tooltip.add(
                     translateToLocalFormatted(
-                        "GT5U.item.tank.locked_to",
+                        "gt.tooltip.digitaltank.locked_to",
                         EnumChatFormatting.YELLOW + fluid.getLocalizedName()));
             }
         }
@@ -294,8 +292,8 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
             mAllowInputFromOutputSide = !mAllowInputFromOutputSide;
             GTUtility.sendChatToPlayer(
                 aPlayer,
-                mAllowInputFromOutputSide ? translateToLocal("gt.interact.desc.input_from_output_on")
-                    : translateToLocal("gt.interact.desc.input_from_output_off"));
+                mAllowInputFromOutputSide ? translateToLocal("gt.chat.interact.desc.input_from_output_on")
+                    : translateToLocal("gt.chat.interact.desc.input_from_output_off"));
         }
     }
 
@@ -484,12 +482,12 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
             currenttip.remove(0);
             currenttip.add(
                 0,
-                formatNumbers(fluid.amount) + " / "
+                formatNumbers(fluid.amount) + GTUtility.translate("gt.tooltip.digitaltank.fluid_amount")
                     + formatNumbers(getRealCapacity())
-                    + " L "
+                    + GTUtility.translate("gt.tooltip.digitaltank.liters")
                     + fluid.getLocalizedName());
         } else {
-            currenttip.add(0, "Tank Empty");
+            currenttip.add(0, GTUtility.translate("gt.tooltip.digitaltank.empty"));
         }
     }
 
@@ -527,7 +525,7 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                     .setBackground(GTUITextures.TRANSPARENT)
                     .setPos(58, 41))
             .widget(
-                new TextWidget(translateToLocal("GT5U.machines.digitaltank.fluid.amount"))
+                new TextWidget(translateToLocal("gt.tooltip.digitaltank.fluid_amount"))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(10, 20))
             .widget(
@@ -540,13 +538,13 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                     .setSize(71, 45))
             .widget(new FluidLockWidget(this).setPos(149, 41))
             .widget(
-                new TextWidget(translateToLocal("GT5U.machines.digitaltank.lockfluid.label"))
+                new TextWidget(translateToLocal("gt.tooltip.digitaltank.lockfluid_label"))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(101, 20))
             .widget(TextWidget.dynamicString(() -> {
                 FluidStack fluidStack = FluidRegistry.getFluidStack(lockedFluidName, 1);
                 return fluidStack != null ? fluidStack.getLocalizedName()
-                    : translateToLocal("GT5U.machines.digitaltank.lockfluid.empty");
+                    : translateToLocal("gt.tooltip.digitaltank.lockfluid_empty");
             })
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setTextAlignment(Alignment.CenterLeft)
@@ -558,17 +556,17 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                     if (!mOutputFluid) {
                         GTUtility.sendChatToPlayer(
                             buildContext.getPlayer(),
-                            GTUtility.trans("262", "Fluid Auto Output Disabled"));
+                            GTUtility.translate("gt.chat.interact.desc.fluid_auto_out_disabled"));
                     } else {
                         GTUtility.sendChatToPlayer(
                             buildContext.getPlayer(),
-                            GTUtility.trans("263", "Fluid Auto Output Enabled"));
+                            GTUtility.translate("gt.chat.interact.desc.fluid_auto_out_enabled"));
                     }
                 }
             })
                 .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
                 .setStaticTexture(GTUITextures.OVERLAY_BUTTON_AUTOOUTPUT_FLUID)
-                .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.digitaltank.autooutput.tooltip"))
+                .setGTTooltip(() -> mTooltipCache.getData("gt.tooltip.digitaltank.autooutput_tooltip"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setPos(7, 63)
                 .setSize(18, 18))
@@ -580,8 +578,7 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                 if (mLockFluid) {
                     if (mFluid == null) {
                         setLockedFluidName(null);
-                        inBrackets = GTUtility
-                            .trans("264", "currently none, will be locked to the next that is put in");
+                        inBrackets = GTUtility.translate("gt.chat.interact.desc.locked_none_lock_next");
                     } else {
                         setLockedFluidName(
                             getDrainableStack().getFluid()
@@ -591,21 +588,24 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                     if (isServer) {
                         GTUtility.sendChatToPlayer(
                             buildContext.getPlayer(),
-                            String.format("%s (%s)", GTUtility.trans("265", "1 specific Fluid"), inBrackets));
+                            String.format(
+                                "%s (%s)",
+                                GTUtility.translate("gt.chat.interact.desc.one_spec_fluid"),
+                                inBrackets));
                     }
                 } else {
                     fluidTank.drain(0, true);
                     if (isServer) {
                         GTUtility.sendChatToPlayer(
                             buildContext.getPlayer(),
-                            GTUtility.trans("266", "Lock Fluid Mode Disabled"));
+                            GTUtility.translate("gt.chat.interact.desc.lock_fluid_disabled"));
                     }
                 }
                 fluidSlotWidget.notifyTooltipChange();
             })
                 .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
                 .setStaticTexture(GTUITextures.OVERLAY_BUTTON_LOCK)
-                .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.digitaltank.lockfluid.tooltip"))
+                .setGTTooltip(() -> mTooltipCache.getData("gt.tooltip.digitaltank.lockfluid_tooltip"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setPos(25, 63)
                 .setSize(18, 18))
@@ -615,17 +615,17 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                     if (!mAllowInputFromOutputSide) {
                         GTUtility.sendChatToPlayer(
                             buildContext.getPlayer(),
-                            translateToLocal("gt.interact.desc.input_from_output_off"));
+                            translateToLocal("gt.chat.interact.desc.input_from_output_off"));
                     } else {
                         GTUtility.sendChatToPlayer(
                             buildContext.getPlayer(),
-                            translateToLocal("gt.interact.desc.input_from_output_on"));
+                            translateToLocal("gt.chat.interact.desc.input_from_output_on"));
                     }
                 }
             })
                 .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
                 .setStaticTexture(GTUITextures.OVERLAY_BUTTON_INPUT_FROM_OUTPUT_SIDE)
-                .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.digitaltank.inputfromoutput.tooltip"))
+                .setGTTooltip(() -> mTooltipCache.getData("gt.tooltip.digitaltank.inputfromoutput_tooltip"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setPos(43, 63)
                 .setSize(18, 18))
@@ -636,17 +636,17 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                     if (!mVoidFluidPart) {
                         GTUtility.sendChatToPlayer(
                             buildContext.getPlayer(),
-                            GTUtility.trans("267", "Overflow Voiding Mode Disabled"));
+                            GTUtility.translate("gt.chat.digitaltank.overflow_disabled"));
                     } else {
                         GTUtility.sendChatToPlayer(
                             buildContext.getPlayer(),
-                            GTUtility.trans("268", "Overflow Voiding Mode Enabled"));
+                            GTUtility.translate("gt.chat.digitaltank.overflow_enabled"));
                     }
                 }
             })
                 .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
                 .setStaticTexture(GTUITextures.OVERLAY_BUTTON_TANK_VOID_EXCESS)
-                .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.digitaltank.voidoverflow.tooltip"))
+                .setGTTooltip(() -> mTooltipCache.getData("gt.tooltip.digitaltank.voidoverflow_tooltip"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setPos(98, 63)
                 .setSize(18, 18))
@@ -657,17 +657,17 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                     if (!mVoidFluidFull) {
                         GTUtility.sendChatToPlayer(
                             buildContext.getPlayer(),
-                            GTUtility.trans("269", "Void Full Mode Disabled"));
+                            GTUtility.translate("gt.tooltip.digitaltank.void_full_mode_disabled"));
                     } else {
                         GTUtility.sendChatToPlayer(
                             buildContext.getPlayer(),
-                            GTUtility.trans("270", "Void Full Mode Enabled"));
+                            GTUtility.translate("gt.tooltip.digitaltank.void_full_mode_enabled"));
                     }
                 }
             })
                 .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
                 .setStaticTexture(GTUITextures.OVERLAY_BUTTON_TANK_VOID_ALL)
-                .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.digitaltank.voidfull.tooltip"))
+                .setGTTooltip(() -> mTooltipCache.getData("gt.tooltip.digitaltank.voidfull_tooltip"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setPos(116, 63)
                 .setSize(18, 18));

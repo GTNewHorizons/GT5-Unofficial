@@ -428,8 +428,8 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
             mChunkLoadingEnabled = !mChunkLoadingEnabled;
             GTUtility.sendChatToPlayer(
                 player,
-                mChunkLoadingEnabled ? GTUtility.trans("502", "Mining chunk loading enabled")
-                    : GTUtility.trans("503", "Mining chunk loading disabled"));
+                mChunkLoadingEnabled ? GTUtility.translate("gt.chat.interact.desc.mining_chunk_enabled")
+                    : GTUtility.translate("gt.chat.interact.desc.mining_chunk_disabled"));
             return true;
         }
         return super.onSolderingToolRightClick(side, wrenchingSide, player, x, y, z, aTool);

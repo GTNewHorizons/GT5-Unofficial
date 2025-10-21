@@ -402,8 +402,8 @@ public abstract class MTELargeTurbineBase extends MTEEnhancedMultiBlockBase<MTEL
             looseFit ^= true;
             GTUtility.sendChatToPlayer(
                 aPlayer,
-                looseFit ? GTUtility.trans("500", "Fitting: Loose - More Flow")
-                    : GTUtility.trans("501", "Fitting: Tight - More Efficiency"));
+                looseFit ? GTUtility.translate("gt.chat.interact.desc.fitting_more_flow")
+                    : GTUtility.translate("gt.chat.interact.desc.fitting_more_efficiency"));
         }
     }
 
