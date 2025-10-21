@@ -13,10 +13,7 @@
 
 package bartworks.system.material.CircuitGeneration;
 
-import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.VP;
-import static gregtech.api.enums.OrePrefixes.bolt;
-import static gregtech.api.enums.OrePrefixes.stick;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 
 import java.util.Arrays;
@@ -31,7 +28,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
-import gregtech.api.enums.GTValues;
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.collect.ArrayListMultimap;
@@ -43,6 +39,7 @@ import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.util.BWUtil;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -284,16 +281,15 @@ public class CircuitImprintLoader {
         }
         OreDictionary.getOreIDs(stack);
         int tier = BWUtil.getCircuitTierFromOreDictName(
-            OreDictionary.getOreName(
-                OreDictionary.getOreIDs(stack).length > 0
-                    ? OreDictionary.getOreIDs(stack)[0]
-                    : -1));
+            OreDictionary
+                .getOreName(OreDictionary.getOreIDs(stack).length > 0 ? OreDictionary.getOreIDs(stack)[0] : -1));
 
         eut = Math.min(eut, VP[tier]);
         GTValues.RA.stdBuilder()
             .itemInputs(stack, ItemList.Shape_Slicer_Flat.get(0))
-            .itemOutputs(BWMetaItems.getCircuitParts()
-                .getStackWithNBT(tag, 1, 1))
+            .itemOutputs(
+                BWMetaItems.getCircuitParts()
+                    .getStackWithNBT(tag, 1, 1))
             .duration(300)
             .eut(eut)
             .requiresCleanRoom()
