@@ -248,7 +248,7 @@ public class CircuitImprintLoader {
         removeOldRecipesFromRegistries();
         CircuitImprintLoader.recipeTagMap.keySet()
             .forEach(e -> {
-                makeAndAddCutterRecipe(e);
+                makeAndAddSlicingRecipe(e);
                 makeAndAddCraftingRecipes(e);
             });
     }
@@ -273,7 +273,7 @@ public class CircuitImprintLoader {
         gtrecipeWorldCache.clear();
     }
 
-    private static void makeAndAddCutterRecipe(NBTTagCompound tag) {
+    private static void makeAndAddSlicingRecipe(NBTTagCompound tag) {
         ItemStack stack = CircuitImprintLoader.getStackFromTag(tag);
         int eut = Integer.MAX_VALUE;
 
@@ -289,7 +289,7 @@ public class CircuitImprintLoader {
                         OreDictionary.getOreIDs(stack) != null && OreDictionary.getOreIDs(stack).length > 0
                             ? OreDictionary.getOreIDs(stack)[0]
                             : -1))));
-        GTRecipe cutterRecipe = new GTRecipe(
+        GTRecipe slicingRecipe = new GTRecipe(
             true,
             new ItemStack[] { stack, ItemList.Shape_Slicer_Flat.get(0) },
             new ItemStack[] { BWMetaItems.getCircuitParts()
@@ -301,8 +301,8 @@ public class CircuitImprintLoader {
             300,
             eut,
             BWUtil.CLEANROOM);
-        gtrecipeWorldCache.add(cutterRecipe);
-        RecipeMaps.cutterRecipes.add(cutterRecipe);
+        gtrecipeWorldCache.add(slicingRecipe);
+        RecipeMaps.slicerRecipes.add(slicingRecipe);
     }
 
     private static void makeAndAddCraftingRecipes(NBTTagCompound tag) {
