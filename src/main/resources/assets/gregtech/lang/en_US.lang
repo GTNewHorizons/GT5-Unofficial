@@ -3693,8 +3693,9 @@ gt.interact.desc.pump_speed_every_tick=Pump speed: %dL every %d ticks, %.2f L/se
 
 
 
-StatCollector.translateToLocal("xxxx")
-import net.minecraft.util.StatCollector;
 
-IKey.lang("xxxx")
-import com.cleanroommc.modularui.api.drawable.IKey;
+# import gregtech.api.util.GTUtility;
+# GTUtility.translate("xxxx")
+#
+# GTUtility.translate("gt.thisthat.desc", THIS, THAT)
+# gt.thisthat.desc=this is %s and that is %s

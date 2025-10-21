@@ -28,7 +28,6 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -372,9 +371,8 @@ public class CoverFluidStorageMonitor extends Cover {
         if (aPlayer.isSneaking()) {
             setSide(ForgeDirection.values()[(fluidLookupSide.ordinal() + 1) % ForgeDirection.values().length])
                 .setSlot(0);
-            GTUtility.sendChatToPlayer(
-                aPlayer,
-                StatCollector.translateToLocal("gt.chat.interact.desc.side") + fluidLookupSide.name());
+            GTUtility
+                .sendChatToPlayer(aPlayer, GTUtility.translate("gt.chat.interact.desc.side") + fluidLookupSide.name());
             return;
         }
         final FluidTankInfo[] tanks = getValidFluidTankInfos(coveredTile.get(), fluidLookupSide);
@@ -388,7 +386,7 @@ public class CoverFluidStorageMonitor extends Cover {
         } else {
             setSlot((slot + tanks.length + (aPlayer.isSneaking() ? -1 : 1)) % tanks.length);
         }
-        GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("gt.chat.interact.desc.slot") + slot);
+        GTUtility.sendChatToPlayer(aPlayer, GTUtility.translate("gt.chat.interact.desc.slot") + slot);
     }
 
     @Override

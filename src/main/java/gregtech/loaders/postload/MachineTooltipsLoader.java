@@ -1,11 +1,11 @@
 package gregtech.loaders.postload;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.util.GTLog;
+import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.ItemMachines;
 
 public class MachineTooltipsLoader implements Runnable {
@@ -20,15 +20,15 @@ public class MachineTooltipsLoader implements Runnable {
                 ((ItemMachines) tStack.getItem()).registerDescription(i);
             }
         }
-        StatCollector.translateToLocal("gt.tooltip.volt_in");
-        StatCollector.translateToLocal("gt.tooltip.volt_out");
-        StatCollector.translateToLocal("gt.tooltip.amp");
-        StatCollector.translateToLocal("gt.tooltip.capacity");
-        StatCollector.translateToLocal("gt.tooltip.contains_fluid");
-        StatCollector.translateToLocal("gt.tooltip.fluid_amount");
-        StatCollector.translateToLocal("gt.tooltip.contains_item");
-        StatCollector.translateToLocal("gt.tooltip.item_amount");
-        StatCollector.translateToLocal("gt.tooltip.has_muffler");
-        StatCollector.translateToLocal("gt.tooltip.steam_tank_upgrades");
+        GTUtility.translate("gt.tooltip.volt_in");
+        GTUtility.translate("gt.tooltip.volt_out");
+        GTUtility.translate("gt.tooltip.amp");
+        GTUtility.translate("gt.tooltip.capacity");
+        GTUtility.translate("gt.tooltip.contains_fluid");
+        GTUtility.translate("gt.tooltip.fluid_amount");
+        GTUtility.translate("gt.tooltip.contains_item");
+        GTUtility.translate("gt.tooltip.item_amount");
+        GTUtility.translate("gt.tooltip.has_muffler");
+        GTUtility.translate("gt.tooltip.steam_tank_upgrades");
     }
 }
