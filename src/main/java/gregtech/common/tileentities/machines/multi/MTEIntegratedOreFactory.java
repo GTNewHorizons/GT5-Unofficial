@@ -216,7 +216,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             .addCasingInfoExactly("Material.reinforcedglass", 48, false)
             .addCasingInfoExactly("gt.blockcasings2.15.name", 30, false)
             .addCasingInfoExactly(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Tungsten, 1)
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1)
                     .getDisplayName(),
                 16,
                 false)

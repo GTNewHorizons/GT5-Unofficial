@@ -3669,6 +3669,7 @@ machtype.adv_nt_compressor=Advanced Neutronium Compressor
 machtype.bhc=BHC
 machtype.cleanroom=Cleanroom
 machtype.ore_factory=Ore Processor, IOF
+machtype.ind_engraver=Laser Engraver, HILE
 
 # Used in addController. These are some commonly used shared ones
 # CONTEXT: Controller: (corepos)
@@ -3679,6 +3680,13 @@ gt.mb.corepos.top_center=Top center
 gt.mb.hint_block=Hint block with dot %d
 
 # Multiblock Tooltip lines
+
+gt.latex.tips.1=§8§oAKA Laminated Application and Thermal Enclosure eXpert
+gt.latex.tips.2=Recipes have an additive §26.25%§7 rubber discount based on %s\nAn Elastic Singularity can be inserted into the controller to gain the following bonuses\n§62x§7 parallels, +§225%§7 rubber discount, and the use of a singular §aMulti-Amp energy hatch
+gt.latex.tips.3=§3Make sure to cover up!
+gt.latex.tips.4=§4Cable Recipes in the Assembler TO BE REMOVED in the next major update!
+
+gt.hi_engraver.tips.1=Laser source hatch determines maximum recipe tier and parallels\nRecipe tier and overclocks limited to laser source tier + 1\nWith UEV laser source, 1 multi-amp energy hatch is allowed (instead of regular hatches)\nParallels equal to the cube root of laser source amperage input\nGlass tier determines maximum laser source tier\n%s glass accepts all laser source hatches\nUse screwdriver to disable laser rendering\nUse wire cutter to toggle realism mode if you hate angled lasers
 
 gt.ore_factory.tips.1=Does all ore processing in one step
 gt.ore_factory.tips.2=Every ore costs 30EU/t, 2L lubricant, 200L distilled water\nRecipes that need extra input require their extra inputs on top of the normal costs\nProcessing time is dependent on mode\nUse a screwdriver to switch mode\nSneak click with screwdriver to void the stone dust
