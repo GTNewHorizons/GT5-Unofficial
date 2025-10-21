@@ -578,11 +578,15 @@ public class MultiblockTooltipBuilder {
 
     public MultiblockTooltipBuilder addStructurePart(String partLocKey, String info, String desc, int... hintDots) {
         if (hintDots.length == 0) {
-            addStructureInfo(desc.isEmpty() ? "GT5U.MBTT.PartInfo" : "GT5U.MBTT.PartInfo_X", partLocKey, switch (info) {
-                case "<casing>" -> "GT5U.MBTT.AnyCasing";
-                case "<bottom casing>" -> "GT5U.MBTT.AnyBottomCasing";
+            addStructureInfo(
+                desc.isEmpty() ? "GT5U.MBTT.PartInfo" : "GT5U.MBTT.PartInfo_X",
+                partLocKey,
+                switch (info.toLowerCase()) {
+                case "<casing>", "any casing" -> "GT5U.MBTT.AnyCasing";
+                case "<bottom casing>", "bottom casing" -> "GT5U.MBTT.AnyBottomCasing";
                 default -> info;
-            }, desc);
+                },
+                desc);
         } else {
             addStructurePart(partLocKey, hintLine(info, hintDots), desc);
             addStructureHint(partLocKey, hintDots);
