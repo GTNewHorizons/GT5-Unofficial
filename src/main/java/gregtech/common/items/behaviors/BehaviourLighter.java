@@ -53,9 +53,9 @@ public class BehaviourLighter extends BehaviourNone {
                     SoundResource.FIRE_IGNITE,
                     1.0F,
                     1.0F,
-                    MathHelper.floor_double(aEntity.posX),
-                    MathHelper.floor_double(aEntity.posY),
-                    MathHelper.floor_double(aEntity.posZ));
+                    aEntity.posX,
+                    aEntity.posY,
+                    aEntity.posZ);
                 ((EntityCreeper) aEntity).func_146079_cb();
                 if (!aPlayer.capabilities.isCreativeMode) {
                     tFuelAmount -= 1L;
