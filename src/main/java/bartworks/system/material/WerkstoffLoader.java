@@ -88,10 +88,8 @@ import org.apache.logging.log4j.Level;
 
 import com.google.common.collect.HashBiMap;
 
-import bartworks.API.SideReference;
 import bartworks.API.WerkstoffAdderRegistry;
 import bartworks.MainMod;
-import bartworks.client.renderer.BWBlockOreRenderer;
 import bartworks.system.material.CircuitGeneration.BWMetaItems;
 import bartworks.system.material.gtenhancement.GTMetaItemEnhancer;
 import bartworks.system.material.processingLoaders.AdditionalRecipes;
@@ -119,7 +117,6 @@ import bartworks.util.EnumUtils;
 import bartworks.util.log.DebugLog;
 import bwcrossmod.cls.CLSCompat;
 import codechicken.nei.api.API;
-import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Element;
@@ -132,6 +129,8 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.common.ores.BWOreAdapter;
+import gregtech.common.ores.OreInfo;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputOreDict;
 import ic2.api.recipe.RecipeOutput;
@@ -251,7 +250,7 @@ public class WerkstoffLoader {
         Werkstoff.Types.COMPOUND,
         new Werkstoff.GenerationFeatures().onlyDust()
             .enforceUnification(), // No autoadd here to gate this material
-                                   // by hand
+        // by hand
         6,
         TextureSet.SET_DULL,
         Pair.of(Materials.Yttrium, 2),
@@ -1651,8 +1650,6 @@ public class WerkstoffLoader {
     public static HashMap<OrePrefixes, BWMetaGeneratedItems> items = new HashMap<>();
     public static HashBiMap<Werkstoff, Fluid> fluids = HashBiMap.create();
     public static HashBiMap<Werkstoff, Fluid> molten = HashBiMap.create();
-    public static Block BWOres;
-    public static Block BWSmallOres;
     public static Block BWBlocks;
     public static Block BWBlockCasings;
     public static Block BWBlockCasingsAdvanced;
@@ -1680,14 +1677,30 @@ public class WerkstoffLoader {
             ret = OreDictHandler.getItemStack(werkstoff.getVarName(), orePrefixes, amount);
             if (ret != null) return ret;
         }
-        if (orePrefixes == ore) return new ItemStack(WerkstoffLoader.BWOres, amount, werkstoff.getmID());
-        if (orePrefixes == oreSmall) return new ItemStack(WerkstoffLoader.BWSmallOres, amount, werkstoff.getmID());
-        else if (orePrefixes == block) return new ItemStack(WerkstoffLoader.BWBlocks, amount, werkstoff.getmID());
-        else if (orePrefixes == OrePrefixes.blockCasing)
+
+        if (orePrefixes == ore || orePrefixes == oreSmall) {
+            try (OreInfo<Werkstoff> info = OreInfo.getNewInfo()) {
+                info.material = werkstoff;
+                info.isSmall = orePrefixes == oreSmall;
+
+                return BWOreAdapter.INSTANCE.getStack(info, amount);
+            }
+        }
+
+        if (orePrefixes == block) {
+            return new ItemStack(WerkstoffLoader.BWBlocks, amount, werkstoff.getmID());
+        }
+        if (orePrefixes == OrePrefixes.blockCasing) {
             return new ItemStack(WerkstoffLoader.BWBlockCasings, amount, werkstoff.getmID());
-        else if (orePrefixes == OrePrefixes.blockCasingAdvanced)
+        }
+        if (orePrefixes == OrePrefixes.blockCasingAdvanced) {
             return new ItemStack(WerkstoffLoader.BWBlockCasingsAdvanced, amount, werkstoff.getmID());
-        else if (WerkstoffLoader.items.get(orePrefixes) == null) return null;
+        }
+
+        if (WerkstoffLoader.items.get(orePrefixes) == null) {
+            return null;
+        }
+
         return new ItemStack(WerkstoffLoader.items.get(orePrefixes), amount, werkstoff.getmID()).copy();
     }
 
@@ -2003,26 +2016,14 @@ public class WerkstoffLoader {
     }
 
     static void gameRegistryHandler() {
-        if (SideReference.Side.Client) {
-            RenderingRegistry.registerBlockHandler(new BWBlockOreRenderer());
-        }
-
-        GameRegistry.registerTileEntity(BWTileEntityMetaGeneratedOre.class, "bw.blockoresTE");
-        GameRegistry.registerTileEntity(BWTileEntityMetaGeneratedSmallOre.class, "bw.blockoresSmallTE");
         GameRegistry.registerTileEntity(BWTileEntityMetaGeneratedWerkstoffBlock.class, "bw.werkstoffblockTE");
         GameRegistry.registerTileEntity(BWTileEntityMetaGeneratedBlocksCasing.class, "bw.werkstoffblockcasingTE");
         GameRegistry.registerTileEntity(
             BWTileEntityMetaGeneratedBlocksCasingAdvanced.class,
             "bw.werkstoffblockscasingadvancedTE");
 
-        WerkstoffLoader.BWOres = new BWMetaGeneratedOres(
-            Material.rock,
-            BWTileEntityMetaGeneratedOre.class,
-            "bw.blockores");
-        WerkstoffLoader.BWSmallOres = new BWMetaGeneratedSmallOres(
-            Material.rock,
-            BWTileEntityMetaGeneratedSmallOre.class,
-            "bw.blockoresSmall");
+        BWOreAdapter.INSTANCE.init();
+
         WerkstoffLoader.BWBlocks = new BWMetaGeneratedWerkstoffBlocks(
             Material.iron,
             BWTileEntityMetaGeneratedWerkstoffBlock.class,
@@ -2038,8 +2039,6 @@ public class WerkstoffLoader {
             "bw.werkstoffblockscasingadvanced",
             OrePrefixes.blockCasingAdvanced);
 
-        GameRegistry.registerBlock(WerkstoffLoader.BWOres, BWItemMetaGeneratedBlock.class, "bw.blockores.01");
-        GameRegistry.registerBlock(WerkstoffLoader.BWSmallOres, BWItemMetaGeneratedBlock.class, "bw.blockores.02");
         GameRegistry.registerBlock(WerkstoffLoader.BWBlocks, BWItemMetaGeneratedBlock.class, "bw.werkstoffblocks.01");
         GameRegistry.registerBlock(
             WerkstoffLoader.BWBlockCasings,
@@ -2062,29 +2061,6 @@ public class WerkstoffLoader {
                 registration.run(werkstoff);
             }
         }
-        addFakeItemDataToInWorldBlocksAndCleanUpFakeData();
-    }
-
-    /**
-     * very hacky way to make my ores/blocks/small ores detectable by gt association in world, well at least the prefix.
-     * used for the miners mostly removing this hacky material from the materials map instantly. we only need the item
-     * data.
-     */
-    private static void addFakeItemDataToInWorldBlocksAndCleanUpFakeData() {
-        Materials oreMat = new Materials(-1, null, 0, 0, 0, false, "bwores", "bwores", null, true, null);
-        Materials smallOreMat = new Materials(-1, null, 0, 0, 0, false, "bwsmallores", "bwsmallores", null, true, null);
-        Materials blockMat = new Materials(-1, null, 0, 0, 0, false, "bwblocks", "bwblocks", null, true, null);
-        for (int i = 0; i < 16; i++) {
-            GTOreDictUnificator.addAssociation(ore, oreMat, new ItemStack(BWOres, 1, i), true);
-            GTOreDictUnificator.addAssociation(oreSmall, smallOreMat, new ItemStack(BWSmallOres, 1, i), true);
-            GTOreDictUnificator.addAssociation(block, blockMat, new ItemStack(BWBlocks, 1, i), true);
-        }
-        Materials.getMaterialsMap()
-            .remove("bwores");
-        Materials.getMaterialsMap()
-            .remove("bwsmallores");
-        Materials.getMaterialsMap()
-            .remove("bwblocks");
     }
 
     public static void removeIC2Recipes() {
@@ -2112,11 +2088,9 @@ public class WerkstoffLoader {
     private static void runAdditionalOreDict() {
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
             if (werkstoff.hasItemType(ore)) {
-                GTOreDictUnificator.registerOre(ore + werkstoff.getVarName(), werkstoff.get(ore));
-                GTOreDictUnificator.registerOre(oreSmall + werkstoff.getVarName(), werkstoff.get(oreSmall));
-                werkstoff.getADDITIONAL_OREDICT()
+                werkstoff.getAdditionalOredict()
                     .forEach(e -> OreDictionary.registerOre(ore + e, werkstoff.get(ore)));
-                werkstoff.getADDITIONAL_OREDICT()
+                werkstoff.getAdditionalOredict()
                     .forEach(e -> OreDictionary.registerOre(oreSmall + e, werkstoff.get(oreSmall)));
             }
 
@@ -2126,11 +2100,11 @@ public class WerkstoffLoader {
 
             if (werkstoff.hasItemType(gem) || werkstoff.hasItemType(ingot)) {
                 GTOreDictUnificator.registerOre(block + werkstoff.getVarName(), werkstoff.get(block));
-                werkstoff.getADDITIONAL_OREDICT()
+                werkstoff.getAdditionalOredict()
                     .forEach(e -> OreDictionary.registerOre(block + e, werkstoff.get(block)));
             }
 
-            werkstoff.getADDITIONAL_OREDICT()
+            werkstoff.getAdditionalOredict()
                 .forEach(
                     s -> ENABLED_ORE_PREFIXES.stream()
                         .filter(o -> Objects.nonNull(werkstoff.get(o)))
@@ -2138,5 +2112,6 @@ public class WerkstoffLoader {
         }
 
         GTOreDictUnificator.registerOre("craftingIndustrialDiamond", WerkstoffLoader.CubicZirconia.get(gemExquisite));
+        BWOreAdapter.INSTANCE.registerOredict();
     }
 }

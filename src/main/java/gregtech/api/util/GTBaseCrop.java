@@ -12,16 +12,13 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 
 import gregtech.GTMod;
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.objects.ItemData;
-import gregtech.common.blocks.BlockOresAbstract;
-import gregtech.common.blocks.TileEntityOres;
+import gregtech.common.ores.OreManager;
 import ic2.api.crops.CropCard;
 import ic2.api.crops.Crops;
 import ic2.api.crops.ICropTile;
@@ -248,22 +245,13 @@ public class GTBaseCrop extends CropCard implements ICropCardInfo {
         for (int i = 1; i < this.getrootslength(aCrop); i++) {
             Block tBlock = aCrop.getWorld()
                 .getBlock(aCrop.getLocation().posX, aCrop.getLocation().posY - i, aCrop.getLocation().posZ);
-            if ((tBlock instanceof BlockOresAbstract)) {
-                TileEntity tTileEntity = aCrop.getWorld()
-                    .getTileEntity(aCrop.getLocation().posX, aCrop.getLocation().posY - i, aCrop.getLocation().posZ);
-                if ((tTileEntity instanceof TileEntityOres)) {
-                    Materials tMaterial = GregTechAPI.sGeneratedMaterials[(((TileEntityOres) tTileEntity).mMetaData
-                        % 1000)];
-                    if ((tMaterial != null) && (tMaterial != Materials._NULL)) {
-                        return tMaterial == mBlock;
-                    }
-                }
-            } else {
-                int tMetaID = aCrop.getWorld()
-                    .getBlockMetadata(aCrop.getLocation().posX, aCrop.getLocation().posY - i, aCrop.getLocation().posZ);
-                if (isBlockBelow(new ItemStack(tBlock, 1, tMetaID))) {
-                    return true;
-                }
+            int tMetaID = aCrop.getWorld()
+                .getBlockMetadata(aCrop.getLocation().posX, aCrop.getLocation().posY - i, aCrop.getLocation().posZ);
+
+            if (OreManager.getMaterial(tBlock, tMetaID) instanceof Materials gtMat) {
+                return gtMat == mBlock;
+            } else if (isBlockBelow(new ItemStack(tBlock, 1, tMetaID))) {
+                return true;
             }
         }
         return false;

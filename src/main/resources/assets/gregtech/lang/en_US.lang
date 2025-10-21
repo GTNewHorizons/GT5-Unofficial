@@ -198,6 +198,8 @@ gt.interact.desc.mb.locking_off=Single recipe locking disabled.
 gt.interact.desc.mb.mode=§fRunning mode: §6%s
 gt.interact.desc.export=Export
 gt.interact.desc.import=Import
+gt.interact.desc.export.tooltip=Export
+gt.interact.desc.import.tooltip=Import
 gt.interact.desc.export_cond=Export (conditional)
 gt.interact.desc.import_cond=Import (conditional)
 gt.interact.desc.export_invert_cond=Export (invert cond)
@@ -703,8 +705,8 @@ GTPP.algae.tooltip.lifespan=Lifespan in days: %d
 GTPP.algae.tooltip.generation=Generation: %d
 
 # Power Goggles
-GT5U.power_goggles.open_config_gui=Open Goggles Config
-GT5U.power_goggles.toggle_power_chart=Toggle Power Chart
+GT5U.power_goggles.open_config_gui=Open Power Goggles Config
+GT5U.power_goggles.toggle_power_chart=Toggle Power Goggles Chart
 GT5U.power_goggles.link_lsc=Goggles linked to LSC at %d,%d,%d.
 GT5U.power_goggles.link_fail=That's not an LSC...
 GT5U.power_goggles.unlink=Goggles Unlinked.
@@ -808,6 +810,7 @@ GT5U.MBTT.Parallel.Additional=%s Parallels per %s Tier
 GT5U.MBTT.Parallel.Singular=%s Parallel
 GT5U.MBTT.Speed.Base=%s Speed
 GT5U.MBTT.Speed.Additional=%s Speed per %s Tier
+GT5U.MBTT.Speed.Absolute=Speed is %s times %s Tier
 GT5U.MBTT.EuDiscount.Base=%s EU Usage
 GT5U.MBTT.EuDiscount.Additional=%s EU Usage per %s Tier
 GT5U.MBTT.SteamDiscount.Base=%s Steam Usage
@@ -951,6 +954,8 @@ gt.recipe.brewer.description=Brewing your Drinks
 gt.recipe.metalbender=Bending Machine
 gt.recipe.metalbender.description=Boo, he's bad! We want BENDER!!!
 gt.recipe.neutroniumcompressor=Neutronium Compressor
+gt.recipe.cable=Cable Coating
+gt.recipe.cablecoater.description=Coating Cables
 gt.recipe.canner=Canner
 gt.recipe.canner.description=Unmobile Food Canning Machine GTA4
 gt.recipe.centrifuge=Centrifuge
@@ -1410,11 +1415,13 @@ GT5U.gui.button.power_panel=Open Power Panel
 GT5U.gui.button.turbinemenu=Open Chamber Controller
 GT5U.gui.button.machineinfo=Display Machine Information
 GT5U.gui.button.max_parallel=Always use maximum
+GT5U.gui.button.foundrymoduleselect=Toggle Module Selection Terminal
 GT5U.gui.text.rangedvalue=Range: %s-%s
 GT5U.gui.text.lockedvalue=Locked: %s
 GT5U.gui.text.success=§aProcessing recipe
 GT5U.gui.text.progress=§fProgress:
 GT5U.gui.text.amount=§fAmount:
+GT5U.gui.text.per_tick=§fPer tick:
 GT5U.gui.text.per_second=§fPer second:
 GT5U.gui.text.per_minute=§fPer minute:
 GT5U.gui.text.per_hour=§fPer hour:
@@ -1494,6 +1501,7 @@ GT5U.gui.text.out_of_fluid=§4No following fluids supplied: §b%s§f x §6%s L
 GT5U.gui.text.out_of_item=§4No following items supplied: §b%s§f x §6%s
 GT5U.gui.text.out_of_stuff=§4No following stuffs supplied: §b%s§f x §6%s
 GT5U.gui.text.power_loss=§4Shut down due to power loss.
+GT5U.gui.text.no_void_mining=§4Cannot void mine this dimension (%s).
 GT5U.gui.text.pollution_fail=§4Failed to output the pollution.
 GT5U.gui.text.structure_incomplete=§4Shut down due to incomplete structure.
 GT5U.gui.text.no_repair=§4Shut down due to machine damage.
@@ -1581,7 +1589,6 @@ GT5U.gui.config.machine_stats.mass_fabricator=Mass Fabricator
 GT5U.gui.config.machine_stats.teleporter=Teleporter
 GT5U.gui.config.machine_stats.cleanroom=Cleanroom
 GT5U.gui.config.worldgen=Worldgen
-GT5U.gui.config.worldgen.end_asteroids=End Asteroids
 GT5U.gui.config.worldgen.general=General
 
 GT5U.gui.text.cannot_change_when_running=Can't change configuration when running!
@@ -1816,6 +1823,7 @@ GT5U.multiblock.itemPipeTier=Item Pipe Tier
 GT5U.multiblock.coilLevel=Heating Coil Level
 GT5U.multiblock.preciseassemblercasing=Voltage limited by casing tier: %s
 GT5U.multiblock.runningMode=§eRunning Mode:
+GT5U.multiblock.startup=Starting up...
 
 # NEI recipe handlers
 GT5U.nei.heat_capacity=Heat Capacity: %s K (%s)
@@ -1952,7 +1960,7 @@ gt.interact.desc.MachineIdle=§8Machine idle
 gt.interact.desc.RecipeProgress=§8Recipe progress
 
 ## EU MEter
-gt.interact.desc.EnergyTHR=§8Energy threshold
+gt.interact.desc.EnergyThreshold=§8Energy threshold
 
 ## Facade
 gt.interact.desc.facade.Redstone=§8Redstone
@@ -1963,14 +1971,18 @@ gt.interact.desc.facade.Items=§8Items
 ## FluidFilter
 gt.interact.desc.FluidFilter.FilterInput=Filter Input
 gt.interact.desc.FluidFilter.FilterOutput=Filter Output
-gt.interact.desc.FluidFilter.BlockOutput=Block Output
+gt.interact.desc.FluidFilter.FilterChat=Filter Fluid:
 gt.interact.desc.FluidFilter.AllowOutput=Allow Output
+gt.interact.desc.FluidFilter.AllowInput=Allow Input
+gt.interact.desc.FluidFilter.BlockOutput=Block Output
+gt.interact.desc.FluidFilter.BlockInput=Block Input
+
 gt.interact.desc.FluidFilter.WhitelistFluid=Whitelist Fluid
 gt.interact.desc.FluidFilter.BlacklistFluid=Blacklist Fluid
-gt.interact.desc.FluidFilter.Direction=§8IFilter Direction
-gt.interact.desc.FluidFilter.Type=§8IFilter Type
-gt.interact.desc.FluidFilter.BlockFlow=§8IBlock Flow
-gt.interact.desc.FluidFilter.Empty=§8IFilter Empty
+gt.interact.desc.FluidFilter.Direction=§8Filter Direction
+gt.interact.desc.FluidFilter.Type=§8Filter Type
+gt.interact.desc.FluidFilter.BlockFlow=§8Block Flow
+gt.interact.desc.FluidFilter.Empty=§8Filter Empty
 
 ## Fluid Regulator
 gt.interact.desc.fluid_regulator.AlwaysOn=Always On
@@ -1987,16 +1999,16 @@ gt.interact.desc.fluid_regulator.L_Sec=L/sec
 ## Item Filter
 gt.interact.desc.Item_Filter.Whitelist_Mode=Whitelist Mode
 gt.interact.desc.Item_Filter.Blacklist_Mode=Blacklist Mode
-gt.interact.desc.Item_Filter.Filter=§8Filter
+gt.interact.desc.Item_Filter.Filter=§8Filter:
 gt.interact.desc.Item_Filter.CheckMode=§8Check Mode
 
 ## Item Meter
 gt.interact.desc.Item_Meter.All=All
 gt.interact.desc.Item_Meter.DetectSlot=§8Detect slot #
-gt.interact.desc.Item_Meter.ItemTHR=§8Item threshold
+gt.interact.desc.Item_Meter.ItemThreshold=§8Item threshold
 
 ## Liquid Meter (Fluid meter)
-gt.interact.desc.Fluid_Meter.FluidTHR=§8Fluid threshold
+gt.interact.desc.Fluid_Meter.FluidThreshold=§8Fluid threshold
 
 ## Player Detector
 gt.interact.desc.Player_Detector.Emit_Player_Close=Emit if any Player is close
@@ -2039,11 +2051,11 @@ gt.interact.tooltip.Wireless_Activity.Idle=Machine idle
 gt.interact.tooltip.Wireless_Activity.Enabled=Machine enabled
 
 ## Wireless Fluid Detector
-gt.interact.desc.Wireless_Fluid_Detector.FluidTHR=§8Fluid threshold
+gt.interact.desc.Wireless_Fluid_Detector.FluidThreshold=§8Fluid threshold
 
 ## Wireless Item Detector
 gt.interact.desc.Item_Item_Detector.All=All
-gt.interact.desc.Item_Item_Detector.ItemTHR=§8Item threshold
+gt.interact.desc.Item_Item_Detector.ItemThreshold=§8Item threshold
 gt.interact.desc.Item_Item_Detector.DetectSlot=§8Detect slot #
 
 ## Energy Detector
@@ -3239,7 +3251,7 @@ GT5U.tooltip.volumetric_flask.empty=Empty
 GT5U.tooltip.volumetric_flask.set_volume=Rightclick on air to set volume (only while empty)
 
 GT5U.tooltip.purify.1=Throw into Cauldron to get clean Dust
-GT5U.tooltip.purify.2=Can be used as Enriched Naquadah Fuel Substitute
+GT5U.tooltip.purify.2=Throw into Cauldron to get clean crushed Ore
 GT5U.tooltip.nqgen=Can be used as Enriched Naquadah Fuel Substitute
 
 # info data
