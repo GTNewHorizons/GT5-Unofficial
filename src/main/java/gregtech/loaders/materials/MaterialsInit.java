@@ -5334,7 +5334,6 @@ public class MaterialsInit {
         Materials.Invar = loadInvar();
         Materials.Kanthal = loadKanthal();
         Materials.Lazurite = loadLazurite();
-        Materials.LiquidAir = loadLiquidAir();
         Materials.LiquidNitrogen = loadLiquidNitrogen();
         Materials.LiquidOxygen = loadLiquidOxygen();
         Materials.Magnalium = loadMagnalium();
@@ -9481,6 +9480,7 @@ public class MaterialsInit {
         Materials.Lapis = loadLapis();
         Materials.Lepidolite = loadLepidolite();
         Materials.Lignite = loadLignite();
+        Materials.LiquidAir = loadLiquidAir();
         Materials.LiveRoot = loadLiveRoot();
         Materials.Malachite = loadMalachite();
         Materials.Manyullyn = loadManyullyn();
