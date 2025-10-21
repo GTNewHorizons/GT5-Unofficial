@@ -68,7 +68,7 @@ public class BehaviourProspecting extends BehaviourNone {
             GTUtility.sendChatToPlayer(
                 aPlayer,
                 GTUtility.trans("100", "This is ") + mat.getLocalizedName() + GTUtility.trans("101", " Ore."));
-            GTUtility.sendSoundToPlayers(aWorld, SoundResource.RANDOM_ANVIL_USE, 1.0F, -1.0F, aX, aY, aZ);
+            GTUtility.sendSoundToPlayers(aWorld, SoundResource.RANDOM_ANVIL_USE, 1.0F, -1.0F, hitX, hitY, hitZ);
             return true;
         }
 
@@ -78,7 +78,7 @@ public class BehaviourProspecting extends BehaviourNone {
             GTUtility.sendChatToPlayer(
                 aPlayer,
                 GTUtility.trans("100", "This is ") + oreMat.mDefaultLocalName + GTUtility.trans("101", " Ore."));
-            GTUtility.sendSoundToPlayers(aWorld, SoundResource.RANDOM_ANVIL_USE, 1.0F, -1.0F, aX, aY, aZ);
+            GTUtility.sendSoundToPlayers(aWorld, SoundResource.RANDOM_ANVIL_USE, 1.0F, -1.0F, hitX, hitY, hitZ);
             return true;
         }
 
@@ -86,7 +86,7 @@ public class BehaviourProspecting extends BehaviourNone {
             || GTUtility.isOre(aBlock, aMeta)) {
             if (!GTModHandler.damageOrDechargeItem(aStack, this.mVanillaCosts, this.mEUCosts, aPlayer)) return false;
 
-            GTUtility.sendSoundToPlayers(aWorld, SoundResource.RANDOM_ANVIL_USE, 1.0F, -1.0F, aX, aY, aZ);
+            GTUtility.sendSoundToPlayers(aWorld, SoundResource.RANDOM_ANVIL_USE, 1.0F, -1.0F, hitX, hitY, hitZ);
             int toolQuality = aItem instanceof MetaGeneratedTool ? aItem.getHarvestLevel(aStack, "") : 0;
             int tX = aX, tY = aY, tZ = aZ;
             for (int i = 0, j = 6 + toolQuality; i < j; i++) {

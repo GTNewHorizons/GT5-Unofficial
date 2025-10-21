@@ -88,7 +88,7 @@ public class BehaviourLighter extends BehaviourNone {
         prepare(aStack);
         long tFuelAmount = GTUtility.ItemNBT.getLighterFuel(aStack);
         if (GTUtility.areStacksEqual(aStack, this.mUsedLighter, true)) {
-            GTUtility.sendSoundToPlayers(aWorld, SoundResource.FIRE_IGNITE, 1.0F, 1.0F, aX, aY, aZ);
+            GTUtility.sendSoundToPlayers(aWorld, SoundResource.FIRE_IGNITE, 1.0F, 1.0F, hitX, hitY, hitZ);
             aWorld.setBlock(aX, aY, aZ, Blocks.fire);
             if (!aPlayer.capabilities.isCreativeMode) {
                 tFuelAmount -= 1L;
