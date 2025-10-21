@@ -1263,7 +1263,8 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
 
         screenElements
             .widget(
-                new TextWidget(GTUtility.translate("gt.gui.maintenance.incomplete")).setTextAlignment(Alignment.CenterLeft)
+                new TextWidget(GTUtility.translate("gt.gui.maintenance.incomplete"))
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val))

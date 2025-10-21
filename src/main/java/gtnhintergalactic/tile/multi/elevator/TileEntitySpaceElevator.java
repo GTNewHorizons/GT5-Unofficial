@@ -748,10 +748,9 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
         screenElements.setSynced(false)
             .setSpace(0);
 
-        screenElements
-            .widget(
-                new TextWidget(GTUtility.translate("gt.gui.maintenance.incomplete")).setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> !mMachine))
+        screenElements.widget(
+            new TextWidget(GTUtility.translate("gt.gui.maintenance.incomplete")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setEnabled(widget -> !mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
 
         screenElements.widget(
