@@ -180,17 +180,17 @@ public class GTValues {
     };
 
     public static final String[] TIER_COLORS = new String[] { EnumChatFormatting.RED.toString(), // ULV, 0
-        EnumChatFormatting.GRAY.toString(), // LV, 1
+        EnumChatFormatting.BLACK.toString(), // LV, 1
         EnumChatFormatting.GOLD.toString(), // MV, 2
         EnumChatFormatting.YELLOW.toString(), // HV, 3
         EnumChatFormatting.DARK_GRAY.toString(), // EV, 4
-        EnumChatFormatting.GREEN.toString(), // IV, 5
+        EnumChatFormatting.BLUE.toString(), // IV, 5
         EnumChatFormatting.LIGHT_PURPLE.toString(), // LuV, 6
         EnumChatFormatting.AQUA.toString(), // ZPM, 7
-        EnumChatFormatting.DARK_GREEN.toString(), // UV, 8
-        EnumChatFormatting.DARK_RED.toString(), // UHV, 9
-        EnumChatFormatting.DARK_PURPLE.toString(), // UEV, 10
-        EnumChatFormatting.DARK_BLUE.toString() + EnumChatFormatting.BOLD, // UIV, 11
+        EnumChatFormatting.DARK_GREEN.toString() + EnumChatFormatting.UNDERLINE, // UV, 8
+        EnumChatFormatting.DARK_RED.toString() + EnumChatFormatting.UNDERLINE, // UHV, 9
+        EnumChatFormatting.DARK_PURPLE.toString() + EnumChatFormatting.UNDERLINE, // UEV, 10
+        EnumChatFormatting.DARK_BLUE.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.UNDERLINE, // UIV, 11
         EnumChatFormatting.RED.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.UNDERLINE, // UMV, 12
         EnumChatFormatting.DARK_RED.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.UNDERLINE, // UXV, 13
         EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.UNDERLINE, // MAX, 14

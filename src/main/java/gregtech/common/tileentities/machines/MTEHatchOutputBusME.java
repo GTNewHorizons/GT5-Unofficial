@@ -358,7 +358,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
                 IAEItemStack rest = Platform.poweredInsert(proxy.getEnergy(), sg, s, getRequest());
                 if (rest != null && rest.getStackSize() > 0) {
                     s.setStackSize(rest.getStackSize());
-                    break;
+                    continue;
                 }
                 s.setStackSize(0);
             }

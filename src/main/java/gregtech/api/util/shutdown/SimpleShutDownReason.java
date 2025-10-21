@@ -90,4 +90,9 @@ public class SimpleShutDownReason implements ShutDownReason {
     public static ShutDownReason ofNormal(String key) {
         return new SimpleShutDownReason(key, false);
     }
+
+    @Override
+    public String getKey() {
+        return key;
+    }
 }

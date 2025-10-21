@@ -46,14 +46,14 @@ public class CoverArmGui extends CoverGui<CoverArm> {
         return new SelectButton().value(LinkedBoolValue.of(isExportSyncer, true))
             .size(16)
             .marginRight(2)
-            .overlay(GTGuiTextures.OVERLAY_ROBOT_ARM_EXPORT);
+            .overlay(GTGuiTextures.OVERLAY_EXPORT);
     }
 
     private IWidget createImportButton(BooleanSyncValue isExportSyncer) {
         return new SelectButton().value(LinkedBoolValue.of(isExportSyncer, false))
             .size(16)
             .marginRight(2)
-            .overlay(GTGuiTextures.OVERLAY_ROBOT_ARM_IMPORT);
+            .overlay(GTGuiTextures.OVERLAY_IMPORT);
     }
 
     private IWidget createTransferModeLabel() {

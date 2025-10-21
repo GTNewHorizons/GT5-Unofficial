@@ -23,11 +23,13 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.common.covers.Cover;
+import gregtech.common.covers.gui.CoverGui;
 import gregtech.common.gui.mui1.cover.EnderFluidLinkUIFactory;
 import gtPlusPlus.core.tileentities.base.TileEntityBase;
 import io.netty.buffer.ByteBuf;
 import tectech.mechanics.enderStorage.EnderLinkTag;
 import tectech.mechanics.enderStorage.EnderWorldSavedData;
+import tectech.thing.gui.CoverEnderFluidLinkGui;
 
 public class CoverEnderFluidLink extends Cover {
 
@@ -202,6 +204,11 @@ public class CoverEnderFluidLink extends Cover {
     @Override
     public boolean hasCoverGUI() {
         return true;
+    }
+
+    @Override
+    protected @NotNull CoverGui<?> getCoverGui() {
+        return new CoverEnderFluidLinkGui(this);
     }
 
     @Override

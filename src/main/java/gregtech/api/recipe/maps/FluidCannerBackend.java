@@ -27,6 +27,7 @@ public class FluidCannerBackend extends RecipeMapBackend {
     protected GTRecipe findFallback(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot) {
         for (ItemStack item : items) {
             if (item == null) continue;
+            // Try to fill a container
             for (FluidStack fluid : fluids) {
                 if (fluid == null) continue;
                 ItemStack filledItem = GTUtility.fillFluidContainer(fluid, item, false, true);
@@ -42,19 +43,20 @@ public class FluidCannerBackend extends RecipeMapBackend {
                         .build()
                         .orElse(null);
                 }
+            }
 
-                FluidStack drainedFluid = GTUtility.getFluidForFilledItem(item, true);
-                if (drainedFluid != null) {
-                    return GTValues.RA.stdBuilder()
-                        .itemInputs(GTUtility.copyAmount(1, item))
-                        .itemOutputs(GTUtility.getContainerItem(item, true))
-                        .fluidOutputs(drainedFluid)
-                        .duration(Math.max(drainedFluid.amount / 64, 16))
-                        .eut(1)
-                        .noBuffer()
-                        .build()
-                        .orElse(null);
-                }
+            // Try to empty a container
+            FluidStack drainedFluid = GTUtility.getFluidForFilledItem(item, true);
+            if (drainedFluid != null) {
+                return GTValues.RA.stdBuilder()
+                    .itemInputs(GTUtility.copyAmount(1, item))
+                    .itemOutputs(GTUtility.getContainerItem(item, true))
+                    .fluidOutputs(drainedFluid)
+                    .duration(Math.max(drainedFluid.amount / 64, 16))
+                    .eut(1)
+                    .noBuffer()
+                    .build()
+                    .orElse(null);
             }
         }
         return null;
