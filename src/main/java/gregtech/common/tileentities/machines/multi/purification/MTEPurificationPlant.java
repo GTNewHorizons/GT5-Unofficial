@@ -553,17 +553,15 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         screenElements.setSynced(false)
             .setSpace(0);
 
-        screenElements
-            .widget(
-                new TextWidget(GTUtility.trans("138", "Incomplete Structure.")).setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(EnumChatFormatting.RED)
-                    .setEnabled(widget -> !mMachine))
+        screenElements.widget(
+            new TextWidget(GTUtility.translate("gt.gui.maintenance.incomplete")).setTextAlignment(Alignment.CenterLeft)
+                .setDefaultColor(EnumChatFormatting.RED)
+                .setEnabled(widget -> !mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
 
         screenElements
             .widget(
-                new TextWidget(translateToLocal("GT5U.gui.text.purification_plant.hit_to_start"))
-                    .setTextAlignment(Alignment.CenterLeft)
+                new TextWidget(GTUtility.translate("gt.gui.maintenance.idle.4")).setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(EnumChatFormatting.BLACK)
                     .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()))
             .widget(new FakeSyncWidget.IntegerSyncer(this::getErrorDisplayID, this::setErrorDisplayID))
@@ -572,7 +570,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                     () -> getBaseMetaTileEntity().isActive(),
                     val -> getBaseMetaTileEntity().setActive(val)));
         screenElements.widget(
-            new TextWidget(GTUtility.trans("142", "Running perfectly.")).setTextAlignment(Alignment.CenterLeft)
+            new TextWidget(GTUtility.translate("gt.gui.maintenance.running")).setTextAlignment(Alignment.CenterLeft)
                 .setDefaultColor(EnumChatFormatting.GREEN)
                 .setEnabled(widget -> getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive()));
         screenElements.widget(
@@ -620,7 +618,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
 
         // Title widget
         builder.widget(
-            new TextWidget(translateToLocal("GT5U.infodata.purification_plant.status_title"))
+            new TextWidget(GTUtility.translate("gt.infodata.multiblock.purification_plant.status_title"))
                 .setTextAlignment(Alignment.Center)
                 .setPos(5, 10)
                 .setSize(windowWidth, 8));
@@ -641,10 +639,10 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     }
 
     private Widget makeStatusWindowButton() {
-        TextButtonWidget widget = (TextButtonWidget) new TextButtonWidget(
-            translateToLocal("GT5U.infodata.purification_plant.status_button")).setLeftMargin(4)
-                .setSize(40, 16)
-                .setPos(10, 40);
+        TextButtonWidget widget = (TextButtonWidget) new TextButtonWidget(GTUtility.translate("gt.gui.status"))
+            .setLeftMargin(4)
+            .setSize(40, 16)
+            .setPos(10, 40);
         widget.button()
             .setOnClick(
                 (clickData, w) -> {
@@ -745,7 +743,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                     return ret.toArray(new IDrawable[0]);
                 })
                 .attachSyncer(new FakeSyncWidget.BooleanSyncer(() -> debugMode, b -> debugMode = b), builder)
-                .addTooltip(translateToLocal("GT5U.gui.tooltip.purification_plant.debug_mode"))
+                .addTooltip(GTUtility.translate("gt.tooltip..purification_plant.debug_mode"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setPos(174, 112)
                 .setSize(16, 16));

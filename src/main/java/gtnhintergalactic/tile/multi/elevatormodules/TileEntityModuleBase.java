@@ -379,7 +379,7 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
 
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("138", "Incomplete Structure.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(GTUtility.translate("gt.gui.maintenance.incomplete")).setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
 

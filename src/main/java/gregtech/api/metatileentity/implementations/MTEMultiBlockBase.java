@@ -265,9 +265,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         if (supportsSingleRecipeLocking()) {
             mLockedToSingleRecipe = !mLockedToSingleRecipe;
             if (mLockedToSingleRecipe) {
-                GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.mb.locking_on"));
+                GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.chat.interact.desc.locking_on"));
             } else {
-                GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.mb.locking_off"));
+                GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.chat.interact.desc.locking_off"));
                 mSingleRecipeCheck = null;
             }
         }
@@ -442,7 +442,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     @Override
     public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isServerSide() && GTUtil.saveMultiblockInputConfiguration(this, aPlayer)) {
-            aPlayer.addChatComponentMessage(new ChatComponentTranslation("GT5U.MULTI_MACHINE_CONFIG.SAVE"));
+            aPlayer.addChatComponentMessage(new ChatComponentTranslation("gt.chat.interact.desc.config_save"));
             return;
         }
         super.onLeftclick(aBaseMetaTileEntity, aPlayer);
@@ -453,10 +453,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         if (GTUtil.hasMultiblockInputConfiguration(aPlayer.getHeldItem())) {
             if (aBaseMetaTileEntity.isServerSide()) {
                 if (GTUtil.loadMultiblockInputConfiguration(this, aPlayer)) {
-                    aPlayer.addChatComponentMessage(new ChatComponentTranslation("GT5U.MULTI_MACHINE_CONFIG.LOAD"));
+                    aPlayer.addChatComponentMessage(new ChatComponentTranslation("gt.chat.interact.desc.config_load"));
                 } else {
-                    aPlayer
-                        .addChatComponentMessage(new ChatComponentTranslation("GT5U.MULTI_MACHINE_CONFIG.LOAD.FAIL"));
+                    aPlayer.addChatComponentMessage(
+                        new ChatComponentTranslation("gt.chat.interact.desc.config_load_fail"));
                 }
             }
             return true;
@@ -2141,55 +2141,35 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         }
 
         return new String[] {
-            /* 1 */ translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumbers(mProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s / "
-                + EnumChatFormatting.YELLOW
-                + formatNumbers(mMaxProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s",
-            /* 2 */ translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumbers(storedEnergy)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + formatNumbers(maxEnergy)
-                + EnumChatFormatting.RESET
-                + " EU",
-            /* 3 */ translateToLocal("GT5U.multiblock.usage") + ": "
-                + EnumChatFormatting.RED
-                + formatNumbers(getActualEnergyUsage())
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            /* 4 */ translateToLocal("GT5U.multiblock.mei") + ": "
-                + EnumChatFormatting.YELLOW
-                + formatNumbers(getMaxInputVoltage())
-                + EnumChatFormatting.RESET
-                + " EU/t(*2A) "
-                + translateToLocal("GT5U.machines.tier")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + VN[GTUtility.getTier(getMaxInputVoltage())]
-                + EnumChatFormatting.RESET,
-            /* 5 */ translateToLocal("GT5U.multiblock.problems") + ": "
-                + EnumChatFormatting.RED
-                + (getIdealStatus() - getRepairStatus())
-                + EnumChatFormatting.RESET
-                + " "
-                + translateToLocal("GT5U.multiblock.efficiency")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + mEfficiency / 100.0F
-                + EnumChatFormatting.RESET
-                + " %",
-            /* 6 */ translateToLocal("GT5U.multiblock.pollution") + ": "
-                + EnumChatFormatting.GREEN
-                + getAveragePollutionPercentage()
-                + EnumChatFormatting.RESET
-                + " %" };
+            /* 1 */ GTUtility.translate(
+                "gt.infodata.multiblock.progress",
+                EnumChatFormatting.GREEN + formatNumbers(mProgresstime / 20) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + formatNumbers(mMaxProgresstime / 20) + EnumChatFormatting.RESET),
+
+            /* 2 */ GTUtility.translate(
+                "gt.infodata.multiblock.energy",
+                EnumChatFormatting.GREEN + formatNumbers(storedEnergy) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + formatNumbers(maxEnergy) + EnumChatFormatting.RESET),
+
+            /* 3 */ GTUtility.translate(
+                "gt.infodata.multiblock.usage",
+                EnumChatFormatting.RED + formatNumbers(getActualEnergyUsage()) + EnumChatFormatting.RESET),
+
+            /* 4 */ GTUtility.translate(
+                "gt.infodata.multiblock.max_energy_income",
+                EnumChatFormatting.YELLOW + formatNumbers(getMaxInputVoltage()) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + VN[GTUtility.getTier(getMaxInputVoltage())] + EnumChatFormatting.RESET),
+
+            /* 5 */ GTUtility.translate(
+                "gt.gui.multiblock.problems_efficiency",
+                EnumChatFormatting.RED + String.valueOf(getIdealStatus() - getRepairStatus())
+                    + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + formatNumbers(mEfficiency / 100.0F) + EnumChatFormatting.RESET),
+
+            /* 6 */ GTUtility.translate(
+                "gt.infodata.multiblock.pollution",
+                EnumChatFormatting.GREEN + String.valueOf(getAveragePollutionPercentage())
+                    + EnumChatFormatting.RESET), };
     }
 
     @Override
@@ -2239,14 +2219,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         final NBTTagCompound tag = accessor.getNBTData();
 
         if (tag.getBoolean("incompleteStructure")) {
-            currentTip.add(RED + translateToLocalFormatted("GT5U.waila.multiblock.status.incomplete") + RESET);
+            currentTip.add(RED + translateToLocalFormatted("gt.waila.multiblock.status.incomplete") + RESET);
         }
         String efficiency = RESET
-            + translateToLocalFormatted("GT5U.waila.multiblock.status.efficiency", tag.getFloat("efficiency"));
+            + translateToLocalFormatted("gt.waila.multiblock.status.efficiency", tag.getFloat("efficiency"));
         if (tag.getBoolean("hasProblems")) {
-            currentTip.add(RED + translateToLocal("GT5U.waila.multiblock.status.has_problem") + efficiency);
+            currentTip.add(RED + translateToLocal("gt.waila.multiblock.status.has_problem") + efficiency);
         } else if (!tag.getBoolean("incompleteStructure")) {
-            currentTip.add(GREEN + translateToLocal("GT5U.waila.multiblock.status.running_fine") + efficiency);
+            currentTip.add(GREEN + translateToLocal("gt.waila.multiblock.status.running_fine") + efficiency);
         }
 
         boolean isActive = tag.getBoolean("isActive");
@@ -2258,14 +2238,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 if (actualEnergyUsage > 0) {
                     currentTip.add(
                         translateToLocalFormatted(
-                            "GT5U.waila.energy.use_with_amperage",
+                            "gt.waila.energy.use_with_amperage",
                             formatNumbers(actualEnergyUsage),
                             GTUtility.getAmperageForTier(actualEnergyUsage, (byte) energyTier),
                             GTUtility.getColoredTierNameFromTier((byte) energyTier)));
                 } else if (actualEnergyUsage < 0) {
                     currentTip.add(
                         translateToLocalFormatted(
-                            "GT5U.waila.energy.produce_with_amperage",
+                            "gt.waila.energy.produce_with_amperage",
                             formatNumbers(-actualEnergyUsage),
                             GTUtility.getAmperageForTier(-actualEnergyUsage, (byte) energyTier),
                             GTUtility.getColoredTierNameFromTier((byte) energyTier)));
@@ -2274,13 +2254,13 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 if (actualEnergyUsage > 0) {
                     currentTip.add(
                         translateToLocalFormatted(
-                            "GT5U.waila.energy.use",
+                            "gt.waila.energy.use",
                             formatNumbers(actualEnergyUsage),
                             GTUtility.getColoredTierNameFromVoltage(actualEnergyUsage)));
                 } else if (actualEnergyUsage < 0) {
                     currentTip.add(
                         translateToLocalFormatted(
-                            "GT5U.waila.energy.produce",
+                            "gt.waila.energy.produce",
                             formatNumbers(-actualEnergyUsage),
                             GTUtility.getColoredTierNameFromVoltage(-actualEnergyUsage)));
                 }
@@ -2292,7 +2272,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
         if (!isActive && isLockedToRecipe && !lockedRecipe.isEmpty()) {
             // Display locked recipe when the machine is idle
-            currentTip.add(translateToLocal("GT5U.waila.multiblock.status.locked_recipe"));
+            currentTip.add(translateToLocal("gt.waila.multiblock.status.locked_recipe"));
             String[] lines = lockedRecipe.split("\n");
             currentTip.addAll(Arrays.asList(lines));
         } else if (isActive) {
@@ -2301,9 +2281,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             int totalOutputs = outputItemLength + outputFluidLength;
 
             if (totalOutputs > 0) {
-                currentTip.add(translateToLocal("GT5U.waila.producing"));
+                currentTip.add(translateToLocal("gt.waila.producing"));
                 if (isLockedToRecipe) {
-                    currentTip.add(translateToLocal("GT5U.waila.multiblock.status.locked_recipe"));
+                    currentTip.add(translateToLocal("gt.waila.multiblock.status.locked_recipe"));
                 }
                 for (int i = 0; i < min(3, outputItemLength); i++) {
                     currentTip.add(
@@ -2320,7 +2300,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 }
                 if (totalOutputs > 3) {
                     currentTip.add(
-                        translateToLocalFormatted("GT5U.waila.producing.andmore", formatNumbers((totalOutputs - 3))));
+                        translateToLocalFormatted("gt.waila.producing.andmore", formatNumbers((totalOutputs - 3))));
                 }
             }
         }
@@ -2334,19 +2314,19 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         if (GTMod.proxy.wailaAverageNS && tag.hasKey("averageNS")) {
             int tAverageTime = tag.getInteger("averageNS");
             currentTip
-                .add(translateToLocalFormatted("GT5U.waila.multiblock.status.cpu_load", formatNumbers(tAverageTime)));
+                .add(translateToLocalFormatted("gt.waila.multiblock.status.cpu_load", formatNumbers(tAverageTime)));
         }
 
         if (tag.getInteger("maxParallelRecipes") > 1) {
             currentTip.add(
-                StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
+                StatCollector.translateToLocal("gt.multiblock.parallelism") + ": "
                     + EnumChatFormatting.WHITE
                     + tag.getInteger("maxParallelRecipes"));
         }
 
         if (tag.hasKey("mode")) {
             currentTip.add(
-                StatCollector.translateToLocal("GT5U.multiblock.runningMode") + " "
+                StatCollector.translateToLocal("gt.multiblock.runningMode") + " "
                     + EnumChatFormatting.WHITE
                     + tag.getString("mode")
                     + EnumChatFormatting.RESET);
@@ -2974,7 +2954,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
         // Window header
         builder.widget(
-            new TextWidget(EnumChatFormatting.UNDERLINE + translateToLocal("GT5U.gui.text.power_panel")).setPos(0, 2)
+            new TextWidget(EnumChatFormatting.UNDERLINE + translateToLocal("gt.gui.power_panel")).setPos(0, 2)
                 .setSize(120, 18));
 
         // Syncing widgets
@@ -2986,7 +2966,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
         // "Max parallel" header text
         builder.widget(
-            TextWidget.localised("GTPP.CC.parallel")
+            TextWidget.localised("gt.gui.max_parallel")
                 .setPos(0, 24)
                 .setSize(120, 18));
 
@@ -3008,8 +2988,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             .setTextColor(Color.WHITE.normal)
             .dynamicTooltip(
                 () -> Collections.singletonList(
-                    alwaysMaxParallel ? translateToLocalFormatted("GT5U.gui.text.lockedvalue", maxParallel)
-                        : translateToLocalFormatted("GT5U.gui.text.rangedvalue", 1, maxParallel)))
+                    alwaysMaxParallel ? translateToLocalFormatted("gt.gui.locked_value", maxParallel)
+                        : translateToLocalFormatted("gt.gui.ranged_value", 1, maxParallel)))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setSize(72, 18)
             .setPos(12, 40)
@@ -3019,7 +2999,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         builder.widget(createMaxParallelCheckBox(textField));
 
         builder.widget(
-            new TextWidget(translateToLocal("GT5U.gui.text.powerfail_events")).setPos(7, 59)
+            new TextWidget(translateToLocal("gt.gui.powerfail_events")).setPos(7, 59)
                 .setSize(85, 16));
         builder.widget(
             new CheckboxWidget(() -> makePowerfailEvents, (_cb, checked) -> makePowerfailEvents = checked)
@@ -3034,7 +3014,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             textField.notifyTooltipChange();
             if (getBaseMetaTileEntity().isClientSide()) return;
             alwaysMaxParallel = checked;
-        }).addTooltip(translateToLocal("GT5U.gui.button.max_parallel"))
+        }).addTooltip(translateToLocal("gt.tooltip.max_parallel_always"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setPos(92, 41)
             .setSize(16, 16);
@@ -3057,23 +3037,20 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     protected final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
     public String generateCurrentRecipeInfoString() {
-        StringBuffer ret = new StringBuffer(translateToLocal("GT5U.gui.text.progress"));
-        ret.append(" ");
-
+        // Prepare formatted values
         numberFormat.setMinimumFractionDigits(2);
         numberFormat.setMaximumFractionDigits(2);
-        numberFormat.format((double) mProgresstime / 20, ret);
-        ret.append("s / ");
-        numberFormat.format((double) mMaxProgresstime / 20, ret);
-        ret.append("s (");
+
+        String progress = numberFormat.format((double) mProgresstime / 20);
+        String maxProgress = numberFormat.format((double) mMaxProgresstime / 20);
+
         numberFormat.setMinimumFractionDigits(1);
         numberFormat.setMaximumFractionDigits(1);
-        numberFormat.format((double) mProgresstime / mMaxProgresstime * 100, ret);
-        ret.append("%)");
-        numberFormat.setMinimumFractionDigits(0);
-        numberFormat.setMaximumFractionDigits(2);
 
-        return ret.toString();
+        String percent = numberFormat.format((double) mProgresstime / mMaxProgresstime * 100);
+
+        // Localized formatted output
+        return GTUtility.translate("gt.gui.recipe_progress", progress, maxProgress, percent);
     }
 
     protected Widget generateCurrentRecipeInfoWidget() {
@@ -3098,7 +3075,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 Long itemCount = entry.getValue();
                 String itemName = entry.getKey()
                     .getDisplayName();
-                String itemAmountString = EnumChatFormatting.WHITE + " x "
+                String itemAmountString = EnumChatFormatting.WHITE + GTUtility.translate("gt.gui.recipe_x")
                     + EnumChatFormatting.GOLD
                     + formatShortenedLong(itemCount)
                     + EnumChatFormatting.WHITE
@@ -3136,19 +3113,23 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 .collect(Collectors.toList());
 
             for (Map.Entry<FluidStack, Long> entry : sortedMap) {
-                Long itemCount = entry.getValue();
-                String itemName = entry.getKey()
+                Long fluidAmount = entry.getValue();
+                String fluidName = entry.getKey()
                     .getLocalizedName();
-                String itemAmountString = EnumChatFormatting.WHITE + " x "
-                    + EnumChatFormatting.GOLD
-                    + formatShortenedLong(itemCount)
-                    + "L"
-                    + EnumChatFormatting.WHITE
-                    + appendRate(false, itemCount, true);
-                String lineText = EnumChatFormatting.AQUA + truncateText(itemName, 40 - itemAmountString.length())
-                    + itemAmountString;
-                String lineTooltip = EnumChatFormatting.AQUA + itemName + "\n" + appendRate(true, itemCount, false);
 
+                String formattedAmount = formatShortenedLong(fluidAmount);
+
+                String amountString = GTUtility.translate(
+                    "gt.gui.recipe_fluid_amount",
+                    EnumChatFormatting.GOLD + formattedAmount + EnumChatFormatting.RESET,
+                    EnumChatFormatting.WHITE + appendRate(false, fluidAmount, true));
+
+                String lineText = EnumChatFormatting.AQUA + truncateText(fluidName, 40 - amountString.length())
+                    + EnumChatFormatting.WHITE
+                    + " "
+                    + amountString;
+
+                String lineTooltip = EnumChatFormatting.AQUA + fluidName + "\n" + appendRate(true, fluidAmount, false);
                 processingDetails.widget(
                     new MultiChildWidget().addChild(
                         new FluidDrawable().setFluid(
@@ -3322,62 +3303,56 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         }
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("132", "Pipe is loose. (Wrench)")).setTextAlignment(Alignment.CenterLeft)
+                new TextWidget(GTUtility.translate("gt.gui.maintenance.wrench")).setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mWrench && mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mWrench, val -> mWrench = val));
-        screenElements
-            .widget(
-                new TextWidget(GTUtility.trans("133", "Screws are loose. (Screwdriver)"))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> !mScrewdriver && mMachine))
+        screenElements.widget(
+            new TextWidget(GTUtility.translate("gt.gui.maintenance.screwdriver")).setTextAlignment(Alignment.CenterLeft)
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setEnabled(widget -> !mScrewdriver && mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mScrewdriver, val -> mScrewdriver = val));
-        screenElements
-            .widget(
-                new TextWidget(GTUtility.trans("134", "Something is stuck. (Soft Mallet)"))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> !mSoftMallet && mMachine))
+        screenElements.widget(
+            new TextWidget(GTUtility.translate("gt.gui.maintenance.soft_mallet")).setTextAlignment(Alignment.CenterLeft)
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setEnabled(widget -> !mSoftMallet && mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mSoftMallet, val -> mSoftMallet = val));
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("135", "Platings are dented. (Hammer)"))
-                    .setTextAlignment(Alignment.CenterLeft)
+                new TextWidget(GTUtility.translate("gt.gui.maintenance.hammer")).setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mHardHammer && mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mHardHammer, val -> mHardHammer = val));
-        screenElements
-            .widget(
-                new TextWidget(GTUtility.trans("136", "Circuitry burned out. (Soldering)"))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> !mSolderingTool && mMachine))
+        screenElements.widget(
+            new TextWidget(GTUtility.translate("gt.gui.maintenance.soldering")).setTextAlignment(Alignment.CenterLeft)
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setEnabled(widget -> !mSolderingTool && mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mSolderingTool, val -> mSolderingTool = val));
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("137", "That doesn't belong there. (Crowbar)"))
-                    .setTextAlignment(Alignment.CenterLeft)
+                new TextWidget(GTUtility.translate("gt.gui.maintenance.crowbar")).setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mCrowbar && mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mCrowbar, val -> mCrowbar = val));
-        screenElements.widget(
-            new TextWidget(translateToLocal("gt.interact.desc.mb.incomplete")).setTextAlignment(Alignment.CenterLeft)
-                .setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setEnabled(widget -> !mMachine))
+        screenElements
+            .widget(
+                new TextWidget(translateToLocal("gt.gui.maintenance.incomplete")).setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> !mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
         screenElements.widget(
-            new TextWidget(translateToLocal("GT5U.gui.text.too_uncertain")).setTextAlignment(Alignment.CenterLeft)
+            new TextWidget(translateToLocal("gt.gui.maintenance.too_uncertain")).setTextAlignment(Alignment.CenterLeft)
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> (getErrorDisplayID() & 128) != 0));
         screenElements.widget(
-            new TextWidget(translateToLocal("GT5U.gui.text.invalid_parameters")).setTextAlignment(Alignment.CenterLeft)
+            new TextWidget(translateToLocal("gt.gui.maintenance.invalid_parameters"))
+                .setTextAlignment(Alignment.CenterLeft)
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> (getErrorDisplayID() & 256) != 0));
 
         screenElements
             .widget(
-                new TextWidget(translateToLocal("gt.interact.desc.mb.idle.1")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(translateToLocal("gt.gui.maintenance.idle.1")).setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()))
             .widget(new FakeSyncWidget.IntegerSyncer(this::getErrorDisplayID, this::setErrorDisplayID))
             .widget(
@@ -3385,20 +3360,20 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                     () -> getBaseMetaTileEntity().isActive(),
                     val -> getBaseMetaTileEntity().setActive(val)));
         screenElements.widget(
-            new TextWidget(translateToLocal("gt.interact.desc.mb.idle.2")).setDefaultColor(COLOR_TEXT_WHITE.get())
+            new TextWidget(translateToLocal("gt.gui.maintenance.idle.2")).setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
         screenElements.widget(
-            new TextWidget(translateToLocal("gt.interact.desc.mb.idle.3")).setDefaultColor(COLOR_TEXT_WHITE.get())
+            new TextWidget(translateToLocal("gt.gui.maintenance.idle.3")).setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
 
         screenElements.widget(
-            new TextWidget(translateToLocal("gt.interact.desc.mb.running")).setDefaultColor(COLOR_TEXT_WHITE.get())
+            new TextWidget(translateToLocal("gt.gui.maintenance.running")).setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive()));
 
         screenElements.widget(TextWidget.dynamicString(() -> {
             Duration time = Duration.ofSeconds((mTotalRunTime - mLastWorkingTick) / 20);
             return translateToLocalFormatted(
-                "GT5U.gui.text.shutdown_duration",
+                "gt.gui.maintenance.shutdown_duration",
                 time.toHours(),
                 time.toMinutes() % 60,
                 time.getSeconds() % 60);
@@ -3493,7 +3468,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         }
 
         screenElements.widget(
-            new TextWidget(GTUtility.trans("144", "Missing Turbine Rotor")).setTextAlignment(Alignment.CenterLeft)
+            new TextWidget(GTUtility.translate("gt.gui.maintenance.missing_turbine_rotor"))
+                .setTextAlignment(Alignment.CenterLeft)
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> {
                     if (getBaseMetaTileEntity().isAllowedToWork()) return false;

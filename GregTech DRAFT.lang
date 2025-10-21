@@ -84,26 +84,12 @@
 	Todo:
 	- Bahaviour"Stuff"
 	- Them bacteria names, example above ^
+
 	
 
-    S:Interaction_DESCRIPTION_Index_128=Redstone
-    S:Interaction_DESCRIPTION_Index_128.1=Redstone 
-    S:Interaction_DESCRIPTION_Index_129=Energy
-    S:Interaction_DESCRIPTION_Index_129.1=Energy 
-    S:Interaction_DESCRIPTION_Index_130=Fluids
-    S:Interaction_DESCRIPTION_Index_130.1=Fluids 
-    S:Interaction_DESCRIPTION_Index_131=Items
-    S:Interaction_DESCRIPTION_Index_131.1=Items 
-    S:Interaction_DESCRIPTION_Index_132=Pipe is loose. (Wrench)
-    S:Interaction_DESCRIPTION_Index_133=Screws are loose. (Screwdriver)
-    S:Interaction_DESCRIPTION_Index_134=Something is stuck. (Soft Mallet)
-    S:Interaction_DESCRIPTION_Index_135=Platings are dented. (Hammer)
-    S:Interaction_DESCRIPTION_Index_136=Circuitry burned out. (Soldering)
-    S:Interaction_DESCRIPTION_Index_137=That doesn't belong there. (Crowbar)
     S:Interaction_DESCRIPTION_Index_138=Incomplete Structure.
     S:Interaction_DESCRIPTION_Index_142=Running perfectly.
     S:Interaction_DESCRIPTION_Index_143=Missing Mining Pipe
-    S:Interaction_DESCRIPTION_Index_144=Missing Turbine Rotor
     S:Interaction_DESCRIPTION_Index_145=Step Down, In: 
     S:Interaction_DESCRIPTION_Index_146=Step Up, In: 
     S:Interaction_DESCRIPTION_Index_147=A, Out: 

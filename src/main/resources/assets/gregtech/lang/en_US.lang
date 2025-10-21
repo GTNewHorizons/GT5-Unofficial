@@ -180,14 +180,6 @@ gt.interact.desc.signal_inverted=Disable with Signal
 gt.interact.desc.signal_off=Disabled
 gt.interact.desc.signal_on_safe=Enable with Signal (Safe)
 gt.interact.desc.signal_inverted_safe=Disable with Signal (Safe)
-gt.interact.desc.mb.idle.1=Hit with Soft Mallet
-gt.interact.desc.mb.idle.2= to (re-)start the Machine
-gt.interact.desc.mb.idle.3= if it doesn't start.
-gt.interact.desc.mb.running=Running perfectly.
-gt.interact.desc.mb.incomplete=Incomplete Structure.
-gt.interact.desc.mb.locking_on=Single recipe locking enabled. Will lock to next recipe.
-gt.interact.desc.mb.locking_off=Single recipe locking disabled.
-gt.interact.desc.mb.mode=§fRunning mode: §6%s
 gt.interact.desc.export=Export
 gt.interact.desc.import=Import
 gt.interact.desc.export.tooltip=Export
@@ -1093,7 +1085,6 @@ gt.recipe.category.forge_hammer_recycling=Forge Hammer Recycling
 gt.recipe.category.tic_part_extruding=TiC Part Extruding
 gt.recipe.category.tic_bolt_molding=TiC Bolt Molding
 
-GT5U.machines.tier=Tier
 GT5U.machines.workarea=Work Area
 GT5U.machines.workareaset=Work Area set to
 GT5U.machines.workarea_fail=Can't adjust work area while running
@@ -1210,9 +1201,6 @@ GT5U.GTPP_MULTI_PRECISE_ASSEMBLER.mode.1=Normal
 GT5U.GTPP_MULTI_PACKAGER.mode.0=Packager
 GT5U.GTPP_MULTI_PACKAGER.mode.1=Unpackager
 GT5U.MULTI_MACHINE_CHANGE=Now running in %s mode
-GT5U.MULTI_MACHINE_CONFIG.SAVE=Saved Multiblock Hatch Configuration
-GT5U.MULTI_MACHINE_CONFIG.LOAD=Loaded Multiblock Hatch Configuration
-GT5U.MULTI_MACHINE_CONFIG.LOAD.FAIL=Failed to load Multiblock Hatch Configuration
 GT5U.DEHP.mode.0=Direct Steam
 GT5U.DEHP.mode.1=Coolant Heating
 GT5U.machines.oreprocessor2=§cTime: %s s
@@ -1397,17 +1385,7 @@ GT5U.gui.button.toggle_output_slot_lock=Toggle output slot
 GT5U.gui.button.power_panel=Open Power Panel
 GT5U.gui.button.turbinemenu=Open Chamber Controller
 GT5U.gui.button.machineinfo=Display Machine Information
-GT5U.gui.button.max_parallel=Always use maximum
-GT5U.gui.text.rangedvalue=Range: %s-%s
-GT5U.gui.text.lockedvalue=Locked: %s
 GT5U.gui.text.success=§aProcessing recipe
-GT5U.gui.text.progress=§fProgress:
-GT5U.gui.text.amount=§fAmount:
-GT5U.gui.text.per_tick=§fPer tick:
-GT5U.gui.text.per_second=§fPer second:
-GT5U.gui.text.per_minute=§fPer minute:
-GT5U.gui.text.per_hour=§fPer hour:
-GT5U.gui.text.per_day=§fPer day:
 GT5U.gui.text.generating=§aGenerating power
 GT5U.gui.text.no_recipe=§7No valid recipe found
 GT5U.gui.text.item_output_full=§7Not enough item output space
@@ -1478,7 +1456,6 @@ GT5U.gui.text.drone_operating=§aDrone operating normally!
 GT5U.gui.text.drone_title=Drone Control Centre
 GT5U.gui.text.drone_custom_name=Custom Machine Name
 GT5U.gui.text.drone_search=Search machine name
-GT5U.gui.text.shutdown_duration=§4Shut down §e%s §4h §e%s §4min §e%s §4s ago.
 GT5U.gui.text.out_of_fluid=§4No following fluids supplied: §b%s§f x §6%s L
 GT5U.gui.text.out_of_item=§4No following items supplied: §b%s§f x §6%s
 GT5U.gui.text.out_of_stuff=§4No following stuffs supplied: §b%s§f x §6%s
@@ -1505,10 +1482,6 @@ GT5U.gui.missing_casings=Too few casings: need %s but have %s
 GT5U.gui.missing_casings_specific=Too few %s: need %s but have %s
 GT5U.gui.missing_hatch=Missing %s
 GT5U.gui.too_many_hatches=Too many %ses (max %s)
-GT5U.gui.text.power_panel=Power Control Panel
-GT5U.gui.text.powerfail_events=Powerfail Events
-GT5U.gui.text.too_uncertain=Too Uncertain.
-GT5U.gui.text.invalid_parameters=Invalid Parameters.
 GT5U.gui.text.enabled=§aEnabled§f
 GT5U.gui.text.disabled=§cDisabled§f
 GT5U.gui.text.lma_craftingfx=Show Crafting Effects
@@ -1575,9 +1548,6 @@ GT5U.gui.config.worldgen.general=General
 
 GT5U.gui.text.cannot_change_when_running=Can't change configuration when running!
 
-GT5U.gui.tooltip.purification_plant.debug_mode=Toggle debug mode.
-GT5U.gui.text.purification_plant.hit_to_start=Hit with Soft Mallet to start.
-
 GT5U.gui.tooltip.redstone_circuit.toggle_output=Toggle EU Output
 GT5U.gui.tooltip.redstone_circuit.toggle_active=Toggle Active State
 GT5U.gui.tooltip.redstone_circuit.change=Change Redstone Circuit
@@ -1597,9 +1567,6 @@ GT5U.gui.text.wireless_maintenance_detector.extra.ge4_issues=§8>= 4 Issues
 GT5U.gui.text.wireless_maintenance_detector.extra.ge5_issues=§8>= 5 Issues
 GT5U.gui.text.wireless_maintenance_detector.extra.rotor_lt20=§8Rotor < 20%
 GT5U.gui.text.wireless_maintenance_detector.extra.rotor_0=§8Rotor ≈ 0%
-
-GT5U.gui.text.fusion_computer.hit_to_start=Hit with Soft Mallet to (re-)start the Machine if it doesn't start.
-GT5U.gui.text.fusion_computer.running_perfectly=Running perfectly.
 
 GT5U.gui.text.large_fluid_extractor.not_enough_casings=Not enough casings: need %d, but\nhave %d.
 GT5U.gui.text.wormhole_generator.missing_entangled_singularity=§7Missing Entangled Singularity§f
@@ -1788,15 +1755,8 @@ GT5U.hatch.item.filter.disable=Item output filtering disabled
 GT5U.bus.filterTooltip.empty=§aDrag item from NEI to set output filter
 GT5U.bus.filterTooltip.full=§aClick to clear output filter
 
-GT5U.multiblock.pollution=Pollution reduced to
-GT5U.multiblock.energy=Stored Energy
-GT5U.multiblock.Progress=Progress
-GT5U.multiblock.efficiency=Efficiency
-GT5U.multiblock.problems=Problems
-GT5U.multiblock.mei=Max Energy Income
 GT5U.multiblock.maxtier=Max Tier
 GT5U.multiblock.usage=Currently uses
-GT5U.multiblock.parallelism=Max Parallel
 GT5U.multiblock.curparallelism=Current Parallel
 GT5U.multiblock.euModifier=EU Modifier
 GT5U.multiblock.speed=Speed
@@ -1804,7 +1764,6 @@ GT5U.multiblock.fluidPipeTier=Fluid Pipe Tier
 GT5U.multiblock.itemPipeTier=Item Pipe Tier
 GT5U.multiblock.coilLevel=Heating Coil Level
 GT5U.multiblock.preciseassemblercasing=Voltage limited by casing tier: %s
-GT5U.multiblock.runningMode=§eRunning Mode:
 GT5U.multiblock.startup=Starting up...
 
 # NEI recipe handlers
@@ -2078,10 +2037,6 @@ GT5U.waila.cover.current_facing=Current Facing
 GT5U.waila.energy.stored=Stored: §a%s§r EU / §e%s§r EU
 GT5U.waila.energy.avg_in_with_amperage=Average Input: §a%s§r EU/t (%sA %s)
 GT5U.waila.energy.avg_out_with_amperage=Average Output: §c%s§r EU/t (%sA %s)
-GT5U.waila.energy.use=Currently uses: §e%s§r EU/t (%s)
-GT5U.waila.energy.use_with_amperage=Currently uses: §e%s§r EU/t (%sA %s)
-GT5U.waila.energy.produce=Currently generates: §a%s§r EU/t (%s)
-GT5U.waila.energy.produce_with_amperage=Currently generates: §a%s§r EU/t (%sA %s)
 GT5U.waila.stocking_bus.auto_pull.enabled=Auto-Pull from ME: Enabled
 GT5U.waila.stocking_bus.auto_pull.disabled=Auto-Pull from ME: Disabled
 GT5U.waila.stocking_bus.min_stack_size=Minimum Stack Size: %s
@@ -2090,8 +2045,6 @@ GT5U.waila.drone_downlink.noConnection=Not connected
 GT5U.waila.drone_downlink.connection=Connected to centre: x:%s y:%s z:%s
 GT5U.waila.drone_downlink.connectionCount=Connection Count: %s
 GT5U.waila.drone_downlink.droneLevel=Drone Level: %s
-GT5U.waila.producing=Producing:
-GT5U.waila.producing.andmore=  And %d More...
 GT5U.waila.generating.on=Generating Energy
 GT5U.waila.generating.off=Not Generating
 GT5U.waila.status.insufficient_energy=Status: Insufficient energy
@@ -2109,13 +2062,6 @@ GT5U.waila.facing.south=SOUTH
 GT5U.waila.facing.west=WEST
 GT5U.waila.facing.east=EAST
 GT5U.waila.facing.unknown=UNKNOWN
-
-GT5U.waila.multiblock.status.incomplete=** INCOMPLETE STRUCTURE **
-GT5U.waila.multiblock.status.efficiency=  Efficiency: %f%%
-GT5U.waila.multiblock.status.has_problem=** HAS PROBLEMS **
-GT5U.waila.multiblock.status.running_fine=Running Fine
-GT5U.waila.multiblock.status.cpu_load=Average CPU load of ~%s ns
-GT5U.waila.multiblock.status.locked_recipe=Locked Recipe:
 
 achievement.gettingstartedwithgt=Getting Started with GT
 achievement.gettingstartedwithgt.desc=Craft a wooden pickaxe
@@ -3046,20 +2992,9 @@ GTPP.gui.text.cover_overflow_valve_l_per_update=§8L/update
 
 GTPP.EBF.heat=Heat capacity
 
-GTPP.machines.tier=Tier
-GTPP.machines.input=Input
-GTPP.machines.output=Output
-
-GTPP.multiblock.pollutionreduced=Pollution reduced to
 GTPP.multiblock.pollution=Pollution
-GTPP.multiblock.energy=Stored Energy
 GTPP.multiblock.progress=Progress
-GTPP.multiblock.efficiency=Efficiency
 GTPP.multiblock.problems=Problems
-GTPP.multiblock.mei=Max Energy Income
-GTPP.multiblock.usage=Currently uses
-GTPP.multiblock.generation=Currently generates
-GTPP.multiblock.specialvalue=Special Value
 GTPP.multiblock.duration=Duration
 GTPP.multiblock.multimachine.metal=Metal Mode. Does compressor (circuit 20), lathe (circuit 21) and electromagnetic polarizer (circuit 22).
 GTPP.multiblock.multimachine.fluid=Fluid Mode. Does fermenter (circuit 20), fluid extractor (circuit 21) and extractor (circuit 22).
@@ -3070,7 +3005,6 @@ GTPP.waila.steam.use=Currently uses: §e%s§r L/s Steam
 
 GTPP.CC.machinetier=Control Core Tier
 GTPP.CC.discount=EU Discount
-GTPP.CC.parallel=Maximum Parallel
 
 # Tooltips for the Charger Packs
 GTPP.battpack.tooltip.1=Worn as a Belt within Baubles
@@ -3334,8 +3268,6 @@ GT5U.infodata.wormhole_generator.hatch.right=Right
 GT5U.infodata.wormhole_generator.hatch.back=Back
 GT5U.infodata.wormhole_generator.hatch.front=Front
 
-GT5U.infodata.purification_plant.status_button=Status
-GT5U.infodata.purification_plant.status_title=§lPurification Unit Status
 GT5U.infodata.purification_plant.linked_units=Linked Purification Units:
 GT5U.infodata.purification_plant.linked_units.status.online=Online
 GT5U.infodata.purification_plant.linked_units.status.disabled=Disabled
@@ -3619,6 +3551,8 @@ item.gt.depletedRodNaquadria4.name=Quad Fuel Rod (Depleted Naquadria)
 # Entities
 entity.gregtech.PowderBarrelPrimed.name=Lit Powder Barrel
 
+GT5U.gui.text.per_tick=§fPer tick:
+
 #mui1
 mui.button.close=x
 
@@ -3646,6 +3580,8 @@ gt.tooltip.invert_redstone=Invert redstone
 gt.tooltip.buffer_stocking_mode=Enable stocking mode
 gt.tooltip.sorting_mode=Sort stacks
 gt.tooltip.energy_tier=%s (%s)
+gt.tooltip.max_parallel_always=Always use maximum
+gt.tooltip..purification_plant.debug_mode=Toggle debug mode.
 
 
 # Behaviour tooltips
@@ -3719,7 +3655,11 @@ gt.chat.interact.desc.Redstone=Redstone
 gt.chat.interact.desc.Energy=Energy
 gt.chat.interact.desc.Fluids=Fluids
 gt.chat.interact.desc.Items=Items
-
+gt.chat.interact.desc.locking_on=Single recipe locking enabled. Will lock to next recipe.
+gt.chat.interact.desc.locking_off=Single recipe locking disabled.
+gt.chat.interact.desc.config_save=Saved Multiblock Hatch Configuration
+gt.chat.interact.desc.config_load=Loaded Multiblock Hatch Configuration
+gt.chat.interact.desc.config_load_fail=Failed to load Multiblock Hatch Configuration
 
 
 # Machine interact description
@@ -3745,9 +3685,85 @@ gt.infodata.hatch_output.fluid_none=No Fluid
 gt.infodata.hatch_output.fluid_locked_to_none=Not Locked
 gt.infodata.hatch_output.fluid_locked_to=Locked to %s
 
+gt.infodata.multiblock.progress=Progress: %s s / %s s
+gt.infodata.multiblock.energy=Stored Energy
+gt.infodata.multiblock.usage=Currently uses
+gt.infodata.multiblock.generation=Currently generates
+gt.infodata.multiblock.special_value=Special Value
+gt.infodata.multiblock.max_energy_income=Max Energy Income
+gt.infodata.multiblock.efficiency=Efficiency
+gt.infodata.multiblock.pollution=Pollution reduced to
+gt.infodata.multiblock.purification_plant.status_title=§lPurification Unit Status
+
+
 # Gui
 gt.gui.hatch_output.lock_fluid=Locked Fluid
 gt.gui.hatch_output.lock_none=None
+
+gt.gui.maintenance.wrench=Pipe is loose. (Wrench)
+gt.gui.maintenance.screwdriver=Screws are loose. (Screwdriver)
+gt.gui.maintenance.soft_mallet=Something is stuck. (Soft Mallet)
+gt.gui.maintenance.hammer=Platings are dented. (Hammer)
+gt.gui.maintenance.soldering=Circuitry burned out. (Soldering)
+gt.gui.maintenance.crowbar=That doesn't belong there. (Crowbar)
+gt.gui.maintenance.missing_turbine_rotor=Missing Turbine Rotor
+gt.gui.maintenance.shutdown_duration=§4Shut down §e%s §4h §e%s §4min §e%s §4s ago.
+gt.gui.maintenance.idle.0=Hit with Soft Mallet to (re-)start the Machine if it doesn't start.
+gt.gui.maintenance.idle.1=Hit with Soft Mallet
+gt.gui.maintenance.idle.2= to (re-)start the Machine
+gt.gui.maintenance.idle.3= if it doesn't start.
+gt.gui.maintenance.idle.4=Hit with Soft Mallet to start.
+gt.gui.maintenance.running=Running perfectly.
+gt.gui.maintenance.incomplete=Incomplete Structure.
+gt.gui.maintenance.too_uncertain=Too Uncertain.
+gt.gui.maintenance.invalid_parameters=Invalid Parameters.
+
+gt.gui.power_panel=Power Control Panel
+gt.gui.max_parallel=Maximum Parallel
+gt.gui.locked_value=Locked: %s
+gt.gui.ranged_value=Range: %s-%s
+gt.gui.powerfail_events=Powerfail Events
+gt.gui.recipe_progress=§fProgress: %s s / %s s (%s%%)§r
+gt.gui.recipe_x= x #space
+gt.gui.recipe_fluid_amount=x %sL%s 
+gt.gui.status=Status
+gt.gui.tier=Tier: #space
+gt.gui.input=Input #space
+gt.gui.output=Output #space
+
+
+# Waila
+gt.waila.multiblock.status.incomplete=** INCOMPLETE STRUCTURE **
+gt.waila.multiblock.status.efficiency=  Efficiency: %f%%
+gt.waila.multiblock.status.has_problem=** HAS PROBLEMS **
+gt.waila.multiblock.status.running_fine=Running Fine
+gt.waila.energy.use_with_amperage=Currently uses: §e%s§r EU/t (%sA %s)
+gt.waila.energy.produce_with_amperage=Currently generates: §a%s§r EU/t (%sA %s)
+gt.waila.energy.use=Currently uses: §e%s§r EU/t (%s)
+gt.waila.energy.produce=Currently generates: §a%s§r EU/t (%s)
+gt.waila.multiblock.status.locked_recipe=Locked Recipe:
+gt.waila.producing=Producing:
+gt.waila.producing.andmore=  And %d More...
+gt.waila.multiblock.status.cpu_load=Average CPU load of ~%s ns
+
+
+# Generic 
+gt.info.eu=EU
+gt.info.eu_1= EU / #space
+gt.info.eu_2= EU#space
+gt.info.percentage= %
+
+
+
+#################
+
+GT5U.gui.text.amount=§fAmount:
+GT5U.gui.text.per_second=§fPer second:
+GT5U.gui.text.per_minute=§fPer minute:
+GT5U.gui.text.per_hour=§fPer hour:
+GT5U.gui.text.per_day=§fPer day:
+
+gt.interact.desc.mb.mode=§fRunning mode: §6%s
 
 
 

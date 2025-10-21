@@ -1263,16 +1263,15 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
 
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("138", "Incomplete Structure.")).setTextAlignment(Alignment.CenterLeft)
+                new TextWidget(GTUtility.translate("gt.gui.maintenance.incomplete")).setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val))
             .widget(
                 TextWidget
                     .dynamicString(
-                        () -> StatCollector.translateToLocal("GTPP.machines.input") + " "
-                            + StatCollector.translateToLocal("GTPP.machines.tier")
-                            + ": "
+                        () -> StatCollector.translateToLocal("gt.gui.input")
+                            + StatCollector.translateToLocal("gt.gui.tier")
                             + EnumChatFormatting.GREEN
                             + GTValues.VOLTAGE_NAMES[(int) getInputTier()])
                     .setTextAlignment(Alignment.CenterLeft)
@@ -1281,9 +1280,8 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             .widget(
                 TextWidget
                     .dynamicString(
-                        () -> StatCollector.translateToLocal("GTPP.machines.output") + " "
-                            + StatCollector.translateToLocal("GTPP.machines.tier")
-                            + ": "
+                        () -> StatCollector.translateToLocal("gt.gui.output")
+                            + StatCollector.translateToLocal("gt.gui.tier")
                             + EnumChatFormatting.GREEN
                             + GTValues.VOLTAGE_NAMES[(int) getOutputTier()])
                     .setTextAlignment(Alignment.CenterLeft)
@@ -1304,7 +1302,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine))
             .widget(
-                new TextWidget(StatCollector.translateToLocal("GTPP.multiblock.energy") + ":")
+                new TextWidget(GTUtility.translate("gt.infodata.multiblock.energy") + ":")
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine))
@@ -1314,16 +1312,16 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                         () -> "" + EnumChatFormatting.GREEN
                             + getStoredEnergyInAllEnergyHatches()
                             + EnumChatFormatting.RESET
-                            + " EU / "
+                            + GTUtility.translate("gt.info.eu_1")
                             + EnumChatFormatting.YELLOW
                             + getMaxEnergyStorageOfAllEnergyHatches()
                             + EnumChatFormatting.RESET
-                            + " EU")
+                            + GTUtility.translate("gt.info.eu_2"))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine))
             .widget(
-                new TextWidget(StatCollector.translateToLocal("GTPP.multiblock.usage") + ":")
+                new TextWidget(GTUtility.translate("gt.infodata.multiblock.usage") + ":")
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine && getLastRecipeEU() > 0 && getLastRecipeDuration() > 0))
@@ -1337,7 +1335,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine && getLastRecipeEU() > 0 && getLastRecipeDuration() > 0))
             .widget(
-                TextWidget.dynamicString(() -> StatCollector.translateToLocal("GTPP.multiblock.generation") + ":")
+                TextWidget.dynamicString(() -> GTUtility.translate("gt.infodata.multiblock.generation") + ":")
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine && getLastRecipeEU() < 0 && getLastRecipeDuration() > 0))
@@ -1362,7 +1360,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             .widget(
                 TextWidget
                     .dynamicString(
-                        () -> StatCollector.translateToLocal("GTPP.multiblock.specialvalue") + ": "
+                        () -> GTUtility.translate("gt.infodata.multiblock.special_value") + ": "
                             + EnumChatFormatting.RED
                             + getLastRecipeEU()
                             + EnumChatFormatting.RESET)
@@ -1373,7 +1371,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                             && getLastRecipeDuration() > 0
                             && (mLastRecipe != null ? mLastRecipe.mSpecialValue : 0) > 0))
             .widget(
-                new TextWidget(StatCollector.translateToLocal("GTPP.multiblock.mei") + ":")
+                new TextWidget(GTUtility.translate("gt.infodata.multiblock.max_energy_income") + ":")
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine))
@@ -1391,11 +1389,11 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             .widget(
                 TextWidget
                     .dynamicString(
-                        () -> StatCollector.translateToLocal("GTPP.multiblock.efficiency") + ": "
+                        () -> StatCollector.translateToLocal("gt.infodata.multiblock.efficiency") + ": "
                             + EnumChatFormatting.YELLOW
                             + (mEfficiency / 100.0F)
                             + EnumChatFormatting.RESET
-                            + " %")
+                            + StatCollector.translateToLocal("gt.info.percentage"))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine))
@@ -1415,7 +1413,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                             + EnumChatFormatting.GREEN
                             + getAveragePollutionPercentage()
                             + EnumChatFormatting.RESET
-                            + " %")
+                            + StatCollector.translateToLocal("gt.info.percentage"))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine))
