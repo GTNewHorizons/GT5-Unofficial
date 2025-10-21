@@ -984,21 +984,19 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     @Override
     public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
 /*
-        if (!shouldRender || !getBaseMetaTileEntity().isActive()) return;
-
-        if (!renderInitialized) {
-            initializeRender();
-            if (!renderInitialized) return;
-        }
-        final TextureManager textureManager = Minecraft.getMinecraft()
-            .getTextureManager();
-        textureManager.bindTexture(ringTexture);
-
-        renderRingOne(x, y, z, timeSinceLastTick, modules[0].rgbArr);
-        renderRingTwo(x, y, z, timeSinceLastTick, modules[1].rgbArr);
-        renderRingThree(x, y, z, timeSinceLastTick, modules[2].rgbArr);
-        renderRingFour(x, y, z, timeSinceLastTick, modules[3].rgbArr);
-*/
+          if (!shouldRender || !getBaseMetaTileEntity().isActive()) return;
+          if (!renderInitialized) {
+         initializeRender();
+          if (!renderInitialized) return;
+          }
+          final TextureManager textureManager = Minecraft.getMinecraft()
+          .getTextureManager();
+          textureManager.bindTexture(ringTexture);
+          renderRingOne(x, y, z, timeSinceLastTick, modules[0].rgbArr);
+          renderRingTwo(x, y, z, timeSinceLastTick, modules[1].rgbArr);
+          renderRingThree(x, y, z, timeSinceLastTick, modules[2].rgbArr);
+          renderRingFour(x, y, z, timeSinceLastTick, modules[3].rgbArr);
+    */
     }
 
     private void initializeRender() {
