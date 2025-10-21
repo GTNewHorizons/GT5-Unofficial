@@ -25,6 +25,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.EnumSkyBlock;
@@ -77,6 +78,7 @@ import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.covers.Cover;
 import gregtech.common.pollution.Pollution;
+import gregtech.common.render.IMTERenderer;
 import gregtech.mixin.interfaces.accessors.EntityItemAccessor;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
 import ic2.api.Direction;
@@ -2206,5 +2208,13 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     @Override
     protected int getCoverTabHeightOffset() {
         return isSteampowered() || getMetaTileEntity() instanceof MTESteamMultiBase<?> ? 32 : 0;
+    }
+
+    @Override
+    public AxisAlignedBB getRenderBoundingBox() {
+
+        return getMetaTileEntity() instanceof IMTERenderer mteRenderer
+            ? mteRenderer.getRenderBoundingBox(xCoord, yCoord, zCoord)
+            : super.getRenderBoundingBox();
     }
 }
