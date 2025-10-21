@@ -159,7 +159,9 @@ public class MTEItemDistributor extends MTEBuffer {
         // Adjust items per side by 1 or -1, constrained to the cyclic interval [0, 127]
         itemsPerSide[ordinalSide] += aPlayer.isSneaking() ? -1 : 1;
         itemsPerSide[ordinalSide] = (byte) ((itemsPerSide[ordinalSide] + 128) % 128);
-        GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("211", "Items per side: ") + itemsPerSide[ordinalSide]);
+        GTUtility.sendChatToPlayer(
+            aPlayer,
+            GTUtility.translate("gt.chat.interact.desc.items_per_side") + itemsPerSide[ordinalSide]);
     }
 
     @Override

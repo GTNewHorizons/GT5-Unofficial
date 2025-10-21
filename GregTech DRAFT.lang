@@ -86,62 +86,7 @@
 	- Them bacteria names, example above ^
 
 	
-    S:Interaction_DESCRIPTION_Index_162=Name: 
-    S:Interaction_DESCRIPTION_Index_163= MetaData: 
-    S:Interaction_DESCRIPTION_Index_164=Hardness: 
-    S:Interaction_DESCRIPTION_Index_165= Blast Resistance: 
-    S:Interaction_DESCRIPTION_Index_166=Is valid Beacon Pyramid Material
-    S:Interaction_DESCRIPTION_Index_167=Tank 
-    S:Interaction_DESCRIPTION_Index_168=Heat: 
-    S:Interaction_DESCRIPTION_Index_169=HEM: 
-    S:Interaction_DESCRIPTION_Index_170= Base EU Output: 
-    S:Interaction_DESCRIPTION_Index_171=Facing: 
-    S:Interaction_DESCRIPTION_Index_172= / Chance: 
-    S:Interaction_DESCRIPTION_Index_173=You can remove this with a Wrench
-    S:Interaction_DESCRIPTION_Index_174=You can NOT remove this with a Wrench
-    S:Interaction_DESCRIPTION_Index_175=Conduction Loss: 
-    S:Interaction_DESCRIPTION_Index_176=Contained Energy: 
-    S:Interaction_DESCRIPTION_Index_177=Has Muffler Upgrade
-    S:Interaction_DESCRIPTION_Index_178=Progress/Load: 
-    S:Interaction_DESCRIPTION_Index_179=Max IN: 
-    S:Interaction_DESCRIPTION_Index_181=Max OUT: 
-    S:Interaction_DESCRIPTION_Index_182= EU at 
-    S:Interaction_DESCRIPTION_Index_183= A
-    S:Interaction_DESCRIPTION_Index_184=Energy: 
-    S:Interaction_DESCRIPTION_Index_186=Owned by: 
-    S:Interaction_DESCRIPTION_Index_187=Type -- Crop-Name: 
-    S:Interaction_DESCRIPTION_Index_188=  Growth: 
-    S:Interaction_DESCRIPTION_Index_189=  Gain: 
-    S:Interaction_DESCRIPTION_Index_190=  Resistance: 
-    S:Interaction_DESCRIPTION_Index_191=Plant -- Fertilizer: 
-    S:Interaction_DESCRIPTION_Index_192=  Water: 
-    S:Interaction_DESCRIPTION_Index_193=  Weed-Ex: 
-    S:Interaction_DESCRIPTION_Index_194=  Scan-Level: 
-    S:Interaction_DESCRIPTION_Index_195=Environment -- Nutrients: 
-    S:Interaction_DESCRIPTION_Index_196=  Humidity: 
-    S:Interaction_DESCRIPTION_Index_197=  Air-Quality: 
-    S:Interaction_DESCRIPTION_Index_198=Attributes:
-    S:Interaction_DESCRIPTION_Index_199=Discovered by: 
-    S:Interaction_DESCRIPTION_Index_200=Sort mode: 
-    S:Interaction_DESCRIPTION_Index_200.1=Automatic Item Shuffling: 
-    S:Interaction_DESCRIPTION_Index_201=Nothing
-    S:Interaction_DESCRIPTION_Index_202=Pollution in Chunk: 
-    S:Interaction_DESCRIPTION_Index_203= gibbl
-    S:Interaction_DESCRIPTION_Index_204=No Pollution in Chunk! HAYO!
-	-----------------
-	
-	
-    S:Interaction_DESCRIPTION_Index_208= L
-    S:Interaction_DESCRIPTION_Index_209= ticks
-    S:Interaction_DESCRIPTION_Index_209.1= tick
-    S:Interaction_DESCRIPTION_Index_210=Average: %.2f L/sec
-    S:Interaction_DESCRIPTION_Index_211=Items per side: 
-    S:Interaction_DESCRIPTION_Index_212=Input enabled
-    S:Interaction_DESCRIPTION_Index_213=Input disabled
-    S:Interaction_DESCRIPTION_Index_214=Connected
-    S:Interaction_DESCRIPTION_Index_215=Disconnected
 
-    S:Interaction_DESCRIPTION_Index_219=Extended Facing: 
     S:Interaction_DESCRIPTION_Index_221=Item threshold
     S:Interaction_DESCRIPTION_Index_222=Fluid threshold
     S:Interaction_DESCRIPTION_Index_222.1=Energy threshold

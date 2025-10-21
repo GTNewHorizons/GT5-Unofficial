@@ -1683,14 +1683,7 @@ GT5U.item.cable.eu_volt=EU-Volt
 GT5U.item.cable.swapped=Cable swapped:
 GT5U.item.tank.locked_to=Content locked to %s
 
-GT5U.item.pipe.capacity=Capacity
-GT5U.item.pipe.heat_resistance=Heat Resistance
-GT5U.item.pipe.gas_proof=Gas Proof
-GT5U.item.pipe.gas_proof.yes=Yes
-GT5U.item.pipe.gas_proof.no=No
-GT5U.item.pipe.amount=Pipe Amount
 GT5U.item.pipe.empty=Empty
-GT5U.item.pipe.swap=Pipe Swapped:
 
 gt.behaviour.paintspray.infinite.gui.header=Select a Color
 gt.behaviour.paintspray.infinite.gui.lock_error=§eSpray can is §clocked§e! §bSneak + MMB to unlock.
@@ -3662,6 +3655,35 @@ gt.chat.interact.desc.locking_off=Single recipe locking disabled.
 gt.chat.interact.desc.config_save=Saved Multiblock Hatch Configuration
 gt.chat.interact.desc.config_load=Loaded Multiblock Hatch Configuration
 gt.chat.interact.desc.config_load_fail=Failed to load Multiblock Hatch Configuration
+gt.chat.interact.desc.items_per_side=Items per side: #Space
+gt.chat.interact.desc.in_enabled=Input enabled
+gt.chat.interact.desc.in_disabled=Input disabled
+gt.chat.interact.desc.connected=Connected
+gt.chat.interact.desc.disconnected=Disconnected
+
+## Pipe stuff
+gt.chat.interact.desc.pipe.l_s_1=L/seconds → #Space
+gt.chat.interact.desc.pipe.l_s_2=L/secs
+gt.chat.interact.desc.pipe.l_s_3= L/s
+gt.chat.interact.desc.pipe.k_1=K → #Space
+gt.chat.interact.desc.pipe.k_2=K
+gt.chat.interact.desc.pipe.gas_proof=Now Gas-Proof
+gt.chat.interact.desc.pipe.gas_proof_not=No Longer Gas-Proof
+gt.chat.interact.desc.pipe.swap=Pipe Swapped:
+gt.chat.interact.desc.pipe.fluid_capacity=Fluid Capacity: %%%
+gt.chat.interact.desc.pipe.fluid_capacity2=%%% L/sec
+gt.chat.interact.desc.pipe.heat_limit=Heat Limit: %%%"
+gt.chat.interact.desc.pipe.heat_limit2=%%% K
+gt.chat.interact.desc.pipe.handle_gas_not=Cannot handle gas"
+gt.chat.interact.desc.pipe.pipe_amount=Pipe Amount: %%%
+
+gt.chat.interact.desc.pipe.capacity=Capacity
+gt.chat.interact.desc.pipe.heat_resistance=Heat Resistance
+gt.chat.interact.desc.pipe.gas_proof=Gas Proof
+gt.chat.interact.desc.pipe.gas_proof.yes=Yes
+gt.chat.interact.desc.pipe.gas_proof.no=No
+gt.chat.interact.desc.pipe.amount=Pipe Amount
+
 
 
 # Machine interact description

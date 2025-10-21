@@ -456,21 +456,22 @@ public class MTEFluidPipe extends MetaPipeEntity {
 
     public void connectPipeOnSide(ForgeDirection side, EntityPlayer entityPlayer) {
         if (!isConnectedAtSide(side)) {
-            if (connect(side) > 0) GTUtility.sendChatToPlayer(entityPlayer, GTUtility.trans("214", "Connected"));
+            if (connect(side) > 0)
+                GTUtility.sendChatToPlayer(entityPlayer, GTUtility.translate("gt.chat.interact.desc.connected"));
         } else {
             disconnect(side);
-            GTUtility.sendChatToPlayer(entityPlayer, GTUtility.trans("215", "Disconnected"));
+            GTUtility.sendChatToPlayer(entityPlayer, GTUtility.translate("gt.chat.interact.desc.disconnected"));
         }
     }
 
     public void blockPipeOnSide(ForgeDirection side, EntityPlayer entityPlayer, byte mask) {
         if (isInputDisabledAtSide(side)) {
             mDisableInput &= ~mask;
-            GTUtility.sendChatToPlayer(entityPlayer, GTUtility.trans("212", "Input enabled"));
+            GTUtility.sendChatToPlayer(entityPlayer, GTUtility.translate("gt.chat.interact.desc.in_enabled"));
             if (!isConnectedAtSide(side)) connect(side);
         } else {
             mDisableInput |= mask;
-            GTUtility.sendChatToPlayer(entityPlayer, GTUtility.trans("213", "Input disabled"));
+            GTUtility.sendChatToPlayer(entityPlayer, GTUtility.translate("gt.chat.interact.desc.in_disabled"));
         }
     }
 
@@ -525,10 +526,10 @@ public class MTEFluidPipe extends MetaPipeEntity {
         // Compare capacity changes
         if (oldCapacity != newPipe.mCapacity) {
             message.append(oldCapacity * 20)
-                .append("L/seconds → ");
+                .append(GTUtility.translate("gt.chat.interact.desc.pipe.l_s_1"));
             message.append(newPipe.mCapacity > oldCapacity ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
                 .append(newPipe.mCapacity * 20)
-                .append("L/secs")
+                .append(GTUtility.translate("gt.chat.interact.desc.pipe.l_s_2"))
                 .append(EnumChatFormatting.RESET);
         }
 
@@ -536,11 +537,11 @@ public class MTEFluidPipe extends MetaPipeEntity {
         if (oldHeatResistance != newPipe.mHeatResistance) {
             if (message.length() > 0) message.append(" | ");
             message.append(oldHeatResistance)
-                .append("K → ");
+                .append(GTUtility.translate("gt.chat.interact.desc.pipe.k_1"));
             message
                 .append(newPipe.mHeatResistance > oldHeatResistance ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
                 .append(newPipe.mHeatResistance)
-                .append("K")
+                .append(GTUtility.translate("gt.chat.interact.desc.pipe.k_2"))
                 .append(EnumChatFormatting.RESET);
         }
 
@@ -549,10 +550,10 @@ public class MTEFluidPipe extends MetaPipeEntity {
             if (message.length() > 0) message.append(" | ");
             if (newPipe.mGasProof) {
                 message.append(EnumChatFormatting.GREEN)
-                    .append("Now Gas-Proof");
+                    .append(GTUtility.translate("gt.chat.interact.desc.pipe.gas_proof"));
             } else {
                 message.append(EnumChatFormatting.RED)
-                    .append("No Longer Gas-Proof");
+                    .append(GTUtility.translate("gt.chat.interact.desc.pipe.gas_proof_not"));
             }
             message.append(EnumChatFormatting.RESET);
         }
@@ -561,7 +562,7 @@ public class MTEFluidPipe extends MetaPipeEntity {
         if (message.length() > 0) {
             GTUtility.sendChatToPlayer(
                 aPlayer,
-                StatCollector.translateToLocal("GT5U.item.pipe.swap") + " " + message.toString());
+                StatCollector.translateToLocal("gt.chat.interact.desc.pipe.swap") + " " + message.toString());
         }
 
         // Force updates to sync changes
@@ -924,20 +925,25 @@ public class MTEFluidPipe extends MetaPipeEntity {
     public String[] getDescription() {
         List<String> descriptions = new ArrayList<>();
         descriptions.add(
-            EnumChatFormatting.BLUE + "Fluid Capacity: %%%"
+            EnumChatFormatting.BLUE + GTUtility.translate("gt.chat.interact.desc.pipe.fluid_capacity")
                 + GTUtility.formatNumbers(mCapacity * 20L)
-                + "%%% L/sec"
+                + GTUtility.translate("gt.chat.interact.desc.pipe.fluid_capacity2")
                 + EnumChatFormatting.GRAY);
         descriptions.add(
-            EnumChatFormatting.RED + "Heat Limit: %%%"
+            EnumChatFormatting.RED + GTUtility.translate("gt.chat.interact.desc.pipe.heat_limit")
                 + GTUtility.formatNumbers(mHeatResistance)
-                + "%%% K"
+                + GTUtility.translate("gt.chat.interact.desc.pipe.heat_limit2")
                 + EnumChatFormatting.GRAY);
         if (!mGasProof) {
-            descriptions.add(EnumChatFormatting.DARK_GREEN + "Cannot handle gas" + EnumChatFormatting.GRAY);
+            descriptions.add(
+                EnumChatFormatting.DARK_GREEN + GTUtility.translate("gt.chat.interact.desc.pipe.handle_gas_not")
+                    + EnumChatFormatting.GRAY);
         }
         if (mPipeAmount != 1) {
-            descriptions.add(EnumChatFormatting.AQUA + "Pipe Amount: %%%" + mPipeAmount + EnumChatFormatting.GRAY);
+            descriptions.add(
+                EnumChatFormatting.AQUA + GTUtility.translate("gt.chat.interact.desc.pipe.pipe_amount")
+                    + mPipeAmount
+                    + EnumChatFormatting.GRAY);
         }
         return descriptions.toArray(new String[0]);
     }
@@ -978,34 +984,36 @@ public class MTEFluidPipe extends MetaPipeEntity {
 
         // Basic pipe stats
         currenttip.add(
-            StatCollector.translateToLocal("GT5U.item.pipe.capacity") + ": "
+            StatCollector.translateToLocal("gt.chat.interact.desc.pipe.capacity") + ": "
                 + EnumChatFormatting.BLUE
                 + GTUtility.formatNumbers(mCapacity * 20L)
-                + " L/s");
+                + "gt.chat.interact.desc.pipe.k_3");
 
         currenttip.add(
-            StatCollector.translateToLocal("GT5U.item.pipe.heat_resistance") + ": "
+            StatCollector.translateToLocal("gt.chat.interact.desc.pipe.heat_resistance") + ": "
                 + EnumChatFormatting.RED
                 + GTUtility.formatNumbers(mHeatResistance)
-                + "K");
+                + GTUtility.translate("gt.chat.interact.desc.pipe.k_2"));
 
         // Gas handling info
         if (mGasProof) {
             currenttip.add(
-                StatCollector.translateToLocal("GT5U.item.pipe.gas_proof") + ": "
+                StatCollector.translateToLocal("gt.chat.interact.desc.pipe.gas_proof") + ": "
                     + EnumChatFormatting.GREEN
-                    + StatCollector.translateToLocal("GT5U.item.pipe.gas_proof.yes"));
+                    + StatCollector.translateToLocal("gt.chat.interact.desc.pipe.gas_proof.yes"));
         } else {
             currenttip.add(
-                StatCollector.translateToLocal("GT5U.item.pipe.gas_proof") + ": "
+                StatCollector.translateToLocal("gt.chat.interact.desc.pipe.gas_proof") + ": "
                     + EnumChatFormatting.RED
-                    + StatCollector.translateToLocal("GT5U.item.pipe.gas_proof.no"));
+                    + StatCollector.translateToLocal("gt.chat.interact.desc.pipe.gas_proof.no"));
         }
 
         // Multi-pipe info
         if (mPipeAmount > 1) {
             currenttip.add(
-                StatCollector.translateToLocal("GT5U.item.pipe.amount") + ": " + EnumChatFormatting.AQUA + mPipeAmount);
+                StatCollector.translateToLocal("gt.chat.interact.desc.pipe.amount") + ": "
+                    + EnumChatFormatting.AQUA
+                    + mPipeAmount);
         }
     }
 
