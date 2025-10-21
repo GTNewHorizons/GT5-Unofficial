@@ -67,7 +67,7 @@ public class BehaviourProspecting extends BehaviourNone {
                 aPlayer,
                 GTUtility.translate("gt.chat.interact.desc.this_is") + mat.getLocalizedName()
                     + GTUtility.translate("gt.chat.interact.desc.ore"));
-            GTUtility.sendSoundToPlayers(aWorld, SoundResource.RANDOM_ANVIL_USE, 1.0F, -1.0F, aX, aY, aZ);
+            GTUtility.sendSoundToPlayers(aWorld, SoundResource.RANDOM_ANVIL_USE, 1.0F, -1.0F, hitX, hitY, hitZ);
             return true;
         }
 
@@ -78,7 +78,7 @@ public class BehaviourProspecting extends BehaviourNone {
                 aPlayer,
                 GTUtility.translate("gt.chat.interact.desc.this_is") + oreMat.mDefaultLocalName
                     + GTUtility.translate("gt.chat.interact.desc.ore"));
-            GTUtility.sendSoundToPlayers(aWorld, SoundResource.RANDOM_ANVIL_USE, 1.0F, -1.0F, aX, aY, aZ);
+            GTUtility.sendSoundToPlayers(aWorld, SoundResource.RANDOM_ANVIL_USE, 1.0F, -1.0F, hitX, hitY, hitZ);
             return true;
         }
 
