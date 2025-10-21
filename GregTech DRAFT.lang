@@ -81,9 +81,6 @@
     S:"Escherichia cadaver"=Rotten Flesh Bacteria
     S:"Escherichia koli"=eColi Bacteria
 	
-    S:Interaction_DESCRIPTION_Index_068.1=Emit if any Player is close
-    S:Interaction_DESCRIPTION_Index_069.1=Emit if other Player is close
-    S:Interaction_DESCRIPTION_Index_070=Emit if you are close
     S:Interaction_DESCRIPTION_Index_071=Conducts strongest Input
     S:Interaction_DESCRIPTION_Index_072=Conducts from bottom Input
     S:Interaction_DESCRIPTION_Index_073=Conducts from top Input

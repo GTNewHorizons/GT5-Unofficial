@@ -98,9 +98,9 @@ public class CoverPlayerDetector extends CoverLegacyData {
             this.coverData = 2;
         }
         switch (this.coverData) {
-            case 0 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("068.1", "Emit if any Player is close"));
-            case 1 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("069.1", "Emit if other Player is close"));
-            case 2 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("070", "Emit if you are close"));
+            case 0 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.translate("gt.chat.interact.emit_player_close"));
+            case 1 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.translate("gt.chat.interact.emit_player_no_close"));
+            case 2 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.translate("gt.chat.interact.emit_you_close"));
         }
     }
 

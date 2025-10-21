@@ -2002,9 +2002,6 @@ gt.interact.desc.Item_Meter.ItemThreshold=§8Item threshold
 gt.interact.desc.Fluid_Meter.FluidThreshold=§8Fluid threshold
 
 ## Player Detector
-gt.interact.desc.Player_Detector.Emit_Player_Close=Emit if any Player is close
-gt.interact.desc.Player_Detector.Emit_Player_No_Close=Emit if other Player is close
-gt.interact.desc.Player_Detector.Emit_You_Close=Emit if you are close
 gt.interact.desc.Player_Detector.Any_Player=§8Any player
 gt.interact.desc.Player_Detector.Other_Players=§8Other players
 gt.interact.desc.Player_Detector.Only_Owner=§8Only owner
@@ -3673,6 +3670,10 @@ gt.tooltip.steam_tank_upgrades=Steam Tank Upgrades
 gt.chat.interact.desc.filter_fluid=Filter Fluid: #Space
 gt.chat.interact.desc.slot=Slot: #Space
 gt.chat.interact.desc.side=Side: #Space
+gt.chat.interact.emit_player_close=Emit if any Player is close
+gt.chat.interact.emit_player_no_close=Emit if other Player is close
+gt.chat.interact.emit_you_close=Emit if you are close
+
 
 
 # Machine interact description
