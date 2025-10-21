@@ -52,11 +52,11 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
     private static final int ARROW_UP_INDEX = 4;
     private static final int FRONT_INDEX = 5;
 
-    private static final String EMIT_ENERGY_TOOLTIP = "GT5U.machines.emit_energy.tooltip";
-    private static final String EMIT_REDSTONE_IF_FULL_TOOLTIP = "GT5U.machines.emit_redstone_if_full.tooltip";
-    private static final String INVERT_REDSTONE_TOOLTIP = "GT5U.machines.invert_redstone.tooltip";
-    private static final String STOCKING_MODE_TOOLTIP = "GT5U.machines.buffer_stocking_mode.tooltip";
-    private static final String SORTING_MODE_TOOLTIP = "GT5U.machines.sorting_mode.tooltip";
+    private static final String EMIT_ENERGY_TOOLTIP = "gt.tooltip.emit_energy";
+    private static final String EMIT_REDSTONE_IF_FULL_TOOLTIP = "gt.tooltip.emit_redstone_if_full";
+    private static final String INVERT_REDSTONE_TOOLTIP = "gt.tooltip.invert_redstone";
+    private static final String STOCKING_MODE_TOOLTIP = "gt.tooltip.buffer_stocking_mode";
+    private static final String SORTING_MODE_TOOLTIP = "gt.tooltip.sorting_mode";
     private static final int BUTTON_SIZE = 18;
 
     public int mMaxStackSize = 64;
@@ -292,11 +292,13 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
                 mTargetStackSize = mMaxStackSize;
             }
             if (mTargetStackSize == 0) {
-                GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("098", "Do not regulate Item Stack Size"));
+                GTUtility.sendChatToPlayer(
+                    aPlayer,
+                    GTUtility.translate("gt.chat.interact.desc.regulate_item_stack_size.not"));
             } else {
                 GTUtility.sendChatToPlayer(
                     aPlayer,
-                    GTUtility.trans("099", "Regulate Item Stack Size to: ") + mTargetStackSize);
+                    GTUtility.translate("gt.chat.interact.desc.regulate_item_stack_size") + mTargetStackSize);
             }
         }
     }
@@ -437,8 +439,9 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
             bSortStacks = !bSortStacks;
             GTUtility.sendChatToPlayer(
                 entityPlayer,
-                GTUtility.trans("200", "Sort mode: ")
-                    + (bSortStacks ? GTUtility.trans("088", "Enabled") : GTUtility.trans("087", "Disabled")));
+                GTUtility.translate("gt.chat.interact.desc.sort_mode")
+                    + (bSortStacks ? GTUtility.translate("gt.chat.interact.desc.enabled")
+                        : GTUtility.translate("gt.chat.interact.desc.disabled")));
             return true;
         }
         return super.onSolderingToolRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ, aTool);
@@ -454,15 +457,13 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
     }
 
     private GTTooltipDataCache.TooltipData getEmitEnergyButtonTooltip() {
-        return mTooltipCache.getData(
-            EMIT_ENERGY_TOOLTIP,
-            EnumChatFormatting.GREEN + GTUtility.formatNumbers(V[mTier])
-                + " ("
-                + GTUtility.getColoredTierNameFromTier(mTier)
-                + EnumChatFormatting.GREEN
-                + ")"
-                + EnumChatFormatting.GRAY,
-            maxAmperesOut());
+        String localizedEnergyText = GTUtility.translate(
+            "gt.tooltip.energy_tier",
+            EnumChatFormatting.GREEN + GTUtility.formatNumbers(V[mTier]),
+            GTUtility.getColoredTierNameFromTier(mTier) + EnumChatFormatting.GREEN);
+
+        return mTooltipCache
+            .getData(EMIT_ENERGY_TOOLTIP, localizedEnergyText + EnumChatFormatting.GRAY, maxAmperesOut());
     }
 
     protected void addEmitRedstoneIfFullButton(ModularWindow.Builder builder) {

@@ -81,10 +81,8 @@
     S:"Escherichia cadaver"=Rotten Flesh Bacteria
     S:"Escherichia koli"=eColi Bacteria
 	
+
 	
-    S:Interaction_DESCRIPTION_Index_094.1=Not enough soldering material!
-    S:Interaction_DESCRIPTION_Index_098=Do not regulate Item Stack Size
-    S:Interaction_DESCRIPTION_Index_099=Regulate Item Stack Size to: 
     S:Interaction_DESCRIPTION_Index_100=This is 
     S:Interaction_DESCRIPTION_Index_101= Ore.
     S:Interaction_DESCRIPTION_Index_102=There is Lava behind this Rock.

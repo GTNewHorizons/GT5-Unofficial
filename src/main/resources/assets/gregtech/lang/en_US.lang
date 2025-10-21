@@ -1262,20 +1262,15 @@ GT5U.machines.advdebugstructurewriter.gui.highlight.tooltip=Show Bounding Box
 GT5U.machines.advdebugstructurewriter.gui.transpose.tooltip=Transpose
 GT5U.machines.nei_transfer.steam.tooltip=%s steam recipes
 GT5U.machines.nei_transfer.voltage.tooltip=Recipes available in %s
-GT5U.machines.emit_energy.tooltip=Emit energy to output side
 GT5U.machines.emit_energy.tooltip.1=§7Voltage: %1$s
 GT5U.machines.emit_energy.tooltip.2=§7Amperage: §e%2$d
-GT5U.machines.emit_redstone_if_full.tooltip=Emit redstone if no slot is free
 GT5U.machines.emit_redstone_if_full.tooltip.1=§7Free slots: §9%1$s
 GT5U.machines.emit_redstone_if_full.tooltip.2=§7Emitting: §c%2$d
 GT5U.machines.emit_redstone_gradually.tooltip=Emit redstone for each slot in use
 GT5U.machines.emit_redstone_gradually.tooltip.1=§7Free slots: §9%1$d
 GT5U.machines.emit_redstone_gradually.tooltip.2=§7Emitting: §c%2$d
-GT5U.machines.invert_redstone.tooltip=Invert redstone
-GT5U.machines.buffer_stocking_mode.tooltip=Enable stocking mode
 GT5U.machines.buffer_stocking_mode.tooltip.extended=§7Keeps this many items in destination rather than transfer items in batches of this amount.
 GT5U.machines.buffer_stocking_mode.tooltip.extended.1=§7This mode can be server unfriendly.
-GT5U.machines.sorting_mode.tooltip=Sort stacks
 GT5U.machines.one_stack_limit.tooltip=Limit insertion
 GT5U.machines.one_stack_limit.tooltip.extended=§7Up to 1 stack of each item can be inserted
 GT5U.machines.invert_filter.tooltip=Invert Filter
@@ -3690,6 +3685,10 @@ gt.chat.interact.desc.redstone_set_to= set to: #Space
 gt.chat.interact.desc.redstone_set_to_weak=Weak
 gt.chat.interact.desc.redstone_set_to_strong=Strong
 gt.chat.interact.desc.tick_rate_not_allowed=Cannot adjust tick rate of this cover type with a jackhammer
+gt.chat.interact.desc.not_enough_solder=Not enough soldering material!
+gt.chat.interact.desc.regulate_item_stack_size=Regulate Item Stack Size to: #Space
+gt.chat.interact.desc.regulate_item_stack_size.not=Do not regulate Item Stack Size
+gt.chat.interact.desc.sort_mode=Sort mode: #Space
 
 
 # Machine interact description
@@ -3706,6 +3705,14 @@ gt.interact.desc.l_tick=L/tick #Space
 gt.interact.desc.l_sec=L/sec #Space
 gt.interact.desc.pump_speed_limit_reached=Pump speed limit reached!
 gt.interact.desc.pump_speed_every_tick=Pump speed: %dL every %d ticks, %.2f L/sec on average
+
+
+gt.tooltip.emit_energy=Emit energy to output side
+gt.tooltip.emit_redstone_if_full=Emit redstone if no slot is free
+gt.tooltip.invert_redstone=Invert redstone
+gt.tooltip.buffer_stocking_mode=Enable stocking mode
+gt.tooltip.sorting_mode=Sort stacks
+gt.tooltip.energy_tier=%s (%s)
 
 
 
