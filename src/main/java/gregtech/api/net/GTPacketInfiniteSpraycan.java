@@ -140,9 +140,9 @@ public class GTPacketInfiniteSpraycan extends GTPacket {
                 SoundResource.GT_SPRAYCAN_SHAKE,
                 1.0F,
                 1,
-                (int) player.posX,
-                (int) player.posY,
-                (int) player.posZ);
+                player.posX,
+                player.posY,
+                player.posZ);
         }
 
         private static void playLockSound(final EntityPlayerMP player) {
@@ -151,9 +151,9 @@ public class GTPacketInfiniteSpraycan extends GTPacket {
                 SoundResource.GT_SPRAYCAN_LOCK,
                 1.0F,
                 1,
-                (int) player.posX,
-                (int) player.posY,
-                (int) player.posZ);
+                player.posX,
+                player.posY,
+                player.posZ);
         }
 
         private static void playUnlockSound(final EntityPlayerMP player) {
@@ -162,9 +162,9 @@ public class GTPacketInfiniteSpraycan extends GTPacket {
                 SoundResource.GT_SPRAYCAN_UNLOCK,
                 1.0F,
                 1,
-                (int) player.posX,
-                (int) player.posY,
-                (int) player.posZ);
+                player.posX,
+                player.posY,
+                player.posZ);
         }
 
         abstract boolean execute(final BehaviourSprayColorInfinite behavior, ItemStack itemStack, EntityPlayerMP player,
