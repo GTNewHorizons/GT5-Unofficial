@@ -42,13 +42,17 @@ public class CoverRedstoneConductor extends CoverLegacyData {
             this.coverData = 6;
         }
         switch (this.coverData) {
-            case 0 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("071", "Conducts strongest Input"));
-            case 1 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("072", "Conducts from bottom Input"));
-            case 2 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("073", "Conducts from top Input"));
-            case 3 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("074", "Conducts from north Input"));
-            case 4 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("075", "Conducts from south Input"));
-            case 5 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("076", "Conducts from west Input"));
-            case 6 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("077", "Conducts from east Input"));
+            case 0 -> GTUtility
+                .sendChatToPlayer(aPlayer, GTUtility.translate("gt.chat.interact.desc.conducts_strongest_i"));
+            case 1 -> GTUtility
+                .sendChatToPlayer(aPlayer, GTUtility.translate("gt.chat.interact.desc.conducts_bottom_i"));
+            case 2 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.translate("gt.chat.interact.desc.conducts_top_i"));
+            case 3 -> GTUtility
+                .sendChatToPlayer(aPlayer, GTUtility.translate("gt.chat.interact.desc.conducts_north_i"));
+            case 4 -> GTUtility
+                .sendChatToPlayer(aPlayer, GTUtility.translate("gt.chat.interact.desc.conducts_south_i"));
+            case 5 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.translate("gt.chat.interact.desc.conducts_west_i"));
+            case 6 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.translate("gt.chat.interact.desc.conducts_east_i"));
         }
     }
 

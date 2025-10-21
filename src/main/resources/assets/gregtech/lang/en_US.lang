@@ -3670,9 +3670,19 @@ gt.tooltip.steam_tank_upgrades=Steam Tank Upgrades
 gt.chat.interact.desc.filter_fluid=Filter Fluid: #Space
 gt.chat.interact.desc.slot=Slot: #Space
 gt.chat.interact.desc.side=Side: #Space
-gt.chat.interact.emit_player_close=Emit if any Player is close
-gt.chat.interact.emit_player_no_close=Emit if other Player is close
-gt.chat.interact.emit_you_close=Emit if you are close
+gt.chat.interact.desc.emit_player_close=Emit if any Player is close
+gt.chat.interact.desc.emit_player_no_close=Emit if other Player is close
+gt.chat.interact.desc.emit_you_close=Emit if you are close
+gt.chat.interact.desc.conducts_strongest_i=Conducts strongest Input
+gt.chat.interact.desc.conducts_bottom_i=Conducts from bottom Input
+gt.chat.interact.desc.conducts_top_i=Conducts from top Input
+gt.chat.interact.desc.conducts_north_i=Conducts from north Input
+gt.chat.interact.desc.conducts_south_i=Conducts from south Input
+gt.chat.interact.desc.conducts_west_i=Conducts from west Input
+gt.chat.interact.desc.conducts_east_i=Conducts from east Input
+
+
+
 
 
 
