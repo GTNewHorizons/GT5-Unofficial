@@ -204,6 +204,7 @@ public enum IDMetaItem03 {
     Naquarite_Universal_Insulator_Foil(251),
     Manafly(252),
     Resonant_Stable_Seed(300),
+    Bubble_Capsule_Polymer(301),
     Alumina_Support_Ring(253),
     Alumina_Support_Ring_Raw(254),
     Beryllium_Shielding_Plate(255),

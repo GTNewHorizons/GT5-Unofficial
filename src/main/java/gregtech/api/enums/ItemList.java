@@ -2692,6 +2692,7 @@ public enum ItemList implements IItemContainer {
     Naquarite_Universal_Insulator_Foil,
 
     Resonant_Stable_Seed,
+    Bubble_Capsule_Polymer,
 
     SpaceElevatorController,
     SpaceElevatorModuleAssemblerT1,

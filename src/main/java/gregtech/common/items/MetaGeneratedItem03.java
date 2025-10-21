@@ -27,6 +27,7 @@ import static gregtech.common.items.IDMetaItem03.Alumina_Support_Ring;
 import static gregtech.common.items.IDMetaItem03.Alumina_Support_Ring_Raw;
 import static gregtech.common.items.IDMetaItem03.Beryllium_Shielding_Plate;
 import static gregtech.common.items.IDMetaItem03.Brittle_Netherite_Scrap;
+import static gregtech.common.items.IDMetaItem03.Bubble_Capsule_Polymer;
 import static gregtech.common.items.IDMetaItem03.Circuit_Biomainframe;
 import static gregtech.common.items.IDMetaItem03.Circuit_Bioprocessor;
 import static gregtech.common.items.IDMetaItem03.Circuit_Biowarecomputer;
@@ -1288,6 +1289,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Prismarine_Precipitate.set(addItem(Prismarine_Precipitate.ID, "Prismarine Precipitate", ""));
         ItemList.Prismatic_Crystal.set(addItem(Prismatic_Crystal.ID, "Prismatic Crystal", ""));
         ItemList.Resonant_Stable_Seed.set(addItem(Resonant_Stable_Seed.ID, "Resonant Seed", ""));
+        ItemList.Bubble_Capsule_Polymer.set(addItem(Bubble_Capsule_Polymer.ID, "Bubble Capsule Polymer", ""));
         ItemList.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet
             .set(
                 addItem(

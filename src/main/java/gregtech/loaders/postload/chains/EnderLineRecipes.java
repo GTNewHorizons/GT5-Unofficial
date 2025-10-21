@@ -6,8 +6,10 @@ import static goodgenerator.util.MyRecipeAdder.computeRangeNKE;
 import static gregtech.api.enums.Mods.AdvancedSolarPanel;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.EtFuturumRequiem;
+import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.HardcoreEnderExpansion;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.enums.Mods.StevesCarts2;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
@@ -221,11 +223,35 @@ public class EnderLineRecipes {
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.EnderPearl, 4L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.HeeEndium, 2L))
                 .outputChances(10000, 9000, 5000, 2500)
-                .fluidOutputs(Materials.TeleportatiumStable.getFluid(1))
+                .fluidOutputs(Materials.NetherAir.getFluid(100))
                 .duration(100 * SECONDS)
                 .eut(0)
                 .metadata(NKE_RANGE, computeRangeNKE(1100, 500))
                 .addTo(neutronActivatorRecipes);
+            // Bubble Encapsulation Polymer
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.VibrantAlloy, 2),
+                    GTOreDictUnificator.get(OrePrefixes.sheet, Materials.EpoxidFiberReinforced, 2),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Soularium, 2),
+                    GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.HeavyDutyPlateTier5", 1),
+                    ItemList.Field_Generator_IV.get(1),
+                    getModItem(Forestry.ID, "thermionicTubes", 8, 12),
+                    ItemList.Field_Generator_MV.get(1),
+                    ItemList.Emitter_LV.get(2),
+                    getModItem(AdvancedSolarPanel.ID, "asp_crafting_items", 2, 1),
+                    getModItem(StevesCarts2.ID, "ModuleComponents", 2, 20))
+                .itemOutputs(ItemList.Bubble_Capsule_Polymer.get(16))
+                .fluidInputs(
+                    Materials.EnderAirPyrostable.getFluid(144L * 8),
+                    Materials.EnderAirCryostable.getFluid(144L * 8),
+                    Materials.EnderAirFortified.getFluid(144L * 8),
+                    Materials.EnderAirBalanced.getFluid(144L * 8))
+                .metadata(IGRecipeMaps.MODULE_TIER, 1)
+                .duration(10 * SECONDS)
+                .eut(TierEU.RECIPE_UV)
+                .addTo(IGRecipeMaps.spaceAssemblerRecipes);
 
             // Unstable Amalgam
 
@@ -442,16 +468,11 @@ public class EnderLineRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(prefix, Materials.Enderium, multiplier),
-                ItemList.Field_Generator_IV.get(1),
-                ItemList.Field_Generator_MV.get(1),
+                ItemList.Bubble_Capsule_Polymer.get(1),
                 getModItem(AdvancedSolarPanel.ID, "asp_crafting_items", 2, 1),
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.HeavyDutyPlateTier5", 1))
             .itemOutputs(GTOreDictUnificator.get(prefix, Materials.TeleportatiumEncased, multiplier))
-            .fluidInputs(
-                // new FluidStack(solderUEV, 144),
-                Materials.TeleportatiumStable.getFluid(288L * inverseMultiplier),
-                Materials.EnderAirFortified.getFluid(144L * inverseMultiplier),
-                Materials.EnderAirBalanced.getFluid(144L * inverseMultiplier))
+            .fluidInputs(Materials.TeleportatiumStable.getFluid(288L * inverseMultiplier))
             .metadata(IGRecipeMaps.MODULE_TIER, 1)
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UV)
