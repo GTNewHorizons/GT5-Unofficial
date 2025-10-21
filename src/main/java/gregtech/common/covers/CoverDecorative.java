@@ -20,10 +20,10 @@ public class CoverDecorative extends CoverLegacyData {
         this.coverData = ((this.coverData + 1) & 15);
         GTUtility.sendChatToPlayer(
             aPlayer,
-            ((this.coverData & 1) != 0 ? GTUtility.trans("128.1", "Redstone ") : "")
-                + ((this.coverData & 2) != 0 ? GTUtility.trans("129.1", "Energy ") : "")
-                + ((this.coverData & 4) != 0 ? GTUtility.trans("130.1", "Fluids ") : "")
-                + ((this.coverData & 8) != 0 ? GTUtility.trans("131.1", "Items ") : ""));
+            ((this.coverData & 1) != 0 ? GTUtility.translate("gt.chat.interact.desc.Redstone") : "")
+                + ((this.coverData & 2) != 0 ? GTUtility.translate("gt.chat.interact.desc.Energy") : "")
+                + ((this.coverData & 4) != 0 ? GTUtility.translate("gt.chat.interact.desc.Fluids") : "")
+                + ((this.coverData & 8) != 0 ? GTUtility.translate("gt.chat.interact.desc.Items") : ""));
     }
 
     @Override

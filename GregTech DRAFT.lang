@@ -83,19 +83,9 @@
 	
 	Todo:
 	- Bahaviour"Stuff"
+	- Them bacteria names, example above ^
 	
-    S:Interaction_DESCRIPTION_Index_108=Outputs misc. Fluids, Steam and Items
-    S:Interaction_DESCRIPTION_Index_109=Outputs Steam and Items
-    S:Interaction_DESCRIPTION_Index_110=Outputs Steam and misc. Fluids
-    S:Interaction_DESCRIPTION_Index_111=Outputs Steam
-    S:Interaction_DESCRIPTION_Index_112=Outputs misc. Fluids and Items
-    S:Interaction_DESCRIPTION_Index_113=Outputs only Items
-    S:Interaction_DESCRIPTION_Index_114=Outputs only misc. Fluids
-    S:Interaction_DESCRIPTION_Index_115=Outputs nothing
-    S:Interaction_DESCRIPTION_Index_122=Emit Redstone if slots contain something
-    S:Interaction_DESCRIPTION_Index_123=Don't emit Redstone
-    S:Interaction_DESCRIPTION_Index_124.1=Blacklist Mode
-    S:Interaction_DESCRIPTION_Index_125.1=Whitelist Mode
+
     S:Interaction_DESCRIPTION_Index_128=Redstone
     S:Interaction_DESCRIPTION_Index_128.1=Redstone 
     S:Interaction_DESCRIPTION_Index_129=Energy
@@ -121,9 +111,6 @@
     S:Interaction_DESCRIPTION_Index_149=A
     S:Interaction_DESCRIPTION_Index_150=Chance: 
     S:Interaction_DESCRIPTION_Index_151=Does not get consumed in the process
-    S:Interaction_DESCRIPTION_Index_151.1=Outputs items and 1 specific Fluid
-    S:Interaction_DESCRIPTION_Index_=Outputs 1 specific Fluid
-    S:Interaction_DESCRIPTION_Index_151.4=Successfully locked Fluid to %s
     S:Interaction_DESCRIPTION_Index_152=Total: 
     S:Interaction_DESCRIPTION_Index_153=Usage: 
     S:Interaction_DESCRIPTION_Index_154=Voltage: 
@@ -226,7 +213,6 @@
     S:Interaction_DESCRIPTION_Index_261=Electricity Storage(Including Batteries)
     S:Interaction_DESCRIPTION_Index_262=Fluid Auto Output Disabled
     S:Interaction_DESCRIPTION_Index_263=Fluid Auto Output Enabled
-    S:Interaction_DESCRIPTION_Index_264=currently none, will be locked to the next that is put in
     S:Interaction_DESCRIPTION_Index_265=1 specific Fluid
     S:Interaction_DESCRIPTION_Index_266=Lock Fluid Mode Disabled
     S:Interaction_DESCRIPTION_Index_267=Overflow Voiding Mode Disabled
@@ -238,8 +224,6 @@
     S:Interaction_DESCRIPTION_Index_273=Original Recipe by: 
     S:Interaction_DESCRIPTION_Index_274=Modified by: 
     S:Interaction_DESCRIPTION_Index_275=Original voltage: 
-    S:Interaction_DESCRIPTION_Index_299=Item Filter: 
-    S:Interaction_DESCRIPTION_Index_300=Filter Cleared!
     S:Interaction_DESCRIPTION_Index_300.1=Fluid Lock Cleared.
     S:Interaction_DESCRIPTION_Index_301=Universal
     S:Interaction_DESCRIPTION_Index_302=Int. EU

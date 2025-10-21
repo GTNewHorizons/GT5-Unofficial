@@ -1310,8 +1310,6 @@ GT5U.machines.betterjukebox.headphonesbound=Headphones bound to jukebox
 GT5U.machines.betterjukebox.headphonesunbound=Shift-click on an electric jukebox to bind headphones
 GT5U.machines.computation_hatch.computation=Computation
 GT5U.machines.laser_hatch.amperage=Amperage
-GT5U.machines.hatch_output.lockfluid.label=Locked Fluid
-GT5U.machines.hatch_output.lockfluid.empty=None
 GT5U.machines.basic_tank.liquid_amount=Liquid Amount
 GT5U.machines.computation_hatch.pending_computation=§7Total Computation I/O: §b%d§r
 GT5U.machines.computation_hatch.wasted_computation=§7Wasted Computation: §b%d§r
@@ -1946,12 +1944,6 @@ gt.interact.desc.RecipeProgress=§8Recipe progress
 ## EU MEter
 gt.interact.desc.EnergyThreshold=§8Energy threshold
 
-## Facade
-gt.interact.desc.facade.Redstone=§8Redstone
-gt.interact.desc.facade.Energy=§8Energy
-gt.interact.desc.facade.Fluids=§8Fluids
-gt.interact.desc.facade.Items=§8Items
-
 ## FluidFilter
 gt.interact.desc.FluidFilter.FilterInput=Filter Input
 gt.interact.desc.FluidFilter.FilterOutput=Filter Output
@@ -1981,8 +1973,6 @@ gt.interact.desc.fluid_regulator.Average=Average:
 gt.interact.desc.fluid_regulator.L_Sec=L/sec
 
 ## Item Filter
-gt.interact.desc.Item_Filter.Whitelist_Mode=Whitelist Mode
-gt.interact.desc.Item_Filter.Blacklist_Mode=Blacklist Mode
 gt.interact.desc.Item_Filter.Filter=§8Filter:
 gt.interact.desc.Item_Filter.CheckMode=§8Check Mode
 
@@ -3246,12 +3236,6 @@ GT5U.infodata.cable.voltage_out=Voltage Out: %s / %s EU/t
 GT5U.infodata.cable.avg_amperage=Avg Amperage (20t): %s A
 GT5U.infodata.cable.avg_output=Avg Output (20t): %s EU/t
 
-GT5U.infodata.hatch.output=Output Hatch
-GT5U.infodata.hatch.output.fluid=Stored Fluid: %s
-GT5U.infodata.hatch.output.fluid.none=No Fluid
-GT5U.infodata.hatch.output.fluid.locked_to.none=Not Locked
-GT5U.infodata.hatch.output.fluid.locked_to=Locked to %s
-
 GT5U.infodata.boiler_solar.heat=Heat Capacity: %s    Hot time: %s
 GT5U.infodata.boiler_solar.output=Min output: %s    Max output: %s
 GT5U.infodata.boiler_solar.current_output=Current Output: %s
@@ -3638,7 +3622,12 @@ entity.gregtech.PowderBarrelPrimed.name=Lit Powder Barrel
 #mui1
 mui.button.close=x
 
-#Let's start the Pain
+############################################################################################################################################################################
+############################################################################################################################################################################
+############################################################################################################################################################################
+############################################################################################################################################################################
+############################################################################################################################################################################
+# New stuff:
 
 # Machine tooltips loader
 gt.tooltip.volt_in=Voltage IN: #Space
@@ -3651,9 +3640,17 @@ gt.tooltip.contains_item=Contains Item: #Space
 gt.tooltip.item_amount=Item Amount: #Space
 gt.tooltip.has_muffler=has Muffler Upgrade
 gt.tooltip.steam_tank_upgrades=Steam Tank Upgrades
+gt.tooltip.emit_energy=Emit energy to output side
+gt.tooltip.emit_redstone_if_full=Emit redstone if no slot is free
+gt.tooltip.invert_redstone=Invert redstone
+gt.tooltip.buffer_stocking_mode=Enable stocking mode
+gt.tooltip.sorting_mode=Sort stacks
+gt.tooltip.energy_tier=%s (%s)
+
 
 # Behaviour tooltips
 gt.tooltip.behaviour.prospecting=Usable for Prospecting
+
 
 # Machine interact chat description
 gt.chat.interact.desc.filter_fluid=Filter Fluid: #Space
@@ -3700,6 +3697,28 @@ gt.chat.interact.desc.liquid_behind_rock=There is a Liquid behind this Rock.
 gt.chat.interact.desc.air_behind_rock=There is an Air Pocket behind this Rock.
 gt.chat.interact.desc.material_behind_rock=Material is changing behind this Rock.
 gt.chat.interact.desc.found_traces=Found traces of #Space
+gt.chat.interact.desc.out_fluids_steam_items=Outputs misc. Fluids, Steam and Items
+gt.chat.interact.desc.out_steam_items=Outputs Steam and Items
+gt.chat.interact.desc.out_steam_fluids=Outputs Steam and misc. Fluids
+gt.chat.interact.desc.out_steam=Outputs Steam
+gt.chat.interact.desc.out_fluids_items=Outputs misc. Fluids and Items
+gt.chat.interact.desc.out_items=Outputs only Items
+gt.chat.interact.desc.out_fluids=Outputs only misc. Fluids
+gt.chat.interact.desc.out_nothing=Outputs nothing
+gt.chat.interact.desc.locked_none_lock_next=currently none, will be locked to the next that is put in
+gt.chat.interact.desc.locked_none_lock_next_fluid_cell=currently none, will be locked to the next that is put in (or use fluid cell to lock)
+gt.chat.interact.desc.out_items_and_one_fluid=Outputs items and 1 specific Fluid
+gt.chat.interact.desc.out_one_fluid=Outputs 1 specific Fluid
+gt.chat.interact.desc.hatch_locked_fluid=Hatch is locked to a different fluid. To change the locking, empty it and made it locked to the next fluid with a screwdriver. Currently locked to
+gt.chat.interact.desc.lock_successfull=Successfully locked Fluid to %s
+gt.chat.interact.desc.whitelist_mode=Whitelist Mode
+gt.chat.interact.desc.blacklist_mode=Blacklist Mode
+gt.chat.interact.desc.item_filter=Item Filter: #Space
+gt.chat.interact.desc.filter_cleared=Filter Cleared!
+gt.chat.interact.desc.Redstone=Redstone
+gt.chat.interact.desc.Energy=Energy
+gt.chat.interact.desc.Fluids=Fluids
+gt.chat.interact.desc.Items=Items
 
 
 
@@ -3719,14 +3738,16 @@ gt.interact.desc.pump_speed_limit_reached=Pump speed limit reached!
 gt.interact.desc.pump_speed_every_tick=Pump speed: %dL every %d ticks, %.2f L/sec on average
 
 
-gt.tooltip.emit_energy=Emit energy to output side
-gt.tooltip.emit_redstone_if_full=Emit redstone if no slot is free
-gt.tooltip.invert_redstone=Invert redstone
-gt.tooltip.buffer_stocking_mode=Enable stocking mode
-gt.tooltip.sorting_mode=Sort stacks
-gt.tooltip.energy_tier=%s (%s)
+# InfoData
+gt.infodata.hatch_output.name=Output Hatch
+gt.infodata.hatch_output.fluid=Stored Fluid: %s
+gt.infodata.hatch_output.fluid_none=No Fluid
+gt.infodata.hatch_output.fluid_locked_to_none=Not Locked
+gt.infodata.hatch_output.fluid_locked_to=Locked to %s
 
-
+# Gui
+gt.gui.hatch_output.lock_fluid=Locked Fluid
+gt.gui.hatch_output.lock_none=None
 
 
 

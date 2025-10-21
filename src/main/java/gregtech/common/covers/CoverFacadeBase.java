@@ -199,10 +199,10 @@ public abstract class CoverFacadeBase extends Cover {
         mFlags = ((mFlags + 1) & 15);
         GTUtility.sendChatToPlayer(
             aPlayer,
-            ((mFlags & REDSTONE_PASS_FLAG) != 0 ? GTUtility.trans("128.1", "Redstone ") : "")
-                + ((mFlags & ENERGY_PASS_FLAG) != 0 ? GTUtility.trans("129.1", "Energy ") : "")
-                + ((mFlags & FLUID_PASS_FLAG) != 0 ? GTUtility.trans("130.1", "Fluids ") : "")
-                + ((mFlags & ITEM_PASS_FLAG) != 0 ? GTUtility.trans("131.1", "Items ") : ""));
+            ((mFlags & REDSTONE_PASS_FLAG) != 0 ? GTUtility.translate("gt.chat.interact.desc.Redstone") : "")
+                + ((mFlags & ENERGY_PASS_FLAG) != 0 ? GTUtility.translate("gt.chat.interact.desc.Energy") : "")
+                + ((mFlags & FLUID_PASS_FLAG) != 0 ? GTUtility.translate("gt.chat.interact.desc.Fluids") : "")
+                + ((mFlags & ITEM_PASS_FLAG) != 0 ? GTUtility.translate("gt.chat.interact.desc.Items") : ""));
     }
 
     @Override
