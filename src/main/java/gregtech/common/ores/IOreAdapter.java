@@ -10,6 +10,8 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
 
 import gregtech.api.enums.StoneType;
@@ -93,6 +95,7 @@ public interface IOreAdapter<TMat extends IOreMaterial> {
      * Gets the drops for a block. This returns an ArrayList due to the return type of
      * {@link Block#getDrops(World, int, int, int, int, int)}.
      */
+    @NotNull
     public ArrayList<ItemStack> getOreDrops(Random rng, OreInfo<?> info, boolean silktouch, int fortune);
 
     /**
