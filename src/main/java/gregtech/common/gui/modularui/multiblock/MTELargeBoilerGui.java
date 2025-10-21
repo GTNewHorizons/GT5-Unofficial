@@ -1,4 +1,4 @@
-package gregtech.common.tileentities.machines.multi.gui;
+package gregtech.common.gui.modularui.multiblock;
 
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
@@ -37,8 +37,14 @@ public class MTELargeBoilerGui extends MTEMultiBlockBaseGui {
     protected IWidget createOverdriveButton(PanelSyncManager syncManager, ModularPanel parent) {
         return new ToggleButton().size(18, 18)
             .syncHandler("overdrive")
-            .overlay(true, GTGuiTextures.OVERLAY_BUTTON_OVERDRIVE_ON)
-            .overlay(false, GTGuiTextures.OVERLAY_BUTTON_OVERDRIVE_OFF)
+            .overlay(
+                true,
+                GTGuiTextures.OVERLAY_BUTTON_OVERDRIVE_ON.asIcon()
+                    .size(16))
+            .overlay(
+                false,
+                GTGuiTextures.OVERLAY_BUTTON_OVERDRIVE_OFF.asIcon()
+                    .size(16))
             .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.machines.overdrive")))
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
