@@ -824,11 +824,10 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     }
 
     protected IWidget makeTitleTextWidget() {
-        return new TextWidget<>(
-            EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("gt.gui.power_panel"))
-                .alignment(Alignment.Center)
-                .size(120, 18)
-                .marginBottom(4);
+        return new TextWidget<>(EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("gt.gui.power_panel"))
+            .alignment(Alignment.Center)
+            .size(120, 18)
+            .marginBottom(4);
     }
 
     private IWidget makePowerfailEventsToggleRow() {
@@ -908,10 +907,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                         () -> alwaysMaxParallelSyncer.getValue()
                             ? StatCollector
                                 .translateToLocalFormatted("gt.gui.locked_value", maxParallelSyncer.getValue())
-                            : StatCollector.translateToLocalFormatted(
-                                "gt.gui.ranged_value",
-                                1,
-                                maxParallelSyncer.getValue()))))
+                            : StatCollector
+                                .translateToLocalFormatted("gt.gui.ranged_value", 1, maxParallelSyncer.getValue()))))
             .tooltipShowUpTimer(TOOLTIP_DELAY)
             .size(70, 14)
             .marginBottom(4)
@@ -931,7 +928,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
 
     protected void makeMaintenanceHoverableTooltip(RichTooltip t, IntSyncValue maintSyncer) {
         if (maintSyncer.getValue() == 0) {
-            t.addLine(IKey.str(EnumChatFormatting.GREEN + StatCollector.translateToLocal("gt.gui.maintenance.no_issues")));
+            t.addLine(
+                IKey.str(EnumChatFormatting.GREEN + StatCollector.translateToLocal("gt.gui.maintenance.no_issues")));
             return;
         }
         if (!multiblock.mCrowbar) t.add(

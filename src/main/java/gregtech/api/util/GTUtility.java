@@ -3364,51 +3364,38 @@ public class GTUtility {
 
     private static void addBaseInfo(EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, ArrayList<String> tList,
         TileEntity tTileEntity, Block tBlock) {
-        tList.add(
-            EnumChatFormatting.STRIKETHROUGH + "-----"
-                + EnumChatFormatting.RESET
-                + " X: "
-                + EnumChatFormatting.AQUA
-                + formatNumbers(aX)
-                + EnumChatFormatting.RESET
-                + " Y: "
-                + EnumChatFormatting.AQUA
-                + formatNumbers(aY)
-                + EnumChatFormatting.RESET
-                + " Z: "
-                + EnumChatFormatting.AQUA
-                + formatNumbers(aZ)
-                + EnumChatFormatting.RESET
-                + " D: "
-                + EnumChatFormatting.AQUA
-                + aWorld.provider.dimensionId
-                + EnumChatFormatting.RESET
-                + " "
-                + EnumChatFormatting.STRIKETHROUGH
-                + "-----");
+        String coordText = String.format(
+            GTUtility.translate("gt.util.coords"),
+            EnumChatFormatting.AQUA + formatNumbers(aX) + EnumChatFormatting.RESET,
+            EnumChatFormatting.AQUA + formatNumbers(aY) + EnumChatFormatting.RESET,
+            EnumChatFormatting.AQUA + formatNumbers(aZ) + EnumChatFormatting.RESET,
+            EnumChatFormatting.AQUA + formatNumbers(aWorld.provider.dimensionId) + EnumChatFormatting.RESET);
+        tList.add(coordText);
+
         try {
             tList.add(
-                GTUtility.trans("162", "Name: ") + EnumChatFormatting.BLUE
+                GTUtility.translate("gt.util.Name") + EnumChatFormatting.BLUE
                     + ((tTileEntity instanceof IInventory inv) ? inv.getInventoryName() : tBlock.getUnlocalizedName())
                     + EnumChatFormatting.RESET
-                    + GTUtility.trans("163", " MetaData: ")
+                    + GTUtility.translate("gt.util.metadata")
                     + EnumChatFormatting.AQUA
                     + aWorld.getBlockMetadata(aX, aY, aZ)
                     + EnumChatFormatting.RESET);
             tList.add(
-                GTUtility.trans("164", "Hardness: ") + EnumChatFormatting.YELLOW
+                GTUtility.translate("gt.util.hardness") + EnumChatFormatting.YELLOW
                     + tBlock.getBlockHardness(aWorld, aX, aY, aZ)
                     + EnumChatFormatting.RESET
-                    + GTUtility.trans("165", " Blast Resistance: ")
+                    + GTUtility.translate("gt.util.blast_resistance")
                     + EnumChatFormatting.YELLOW
                     + tBlock
                         .getExplosionResistance(aPlayer, aWorld, aX, aY, aZ, aPlayer.posX, aPlayer.posY, aPlayer.posZ)
                     + EnumChatFormatting.RESET);
             if (tBlock.isBeaconBase(aWorld, aX, aY, aZ, aX, aY + 1, aZ)) tList.add(
-                EnumChatFormatting.GOLD + GTUtility.trans("166", "Is valid Beacon Pyramid Material")
+                EnumChatFormatting.GOLD + GTUtility.translate("gt.util.invalid_becaon_material")
                     + EnumChatFormatting.RESET);
         } catch (Throwable e) {
-            tList.add("§cAn exception was thrown while fetching this block's info.§r");
+            tList.add(
+                EnumChatFormatting.AQUA + GTUtility.translate("gt.util.exception_block") + EnumChatFormatting.RESET);
             if (D1) e.printStackTrace(GTLog.err);
         }
     }
@@ -3419,25 +3406,26 @@ public class GTUtility {
             if (tTileEntity instanceof IFluidHandler fluidHandler) {
                 rEUAmount += 500;
                 final FluidTankInfo[] tTanks = fluidHandler.getTankInfo(side);
-                if (tTanks != null) for (byte i = 0; i < tTanks.length; i++) {
-                    tList.add(
-                        GTUtility.trans("167", "Tank ") + i
-                            + ": "
-                            + EnumChatFormatting.GREEN
-                            + formatNumbers((tTanks[i].fluid == null ? 0 : tTanks[i].fluid.amount))
-                            + EnumChatFormatting.RESET
-                            + " L / "
-                            + EnumChatFormatting.YELLOW
-                            + formatNumbers(tTanks[i].capacity)
-                            + EnumChatFormatting.RESET
-                            + " L "
-                            + EnumChatFormatting.GOLD
-                            + getFluidName(tTanks[i].fluid, true)
-                            + EnumChatFormatting.RESET);
+                if (tTanks != null) {
+                    for (int i = 0; i < tTanks.length; i++) {
+                        int amount = (tTanks[i].fluid == null ? 0 : tTanks[i].fluid.amount);
+                        int capacity = tTanks[i].capacity;
+                        String fluidName = getFluidName(tTanks[i].fluid, true);
+
+                        String tankText = String.format(
+                            GTUtility.translate("gt.util.tank"),
+                            i,
+                            EnumChatFormatting.GREEN + formatNumbers(amount) + EnumChatFormatting.RESET,
+                            EnumChatFormatting.YELLOW + formatNumbers(capacity) + EnumChatFormatting.RESET,
+                            EnumChatFormatting.GOLD + fluidName + EnumChatFormatting.RESET);
+
+                        tList.add(tankText);
+                    }
                 }
             }
         } catch (Throwable e) {
-            tList.add("§cAn exception was thrown while fetching this tile's fluid tank info.§r");
+            tList.add(
+                EnumChatFormatting.AQUA + GTUtility.translate("gt.util.exception_fluid") + EnumChatFormatting.RESET);
             if (D1) e.printStackTrace(GTLog.err);
         }
         return rEUAmount;
@@ -3453,7 +3441,8 @@ public class GTUtility {
                 if (temp != null) tList.addAll(temp);
             }
         } catch (Throwable e) {
-            tList.add("§cAn exception was thrown while fetching this block's debug info.§r");
+            tList.add(
+                EnumChatFormatting.AQUA + GTUtility.translate("gt.util.exception_debug") + EnumChatFormatting.RESET);
             if (D1) e.printStackTrace(GTLog.err);
         }
         return rEUAmount;
@@ -3462,13 +3451,13 @@ public class GTUtility {
     private static void addPollutionInfo(ArrayList<String> tList, Chunk currentChunk) {
         if (Pollution.hasPollution(currentChunk)) {
             tList.add(
-                GTUtility.trans("202", "Pollution in Chunk: ") + EnumChatFormatting.RED
+                GTUtility.translate("gt.util.pollution_in_chunk") + EnumChatFormatting.RED
                     + formatNumbers(Pollution.getPollution(currentChunk))
                     + EnumChatFormatting.RESET
-                    + GTUtility.trans("203", " gibbl"));
+                    + GTUtility.translate("gt.util.gibbl"));
         } else {
             tList.add(
-                EnumChatFormatting.GREEN + GTUtility.trans("204", "No Pollution in Chunk! HAYO!")
+                EnumChatFormatting.GREEN + GTUtility.translate("gt.util.no_pollution_in_chunk")
                     + EnumChatFormatting.RESET);
         }
     }
@@ -3476,22 +3465,19 @@ public class GTUtility {
     private static void addUndergroundFluidInfo(EntityPlayer aPlayer, ArrayList<String> tList, Chunk currentChunk) {
         if (aPlayer.capabilities.isCreativeMode) {
             final FluidStack tFluid = undergroundOilReadInformation(currentChunk); // -# to only read
-            if (tFluid != null) tList.add(
-                EnumChatFormatting.GOLD + tFluid.getLocalizedName()
-                    + EnumChatFormatting.RESET
-                    + ": "
-                    + EnumChatFormatting.YELLOW
-                    + formatNumbers(tFluid.amount)
-                    + EnumChatFormatting.RESET
-                    + " L");
-            else tList.add(
-                EnumChatFormatting.GOLD + GTUtility.trans("201", "Nothing")
-                    + EnumChatFormatting.RESET
-                    + ": "
-                    + EnumChatFormatting.YELLOW
-                    + '0'
-                    + EnumChatFormatting.RESET
-                    + " L");
+            if (tFluid != null) {
+                String fluidInfo = String.format(
+                    GTUtility.translate("gt.util.underground_oil_info"),
+                    EnumChatFormatting.GOLD + tFluid.getLocalizedName() + EnumChatFormatting.RESET,
+                    EnumChatFormatting.YELLOW + formatNumbers(tFluid.amount) + EnumChatFormatting.RESET);
+                tList.add(fluidInfo);
+            } else {
+                String noFluidInfo = String.format(
+                    GTUtility.translate("gt.util.underground_oil_info"),
+                    EnumChatFormatting.GOLD + GTUtility.translate("gt.util.nothing") + EnumChatFormatting.RESET,
+                    EnumChatFormatting.YELLOW + "0" + EnumChatFormatting.RESET);
+                tList.add(noFluidInfo);
+            }
         }
     }
 
@@ -3508,7 +3494,8 @@ public class GTUtility {
                 }
             }
         } catch (Throwable e) {
-            tList.add("§cAn exception was thrown while fetching this leaves' info.§r");
+            tList.add(
+                EnumChatFormatting.AQUA + GTUtility.translate("gt.util.exception_leaves") + EnumChatFormatting.RESET);
             if (D1) e.printStackTrace(GTLog.err);
         }
         return rEUAmount;

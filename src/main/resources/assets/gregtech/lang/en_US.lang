@@ -3581,6 +3581,10 @@ gt.tooltip.power_panel=Open Power Panel
 gt.tooltip.structure_update=Update Structure
 gt.tooltip.power_switch=Power Switch
 gt.tooltip.hoverable_error=ERROR! REPORT ME!
+gt.tooltip.chance=Chance: #Space
+gt.tooltip.not_consumed_in_process=Does not get consumed in the process
+
+
 
 
 # Behaviour tooltips
@@ -3694,6 +3698,20 @@ gt.infodata.multiblock.efficiency=Efficiency
 gt.infodata.multiblock.pollution=Pollution reduced to
 gt.infodata.multiblock.purification_plant.status_title=§lPurification Unit Status
 
+# Recipe
+gt.recipe.original_by=Original Recipe by: #space
+gt.recipe.modified_by=Modified by: #space
+gt.recipe.recipe_by=Recipe by: #space
+gt.recipe.total=Total: %s EU
+gt.recipe.usage=Usage: %s EU/t
+gt.recipe.time=Time: %s secs
+gt.recipe.time_ticks=(%s ticks)
+
+gt.recipe.needs_low_gravity=Needs Low Gravity
+gt.recipe.needs_cleanroom=Needs Cleanroom
+gt.recipe.scan_ass_line=Scan for Assembly Line
+gt.recipe.needs_cleanroom_and_low_gravity=Needs Cleanroom & LowGrav
+gt.recipe.deprecated_recipe=Deprecated Recipe
 
 # Gui
 gt.gui.hatch_output.lock_fluid=Locked Fluid
@@ -3730,7 +3748,14 @@ gt.gui.status=Status
 gt.gui.tier=Tier: #space
 gt.gui.input=Input #space
 gt.gui.output=Output #space
+gt.gui.input_1=Input:
+gt.gui.output_1=Output:
 gt.gui.startup=Starting up...
+gt.gui.step_down_in=Step Down, In: #space
+gt.gui.step_up_in=Step Up, In: #space
+gt.gui.step_down=Step Down
+gt.gui.step_up=Step Up
+gt.gui.amp_out=A, Out: #space
 
 
 
@@ -3753,10 +3778,63 @@ gt.waila.multiblock.status.cpu_load=Average CPU load of ~%s ns
 # Generic 
 gt.info.eu=EU
 gt.info.eu_1= EU / #space
-gt.info.eu_2= EU#space
+gt.info.eu_2= EU #space
+gt.info.amp=A
+gt.info.volt=V
+
 gt.info.percentage= %
 gt.info.liters=L
 
+# GTUtility
+gt.util.coords=----- X: %s Y: %s Z: %s D: %s -----
+gt.util.Name=Name: #space
+gt.util.metadata= MetaData: #space
+gt.util.hardness=Hardness: #space
+gt.util.blast_resistance= Blast Resistance: #space
+gt.util.invalid_becaon_material=Is valid Beacon Pyramid Material
+gt.util.tank=Tank %d: %s L / %s L %s
+gt.util.heat=Heat: #space
+gt.util.hrm= HEM: #space
+gt.util.base_eu_out= Base EU Output: #space
+gt.util.facind=Facing: #space
+gt.util.chance= / Chance: #space
+gt.util.remove_wrench_yes=You can remove this with a Wrench
+gt.util.remove_wrench_no=You can NOT remove this with a Wrench
+gt.util.conduction_loss=Conduction Loss: #space
+gt.util.contained_energy=Contained Energy: #space
+gt.util.has_muffler=Has Muffler Upgrade
+gt.util.progres_load=Progress/Load: #space
+gt.util.max_in=Max IN: #space
+gt.util.max_out=Max OUT: #space
+gt.util.eu_at= EU at #space
+gt.util.Amp= A #space
+gt.util.energy=Energy: #space
+gt.util.owned_by=Owned by: #space
+gt.util.crop_name=Type -- Crop-Name: #space
+gt.util.crop_growth=  Growth: #space
+gt.util.crop_gain=  Gain: #space
+gt.util.crop_resistance=  Resistance: #space
+gt.util.crop_fertilizer=Plant -- Fertilizer: #space
+gt.util.crop_water=  Water: #space
+gt.util.crop_weed_ex=  Weed-Ex: #space
+gt.util.crop_scan_level=  Scan-Level: #space
+gt.util.crop_nutrients=Environment -- Nutrients: #space
+gt.util.crop_humidity=  Humidity: #space
+gt.util.crop_air_quality=  Air-Quality: #space
+gt.util.crop_attributes=Attributes:
+gt.util.crop_discorvered_by=Discovered by: #space
+gt.util.sort_mode=Sort mode: #space
+gt.util.auto_item_shuffle=Automatic Item Shuffling: #space
+gt.util.nothing=Nothing
+gt.util.pollution_in_chunk=Pollution in Chunk: #space
+gt.util.gibbl= gibbl
+gt.util.no_pollution_in_chunk=No Pollution in Chunk! HAYO!
+gt.util.underground_oil_info=%s: %s L
+
+gt.util.exception_block=An exception was thrown while fetching this block's info.
+gt.util.exception_fluid=An exception was thrown while fetching this tile's fluid tank info.
+gt.util.exception_debug=An exception was thrown while fetching this block's debug info.
+gt.util.exception_leaves=An exception was thrown while fetching this leaves' info.
 
 
 
@@ -3777,3 +3855,6 @@ gt.interact.desc.mb.mode=§fRunning mode: §6%s
 #
 # GTUtility.translate("gt.thisthat.desc", THIS, THAT)
 # gt.thisthat.desc=this is %s and that is %s
+
+
+# GTUtility.java L 3512

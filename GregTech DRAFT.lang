@@ -86,26 +86,6 @@
 	- Them bacteria names, example above ^
 
 	
-
-    S:Interaction_DESCRIPTION_Index_143=Missing Mining Pipe
-    S:Interaction_DESCRIPTION_Index_145=Step Down, In: 
-    S:Interaction_DESCRIPTION_Index_146=Step Up, In: 
-    S:Interaction_DESCRIPTION_Index_147=A, Out: 
-    S:Interaction_DESCRIPTION_Index_148=V 
-    S:Interaction_DESCRIPTION_Index_149=A
-    S:Interaction_DESCRIPTION_Index_150=Chance: 
-    S:Interaction_DESCRIPTION_Index_151=Does not get consumed in the process
-    S:Interaction_DESCRIPTION_Index_152=Total: 
-    S:Interaction_DESCRIPTION_Index_153=Usage: 
-    S:Interaction_DESCRIPTION_Index_154=Voltage: 
-    S:Interaction_DESCRIPTION_Index_155=Amperage: 
-    S:Interaction_DESCRIPTION_Index_156=Voltage: unspecified
-    S:Interaction_DESCRIPTION_Index_157=Amperage: unspecified
-    S:Interaction_DESCRIPTION_Index_158=Time: 
-    S:Interaction_DESCRIPTION_Index_159=Needs Low Gravity
-    S:Interaction_DESCRIPTION_Index_160=Needs Cleanroom
-    S:Interaction_DESCRIPTION_Index_160.1=Needs Cleanroom & LowGrav
-    S:Interaction_DESCRIPTION_Index_161= secs
     S:Interaction_DESCRIPTION_Index_162=Name: 
     S:Interaction_DESCRIPTION_Index_163= MetaData: 
     S:Interaction_DESCRIPTION_Index_164=Hardness: 
@@ -148,7 +128,9 @@
     S:Interaction_DESCRIPTION_Index_202=Pollution in Chunk: 
     S:Interaction_DESCRIPTION_Index_203= gibbl
     S:Interaction_DESCRIPTION_Index_204=No Pollution in Chunk! HAYO!
-    S:Interaction_DESCRIPTION_Index_206=Scan for Assembly Line
+	-----------------
+	
+	
     S:Interaction_DESCRIPTION_Index_208= L
     S:Interaction_DESCRIPTION_Index_209= ticks
     S:Interaction_DESCRIPTION_Index_209.1= tick
@@ -158,7 +140,7 @@
     S:Interaction_DESCRIPTION_Index_213=Input disabled
     S:Interaction_DESCRIPTION_Index_214=Connected
     S:Interaction_DESCRIPTION_Index_215=Disconnected
-    S:Interaction_DESCRIPTION_Index_216=Deprecated Recipe
+
     S:Interaction_DESCRIPTION_Index_219=Extended Facing: 
     S:Interaction_DESCRIPTION_Index_221=Item threshold
     S:Interaction_DESCRIPTION_Index_222=Fluid threshold

@@ -1,6 +1,5 @@
 package tectech.recipe;
 
-import static gregtech.api.util.GTUtility.trans;
 import static tectech.loader.recipe.Godforge.magmatterItemsForNEI;
 import static tectech.loader.recipe.Godforge.magmatterSpaceFluidItemsForNEI;
 import static tectech.loader.recipe.Godforge.magmatterTimeFluidItemsForNEI;
@@ -70,9 +69,9 @@ public class GodforgeExoticFrontend extends RecipeMapFrontend {
     protected void drawEnergyInfo(RecipeDisplayInfo recipeInfo) {
         long eut = recipeInfo.recipe.mEUt;
         long duration = recipeInfo.recipe.mDuration;
-        recipeInfo.drawText(trans("152", "Total: ") + GTUtility.formatNumbers(eut * duration) + " EU");
-        recipeInfo.drawText(trans("153", "Usage: ") + GTUtility.formatNumbers(eut) + " EU/t");
-        recipeInfo.drawText(trans("158", "Time: ") + GTUtility.formatNumbers(duration / 20) + " secs");
+        recipeInfo.drawText(GTUtility.translate("gt.recipe.total", GTUtility.formatNumbers(eut * duration)));
+        recipeInfo.drawText(GTUtility.translate("gt.recipe.usage", GTUtility.formatNumbers(eut)));
+        recipeInfo.drawText(GTUtility.translate("gt.recipe.time", GTUtility.formatNumbers(duration / 20)));
 
     }
 

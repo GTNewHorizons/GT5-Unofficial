@@ -236,10 +236,13 @@ public class MobHandlerLoader {
     public void onMobNEIRegistration(MobNEIRegistrationEvent event) {
         MobEECRecipe recipe = recipeMap.get(event.mobName);
         if (recipe != null) {
+            String timeText = GTUtility.translate("gt.recipe.time", GTUtility.formatNumbers(recipe.mDuration / 20d));
+            if (recipe.mDuration < 20) {
+                timeText += " " + GTUtility.translate("gt.recipe.time.ticks", recipe.mDuration);
+            }
+
             event.additionalInformation.addAll(
-                Arrays.asList(
-                    GTUtility.trans("153", "Usage: ") + GTUtility.formatNumbers(recipe.mEUt) + " EU/t",
-                    GTUtility.trans("158", "Time: ") + GTUtility.formatNumbers(recipe.mDuration / 20d) + " secs"));
+                Arrays.asList(GTUtility.translate("gt.recipe.usage", GTUtility.formatNumbers(recipe.mEUt)), timeText));
         }
     }
 }
