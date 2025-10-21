@@ -219,7 +219,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
 
         return new ListWidget<>().widthRel(1)
             .child(
-                IKey.lang("GT5U.multiblock.startup")
+                IKey.lang("gt.gui.startup")
                     .color(Color.WHITE.main)
                     .asWidget()
                     .alignment(Alignment.CenterLeft)
@@ -227,7 +227,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                     .marginBottom(2)
                     .widthRel(1))
             .child(
-                new TextWidget<>(GTUtility.trans("142", "Running perfectly.")).color(Color.WHITE.main)
+                new TextWidget<>(GTUtility.translate("gt.gui.maintenance.running")).color(Color.WHITE.main)
                     .setEnabledIf(widget -> multiblock.getErrorDisplayID() == 0 && baseMetaTileEntity.isActive())
                     .marginBottom(2)
                     .widthRel(1))
@@ -473,7 +473,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
 
     private @NotNull String getItemTextLine(String itemName, long amount, IntSyncValue maxProgressTimeSyncer) {
 
-        String amountString = EnumChatFormatting.WHITE + " x "
+        String amountString = EnumChatFormatting.WHITE + GTUtility.translate("gt.gui.recipe_x")
             + EnumChatFormatting.GOLD
             + GTUtility.formatShortenedLong(amount)
             + EnumChatFormatting.WHITE
@@ -510,10 +510,10 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     }
 
     private @NotNull String getFluidTextLine(String fluidName, long amount, IntSyncValue maxProgressTimeSyncer) {
-        String amountString = EnumChatFormatting.WHITE + " x "
+        String amountString = EnumChatFormatting.WHITE + GTUtility.translate("gt.gui.recipe_x")
             + EnumChatFormatting.GOLD
             + GTUtility.formatShortenedLong(amount)
-            + "L"
+            + GTUtility.translate("gt.info.liters")
             + EnumChatFormatting.WHITE
             + GTUtility.appendRate(false, amount, true, maxProgressTimeSyncer.getValue());
         String fluidTextLine = EnumChatFormatting.AQUA + GTUtility.truncateText(fluidName, 48 - amountString.length())
@@ -568,7 +568,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     }
 
     private void createVoidExcessTooltip(RichTooltip t) {
-        t.addLine(IKey.dynamic(() -> StatCollector.translateToLocal("GT5U.gui.button.voiding_mode")))
+        t.addLine(IKey.dynamic(() -> StatCollector.translateToLocal("gt.tooltip.voiding_mode")))
             .addLine(
                 IKey.dynamic(
                     () -> StatCollector.translateToLocal(
@@ -625,8 +625,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             t,
             multiblock::supportsInputSeparation,
             multiblock::isInputSeparationEnabled,
-            StatCollector.translateToLocal("GT5U.gui.button.input_separation_on"),
-            StatCollector.translateToLocal("GT5U.gui.button.input_separation_off"));
+            StatCollector.translateToLocal("gt.tooltip.input_separation_on"),
+            StatCollector.translateToLocal("gt.tooltip.input_separation_off"));
     }
 
     /**
@@ -686,7 +686,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     }
 
     private void createModeSwitchTooltip(RichTooltip t) {
-        t.addLine(IKey.dynamic(() -> StatCollector.translateToLocal("GT5U.gui.button.mode_switch")))
+        t.addLine(IKey.dynamic(() -> StatCollector.translateToLocal("gt.tooltip.mode_switch")))
             .addLine(IKey.dynamic(multiblock::getMachineModeName));
     }
 
@@ -733,8 +733,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             t,
             multiblock::supportsBatchMode,
             multiblock::isBatchModeEnabled,
-            StatCollector.translateToLocal("GT5U.gui.button.batch_mode_on"),
-            StatCollector.translateToLocal("GT5U.gui.button.batch_mode_off"));
+            StatCollector.translateToLocal("gt.tooltip.batch_mode_on"),
+            StatCollector.translateToLocal("gt.tooltip.batch_mode_off"));
     }
 
     protected IWidget createLockToSingleRecipeButton(PanelSyncManager syncManager) {
@@ -782,8 +782,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             t,
             multiblock::supportsSingleRecipeLocking,
             multiblock::isRecipeLockingEnabled,
-            StatCollector.translateToLocal("GT5U.gui.button.lock_recipe_on"),
-            StatCollector.translateToLocal("GT5U.gui.button.lock_recipe_off"));
+            StatCollector.translateToLocal("gt.tooltip.lock_recipe_on"),
+            StatCollector.translateToLocal("gt.tooltip.lock_recipe_off"));
     }
 
     protected IWidget createPowerPanelButton(PanelSyncManager syncManager, ModularPanel parent) {
@@ -801,7 +801,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                 }
                 return true;
             })
-            .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.power_panel")))
+            .tooltipBuilder(t -> t.addLine(IKey.lang("gt.tooltip.power_panel")))
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
@@ -816,7 +816,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                     .padding(3)
                     .child(makeTitleTextWidget())
                     .child(
-                        IKey.lang("GTPP.CC.parallel")
+                        IKey.lang("gt.gui.max_parallel")
                             .asWidget()
                             .marginBottom(4))
                     .child(makeParallelConfigurator(syncManager))
@@ -825,7 +825,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
 
     protected IWidget makeTitleTextWidget() {
         return new TextWidget<>(
-            EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("GT5U.gui.text.power_panel"))
+            EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("gt.gui.power_panel"))
                 .alignment(Alignment.Center)
                 .size(120, 18)
                 .marginBottom(4);
@@ -841,7 +841,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .paddingRight(3)
             .mainAxisAlignment(MainAxis.CENTER)
             .child(
-                new TextWidget<>(IKey.lang("GT5U.gui.text.powerfail_events")).height(18)
+                new TextWidget<>(IKey.lang("gt.gui.powerfail_events")).height(18)
                     .marginRight(2))
             .child(
                 new ToggleButton().size(18, 18)
@@ -891,7 +891,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                         powerPanelMaxParallelSyncer.setValue(maxParallelSyncer.getValue());
                         return true;
                     })
-                    .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.max_parallel")))
+                    .tooltipBuilder(t -> t.addLine(IKey.lang("gt.tooltip.max_parallel_always")))
                     .tooltipShowUpTimer(TOOLTIP_DELAY));
     }
 
@@ -907,9 +907,9 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                     IKey.dynamic(
                         () -> alwaysMaxParallelSyncer.getValue()
                             ? StatCollector
-                                .translateToLocalFormatted("GT5U.gui.text.lockedvalue", maxParallelSyncer.getValue())
+                                .translateToLocalFormatted("gt.gui.locked_value", maxParallelSyncer.getValue())
                             : StatCollector.translateToLocalFormatted(
-                                "GT5U.gui.text.rangedvalue",
+                                "gt.gui.ranged_value",
                                 1,
                                 maxParallelSyncer.getValue()))))
             .tooltipShowUpTimer(TOOLTIP_DELAY)
@@ -931,7 +931,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
 
     protected void makeMaintenanceHoverableTooltip(RichTooltip t, IntSyncValue maintSyncer) {
         if (maintSyncer.getValue() == 0) {
-            t.addLine(IKey.str(EnumChatFormatting.GREEN + "No maintenance issues!"));
+            t.addLine(IKey.str(EnumChatFormatting.GREEN + StatCollector.translateToLocal("gt.gui.maintenance.no_issues")));
             return;
         }
         if (!multiblock.mCrowbar) t.add(
@@ -1007,12 +1007,12 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         return new ToggleButton().size(18, 18)
             .syncHandler("structureUpdateButton")
             .overlay(GTGuiTextures.OVERLAY_BUTTON_STRUCTURE_UPDATE)
-            .tooltipBuilder(t -> { t.addLine(IKey.lang("GT5U.gui.button.structure_update")); });
+            .tooltipBuilder(t -> { t.addLine(IKey.lang("gt.tooltip.structure_update")); });
     }
 
     protected IWidget createPowerSwitchButton() {
         return new ToggleButton().syncHandler("powerSwitch")
-            .tooltip(tooltip -> tooltip.add("Power Switch"))
+            .tooltip(tooltip -> tooltip.add(GTUtility.translate("gt.tooltip.power_switch")))
             .size(18, 18)
             .marginBottom(4)
             .overlay(

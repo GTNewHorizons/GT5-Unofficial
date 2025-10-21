@@ -67,7 +67,7 @@ public enum VoidingMode {
     }
 
     public String getTransKey() {
-        return "GT5U.gui.button.voiding_mode_" + name;
+        return "gt.tooltip.voiding_mode_" + name;
     }
 
     public VoidingMode next() {

@@ -1345,20 +1345,6 @@ channels.gregtech.field=Decides the tier of T.F.F.T. Storage Field.
 GT5U.gui.select.current=§8Current:
 GT5U.gui.button.liquid_filling_OFF=§7Liquid Filling: §4OFF
 GT5U.gui.button.liquid_filling_ON=§7Liquid Filling: §aON
-GT5U.gui.button.power_switch=Power Switch
-GT5U.gui.button.voiding_mode=Voiding Mode:
-GT5U.gui.button.voiding_mode_none=§7Void Nothing
-GT5U.gui.button.voiding_mode_item=§7Void Excess §6Items
-GT5U.gui.button.voiding_mode_fluid=§7Void Excess §9Fluids
-GT5U.gui.button.voiding_mode_all=§7Void Excess §6Items §7and §9Fluids
-GT5U.gui.button.input_separation_on=Input Separation: ON
-GT5U.gui.button.input_separation_off=Input Separation: OFF
-GT5U.gui.button.mode_switch=Mode Switch
-GT5U.gui.button.batch_mode_on=Batch Mode: ON
-GT5U.gui.button.batch_mode_off=Batch Mode: OFF
-GT5U.gui.button.lock_recipe_on=Lock Recipe: ON
-GT5U.gui.button.lock_recipe_off=Lock Recipe: OFF
-GT5U.gui.button.structure_update=Update Structure
 GT5U.gui.button.down_tier=Down Tier
 GT5U.gui.button.tier=Tier:
 GT5U.gui.button.forbidden=§4Cannot change mode for this machine
@@ -1382,7 +1368,6 @@ GT5U.gui.button.drone_distance=Sort by §3distance
 GT5U.gui.button.drone_error=Sort by §3shutdown status
 GT5U.gui.button.drone_showLocalName=Show localized name
 GT5U.gui.button.toggle_output_slot_lock=Toggle output slot
-GT5U.gui.button.power_panel=Open Power Panel
 GT5U.gui.button.turbinemenu=Open Chamber Controller
 GT5U.gui.button.machineinfo=Display Machine Information
 GT5U.gui.text.success=§aProcessing recipe
@@ -1514,7 +1499,6 @@ GT5U.gui.hoverable.incomplete=Structure incomplete.
 GT5U.gui.hoverable.powerloss=Lost Power.
 GT5U.gui.hoverable.norepair=Machine too damaged.
 GT5U.gui.hoverable.manualshutdown=Manual shutdown (get it?).
-GT5U.gui.hoverable.error=ERROR! REPORT ME!
 
 GT5U.gui.config.client=Client
 GT5U.gui.config.client.color_modulation=Color Modulation
@@ -1764,7 +1748,6 @@ GT5U.multiblock.fluidPipeTier=Fluid Pipe Tier
 GT5U.multiblock.itemPipeTier=Item Pipe Tier
 GT5U.multiblock.coilLevel=Heating Coil Level
 GT5U.multiblock.preciseassemblercasing=Voltage limited by casing tier: %s
-GT5U.multiblock.startup=Starting up...
 
 # NEI recipe handlers
 GT5U.nei.heat_capacity=Heat Capacity: %s K (%s)
@@ -3582,6 +3565,22 @@ gt.tooltip.sorting_mode=Sort stacks
 gt.tooltip.energy_tier=%s (%s)
 gt.tooltip.max_parallel_always=Always use maximum
 gt.tooltip..purification_plant.debug_mode=Toggle debug mode.
+gt.tooltip.voiding_mode=Voiding Mode:
+gt.tooltip.voiding_mode_none=§7Void Nothing
+gt.tooltip.voiding_mode_item=§7Void Excess §6Items
+gt.tooltip.voiding_mode_fluid=§7Void Excess §9Fluids
+gt.tooltip.voiding_mode_all=§7Void Excess §6Items §7and §9Fluids
+gt.tooltip.input_separation_on=Input Separation: ON
+gt.tooltip.input_separation_off=Input Separation: OFF
+gt.tooltip.mode_switch=Mode Switch
+gt.tooltip.batch_mode_on=Batch Mode: ON
+gt.tooltip.batch_mode_off=Batch Mode: OFF
+gt.tooltip.lock_recipe_on=Lock Recipe: ON
+gt.tooltip.lock_recipe_off=Lock Recipe: OFF
+gt.tooltip.power_panel=Open Power Panel
+gt.tooltip.structure_update=Update Structure
+gt.tooltip.power_switch=Power Switch
+gt.tooltip.hoverable_error=ERROR! REPORT ME!
 
 
 # Behaviour tooltips
@@ -3717,6 +3716,7 @@ gt.gui.maintenance.running=Running perfectly.
 gt.gui.maintenance.incomplete=Incomplete Structure.
 gt.gui.maintenance.too_uncertain=Too Uncertain.
 gt.gui.maintenance.invalid_parameters=Invalid Parameters.
+gt.gui.maintenance.no_issues=No maintenance issues!
 
 gt.gui.power_panel=Power Control Panel
 gt.gui.max_parallel=Maximum Parallel
@@ -3730,6 +3730,9 @@ gt.gui.status=Status
 gt.gui.tier=Tier: #space
 gt.gui.input=Input #space
 gt.gui.output=Output #space
+gt.gui.startup=Starting up...
+
+
 
 
 # Waila
@@ -3752,6 +3755,8 @@ gt.info.eu=EU
 gt.info.eu_1= EU / #space
 gt.info.eu_2= EU#space
 gt.info.percentage= %
+gt.info.liters=L
+
 
 
 
