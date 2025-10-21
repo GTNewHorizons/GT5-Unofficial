@@ -19,7 +19,6 @@ import org.spongepowered.libraries.com.google.common.collect.ImmutableList;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
-import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
 import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
 
@@ -38,7 +37,6 @@ import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenCustomHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
-@EventBusSubscriber
 public class UnificationOreAdapter implements IOreAdapter<Materials> {
 
     private static final ImmutableList<OrePrefixes> ORE_ORE_PREFIXES = Arrays.stream(OrePrefixes.values())
