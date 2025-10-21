@@ -43,7 +43,8 @@ public class BehaviourPlungerFluid extends BehaviourNone {
                     if ((aPlayer.capabilities.isCreativeMode)
                         || (((MetaGeneratedTool) aItem).doDamage(aStack, this.mCosts))) {
                         ((IFluidHandler) aTileEntity).drain(tDirection, drainAmount, true);
-                        GTUtility.sendSoundToPlayers(aWorld, SoundResource.GTCEU_OP_PLUNGER, 1.0F, 1.0F, hitX, hitY, hitZ);
+                        GTUtility
+                            .sendSoundToPlayers(aWorld, SoundResource.GTCEU_OP_PLUNGER, 1.0F, 1.0F, hitX, hitY, hitZ);
                         return true;
                     }
                 }
