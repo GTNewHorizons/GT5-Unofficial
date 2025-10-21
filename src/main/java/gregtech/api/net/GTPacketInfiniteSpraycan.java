@@ -188,9 +188,9 @@ public class GTPacketInfiniteSpraycan extends GTPacket {
                 sound,
                 1.0F,
                 1,
-                (int) player.posX,
-                (int) player.posY,
-                (int) player.posZ);
+                player.posX,
+                player.posY,
+                player.posZ);
         }
 
         abstract boolean execute(final BehaviourSprayColorInfinite behavior, ItemStack itemStack, EntityPlayerMP player,
