@@ -284,7 +284,7 @@ public class CircuitImprintLoader {
             OreDictionary
                 .getOreName(OreDictionary.getOreIDs(stack).length > 0 ? OreDictionary.getOreIDs(stack)[0] : -1));
 
-        eut = Math.min(eut, VP[tier]);
+        eut = Math.min(eut, VP[Math.max(tier,0)]);
         GTValues.RA.stdBuilder()
             .itemInputs(stack, ItemList.Shape_Slicer_Flat.get(0))
             .itemOutputs(
