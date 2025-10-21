@@ -79,18 +79,11 @@
     S:"Book.Thermal Boiler Manual.Page15"=It might be useful to use the Screwdriver on the Output Hatches to determine what is outputted where.
 	
     S:"Escherichia cadaver"=Rotten Flesh Bacteria
-    S:"Escherichia koli"=eColi Bacteria
+    S:"Escherichia koli"=eColi 
 	
-
+	Todo:
+	- Bahaviour"Stuff"
 	
-    S:Interaction_DESCRIPTION_Index_100=This is 
-    S:Interaction_DESCRIPTION_Index_101= Ore.
-    S:Interaction_DESCRIPTION_Index_102=There is Lava behind this Rock.
-    S:Interaction_DESCRIPTION_Index_103=There is a Liquid behind this Rock.
-    S:Interaction_DESCRIPTION_Index_104=There is an Air Pocket behind this Rock.
-    S:Interaction_DESCRIPTION_Index_105=Material is changing behind this Rock.
-    S:Interaction_DESCRIPTION_Index_106=Found traces of 
-    S:Interaction_DESCRIPTION_Index_107=No Ores found.
     S:Interaction_DESCRIPTION_Index_108=Outputs misc. Fluids, Steam and Items
     S:Interaction_DESCRIPTION_Index_109=Outputs Steam and Items
     S:Interaction_DESCRIPTION_Index_110=Outputs Steam and misc. Fluids
@@ -18534,7 +18527,6 @@
     S:gt.behaviour.plunger.essentia=Clears Essentia from Containers and Tubes
     S:gt.behaviour.plunger.fluid=Clears 1000 Liters of Fluid from Tanks. Fully clears when sneaking.
     S:gt.behaviour.plunger.item=Clears Items from Pipes
-    S:gt.behaviour.prospecting=Usable for Prospecting
     S:gt.behaviour.scanning=Can scan Blocks in World
     S:gt.behaviour.scoop=Catches Butterflies on Leftclick
     S:gt.behaviour.sensorkit.tooltip=Used to display Information using the Mod Nuclear Control

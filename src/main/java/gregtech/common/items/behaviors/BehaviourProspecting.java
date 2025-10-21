@@ -20,7 +20,6 @@ import gregtech.api.items.MetaBaseItem;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -30,8 +29,7 @@ public class BehaviourProspecting extends BehaviourNone {
 
     private final int mVanillaCosts;
     private final int mEUCosts;
-    private final String mTooltip = GTLanguageManager
-        .addStringLocalization("gt.behaviour.prospecting", "Usable for Prospecting");
+    private final String mTooltip = GTUtility.translate("gt.tooltip.behaviour.prospecting");
 
     public BehaviourProspecting(int aVanillaCosts, int aEUCosts) {
         this.mVanillaCosts = aVanillaCosts;
@@ -67,7 +65,8 @@ public class BehaviourProspecting extends BehaviourNone {
         if (mat != null) {
             GTUtility.sendChatToPlayer(
                 aPlayer,
-                GTUtility.trans("100", "This is ") + mat.getLocalizedName() + GTUtility.trans("101", " Ore."));
+                GTUtility.translate("gt.chat.interact.desc.this_is") + mat.getLocalizedName()
+                    + GTUtility.translate("gt.chat.interact.desc.ore"));
             GTUtility.sendSoundToPlayers(aWorld, SoundResource.RANDOM_ANVIL_USE, 1.0F, -1.0F, aX, aY, aZ);
             return true;
         }
@@ -77,7 +76,8 @@ public class BehaviourProspecting extends BehaviourNone {
         if (oreMat != null) {
             GTUtility.sendChatToPlayer(
                 aPlayer,
-                GTUtility.trans("100", "This is ") + oreMat.mDefaultLocalName + GTUtility.trans("101", " Ore."));
+                GTUtility.translate("gt.chat.interact.desc.this_is") + oreMat.mDefaultLocalName
+                    + GTUtility.translate("gt.chat.interact.desc.ore"));
             GTUtility.sendSoundToPlayers(aWorld, SoundResource.RANDOM_ANVIL_USE, 1.0F, -1.0F, aX, aY, aZ);
             return true;
         }
@@ -97,21 +97,21 @@ public class BehaviourProspecting extends BehaviourNone {
                 Block tBlock = aWorld.getBlock(tX, tY, tZ);
 
                 if (tBlock == Blocks.lava || tBlock == Blocks.flowing_lava) {
-                    GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("102", "There is Lava behind this Rock."));
+                    GTUtility.sendChatToPlayer(aPlayer, GTUtility.translate("gt.chat.interact.desc.lava_behind_rock"));
                     break;
                 }
                 if (tBlock instanceof BlockLiquid || tBlock instanceof IFluidBlock) {
-                    GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("103", "There is a Liquid behind this Rock."));
+                    GTUtility
+                        .sendChatToPlayer(aPlayer, GTUtility.translate("gt.chat.interact.desc.liquid_behind_rock"));
                     break;
                 }
                 if (tBlock == Blocks.monster_egg || !GTUtility.hasBlockHitBox(aWorld, tX, tY, tZ)) {
-                    GTUtility
-                        .sendChatToPlayer(aPlayer, GTUtility.trans("104", "There is an Air Pocket behind this Rock."));
+                    GTUtility.sendChatToPlayer(aPlayer, GTUtility.translate("gt.chat.interact.desc.air_behind_rock"));
                     break;
                 }
                 if (tBlock != aBlock) {
                     if (i < 4) GTUtility
-                        .sendChatToPlayer(aPlayer, GTUtility.trans("105", "Material is changing behind this Rock."));
+                        .sendChatToPlayer(aPlayer, GTUtility.translate("gt.chat.interact.desc.material_behind_rock"));
                     break;
                 }
             }
@@ -129,8 +129,8 @@ public class BehaviourProspecting extends BehaviourNone {
                 if (mat != null) {
                     GTUtility.sendChatToPlayer(
                         aPlayer,
-                        GTUtility.trans("106", "Found traces of ") + mat.getLocalizedName()
-                            + GTUtility.trans("101", " Ore."));
+                        GTUtility.translate("gt.chat.interact.desc.found_traces") + mat.getLocalizedName()
+                            + GTUtility.translate("gt.chat.interact.desc.ore"));
                     return true;
                 }
 
@@ -139,13 +139,13 @@ public class BehaviourProspecting extends BehaviourNone {
                 if (oreMat != null) {
                     GTUtility.sendChatToPlayer(
                         aPlayer,
-                        GTUtility.trans("106", "Found traces of ") + oreMat.mDefaultLocalName
-                            + GTUtility.trans("101", " Ore."));
+                        GTUtility.translate("gt.chat.interact.desc.found_traces") + oreMat.mDefaultLocalName
+                            + GTUtility.translate("gt.chat.interact.desc.ore"));
                     return true;
                 }
             }
 
-            GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("107", "No Ores found."));
+            GTUtility.sendChatToPlayer(aPlayer, GTUtility.translate("gt.chat.interact.desc.ore_not_found"));
             return true;
         }
 

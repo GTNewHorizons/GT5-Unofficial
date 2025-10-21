@@ -3652,6 +3652,9 @@ gt.tooltip.item_amount=Item Amount: #Space
 gt.tooltip.has_muffler=has Muffler Upgrade
 gt.tooltip.steam_tank_upgrades=Steam Tank Upgrades
 
+# Behaviour tooltips
+gt.tooltip.behaviour.prospecting=Usable for Prospecting
+
 # Machine interact chat description
 gt.chat.interact.desc.filter_fluid=Filter Fluid: #Space
 gt.chat.interact.desc.slot=Slot: #Space
@@ -3689,6 +3692,15 @@ gt.chat.interact.desc.not_enough_solder=Not enough soldering material!
 gt.chat.interact.desc.regulate_item_stack_size=Regulate Item Stack Size to: #Space
 gt.chat.interact.desc.regulate_item_stack_size.not=Do not regulate Item Stack Size
 gt.chat.interact.desc.sort_mode=Sort mode: #Space
+gt.chat.interact.desc.this_is=This is #Space
+gt.chat.interact.desc.ore= Ore.
+gt.chat.interact.desc.ore_not_found=No Ores found.
+gt.chat.interact.desc.lava_behind_rock=There is Lava behind this Rock.
+gt.chat.interact.desc.liquid_behind_rock=There is a Liquid behind this Rock.
+gt.chat.interact.desc.air_behind_rock=There is an Air Pocket behind this Rock.
+gt.chat.interact.desc.material_behind_rock=Material is changing behind this Rock.
+gt.chat.interact.desc.found_traces=Found traces of #Space
+
 
 
 # Machine interact description
