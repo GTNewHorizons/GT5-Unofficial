@@ -3534,7 +3534,6 @@ item.gt.depletedRodNaquadria4.name=Quad Fuel Rod (Depleted Naquadria)
 # Entities
 entity.gregtech.PowderBarrelPrimed.name=Lit Powder Barrel
 
-GT5U.gui.text.per_tick=§fPer tick:
 
 #mui1
 mui.button.close=x
@@ -3793,22 +3792,11 @@ gt.util.hardness=Hardness: #space
 gt.util.blast_resistance= Blast Resistance: #space
 gt.util.invalid_becaon_material=Is valid Beacon Pyramid Material
 gt.util.tank=Tank %d: %s L / %s L %s
-gt.util.heat=Heat: #space
-gt.util.hrm= HEM: #space
 gt.util.base_eu_out= Base EU Output: #space
-gt.util.facind=Facing: #space
-gt.util.chance= / Chance: #space
 gt.util.remove_wrench_yes=You can remove this with a Wrench
 gt.util.remove_wrench_no=You can NOT remove this with a Wrench
 gt.util.conduction_loss=Conduction Loss: #space
-gt.util.contained_energy=Contained Energy: #space
-gt.util.has_muffler=Has Muffler Upgrade
-gt.util.progres_load=Progress/Load: #space
-gt.util.max_in=Max IN: #space
-gt.util.max_out=Max OUT: #space
-gt.util.eu_at= EU at #space
-gt.util.Amp= A #space
-gt.util.energy=Energy: #space
+gt.util.has_muffler=Is Muffled
 gt.util.owned_by=Owned by: #space
 gt.util.crop_name=Type -- Crop-Name: #space
 gt.util.crop_growth=  Growth: #space
@@ -3830,21 +3818,59 @@ gt.util.pollution_in_chunk=Pollution in Chunk: #space
 gt.util.gibbl= gibbl
 gt.util.no_pollution_in_chunk=No Pollution in Chunk! HAYO!
 gt.util.underground_oil_info=%s: %s L
+gt.util.disabled=Disabled.
+gt.util.progress_load=Progress/Load: #space
+gt.util.contained_energy=Contained Energy: %s / %s EU
+gt.util.facing_chance=Facing: %s / Chance: %s%
+gt.util.extend_facing=Extended Facing: #space
+gt.util.heat=Heat: %s / %s
+gt.util.hem=HEM: %s
 
+gt.util.amount=§fAmount:
+gt.util.per_tick=§fPer tick:
+gt.util.per_second=§fPer second:
+gt.util.per_minute=§fPer minute:
+gt.util.per_hour=§fPer hour:
+gt.util.per_day=§fPer day:
+
+gt.util.rate_shortened=(%s/s)
+gt.util.amount_line=%s: %s
+gt.util.per_tick_line=%s: %s%s
+gt.util.per_second_line=%s: %s%s
+gt.util.per_minute_line=%s: %s%s
+gt.util.per_hour_line=%s: %s%s
+gt.util.per_day_line=%s: %s%s
+gt.util.liters=L
+gt.util.high_value_brackets=[%s]
+
+gt.util.info_max_out=Max OUT: %s (%s) EU at %s A
+gt.util.info_energy=Energy: %s EU / %s EU
 gt.util.exception_block=An exception was thrown while fetching this block's info.
 gt.util.exception_fluid=An exception was thrown while fetching this tile's fluid tank info.
 gt.util.exception_debug=An exception was thrown while fetching this block's debug info.
 gt.util.exception_leaves=An exception was thrown while fetching this leaves' info.
+gt.util.exception_crop=An exception was thrown while fetching this crop's info.
+gt.util.exception_device=An exception was thrown while fetching this device's info
+gt.util.exception_owner=An exception was thrown while fetching this device's owner.
+gt.util.exception_energy=An exception was thrown while fetching this device's energy info.
+gt.util.exception_cover=An exception was thrown while fetching this device's covers.
+gt.util.exception_progress=An exception was thrown while fetching this device's progress.
+gt.util.exception_upgrade=An exception was thrown while fetching this device's upgrades.
+gt.util.exception_ic2_energy_info=An exception was thrown while fetching this device's IC2 energy info.
+gt.util.exception_eu_conduction=An exception was thrown while fetching this device's EU conduction info.
+gt.util.exception_ic2_wrenchability=An exception was thrown while fetching this device's IC2 wrenchability.
+gt.util.exception_alignment_info=An exception was thrown while fetching this device's alignment info.
+gt.util.exception_reactor_info=An exception was thrown while fetching this reactor's info.
+
+
+
+
 
 
 
 #################
 
-GT5U.gui.text.amount=§fAmount:
-GT5U.gui.text.per_second=§fPer second:
-GT5U.gui.text.per_minute=§fPer minute:
-GT5U.gui.text.per_hour=§fPer hour:
-GT5U.gui.text.per_day=§fPer day:
+
 
 gt.interact.desc.mb.mode=§fRunning mode: §6%s
 

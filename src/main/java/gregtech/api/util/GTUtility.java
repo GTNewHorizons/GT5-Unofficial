@@ -3509,28 +3509,28 @@ public class GTUtility {
                 if (crop.getScanLevel() < 4) crop.setScanLevel((byte) 4);
                 if (crop.getCrop() != null) {
                     tList.add(
-                        GTUtility.trans("187", "Type -- Crop-Name: ") + crop.getCrop()
+                        GTUtility.translate("gt.util.crop_name") + crop.getCrop()
                             .name()
-                            + GTUtility.trans("188", "  Growth: ")
+                            + GTUtility.translate("gt.util.crop_growth")
                             + crop.getGrowth()
-                            + GTUtility.trans("189", "  Gain: ")
+                            + GTUtility.translate("gt.util.crop_gain")
                             + crop.getGain()
-                            + GTUtility.trans("190", "  Resistance: ")
+                            + GTUtility.translate("gt.util.crop_resistance")
                             + crop.getResistance());
                 }
                 tList.add(
-                    GTUtility.trans("191", "Plant -- Fertilizer: ") + crop.getNutrientStorage()
-                        + GTUtility.trans("192", "  Water: ")
+                    GTUtility.translate("gt.util.crop_fertilizer") + crop.getNutrientStorage()
+                        + GTUtility.translate("gt.util.crop_water")
                         + crop.getHydrationStorage()
-                        + GTUtility.trans("193", "  Weed-Ex: ")
+                        + GTUtility.translate("gt.util.crop_weed_ex")
                         + crop.getWeedExStorage()
-                        + GTUtility.trans("194", "  Scan-Level: ")
+                        + GTUtility.translate("gt.util.crop_scan_level")
                         + crop.getScanLevel());
                 tList.add(
-                    GTUtility.trans("195", "Environment -- Nutrients: ") + crop.getNutrients()
-                        + GTUtility.trans("196", "  Humidity: ")
+                    GTUtility.translate("gt.util.crop_nutrients") + crop.getNutrients()
+                        + GTUtility.translate("gt.util.crop_humidity")
                         + crop.getHumidity()
-                        + GTUtility.trans("197", "  Air-Quality: ")
+                        + GTUtility.translate("gt.util.crop_air_quality")
                         + crop.getAirQuality());
                 if (crop.getCrop() != null) {
                     final StringBuilder tStringB = new StringBuilder();
@@ -3540,14 +3540,15 @@ public class GTUtility {
                             .append(tAttribute);
                     }
                     final String tString = tStringB.toString();
-                    tList.add(GTUtility.trans("198", "Attributes:") + tString.replaceFirst(",", E));
+                    tList.add(GTUtility.translate("gt.util.crop_attributes") + tString.replaceFirst(",", E));
                     tList.add(
-                        GTUtility.trans("199", "Discovered by: ") + crop.getCrop()
+                        GTUtility.translate("gt.util.crop_discorvered_by") + crop.getCrop()
                             .discoveredBy());
                 }
             }
         } catch (Throwable e) {
-            tList.add("§cAn exception was thrown while fetching this crop's info.§r");
+            tList.add(
+                EnumChatFormatting.AQUA + GTUtility.translate("gt.util.exception_crop") + EnumChatFormatting.RESET);
             if (D1) e.printStackTrace(GTLog.err);
         }
         return rEUAmount;
@@ -3559,7 +3560,8 @@ public class GTUtility {
                 tList.addAll(Arrays.asList(info.getInfoData()));
             }
         } catch (Throwable e) {
-            tList.add("§cAn exception was thrown while fetching this device's info.§r");
+            tList.add(
+                EnumChatFormatting.AQUA + GTUtility.translate("gt.util.exception_device") + EnumChatFormatting.RESET);
             if (D1) e.printStackTrace(GTLog.err);
         }
     }
@@ -3568,12 +3570,13 @@ public class GTUtility {
         try {
             if (tTileEntity instanceof IGregTechTileEntity gtTE) {
                 tList.add(
-                    GTUtility.trans("186", "Owned by: ") + EnumChatFormatting.BLUE
+                    GTUtility.translate("gt.util.owned_by") + EnumChatFormatting.BLUE
                         + gtTE.getOwnerName()
                         + EnumChatFormatting.RESET);
             }
         } catch (Throwable e) {
-            tList.add("§cAn exception was thrown while fetching this device's owner.§r");
+            tList.add(
+                EnumChatFormatting.AQUA + GTUtility.translate("gt.util.exception_owner") + EnumChatFormatting.RESET);
             if (D1) e.printStackTrace(GTLog.err);
         }
     }
@@ -3582,41 +3585,32 @@ public class GTUtility {
         try {
             if (tTileEntity instanceof IBasicEnergyContainer energyContainer && energyContainer.getEUCapacity() > 0) {
                 tList.add(
-                    GTUtility.trans("179", "Max IN: ") + EnumChatFormatting.RED
-                        + formatNumbers(energyContainer.getInputVoltage())
-                        + " ("
-                        + GTValues.VN[getTier(energyContainer.getInputVoltage())]
-                        + ") "
-                        + EnumChatFormatting.RESET
-                        + GTUtility.trans("182", " EU at ")
-                        + EnumChatFormatting.RED
-                        + formatNumbers(energyContainer.getInputAmperage())
-                        + EnumChatFormatting.RESET
-                        + GTUtility.trans("183", " A"));
+                    GTUtility.translate(
+                        "gt.util.info_max_in",
+                        EnumChatFormatting.RED + formatNumbers(energyContainer.getInputVoltage())
+                            + EnumChatFormatting.RESET,
+                        GTValues.VN[getTier(energyContainer.getInputVoltage())],
+                        EnumChatFormatting.RED + formatNumbers(energyContainer.getInputAmperage())
+                            + EnumChatFormatting.RESET));
                 tList.add(
-                    GTUtility.trans("181", "Max OUT: ") + EnumChatFormatting.RED
-                        + formatNumbers(energyContainer.getOutputVoltage())
-                        + " ("
-                        + GTValues.VN[getTier(energyContainer.getOutputVoltage())]
-                        + ") "
-                        + EnumChatFormatting.RESET
-                        + GTUtility.trans("182", " EU at ")
-                        + EnumChatFormatting.RED
-                        + formatNumbers(energyContainer.getOutputAmperage())
-                        + EnumChatFormatting.RESET
-                        + GTUtility.trans("183", " A"));
+                    GTUtility.translate(
+                        "gt.util.info_max_out",
+                        EnumChatFormatting.RED + formatNumbers(energyContainer.getOutputVoltage())
+                            + EnumChatFormatting.RESET,
+                        GTValues.VN[getTier(energyContainer.getOutputVoltage())],
+                        EnumChatFormatting.RED + formatNumbers(energyContainer.getOutputAmperage())
+                            + EnumChatFormatting.RESET));
                 tList.add(
-                    GTUtility.trans("184", "Energy: ") + EnumChatFormatting.GREEN
-                        + formatNumbers(energyContainer.getStoredEU())
-                        + EnumChatFormatting.RESET
-                        + " EU / "
-                        + EnumChatFormatting.YELLOW
-                        + formatNumbers(energyContainer.getEUCapacity())
-                        + EnumChatFormatting.RESET
-                        + " EU");
+                    GTUtility.translate(
+                        "gt.util.info_energy",
+                        EnumChatFormatting.GREEN + formatNumbers(energyContainer.getStoredEU())
+                            + EnumChatFormatting.RESET,
+                        EnumChatFormatting.YELLOW + formatNumbers(energyContainer.getEUCapacity())
+                            + EnumChatFormatting.RESET));
             }
         } catch (Throwable e) {
-            tList.add("§cAn exception was thrown while fetching this device's energy info.§r");
+            tList.add(
+                EnumChatFormatting.AQUA + GTUtility.translate("gt.util.exception_energy") + EnumChatFormatting.RESET);
             if (D1) e.printStackTrace(GTLog.err);
         }
     }
@@ -3631,7 +3625,8 @@ public class GTUtility {
                 if (tString != null && !tString.equals(E)) tList.add(tString);
             }
         } catch (Throwable e) {
-            tList.add("§cAn exception was thrown while fetching this device's covers.§r");
+            tList.add(
+                EnumChatFormatting.AQUA + GTUtility.translate("gt.util.exception_cover") + EnumChatFormatting.RESET);
             if (D1) e.printStackTrace(GTLog.err);
         }
         return rEUAmount;
@@ -3641,9 +3636,12 @@ public class GTUtility {
         int rEUAmount = 0;
         try {
             if (tTileEntity instanceof IMachineProgress progress) {
+
                 if (progress.isAllowedToWork() && !progress.hasThingsToDo()) {
-                    tList.add(EnumChatFormatting.RED + "Disabled." + EnumChatFormatting.RESET);
+                    tList.add(
+                        EnumChatFormatting.RED + GTUtility.translate("gt.util.disabled") + EnumChatFormatting.RESET);
                 }
+
                 if (progress.wasShutdown() && isStringValid(
                     progress.getLastShutDownReason()
                         .getDisplayString())) {
@@ -3651,19 +3649,22 @@ public class GTUtility {
                         progress.getLastShutDownReason()
                             .getDisplayString());
                 }
+
                 rEUAmount += 400;
                 int tValue = 0;
-                if (0 < (tValue = progress.getMaxProgress())) tList.add(
-                    GTUtility.trans("178", "Progress/Load: ") + EnumChatFormatting.GREEN
-                        + formatNumbers(progress.getProgress())
-                        + EnumChatFormatting.RESET
-                        + " / "
-                        + EnumChatFormatting.YELLOW
-                        + formatNumbers(tValue)
-                        + EnumChatFormatting.RESET);
+
+                if ((tValue = progress.getMaxProgress()) > 0) {
+                    tList.add(
+                        GTUtility.translate(
+                            "gt.util.progress_load",
+                            EnumChatFormatting.GREEN + formatNumbers(progress.getProgress()) + EnumChatFormatting.RESET,
+                            EnumChatFormatting.YELLOW + formatNumbers(tValue) + EnumChatFormatting.RESET));
+                }
+
             }
         } catch (Throwable e) {
-            tList.add("§cAn exception was thrown while fetching this device's progress.§r");
+            tList.add(
+                EnumChatFormatting.AQUA + GTUtility.translate("gt.util.exception_progress") + EnumChatFormatting.RESET);
             if (D1) e.printStackTrace(GTLog.err);
         }
         return rEUAmount;
@@ -3674,11 +3675,12 @@ public class GTUtility {
         try {
             if (tTileEntity instanceof IUpgradableMachine upgradableMachine) {
                 rEUAmount += 500;
-                if (upgradableMachine.isMuffled()) tList
-                    .add(EnumChatFormatting.GREEN + GTUtility.trans("177", "Is Muffled") + EnumChatFormatting.RESET);
+                if (upgradableMachine.isMuffled()) tList.add(
+                    EnumChatFormatting.GREEN + GTUtility.translate("gt.util.has_muffler") + EnumChatFormatting.RESET);
             }
         } catch (Throwable e) {
-            tList.add("§cAn exception was thrown while fetching this device's upgrades.§r");
+            tList.add(
+                EnumChatFormatting.AQUA + GTUtility.translate("gt.util.exception_upgrade") + EnumChatFormatting.RESET);
             if (D1) e.printStackTrace(GTLog.err);
         }
         return rEUAmount;
@@ -3688,19 +3690,20 @@ public class GTUtility {
         int rEUAmount = 0;
         try {
             if (tTileEntity instanceof ic2.api.tile.IEnergyStorage storage) {
+
                 rEUAmount += 200;
+
                 tList.add(
-                    GTUtility.trans("176", "Contained Energy: ") + EnumChatFormatting.YELLOW
-                        + formatNumbers(storage.getStored())
-                        + EnumChatFormatting.RESET
-                        + " EU / "
-                        + EnumChatFormatting.YELLOW
-                        + formatNumbers(storage.getCapacity())
-                        + EnumChatFormatting.RESET
-                        + " EU");
+                    GTUtility.translate(
+                        "gt.util.contained_energy",
+                        EnumChatFormatting.YELLOW + formatNumbers(storage.getStored()) + EnumChatFormatting.RESET,
+                        EnumChatFormatting.YELLOW + formatNumbers(storage.getCapacity()) + EnumChatFormatting.RESET));
+
             }
         } catch (Throwable e) {
-            tList.add("§cAn exception was thrown while fetching this device's IC2 energy info.§r");
+            tList.add(
+                EnumChatFormatting.AQUA + GTUtility.translate("gt.util.exception_ic2_energy_info")
+                    + EnumChatFormatting.RESET);
             if (D1) e.printStackTrace(GTLog.err);
         }
         return rEUAmount;
@@ -3712,12 +3715,14 @@ public class GTUtility {
             if (tTileEntity instanceof ic2.api.energy.tile.IEnergyConductor conductor) {
                 rEUAmount += 200;
                 tList.add(
-                    GTUtility.trans("175", "Conduction Loss: ") + EnumChatFormatting.YELLOW
+                    GTUtility.translate("gt.util.conduction_loss") + EnumChatFormatting.YELLOW
                         + conductor.getConductionLoss()
                         + EnumChatFormatting.RESET);
             }
         } catch (Throwable e) {
-            tList.add("§cAn exception was thrown while fetching this device's EU conduction info.§r");
+            tList.add(
+                EnumChatFormatting.AQUA + GTUtility.translate("gt.util.exception_eu_conduction")
+                    + EnumChatFormatting.RESET);
             if (D1) e.printStackTrace(GTLog.err);
         }
         return rEUAmount;
@@ -3727,25 +3732,30 @@ public class GTUtility {
         int rEUAmount = 0;
         try {
             if (tTileEntity instanceof ic2.api.tile.IWrenchable wrenchable) {
+
                 rEUAmount += 100;
+
+                // Facing and wrench drop chance
                 tList.add(
-                    GTUtility.trans("171", "Facing: ") + EnumChatFormatting.GREEN
-                        + wrenchable.getFacing()
-                        + EnumChatFormatting.RESET
-                        + GTUtility.trans("172", " / Chance: ")
-                        + EnumChatFormatting.YELLOW
-                        + (wrenchable.getWrenchDropRate() * 100)
-                        + EnumChatFormatting.RESET
-                        + "%");
+                    GTUtility.translate(
+                        "gt.util.facing_chance",
+                        EnumChatFormatting.GREEN + String.valueOf(wrenchable.getFacing()) + EnumChatFormatting.RESET,
+                        EnumChatFormatting.YELLOW + formatNumbers(wrenchable.getWrenchDropRate() * 100)
+                            + EnumChatFormatting.RESET));
+
+                // Can the player remove it with a wrench?
                 tList.add(
                     wrenchable.wrenchCanRemove(aPlayer)
-                        ? EnumChatFormatting.GREEN + GTUtility.trans("173", "You can remove this with a Wrench")
+                        ? EnumChatFormatting.GREEN + GTUtility.translate("gt.util.remove_wrench_yes")
                             + EnumChatFormatting.RESET
-                        : EnumChatFormatting.RED + GTUtility.trans("174", "You can NOT remove this with a Wrench")
+                        : EnumChatFormatting.RED + GTUtility.translate("gt.util.remove_wrench_no")
                             + EnumChatFormatting.RESET);
+
             }
         } catch (Throwable e) {
-            tList.add("§cAn exception was thrown while fetching this device's IC@ wrenchability.§r");
+            tList.add(
+                EnumChatFormatting.AQUA + GTUtility.translate("gt.util.exception_ic2_wrenchability")
+                    + EnumChatFormatting.RESET);
             if (D1) e.printStackTrace(GTLog.err);
         }
         return rEUAmount;
@@ -3759,13 +3769,15 @@ public class GTUtility {
                 if (tAlignment != null) {
                     rEUAmount += 100;
                     tList.add(
-                        GTUtility.trans("219", "Extended Facing: ") + EnumChatFormatting.GREEN
+                        GTUtility.translate("gt.util.extend_facing") + EnumChatFormatting.GREEN
                             + tAlignment.getExtendedFacing()
                             + EnumChatFormatting.RESET);
                 }
             }
         } catch (Throwable e) {
-            tList.add("§cAn exception was thrown while fetching this device's alignment info.§r");
+            tList.add(
+                EnumChatFormatting.AQUA + GTUtility.translate("gt.util.exception_alignment_info")
+                    + EnumChatFormatting.RESET);
             if (D1) e.printStackTrace(GTLog.err);
         }
         return rEUAmount;
@@ -3775,22 +3787,28 @@ public class GTUtility {
         int rEUAmount = 0;
         try {
             if (tTileEntity instanceof ic2.api.reactor.IReactor reactor) {
+
                 rEUAmount += 500;
+
+                // Heat / Max Heat
                 tList.add(
-                    GTUtility.trans("168", "Heat: ") + EnumChatFormatting.GREEN
-                        + formatNumbers(reactor.getHeat())
-                        + EnumChatFormatting.RESET
-                        + " / "
-                        + EnumChatFormatting.YELLOW
-                        + formatNumbers(reactor.getMaxHeat())
-                        + EnumChatFormatting.RESET);
+                    GTUtility.translate(
+                        "gt.util.heat",
+                        EnumChatFormatting.GREEN + formatNumbers(reactor.getHeat()) + EnumChatFormatting.RESET,
+                        EnumChatFormatting.YELLOW + formatNumbers(reactor.getMaxHeat()) + EnumChatFormatting.RESET));
+
+                // Heat Effect Modifier (HEM)
                 tList.add(
-                    GTUtility.trans("169", "HEM: ") + EnumChatFormatting.YELLOW
-                        + reactor.getHeatEffectModifier()
-                        + EnumChatFormatting.RESET);
+                    GTUtility.translate(
+                        "gt.util.hem",
+                        EnumChatFormatting.YELLOW + String.valueOf(reactor.getHeatEffectModifier())
+                            + EnumChatFormatting.RESET));
+
             }
         } catch (Throwable e) {
-            tList.add("§cAn exception was thrown while fetching this reactor's info.§r");
+            tList.add(
+                EnumChatFormatting.AQUA + GTUtility.translate("gt.util.exception_reactor_info")
+                    + EnumChatFormatting.RESET);
             if (D1) e.printStackTrace(GTLog.err);
         }
         return rEUAmount;
@@ -5385,12 +5403,12 @@ public class GTUtility {
         double perHour = perSecond * 3_600;
         double perDay = perSecond * 86_400;
 
-        final String amountText = translateToLocal("GT5U.gui.text.amount") + " ";
-        final String perTickText = translateToLocal("GT5U.gui.text.per_tick") + " ";
-        final String perSecondText = translateToLocal("GT5U.gui.text.per_second") + " ";
-        final String perMinuteText = translateToLocal("GT5U.gui.text.per_minute") + " ";
-        final String perHourText = translateToLocal("GT5U.gui.text.per_hour") + " ";
-        final String perDayText = translateToLocal("GT5U.gui.text.per_day") + " ";
+        final String amountText = translateToLocal("gt.util.amount") + " ";
+        final String perTickText = translateToLocal("gt.util.per_tick") + " ";
+        final String perSecondText = translateToLocal("gt.util.per_second") + " ";
+        final String perMinuteText = translateToLocal("gt.util.per_minute") + " ";
+        final String perHourText = translateToLocal("gt.util.per_hour") + " ";
+        final String perDayText = translateToLocal("gt.util.per_day") + " ";
 
         final Function<Double, Double> roundNumber = (number) -> {
             if (Math.abs(number) < 10) {
@@ -5401,84 +5419,91 @@ public class GTUtility {
         };
 
         if (isFormatShortened) {
-            ret.append(" (");
-            ret.append(EnumChatFormatting.GRAY);
-            ret.append(perSecond > 1 ? formatShortenedLong((long) perSecond) : df.format(perSecond));
-            ret.append("/s");
-            ret.append(EnumChatFormatting.WHITE);
-            ret.append(")");
+            ret.append(
+                GTUtility.translate(
+                    "gt.util.rate_shortened",
+                    EnumChatFormatting.GRAY
+                        + (perSecond > 1 ? formatShortenedLong((long) perSecond) : df.format(perSecond))
+                        + EnumChatFormatting.RESET));
         } else {
-            ret.append(EnumChatFormatting.RESET);
+            // Amount line
             ret.append(
-                amountText + EnumChatFormatting.GOLD
-                    + formatNumbers(amount)
-                    + (isLiquid ? "L" : "")
-                    + EnumChatFormatting.RESET);
+                GTUtility.translate(
+                    "gt.util.amount_line",
+                    amountText,
+                    EnumChatFormatting.GOLD + formatNumbers(amount)
+                        + (isLiquid ? GTUtility.translate("gt.util.liters") : "")
+                        + EnumChatFormatting.RESET));
             ret.append("\n");
+
+            // Per-tick line
+            String perTickSuffix = perTick > 1_000_000
+                ? GTUtility.translate("gt.util.high_value_brackets", formatShortenedLong((long) perTick))
+                : "";
             ret.append(
-                perTickText + EnumChatFormatting.GOLD
-                    + formatNumbers(roundNumber.apply(perTick))
-                    + (isLiquid ? "L" : "")
-                    + (perSecond > 1_000_000
-                        ? EnumChatFormatting.WHITE + " ["
-                            + EnumChatFormatting.GRAY
-                            + formatShortenedLong((long) perTick)
-                            + EnumChatFormatting.WHITE
-                            + "]"
-                        : "")
-                    + EnumChatFormatting.RESET);
+                GTUtility.translate(
+                    "gt.util.per_tick_line",
+                    perTickText,
+                    EnumChatFormatting.GOLD + formatNumbers(roundNumber.apply(perTick))
+                        + (isLiquid ? GTUtility.translate("gt.util.liters") : "")
+                        + EnumChatFormatting.RESET,
+                    perTickSuffix));
             ret.append("\n");
+
+            // Per-second line
+            String perSecondSuffix = perSecond > 1_000_000
+                ? GTUtility.translate("gt.util.high_value_brackets", formatShortenedLong((long) perSecond))
+                : "";
             ret.append(
-                perSecondText + EnumChatFormatting.GOLD
-                    + formatNumbers(roundNumber.apply(perSecond))
-                    + (isLiquid ? "L" : "")
-                    + (perSecond > 1_000_000
-                        ? EnumChatFormatting.WHITE + " ["
-                            + EnumChatFormatting.GRAY
-                            + formatShortenedLong((long) perSecond)
-                            + EnumChatFormatting.WHITE
-                            + "]"
-                        : "")
-                    + EnumChatFormatting.RESET);
+                GTUtility.translate(
+                    "gt.util.per_second_line",
+                    perSecondText,
+                    EnumChatFormatting.GOLD + formatNumbers(roundNumber.apply(perSecond))
+                        + (isLiquid ? GTUtility.translate("gt.util.liters") : "")
+                        + EnumChatFormatting.RESET,
+                    perSecondSuffix));
             ret.append("\n");
+
+            // Per-minute line
+            String perMinuteSuffix = perMinute > 1_000_000
+                ? GTUtility.translate("gt.util.high_value_brackets", formatShortenedLong((long) perMinute))
+                : "";
             ret.append(
-                perMinuteText + EnumChatFormatting.GOLD
-                    + formatNumbers(roundNumber.apply(perMinute))
-                    + (isLiquid ? "L" : "")
-                    + (perMinute > 1_000_000
-                        ? EnumChatFormatting.WHITE + " ["
-                            + EnumChatFormatting.GRAY
-                            + formatShortenedLong((long) perMinute)
-                            + EnumChatFormatting.WHITE
-                            + "]"
-                        : "")
-                    + EnumChatFormatting.RESET);
+                GTUtility.translate(
+                    "gt.util.per_minute_line",
+                    perMinuteText,
+                    EnumChatFormatting.GOLD + formatNumbers(roundNumber.apply(perMinute))
+                        + (isLiquid ? GTUtility.translate("gt.util.liters") : "")
+                        + EnumChatFormatting.RESET,
+                    perMinuteSuffix));
             ret.append("\n");
+
+            // Per-hour line
+            String perHourSuffix = perHour > 1_000_000
+                ? GTUtility.translate("gt.util.high_value_brackets", formatShortenedLong((long) perHour))
+                : "";
             ret.append(
-                perHourText + EnumChatFormatting.GOLD
-                    + formatNumbers(roundNumber.apply(perHour))
-                    + (isLiquid ? "L" : "")
-                    + (perHour > 1_000_000
-                        ? EnumChatFormatting.WHITE + " ["
-                            + EnumChatFormatting.GRAY
-                            + formatShortenedLong((long) perHour)
-                            + EnumChatFormatting.WHITE
-                            + "]"
-                        : "")
-                    + EnumChatFormatting.RESET);
+                GTUtility.translate(
+                    "gt.util.per_hour_line",
+                    perHourText,
+                    EnumChatFormatting.GOLD + formatNumbers(roundNumber.apply(perHour))
+                        + (isLiquid ? GTUtility.translate("gt.util.liters") : "")
+                        + EnumChatFormatting.RESET,
+                    perHourSuffix));
             ret.append("\n");
+
+            // Per-day line
+            String perDaySuffix = perDay > 1_000_000
+                ? GTUtility.translate("gt.util.high_value_brackets", formatShortenedLong((long) perDay))
+                : "";
             ret.append(
-                perDayText + EnumChatFormatting.GOLD
-                    + formatNumbers(roundNumber.apply(perDay))
-                    + (isLiquid ? "L" : "")
-                    + (perDay > 1_000_000
-                        ? EnumChatFormatting.WHITE + " ["
-                            + EnumChatFormatting.GRAY
-                            + formatShortenedLong((long) perDay)
-                            + EnumChatFormatting.WHITE
-                            + "]"
-                        : "")
-                    + EnumChatFormatting.RESET);
+                GTUtility.translate(
+                    "gt.util.per_day_line",
+                    perDayText,
+                    EnumChatFormatting.GOLD + formatNumbers(roundNumber.apply(perDay))
+                        + (isLiquid ? GTUtility.translate("gt.util.liters") : "")
+                        + EnumChatFormatting.RESET,
+                    perDaySuffix));
         }
         return ret.toString();
     }
