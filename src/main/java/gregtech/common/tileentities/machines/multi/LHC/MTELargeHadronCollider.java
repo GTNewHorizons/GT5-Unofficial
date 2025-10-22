@@ -3,14 +3,8 @@ package gregtech.common.tileentities.machines.multi.LHC;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
-import static gregtech.api.enums.HatchElement.InputBus;
-import static gregtech.api.enums.HatchElement.InputHatch;
-import static gregtech.api.enums.HatchElement.Maintenance;
-import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE_GLOW;
@@ -20,25 +14,31 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTStructureUtility.ofSolenoidCoil;
 import static java.lang.Math.max;
+import static java.lang.Math.min;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Nullable;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.blocks.BlockCasings13;
-import gregtech.common.tileentities.machines.multi.MTEIndustrialBrewery;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -2412,7 +2412,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 .atLeast(Energy, ExoticEnergy)
                 .casingIndex(((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(10))
                 .dot(1)
-                .buildAndChain(GregTechAPI.sBlockCasings13,10)
+                .buildAndChain(GregTechAPI.sBlockCasings13, 10)
         )
         .addElement('A', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
         .addElement('D', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 0))
@@ -2582,11 +2582,11 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-        int colorIndex, boolean aActive, boolean redstoneLevel) {
+                                 int colorIndex, boolean aActive, boolean redstoneLevel) {
         ITexture[] rTexture;
         if (side == aFacing) {
             if (aActive) {
-                rTexture = new ITexture[] {
+                rTexture = new ITexture[]{
                     Textures.BlockIcons
                         .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings13, 10)),
                     TextureFactory.builder()
@@ -2597,9 +2597,9 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                         .addIcon(OVERLAY_FRONT_MULTI_BREWERY_ACTIVE_GLOW) // todo: new texture
                         .extFacing()
                         .glow()
-                        .build() };
+                        .build()};
             } else {
-                rTexture = new ITexture[] {
+                rTexture = new ITexture[]{
                     Textures.BlockIcons
                         .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings13, 10)),
                     TextureFactory.builder()
@@ -2610,11 +2610,11 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                         .addIcon(OVERLAY_FRONT_MULTI_BREWERY_GLOW) // todo: new texture
                         .extFacing()
                         .glow()
-                        .build() };
+                        .build()};
             }
         } else {
-            rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings13, 10)) };
+            rTexture = new ITexture[]{Textures.BlockIcons
+                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings13, 10))};
         }
         return rTexture;
     }
@@ -2713,7 +2713,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
         gravEnabled = checkPiece(LHCModules.Grav.structurePiece, -47, -1, -61);
 
         return checkPiece(STRUCTURE_PIECE_MAIN, 54, 4, 1)
-            && ((mExoticEnergyHatches.size()==1) ^ (mEnergyHatches.size()==1));
+            && ((mExoticEnergyHatches.size() == 1) ^ (mEnergyHatches.size() == 1));
 
     }
 
@@ -2729,24 +2729,26 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
     }
 
     private String clientLocale = "en_US";
+
     @Override
     public String[] getInfoData() {
 
         BeamLinePacket dataPacket = new BeamLinePacket(cachedOutputParticle);
 
-        return new String[] {
+        return new String[]{
             translateToLocalFormatted("tt.keyword.Content", this.clientLocale) + ": "
                 + EnumChatFormatting.AQUA
                 + (dataPacket != null ? dataPacket.getContentString() : 0),
             translateToLocalFormatted("tt.keyword.PacketHistory", this.clientLocale) + ": "
                 + EnumChatFormatting.RED
-                + (dataPacket != null ? dataPacket.getTraceSize() : 0), };
+                + (dataPacket != null ? dataPacket.getTraceSize() : 0),};
     }
 
 
     public final float MAXIMUM_PARTICLE_ENERGY_keV = 2_000_000_000; // 2TeV max
-    public final double keVEURatio = 0.1*1000; // 1 eV = 0.1 EU, so 1 keV = 100 EU
-    public final int ZPM = 131072; // todo use any voltage hatch
+    public final double keVEURatio = 0.1 / 1000; // 1 EU = 0.1 eV, so 1 EU = 0.1/1000 keV
+    public final float rateScaleFactor = 1.1F;
+    public final int maxAccelerationCycles = 10;
     public int playerTargetBeamEnergykeV = 1_000_000; // todo parse player input
 
     //todo: seriously test values, since unit conversion between eV, keV, MeV is a bit of a mess
@@ -2759,27 +2761,36 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
         float outEnergy = inputEnergy;
         int outRate = inputRate;
 
-        if (inputEnergy <= MAXIMUM_PARTICLE_ENERGY_keV) { // todo distinguish between maximum energy and player goal
-            outEnergy += (float) (Math.pow(accelerationCycleCounter+1,2) * inputRate *
-                this.mMaxProgresstime * ZPM * keVEURatio);
-            //todo replace ZPM with hatch voltage tier
+        long machineVoltage = getAverageInputVoltage();
+
+        if (inputEnergy <= playerTargetBeamEnergykeV) {
+            outEnergy += (float) (Math.pow(accelerationCycleCounter + 1, 2) * this.mMaxProgresstime * machineVoltage * keVEURatio);
+            if (outEnergy >= MAXIMUM_PARTICLE_ENERGY_keV) {
+                return new BeamInformation(MAXIMUM_PARTICLE_ENERGY_keV, outRate, particle.getParticleId(), particle.getFocus());
+                // todo: or should this crash the machine instead?
+            }
+
+        } else {
+            outRate = (int) Math.ceil(outRate * rateScaleFactor);
         }
-        //todo add logic for what happens if player goal is met
 
         return new BeamInformation(outEnergy,
-            outRate,particle.getParticleId(),particle.getFocus());
+            outRate, particle.getParticleId(), particle.getFocus());
 
     }
 
-    public long calculateEnergyCostAccelerator(BeamInformation particle){
+    public long calculateEnergyCostAccelerator(BeamInformation particle) {
+        long machineVoltage = getAverageInputVoltage();
 
-        return (long) (ZPM * Math.pow(accelerationCycleCounter+1, 2) * particle.getRate()); // counter starts at 0, so +1
-        //todo replace ZPM with hatch voltage tier
-
+        return (long) (machineVoltage * Math.pow(min(accelerationCycleCounter + 1, maxAccelerationCycles), 2)
+            * particle.getRate()); // counter starts at 0, so +1
     }
 
-    public long calculateEnergyCostCollider(){
-        return ZPM; //todo make gooder
+    public long calculateEnergyCostCollider() {
+
+        long machineVoltage = getAverageInputVoltage();
+
+        return machineVoltage; //todo make gooder
     }
 
     @Override
@@ -2793,63 +2804,62 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
     BeamInformation initialParticleInfo = null;
     BeamInformation cachedOutputParticle = null;
     int accelerationCycleCounter = 0;
-    final int MAX_ACCELERATION_CYCLES = 10;
+    final int MAXIMUM_ACCELERATION_CYCLES = 10;
+    int playerTargetAccelerationCycles = 8; // todo require player input
 
     @NotNull
     @Override
     public CheckRecipeResult checkProcessing() {
 
         BeamInformation inputInfo = this.getInputInformation();
+
         if (inputInfo == null) return CheckRecipeResultRegistry.NO_RECIPE;
 
-        if (machineMode == MACHINEMODE_ACCELERATOR){
+        if (machineMode == MACHINEMODE_ACCELERATOR) {
 
             this.mEfficiency = 10000;
             this.mEfficiencyIncrease = 10000;
             this.mMaxProgresstime = TickTime.SECOND;
 
-            if (cachedOutputParticle == null){
+            if (cachedOutputParticle == null) {
                 // assign cachedOutputParticle, which will be accelerated in consequent processing cycles
                 // also assign initialParticleInfo, which inputInfo is compared against every cycle
                 cachedOutputParticle = inputInfo.copy();
                 initialParticleInfo = inputInfo.copy();
                 accelerationCycleCounter = 0;
-            }
-            else{
+            } else {
                 // if cachedOutputParticle exists, then apply acceleration cycle logic
-                if (!initialParticleInfo.isEqual(inputInfo)){
+                if (!initialParticleInfo.isEqual(inputInfo)) {
                     // if the input beam is ever modified or interrupted, crash the LHC
                     stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.noaccel"));
                     // todo: new shutdown reason
                     return CheckRecipeResultRegistry.NO_RECIPE;
-                }
-                else {
+                } else {
 
-                    if (accelerationCycleCounter < MAX_ACCELERATION_CYCLES){
-                        cachedOutputParticle = accelerateParticle(cachedOutputParticle);
-                        accelerationCycleCounter += 1;
-                    }
-
-                    long energyCost = calculateEnergyCostAccelerator(cachedOutputParticle);
-
-                    if (!drainEnergyInput(energyCost)) {
+                    lEUt = calculateEnergyCostAccelerator(cachedOutputParticle);
+                    // todo fix waila
+                    if (!drainEnergyInput(20*lEUt)) { // *20 because CheckRecipeResult is every second
                         stopMachine(ShutDownReasonRegistry.POWER_LOSS);
                         endRecipeProcessing();
-                        return CheckRecipeResultRegistry.insufficientPower(energyCost);
+                        return CheckRecipeResultRegistry.insufficientPower(lEUt);
+                    }
+
+                    if (accelerationCycleCounter < Math.min(playerTargetAccelerationCycles,MAXIMUM_ACCELERATION_CYCLES)) {
+                        cachedOutputParticle = accelerateParticle(cachedOutputParticle);
+                        accelerationCycleCounter += 1;
+                    } else {
+                        machineMode = MACHINEMODE_COLLIDER;
                     }
                 }
             }
-        }
+        } else {
 
-
-        else {
-
-            float inputEnergy = inputInfo.getEnergy();
-            Particle inputParticle = Particle.getParticleFromId(inputInfo.getParticleId());
-            int inputRate = inputInfo.getRate();
+            float inputEnergy = cachedOutputParticle.getEnergy();
+            Particle inputParticle = Particle.getParticleFromId(cachedOutputParticle.getParticleId());
+            int inputRate = cachedOutputParticle.getRate();
 
             if (inputEnergy == 0) return CheckRecipeResultRegistry.NO_RECIPE;
-            float inputFocus = inputInfo.getFocus();
+            float inputFocus = cachedOutputParticle.getFocus();
 
             if (!inputParticle.canAccelerate()) {
                 stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.noaccel"));
@@ -2859,14 +2869,6 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
             this.mEfficiency = 10000;
             this.mEfficiencyIncrease = 10000;
             this.mMaxProgresstime = TickTime.SECOND;
-
-            // todo: // energy this.lEUt = -GTValues.VP[GTUtility.getTier(this.getAverageInputVoltage())] *
-            // this.getMaxInputAmps();
-
-            // todo: same^ // long voltage = this.getMaxInputEu();
-            // todo: same^ // float voltageFactor = getVoltageFactor(voltage);
-            // todo: same^ // this.outputEnergy = (float) calculateOutputParticleEnergy(voltage, inputEnergy,
-            // this.antennaeTier);
 
             // Generate output particle:
 
@@ -2890,6 +2892,12 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
             }
 
             outputPacketAfterRecipe();
+            // todo fix waila
+            if (!drainEnergyInput(20*lEUt)) { // *20 because CheckRecipeResult is every second
+                stopMachine(ShutDownReasonRegistry.POWER_LOSS);
+                endRecipeProcessing();
+                return CheckRecipeResultRegistry.insufficientPower(lEUt);
+            }
         }
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
@@ -2910,7 +2918,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
         for (int i = 0; i < n; i++) {
             Particle p = Particle.getParticleFromId(i);
             double thresholdMeV = max(p.getMass(), 0.5); // massless particles have a threshold of 0.5 (arbitrary).
-                                                         // massive particles have a threshold equal to their rest mass.
+            // massive particles have a threshold equal to their rest mass.
             double w = (collisionEnergyMeV < thresholdMeV) ? 0.0 : p.getLHCWeight();
 
             if (w < 0 || Double.isNaN(w) || Double.isInfinite(w)) w = 0.0;
@@ -2962,6 +2970,14 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
     }
 
     @Override
+    public void onDisableWorking() {
+        initialParticleInfo = null;
+        cachedOutputParticle = null;
+        accelerationCycleCounter = 0;
+        super.onDisableWorking();
+    }
+
+    @Override
     protected boolean forceUseMui2() {
         return true;
     }
@@ -2970,7 +2986,5 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
     protected @NotNull MTEMultiBlockBaseGui getGui() {
         return new MTELargeHadronColliderGui(this);
     }
-
-
 
 }

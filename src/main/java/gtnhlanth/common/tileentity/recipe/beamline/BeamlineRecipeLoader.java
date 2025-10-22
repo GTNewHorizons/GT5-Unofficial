@@ -129,13 +129,13 @@ public class BeamlineRecipeLoader {
          * PROTON
          */
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Hydrogen.getCells(1))
+            .fluidInputs(Materials.Hydrogen.getGas(1000))
             .metadata(
                 SOURCE_CHAMBER_METADATA,
                 SourceChamberMetadata.builder()
                     .particleID(Particle.PROTON.ordinal())
-                    .rate(100)
-                    .energy(1000000, 0.3f)
+                    .rate(10)
+                    .energy(100_000, 0.3f)
                     .focus(99)
                     .build())
             .duration(20)
