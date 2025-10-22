@@ -415,9 +415,13 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
     private int uiSteamStored = 0;
     private int uiSteamCapacity = 0;
 
+    // tierMachine isn't synced to client. Adding a syncHandler for it will not work because
+    // You will still get one opening with the incorrect theme, so getThemeTier it is
+    protected abstract int getThemeTier();
+
     @Override
     protected GTGuiTheme getGuiTheme() {
-        return GTGuiThemes.BRONZE;
+        return getThemeTier() != 2 ? GTGuiThemes.BRONZE : GTGuiThemes.STEEL;
     }
 
     @Override

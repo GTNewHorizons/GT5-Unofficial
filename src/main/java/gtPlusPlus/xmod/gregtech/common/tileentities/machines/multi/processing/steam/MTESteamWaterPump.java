@@ -87,7 +87,7 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
 
     private static final int BASE_STEAM_PER_SECOND = 1_500;
 
-    private int tierMachine = -1;
+    private int mSetTier = -1;
 
     private float currentHumidity;
 
@@ -117,7 +117,7 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
     }
 
     private int calculateFinalWaterOutput() {
-        return (int) ((currentHumidity * BASE_WATER_PER_SECOND) * tierMachine);
+        return (int) ((currentHumidity * BASE_WATER_PER_SECOND) * mSetTier);
     }
 
     @Override
@@ -139,7 +139,7 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
                             { " A ", "   ", "A A", " A " },
                             { "C~C", "CCC", "CCC", "CCC" } }))
                 .addElement('A', ofBlocksTiered(MTESteamWaterPump::getFrameTier, ImmutableList.of(Pair.of(GregTechAPI.sBlockFrames, Materials.Bronze.mMetaItemSubID),
-                    Pair.of(GregTechAPI.sBlockFrames, Materials.Steel.mMetaItemSubID)), -1, (pump, tier) -> pump.tierMachine = tier , pump -> pump.tierMachine))
+                    Pair.of(GregTechAPI.sBlockFrames, Materials.Steel.mMetaItemSubID)), -1, (pump, tier) -> pump.mSetTier = tier , pump -> pump.mSetTier))
                 .addElement(
                     'C',
                         ofChain(
@@ -198,7 +198,7 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
 
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCountCasing = 0;
-        tierMachine = -1;
+        mSetTier = -1;
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) {
             return false;
@@ -349,19 +349,19 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setFloat("humidity", currentHumidity * 100);
-        tag.setInteger("mSetTier", tierMachine);
+        tag.setInteger("mSetTier", mSetTier);
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setInteger("mSetTier", tierMachine);
+        aNBT.setInteger("mSetTier", mSetTier);
     }
 
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        tierMachine = aNBT.getInteger("mSetTier");
+        mSetTier = aNBT.getInteger("mSetTier");
     }
 
     @Override
@@ -375,4 +375,8 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
         return SoundResource.GT_MACHINES_WATER_PUMP_LOOP;
     }
 
+    @Override
+    protected int getThemeTier() {
+        return mSetTier;
+    }
 }
