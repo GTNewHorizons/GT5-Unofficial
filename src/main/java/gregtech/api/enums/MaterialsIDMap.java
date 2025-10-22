@@ -305,7 +305,7 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(509, Materials.Amethyst);
         r(510, Materials.Opal);
         r(511, Materials.Jasper);
-        r(512, Materials.Spinel);
+        r(512, Materials.FoolsRuby);
         r(513, Materials.BlueTopaz);
         r(514, Materials.Amber);
         r(515, Materials.Dilithium);
