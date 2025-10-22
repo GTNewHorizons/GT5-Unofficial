@@ -566,7 +566,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setMaxParallel(getTrueParallel());
-        if (mExoticEnergyHatches.isEmpty()) {
+        if (mExoticEnergyHatches.isEmpty() && !debugEnergyPresent) {
             logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
             logic.setAvailableAmperage(1L);
         } else super.setProcessingLogicPower(logic);
