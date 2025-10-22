@@ -15011,7 +15011,7 @@ public class MaterialsInit {
         Materials.DTCC = loadDTCC();
         Materials.DTPC = loadDTPC();
         Materials.DTRC = loadDTRC();
-        Materials.DimensionallyTranscendentExoticCatalyst = loadDimensionallyTranscendentExoticCatalyst();
+        Materials.DTEC = loadDTEC();
         Materials.DimensionallyTranscendentStellarCatalyst = loadDimensionallyTranscendentStellarCatalyst();
         Materials.ExcitedDTCC = loadExcitedDTCC();
         Materials.ExcitedDTPC = loadExcitedDTPC();
@@ -15094,7 +15094,7 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadDimensionallyTranscendentExoticCatalyst() {
+    private static Materials loadDTEC() {
         return new MaterialBuilder().setName("DimensionallyTranscendentExoticCatalyst")
             .setDefaultLocalName("Dimensionally Transcendent Exotic Catalyst")
             .setIconSet(TextureSet.SET_FLUID)
