@@ -6477,23 +6477,6 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadLiquidAir() {
-        return new MaterialBuilder().setName("LiquidAir")
-            .setDefaultLocalName("Liquid Air")
-            .setIconSet(TextureSet.SET_FLUID)
-            .setColor(Dyes.dyeLightBlue)
-            .setARGB(0xf0a9d0f5)
-            .addCell()
-            .setMeltingPoint(4)
-            .addCentrifugeRecipe()
-            .addMaterial(Materials.Nitrogen, 40)
-            .addMaterial(Materials.Oxygen, 11)
-            .addMaterial(Materials.Argon, 1)
-            .addMaterial(Materials.NobleGases, 1)
-            .addSubTag(SubTag.TRANSPARENT)
-            .constructMaterial();
-    }
-
     private static Materials loadLiquidNitrogen() {
         return new MaterialBuilder().setName("LiquidNitrogen")
             .setDefaultLocalName("Liquid Nitrogen")
@@ -10471,6 +10454,23 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
             .removeOrePrefix(OrePrefixes.lens)
+            .constructMaterial();
+    }
+
+    private static Materials loadLiquidAir() {
+        return new MaterialBuilder().setName("LiquidAir")
+            .setDefaultLocalName("Liquid Air")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLightBlue)
+            .setARGB(0xf0a9d0f5)
+            .addCell()
+            .setMeltingPoint(4)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Nitrogen, 40)
+            .addMaterial(Materials.Oxygen, 11)
+            .addMaterial(Materials.Argon, 1)
+            .addMaterial(Materials.NobleGases, 1)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
