@@ -1540,7 +1540,7 @@ public class RecipeLoader2 {
                 GGMaterial.metastableOganesson.getMolten(8 * INGOTS),
                 GGMaterial.preciousMetalAlloy.getMolten(16 * INGOTS),
                 Materials.SpaceTime.getMolten(2 * INGOTS),
-                Materials.DimensionallyTranscendentResidue.getFluid(5_000))
+                Materials.DTR.getFluid(5_000))
             .fluidOutputs(GGMaterial.shirabon.getMolten(1 * INGOTS))
             .duration(10 * SECONDS)
             .eut(1_500_000_000)

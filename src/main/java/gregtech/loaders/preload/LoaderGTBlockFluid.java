@@ -1387,9 +1387,9 @@ public class LoaderGTBlockFluid implements Runnable {
             .withLocalizedName("Dimensionally Transcendent Residue")
             .withStateAndTemperature(LIQUID, 2000000000)
             .buildAndRegister()
-            .configureMaterials(Materials.DimensionallyTranscendentResidue)
+            .configureMaterials(Materials.DTR)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials.DimensionallyTranscendentResidue, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.DTR, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("ExcitedDTCC")
             .withLocalizedName("Excited Dimensionally Transcendent Crude Catalyst")

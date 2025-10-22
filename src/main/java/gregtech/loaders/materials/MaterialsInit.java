@@ -15018,7 +15018,7 @@ public class MaterialsInit {
         Materials.ExcitedDTRC = loadExcitedDTRC();
         Materials.ExcitedDTEC = loadExcitedDTEC();
         Materials.ExcitedDTSC = loadExcitedDTSC();
-        Materials.DimensionallyTranscendentResidue = loadDimensionallyTranscendentResidue();
+        Materials.DTR = loadDTR();
         Materials.SpaceTime = loadSpaceTime();
         Materials.TranscendentMetal = loadTranscendentMetal();
         Materials.MagnetohydrodynamicallyConstrainedStarMatter = loadMagnetohydrodynamicallyConstrainedStarMatter();
@@ -15189,7 +15189,7 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadDimensionallyTranscendentResidue() {
+    private static Materials loadDTR() {
         return new MaterialBuilder().setName("DimensionallyTranscendentResidue")
             .setDefaultLocalName("Dimensionally Transcendent Residue")
             .setChemicalFormula(CustomGlyphs.SPARKLES + "-" + CustomGlyphs.EMPTY_SET)

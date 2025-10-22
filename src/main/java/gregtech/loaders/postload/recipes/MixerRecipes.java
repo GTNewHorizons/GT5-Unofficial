@@ -1677,7 +1677,7 @@ public class MixerRecipes implements Runnable {
                 GGMaterial.atomicSeparationCatalyst.get(OrePrefixes.dust, 13),
                 GTUtility.getIntegratedCircuit(6))
             .itemOutputs(Materials.Mellion.getDust(63))
-            .fluidInputs(Materials.DimensionallyTranscendentResidue.getFluid(5_000))
+            .fluidInputs(Materials.DTR.getFluid(5_000))
             .duration(15 * SECONDS)
             .eut((int) TierEU.RECIPE_UMV)
             .addTo(mixerRecipes);

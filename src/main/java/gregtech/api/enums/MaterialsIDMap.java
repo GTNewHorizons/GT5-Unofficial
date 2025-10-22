@@ -372,7 +372,7 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(586, Materials.BlackDwarfMatter);
         r(587, Materials.Time);
         r(588, Materials.SpaceTime);
-        r(589, Materials.DimensionallyTranscendentResidue);
+        r(589, Materials.DTR);
         r(590, Materials.PotassiumNitrade);
         r(591, Materials.ChromiumTrioxide);
         r(592, Materials.Nitrochlorobenzene);
