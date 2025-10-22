@@ -13614,7 +13614,6 @@ public class MaterialsInit {
     }
 
     private static void loadRadoxLine() {
-        Materials.DilutedXenoxene = loadDilutedXenoxene();
         Materials.RadoxCracked = loadRadoxCracked();
         Materials.RadoxGas = loadRadoxGas();
         Materials.RadoxHeavy = loadRadoxHeavy();
@@ -13624,15 +13623,7 @@ public class MaterialsInit {
         Materials.RadoxSuperHeavy = loadRadoxSuperHeavy();
         Materials.RadoxSuperLight = loadRadoxSuperLight();
         Materials.Xenoxene = loadXenoxene();
-    }
-
-    private static Materials loadDilutedXenoxene() {
-        return new MaterialBuilder().setName("DilutedXenoxene")
-            .setDefaultLocalName("Diluted Xenoxene")
-            .setIconSet(TextureSet.SET_DULL)
-            .setARGB(0x00cec8c4)
-            .addFluid()
-            .constructMaterial();
+        Materials.XenoxeneDiluted = loadXenoxeneDiluted();
     }
 
     private static Materials loadRadoxCracked() {
@@ -13725,6 +13716,15 @@ public class MaterialsInit {
             .setDefaultLocalName("Xenoxene")
             .setIconSet(TextureSet.SET_DULL)
             .setARGB(0x00858280)
+            .addFluid()
+            .constructMaterial();
+    }
+
+    private static Materials loadXenoxeneDiluted() {
+        return new MaterialBuilder().setName("DilutedXenoxene")
+            .setDefaultLocalName("Diluted Xenoxene")
+            .setIconSet(TextureSet.SET_DULL)
+            .setARGB(0x00cec8c4)
             .addFluid()
             .constructMaterial();
     }
