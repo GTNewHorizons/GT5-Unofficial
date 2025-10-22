@@ -2387,24 +2387,24 @@ public class GTUtility {
     }
 
     public static boolean sendSoundToPlayers(World aWorld, String aSoundName, float aSoundStrength,
-        float aSoundModulation, int aX, int aY, int aZ) {
+        float aSoundModulation, double aX, double aY, double aZ) {
         if (isStringInvalid(aSoundName) || aWorld == null || aWorld.isRemote) return false;
         NW.sendPacketToAllPlayersInRange(
             aWorld,
-            new GTPacketSound(aSoundName, aSoundStrength, aSoundModulation, aX, (short) aY, aZ),
-            aX,
-            aZ);
+            new GTPacketSound(aSoundName, aSoundStrength, aSoundModulation, aX, aY, aZ),
+            MathHelper.floor_double(aX),
+            MathHelper.floor_double(aZ));
         return true;
     }
 
     public static boolean sendSoundToPlayers(World aWorld, SoundResource sound, float aSoundStrength,
-        float aSoundModulation, int aX, int aY, int aZ) {
+        float aSoundModulation, double aX, double aY, double aZ) {
         if (aWorld == null || aWorld.isRemote) return false;
         NW.sendPacketToAllPlayersInRange(
             aWorld,
-            new GTPacketSound(sound.resourceLocation.toString(), aSoundStrength, aSoundModulation, aX, (short) aY, aZ),
-            aX,
-            aZ);
+            new GTPacketSound(sound.resourceLocation.toString(), aSoundStrength, aSoundModulation, aX, aY, aZ),
+            MathHelper.floor_double(aX),
+            MathHelper.floor_double(aZ));
         return true;
     }
 

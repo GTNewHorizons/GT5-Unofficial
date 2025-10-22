@@ -262,8 +262,8 @@ gt.interact.desc.need_maint_rotor_lo=Emit if rotor needs maintenance low accurac
 gt.interact.desc.need_maint_rotor_hi=Emit if rotor needs maintenance high accuracy mod
 gt.interact.desc.issue=1 Issue
 gt.interact.desc.issues=%s Issues
-gt.interact.desc.issue_rotor_low=Rotor < 20%
-gt.interact.desc.issue_rotor_dead=Rotor ≈ 0%
+gt.interact.desc.issue_rotor_low=Rotor < 20%%
+gt.interact.desc.issue_rotor_dead=Rotor ≈ 0%%
 
 # GT++ items
 item.GTPP.air_intake_hatch.name=Air Intake Hatch
@@ -1551,6 +1551,9 @@ GT5U.gui.text.alpha-transfer=Alpha Transfer
 GT5U.gui.text.beta-minus=Beta Minus Decay
 GT5U.gui.text.beta-plus=Beta Plus Decay
 GT5U.gui.text.invalidfluidsup=Invalid Fluid Supplied
+GT5U.gui.text.amperage=Amperage
+GT5U.gui.text.voltagetier=Voltage Tier
+GT5U.gui.text.ticks_between_refill=Ticks Between Refills
 
 
 GT5U.gui.hoverable.runningfine=Running Fine.
