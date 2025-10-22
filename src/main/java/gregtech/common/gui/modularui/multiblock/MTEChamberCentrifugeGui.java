@@ -31,23 +31,20 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.MTEChamberCentrifuge;
 
-public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui {
+public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui<MTEChamberCentrifuge> {
 
-    private final MTEChamberCentrifuge base;
-
-    public MTEChamberCentrifugeGui(MTEChamberCentrifuge base) {
-        super(base);
-        this.base = base;
+    public MTEChamberCentrifugeGui(MTEChamberCentrifuge multiblock) {
+        super(multiblock);
     }
 
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        syncManager.syncValue("RP", new IntSyncValue(base::getRP));
-        syncManager.syncValue("Parallels", new IntSyncValue(base::getTrueParallel));
-        syncManager.syncValue("Speed", new StringSyncValue(base::getSpeedStr));
-        syncManager.syncValue("modeString", new StringSyncValue(base::modeToString));
-        syncManager.syncValue("modeValue", new DoubleSyncValue(() -> base.mMode, dub -> base.mMode = dub));
+        syncManager.syncValue("RP", new IntSyncValue(multiblock::getRP));
+        syncManager.syncValue("Parallels", new IntSyncValue(multiblock::getTrueParallel));
+        syncManager.syncValue("Speed", new StringSyncValue(multiblock::getSpeedStr));
+        syncManager.syncValue("modeString", new StringSyncValue(multiblock::modeToString));
+        syncManager.syncValue("modeValue", new DoubleSyncValue(() -> multiblock.mMode, dub -> multiblock.mMode = dub));
     }
 
     @Override
@@ -167,7 +164,8 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui {
                                         'I',
                                         index -> {
                                             return new ItemSlot().slot(
-                                                new ModularSlot(base.turbineHolder, index).filter(base::isTurbine));
+                                                new ModularSlot(multiblock.turbineHolder, index)
+                                                    .filter(multiblock::isTurbine));
                                         })
                                     .build())
 
@@ -185,7 +183,10 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui {
                             .crossAxisAlignment(Alignment.CrossAxis.CENTER)
                             .child(
                                 new ToggleButton()
-                                    .value(new BooleanSyncValue(() -> base.tier2Fluid, bool -> base.tier2Fluid = bool))
+                                    .value(
+                                        new BooleanSyncValue(
+                                            () -> multiblock.tier2Fluid,
+                                            bool -> multiblock.tier2Fluid = bool))
                                     .overlay(true, GTGuiTextures.OVERLAY_BUTTON_REDSTONE_ON)
                                     .overlay(false, GTGuiTextures.OVERLAY_BUTTON_REDSTONE_OFF))
 

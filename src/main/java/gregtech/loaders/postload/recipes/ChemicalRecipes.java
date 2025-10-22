@@ -6072,6 +6072,5 @@ public class ChemicalRecipes implements Runnable {
             .duration(3 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_EV)
             .addTo(multiblockChemicalReactorRecipes);
-
     }
 }
