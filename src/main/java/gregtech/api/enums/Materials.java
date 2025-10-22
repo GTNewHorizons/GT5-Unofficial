@@ -350,7 +350,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials FermentedBiomass;
     public static Materials FishOil;
     public static Materials FryingOilHot;
-    public static Materials Diesel;
+    public static Materials Fuel;
     public static Materials Glue;
     public static Materials Gunpowder;
     public static Materials Honey;

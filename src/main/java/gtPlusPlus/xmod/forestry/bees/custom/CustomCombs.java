@@ -17,7 +17,7 @@ public enum CustomCombs {
     // Fuels
     BIOMASS("biomass", true, Materials.Biomass, 100),
     ETHANOL("ethanol", true, Materials.Ethanol, 75),
-    DIESEL("diesel", true, Materials.Diesel, 50),
+    DIESEL("diesel", true, Materials.Fuel, 50),
     NITRO("nitro", true, Materials.NitroFuel, 25),
     HOOTCH("hootch", true, Materials.Silicon, 50),
     ROCKETFUEL("rocket", true, Materials.Silicon, 25),

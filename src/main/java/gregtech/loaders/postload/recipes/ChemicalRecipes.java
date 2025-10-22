@@ -5636,14 +5636,14 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(24))
             .fluidInputs(Materials.LightFuel.getFluid(20_000), Materials.HeavyFuel.getFluid(4_000))
-            .fluidOutputs(Materials.Diesel.getFluid(24_000))
+            .fluidOutputs(Materials.Fuel.getFluid(24_000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(multiblockChemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(24))
-            .fluidInputs(Materials.Diesel.getFluid(10_000), Materials.Tetranitromethane.getFluid(200))
+            .fluidInputs(Materials.Fuel.getFluid(10_000), Materials.Tetranitromethane.getFluid(200))
             .fluidOutputs(Materials.NitroFuel.getFluid(10_000))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_HV)

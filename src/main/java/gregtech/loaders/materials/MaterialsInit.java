@@ -4574,7 +4574,7 @@ public class MaterialsInit {
         Materials.FermentedBiomass = loadFermentedBiomass();
         Materials.FishOil = loadFishOil();
         Materials.FryingOilHot = loadFryingOilHot();
-        Materials.Diesel = loadDiesel();
+        Materials.Fuel = loadFuel();
         Materials.Glue = loadGlue();
         Materials.Gunpowder = loadGunpowder();
         Materials.Honey = loadHoney();
@@ -4785,7 +4785,7 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadDiesel() {
+    private static Materials loadFuel() {
         return new MaterialBuilder().setName("Fuel")
             .setDefaultLocalName("Diesel")
             .setIconSet(TextureSet.SET_FLUID)
