@@ -33,7 +33,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
     }
 
     @Override
-    public void registerOre(OrePrefixes aPrefix, Materials material, String oreDictName, String modName,
+    public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
         ItemStack stack) {
         if (material.contains(SubTag.NO_ORE_PROCESSING)) return;
 
@@ -65,7 +65,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
         }
 
         // Blast furnace is *not* required for processing this ore.
-        switch (aPrefix.getName()) {
+        switch (prefix.getName()) {
             case "crushed", "crushedPurified", "crushedCentrifuged" -> {
                 if (material.mDirectSmelting == material) {
                     addSmeltingRecipe(material, stack, OrePrefixes.nugget, 10);
@@ -184,13 +184,14 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
     private static void addSmeltingRecipe(Materials material, ItemStack stack, OrePrefixes prefix, int size) {
         ItemStack smeltingOutput = GTOreDictUnificator.get(prefix, material.mDirectSmelting, size);
 
-        if (smeltingOutput == null) smeltingOutput = GTOreDictUnificator.get(
-            material.contains(SubTag.SMELTING_TO_GEM) ? OrePrefixes.gem : OrePrefixes.ingot,
-            material.mDirectSmelting,
-            1L);
+        if (smeltingOutput == null) {
+            OrePrefixes outputPrefix = material.contains(SubTag.SMELTING_TO_GEM) ? OrePrefixes.gem : OrePrefixes.ingot;
+            smeltingOutput = GTOreDictUnificator.get(outputPrefix, material.mDirectSmelting, 1L);
+        }
 
-        if ((smeltingOutput == null) && (!material.contains(SubTag.SMELTING_TO_GEM)))
+        if (smeltingOutput == null && !material.contains(SubTag.SMELTING_TO_GEM)) {
             smeltingOutput = GTOreDictUnificator.get(OrePrefixes.ingot, material.mDirectSmelting, 1L);
+        }
 
         GTModHandler.addSmeltingRecipe(stack, smeltingOutput);
     }
