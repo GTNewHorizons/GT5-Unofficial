@@ -817,7 +817,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.BorosilicateGlass, 1),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.ReinforceGlass, 6),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.ReinforcedGlass, 6),
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.NaquadahAlloy, 32),
                 ItemList.Field_Generator_HV.get(4),
                 GTUtility.getIntegratedCircuit(6))

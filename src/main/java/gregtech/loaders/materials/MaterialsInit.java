@@ -7679,7 +7679,7 @@ public class MaterialsInit {
     private static void loadUnclassified03() {
         Materials.BioMediumRaw = loadBioMediumRaw();
         Materials.BioMediumSterilized = loadBioMediumSterilized();
-        Materials.ReinforceGlass = loadReinforceGlass();
+        Materials.ReinforcedGlass = loadReinforcedGlass();
     }
 
     private static Materials loadBioMediumRaw() {
@@ -7704,7 +7704,7 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadReinforceGlass() {
+    private static Materials loadReinforcedGlass() {
         return new MaterialBuilder().setName("ReinforcedGlass")
             .setDefaultLocalName("Reinforced Glass")
             .setIconSet(TextureSet.SET_FLUID)

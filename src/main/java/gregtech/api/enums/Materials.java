@@ -530,7 +530,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     // Unclassified 03 materials
     public static Materials BioMediumRaw;
     public static Materials BioMediumSterilized;
-    public static Materials ReinforceGlass;
+    public static Materials ReinforcedGlass;
 
     // Unclassified 04 materials
     public static Materials GrowthMediumRaw;
