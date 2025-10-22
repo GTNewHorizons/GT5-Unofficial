@@ -559,4 +559,9 @@ public class MTESteamFurnaceMulti extends MTESteamMultiBase<MTESteamFurnaceMulti
         return SoundResource.GTCEU_LOOP_FURNACE;
     }
 
+    @Override
+    public int getThemeTier() {
+        return tierMachineCasing;
+    }
+
 }
