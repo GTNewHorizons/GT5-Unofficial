@@ -13,7 +13,7 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.net.PacketDebugRedstoneCover;
+import gregtech.api.net.PacketTeleportPlayer;
 
 public class ChaosLocatorGui {
 
@@ -109,7 +109,7 @@ public class ChaosLocatorGui {
                         .getTagCompound()
                         .getInteger("zCoordinate") * 10_000;
 
-                    GTValues.NW.sendToServer(new PacketDebugRedstoneCover(1, xToTeleportTo, 200, zToTeleportTo, true));
+                    GTValues.NW.sendToServer(new PacketTeleportPlayer(1, xToTeleportTo, 200, zToTeleportTo, true));
                     return true;
                 }));
 
