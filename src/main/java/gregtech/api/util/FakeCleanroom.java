@@ -3,9 +3,11 @@ package gregtech.api.util;
 import gregtech.api.interfaces.ICleanroom;
 
 /** "Cleanroom" Bypass for Dev Work. */
-public enum FakeCleanroom implements ICleanroom {
+public final class FakeCleanroom implements ICleanroom {
 
-    INSTANCE;
+    public static final FakeCleanroom INSTANCE = new FakeCleanroom();
+
+    private FakeCleanroom() {} // Defensive
 
     public static volatile boolean CLEANROOM_BYPASS = false;
     public static volatile boolean LOWGRAV_BYPASS = false;
