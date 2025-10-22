@@ -978,7 +978,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
 
     // UEV+ Materials
     public static Materials DTCC;
-    public static Materials DimensionallyTranscendentProsaicCatalyst;
+    public static Materials DTPC;
     public static Materials DimensionallyTranscendentResplendentCatalyst;
     public static Materials DimensionallyTranscendentExoticCatalyst;
     public static Materials DimensionallyTranscendentStellarCatalyst;
