@@ -8,7 +8,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.common.loaders.FluidLoader;
-import bartworks.common.tileentities.multis.MTEHighTempGasCooledReactor;
 import bartworks.common.tileentities.multis.MTEThoriumHighTempReactor;
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
@@ -32,18 +31,6 @@ public class Mixer implements Runnable {
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(mixerRecipes);
-
-        int i = 0;
-        for (MTEHighTempGasCooledReactor.HTGRMaterials.Fuel_ fuel : MTEHighTempGasCooledReactor.HTGRMaterials.sHTGR_Fuel) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(fuel.mainItem, fuel.secondaryItem, GTUtility.getIntegratedCircuit(1))
-                .itemOutputs(new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 1, i))
-                .duration(20 * SECONDS)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(mixerRecipes);
-
-            i += MTEHighTempGasCooledReactor.HTGRMaterials.MATERIALS_PER_FUEL;
-        }
 
         if (Gendustry.isModLoaded()) {
             GTValues.RA.stdBuilder()
