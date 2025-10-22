@@ -10,7 +10,7 @@ public enum CustomCombs {
     // Rubbers & Silicons
     SILICON("silicon", true, Materials.Silicon, 100),
     RUBBER("rubber", true, Materials.Rubber, 100),
-    PLASTIC("polyethylene", true, Materials.Plastic, 75),
+    PLASTIC("polyethylene", true, Materials.Polyethylene, 75),
     PTFE("polytetrafluoroethylene", true, GTPPBees.PTFE, 50),
     PBS("styrene-butadiene", true, GTPPBees.PBS, 25),
 

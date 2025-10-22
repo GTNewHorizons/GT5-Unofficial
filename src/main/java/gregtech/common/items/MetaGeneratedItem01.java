@@ -851,7 +851,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Fuel_Can_Plastic_Empty.ID,
                 "Empty Plastic Fuel Can",
                 "Used to store Fuels",
-                new ItemData(Materials.Plastic, OrePrefixes.plate.mMaterialAmount * 1L),
+                new ItemData(Materials.Polyethylene, OrePrefixes.plate.mMaterialAmount * 1L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 1L)));
         ItemList.Fuel_Can_Plastic_Filled.set(
@@ -859,7 +859,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Fuel_Can_Plastic_Filled.ID,
                 "Plastic Fuel Can",
                 "Burns well in Diesel Generators",
-                new ItemData(Materials.Plastic, OrePrefixes.plate.mMaterialAmount * 1L),
+                new ItemData(Materials.Polyethylene, OrePrefixes.plate.mMaterialAmount * 1L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 1L)));
 
@@ -4175,7 +4175,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         GTModHandler.addCraftingRecipe(
             ItemList.Fuel_Can_Plastic_Empty.get(7L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { " PP", "P P", "PPP", 'P', OrePrefixes.plate.get(Materials.Plastic) });
+            new Object[] { " PP", "P P", "PPP", 'P', OrePrefixes.plate.get(Materials.Polyethylene) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Schematic_1by1.get(1L),

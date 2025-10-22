@@ -370,7 +370,7 @@ public class Pulverizer implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 2))
                 .itemOutputs(
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plastic, 12),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Polyethylene, 12),
                     GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Aluminium, 3))
                 .duration(22 * SECONDS + 10 * TICKS)
                 .eut(8)

@@ -5353,9 +5353,9 @@ public class MaterialsInit {
         Materials.Obsidian = loadObsidian();
         Materials.Phosphate = loadPhosphate();
         Materials.PigIron = loadPigIron();
-        Materials.Plastic = loadPlastic();
         Materials.Polycaprolactam = loadPolycaprolactam();
         Materials.Polydimethylsiloxane = loadPolydimethylsiloxane();
+        Materials.Polyethylene = loadPolyethylene();
         Materials.Polytetrafluoroethylene = loadPolytetrafluoroethylene();
         Materials.Potash = loadPotash();
         Materials.Powellite = loadPowellite();
@@ -6828,29 +6828,6 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadPlastic() {
-        return new MaterialBuilder().setName("Plastic")
-            .setDefaultLocalName("Polyethylene")
-            .setIconSet(TextureSet.SET_DULL)
-            .setColor(Dyes.dyeWhite)
-            .setARGB(0x00c8c8c8)
-            .setTool(32, 1, 3.0f)
-            .setToolEnchantment(() -> Enchantment.knockback, 1)
-            .addDustItems()
-            .addMetalItems()
-            .addToolHeadItems()
-            .addGearItems()
-            .setMeltingPoint(400)
-            .addMaterial(Materials.Carbon, 1)
-            .addMaterial(Materials.Hydrogen, 2)
-            .addAspect(TCAspects.MOTUS, 2)
-            .addSubTag(SubTag.BOUNCY)
-            .addSubTag(SubTag.FLAMMABLE)
-            .addSubTag(SubTag.NO_SMASHING)
-            .addSubTag(SubTag.STRETCHY)
-            .constructMaterial();
-    }
-
     private static Materials loadPolycaprolactam() {
         return new MaterialBuilder().setName("Polycaprolactam")
             .setDefaultLocalName("Polycaprolactam")
@@ -6884,6 +6861,29 @@ public class MaterialsInit {
             .addMaterial(Materials.Oxygen, 1)
             .addMaterial(Materials.Silicon, 1)
             .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadPolyethylene() {
+        return new MaterialBuilder().setName("Plastic")
+            .setDefaultLocalName("Polyethylene")
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeWhite)
+            .setARGB(0x00c8c8c8)
+            .setTool(32, 1, 3.0f)
+            .setToolEnchantment(() -> Enchantment.knockback, 1)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(400)
+            .addMaterial(Materials.Carbon, 1)
+            .addMaterial(Materials.Hydrogen, 2)
+            .addAspect(TCAspects.MOTUS, 2)
+            .addSubTag(SubTag.BOUNCY)
+            .addSubTag(SubTag.FLAMMABLE)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.STRETCHY)
             .constructMaterial();
     }
 
