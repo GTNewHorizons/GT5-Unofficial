@@ -13,6 +13,7 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.net.PacketTeleportPlayer;
 
 public class ChaosLocatorGui {
@@ -61,7 +62,8 @@ public class ChaosLocatorGui {
         panel.child(
             new TextWidget<>("Enter Coordinates").sizeRel(1f, 0.2f)
                 .posRel(0f, 0.1f)
-                .alignment(Alignment.Center));
+                .alignment(Alignment.Center)
+                .color(10227735));
 
         panel.child(
             Flow.row()
@@ -72,13 +74,15 @@ public class ChaosLocatorGui {
                         .child(
                             new TextFieldWidget().sizeRel(1f, 0.4f)
                                 .setTextAlignment(Alignment.Center)
+                                .setTextColor(10227735)
                                 .setFormatAsInteger(true)
                                 .setNumbers(-1000, 1000)
                                 .value(xSyncer)
                                 .setDefaultNumber(0))
                         .child(
                             new TextWidget<>("X * 10k").sizeRel(1f, 0.2f)
-                                .alignment(Alignment.Center))
+                                .alignment(Alignment.Center)
+                                .color(10227735))
                         .childPadding(2))
                 .child(
                     Flow.column()
@@ -87,20 +91,21 @@ public class ChaosLocatorGui {
                         .child(
                             new TextFieldWidget().sizeRel(1f, 0.4f)
                                 .setTextAlignment(Alignment.Center)
+                                .setTextColor(10227735)
                                 .setFormatAsInteger(true)
                                 .setNumbers(-1000, 1000)
                                 .value(zSyncer)
                                 .setDefaultNumber(0))
                         .child(
                             new TextWidget<>("Z * 10k").sizeRel(1f, 0.2f)
-                                .alignment(Alignment.Center))
+                                .alignment(Alignment.Center)
+                                .color(10227735))
                         .childPadding(2)));
 
         panel.child(
             new ButtonWidget<>().sizeRel(0.4f, 0.2f)
                 .posRel(0.5f, 0.85f)
-                .tooltip(tooltip -> { tooltip.addLine("Can only warp while in the end dimension"); })
-                .overlay(IKey.lang("gt.item.chaos_locator.warp"))
+                .overlay(IKey.lang("gt.item.chaos_locator.warp").color(10227735))
                 .onMousePressed(mouseButton -> {
                     int xToTeleportTo = guiData.getMainHandItem()
                         .getTagCompound()
@@ -111,8 +116,9 @@ public class ChaosLocatorGui {
 
                     GTValues.NW.sendToServer(new PacketTeleportPlayer(1, xToTeleportTo, 200, zToTeleportTo, true));
                     return true;
-                }));
+                })
+                .widgetTheme(GTWidgetThemes.BUTTON_BLACK));
 
-        return panel;
+        return panel.widgetTheme(GTWidgetThemes.BACKGROUND_CHAOS_LOCATOR);
     }
 }

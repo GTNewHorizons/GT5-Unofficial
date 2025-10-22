@@ -53,6 +53,13 @@ public final class GTWidgetThemes {
         .defaultHoverTheme(null)
         .register();
 
+    public static WidgetThemeKey<WidgetTheme> BACKGROUND_CHAOS_LOCATOR = themeApi
+        .widgetThemeKeyBuilder("backgroundChaosLocator", WidgetTheme.class)
+        .defaultTheme(
+            new WidgetTheme(0, 0, GTGuiTextures.BACKGROUND_CHAOS_LOCATOR, Color.WHITE.main, 0xFAFAFA, false, 0))
+        .defaultHoverTheme(null)
+        .register();
+
     public static WidgetThemeKey<SlotTheme> OVERLAY_ITEM_SLOT_DUST = registerThemedItemSlot("overlayItemSlotDust");
     public static WidgetThemeKey<SlotTheme> OVERLAY_ITEM_SLOT_INGOT = registerThemedItemSlot("overlayItemSlotIngot");
     public static WidgetThemeKey<SlotTheme> OVERLAY_ITEM_SLOT_FURNACE = registerThemedItemSlot(
@@ -79,6 +86,13 @@ public final class GTWidgetThemes {
     public static WidgetThemeKey<WidgetTheme> BUTTON_COVER_TAB_ENABLED = registerThemedButton("buttonCoverTabEnabled");
     public static WidgetThemeKey<WidgetTheme> BUTTON_COVER_TAB_DISABLED = registerThemedButton(
         "buttonCoverTabDisabled");
+
+    public static WidgetThemeKey<WidgetTheme> BUTTON_BLACK = themeApi
+        .widgetThemeKeyBuilder("buttonBlack", WidgetTheme.class)
+        .defaultTheme(
+            new WidgetTheme(0, 0, GuiTextures.MC_BUTTON, 0x333333, 0xFAFAFA, false, 0))
+        .defaultHoverTheme(null)
+        .register();
 
     public static WidgetThemeKey<WidgetTheme> PICTURE_CANISTER = registerThemedTexture("pictureCanister");
     public static WidgetThemeKey<WidgetTheme> PICTURE_LOGO = registerThemedTexture("pictureLogo");
