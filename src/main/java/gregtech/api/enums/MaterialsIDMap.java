@@ -528,7 +528,7 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(745, Materials.DimensionallyTranscendentExoticCatalyst);
         r(746, Materials.DimensionallyTranscendentResplendentCatalyst);
         r(747, Materials.DimensionallyTranscendentProsaicCatalyst);
-        r(748, Materials.DimensionallyTranscendentCrudeCatalyst);
+        r(748, Materials.DTCC);
         r(749, Materials.SodiumMethoxide);
         r(750, Materials.TrimethylBorate);
         r(751, Materials.SodiumHydride);

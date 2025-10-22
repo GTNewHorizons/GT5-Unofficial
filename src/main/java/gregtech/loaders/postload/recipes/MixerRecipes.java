@@ -1601,7 +1601,7 @@ public class MixerRecipes implements Runnable {
                     Materials.Iron.getPlasma(1_000),
                     Materials.Calcium.getPlasma(1_000),
                     Materials.Niobium.getPlasma(1_000))
-                .fluidOutputs(Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(1_000))
+                .fluidOutputs(Materials.DTCC.getFluid(1_000))
                 .duration(41 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)
                 .addTo(mixerNonCellRecipes);
@@ -1609,7 +1609,7 @@ public class MixerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.getIntegratedCircuit(10))
                 .fluidInputs(
-                    Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(1_000),
+                    Materials.DTCC.getFluid(1_000),
                     Materials.Radon.getPlasma(1_000),
                     Materials.Nickel.getPlasma(1_000),
                     Materials.Boron.getPlasma(1_000),

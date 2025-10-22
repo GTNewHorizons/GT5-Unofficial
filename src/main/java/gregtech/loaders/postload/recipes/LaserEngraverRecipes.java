@@ -14,7 +14,7 @@ public class LaserEngraverRecipes implements Runnable {
     public void run() {
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(1_000))
+            .fluidInputs(Materials.DTCC.getFluid(1_000))
             .fluidOutputs(Materials.ExcitedDTCC.getFluid(1_000))
             .requiresCleanRoom()
             .duration(41 * MINUTES + 40 * SECONDS)

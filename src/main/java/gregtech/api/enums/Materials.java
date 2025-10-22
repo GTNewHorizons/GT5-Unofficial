@@ -977,7 +977,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials RubyJuice;
 
     // UEV+ Materials
-    public static Materials DimensionallyTranscendentCrudeCatalyst;
+    public static Materials DTCC;
     public static Materials DimensionallyTranscendentProsaicCatalyst;
     public static Materials DimensionallyTranscendentResplendentCatalyst;
     public static Materials DimensionallyTranscendentExoticCatalyst;
