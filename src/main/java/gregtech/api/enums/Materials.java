@@ -402,6 +402,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials ArsenicTrioxide;
     public static Materials Asbestos;
     public static Materials Ash;
+    public static Materials AshDark;
     public static Materials BandedIron;
     public static Materials BatteryAlloy;
     public static Materials Benzene;
@@ -427,7 +428,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Cooperite;
     public static Materials CupricOxide;
     public static Materials Cupronickel;
-    public static Materials DarkAsh;
     public static Materials DeepIron;
     public static Materials Diamond;
     public static Materials DilutedHydrochloricAcid;

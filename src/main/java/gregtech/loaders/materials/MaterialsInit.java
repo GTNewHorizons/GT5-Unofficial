@@ -5286,6 +5286,7 @@ public class MaterialsInit {
         Materials.ArsenicTrioxide = loadArsenicTrioxide();
         Materials.Asbestos = loadAsbestos();
         Materials.Ash = loadAsh();
+        Materials.AshDark = loadAshDark();
         Materials.BandedIron = loadBandedIron();
         Materials.BatteryAlloy = loadBatteryAlloy();
         Materials.Benzene = loadBenzene();
@@ -5311,7 +5312,6 @@ public class MaterialsInit {
         Materials.Cooperite = loadCooperite();
         Materials.CupricOxide = loadCupricOxide();
         Materials.Cupronickel = loadCupronickel();
-        Materials.DarkAsh = loadDarkAsh();
         Materials.DeepIron = loadDeepIron();
         Materials.Diamond = loadDiamond();
         Materials.DilutedHydrochloricAcid = loadDilutedHydrochloricAcid();
@@ -5572,6 +5572,23 @@ public class MaterialsInit {
             .setARGB(0x00969696)
             .addDustItems()
             .addMaterial(Materials.Carbon, 1)
+            .addAspect(TCAspects.PERDITIO, 1)
+            .addOreByproduct(() -> Materials.Carbon)
+            .constructMaterial();
+    }
+
+    private static Materials loadAshDark() {
+        return new MaterialBuilder().setName("DarkAsh")
+            .setDefaultLocalName("Dark Ashes")
+            .setChemicalFormula("C" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK + "??")
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeGray)
+            .setARGB(0x00323232)
+            .addDustItems()
+            .setDensity(2, 1)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Carbon, 1)
+            .addAspect(TCAspects.IGNIS, 1)
             .addAspect(TCAspects.PERDITIO, 1)
             .addOreByproduct(() -> Materials.Carbon)
             .constructMaterial();
@@ -6051,23 +6068,6 @@ public class MaterialsInit {
             .addMaterial(Materials.Copper, 1)
             .addMaterial(Materials.Nickel, 1)
             .addSubTag(SubTag.METAL)
-            .constructMaterial();
-    }
-
-    private static Materials loadDarkAsh() {
-        return new MaterialBuilder().setName("DarkAsh")
-            .setDefaultLocalName("Dark Ashes")
-            .setChemicalFormula("C" + CustomGlyphs.SUBSCRIPT_QUESTION_MARK + "??")
-            .setIconSet(TextureSet.SET_DULL)
-            .setColor(Dyes.dyeGray)
-            .setARGB(0x00323232)
-            .addDustItems()
-            .setDensity(2, 1)
-            .addElectrolyzerRecipe()
-            .addMaterial(Materials.Carbon, 1)
-            .addAspect(TCAspects.IGNIS, 1)
-            .addAspect(TCAspects.PERDITIO, 1)
-            .addOreByproduct(() -> Materials.Carbon)
             .constructMaterial();
     }
 
@@ -9807,7 +9807,7 @@ public class MaterialsInit {
             .setMeltingPoint(6_400)
             .setDensity(3, 2)
             .addCentrifugeRecipe()
-            .addMaterial(Materials.DarkAsh, 1)
+            .addMaterial(Materials.AshDark, 1)
             .addMaterial(Materials.Sulfur, 1)
             .addMaterial(Materials.Magic, 1)
             .addAspect(TCAspects.PRAECANTATIO, 2)
@@ -11546,10 +11546,10 @@ public class MaterialsInit {
             .addMaterial(Materials.Olivine, 1)
             .addMaterial(Materials.Calcite, 3)
             .addMaterial(Materials.Flint, 8)
-            .addMaterial(Materials.DarkAsh, 4)
+            .addMaterial(Materials.AshDark, 4)
             .addAspect(TCAspects.TENEBRAE, 1)
             .addOreByproduct(() -> Materials.Olivine)
-            .addOreByproduct(() -> Materials.DarkAsh)
+            .addOreByproduct(() -> Materials.AshDark)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.STONE)
             .addOrePrefix(OrePrefixes.dustImpure)

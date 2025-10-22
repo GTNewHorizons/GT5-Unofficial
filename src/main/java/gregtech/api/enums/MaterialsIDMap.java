@@ -596,7 +596,7 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(813, Materials.Bluestone);
         r(814, Materials.NetherBrick);
         r(815, Materials.Ash);
-        r(816, Materials.DarkAsh);
+        r(816, Materials.AshDark);
         r(817, Materials.Salt);
         r(818, Materials.HydratedCoal);
         r(819, Materials.Graphene);

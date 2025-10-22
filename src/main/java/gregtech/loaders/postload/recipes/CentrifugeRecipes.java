@@ -665,7 +665,7 @@ public class CentrifugeRecipes implements Runnable {
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.AshDark, 1))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1))

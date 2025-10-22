@@ -372,7 +372,7 @@ public class ChemicalRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Calcite, 1),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1))
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.AshDark, 1))
                 .itemOutputs(ItemList.IC2_Fertilizer.get(1))
                 .fluidInputs(new FluidStack(tFluid, 1_000))
                 .duration(5 * SECONDS)
@@ -422,7 +422,7 @@ public class ChemicalRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Calcium, 1),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1))
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.AshDark, 1))
                 .itemOutputs(ItemList.IC2_Fertilizer.get(2))
                 .fluidInputs(new FluidStack(tFluid, 1_000))
                 .duration(10 * SECONDS)
@@ -472,7 +472,7 @@ public class ChemicalRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Apatite, 1),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1))
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.AshDark, 1))
                 .itemOutputs(ItemList.IC2_Fertilizer.get(2))
                 .fluidInputs(new FluidStack(tFluid, 1_000))
                 .duration(10 * SECONDS)
@@ -522,7 +522,7 @@ public class ChemicalRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glauconite, 1),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1))
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.AshDark, 1))
                 .itemOutputs(ItemList.IC2_Fertilizer.get(2))
                 .fluidInputs(new FluidStack(tFluid, 1_000))
                 .duration(10 * SECONDS)
@@ -572,7 +572,7 @@ public class ChemicalRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.GlauconiteSand, 1),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1))
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.AshDark, 1))
                 .itemOutputs(ItemList.IC2_Fertilizer.get(2))
                 .fluidInputs(new FluidStack(tFluid, 1_000))
                 .duration(10 * SECONDS)

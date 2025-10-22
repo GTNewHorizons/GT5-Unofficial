@@ -58,7 +58,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
             .itemInputs(WerkstoffMaterialPool.LanthanumHexaboride.get(OrePrefixes.dust, 4))
             .itemOutputs(
                 WerkstoffMaterialPool.LanthanumHexaboride.get(OrePrefixes.gem, 3),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 12L))
+                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.AshDark, 12L))
             .duration(1 * TICKS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(electricImplosionCompressorRecipes);

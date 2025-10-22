@@ -187,7 +187,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         addProcessGT(CombType.APATITE, new Materials[] { Materials.Apatite }, Voltage.LV);
         addCentrifugeToMaterial(
             CombType.ASH,
-            new Materials[] { Materials.DarkAsh, Materials.Ash },
+            new Materials[] { Materials.AshDark, Materials.Ash },
             new int[] { 50 * 100, 50 * 100 },
             GTValues.emptyIntArray,
             Voltage.ULV,
