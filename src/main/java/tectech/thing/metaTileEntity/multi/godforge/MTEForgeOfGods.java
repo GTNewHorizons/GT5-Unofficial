@@ -383,7 +383,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         {
             add(Materials.DTR.getFluid(1));
             add(Materials.RawStarMatter.getFluid(1));
-            add(Materials.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(1));
+            add(Materials.MHDCSM.getMolten(1));
         }
     };
 
@@ -1247,10 +1247,10 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .widget(
                 new MultiChildWidget().addChild(
                     new FluidNameHolderWidget(
-                        () -> Materials.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(1)
+                        () -> Materials.MHDCSM.getMolten(1)
                             .getUnlocalizedName()
                             .substring(6),
-                        (String) -> Materials.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(1)
+                        (String) -> Materials.MHDCSM.getMolten(1)
                             .getUnlocalizedName()) {
 
                         @Override

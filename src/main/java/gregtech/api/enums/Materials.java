@@ -990,7 +990,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials DTR;
     public static Materials SpaceTime;
     public static Materials TranscendentMetal;
-    public static Materials MagnetohydrodynamicallyConstrainedStarMatter;
+    public static Materials MHDCSM;
     public static Materials RawStarMatter;
     public static Materials WhiteDwarfMatter;
     public static Materials BlackDwarfMatter;
@@ -1564,7 +1564,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         }
 
         if (aMaterial == Materials.MagMatter) {
-            aMaterial.mHandleMaterial = Materials.MagnetohydrodynamicallyConstrainedStarMatter;
+            aMaterial.mHandleMaterial = Materials.MHDCSM;
         }
     }
 

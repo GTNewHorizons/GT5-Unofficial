@@ -15021,7 +15021,7 @@ public class MaterialsInit {
         Materials.DTR = loadDTR();
         Materials.SpaceTime = loadSpaceTime();
         Materials.TranscendentMetal = loadTranscendentMetal();
-        Materials.MagnetohydrodynamicallyConstrainedStarMatter = loadMagnetohydrodynamicallyConstrainedStarMatter();
+        Materials.MHDCSM = loadMHDCSM();
         Materials.RawStarMatter = loadRawStarMatter();
         Materials.WhiteDwarfMatter = loadWhiteDwarfMatter();
         Materials.BlackDwarfMatter = loadBlackDwarfMatter();
@@ -15248,7 +15248,7 @@ public class MaterialsInit {
             .setProcessingMaterialTierEU(TierEU.RECIPE_UHV);
     }
 
-    private static Materials loadMagnetohydrodynamicallyConstrainedStarMatter() {
+    private static Materials loadMHDCSM() {
         return new MaterialBuilder().setName("MagnetohydrodynamicallyConstrainedStarMatter")
             .setDefaultLocalName("Magnetohydrodynamically Constrained Star Matter")
             .setChemicalFormula(

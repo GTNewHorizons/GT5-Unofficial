@@ -403,10 +403,9 @@ public class MachineRecipes implements Runnable {
             new Object[] { ItemList.SpaceElevatorBaseCasing.get(1),
                 new ItemStack(GameRegistry.findItem("gregtech", "gt.blockmachines"), 4, 10786),
                 new ItemStack(GameRegistry.findItem("gregtech", "gt.blockmachines"), 4, 12093),
-                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 8),
+                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.MHDCSM, 8),
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.MagMatter, 8),
-                GTOreDictUnificator
-                    .get(OrePrefixes.gearGtSmall, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 16),
+                GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.MHDCSM, 16),
                 GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.MagMatter, 16),
                 ItemList.Robot_Arm_UXV.get(8), ItemList.Conveyor_Module_UXV.get(16), highComputationStationT5_32,
                 new Object[] { OrePrefixes.circuit.get(Materials.UXV), 16 },
