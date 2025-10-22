@@ -13140,7 +13140,7 @@ public class MaterialsInit {
         Materials.Uraniumtriplatinid = loadUraniumtriplatinid();
         Materials.Vanadiumtriindinid = loadVanadiumtriindinid();
         Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid = loadTetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid();
-        Materials.Tetranaquadahdiindiumhexaplatiumosminid = loadTetranaquadahdiindiumhexaplatiumosminid();
+        Materials.SuperconductorZPMBase = loadSuperconductorZPMBase();
         Materials.SuperconductorUVBase = loadSuperconductorUVBase();
         Materials.SuperconductorUHVBase = loadSuperconductorUHVBase();
         Materials.SuperconductorUEVBase = loadSuperconductorUEVBase();
@@ -13260,7 +13260,7 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadTetranaquadahdiindiumhexaplatiumosminid() {
+    private static Materials loadSuperconductorZPMBase() {
         return new MaterialBuilder().setName("Tetranaquadahdiindiumhexaplatiumosminid")
             .setDefaultLocalName("Superconductor Base ZPM")
             .setIconSet(TextureSet.SET_METALLIC)

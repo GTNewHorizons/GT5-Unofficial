@@ -406,7 +406,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .disableCable()
             .build();
         WireCableBuilder.builder()
-            .material(Materials.Tetranaquadahdiindiumhexaplatiumosminid)
+            .material(Materials.SuperconductorZPMBase)
             .startId(2300)
             .lossWire(1024)
             .amperage(8)

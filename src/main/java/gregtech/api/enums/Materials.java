@@ -840,7 +840,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Uraniumtriplatinid;
     public static Materials Vanadiumtriindinid;
     public static Materials Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid;
-    public static Materials Tetranaquadahdiindiumhexaplatiumosminid;
+    public static Materials SuperconductorZPMBase;
     public static Materials SuperconductorUVBase;
     public static Materials SuperconductorUHVBase;
     public static Materials SuperconductorUEVBase;
