@@ -13139,7 +13139,7 @@ public class MaterialsInit {
         Materials.Titaniumonabariumdecacoppereikosaoxid = loadTitaniumonabariumdecacoppereikosaoxid();
         Materials.Uraniumtriplatinid = loadUraniumtriplatinid();
         Materials.Vanadiumtriindinid = loadVanadiumtriindinid();
-        Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid = loadTetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid();
+        Materials.SuperconductorLuVBase = loadSuperconductorLuVBase();
         Materials.SuperconductorZPMBase = loadSuperconductorZPMBase();
         Materials.SuperconductorUVBase = loadSuperconductorUVBase();
         Materials.SuperconductorUHVBase = loadSuperconductorUHVBase();
@@ -13235,7 +13235,7 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadTetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid() {
+    private static Materials loadSuperconductorLuVBase() {
         return new MaterialBuilder().setName("Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid")
             .setDefaultLocalName("Superconductor Base LuV")
             .setIconSet(TextureSet.SET_METALLIC)
