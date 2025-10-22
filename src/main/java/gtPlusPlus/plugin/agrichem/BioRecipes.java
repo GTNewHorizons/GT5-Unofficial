@@ -198,14 +198,6 @@ public class BioRecipes {
             .eut(16)
             .addTo(UniversalChemical);
 
-        // Craft into Wood Pellets
-        GTValues.RA.stdBuilder()
-            .itemInputs(GregtechItemList.CelluloseFiber.get(12))
-            .itemOutputs(GregtechItemList.WoodPellet.get(24))
-            .duration(2 * SECONDS + 8 * TICKS)
-            .eut(8)
-            .addTo(assemblerRecipes);
-
         // Methanol Extraction
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.CelluloseFiber.get(3))
@@ -244,10 +236,10 @@ public class BioRecipes {
 
         // Extruder Recipe
         GTValues.RA.stdBuilder()
-            .itemInputs(GregtechItemList.CelluloseFiber.get(4), GregtechItemList.Pellet_Mold.get(0))
+            .itemInputs(GregtechItemList.CelluloseFiber.get(2), GregtechItemList.Pellet_Mold.get(0))
             .itemOutputs(GregtechItemList.WoodPellet.get(1))
-            .duration(3 * SECONDS + 6 * TICKS)
-            .eut(16)
+            .duration(2 * SECONDS + 8 * TICKS)
+            .eut(8)
             .addTo(extruderRecipes);
 
         // Assembly Recipe
