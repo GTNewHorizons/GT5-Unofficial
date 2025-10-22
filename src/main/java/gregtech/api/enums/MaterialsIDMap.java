@@ -246,7 +246,7 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(382, Materials.Ardite);
         r(383, Materials.Reinforced);
         r(384, Materials.Galgadorian);
-        r(385, Materials.EnhancedGalgadorian);
+        r(385, Materials.GalgadorianEnhanced);
         r(386, Materials.Manyullyn);
         r(387, Materials.Mytryl);
         r(388, Materials.BlackPlutonium);

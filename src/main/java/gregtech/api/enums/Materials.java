@@ -803,8 +803,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     // Added
     public static Materials BloodInfusedIron;
     public static Materials Electrotine;
-    public static Materials EnhancedGalgadorian;
     public static Materials Galgadorian;
+    public static Materials GalgadorianEnhanced;
     public static Materials Shadow;
 
     // Galaxy Space 1.10 compat from Version 2.6

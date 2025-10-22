@@ -12516,8 +12516,8 @@ public class MaterialsInit {
     private static void loadAdded() {
         Materials.BloodInfusedIron = loadBloodInfusedIron();
         Materials.Electrotine = loadElectrotine();
-        Materials.EnhancedGalgadorian = loadEnhancedGalgadorian();
         Materials.Galgadorian = loadGalgadorian();
+        Materials.GalgadorianEnhanced = loadGalgadorianEnhanced();
         Materials.Shadow = loadShadow();
     }
 
@@ -12564,25 +12564,6 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadEnhancedGalgadorian() {
-        return new MaterialBuilder().setName("EnhancedGalgadorian")
-            .setDefaultLocalName("Enhanced Galgadorian")
-            .setChemicalFormula("???Fe₂C₉Nh₃")
-            .setIconSet(TextureSet.SET_METALLIC)
-            .setColor(Dyes.dyePink)
-            .setARGB(0x00985d85)
-            .setTool(7_200, 5, 32.0f)
-            .addDustItems()
-            .addMetalItems()
-            .addToolHeadItems()
-            .addGearItems()
-            .setMeltingPoint(4_500)
-            .setBlastFurnaceTemp(4_500)
-            .setBlastFurnaceRequired(true)
-            .setAutoGenerateBlastFurnaceRecipes(false)
-            .constructMaterial();
-    }
-
     private static Materials loadGalgadorian() {
         return new MaterialBuilder().setName("Galgadorian")
             .setDefaultLocalName("Galgadorian")
@@ -12597,6 +12578,25 @@ public class MaterialsInit {
             .addGearItems()
             .setMeltingPoint(3_000)
             .setBlastFurnaceTemp(3_000)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .constructMaterial();
+    }
+
+    private static Materials loadGalgadorianEnhanced() {
+        return new MaterialBuilder().setName("EnhancedGalgadorian")
+            .setDefaultLocalName("Enhanced Galgadorian")
+            .setChemicalFormula("???Fe₂C₉Nh₃")
+            .setIconSet(TextureSet.SET_METALLIC)
+            .setColor(Dyes.dyePink)
+            .setARGB(0x00985d85)
+            .setTool(7_200, 5, 32.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(4_500)
+            .setBlastFurnaceTemp(4_500)
             .setBlastFurnaceRequired(true)
             .setAutoGenerateBlastFurnaceRecipes(false)
             .constructMaterial();
