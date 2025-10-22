@@ -258,8 +258,8 @@ public class VacuumFreezerRecipes implements Runnable {
                 .addTo(vacuumFreezerRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.Vanadiumtriindinid, 1L))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Vanadiumtriindinid, 1L))
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorIVBase, 1L))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.SuperconductorIVBase, 1L))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_IV)
                 .addTo(vacuumFreezerRecipes);

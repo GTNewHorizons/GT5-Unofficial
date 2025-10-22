@@ -1060,7 +1060,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_IV.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.spring, Materials.Vanadiumtriindinid, 1L),
+                GTOreDictUnificator.get(OrePrefixes.spring, Materials.SuperconductorIVBase, 1L),
                 ItemList.Circuit_Chip_HPIC.get(2L),
                 ItemList.IV_Coil.get(2L),
                 ItemList.Reactor_Coolant_He_3.get(1L),
@@ -1099,7 +1099,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_IV.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.spring, Materials.Vanadiumtriindinid, 1L),
+                GTOreDictUnificator.get(OrePrefixes.spring, Materials.SuperconductorIVBase, 1L),
                 ItemList.Circuit_Chip_HPIC.get(2L),
                 ItemList.IV_Coil.get(2L),
                 ItemList.Reactor_Coolant_NaK_3.get(1L),
@@ -1840,7 +1840,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Vanadiumtriindinid, 12),
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorIVBase, 12),
                 GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.NiobiumTitanium, 8),
                 ItemList.Electric_Pump_IV.get(1),
                 GTUtility.getIntegratedCircuit(9))
@@ -1936,7 +1936,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Vanadiumtriindinid, 12),
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorIVBase, 12),
                 GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.NiobiumTitanium, 8),
                 ItemList.Electric_Pump_IV.get(1),
                 GTUtility.getIntegratedCircuit(9))
@@ -2044,7 +2044,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Vanadiumtriindinid, 12),
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorIVBase, 12),
                 GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.NiobiumTitanium, 8),
                 ItemList.Electric_Pump_IV.get(1),
                 GTUtility.getIntegratedCircuit(9))
