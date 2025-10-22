@@ -7,8 +7,6 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 
-import java.util.function.Supplier;
-
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
@@ -47,15 +45,13 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
             if (material.mDirectSmelting.mBlastFurnaceTemp >= 1000) return;
             if (!material.mAutoGenerateBlastFurnaceRecipes) return;
 
-            final ItemStack ingot = material.getIngots(1);
+            final ItemStack output = material.getIngots(1);
 
-            if (ingot == null) return;
-
-            Supplier<ItemStack> ingotHot = () -> GTOreDictUnificator.get(OrePrefixes.ingotHot, material, ingot, 1);
+            if (output == null) return;
 
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(1, stack), GTUtility.getIntegratedCircuit(1))
-                .itemOutputs(material.mBlastFurnaceTemp > 1750 ? ingotHot.get() : ingot)
+                .itemOutputs(output)
                 .duration(Math.max(material.getMass() / 4L, 1L) * material.mBlastFurnaceTemp * TICKS)
                 .eut(TierEU.RECIPE_MV)
                 .metadata(COIL_HEAT, (int) material.mBlastFurnaceTemp)
