@@ -858,6 +858,11 @@ public class Material implements IOreMaterial {
         return "ERROR.BAD.TRANSLATED.NAME";
     }
 
+    @Override
+    public String toString() {
+        return "Material{" + "unlocalizedName='" + unlocalizedName + '\'' + '}';
+    }
+
     public final MaterialState getState() {
         return this.materialState;
     }

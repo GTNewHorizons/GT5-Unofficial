@@ -1926,7 +1926,8 @@ public class Textures {
         NANO_FORGE_CASING_3,
         NANO_FORGE_CASING_4,
         NANITE_CORE,
-        NANITE_SHIELDING_FRAME
+        NANITE_SHIELDING_FRAME,
+        OVERLAY_ENERGY_IN_DEBUG,
 
         // semicolon after the comment to reduce merge conflicts
         ;
