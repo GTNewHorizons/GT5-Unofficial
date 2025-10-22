@@ -22,7 +22,6 @@ public class CircularGaugeDrawable implements IDrawable {
     private DoubleSupplier progressSupplier;
     private float minAngle = (float) Math.toRadians(-235.0);
     private float maxAngle = (float) Math.toRadians(45.0);
-    private int color = 0xff_431d00;
     private float lastAngle = Float.NaN;
 
     public CircularGaugeDrawable(DoubleSupplier progressSupplier) {
