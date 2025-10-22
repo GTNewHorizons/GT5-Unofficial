@@ -3021,7 +3021,10 @@ gt.item.redstone_sniffer.teleport=Teleport
 gt.item.redstone_sniffer.highlight_message=Highlighting cover at %d,%d,%d
 gt.item.redstone_sniffer.wrong_dim_message=Cannot highlight because you're not in the same dimension!
 gt.item.chaos_locator.warp=WARP
-gt.item.chaos_locator.tooltip.01=Only works in the End dimension
+gt.item.chaos_locator.coords=Enter Coordinates
+gt.item.chaos_locator.tooltip.01=Tracking works across dimensions
+gt.item.chaos_locator.x=X * 10k
+gt.item.chaos_locator.z=Z * 10k
 
 gt.cover.info.format.tick_rate=§b%s§r %s
 gt.cover.info.chat.tick_rate=Cover tick rate set to %s

@@ -60,7 +60,7 @@ public class ChaosLocatorGui {
             .size(100, 100);
 
         panel.child(
-            new TextWidget<>("Enter Coordinates").sizeRel(1f, 0.2f)
+            new TextWidget<>(IKey.lang("gt.item.chaos_locator.coords")).sizeRel(1f, 0.2f)
                 .posRel(0f, 0.1f)
                 .alignment(Alignment.Center)
                 .color(10227735));
@@ -80,7 +80,7 @@ public class ChaosLocatorGui {
                                 .value(xSyncer)
                                 .setDefaultNumber(0))
                         .child(
-                            new TextWidget<>("X * 10k").sizeRel(1f, 0.2f)
+                            new TextWidget<>(IKey.lang("gt.item.chaos_locator.z")).sizeRel(1f, 0.2f)
                                 .alignment(Alignment.Center)
                                 .color(10227735))
                         .childPadding(2))
@@ -97,7 +97,7 @@ public class ChaosLocatorGui {
                                 .value(zSyncer)
                                 .setDefaultNumber(0))
                         .child(
-                            new TextWidget<>("Z * 10k").sizeRel(1f, 0.2f)
+                            new TextWidget<>(IKey.lang("gt.item.chaos_locator.z")).sizeRel(1f, 0.2f)
                                 .alignment(Alignment.Center)
                                 .color(10227735))
                         .childPadding(2)));
@@ -105,7 +105,9 @@ public class ChaosLocatorGui {
         panel.child(
             new ButtonWidget<>().sizeRel(0.4f, 0.2f)
                 .posRel(0.5f, 0.85f)
-                .overlay(IKey.lang("gt.item.chaos_locator.warp").color(10227735))
+                .overlay(
+                    IKey.lang("gt.item.chaos_locator.warp")
+                        .color(10227735))
                 .onMousePressed(mouseButton -> {
                     int xToTeleportTo = guiData.getMainHandItem()
                         .getTagCompound()
