@@ -23,6 +23,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -59,6 +60,8 @@ import gregtech.api.util.GTWaila;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.gui.modularui.multiblock.base.MTESteamMultiBaseGui;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusOutput;
@@ -417,11 +420,16 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
 
     // tierMachine isn't synced to client. Adding a syncHandler for it will not work because
     // You will still get one opening with the incorrect theme, so getThemeTier it is
-    protected abstract int getThemeTier();
+    public abstract int getThemeTier();
 
     @Override
     protected GTGuiTheme getGuiTheme() {
         return getThemeTier() != 2 ? GTGuiThemes.BRONZE : GTGuiThemes.STEEL;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTESteamMultiBaseGui(this);
     }
 
     @Override
