@@ -13620,9 +13620,9 @@ public class MaterialsInit {
         Materials.RadoxHeavy = loadRadoxHeavy();
         Materials.RadoxLight = loadRadoxLight();
         Materials.RadoxPolymer = loadRadoxPolymer();
+        Materials.RadoxRaw = loadRadoxRaw();
         Materials.RadoxSuperHeavy = loadRadoxSuperHeavy();
         Materials.RadoxSuperLight = loadRadoxSuperLight();
-        Materials.RawRadox = loadRawRadox();
         Materials.Xenoxene = loadXenoxene();
     }
 
@@ -13693,6 +13693,15 @@ public class MaterialsInit {
             .setGasTemperature(12_406);
     }
 
+    private static Materials loadRadoxRaw() {
+        return new MaterialBuilder().setName("RawRadox")
+            .setDefaultLocalName("Raw Radox")
+            .setIconSet(TextureSet.SET_DULL)
+            .setARGB(0x00501e50)
+            .addFluid()
+            .constructMaterial();
+    }
+
     private static Materials loadRadoxSuperHeavy() {
         return new MaterialBuilder().setName("SuperHeavyRadox")
             .setDefaultLocalName("Super Heavy Radox")
@@ -13708,15 +13717,6 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_DULL)
             .setARGB(0x009b009b)
             .addGas()
-            .constructMaterial();
-    }
-
-    private static Materials loadRawRadox() {
-        return new MaterialBuilder().setName("RawRadox")
-            .setDefaultLocalName("Raw Radox")
-            .setIconSet(TextureSet.SET_DULL)
-            .setARGB(0x00501e50)
-            .addFluid()
             .constructMaterial();
     }
 

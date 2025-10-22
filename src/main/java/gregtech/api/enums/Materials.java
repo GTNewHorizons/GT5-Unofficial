@@ -875,9 +875,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials RadoxHeavy;
     public static Materials RadoxLight;
     public static Materials RadoxPolymer;
+    public static Materials RadoxRaw;
     public static Materials RadoxSuperHeavy;
     public static Materials RadoxSuperLight;
-    public static Materials RawRadox;
     public static Materials Xenoxene;
 
     // Netherite Line
