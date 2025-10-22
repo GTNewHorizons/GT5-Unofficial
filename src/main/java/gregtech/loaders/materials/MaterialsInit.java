@@ -13137,7 +13137,7 @@ public class MaterialsInit {
     private static void loadSuperconductorBases() {
         Materials.Pentacadmiummagnesiumhexaoxid = loadPentacadmiummagnesiumhexaoxid();
         Materials.Titaniumonabariumdecacoppereikosaoxid = loadTitaniumonabariumdecacoppereikosaoxid();
-        Materials.Uraniumtriplatinid = loadUraniumtriplatinid();
+        Materials.SuperconductorEVBase = loadSuperconductorEVBase();
         Materials.SuperconductorIVBase = loadSuperconductorIVBase();
         Materials.SuperconductorLuVBase = loadSuperconductorLuVBase();
         Materials.SuperconductorZPMBase = loadSuperconductorZPMBase();
@@ -13193,7 +13193,7 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadUraniumtriplatinid() {
+    private static Materials loadSuperconductorEVBase() {
         return new MaterialBuilder().setName("Uraniumtriplatinid")
             .setDefaultLocalName("Superconductor Base EV")
             .setIconSet(TextureSet.SET_SHINY)

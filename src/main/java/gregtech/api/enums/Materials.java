@@ -837,7 +837,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     // Superconductor Bases
     public static Materials Pentacadmiummagnesiumhexaoxid;
     public static Materials Titaniumonabariumdecacoppereikosaoxid;
-    public static Materials Uraniumtriplatinid;
+    public static Materials SuperconductorEVBase;
     public static Materials SuperconductorIVBase;
     public static Materials SuperconductorLuVBase;
     public static Materials SuperconductorZPMBase;
