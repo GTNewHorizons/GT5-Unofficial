@@ -422,7 +422,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .disableCable()
             .build();
         WireCableBuilder.builder()
-            .material(Materials.Longasssuperconductornameforuhvwire)
+            .material(Materials.SuperconductorUHVBase)
             .startId(2520)
             .lossWire(16384)
             .amperage(16)

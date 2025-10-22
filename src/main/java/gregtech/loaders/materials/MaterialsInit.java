@@ -13142,7 +13142,7 @@ public class MaterialsInit {
         Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid = loadTetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid();
         Materials.Tetranaquadahdiindiumhexaplatiumosminid = loadTetranaquadahdiindiumhexaplatiumosminid();
         Materials.Longasssuperconductornameforuvwire = loadLongasssuperconductornameforuvwire();
-        Materials.Longasssuperconductornameforuhvwire = loadLongasssuperconductornameforuhvwire();
+        Materials.SuperconductorUHVBase = loadSuperconductorUHVBase();
         Materials.SuperconductorUEVBase = loadSuperconductorUEVBase();
         Materials.SuperconductorUIVBase = loadSuperconductorUIVBase();
         Materials.SuperconductorUMVBase = loadSuperconductorUMVBase();
@@ -13308,7 +13308,7 @@ public class MaterialsInit {
             .setProcessingMaterialTierEU(TierEU.RECIPE_LuV);
     }
 
-    private static Materials loadLongasssuperconductornameforuhvwire() {
+    private static Materials loadSuperconductorUHVBase() {
         return new MaterialBuilder().setName("Longasssuperconductornameforuhvwire")
             .setDefaultLocalName("Superconductor Base UHV")
             .setChemicalFormula("D₆(SpNt)₇Tn₅Am₆")
