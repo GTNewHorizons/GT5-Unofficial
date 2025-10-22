@@ -56,6 +56,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.metatileentity.implementations.MTEBasicBatteryBuffer;
 import gregtech.api.metatileentity.implementations.MTEBasicHull;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
+import gregtech.api.metatileentity.implementations.MTEHatchBooster;
 import gregtech.api.metatileentity.implementations.MTEHatchBulkCatalystHousing;
 import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
@@ -9301,6 +9302,11 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             .set(new MTEHatchMagnet(MAG_HATCH.ID, "hatch.mag_hatch", "Electromagnet Housing").getStackForm(1L));
     }
 
+    private static void registerBoosterHatch() {
+        ItemList.Hatch_Booster
+            .set(new MTEHatchBooster(BOOST_HATCH.ID, "hatch.booster_hatch", "Booster Hatch").getStackForm(1L));
+    }
+
     private static void registerInputBus() {
         ItemList.Hatch_Input_Bus_ULV.set(
             new MTEHatchInputBus(INPUT_BUS_ULV.ID, "hatch.input_bus.tier.00", "Input Bus (ULV)", 0).getStackForm(1L));
@@ -10918,6 +10924,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerLongDistancePipe();
         registerAE2Hatches();
         registerMagHatch();
+        registerBoosterHatch();
         registerInputBus();
         registerOutputBus();
         registerVoidBus();

@@ -2748,6 +2748,20 @@ public enum ItemList implements IItemContainer {
     MagLevHarness,
 
     ManaFly,
+
+    Hatch_Booster,
+    Booster_MV,
+    Booster_HV,
+    Booster_EV,
+    Booster_IV,
+    Booster_LuV,
+    Booster_ZPM,
+    Booster_UV,
+    Booster_UHV,
+    Booster_UEV,
+    Booster_UIV,
+    Booster_UMV,
+
     // semicolon after the comment to reduce merge conflicts
     ;
 

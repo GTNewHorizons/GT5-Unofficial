@@ -9,52 +9,50 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
-import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTStructureUtility.ofSolenoidCoil;
 
-import goodgenerator.blocks.tileEntity.MTEComponentAssemblyLine;
-import goodgenerator.loader.Loaders;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.util.GTRecipe;
-import gregtech.api.util.OverclockCalculator;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatchBooster;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.BlockCasings10;
+import gregtech.common.items.MetaGeneratedItem01;
 import gregtech.common.misc.GTStructureChannels;
-import org.apache.commons.lang3.tuple.Pair;
-import org.jetbrains.annotations.NotNull;
-
-import javax.annotation.Nonnull;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<MTESuperConductorProcessor>
     implements ISurvivalConstructable {
@@ -69,7 +67,7 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
             STRUCTURE_PIECE_MAIN,
             // spotless:off
             new String[][]{{
-                "BBB",
+                "BDB",
                 "BBB",
                 "B~B",
                 "BBB",
@@ -91,29 +89,38 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
         .addElement(
             'B',
             buildHatchAdder(MTESuperConductorProcessor.class)
-                .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy)
+                .atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(15))
                 .dot(1)
                 .buildAndChain(
                     onElementPass(MTESuperConductorProcessor::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 15))))
         .addElement(
             'A',
-            lazy(()->ofBlocksTiered(
-                (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta : null,
-                IntStream.range(0, 14)
-                    .mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
-                    .collect(Collectors.toList()),
-                -1,
-                MTESuperConductorProcessor::setCasingTier,
-                MTESuperConductorProcessor::getCasingTier)))
+            lazy(
+                () -> ofBlocksTiered(
+                    (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta : null,
+                    IntStream.range(0, 14)
+                        .mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
+                        .collect(Collectors.toList()),
+                    -1,
+                    MTESuperConductorProcessor::setCasingTier,
+                    MTESuperConductorProcessor::getCasingTier)))
         .addElement(
             'C',
             GTStructureChannels.SOLENOID.use(
                 ofSolenoidCoil(
                     MTESuperConductorProcessor::setSolenoidLevel,
-                    MTESuperConductorProcessor::getSolenoidLevel))
-        )
+                    MTESuperConductorProcessor::getSolenoidLevel)))
+        .addElement(
+            'D',
+            buildHatchAdder(MTESuperConductorProcessor.class).adder(MTESuperConductorProcessor::addboosterHatch)
+                .hatchClass(MTEHatchBooster.class)
+                .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(0))
+                .dot(2)
+                .build())
         .build();
+
+    private MTEHatchBooster boosterHatch = null;
 
     public MTESuperConductorProcessor(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -204,39 +211,61 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
         return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 2, 0, elementBudget, env, false, true);
     }
 
-    private int mCasingAmount;
+    private int casingAmount;
 
     private void onCasingAdded() {
-        mCasingAmount++;
+        casingAmount++;
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         solenoidLevel = null;
+        boosterHatch = null;
         this.casingTier = -1;
-        mCasingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, 1, 2, 0) && mCasingAmount >= 5;
+        casingAmount = 0;
+        return checkPiece(STRUCTURE_PIECE_MAIN, 1, 2, 0) && casingAmount >= 1;
     }
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic(){
+        return new ProcessingLogic() {
+
             protected @NotNull OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setEUtDiscount(calculateEuDiscount(recipe.mEUt));
             }
+
             @Override
             protected @NotNull CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                if (solenoidLevel - GTUtility.getTier(recipe.mEUt) < 0)
-                    return CheckRecipeResultRegistry.NO_RECIPE;
+                if (solenoidLevel - GTUtility.getTier(recipe.mEUt) < 0) return CheckRecipeResultRegistry.NO_RECIPE;
                 return super.validateRecipe(recipe);
             }
         }.setSpeedBonus(1F / 1.25F)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 
+    public static boolean isValidBooster(ItemStack aBooster) {
+        return aBooster != null && aBooster.getItem() instanceof MetaGeneratedItem01
+            && aBooster.getItemDamage() >= 32150
+            && aBooster.getItemDamage() <= 32160;
+    }
+
+    private boolean addboosterHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity != null) {
+            final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+            if (aMetaTileEntity instanceof MTEHatchBooster booster) {
+                booster.updateTexture(aBaseCasingIndex);
+                if (boosterHatch == null) {
+                    boosterHatch = booster;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     @Override
     public int getMaxParallelRecipes() {
-        return Math.max(1, (int) Math.pow(1.4, casingTier));
+        return Math.max(1, (int) Math.pow(1.4, casingTier+1));
     }
 
     @Override
@@ -282,7 +311,7 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
 
     private double calculateEuDiscount(int recipeVoltage) {
         final int recipeTier = GTUtility.getTier(recipeVoltage);
-        final int exponent =  Math.max(0, solenoidLevel - recipeTier);
+        final int exponent = Math.max(0, solenoidLevel - recipeTier);
         return Math.pow(0.9, exponent);
     }
 }
