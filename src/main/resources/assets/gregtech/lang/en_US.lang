@@ -1,3 +1,12 @@
+#
+#
+#
+#
+#
+#
+#
+#
+
 # Creative ItemGroup Tab
 itemGroup.GregTech.GTPP_BLOCKS=GT++ Blocks
 itemGroup.GregTech.GTPP_MACHINES=GT++ Machines
@@ -92,15 +101,7 @@ gt.crop.trollplant.name=Trollplant
 gt.crop.withereed.name=Withereed
 gt.crop.zomplant.name=Zomplant
 
-# Tooltip info of tile-entities
-gt.tileentity.eup_in=Voltage IN: §a%d (%s§a)§7
-gt.tileentity.eup_out=Voltage OUT: §a%d (%s§a)§7
-gt.tileentity.eup_amount=Amperage: §e%d§7
-gt.tileentity.eup_store=Capacity: §9%d§7 EU
-gt.tileentity.has_muffler=is Muffled
-gt.tileentity.has_steam_upgrade=has Steam Upgrade
-gt.tileentity.colored=Colored (%s%s§7)
-
+####
 item.gt.advancedsensorcard.name=GregTech Advanced Sensor Card
 gt.blackholerenderer.name=Black Hole Renderer
 gt.block.longdistancepipe.name=Long Distance Pipeline Pipe
@@ -3545,7 +3546,6 @@ gt.tooltip.chunk_loading_off=§7Chunk Loading: §4OFF
 gt.tooltip.drill_retract_pipes=§7Abort and retract mining pipes
 gt.tooltip.drill_retract_pipes_active=§4Cannot interrupt abort procedure
 
-
 gt.tooltip.digitaltank.tooltip=Stores %sL of fluid
 gt.tooltip.digitaltank.tooltip1=Will keep its contents when harvested
 gt.tooltip.digitaltank.locked_to=Content locked to %s
@@ -3563,12 +3563,19 @@ gt.tooltip.digitaltank.void_full_mode_disabled=Void Full Mode Disable
 gt.tooltip.digitaltank.void_full_mode_enabled=Void Full Mode Enabled
 gt.tooltip.digitaltank.voidfull_tooltip=Void Full Mode
 
+## Tileentity Tooltips 
+gt.tooltip.tileentity.eup_in=Voltage IN: §a%d (%s§a)§7
+gt.tooltip.tileentity.eup_out=Voltage OUT: §a%d (%s§a)§7
+gt.tooltip.tileentity.eup_amount=Amperage: §e%d§7
+gt.tooltip.tileentity.eup_store=Capacity: §9%d§7 EU
+gt.tooltip.tileentity.has_muffler=is Muffled
+gt.tooltip.tileentity.has_steam_upgrade=has Steam Upgrade
+gt.tooltip.tileentity.colored=Colored (%s%s§7)
 
-
-
-# Behaviour tooltips
+## Behaviour tooltips
 gt.tooltip.behaviour.prospecting=Usable for Prospecting
 gt.tooltip.behaviour.sneak_switch_mode=Sneak Rightclick to switch Mode
+
 
 # Machine interact chat description
 gt.chat.interact.desc.filter_fluid=Filter Fluid: #Space
@@ -3659,9 +3666,6 @@ gt.chat.interact.desc.mining_chunk_enabled=Mining chunk loading enabled
 gt.chat.interact.desc.mining_chunk_disabled=Mining chunk loading disabled
 gt.chat.interact.desc.connectable=Connectable: #space
 
-
-
-
 ## Digital Tank/Digital Chest
 gt.chat.digitaltank.overflow_disabled=Overflow Voiding Mode Disabled
 gt.chat.digitaltank.overflow_enabled=Overflow Voiding Mode Enabled
@@ -3685,7 +3689,6 @@ gt.chat.interact.desc.pipe.heat_limit=Heat Limit: %%%"
 gt.chat.interact.desc.pipe.heat_limit2=%%% K
 gt.chat.interact.desc.pipe.handle_gas_not=Cannot handle gas"
 gt.chat.interact.desc.pipe.pipe_amount=Pipe Amount: %%%
-
 gt.chat.interact.desc.pipe.capacity=Capacity
 gt.chat.interact.desc.pipe.heat_resistance=Heat Resistance
 gt.chat.interact.desc.pipe.gas_proof=Gas Proof
@@ -3709,7 +3712,9 @@ gt.interact.desc.l_tick=L/tick #Space
 gt.interact.desc.l_sec=L/sec #Space
 gt.interact.desc.pump_speed_limit_reached=Pump speed limit reached!
 gt.interact.desc.pump_speed_every_tick=Pump speed: %dL every %d ticks, %.2f L/sec on average
-
+gt.interact.desc.running_mode=§fRunning mode: §6%s
+gt.interact.desc.all=All
+gt.interact.desc.any=Any
 
 # InfoData
 gt.infodata.hatch_output.name=Output Hatch
@@ -3748,7 +3753,6 @@ gt.recipe.total=Total: %s EU
 gt.recipe.usage=Usage: %s EU/t
 gt.recipe.time=Time: %s secs
 gt.recipe.time_ticks=(%s ticks)
-
 gt.recipe.needs_low_gravity=Needs Low Gravity
 gt.recipe.needs_cleanroom=Needs Cleanroom
 gt.recipe.scan_ass_line=Scan for Assembly Line
@@ -3807,8 +3811,6 @@ gt.gui.step_up=Step Up
 gt.gui.amp_out=A, Out: #space
 
 
-
-
 # Waila
 gt.waila.multiblock.status.incomplete=** INCOMPLETE STRUCTURE **
 gt.waila.multiblock.status.efficiency=  Efficiency: %f%%
@@ -3830,9 +3832,9 @@ gt.info.eu_1= EU / #space
 gt.info.eu_2= EU #space
 gt.info.amp=A
 gt.info.volt=V
-
 gt.info.percentage= %
 gt.info.liters=L
+
 
 # GTUtility
 gt.util.coords=----- X: %s Y: %s Z: %s D: %s -----
@@ -3875,14 +3877,12 @@ gt.util.facing_chance=Facing: %s / Chance: %s%
 gt.util.extend_facing=Extended Facing: #space
 gt.util.heat=Heat: %s / %s
 gt.util.hem=HEM: %s
-
 gt.util.amount=§fAmount:
 gt.util.per_tick=§fPer tick:
 gt.util.per_second=§fPer second:
 gt.util.per_minute=§fPer minute:
 gt.util.per_hour=§fPer hour:
 gt.util.per_day=§fPer day:
-
 gt.util.rate_shortened=(%s/s)
 gt.util.amount_line=%s: %s
 gt.util.per_tick_line=%s: %s%s
@@ -3892,9 +3892,12 @@ gt.util.per_hour_line=%s: %s%s
 gt.util.per_day_line=%s: %s%s
 gt.util.liters=L
 gt.util.high_value_brackets=[%s]
-
 gt.util.info_max_out=Max OUT: %s (%s) EU at %s A
 gt.util.info_energy=Energy: %s EU / %s EU
+
+
+# Exceptions/Errors
+## GTUtility
 gt.util.exception_block=An exception was thrown while fetching this block's info.
 gt.util.exception_fluid=An exception was thrown while fetching this tile's fluid tank info.
 gt.util.exception_debug=An exception was thrown while fetching this block's debug info.
@@ -3912,7 +3915,8 @@ gt.util.exception_ic2_wrenchability=An exception was thrown while fetching this 
 gt.util.exception_alignment_info=An exception was thrown while fetching this device's alignment info.
 gt.util.exception_reactor_info=An exception was thrown while fetching this reactor's info.
 
-
+## ItemMachines
+gt.util.exception_item_info=An exception was thrown while getting this item's info.
 
 
 
@@ -3921,8 +3925,6 @@ gt.util.exception_reactor_info=An exception was thrown while fetching this react
 #################
 
 
-
-gt.interact.desc.mb.mode=§fRunning mode: §6%s
 
 
 

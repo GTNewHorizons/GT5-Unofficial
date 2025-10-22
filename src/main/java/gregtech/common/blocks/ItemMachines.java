@@ -19,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -93,7 +94,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                         final byte inputTier = GTUtility.getTier(tTileEntity.getInputVoltage());
                         aList.add(
                             translateToLocalFormatted(
-                                "gt.tileentity.eup_in",
+                                "gt.tooltip.tileentity.eup_in",
                                 GTUtility.formatNumbers(tTileEntity.getInputVoltage()),
                                 GTUtility.getColoredTierNameFromTier(inputTier)));
                     }
@@ -101,42 +102,44 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                         final byte outputTier = GTUtility.getTier(tTileEntity.getOutputVoltage());
                         aList.add(
                             translateToLocalFormatted(
-                                "gt.tileentity.eup_out",
+                                "gt.tooltip.tileentity.eup_out",
                                 GTUtility.formatNumbers(tTileEntity.getOutputVoltage()),
                                 GTUtility.getColoredTierNameFromTier(outputTier)));
                     }
                     if (tTileEntity.getOutputAmperage() > 1L) {
                         aList.add(
                             translateToLocalFormatted(
-                                "gt.tileentity.eup_amount",
+                                "gt.tooltip.tileentity.eup_amount",
                                 GTUtility.formatNumbers(tTileEntity.getOutputAmperage())));
                     }
                     aList.add(
                         translateToLocalFormatted(
-                            "gt.tileentity.eup_store",
+                            "gt.tooltip.tileentity.eup_store",
                             GTUtility.formatNumbers(tTileEntity.getEUCapacity())));
                 }
             }
             final NBTTagCompound aNBT = aStack.getTagCompound();
             if (aNBT != null) {
                 if (aNBT.getBoolean("mMuffler")) {
-                    aList.add(translateToLocal("gt.tileentity.has_muffler"));
+                    aList.add(translateToLocal("gt.tooltip.tileentity.has_muffler"));
                 }
                 if (aNBT.getBoolean("mSteamConverter")) {
-                    aList.add(translateToLocal("gt.tileentity.has_steam_upgrade"));
+                    aList.add(translateToLocal("gt.tooltip.tileentity.has_steam_upgrade"));
                 }
 
                 CoverableTileEntity.addInstalledCoversInformation(aNBT, aList);
                 if (aNBT.hasKey("mColor") && aNBT.getByte("mColor") != -1) {
                     aList.add(
                         translateToLocalFormatted(
-                            "gt.tileentity.colored",
+                            "gt.tooltip.tileentity.colored",
                             Dyes.get(aNBT.getByte("mColor") - 1).formatting,
                             Dyes.get(aNBT.getByte("mColor") - 1).mName));
                 }
             }
         } catch (Throwable e) {
-            aList.add("§cAn exception was thrown while getting this item's info.§r");
+            aList.add(
+                EnumChatFormatting.AQUA + GTUtility.translate("gt.util.exception_reactor_info")
+                    + EnumChatFormatting.RESET);
             aList.add(e.getLocalizedMessage());
             GT_FML_LOGGER.error("addInformation", e);
         }

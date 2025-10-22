@@ -3298,7 +3298,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         if (supportsMachineModeSwitch()) {
             screenElements.widget(
                 TextWidget
-                    .dynamicString(() -> translateToLocalFormatted("gt.interact.desc.mb.mode", getMachineModeName()))
+                    .dynamicString(
+                        () -> translateToLocalFormatted("gt.interact.desc.running_mode", getMachineModeName()))
                     .setTextAlignment(Alignment.CenterLeft));
         }
         screenElements
