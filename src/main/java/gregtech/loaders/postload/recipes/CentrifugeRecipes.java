@@ -462,7 +462,7 @@ public class CentrifugeRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(Materials.Helium.getGas(80))
-            .fluidOutputs(Materials.Helium_3.getGas(5))
+            .fluidOutputs(Materials.Helium3.getGas(5))
             .duration(8 * SECONDS)
             .eut(80)
             .addTo(centrifugeRecipes);

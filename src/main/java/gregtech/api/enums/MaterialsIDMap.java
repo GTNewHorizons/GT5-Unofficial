@@ -12,7 +12,7 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(  2, Materials.Deuterium);
         r(  3, Materials.Tritium);
         r(  4, Materials.Helium);
-        r(  5, Materials.Helium_3);
+        r(  5, Materials.Helium3);
         r(  6, Materials.Lithium);
         r(  8, Materials.Beryllium);
         r(  9, Materials.Boron);

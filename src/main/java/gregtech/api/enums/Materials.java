@@ -140,7 +140,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
 
     // Isotopes
     public static Materials Deuterium;
-    public static Materials Helium_3;
+    public static Materials Helium3;
     public static Materials Plutonium241;
     public static Materials Tritium;
     public static Materials Uranium235;

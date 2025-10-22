@@ -1932,7 +1932,7 @@ public class MaterialsInit {
 
     private static void loadIsotopes() {
         Materials.Deuterium = loadDeuterium();
-        Materials.Helium_3 = loadHelium3();
+        Materials.Helium3 = loadHelium3();
         Materials.Plutonium241 = loadPlutonium241();
         Materials.Tritium = loadTritium();
         Materials.Uranium235 = loadUranium235();
@@ -5196,7 +5196,7 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_DULL)
             .setColor(Dyes.dyeYellow)
             .addDustItems()
-            .addOreByproduct(() -> Materials.Helium_3)
+            .addOreByproduct(() -> Materials.Helium3)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.STONE)
             .addOrePrefix(OrePrefixes.dustImpure)

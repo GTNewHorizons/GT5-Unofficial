@@ -1010,9 +1010,9 @@ public class LoaderGTBlockFluid implements Runnable {
             .withLocalizedName("Helium-3")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.Helium_3)
+            .configureMaterials(Materials.Helium3)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Helium_3, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Helium3, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("Methane")
             .withLocalizedName("Methane")
