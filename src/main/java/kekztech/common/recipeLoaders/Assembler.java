@@ -58,8 +58,8 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(6),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.CrudeSteel, 1),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.CrudeSteel, 6),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.ClayCompound, 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.ClayCompound, 6),
                 GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Steel, 3),
                 ItemList.FluidRegulator_LV.get(1))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 1))

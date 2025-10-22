@@ -819,7 +819,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     // Unclassified 07 materials
     public static Materials AstralSilver;
     public static Materials BlueAlloy;
-    public static Materials CrudeSteel;
+    public static Materials ClayCompound;
     public static Materials Enderium;
     public static Materials Mithril;
     public static Materials ShadowIron;
@@ -1493,7 +1493,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         OrePrefixes.ingotHot.disableComponent(Materials.BlackSteel);
         OrePrefixes.ingotHot.disableComponent(Materials.EnergeticAlloy);
         OrePrefixes.ingotHot.disableComponent(Materials.PulsatingIron);
-        OrePrefixes.ingotHot.disableComponent(Materials.CrudeSteel);
+        OrePrefixes.ingotHot.disableComponent(Materials.ClayCompound);
         OrePrefixes.ingotHot.disableComponent(Materials.Netherite);
         OrePrefixes.ingotHot.disableComponent(Materials.HotProtoHalkonite);
         OrePrefixes.ingotHot.disableComponent(Materials.ProtoHalkonite);

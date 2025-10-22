@@ -12788,7 +12788,7 @@ public class MaterialsInit {
     private static void loadUnclassified07() {
         Materials.AstralSilver = loadAstralSilver();
         Materials.BlueAlloy = loadBlueAlloy();
-        Materials.CrudeSteel = loadCrudeSteel();
+        Materials.ClayCompound = loadClayCompound();
         Materials.Enderium = loadEnderium();
         Materials.Mithril = loadMithril();
         Materials.ShadowIron = loadShadowIron();
@@ -12834,7 +12834,7 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadCrudeSteel() {
+    private static Materials loadClayCompound() {
         return new MaterialBuilder().setName("CrudeSteel")
             .setDefaultLocalName("Clay Compound")
             .setIconSet(TextureSet.SET_VIVID)
