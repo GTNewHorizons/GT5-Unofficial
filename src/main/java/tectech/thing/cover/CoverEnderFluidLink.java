@@ -168,7 +168,7 @@ public class CoverEnderFluidLink extends Cover {
 
     private void readLegacyDataFromNbt(NBTTagInt nbtInt) {
         int data = nbtInt.func_150287_d();
-        this.export = testBit(data, IMPORT_EXPORT_MASK);
+        this.export = !testBit(data, IMPORT_EXPORT_MASK);
         this.privateChannel = testBit(data, PUBLIC_PRIVATE_MASK);
     }
 

@@ -3541,8 +3541,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         return getGui().build(guiData, syncManager, uiSettings);
     }
 
-    protected @NotNull MTEMultiBlockBaseGui getGui() {
-        return new MTEMultiBlockBaseGui(this);
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEMultiBlockBaseGui<>(this);
     }
 
     public boolean getDefaultHasMaintenanceChecks() {
