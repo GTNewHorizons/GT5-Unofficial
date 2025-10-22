@@ -149,9 +149,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                new ItemStack(Items.sugar),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Polyethylene, 1))
+            .itemInputs(new ItemStack(Items.sugar), GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plastic, 1))
             .itemOutputs(ItemList.GelledToluene.get(2))
             .fluidInputs(new FluidStack(ItemList.sToluene, 133))
             .duration(7 * SECONDS)
@@ -159,9 +157,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                new ItemStack(Items.sugar, 9),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Polyethylene, 1))
+            .itemInputs(new ItemStack(Items.sugar, 9), GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plastic, 1))
             .itemOutputs(ItemList.GelledToluene.get(18))
             .fluidInputs(new FluidStack(ItemList.sToluene, 1_197))
             .duration(1 * MINUTES + 3 * SECONDS)
@@ -4017,7 +4013,7 @@ public class ChemicalRecipes implements Runnable {
         addDefaultPolymerizationRecipes(
             Materials.Ethylene.mGas,
             Materials.Ethylene.getCells(1),
-            Materials.Polyethylene.mStandardMoltenFluid);
+            Materials.Plastic.mStandardMoltenFluid);
 
         addDefaultPolymerizationRecipes(
             Materials.Tetrafluoroethylene.mGas,

@@ -469,7 +469,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Obsidian;
     public static Materials Phosphate;
     public static Materials PigIron;
-    public static Materials Polyethylene;
+    public static Materials Plastic;
     public static Materials Polycaprolactam;
     public static Materials Polydimethylsiloxane;
     public static Materials Polytetrafluoroethylene;

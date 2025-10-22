@@ -646,7 +646,7 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(871, Materials.Malachite);
         r(872, Materials.Migmatite);
         r(873, Materials.Pitchblende);
-        r(874, Materials.Polyethylene);
+        r(874, Materials.Plastic);
         r(876, Materials.Siltstone);
         r(877, Materials.Soapstone);
         r(878, Materials.Oilsands);

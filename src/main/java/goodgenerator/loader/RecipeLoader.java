@@ -963,7 +963,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.PolyvinylChloride, 4),
-                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Polyethylene, 4),
+                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Plastic, 4),
                 GTUtility.getIntegratedCircuit(8))
             .fluidInputs(FluidRegistry.getFluidStack("dye.chemical.dyecyan", 1 * INGOTS))
             .itemOutputs(ItemRefer.Plastic_Case.get(1))
@@ -974,7 +974,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.PolyvinylChloride, 4),
-                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Polyethylene, 4),
+                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Plastic, 4),
                 GTUtility.getIntegratedCircuit(8))
             .fluidInputs(FluidRegistry.getFluidStack("dye.watermixed.dyecyan", 1 * INGOTS))
             .itemOutputs(ItemRefer.Plastic_Case.get(1))
@@ -986,7 +986,7 @@ public class RecipeLoader {
             ItemRefer.Plastic_Case.get(1),
             new Object[] { "PCP", "CDC", "PCP", 'P',
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.PolyvinylChloride, 1), 'C',
-                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Polyethylene, 1), 'D', "dyeCyan" });
+                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Plastic, 1), 'D', "dyeCyan" });
 
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -1125,7 +1125,7 @@ public class RecipeLoader {
                 ItemRefer.Inverter.get(1),
                 ItemList.Hull_MV.get(1L),
                 GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.AnyCopper, 2),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polyethylene, 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Plastic, 1),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Beryllium, 2),
                 ItemList.Electric_Motor_MV.get(2))
             .itemOutputs(Loaders.NeutronAccelerators[2].copy())

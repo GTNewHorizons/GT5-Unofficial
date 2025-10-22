@@ -685,7 +685,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
                 true).getStackForm(1L));
 
         FluidPipeBuilder.builder()
-            .material(Materials.Polyethylene)
+            .material(Materials.Plastic)
             .displayName("Plastic")
             .startId(5170)
             .baseCapacity(360)

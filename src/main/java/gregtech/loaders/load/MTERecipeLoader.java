@@ -423,7 +423,7 @@ public class MTERecipeLoader implements Runnable {
             new Object[] { "GRG", "WEW", aTextCableHull, 'M', MTEBasicMachineWithRecipe.X.HULL, 'R',
                 MTEBasicMachineWithRecipe.X.ROTOR, 'E', MTEBasicMachineWithRecipe.X.MOTOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
-                OrePrefixes.pipeMedium.get(Materials.Polyethylene) },
+                OrePrefixes.pipeMedium.get(Materials.Plastic) },
             3);
 
         GTModHandler.addMachineCraftingRecipe(
@@ -431,7 +431,7 @@ public class MTERecipeLoader implements Runnable {
             new Object[] { "GRG", "WEW", aTextCableHull, 'M', MTEBasicMachineWithRecipe.X.HULL, 'R',
                 MTEBasicMachineWithRecipe.X.ROTOR, 'E', MTEBasicMachineWithRecipe.X.MOTOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
-                OrePrefixes.pipeLarge.get(Materials.Polyethylene) },
+                OrePrefixes.pipeLarge.get(Materials.Plastic) },
             4);
 
         GTModHandler.addMachineCraftingRecipe(
@@ -439,7 +439,7 @@ public class MTERecipeLoader implements Runnable {
             new Object[] { "GRG", "WEW", aTextCableHull, 'M', MTEBasicMachineWithRecipe.X.HULL, 'R',
                 MTEBasicMachineWithRecipe.X.ROTOR, 'E', MTEBasicMachineWithRecipe.X.MOTOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
-                OrePrefixes.pipeHuge.get(Materials.Polyethylene) },
+                OrePrefixes.pipeHuge.get(Materials.Plastic) },
             5);
     }
 
@@ -2168,13 +2168,13 @@ public class MTERecipeLoader implements Runnable {
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_HV, 'C',
                 OrePrefixes.cableGt01.get(Materials.Gold), 'H', OrePrefixes.plate.get(Materials.StainlessSteel), 'P',
-                OrePrefixes.plate.get(Materials.Polyethylene) });
+                OrePrefixes.plate.get(Materials.Plastic) });
         GTModHandler.addCraftingRecipe(
             ItemList.Hull_EV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_EV, 'C',
                 OrePrefixes.cableGt01.get(Materials.Aluminium), 'H', OrePrefixes.plate.get(Materials.Titanium), 'P',
-                OrePrefixes.plate.get(Materials.Polyethylene) });
+                OrePrefixes.plate.get(Materials.Plastic) });
         GTModHandler.addCraftingRecipe(
             ItemList.Hull_IV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.BUFFERED,
