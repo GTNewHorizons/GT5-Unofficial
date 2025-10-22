@@ -3461,76 +3461,76 @@ mui.button.close=x
 # New stuff:
 
 # Machine tooltips loader
-gt.tooltip.volt_in=Voltage IN: #Space
-gt.tooltip.volt_out=Voltage OUT: #Space
-gt.tooltip.amp=Amperage: #Space
-gt.tooltip.capacity=Capacity: #Space
-gt.tooltip.contains_fluid=Contains Fluid: #Space
-gt.tooltip.fluid_amount=Fluid Amount: #Space
-gt.tooltip.contains_item=Contains Item: #Space
-gt.tooltip.item_amount=Item Amount: #Space
-gt.tooltip.has_muffler=has Muffler Upgrade
-gt.tooltip.steam_tank_upgrades=Steam Tank Upgrades
-gt.tooltip.emit_energy=Emit energy to output side
-gt.tooltip.emit_redstone_if_full=Emit redstone if no slot is free
-gt.tooltip.invert_redstone=Invert redstone
-gt.tooltip.buffer_stocking_mode=Enable stocking mode
-gt.tooltip.sorting_mode=Sort stacks
-gt.tooltip.energy_tier=%s (%s)
-gt.tooltip.max_parallel_always=Always use maximum
-gt.tooltip..purification_plant.debug_mode=Toggle debug mode.
-gt.tooltip.voiding_mode=Voiding Mode:
-gt.tooltip.voiding_mode_none=§7Void Nothing
-gt.tooltip.voiding_mode_item=§7Void Excess §6Items
-gt.tooltip.voiding_mode_fluid=§7Void Excess §9Fluids
-gt.tooltip.voiding_mode_all=§7Void Excess §6Items §7and §9Fluids
-gt.tooltip.input_separation_on=Input Separation: ON
-gt.tooltip.input_separation_off=Input Separation: OFF
-gt.tooltip.mode_switch=Mode Switch
-gt.tooltip.batch_mode_on=Batch Mode: ON
-gt.tooltip.batch_mode_off=Batch Mode: OFF
-gt.tooltip.lock_recipe_on=Lock Recipe: ON
-gt.tooltip.lock_recipe_off=Lock Recipe: OFF
-gt.tooltip.power_panel=Open Power Panel
-gt.tooltip.structure_update=Update Structure
-gt.tooltip.power_switch=Power Switch
-gt.tooltip.hoverable_error=ERROR! REPORT ME!
-gt.tooltip.chance=Chance: #Space
-gt.tooltip.not_consumed_in_process=Does not get consumed in the process
-gt.tooltip.chunk_loading_on=§7Chunk Loading: §aON
-gt.tooltip.chunk_loading_off=§7Chunk Loading: §4OFF
-gt.tooltip.drill_retract_pipes=§7Abort and retract mining pipes
-gt.tooltip.drill_retract_pipes_active=§4Cannot interrupt abort procedure
-
-gt.tooltip.digitaltank.tooltip=Stores %sL of fluid
-gt.tooltip.digitaltank.tooltip1=Will keep its contents when harvested
-gt.tooltip.digitaltank.locked_to=Content locked to %s
-gt.tooltip.digitaltank.fluid_amount= / #space
-gt.tooltip.digitaltank.liters= L #space
-gt.tooltip.digitaltank.empty=Tank Empty
-gt.tooltip.digitaltank.fluid_amount=Fluid Amount
-gt.tooltip.digitaltank.lockfluid_label=Locked Fluid
-gt.tooltip.digitaltank.lockfluid_empty=None
-gt.tooltip.digitaltank.autooutput_tooltip=Fluid Auto-Output
-gt.tooltip.digitaltank.lockfluid_tooltip=Lock Fluid Mode
-gt.tooltip.digitaltank.inputfromoutput_tooltip=Input Fluid from Output Side
-gt.tooltip.digitaltank.voidoverflow_tooltip=Overflow Voiding Mode
-gt.tooltip.digitaltank.void_full_mode_disabled=Void Full Mode Disable
-gt.tooltip.digitaltank.void_full_mode_enabled=Void Full Mode Enabled
-gt.tooltip.digitaltank.voidfull_tooltip=Void Full Mode
-
-## Tileentity Tooltips 
-gt.tooltip.tileentity.eup_in=Voltage IN: §a%d (%s§a)§7
-gt.tooltip.tileentity.eup_out=Voltage OUT: §a%d (%s§a)§7
-gt.tooltip.tileentity.eup_amount=Amperage: §e%d§7
-gt.tooltip.tileentity.eup_store=Capacity: §9%d§7 EU
-gt.tooltip.tileentity.has_muffler=is Muffled
-gt.tooltip.tileentity.has_steam_upgrade=has Steam Upgrade
-gt.tooltip.tileentity.colored=Colored (%s%s§7)
-
-## Behaviour tooltips
-gt.tooltip.behaviour.prospecting=Usable for Prospecting
-gt.tooltip.behaviour.sneak_switch_mode=Sneak Rightclick to switch Mode
+ gt.tooltip.volt_in=Voltage IN: #Space
+ gt.tooltip.volt_out=Voltage OUT: #Space
+ gt.tooltip.amp=Amperage: #Space
+ gt.tooltip.capacity=Capacity: #Space
+ gt.tooltip.contains_fluid=Contains Fluid: #Space
+ gt.tooltip.fluid_amount=Fluid Amount: #Space
+ gt.tooltip.contains_item=Contains Item: #Space
+ gt.tooltip.item_amount=Item Amount: #Space
+ gt.tooltip.has_muffler=has Muffler Upgrade
+ gt.tooltip.steam_tank_upgrades=Steam Tank Upgrades
+ gt.tooltip.emit_energy=Emit energy to output side
+ gt.tooltip.emit_redstone_if_full=Emit redstone if no slot is free
+ gt.tooltip.invert_redstone=Invert redstone
+ gt.tooltip.buffer_stocking_mode=Enable stocking mode
+ gt.tooltip.sorting_mode=Sort stacks
+ gt.tooltip.energy_tier=%s (%s)
+ gt.tooltip.max_parallel_always=Always use maximum
+ gt.tooltip..purification_plant.debug_mode=Toggle debug mode.
+ gt.tooltip.voiding_mode=Voiding Mode:
+ gt.tooltip.voiding_mode_none=§7Void Nothing
+ gt.tooltip.voiding_mode_item=§7Void Excess §6Items
+ gt.tooltip.voiding_mode_fluid=§7Void Excess §9Fluids
+ gt.tooltip.voiding_mode_all=§7Void Excess §6Items §7and §9Fluids
+ gt.tooltip.input_separation_on=Input Separation: ON
+ gt.tooltip.input_separation_off=Input Separation: OFF
+ gt.tooltip.mode_switch=Mode Switch
+ gt.tooltip.batch_mode_on=Batch Mode: ON
+ gt.tooltip.batch_mode_off=Batch Mode: OFF
+ gt.tooltip.lock_recipe_on=Lock Recipe: ON
+ gt.tooltip.lock_recipe_off=Lock Recipe: OFF
+ gt.tooltip.power_panel=Open Power Panel
+ gt.tooltip.structure_update=Update Structure
+ gt.tooltip.power_switch=Power Switch
+ gt.tooltip.hoverable_error=ERROR! REPORT ME!
+ gt.tooltip.chance=Chance: #Space
+ gt.tooltip.not_consumed_in_process=Does not get consumed in the process
+ gt.tooltip.chunk_loading_on=§7Chunk Loading: §aON
+ gt.tooltip.chunk_loading_off=§7Chunk Loading: §4OFF
+ gt.tooltip.drill_retract_pipes=§7Abort and retract mining pipes
+ gt.tooltip.drill_retract_pipes_active=§4Cannot interrupt abort procedure
+ 
+ gt.tooltip.digitaltank.tooltip=Stores %sL of fluid
+ gt.tooltip.digitaltank.tooltip1=Will keep its contents when harvested
+ gt.tooltip.digitaltank.locked_to=Content locked to %s
+ gt.tooltip.digitaltank.fluid_amount= / #space
+ gt.tooltip.digitaltank.liters= L #space
+ gt.tooltip.digitaltank.empty=Tank Empty
+ gt.tooltip.digitaltank.fluid_amount=Fluid Amount
+ gt.tooltip.digitaltank.lockfluid_label=Locked Fluid
+ gt.tooltip.digitaltank.lockfluid_empty=None
+ gt.tooltip.digitaltank.autooutput_tooltip=Fluid Auto-Output
+ gt.tooltip.digitaltank.lockfluid_tooltip=Lock Fluid Mode
+ gt.tooltip.digitaltank.inputfromoutput_tooltip=Input Fluid from Output Side
+ gt.tooltip.digitaltank.voidoverflow_tooltip=Overflow Voiding Mode
+ gt.tooltip.digitaltank.void_full_mode_disabled=Void Full Mode Disable
+ gt.tooltip.digitaltank.void_full_mode_enabled=Void Full Mode Enabled
+ gt.tooltip.digitaltank.voidfull_tooltip=Void Full Mode
+ 
+ ## Tileentity Tooltips 
+  gt.tooltip.tileentity.eup_in=Voltage IN: §a%d (%s§a)§7
+  gt.tooltip.tileentity.eup_out=Voltage OUT: §a%d (%s§a)§7
+  gt.tooltip.tileentity.eup_amount=Amperage: §e%d§7
+  gt.tooltip.tileentity.eup_store=Capacity: §9%d§7 EU
+  gt.tooltip.tileentity.has_muffler=is Muffled
+  gt.tooltip.tileentity.has_steam_upgrade=has Steam Upgrade
+  gt.tooltip.tileentity.colored=Colored (%s%s§7)
+ 
+ ## Behaviour tooltips
+  gt.tooltip.behaviour.prospecting=Usable for Prospecting
+  gt.tooltip.behaviour.sneak_switch_mode=Sneak Rightclick to switch Mode
 
 
 # Machine interact chat description
@@ -3622,7 +3622,7 @@ gt.tooltip.behaviour.sneak_switch_mode=Sneak Rightclick to switch Mode
  gt.chat.interact.desc.mining_chunk_disabled=Mining chunk loading disabled
  gt.chat.interact.desc.connectable=Connectable: #space
  
-  ## Digital Tank/Digital Chest
+ ## Digital Tank/Digital Chest
   gt.chat.digitaltank.overflow_disabled=Overflow Voiding Mode Disabled
   gt.chat.digitaltank.overflow_enabled=Overflow Voiding Mode Enabled
   gt.chat.digitalchest.voidoverflow.enabled=Overflow Voiding Mode §aOn§r
@@ -3630,7 +3630,7 @@ gt.tooltip.behaviour.sneak_switch_mode=Sneak Rightclick to switch Mode
   gt.chat.digitalchest.inputfilter_disabled=Input Filter §cOff§r
   gt.chat.digitalchest.inputfilter_enabled=Input Filter §aOn§r
  
-  ## Pipe stuff
+ ## Pipe stuff
   gt.chat.interact.desc.pipe.l_s_1=L/seconds → #Space
   gt.chat.interact.desc.pipe.l_s_2=L/secs
   gt.chat.interact.desc.pipe.l_s_3= L/s
