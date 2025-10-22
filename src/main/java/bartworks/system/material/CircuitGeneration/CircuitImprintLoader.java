@@ -279,11 +279,9 @@ public class CircuitImprintLoader {
         for (GTRecipe recipe : CircuitImprintLoader.recipeTagMap.get(tag)) {
             eut = Math.min(eut, recipe.mEUt);
         }
-        OreDictionary.getOreIDs(stack);
         int tier = BWUtil.getCircuitTierFromOreDictName(
             OreDictionary
                 .getOreName(OreDictionary.getOreIDs(stack).length > 0 ? OreDictionary.getOreIDs(stack)[0] : -1));
-
         eut = Math.min(eut, VP[Math.max(tier, 0)]);
         GTValues.RA.stdBuilder()
             .itemInputs(stack, ItemList.Shape_Slicer_Flat.get(0))
