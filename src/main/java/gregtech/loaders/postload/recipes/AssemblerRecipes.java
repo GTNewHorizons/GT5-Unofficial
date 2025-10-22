@@ -608,7 +608,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Energy_LapotronicOrb.get(1),
                 GTUtility.getIntegratedCircuit(4))
             .itemOutputs(ItemList.TierdDrone0.get(4))
-            .fluidInputs(Materials.AdvancedGlue.getFluid(1 * INGOTS))
+            .fluidInputs(Materials.GlueAdvanced.getFluid(1 * INGOTS))
             .duration(10 * SECONDS)
             .eut(48)
             .addTo(assemblerRecipes);
@@ -672,7 +672,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Circuit_Silicon_Wafer2.get(32),
                 GTUtility.getIntegratedCircuit(1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Graphene, 64))
-            .fluidInputs(Materials.AdvancedGlue.getFluid(500))
+            .fluidInputs(Materials.GlueAdvanced.getFluid(500))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -683,7 +683,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Circuit_Silicon_Wafer3.get(8),
                 GTUtility.getIntegratedCircuit(1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Graphene, 64))
-            .fluidInputs(Materials.AdvancedGlue.getFluid(250))
+            .fluidInputs(Materials.GlueAdvanced.getFluid(250))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);

@@ -95,7 +95,7 @@ public class MachineRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Graphene, 64),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Graphene, 64))
             .itemOutputs(ItemList.NanotubeSpool.get(1))
-            .fluidInputs(Materials.AdvancedGlue.getFluid(720))
+            .fluidInputs(Materials.GlueAdvanced.getFluid(720))
             .duration(1 * MINUTE)
             .eut(TierEU.RECIPE_ZPM)
             .requiresCleanRoom()

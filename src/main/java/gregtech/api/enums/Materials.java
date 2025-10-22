@@ -334,7 +334,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Piko;
 
     // Not possible to determine exact Components
-    public static Materials AdvancedGlue;
     public static Materials Antimatter;
     public static Materials Biomass;
     public static Materials CharcoalByproducts;
@@ -352,6 +351,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials FishOil;
     public static Materials FryingOilHot;
     public static Materials Glue;
+    public static Materials GlueAdvanced;
     public static Materials Gunpowder;
     public static Materials Honey;
     public static Materials Leather;

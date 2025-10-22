@@ -359,7 +359,7 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(564, Materials.PreActivatedCarbon);
         r(565, Materials.DirtyActivatedCarbon);
         r(566, Materials.PolyAluminiumChloride);
-        r(567, Materials.AdvancedGlue);
+        r(567, Materials.GlueAdvanced);
         r(568, Materials.Ozone);
         r(569, Materials.StableBaryonicMatter);
         r(570, Materials.OilExtraHeavy);

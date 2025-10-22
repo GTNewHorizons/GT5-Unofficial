@@ -852,7 +852,7 @@ public class RecipeLoader {
                 ItemRefer.Aluminum_Nitride_Dust.get(4),
                 WerkstoffLoader.YttriumOxide.get(OrePrefixes.dust, 5),
                 GTUtility.getIntegratedCircuit(9))
-            .fluidInputs(Materials.AdvancedGlue.getFluid(1_000))
+            .fluidInputs(Materials.GlueAdvanced.getFluid(1_000))
             .itemOutputs(ItemRefer.Special_Ceramics_Dust.get(9))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -863,7 +863,7 @@ public class RecipeLoader {
                 ItemRefer.Aluminum_Nitride_Dust.get(4),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uraninite, 5),
                 GTUtility.getIntegratedCircuit(9))
-            .fluidInputs(Materials.AdvancedGlue.getFluid(1_000))
+            .fluidInputs(Materials.GlueAdvanced.getFluid(1_000))
             .itemOutputs(ItemRefer.Special_Ceramics_Dust.get(9))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)

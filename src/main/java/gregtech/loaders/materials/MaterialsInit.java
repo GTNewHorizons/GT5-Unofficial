@@ -4559,7 +4559,6 @@ public class MaterialsInit {
     }
 
     private static void loadNotExact() {
-        Materials.AdvancedGlue = loadAdvancedGlue();
         Materials.Biomass = loadBiomass();
         Materials.CharcoalByproducts = loadCharcoalByproducts();
         Materials.Cheese = loadCheese();
@@ -4576,6 +4575,7 @@ public class MaterialsInit {
         Materials.FishOil = loadFishOil();
         Materials.FryingOilHot = loadFryingOilHot();
         Materials.Glue = loadGlue();
+        Materials.GlueAdvanced = loadGlueAdvanced();
         Materials.Gunpowder = loadGunpowder();
         Materials.Honey = loadHoney();
         Materials.Leather = loadLeather();
@@ -4604,19 +4604,6 @@ public class MaterialsInit {
         Materials.WoodGas = loadWoodGas();
         Materials.WoodTar = loadWoodTar();
         Materials.WoodVinegar = loadWoodVinegar();
-    }
-
-    private static Materials loadAdvancedGlue() {
-        return new MaterialBuilder().setName("AdvancedGlue")
-            .setDefaultLocalName("Advanced Glue")
-            .setChemicalFormula("A chemically approved glue!")
-            .setIconSet(TextureSet.SET_FLUID)
-            .setColor(Dyes.dyeYellow)
-            .setARGB(0x00ffffb9)
-            .addCell()
-            .addFluid()
-            .addAspect(TCAspects.LIMUS, 5)
-            .constructMaterial();
     }
 
     private static Materials loadBiomass() {
@@ -4805,6 +4792,19 @@ public class MaterialsInit {
             .setARGB(0x00c8c400)
             .addCell()
             .addAspect(TCAspects.LIMUS, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadGlueAdvanced() {
+        return new MaterialBuilder().setName("AdvancedGlue")
+            .setDefaultLocalName("Advanced Glue")
+            .setChemicalFormula("A chemically approved glue!")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeYellow)
+            .setARGB(0x00ffffb9)
+            .addCell()
+            .addFluid()
+            .addAspect(TCAspects.LIMUS, 5)
             .constructMaterial();
     }
 
