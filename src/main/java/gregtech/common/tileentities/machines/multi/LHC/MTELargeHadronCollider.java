@@ -151,7 +151,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                           CCCCCCCCCCCCCCC                                   ",
@@ -165,7 +165,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                            CCCCCCCCCCCCCC                                   ",
                 "                                                  CCCCCCCCCC            A                                    ",
@@ -179,7 +179,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             "
-            }, {
+            },{
                 "                                                             CCCCCCCCCCCCC                                   ",
                 "                                                           CCCCCCCCCCCCCA                                    ",
                 "                                              CCCCCCCCCCCCCCCCC         D                                    ",
@@ -193,7 +193,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             "
-            }, {
+            },{
                 "                                                             CEEECEEECEEEC                                   ",
                 "                                                           CCCCCCCCCCCCCA                                    ",
                 "                                            CCCCCC       CCCCCCCC       D                                    ",
@@ -207,7 +207,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             "
-            }, {
+            },{
                 "                                                             CCCCCCCCCCCCC                                   ",
                 "                                                           CCCCCCCCCCCCCA                                    ",
                 "                                          CCCCC           CC  CCCCC     D                                    ",
@@ -221,7 +221,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                            CCCCCCCCCCCCCC                                   ",
                 "                                         CCCC              C    CCCC    A                                    ",
@@ -235,7 +235,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                       CCCC                 CCCCCCCCCCCCCC                                   ",
@@ -249,7 +249,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                      CCCC                         CCCC                                      ",
@@ -263,7 +263,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                     CCCC                           CCCC                                     ",
@@ -277,7 +277,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                     CCC                             CCC                                     ",
@@ -291,7 +291,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                    CCC                               CCC                                    ",
@@ -305,7 +305,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                   CCC                                 CCC                                   ",
@@ -319,7 +319,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                   CC                                   CC                                   ",
@@ -333,7 +333,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "                                               CCCCCCCCCCCCCCC                                               ",
                 "                                               CCCCCCCCCCCCCCC                                               ",
                 "                                                                                                             "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                  CCC                                   CCC                                  ",
@@ -347,77 +347,77 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "                                          CCCCC               CCCCC                                          ",
                 "                                          CCCCC               CCCCC                                          ",
                 "                                               CCCCCCCCCCCCCCC                                               "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                 CCC                                     CC                                  ",
-                "                                CC  C                                   C  C                                 ",
-                "                               CCC  C                                   C  C                                 ",
-                "                              C  C  C                                   C  C                                 ",
-                "                              C   CC                                     CC                                  ",
+                "                                C   C                                   C  C                                 ",
+                "                               CC   C                                   C  C                                 ",
+                "                              C     C                                   C  C                                 ",
+                "                              C    C                                     CC                                  ",
                 "                              C   C                                                                          ",
                 "                              CCCC        CCCCCCCCCCCCCCCCCCCCCCCCC                                          ",
                 "                                      CCCC                         CCCC                                      ",
                 "                                      CCCC                         CCCC                                      ",
                 "                                      CCCC                         CCCC                                      ",
                 "                                          CCCCCCCCCCCCCCCCCCCCCCCCC                                          "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                 CCC                                     CCC                                 ",
                 "                                C   C                                   C   C                                ",
-                "                              CCC   C                                   C   C                                ",
-                "                             C  C   C                                   C   C                                ",
-                "                             C   CCC                                     CCC                                 ",
+                "                              CC    C                                   C   C                                ",
+                "                             C      C                                   C   C                                ",
+                "                             C     C                                     CCC                                 ",
                 "                             C    C                                                                          ",
                 "                             C    C   CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC                                      ",
                 "                              CCCC CCC                                 CCC                                   ",
                 "                                   CCC                                 CCC                                   ",
                 "                                   CCC                                 CCC                                   ",
                 "                                      CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC                                      "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                 CC                                       CC                                 ",
                 "                               CC  C                                     C  C                                ",
-                "                              CCC  C                                     C  C                                ",
-                "                             C  C  C                                     C  C                                ",
-                "                            C    CC                                       CC                                 ",
+                "                              C    C                                     C  C                                ",
+                "                             C     C                                     C  C                                ",
+                "                            C     C                                       CC                                 ",
                 "                            C     C                                                                          ",
                 "                            C     CCCCCCCCCCCCC               CCCCCCCCCCCC                                   ",
                 "                            CCCCCCC            CCCCCCCCCCCCCCC            CC                                 ",
                 "                                 CC            CCCCCCCCCCCCCCC            CC                                 ",
                 "                                 CC            CCCCCCCCCCCCCCC            CC                                 ",
                 "                                   CCCCCCCCCCCC               CCCCCCCCCCCC                                   "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                CCC                                       CC                                 ",
-                "                               CC  C                                     C  C                                ",
-                "                              CCC  C                                     C  C                                ",
-                "                             C CC  C                                     C  C                                ",
-                "                           CC   CCC                                       CC                                 ",
+                "                               C   C                                     C  C                                ",
+                "                              C    C                                     C  C                                ",
+                "                             C     C                                     C  C                                ",
+                "                           CC    CC                                       CC                                 ",
                 "                           C    CC                                                                           ",
                 "                           C    CCCCCCCCCC                         CCCCCCCCC                                 ",
-                "                           C   CC         CCCCC               CCCCC         CC                               ",
+                "                           C    C         CCCCC               CCCCC         CC                               ",
                 "                            CCCCC         CCCCC               CCCCC         CC                               ",
                 "                               CC         CCCCC               CCCCC         CC                               ",
                 "                                 CCCCCCCCC                         CCCCCCCCC                                 "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                CCC                                       CC                                 ",
-                "                               CC  C                                     C  C                                ",
-                "                              CCC  C                                     C  C                                ",
-                "                             C CC  C                                     C  C                                ",
-                "                           CC  C CC                                       CC                                 ",
+                "                               C   C                                     C  C                                ",
+                "                              CC   C                                     C  C                                ",
+                "                             C C   C                                     C  C                                ",
+                "                           CC  CCCC                                       CC                                 ",
                 "                          C    C                                                                             ",
-                "                          C    CCCCCCCC                               CCCCCCCC                               ",
-                "                          C  CC        CCC                         CCC        CC                             ",
-                "                           CCCC        CCC                         CCC        CC                             ",
+                "                          C     CCCCCCC                               CCCCCCCC                               ",
+                "                          C            CCC                         CCC        CC                             ",
+                "                           CC          CCC                         CCC        CC                             ",
                 "                             CC        CCC                         CCC        CC                             ",
                 "                               CCCCCCCC                               CCCCCCCC                               "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                CC                                         CC                                ",
@@ -425,13 +425,13 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "                               C  C                                       C  C                               ",
                 "                             CCC  C                                       C  C                               ",
                 "                          CCCCCCCC                                         CC                                ",
-                "                         CC   CC                                                                             ",
-                "                         C   CCCCCCC                                     CCCCCCC                             ",
-                "                         C CC       CCC                               CCC       CC                           ",
-                "                          CCC       CCC                               CCC       CC                           ",
+                "                         C    CC                                                                             ",
+                "                         C     CCCCC                                     CCCCCCC                             ",
+                "                         C          CCC                               CCC       CC                           ",
+                "                          C         CCC                               CCC       CC                           ",
                 "                           CC       CCC                               CCC       CC                           ",
                 "                             CCCCCCC                                     CCCCCCC                             "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                CC                                         CC                                ",
@@ -439,13 +439,13 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "                               E  E                                       E  E                               ",
                 "                               C  C                                       C  C                               ",
                 "                          CCCCCCCC                                         CC                                ",
-                "                         CC  CCC                                                                             ",
-                "                        CCCCCCCCCC                                         CCCCCCC                           ",
-                "                        CCC       CC                                     CC       CC                         ",
-                "                        CCC       CC                                     CC       CC                         ",
+                "                         C   CCC                                                                             ",
+                "                        CC    CCCC                                         CCCCCCC                           ",
+                "                        CC        CC                                     CC       CC                         ",
+                "                        CC        CC                                     CC       CC                         ",
                 "                        CCC       CC                                     CC       CC                         ",
                 "                           CCCCCCC                                         CCCCCCC                           "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                CC                                         CC                                ",
@@ -453,13 +453,13 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "                               E  E                                       E  E                               ",
                 "                               C  C                                       C  C                               ",
                 "                           CC   CC                                         CC                                ",
-                "                        CCCCCC                                                                               ",
-                "                       CCCCCCCCC                                             CCCCCCC                         ",
+                "                        CCC  C                                                                               ",
+                "                       CC    CCC                                             CCCCCCC                         ",
                 "                       CC       CC                                         CC       C                        ",
                 "                       CC       CC                                         CC       C                        ",
                 "                       CC       CC                                         CC       C                        ",
                 "                         CCCCCCC                                             CCCCCCC                         "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                CC                                         CC                                ",
@@ -468,12 +468,12 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "                               C  C                                       C  C                               ",
                 "                                CC                                         CC                                ",
                 "                        CCCCC                                                                                ",
-                "                       CCCCCCC                                                 CCCCCC                        ",
+                "                       CC   CC                                                 CCCCCC                        ",
                 "                      CC      CC                                             CC      CC                      ",
                 "                      CC      CC                                             CC      CC                      ",
                 "                      CC      CC                                             CC      CC                      ",
                 "                        CCCCCC                                                 CCCCCC                        "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                CC                                         CC                                ",
@@ -482,12 +482,12 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "                               C  C                                       C  C                               ",
                 "                                CC                                         CC                                ",
                 "                         CC                                                                                  ",
-                "                      CCCCCC                                                     CCCCCC                      ",
+                "                      CCC  C                                                     CCCCCC                      ",
                 "                     C      CC                                                 CC      C                     ",
                 "                     C      CC                                                 CC      C                     ",
                 "                     C      CC                                                 CC      C                     ",
                 "                      CCCCCC                                                     CCCCCC                      "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                CC                                         CC                                ",
@@ -501,7 +501,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "                    C     CC                                                     CC     C                    ",
                 "                    C     CC                                                     CC     C                    ",
                 "                     CCCCC                                                         CCCCC                     "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                CC                                         CC                                ",
@@ -510,26 +510,26 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "                               C  C                                       C  C                               ",
                 "                                CC                                         CC     CCC                        ",
                 "                                                                                  CCCCC                      ",
-                "                    CCCCC                                                         CCCCCCCC                   ",
+                "                    CCCCC                                                         CCC  CCC                   ",
                 "                   C     C                                                         C     C                   ",
                 "                   C     C                                                         C     C                   ",
                 "                   C     C                                                         C     C                   ",
                 "                    CCCCC                                                           CCCCC                    "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                CC                                         CC                                ",
                 "                               C  C                                       C  C                               ",
                 "                               E  E                                       E  E                               ",
                 "                               C  C                                       C  C  CCCC                         ",
-                "                                CC                                         CC   CCC CCC                      ",
-                "                                                                                CCC    CC                    ",
-                "                   CCCCC                                                          C CCCCCCC                  ",
-                "                 CC     C                                                          CC     CC                 ",
+                "                                CC                                         CC   CC  CCC                      ",
+                "                                                                                CC     CC                    ",
+                "                   CCCCC                                                          C     CCC                  ",
+                "                 CC     C                                                          C      CC                 ",
                 "                 CC     C                                                           C     CC                 ",
                 "                 CC     C                                                           C     CC                 ",
                 "                   CCCCC                                                             CCCCC                   "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                CC                                         CC                                ",
@@ -539,31 +539,31 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "                                CC                                         CCCCC     CC                      ",
                 "                                                                              CC       CCC                   ",
                 "                 CCCCC                                                          CCC    CCCCC                 ",
-                "                C     CC                                                           CCCC     C                ",
-                "                C     CC                                                             CC     C                ",
+                "                C     CC                                                           CC       C                ",
+                "                C     CC                                                             C      C                ",
                 "                C     CC                                                             CC     C                ",
                 "                 CCCCC                                                                 CCCCC                 "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                 CC                                       CCCC                               ",
-                "                                C  C                                     C  CCCC                             ",
-                "                                C  C                                     C  CC  CCC                          ",
-                "                                C  C                                     C  CC     CC                        ",
+                "                                C  C                                     C    CC                             ",
+                "                                C  C                                     C      CCC                          ",
+                "                                C  C                                     C         CC                        ",
                 "                                 CC                                       CCC        CC                      ",
-                "                                                                             CCCC      CCC                   ",
+                "                                                                             CCC       CCC                   ",
                 "                CCCCC                                                          CCCC    CCCCCC                ",
                 "               C     C                                                             CC  C     C               ",
                 "               C     C                                                               CCC     C               ",
                 "               C     C                                                                 C     C               ",
                 "                CCCCC                                                                   CCCCC                "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                 CC                                       CCCC                               ",
-                "                                C  C                                     C  C CC                             ",
-                "                                C  C                                     C  C   CC                           ",
-                "                                C  C                                     C  C    CC                          ",
+                "                                C  C                                     C    CC                             ",
+                "                                C  C                                     C      CC                           ",
+                "                                C  C                                     C       CC                          ",
                 "                                 CC                                       CCC    CCCC                        ",
                 "                                                                             CCCCCCCCCCCC                    ",
                 "               CCCCC                                                           CC  CCCCCCCCCCC               ",
@@ -571,13 +571,13 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "              C     C                                                                   C     C              ",
                 "              C     C                                                                   C     C              ",
                 "               CCCCC                                                                     CCCCC               "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                 CC                                       CCCC                               ",
-                "                                C  C                                     C  C C                              ",
-                "                                C  C                                     C  C  CC                            ",
-                "                                C  C                                     C  C  CCC                           ",
+                "                                C  C                                     C    C                              ",
+                "                                C  C                                     C     CC                            ",
+                "                                C  C                                     C     CCC                           ",
                 "                                 CC                                       CCCCCCCC                           ",
                 "                                                                              CCC                            ",
                 "               CCCC                                                                     CCCCCC               ",
@@ -585,7 +585,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "              C    C                                                                     C    C              ",
                 "              C    C                                                                     C    C              ",
                 "               CCCC                                                                       CCCC               "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                 CCC                                     CCCC                                ",
@@ -599,7 +599,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "             C    C                                                                       C    C             ",
                 "             C    C                                                                       C    C             ",
                 "              CCCC                                                                         CCCC              "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                  CC                                     CC                                  ",
@@ -613,7 +613,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "            C    C                                                                        CC    C            ",
                 "            C    C                                                                        CC    C            ",
                 "             CCCC                                                                           CCCC             "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                  CCC                                   CCC                                  ",
@@ -627,7 +627,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "           C    C                                                                           C    C           ",
                 "           C    C                                                                           C    C           ",
                 "            CCCC                                                                             CCCC            "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                   CC                                   CC                                   ",
@@ -641,7 +641,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "          C    C                                                                             C    C          ",
                 "          C    C                                                                             C    C          ",
                 "           CCCC                                                                               CCCC           "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                   CCC                                 CCC                                   ",
@@ -655,7 +655,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "          C    C                                                                             C    C          ",
                 "          C    C                                                                             C    C          ",
                 "           CCCC                                                                               CCCC           "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                    CCC                               CCC                                    ",
@@ -669,7 +669,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "         C    C                                                                               C    C         ",
                 "         C    C                                                                               C    C         ",
                 "          CCCC                                                                                 CCCC          "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                     CCC                             CCC                                     ",
@@ -683,7 +683,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "        C    C                                                                                 C    C        ",
                 "        C    C                                                                                 C    C        ",
                 "         CCCC                                                                                   CCCC         "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                     CCCC                           CCCC                                     ",
@@ -697,7 +697,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "        C   C                                                                                   C   C        ",
                 "        C   C                                                                                   C   C        ",
                 "         CCC                                                                                     CCC         "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                      CCCC                         CCCC                                      ",
@@ -711,7 +711,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "       C    C                                                                                   C    C       ",
                 "       C    C                                                                                   C    C       ",
                 "        CCCC                                                                                     CCCC        "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                       CCCC                       CCCC                                       ",
@@ -725,7 +725,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "       C   C                                                                                     C   C       ",
                 "       C   C                                                                                     C   C       ",
                 "        CCC                                                                                       CCC        "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                         CCCC                   CCCC                                         ",
@@ -739,7 +739,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "      C    C                                                                                     C    C      ",
                 "      C    C                                                                                     C    C      ",
                 "       CCCC                                                                                       CCCC       "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                          CCCCC               CCCCC                                          ",
@@ -753,7 +753,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "      C   C                                                                                       C   C      ",
                 "      C   C                                                                                       C   C      ",
                 "       CCC                                                                                         CCC       "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                            CCCCCC         CCCCCC                                            ",
@@ -767,7 +767,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "     C    C                                                                                       C    C     ",
                 "     C    C                                                                                       C    C     ",
                 "      CCCC                                                                                         CCCC      "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                              CCCCCCCCCCCCCCCCC                                              ",
@@ -781,7 +781,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "     C   C                                                                                         C   C     ",
                 "     C   C                                                                                         C   C     ",
                 "      CCC                                                                                           CCC      "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                  CCCCCCCCC                                                  ",
@@ -795,7 +795,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "    C    C                                                                                         C    C    ",
                 "    C    C                                                                                         C    C    ",
                 "     CCCC                                                                                           CCCC     "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -809,7 +809,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "    C   C                                                                                           C   C    ",
                 "    C   C                                                                                           C   C    ",
                 "     CCC                                                                                             CCC     "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -823,7 +823,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "   C    C                                                                                           C    C   ",
                 "   C    C                                                                                           C    C   ",
                 "    CCCC                                                                                             CCCC    "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -837,7 +837,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "   C   C                                                                                             C   C   ",
                 "   C   C                                                                                             C   C   ",
                 "    CCC                                                                                               CCC    "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -851,7 +851,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "   C   C                                                                                             C   C   ",
                 "   C   C                                                                                             C   C   ",
                 "    CCC                                                                                               CCC    "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -865,7 +865,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "  C    C                                                                                             C    C  ",
                 "  C    C                                                                                             C    C  ",
                 "   CCCC                                                                                               CCCC   "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -879,7 +879,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "  C   C                                                                                               C   C  ",
                 "  C   C                                                                                               C   C  ",
                 "   CCC                                                                                                 CCC   "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -893,7 +893,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "  C   C                                                                                               C   C  ",
                 "  C   C                                                                                               C   C  ",
                 "   CCC                                                                                                 CCC   "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -907,7 +907,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "  C   C                                                                                               C   C  ",
                 "  C   C                                                                                               C   C  ",
                 "   CCC                                                                                                 CCC   "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -921,7 +921,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 " C   C                                                                                                 C   C ",
                 " C   C                                                                                                 C   C ",
                 "  CCC                                                                                                   CCC  "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -935,7 +935,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 " C   C                                                                                                 C   C ",
                 " C   C                                                                                                 C   C ",
                 "  CCC                                                                                                   CCC  "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -949,7 +949,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 " C   C                                                                                                 C   C ",
                 " C   C                                                                                                 C   C ",
                 "  CCC                                                                                                   CCC  "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -963,7 +963,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 " C   C                                                                                                 C   C ",
                 " C   C                                                                                                 C   C ",
                 "  CCC                                                                                                   CCC  "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -977,7 +977,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 " C   C                                                                                                 C   C ",
                 " C   C                                                                                                 C   C ",
                 "  CCC                                                                                                   CCC  "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -991,7 +991,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "C   C                                                                                                   C   C",
                 "C   C                                                                                                   C   C",
                 " CCC                                                                                                     CCC "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1005,7 +1005,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "C   C                                                                                                   C   C",
                 "C   C                                                                                                   C   C",
                 " CCC                                                                                                     CCC "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1019,7 +1019,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "C   C                                                                                                   C   C",
                 "C   C                                                                                                   C   C",
                 " CCC                                                                                                     CCC "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1033,7 +1033,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "C   C                                                                                                   C   C",
                 "C   C                                                                                                   C   C",
                 " CCC                                                                                                     CCC "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1047,7 +1047,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "C   C                                                                                                   C   C",
                 "C   C                                                                                                   C   C",
                 " CCC                                                                                                     CCC "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1061,7 +1061,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "C   C                                                                                                   C   C",
                 "C   C                                                                                                   C   C",
                 " CCC                                                                                                     CCC "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1075,7 +1075,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "C   C                                                                                                   C   C",
                 "C   C                                                                                                   C   C",
                 " CCC                                                                                                     CCC "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1089,7 +1089,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "C   C                                                                                                   C   C",
                 "C   C                                                                                                   C   C",
                 " CCC                                                                                                     CCC "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1103,7 +1103,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "C   C                                                                                                   C   C",
                 "C   C                                                                                                   C   C",
                 " CCC                                                                                                     CCC "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1117,7 +1117,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "C   C                                                                                                   C   C",
                 "C   C                                                                                                   C   C",
                 " CCC                                                                                                     CCC "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1131,7 +1131,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "C   C                                                                                                   C   C",
                 "C   C                                                                                                   C   C",
                 " CCC                                                                                                     CCC "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1145,7 +1145,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "C   C                                                                                                   C   C",
                 "C   C                                                                                                   C   C",
                 " CCC                                                                                                     CCC "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1159,7 +1159,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "C   C                                                                                                   C   C",
                 "C   C                                                                                                   C   C",
                 " CCC                                                                                                     CCC "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1173,7 +1173,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "C   C                                                                                                   C   C",
                 "C   C                                                                                                   C   C",
                 " CCC                                                                                                     CCC "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1187,7 +1187,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "C   C                                                                                                   C   C",
                 "C   C                                                                                                   C   C",
                 " CCC                                                                                                     CCC "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1201,7 +1201,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 " C   C                                                                                                 C   C ",
                 " C   C                                                                                                 C   C ",
                 "  CCC                                                                                                   CCC  "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1215,7 +1215,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 " C   C                                                                                                 C   C ",
                 " C   C                                                                                                 C   C ",
                 "  CCC                                                                                                   CCC  "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1229,7 +1229,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 " C   C                                                                                                 C   C ",
                 " C   C                                                                                                 C   C ",
                 "  CCC                                                                                                   CCC  "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1243,7 +1243,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 " C   C                                                                                                 C   C ",
                 " C   C                                                                                                 C   C ",
                 "  CCC                                                                                                   CCC  "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1257,7 +1257,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 " C   C                                                                                                 C   C ",
                 " C   C                                                                                                 C   C ",
                 "  CCC                                                                                                   CCC  "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1271,7 +1271,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "  C   C                                                                                               C   C  ",
                 "  C   C                                                                                               C   C  ",
                 "   CCC                                                                                                 CCC   "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1285,7 +1285,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "  C   C                                                                                               C   C  ",
                 "  C   C                                                                                               C   C  ",
                 "   CCC                                                                                                 CCC   "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1299,7 +1299,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "  C   C                                                                                               C   C  ",
                 "  C   C                                                                                               C   C  ",
                 "   CCC                                                                                                 CCC   "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1313,7 +1313,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "  C    C                                                                                             C    C  ",
                 "  C    C                                                                                             C    C  ",
                 "   CCCC                                                                                               CCCC   "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1327,7 +1327,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "   C   C                                                                                             C   C   ",
                 "   C   C                                                                                             C   C   ",
                 "    CCC                                                                                               CCC    "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1341,7 +1341,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "   C   C                                                                                             C   C   ",
                 "   C   C                                                                                             C   C   ",
                 "    CCC                                                                                               CCC    "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1355,7 +1355,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "   C    C                                                                                           C    C   ",
                 "   C    C                                                                                           C    C   ",
                 "    CCCC                                                                                             CCCC    "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1369,7 +1369,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "    C   C                                                                                           C   C    ",
                 "    C   C                                                                                           C   C    ",
                 "     CCC                                                                                             CCC     "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1383,7 +1383,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "    C    C                                                                                         C    C    ",
                 "    C    C                                                                                         C    C    ",
                 "     CCCC                                                                                           CCCC     "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1397,7 +1397,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "     C   C                                                                                         C   C     ",
                 "     C   C                                                                                         C   C     ",
                 "      CCC                                                                                           CCC      "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1411,7 +1411,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "     C    C                                                                                       C    C     ",
                 "     C    C                                                                                       C    C     ",
                 "      CCCC                                                                                         CCCC      "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1425,7 +1425,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "      C   C                                                                                       C   C      ",
                 "      C   C                                                                                       C   C      ",
                 "       CCC                                                                                         CCC       "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1439,7 +1439,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "      C    C                                                                                     C    C      ",
                 "      C    C                                                                                     C    C      ",
                 "       CCCC                                                                                       CCCC       "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1453,7 +1453,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "       C   C                                                                                     C   C       ",
                 "       C   C                                                                                     C   C       ",
                 "        CCC                                                                                       CCC        "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1467,7 +1467,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "       C    C                                                                                   C    C       ",
                 "       C    C                                                                                   C    C       ",
                 "        CCCC                                                                                     CCCC        "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1481,7 +1481,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "        C   C                                                                                   C   C        ",
                 "        C   C                                                                                   C   C        ",
                 "         CCC                                                                                     CCC         "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1495,7 +1495,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "        C    C                                                                                 C    C        ",
                 "        C    C                                                                                 C    C        ",
                 "         CCCC                                                                                   CCCC         "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1509,7 +1509,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "         C    C                                                                               C    C         ",
                 "         C    C                                                                               C    C         ",
                 "          CCCC                                                                                 CCCC          "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1523,7 +1523,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "          C    C                                                                             C    C          ",
                 "          C    C                                                                             C    C          ",
                 "           CCCC                                                                               CCCC           "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1537,7 +1537,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "          C    C                                                                             C    C          ",
                 "          C    C                                                                             C    C          ",
                 "           CCCC                                                                               CCCC           "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1551,7 +1551,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "           C    C                                                                           C    C           ",
                 "           C    C                                                                           C    C           ",
                 "            CCCC                                                                             CCCC            "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1565,7 +1565,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "            C    C                                                                         C    C            ",
                 "            C    C                                                                         C    C            ",
                 "             CCCC                                                                           CCCC             "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1579,7 +1579,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "             C    C                                                                       C    C             ",
                 "             C    C                                                                       C    C             ",
                 "              CCCC                                                                         CCCC              "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1593,7 +1593,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "              C    C                                                                     C    C              ",
                 "              C    C                                                                     C    C              ",
                 "               CCCC                                                                       CCCC               "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1607,7 +1607,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "              C     C                                                                   C     C              ",
                 "              C     C                                                                   C     C              ",
                 "               CCCCC                                                                     CCCCC               "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1621,7 +1621,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "               C     C                                                                 C     C               ",
                 "               C     C                                                                 C     C               ",
                 "                CCCCC                                                                   CCCCC                "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1635,7 +1635,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "                C     CC                                                             CC     C                ",
                 "                C     CC                                                             CC     C                ",
                 "                 CCCCC                                                                 CCCCC                 "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1649,7 +1649,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "                 CC     C                                                           C     CC                 ",
                 "                 CC     C                                                           C     CC                 ",
                 "                   CCCCC                                                             CCCCC                   "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1663,7 +1663,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "                   C     C                                                         C     C                   ",
                 "                   C     C                                                         C     C                   ",
                 "                    CCCCC                                                           CCCCC                    "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1677,7 +1677,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "                    C     CC                                                     CC     C                    ",
                 "                    C     CC                                                     CC     C                    ",
                 "                     CCCCC                                                         CCCCC                     "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1691,7 +1691,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "                     C      CC                                                 CC      C                     ",
                 "                     C      CC                                                 CC      C                     ",
                 "                      CCCCCC                                                     CCCCCC                      "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1705,7 +1705,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "                      CC      CC                                             CC      CC                      ",
                 "                      CC      CC                                             CC      CC                      ",
                 "                        CCCCCC                                                 CCCCCC                        "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1719,7 +1719,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "                        C       CC                                         CC       C                        ",
                 "                        C       CC                                         CC       C                        ",
                 "                         CCCCCCC                                             CCCCCCC                         "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1733,7 +1733,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "                         CC       CC                                     CC       CC                         ",
                 "                         CC       CC                                     CC       CC                         ",
                 "                           CCCCCCC                                         CCCCCCC                           "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1747,7 +1747,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "                           CC       CCC                               CCC       CC                           ",
                 "                           CC       CCC                               CCC       CC                           ",
                 "                             CCCCCCC                                     CCCCCCC                             "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1761,7 +1761,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "                             CC        CCC                         CCC        CC                             ",
                 "                             CC        CCC                         CCC        CC                             ",
                 "                               CCCCCCCC                               CCCCCCCC                               "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1775,7 +1775,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "                               CC         CCCCC               CCCCC         CC                               ",
                 "                               CC         CCCCC               CCCCC         CC                               ",
                 "                                 CCCCCCCCC                         CCCCCCCCC                                 "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1789,7 +1789,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "                                 CC            CCCCCCCCCCCCCCC            CC                                 ",
                 "                                 CC            CCCCCCCCCCCCCCC            CC                                 ",
                 "                                   CCCCCCCCCCCC               CCCCCCCCCCCC                                   "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1803,7 +1803,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "                                   CCC                                 CCC                                   ",
                 "                                   CCC                                 CCC                                   ",
                 "                                      CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC                                      "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1817,7 +1817,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "                                      CCCC                         CCCC                                      ",
                 "                                      CCCC                         CCCC                                      ",
                 "                                          CCCCCCCCCCCCCCCCCCCCCCCCC                                          "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -1831,7 +1831,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "                                          CCCCC               CCCCC                                          ",
                 "                                          CCCCC               CCCCC                                          ",
                 "                                               CCCCCCCCCCCCCCC                                               "
-            }, {
+            },{
                 "                                                                                                             ",
                 "                                                                                                             ",
                 "                                                                                                             ",
@@ -2798,6 +2798,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
         initialParticleInfo = null;
         cachedOutputParticle = null;
         accelerationCycleCounter = 0;
+        machineMode = MACHINEMODE_ACCELERATOR;
         super.stopMachine(reason);
     }
 
@@ -2813,7 +2814,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
 
         BeamInformation inputInfo = this.getInputInformation();
 
-        if (inputInfo == null) return CheckRecipeResultRegistry.NO_RECIPE;
+        if (inputInfo == null || inputInfo.getRate() == 0) return CheckRecipeResultRegistry.NO_RECIPE;
 
         if (machineMode == MACHINEMODE_ACCELERATOR) {
 
@@ -2829,6 +2830,11 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 accelerationCycleCounter = 0;
             } else {
                 // if cachedOutputParticle exists, then apply acceleration cycle logic
+                if (!cachedOutputParticle.getParticle().canAccelerate()){
+                    // if the input beam is not charged particles, crash
+                    stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.noaccel"));
+                    return CheckRecipeResultRegistry.NO_RECIPE;
+                }
                 if (!initialParticleInfo.isEqual(inputInfo)) {
                     // if the input beam is ever modified or interrupted, crash the LHC
                     stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.noaccel"));
@@ -2974,6 +2980,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
         initialParticleInfo = null;
         cachedOutputParticle = null;
         accelerationCycleCounter = 0;
+        machineMode = MACHINEMODE_ACCELERATOR;
         super.onDisableWorking();
     }
 
