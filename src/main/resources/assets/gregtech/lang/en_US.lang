@@ -3514,7 +3514,7 @@ GT5U.gui.text.volumetric_flask.confirm=Confirm
   gt.gui.step_down=Step Down
   gt.gui.step_up=Step Up
   gt.gui.amp_out=A, Out: #space
-## Circuit
+ ## Circuit
  GT5U.gui.circuit.generic.data_display.off=OFF
  GT5U.gui.circuit.generic.data_display.on=ON
  GT5U.gui.circuit.data_description.delay=Delay
