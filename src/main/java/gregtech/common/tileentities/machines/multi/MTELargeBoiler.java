@@ -402,7 +402,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
     public boolean onRunningTick(ItemStack aStack) {
         if (this.mEUt > 0) {
             int maxEff = getCorrectedMaxEfficiency(mInventory[1]);
-            if (maxEff < mEfficiency){
+            if (maxEff < mEfficiency) {
                 mEfficiency = maxEff;
             }
             if (this.mSuperEfficencyIncrease > 0 && mEfficiency < maxEff) {
@@ -512,7 +512,8 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
     }
 
     private int getCorrectedMaxEfficiency(ItemStack itemStack) {
-        return (int) (getMaxEfficiency(itemStack) - ((getIdealStatus() - getRepairStatus()) * 1000) * getOverdriveMult());
+        return (int) (getMaxEfficiency(itemStack)
+            - ((getIdealStatus() - getRepairStatus()) * 1000) * getOverdriveMult());
     }
 
     @Override
