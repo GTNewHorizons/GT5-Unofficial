@@ -2757,6 +2757,7 @@ public enum ItemList implements IItemContainer {
     MagLevHarness,
 
     ManaFly,
+    DebugEnergyHatch,
 
     Machine_LV_CableCoater,
     Machine_MV_CableCoater,
