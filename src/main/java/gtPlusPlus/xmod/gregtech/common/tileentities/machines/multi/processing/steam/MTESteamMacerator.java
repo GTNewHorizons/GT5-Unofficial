@@ -358,7 +358,7 @@ public class MTESteamMacerator extends MTESteamMultiBase<MTESteamMacerator> impl
     }
 
     @Override
-    protected int getThemeTier() {
+    public int getThemeTier() {
         return tierMachineCasing;
     }
 }

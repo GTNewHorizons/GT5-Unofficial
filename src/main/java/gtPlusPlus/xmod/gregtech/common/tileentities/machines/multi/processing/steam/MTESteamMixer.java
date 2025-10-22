@@ -421,7 +421,7 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
     }
 
     @Override
-    protected int getThemeTier() {
+    public int getThemeTier() {
         return tierMachineCasing;
     }
 

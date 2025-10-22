@@ -425,7 +425,7 @@ public class MTESteamCentrifuge extends MTESteamMultiBase<MTESteamCentrifuge> im
     }
 
     @Override
-    protected int getThemeTier() {
+    public int getThemeTier() {
         return tierMachineCasing;
     }
 
