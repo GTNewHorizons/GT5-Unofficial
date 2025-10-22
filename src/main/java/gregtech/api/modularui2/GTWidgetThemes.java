@@ -89,8 +89,7 @@ public final class GTWidgetThemes {
 
     public static WidgetThemeKey<WidgetTheme> BUTTON_BLACK = themeApi
         .widgetThemeKeyBuilder("buttonBlack", WidgetTheme.class)
-        .defaultTheme(
-            new WidgetTheme(0, 0, GuiTextures.MC_BUTTON, 0x333333, 0xFAFAFA, false, 0))
+        .defaultTheme(new WidgetTheme(0, 0, GuiTextures.MC_BUTTON, 0x333333, 0xFAFAFA, false, 0))
         .defaultHoverTheme(null)
         .register();
 
