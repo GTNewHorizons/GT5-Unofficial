@@ -1313,9 +1313,9 @@ public class LoaderGTBlockFluid implements Runnable {
             .withLocalizedName("Diesel")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.Fuel)
+            .configureMaterials(Materials.Diesel)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Fuel, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Diesel, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("for.honey")
             .withLocalizedName("Honey")
@@ -1613,12 +1613,12 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.Bottle_Empty.get(1L)));
         FluidContainerRegistry.registerFluidContainer(
             new FluidContainerRegistry.FluidContainerData(
-                Materials.Fuel.getFluid(100L),
+                Materials.Diesel.getFluid(100L),
                 ItemList.Tool_Lighter_Invar_Full.get(1L),
                 ItemList.Tool_Lighter_Invar_Empty.get(1L)));
         FluidContainerRegistry.registerFluidContainer(
             new FluidContainerRegistry.FluidContainerData(
-                Materials.Fuel.getFluid(1_000),
+                Materials.Diesel.getFluid(1_000),
                 ItemList.Tool_Lighter_Platinum_Full.get(1L),
                 ItemList.Tool_Lighter_Platinum_Empty.get(1L)));
 

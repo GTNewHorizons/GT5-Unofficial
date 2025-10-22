@@ -488,7 +488,7 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(704, Materials.Biomass);
         r(706, Materials.Ethanol);
         r(707, Materials.Oil);
-        r(708, Materials.Fuel);
+        r(708, Materials.Diesel);
         r(709, Materials.NitroFuel);
         r(710, Materials.CoalFuel);
         r(711, Materials.FishOil);

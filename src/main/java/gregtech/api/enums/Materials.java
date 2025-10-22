@@ -346,11 +346,11 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Cocoa;
     public static Materials Coffee;
     public static Materials Creosote;
+    public static Materials Diesel;
     public static Materials Ethanol;
     public static Materials FermentedBiomass;
     public static Materials FishOil;
     public static Materials FryingOilHot;
-    public static Materials Fuel;
     public static Materials Glue;
     public static Materials Gunpowder;
     public static Materials Honey;

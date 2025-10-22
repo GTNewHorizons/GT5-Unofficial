@@ -4570,11 +4570,11 @@ public class MaterialsInit {
         Materials.Cocoa = loadCocoa();
         Materials.Coffee = loadCoffee();
         Materials.Creosote = loadCreosote();
+        Materials.Diesel = loadDiesel();
         Materials.Ethanol = loadEthanol();
         Materials.FermentedBiomass = loadFermentedBiomass();
         Materials.FishOil = loadFishOil();
         Materials.FryingOilHot = loadFryingOilHot();
-        Materials.Fuel = loadFuel();
         Materials.Glue = loadGlue();
         Materials.Gunpowder = loadGunpowder();
         Materials.Honey = loadHoney();
@@ -4730,6 +4730,17 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
+    private static Materials loadDiesel() {
+        return new MaterialBuilder().setName("Fuel")
+            .setDefaultLocalName("Diesel")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeYellow)
+            .setARGB(0x00ffff00)
+            .setFuel(MaterialBuilder.FuelType.Diesel, 480)
+            .addCell()
+            .constructMaterial();
+    }
+
     private static Materials loadEthanol() {
         return new MaterialBuilder().setName("Ethanol")
             .setDefaultLocalName("Ethanol")
@@ -4782,17 +4793,6 @@ public class MaterialsInit {
             .addAspect(TCAspects.AQUA, 1)
             .addAspect(TCAspects.IGNIS, 1)
             .addSubTag(SubTag.FOOD)
-            .constructMaterial();
-    }
-
-    private static Materials loadFuel() {
-        return new MaterialBuilder().setName("Fuel")
-            .setDefaultLocalName("Diesel")
-            .setIconSet(TextureSet.SET_FLUID)
-            .setColor(Dyes.dyeYellow)
-            .setARGB(0x00ffff00)
-            .setFuel(MaterialBuilder.FuelType.Diesel, 480)
-            .addCell()
             .constructMaterial();
     }
 
