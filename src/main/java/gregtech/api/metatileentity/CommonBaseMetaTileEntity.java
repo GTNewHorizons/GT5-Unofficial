@@ -172,7 +172,8 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
     }
 
     protected void sendSoundToPlayers(SoundResource sound, float soundStrength, int soundModulation) {
-        GTUtility.sendSoundToPlayers(worldObj, sound, soundStrength, soundModulation, xCoord, yCoord, zCoord);
+        GTUtility
+            .sendSoundToPlayers(worldObj, sound, soundStrength, soundModulation, xCoord + .5, yCoord + .5, zCoord + .5);
     }
 
     /**
