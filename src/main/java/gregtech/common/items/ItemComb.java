@@ -1299,7 +1299,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
             .itemInputs(
                 GTBees.combs.getStackForType(CombType.ELVEN, 6),
                 GTOreDictUnificator.get(OrePrefixes.gemFlawless, Materials.ManaDiamond, 1))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.BotaniaDragonstone, 1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Dragonstone, 1))
             .fluidInputs(Materials.Void.getMolten(1 * EIGHTH_INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_EV)

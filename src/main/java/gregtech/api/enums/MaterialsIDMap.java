@@ -155,7 +155,7 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(206, Materials.Livingwood);
         r(207, Materials.Dreamwood);
         r(208, Materials.ManaDiamond);
-        r(209, Materials.BotaniaDragonstone);
+        r(209, Materials.Dragonstone);
         r(232, Materials.DenseSteam);
         r(233, Materials.DenseSuperheatedSteam);
         r(234, Materials.DenseSupercriticalSteam);

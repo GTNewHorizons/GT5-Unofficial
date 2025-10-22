@@ -914,7 +914,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Livingwood;
     public static Materials Dreamwood;
     public static Materials ManaDiamond;
-    public static Materials BotaniaDragonstone;
+    public static Materials Dragonstone;
 
     // Kevlar Line
     public static Materials DiphenylmethaneDiisocyanate;

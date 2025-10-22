@@ -13984,7 +13984,7 @@ public class MaterialsInit {
         Materials.Livingwood = loadLivingwood();
         Materials.Dreamwood = loadDreamwood();
         Materials.ManaDiamond = loadManaDiamond();
-        Materials.BotaniaDragonstone = loadBotaniaDragonstone();
+        Materials.Dragonstone = loadDragonstone();
     }
 
     private static Materials loadManasteel() {
@@ -14143,7 +14143,7 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadBotaniaDragonstone() {
+    private static Materials loadDragonstone() {
         return new MaterialBuilder().setName("BotaniaDragonstone")
             .setDefaultLocalName("Dragonstone")
             .setChemicalFormula("Dg")
