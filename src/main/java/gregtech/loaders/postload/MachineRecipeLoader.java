@@ -48,6 +48,7 @@ import gregtech.loaders.postload.recipes.PrinterRecipes;
 import gregtech.loaders.postload.recipes.Pulverizer;
 import gregtech.loaders.postload.recipes.PyrolyseRecipes;
 import gregtech.loaders.postload.recipes.RecipeRemover;
+import gregtech.loaders.postload.recipes.SCPRecipes;
 import gregtech.loaders.postload.recipes.SifterRecipes;
 import gregtech.loaders.postload.recipes.SmelterRecipes;
 import gregtech.loaders.postload.recipes.ThaumcraftRecipes;
@@ -108,6 +109,7 @@ public class MachineRecipeLoader implements Runnable {
         new Pulverizer().run();
         new PyrolyseRecipes().run();
         new RecipeRemover().run();
+        new SCPRecipes().run();
         new SifterRecipes().run();
         new SmelterRecipes().run();
         new ThaumcraftRecipes().run();

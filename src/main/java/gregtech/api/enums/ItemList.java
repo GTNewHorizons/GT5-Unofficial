@@ -2202,6 +2202,7 @@ public enum ItemList implements IItemContainer {
     CasingIchorium,
     EntropicProcessor,
     DecayWarehouse,
+    SuperConductorProcessor,
     AcceleratorLV,
     AcceleratorMV,
     AcceleratorHV,

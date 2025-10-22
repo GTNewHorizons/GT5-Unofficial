@@ -1307,4 +1307,10 @@ public final class RecipeMaps {
         .progressBar(GTUITextures.PROGRESSBAR_ARROW)
         .frontend(IsotopeDecayFrontend::new)
         .build();
+
+    public static final RecipeMap<RecipeMapBackend> scpRecipes = RecipeMapBuilder.of("gt.recipe.scp")
+        .maxIO(2, 1, 2, 0)
+        .minInputs(1, 1)
+        .progressBar(GTUITextures.PROGRESSBAR_ARROW)
+        .build();
 }
