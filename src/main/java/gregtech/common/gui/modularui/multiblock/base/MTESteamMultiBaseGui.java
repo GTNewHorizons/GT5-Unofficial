@@ -8,6 +8,7 @@ import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.gui.modularui.widget.CircularGaugeDrawable;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
 
@@ -38,6 +39,7 @@ public class MTESteamMultiBaseGui extends MTEMultiBlockBaseGui<MTESteamMultiBase
             .child(
                 new CircularGaugeDrawable(() -> (float) steamStoredSyncer.getValue() / maxSteamSyncer.getValue())
                     .asWidget()
+                    .widgetTheme(GTWidgetThemes.STEAM_GAUGE_ARROW)
                     .size(18, 4)
                     .left(-48 + 21)
                     .top(8 + 21));

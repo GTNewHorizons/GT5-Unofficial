@@ -75,6 +75,11 @@ public final class GTWidgetThemes {
         .defaultTheme(new ProgressbarWidgetTheme(GTGuiTextures.PROGRESSBAR_FUEL_STANDARD, 14))
         .defaultHoverTheme(null)
         .register();
+    public static WidgetThemeKey<WidgetTheme> STEAM_GAUGE_ARROW = themeApi
+        .widgetThemeKeyBuilder("steamGaugeArrow", WidgetTheme.class)
+        .defaultTheme(new WidgetTheme(0, 0, null, Color.RED.main, 0xFF404040, false, 0))
+        .defaultHoverTheme(null)
+        .register();
 
     public static WidgetThemeKey<WidgetTheme> BUTTON_COVER_TAB_ENABLED = registerThemedButton("buttonCoverTabEnabled");
     public static WidgetThemeKey<WidgetTheme> BUTTON_COVER_TAB_DISABLED = registerThemedButton(

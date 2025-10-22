@@ -57,6 +57,7 @@ public class CircularGaugeDrawable implements IDrawable {
 
         tessellator.startDrawing(GL11.GL_TRIANGLE_STRIP);
 
+        int color = widgetTheme.getColor();
         tessellator
             .setColorRGBA(Color.getRed(color), Color.getGreen(color), Color.getBlue(color), Color.getAlpha(color));
         tessellator.addVertex(x + width * cosA, y - width * sinA, 0.0f);
@@ -68,5 +69,10 @@ public class CircularGaugeDrawable implements IDrawable {
         GlStateManager.disableBlend();
         GlStateManager.enableAlpha();
         GlStateManager.enableTexture2D();
+    }
+
+    @Override
+    public boolean canApplyTheme() {
+        return true;
     }
 }
