@@ -49,6 +49,8 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchVoidBus;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.objects.overclockdescriber.SteamOverclockDescriber;
 import gregtech.api.recipe.RecipeMap;
@@ -412,6 +414,11 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
 
     private int uiSteamStored = 0;
     private int uiSteamCapacity = 0;
+
+    @Override
+    protected GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.BRONZE;
+    }
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
