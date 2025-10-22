@@ -101,50 +101,6 @@ gt.crop.trollplant.name=Trollplant
 gt.crop.withereed.name=Withereed
 gt.crop.zomplant.name=Zomplant
 
-####
-item.gt.advancedsensorcard.name=GregTech Advanced Sensor Card
-gt.blackholerenderer.name=Black Hole Renderer
-gt.block.longdistancepipe.name=Long Distance Pipeline Pipe
-gt.blockcasings.cyclotron_coils.name=Solenoid Superconductor Coil
-gt.blockcasings.name=Machine Casing
-gt.blockcasings2.name=Machine Casing
-gt.blockcasings3.name=Machine Casing
-gt.blockcasings4.name=Machine Casing
-gt.blockcasings5.name=Machine Casing
-gt.blockcasings6.name=Machine Casing
-gt.blockcasings8.name=Machine Casing
-gt.blockcasings9.name=Machine Casing
-gt.blockcasings10.name=Machine Casing
-gt.blockcasings11.name=Machine Casing
-gt.blockcasingsNH.name=Machine Casing
-gt.blockconcretes.name=Concrete
-gt.blockframes.name=Frame
-gt.blockgem1.name=Block
-gt.blockgem2.name=Block
-gt.blockgem3.name=Block
-gt.blockglass1.name=Glass
-gt.blockgranites.name=Granite
-gt.blockmachines.name=Machine
-gt.blockmetal1.name=Block
-gt.blockmetal2.name=Block
-gt.blockmetal3.name=Block
-gt.blockmetal4.name=Block
-gt.blockmetal5.name=Block
-gt.blockmetal6.name=Block
-gt.blockmetal7.name=Block
-gt.blockmetal8.name=Block
-gt.blockmetal9.name=Block
-gt.blockores.name=Ore
-gt.blockreinforced.name=Reinforced Block
-gt.blockstones.name=Stone
-gt.blocktintedglass.name=Tinted Industrial Glass
-gt.wormholerenderer.name=Wormhole Renderer
-item.gt.comb.name=Comb
-item.gt.drop.name=Drop
-item.gt.pollen.name=Pollen
-item.gt.propolis.name=Propolis
-tile.gt.dronerender.name=Drone Renderer
-
 # GT Item Descriptions
 gt.item.desc.stored_heat=Stored Heat: %s
 gt.item.desc.durability=Durability: %s/%s
@@ -3578,361 +3534,350 @@ gt.tooltip.behaviour.sneak_switch_mode=Sneak Rightclick to switch Mode
 
 
 # Machine interact chat description
-gt.chat.interact.desc.filter_fluid=Filter Fluid: #Space
-gt.chat.interact.desc.slot=Slot: #Space
-gt.chat.interact.desc.side=Side: #Space
-gt.chat.interact.desc.emit_player_close=Emit if any Player is close
-gt.chat.interact.desc.emit_player_no_close=Emit if other Player is close
-gt.chat.interact.desc.emit_you_close=Emit if you are close
-gt.chat.interact.desc.conducts_strongest_ni=Conducts strongest Input
-gt.chat.interact.desc.conducts_bottom_in=Conducts from bottom Input
-gt.chat.interact.desc.conducts_top_in=Conducts from top Input
-gt.chat.interact.desc.conducts_north_in=Conducts from north Input
-gt.chat.interact.desc.conducts_south_in=Conducts from south Input
-gt.chat.interact.desc.conducts_west_in=Conducts from west Input
-gt.chat.interact.desc.conducts_east_in=Conducts from east Input
-gt.chat.interact.desc.signal_normal=Signal = #Space
-gt.chat.interact.desc.signal_conditional=Conditional Signal = #Space
-gt.chat.interact.desc.signal_conditional_inverted=Inverted Conditional Signal = #Space
-gt.chat.interact.desc.shutter.open_enabled=Open if work enabled
-gt.chat.interact.desc.shutter.open_disabled=Open if work disabled
-gt.chat.interact.desc.shutter.out_allow=Only Output allowed
-gt.chat.interact.desc.shutter.in_allow=Only Input allowed
-gt.chat.interact.desc.auto_in=Auto-Input: #Space
-gt.chat.interact.desc.disabled=Disabled
-gt.chat.interact.desc.enabled=Enabled
-gt.chat.interact.desc.auto_out=  Auto-Output: #Space
-gt.chat.interact.desc.muffled_on=Sound Muffling: §aEnabled§r
-gt.chat.interact.desc.muffled_off=Sound Muffling: §cDisabled§r
-gt.chat.interact.desc.machine_processing=Machine Processing: #Space
-gt.chat.interact.desc.redstone_out_at_side=Redstone Output at Side #Space
-gt.chat.interact.desc.redstone_set_to= set to: #Space
-gt.chat.interact.desc.redstone_set_to_weak=Weak
-gt.chat.interact.desc.redstone_set_to_strong=Strong
-gt.chat.interact.desc.tick_rate_not_allowed=Cannot adjust tick rate of this cover type with a jackhammer
-gt.chat.interact.desc.not_enough_solder=Not enough soldering material!
-gt.chat.interact.desc.regulate_item_stack_size=Regulate Item Stack Size to: #Space
-gt.chat.interact.desc.regulate_item_stack_size.not=Do not regulate Item Stack Size
-gt.chat.interact.desc.sort_mode=Sort mode: #Space
-gt.chat.interact.desc.this_is=This is #Space
-gt.chat.interact.desc.ore= Ore.
-gt.chat.interact.desc.ore_not_found=No Ores found.
-gt.chat.interact.desc.lava_behind_rock=There is Lava behind this Rock.
-gt.chat.interact.desc.liquid_behind_rock=There is a Liquid behind this Rock.
-gt.chat.interact.desc.air_behind_rock=There is an Air Pocket behind this Rock.
-gt.chat.interact.desc.material_behind_rock=Material is changing behind this Rock.
-gt.chat.interact.desc.found_traces=Found traces of #Space
-gt.chat.interact.desc.out_fluids_steam_items=Outputs misc. Fluids, Steam and Items
-gt.chat.interact.desc.out_steam_items=Outputs Steam and Items
-gt.chat.interact.desc.out_steam_fluids=Outputs Steam and misc. Fluids
-gt.chat.interact.desc.out_steam=Outputs Steam
-gt.chat.interact.desc.out_fluids_items=Outputs misc. Fluids and Items
-gt.chat.interact.desc.out_items=Outputs only Items
-gt.chat.interact.desc.out_fluids=Outputs only misc. Fluids
-gt.chat.interact.desc.out_nothing=Outputs nothing
-gt.chat.interact.desc.locked_none_lock_next=currently none, will be locked to the next that is put in
-gt.chat.interact.desc.locked_none_lock_next_fluid_cell=currently none, will be locked to the next that is put in (or use fluid cell to lock)
-gt.chat.interact.desc.out_items_and_one_fluid=Outputs items and 1 specific Fluid
-gt.chat.interact.desc.out_one_fluid=Outputs 1 specific Fluid
-gt.chat.interact.desc.hatch_locked_fluid=Hatch is locked to a different fluid. To change the locking, empty it and made it locked to the next fluid with a screwdriver. Currently locked to
-gt.chat.interact.desc.lock_successfull=Successfully locked Fluid to %s
-gt.chat.interact.desc.whitelist_mode=Whitelist Mode
-gt.chat.interact.desc.blacklist_mode=Blacklist Mode
-gt.chat.interact.desc.item_filter=Item Filter: #Space
-gt.chat.interact.desc.filter_cleared=Filter Cleared!
-gt.chat.interact.desc.Redstone=Redstone
-gt.chat.interact.desc.Energy=Energy
-gt.chat.interact.desc.Fluids=Fluids
-gt.chat.interact.desc.Items=Items
-gt.chat.interact.desc.locking_on=Single recipe locking enabled. Will lock to next recipe.
-gt.chat.interact.desc.locking_off=Single recipe locking disabled.
-gt.chat.interact.desc.config_save=Saved Multiblock Hatch Configuration
-gt.chat.interact.desc.config_load=Loaded Multiblock Hatch Configuration
-gt.chat.interact.desc.config_load_fail=Failed to load Multiblock Hatch Configuration
-gt.chat.interact.desc.items_per_side=Items per side: #Space
-gt.chat.interact.desc.in_enabled=Input enabled
-gt.chat.interact.desc.in_disabled=Input disabled
-gt.chat.interact.desc.connected=Connected
-gt.chat.interact.desc.disconnected=Disconnected
-gt.chat.interact.desc.fluid_auto_out_disabled=Fluid Auto Output Disabled
-gt.chat.interact.desc.fluid_auto_out_enabled=Fluid Auto Output Enabled
-gt.chat.interact.desc.input_from_output_on=Input from Output Side allowed
-gt.chat.interact.desc.input_from_output_off=Input from Output Side forbidden
-gt.chat.interact.desc.one_spec_fluid=1 specific Fluid
-gt.chat.interact.desc.lock_fluid_disabled=Lock Fluid Mode Disabled
-gt.chat.interact.desc.fitting_more_flow=Fitting: Loose - More Flow
-gt.chat.interact.desc.fitting_more_efficiency=Fitting: Tight - More Efficiency
-gt.chat.interact.desc.mining_chunk_enabled=Mining chunk loading enabled
-gt.chat.interact.desc.mining_chunk_disabled=Mining chunk loading disabled
-gt.chat.interact.desc.connectable=Connectable: #space
-
-## Digital Tank/Digital Chest
-gt.chat.digitaltank.overflow_disabled=Overflow Voiding Mode Disabled
-gt.chat.digitaltank.overflow_enabled=Overflow Voiding Mode Enabled
-gt.chat.digitalchest.voidoverflow.enabled=Overflow Voiding Mode §aOn§r
-gt.chat.digitalchest.voidoverflow.disabled=Overflow Voiding Mode §cOff§r
-gt.chat.digitalchest.inputfilter_disabled=Input Filter §cOff§r
-gt.chat.digitalchest.inputfilter_enabled=Input Filter §aOn§r
-
-## Pipe stuff
-gt.chat.interact.desc.pipe.l_s_1=L/seconds → #Space
-gt.chat.interact.desc.pipe.l_s_2=L/secs
-gt.chat.interact.desc.pipe.l_s_3= L/s
-gt.chat.interact.desc.pipe.k_1=K → #Space
-gt.chat.interact.desc.pipe.k_2=K
-gt.chat.interact.desc.pipe.gas_proof=Now Gas-Proof
-gt.chat.interact.desc.pipe.gas_proof_not=No Longer Gas-Proof
-gt.chat.interact.desc.pipe.swap=Pipe Swapped:
-gt.chat.interact.desc.pipe.fluid_capacity=Fluid Capacity: %%%
-gt.chat.interact.desc.pipe.fluid_capacity2=%%% L/sec
-gt.chat.interact.desc.pipe.heat_limit=Heat Limit: %%%"
-gt.chat.interact.desc.pipe.heat_limit2=%%% K
-gt.chat.interact.desc.pipe.handle_gas_not=Cannot handle gas"
-gt.chat.interact.desc.pipe.pipe_amount=Pipe Amount: %%%
-gt.chat.interact.desc.pipe.capacity=Capacity
-gt.chat.interact.desc.pipe.heat_resistance=Heat Resistance
-gt.chat.interact.desc.pipe.gas_proof=Gas Proof
-gt.chat.interact.desc.pipe.gas_proof.yes=Yes
-gt.chat.interact.desc.pipe.gas_proof.no=No
-gt.chat.interact.desc.pipe.amount=Pipe Amount
+ gt.chat.interact.desc.filter_fluid=Filter Fluid: #Space
+ gt.chat.interact.desc.slot=Slot: #Space
+ gt.chat.interact.desc.side=Side: #Space
+ gt.chat.interact.desc.emit_player_close=Emit if any Player is close
+ gt.chat.interact.desc.emit_player_no_close=Emit if other Player is close
+ gt.chat.interact.desc.emit_you_close=Emit if you are close
+ gt.chat.interact.desc.conducts_strongest_ni=Conducts strongest Input
+ gt.chat.interact.desc.conducts_bottom_in=Conducts from bottom Input
+ gt.chat.interact.desc.conducts_top_in=Conducts from top Input
+ gt.chat.interact.desc.conducts_north_in=Conducts from north Input
+ gt.chat.interact.desc.conducts_south_in=Conducts from south Input
+ gt.chat.interact.desc.conducts_west_in=Conducts from west Input
+ gt.chat.interact.desc.conducts_east_in=Conducts from east Input
+ gt.chat.interact.desc.signal_normal=Signal = #Space
+ gt.chat.interact.desc.signal_conditional=Conditional Signal = #Space
+ gt.chat.interact.desc.signal_conditional_inverted=Inverted Conditional Signal = #Space
+ gt.chat.interact.desc.shutter.open_enabled=Open if work enabled
+ gt.chat.interact.desc.shutter.open_disabled=Open if work disabled
+ gt.chat.interact.desc.shutter.out_allow=Only Output allowed
+ gt.chat.interact.desc.shutter.in_allow=Only Input allowed
+ gt.chat.interact.desc.auto_in=Auto-Input: #Space
+ gt.chat.interact.desc.disabled=Disabled
+ gt.chat.interact.desc.enabled=Enabled
+ gt.chat.interact.desc.auto_out=  Auto-Output: #Space
+ gt.chat.interact.desc.muffled_on=Sound Muffling: §aEnabled§r
+ gt.chat.interact.desc.muffled_off=Sound Muffling: §cDisabled§r
+ gt.chat.interact.desc.machine_processing=Machine Processing: #Space
+ gt.chat.interact.desc.redstone_out_at_side=Redstone Output at Side #Space
+ gt.chat.interact.desc.redstone_set_to= set to: #Space
+ gt.chat.interact.desc.redstone_set_to_weak=Weak
+ gt.chat.interact.desc.redstone_set_to_strong=Strong
+ gt.chat.interact.desc.tick_rate_not_allowed=Cannot adjust tick rate of this cover type with a jackhammer
+ gt.chat.interact.desc.not_enough_solder=Not enough soldering material!
+ gt.chat.interact.desc.regulate_item_stack_size=Regulate Item Stack Size to: #Space
+ gt.chat.interact.desc.regulate_item_stack_size.not=Do not regulate Item Stack Size
+ gt.chat.interact.desc.sort_mode=Sort mode: #Space
+ gt.chat.interact.desc.this_is=This is #Space
+ gt.chat.interact.desc.ore= Ore.
+ gt.chat.interact.desc.ore_not_found=No Ores found.
+ gt.chat.interact.desc.lava_behind_rock=There is Lava behind this Rock.
+ gt.chat.interact.desc.liquid_behind_rock=There is a Liquid behind this Rock.
+ gt.chat.interact.desc.air_behind_rock=There is an Air Pocket behind this Rock.
+ gt.chat.interact.desc.material_behind_rock=Material is changing behind this Rock.
+ gt.chat.interact.desc.found_traces=Found traces of #Space
+ gt.chat.interact.desc.out_fluids_steam_items=Outputs misc. Fluids, Steam and Items
+ gt.chat.interact.desc.out_steam_items=Outputs Steam and Items
+ gt.chat.interact.desc.out_steam_fluids=Outputs Steam and misc. Fluids
+ gt.chat.interact.desc.out_steam=Outputs Steam
+ gt.chat.interact.desc.out_fluids_items=Outputs misc. Fluids and Items
+ gt.chat.interact.desc.out_items=Outputs only Items
+ gt.chat.interact.desc.out_fluids=Outputs only misc. Fluids
+ gt.chat.interact.desc.out_nothing=Outputs nothing
+ gt.chat.interact.desc.locked_none_lock_next=currently none, will be locked to the next that is put in
+ gt.chat.interact.desc.locked_none_lock_next_fluid_cell=currently none, will be locked to the next that is put in (or use fluid cell to lock)
+ gt.chat.interact.desc.out_items_and_one_fluid=Outputs items and 1 specific Fluid
+ gt.chat.interact.desc.out_one_fluid=Outputs 1 specific Fluid
+ gt.chat.interact.desc.hatch_locked_fluid=Hatch is locked to a different fluid. To change the locking, empty it and made it locked to the next fluid with a screwdriver. Currently locked to
+ gt.chat.interact.desc.lock_successfull=Successfully locked Fluid to %s
+ gt.chat.interact.desc.whitelist_mode=Whitelist Mode
+ gt.chat.interact.desc.blacklist_mode=Blacklist Mode
+ gt.chat.interact.desc.item_filter=Item Filter: #Space
+ gt.chat.interact.desc.filter_cleared=Filter Cleared!
+ gt.chat.interact.desc.Redstone=Redstone
+ gt.chat.interact.desc.Energy=Energy
+ gt.chat.interact.desc.Fluids=Fluids
+ gt.chat.interact.desc.Items=Items
+ gt.chat.interact.desc.locking_on=Single recipe locking enabled. Will lock to next recipe.
+ gt.chat.interact.desc.locking_off=Single recipe locking disabled.
+ gt.chat.interact.desc.config_save=Saved Multiblock Hatch Configuration
+ gt.chat.interact.desc.config_load=Loaded Multiblock Hatch Configuration
+ gt.chat.interact.desc.config_load_fail=Failed to load Multiblock Hatch Configuration
+ gt.chat.interact.desc.items_per_side=Items per side: #Space
+ gt.chat.interact.desc.in_enabled=Input enabled
+ gt.chat.interact.desc.in_disabled=Input disabled
+ gt.chat.interact.desc.connected=Connected
+ gt.chat.interact.desc.disconnected=Disconnected
+ gt.chat.interact.desc.fluid_auto_out_disabled=Fluid Auto Output Disabled
+ gt.chat.interact.desc.fluid_auto_out_enabled=Fluid Auto Output Enabled
+ gt.chat.interact.desc.input_from_output_on=Input from Output Side allowed
+ gt.chat.interact.desc.input_from_output_off=Input from Output Side forbidden
+ gt.chat.interact.desc.one_spec_fluid=1 specific Fluid
+ gt.chat.interact.desc.lock_fluid_disabled=Lock Fluid Mode Disabled
+ gt.chat.interact.desc.fitting_more_flow=Fitting: Loose - More Flow
+ gt.chat.interact.desc.fitting_more_efficiency=Fitting: Tight - More Efficiency
+ gt.chat.interact.desc.mining_chunk_enabled=Mining chunk loading enabled
+ gt.chat.interact.desc.mining_chunk_disabled=Mining chunk loading disabled
+ gt.chat.interact.desc.connectable=Connectable: #space
+ 
+  ## Digital Tank/Digital Chest
+  gt.chat.digitaltank.overflow_disabled=Overflow Voiding Mode Disabled
+  gt.chat.digitaltank.overflow_enabled=Overflow Voiding Mode Enabled
+  gt.chat.digitalchest.voidoverflow.enabled=Overflow Voiding Mode §aOn§r
+  gt.chat.digitalchest.voidoverflow.disabled=Overflow Voiding Mode §cOff§r
+  gt.chat.digitalchest.inputfilter_disabled=Input Filter §cOff§r
+  gt.chat.digitalchest.inputfilter_enabled=Input Filter §aOn§r
+ 
+  ## Pipe stuff
+  gt.chat.interact.desc.pipe.l_s_1=L/seconds → #Space
+  gt.chat.interact.desc.pipe.l_s_2=L/secs
+  gt.chat.interact.desc.pipe.l_s_3= L/s
+  gt.chat.interact.desc.pipe.k_1=K → #Space
+  gt.chat.interact.desc.pipe.k_2=K
+  gt.chat.interact.desc.pipe.gas_proof=Now Gas-Proof
+  gt.chat.interact.desc.pipe.gas_proof_not=No Longer Gas-Proof
+  gt.chat.interact.desc.pipe.swap=Pipe Swapped:
+  gt.chat.interact.desc.pipe.fluid_capacity=Fluid Capacity: %%%
+  gt.chat.interact.desc.pipe.fluid_capacity2=%%% L/sec
+  gt.chat.interact.desc.pipe.heat_limit=Heat Limit: %%%"
+  gt.chat.interact.desc.pipe.heat_limit2=%%% K
+  gt.chat.interact.desc.pipe.handle_gas_not=Cannot handle gas"
+  gt.chat.interact.desc.pipe.pipe_amount=Pipe Amount: %%%
+  gt.chat.interact.desc.pipe.capacity=Capacity
+  gt.chat.interact.desc.pipe.heat_resistance=Heat Resistance
+  gt.chat.interact.desc.pipe.gas_proof=Gas Proof
+  gt.chat.interact.desc.pipe.gas_proof.yes=Yes
+  gt.chat.interact.desc.pipe.gas_proof.no=No
+  gt.chat.interact.desc.pipe.amount=Pipe Amount
 
 
 
 # Machine interact description
-gt.interact.desc.filter_i_deny_o=Filter input, Deny output
-gt.interact.desc.invert_i_deny_o=Invert input, Deny output
-gt.interact.desc.filter_i_any_o=Filter input, Permit any output
-gt.interact.desc.invert_i_any_o=Invert input, Permit any output
-gt.interact.desc.deny_i_filter_o=Deny input, Filter output
-gt.interact.desc.deny_i_invert_o=Deny input, Invert output
-gt.interact.desc.any_i_filter_o=Permit any input, Filter output
-gt.interact.desc.any_i_invert_o=Permit any input, Invert output
-gt.interact.desc.pump_speed=Pump speed: #Space
-gt.interact.desc.l_tick=L/tick #Space
-gt.interact.desc.l_sec=L/sec #Space
-gt.interact.desc.pump_speed_limit_reached=Pump speed limit reached!
-gt.interact.desc.pump_speed_every_tick=Pump speed: %dL every %d ticks, %.2f L/sec on average
-gt.interact.desc.running_mode=§fRunning mode: §6%s
-gt.interact.desc.all=All
-gt.interact.desc.any=Any
+ gt.interact.desc.filter_i_deny_o=Filter input, Deny output
+ gt.interact.desc.invert_i_deny_o=Invert input, Deny output
+ gt.interact.desc.filter_i_any_o=Filter input, Permit any output
+ gt.interact.desc.invert_i_any_o=Invert input, Permit any output
+ gt.interact.desc.deny_i_filter_o=Deny input, Filter output
+ gt.interact.desc.deny_i_invert_o=Deny input, Invert output
+ gt.interact.desc.any_i_filter_o=Permit any input, Filter output
+ gt.interact.desc.any_i_invert_o=Permit any input, Invert output
+ gt.interact.desc.pump_speed=Pump speed: #Space
+ gt.interact.desc.l_tick=L/tick #Space
+ gt.interact.desc.l_sec=L/sec #Space
+ gt.interact.desc.pump_speed_limit_reached=Pump speed limit reached!
+ gt.interact.desc.pump_speed_every_tick=Pump speed: %dL every %d ticks, %.2f L/sec on average
+ gt.interact.desc.running_mode=§fRunning mode: §6%s
+ gt.interact.desc.all=All
+ gt.interact.desc.any=Any
 
 # InfoData
-gt.infodata.hatch_output.name=Output Hatch
-gt.infodata.hatch_output.fluid=Stored Fluid: %s
-gt.infodata.hatch_output.fluid_none=No Fluid
-gt.infodata.hatch_output.fluid_locked_to_none=Not Locked
-gt.infodata.hatch_output.fluid_locked_to=Locked to %s
-
-gt.infodata.multiblock.progress=Progress: %s s / %s s
-gt.infodata.multiblock.energy=Stored Energy
-gt.infodata.multiblock.usage=Currently uses
-gt.infodata.multiblock.generation=Currently generates
-gt.infodata.multiblock.special_value=Special Value
-gt.infodata.multiblock.max_energy_income=Max Energy Income
-gt.infodata.multiblock.efficiency=Efficiency
-gt.infodata.multiblock.pollution=Pollution reduced to
-gt.infodata.multiblock.purification_plant.status_title=§lPurification Unit Status
-
-gt.infodata.turbine.running.true=Turbine running
-gt.infodata.turbine.running.false=Turbine stopped
-gt.infodata.turbine.maintenance.false=No Maintenance issues
-gt.infodata.turbine.maintenance.true=Needs Maintenance
-gt.infodata.turbine.efficiency=Current Speed: #space
-gt.infodata.turbine.flow=Optimal Flow: #space
-gt.infodata.turbine.fuel=Fuel Remaining: #space
-gt.infodata.turbine.dmg=Turbine Damage: #space
-gt.infodata.turbine.loose=Loose
-gt.infodata.turbine.tight=Tight
+ gt.infodata.hatch_output.name=Output Hatch
+ gt.infodata.hatch_output.fluid=Stored Fluid: %s
+ gt.infodata.hatch_output.fluid_none=No Fluid
+ gt.infodata.hatch_output.fluid_locked_to_none=Not Locked
+ gt.infodata.hatch_output.fluid_locked_to=Locked to %s
+ 
+ gt.infodata.multiblock.progress=Progress: %s s / %s s
+ gt.infodata.multiblock.energy=Stored Energy
+ gt.infodata.multiblock.usage=Currently uses
+ gt.infodata.multiblock.generation=Currently generates
+ gt.infodata.multiblock.special_value=Special Value
+ gt.infodata.multiblock.max_energy_income=Max Energy Income
+ gt.infodata.multiblock.efficiency=Efficiency
+ gt.infodata.multiblock.pollution=Pollution reduced to
+ gt.infodata.multiblock.purification_plant.status_title=§lPurification Unit Status
+ 
+ gt.infodata.turbine.running.true=Turbine running
+ gt.infodata.turbine.running.false=Turbine stopped
+ gt.infodata.turbine.maintenance.false=No Maintenance issues
+ gt.infodata.turbine.maintenance.true=Needs Maintenance
+ gt.infodata.turbine.efficiency=Current Speed: #space
+ gt.infodata.turbine.flow=Optimal Flow: #space
+ gt.infodata.turbine.fuel=Fuel Remaining: #space
+ gt.infodata.turbine.dmg=Turbine Damage: #space
+ gt.infodata.turbine.loose=Loose
+ gt.infodata.turbine.tight=Tight
 
 
 # Recipe
-gt.recipe.original_by=Original Recipe by: #space
-gt.recipe.modified_by=Modified by: #space
-gt.recipe.recipe_by=Recipe by: #space
-gt.recipe.total=Total: %s EU
-gt.recipe.usage=Usage: %s EU/t
-gt.recipe.time=Time: %s secs
-gt.recipe.time_ticks=(%s ticks)
-gt.recipe.needs_low_gravity=Needs Low Gravity
-gt.recipe.needs_cleanroom=Needs Cleanroom
-gt.recipe.scan_ass_line=Scan for Assembly Line
-gt.recipe.needs_cleanroom_and_low_gravity=Needs Cleanroom & LowGrav
-gt.recipe.deprecated_recipe=Deprecated Recipe
-gt.recipe.pcb_factory_tier=PCB Factory Tier: #space
-gt.recipe.pcb_factory_upgrade_requirement=Upgrade Required: #space
-gt.recipe.pcb_factory_upgrade_bio=Bio
-gt.recipe.compression_require_hip=Requires HIP Unit
-gt.recipe.compression_require_stabilized_black_hole=Requires Stabilized Black Hole
-gt.recipe.require_tier=Tier required: %s
+ gt.recipe.original_by=Original Recipe by: #space
+ gt.recipe.modified_by=Modified by: #space
+ gt.recipe.recipe_by=Recipe by: #space
+ gt.recipe.total=Total: %s EU
+ gt.recipe.usage=Usage: %s EU/t
+ gt.recipe.time=Time: %s secs
+ gt.recipe.time_ticks=(%s ticks)
+ gt.recipe.needs_low_gravity=Needs Low Gravity
+ gt.recipe.needs_cleanroom=Needs Cleanroom
+ gt.recipe.scan_ass_line=Scan for Assembly Line
+ gt.recipe.needs_cleanroom_and_low_gravity=Needs Cleanroom & LowGrav
+ gt.recipe.deprecated_recipe=Deprecated Recipe
+ gt.recipe.pcb_factory_tier=PCB Factory Tier: #space
+ gt.recipe.pcb_factory_upgrade_requirement=Upgrade Required: #space
+ gt.recipe.pcb_factory_upgrade_bio=Bio
+ gt.recipe.compression_require_hip=Requires HIP Unit
+ gt.recipe.compression_require_stabilized_black_hole=Requires Stabilized Black Hole
+ gt.recipe.require_tier=Tier required: %s
 
 
 # Gui
-gt.gui.hatch_output.lock_fluid=Locked Fluid
-gt.gui.hatch_output.lock_none=None
-
-gt.gui.maintenance.wrench=Pipe is loose. (Wrench)
-gt.gui.maintenance.screwdriver=Screws are loose. (Screwdriver)
-gt.gui.maintenance.soft_mallet=Something is stuck. (Soft Mallet)
-gt.gui.maintenance.hammer=Platings are dented. (Hammer)
-gt.gui.maintenance.soldering=Circuitry burned out. (Soldering)
-gt.gui.maintenance.crowbar=That doesn't belong there. (Crowbar)
-gt.gui.maintenance.missing_turbine_rotor=Missing Turbine Rotor
-gt.gui.maintenance.shutdown_duration=§4Shut down §e%s §4h §e%s §4min §e%s §4s ago.
-gt.gui.maintenance.idle.0=Hit with Soft Mallet to (re-)start the Machine if it doesn't start.
-gt.gui.maintenance.idle.1=Hit with Soft Mallet
-gt.gui.maintenance.idle.2= to (re-)start the Machine
-gt.gui.maintenance.idle.3= if it doesn't start.
-gt.gui.maintenance.idle.4=Hit with Soft Mallet to start.
-gt.gui.maintenance.running=Running perfectly.
-gt.gui.maintenance.incomplete=Incomplete Structure.
-gt.gui.maintenance.too_uncertain=Too Uncertain.
-gt.gui.maintenance.invalid_parameters=Invalid Parameters.
-gt.gui.maintenance.no_issues=No maintenance issues!
-
-gt.gui.power_panel=Power Control Panel
-gt.gui.max_parallel=Maximum Parallel
-gt.gui.locked_value=Locked: %s
-gt.gui.ranged_value=Range: %s-%s
-gt.gui.powerfail_events=Powerfail Events
-gt.gui.recipe_progress=§fProgress: %s s / %s s (%s%%)§r
-gt.gui.recipe_x= x #space
-gt.gui.recipe_fluid_amount=x %sL%s 
-gt.gui.status=Status
-gt.gui.tier=Tier: #space
-gt.gui.input=Input #space
-gt.gui.output=Output #space
-gt.gui.input_1=Input:
-gt.gui.output_1=Output:
-gt.gui.startup=Starting up...
-gt.gui.step_down_in=Step Down, In: #space
-gt.gui.step_up_in=Step Up, In: #space
-gt.gui.step_down=Step Down
-gt.gui.step_up=Step Up
-gt.gui.amp_out=A, Out: #space
+ gt.gui.hatch_output.lock_fluid=Locked Fluid
+ gt.gui.hatch_output.lock_none=None
+ 
+ gt.gui.maintenance.wrench=Pipe is loose. (Wrench)
+ gt.gui.maintenance.screwdriver=Screws are loose. (Screwdriver)
+ gt.gui.maintenance.soft_mallet=Something is stuck. (Soft Mallet)
+ gt.gui.maintenance.hammer=Platings are dented. (Hammer)
+ gt.gui.maintenance.soldering=Circuitry burned out. (Soldering)
+ gt.gui.maintenance.crowbar=That doesn't belong there. (Crowbar)
+ gt.gui.maintenance.missing_turbine_rotor=Missing Turbine Rotor
+ gt.gui.maintenance.shutdown_duration=§4Shut down §e%s §4h §e%s §4min §e%s §4s ago.
+ gt.gui.maintenance.idle.0=Hit with Soft Mallet to (re-)start the Machine if it doesn't start.
+ gt.gui.maintenance.idle.1=Hit with Soft Mallet
+ gt.gui.maintenance.idle.2= to (re-)start the Machine
+ gt.gui.maintenance.idle.3= if it doesn't start.
+ gt.gui.maintenance.idle.4=Hit with Soft Mallet to start.
+ gt.gui.maintenance.running=Running perfectly.
+ gt.gui.maintenance.incomplete=Incomplete Structure.
+ gt.gui.maintenance.too_uncertain=Too Uncertain.
+ gt.gui.maintenance.invalid_parameters=Invalid Parameters.
+ gt.gui.maintenance.no_issues=No maintenance issues!
+ 
+ gt.gui.power_panel=Power Control Panel
+ gt.gui.max_parallel=Maximum Parallel
+ gt.gui.locked_value=Locked: %s
+ gt.gui.ranged_value=Range: %s-%s
+ gt.gui.powerfail_events=Powerfail Events
+ gt.gui.recipe_progress=§fProgress: %s s / %s s (%s%%)§r
+ gt.gui.recipe_x= x #space
+ gt.gui.recipe_fluid_amount=x %sL%s 
+ gt.gui.status=Status
+ gt.gui.tier=Tier: #space
+ gt.gui.input=Input #space
+ gt.gui.output=Output #space
+ gt.gui.input_1=Input:
+ gt.gui.output_1=Output:
+ gt.gui.startup=Starting up...
+ gt.gui.step_down_in=Step Down, In: #space
+ gt.gui.step_up_in=Step Up, In: #space
+ gt.gui.step_down=Step Down
+ gt.gui.step_up=Step Up
+ gt.gui.amp_out=A, Out: #space
 
 
 # Waila
-gt.waila.multiblock.status.incomplete=** INCOMPLETE STRUCTURE **
-gt.waila.multiblock.status.efficiency=  Efficiency: %f%%
-gt.waila.multiblock.status.has_problem=** HAS PROBLEMS **
-gt.waila.multiblock.status.running_fine=Running Fine
-gt.waila.energy.use_with_amperage=Currently uses: §e%s§r EU/t (%sA %s)
-gt.waila.energy.produce_with_amperage=Currently generates: §a%s§r EU/t (%sA %s)
-gt.waila.energy.use=Currently uses: §e%s§r EU/t (%s)
-gt.waila.energy.produce=Currently generates: §a%s§r EU/t (%s)
-gt.waila.multiblock.status.locked_recipe=Locked Recipe:
-gt.waila.producing=Producing:
-gt.waila.producing.andmore=  And %d More...
-gt.waila.multiblock.status.cpu_load=Average CPU load of ~%s ns
+ gt.waila.multiblock.status.incomplete=** INCOMPLETE STRUCTURE **
+ gt.waila.multiblock.status.efficiency=  Efficiency: %f%%
+ gt.waila.multiblock.status.has_problem=** HAS PROBLEMS **
+ gt.waila.multiblock.status.running_fine=Running Fine
+ gt.waila.energy.use_with_amperage=Currently uses: §e%s§r EU/t (%sA %s)
+ gt.waila.energy.produce_with_amperage=Currently generates: §a%s§r EU/t (%sA %s)
+ gt.waila.energy.use=Currently uses: §e%s§r EU/t (%s)
+ gt.waila.energy.produce=Currently generates: §a%s§r EU/t (%s)
+ gt.waila.multiblock.status.locked_recipe=Locked Recipe:
+ gt.waila.producing=Producing:
+ gt.waila.producing.andmore=  And %d More...
+ gt.waila.multiblock.status.cpu_load=Average CPU load of ~%s ns
 
 
 # Generic 
-gt.info.eu=EU
-gt.info.eu_1= EU / #space
-gt.info.eu_2= EU #space
-gt.info.amp=A
-gt.info.volt=V
-gt.info.percentage= %
-gt.info.liters=L
+ gt.info.eu=EU
+ gt.info.eu_1= EU / #space
+ gt.info.eu_2= EU #space
+ gt.info.amp=A
+ gt.info.volt=V
+ gt.info.percentage= %
+ gt.info.liters=L
 
 
 # GTUtility
-gt.util.coords=----- X: %s Y: %s Z: %s D: %s -----
-gt.util.Name=Name: #space
-gt.util.metadata= MetaData: #space
-gt.util.hardness=Hardness: #space
-gt.util.blast_resistance= Blast Resistance: #space
-gt.util.invalid_becaon_material=Is valid Beacon Pyramid Material
-gt.util.tank=Tank %d: %s L / %s L %s
-gt.util.base_eu_out= Base EU Output: #space
-gt.util.remove_wrench_yes=You can remove this with a Wrench
-gt.util.remove_wrench_no=You can NOT remove this with a Wrench
-gt.util.conduction_loss=Conduction Loss: #space
-gt.util.has_muffler=Is Muffled
-gt.util.owned_by=Owned by: #space
-gt.util.crop_name=Type -- Crop-Name: #space
-gt.util.crop_growth=  Growth: #space
-gt.util.crop_gain=  Gain: #space
-gt.util.crop_resistance=  Resistance: #space
-gt.util.crop_fertilizer=Plant -- Fertilizer: #space
-gt.util.crop_water=  Water: #space
-gt.util.crop_weed_ex=  Weed-Ex: #space
-gt.util.crop_scan_level=  Scan-Level: #space
-gt.util.crop_nutrients=Environment -- Nutrients: #space
-gt.util.crop_humidity=  Humidity: #space
-gt.util.crop_air_quality=  Air-Quality: #space
-gt.util.crop_attributes=Attributes:
-gt.util.crop_discorvered_by=Discovered by: #space
-gt.util.sort_mode=Sort mode: #space
-gt.util.auto_item_shuffle=Automatic Item Shuffling: #space
-gt.util.nothing=Nothing
-gt.util.pollution_in_chunk=Pollution in Chunk: #space
-gt.util.gibbl= gibbl
-gt.util.no_pollution_in_chunk=No Pollution in Chunk! HAYO!
-gt.util.underground_oil_info=%s: %s L
-gt.util.disabled=Disabled.
-gt.util.progress_load=Progress/Load: #space
-gt.util.contained_energy=Contained Energy: %s / %s EU
-gt.util.facing_chance=Facing: %s / Chance: %s%
-gt.util.extend_facing=Extended Facing: #space
-gt.util.heat=Heat: %s / %s
-gt.util.hem=HEM: %s
-gt.util.amount=§fAmount:
-gt.util.per_tick=§fPer tick:
-gt.util.per_second=§fPer second:
-gt.util.per_minute=§fPer minute:
-gt.util.per_hour=§fPer hour:
-gt.util.per_day=§fPer day:
-gt.util.rate_shortened=(%s/s)
-gt.util.amount_line=%s: %s
-gt.util.per_tick_line=%s: %s%s
-gt.util.per_second_line=%s: %s%s
-gt.util.per_minute_line=%s: %s%s
-gt.util.per_hour_line=%s: %s%s
-gt.util.per_day_line=%s: %s%s
-gt.util.liters=L
-gt.util.high_value_brackets=[%s]
-gt.util.info_max_out=Max OUT: %s (%s) EU at %s A
-gt.util.info_energy=Energy: %s EU / %s EU
+ gt.util.coords=----- X: %s Y: %s Z: %s D: %s -----
+ gt.util.Name=Name: #space
+ gt.util.metadata= MetaData: #space
+ gt.util.hardness=Hardness: #space
+ gt.util.blast_resistance= Blast Resistance: #space
+ gt.util.invalid_becaon_material=Is valid Beacon Pyramid Material
+ gt.util.tank=Tank %d: %s L / %s L %s
+ gt.util.base_eu_out= Base EU Output: #space
+ gt.util.remove_wrench_yes=You can remove this with a Wrench
+ gt.util.remove_wrench_no=You can NOT remove this with a Wrench
+ gt.util.conduction_loss=Conduction Loss: #space
+ gt.util.has_muffler=Is Muffled
+ gt.util.owned_by=Owned by: #space
+ gt.util.crop_name=Type -- Crop-Name: #space
+ gt.util.crop_growth=  Growth: #space
+ gt.util.crop_gain=  Gain: #space
+ gt.util.crop_resistance=  Resistance: #space
+ gt.util.crop_fertilizer=Plant -- Fertilizer: #space
+ gt.util.crop_water=  Water: #space
+ gt.util.crop_weed_ex=  Weed-Ex: #space
+ gt.util.crop_scan_level=  Scan-Level: #space
+ gt.util.crop_nutrients=Environment -- Nutrients: #space
+ gt.util.crop_humidity=  Humidity: #space
+ gt.util.crop_air_quality=  Air-Quality: #space
+ gt.util.crop_attributes=Attributes:
+ gt.util.crop_discorvered_by=Discovered by: #space
+ gt.util.sort_mode=Sort mode: #space
+ gt.util.auto_item_shuffle=Automatic Item Shuffling: #space
+ gt.util.nothing=Nothing
+ gt.util.pollution_in_chunk=Pollution in Chunk: #space
+ gt.util.gibbl= gibbl
+ gt.util.no_pollution_in_chunk=No Pollution in Chunk! HAYO!
+ gt.util.underground_oil_info=%s: %s L
+ gt.util.disabled=Disabled.
+ gt.util.progress_load=Progress/Load: #space
+ gt.util.contained_energy=Contained Energy: %s / %s EU
+ gt.util.facing_chance=Facing: %s / Chance: %s%
+ gt.util.extend_facing=Extended Facing: #space
+ gt.util.heat=Heat: %s / %s
+ gt.util.hem=HEM: %s
+ gt.util.amount=§fAmount:
+ gt.util.per_tick=§fPer tick:
+ gt.util.per_second=§fPer second:
+ gt.util.per_minute=§fPer minute:
+ gt.util.per_hour=§fPer hour:
+ gt.util.per_day=§fPer day:
+ gt.util.rate_shortened=(%s/s)
+ gt.util.amount_line=%s: %s
+ gt.util.per_tick_line=%s: %s%s
+ gt.util.per_second_line=%s: %s%s
+ gt.util.per_minute_line=%s: %s%s
+ gt.util.per_hour_line=%s: %s%s
+ gt.util.per_day_line=%s: %s%s
+ gt.util.liters=L
+ gt.util.high_value_brackets=[%s]
+ gt.util.info_max_out=Max OUT: %s (%s) EU at %s A
+ gt.util.info_energy=Energy: %s EU / %s EU
 
 
 # Exceptions/Errors
-## GTUtility
-gt.util.exception_block=An exception was thrown while fetching this block's info.
-gt.util.exception_fluid=An exception was thrown while fetching this tile's fluid tank info.
-gt.util.exception_debug=An exception was thrown while fetching this block's debug info.
-gt.util.exception_leaves=An exception was thrown while fetching this leaves' info.
-gt.util.exception_crop=An exception was thrown while fetching this crop's info.
-gt.util.exception_device=An exception was thrown while fetching this device's info
-gt.util.exception_owner=An exception was thrown while fetching this device's owner.
-gt.util.exception_energy=An exception was thrown while fetching this device's energy info.
-gt.util.exception_cover=An exception was thrown while fetching this device's covers.
-gt.util.exception_progress=An exception was thrown while fetching this device's progress.
-gt.util.exception_upgrade=An exception was thrown while fetching this device's upgrades.
-gt.util.exception_ic2_energy_info=An exception was thrown while fetching this device's IC2 energy info.
-gt.util.exception_eu_conduction=An exception was thrown while fetching this device's EU conduction info.
-gt.util.exception_ic2_wrenchability=An exception was thrown while fetching this device's IC2 wrenchability.
-gt.util.exception_alignment_info=An exception was thrown while fetching this device's alignment info.
-gt.util.exception_reactor_info=An exception was thrown while fetching this reactor's info.
-
-## ItemMachines
-gt.util.exception_item_info=An exception was thrown while getting this item's info.
-
-
+ ## GTUtility
+ gt.util.exception_block=An exception was thrown while fetching this block's info.
+ gt.util.exception_fluid=An exception was thrown while fetching this tile's fluid tank info.
+ gt.util.exception_debug=An exception was thrown while fetching this block's debug info.
+ gt.util.exception_leaves=An exception was thrown while fetching this leaves' info.
+ gt.util.exception_crop=An exception was thrown while fetching this crop's info.
+ gt.util.exception_device=An exception was thrown while fetching this device's info
+ gt.util.exception_owner=An exception was thrown while fetching this device's owner.
+ gt.util.exception_energy=An exception was thrown while fetching this device's energy info.
+ gt.util.exception_cover=An exception was thrown while fetching this device's covers.
+ gt.util.exception_progress=An exception was thrown while fetching this device's progress.
+ gt.util.exception_upgrade=An exception was thrown while fetching this device's upgrades.
+ gt.util.exception_ic2_energy_info=An exception was thrown while fetching this device's IC2 energy info.
+ gt.util.exception_eu_conduction=An exception was thrown while fetching this device's EU conduction info.
+ gt.util.exception_ic2_wrenchability=An exception was thrown while fetching this device's IC2 wrenchability.
+ gt.util.exception_alignment_info=An exception was thrown while fetching this device's alignment info.
+ gt.util.exception_reactor_info=An exception was thrown while fetching this reactor's info.
+ 
+ ## ItemMachines
+ gt.util.exception_item_info=An exception was thrown while getting this item's info.
 
 
-
-#################
-
-
-
-
-
+#############
 # import gregtech.api.util.GTUtility;
 # GTUtility.translate("xxxx")
 #
 # GTUtility.translate("gt.thisthat.desc", THIS, THAT)
 # gt.thisthat.desc=this is %s and that is %s
-
-
-# GTUtility.java L 3512

@@ -86,10 +86,6 @@
 	- Them bacteria names, example above ^
 
 
-    S:Interaction_DESCRIPTION_Index_ALL=All
-    S:Interaction_DESCRIPTION_Index_ANY=Any
-	
-	
     S:MU-metaitem.01.32040.name=Extruder Shape (Shaft)
     S:MU-metaitem.01.32040.tooltip=Extruder Shape for making Windmill Shafts
     S:MU-metaitem.01.32041.name=Pu Pellet
