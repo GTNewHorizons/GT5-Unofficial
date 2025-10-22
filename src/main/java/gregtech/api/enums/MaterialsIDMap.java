@@ -513,7 +513,7 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(730, Materials.OilHeavy);
         r(731, Materials.OilMedium);
         r(732, Materials.OilLight);
-        r(733, Materials.NatruralGas);
+        r(733, Materials.NaturalGas);
         r(734, Materials.SulfuricGas);
         r(735, Materials.Gas);
         r(736, Materials.SulfuricNaphtha);

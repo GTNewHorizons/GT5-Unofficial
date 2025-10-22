@@ -7558,7 +7558,7 @@ public class MaterialsInit {
         Materials.LightFuel = loadLightFuel();
         Materials.LPG = loadLPG();
         Materials.Naphtha = loadNaphtha();
-        Materials.NatruralGas = loadNatruralGas(); // Nat"r"uralGas lol
+        Materials.NaturalGas = loadNaturalGas();
         Materials.SulfuricGas = loadSulfuricGas();
         Materials.SulfuricHeavyFuel = loadSulfuricHeavyFuel();
         Materials.SulfuricLightFuel = loadSulfuricLightFuel();
@@ -7623,7 +7623,7 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadNatruralGas() {
+    private static Materials loadNaturalGas() {
         return new MaterialBuilder().setName("NatruralGas")
             .setDefaultLocalName("Natural Gas")
             .setIconSet(TextureSet.SET_FLUID)

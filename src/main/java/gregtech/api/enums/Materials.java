@@ -521,7 +521,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials LightFuel;
     public static Materials LPG;
     public static Materials Naphtha;
-    public static Materials NatruralGas;
+    public static Materials NaturalGas;
     public static Materials SulfuricGas;
     public static Materials SulfuricHeavyFuel;
     public static Materials SulfuricLightFuel;

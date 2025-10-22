@@ -36,7 +36,7 @@ public class SpacePumpingRecipes {
         }
         RECIPES.put(Pair.of(3, 2), Materials.OilExtraHeavy.getFluid(1_400_000));
         RECIPES.put(Pair.of(3, 3), Materials.Lava.getFluid(1_800_000));
-        RECIPES.put(Pair.of(3, 4), Materials.NatruralGas.getGas(1_400_000));
+        RECIPES.put(Pair.of(3, 4), Materials.NaturalGas.getGas(1_400_000));
 
         // T4
         RECIPES.put(Pair.of(4, 1), Materials.SulfuricAcid.getFluid(784_000));

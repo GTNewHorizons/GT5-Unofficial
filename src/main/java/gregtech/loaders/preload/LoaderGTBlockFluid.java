@@ -1115,9 +1115,9 @@ public class LoaderGTBlockFluid implements Runnable {
             .withLocalizedName("Natural Gas")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.NatruralGas)
+            .configureMaterials(Materials.NaturalGas)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials.NatruralGas, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.NaturalGas, 1L),
                 ItemList.Cell_Empty.get(1L));
         ItemList.sHydricSulfur = GTFluidFactory.builder("liquid_hydricsulfur")
             .withLocalizedName("Hydrogen Sulfide")
