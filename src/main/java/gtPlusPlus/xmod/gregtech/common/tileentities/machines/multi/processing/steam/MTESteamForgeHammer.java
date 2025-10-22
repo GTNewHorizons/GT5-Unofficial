@@ -415,7 +415,7 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
     }
 
     @Override
-    protected int getThemeTier() {
+    public int getThemeTier() {
         return tierMachineCasing;
     }
 

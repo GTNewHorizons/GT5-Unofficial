@@ -376,7 +376,7 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
     }
 
     @Override
-    protected int getThemeTier() {
+    public int getThemeTier() {
         return mSetTier;
     }
 }

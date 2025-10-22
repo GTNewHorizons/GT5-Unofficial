@@ -375,7 +375,7 @@ public class MTESteamAlloySmelter extends MTESteamMultiBase<MTESteamAlloySmelter
     }
 
     @Override
-    protected int getThemeTier() {
+    public int getThemeTier() {
         return tierMachineCasing;
     }
 }

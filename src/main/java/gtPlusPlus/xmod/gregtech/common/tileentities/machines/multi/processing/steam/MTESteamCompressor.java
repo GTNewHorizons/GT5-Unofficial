@@ -359,7 +359,7 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
     }
 
     @Override
-    protected int getThemeTier() {
+    public int getThemeTier() {
         return tierMachineCasing;
     }
 

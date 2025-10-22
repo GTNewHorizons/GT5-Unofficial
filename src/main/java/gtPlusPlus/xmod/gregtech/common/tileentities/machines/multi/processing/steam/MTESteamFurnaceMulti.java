@@ -560,7 +560,7 @@ public class MTESteamFurnaceMulti extends MTESteamMultiBase<MTESteamFurnaceMulti
     }
 
     @Override
-    protected int getThemeTier() {
+    public int getThemeTier() {
         return tierMachineCasing;
     }
 
