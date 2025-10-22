@@ -559,4 +559,9 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
             GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_WASHPLANT,
             GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_SIMPLEWASHER);
     }
+
+    @Override
+    protected int getThemeTier() {
+        return tierMachineCasing;
+    }
 }

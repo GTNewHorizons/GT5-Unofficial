@@ -374,4 +374,8 @@ public class MTESteamAlloySmelter extends MTESteamMultiBase<MTESteamAlloySmelter
         return SoundResource.IC2_MACHINES_INDUCTION_LOOP;
     }
 
+    @Override
+    protected int getThemeTier() {
+        return tierMachineCasing;
+    }
 }
