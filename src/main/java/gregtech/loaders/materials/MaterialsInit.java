@@ -4597,7 +4597,7 @@ public class MaterialsInit {
         Materials.Stone = loadStone();
         Materials.TNT = loadTNT();
         Materials.Unstable = loadUnstable();
-        Materials.Unstableingot = loadUnstableingot();
+        Materials.UnstableIngot = loadUnstableIngot();
         Materials.Vinegar = loadVinegar();
         Materials.WeedEX9000 = loadWeedEX9000();
         Materials.Wheat = loadWheat();
@@ -5092,7 +5092,7 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadUnstableingot() {
+    private static Materials loadUnstableIngot() {
         return new MaterialBuilder().setName("Unstableingot")
             .setDefaultLocalName("Unstable")
             .setColor(Dyes.dyeWhite)

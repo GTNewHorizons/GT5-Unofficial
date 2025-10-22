@@ -373,7 +373,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Stone;
     public static Materials TNT;
     public static Materials Unstable;
-    public static Materials Unstableingot;
+    public static Materials UnstableIngot;
     public static Materials Vinegar;
     public static Materials WeedEX9000;
     public static Materials Wheat;
