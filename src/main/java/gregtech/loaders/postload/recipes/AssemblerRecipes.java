@@ -1816,7 +1816,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Titaniumonabariumdecacoppereikosaoxid, 6),
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorHVBase, 6),
                 GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Titanium, 4),
                 ItemList.Electric_Pump_HV.get(1),
                 GTUtility.getIntegratedCircuit(9))
@@ -1912,7 +1912,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Titaniumonabariumdecacoppereikosaoxid, 6),
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorHVBase, 6),
                 GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Titanium, 4),
                 ItemList.Electric_Pump_HV.get(1),
                 GTUtility.getIntegratedCircuit(9))
@@ -2020,7 +2020,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Titaniumonabariumdecacoppereikosaoxid, 6),
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorHVBase, 6),
                 GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Titanium, 4),
                 ItemList.Electric_Pump_HV.get(1),
                 GTUtility.getIntegratedCircuit(9))

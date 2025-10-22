@@ -746,7 +746,7 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(985, Materials.SuperconductorUHVBase);
         r(986, Materials.SuperconductorUVBase);
         r(987, Materials.Pentacadmiummagnesiumhexaoxid);
-        r(988, Materials.Titaniumonabariumdecacoppereikosaoxid);
+        r(988, Materials.SuperconductorHVBase);
         r(989, Materials.SuperconductorEVBase);
         r(990, Materials.SuperconductorIVBase);
         r(991, Materials.SuperconductorLuVBase);
