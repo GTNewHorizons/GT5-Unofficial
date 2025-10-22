@@ -14,12 +14,9 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -48,8 +45,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.widget.FluidLockWidget;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class MTEDigitalTankBase extends MTEBasicTank
     implements IFluidLockable, IAddUIWidgets, IAddGregtechLogo {
@@ -471,35 +466,6 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
     @Nonnull
     public FluidTankInfo[] getRealTankInfo(ForgeDirection side) {
         return new FluidTankInfo[] { new FluidTankInfo(getFluid(), getRealCapacity()) };
-    }
-
-    @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currenttip, accessor, config);
-
-        NBTTagCompound tag = accessor.getNBTData();
-        FluidStack fluid = tag.hasKey("mFluid") ? FluidStack.loadFluidStackFromNBT(tag.getCompoundTag("mFluid")) : null;
-        if (fluid != null && fluid.amount >= 0) {
-            currenttip.remove(0);
-            currenttip.add(
-                0,
-                formatNumbers(fluid.amount) + " / "
-                    + formatNumbers(getRealCapacity())
-                    + " L "
-                    + fluid.getLocalizedName());
-        } else {
-            currenttip.add(0, "Tank Empty");
-        }
-    }
-
-    @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        FluidStack fluid = getFluid();
-        if (fluid != null) tag.setTag("mFluid", fluid.writeToNBT(new NBTTagCompound()));
-        else if (tag.hasKey("mFluid")) tag.removeTag("mFluid");
     }
 
     protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
