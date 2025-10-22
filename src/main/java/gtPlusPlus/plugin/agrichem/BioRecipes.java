@@ -236,10 +236,10 @@ public class BioRecipes {
 
         // Extruder Recipe
         GTValues.RA.stdBuilder()
-            .itemInputs(GregtechItemList.CelluloseFiber.get(2), GregtechItemList.Pellet_Mold.get(0))
+            .itemInputs(GregtechItemList.CelluloseFiber.get(1), GregtechItemList.Pellet_Mold.get(0))
             .itemOutputs(GregtechItemList.WoodPellet.get(1))
             .duration(2 * SECONDS + 8 * TICKS)
-            .eut(8)
+            .eut(16)
             .addTo(extruderRecipes);
 
         // Assembly Recipe
