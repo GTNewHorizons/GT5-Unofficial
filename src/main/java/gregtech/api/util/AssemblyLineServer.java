@@ -262,7 +262,7 @@ public class AssemblyLineServer {
                                 case 1 -> mMats = new Materials[] { Materials.InfusedAir, Materials.Amber,
                                     Materials.Amethyst, Materials.InfusedWater, Materials.BlueTopaz,
                                     Materials.CertusQuartz, Materials.Dilithium, Materials.EnderEye,
-                                    Materials.EnderPearl, Materials.FoolsRuby, Materials.Force, Materials.Forcicium,
+                                    Materials.EnderPearl, Materials.Spinel, Materials.Force, Materials.Forcicium,
                                     Materials.Forcillium, Materials.GreenSapphire, Materials.InfusedFire,
                                     Materials.Jasper, Materials.ManaDiamond, Materials.BotaniaDragonstone };
                                 case 2 -> mMats = new Materials[] { Materials.Lazurite, Materials.Lignite,

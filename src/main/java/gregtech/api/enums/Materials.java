@@ -241,7 +241,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials FierySteel;
     public static Materials Firestone;
     public static Materials Fluorite;
-    public static Materials FoolsRuby;
     public static Materials Force;
     public static Materials Forcicium;
     public static Materials Forcillium;
@@ -295,6 +294,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Rubracium;
     public static Materials Sand;
     public static Materials Siltstone;
+    public static Materials Spinel;
     public static Materials Sunstone;
     public static Materials Tar;
     public static Materials Tartarite;

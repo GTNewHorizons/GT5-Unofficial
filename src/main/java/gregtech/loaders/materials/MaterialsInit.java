@@ -2605,7 +2605,6 @@ public class MaterialsInit {
         Materials.FierySteel = loadFierySteel();
         Materials.Firestone = loadFirestone();
         Materials.Fluorite = loadFluorite();
-        Materials.FoolsRuby = loadFoolsRuby();
         Materials.Force = loadForce();
         Materials.Forcicium = loadForcicium();
         Materials.Forcillium = loadForcillium();
@@ -2659,6 +2658,7 @@ public class MaterialsInit {
         Materials.Rubracium = loadRubracium();
         Materials.Sand = loadSand();
         Materials.Siltstone = loadSiltstone();
+        Materials.Spinel = loadSpinel();
         Materials.Sunstone = loadSunstone();
         Materials.Tar = loadTar();
         Materials.Tartarite = loadTartarite();
@@ -3278,7 +3278,7 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadFoolsRuby() {
+    private static Materials loadSpinel() {
         return new MaterialBuilder().setName("FoolsRuby")
             .setDefaultLocalName("Spinel")
             .setIconSet(TextureSet.SET_RUBY)
