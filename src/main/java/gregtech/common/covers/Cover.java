@@ -44,7 +44,7 @@ import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.modularui2.GTModularScreen;
 import gregtech.api.util.GTUtility;
-import gregtech.common.covers.gui.CoverGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.gui.mui1.cover.CoverUIFactory;
 import gregtech.common.text.ClientTickRateFormatter;
 import io.netty.buffer.ByteBuf;
@@ -312,10 +312,10 @@ public class Cover implements IGuiHolder<CoverGuiData> {
     /**
      * Override this method to provide a different GUI implementation for your cover in MUI2.
      *
-     * @return The variant of CoverGui that can build a GUI for this cover
+     * @return The variant of CoverBaseGui that can build a GUI for this cover
      */
-    protected @NotNull CoverGui<?> getCoverGui() {
-        return new CoverGui<>(this);
+    protected @NotNull CoverBaseGui<?> getCoverGui() {
+        return new CoverBaseGui<>(this);
     }
 
     // endregion
