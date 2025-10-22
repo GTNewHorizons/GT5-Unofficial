@@ -5353,7 +5353,7 @@ public class MaterialsInit {
         Materials.Obsidian = loadObsidian();
         Materials.Phosphate = loadPhosphate();
         Materials.PigIron = loadPigIron();
-        Materials.Plastic = loadPlastic();
+        Materials.Polyethylene = loadPolyethylene();
         Materials.Polycaprolactam = loadPolycaprolactam();
         Materials.Polydimethylsiloxane = loadPolydimethylsiloxane();
         Materials.Polytetrafluoroethylene = loadPolytetrafluoroethylene();
@@ -6828,7 +6828,7 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadPlastic() {
+    private static Materials loadPolyethylene() {
         return new MaterialBuilder().setName("Plastic")
             .setDefaultLocalName("Polyethylene")
             .setIconSet(TextureSet.SET_DULL)

@@ -149,7 +149,7 @@ public class RecipeLoaderChemicalSkips {
                 Materials.Chlorine.getGas(16_000),
                 Materials.Fluorine.getGas(16_000))
             .fluidOutputs(
-                Materials.Plastic.getMolten(4 * STACKS),
+                Materials.Polyethylene.getMolten(4 * STACKS),
                 Materials.PolyvinylChloride.getMolten(2 * STACKS),
                 Materials.Polystyrene.getMolten(1 * STACKS),
                 Materials.Polytetrafluoroethylene.getMolten(2 * STACKS),
