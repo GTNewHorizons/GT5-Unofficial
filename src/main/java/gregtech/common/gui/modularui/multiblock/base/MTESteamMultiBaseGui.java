@@ -39,7 +39,7 @@ public class MTESteamMultiBaseGui extends MTEMultiBlockBaseGui<MTESteamMultiBase
             .child(
                 new CircularGaugeDrawable(() -> (float) steamStoredSyncer.getValue() / maxSteamSyncer.getValue())
                     .asWidget()
-                    .widgetTheme(GTWidgetThemes.STEAM_GAUGE_ARROW)
+                    .widgetTheme(GTWidgetThemes.STEAM_GAUGE_NEEDLE)
                     .size(18, 4)
                     .left(-48 + 21)
                     .top(8 + 21));
