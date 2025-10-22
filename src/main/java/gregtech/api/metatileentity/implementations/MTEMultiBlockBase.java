@@ -144,7 +144,6 @@ import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 import gregtech.common.tileentities.machines.MTEHatchOutputME;
-import gregtech.common.tileentities.machines.multi.MTELargeBoiler;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbine;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
@@ -2588,23 +2587,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     public void setMuffled(boolean value) {
         final IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
         if (baseMetaTileEntity != null) {
-            baseMetaTileEntity.setMuffler(value);
-        }
-    }
-
-    @Override
-    public boolean isOverdrive() {
-        final IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
-        if (baseMetaTileEntity instanceof MTELargeBoiler) {
-            return baseMetaTileEntity.isMuffled();
-        }
-        return false;
-    }
-
-    @Override
-    public void setOverdrive(boolean value) {
-        final IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
-        if (baseMetaTileEntity instanceof MTELargeBoiler) {
             baseMetaTileEntity.setMuffler(value);
         }
     }

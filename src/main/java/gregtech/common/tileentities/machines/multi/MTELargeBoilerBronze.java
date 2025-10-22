@@ -98,6 +98,6 @@ public class MTELargeBoilerBronze extends MTELargeBoiler {
 
     @Override
     public float getOverdriveMult() {
-        return 1F;
+        return 1.5F;
     }
 }

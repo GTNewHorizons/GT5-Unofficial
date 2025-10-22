@@ -98,6 +98,6 @@ public class MTELargeBoilerTungstenSteel extends MTELargeBoiler {
 
     @Override
     public float getOverdriveMult() {
-        return 2.5F;
+        return 2.25F;
     }
 }

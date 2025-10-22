@@ -37,8 +37,6 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -155,10 +153,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                 .addInfo("A programmed circuit in the main block throttles the boiler (-1000L/s per config)")
                 .addInfo("Solid Fuels with a burn value that is too high or too low will not work");
         }
-        tt.addInfo(String.format("Takes %s seconds to heat up", formatNumbers(500.0 / getEfficiencyIncrease()))) // ?
-                                                                                                                 // check
-                                                                                                                 // semifluid
-                                                                                                                 // again
+        tt.addInfo(String.format("Takes %s seconds to heat up", formatNumbers(500.0 / getEfficiencyIncrease())))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 5, 3, false)
             .addController("Front bottom")
@@ -268,12 +263,10 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
         return false;
     }
 
-    @Override
     public boolean isOverdrive() {
         return overdrive;
     }
 
-    @Override
     public void setOverdrive(boolean value) {
         overdrive = value;
     }
@@ -401,12 +394,6 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
     private final int superToNormalSteam = 3;
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
-        builder.widget(createOverdriveButton(builder));
-    }
-
-    @Override
     protected @NotNull MTELargeBoilerGui getGui() {
         return new MTELargeBoilerGui(this);
     }
@@ -415,6 +402,9 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
     public boolean onRunningTick(ItemStack aStack) {
         if (this.mEUt > 0) {
             int maxEff = getCorrectedMaxEfficiency(mInventory[1]);
+            if (maxEff < mEfficiency){
+                mEfficiency = maxEff;
+            }
             if (this.mSuperEfficencyIncrease > 0 && mEfficiency < maxEff) {
                 mEfficiency = Math.max(0, Math.min(mEfficiency + mSuperEfficencyIncrease, maxEff));
             }
@@ -522,7 +512,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
     }
 
     private int getCorrectedMaxEfficiency(ItemStack itemStack) {
-        return getMaxEfficiency(itemStack) - ((getIdealStatus() - getRepairStatus()) * 1000);
+        return (int) (getMaxEfficiency(itemStack) - ((getIdealStatus() - getRepairStatus()) * 1000) * getOverdriveMult());
     }
 
     @Override
