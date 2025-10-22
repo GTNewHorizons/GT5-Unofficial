@@ -262,8 +262,8 @@ gt.interact.desc.need_maint_rotor_lo=Emit if rotor needs maintenance low accurac
 gt.interact.desc.need_maint_rotor_hi=Emit if rotor needs maintenance high accuracy mod
 gt.interact.desc.issue=1 Issue
 gt.interact.desc.issues=%s Issues
-gt.interact.desc.issue_rotor_low=Rotor < 20%
-gt.interact.desc.issue_rotor_dead=Rotor ≈ 0%
+gt.interact.desc.issue_rotor_low=Rotor < 20%%
+gt.interact.desc.issue_rotor_dead=Rotor ≈ 0%%
 
 # GT++ items
 item.GTPP.air_intake_hatch.name=Air Intake Hatch
@@ -705,8 +705,8 @@ GTPP.algae.tooltip.lifespan=Lifespan in days: %d
 GTPP.algae.tooltip.generation=Generation: %d
 
 # Power Goggles
-GT5U.power_goggles.open_config_gui=Open Goggles Config
-GT5U.power_goggles.toggle_power_chart=Toggle Power Chart
+GT5U.power_goggles.open_config_gui=Open Power Goggles Config
+GT5U.power_goggles.toggle_power_chart=Toggle Power Goggles Chart
 GT5U.power_goggles.link_lsc=Goggles linked to LSC at %d,%d,%d.
 GT5U.power_goggles.link_fail=That's not an LSC...
 GT5U.power_goggles.unlink=Goggles Unlinked.
@@ -954,6 +954,8 @@ gt.recipe.brewer.description=Brewing your Drinks
 gt.recipe.metalbender=Bending Machine
 gt.recipe.metalbender.description=Boo, he's bad! We want BENDER!!!
 gt.recipe.neutroniumcompressor=Neutronium Compressor
+gt.recipe.cable=Cable Coating
+gt.recipe.cablecoater.description=Coating Cables
 gt.recipe.canner=Canner
 gt.recipe.canner.description=Unmobile Food Canning Machine GTA4
 gt.recipe.centrifuge=Centrifuge
@@ -1552,6 +1554,9 @@ GT5U.gui.text.alpha-transfer=Alpha Transfer
 GT5U.gui.text.beta-minus=Beta Minus Decay
 GT5U.gui.text.beta-plus=Beta Plus Decay
 GT5U.gui.text.invalidfluidsup=Invalid Fluid Supplied
+GT5U.gui.text.amperage=Amperage
+GT5U.gui.text.voltagetier=Voltage Tier
+GT5U.gui.text.ticks_between_refill=Ticks Between Refills
 
 
 GT5U.gui.hoverable.runningfine=Running Fine.
@@ -3252,7 +3257,7 @@ GT5U.tooltip.volumetric_flask.empty=Empty
 GT5U.tooltip.volumetric_flask.set_volume=Rightclick on air to set volume (only while empty)
 
 GT5U.tooltip.purify.1=Throw into Cauldron to get clean Dust
-GT5U.tooltip.purify.2=Can be used as Enriched Naquadah Fuel Substitute
+GT5U.tooltip.purify.2=Throw into Cauldron to get clean crushed Ore
 GT5U.tooltip.nqgen=Can be used as Enriched Naquadah Fuel Substitute
 
 # info data

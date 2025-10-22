@@ -18,25 +18,14 @@
  * spotless:on
  */
 
-package kubatech.loaders.item.items;
-
-import java.util.List;
+package kubatech.loaders.item.kubaitem;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 
-import kubatech.loaders.item.ItemProxy;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
-public class ItemTeaIngredient extends ItemProxy {
+public interface IItemProxyGUI {
 
-    public ItemTeaIngredient(String unlocalizedName) {
-        super("teaingredient." + unlocalizedName, "teaingredient/" + unlocalizedName);
-    }
-
-    @Override
-    public void addInformation(ItemStack stack, EntityPlayer entity, List<String> tooltipList, boolean showDebugInfo) {
-        tooltipList.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("kubatech.tooltip.tea_ingredient.0"));
-    }
+    ModularWindow createWindow(ItemStack stack, EntityPlayer player);
 }

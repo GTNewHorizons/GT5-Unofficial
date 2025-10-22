@@ -234,7 +234,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             .beginStructureBlock(3, 9, 3, false)
             .addController("Front 3rd layer center")
             .addCasingInfoMin("Solid Steel Machine Casing", 8, false)
-            .addStructureInfo("Casings can be replaced with Explosion Warning Signs")
+            .addStructureInfo("Casings can be replaced with Explosion Hazard Signs")
             .addOtherStructurePart("Transformer-Winding Blocks", "Outer layer 2,3,7,8")
             .addOtherStructurePart("Nickel-Zinc-Ferrite Blocks", "Inner layer 2,3,7,8")
             .addOtherStructurePart("Containment Blocks", "Layer 4,5,6")
