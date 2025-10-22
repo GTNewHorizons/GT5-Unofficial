@@ -15010,7 +15010,7 @@ public class MaterialsInit {
     private static void loadUEVPlusMaterials() {
         Materials.DTCC = loadDTCC();
         Materials.DTPC = loadDTPC();
-        Materials.DimensionallyTranscendentResplendentCatalyst = loadDimensionallyTranscendentResplendentCatalyst();
+        Materials.DTRC = loadDTRC();
         Materials.DimensionallyTranscendentExoticCatalyst = loadDimensionallyTranscendentExoticCatalyst();
         Materials.DimensionallyTranscendentStellarCatalyst = loadDimensionallyTranscendentStellarCatalyst();
         Materials.ExcitedDTCC = loadExcitedDTCC();
@@ -15080,7 +15080,7 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadDimensionallyTranscendentResplendentCatalyst() {
+    private static Materials loadDTRC() {
         return new MaterialBuilder().setName("DimensionallyTranscendentResplendentCatalyst")
             .setDefaultLocalName("Dimensionally Transcendent Resplendent Catalyst")
             .setIconSet(TextureSet.SET_FLUID)
