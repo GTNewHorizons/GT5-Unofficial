@@ -80,7 +80,7 @@ public class ChaosLocatorGui {
                                 .value(xSyncer)
                                 .setDefaultNumber(0))
                         .child(
-                            new TextWidget<>(IKey.lang("gt.item.chaos_locator.z")).sizeRel(1f, 0.2f)
+                            new TextWidget<>(IKey.lang("gt.item.chaos_locator.x")).sizeRel(1f, 0.2f)
                                 .alignment(Alignment.Center)
                                 .color(10227735))
                         .childPadding(2))
