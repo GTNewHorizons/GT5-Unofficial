@@ -550,7 +550,7 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(767, Materials.SulfurDichloride);
         r(768, Materials.ThionylChloride);
         r(769, Materials.BismuthIIIOxide);
-        r(770, Materials.HeeEndium);
+        r(770, Materials.Endium);
         r(771, Materials.RaneyNickelActivated);
         r(772, Materials.NickelAluminide);
         r(773, Materials.IIButinIIVdiol);

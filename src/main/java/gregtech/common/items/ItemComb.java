@@ -713,7 +713,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
                 GTBees.drop.getStackForType(DropType.ENDERGOO), new ItemStack(Items.spawn_egg, 1, 60) },
             new int[] { 25 * 100, 10 * 100, 20 * 100, 15 * 100 },
             Voltage.EV);
-        addProcessGT(CombType.ENDIUM, new Materials[] { Materials.HeeEndium }, Voltage.HV);
+        addProcessGT(CombType.ENDIUM, new Materials[] { Materials.Endium }, Voltage.HV);
 
         addCentrifugeToItemStack(
             CombType.RUNEI,

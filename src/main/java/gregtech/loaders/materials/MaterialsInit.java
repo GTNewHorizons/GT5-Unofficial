@@ -2316,9 +2316,9 @@ public class MaterialsInit {
         Materials.Draconium = loadDraconium();
         Materials.DraconiumAwakened = loadDraconiumAwakened();
         Materials.Ender = loadEnder();
+        Materials.Endium = loadEndium();
         Materials.Fluix = loadFluix();
         Materials.Flux = loadFlux();
-        Materials.HeeEndium = loadHeeEndium();
         Materials.InfusedTeslatite = loadInfusedTeslatite();
         Materials.IridiumSodiumOxide = loadIridiumSodiumOxide();
         Materials.Mutation = loadMutation();
@@ -2411,6 +2411,23 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
+    private static Materials loadEndium() {
+        return new MaterialBuilder().setName("HeeEndium")
+            .setDefaultLocalName("Endium")
+            .setChemicalFormula("Em")
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeLightBlue)
+            .setARGB(0x00a5dcfa)
+            .setTool(1_024, 4, 16.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .addSubTag(SubTag.METAL)
+            .constructMaterial();
+    }
+
     private static Materials loadFluix() {
         return new MaterialBuilder().setName("Fluix")
             .setDefaultLocalName("Fluix")
@@ -2428,23 +2445,6 @@ public class MaterialsInit {
         return new MaterialBuilder().setName("Flux")
             .setDefaultLocalName("Flux")
             .addDustItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadHeeEndium() {
-        return new MaterialBuilder().setName("HeeEndium")
-            .setDefaultLocalName("Endium")
-            .setChemicalFormula("Em")
-            .setIconSet(TextureSet.SET_DULL)
-            .setColor(Dyes.dyeLightBlue)
-            .setARGB(0x00a5dcfa)
-            .setTool(1_024, 4, 16.0f)
-            .addDustItems()
-            .addMetalItems()
-            .addOreItems()
-            .addToolHeadItems()
-            .addGearItems()
-            .addSubTag(SubTag.METAL)
             .constructMaterial();
     }
 

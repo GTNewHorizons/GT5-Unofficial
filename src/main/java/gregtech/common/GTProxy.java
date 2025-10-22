@@ -1546,7 +1546,7 @@ public class GTProxy implements IFuelHandler {
                 } else if (aEvent.Name.equals("copperWire")) {
                     GTOreDictUnificator.registerOre(OreDictNames.craftingWireCopper, aEvent.Ore);
                 } else if (aEvent.Name.equals("oreHeeEndrium")) {
-                    GTOreDictUnificator.registerOre(OrePrefixes.ore, Materials.HeeEndium, aEvent.Ore);
+                    GTOreDictUnificator.registerOre(OrePrefixes.ore, Materials.Endium, aEvent.Ore);
                 } else if (aEvent.Name.equals("sheetPlastic")) {
                     GTOreDictUnificator.registerOre(OrePrefixes.plate, Materials.Polyethylene, aEvent.Ore);
                 } else if (aEvent.Name.startsWith("shard")) {

@@ -180,9 +180,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Draconium;
     public static Materials DraconiumAwakened;
     public static Materials Ender;
+    public static Materials Endium;
     public static Materials Fluix;
     public static Materials Flux;
-    public static Materials HeeEndium;
     public static Materials InfusedTeslatite;
     public static Materials IridiumSodiumOxide;
     public static Materials Mutation;
