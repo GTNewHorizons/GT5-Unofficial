@@ -13141,7 +13141,7 @@ public class MaterialsInit {
         Materials.Vanadiumtriindinid = loadVanadiumtriindinid();
         Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid = loadTetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid();
         Materials.Tetranaquadahdiindiumhexaplatiumosminid = loadTetranaquadahdiindiumhexaplatiumosminid();
-        Materials.Longasssuperconductornameforuvwire = loadLongasssuperconductornameforuvwire();
+        Materials.SuperconductorUVBase = loadSuperconductorUVBase();
         Materials.SuperconductorUHVBase = loadSuperconductorUHVBase();
         Materials.SuperconductorUEVBase = loadSuperconductorUEVBase();
         Materials.SuperconductorUIVBase = loadSuperconductorUIVBase();
@@ -13283,7 +13283,7 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadLongasssuperconductornameforuvwire() {
+    private static Materials loadSuperconductorUVBase() {
         return new MaterialBuilder().setName("Longasssuperconductornameforuvwire")
             .setDefaultLocalName("Superconductor Base UV")
             .setChemicalFormula("Nq*₄(Ir₃Os)₃EuSm")
