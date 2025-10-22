@@ -333,4 +333,196 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
             .setSize(BUTTON_SIZE, BUTTON_SIZE)
             .setGTTooltip(tooltipDataSupplier);
     }
+
+    /**
+     * Removes the specified quantity of items matching any of the target ItemStacks.
+     *
+     * @param targets Array of target ItemStacks to search for (compared by type and metadata).
+     * @param amount  Number of items to remove.
+     * @return ItemStack of removed items, or null if nothing was removed.
+     */
+    public ItemStack removeResource(ItemStack[] targets, int amount) {
+        if (targets == null || targets.length == 0 || amount <= 0 || getBaseMetaTileEntity() == null) {
+            return null;
+        }
+
+        ItemStack result = null;
+        int remaining = amount;
+        for (int i = 0; i < this.getSizeInventory() && remaining > 0; i++) {
+            if (i == getCircuitSlot()) continue;
+            ItemStack slotStack = this.getStackInSlot(i);
+            if (slotStack == null || slotStack.stackSize < amount) {
+                continue;
+            }
+            for (ItemStack target : targets) {
+                if (target != null && GTUtility.areStacksEqual(slotStack, target)) {
+                    if (result == null || GTUtility.areStacksEqual(result, slotStack)) {
+                        int toRemove = Math.min(remaining, slotStack.stackSize);
+                        ItemStack removed = getBaseMetaTileEntity().decrStackSize(i, toRemove);
+                        if (removed != null) {
+                            if (result == null) {
+                                result = removed.copy();
+                            } else {
+                                result.stackSize += removed.stackSize;
+                            }
+                            remaining -= removed.stackSize;
+                            updateSlots();
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Removes all items matching any of the target ItemStacks.
+     *
+     * @param targets Array of target ItemStacks to search for (compared by type and metadata).
+     * @return ItemStack with the total quantity of removed items, or null if nothing was removed.
+     */
+    public ItemStack removeAllResource(ItemStack[] targets) {
+        if (targets == null || targets.length == 0 || getBaseMetaTileEntity() == null) {
+            return null;
+        }
+
+        ItemStack result = null;
+        boolean updated = false;
+        for (int i = 0; i < getSizeInventory(); i++) {
+            if (i == getCircuitSlot()) continue;
+            ItemStack slotStack = getStackInSlot(i);
+            if (slotStack == null) {
+                continue;
+            }
+            for (ItemStack target : targets) {
+                if (target != null && GTUtility.areStacksEqual(slotStack, target)) {
+                    if (result == null || GTUtility.areStacksEqual(result, slotStack)) {
+                        ItemStack removed = getBaseMetaTileEntity().decrStackSize(i, slotStack.stackSize);
+                        if (removed != null) {
+                            if (result == null) {
+                                result = removed.copy();
+                            } else if (GTUtility.areStacksEqual(result, removed)) {
+                                result.stackSize += removed.stackSize;
+                            }
+                            updated = true;
+                        }
+                    }
+                }
+            }
+        }
+        if (updated) {
+            updateSlots();
+        }
+        return result;
+    }
+
+    /**
+     * Finds the first ItemStack matching any of the target ItemStacks.
+     *
+     * @param targets Array of target ItemStacks to search for (compared by type and metadata).
+     * @return First found ItemStack, or null if nothing was found.
+     */
+    public ItemStack findResource(ItemStack[] targets) {
+        if (targets == null || targets.length == 0 || getSizeInventory() == 0) {
+            return null;
+        }
+
+        for (int i = 0; i < getSizeInventory(); i++) {
+            if (i == getCircuitSlot()) continue;
+            ItemStack slotStack = getStackInSlot(i);
+            if (slotStack == null) {
+                continue;
+            }
+            for (ItemStack target : targets) {
+                if (target != null && GTUtility.areStacksEqual(slotStack, target)) {
+                    return slotStack.copy();
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Checks if the inventory contains an item matching any of the target ItemStacks.
+     *
+     * @param targets Array of target ItemStacks to search for (compared by type and metadata).
+     * @return true if a matching item is found, false otherwise.
+     */
+    public boolean hasResource(ItemStack[] targets) {
+        if (targets == null || targets.length == 0 || getSizeInventory() == 0) {
+            return false;
+        }
+
+        for (int i = 0; i < getSizeInventory(); i++) {
+            if (i == getCircuitSlot()) continue;
+            ItemStack slotStack = getStackInSlot(i);
+            if (slotStack == null) {
+                continue;
+            }
+            for (ItemStack target : targets) {
+                if (target != null && GTUtility.areStacksEqual(slotStack, target)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks if the inventory contains at least the specified quantity of items matching any of the target ItemStacks.
+     *
+     * @param targets Array of target ItemStacks to search for (compared by type and metadata).
+     * @param amount  Number of items to check for.
+     * @return true if at least the specified quantity is found, false otherwise.
+     */
+    public boolean hasResource(ItemStack[] targets, int amount) {
+        if (targets == null || targets.length == 0 || amount <= 0 || getSizeInventory() == 0) {
+            return false;
+        }
+
+        int total = 0;
+        for (int i = 0; i < getSizeInventory(); i++) {
+            if (i == getCircuitSlot()) continue;
+            ItemStack slotStack = getStackInSlot(i);
+            if (slotStack == null) {
+                continue;
+            }
+            for (ItemStack target : targets) {
+                if (target != null && GTUtility.areStacksEqual(slotStack, target)) {
+                    total += slotStack.stackSize;
+                    if (total >= amount) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    // one element target methods
+
+    public ItemStack removeResource(ItemStack target, int amount) {
+        if (target == null) return null;
+        return removeResource(new ItemStack[] { target }, amount);
+    }
+
+    public ItemStack removeAllResource(ItemStack target) {
+        if (target == null) return null;
+        return removeAllResource(new ItemStack[] { target });
+    }
+
+    public ItemStack findResource(ItemStack target) {
+        if (target == null) return null;
+        return findResource(new ItemStack[] { target });
+    }
+
+    public boolean hasResource(ItemStack target) {
+        if (target == null) return false;
+        return hasResource(new ItemStack[] { target });
+    }
+
+    public boolean hasResource(ItemStack target, int amount) {
+        if (target == null) return false;
+        return hasResource(new ItemStack[] { target }, amount);
+    }
 }

@@ -42,7 +42,6 @@ import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GTModHandler;
@@ -344,12 +343,6 @@ public class CraftingRecipes implements Runnable {
             new Object[] { "BZB", "BRB", "BZB", 'B', new ItemStack(GregTechAPI.sBlockCasings3, 1, 12), 'R',
                 GTModHandler.getModItem(IndustrialCraft2.ID, "blockGenerator", 1, 5), 'Z', "circuitUltimate" });
 
-        GTModHandler.addCraftingRecipe(
-            ItemRegistry.HTGR,
-            RecipeLoader.BITSD,
-            new Object[] { "BZB", "BRB", "BZB", 'B', new ItemStack(GregTechAPI.sBlockCasings8, 1, 5), 'R',
-                GTModHandler.getModItem(IndustrialCraft2.ID, "blockGenerator", 1, 5), 'Z', "circuitSuperconductor" });
-
         // DNAExtractionModule
         GTModHandler.addCraftingRecipe(
             BioItemList.mBioLabParts[0],
@@ -493,7 +486,7 @@ public class CraftingRecipes implements Runnable {
                 .getStackForm(1L),
             RecipeLoader.BITSD,
             new Object[] { "PFP", "WCW", "OGO", 'F',
-                GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.TranscendentMetal, 1L), 'W',
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TranscendentMetal, 1L), 'W',
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Infinity, 1L), 'P',
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polytetrafluoroethylene, 1L), 'O',
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polystyrene, 1L), 'G', "circuit" + Materials.UIV,
@@ -504,7 +497,7 @@ public class CraftingRecipes implements Runnable {
                 .getStackForm(1L),
             RecipeLoader.BITSD,
             new Object[] { "PFP", "WCW", "OGO", 'F',
-                GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SpaceTime, 1L), 'W',
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 1L), 'W',
                 GTOreDictUnificator.get("wireGt01Hypogen", 1L), 'P',
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polytetrafluoroethylene, 1L), 'O',
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polystyrene, 1L), 'G', "circuit" + Materials.UMV,

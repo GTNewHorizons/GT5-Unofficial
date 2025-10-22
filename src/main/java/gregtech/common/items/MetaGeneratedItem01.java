@@ -474,6 +474,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.World;
 
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTechAPI;
@@ -3537,6 +3538,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                         aItemEntity.setEntityItemStack(
                             GTOreDictUnificator
                                 .get(OrePrefixes.dust, aMaterial, aItemEntity.getEntityItem().stackSize));
+                        aItemEntity.delayBeforeCanPickup = 0;
+                        cancelMovementAndTeleport(aItemEntity, tX, tY, tZ);
                         aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
                         return true;
                     }
@@ -3547,6 +3550,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                         aItemEntity.setEntityItemStack(
                             GTOreDictUnificator
                                 .get(OrePrefixes.crushedPurified, aMaterial, aItemEntity.getEntityItem().stackSize));
+                        aItemEntity.delayBeforeCanPickup = 0;
+                        cancelMovementAndTeleport(aItemEntity, tX, tY, tZ);
                         aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
                         return true;
                     }
@@ -3555,6 +3560,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                     int tMetaData = aItemEntity.worldObj.getBlockMetadata(tX, tY, tZ);
                     if ((tBlock == Blocks.cauldron) && (tMetaData > 0)) {
                         aItemEntity.setEntityItemStack(ItemList.Food_Dough.get(aItemEntity.getEntityItem().stackSize));
+                        aItemEntity.delayBeforeCanPickup = 0;
+                        cancelMovementAndTeleport(aItemEntity, tX, tY, tZ);
                         aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
                         return true;
                     }
@@ -3562,6 +3569,76 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean onItemUse(final ItemStack oldItemStack, final EntityPlayer player, final World world, final int x,
+        final int y, final int z, final int ordinalSide, final float hitX, final float hitY, final float hitZ) {
+        final Block blockClicked = world.getBlock(x, y, z);
+        final int metadata = world.getBlockMetadata(x, y, z);
+
+        if (blockClicked == Blocks.cauldron && metadata > 0) {
+            final int damage = oldItemStack.getItemDamage();
+
+            if ((damage < 32000) && (damage >= 0)) {
+                final Materials oldMaterial = GregTechAPI.sGeneratedMaterials[(damage % 1000)];
+                final OrePrefixes oldPrefix = this.mGeneratedPrefixList[(damage / 1000)];
+                final ItemStack newItemStack = getCauldronWashingResult(oldPrefix, oldMaterial, oldItemStack.stackSize);
+
+                if (newItemStack != null) {
+                    world.setBlockMetadataWithNotify(x, y, z, metadata - 1, 3);
+                    player.inventory.setInventorySlotContents(player.inventory.currentItem, newItemStack);
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns a function to get a new ItemStack after washing.
+     *
+     * @param oldPrefix   The old prefix of the stack being converted
+     * @param oldMaterial The old material to be converted
+     * @param stackSize   The stack size to be returned
+     * @return the new ItemStack after washing, or null if the material/prefix was invalid
+     */
+    static ItemStack getCauldronWashingResult(final OrePrefixes oldPrefix, final Materials oldMaterial,
+        final int stackSize) {
+        if ((oldMaterial != null) && (oldMaterial != Materials.Empty) && (oldMaterial != Materials._NULL)) {
+            switch (oldPrefix) {
+                case dustImpure:
+                case dustPure:
+                    return GTOreDictUnificator
+                        .get(OrePrefixes.dust, cauldronRemap.getOrDefault(oldMaterial, oldMaterial), stackSize);
+                case crushed:
+                    return GTOreDictUnificator.get(OrePrefixes.crushedPurified, oldMaterial, stackSize);
+                case dust:
+                    if (oldMaterial == Materials.Wheat) {
+                        return ItemList.Food_Dough.get(stackSize);
+                    }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Cancels the movement of an EntityItem and teleports it above the cauldron.
+     *
+     * @param entityItem The item entity to move
+     * @param x          The X coordinate of the cauldron
+     * @param y          The Y coordinate of the cauldron
+     * @param z          The Z coordinate of the cauldron
+     */
+    static void cancelMovementAndTeleport(EntityItem entityItem, int x, int y, int z) {
+        entityItem.motionX = 0;
+        entityItem.motionY = 0;
+        entityItem.motionZ = 0;
+        entityItem.posX = x + 0.5;
+        entityItem.posY = y + 1.5;
+        entityItem.posZ = z + 0.5;
     }
 
     @Override
@@ -3582,7 +3659,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
     public boolean isPlasmaCellUsed(OrePrefixes aPrefix, Materials aMaterial) {
         // Materials has a plasma fluid
         if (aPrefix == OrePrefixes.cellPlasma && aMaterial.getPlasma(1L) != null) {
-            if (aMaterial.mHasPlasma) return true;
+            if (aMaterial.hasPlasma()) return true;
             // Loop through fusion recipes
             for (GTRecipe recipe : RecipeMaps.fusionRecipes.getAllRecipes()) {
                 // Make sure fluid output can't be null (not sure if possible)

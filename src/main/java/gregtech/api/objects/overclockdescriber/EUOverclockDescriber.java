@@ -59,6 +59,7 @@ public class EUOverclockDescriber extends EUNoOverclockDescriber {
     /**
      * @return Whole original EU/t usage. Also displays voltage tier if it should be shown.
      */
+    // TODO: when porting frontends to mui2, use mui2 Color, not EnumChatFormatting for customization
     protected String getOriginalEUtDisplay(RecipeDisplayInfo recipeInfo) {
         OverclockCalculator originalPowerCalculator = OverclockCalculator.ofNoOverclock(recipeInfo.recipe)
             .calculate();
