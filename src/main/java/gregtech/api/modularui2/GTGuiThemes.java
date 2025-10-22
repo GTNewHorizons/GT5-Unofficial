@@ -158,6 +158,7 @@ public final class GTGuiThemes {
             GTTextureIds.BUTTON_COVER_TAB_DISABLED_STEEL)
         .themedTexture(GTWidgetThemes.PICTURE_CANISTER.getFullName(), GTTextureIds.OVERLAY_SLOT_CANISTER_STEEL)
         .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_GT_LOGO_STEEL)
+        .themedColor(GTWidgetThemes.STEAM_GAUGE_NEEDLE.getFullName(), 0x3d3847)
         .build();
     public static final GTGuiTheme PRIMITIVE = GTGuiTheme.builder("gregtech:primitive")
         .parent(STANDARD)
@@ -196,5 +197,10 @@ public final class GTGuiThemes {
             GTWidgetThemes.BUTTON_COVER_TAB_DISABLED.getFullName(),
             GTTextureIds.BUTTON_COVER_TAB_DISABLED_PRIMITIVE)
         .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_GT_LOGO_PRIMITIVE)
+        .build();
+    public static final GTGuiTheme TECTECH_STANDARD = GTGuiTheme.builder("tectech:standard")
+        .parent(STANDARD)
+        .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_TECTECH_LOGO_DARK)
+        .themedTexture(GTWidgetThemes.BACKGROUND_TERMINAL.getFullName(), GTTextureIds.BACKGROUND_TERMINAL_TECTECH)
         .build();
 }

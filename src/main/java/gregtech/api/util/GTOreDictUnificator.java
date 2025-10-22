@@ -346,7 +346,7 @@ public class GTOreDictUnificator {
             } else if (inputs[i] instanceof ItemData) {
                 tData[i] = (ItemData) inputs[i];
             } else {
-                throw new IllegalArgumentException();
+                throw new IllegalArgumentException("Illegal item data: " + inputs[i]);
             }
         }
         if (GTUtility.arrayContainsNonNull(tData)) {
