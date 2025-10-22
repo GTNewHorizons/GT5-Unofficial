@@ -282,7 +282,7 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(425, Materials.MTBEMixtureAlt);
         r(460, Materials.HydricSulfide);
         r(470, Materials.Epoxid);
-        r(471, Materials.Silicone);
+        r(471, Materials.RubberSilicone);
         r(472, Materials.Polycaprolactam);
         r(473, Materials.Polytetrafluoroethylene);
         r(485, Materials.Alduorite);

@@ -186,7 +186,7 @@ public class ComponentAssemblyLineLoader {
             .metadata(COAL_CASING_TIER, COAL_LV)
             .addTo(componentAssemblyLineRecipes);
 
-        for (var rubber : new Materials[] { Rubber, Silicone, StyreneButadieneRubber }) {
+        for (var rubber : new Materials[] { Rubber, RubberSilicone, StyreneButadieneRubber }) {
             // Pump
             GTValues.RA.stdBuilder()
                 .itemOutputs(Electric_Pump_LV.get(64))
@@ -301,7 +301,7 @@ public class ComponentAssemblyLineLoader {
             .metadata(COAL_CASING_TIER, COAL_MV)
             .addTo(componentAssemblyLineRecipes);
 
-        for (var rubber : new Materials[] { Rubber, Silicone, StyreneButadieneRubber }) {
+        for (var rubber : new Materials[] { Rubber, RubberSilicone, StyreneButadieneRubber }) {
             // Pump
             GTValues.RA.stdBuilder()
                 .itemOutputs(Electric_Pump_MV.get(64))
@@ -414,7 +414,7 @@ public class ComponentAssemblyLineLoader {
             .metadata(COAL_CASING_TIER, COAL_HV)
             .addTo(componentAssemblyLineRecipes);
 
-        for (var rubber : new Materials[] { Rubber, Silicone, StyreneButadieneRubber }) {
+        for (var rubber : new Materials[] { Rubber, RubberSilicone, StyreneButadieneRubber }) {
             // Pump
             GTValues.RA.stdBuilder()
                 .itemOutputs(Electric_Pump_HV.get(64))
@@ -527,7 +527,7 @@ public class ComponentAssemblyLineLoader {
             .metadata(COAL_CASING_TIER, COAL_EV)
             .addTo(componentAssemblyLineRecipes);
 
-        for (var rubber : new Materials[] { Rubber, Silicone, StyreneButadieneRubber }) {
+        for (var rubber : new Materials[] { Rubber, RubberSilicone, StyreneButadieneRubber }) {
             // Pump
             GTValues.RA.stdBuilder()
                 .itemOutputs(Electric_Pump_EV.get(64))
@@ -643,7 +643,7 @@ public class ComponentAssemblyLineLoader {
             .metadata(COAL_CASING_TIER, COAL_IV)
             .addTo(componentAssemblyLineRecipes);
 
-        for (var rubber : new Materials[] { Silicone, StyreneButadieneRubber }) {
+        for (var rubber : new Materials[] {RubberSilicone, StyreneButadieneRubber }) {
             // Pump
             GTValues.RA.stdBuilder()
                 .itemOutputs(Electric_Pump_IV.get(64))
@@ -754,7 +754,7 @@ public class ComponentAssemblyLineLoader {
             .metadata(COAL_CASING_TIER, COAL_LuV)
             .addTo(componentAssemblyLineRecipes);
 
-        for (var rubber : new Materials[] { Silicone, StyreneButadieneRubber }) {
+        for (var rubber : new Materials[] {RubberSilicone, StyreneButadieneRubber }) {
             // Pump
             GTValues.RA.stdBuilder()
                 .itemOutputs(Electric_Pump_LuV.get(64))
@@ -926,7 +926,7 @@ public class ComponentAssemblyLineLoader {
             .metadata(COAL_CASING_TIER, COAL_ZPM)
             .addTo(componentAssemblyLineRecipes);
 
-        for (var rubber : new Materials[] { Silicone, StyreneButadieneRubber }) {
+        for (var rubber : new Materials[] {RubberSilicone, StyreneButadieneRubber }) {
             // Pump
             GTValues.RA.stdBuilder()
                 .itemOutputs(Electric_Pump_ZPM.get(64))
@@ -1081,7 +1081,7 @@ public class ComponentAssemblyLineLoader {
             .metadata(COAL_CASING_TIER, COAL_UV)
             .addTo(componentAssemblyLineRecipes);
 
-        for (var rubber : new Materials[] { Silicone, StyreneButadieneRubber }) {
+        for (var rubber : new Materials[] {RubberSilicone, StyreneButadieneRubber }) {
             // Pump
             GTValues.RA.stdBuilder()
                 .itemOutputs(Electric_Pump_UV.get(64))
@@ -1239,7 +1239,7 @@ public class ComponentAssemblyLineLoader {
             .metadata(COAL_CASING_TIER, COAL_UHV)
             .addTo(componentAssemblyLineRecipes);
 
-        for (var rubber : new Materials[] { Silicone, StyreneButadieneRubber }) {
+        for (var rubber : new Materials[] {RubberSilicone, StyreneButadieneRubber }) {
             // Pump
             GTValues.RA.stdBuilder()
                 .itemOutputs(Electric_Pump_UHV.get(64))
@@ -1399,7 +1399,7 @@ public class ComponentAssemblyLineLoader {
             .metadata(COAL_CASING_TIER, COAL_UEV)
             .addTo(componentAssemblyLineRecipes);
 
-        for (var rubber : new Materials[] { Silicone, StyreneButadieneRubber }) {
+        for (var rubber : new Materials[] {RubberSilicone, StyreneButadieneRubber }) {
             // Pump
             GTValues.RA.stdBuilder()
                 .itemOutputs(Electric_Pump_UEV.get(64))
@@ -1586,7 +1586,7 @@ public class ComponentAssemblyLineLoader {
             .metadata(COAL_CASING_TIER, COAL_UIV)
             .addTo(componentAssemblyLineRecipes);
 
-        for (var rubber : new Materials[] { Silicone, StyreneButadieneRubber }) {
+        for (var rubber : new Materials[] {RubberSilicone, StyreneButadieneRubber }) {
             // Pump
             GTValues.RA.stdBuilder()
                 .itemOutputs(Electric_Pump_UIV.get(64))
@@ -1778,7 +1778,7 @@ public class ComponentAssemblyLineLoader {
             .metadata(COAL_CASING_TIER, COAL_UMV)
             .addTo(componentAssemblyLineRecipes);
 
-        for (var rubber : new Materials[] { Silicone, StyreneButadieneRubber }) {
+        for (var rubber : new Materials[] {RubberSilicone, StyreneButadieneRubber }) {
             // Pump
             GTValues.RA.stdBuilder()
                 .itemOutputs(Electric_Pump_UMV.get(64))

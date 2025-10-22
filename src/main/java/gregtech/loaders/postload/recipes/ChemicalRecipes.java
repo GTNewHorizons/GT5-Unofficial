@@ -2416,7 +2416,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Polydimethylsiloxane.getDust(9), Materials.Sulfur.getDust(1))
-            .fluidOutputs(Materials.Silicone.getMolten(9 * INGOTS))
+            .fluidOutputs(Materials.RubberSilicone.getMolten(9 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);

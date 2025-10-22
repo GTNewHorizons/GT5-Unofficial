@@ -5368,6 +5368,7 @@ public class MaterialsInit {
         Materials.RawRubber = loadRawRubber();
         Materials.RockSalt = loadRockSalt();
         Materials.Rubber = loadRubber();
+        Materials.RubberSilicone = loadRubberSilicone();
         Materials.Ruby = loadRuby();
         Materials.Rutile = loadRutile();
         Materials.Salt = loadSalt();
@@ -5375,7 +5376,6 @@ public class MaterialsInit {
         Materials.Sapphire = loadSapphire();
         Materials.Scheelite = loadScheelite();
         Materials.SiliconDioxide = loadSiliconDioxide();
-        Materials.Silicone = loadSilicone();
         Materials.Snow = loadSnow();
         Materials.SodaAsh = loadSodaAsh();
         Materials.Sodalite = loadSodalite();
@@ -7093,6 +7093,30 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
+    private static Materials loadRubberSilicone() {
+        return new MaterialBuilder().setName("Silicone")
+            .setDefaultLocalName("Silicone Rubber")
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeWhite)
+            .setARGB(0x00dcdcdc)
+            .setTool(128, 1, 3.0f)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setMeltingPoint(900)
+            .addMaterial(Materials.Carbon, 2)
+            .addMaterial(Materials.Hydrogen, 6)
+            .addMaterial(Materials.Oxygen, 1)
+            .addMaterial(Materials.Silicon, 1)
+            .addAspect(TCAspects.MOTUS, 2)
+            .addSubTag(SubTag.BOUNCY)
+            .addSubTag(SubTag.FLAMMABLE)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.STRETCHY)
+            .constructMaterial();
+    }
+
     private static Materials loadRuby() {
         return new MaterialBuilder().setName("Ruby")
             .setDefaultLocalName("Ruby")
@@ -7229,30 +7253,6 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.QUARTZ)
-            .constructMaterial();
-    }
-
-    private static Materials loadSilicone() {
-        return new MaterialBuilder().setName("Silicone")
-            .setDefaultLocalName("Silicone Rubber")
-            .setIconSet(TextureSet.SET_DULL)
-            .setColor(Dyes.dyeWhite)
-            .setARGB(0x00dcdcdc)
-            .setTool(128, 1, 3.0f)
-            .addDustItems()
-            .addMetalItems()
-            .addToolHeadItems()
-            .addGearItems()
-            .setMeltingPoint(900)
-            .addMaterial(Materials.Carbon, 2)
-            .addMaterial(Materials.Hydrogen, 6)
-            .addMaterial(Materials.Oxygen, 1)
-            .addMaterial(Materials.Silicon, 1)
-            .addAspect(TCAspects.MOTUS, 2)
-            .addSubTag(SubTag.BOUNCY)
-            .addSubTag(SubTag.FLAMMABLE)
-            .addSubTag(SubTag.NO_SMASHING)
-            .addSubTag(SubTag.STRETCHY)
             .constructMaterial();
     }
 

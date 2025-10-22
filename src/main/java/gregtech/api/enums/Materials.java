@@ -484,6 +484,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials RawRubber;
     public static Materials RockSalt;
     public static Materials Rubber;
+    public static Materials RubberSilicone;
     public static Materials Ruby;
     public static Materials Rutile;
     public static Materials Salt;
@@ -491,7 +492,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Sapphire;
     public static Materials Scheelite;
     public static Materials SiliconDioxide;
-    public static Materials Silicone;
     public static Materials Snow;
     public static Materials SodaAsh;
     public static Materials Sodalite;
@@ -1424,9 +1424,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         Bronze.mOreReRegistrations.add(AnyBronze);
         Rubber.mOreReRegistrations.add(AnyRubber);
         StyreneButadieneRubber.mOreReRegistrations.add(AnyRubber);
-        Silicone.mOreReRegistrations.add(AnyRubber);
+        RubberSilicone.mOreReRegistrations.add(AnyRubber);
         StyreneButadieneRubber.mOreReRegistrations.add(AnySyntheticRubber);
-        Silicone.mOreReRegistrations.add(AnySyntheticRubber);
+        RubberSilicone.mOreReRegistrations.add(AnySyntheticRubber);
     }
 
     private static void setToolEnchantments() {

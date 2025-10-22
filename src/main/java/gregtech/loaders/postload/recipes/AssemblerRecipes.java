@@ -1613,7 +1613,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Silicone, 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.RubberSilicone, 1),
                 GTModHandler.getIC2Item("carbonMesh", 1),
                 GTUtility.getIntegratedCircuit(3))
             .itemOutputs(ItemList.Duct_Tape.get(1))

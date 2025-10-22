@@ -2240,7 +2240,7 @@ public class Assembler implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Tin, 4),
                     GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.BatteryAlloy, 4),
                     GTOreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 8),
-                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Silicone, 8))
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.RubberSilicone, 8))
                 .itemOutputs(CustomItemList.teslaCapacitor.getWithDamage(1, 0))
                 .fluidInputs(Materials.Epoxid.getMolten(1 * HALF_INGOTS))
                 .duration(16 * SECONDS)
@@ -2252,7 +2252,7 @@ public class Assembler implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Copper, 4),
                     GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.BatteryAlloy, 6),
                     GTOreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 12),
-                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Silicone, 12))
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.RubberSilicone, 12))
                 .itemOutputs(CustomItemList.teslaCapacitor.getWithDamage(1, 1))
                 .fluidInputs(Materials.Epoxid.getMolten(1 * INGOTS))
                 .duration(16 * SECONDS)
@@ -2264,7 +2264,7 @@ public class Assembler implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Gold, 4),
                     GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.BatteryAlloy, 8),
                     GTOreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 16),
-                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Silicone, 16))
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.RubberSilicone, 16))
                 .itemOutputs(CustomItemList.teslaCapacitor.getWithDamage(1, 2))
                 .fluidInputs(Materials.Epoxid.getMolten(216))
                 .duration(16 * SECONDS)
@@ -2276,7 +2276,7 @@ public class Assembler implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Aluminium, 4),
                     GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.BatteryAlloy, 10),
                     GTOreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 20),
-                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Silicone, 20))
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.RubberSilicone, 20))
                 .itemOutputs(CustomItemList.teslaCapacitor.getWithDamage(1, 3))
                 .fluidInputs(Materials.Epoxid.getMolten(2 * INGOTS))
                 .duration(16 * SECONDS)
@@ -2288,7 +2288,7 @@ public class Assembler implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Tungsten, 4),
                     GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.BatteryAlloy, 12),
                     GTOreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 24),
-                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Silicone, 24))
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.RubberSilicone, 24))
                 .itemOutputs(CustomItemList.teslaCapacitor.getWithDamage(1, 4))
                 .fluidInputs(Materials.Epoxid.getMolten(2 * INGOTS + 1 * HALF_INGOTS))
                 .duration(16 * SECONDS)
@@ -2300,7 +2300,7 @@ public class Assembler implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.HSSG, 4),
                     GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.BatteryAlloy, 14),
                     GTOreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 28),
-                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Silicone, 28))
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.RubberSilicone, 28))
                 .itemOutputs(CustomItemList.teslaCapacitor.getWithDamage(1, 5))
                 .fluidInputs(Materials.Epoxid.getMolten(3 * INGOTS))
                 .duration(16 * SECONDS)
@@ -2312,7 +2312,7 @@ public class Assembler implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Naquadah, 4),
                     GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.BatteryAlloy, 16),
                     GTOreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 32),
-                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Silicone, 32))
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.RubberSilicone, 32))
                 .itemOutputs(CustomItemList.teslaCapacitor.getWithDamage(1, 6))
                 .fluidInputs(Materials.Epoxid.getMolten(504))
                 .duration(16 * SECONDS)

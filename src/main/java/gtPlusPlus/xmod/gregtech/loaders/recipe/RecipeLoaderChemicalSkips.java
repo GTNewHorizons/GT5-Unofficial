@@ -168,7 +168,7 @@ public class RecipeLoaderChemicalSkips {
                 Materials.Hydrogen.getGas(16_000),
                 Materials.Chlorine.getGas(16_000))
             .fluidOutputs(
-                Materials.Silicone.getMolten(1 * STACKS),
+                Materials.RubberSilicone.getMolten(1 * STACKS),
                 Materials.StyreneButadieneRubber.getMolten(1 * STACKS),
                 Materials.PolyphenyleneSulfide.getMolten(2 * STACKS),
                 Materials.Rubber.getMolten(4 * STACKS))
@@ -511,7 +511,7 @@ public class RecipeLoaderChemicalSkips {
             .itemInputs(
                 GTUtility.getIntegratedCircuit(10),
                 CI.getEmptyCatalyst(1),
-                Materials.Silicone.getDust(64),
+                Materials.RubberSilicone.getDust(64),
                 Materials.StyreneButadieneRubber.getDust(64),
                 Materials.Carbon.getNanite(64))
             .itemOutputs(GregtechItemList.RubberPolymerCatalyst.get(1))
