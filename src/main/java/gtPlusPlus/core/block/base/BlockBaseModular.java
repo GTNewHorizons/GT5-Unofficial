@@ -11,6 +11,8 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.IBlockAccess;
 
+import org.jetbrains.annotations.NotNull;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -94,28 +96,34 @@ public class BlockBaseModular extends BasicBlock {
 
     public void registerComponent() {
         Logger.MATERIALS("Attempting to register " + this.getUnlocalizedName() + ".");
+
         if (this.blockMaterial == null) {
             Logger.MATERIALS("Tried to register " + this.getUnlocalizedName() + " but the material was null.");
             return;
         }
-        String aName = blockMaterial.getUnlocalizedName();
+
+        final String name = blockMaterial.getUnlocalizedName();
+
         // Register Component
-        Map<String, ItemStack> aMap = Material.mComponentMap.get(aName);
-        if (aMap == null) {
-            aMap = new HashMap<>();
-        }
-        int fx = getBlockTypeMeta();
-        String aKey = (fx == 0 ? OrePrefixes.block.getName()
-            : (fx == 1 ? OrePrefixes.frameGt.getName() : OrePrefixes.ore.getName()));
-        ItemStack x = aMap.get(aKey);
-        if (x == null) {
-            aMap.put(aKey, new ItemStack(this));
-            Logger.MATERIALS("Registering a material component. Item: [" + aName + "] Map: [" + aKey + "]");
-            Material.mComponentMap.put(aName, aMap);
-        } else {
-            // Bad
+        Map<String, ItemStack> map = Material.mComponentMap.get(name);
+        if (map == null) map = new HashMap<>();
+
+        final String key = getKey(getBlockTypeMeta());
+
+        if (map.containsKey(key)) {
             Logger.MATERIALS("Tried to double register a material component.");
+            return;
         }
+
+        Logger.MATERIALS("Registering a material component. Item: [" + name + "] Map: [" + key + "]");
+        map.put(key, new ItemStack(this));
+        Material.mComponentMap.put(name, map);
+    }
+
+    private static @NotNull String getKey(int fx) {
+        if (fx == 0) return OrePrefixes.block.getName();
+        if (fx == 1) return OrePrefixes.frameGt.getName();
+        return OrePrefixes.ore.getName();
     }
 
     public int getBlockTypeMeta() {
