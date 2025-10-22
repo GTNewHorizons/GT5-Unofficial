@@ -15012,7 +15012,7 @@ public class MaterialsInit {
         Materials.DTPC = loadDTPC();
         Materials.DTRC = loadDTRC();
         Materials.DTEC = loadDTEC();
-        Materials.DimensionallyTranscendentStellarCatalyst = loadDimensionallyTranscendentStellarCatalyst();
+        Materials.DTSC = loadDTSC();
         Materials.ExcitedDTCC = loadExcitedDTCC();
         Materials.ExcitedDTPC = loadExcitedDTPC();
         Materials.ExcitedDTRC = loadExcitedDTRC();
@@ -15108,7 +15108,7 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadDimensionallyTranscendentStellarCatalyst() {
+    private static Materials loadDTSC() {
         return new MaterialBuilder().setName("DimensionallyTranscendentStellarCatalyst")
             .setDefaultLocalName("Dimensionally Transcendent Stellar Catalyst")
             .setChemicalFormula("Stellar")

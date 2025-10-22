@@ -981,7 +981,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials DTPC;
     public static Materials DTRC;
     public static Materials DTEC;
-    public static Materials DimensionallyTranscendentStellarCatalyst;
+    public static Materials DTSC;
     public static Materials ExcitedDTCC;
     public static Materials ExcitedDTPC;
     public static Materials ExcitedDTRC;

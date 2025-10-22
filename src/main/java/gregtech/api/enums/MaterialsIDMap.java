@@ -104,7 +104,7 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(126, Materials.ExcitedDTEC);
         r(127, Materials.ExcitedDTSC);
         r(129, Materials.Neutronium);
-        r(130, Materials.DimensionallyTranscendentStellarCatalyst);
+        r(130, Materials.DTSC);
         r(131, Materials.SuperconductorUIVBase);
         r(132, Materials.Netherite);
         r(133, Materials.ActivatedNetherite);
