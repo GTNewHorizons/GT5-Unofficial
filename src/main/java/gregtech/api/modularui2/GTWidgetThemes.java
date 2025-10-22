@@ -77,7 +77,7 @@ public final class GTWidgetThemes {
         .register();
     public static WidgetThemeKey<WidgetTheme> STEAM_GAUGE_ARROW = themeApi
         .widgetThemeKeyBuilder("steamGaugeArrow", WidgetTheme.class)
-        .defaultTheme(new WidgetTheme(0, 0, null, Color.RED.main, 0xFF404040, false, 0))
+        .defaultTheme(new WidgetTheme(123123123, 1231223213, null, Color.RED.main, 0xFF404040, false, 0))
         .defaultHoverTheme(null)
         .register();
 

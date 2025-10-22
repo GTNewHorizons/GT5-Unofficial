@@ -1,5 +1,6 @@
 package gregtech.api.modularui2;
 
+import com.cleanroommc.modularui.utils.Color;
 import gregtech.api.enums.Dyes;
 import gtPlusPlus.xmod.gregtech.common.modularui2.GTPPTextureIds;
 
@@ -62,6 +63,8 @@ public final class GTGuiThemes {
             GTTextureIds.BUTTON_COVER_TAB_DISABLED_STANDARD)
         .themedTexture(GTWidgetThemes.PICTURE_CANISTER.getFullName(), GTPPTextureIds.PICTURE_CANISTER_DARK)
         .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_GT_LOGO_STANDARD)
+        .themedColor(GTWidgetThemes.STEAM_GAUGE_ARROW.getFullName(), Color.BROWN.main)
+
         .build();
     public static final GTGuiTheme COVER = GTGuiTheme.builder("gregtech:cover")
         .parent(STANDARD)
