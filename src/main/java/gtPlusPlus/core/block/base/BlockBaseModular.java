@@ -105,8 +105,7 @@ public class BlockBaseModular extends BasicBlock {
         final String name = blockMaterial.getUnlocalizedName();
 
         // Register Component
-        Map<String, ItemStack> map = Material.mComponentMap.get(name);
-        if (map == null) map = new HashMap<>();
+        final Map<String, ItemStack> map = Material.mComponentMap.computeIfAbsent(name, x -> new HashMap<>());
 
         final String key = getKey(getBlockTypeMeta());
 
@@ -117,7 +116,6 @@ public class BlockBaseModular extends BasicBlock {
 
         Logger.MATERIALS("Registering a material component. Item: [" + name + "] Map: [" + key + "]");
         map.put(key, new ItemStack(this));
-        Material.mComponentMap.put(name, map);
     }
 
     private static @NotNull String getKey(int fx) {
