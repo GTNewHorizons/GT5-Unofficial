@@ -13135,7 +13135,7 @@ public class MaterialsInit {
     }
 
     private static void loadSuperconductorBases() {
-        Materials.Pentacadmiummagnesiumhexaoxid = loadPentacadmiummagnesiumhexaoxid();
+        Materials.SuperconductorMVBase = loadSuperconductorMVBase();
         Materials.SuperconductorHVBase = loadSuperconductorHVBase();
         Materials.SuperconductorEVBase = loadSuperconductorEVBase();
         Materials.SuperconductorIVBase = loadSuperconductorIVBase();
@@ -13148,7 +13148,7 @@ public class MaterialsInit {
         Materials.SuperconductorUMVBase = loadSuperconductorUMVBase();
     }
 
-    private static Materials loadPentacadmiummagnesiumhexaoxid() {
+    private static Materials loadSuperconductorMVBase() {
         return new MaterialBuilder().setName("Pentacadmiummagnesiumhexaoxid")
             .setDefaultLocalName("Superconductor Base MV")
             .setIconSet(TextureSet.SET_SHINY)

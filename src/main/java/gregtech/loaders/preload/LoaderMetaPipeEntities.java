@@ -366,7 +366,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
 
         // Superconductor base
         WireCableBuilder.builder()
-            .material(Materials.Pentacadmiummagnesiumhexaoxid)
+            .material(Materials.SuperconductorMVBase)
             .startId(2200)
             .lossWire(2)
             .amperage(1)

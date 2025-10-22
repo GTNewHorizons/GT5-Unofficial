@@ -835,7 +835,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Trinium;
 
     // Superconductor Bases
-    public static Materials Pentacadmiummagnesiumhexaoxid;
+    public static Materials SuperconductorMVBase;
     public static Materials SuperconductorHVBase;
     public static Materials SuperconductorEVBase;
     public static Materials SuperconductorIVBase;
