@@ -748,7 +748,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.RawRubber, 9),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.RubberRaw, 9),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1))
             .fluidOutputs(Materials.Rubber.getMolten(9 * INGOTS))
             .duration(30 * SECONDS)
@@ -757,7 +757,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.RawRubber, 1),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.RubberRaw, 1),
                 GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Sulfur, 1))
             .fluidOutputs(Materials.Rubber.getMolten(1 * INGOTS))
             .duration(5 * SECONDS)
@@ -3307,7 +3307,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Cell_Air.get(1), GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(Materials.RawRubber.getDust(1), Materials.Empty.getCells(1))
+            .itemOutputs(Materials.RubberRaw.getDust(1), Materials.Empty.getCells(1))
             .fluidInputs(Materials.Isoprene.getFluid(144))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -3315,7 +3315,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Oxygen.getCells(2), GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(Materials.RawRubber.getDust(3), Materials.Empty.getCells(2))
+            .itemOutputs(Materials.RubberRaw.getDust(3), Materials.Empty.getCells(2))
             .fluidInputs(Materials.Isoprene.getFluid(288))
             .duration(16 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -3323,7 +3323,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Isoprene.getCells(1), GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(Materials.RawRubber.getDust(7), Materials.Empty.getCells(1))
+            .itemOutputs(Materials.RubberRaw.getDust(7), Materials.Empty.getCells(1))
             .fluidInputs(Materials.Air.getGas(14_000))
             .duration(56 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -3331,7 +3331,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Isoprene.getCells(2), GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(Materials.RawRubber.getDust(21), Materials.Empty.getCells(2))
+            .itemOutputs(Materials.RubberRaw.getDust(21), Materials.Empty.getCells(2))
             .fluidInputs(Materials.Oxygen.getGas(14_000))
             .duration(1 * MINUTES + 52 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -5525,7 +5525,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
-            .itemOutputs(Materials.RawRubber.getDust(18))
+            .itemOutputs(Materials.RubberRaw.getDust(18))
             .fluidInputs(
                 Materials.Isoprene.getFluid(1728),
                 Materials.Air.getGas(6_000),
@@ -5536,7 +5536,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
-            .itemOutputs(Materials.RawRubber.getDust(24))
+            .itemOutputs(Materials.RubberRaw.getDust(24))
             .fluidInputs(
                 Materials.Isoprene.getFluid(1728),
                 Materials.Oxygen.getGas(6_000),

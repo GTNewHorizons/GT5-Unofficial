@@ -5365,9 +5365,9 @@ public class MaterialsInit {
         Materials.Pyrolusite = loadPyrolusite();
         Materials.Pyrope = loadPyrope();
         Materials.Quicklime = loadQuicklime();
-        Materials.RawRubber = loadRawRubber();
         Materials.RockSalt = loadRockSalt();
         Materials.Rubber = loadRubber();
+        Materials.RubberRaw = loadRubberRaw();
         Materials.RubberSilicone = loadRubberSilicone();
         Materials.Ruby = loadRuby();
         Materials.Rutile = loadRutile();
@@ -7037,20 +7037,6 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadRawRubber() {
-        return new MaterialBuilder().setName("RawRubber")
-            .setDefaultLocalName("Raw Rubber")
-            .setIconSet(TextureSet.SET_DULL)
-            .setColor(Dyes.dyeWhite)
-            .setARGB(0x00ccc789)
-            .addDustItems()
-            .setMeltingPoint(400)
-            .addMaterial(Materials.Carbon, 5)
-            .addMaterial(Materials.Hydrogen, 8)
-            .addAspect(TCAspects.MOTUS, 2)
-            .constructMaterial();
-    }
-
     private static Materials loadRockSalt() {
         return new MaterialBuilder().setName("RockSalt")
             .setDefaultLocalName("Rock Salt")
@@ -7090,6 +7076,20 @@ public class MaterialsInit {
             .addSubTag(SubTag.FLAMMABLE)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.STRETCHY)
+            .constructMaterial();
+    }
+
+    private static Materials loadRubberRaw() {
+        return new MaterialBuilder().setName("RawRubber")
+            .setDefaultLocalName("Raw Rubber")
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeWhite)
+            .setARGB(0x00ccc789)
+            .addDustItems()
+            .setMeltingPoint(400)
+            .addMaterial(Materials.Carbon, 5)
+            .addMaterial(Materials.Hydrogen, 8)
+            .addAspect(TCAspects.MOTUS, 2)
             .constructMaterial();
     }
 

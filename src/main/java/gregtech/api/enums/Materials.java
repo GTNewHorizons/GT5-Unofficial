@@ -481,9 +481,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Pyrolusite;
     public static Materials Pyrope;
     public static Materials Quicklime;
-    public static Materials RawRubber;
     public static Materials RockSalt;
     public static Materials Rubber;
+    public static Materials RubberRaw;
     public static Materials RubberSilicone;
     public static Materials Ruby;
     public static Materials Rutile;
