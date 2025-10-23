@@ -219,7 +219,11 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
     public int getItemStackLimit(ItemStack stack) {
         final int damage = getDamage(stack);
         final int stackSize = super.getItemStackLimit(stack);
+        if (damage >= 32_000) return stackSize;
+
         final OrePrefixes prefix = mGeneratedPrefixList[damage / 1000];
-        return damage < 32000 && prefix != null ? Math.min(stackSize, prefix.getDefaultStackSize()) : stackSize;
+        if (prefix == null) return stackSize;
+
+        return Math.min(stackSize, prefix.getDefaultStackSize());
     }
 }
