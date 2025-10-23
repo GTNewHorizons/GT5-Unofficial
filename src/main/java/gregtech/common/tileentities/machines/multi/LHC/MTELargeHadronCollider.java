@@ -2483,22 +2483,6 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
         super(aName);
     }
 
-    private void setCoilLevel(HeatingCoilLevel level) {
-        mCoilLevel = level;
-    }
-
-    private HeatingCoilLevel getCoilLevel() {
-        return mCoilLevel;
-    }
-
-    private Byte getSolenoidLevel() {
-        return mSolenoidLevel;
-    }
-
-    private void setSolenoidLevel(byte level) {
-        mSolenoidLevel = level;
-    }
-
     private boolean addBeamLineInputHatch(IGregTechTileEntity te, int casingIndex) {
         if (te == null) return false;
 
