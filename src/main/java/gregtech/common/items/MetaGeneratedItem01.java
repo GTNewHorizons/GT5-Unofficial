@@ -3803,6 +3803,11 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         setFluidContainerStats(32000 + Electromagnet_Neodymium.ID, 0L, 1L);
         setFluidContainerStats(32000 + Electromagnet_Samarium.ID, 0L, 1L);
         setFluidContainerStats(32000 + Electromagnet_Tengam.ID, 0L, 1L);
+        setFluidContainerStats(32000 + Booster_MV.ID, 0L, 1L);
+        setFluidContainerStats(32000 + Booster_HV.ID, 0L, 1L);
+        setFluidContainerStats(32000 + Booster_EV.ID, 0L, 1L);
+        setFluidContainerStats(32000 + Booster_IV.ID, 0L, 1L);
+
     }
 
     private void oredictBlacklistEntries() {

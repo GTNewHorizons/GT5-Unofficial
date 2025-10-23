@@ -3,7 +3,10 @@ package gregtech.api.metatileentity.implementations;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_EMS_HOUSING;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_EMS_HOUSING_GLOW;
 import static gregtech.common.modularui2.util.CommonGuiComponents.gridTemplate1by1;
+import static gregtech.common.modularui2.util.CommonGuiComponents.gridTemplate2by2;
 
+import com.cleanroommc.modularui.utils.item.LimitingItemStackHandler;
+import gregtech.api.util.GTUtility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -28,11 +31,11 @@ import gregtech.common.tileentities.machines.multi.MTESuperConductorProcessor;
 public class MTEHatchBooster extends MTEHatch {
 
     public MTEHatchBooster(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, 5, 1, "Holds boosters for the SuperConductor Processor");
+        super(aID, aName, aNameRegional, 5, 4, "Holds boosters for the SuperConductor Processor");
     }
 
     public MTEHatchBooster(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 1, aDescription, aTextures);
+        super(aName, aTier, 4, aDescription, aTextures);
     }
 
     @Override
@@ -82,7 +85,7 @@ public class MTEHatchBooster extends MTEHatch {
 
     @Override
     public int getInventoryStackLimit() {
-        return 3;
+        return 4;
     }
 
     @Override
@@ -114,6 +117,15 @@ public class MTEHatchBooster extends MTEHatch {
     }
 
     @Override
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        for (ItemStack stack : this.mInventory) {
+            if (GTUtility.areStacksEqual(stack, itemStack))
+                return false;
+        }
+        return super.isItemValidForSlot(index, itemStack);
+    }
+
+    @Override
     protected boolean useMui2() {
         return true;
     }
@@ -124,7 +136,7 @@ public class MTEHatchBooster extends MTEHatch {
         return GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings)
             .build()
             .child(
-                gridTemplate1by1(
+                gridTemplate2by2(
                     index -> new ItemSlot().slot(
                         new ModularSlot(inventoryHandler, index).slotGroup("item_inv")
                             .filter(MTESuperConductorProcessor::isValidBooster))));
