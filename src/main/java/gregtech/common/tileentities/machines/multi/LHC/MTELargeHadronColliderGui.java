@@ -12,7 +12,7 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui {
 
     @Override
     protected void setMachineModeIcons() {
-        machineModeIcons.add(GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_CUTTING); //todo: make new
-        machineModeIcons.add(GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_SLICING); //todo: make new
+        machineModeIcons.add(GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_ACCELERATOR);
+        machineModeIcons.add(GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_COLLIDER);
     }
 }

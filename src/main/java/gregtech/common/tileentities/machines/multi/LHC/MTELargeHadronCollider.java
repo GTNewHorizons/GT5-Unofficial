@@ -99,12 +99,21 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setInteger("machineMode", machineMode);
+        aNBT.setFloat("energy", cachedOutputParticle.getEnergy());
+        aNBT.setInteger("rate", cachedOutputParticle.getRate());
+        aNBT.setInteger("particleId", cachedOutputParticle.getParticleId());
+        aNBT.setFloat("focus", cachedOutputParticle.getFocus());
     }
 
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         machineMode = aNBT.getInteger("machineMode");
+        cachedOutputParticle = new BeamInformation(
+            aNBT.getFloat("energy"),
+            aNBT.getInteger("rate"),
+            aNBT.getInteger("particleId"),
+            aNBT.getFloat("focus"));
     }
 
     @Override
@@ -2622,14 +2631,57 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Particle Collider")
-            .addBulkMachineInfo(0, 0.0F, 0F)
+        tt.addMachineType("Particle Accelerator, Particle Collider")
+            .addInfo("Accelerates particles to high energies and then collides them to generate new particles")
+            .addInfo("Electrically neutral particles are unaffected")
+            .addInfo("Set the "+EnumChatFormatting.YELLOW+"target beam energy "+EnumChatFormatting.GRAY+"(up to 2TeV) "+
+                "and the "+EnumChatFormatting.BLUE+"maximum number of cycles "+EnumChatFormatting.GRAY+"(up to 10)")
+            .addInfo("Cycles every second")
+            .addSeparator()
+            .addInfo(""+EnumChatFormatting.WHITE + EnumChatFormatting.UNDERLINE+"Accelerator mode")
+            .addInfo("Accelerates the beam in the smaller LHC ring")
+            .addInfo("Accelerator mode increases the "+EnumChatFormatting.GOLD+"Beam Energy "+EnumChatFormatting.GRAY+"by "+EnumChatFormatting.WHITE+"10eV"+EnumChatFormatting.GRAY+" for every EU consumed, "+
+                "until the")
+            .addInfo(EnumChatFormatting.YELLOW+"Target Beam Energy "+EnumChatFormatting.GRAY+"is reached, or the "+EnumChatFormatting.BLUE+
+                "maximum number of cycles "+EnumChatFormatting.GRAY+"is reached")
+            .addInfo("If the "+EnumChatFormatting.YELLOW+"Target Beam Energy "+EnumChatFormatting.GRAY+"is reached, multiply the current "
+                +EnumChatFormatting.RED+"Beam Rate "+EnumChatFormatting.GRAY+"by "+EnumChatFormatting.WHITE+"1.1")
+            .addInfo(EnumChatFormatting.GREEN+"Power "+EnumChatFormatting.GRAY+"cost starts at "+EnumChatFormatting.WHITE+"1A "+EnumChatFormatting.GRAY+"of "+
+                EnumChatFormatting.AQUA+"Energy Hatch Voltage "+EnumChatFormatting.GRAY+"per "+EnumChatFormatting.RED+"Beam Rate "+EnumChatFormatting.GRAY+
+                "and increases quadratically")
+            .addInfo("with the "+EnumChatFormatting.LIGHT_PURPLE+"number of completed cycles")
+            .addInfo(EnumChatFormatting.GREEN+"P "+EnumChatFormatting.GRAY+"= "+EnumChatFormatting.AQUA+"V "+EnumChatFormatting.GRAY+"* "+
+                EnumChatFormatting.RED+"R "+EnumChatFormatting.GRAY+"* "+EnumChatFormatting.LIGHT_PURPLE+"N"+EnumChatFormatting.GRAY+"^2")
+            .addInfo("Automatically switches to Collider mode when the "+EnumChatFormatting.BLUE+"maximum number of cycles "+EnumChatFormatting.GRAY+"is reached")
+            .addSeparator()
+            .addInfo(""+EnumChatFormatting.WHITE + EnumChatFormatting.UNDERLINE+"Collider mode")
+            .addInfo("Splits the beam into "+EnumChatFormatting.WHITE+"two "+EnumChatFormatting.GRAY+"beams that go in opposite directions in the larger LHC ring, which")
+            .addInfo("then collide to generate new particles")
+            .addInfo("The "+EnumChatFormatting.DARK_AQUA+"collision energy "+EnumChatFormatting.GRAY+"is two times the "+EnumChatFormatting.GOLD+"beam energy")
+            .addInfo("If the "+EnumChatFormatting.DARK_AQUA+"collision energy "+EnumChatFormatting.GRAY+"exceeds the rest mass of a particle, that particle will start")
+            .addInfo("appearing in the outputs")
+            .addInfo("A particle output can only appear in the modules that correspond to the forces that")
+            .addInfo("interact with that particle")
+            .addInfo("For example, Neutrinos cannot appear in the Strong force module, "+EnumChatFormatting.WHITE+"ALICE"+EnumChatFormatting.GRAY+", since they do")
+            .addInfo("not interact via the strong force")
+            .addInfo(EnumChatFormatting.WHITE+"Advanced Beamline Output Hatches "+EnumChatFormatting.GRAY+"will allow you to see the list of possible outputs, and")
+            .addInfo("filter them")
+            .addSeparator()
+            .addInfo("There are four LHC modules, marked by the letter on top of the module:")
+            .addInfo(EnumChatFormatting.AQUA+"E - Electromagnetism "+EnumChatFormatting.GRAY+"- Charged Matter Sensor ("+EnumChatFormatting.AQUA+"CMS"+EnumChatFormatting.GRAY+")")
+            .addInfo(EnumChatFormatting.DARK_GREEN+"W - Weak Interaction "+EnumChatFormatting.GRAY+"- Advanced Total Lepton Assimilation Snare ("+EnumChatFormatting.DARK_GREEN+"ATLAS"+EnumChatFormatting.GRAY+")")
+            .addInfo(EnumChatFormatting.WHITE+"S - Strong Force "+EnumChatFormatting.GRAY+"- Absolute Lattice Integrated Chromodynamic Encapsulator ("+EnumChatFormatting.WHITE+"ALICE"+EnumChatFormatting.GRAY+")")
+            .addInfo(EnumChatFormatting.DARK_PURPLE+"G - Gravity "+EnumChatFormatting.GRAY+"- Localized Horizon Curvature Binder ("+EnumChatFormatting.DARK_PURPLE+"LHCb"+EnumChatFormatting.GRAY+")")
+            .addSeparator()
             .beginStructureBlock(109, 13, 122, false)
             .addController("Front Center")
-            .addCasingInfoExactly("Collider Casing", 5817, false)
+            .addCasingInfoExactly("Collider Casing", 5666, false)
+            .addCasingInfoExactly("Energy Hatch", 1, false)
             .addCasingInfoExactly("Shielded Accelerator Casing", 16, false)
             .addCasingInfoExactly("Shielded Accelerator Glass", 20, false)
             .addCasingInfoExactly("Beamline Input Hatch", 1, false)
+            .addCasingInfoExactly("Neonite (Any)", 73, false)
+            .addTecTechHatchInfo()
             .toolTipFinisher();
         return tt;
     }
@@ -2776,7 +2828,6 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
 
         return new BeamInformation(outEnergy,
             outRate, particle.getParticleId(), particle.getFocus());
-
     }
 
     public long calculateEnergyCostAccelerator(BeamInformation particle) {
@@ -2784,13 +2835,6 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
 
         return (long) (machineVoltage * Math.pow(min(accelerationCycleCounter + 1, maxAccelerationCycles), 2)
             * particle.getRate()); // counter starts at 0, so +1
-    }
-
-    public long calculateEnergyCostCollider() {
-
-        long machineVoltage = getAverageInputVoltage();
-
-        return machineVoltage; //todo make gooder
     }
 
     @Override
@@ -2879,7 +2923,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
             // Generate output particle:
 
             // 1. Determine output energy (= collision energy)
-            this.outputEnergy = (float) (inputEnergy) / 2; // output energy = collision energy = input energy * 0.5
+            this.outputEnergy = (float) (inputEnergy) * 2; // output energy = collision energy = input energy * 2
 
             // 2. Use collision energy to generate particle ID
             this.outputParticleID = GenerateOutputParticleID(this.outputEnergy);
