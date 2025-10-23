@@ -3239,6 +3239,7 @@ GT5U.tooltip.structure.shielding=Shielding Core
 GT5U.tooltip.structure.eoh_tdfg=Time Dilation Field Generator
 GT5U.tooltip.structure.eoh_sfg=Stabilisation Field Generator
 GT5U.tooltip.structure.eoh_scfg=Spacetime Compression Field Generator
+GT5U.tooltip.structure.kaboom_containment=Containment Block
 
 GT5U.tooltip.fluid.registry=Registry: %s
 GT5U.tooltip.fluid.amount=Amount: %s L
@@ -3677,7 +3678,9 @@ machtype.adv_nt_compressor=Advanced Neutronium Compressor
 machtype.bhc=BHC
 machtype.cleanroom=Cleanroom
 machtype.ore_factory=Ore Processor, IOF
-machtype.ind_engraver=Laser Engraver, HILE
+machtype.hi_engraver=Laser Engraver, HILE
+machtype.latex=Cable Coater, LATEX
+machtype.eic=Implosion Compressor, EIC
 
 # Used in addController. These are some commonly used shared ones
 # CONTEXT: Controller: (corepos)
@@ -3689,8 +3692,17 @@ gt.mb.hint_block=Hint block with dot %d
 
 # Multiblock Tooltip lines
 
+gt.eic.tips.1=Explosions are fun!\nUses electricity instead of Explosives\n§6Parallels§7 are determined by §fContainment Block§7 Tier\n§fNeutronium§7 : §61§7 Parallel\n§cInfinity§7 : §64§7 Parallels\n§8Transcendent Metal§7 : §616§7 Parallels\n§dSpacetime§7 : §664§7 Parallels\n§3Universium§7 : §6256§7 Parallels
+gt.eic.info.1=Front 3rd layer center
+gt.eic.info.2=Casings can be replaced with Explosion Hazard Signs
+gt.eic.info.3=Outer layer 2,3,7,8
+gt.eic.info.4=Inner layer 2,3,7,8
+gt.eic.info.5=Layer 4,5,6
+gt.eic.info.6=Any Solid Steel Machine casing
+gt.eic.info.7=Bottom middle and/or top middle
+
 gt.latex.tips.1=§8§oAKA Laminated Application and Thermal Enclosure eXpert
-gt.latex.tips.2=Recipes have an additive §26.25%§7 rubber discount based on %s\nAn Elastic Singularity can be inserted into the controller to gain the following bonuses\n§62x§7 parallels, +§225%§7 rubber discount, and the use of a singular §aMulti-Amp energy hatch
+gt.latex.tips.2=Recipes have an additive §26.25%%§7 rubber discount based on %s\nAn Elastic Singularity can be inserted into the controller to gain the following bonuses\n§62x§7 parallels, +§225%%§7 rubber discount, and the use of a singular §aMulti-Amp energy hatch
 gt.latex.tips.3=§3Make sure to cover up!
 gt.latex.tips.4=§4Cable Recipes in the Assembler TO BE REMOVED in the next major update!
 

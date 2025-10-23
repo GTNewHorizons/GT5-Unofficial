@@ -258,7 +258,7 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Cable Coater, LATEX")
+        tt.addMachineType("machtype.latex")
             .addInfo("gt.latex.tips.1")
             .addBulkMachineInfo(8, 2F, 0.85F)
             .addInfo("gt.latex.tips.2", TooltipHelper.tierText(TooltipTier.ITEM_PIPE_CASING))
