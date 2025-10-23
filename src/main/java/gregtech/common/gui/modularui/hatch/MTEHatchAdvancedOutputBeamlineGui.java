@@ -112,10 +112,6 @@ public class MTEHatchAdvancedOutputBeamlineGui {
         return returnMap;
     }
 
-    /*
-     * There is currently a bug with MUI2 and .overlay, it un-applies the theme after it was applied once, for some
-     * reason. should be fixed and is not on me
-     */
     protected IWidget createButtonForParticle(GenericMapSyncHandler<Particle, Boolean> mapSyncHandler,
         Particle particle) {
         return new ToggleButton().marginRight(2)
@@ -129,6 +125,7 @@ public class MTEHatchAdvancedOutputBeamlineGui {
             .tooltipBuilder(t -> t.addLine(particle.getLocalisedName()));
     }
 
+    // these serializers are here since they only really pertain to this class.
     protected static class KeyParticleAdapter implements IByteBufAdapter<Particle> {
 
         @Override
