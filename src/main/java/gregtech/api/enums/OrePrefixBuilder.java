@@ -61,11 +61,13 @@ public class OrePrefixBuilder {
         return this;
     }
 
+    /** Marks this prefix as unifiable during the unification process. */
     public OrePrefixBuilder unifiable() {
         this.isUnifiable = true;
         return this;
     }
 
+    /** Indicates that this prefix represents items derived from a material (e.g., ingots, dusts). */
     public OrePrefixBuilder materialBased() {
         this.isMaterialBased = true;
         return this;
@@ -76,6 +78,7 @@ public class OrePrefixBuilder {
         return this;
     }
 
+    /** Marks this prefix as a container (e.g., cells, buckets). */
     public OrePrefixBuilder container() {
         this.isContainer = true;
         return this;
@@ -86,11 +89,13 @@ public class OrePrefixBuilder {
         return this;
     }
 
+    /** Marks this prefix as recyclable (e.g. maceration, fluid-extraction). */
     public OrePrefixBuilder recyclable() {
         this.isRecyclable = true;
         return this;
     }
 
+    /** Marks this prefix as enchantable. */
     public OrePrefixBuilder enchantable() {
         this.isEnchantable = true;
         return this;
@@ -108,11 +113,13 @@ public class OrePrefixBuilder {
         return this;
     }
 
+    /** Sets the default stack size for items with this prefix. */
     public OrePrefixBuilder defaultStackSize(int defaultStackSize) {
         this.defaultStackSize = defaultStackSize;
         return this;
     }
 
+    /** Sets the texture index used for this prefix. See {@link OrePrefixTextureID}. */
     public OrePrefixBuilder textureIndex(@MagicConstant(flagsFromClass = OrePrefixTextureID.class) int textureIndex) {
         this.textureIndex = textureIndex;
         return this;
