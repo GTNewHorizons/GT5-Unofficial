@@ -6,8 +6,10 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BIOVAT;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BIOVAT_EMPTY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BIOVAT_EMPTY_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BIOVAT_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
@@ -167,10 +169,9 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     private int casingTier;
     public int maxAOs;
 
-    private int status = 0;
-
-    private int fluidAmount = 0;
     public final int INTERNAL_FLUID_TANK_SIZE = 64000;
+
+    boolean isFinalized = false;
 
     public MTEEvolutionChamber(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -206,12 +207,20 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
 
     @Override
     public void onValueUpdate(byte aValue) {
+        if (aValue >= 10) {
+            isFinalized = true;
+            aValue -= 10;
+        }
         casingTier = aValue;
     }
 
     @Override
     public byte getUpdateData() {
-        return (byte) casingTier;
+        byte update = (byte) casingTier;
+        if (currentSpecies != null && currentSpecies.getFinalized()) {
+            update += 10;
+        }
+        return update;
     }
 
     @Override
@@ -230,18 +239,33 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         ITexture[] rTexture;
         int casingMeta = Math.max(casingTier - 1, 0);
         if (side == aFacing) {
-            rTexture = new ITexture[] {
-                Textures.BlockIcons
-                    .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, casingMeta)),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_BIOVAT_EMPTY)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_BIOVAT_EMPTY_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
+            if (currentSpecies != null && currentSpecies.getFinalized()) {
+                rTexture = new ITexture[]{
+                    Textures.BlockIcons
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, casingMeta)),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_BIOVAT)
+                        .extFacing()
+                        .build(),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_BIOVAT_GLOW)
+                        .extFacing()
+                        .glow()
+                        .build()};
+            } else {
+                rTexture = new ITexture[]{
+                    Textures.BlockIcons
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, casingMeta)),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_BIOVAT_EMPTY)
+                        .extFacing()
+                        .build(),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_BIOVAT_EMPTY_GLOW)
+                        .extFacing()
+                        .glow()
+                        .build()};
+            }
         } else {
             rTexture = new ITexture[] { Textures.BlockIcons
                 .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, casingMeta)) };
@@ -342,10 +366,6 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
             || aTick % 5 != 0
             || currentSpecies == null
             || !currentSpecies.getFinalized()) return;
-
-        if (status == 1) {
-            return;
-        }
 
         boolean fluidChanged = false;
         if (tank.getFluidAmount() < tank.getCapacity()) {
