@@ -2618,7 +2618,12 @@ GT5U.gui.text.volumetric_flask.confirm=Confirm
   gt.item.redstone_sniffer.teleport=Teleport
   gt.item.redstone_sniffer.highlight_message=Highlighting cover at %d,%d,%d
   gt.item.redstone_sniffer.wrong_dim_message=Cannot highlight because you're not in the same dimension!
-
+ ## Chaos Locator
+  gt.item.chaos_locator.warp=WARP
+  gt.item.chaos_locator.coords=Enter Coordinates
+  gt.item.chaos_locator.tooltip.01=Tracking works across dimensions
+  gt.item.chaos_locator.x=X * 10k
+  gt.item.chaos_locator.z=Z * 10k
  ## Trowel
   gt.behaviour.trowel.tooltip1=Places a random block from your hotbar
   gt.behaviour.trowel.tooltip2=§o"Don't forget to bring a trowel!"§r -§cQuerns§r
