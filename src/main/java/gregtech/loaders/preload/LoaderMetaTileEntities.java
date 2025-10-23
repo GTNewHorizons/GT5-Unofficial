@@ -592,7 +592,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 LARGE_HADRON_COLLIDER.ID,
                 "multimachine.large-hadron-collider",
                 "Large Hadron Collider").getStackForm(1));
-      
+
         ItemList.LATEX.set(new MTELatex(LATEX.ID, "multimachine.latex", "L.A.T.E.X.").getStackForm(1));
         addItemTooltip(ItemList.LATEX.get(1), chain(() -> "Author: ", GTValues.AuthorThree));
 

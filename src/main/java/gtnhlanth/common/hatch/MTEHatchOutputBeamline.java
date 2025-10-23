@@ -2,11 +2,7 @@ package gtnhlanth.common.hatch;
 
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
-import java.util.List;
-
 import net.minecraftforge.common.util.ForgeDirection;
-
-import com.google.common.collect.ImmutableList;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;

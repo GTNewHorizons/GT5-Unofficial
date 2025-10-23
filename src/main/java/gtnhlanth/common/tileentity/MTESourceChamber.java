@@ -22,8 +22,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-
 import net.minecraftforge.fluids.FluidStack;
+
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -88,7 +88,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
                     .build())
             .addElement(
                 'i',
-                buildHatchAdder(MTESourceChamber.class).atLeast(InputBus,InputHatch)
+                buildHatchAdder(MTESourceChamber.class).atLeast(InputBus, InputHatch)
                     .casingIndex(CASING_INDEX)
                     .dot(1)
                     .build())

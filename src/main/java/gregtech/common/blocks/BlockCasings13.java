@@ -26,10 +26,10 @@ public class BlockCasings13 extends BlockCasingsAbstract {
         register(8, ItemList.LoadbearingDistributionCasing, "Loadbearing Distribution Casing");
         register(9, ItemList.NaniteFramework, "Nanite Replication Framework");
         register(10, ItemList.ColliderCasing, "Collider Casing");
-        register(11, ItemList.CMSCasing,"Charged Matter Sensor Casing");
-        register(12, ItemList.ATLASCasing,"Advanced Total Lepton Assimilation Snare Casing");
-        register(13, ItemList.ALICECasing,"Absolute Lattice Integrated Chromodynamic Encapsulator Casing");
-        register(14, ItemList.LHCbCasing,"Localized Horizon Curvature Binder Casing");
+        register(11, ItemList.CMSCasing, "Charged Matter Sensor Casing");
+        register(12, ItemList.ATLASCasing, "Advanced Total Lepton Assimilation Snare Casing");
+        register(13, ItemList.ALICECasing, "Absolute Lattice Integrated Chromodynamic Encapsulator Casing");
+        register(14, ItemList.LHCbCasing, "Localized Horizon Curvature Binder Casing");
 
     }
 

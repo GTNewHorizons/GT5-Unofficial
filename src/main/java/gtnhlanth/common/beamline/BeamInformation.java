@@ -53,14 +53,13 @@ public class BeamInformation {
     }
 
     public BeamInformation copy() {
-        return new BeamInformation(this.energy,this.rate,this.particleId,this.focus);
+        return new BeamInformation(this.energy, this.rate, this.particleId, this.focus);
     }
 
     public boolean isEqual(BeamInformation other) {
-        return (this.energy == other.energy)
-        && (this.rate == other.rate)
-        && (this.particleId == other.particleId)
-        && (this.focus == other.focus);
+        return (this.energy == other.energy) && (this.rate == other.rate)
+            && (this.particleId == other.particleId)
+            && (this.focus == other.focus);
     }
 
 }
