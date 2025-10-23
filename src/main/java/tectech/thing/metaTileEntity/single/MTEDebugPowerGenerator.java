@@ -97,10 +97,10 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1],
             side != facing
                 ? LASER
-                    ? (aActive ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_LASER[mTier]
-                        : Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_LASER[mTier])
-                    : (aActive ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_64A[mTier]
-                        : Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_64A[mTier])
+                    ? (aActive ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_LASER[mTier + 1]
+                        : Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_LASER[mTier + 1])
+                    : (aActive ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_64A[mTier + 1]
+                        : Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_64A[mTier + 1])
                 : GENNY };
     }
 

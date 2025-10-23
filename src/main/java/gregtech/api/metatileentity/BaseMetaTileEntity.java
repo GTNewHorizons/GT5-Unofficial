@@ -25,6 +25,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.EnumSkyBlock;
@@ -77,6 +78,7 @@ import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.covers.Cover;
 import gregtech.common.pollution.Pollution;
+import gregtech.common.render.IMTERenderer;
 import gregtech.mixin.interfaces.accessors.EntityItemAccessor;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
 import ic2.api.Direction;
@@ -1494,7 +1496,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                             return true;
                         }
                     } else {
-                        if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sCrowbarList)) {
+                        if (aPlayer.isSneaking() && GTUtility.isStackInList(tCurrentItem, GregTechAPI.sCrowbarList)) {
                             if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
                                 sendSoundToPlayers(SoundResource.RANDOM_BREAK, 1.0F, -1);
                                 dropCover(effectiveSide, side);
@@ -1532,13 +1534,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                 if (!getCoverAtSide(side).isGUIClickable()) return false;
 
                 if (isUpgradable() && tCurrentItem != null) {
-                    if (ItemList.Upgrade_Muffler.isStackEqual(aPlayer.inventory.getCurrentItem())) {
-                        if (addMufflerUpgrade()) {
-                            sendSoundToPlayers(SoundResource.GTCEU_OP_CLICK, 1.0F, 1);
-                            if (!aPlayer.capabilities.isCreativeMode) aPlayer.inventory.getCurrentItem().stackSize--;
-                        }
-                        return true;
-                    }
                     if (ItemList.Upgrade_Lock.isStackEqual(aPlayer.inventory.getCurrentItem())) {
                         if (isUpgradable() && !mLockUpgrade) {
                             mLockUpgrade = true;
@@ -1653,13 +1648,13 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     }
 
     @Override
-    public boolean hasMufflerUpgrade() {
+    public boolean isMuffled() {
         return mMuffler;
     }
 
     @Override
     public boolean isMufflerUpgradable() {
-        return isUpgradable() && !hasMufflerUpgrade();
+        return isUpgradable() && !isMuffled();
     }
 
     @Override
@@ -2213,5 +2208,13 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     @Override
     protected int getCoverTabHeightOffset() {
         return isSteampowered() || getMetaTileEntity() instanceof MTESteamMultiBase<?> ? 32 : 0;
+    }
+
+    @Override
+    public AxisAlignedBB getRenderBoundingBox() {
+
+        return getMetaTileEntity() instanceof IMTERenderer mteRenderer
+            ? mteRenderer.getRenderBoundingBox(xCoord, yCoord, zCoord)
+            : super.getRenderBoundingBox();
     }
 }

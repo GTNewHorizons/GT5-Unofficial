@@ -31,7 +31,9 @@ public class SpacePumpingRecipes {
         RECIPES.put(Pair.of(2, 1), Materials.Chlorobenzene.getFluid(896_000));
 
         // T3
-        RECIPES.put(Pair.of(3, 1), FluidRegistry.getFluidStack("endergoo", 32_000));
+        if (Mods.HardcoreEnderExpansion.isModLoaded()) {
+            RECIPES.put(Pair.of(3, 1), FluidRegistry.getFluidStack("endergoo", 32_000));
+        }
         RECIPES.put(Pair.of(3, 2), Materials.OilExtraHeavy.getFluid(1_400_000));
         RECIPES.put(Pair.of(3, 3), Materials.Lava.getFluid(1_800_000));
         RECIPES.put(Pair.of(3, 4), Materials.NatruralGas.getGas(1_400_000));

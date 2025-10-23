@@ -4,6 +4,7 @@ import static gregtech.api.enums.GTValues.NF;
 import static gregtech.api.enums.GTValues.NI;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Mods.AE2FluidCraft;
+import static gregtech.api.enums.Mods.Botania;
 import static gregtech.api.enums.Mods.ExtraBees;
 import static gregtech.api.enums.Mods.ExtraUtilities;
 import static gregtech.api.enums.Mods.Forestry;
@@ -16,10 +17,15 @@ import static gregtech.api.enums.Mods.ThaumicBases;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
+import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
+import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
+import static gregtech.api.util.GTRecipeBuilder.EIGHTH_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.CLEANROOM;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
 import java.util.Arrays;
 import java.util.List;
@@ -50,14 +56,17 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
+import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.common.render.items.GeneratedMaterialRenderer;
 import gregtech.loaders.misc.GTBees;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
+import vazkii.botania.common.item.ModItems;
 
 @Optional.Interface(
     iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning",
@@ -920,7 +929,6 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
             100,
             NI,
             50 * 100);
-
         // (Noble)gas Line
         addFluidExtractorProcess(CombType.HELIUM, Materials.Helium.getGas(250), Voltage.HV);
         addFluidExtractorProcess(CombType.ARGON, Materials.Argon.getGas(250), Voltage.MV);
@@ -935,6 +943,9 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
          * TODO: update this comment The Centrifuge Recipes for Infused Shards and Nether/End-Shard from the Infused
          * Shard Line are below the NobleGas Lines for Xenon and co. in GT_MachineRecipeLoader.java In Lines 1525
          */
+        if (Botania.isModLoaded()) {
+            registerBotaniaItems();
+        }
     }
 
     /**
@@ -1262,6 +1273,128 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
                 return (this.getVoltage() / 16) * 15;
             }
         }
+    }
+
+    public void registerBotaniaItems() {
+        // Manasteel -> Manasteel LCR w/Steel
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTBees.combs.getStackForType(CombType.MANASTEEL, 4))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Manasteel, 1))
+            .fluidInputs(Materials.Steel.getMolten(1 * INGOTS))
+            .duration(33 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(GTRecipeConstants.UniversalChemical);
+
+        // Manasteel -> Manasteel LCR w/Thaumium
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTBees.combs.getStackForType(CombType.MANASTEEL, 4))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Manasteel, 4))
+            .fluidInputs(Materials.Thaumium.getMolten(2 * INGOTS))
+            .duration(33 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(GTRecipeConstants.UniversalChemical);
+
+        // Elven -> Dragonstone Autoclave
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTBees.combs.getStackForType(CombType.ELVEN, 6),
+                GTOreDictUnificator.get(OrePrefixes.gemFlawless, Materials.ManaDiamond, 1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.BotaniaDragonstone, 1))
+            .fluidInputs(Materials.Void.getMolten(1 * EIGHTH_INGOTS))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(autoclaveRecipes);
+
+        // Elven -> Pixie Dust Dehydrator
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTBees.combs.getStackForType(CombType.ELVEN, 1))
+            .itemOutputs(new ItemStack(ModItems.manaResource, 1, 8))
+            .outputChances(50 * 100)
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(chemicalDehydratorRecipes);
+
+        // Elven -> Eleven Elementium LCR w/Manasteel
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTBees.combs.getStackForType(CombType.ELVEN, 4))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.ElvenElementium, 1))
+            .fluidInputs(Materials.Manasteel.getMolten(2 * INGOTS))
+            .duration(33 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(GTRecipeConstants.UniversalChemical);
+
+        // Elven -> Eleven Elementium LCR w/Shadowmetal
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTBees.combs.getStackForType(CombType.ELVEN, 4))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.ElvenElementium, 4))
+            .fluidInputs(Materials.Shadow.getMolten(2 * INGOTS))
+            .duration(33 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(GTRecipeConstants.UniversalChemical);
+
+        // Terrasteel -> Terrasteel LCR
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTBees.combs.getStackForType(CombType.TERRASTEEL, 4),
+                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Terrasteel, 1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Terrasteel, 1))
+            .fluidInputs(Materials.ElvenElementium.getMolten(4 * INGOTS))
+            .outputChances(50 * 100)
+            .fluidOutputs(Materials.Terrasteel.getMolten(1 * INGOTS))
+            .duration(33 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(GTRecipeConstants.UniversalChemical);
+
+        // Gaia -> Gaia Spirit LCR w/Elementium
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTBees.combs.getStackForType(CombType.GAIASPIRIT, 4),
+                new ItemStack(ModItems.manaResource, 4, 8),
+                new ItemStack(ModItems.dice, 1))
+            .itemOutputs(new ItemStack(ModItems.manaResource, 4, 5))
+            .fluidInputs(Materials.ElvenElementium.getMolten(4 * INGOTS))
+            .duration(33 * SECONDS)
+            .eut(TierEU.RECIPE_LuV)
+            .addTo(multiblockChemicalReactorRecipes);
+
+        // Gaia -> Gaia Spirit LCR w/Terrasteel
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTBees.combs.getStackForType(CombType.GAIASPIRIT, 4),
+                new ItemStack(ModItems.manaResource, 4, 8),
+                new ItemStack(ModItems.dice, 1))
+            .itemOutputs(new ItemStack(ModItems.manaResource, 6, 5))
+            .fluidInputs(Materials.Terrasteel.getMolten(2 * INGOTS))
+            .duration(33 * SECONDS)
+            .eut(TierEU.RECIPE_LuV)
+            .addTo(multiblockChemicalReactorRecipes);
+
+        // MMM -> Mana Fly
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTBees.combs.getStackForType(CombType.MMM, 1))
+            .itemOutputs(ItemList.ManaFly.get(1))
+            .outputChances(80 * 100)
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(centrifugeRecipes);
+
+        // Sifting Mana Bunches
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.ManaFly.get(1))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Manasteel, 1),
+                new ItemStack(ModItems.manaResource, 1, 16),
+                new ItemStack(ModItems.manaResource, 1, 23),
+                new ItemStack(ModItems.quartz, 1, 1),
+                new ItemStack(ModItems.manaResource, 1, 22),
+                new ItemStack(ModItems.manaResource, 1, 1),
+                GTOreDictUnificator.get(OrePrefixes.gem, Materials.ManaDiamond, 1),
+                new ItemStack(ModItems.manaCookie, 1))
+            .outputChances(35 * 100, 15 * 100, 15 * 100, 15 * 100, 15 * 100, 5 * 100, 2 * 100, 1 * 10)
+            .duration(20 * SECONDS)
+            .fluidInputs(Materials.HydrofluoricAcid.getFluid(250L))
+            .eut(TierEU.RECIPE_EV)
+            .addTo(sifterRecipes);
     }
 
     @Override

@@ -34,6 +34,7 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -147,19 +148,29 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Cracker, MOC")
+            .addInfo(
+                TooltipHelper.coloredText(
+                    TooltipHelper.italicText("\"Thermally cracks heavy hydrocarbons into lighter fractions\""),
+                    EnumChatFormatting.DARK_GRAY))
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
-            .addDynamicEuEffInfo(0.1f, TooltipTier.COIL)
-            .addInfo("Maximum of " + TooltipHelper.effText(0.5f) + " EU discount")
-            .addInfo("Thermally cracks heavy hydrocarbons into lighter fractions")
-            .addInfo("More efficient than the Chemical Reactor")
+            .addInfo(
+                TooltipHelper.effText("-10%") + " EU Usage per " + TooltipHelper.tierText(TooltipTier.COIL) + " Tier")
+            .addInfo("up to a maximum of " + TooltipHelper.effText("-50%") + " EU Usage")
+            .addSeparator()
             .addInfo("Gives different benefits whether it hydro or steam-cracks:")
-            .addInfo("Hydro - Consumes 20% less Hydrogen and outputs 25% more cracked fluid")
-            .addInfo("Steam - Outputs 50% more cracked fluid")
-            .addInfo("(Values compared to cracking in the Chemical Reactor)")
-            .addInfo("Place the appropriate circuit in the controller or an input bus")
-            .addGlassEnergyLimitInfo()
+            .addInfo(
+                "Hydro - Consumes " + TooltipHelper.coloredText("20%", EnumChatFormatting.DARK_AQUA)
+                    + " less Hydrogen and outputs "
+                    + TooltipHelper.coloredText("25%", EnumChatFormatting.DARK_AQUA)
+                    + " more cracked fluid")
+            .addInfo(
+                "Steam - Outputs " + TooltipHelper.coloredText("50%", EnumChatFormatting.DARK_AQUA)
+                    + " more cracked fluid")
+            .addInfo(TooltipHelper.italicText("In comparison to a chemical reactor"))
+            .addSeparator()
             .addTecTechHatchInfo()
             .addMinGlassForLaser(VoltageIndex.UV)
+            .addGlassEnergyLimitInfo()
             .addUnlimitedTierSkips()
             .beginStructureBlock(13, 7, 9, true)
             .addController("Front bottom")

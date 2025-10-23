@@ -328,7 +328,7 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
 
     @Override
     public String getMachineType() {
-        return "Semifluid Generator";
+        return "Semifluid Generator, LSB";
     }
 
     @Override

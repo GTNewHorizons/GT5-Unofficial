@@ -4,8 +4,6 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Map;
 
-import net.minecraft.item.ItemStack;
-
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ListMultimap;
@@ -33,6 +31,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.common.items.MetaGeneratedItem01;
 import gregtech.common.items.MetaGeneratedItem02;
 import gregtech.common.items.MetaGeneratedItem03;
+import gregtech.common.ores.GTOreAdapter;
 import gregtech.nei.dumper.BatchModeSupportDumper;
 import gregtech.nei.dumper.InputSeparationSupportDumper;
 import gregtech.nei.dumper.MaterialDumper;
@@ -82,6 +81,7 @@ public class NEIGTConfig implements IConfigureNEI {
         registerCatalysts();
         registerItemEntries();
         registerDumpers();
+        hideItems();
         sIsAdded = true;
     }
 
@@ -112,12 +112,6 @@ public class NEIGTConfig implements IConfigureNEI {
         API.addRecipeCatalyst(
             GTModHandler.getIC2Item("nuclearReactor", 1, null),
             RecipeMaps.ic2NuclearFakeRecipes.unlocalizedName);
-
-        // Remove the ones already registered by NEI assets
-        // Bronze Blast Furnace
-        API.removeRecipeCatalyst(
-            new ItemStack(GregTechAPI.sBlockMachines, 1, 108),
-            RecipeMaps.primitiveBlastRecipes.unlocalizedName);
     }
 
     private void registerItemEntries() {
@@ -134,6 +128,10 @@ public class NEIGTConfig implements IConfigureNEI {
         API.addOption(new InputSeparationSupportDumper());
         API.addOption(new BatchModeSupportDumper());
         API.addOption(new RecipeLockingSupportDumper());
+    }
+
+    private void hideItems() {
+        GTOreAdapter.INSTANCE.hideOres();
     }
 
     @SubscribeEvent

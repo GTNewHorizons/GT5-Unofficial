@@ -63,7 +63,10 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
 
             if ((tMaterial.contains(SubTag.SMELTING_TO_FLUID)) && (!tMaterial.contains(SubTag.NO_SMELTING))
                 && !tMaterial.contains(SubTag.SMELTING_TO_GEM)) {
-                registerMolten(tMaterial, tMaterial.mMetaItemSubID);
+                // extra check for if the material is not in the molten cell blacklist.
+                if (!cellMolten.mNotGeneratedItems.contains(tMaterial)) {
+                    registerMolten(tMaterial, tMaterial.mMetaItemSubID);
+                }
                 if (tMaterial.mSmeltInto != tMaterial && tMaterial.mSmeltInto.mMetaItemSubID >= 0
                     && tMaterial.mSmeltInto.mMetaItemSubID < 1_000) {
                     registerMolten(tMaterial.mSmeltInto, tMaterial.mSmeltInto.mMetaItemSubID);

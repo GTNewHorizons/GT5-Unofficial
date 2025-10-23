@@ -55,6 +55,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import ic2.core.IHasGui;
 import ic2.core.item.ItemToolbox;
+import thaumic.tinkerer.common.block.tile.tablet.TabletFakePlayer;
 
 public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAlignment {
 
@@ -175,10 +176,14 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
         float aX, float aY, float aZ) {
         if (side == aBaseMetaTileEntity.getFrontFacing()) {
             if (aBaseMetaTileEntity.isClientSide()) return true;
-            // only allow OC robot fake player
-            if (aPlayer instanceof FakePlayer && !aPlayer.getGameProfile()
-                .getName()
-                .endsWith(".robot")) return false;
+            // only allow OC robot & dynamism tablet fake player
+            if (aPlayer instanceof FakePlayer) {
+                if (!(aPlayer instanceof TabletFakePlayer) && !aPlayer.getGameProfile()
+                    .getName()
+                    .endsWith(".robot")) {
+                    return false;
+                }
+            }
             ItemStack tStack = aPlayer.getCurrentEquippedItem();
             if (tStack != null) {
                 if (tStack.getItem() instanceof ItemToolbox) {
@@ -231,7 +236,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
     public void onMaintenancePerformed(MTEMultiBlockBase aMaintenanceTarget) {
         IGregTechTileEntity tMte = getBaseMetaTileEntity();
 
-        if (tMte == null || tMte.hasMufflerUpgrade()) return;
+        if (tMte == null || tMte.isMuffled()) return;
 
         if (mMaintenanceSound == null) {
             setMaintenanceSound(SoundResource.GT_MAINTENANCE_TOOLBOX, 1.0F, 1.0F);
@@ -242,9 +247,9 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
             mMaintenanceSound,
             mMaintenanceSoundStrength,
             mMaintenanceSoundModulation,
-            tMte.getXCoord(),
-            tMte.getYCoord(),
-            tMte.getZCoord());
+            tMte.getXCoord() + .5,
+            tMte.getYCoord() + .5,
+            tMte.getZCoord() + .5);
 
         setMaintenanceSound((String) null, 1.0F, 1.0F);
     }

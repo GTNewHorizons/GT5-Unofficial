@@ -445,8 +445,10 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     private void onRecipeFail() {
         // Possibly output lower quality water.
         // Note that if there is no space for this, it will be voided regardless of fluid void setting!
-        FluidStack outputWater = getDegradedOutputWater();
-        this.addOutput(outputWater);
+        if (mOutputFluids != null) {
+            FluidStack outputWater = getDegradedOutputWater();
+            this.addOutput(outputWater);
+        }
     }
 
     /**
@@ -736,6 +738,11 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     }
 
     private static final int PARALLEL_WINDOW_ID = 10;
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {

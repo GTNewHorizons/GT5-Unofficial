@@ -59,7 +59,7 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.MaterialsUEVplus;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -152,9 +152,7 @@ public class MTEExoticModule extends MTEBaseModule {
                     }
 
                     if (numberOfItems != 0) {
-                        for (ItemStack itemStack : randomizedItemInput) {
-                            addOutput(itemStack);
-                        }
+                        addItemOutputs(randomizedItemInput);
                     }
 
                     recipeInProgress = true;
@@ -241,7 +239,7 @@ public class MTEExoticModule extends MTEBaseModule {
             null,
             ArrayUtils
                 .addAll(convertItemToPlasma(randomizedItemInput, 9), convertFluidToPlasma(randomizedFluidInput, 1)),
-            new FluidStack[] { MaterialsUEVplus.QuarkGluonPlasma.getFluid(1000 * actualParallel) },
+            new FluidStack[] { Materials.QuarkGluonPlasma.getFluid(1000 * actualParallel) },
             10 * SECONDS,
             (int) TierEU.RECIPE_MAX,
             0);
@@ -254,8 +252,8 @@ public class MTEExoticModule extends MTEBaseModule {
         numberOfFluids = 2;
         int timeAmount = GodforgeMath.getRandomIntInRange(1, 50);
         int spaceAmount = GodforgeMath.getRandomIntInRange(51, 100);
-        randomizedFluidInput = new FluidStack[] { MaterialsUEVplus.Time.getMolten(timeAmount * 1000L),
-            MaterialsUEVplus.Space.getMolten(spaceAmount * 1000L) };
+        randomizedFluidInput = new FluidStack[] { Materials.Time.getMolten(timeAmount * 1000L),
+            Materials.Space.getMolten(spaceAmount * 1000L) };
 
         return new GTRecipe(
             false,
@@ -265,9 +263,9 @@ public class MTEExoticModule extends MTEBaseModule {
             null,
             ArrayUtils.addAll(
                 convertItemToPlasma(randomizedItemInput, spaceAmount - timeAmount),
-                MaterialsUEVplus.Time.getMolten(timeAmount),
-                MaterialsUEVplus.Space.getMolten(spaceAmount)),
-            new FluidStack[] { MaterialsUEVplus.MagMatter.getMolten(576 * actualParallel) },
+                Materials.Time.getMolten(timeAmount),
+                Materials.Space.getMolten(spaceAmount)),
+            new FluidStack[] { Materials.MagMatter.getMolten(576 * actualParallel) },
             10 * SECONDS,
             (int) TierEU.RECIPE_MAX,
             0);
@@ -433,9 +431,9 @@ public class MTEExoticModule extends MTEBaseModule {
 
             FluidStack outputFluid;
             if (magmatterMode) {
-                outputFluid = MaterialsUEVplus.MagMatter.getMolten(actualParallel * 4 * INGOTS);
+                outputFluid = Materials.MagMatter.getMolten(actualParallel * 4 * INGOTS);
             } else {
-                outputFluid = MaterialsUEVplus.QuarkGluonPlasma.getFluid(1000L * actualParallel);
+                outputFluid = Materials.QuarkGluonPlasma.getFluid(1000L * actualParallel);
             }
 
             plasmaRecipe = new GTRecipe(
@@ -640,12 +638,12 @@ public class MTEExoticModule extends MTEBaseModule {
         IFluidTanksHandler magMatterFluidHandler = new FluidTanksHandler(2, 128000);
         magMatterFluidHandler.setFluidInTank(
             0,
-            MaterialsUEVplus.Space.getMolten(1)
+            Materials.Space.getMolten(1)
                 .getFluid(),
             1);
         magMatterFluidHandler.setFluidInTank(
             1,
-            MaterialsUEVplus.Time.getMolten(1)
+            Materials.Time.getMolten(1)
                 .getFluid(),
             1);
 
@@ -733,7 +731,7 @@ public class MTEExoticModule extends MTEBaseModule {
             .setBackground(
                 () -> new IDrawable[] { TecTechUITextures.BUTTON_CELESTIAL_32x32,
                     new ItemDrawable(
-                        isMagmatterModeOn() ? GTOreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.MagMatter, 1)
+                        isMagmatterModeOn() ? GTOreDictUnificator.get(OrePrefixes.dust, Materials.MagMatter, 1)
                             : CustomItemList.Godforge_FakeItemQGP.get(1))
 
                 })

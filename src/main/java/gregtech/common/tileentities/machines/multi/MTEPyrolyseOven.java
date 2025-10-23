@@ -74,7 +74,7 @@ public class MTEPyrolyseOven extends MTEEnhancedMultiBlockBase<MTEPyrolyseOven> 
             't',
             buildHatchAdder(MTEPyrolyseOven.class).atLeast(InputBus, InputHatch, Muffler)
                 .casingIndex(CASING_INDEX)
-                .dot(1)
+                .dot(2)
                 .buildAndChain(onElementPass(MTEPyrolyseOven::onCasingAdded, ofBlock(GregTechAPI.sBlockCasingsNH, 2))))
         .build();
 

@@ -22,13 +22,12 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsKevlar;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class ChemicalBathRecipes implements Runnable {
 
     @Override
@@ -316,8 +315,8 @@ public class ChemicalBathRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.WovenKevlar.get(1))
-            .itemOutputs(MaterialsKevlar.Kevlar.getPlates(1))
-            .fluidInputs(MaterialsKevlar.PolyurethaneResin.getFluid(1_000))
+            .itemOutputs(Materials.Kevlar.getPlates(1))
+            .fluidInputs(Materials.PolyurethaneResin.getFluid(1_000))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(chemicalBathRecipes);
@@ -448,24 +447,24 @@ public class ChemicalBathRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(prefix, Materials.Infinity, multiplier))
-            .itemOutputs(GTOreDictUnificator.get(prefix, MaterialsUEVplus.HotProtoHalkonite, multiplier))
-            .fluidInputs(MaterialsUEVplus.MoltenProtoHalkoniteBase.getFluid((long) partFraction * multiplier))
+            .itemOutputs(GTOreDictUnificator.get(prefix, Materials.HotProtoHalkonite, multiplier))
+            .fluidInputs(Materials.MoltenProtoHalkoniteBase.getFluid((long) partFraction * multiplier))
             .duration((int) (multiplier * (8 * SECONDS * partFraction / (float) INGOTS)))
             .eut(TierEU.RECIPE_UEV)
             .addTo(chemicalBathRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(prefix, MaterialsUEVplus.Creon, multiplier))
-            .itemOutputs(GTOreDictUnificator.get(prefix, MaterialsUEVplus.HotProtoHalkonite, multiplier))
-            .fluidInputs(MaterialsUEVplus.MoltenProtoHalkoniteBase.getFluid((long) partFraction * multiplier / 2L))
+            .itemInputs(GTOreDictUnificator.get(prefix, Materials.Creon, multiplier))
+            .itemOutputs(GTOreDictUnificator.get(prefix, Materials.HotProtoHalkonite, multiplier))
+            .fluidInputs(Materials.MoltenProtoHalkoniteBase.getFluid((long) partFraction * multiplier / 2L))
             .duration((int) (multiplier * (2 * SECONDS * partFraction / (float) INGOTS)))
             .eut(TierEU.RECIPE_UIV)
             .addTo(chemicalBathRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(prefix, MaterialsUEVplus.Mellion, multiplier))
-            .itemOutputs(GTOreDictUnificator.get(prefix, MaterialsUEVplus.HotProtoHalkonite, multiplier))
-            .fluidInputs(MaterialsUEVplus.MoltenProtoHalkoniteBase.getFluid((long) partFraction * multiplier / 2L))
+            .itemInputs(GTOreDictUnificator.get(prefix, Materials.Mellion, multiplier))
+            .itemOutputs(GTOreDictUnificator.get(prefix, Materials.HotProtoHalkonite, multiplier))
+            .fluidInputs(Materials.MoltenProtoHalkoniteBase.getFluid((long) partFraction * multiplier / 2L))
             .duration((int) (multiplier * (2 * SECONDS * partFraction / (float) INGOTS)))
             .eut(TierEU.RECIPE_UIV)
             .addTo(chemicalBathRecipes);

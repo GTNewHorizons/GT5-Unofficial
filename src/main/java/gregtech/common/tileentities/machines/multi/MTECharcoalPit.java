@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLog;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -124,6 +125,7 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ISeconda
     }
 
     private boolean isWoodLog(Block log, int meta) {
+        if (log instanceof BlockLog) return true;
         for (int id : OreDictionary.getOreIDs(new ItemStack(log, 1, meta))) {
             if (OreDictionary.getOreName(id)
                 .equals("logWood")) return true;

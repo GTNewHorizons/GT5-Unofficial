@@ -66,7 +66,7 @@ public class MTERocketFuelGenerator extends MTERocketFuelGeneratorBase {
     @Override
     public ITexture[] getFront(final byte aColor) {
         return new ITexture[] { super.getFront(aColor)[0], this.getCasingTexture(),
-            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_2A[this.mTier] };
+            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_2A[this.mTier + 1] };
     }
 
     @Override
@@ -96,7 +96,7 @@ public class MTERocketFuelGenerator extends MTERocketFuelGeneratorBase {
     @Override
     public ITexture[] getFrontActive(final byte aColor) {
         return new ITexture[] { super.getFrontActive(aColor)[0], this.getCasingTexture(),
-            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_2A[this.mTier] };
+            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_2A[this.mTier + 1] };
     }
 
     @Override

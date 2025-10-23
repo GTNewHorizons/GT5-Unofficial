@@ -156,10 +156,12 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
 
     public MTEAirFilterBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
+        usesTurbine = true;
     }
 
     public MTEAirFilterBase(String aName) {
         super(aName);
+        usesTurbine = true;
     }
 
     public abstract long getEUt();

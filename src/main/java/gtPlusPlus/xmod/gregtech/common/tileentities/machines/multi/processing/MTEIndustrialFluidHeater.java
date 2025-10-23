@@ -55,7 +55,7 @@ public class MTEIndustrialFluidHeater extends GTPPMultiBlockBase<MTEIndustrialFl
 
     @Override
     public String getMachineType() {
-        return "Fluid Heater";
+        return "Fluid Heater, THD";
     }
 
     @Override

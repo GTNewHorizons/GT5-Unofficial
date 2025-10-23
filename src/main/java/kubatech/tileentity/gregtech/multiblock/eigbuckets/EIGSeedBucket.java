@@ -23,6 +23,8 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 
+import com.mitchej123.hodgepodge.mixins.interfaces.INetherSeed;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GTUtility;
 import gregtech.common.GTDummyWorld;
@@ -110,10 +112,14 @@ public class EIGSeedBucket extends EIGBucket {
         Item item = this.seed.getItem();
         Block block;
         if (!(item instanceof IPlantable)) return;
-        if (item instanceof ItemSeeds) {
-            block = ((ItemSeeds) item).getPlant(fakeWorld, 0, 0, 0);
-        } else if (item instanceof ItemSeedFood) {
-            block = ((ItemSeedFood) item).getPlant(fakeWorld, 0, 0, 0);
+
+        // Order is important due to ItemNetherSeed being a child of both INetherSeed and ItemSeeds
+        if (item instanceof INetherSeed netherSeed) {
+            block = netherSeed.hodgepodge$getPlant(fakeWorld, 0, 0, 0);
+        } else if (item instanceof ItemSeeds itemSeeds) {
+            block = itemSeeds.getPlant(fakeWorld, 0, 0, 0);
+        } else if (item instanceof ItemSeedFood itemSeedFood) {
+            block = itemSeedFood.getPlant(fakeWorld, 0, 0, 0);
         } else {
             // We can't plant it, we can't handle it, get out.
             return;
@@ -251,7 +257,7 @@ public class EIGSeedBucket extends EIGBucket {
             this.x = x;
             this.y = y;
             this.z = z;
-            this.rand = new EIGSeedBucket.GreenHouseRandom();
+            this.rand = new Random();
         }
 
         @Override
@@ -302,15 +308,4 @@ public class EIGSeedBucket extends EIGBucket {
             return true;
         }
     }
-
-    private static class GreenHouseRandom extends Random {
-
-        private static final long serialVersionUID = -387271808935248890L;
-
-        @Override
-        public int nextInt(int bound) {
-            return 0;
-        }
-    }
-
 }

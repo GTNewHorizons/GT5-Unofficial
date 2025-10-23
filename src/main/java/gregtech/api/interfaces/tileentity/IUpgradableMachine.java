@@ -45,7 +45,7 @@ public interface IUpgradableMachine extends IMachineProgress {
     /**
      * Does this Machine have an Muffler
      */
-    boolean hasMufflerUpgrade();
+    boolean isMuffled();
 
     /**
      * Does this Machine have a Steam-Converter

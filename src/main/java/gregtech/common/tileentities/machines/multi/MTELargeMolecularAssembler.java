@@ -380,12 +380,16 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    public boolean addOutput(ItemStack aStack) {
-        cachedOutputs.add(
-            AEApi.instance()
-                .storage()
-                .createItemStack(aStack));
+    public boolean addItemOutputs(ItemStack[] outputItems) {
+        for (ItemStack stack : outputItems) {
+            cachedOutputs.add(
+                AEApi.instance()
+                    .storage()
+                    .createItemStack(stack));
+        }
+
         markDirty();
+
         return true;
     }
 
@@ -694,6 +698,11 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public IGridNode getActionableNode() {
         return getProxy().getNode();
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
     }
 
     @Override

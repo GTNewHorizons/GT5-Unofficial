@@ -83,6 +83,7 @@ import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.FakeCleanroom;
 import gregtech.api.util.GTClientPreference;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTOreDictUnificator;
@@ -849,7 +850,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     protected void updateSounds(SoundResource activitySound) {
         if (activitySound == null) return;
 
-        if (getBaseMetaTileEntity().isActive() && !getBaseMetaTileEntity().hasMufflerUpgrade()) {
+        if (getBaseMetaTileEntity().isActive() && !getBaseMetaTileEntity().isMuffled()) {
             if (activitySoundLoop == null) {
                 activitySoundLoop = new GTSoundLoop(
                     activitySound.resourceLocation,
@@ -1017,6 +1018,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     public static boolean isValidForLowGravity(GTRecipe tRecipe, int dimId) {
+        if (FakeCleanroom.isLowGravBypassEnabled()) return true;
         return // TODO check or get a better solution
         DimensionManager.getProvider(dimId)
             .getClass()
@@ -1037,7 +1039,11 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             || DimensionManager.getProvider(dimId)
                 .getClass()
                 .getName()
-                .contains("SpaceStation");
+                .contains("SpaceStation")
+            || DimensionManager.getProvider(dimId)
+                .getClass()
+                .getName()
+                .contains("Mothership");
     }
 
     /**

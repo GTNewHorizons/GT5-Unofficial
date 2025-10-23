@@ -92,12 +92,12 @@ public class MTEPlasmaModule extends MTEBaseModule {
             @Override
             protected CheckRecipeResult onRecipeStart(@NotNull GTRecipe recipe) {
                 wirelessEUt = (long) recipe.mEUt * maxParallel;
-                if (!addEUToGlobalEnergyMap(userUUID, -calculatedEut * duration)) {
+                BigInteger powerForRecipe = BigInteger.valueOf(calculatedEut)
+                    .multiply(BigInteger.valueOf(duration));
+                if (!addEUToGlobalEnergyMap(userUUID, powerForRecipe.negate())) {
                     return CheckRecipeResultRegistry.insufficientPower(wirelessEUt * recipe.mDuration);
                 }
-                addToPowerTally(
-                    BigInteger.valueOf(calculatedEut)
-                        .multiply(BigInteger.valueOf(duration)));
+                addToPowerTally(powerForRecipe);
                 addToRecipeTally(calculatedParallels);
                 currentParallel = calculatedParallels;
                 EUt = calculatedEut;

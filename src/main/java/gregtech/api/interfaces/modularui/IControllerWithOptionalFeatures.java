@@ -90,9 +90,10 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
         return (ButtonWidget) button;
     }
 
-    default ButtonWidget createMuffleButton(IWidgetBuilder<?> builder) {
+    default ButtonWidget createMuffleButton(IWidgetBuilder<?> builder, boolean canBeMuffled) {
         return (ButtonWidget) new ButtonWidget().setOnClick((clickData, widget) -> { setMuffled(!isMuffled()); })
             .setPlayClickSound(true)
+            .setEnabled(canBeMuffled)
             .setBackground(() -> {
                 List<UITexture> ret = new ArrayList<>();
                 if (isMuffled()) {
@@ -106,8 +107,8 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
             })
             .attachSyncer(new FakeSyncWidget.BooleanSyncer(this::isMuffled, this::setMuffled), builder)
             .addTooltip(StatCollector.translateToLocal("GT5U.machines.muffled"))
-            .setPos(174, 112)
-            .setSize(16, 16);
+            .setPos(200, 0)
+            .setSize(12, 12);
     }
 
     Pos2d getVoidingModeButtonPos();
@@ -450,7 +451,8 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
      * @param tooltipFeatureEnabled  tooltip text to display when the feature is enabled
      * @param tooltipFeatureDisabled tooltip text to display when the feature is disabled
      *
-     * @see gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui#addDynamicTooltipOfFeatureToButton(RichTooltip,
+     *
+     * @see gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui#addDynamicTooltipOfFeatureToButton(RichTooltip,
      *      Supplier, Supplier, String, String) For equivalent method but made for non-ModularUI
      */
     default void addDynamicTooltipOfFeatureToButton(Widget widget, Supplier<Boolean> supportsFeature,

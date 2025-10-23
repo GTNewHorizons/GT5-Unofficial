@@ -360,30 +360,33 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     }
 
     @Override
-    public boolean addOutput(ItemStack aStack) {
-        if (GTUtility.isStackInvalid(aStack)) return false;
+    public boolean addItemOutputs(ItemStack[] stacks) {
+        for (ItemStack stack : stacks) {
+            if (GTUtility.isStackInvalid(stack)) continue;
 
-        for (TileEntityDispenser tHatch : this.tileEntityDispensers) {
-            for (int i = tHatch.getSizeInventory() - 1; i >= 0; i--) {
-                if (tHatch.getStackInSlot(i) == null || GTUtility.areStacksEqual(tHatch.getStackInSlot(i), aStack)
-                    && aStack.stackSize + tHatch.getStackInSlot(i).stackSize <= 64) {
-                    if (GTUtility.areStacksEqual(tHatch.getStackInSlot(i), aStack)) {
-                        ItemStack merge = tHatch.getStackInSlot(i)
-                            .copy();
-                        merge.stackSize = aStack.stackSize + tHatch.getStackInSlot(i).stackSize;
-                        tHatch.setInventorySlotContents(i, merge);
-                    } else {
-                        tHatch.setInventorySlotContents(i, aStack.copy());
-                    }
+            for (TileEntityDispenser tHatch : this.tileEntityDispensers) {
+                for (int i = tHatch.getSizeInventory() - 1; i >= 0; i--) {
+                    if (tHatch.getStackInSlot(i) == null || GTUtility.areStacksEqual(tHatch.getStackInSlot(i), stack)
+                        && stack.stackSize + tHatch.getStackInSlot(i).stackSize <= 64) {
+                        if (GTUtility.areStacksEqual(tHatch.getStackInSlot(i), stack)) {
+                            ItemStack merge = tHatch.getStackInSlot(i)
+                                .copy();
+                            merge.stackSize = stack.stackSize + tHatch.getStackInSlot(i).stackSize;
+                            tHatch.setInventorySlotContents(i, merge);
+                        } else {
+                            tHatch.setInventorySlotContents(i, stack.copy());
+                        }
 
-                    if (GTUtility.areStacksEqual(tHatch.getStackInSlot(i), aStack)) {
-                        return true;
+                        if (GTUtility.areStacksEqual(tHatch.getStackInSlot(i), stack)) {
+                            return true;
+                        }
+                        tHatch.setInventorySlotContents(i, null);
+                        return false;
                     }
-                    tHatch.setInventorySlotContents(i, null);
-                    return false;
                 }
             }
         }
+
         return false;
     }
 
@@ -559,6 +562,11 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     @Override
     public int getTitleColor() {
         return this.COLOR_TITLE_WHITE.get();
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
     }
 
     @Override

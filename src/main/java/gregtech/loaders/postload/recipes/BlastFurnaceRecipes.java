@@ -20,14 +20,13 @@ import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsKevlar;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialsElements;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class BlastFurnaceRecipes implements Runnable {
 
     @Override
@@ -501,7 +500,7 @@ public class BlastFurnaceRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Quicklime.getDust(2), Materials.Carbon.getDust(3))
-            .itemOutputs(MaterialsKevlar.CalciumCarbide.getDust(3))
+            .itemOutputs(Materials.CalciumCarbide.getDust(3))
             .fluidOutputs(Materials.CarbonMonoxide.getGas(1_000))
             .duration(30 * SECONDS)
             .eut((int) TierEU.RECIPE_HV)
@@ -512,7 +511,7 @@ public class BlastFurnaceRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Nickel.getDust(1), Materials.Aluminium.getDust(3))
-            .itemOutputs(MaterialsKevlar.NickelAluminide.getIngots(4))
+            .itemOutputs(Materials.NickelAluminide.getIngots(4))
             .duration(45 * SECONDS)
             .eut((int) TierEU.RECIPE_HV)
             .metadata(COIL_HEAT, 1688)
@@ -605,8 +604,8 @@ public class BlastFurnaceRecipes implements Runnable {
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialsUEVplus.TranscendentMetal.getDust(1), GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, MaterialsUEVplus.TranscendentMetal, 1))
+            .itemInputs(Materials.TranscendentMetal.getDust(1), GTUtility.getIntegratedCircuit(1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.TranscendentMetal, 1))
             .fluidInputs(Materials.Tungsten.getMolten(1 * INGOTS))
             .fluidOutputs(MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(1 * HALF_INGOTS))
             .duration(3 * MINUTES)
@@ -620,7 +619,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .itemInputs(
                 new ItemStack(WerkstoffLoader.items.get(OrePrefixes.dust), 1, 78),
                 GTUtility.getIntegratedCircuit(2))
-            .itemOutputs(MaterialsKevlar.RhodiumChloride.getDust(4))
+            .itemOutputs(Materials.RhodiumChloride.getDust(4))
             .fluidInputs(Materials.Chlorine.getGas(3_000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -630,11 +629,11 @@ public class BlastFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Phononic_Seed_Crystal.get(1),
-                MaterialsUEVplus.SixPhasedCopper.getNanite(1),
+                Materials.SixPhasedCopper.getNanite(1),
                 Materials.Dilithium.getDust(16),
                 GTUtility.getIntegratedCircuit(2))
-            .fluidInputs(MaterialsUEVplus.Mellion.getMolten(48 * INGOTS))
-            .fluidOutputs(MaterialsUEVplus.PhononCrystalSolution.getFluid(1_000))
+            .fluidInputs(Materials.Mellion.getMolten(48 * INGOTS))
+            .fluidOutputs(Materials.PhononCrystalSolution.getFluid(1_000))
             .duration(300 * SECONDS)
             .eut((int) TierEU.RECIPE_UIV)
             .metadata(COIL_HEAT, 17000)
@@ -643,20 +642,20 @@ public class BlastFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Phononic_Seed_Crystal.get(2),
-                MaterialsUEVplus.Eternity.getDust(8),
+                Materials.Eternity.getDust(8),
                 GGMaterial.shirabon.get(OrePrefixes.dust, 8),
                 GTUtility.getIntegratedCircuit(2))
-            .fluidInputs(MaterialsUEVplus.PhononMedium.getFluid(10L))
-            .fluidOutputs(MaterialsUEVplus.PhononCrystalSolution.getFluid(3_000))
+            .fluidInputs(Materials.PhononMedium.getFluid(10L))
+            .fluidOutputs(Materials.PhononCrystalSolution.getFluid(3_000))
             .duration(200 * SECONDS)
             .eut((int) TierEU.RECIPE_UXV)
             .metadata(COIL_HEAT, 50000)
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialsUEVplus.Mellion.getDust(1), GTUtility.getIntegratedCircuit(11))
+            .itemInputs(Materials.Mellion.getDust(1), GTUtility.getIntegratedCircuit(11))
             .itemOutputs(ItemList.Harmonic_Compound.get(2))
-            .fluidInputs(MaterialsUEVplus.Creon.getPlasma(1 * INGOTS))
+            .fluidInputs(Materials.Creon.getPlasma(1 * INGOTS))
             .duration(30 * SECONDS)
             .eut((int) TierEU.RECIPE_UMV)
             .metadata(COIL_HEAT, 14000)

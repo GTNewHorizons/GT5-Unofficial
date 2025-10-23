@@ -82,8 +82,7 @@ public enum GregtechItemList implements IGregtechItemContainer {
     // Pellet Mold
     Pellet_Mold,
 
-    // Upgrade chip for Distillus
-    Distillus_Upgrade_Chip,
+    // Upgrade chip for Maceration Stack
     Maceration_Upgrade_Chip,
 
     // Milling Balls
@@ -378,6 +377,8 @@ public enum GregtechItemList implements IGregtechItemContainer {
     Controller_SteamCompressorMulti,
     // Big Steam Alloy Smelter
     Controller_SteamAlloySmelterMulti,
+    // Big Steam Furnace
+    Controller_SteamFurnaceMulti,
 
     // Industrial Rock Breaker
     Controller_IndustrialRockBreaker,
@@ -922,6 +923,7 @@ public enum GregtechItemList implements IGregtechItemContainer {
     DehydratorCoilWireZPM,
     PersonalCloakingDevice,
     PersonalHealingDevice,
+    Hatch_Input_Debug_Steam,
 
     ;
 

@@ -119,7 +119,7 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker> impl
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Cracker")
+        tt.addMachineType("Cracker, OCU")
             .addDynamicEuEffInfo(0.1f, TooltipTier.COIL)
             .addInfo("Maximum of " + TooltipHelper.effText(0.5f) + " EU discount")
             .addInfo("Thermally cracks heavy hydrocarbons into lighter fractions")

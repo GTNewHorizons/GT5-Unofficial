@@ -63,7 +63,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.MaterialsUEVplus;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IIconContainer;
@@ -98,31 +98,31 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     private static final int DISCOUNT_BITMAP = 0b10;
 
     // Valid fuels which the discount will get applied to.
-    private static final FluidStack[] valid_fuels = { MaterialsUEVplus.ExcitedDTCC.getFluid(1L),
-        MaterialsUEVplus.ExcitedDTPC.getFluid(1L), MaterialsUEVplus.ExcitedDTRC.getFluid(1L),
-        MaterialsUEVplus.ExcitedDTEC.getFluid(1L), MaterialsUEVplus.ExcitedDTSC.getFluid(1L) };
+    private static final FluidStack[] valid_fuels = { Materials.ExcitedDTCC.getFluid(1L),
+        Materials.ExcitedDTPC.getFluid(1L), Materials.ExcitedDTRC.getFluid(1L), Materials.ExcitedDTEC.getFluid(1L),
+        Materials.ExcitedDTSC.getFluid(1L) };
 
     private static final HashMap<Fluid, Pair<Long, Float>> FUEL_ENERGY_VALUES = new HashMap<>() {
 
         {
             put(
-                MaterialsUEVplus.ExcitedDTCC.getFluid(1L)
+                Materials.ExcitedDTCC.getFluid(1L)
                     .getFluid(),
                 Pair.of(14_514_983L, 1 / 8f));
             put(
-                MaterialsUEVplus.ExcitedDTPC.getFluid(1L)
+                Materials.ExcitedDTPC.getFluid(1L)
                     .getFluid(),
                 Pair.of(66_768_460L, 1 / 4f));
             put(
-                MaterialsUEVplus.ExcitedDTRC.getFluid(1L)
+                Materials.ExcitedDTRC.getFluid(1L)
                     .getFluid(),
                 Pair.of(269_326_451L, 1 / 2f));
             put(
-                MaterialsUEVplus.ExcitedDTEC.getFluid(1L)
+                Materials.ExcitedDTEC.getFluid(1L)
                     .getFluid(),
                 Pair.of(1_073_007_393L, 1f));
             put(
-                MaterialsUEVplus.ExcitedDTSC.getFluid(1L)
+                Materials.ExcitedDTSC.getFluid(1L)
                     .getFluid(),
                 Pair.of(4_276_767_521L, 2f));
         }
@@ -827,7 +827,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             for (int i = 0; i < tRecipe.mFluidOutputs.length; i++) {
                 fluidOutputsWithResidue[i] = tRecipe.mFluidOutputs[i].copy();
             }
-            fluidOutputsWithResidue[tRecipe.mFluidOutputs.length] = MaterialsUEVplus.DimensionallyTranscendentResidue
+            fluidOutputsWithResidue[tRecipe.mFluidOutputs.length] = Materials.DimensionallyTranscendentResidue
                 .getFluid(0);
             tRecipe.mFluidOutputs = fluidOutputsWithResidue;
             recalculateDiscount();
@@ -1034,6 +1034,10 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
         enoughCatalyst = true;
         int needed = (validFuelStack.amount + extraCatalystNeeded) / 2;
         for (FluidStack stack : inputFluids) {
+            if (needed <= 0) {
+                break;
+            }
+
             if (stack.isFluidEqual(validFuelStack)) {
                 needed -= stack.amount;
             }
@@ -1047,7 +1051,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
 
         // Increase present catalyst and residue by calculated amount
         for (FluidStack outputFluid : recipe.mFluidOutputs) {
-            if (outputFluid.isFluidEqual(MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(1))) {
+            if (outputFluid.isFluidEqual(Materials.DimensionallyTranscendentResidue.getFluid(1))) {
                 outputFluid.amount += (int) (extraCatalystNeeded * FUEL_ENERGY_VALUES.get(validFuel)
                     .getRight());
             }
@@ -1115,6 +1119,11 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     }
 
     private static final int CATALYST_WINDOW_ID = 10;
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {

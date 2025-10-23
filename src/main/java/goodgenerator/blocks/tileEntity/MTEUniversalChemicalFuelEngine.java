@@ -5,7 +5,11 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+
+import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -378,5 +382,16 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
     @Override
     public boolean showRecipeTextInGUI() {
         return false;
+    }
+
+    @Nonnull
+    @Override
+    public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
+        return Arrays.asList(GTPPRecipeMaps.rocketFuels, RecipeMaps.dieselFuels, RecipeMaps.gasTurbineFuels);
+    }
+
+    @Override
+    public int getRecipeCatalystPriority() {
+        return -2;
     }
 }

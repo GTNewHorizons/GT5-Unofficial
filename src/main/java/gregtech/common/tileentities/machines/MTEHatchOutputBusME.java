@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -25,7 +26,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizons.modularui.api.forge.ItemHandlerHelper;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
@@ -53,13 +53,18 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.OutputBusType;
 import gregtech.api.interfaces.IMEConnectable;
+import gregtech.api.interfaces.IOutputBus;
+import gregtech.api.interfaces.IOutputBusTransaction;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
+import it.unimi.dsi.fastutil.objects.Object2LongMaps;
+import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -79,7 +84,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     long tickCounter = 0;
     boolean additionalConnection = false;
     EntityPlayer lastClickedPlayer = null;
-    List<ItemStack> lockedItems = new ArrayList<>();
+    private final HashSet<GTUtility.ItemId> lockedItems = new HashSet<>();
 
     boolean hadCell = false;
 
@@ -98,10 +103,6 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
 
     public MTEHatchOutputBusME(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 1, aDescription, aTextures);
-    }
-
-    public List<ItemStack> getLockedItems() {
-        return lockedItems;
     }
 
     @Override
@@ -130,8 +131,8 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         if (!lockedItems.isEmpty()) {
             boolean isOk = false;
 
-            for (ItemStack lockedItem : lockedItems) {
-                if (lockedItem.isItemEqual(stack)) {
+            for (GTUtility.ItemId lockedItem : lockedItems) {
+                if (lockedItem.matches(stack)) {
                     isOk = true;
 
                     break;
@@ -143,8 +144,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
             }
         }
 
-        // Always allow insertion on the same tick so we can output the entire recipe
-        if (canAcceptItem() || (lastInputTick == tickCounter)) {
+        if (canAcceptItem()) {
             if (!simulate) {
                 itemCache.add(
                     AEApi.instance()
@@ -179,7 +179,93 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
      * Check if the internal cache can still fit more items in it
      */
     public boolean canAcceptItem() {
+        // Always allow insertion on the same tick so we can output the entire recipe
+        if (lastInputTick == tickCounter) return true;
+
         return getCachedAmount() < getCacheCapacity();
+    }
+
+    @Override
+    public boolean isFiltered() {
+        return !lockedItems.isEmpty();
+    }
+
+    @Override
+    public boolean isFilteredToItem(GTUtility.ItemId id) {
+        return lockedItems.contains(id);
+    }
+
+    @Override
+    public OutputBusType getBusType() {
+        return lockedItems.isEmpty() ? OutputBusType.MEUnfiltered : OutputBusType.MEFiltered;
+    }
+
+    @Override
+    public IOutputBusTransaction createTransaction() {
+        return new MEOutputBusTransaction();
+    }
+
+    class MEOutputBusTransaction implements IOutputBusTransaction {
+
+        private final Object2LongOpenHashMap<GTUtility.ItemId> pendingItems = new Object2LongOpenHashMap<>();
+        private final long initialStored, capacity, tick;
+        private long currentStored;
+        private boolean active = true;
+
+        public MEOutputBusTransaction() {
+            initialStored = getCachedAmount();
+            capacity = getCacheCapacity();
+            // We don't want to mutate lastInputTick, so we'll keep a simulated version of it.
+            // This transaction assumes that something will be ejected into this bus, so we can just use the current
+            // tick if this bus still has space.
+            tick = initialStored >= capacity ? lastInputTick : tickCounter;
+        }
+
+        @Override
+        public IOutputBus getBus() {
+            return MTEHatchOutputBusME.this;
+        }
+
+        @Override
+        public boolean hasAvailableSpace() {
+            // There's really no reason for the tick counter, it's just more accurate to the real bus's behaviour.
+            // Transactions should never be kept around long enough for it to matter, but in case someone does something
+            // stupid it's here to make sure nothing breaks.
+            // This condition should always return true unless this transaction is kept around for more than one tick.
+            return initialStored + currentStored < capacity || tickCounter == tick;
+        }
+
+        @Override
+        public boolean storePartial(GTUtility.ItemId id, ItemStack stack) {
+            if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
+
+            if (!hasAvailableSpace()) return false;
+            if (!lockedItems.isEmpty() && !lockedItems.contains(id)) return false;
+
+            pendingItems.addTo(id, stack.stackSize);
+            currentStored += stack.stackSize;
+            stack.stackSize = 0;
+
+            return true;
+        }
+
+        @Override
+        public void completeItem(GTUtility.ItemId id) {
+            // Do nothing
+        }
+
+        @Override
+        public void commit() {
+            // spotless:off
+            Object2LongMaps.fastForEach(pendingItems, e -> {
+                itemCache.add(AEItemStack.create(e.getKey().getItemStack()).setStackSize(e.getLongValue()));
+            });
+            // spotless:on
+
+            MTEHatchOutputBusME.this.markDirty();
+
+            active = false;
+        }
     }
 
     protected BaseActionSource getRequest() {
@@ -272,7 +358,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
                 IAEItemStack rest = Platform.poweredInsert(proxy.getEnergy(), sg, s, getRequest());
                 if (rest != null && rest.getStackSize() > 0) {
                     s.setStackSize(rest.getStackSize());
-                    break;
+                    continue;
                 }
                 s.setStackSize(0);
             }
@@ -363,7 +449,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
                         if (stack != null) {
                             hadFilters = true;
 
-                            lockedItems.add(ItemHandlerHelper.copyStackWithSize(stack, 1));
+                            lockedItems.add(GTUtility.ItemId.create(stack));
 
                             if (isFirst) {
                                 builder.append(stack.getDisplayName());
@@ -424,9 +510,10 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
 
         NBTTagList lockedItemsTag = new NBTTagList();
 
-        for (ItemStack stack : this.lockedItems) {
+        for (GTUtility.ItemId stack : this.lockedItems) {
             NBTTagCompound stackTag = new NBTTagCompound();
-            stack.writeToNBT(stackTag);
+            stack.getItemStack()
+                .writeToNBT(stackTag);
             lockedItemsTag.appendTag(stackTag);
         }
 
@@ -456,7 +543,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         if (lockedItemsTag instanceof NBTTagList lockedItemsList) {
             for (int i = 0; i < lockedItemsList.tagCount(); i++) {
                 NBTTagCompound stackTag = lockedItemsList.getCompoundTagAt(i);
-                this.lockedItems.add(GTUtility.loadItem(stackTag));
+                this.lockedItems.add(GTUtility.ItemId.create(GTUtility.loadItem(stackTag)));
             }
         }
 

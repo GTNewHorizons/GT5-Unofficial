@@ -89,7 +89,7 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
 
     public ITexture[] getFront(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_2A[this.mTier] };
+            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_4A[this.mTier + 1] };
     }
 
     public ITexture[] getBack(final byte aColor) {
@@ -114,7 +114,7 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
 
     public ITexture[] getFrontActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_2A[this.mTier] };
+            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_4A[this.mTier + 1] };
     }
 
     public ITexture[] getBackActive(final byte aColor) {
@@ -228,7 +228,10 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
 
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
-        aCurrentOutputAmperage = aNBT.getByte("aCurrentOutputAmperage");
+        if (aNBT.hasKey("aCurrentOutputAmperage")) {
+            aCurrentOutputAmperage = aNBT.getByte("aCurrentOutputAmperage");
+        }
+
         if (aNBT.hasKey("aStoredEU")) {
             this.setEUVar(aNBT.getLong("aStoredEU"));
         }
