@@ -36,14 +36,14 @@
 dependencies {
     api("com.github.GTNewHorizons:StructureLib:1.4.23:dev")
     api("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
-    api("com.github.GTNewHorizons:NotEnoughItems:2.8.19-GTNH:dev")
+    api("com.github.GTNewHorizons:NotEnoughItems:2.8.20-GTNH:dev")
     api("com.github.GTNewHorizons:NotEnoughIds:2.1.10:dev")
-    api("com.github.GTNewHorizons:GTNHLib:0.7.0:dev")
+    api("com.github.GTNewHorizons:GTNHLib:0.7.1:dev")
     api("com.github.GTNewHorizons:ModularUI:1.3.0:dev")
     api("com.github.GTNewHorizons:ModularUI2:2.3.5-1.7.10:dev")
-    api("com.github.GTNewHorizons:waila:1.9.2:dev")
-    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-717-GTNH:dev")
-    api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.5.6-gtnh:dev")
+    api("com.github.GTNewHorizons:waila:1.9.5:dev")
+    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-719-GTNH:dev")
+    api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.5.8-gtnh:dev")
     api('com.github.GTNewHorizons:Yamcl:0.7.1:dev')
     api("com.github.GTNewHorizons:Postea:1.1.3:dev")
 
@@ -63,7 +63,7 @@ dependencies {
     compileOnlyApi("com.github.GTNewHorizons:BuildCraft:7.1.45:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.10.3:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:ForestryMC:4.10.17:dev") { transitive = false }
-    compileOnlyApi("com.github.GTNewHorizons:Galacticraft:3.4.2-GTNH:dev") { transitive = false }
+    compileOnlyApi("com.github.GTNewHorizons:Galacticraft:3.4.4-GTNH:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:ProjectRed:4.12.0-GTNH:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:Railcraft:9.17.0:dev") { transitive = false }
     // Required to use Blast Furnace and Smoker Recipe maps from EFR.
@@ -114,7 +114,7 @@ dependencies {
     // runtimeOnlyNonPublishable('com.github.GTNewHorizons:Binnie:2.6.0:dev')
 
     // For testing Galacticraft integration (GTNH intergalactic, Ross, etc)
-    // runtimeOnlyNonPublishable("com.github.GTNewHorizons:Galacticraft:3.4.2-GTNH:dev") {
+    // runtimeOnlyNonPublishable("com.github.GTNewHorizons:Galacticraft:3.4.4-GTNH:dev") {
     //     exclude group: "com.github.GTNewHorizons", module: "GT5-Unofficial"
     // }
 

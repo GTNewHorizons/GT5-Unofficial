@@ -89,6 +89,13 @@ public final class GTGuiTextures {
         .adaptable(1)
         .name(GTTextureIds.BACKGROUND_REDSTONE_SNIFFER)
         .build();
+
+    public static final UITexture BACKGROUND_CHAOS_LOCATOR = UITexture.builder()
+        .location(GregTech.ID, "gui/background/chaos_locator")
+        .imageSize(176, 166)
+        .adaptable(1)
+        .name(GTTextureIds.BACKGROUND_CHAOS_LOCATOR)
+        .build();
     // endregion background
 
     // region overlay
