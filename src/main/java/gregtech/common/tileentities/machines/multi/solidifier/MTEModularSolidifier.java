@@ -54,6 +54,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.items.GGMaterial;
+import goodgenerator.loader.Loaders;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
@@ -190,9 +191,9 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         .addShape(SolidifierModules.STREAMLINED_CASTERS.structureID, transpose(new String[][]{
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"     bbbbb     ","   bbb   bbb   ","  bb       bb  "," bb         bb "," b           b ","bb           bb","b             b","b             b","b             b","bb           bb"," b           b "," bb         bb ","  bb       bb  ","   bbb   bbb   ","     bbbbb     "},
-            {"     cbcbc     ","   ccc   ccc   ","  cc       cc  "," cc         cc "," c           c ","cc           cc","b             b","c             c","b             b","cc           cc"," c           c "," cc         cc ","  cc       cc  ","   ccc   ccc   ","     cbcbc     "},
-            {"     bbbbb     ","   bbb   bbb   ","  bb       bb  "," bb         bb "," b           b ","bb           bb","b             b","b             b","b             b","bb           bb"," b           b "," bb         bb ","  bb       bb  ","   bbb   bbb   ","     bbbbb     "},
+            {"     UUbUU     ","   bbb   bbb   ","  Ub       bU  "," bb         bb "," b           b ","Ub           bU","U             U","b             b","U             U","Ub           bU"," b           b "," bb         bb ","  Ub       bU  ","   bbb   bbb   ","     UUbUU     "},
+            {"     aTcTa     ","   caV   Vac   ","  cV       Vc  "," cV         Vc "," a           a ","aV           Va","T             T","c             c","T             T","aV           Va"," a           a "," cV         Vc ","  cV       Vc  ","   caV   Vac   ","     aTcTa     "},
+            {"     UUbUU     ","   bbb   bbb   ","  Ub       bU  "," bb         bb "," b           b ","Ub           bU","U             U","b             b","U             U","Ub           bU"," b           b "," bb         bb ","  Ub       bU  ","   bbb   bbb   ","     UUbUU     "},
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
         }))
@@ -226,9 +227,9 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         .addShape(SolidifierModules.EFFICIENT_OC.structureID, transpose(new String[][]{
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
             {"      ttt      ","    tt   tt    ","               ","               "," t           t "," t           t ","t             t","t             t","t             t"," t           t "," t           t ","               ","               ","    tt   tt    ","      ttt      "},
-            {"     vFtFv     ","   tvv   vvt   ","  tF       Ft  "," tF         Ft "," v           v ","vv           vv","F             F","t             t","F             F","vv           vv"," v           v "," tF         Ft ","  tF       Ft  ","   tvv   vvt   ","     vFtFv     "},
-            {"     utttu     ","   uuu   uuu   ","  uu       uu  "," uu         uu "," u           u ","uu           uu","t             t","t             t","t             t","uu           uu"," u           u "," uu         uu ","  uu       uu  ","   uuu   uuu   ","     utttu     "},
-            {"     vFtFv     ","   tvv   vvt   ","  tF       Ft  "," tF         Ft "," v           v ","vv           vv","F             F","t             t","F             F","vv           vv"," v           v "," tF         Ft ","  tF       Ft  ","   tvv   vvt   ","     vFtFv     "},
+            {"     vvtvv     ","   tvv F vvt   ","  Mv       vM  "," tv         vt "," v           v ","vv           vv","v             v","tF           Ft","v             v","vv           vv"," v           v "," tv         vt ","  Mv       vM  ","   tvv F vvt   ","     vvtvv     "},
+            {"     utvtu     ","   uuuFNFuuu   ","  uu       uu  "," uu         uu "," u           u ","uu           uu","tF           Ft","vN           Nv","tF           Ft","uu           uu"," u           u "," uu         uu ","  uu       uu  ","   uuuFNFuuu   ","     utvtu     "},
+            {"     vvtvv     ","   tvv F vvt   ","  Mv       vM  "," tv         vt "," v           v ","vv           vv","v             v","tF           Ft","v             v","vv           vv"," v           v "," tv         vt ","  Mv       vM  ","   tvv F vvt   ","     vvtvv     "},
             {"      ttt      ","    tt   tt    ","               ","               "," t           t "," t           t ","t             t","t             t","t             t"," t           t "," t           t ","               ","               ","    tt   tt    ","      ttt      "},
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
         }))
@@ -285,11 +286,15 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                 .dot(1)
                 .casingIndex(((BlockCasingsFoundry) GregTechAPI.sBlockCasingsFoundry).getTextureIndex(0))
                 .buildAndChain(
-                    onElementPass(MTEModularSolidifier::onCasingAdded, ofBlock(GregTechAPI.sBlockCasingsFoundry, 0)))) // placeholder
-        .addElement('a', ofBlock(GregTechAPI.sBlockCasingsFoundry, 0)) // base casing, no adder
+                    onElementPass(MTEModularSolidifier::onCasingAdded, ofBlock(GregTechAPI.sBlockCasingsFoundry, 0))))
         // streamlined casters
+        .addElement('a', ofFrame(Materials.DraconiumAwakened))
         .addElement('b', ofBlock(GregTechAPI.sBlockCasingsFoundry, 10)) // Streamlined Caster
-        .addElement('c', ofFrame(Materials.Enderium))
+        .addElement('c', ofFrame(Materials.Tritanium))
+        .addElement('T', ofBlock(GregTechAPI.sBlockMetal7, 10))
+        .addElement('U', lazy(() -> ofBlock(ModBlocks.blockCasings5Misc, 3)))
+        .addElement('V', lazy(() -> ofBlock(ModBlocks.blockSpecialMultiCasings, 13)))
+
         // power efficient subsystems
         .addElement('d', ofBlock(GregTechAPI.sBlockCasingsFoundry, 6)) // power eff subsystems
         .addElement('e', ofFrame(Materials.Samarium))
@@ -321,8 +326,11 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                                                                                // rework
         // efficient overclock
         .addElement('t', ofBlock(GregTechAPI.sBlockCasingsFoundry, 5))
-        .addElement('u', ofBlock(GregTechAPI.sBlockGlass1, 4))
+        .addElement('u', lazy(() -> ofBlock(Loaders.antimatterContainmentCasing, 0)))
         .addElement('v', lazy(() -> ofBlock(ModBlocks.blockCasings6Misc, 0)))
+        .addElement('M', lazy(() -> ofBlock(Loaders.magneticFluxCasing, 0)))
+        .addElement('N', lazy(() -> ofBlock(Loaders.gravityStabilizationCasing, 0)))
+
         // transcendent reinforcement
         .addElement('1', ofBlock(GregTechAPI.sBlockCasingsFoundry, 7))
         .addElement('2', ofFrame(Materials.Mellion))
