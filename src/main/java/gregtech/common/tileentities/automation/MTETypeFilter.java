@@ -7,6 +7,7 @@ import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.IntStream;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -100,31 +101,23 @@ public class MTETypeFilter extends MTESpecialFilter {
         }
     }
 
-    private void cyclePrefix(boolean aRightClick) {
-        for (int i = 0; i < OrePrefixes.VALUES.length; i++) {
-            if (this.mPrefix == OrePrefixes.VALUES[i]) {
-                for (this.mPrefix = null; this.mPrefix == null; this.mPrefix = OrePrefixes.VALUES[i]) {
-                    if (aRightClick) {
-                        do {
-                            i--;
-                            if (i < 0) {
-                                i = OrePrefixes.VALUES.length - 1;
-                            }
-                        } while (OrePrefixes.VALUES[i].mPrefixedItems.isEmpty());
-                    } else {
-                        do {
-                            i++;
-                            if (i >= OrePrefixes.VALUES.length) {
-                                i = 0;
-                            }
-                        } while (OrePrefixes.VALUES[i].mPrefixedItems.isEmpty());
-                    }
-                    if (!OrePrefixes.VALUES[i].mPrefixedItems.isEmpty()
-                        && OrePrefixes.VALUES[i].mPrefixInto == OrePrefixes.VALUES[i]) mPrefix = OrePrefixes.VALUES[i];
-                }
-            }
-            this.mRotationIndex = -1;
-        }
+    private void cyclePrefix(boolean rightClick) {
+        mRotationIndex = -1;
+
+        final int start = IntStream.range(0, OrePrefixes.VALUES.length)
+            .filter(i -> mPrefix == OrePrefixes.VALUES[i])
+            .findFirst()
+            .orElse(0);
+
+        // spotless:off
+        mPrefix = IntStream.range(1, OrePrefixes.VALUES.length)
+            .map(offset -> start + (rightClick ? -offset : offset))                        // search up/down from start
+            .map(index -> (index + OrePrefixes.VALUES.length) % OrePrefixes.VALUES.length) // wrap around
+            .mapToObj(index -> OrePrefixes.VALUES[index])                                  // map to prefix
+            .filter(prefix -> !prefix.mPrefixedItems.isEmpty())                            // only prefixes with items
+            .findFirst()
+            .orElse(mPrefix);                                                              // fallback to current prefix
+        // spotless:on
     }
 
     @Override
