@@ -190,9 +190,9 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         .addShape(SolidifierModules.STREAMLINED_CASTERS.structureID, transpose(new String[][]{
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"     bbFbb     ","   bbb   bbb   ","  bF       Fb  "," bF         Fb "," b           b ","bb           bb","b             b","F             F","b             b","bb           bb"," b           b "," bF         Fb ","  bF       Fb  ","   bbb   bbb   ","     bbFbb     "},
-            {"     cFcFc     ","   ccc   ccc   ","  cc       cc  "," cc         cc "," c           c ","cc           cc","F             F","c             c","F             F","cc           cc"," c           c "," cc         cc ","  cc       cc  ","   ccc   ccc   ","     cFcFc     "},
-            {"     bbFbb     ","   bbb   bbb   ","  bF       Fb  "," bF         Fb "," b           b ","bb           bb","b             b","F             F","b             b","bb           bb"," b           b "," bF         Fb ","  bF       Fb  ","   bbb   bbb   ","     bbFbb     "},
+            {"     bbbbb     ","   bbb   bbb   ","  bb       bb  "," bb         bb "," b           b ","bb           bb","b             b","b             b","b             b","bb           bb"," b           b "," bb         bb ","  bb       bb  ","   bbb   bbb   ","     bbbbb     "},
+            {"     cbcbc     ","   ccc   ccc   ","  cc       cc  "," cc         cc "," c           c ","cc           cc","b             b","c             c","b             b","cc           cc"," c           c "," cc         cc ","  cc       cc  ","   ccc   ccc   ","     cbcbc     "},
+            {"     bbbbb     ","   bbb   bbb   ","  bb       bb  "," bb         bb "," b           b ","bb           bb","b             b","b             b","b             b","bb           bb"," b           b "," bb         bb ","  bb       bb  ","   bbb   bbb   ","     bbbbb     "},
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
         }))
@@ -292,8 +292,8 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         .addElement('c', ofFrame(Materials.Enderium))
         // power efficient subsystems
         .addElement('d', ofBlock(GregTechAPI.sBlockCasingsFoundry, 6)) // power eff subsystems
-        .addElement('e', ofFrame(Materials.SamariumMagnetic))
-        .addElement('f', ofFrame(Materials.TengamAttuned))
+        .addElement('e', ofFrame(Materials.Samarium))
+        .addElement('f', ofFrame(Materials.TengamPurified))
         .addElement('g', lazy(() -> ofBlock(ModBlocks.blockCustomMachineCasings, 3))) // TODO: replace with MEBF/green
                                                                                       // casing after rework
         // casting basins
@@ -325,8 +325,8 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         .addElement('v', lazy(() -> ofBlock(ModBlocks.blockCasings6Misc, 0)))
         // transcendent reinforcement
         .addElement('1', ofBlock(GregTechAPI.sBlockCasingsFoundry, 7))
-        .addElement('2', ofFrame(Materials.Creon))
-        .addElement('3', ofFrame(Materials.Mellion))
+        .addElement('2', ofFrame(Materials.Mellion))
+        .addElement('3', ofFrame(Materials.Creon))
         .addElement('4', ofFrame(Materials.TranscendentMetal))
         .addElement('5', ofFrame(Materials.SpaceTime))
         .addElement('6', ofBlock(GregTechAPI.sBlockMetal9, 3))
