@@ -11,27 +11,27 @@ public enum SolidifierModules {
 
     // please dont hate me for the arbitrary transparent rectangle image
     UNSET("Unset", "UN.", "", ItemList.Display_ITS_FREE.get(1), GTGuiTextures.MODULAR_SOLIDIFIER_UNSET,
-        new float[] { 0f, 0f, 0f, 0f }),
+        new float[] { 0f, 0f, 0f }),
     ACTIVE_TIME_DILATION_SYSTEM("Time Dilation System", "T.D.S", "tds",
         ItemList.Active_Time_Dilation_System_Solidifier_Modular.get(0), GTGuiTextures.MODULAR_SOLIDIFIER_TDS,
-        new float[] { 0f / 255f, 24f / 255f, 43f / 255f, 0.7f }),
+        new float[] { 10f / 255f, 24f / 255f, 43f / 255f }, 5),
     EFFICIENT_OC("Efficient Overclocking System", "E.O.C", "eff_oc",
         ItemList.Efficient_Overclocking_Solidifier_Modular.get(1), GTGuiTextures.MODULAR_SOLIDIFIER_EFF_OC,
-        new float[] { 107f / 255f, 33f / 255f, 196f / 255f, 0.7f }),
+        new float[] { 107f / 255f, 33f / 255f, 196f / 255f }),
     POWER_EFFICIENT_SUBSYSTEMS("Power Efficient Subsytems", "P.E.S", "power_efficient_subsystems",
         ItemList.Power_Efficient_Subsystems_Solidifier_Modular.get(1), GTGuiTextures.OVERLAY_BUTTON_CYCLIC,
-        new float[] { 0f / 255f, 143f / 255f, 38f / 255f, 0.7f }),
+        new float[] { 10f / 255f, 143f / 255f, 38f / 255f }, 0.9f),
     TRANSCENDENT_REINFORCEMENT("Transcendent Reinforcement", "T.R", "transcendent_reinforcement",
         ItemList.Transcendent_Reinforcement_Solidifier_Modular.get(1), GTGuiTextures.MODULAR_SOLIDIFIER_TR_RE,
-        new float[] { 150f / 255f, 0, 150f / 255f, 0.7f }),
+        new float[] { 150f / 255f, 10 / 255f, 150f / 255f }, 1.5f),
     EXTRA_CASTING_BASINS("Extra Casting Basins", "E.C.B", "extra_casting_basins",
         ItemList.Extra_Casting_Basins_Solidifier_Modular.get(1), GTGuiTextures.OVERLAY_BUTTON_CYCLIC,
-        new float[] { 58f / 255f, 58f / 255f, 34f / 255f, 0.7f }),
+        new float[] { 58f / 255f, 58f / 255f, 34f / 255f }, 3),
     HYPERCOOLER("Hypercooler", "H.C", "hypercooler", ItemList.Hypercooler_Solidifier_Modular.get(1),
-        GTGuiTextures.MODULAR_SOLIDIFIER_HC, new float[] { 0, 1, 1, 0.7f }),
+        GTGuiTextures.MODULAR_SOLIDIFIER_HC, new float[] { 10f / 255f, 0.6f, 0.6f, 0.8f }),
     STREAMLINED_CASTERS("Streamlined Casters", "S.L.C", "streamlined_casters",
         ItemList.Streamlined_Casters_Solidifier_Modular.get(1), GTGuiTextures.OVERLAY_BUTTON_CYCLIC,
-        new float[] { 130f / 255f, 0f / 255f, 0f / 255f, 0.7f });
+        new float[] { 130f / 255f, 10f / 255f, 10f / 255f }, 2);
 
     public final String displayName;
     public final String shorthand;
@@ -51,6 +51,20 @@ public enum SolidifierModules {
         this.icon = icon;
         this.texture = texture;
         this.rgbArr = rgbArr;
+    }
+
+    // TODO sisyphus: get rid of multiplier
+    private SolidifierModules(String display, String shortname, String structid, ItemStack icon, UITexture texture,
+        float[] rgbArr, float multiplier) {
+        this.displayName = display;
+        this.shorthand = shortname;
+        this.structureID = structid;
+        this.icon = icon;
+        this.texture = texture;
+        this.rgbArr = rgbArr;
+        for (int i = 0; i < rgbArr.length; i++) {
+            this.rgbArr[i] *= multiplier;
+        }
     }
 
     public static SolidifierModules getModule(int ordinal) {
