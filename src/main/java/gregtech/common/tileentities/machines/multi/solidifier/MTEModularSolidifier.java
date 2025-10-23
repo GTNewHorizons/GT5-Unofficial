@@ -47,7 +47,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
 import com.google.common.collect.ImmutableList;
-import com.gtnewhorizon.gtnhlib.client.renderer.shader.AutoShaderUpdater;
+//import com.gtnewhorizon.gtnhlib.client.renderer.shader.AutoShaderUpdater;
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
 import com.gtnewhorizon.gtnhlib.client.renderer.vbo.IModelCustomExt;
 import com.gtnewhorizon.gtnhlib.client.renderer.vbo.VertexBuffer;
@@ -1316,7 +1316,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             );
             uGlowColor = ringProgram.getUniformLocation("u_Color");
             uTexOffset = ringProgram.getUniformLocation("texOffset");
-            AutoShaderUpdater.getInstance().registerShaderReload(
+         /*   AutoShaderUpdater.getInstance().registerShaderReload(
                 ringProgram,
                 GregTech.resourceDomain,
                 "shaders/foundry.vert.glsl",
@@ -1326,7 +1326,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                     uTexOffset = shader.getUniformLocation("texOffset");
                 }
 
-            );
+            );*/
 
             StructureVBO ringStructure = (new StructureVBO()).addMapping('b', GregTechAPI.sBlockCasings8, 14)
                 .addMapping('c', GregTechAPI.sBlockCasingsFoundry, 9)
