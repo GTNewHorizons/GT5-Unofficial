@@ -102,10 +102,7 @@ public class OrePrefixBuilder {
         return this;
     }
 
-    /**
-     * Used to determine the amount of Material this Prefix contains. Multiply or Divide GT_Values.M to get the Amounts
-     * in comparision to one Ingot. 0 = Null Negative = Undefined Amount
-     */
+    /** Sets the amount of material per item. One ingot is worth {@link GTValues#M}. */
     public OrePrefixBuilder materialAmount(long materialAmount) {
         this.materialAmount = materialAmount;
         return this;
