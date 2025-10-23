@@ -21,6 +21,10 @@ public class BlockCasings13 extends BlockCasingsAbstract {
         register(8, ItemList.LoadbearingDistributionCasing, "Loadbearing Distribution Casing");
         register(9, ItemList.NaniteFramework, "Nanite Replication Framework");
         register(10, ItemList.ColliderCasing, "Collider Casing");
+        register(11, ItemList.CMSCasing,"Charged Matter Sensor Casing");
+        register(12, ItemList.ATLASCasing,"Advanced Total Lepton Assimilation Snare Casing");
+        register(13, ItemList.ALICECasing,"Absolute Lattice Integrated Chromodynamic Encapsulator Casing");
+        register(14, ItemList.LHCbCasing,"Localized Horizon Curvature Binder Casing");
 
     }
 
@@ -39,6 +43,10 @@ public class BlockCasings13 extends BlockCasingsAbstract {
             case 8 -> Textures.BlockIcons.NANO_FORGE_CASING_4.getIcon();
             case 9 -> Textures.BlockIcons.NANITE_CORE.getIcon();
             case 10 -> Textures.BlockIcons.COLLIDER_CASING.getIcon();
+            case 11 -> Textures.BlockIcons.CMS_CASING.getIcon();
+            case 12 -> Textures.BlockIcons.ATLAS_CASING.getIcon();
+            case 13 -> Textures.BlockIcons.ALICE_CASING.getIcon();
+            case 14 -> Textures.BlockIcons.LHCB_CASING.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
     }

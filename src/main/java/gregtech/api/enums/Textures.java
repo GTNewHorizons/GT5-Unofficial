@@ -1926,6 +1926,10 @@ public class Textures {
         NANITE_SHIELDING_FRAME,
 
         COLLIDER_CASING,
+        CMS_CASING,
+        ATLAS_CASING,
+        ALICE_CASING,
+        LHCB_CASING,
 
         // semicolon after the comment to reduce merge conflicts
         ;

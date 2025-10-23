@@ -2744,6 +2744,10 @@ public enum ItemList implements IItemContainer {
 
     LargeHadronCollider,
     ColliderCasing,
+    CMSCasing,
+    ATLASCasing,
+    ALICECasing,
+    LHCbCasing,
     AdvancedBeamlineOutputHatch,
 
     // semicolon after the comment to reduce merge conflicts
