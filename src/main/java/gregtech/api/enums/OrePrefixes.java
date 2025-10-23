@@ -41,7 +41,7 @@ import it.unimi.dsi.fastutil.objects.ObjectSet;
 @SuppressWarnings({ "PointlessArithmeticExpression", "unused" })
 public class OrePrefixes {
 
-    public static final List<OrePrefixes> VALUES = new ArrayList<>();
+    private static List<OrePrefixes> VALUES_LIST = new ArrayList<>();
 
     private static final int ORE_STACK_SIZE = GTUtility.clamp(Gregtech.features.maxOreStackSize, 1, 64);
     private static final int PLANK_STACK_SIZE = GTUtility.clamp(Gregtech.features.maxPlankStackSize, 16, 64);
@@ -2048,6 +2048,14 @@ public class OrePrefixes {
         .selfReferencing()
         .build();
 
+    public static final OrePrefixes[] VALUES;
+
+    // Convert the prefix list to a fixed array and release the temporary reference.
+    static {
+        VALUES = VALUES_LIST.toArray(new OrePrefixes[0]);
+        VALUES_LIST = null;
+    }
+
     private final @NotNull String name;
     private final @NotNull String defaultLocalName;
     private final @NotNull String materialPrefix;
@@ -2101,7 +2109,7 @@ public class OrePrefixes {
 
         addAspectForName();
 
-        VALUES.add(this);
+        VALUES_LIST.add(this);
     }
 
     private void addAspectForName() {

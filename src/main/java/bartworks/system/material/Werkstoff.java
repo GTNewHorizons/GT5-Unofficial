@@ -733,7 +733,8 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
         public GenerationFeatures() {}
 
         public static void initPrefixLogic() {
-            OrePrefixes.VALUES.forEach(e -> prefixLogic.put(e, 0));
+            Arrays.stream(OrePrefixes.VALUES)
+                .forEach(e -> prefixLogic.put(e, 0));
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.dust, 0b1);
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.dustTiny, 0b1);
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.dustSmall, 0b1);
