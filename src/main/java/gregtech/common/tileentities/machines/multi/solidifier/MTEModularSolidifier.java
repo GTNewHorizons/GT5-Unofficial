@@ -28,12 +28,18 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
+import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
+import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -43,6 +49,8 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
+import org.joml.AxisAngle4f;
+import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
@@ -1161,7 +1169,6 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         GL20.glUniform3f(uGlowColor, rgba[0], rgba[1], rgba[2]);
         ring.renderAllVBO();
         GL11.glPopMatrix();
-
     }
 
     private void renderRingFour(float[] rgba) {
@@ -1172,6 +1179,59 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         ring.renderAllVBO();
         GL11.glPopMatrix();
     }
+
+    private void applyRotation ()
+    {
+        //todo: idfk LMAO
+        ExtendedFacing extendedFacing = this.getExtendedFacing();
+
+        ForgeDirection direction = extendedFacing.getDirection();
+        Rotation rotation = extendedFacing.getRotation();
+        Flip flip = extendedFacing.getFlip();
+
+        //issues:  forge direction WEST + rotation normal / upside down
+        // forge direction: up / down + rotation: upside down
+        Matrix4f rotationMatrix = new Matrix4f().identity();
+
+        float localAngle = switch (rotation) {
+            case NORMAL -> 0;
+            case CLOCKWISE -> 90;
+            case COUNTER_CLOCKWISE -> -90;
+            case UPSIDE_DOWN -> 180;
+        };
+        localAngle *= (flip == Flip.HORIZONTAL || flip == Flip.VERTICAL) ? 1 : -1;
+        localAngle = (float) Math.toRadians(localAngle);
+        rotationMatrix.rotate(localAngle, direction.offsetX, direction.offsetY, direction.offsetZ);
+
+        float x = 0, y = 0;
+        float angle = switch (direction) {
+            case DOWN, UP -> {
+                x = 1;
+                yield -90;
+            }
+            case EAST, SOUTH -> {
+                y = 1;
+                yield 90;
+            }
+            case WEST, NORTH -> {
+                y = 1;
+                yield -90;
+            }
+            case UNKNOWN -> 0.0F;
+        };
+        angle = (float) Math.toRadians(angle);
+        rotationMatrix.rotate(angle, x, y, 0);
+
+        AxisAngle4f rotationVector = new AxisAngle4f();
+        rotationMatrix.getRotation(rotationVector);
+
+        final var rotationAngle = rotationVector.angle / (float) Math.PI * 180;
+        final var rotAxisX = rotationVector.x;
+        final var rotAxisY = rotationVector.y;
+        final var rotAxisZ = rotationVector.z;
+        GL11.glRotated(rotationAngle, rotAxisX, rotAxisY, rotAxisZ);
+    }
+
 
     @Override
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
