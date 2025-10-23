@@ -779,7 +779,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             }
 
             // We do care. Preserve the weapon
-            if (!mCycleWeapons || !addOutputPartial(tWeapon, false)) return null;
+            if (!mCycleWeapons || !addOutputAtomic(tWeapon)) return null;
             weaponCache.setStackInSlot(0, null);
             tWeapon = null;
         }
@@ -862,9 +862,9 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             SoundResource.RANDOM_BREAK,
             0.5F,
             0.9F,
-            tMTE.getXCoord(),
-            tMTE.getYCoord(),
-            tMTE.getZCoord());
+            tMTE.getXCoord() + .5,
+            tMTE.getYCoord() + .5,
+            tMTE.getZCoord() + .5);
     }
 
     private boolean checkRitualConnection() {

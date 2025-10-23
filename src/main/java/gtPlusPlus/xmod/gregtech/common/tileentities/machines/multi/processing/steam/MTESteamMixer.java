@@ -404,18 +404,25 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setInteger("tierMachine", tierMachine);
+        aNBT.setInteger("tierMachineCasing", tierMachineCasing);
     }
 
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         tierMachine = aNBT.getInteger("tierMachine");
+        tierMachineCasing = aNBT.getInteger("tierMachineCasing");
     }
 
     @SideOnly(Side.CLIENT)
     @Override
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_STEAM_CENTRIFUGE_LOOP;
+    }
+
+    @Override
+    public int getThemeTier() {
+        return tierMachineCasing;
     }
 
 }

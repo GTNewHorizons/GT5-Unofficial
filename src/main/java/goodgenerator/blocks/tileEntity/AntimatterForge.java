@@ -43,7 +43,6 @@ import goodgenerator.items.GGMaterial;
 import goodgenerator.loader.Loaders;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -70,11 +69,11 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     implements ISurvivalConstructable, IOverclockDescriptionProvider {
 
     private static final FluidStack[] magneticUpgrades = { Materials.TengamPurified.getMolten(1L),
-        MaterialsUEVplus.Time.getMolten(1L), MaterialsUEVplus.MagMatter.getMolten(1L) };
-    private static final FluidStack[] gravityUpgrades = { MaterialsUEVplus.SpaceTime.getMolten(1L),
-        MaterialsUEVplus.Space.getMolten(1L), MaterialsUEVplus.Eternity.getMolten(1L) };
+        Materials.Time.getMolten(1L), Materials.MagMatter.getMolten(1L) };
+    private static final FluidStack[] gravityUpgrades = { Materials.SpaceTime.getMolten(1L),
+        Materials.Space.getMolten(1L), Materials.Eternity.getMolten(1L) };
     private static final FluidStack[] containmentUpgrades = { GGMaterial.shirabon.getMolten(1),
-        MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(1L) };
+        Materials.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(1L) };
     private static final FluidStack[] activationUpgrades = { GGMaterial.naquadahBasedFuelMkVDepleted.getFluidOrGas(1),
         GGMaterial.naquadahBasedFuelMkVIDepleted.getFluidOrGas(1) };
 
@@ -96,7 +95,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     private final FluidStack[] upgradeFluids = { null, null, null, null };
     private final int[] fluidConsumptions = { 0, 0, 0, 0 };
 
-    private static final FluidStack ZERO_ANTIMATTER = MaterialsUEVplus.Antimatter.getFluid(0);
+    private static final FluidStack ZERO_ANTIMATTER = Materials.Antimatter.getFluid(0);
 
     public static final String MAIN_NAME = "antimatterForge";
     private final int speed = 20;
@@ -476,7 +475,6 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
 
     @Override
     public CheckRecipeResult checkProcessing() {
-        startRecipeProcessing();
         FluidStack[] antimatterStored = new FluidStack[16];
         long totalAntimatterAmount = 0;
         long minAntimatterAmount = Long.MAX_VALUE;
@@ -536,7 +534,6 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         if (!drainEnergyInput(energyCost)) {
             decimateAntimatter();
             stopMachine(ShutDownReasonRegistry.POWER_LOSS);
-            endRecipeProcessing();
             setProtoRender(false);
             return CheckRecipeResultRegistry.insufficientPower(energyCost);
         }
@@ -559,10 +556,9 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             containedProtomatter);
 
         // We didn't have enough protomatter, reduce antimatter by 10% and stop the machine.
-        if (!this.depleteInput(MaterialsUEVplus.Protomatter.getFluid(Math.abs(antimatterChange)))) {
+        if (!this.depleteInput(Materials.Protomatter.getFluid(Math.abs(antimatterChange)))) {
             decimateAntimatter();
-            stopMachine(ShutDownReasonRegistry.outOfFluid(MaterialsUEVplus.Protomatter.getFluid(1L)));
-            endRecipeProcessing();
+            stopMachine(ShutDownReasonRegistry.outOfFluid(Materials.Protomatter.getFluid(1L)));
             setProtoRender(false);
             return CheckRecipeResultRegistry.NO_FUEL_FOUND;
         }
@@ -579,7 +575,6 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         mEfficiencyIncrease = 10000;
         mMaxProgresstime = speed;
 
-        endRecipeProcessing();
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
@@ -635,7 +630,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             int change = (int) (Math.ceil((r.nextGaussian() + baseSkew + modifiers[ACTIVATION_ID]) * (coeff / 16)));
             difference += change;
             if (change >= 0) {
-                hatch.fill(MaterialsUEVplus.Antimatter.getFluid(change), true);
+                hatch.fill(Materials.Antimatter.getFluid(change), true);
             } else {
                 hatch.drain(-change, true);
             }
@@ -796,6 +791,11 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     protected long activeCostCache;
     protected long antimatterChangeCache;
     protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 
     @Override
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {

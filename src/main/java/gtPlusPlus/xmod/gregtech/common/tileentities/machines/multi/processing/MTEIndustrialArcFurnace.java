@@ -77,7 +77,7 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
 
     @Override
     public String getMachineType() {
-        return "Arc Furnace, Plasma Arc Furnace";
+        return "Arc Furnace, Plasma Arc Furnace, IAF";
     }
 
     @Override

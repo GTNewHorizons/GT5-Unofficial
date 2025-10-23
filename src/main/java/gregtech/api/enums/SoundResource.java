@@ -191,6 +191,7 @@ public enum SoundResource {
     GTCEU_OP_SPRAY_CAN(408, "gtceu", "gtceu.SprayCanOp"),
     GTCEU_OP_WIRECUTTER(409, "gtceu", "gtceu.WirecutterOp"),
     GTCEU_OP_WRENCH(410, "gtceu", "gtceu.WrenchOp"),
+    RAILCRAFT_STEAM_BURST(411, "railcraft", "machine.steamburst"),
     /*
      * Other Minecraft Sounds that were missing
      */

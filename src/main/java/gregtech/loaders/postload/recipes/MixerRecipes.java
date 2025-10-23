@@ -26,9 +26,6 @@ import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsKevlar;
-import gregtech.api.enums.MaterialsOreAlum;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
@@ -37,6 +34,7 @@ import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class MixerRecipes implements Runnable {
 
     @Override
@@ -1274,9 +1272,9 @@ public class MixerRecipes implements Runnable {
         // radiation manufacturing
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialsOreAlum.SluiceSand.getDust(1))
+            .itemInputs(Materials.SluiceSand.getDust(1))
             .fluidInputs(Materials.Water.getFluid(500))
-            .fluidOutputs(MaterialsOreAlum.SluiceJuice.getFluid(1_000))
+            .fluidOutputs(Materials.SluiceJuice.getFluid(1_000))
             .duration(5 * SECONDS)
             .eut(16)
             .addTo(mixerRecipes);
@@ -1603,7 +1601,7 @@ public class MixerRecipes implements Runnable {
                     Materials.Iron.getPlasma(1_000),
                     Materials.Calcium.getPlasma(1_000),
                     Materials.Niobium.getPlasma(1_000))
-                .fluidOutputs(MaterialsUEVplus.DimensionallyTranscendentCrudeCatalyst.getFluid(1_000))
+                .fluidOutputs(Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(1_000))
                 .duration(41 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)
                 .addTo(mixerNonCellRecipes);
@@ -1611,12 +1609,12 @@ public class MixerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.getIntegratedCircuit(10))
                 .fluidInputs(
-                    MaterialsUEVplus.DimensionallyTranscendentCrudeCatalyst.getFluid(1_000),
+                    Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(1_000),
                     Materials.Radon.getPlasma(1_000),
                     Materials.Nickel.getPlasma(1_000),
                     Materials.Boron.getPlasma(1_000),
                     Materials.Sulfur.getPlasma(1_000))
-                .fluidOutputs(MaterialsUEVplus.DimensionallyTranscendentProsaicCatalyst.getFluid(1_000))
+                .fluidOutputs(Materials.DimensionallyTranscendentProsaicCatalyst.getFluid(1_000))
                 .duration(41 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_UV)
                 .addTo(mixerNonCellRecipes);
@@ -1624,12 +1622,12 @@ public class MixerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.getIntegratedCircuit(11))
                 .fluidInputs(
-                    MaterialsUEVplus.DimensionallyTranscendentProsaicCatalyst.getFluid(1_000),
+                    Materials.DimensionallyTranscendentProsaicCatalyst.getFluid(1_000),
                     Materials.Nitrogen.getPlasma(1_000),
                     Materials.Zinc.getPlasma(1_000),
                     Materials.Silver.getPlasma(1_000),
                     Materials.Titanium.getPlasma(1_000))
-                .fluidOutputs(MaterialsUEVplus.DimensionallyTranscendentResplendentCatalyst.getFluid(1_000))
+                .fluidOutputs(Materials.DimensionallyTranscendentResplendentCatalyst.getFluid(1_000))
                 .duration(41 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_UHV)
                 .addTo(mixerNonCellRecipes);
@@ -1637,12 +1635,12 @@ public class MixerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.getIntegratedCircuit(12))
                 .fluidInputs(
-                    MaterialsUEVplus.DimensionallyTranscendentResplendentCatalyst.getFluid(1_000),
+                    Materials.DimensionallyTranscendentResplendentCatalyst.getFluid(1_000),
                     Materials.Americium.getPlasma(1_000),
                     Materials.Bismuth.getPlasma(1_000),
                     Materials.Oxygen.getPlasma(1_000),
                     Materials.Tin.getPlasma(1_000))
-                .fluidOutputs(MaterialsUEVplus.DimensionallyTranscendentExoticCatalyst.getFluid(1_000))
+                .fluidOutputs(Materials.DimensionallyTranscendentExoticCatalyst.getFluid(1_000))
                 .duration(41 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_UEV)
                 .addTo(mixerNonCellRecipes);
@@ -1650,12 +1648,12 @@ public class MixerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.getIntegratedCircuit(13))
                 .fluidInputs(
-                    MaterialsUEVplus.DimensionallyTranscendentExoticCatalyst.getFluid(1_000),
+                    Materials.DimensionallyTranscendentExoticCatalyst.getFluid(1_000),
                     Materials.Lead.getPlasma(1_000),
                     Materials.Thorium.getPlasma(1_000),
                     Materials.Naquadria.getPlasma(100L),
-                    MaterialsUEVplus.RawStarMatter.getFluid(25L))
-                .fluidOutputs(MaterialsUEVplus.DimensionallyTranscendentStellarCatalyst.getFluid(1_000))
+                    Materials.RawStarMatter.getFluid(25L))
+                .fluidOutputs(Materials.DimensionallyTranscendentStellarCatalyst.getFluid(1_000))
                 .duration(41 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_UIV)
                 .addTo(mixerNonCellRecipes);
@@ -1663,7 +1661,7 @@ public class MixerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.IC2_Spray_WeedEx.get(1))
-            .fluidInputs(MaterialsKevlar.NaphthenicAcid.getFluid(10))
+            .fluidInputs(Materials.NaphthenicAcid.getFluid(10))
             .fluidOutputs(Materials.WeedEX9000.getFluid(750))
             .duration(5 * SECONDS)
             .eut(100)
@@ -1678,8 +1676,8 @@ public class MixerRecipes implements Runnable {
                 Materials.Firestone.getDust(13),
                 GGMaterial.atomicSeparationCatalyst.get(OrePrefixes.dust, 13),
                 GTUtility.getIntegratedCircuit(6))
-            .itemOutputs(MaterialsUEVplus.Mellion.getDust(63))
-            .fluidInputs(MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(5_000))
+            .itemOutputs(Materials.Mellion.getDust(63))
+            .fluidInputs(Materials.DimensionallyTranscendentResidue.getFluid(5_000))
             .duration(15 * SECONDS)
             .eut((int) TierEU.RECIPE_UMV)
             .addTo(mixerRecipes);

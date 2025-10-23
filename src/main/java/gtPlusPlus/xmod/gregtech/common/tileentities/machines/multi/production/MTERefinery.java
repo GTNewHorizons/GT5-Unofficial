@@ -49,17 +49,15 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
 
     @Override
     public String getMachineType() {
-        return "Fuel Refinery";
+        return "Fuel Refinery, RFPP";
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Fission Fuel Processing Unit")
             .addInfo("Refines fluorides and Uranium into nuclear fuel for the LFTR")
             .addInfo("LFTR Fuel 2 and Fuel 3 have alternative, much more efficient recipes")
-            .addInfo("However, they require fission breeding outputs from the LFTR itself")
             .addInfo("Only one Energy Hatch is allowed per Processing Unit")
             .addInfo("All recipe times in this multi are very long, watch out!")
             .addPollutionAmount(getPollutionPerSecond(null))
@@ -75,8 +73,8 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
             .addMaintenanceHatch("Base platform", 1)
             .addEnergyHatch("Base platform", 1)
             .addStructureInfo("Muffler's Tier must be IV+")
-            .addStructureInfo("2-4x Input Hatches, 1-2x Output Hatches")
-            .addStructureInfo("1x Muffler, 1x Maintenance Hatch, 1x Energy Hatch")
+            .addStructureInfo("2+ Input Hatches, 1+ Output Hatches")
+            .addStructureInfo("1 Muffler Hatch, 1 Maintenance Hatch, 1 Energy Hatch")
             .toolTipFinisher();
         return tt;
     }

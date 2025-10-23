@@ -19,6 +19,7 @@ import gregtech.api.util.GTUtility;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
 import mods.railcraft.common.items.RailcraftToolItems;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class PyrolyseRecipes implements Runnable {
 
     @Override

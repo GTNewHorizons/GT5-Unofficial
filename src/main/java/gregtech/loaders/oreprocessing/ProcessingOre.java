@@ -20,6 +20,8 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.common.ores.OreInfo;
+import gregtech.common.ores.OreManager;
 
 public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -215,24 +217,34 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
                 .eut(16)
                 .addTo(hammerRecipes);
 
+            ItemStack byproduct = GTOreDictUnificator
+                .get(OrePrefixes.gem, tPrimaryByMaterial, GTUtility.copyAmount(1, tPrimaryByProduct), 1L);
+
+            if (tMaterial.contains(SubTag.PULVERIZING_CINNABAR)) {
+                byproduct = GTOreDictUnificator.get(OrePrefixes.crystal, Materials.Cinnabar, byproduct, 1L);
+            }
+
+            ItemStack stoneDust = null;
+
+            try (OreInfo<?> info = OreManager.getOreInfo(aOreStack)) {
+                if (info != null) {
+                    stoneDust = info.stoneType.getDust(true, 1);
+                }
+            }
+
+            if (stoneDust == null) {
+                stoneDust = GTOreDictUnificator.getDust(aPrefix.mSecondaryMaterial);
+            }
+
             int chanceOre2 = tPrimaryByProduct == null ? 0
                 : tPrimaryByProduct.stackSize * 10 * aMultiplier * aMaterial.mByProductMultiplier;
             chanceOre2 = 100 * chanceOre2; // converting to the GT format, 100% is 10000
             GTValues.RA.stdBuilder()
                 .itemInputs(aOreStack)
-                .itemOutputs(
-                    GTUtility.mul(2, tCrushed),
-                    tMaterial.contains(SubTag.PULVERIZING_CINNABAR) ? GTOreDictUnificator.get(
-                        OrePrefixes.crystal,
-                        Materials.Cinnabar,
-                        GTOreDictUnificator
-                            .get(OrePrefixes.gem, tPrimaryByMaterial, GTUtility.copyAmount(1, tPrimaryByProduct), 1L),
-                        1L)
-                        : GTOreDictUnificator
-                            .get(OrePrefixes.gem, tPrimaryByMaterial, GTUtility.copyAmount(1, tPrimaryByProduct), 1L),
-                    GTOreDictUnificator.getDust(aPrefix.mSecondaryMaterial))
+                .itemOutputs(GTUtility.mul(2, tCrushed), byproduct, stoneDust)
                 .outputChances(10000, chanceOre2, 5000)
                 .duration(20 * SECONDS)
+                .nbtSensitive()
                 .eut(2)
                 .addTo(maceratorRecipes);
         }

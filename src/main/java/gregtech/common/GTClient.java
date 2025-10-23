@@ -96,6 +96,7 @@ import gregtech.common.entity.EntityPowderBarrelPrimed;
 import gregtech.common.misc.GTPowerfailCommandClient;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.pollution.PollutionRenderer;
+import gregtech.common.powergoggles.PowerGogglesCommand;
 import gregtech.common.render.BaseMetaTileEntityRenderer;
 import gregtech.common.render.BlackholeRenderer;
 import gregtech.common.render.DroneRender;
@@ -287,6 +288,7 @@ public class GTClient extends GTProxy {
         Materials.initClient();
 
         ClientCommandHandler.instance.registerCommand(new GTPowerfailCommandClient());
+        ClientCommandHandler.instance.registerCommand(new PowerGogglesCommand());
 
         if (Mods.Navigator.isModLoaded()) {
             registerMapLayers();

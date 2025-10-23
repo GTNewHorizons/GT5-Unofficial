@@ -12,6 +12,8 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.ImmutableSet;
@@ -30,7 +32,8 @@ import gregtech.api.interfaces.tileentity.IColoredTileEntity;
  * Used to provide a consistent interface for dealing with colors of blocks for the various spray can items.
  * <p>
  * Call {@link #getInstance(EntityPlayer, MovingObjectPosition)} or
- * {@link #getInstance(World, int, int, int, ForgeDirection, EntityPlayer)} to acquire an instance of this class.
+ * {@link #getInstance(EntityPlayer, int, int, int, ForgeDirection)}
+ * to acquire an instance of this class.
  */
 public abstract class ColoredBlockContainer {
 
@@ -70,29 +73,26 @@ public abstract class ColoredBlockContainer {
 
     private ColoredBlockContainer() {}
 
-    public static ColoredBlockContainer getInstance(EntityPlayer player, MovingObjectPosition position) {
-        if (position == null || position.typeOfHit != MovingObjectPosition.MovingObjectType.BLOCK) {
+    public static ColoredBlockContainer getInstance(@NotNull EntityPlayer player,
+        @NotNull MovingObjectPosition position) {
+        if (position.typeOfHit != MovingObjectPosition.MovingObjectType.BLOCK) {
             return NULL_INSTANCE;
         }
         return getInstance(
-            player.worldObj,
+            player,
             position.blockX,
             position.blockY,
             position.blockZ,
-            ForgeDirection.getOrientation(position.sideHit),
-            player);
+            ForgeDirection.getOrientation(position.sideHit));
     }
 
-    public static ColoredBlockContainer getInstance(EntityPlayer player, TileEntity tileEntity, ForgeDirection side) {
-        if (tileEntity == null) {
-            return NULL_INSTANCE;
-        }
-
-        return getInstance(player.worldObj, tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, side, player);
+    public static ColoredBlockContainer getInstance(@NotNull EntityPlayer player, @NotNull TileEntity tileEntity,
+        @NotNull ForgeDirection side) {
+        return getInstance(player, tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, side);
     }
 
-    public static ColoredBlockContainer getInstance(World world, int x, int y, int z, ForgeDirection side,
-        EntityPlayer player) {
+    public static ColoredBlockContainer getInstance(EntityPlayer player, int x, int y, int z, ForgeDirection side) {
+        final World world = player.getEntityWorld();
         final Block block = world.getBlock(x, y, z);
 
         // The vanilla method returns Blocks.air instead of null for a negative result

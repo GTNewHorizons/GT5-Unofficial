@@ -579,7 +579,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
             if (MathUtils.randFloat(0, 10000000) / 10000000f < (1.2f - (0.2 * this.mPipeCasingTier))) {
                 int damage = getDamage(aStack) + 1;
                 if (damage >= getMaxCatalystDurability()) {
-                    addOutput(CI.getEmptyCatalyst(1));
+                    addOutputPartial(CI.getEmptyCatalyst(1));
                     aStack.stackSize -= 1;
                     return aStack.stackSize == 0;
                 } else {

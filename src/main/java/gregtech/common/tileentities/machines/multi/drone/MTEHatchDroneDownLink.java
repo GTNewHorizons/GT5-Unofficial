@@ -155,7 +155,7 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
             if (aPlayer instanceof FakePlayer) return false;
             if (!hasConnection()) {
                 aPlayer.addChatComponentMessage(new ChatComponentTranslation("GT5U.machines.dronecentre.noconnection"));
-                return false;
+                return true;
             }
             openGui(aPlayer);
             return true;

@@ -1,5 +1,7 @@
 package gregtech.loaders.preload;
 
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.addItemTooltip;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.chain;
 import static gregtech.api.enums.MetaTileEntityIDs.*;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.Thaumcraft;
@@ -45,6 +47,9 @@ import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 
 import net.minecraft.util.EnumChatFormatting;
 
+import org.apache.commons.lang3.ArrayUtils;
+
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MachineType;
 import gregtech.api.enums.SoundResource;
@@ -55,6 +60,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchBulkCatalystHousing;
 import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.metatileentity.implementations.MTEHatchEnergyDebug;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.metatileentity.implementations.MTEHatchMagnet;
@@ -133,6 +139,7 @@ import gregtech.common.tileentities.machines.multi.MTEAirFilter2;
 import gregtech.common.tileentities.machines.multi.MTEAirFilter3;
 import gregtech.common.tileentities.machines.multi.MTEAssemblyLine;
 import gregtech.common.tileentities.machines.multi.MTEBrickedBlastFurnace;
+import gregtech.common.tileentities.machines.multi.MTEChamberCentrifuge;
 import gregtech.common.tileentities.machines.multi.MTECharcoalPit;
 import gregtech.common.tileentities.machines.multi.MTECleanroom;
 import gregtech.common.tileentities.machines.multi.MTEConcreteBackfiller1;
@@ -164,6 +171,7 @@ import gregtech.common.tileentities.machines.multi.MTELargeTurbineGas;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbineHPSteam;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbinePlasma;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbineSteam;
+import gregtech.common.tileentities.machines.multi.MTELatex;
 import gregtech.common.tileentities.machines.multi.MTEMultiAutoclave;
 import gregtech.common.tileentities.machines.multi.MTEMultiCanner;
 import gregtech.common.tileentities.machines.multi.MTEMultiFurnace;
@@ -550,6 +558,19 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEIndustrialBrewery(INDUSTRIAL_BREWERY_CONTROLLER.ID, "multimachine.brewery", "Big Barrel Brewery")
                 .getStackForm(1));
 
+        ItemList.Machine_Multi_ChamberCentrifuge.set(
+            new MTEChamberCentrifuge(
+                CHAMBER_CENTRIFUGE_CONTROLLER.ID,
+                "multimachine.chambercentrifuge",
+                "Spinmatron-2737").getStackForm(1));
+        addItemTooltip(
+            ItemList.Machine_Multi_ChamberCentrifuge.get(1),
+            chain(
+                () -> "Authors: ",
+                GTValues.fancyAuthorChrom,
+                () -> EnumChatFormatting.GRAY + " & ",
+                GTValues.AuthorNoc));
+
         ItemList.Machine_Multi_Autoclave.set(
             new MTEMultiAutoclave(MULTI_AUTOCLAVE_CONTROLLER.ID, "multimachine.autoclave", "Industrial Autoclave")
                 .getStackForm(1));
@@ -571,6 +592,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 LARGE_HADRON_COLLIDER.ID,
                 "multimachine.large-hadron-collider",
                 "Large Hadron Collider").getStackForm(1));
+      
+        ItemList.LATEX.set(new MTELatex(LATEX.ID, "multimachine.latex", "L.A.T.E.X.").getStackForm(1));
+        addItemTooltip(ItemList.LATEX.get(1), chain(() -> "Author: ", GTValues.AuthorThree));
 
         if (Thaumcraft.isModLoaded()) {
             ItemList.ResearchCompleter.set(
@@ -4102,7 +4126,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 1,
                 MachineType.CUTTING_MACHINE.tooltipDescription(),
                 RecipeMaps.cutterRecipes,
-                1,
+                2,
                 2,
                 true,
                 SoundResource.GTCEU_LOOP_CUT,
@@ -7638,6 +7662,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     }
 
+    @Deprecated
     private void registerSlicingMachine() {
         ItemList.Machine_LV_Slicer.set(
             new MTEBasicMachineWithRecipe(
@@ -7645,7 +7670,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "basicmachine.slicer.tier.01",
                 "Basic Slicing Machine",
                 1,
-                MachineType.SLICER.tooltipDescription(),
+                ArrayUtils.add(
+                    MachineType.SLICER.tooltipDescription(),
+                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
                 RecipeMaps.slicerRecipes,
                 2,
                 1,
@@ -7660,7 +7687,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "basicmachine.slicer.tier.02",
                 "Advanced Slicing Machine",
                 2,
-                MachineType.SLICER.tooltipDescription(),
+                ArrayUtils.add(
+                    MachineType.SLICER.tooltipDescription(),
+                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
                 RecipeMaps.slicerRecipes,
                 2,
                 1,
@@ -7675,7 +7704,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "basicmachine.slicer.tier.03",
                 "Advanced Slicing Machine II",
                 3,
-                MachineType.SLICER.tooltipDescription(),
+                ArrayUtils.add(
+                    MachineType.SLICER.tooltipDescription(),
+                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
                 RecipeMaps.slicerRecipes,
                 2,
                 1,
@@ -7690,7 +7721,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "basicmachine.slicer.tier.04",
                 "Advanced Slicing Machine III",
                 4,
-                MachineType.SLICER.tooltipDescription(),
+                ArrayUtils.add(
+                    MachineType.SLICER.tooltipDescription(),
+                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
                 RecipeMaps.slicerRecipes,
                 2,
                 1,
@@ -7705,7 +7738,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "basicmachine.slicer.tier.05",
                 "Advanced Slicing Machine IV",
                 5,
-                MachineType.SLICER.tooltipDescription(),
+                ArrayUtils.add(
+                    MachineType.SLICER.tooltipDescription(),
+                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
                 RecipeMaps.slicerRecipes,
                 2,
                 1,
@@ -7720,7 +7755,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "basicmachine.slicer.tier.06",
                 "Elite Slicing Machine",
                 6,
-                MachineType.SLICER.tooltipDescription(),
+                ArrayUtils.add(
+                    MachineType.SLICER.tooltipDescription(),
+                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
                 slicerRecipes,
                 2,
                 1,
@@ -7735,7 +7772,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "basicmachine.slicer.tier.07",
                 "Elite Slicing Machine II",
                 7,
-                MachineType.SLICER.tooltipDescription(),
+                ArrayUtils.add(
+                    MachineType.SLICER.tooltipDescription(),
+                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
                 slicerRecipes,
                 2,
                 1,
@@ -7750,7 +7789,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "basicmachine.slicer.tier.08",
                 "Ultimate Quantum Slicer",
                 8,
-                MachineType.SLICER.tooltipDescription(),
+                ArrayUtils.add(
+                    MachineType.SLICER.tooltipDescription(),
+                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
+
                 slicerRecipes,
                 2,
                 1,
@@ -7765,7 +7807,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "basicmachine.slicer.tier.09",
                 "Epic Quantum Slicer",
                 9,
-                MachineType.SLICER.tooltipDescription(),
+                ArrayUtils.add(
+                    MachineType.SLICER.tooltipDescription(),
+                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
+
                 slicerRecipes,
                 2,
                 1,
@@ -7780,7 +7825,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "basicmachine.slicer.tier.10",
                 "Epic Quantum Slicer II",
                 10,
-                MachineType.SLICER.tooltipDescription(),
+                ArrayUtils.add(
+                    MachineType.SLICER.tooltipDescription(),
+                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
+
                 slicerRecipes,
                 2,
                 1,
@@ -7795,7 +7843,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "basicmachine.slicer.tier.11",
                 "Epic Quantum Slicer III",
                 11,
-                MachineType.SLICER.tooltipDescription(),
+                ArrayUtils.add(
+                    MachineType.SLICER.tooltipDescription(),
+                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
+
                 slicerRecipes,
                 2,
                 1,
@@ -7810,7 +7861,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "basicmachine.slicer.tier.12",
                 "Epic Quantum Slicer IV",
                 12,
-                MachineType.SLICER.tooltipDescription(),
+                ArrayUtils.add(
+                    MachineType.SLICER.tooltipDescription(),
+                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
+
                 slicerRecipes,
                 2,
                 1,
@@ -8982,6 +9036,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.Hatch_Energy_UXV.set(
             new MTEHatchEnergy(ENERGY_HATCH_UXV.ID, "hatch.energy.tier.13", "UXV Energy Hatch", 13).getStackForm(1L));
+
+        ItemList.DebugEnergyHatch.set(
+            new MTEHatchEnergyDebug(ENERGY_HATCH_DEBUG.ID, "hatch.energy.debug", "Debug Energy Hatch", 14)
+                .getStackForm(1L));
     }
 
     private static void registerInputHatch() {
@@ -10966,6 +11024,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerOven();
         registerNameRemover();
         registerAirFilters();
+        registerCableCoaters();
 
         ItemList.AdvDebugStructureWriter.set(
             new MTEAdvDebugStructureWriter(
@@ -11036,5 +11095,86 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 LargeMolecularAssembler.ID,
                 "largemolecularassembler",
                 "Large Molecular Assembler").getStackForm(1));
+    }
+
+    private static void registerCableCoaters() {
+
+        ItemList.Machine_LV_CableCoater.set(
+            new MTEBasicMachineWithRecipe(
+                CABLECOATER_LV.ID,
+                "basicmachine.cablecoater.tier.01",
+                "Basic Cable Coater",
+                1,
+                MachineType.CABLE_COATER.tooltipDescription(),
+                RecipeMaps.cableRecipes,
+                6,
+                1,
+                true,
+                SoundResource.GTCEU_LOOP_ASSEMBLER,
+                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
+                "CABLE_COATER").getStackForm(1L));
+
+        ItemList.Machine_MV_CableCoater.set(
+            new MTEBasicMachineWithRecipe(
+                CABLECOATER_MV.ID,
+                "basicmachine.cablecoater.tier.02",
+                "Advanced Cable Coater",
+                2,
+                MachineType.CABLE_COATER.tooltipDescription(),
+                RecipeMaps.cableRecipes,
+                6,
+                1,
+                true,
+                SoundResource.GTCEU_LOOP_ASSEMBLER,
+                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
+                "CABLE_COATER").getStackForm(1L));
+
+        ItemList.Machine_HV_CableCoater.set(
+            new MTEBasicMachineWithRecipe(
+                CABLECOATER_HV.ID,
+                "basicmachine.cablecoater.tier.03",
+                "Advanced Cable Coater II",
+                3,
+                MachineType.CABLE_COATER.tooltipDescription(),
+                RecipeMaps.cableRecipes,
+                6,
+                1,
+                true,
+                SoundResource.GTCEU_LOOP_ASSEMBLER,
+                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
+                "CABLE_COATER").getStackForm(1L));
+
+        ItemList.Machine_EV_CableCoater.set(
+            new MTEBasicMachineWithRecipe(
+                CABLECOATER_EV.ID,
+                "basicmachine.cablecoater.tier.04",
+                "Advanced Cable Coater III",
+                4,
+                MachineType.CABLE_COATER.tooltipDescription(),
+                RecipeMaps.cableRecipes,
+                6,
+                1,
+                true,
+                SoundResource.GTCEU_LOOP_ASSEMBLER,
+                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
+                "CABLE_COATER").getStackForm(1L));
+
+        addItemTooltip(
+            ItemList.Machine_LV_CableCoater.get(1),
+            () -> EnumChatFormatting.DARK_RED
+                + "Cable Recipes in the Assembler TO BE REMOVED in the next major update!");
+        addItemTooltip(
+            ItemList.Machine_MV_CableCoater.get(1),
+            () -> EnumChatFormatting.DARK_RED
+                + "Cable Recipes in the Assembler TO BE REMOVED in the next major update!");
+        addItemTooltip(
+            ItemList.Machine_HV_CableCoater.get(1),
+            () -> EnumChatFormatting.DARK_RED
+                + "Cable Recipes in the Assembler TO BE REMOVED in the next major update!");
+        addItemTooltip(
+            ItemList.Machine_EV_CableCoater.get(1),
+            () -> EnumChatFormatting.DARK_RED
+                + "Cable Recipes in the Assembler TO BE REMOVED in the next major update!");
+
     }
 }

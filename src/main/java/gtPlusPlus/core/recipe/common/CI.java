@@ -326,7 +326,7 @@ public class CI {
                 case 5 -> ItemUtils.getOrePrefixStack(aPrefix, MaterialsAlloy.MARAGING350, aAmount);
                 case 6 -> ItemUtils.getOrePrefixStack(aPrefix, MaterialsAlloy.STABALLOY, aAmount);
                 case 7 -> ItemUtils.getOrePrefixStack(aPrefix, MaterialsAlloy.HASTELLOY_X, aAmount);
-                case 8 -> ItemUtils.getOrePrefixStack(aPrefix, Materials.Ultimate, aAmount);
+                case 8 -> ItemUtils.getOrePrefixStack(aPrefix, Materials.ZPM, aAmount);
                 case 9 -> ItemUtils.getOrePrefixStack(OrePrefixes.pipeMedium, Materials.SuperconductorUHV, aAmount);
                 case 10 -> ItemUtils.getOrePrefixStack(aPrefix, Materials.Europium, aAmount);
                 default -> ItemUtils.getOrePrefixStack(aPrefix, Materials.Titanium, aAmount);

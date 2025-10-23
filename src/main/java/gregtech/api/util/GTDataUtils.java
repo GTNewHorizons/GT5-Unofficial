@@ -8,7 +8,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.IntFunction;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
+
+import org.jetbrains.annotations.Nullable;
+
+import it.unimi.dsi.fastutil.objects.ObjectIterators;
 
 /**
  * Various util methods for managing raw data structures that are minecraft/gt agnostic.
@@ -44,6 +49,75 @@ public class GTDataUtils {
         return out;
     }
 
+    public static int countNonNulls(Object[] array) {
+        int l = array.length;
+        int count = 0;
+
+        // noinspection ForLoopReplaceableByForEach
+        for (int i = 0; i < l; i++) {
+            if (array[i] != null) count++;
+        }
+
+        return count;
+    }
+
+    public static <T> T[] withoutNulls(T[] array) {
+        if (array.length == 0) return array;
+
+        int nonNullCount = GTDataUtils.countNonNulls(array);
+
+        if (nonNullCount == array.length) return array;
+
+        T[] out = Arrays.copyOf(array, nonNullCount);
+
+        int j = 0, l = array.length;
+
+        for (int i = 0; i < l; i++) {
+            T t = array[i];
+
+            if (t != null) out[j++] = t;
+        }
+
+        return out;
+    }
+
+    public static <T> ArrayList<T> filterList(List<T> input, Predicate<T> filter) {
+        ArrayList<T> output = new ArrayList<>(input.size());
+
+        for (int i = 0, inputSize = input.size(); i < inputSize; i++) {
+            T t = input.get(i);
+
+            if (filter.test(t)) {
+                output.add(t);
+            }
+        }
+
+        return output;
+    }
+
+    public static <T, S extends T> void addAllFiltered(List<S> input, List<T> output, Predicate<S> filter) {
+        for (int i = 0, inputSize = input.size(); i < inputSize; i++) {
+            S s = input.get(i);
+
+            if (filter.test(s)) {
+                output.add(s);
+            }
+        }
+    }
+
+    /**
+     * Upcasts a list of a concrete type into a list of interfaces since java can't do this implicitly with generics.
+     */
+    public static <I, T extends I> ArrayList<I> upcast(List<T> input) {
+        ArrayList<I> output = new ArrayList<>(input.size());
+
+        for (int i = 0, inputSize = input.size(); i < inputSize; i++) {
+            output.add(input.get(i));
+        }
+
+        return output;
+    }
+
     public static <T> int findIndex(T[] array, T value) {
         for (int i = 0; i < array.length; i++) {
             if (array[i] == value) return i;
@@ -52,11 +126,13 @@ public class GTDataUtils {
         return -1;
     }
 
-    public static <T> T getIndexSafe(T[] array, int index) {
+    @Nullable
+    public static <T> T getIndexSafe(@Nullable T @Nullable [] array, int index) {
         return array == null || index < 0 || index >= array.length ? null : array[index];
     }
 
-    public static <T> T getIndexSafe(List<T> list, int index) {
+    @Nullable
+    public static <T> T getIndexSafe(@Nullable List<@Nullable T> list, int index) {
         return list == null || index < 0 || index >= list.size() ? null : list.get(index);
     }
 
@@ -67,6 +143,11 @@ public class GTDataUtils {
         l.removeIf(t -> !set.add(t));
 
         return set;
+    }
+
+    /** A simple, low allocation Iterable that contains one value. */
+    public static <T> Iterable<T> singletonIterable(T object) {
+        return () -> ObjectIterators.singleton(object);
     }
 
     public static <T> Stream<T> ofNullableStream(T value) {

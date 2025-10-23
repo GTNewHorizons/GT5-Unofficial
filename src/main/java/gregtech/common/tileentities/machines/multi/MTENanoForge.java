@@ -56,7 +56,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.INEIPreviewModifier;
@@ -82,7 +81,6 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.common.blocks.BlockCasings13;
 import gregtech.common.blocks.BlockCasings8;
-import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.render.TileEntityNanoForgeRenderer;
 import tectech.thing.gui.TecTechUITextures;
 
@@ -345,9 +343,9 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                 .buildAndChain(GregTechAPI.sBlockCasings8, 10))
         .addElement('J', ofBlock(GregTechAPI.sBlockCasings13, 5))
         .addElement('K', ofBlock(GregTechAPI.sBlockCasings13, 7))
-        .addElement('M', ofFrame(MaterialsUEVplus.MagMatter))
-        .addElement('N', ofFrame(MaterialsUEVplus.BlackDwarfMatter))
-        .addElement('O', ofFrame(MaterialsUEVplus.WhiteDwarfMatter))
+        .addElement('M', ofFrame(Materials.MagMatter))
+        .addElement('N', ofFrame(Materials.BlackDwarfMatter))
+        .addElement('O', ofFrame(Materials.WhiteDwarfMatter))
         .addElement('P', ofBlock(GregTechAPI.sBlockCasings13, 8))
         .addElement('Q', ofBlock(GregTechAPI.sBlockCasings13, 9))
         .addElement(
@@ -475,17 +473,11 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
 
                     busScan: for (int i = 0; i < mInputBusses.size(); i++) {
                         MTEHatchInputBus inputBus = mInputBusses.get(i);
-                        ItemStack[] busInventory = inputBus.getRealInventory();
-                        for (int j = 0; j < busInventory.length; j++) {
-                            ItemStack inputItem = null;
-                            if (inputBus instanceof MTEHatchInputBusME meBus) {
-                                if (j == 18) {
-                                    break;
-                                }
-                                inputItem = meBus.getRealInventory()[j + 16];
-                            } else {
-                                inputItem = inputBus.getStackInSlot(j);
-                            }
+                        int invSize = inputBus.getSizeInventory();
+
+                        for (int j = 0; j < invSize; j++) {
+                            ItemStack inputItem = inputBus.getStackInSlot(j);
+
                             if (inputItem != null) {
                                 ItemData data = GTOreDictUnificator.getAssociation(inputItem);
                                 if (data == null) {
@@ -522,10 +514,8 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
 
                     if (foundNanite) {
                         for (MTEHatchInput hatch : filterValidMTEs(mInputHatches)) {
-                            FluidStack drained = hatch.drain(
-                                ForgeDirection.UNKNOWN,
-                                MaterialsUEVplus.MagMatter.getMolten(Integer.MAX_VALUE),
-                                true);
+                            FluidStack drained = hatch
+                                .drain(ForgeDirection.UNKNOWN, Materials.MagMatter.getMolten(Integer.MAX_VALUE), true);
                             if (drained == null) {
                                 continue;
                             }
@@ -641,12 +631,12 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                 mSpecialTier = 2;
             }
 
-            if (aStack.isItemEqual(MaterialsUEVplus.TranscendentMetal.getNanite(1))
+            if (aStack.isItemEqual(Materials.TranscendentMetal.getNanite(1))
                 && checkPiece(STRUCTURE_PIECE_TIER2, -7, 14, 4)
                 && checkPiece(STRUCTURE_PIECE_TIER3, 14, 26, 4)) {
                 mSpecialTier = 3;
             }
-        } else if (aStack != null && aStack.isItemEqual(MaterialsUEVplus.Eternity.getNanite(1))) {
+        } else if (aStack != null && aStack.isItemEqual(Materials.Eternity.getNanite(1))) {
             casingAmount = 0;
             if (checkPiece(STRUCTURE_PIECE_TIER4_BASE, 20, 33, 0) && casingAmount >= 2784) {
                 if (renderActive) {
@@ -872,6 +862,11 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
             + tierThree
             + EnumChatFormatting.GRAY
             + " ";
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
     }
 
     @Override

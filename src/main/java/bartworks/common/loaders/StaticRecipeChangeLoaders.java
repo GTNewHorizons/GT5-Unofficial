@@ -53,7 +53,7 @@ public class StaticRecipeChangeLoaders {
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
             StaticRecipeChangeLoaders.runMaterialLinker(werkstoff);
             if (werkstoff.getGenerationFeatures().enforceUnification) {
-                HashSet<String> oreDictNames = new HashSet<>(werkstoff.getADDITIONAL_OREDICT());
+                HashSet<String> oreDictNames = new HashSet<>(werkstoff.getAdditionalOredict());
                 oreDictNames.add(werkstoff.getVarName());
                 StaticRecipeChangeLoaders.runMoltenUnificationEnforcement(werkstoff);
                 StaticRecipeChangeLoaders.runUnficationDeleter(werkstoff);

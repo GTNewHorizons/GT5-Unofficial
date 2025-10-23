@@ -20,7 +20,6 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.RecipeCategories;
@@ -28,6 +27,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtnhlanth.common.register.WerkstoffMaterialPool;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class Pulverizer implements Runnable {
 
     @Override
@@ -76,6 +76,7 @@ public class Pulverizer implements Runnable {
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.NetherQuartz, 4))
             .duration(19 * SECONDS + 12 * TICKS)
             .eut(4)
+            .recipeCategory(RecipeCategories.maceratorRecycling)
             .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
@@ -83,6 +84,7 @@ public class Pulverizer implements Runnable {
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.NetherQuartz, 4))
             .duration(19 * SECONDS + 12 * TICKS)
             .eut(4)
+            .recipeCategory(RecipeCategories.maceratorRecycling)
             .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
@@ -90,6 +92,15 @@ public class Pulverizer implements Runnable {
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.NetherQuartz, 4))
             .duration(19 * SECONDS + 12 * TICKS)
             .eut(4)
+            .recipeCategory(RecipeCategories.maceratorRecycling)
+            .addTo(maceratorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.block, Materials.Ichorium, 1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Ichorium, 2))
+            .duration(44 * SECONDS + 2 * TICKS)
+            .eut(4)
+            .recipeCategory(RecipeCategories.maceratorRecycling)
             .addTo(maceratorRecipes);
 
         // marbe dust( stone dust
@@ -265,7 +276,7 @@ public class Pulverizer implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Casing_Coil_Eternal.get(1))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.SpaceTime, 9L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.SpaceTime, 9L),
                 MaterialsElements.STANDALONE.HYPOGEN.getDust(4),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.PrismaticNaquadah, 64),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Netherite, 8))

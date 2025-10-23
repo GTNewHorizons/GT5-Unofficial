@@ -82,10 +82,8 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.common.misc.GTStructureChannels;
 
@@ -236,7 +234,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             .beginStructureBlock(3, 9, 3, false)
             .addController("Front 3rd layer center")
             .addCasingInfoMin("Solid Steel Machine Casing", 8, false)
-            .addStructureInfo("Casings can be replaced with Explosion Warning Signs")
+            .addStructureInfo("Casings can be replaced with Explosion Hazard Signs")
             .addOtherStructurePart("Transformer-Winding Blocks", "Outer layer 2,3,7,8")
             .addOtherStructurePart("Nickel-Zinc-Ferrite Blocks", "Inner layer 2,3,7,8")
             .addOtherStructurePart("Containment Blocks", "Layer 4,5,6")
@@ -257,17 +255,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
-
-            @NotNull
-            @Override
-            protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                // For overclocking we'll allow all power to be used
-                return super.createOverclockCalculator(recipe)
-                    .setEUt(MTEElectricImplosionCompressor.this.getMaxInputEu())
-                    .setAmperage(1);
-            }
-        }.setMaxParallelSupplier(this::getTrueParallel);
+        return new ProcessingLogic().setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override

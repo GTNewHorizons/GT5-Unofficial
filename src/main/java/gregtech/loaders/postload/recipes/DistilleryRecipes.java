@@ -15,8 +15,6 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsKevlar;
-import gregtech.api.enums.MaterialsOreAlum;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
@@ -24,6 +22,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class DistilleryRecipes implements Runnable {
 
     @Override
@@ -121,8 +120,8 @@ public class DistilleryRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(MaterialsOreAlum.SluiceSand.getDust(1))
-            .fluidInputs(MaterialsOreAlum.SluiceJuice.getFluid(1_000))
+            .itemOutputs(Materials.SluiceSand.getDust(1))
+            .fluidInputs(Materials.SluiceJuice.getFluid(1_000))
             .fluidOutputs(Materials.Water.getFluid(500))
             .duration(5 * SECONDS)
             .eut(16)
@@ -131,7 +130,7 @@ public class DistilleryRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(6))
             .fluidInputs(Materials.WoodTar.getFluid(200))
-            .fluidOutputs(MaterialsKevlar.IIIDimethylbenzene.getFluid(30))
+            .fluidOutputs(Materials.IIIDimethylbenzene.getFluid(30))
             .duration(16 * TICKS)
             .eut(64)
             .addTo(distilleryRecipes);
@@ -139,7 +138,7 @@ public class DistilleryRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(6))
             .fluidInputs(Materials.CharcoalByproducts.getGas(200))
-            .fluidOutputs(MaterialsKevlar.IIIDimethylbenzene.getFluid(20))
+            .fluidOutputs(Materials.IIIDimethylbenzene.getFluid(20))
             .duration(5 * SECONDS)
             .eut(64)
             .addTo(distilleryRecipes);
@@ -147,7 +146,7 @@ public class DistilleryRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(7))
             .fluidInputs(Materials.WoodTar.getFluid(200))
-            .fluidOutputs(MaterialsKevlar.IVDimethylbenzene.getFluid(30))
+            .fluidOutputs(Materials.IVDimethylbenzene.getFluid(30))
             .duration(16 * TICKS)
             .eut(64)
             .addTo(distilleryRecipes);
@@ -155,7 +154,7 @@ public class DistilleryRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(7))
             .fluidInputs(Materials.CharcoalByproducts.getGas(200))
-            .fluidOutputs(MaterialsKevlar.IVDimethylbenzene.getFluid(20))
+            .fluidOutputs(Materials.IVDimethylbenzene.getFluid(20))
             .duration(5 * SECONDS)
             .eut(64)
             .addTo(distilleryRecipes);
@@ -410,8 +409,8 @@ public class DistilleryRecipes implements Runnable {
         // C15H10N2O2(5HCl) = C15H10N2O2 + 5HCl
 
         GTValues.RA.stdBuilder()
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.DiphenylmethaneDiisocyanate, 29L))
-            .fluidInputs(MaterialsKevlar.DiphenylmethaneDiisocyanateMixture.getFluid(1_000))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.DiphenylmethaneDiisocyanate, 29L))
+            .fluidInputs(Materials.DiphenylmethaneDiisocyanateMixture.getFluid(1_000))
             .fluidOutputs(Materials.HydrochloricAcid.getFluid(5_000))
             .duration(2 * MINUTES + 5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -425,7 +424,7 @@ public class DistilleryRecipes implements Runnable {
                 Materials.WoodTar.getFluid(250),
                 Materials.WoodVinegar.getFluid(400),
                 Materials.WoodGas.getGas(250),
-                MaterialsKevlar.IIIDimethylbenzene.getFluid(100))
+                Materials.IIIDimethylbenzene.getFluid(100))
             .duration(2 * SECONDS)
             .eut(256)
             .addTo(distillationTowerRecipes);
@@ -438,7 +437,7 @@ public class DistilleryRecipes implements Runnable {
                 Materials.Phenol.getFluid(100),
                 Materials.Benzene.getFluid(400),
                 Materials.Toluene.getFluid(100),
-                MaterialsKevlar.IIIDimethylbenzene.getFluid(150))
+                Materials.IIIDimethylbenzene.getFluid(150))
             .duration(2 * SECONDS)
             .eut(256)
             .addTo(distillationTowerRecipes);
@@ -451,7 +450,7 @@ public class DistilleryRecipes implements Runnable {
                 Materials.Phenol.getFluid(100),
                 Materials.Benzene.getFluid(400),
                 Materials.Toluene.getFluid(100),
-                MaterialsKevlar.IVDimethylbenzene.getFluid(150))
+                Materials.IVDimethylbenzene.getFluid(150))
             .duration(2 * SECONDS)
             .eut(256)
             .addTo(distillationTowerRecipes);
@@ -464,7 +463,7 @@ public class DistilleryRecipes implements Runnable {
                 Materials.WoodTar.getFluid(250),
                 Materials.WoodVinegar.getFluid(400),
                 Materials.WoodGas.getGas(250),
-                MaterialsKevlar.IVDimethylbenzene.getFluid(100))
+                Materials.IVDimethylbenzene.getFluid(100))
             .duration(2 * SECONDS)
             .eut(256)
             .addTo(distillationTowerRecipes);
@@ -478,8 +477,8 @@ public class DistilleryRecipes implements Runnable {
                 Materials.WoodVinegar.getFluid(400),
                 Materials.WoodGas.getGas(250),
                 Materials.Dimethylbenzene.getFluid(20),
-                MaterialsKevlar.IIIDimethylbenzene.getFluid(60),
-                MaterialsKevlar.IVDimethylbenzene.getFluid(20))
+                Materials.IIIDimethylbenzene.getFluid(60),
+                Materials.IVDimethylbenzene.getFluid(20))
             .duration(2 * SECONDS)
             .eut(256)
             .addTo(distillationTowerRecipes);
@@ -493,8 +492,8 @@ public class DistilleryRecipes implements Runnable {
                 Materials.Benzene.getFluid(400),
                 Materials.Toluene.getFluid(100),
                 Materials.Dimethylbenzene.getFluid(30),
-                MaterialsKevlar.IIIDimethylbenzene.getFluid(90),
-                MaterialsKevlar.IVDimethylbenzene.getFluid(30))
+                Materials.IIIDimethylbenzene.getFluid(90),
+                Materials.IVDimethylbenzene.getFluid(30))
             .duration(2 * SECONDS)
             .eut(256)
             .addTo(distillationTowerRecipes);
@@ -506,7 +505,7 @@ public class DistilleryRecipes implements Runnable {
                 Materials.SulfuricHeavyFuel.getFluid(70),
                 Materials.SulfuricLightFuel.getFluid(130),
                 Materials.SulfuricNaphtha.getFluid(200),
-                MaterialsKevlar.NaphthenicAcid.getFluid(15),
+                Materials.NaphthenicAcid.getFluid(15),
                 Materials.SulfuricGas.getGas(1600))
             .duration(1 * SECONDS + 1 * TICKS)
             .eut(TierEU.RECIPE_HV)
@@ -519,7 +518,7 @@ public class DistilleryRecipes implements Runnable {
                 Materials.SulfuricHeavyFuel.getFluid(100),
                 Materials.SulfuricLightFuel.getFluid(500),
                 Materials.SulfuricNaphtha.getFluid(1_500),
-                MaterialsKevlar.NaphthenicAcid.getFluid(25),
+                Materials.NaphthenicAcid.getFluid(25),
                 Materials.SulfuricGas.getGas(600))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_HV)
@@ -532,7 +531,7 @@ public class DistilleryRecipes implements Runnable {
                 Materials.SulfuricHeavyFuel.getFluid(300),
                 Materials.SulfuricLightFuel.getFluid(1_000),
                 Materials.SulfuricNaphtha.getFluid(400),
-                MaterialsKevlar.NaphthenicAcid.getFluid(50),
+                Materials.NaphthenicAcid.getFluid(50),
                 Materials.SulfuricGas.getGas(1_200))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_HV)
@@ -545,7 +544,7 @@ public class DistilleryRecipes implements Runnable {
                 Materials.SulfuricHeavyFuel.getFluid(1_000),
                 Materials.SulfuricLightFuel.getFluid(450),
                 Materials.SulfuricNaphtha.getFluid(150),
-                MaterialsKevlar.NaphthenicAcid.getFluid(50),
+                Materials.NaphthenicAcid.getFluid(50),
                 Materials.SulfuricGas.getGas(600))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)

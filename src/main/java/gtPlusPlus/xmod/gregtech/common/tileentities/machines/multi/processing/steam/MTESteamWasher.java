@@ -51,6 +51,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -62,9 +63,10 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.BlockCasings1;
 import gregtech.common.blocks.BlockCasings2;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.gui.modularui.multiblock.base.MTESteamMultiBaseGui;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.gui.MTESteamWasherGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -429,6 +431,7 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
         super.saveNBTData(aNBT);
         aNBT.setInteger("tierMachine", tierMachine);
         aNBT.setInteger("mMode", machineMode);
+        aNBT.setInteger("tierMachineCasing", tierMachineCasing);
     }
 
     @Override
@@ -436,6 +439,7 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
         super.loadNBTData(aNBT);
         tierMachine = aNBT.getInteger("tierMachine");
         machineMode = aNBT.getInteger("mMode");
+        tierMachineCasing = aNBT.getInteger("tierMachineCasing");
     }
 
     @Override
@@ -551,7 +555,14 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
     }
 
     @Override
-    protected @NotNull MTESteamWasherGui getGui() {
-        return new MTESteamWasherGui(this);
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTESteamMultiBaseGui(this).withMachineModeIcons(
+            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_WASHPLANT,
+            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_SIMPLEWASHER);
+    }
+
+    @Override
+    public int getThemeTier() {
+        return tierMachineCasing;
     }
 }

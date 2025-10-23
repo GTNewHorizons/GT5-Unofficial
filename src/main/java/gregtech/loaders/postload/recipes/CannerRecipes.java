@@ -12,6 +12,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class CannerRecipes implements Runnable {
 
     @Override

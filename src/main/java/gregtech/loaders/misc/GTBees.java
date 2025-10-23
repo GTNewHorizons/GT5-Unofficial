@@ -60,7 +60,7 @@ public class GTBees {
     public static ItemComb combs;
 
     public GTBees() {
-        if (!(Forestry.isModLoaded() && GTMod.proxy.mGTBees)) {
+        if (!Forestry.isModLoaded() || !GTMod.proxy.mGTBees) {
             return;
         }
         GTFlowers.doInit();

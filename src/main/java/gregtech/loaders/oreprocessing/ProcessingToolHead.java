@@ -40,9 +40,9 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
-        boolean aSpecialRecipeReq1 = aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)
+        boolean aSpecialRecipeReq1 = aMaterial.mUnifiable && (aMaterial.mMaterialInto == aMaterial)
             && !aMaterial.contains(SubTag.NO_SMASHING);
-        boolean aSpecialRecipeReq2 = aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)
+        boolean aSpecialRecipeReq2 = aMaterial.mUnifiable && (aMaterial.mMaterialInto == aMaterial)
             && !aMaterial.contains(SubTag.NO_WORKING);
         boolean aNoWorking = aMaterial.contains(SubTag.NO_WORKING);
         boolean aProducesSoftMallet = aMaterial.contains(SubTag.BOUNCY) || aMaterial.contains(SubTag.WOOD)

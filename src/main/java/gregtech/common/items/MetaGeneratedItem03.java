@@ -23,6 +23,9 @@ import static gregtech.client.GTTooltipHandler.Tier.UXV;
 import static gregtech.client.GTTooltipHandler.Tier.ZPM;
 import static gregtech.client.GTTooltipHandler.registerTieredTooltip;
 import static gregtech.common.items.IDMetaItem03.Activated_Carbon_Filter_Mesh;
+import static gregtech.common.items.IDMetaItem03.Alumina_Support_Ring;
+import static gregtech.common.items.IDMetaItem03.Alumina_Support_Ring_Raw;
+import static gregtech.common.items.IDMetaItem03.Beryllium_Shielding_Plate;
 import static gregtech.common.items.IDMetaItem03.Brittle_Netherite_Scrap;
 import static gregtech.common.items.IDMetaItem03.Circuit_Biomainframe;
 import static gregtech.common.items.IDMetaItem03.Circuit_Bioprocessor;
@@ -204,6 +207,7 @@ import static gregtech.common.items.IDMetaItem03.KevlarFiber;
 import static gregtech.common.items.IDMetaItem03.LV_Coil;
 import static gregtech.common.items.IDMetaItem03.LuV_Coil;
 import static gregtech.common.items.IDMetaItem03.MV_Coil;
+import static gregtech.common.items.IDMetaItem03.Manafly;
 import static gregtech.common.items.IDMetaItem03.NandChip;
 import static gregtech.common.items.IDMetaItem03.Naquarite_Universal_Insulator_Foil;
 import static gregtech.common.items.IDMetaItem03.Netherite_Nanoparticles;
@@ -1268,6 +1272,18 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Intensely_Bonded_Netherite_Nanoparticles
             .set(addItem(Intensely_Bonded_Netherite_Nanoparticles.ID, "Intensely Bonded Netherite Nanoparticles", ""));
         ItemList.Hot_Netherite_Scrap.set(addItem(Hot_Netherite_Scrap.ID, "Hot Netherite Scrap", "Activated?"));
+        ItemList.Beryllium_Shielding_Plate.set(
+            addItem(
+                Beryllium_Shielding_Plate.ID,
+                "Beryllium Shielding Plate",
+                "A plate made of Beryllium, used for reactor shielding"));
+        ItemList.Alumina_Support_Ring.set(
+            addItem(Alumina_Support_Ring.ID, "Alumina Support Ring", "A support ring used for insulated fluid pipes"));
+        ItemList.Alumina_Support_Ring_Raw.set(
+            addItem(
+                Alumina_Support_Ring_Raw.ID,
+                "Raw Alumina Support Ring",
+                "An unfired support ring used for insulated fluid pipes"));
         ItemList.Prismarine_Precipitate.set(addItem(Prismarine_Precipitate.ID, "Prismarine Precipitate", ""));
         ItemList.Prismatic_Crystal.set(addItem(Prismatic_Crystal.ID, "Prismatic Crystal", ""));
         ItemList.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet
@@ -1423,6 +1439,14 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 White_Dwarf_Shape_Extruder_ToolHeadDrill.ID,
                 "White Dwarf Extruder Shape (Drill Head)",
                 "White Dwarf Extruder Shape for a Drill Head"));
+        ItemList.ManaFly.set(
+            addItem(
+                Manafly.ID,
+                "Manafly",
+                "If you sift this, you're a monster",
+                new TCAspects.TC_AspectStack(TCAspects.AQUA, 10L),
+                new TCAspects.TC_AspectStack(TCAspects.HERBA, 10L)));
+
         registerAllTieredTooltips();
         registerAllAnimatedTooltips();
         initOrePrefixes();
