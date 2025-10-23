@@ -3448,8 +3448,9 @@ public class ResearchStationAssemblyLine implements Runnable {
             2_048,
             (int) TierEU.RECIPE_UEV,
             64,
-            new Object[] { ItemList.Magnetic_Chassis_T1_Solidifier_Modular.get(1), ItemList.Circuit_Wafer_QPIC.get(64),
-                ItemList.Cover_SolarPanel_UV.get(2),
+            new Object[] { ItemList.Magnetic_Chassis_T1_Solidifier_Modular.get(1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.TengamAttuned, 6),
+                ItemList.Circuit_Wafer_QPIC.get(64), ItemList.Cover_SolarPanel_UV.get(2),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUEV, 2),
                 ItemList.Energy_Cluster.get(1), },
             new FluidStack[] { Materials.Neodymium.getMolten(36864), // 4 : 2 : 1 magnet ratio
