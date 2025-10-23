@@ -40,7 +40,7 @@ public class OrePrefixTextureID {
     public static final int TOOL_HEAD_BUZZ_SAW = 48;
     public static final int NANITES = 50;
     public static final int WIRE_FINE = 51;
-    public static final int GEAR_GT_SMALL = 52;
+    public static final int GEAR_SMALL = 52;
     public static final int ROTOR = 53;
     public static final int STICK_LONG = 54;
     public static final int SPRING_SMALL = 55;
@@ -49,7 +49,7 @@ public class OrePrefixTextureID {
     public static final int GEM_FLAWED = 60;
     public static final int GEM_FLAWLESS = 61;
     public static final int GEM_EXQUISITE = 62;
-    public static final int GEAR_GT = 63;
+    public static final int GEAR = 63;
     public static final int ORE_RAW = 64;
     public static final int ORE_SMALL = 67;
     public static final int ORE = 68;
@@ -60,7 +60,7 @@ public class OrePrefixTextureID {
     public static final int PIPE_MEDIUM = 80;
     public static final int PIPE_LARGE = 81;
     public static final int PIPE_HUGE = 82;
-    public static final int FRAME_GT = 83;
+    public static final int FRAME = 83;
     public static final int PIPE_QUADRUPLE = 84;
     public static final int PIPE_NONUPLE = 85;
     public static final int TURBINE_BLADE = 100;

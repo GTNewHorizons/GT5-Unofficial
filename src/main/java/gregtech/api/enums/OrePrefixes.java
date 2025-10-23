@@ -705,7 +705,7 @@ public class OrePrefixes {
         .recyclable()
         .materialGenerationBits(GEAR)
         .materialAmount(M * 1)
-        .textureIndex(OrePrefixTextureID.GEAR_GT_SMALL)
+        .textureIndex(OrePrefixTextureID.GEAR_SMALL)
         .build();
 
     /** Introduced by me because BuildCraft has ruined the gear Prefix... */
@@ -716,7 +716,7 @@ public class OrePrefixes {
         .recyclable()
         .materialGenerationBits(GEAR)
         .materialAmount(M * 4)
-        .textureIndex(OrePrefixTextureID.GEAR_GT)
+        .textureIndex(OrePrefixTextureID.GEAR)
         .build();
 
     /** 3/4 of a Plate or Gem used to shape a Lense. Normally only used on Transparent Materials. */
@@ -1315,7 +1315,7 @@ public class OrePrefixes {
         .skipActiveUnification()
         .recyclable()
         .materialAmount(M * 2)
-        .textureIndex(OrePrefixTextureID.FRAME_GT)
+        .textureIndex(OrePrefixTextureID.FRAME)
         .build();
 
     public static final OrePrefixes pipeTiny = new OrePrefixBuilder("pipeTiny").withDefaultLocalName("Tiny Pipes")
