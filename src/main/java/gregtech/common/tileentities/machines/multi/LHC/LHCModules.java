@@ -17,7 +17,6 @@ public enum LHCModules {
             Particle.OMEGA)),
     Weak("Weak",
         ImmutableList.of(
-            Particle.PHOTON,
             Particle.ZBOSON,
             Particle.WBOSON,
             Particle.HIGGS,
