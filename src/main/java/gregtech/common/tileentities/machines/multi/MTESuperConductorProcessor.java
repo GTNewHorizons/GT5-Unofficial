@@ -8,6 +8,7 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.MultiAmpEnergy;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE;
@@ -34,6 +35,8 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -46,6 +49,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -60,6 +64,7 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private int casingTier = -1;
     private Byte solenoidLevel = null;
+    private int bonusParallel = 1;
 
     private static final IStructureDefinition<MTESuperConductorProcessor> STRUCTURE_DEFINITION = StructureDefinition
         .<MTESuperConductorProcessor>builder()
@@ -72,13 +77,13 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
                 "B~B",
                 "BBB",
                 "C C"
-            },{
+            }, {
                 "BBB",
                 "A A",
                 "A A",
                 "BBB",
                 "   "
-            },{
+            }, {
                 "BBB",
                 "BAB",
                 "BAB",
@@ -89,7 +94,7 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
         .addElement(
             'B',
             buildHatchAdder(MTESuperConductorProcessor.class)
-                .atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy)
+                .atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy.or(MultiAmpEnergy))
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(15))
                 .dot(1)
                 .buildAndChain(
@@ -227,20 +232,81 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
+    public @NotNull CheckRecipeResult checkProcessing() {
+        CheckRecipeResult result = super.checkProcessing();
+        if (result != CheckRecipeResultRegistry.NO_RECIPE && boosterHatch != null && mOutputItems != null) {
+            for (int i = 0; i < mOutputItems.length; i++) {
+                for (int j = 0; j < boosterHatch.getInventoryStackLimit(); j++) {
+                    int sconID = getSconID(mOutputItems[i]);
+                    int boosterID = boosterHatch.getBoosterIDInSlot(j);
+                    if (sconID != -1 && boosterID != -1 && sconID == boosterID) {
+                        mOutputItems[i].stackSize = (int) (mOutputItems[i].stackSize * 1.15);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    private int getSconID(ItemStack scon) {
+        if (scon != null) {
+            ItemStack sconMV = GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorMV, 1);
+            if (scon.isItemEqual(sconMV)) return 2;
+            ItemStack sconHV = GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorHV, 1);
+            if (scon.isItemEqual(sconHV)) return 3;
+            ItemStack sconEV = GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorEV, 1);
+            if (scon.isItemEqual(sconEV)) return 4;
+            ItemStack sconIV = GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorIV, 1);
+            if (ItemStack.areItemStacksEqual(scon, sconIV)) return 5;
+            ItemStack sconLuV = GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 1);
+            if (ItemStack.areItemStacksEqual(scon, sconLuV)) return 6;
+            ItemStack sconZPM = GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorZPM, 1);
+            if (ItemStack.areItemStacksEqual(scon, sconZPM)) return 7;
+            ItemStack sconUV = GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUV, 1);
+            if (ItemStack.areItemStacksEqual(scon, sconUV)) return 8;
+            ItemStack sconUHV = GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUHV, 1);
+            if (ItemStack.areItemStacksEqual(scon, sconUHV)) return 9;
+            ItemStack sconUEV = GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUEV, 1);
+            if (ItemStack.areItemStacksEqual(scon, sconUEV)) return 10;
+            ItemStack sconUIV = GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUIV, 1);
+            if (ItemStack.areItemStacksEqual(scon, sconUIV)) return 11;
+            ItemStack sconUMV = GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUMV, 1);
+            if (ItemStack.areItemStacksEqual(scon, sconUMV)) return 12;
+        } ;
+        return -1;
+    }
+
+    @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
-            protected @NotNull OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setEUtDiscount(calculateEuDiscount(recipe.mEUt));
+            @Override
+            public ProcessingLogic setMaxParallel(int maxParallel) {
+                return super.setMaxParallel(maxParallel);
             }
 
             @Override
             protected @NotNull CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 if (solenoidLevel - GTUtility.getTier(recipe.mEUt) < 0) return CheckRecipeResultRegistry.NO_RECIPE;
+                bonusParallel = 1;
+                if (boosterHatch != null) {
+                    for (int j = 0; j < boosterHatch.getInventoryStackLimit(); j++) {
+                        int boosterID = boosterHatch.getBoosterIDInSlot(j);
+                        if (GTUtility.getTier(recipe.mEUt) != -1 && boosterID != -1
+                            && GTUtility.getTier(recipe.mEUt) == boosterID) {
+                            bonusParallel = 2;
+                        }
+                    }
+                }
+                maxParallel = Math.max(1, bonusParallel * (int) Math.round((0.95 * Math.pow(1.32, casingTier + 1))));
                 return super.validateRecipe(recipe);
             }
-        }.setSpeedBonus(1F / 1.25F)
-            .setMaxParallelSupplier(this::getTrueParallel);
+        }.noRecipeCaching();
+    }
+
+    @Override
+    public boolean supportsPowerPanel() {
+        return false;
     }
 
     public static boolean isValidBooster(ItemStack aBooster) {
@@ -261,11 +327,6 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
             }
         }
         return false;
-    }
-
-    @Override
-    public int getMaxParallelRecipes() {
-        return Math.max(1, (int) Math.pow(1.4, casingTier+1));
     }
 
     @Override

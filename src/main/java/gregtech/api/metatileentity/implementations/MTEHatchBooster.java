@@ -5,6 +5,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_EMS_HOUSING_GLOW;
 import static gregtech.common.modularui2.util.CommonGuiComponents.gridTemplate1by1;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
@@ -81,12 +82,35 @@ public class MTEHatchBooster extends MTEHatch {
 
     @Override
     public int getInventoryStackLimit() {
-        return 1;
+        return 3;
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEHatchBooster(mName, mTier, mDescriptionArray, mTextures);
+    }
+
+    public int getBoosterIDInSlot(int index) {
+        if (index < this.getInventoryStackLimit()) {
+            ItemStack slot = this.getStackInSlot(index);
+            if (slot != null) {
+                return switch (slot.getItemDamage()) {
+                    case 32150 -> 2;
+                    case 32151 -> 3;
+                    case 32152 -> 4;
+                    case 32153 -> 5;
+                    case 32154 -> 6;
+                    case 32155 -> 7;
+                    case 32156 -> 8;
+                    case 32157 -> 9;
+                    case 32158 -> 10;
+                    case 32159 -> 11;
+                    case 32160 -> 12;
+                    default -> -1;
+                };
+            }
+        }
+        return -1;
     }
 
     @Override
