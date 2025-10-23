@@ -17,8 +17,6 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -36,7 +34,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TickTime;
@@ -74,11 +71,6 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
 
     private final ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
     private ArrayList<MTEHatchAdvancedOutputBeamline> mOutputBeamline = new ArrayList<>();
-    @Nullable
-    private HeatingCoilLevel mCoilLevel = null;
-    @Nullable
-    private Byte mSolenoidLevel = null;
-
     private float outputEnergy;
     private int outputRate;
     private int outputParticleID;
@@ -88,21 +80,25 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setInteger("machineMode", machineMode);
-        aNBT.setFloat("energy", cachedOutputParticle.getEnergy());
-        aNBT.setInteger("rate", cachedOutputParticle.getRate());
-        aNBT.setInteger("particleId", cachedOutputParticle.getParticleId());
-        aNBT.setFloat("focus", cachedOutputParticle.getFocus());
+        if (cachedOutputParticle != null) {
+            aNBT.setFloat("energy", cachedOutputParticle.getEnergy());
+            aNBT.setInteger("rate", cachedOutputParticle.getRate());
+            aNBT.setInteger("particleId", cachedOutputParticle.getParticleId());
+            aNBT.setFloat("focus", cachedOutputParticle.getFocus());
+        }
     }
 
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         machineMode = aNBT.getInteger("machineMode");
-        cachedOutputParticle = new BeamInformation(
-            aNBT.getFloat("energy"),
-            aNBT.getInteger("rate"),
-            aNBT.getInteger("particleId"),
-            aNBT.getFloat("focus"));
+        if (aNBT.hasKey("energy") && aNBT.hasKey("rate") && aNBT.hasKey("particleID") && aNBT.hasKey("focus")) {
+            cachedOutputParticle = new BeamInformation(
+                aNBT.getFloat("energy"),
+                aNBT.getInteger("rate"),
+                aNBT.getInteger("particleId"),
+                aNBT.getFloat("focus"));
+        }
     }
 
     @Override

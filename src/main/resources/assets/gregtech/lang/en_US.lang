@@ -1735,6 +1735,9 @@ GT5U.gui.chat.powerfail.list.truncated=%s additional powerfails truncated
 GT5U.gui.chat.powerfail.shown=Enabled powerfail overlay rendering.
 GT5U.gui.chat.powerfail.hidden=Disabled powerfail overlay rendering.
 
+GT5U.gui.text.BeamlineHatch.blacklist=Blacklist Selection
+GT5U.gui.text.BeamlineHatch.emptylist=No List to choose from :(
+
 # Note to translators: this translation entry is supposed to be a number indicating how many taunts you define here
 # Game will randomly display one of them
 GT5U.item.programmed_circuit.no_screwdriver.count=3

@@ -9,6 +9,7 @@ import net.minecraft.network.PacketBuffer;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -19,7 +20,6 @@ import com.cleanroommc.modularui.value.BoolValue;
 import com.cleanroommc.modularui.value.sync.GenericMapSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ListWidget;
-import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
@@ -53,7 +53,9 @@ public class MTEHatchAdvancedOutputBeamlineGui {
                 Flow.column()
                     .align(Alignment.START)
                     .child(
-                        new TextWidget<>("Blacklist Selection").anchorLeft(0)
+                        IKey.lang("GT5U.gui.text.BeamlineHatch.blacklist")
+                            .asWidget()
+                            .anchorLeft(0)
                             .size(120, 18)
                             .padding(4, 0))
                     .child(createBlacklistWidget(mapSyncHandler).left(4))
@@ -62,7 +64,9 @@ public class MTEHatchAdvancedOutputBeamlineGui {
                             .isEmpty()))
 
             .child(
-                new TextWidget<>("No List to choose from :(").anchorLeft(0)
+                IKey.lang("GT5U.gui.text.BeamlineHatch.emptylist")
+                    .asWidget()
+                    .anchorLeft(0)
                     .size(120, 18)
                     .padding(4, 16)
                     .setEnabledIf(
