@@ -52,7 +52,8 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import goodgenerator.loader.Loaders;
+import bartworks.system.material.WerkstoffLoader;
+import goodgenerator.items.GGMaterial;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
@@ -186,73 +187,68 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                     {"      H~H      ","       D       ","       D       ","       D       ","       D       ","               ","H             H","HDDDD     DDDDH","H             H","               ","       D       ","       D       ","       D       ","       D       ","      HHH      "},
                     {"     HHHHH     ","   DDHHHHHDD   ","  D  HHHHH  D  "," D    HHH    D "," D    HHH    D ","HHH  HHHHH  HHH","HHHHHHHHHHHHHHH","HHHHHHHHHHHHHHH","HHHHHHHHHHHHHHH","HHH  HHHHH  HHH"," D    HHH    D "," D    HHH    D ","  D  HHHHH  D  ","   DDHHHHHDD   ","     HHHHH     "}
                 }))
-        .addShape(SolidifierModules.EFFICIENT_OC.structureID, transpose(new String[][]{
-                {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-                {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-                {"     oFrFo     ","   roo   oor   ","  ro       or  "," ro         or "," o           o ","oo           oo","F             F","r             r","F             F","oo           oo"," o           o "," ro         or ","  ro       or  ","   roo   oor   ","     oFrFo     "},
-                {"     ArrrA     ","   AAA   AAA   ","  AA       AA  "," AA         AA "," A           A ","AA           AA","r             r","r             r","r             r","AA           AA"," A           A "," AA         AA ","  AA       AA  ","   AAA   AAA   ","     ArrrA     "},
-                {"     oFrFo     ","   roo   oor   ","  ro       or  "," ro         or "," o           o ","oo           oo","F             F","r             r","F             F","oo           oo"," o           o "," ro         or ","  ro       or  ","   roo   oor   ","     oFrFo     "},
-                {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-                {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
-            }
-        ))
-        .addShape(SolidifierModules.TRANSCENDENT_REINFORCEMENT.structureID, transpose(new String[][]{
-                {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-                {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-                {"      fff      ","    DD   DD    ","   D       D   ","  D         D  "," D           D "," D           D ","f             f","f             f","f             f"," D           D "," D           D ","  D         D  ","   D       D   ","    DD   DD    ","      fff      "},
-                {"     gghgg     ","   ggg   ggg   ","  gg       gg  "," gg         gg "," g           g ","gg           gg","g             g","h             h","g             g","gg           gg"," g           g "," gg         gg ","  gg       gg  ","   ggg   ggg   ","     gghgg     "},
-                {"      fff      ","    DD   DD    ","   D       D   ","  D         D  "," D           D "," D           D ","f             f","f             f","f             f"," D           D "," D           D ","  D         D  ","   D       D   ","    DD   DD    ","      fff      "},
-                {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-                {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
-            }
-        ))
-        .addShape(SolidifierModules.HYPERCOOLER.structureID, transpose(new String[][]{
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"     bbbbb     ","   bcb   bcb   ","  bb       bb  "," bb         bb "," c           c ","bb           bb","b             b","b             b","b             b","bb           bb"," c           c "," bb         bb ","  bb       bb  ","   bcb   bcb   ","     bbbbb     "},
-            {"     AbdbA     ","   AAA   AAA   ","  AA       AA  "," AA         AA "," A           A ","AA           AA","b             b","d             d","b             b","AA           AA"," A           A "," AA         AA ","  AA       AA  ","   AAA   AAA   ","     AbdbA     "},
-            {"     bbbbb     ","   bcb   bcb   ","  bb       bb  "," bb         bb "," c           c ","bb           bb","b             b","b             b","b             b","bb           bb"," c           c "," bb         bb ","  bb       bb  ","   bcb   bcb   ","     bbbbb     "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
-        }))
-        .addShape(SolidifierModules.ACTIVE_TIME_DILATION_SYSTEM.structureID, transpose(new String[][]{
-            {"               ","      K K      ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","      K K      ","               "},
-            {"      j j      ","      j j      ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","      j j      ","      j j      "},
-            {"     ljijl     ","   lll   lll   ","  ll       ll  "," ll         ll "," l           l ","ll           ll","l             l","l             l","l             l","ll           ll"," l           l "," ll         ll ","  ll       ll  ","   lll   lll   ","     ljijl     "},
-            {"      jkj      ","               ","               ","               ","               ","               ","l             l","k             k","l             l","               ","               ","               ","               ","               ","      jkj      "},
-            {"     ljijl     ","   lll   lll   ","  ll       ll  "," ll         ll "," l           l ","ll           ll","l             l","l             l","l             l","ll           ll"," l           l "," ll         ll ","  ll       ll  ","   lll   lll   ","     ljijl     "},
-            {"      j j      ","      j j      ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","      j j      ","      j j      "},
-            {"               ","      K K      ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","      K K      ","               "}
-        }))
-
-        .addShape(SolidifierModules.EXTRA_CASTING_BASINS.structureID, transpose(new String[][]{
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"     qHHHq     ","   qqq   qqq   ","  qq       qq  "," qq         qq "," q           q ","qq           qq","H             H","H             H","H             H","qq           qq"," q           q "," qq         qq ","  qq       qq  ","   qqq   qqq   ","     qHHHq     "},
-            {"     AHHHA     ","   AAA   AAA   ","  AA       AA  "," AA         AA "," A           A ","AA           AA","H             H","H             H","H             H","AA           AA"," A           A "," AA         AA ","  AA       AA  ","   AAA   AAA   ","     AHHHA     "},
-            {"     qHHHq     ","   qqq   qqq   ","  qq       qq  "," qq         qq "," q           q ","qq           qq","H             H","H             H","H             H","qq           qq"," q           q "," qq         qq ","  qq       qq  ","   qqq   qqq   ","     qHHHq     "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
-
-        }))
         .addShape(SolidifierModules.STREAMLINED_CASTERS.structureID, transpose(new String[][]{
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"     sHHHs     ","   sss   sss   ","  ss       ss  "," ss         ss "," s           s ","ss           ss","H             H","H             H","H             H","ss           ss"," s           s "," ss         ss ","  ss       ss  ","   sss   sss   ","     sHHHs     "},
-            {"     AHHHA     ","   AAA   AAA   ","  AA       AA  "," AA         AA "," A           A ","AA           AA","H             H","H             H","H             H","AA           AA"," A           A "," AA         AA ","  AA       AA  ","   AAA   AAA   ","     AHHHA     "},
-            {"     sHHHs     ","   sss   sss   ","  ss       ss  "," ss         ss "," s           s ","ss           ss","H             H","H             H","H             H","ss           ss"," s           s "," ss         ss ","  ss       ss  ","   sss   sss   ","     sHHHs     "},
+            {"     bbFbb     ","   bbb   bbb   ","  bF       Fb  "," bF         Fb "," b           b ","bb           bb","b             b","F             F","b             b","bb           bb"," b           b "," bF         Fb ","  bF       Fb  ","   bbb   bbb   ","     bbFbb     "},
+            {"     cFcFc     ","   ccc   ccc   ","  cc       cc  "," cc         cc "," c           c ","cc           cc","F             F","c             c","F             F","cc           cc"," c           c "," cc         cc ","  cc       cc  ","   ccc   ccc   ","     cFcFc     "},
+            {"     bbFbb     ","   bbb   bbb   ","  bF       Fb  "," bF         Fb "," b           b ","bb           bb","b             b","F             F","b             b","bb           bb"," b           b "," bF         Fb ","  bF       Fb  ","   bbb   bbb   ","     bbFbb     "},
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
         }))
         .addShape(SolidifierModules.POWER_EFFICIENT_SUBSYSTEMS.structureID, transpose(new String[][]{
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"     tHHHt     ","   ttt   ttt   ","  tt       tt  "," tt         tt "," t           t ","tt           tt","H             H","H             H","H             H","tt           tt"," t           t "," tt         tt ","  tt       tt  ","   ttt   ttt   ","     tHHHt     "},
-            {"     AHHHA     ","   AAA   AAA   ","  AA       AA  "," AA         AA "," A           A ","AA           AA","H             H","H             H","H             H","AA           AA"," A           A "," AA         AA ","  AA       AA  ","   AAA   AAA   ","     AHHHA     "},
-            {"     tHHHt     ","   ttt   ttt   ","  tt       tt  "," tt         tt "," t           t ","tt           tt","H             H","H             H","H             H","tt           tt"," t           t "," tt         tt ","  tt       tt  ","   ttt   ttt   ","     tHHHt     "},
+            {"     gfffg     ","   ddd   ddd   ","  gd       dg  "," dd         dd "," d           d ","gd           dg","f             f","f             f","f             f","gd           dg"," d           d "," dd         dd ","  gd       dg  ","   ddd   ddd   ","     gfffg     "},
+            {"     eddde     ","   fee   eef   ","               "," f           f "," e           e ","ee           ee","d             d","d             d","d             d","ee           ee"," e           e "," f           f ","               ","   fee   eef   ","     eddde     "},
+            {"     gfffg     ","   ddd   ddd   ","  gd       dg  "," dd         dd "," d           d ","gd           dg","f             f","f             f","f             f","gd           dg"," d           d "," dd         dd ","  gd       dg  ","   ddd   ddd   ","     gfffg     "},
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
-
+        }))
+        .addShape(SolidifierModules.EXTRA_CASTING_BASINS.structureID, transpose(new String[][]{
+            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
+            {"      jjj      ","      hhh      ","               ","               ","               ","               ","jh           hj","jh           hj","jh           hj","               ","               ","               ","               ","      hhh      ","      jjj      "},
+            {"     jhmhj     ","   jjhHHHhjj   ","  k         k  "," j           j "," j           j ","jh           hj","hH           Hh","mH           Hm","hH           Hh","jh           hj"," j           j "," j           j ","  k         k  ","   jjhHHHhjj   ","     jhmhj     "},
+            {"     mmlmm     ","   iimHHHmii   ","  h         h  "," i           i "," i           i ","mm           mm","mH           Hm","lH           Hl","mH           Hm","mm           mm"," i           i "," i           i ","  h         h  ","   iimHHHmii   ","     mmlmm     "},
+            {"     jhmhj     ","   jjhHHHhjj   ","  k         k  "," j           j "," j           j ","jh           hj","hH           Hh","mH           Hm","hH           Hh","jh           hj"," j           j "," j           j ","  k         k  ","   jjhHHHhjj   ","     jhmhj     "},
+            {"      jjj      ","      hhh      ","               ","               ","               ","               ","jh           hj","jh           hj","jh           hj","               ","               ","               ","               ","      hhh      ","      jjj      "},
+            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
+        }))
+        .addShape(SolidifierModules.HYPERCOOLER.structureID, transpose(new String[][]{
+            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
+            {"      qoq      ","    qq   qq    ","               ","               "," q           q "," q           q ","q             q","o             o","q             q"," q           q "," q           q ","               ","               ","    qq   qq    ","      qoq      "},
+            {"     npspn     ","   pnn   nnp   ","               "," p           p "," n           n ","nn           nn","p             p","s             s","p             p","nn           nn"," n           n "," p           p ","               ","   pnn   nnp   ","     npspn     "},
+            {"     ossso     ","   rrr   rrr   ","  o         o  "," r           r "," r           r ","or           ro","s             s","s             s","s             s","or           ro"," r           r "," r           r ","  o         o  ","   rrr   rrr   ","     ossso     "},
+            {"     npspn     ","   pnn   nnp   ","               "," p           p "," n           n ","nn           nn","p             p","s             s","p             p","nn           nn"," n           n "," p           p ","               ","   pnn   nnp   ","     npspn     "},
+            {"      qoq      ","    qq   qq    ","               ","               "," q           q "," q           q ","q             q","o             o","q             q"," q           q "," q           q ","               ","               ","    qq   qq    ","      qoq      "},
+            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
+        }))
+        .addShape(SolidifierModules.EFFICIENT_OC.structureID, transpose(new String[][]{
+            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
+            {"      ttt      ","    tt   tt    ","               ","               "," t           t "," t           t ","t             t","t             t","t             t"," t           t "," t           t ","               ","               ","    tt   tt    ","      ttt      "},
+            {"     vFtFv     ","   tvv   vvt   ","  tF       Ft  "," tF         Ft "," v           v ","vv           vv","F             F","t             t","F             F","vv           vv"," v           v "," tF         Ft ","  tF       Ft  ","   tvv   vvt   ","     vFtFv     "},
+            {"     utttu     ","   uuu   uuu   ","  uu       uu  "," uu         uu "," u           u ","uu           uu","t             t","t             t","t             t","uu           uu"," u           u "," uu         uu ","  uu       uu  ","   uuu   uuu   ","     utttu     "},
+            {"     vFtFv     ","   tvv   vvt   ","  tF       Ft  "," tF         Ft "," v           v ","vv           vv","F             F","t             t","F             F","vv           vv"," v           v "," tF         Ft ","  tF       Ft  ","   tvv   vvt   ","     vFtFv     "},
+            {"      ttt      ","    tt   tt    ","               ","               "," t           t "," t           t ","t             t","t             t","t             t"," t           t "," t           t ","               ","               ","    tt   tt    ","      ttt      "},
+            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
+        }))
+        .addShape(SolidifierModules.TRANSCENDENT_REINFORCEMENT.structureID, transpose(new String[][]{
+            {"     24442     ","               ","               ","               ","               ","3             3","4             4","4             4","4             4","3             3","               ","               ","               ","               ","     24442     "},
+            {"       8       ","   22     22   ","               "," 3           3 "," 3           3 ","               ","               ","8             8","               ","               "," 3           3 "," 3           3 ","               ","   22     22   ","       8       "},
+            {"      777      ","    88   88    ","  5         5  ","               "," 8           8 "," 8           8 ","7             7","7             7","7             7"," 8           8 "," 8           8 ","               ","  5         5  ","    88   88    ","      777      "},
+            {"     16861     ","   111   111   ","  11       11  "," 11         11 "," 1           1 ","11           11","6             6","8             8","6             6","11           11"," 1           1 "," 11         11 ","  11       11  ","   111   111   ","     16861     "},
+            {"      777      ","    88   88    ","  5         5  ","               "," 8           8 "," 8           8 ","7             7","7             7","7             7"," 8           8 "," 8           8 ","               ","  5         5  ","    88   88    ","      777      "},
+            {"       8       ","   33     33   ","               "," 2           2 "," 2           2 ","               ","               ","8             8","               ","               "," 2           2 "," 2           2 ","               ","   33     33   ","       8       "},
+            {"     34443     ","               ","               ","               ","               ","2             2","4             4","4             4","4             4","2             2","               ","               ","               ","               ","     34443     "}
+        }))
+        .addShape(SolidifierModules.ACTIVE_TIME_DILATION_SYSTEM.structureID, transpose(new String[][]{
+            {"               ","       #       ","               ","               ","               ","               ","               "," #           # ","               ","               ","               ","               ","               ","       #       ","               "},
+            {"     &@ @^     ","    && ! ^^    ","               ","               "," ^           & ","^^           &&","@             @"," !           ! ","@             @","&&           ^^"," &           ^ ","               ","               ","    ^^ ! &&    ","     ^@ @&     "},
+            {"      @!@      ","   &**   XX^   ","   &       ^   "," ^^         && "," X           * "," X           * ","@             @","!             !","@             @"," *           X "," *           X "," &&         ^^ ","   ^       &   ","   ^XX   **&   ","      @!@      "},
+            {"      !Z!      ","    $$   $$    ","  %         %  ","               "," $           $ "," $           $ ","!             !","Z             Z","!             !"," $           $ "," $           $ ","               ","  %         %  ","    $$   $$    ","      !Z!      "},
+            {"      @!@      ","   ^XX   **&   ","   ^       &   "," &&         ^^ "," *           X "," *           X ","@             @","!             !","@             @"," X           * "," X           * "," ^^         && ","   &       ^   ","   &**   XX^   ","      @!@      "},
+            {"     ^@ @&     ","    ^^ ! &&    ","               ","               "," &           ^ ","&&           ^^","@             @"," !           ! ","@             @","^^           &&"," ^           & ","               ","               ","    && ! ^^    ","     &@ @^     "},
+            {"               ","       #       ","               ","               ","               ","               ","               "," #           # ","               ","               ","               ","               ","               ","       #       ","               "}
         }))
         .addShape(SolidifierModules.UNSET.structureID, transpose(new String[][]{
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
@@ -268,7 +264,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings11, 7))
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings5, 12))
         .addElement('D', ofFrame(Materials.TranscendentMetal))
-        .addElement('E', lazy(() -> ofBlock(GodforgeCasings, 0)))
+        .addElement('E', ofBlock(GregTechAPI.sBlockCasingsFoundry, 11))
         .addElement(
             'F',
             GTStructureChannels.MAGNETIC_CHASSIS.use(
@@ -290,33 +286,288 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                 .casingIndex(((BlockCasingsFoundry) GregTechAPI.sBlockCasingsFoundry).getTextureIndex(0))
                 .buildAndChain(
                     onElementPass(MTEModularSolidifier::onCasingAdded, ofBlock(GregTechAPI.sBlockCasingsFoundry, 0)))) // placeholder
-        .addElement('b', ofBlock(GregTechAPI.sBlockCasings8, 14))
-        .addElement('c', ofBlock(GregTechAPI.sBlockCasingsFoundry, 9))
+        .addElement('a', ofBlock(GregTechAPI.sBlockCasingsFoundry, 0)) // base casing, no adder
+        // streamlined casters
+        .addElement('b', ofBlock(GregTechAPI.sBlockCasingsFoundry, 10)) // Streamlined Caster
+        .addElement('c', ofFrame(Materials.Enderium))
+        // power efficient subsystems
+        .addElement('d', ofBlock(GregTechAPI.sBlockCasingsFoundry, 6)) // power eff subsystems
+        .addElement('e', ofFrame(Materials.SamariumMagnetic))
+        .addElement('f', ofFrame(Materials.TengamAttuned))
+        .addElement('g', lazy(() -> ofBlock(ModBlocks.blockCustomMachineCasings, 3))) // TODO: replace with MEBF/green
+                                                                                      // casing after rework
+        // casting basins
+        .addElement('h', ofBlock(GregTechAPI.sBlockCasings10, 13)) // shaper casing
+        .addElement('i', ofBlock(GregTechAPI.sBlockCasings10, 14)) // shaper radiator
+        .addElement('j', ofBlock(GregTechAPI.sBlockCasingsFoundry, 8)) // extra casting basings
+        .addElement('k', ofFrame(Materials.Erbium))
         .addElement(
-            'd',
+            'l',
+            lazy(() -> ofBlock(WerkstoffLoader.BWBlockCasingsAdvanced, GGMaterial.preciousMetalAlloy.getmID())))
+        .addElement('m', lazy(() -> ofBlock(WerkstoffLoader.BWBlockCasings, GGMaterial.preciousMetalAlloy.getmID())))
+        // hypercooler
+        .addElement('n', ofBlock(GregTechAPI.sBlockCasings2, 1))
+        .addElement('o', ofBlock(GregTechAPI.sBlockCasings8, 14))
+        .addElement(
+            'p',
             buildHatchAdder(MTEModularSolidifier.class).hatchClass(MTEHatchInput.class)
                 .adder(MTEModularSolidifier::addCoolantInputToMachineList)
                 .casingIndex(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasingsFoundry, 9))
                 .dot(2)
                 .buildAndChain(GregTechAPI.sBlockCasingsFoundry, 9))
-        .addElement('e', ofBlock(GregTechAPI.sBlockFrames, 581))
-        .addElement('f', ofBlock(GregTechAPI.sBlockCasingsFoundry, 0))
-        .addElement('g', ofBlock(GregTechAPI.sBlockCasingsFoundry, 7))
-        .addElement('h', lazy(() -> ofBlock(BlockGodforgeGlass.INSTANCE, 0)))
-        .addElement('i', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsBA0, 10)))
-        .addElement('j', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsBA0, 11)))
-        .addElement('k', lazy(() -> ofBlock(TTCasingsContainer.TimeAccelerationFieldGenerator, 8)))
-        .addElement('K', ofBlock(GregTechAPI.sBlockCasingsFoundry, 4))
-        .addElement('l', ofFrame(Materials.Longasssuperconductornameforuhvwire))// this cant be real
-        .addElement('m', lazy(() -> ofBlock(ModBlocks.blockCasings5Misc, 13)))
-        .addElement('n', lazy(() -> ofBlock(ModBlocks.blockCasings5Misc, 9)))
-        .addElement('o', lazy(() -> ofBlock(ModBlocks.blockCasings6Misc, 0)))
-        .addElement('p', lazy(() -> ofBlock(Loaders.compactFusionCoil, 4)))
-        .addElement('q', ofBlock(GregTechAPI.sBlockCasingsFoundry, 8))
-        .addElement('r', ofBlock(GregTechAPI.sBlockCasingsFoundry, 5))
-        .addElement('s', ofBlock(GregTechAPI.sBlockCasingsFoundry, 10))
-        .addElement('t', ofBlock(GregTechAPI.sBlockCasingsFoundry, 6))
+        .addElement('q', ofFrame(Materials.Netherite))
+        .addElement('r', ofBlock(GregTechAPI.sBlockGlass1, 3))
+        .addElement('s', lazy(() -> ofBlock(ModBlocks.blockCasings3Misc, 10))) // TODO: replace with MVF casing after
+                                                                               // rework
+        // efficient overclock
+        .addElement('t', ofBlock(GregTechAPI.sBlockCasingsFoundry, 5))
+        .addElement('u', ofBlock(GregTechAPI.sBlockGlass1, 4))
+        .addElement('v', lazy(() -> ofBlock(ModBlocks.blockCasings6Misc, 0)))
+        // transcendent reinforcement
+        .addElement('1', ofBlock(GregTechAPI.sBlockCasingsFoundry, 7))
+        .addElement('2', ofFrame(Materials.Creon))
+        .addElement('3', ofFrame(Materials.Mellion))
+        .addElement('4', ofFrame(Materials.TranscendentMetal))
+        .addElement('5', ofFrame(Materials.SpaceTime))
+        .addElement('6', ofBlock(GregTechAPI.sBlockMetal9, 3))
+        .addElement('7', lazy(() -> ofBlock(GodforgeCasings, 3)))
+        .addElement('8', lazy(() -> ofBlock(BlockGodforgeGlass.INSTANCE, 0)))
+        // Time Dilation System
+        .addElement('!', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsBA0, 10)))
+        .addElement('@', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsBA0, 11)))
+        .addElement('#', ofBlock(GregTechAPI.sBlockCasingsFoundry, 4))
+        .addElement('$', ofFrame(Materials.Universium))
+        .addElement('%', ofFrame(Materials.Eternity))
+        .addElement('^', ofFrame(Materials.WhiteDwarfMatter))
+        .addElement('&', ofFrame(Materials.BlackDwarfMatter))
+        .addElement('*', ofBlock(GregTechAPI.sBlockMetal9, 6))
+        .addElement('X', ofBlock(GregTechAPI.sBlockMetal9, 7))
+        .addElement('Z', lazy(() -> ofBlock(TTCasingsContainer.TimeAccelerationFieldGenerator, 8)))
         .build();
+
+    /*
+     * private static final IStructureDefinition<MTEModularSolidifier> STRUCTURE_DEFINITION_temp = StructureDefinition
+     * .<MTEModularSolidifier>builder()
+     * .addShape(SolidifierModules.STREAMLINED_CASTERS.structureID, transpose(new String[][]{
+     * {"               ","               ","               ","               ","               ","               "
+     * ,"               ","               ","               ","               ","               ","               "
+     * ,"               ","               ","               "},
+     * {"               ","               ","               ","               ","               ","               "
+     * ,"               ","               ","               ","               ","               ","               "
+     * ,"               ","               ","               "},
+     * {"     bbFbb     ","   bbb   bbb   ","  bF       Fb  "," bF         Fb "," b           b ","bb           bb"
+     * ,"b             b","F             F","b             b","bb           bb"," b           b "," bF         Fb "
+     * ,"  bF       Fb  ","   bbb   bbb   ","     bbFbb     "},
+     * {"     cFcFc     ","   ccc   ccc   ","  cc       cc  "," cc         cc "," c           c ","cc           cc"
+     * ,"F             F","c             c","F             F","cc           cc"," c           c "," cc         cc "
+     * ,"  cc       cc  ","   ccc   ccc   ","     cFcFc     "},
+     * {"     bbFbb     ","   bbb   bbb   ","  bF       Fb  "," bF         Fb "," b           b ","bb           bb"
+     * ,"b             b","F             F","b             b","bb           bb"," b           b "," bF         Fb "
+     * ,"  bF       Fb  ","   bbb   bbb   ","     bbFbb     "},
+     * {"               ","               ","               ","               ","               ","               "
+     * ,"               ","               ","               ","               ","               ","               "
+     * ,"               ","               ","               "},
+     * {"               ","               ","               ","               ","               ","               "
+     * ,"               ","               ","               ","               ","               ","               "
+     * ,"               ","               ","               "}
+     * }))
+     * .addShape(SolidifierModules.POWER_EFFICIENT_SUBSYSTEMS.structureID, transpose(new String[][]{
+     * {"               ","               ","               ","               ","               ","               "
+     * ,"               ","               ","               ","               ","               ","               "
+     * ,"               ","               ","               "},
+     * {"               ","               ","               ","               ","               ","               "
+     * ,"               ","               ","               ","               ","               ","               "
+     * ,"               ","               ","               "},
+     * {"     gfffg     ","   ddd   ddd   ","  gd       dg  "," dd         dd "," d           d ","gd           dg"
+     * ,"f             f","f             f","f             f","gd           dg"," d           d "," dd         dd "
+     * ,"  gd       dg  ","   ddd   ddd   ","     gfffg     "},
+     * {"     eddde     ","   fee   eef   ","               "," f           f "," e           e ","ee           ee"
+     * ,"d             d","d             d","d             d","ee           ee"," e           e "," f           f "
+     * ,"               ","   fee   eef   ","     eddde     "},
+     * {"     gfffg     ","   ddd   ddd   ","  gd       dg  "," dd         dd "," d           d ","gd           dg"
+     * ,"f             f","f             f","f             f","gd           dg"," d           d "," dd         dd "
+     * ,"  gd       dg  ","   ddd   ddd   ","     gfffg     "},
+     * {"               ","               ","               ","               ","               ","               "
+     * ,"               ","               ","               ","               ","               ","               "
+     * ,"               ","               ","               "},
+     * {"               ","               ","               ","               ","               ","               "
+     * ,"               ","               ","               ","               ","               ","               "
+     * ,"               ","               ","               "}
+     * }))
+     * .addShape(SolidifierModules.EXTRA_CASTING_BASINS.structureID, transpose(new String[][]{
+     * {"               ","               ","               ","               ","               ","               "
+     * ,"               ","               ","               ","               ","               ","               "
+     * ,"               ","               ","               "},
+     * {"      jjj      ","      hhh      ","               ","               ","               ","               "
+     * ,"jh           hj","jh           hj","jh           hj","               ","               ","               "
+     * ,"               ","      hhh      ","      jjj      "},
+     * {"     jhmhj     ","   jjhHHHhjj   ","  k         k  "," j           j "," j           j ","jh           hj"
+     * ,"hH           Hh","mH           Hm","hH           Hh","jh           hj"," j           j "," j           j "
+     * ,"  k         k  ","   jjhHHHhjj   ","     jhmhj     "},
+     * {"     mmlmm     ","   iimHHHmii   ","  h         h  "," i           i "," i           i ","mm           mm"
+     * ,"mH           Hm","lH           Hl","mH           Hm","mm           mm"," i           i "," i           i "
+     * ,"  h         h  ","   iimHHHmii   ","     mmlmm     "},
+     * {"     jhmhj     ","   jjhHHHhjj   ","  k         k  "," j           j "," j           j ","jh           hj"
+     * ,"hH           Hh","mH           Hm","hH           Hh","jh           hj"," j           j "," j           j "
+     * ,"  k         k  ","   jjhHHHhjj   ","     jhmhj     "},
+     * {"      jjj      ","      hhh      ","               ","               ","               ","               "
+     * ,"jh           hj","jh           hj","jh           hj","               ","               ","               "
+     * ,"               ","      hhh      ","      jjj      "},
+     * {"               ","               ","               ","               ","               ","               "
+     * ,"               ","               ","               ","               ","               ","               "
+     * ,"               ","               ","               "}
+     * }))
+     * .addShape(SolidifierModules.HYPERCOOLER.structureID, transpose(new String[][]{
+     * {"               ","               ","               ","               ","               ","               "
+     * ,"               ","               ","               ","               ","               ","               "
+     * ,"               ","               ","               "},
+     * {"               ","               ","               ","               ","               ","               "
+     * ,"               ","               ","               ","               ","               ","               "
+     * ,"               ","               ","               "},
+     * {"     bbFbb     ","   bbb   bbb   ","  bF       Fb  "," bF         Fb "," b           b ","bb           bb"
+     * ,"b             b","F             F","b             b","bb           bb"," b           b "," bF         Fb "
+     * ,"  bF       Fb  ","   bbb   bbb   ","     bbFbb     "},
+     * {"     cFcFc     ","   ccc   ccc   ","  cc       cc  "," cc         cc "," c           c ","cc           cc"
+     * ,"F             F","c             c","F             F","cc           cc"," c           c "," cc         cc "
+     * ,"  cc       cc  ","   ccc   ccc   ","     cFcFc     "},
+     * {"     bbFbb     ","   bbb   bbb   ","  bF       Fb  "," bF         Fb "," b           b ","bb           bb"
+     * ,"b             b","F             F","b             b","bb           bb"," b           b "," bF         Fb "
+     * ,"  bF       Fb  ","   bbb   bbb   ","     bbFbb     "},
+     * {"               ","               ","               ","               ","               ","               "
+     * ,"               ","               ","               ","               ","               ","               "
+     * ,"               ","               ","               "},
+     * {"               ","               ","               ","               ","               ","               "
+     * ,"               ","               ","               ","               ","               ","               "
+     * ,"               ","               ","               "}
+     * }))
+     * .addShape(SolidifierModules.EFFICIENT_OC.structureID, transpose(new String[][]{
+     * {"               ","               ","               ","               ","               ","               "
+     * ,"               ","               ","               ","               ","               ","               "
+     * ,"               ","               ","               "},
+     * {"      ttt      ","    tt   tt    ","               ","               "," t           t "," t           t "
+     * ,"t             t","t             t","t             t"," t           t "," t           t ","               "
+     * ,"               ","    tt   tt    ","      ttt      "},
+     * {"     vFtFv     ","   tvv   vvt   ","  tF       Ft  "," tF         Ft "," v           v ","vv           vv"
+     * ,"F             F","t             t","F             F","vv           vv"," v           v "," tF         Ft "
+     * ,"  tF       Ft  ","   tvv   vvt   ","     vFtFv     "},
+     * {"     utttu     ","   uuu   uuu   ","  uu       uu  "," uu         uu "," u           u ","uu           uu"
+     * ,"t             t","t             t","t             t","uu           uu"," u           u "," uu         uu "
+     * ,"  uu       uu  ","   uuu   uuu   ","     utttu     "},
+     * {"     vFtFv     ","   tvv   vvt   ","  tF       Ft  "," tF         Ft "," v           v ","vv           vv"
+     * ,"F             F","t             t","F             F","vv           vv"," v           v "," tF         Ft "
+     * ,"  tF       Ft  ","   tvv   vvt   ","     vFtFv     "},
+     * {"      ttt      ","    tt   tt    ","               ","               "," t           t "," t           t "
+     * ,"t             t","t             t","t             t"," t           t "," t           t ","               "
+     * ,"               ","    tt   tt    ","      ttt      "},
+     * {"               ","               ","               ","               ","               ","               "
+     * ,"               ","               ","               ","               ","               ","               "
+     * ,"               ","               ","               "}
+     * }))
+     * .addShape(SolidifierModules.TRANSCENDENT_REINFORCEMENT.structureID, transpose(new String[][]{
+     * {"     24442     ","               ","               ","               ","               ","3             3"
+     * ,"3             4","3             4","3             4","3             3","               ","               "
+     * ,"               ","               ","     24442     "},
+     * {"       8       ","   22     22   ","               "," 3           3 "," 3           3 ","               "
+     * ,"               ","8             8","               ","               "," 3           3 "," 3           3 "
+     * ,"               ","   22     22   ","       8       "},
+     * {"      777      ","    88   88    ","  5         5  ","               "," 8           8 "," 8           8 "
+     * ,"7             7","7             7","7             7"," 8           8 "," 8           8 ","               "
+     * ,"  5         5  ","    88   88    ","      777      "},
+     * {"     16861     ","   111   111   ","  11       11  "," 11         11 "," 1           1 ","11           11"
+     * ,"6             6","8             8","6             6","11           11"," 1           1 "," 11         11 "
+     * ,"  11       11  ","   111   111   ","     16861     "},
+     * {"      777      ","    88   88    ","  5         5  ","               "," 8           8 "," 8           8 "
+     * ,"7             7","7             7","7             7"," 8           8 "," 8           8 ","               "
+     * ,"  5         5  ","    88   88    ","      777      "},
+     * {"       8       ","   33     33   ","               "," 2           2 "," 2           2 ","               "
+     * ,"               ","8             8","               ","               "," 2           2 "," 2           2 "
+     * ,"               ","   33     33   ","       8       "},
+     * {"     34443     ","               ","               ","               ","               ","2             2"
+     * ,"4             4","4             4","4             4","2             2","               ","               "
+     * ,"               ","               ","     34443     "}
+     * }))
+     * .addShape(SolidifierModules.ACTIVE_TIME_DILATION_SYSTEM.structureID, transpose(new String[][]{
+     * {"     @$$$@     ","               ","               ","               ","               ","#             #"
+     * ,"#             $","#             $","#             $","#             #","               ","               "
+     * ,"               ","               ","     @$$$@     "},
+     * {"       *       ","   @@     @@   ","               "," #           # "," #           # ","               "
+     * ,"               ","*             *","               ","               "," #           # "," #           # "
+     * ,"               ","   @@     @@   ","       *       "},
+     * {"      &&&      ","    **   **    ","  %         %  ","               "," *           * "," *           * "
+     * ,"&             &","&             &","&             &"," *           * "," *           * ","               "
+     * ,"  %         %  ","    **   **    ","      &&&      "},
+     * {"     !^*^!     ","   !!!   !!!   ","  !!       !!  "," !!         !! "," !           ! ","!!           !!"
+     * ,"^             ^","*             *","^             ^","!!           !!"," !           ! "," !!         !! "
+     * ,"  !!       !!  ","   !!!   !!!   ","     !^*^!     "},
+     * {"      &&&      ","    **   **    ","  %         %  ","               "," *           * "," *           * "
+     * ,"&             &","&             &","&             &"," *           * "," *           * ","               "
+     * ,"  %         %  ","    **   **    ","      &&&      "},
+     * {"       *       ","   ##     ##   ","               "," @           @ "," @           @ ","               "
+     * ,"               ","*             *","               ","               "," @           @ "," @           @ "
+     * ,"               ","   ##     ##   ","       *       "},
+     * {"     #$$$#     ","               ","               ","               ","               ","@             @"
+     * ,"$             $","$             $","$             $","@             @","               ","               "
+     * ,"               ","               ","     #$$$#     "}
+     * }))
+     * .addElement('a', ofBlock(GregTechAPI.sBlockCasingsFoundry,0)) // base casing, no adder
+     * // streamlined casters
+     * .addElement('b', ofBlock(GregTechAPI.sBlockCasingsFoundry,10)) // Streamlined Caster
+     * .addElement('c', ofFrame(Materials.Enderium))
+     * // power efficient subsystems
+     * .addElement('d', ofBlock(GregTechAPI.sBlockCasingsFoundry,6)) // power eff subsystems
+     * .addElement('e', ofFrame(Materials.SamariumMagnetic))
+     * .addElement('f', ofFrame(Materials.TengamAttuned))
+     * .addElement('g',lazy(()-> ofBlock( ModBlocks.blockCustomMachineCasings,3))) //TODO: replace with MEBF/green
+     * casing after rework
+     * // casting basins
+     * .addElement('h',ofBlock(GregTechAPI.sBlockCasings10,13)) // shaper casing
+     * .addElement('i', ofBlock(GregTechAPI.sBlockCasings10,14)) // shaper radiator
+     * .addElement('j', ofBlock(GregTechAPI.sBlockCasingsFoundry, 8 )) // extra casting basings
+     * .addElement('k', ofFrame(Materials.Erbium))
+     * .addElement(
+     * 'l', lazy(() -> ofBlock(WerkstoffLoader.BWBlockCasingsAdvanced, GGMaterial.preciousMetalAlloy.getmID())))
+     * .addElement(
+     * 'm', lazy(() -> ofBlock(WerkstoffLoader.BWBlockCasings, GGMaterial.preciousMetalAlloy.getmID())))
+     * // hypercooler
+     * .addElement('n', ofBlock(GregTechAPI.sBlockCasings2,1))
+     * .addElement('o', ofBlock(GregTechAPI.sBlockCasings8, 14))
+     * .addElement(
+     * 'p',
+     * buildHatchAdder(MTEModularSolidifier.class).hatchClass(MTEHatchInput.class)
+     * .adder(MTEModularSolidifier::addCoolantInputToMachineList)
+     * .casingIndex(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasingsFoundry, 9))
+     * .dot(2)
+     * .buildAndChain(GregTechAPI.sBlockCasingsFoundry, 9))
+     * .addElement('q', ofFrame(Materials.Netherite))
+     * .addElement('r', ofBlock(GregTechAPI.sBlockGlass1,3))
+     * .addElement('s', lazy(() ->ofBlock(ModBlocks.blockCasings3Misc, 10))) //TODO: replace with MVF casing after
+     * rework
+     * // efficient overclock
+     * .addElement('t', ofBlock(GregTechAPI.sBlockCasingsFoundry,5))
+     * .addElement('u', ofBlock(GregTechAPI.sBlockGlass1,4))
+     * .addElement('v',lazy(() -> ofBlock(ModBlocks.blockCasings6Misc,0)))
+     * // transcendent reinforcement
+     * .addElement('1', ofBlock(GregTechAPI.sBlockCasingsFoundry,7))
+     * .addElement('2', ofFrame(Materials.Creon))
+     * .addElement('3', ofFrame(Materials.Mellion))
+     * .addElement('4', ofFrame(Materials.TranscendentMetal))
+     * .addElement('5', ofFrame(Materials.SpaceTime))
+     * .addElement('6', ofBlock(GregTechAPI.sBlockMetal9,3))
+     * .addElement('7', lazy(() -> ofBlock(GodforgeCasings,3)))
+     * .addElement('8', lazy(()-> ofBlock(BlockGodforgeGlass.INSTANCE, 0)))
+     * // Time Dilation System
+     * .addElement('!', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsBA0,10)))
+     * .addElement('@', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsBA0,11)))
+     * .addElement('#', ofBlock(GregTechAPI.sBlockCasingsFoundry,4))
+     * .addElement('$', ofFrame(Materials.WhiteDwarfMatter))
+     * .addElement('%', ofFrame(Materials.BlackDwarfMatter))
+     * .addElement('^', ofFrame(Materials.Universium))
+     * .addElement('&', ofFrame(Materials.Eternity))
+     * .addElement('*', ofBlock(GregTechAPI.sBlockMetal9,6))
+     * .addElement('_', ofBlock(GregTechAPI.sBlockMetal9,7))
+     * .addElement('+', lazy(() -> ofBlock(TTCasingsContainer.TimeAccelerationFieldGenerator, 8)))
+     * .build();
+     */
 
     public MTEModularSolidifier(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);

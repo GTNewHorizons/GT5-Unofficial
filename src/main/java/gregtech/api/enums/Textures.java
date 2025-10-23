@@ -1947,6 +1947,7 @@ public class Textures {
         MODULAR_SOLIDIFIER_HYPERCOOLER,
         MODULAR_SOLIDIFIER_STREAMLINED_CASTERS,
         MODULAR_SOLIDIFIER_ACTIVE_TIME_DILATION_SYSTEM,
+        MODULAR_SOLIDIFIER_SECONDARY_CASING,
 
         // semicolon after the comment to reduce merge conflicts
         ;

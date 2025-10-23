@@ -24,6 +24,7 @@ public class BlockCasingsFoundry extends BlockCasingsAbstract {
         register(8, ItemList.Extra_Casting_Basins_Solidifier_Modular, "Superdense Casting Basin Casing");
         register(9, ItemList.Hypercooler_Solidifier_Modular, "Hypercooler Siphon Casing");
         register(10, ItemList.Streamlined_Casters_Solidifier_Modular, "Streamlined Casting Casing");
+        register(11, ItemList.Secondary_Casing_Solidifier_Modular, "Secondary Modular Solidifier Casing");
         for (int i = 1; i <= 3; i++) {
             GTStructureChannels.MAGNETIC_CHASSIS.registerAsIndicator(new ItemStack(this, 1, i), i);
         }
@@ -51,6 +52,7 @@ public class BlockCasingsFoundry extends BlockCasingsAbstract {
             case 8 -> Textures.BlockIcons.MODULAR_SOLIDIFIER_EXTRA_CASTING_BASINS.getIcon();
             case 9 -> Textures.BlockIcons.MODULAR_SOLIDIFIER_HYPERCOOLER.getIcon();
             case 10 -> Textures.BlockIcons.MODULAR_SOLIDIFIER_STREAMLINED_CASTERS.getIcon();
+            case 11 -> Textures.BlockIcons.MODULAR_SOLIDIFIER_SECONDARY_CASING.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
 
         };
