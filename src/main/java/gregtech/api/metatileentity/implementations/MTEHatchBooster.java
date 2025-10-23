@@ -2,11 +2,7 @@ package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_EMS_HOUSING;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_EMS_HOUSING_GLOW;
-import static gregtech.common.modularui2.util.CommonGuiComponents.gridTemplate1by1;
-import static gregtech.common.modularui2.util.CommonGuiComponents.gridTemplate2by2;
 
-import com.cleanroommc.modularui.utils.item.LimitingItemStackHandler;
-import gregtech.api.util.GTUtility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -14,41 +10,33 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.multi.MTESuperConductorProcessor;
 
 public class MTEHatchBooster extends MTEHatch {
 
     public MTEHatchBooster(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, 5, 4, "Holds boosters for the SuperConductor Processor");
+        super(aID, aName, aNameRegional, 5, 3, "Holds boosters for the SuperConductor Processor");
     }
 
     public MTEHatchBooster(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 4, aDescription, aTextures);
+        super(aName, aTier, 3, aDescription, aTextures);
     }
 
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return true;
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            new SlotWidget(inventoryHandler, 0).setFilter(MTESuperConductorProcessor::isValidBooster)
-                .setAccess(true, true)
-                .setPos(79, 34));
     }
 
     @Override
@@ -84,11 +72,6 @@ public class MTEHatchBooster extends MTEHatch {
     }
 
     @Override
-    public int getInventoryStackLimit() {
-        return 4;
-    }
-
-    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEHatchBooster(mName, mTier, mDescriptionArray, mTextures);
     }
@@ -119,10 +102,9 @@ public class MTEHatchBooster extends MTEHatch {
     @Override
     public boolean isItemValidForSlot(int index, ItemStack itemStack) {
         for (ItemStack stack : this.mInventory) {
-            if (GTUtility.areStacksEqual(stack, itemStack))
-                return false;
+            if (GTUtility.areStacksEqual(stack, itemStack)) return false;
         }
-        return super.isItemValidForSlot(index, itemStack);
+        return MTESuperConductorProcessor.isValidBooster(itemStack);
     }
 
     @Override
@@ -132,13 +114,19 @@ public class MTEHatchBooster extends MTEHatch {
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        syncManager.registerSlotGroup("item_inv", 1);
+        syncManager.registerSlotGroup("item_inv", 3);
         return GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings)
             .build()
             .child(
-                gridTemplate2by2(
-                    index -> new ItemSlot().slot(
-                        new ModularSlot(inventoryHandler, index).slotGroup("item_inv")
-                            .filter(MTESuperConductorProcessor::isValidBooster))));
+                SlotGroupWidget.builder()
+                    .matrix("III")
+                    .key(
+                        'I',
+                        index -> new ItemSlot().slot(
+                            new ModularSlot(inventoryHandler, index).slotGroup("item_inv")
+                                .filter(item -> this.isItemValidForSlot(index, item))))
+                    .build()
+                    .alignX(Alignment.CENTER)
+                    .alignY(0.25f));
     }
 }
