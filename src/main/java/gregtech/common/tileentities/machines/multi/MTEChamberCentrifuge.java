@@ -443,7 +443,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             .addCasingInfoExactly("IsaMill Gearbox Casing", 54, false)
             .addCasingInfoExactly("PBI Pipe Casing", 160, false)
             .addCasingInfoExactly("Turbine Shaft", 24, false)
-            .addCasingInfoExactly("Rotor Assembly", 2, 8, false)
+            .addCasingInfoExactly("Rotor Assembly", 8, false)
             .addCasingInfoExactly("SC Turbine Casing", 264, false)
             .addInputBus("Any Vibration-Safe Casing", 1)
             .addOutputBus("Any Vibration-Safe Casing", 1)
