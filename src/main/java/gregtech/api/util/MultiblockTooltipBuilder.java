@@ -17,6 +17,8 @@ import java.util.function.Consumer;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.util.EnumChatFormatting;
 
 import org.jetbrains.annotations.NotNull;
@@ -900,12 +902,15 @@ public class MultiblockTooltipBuilder {
      *
      * @return Instance this method was called on.
      */
-    public MultiblockTooltipBuilder addStructureInfoSeparator() {
-        return addStructureInfoSeparator(
-            EnumChatFormatting.GRAY,
-            (int) (translateToLocal("GT5U.MBTT.Structure.SeeStructure").replaceAll("§[0-9a-fk-or]", "")
-                .length() * 0.8),
-            false);
+    public MultiblockTooltipBuilder addStructureInfoSeparator(@Nullable boolean... useFinisherConfig) {
+        if (useFinisherConfig != null) {
+            return addStructureInfoSeparator(
+                EnumChatFormatting.GRAY,
+                (int) (translateToLocal("GT5U.MBTT.Structure.SeeStructure").replaceAll("§[0-9a-fk-or]", "")
+                    .length() * 0.7),
+                useFinisherConfig[0]);
+        }
+        return this;
     }
 
     /**
@@ -1012,7 +1017,7 @@ public class MultiblockTooltipBuilder {
             case 0 -> {}
             case 1 -> addInfo(" ");
             case 2 -> addInfo(separatorColor + "%SEPARATORLINE%");
-            default -> addInfo(separatorColor.toString() + EnumChatFormatting.STRIKETHROUGH + "%SEPARATORLINE%");
+            default -> addInfo("" + separatorColor + EnumChatFormatting.STRIKETHROUGH + "%SEPARATORLINE%");
         }
 
         addInfo("GT5U.MBTT.HoldDisplay");
@@ -1024,20 +1029,15 @@ public class MultiblockTooltipBuilder {
                 "GT5U.MBTT.Authors",
                 String.join(EnumChatFormatting.GRAY + " & " + EnumChatFormatting.GREEN, processedAuthors));
         }
-        hLines.add(TT_structurehint);
-        this.addStructureInfoSeparator(
-            EnumChatFormatting.GRAY,
-            (int) (translateToLocal("GT5U.MBTT.Structure.SeeStructure").replaceAll("§[0-9a-fk-or]", "")
-                .length() * 0.8),
-            true);
-        addShiftInfo("GT5U.MBTT.Structure.Complex");
+        this.addStructureInfoSeparator(true);
         addShiftInfo("GT5U.MBTT.Structure.SeeStructure");
-        // e.getKey() - 1 because 1 dot is meta 0.
+        hLines.add(TT_structurehint);
         hArray = Stream.concat(
             hLines.stream(),
             hBlocks.asMap()
                 .entrySet()
                 .stream()
+                // e.getKey() - 1 because 1 dot is meta 0.
                 .map(e -> TT_dots[e.getKey() - 1] + COLON + String.join(SEPARATOR, e.getValue())))
             .toArray(String[]::new);
         // free memory
