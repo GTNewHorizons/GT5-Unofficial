@@ -97,7 +97,6 @@ public class MTETeslaTower extends TTMultiblockBase
         .build();
     private final HashSet<ThaumSpark> sparkList = new HashSet<>();
     private int sparkCount = 20;
-
     // Face icons
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
@@ -125,6 +124,7 @@ public class MTETeslaTower extends TTMultiblockBase
     private long outputVoltage;
     private long outputCurrent;
     private long outputCurrentLastTick;
+    private List<Long> outputCurrentHistory = new ArrayList<>();
 
     // Prevents unnecessary offset calculation, saving on lag
     private byte oldRotation = -1;
@@ -795,6 +795,7 @@ public class MTETeslaTower extends TTMultiblockBase
         long usedAmps = TeslaUtil.powerTeslaNodeMap(this);
         outputCurrentDisplay.set(usedAmps);
         outputCurrentLastTick = usedAmps;
+        outputCurrentHistory.add(usedAmps);
 
         outputMaxDisplay.set(Math.max(outputCurrentDisplay.get(), outputMaxDisplay.get()));
         // TODO Encapsulate the spark sender
@@ -997,6 +998,14 @@ public class MTETeslaTower extends TTMultiblockBase
             return true;
         }
         return false;
+    }
+
+    public List<Long> getOutputCurrentHistory() {
+        return outputCurrentHistory;
+    }
+
+    public void setOutputCurrentHistory(List<Long> outputCurrentHistory) {
+        this.outputCurrentHistory = outputCurrentHistory;
     }
 
     @Override

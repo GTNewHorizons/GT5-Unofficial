@@ -2,12 +2,20 @@ package gregtech.common.gui.modularui.multiblock;
 
 import java.awt.*;
 
+import net.minecraft.network.PacketBuffer;
+
+import org.jetbrains.annotations.NotNull;
+
+import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.Rectangle;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Color;
+import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
@@ -15,6 +23,7 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.multiblock.base.TTMultiblockBaseGui;
+import gregtech.common.gui.modularui.widget.ChartWidget;
 import tectech.thing.metaTileEntity.multi.MTETeslaTower;
 
 public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
@@ -61,5 +70,55 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
                 t -> t.addLine(
                     String.format("Output current: %d/%d", currentSyncer.getValue(), maxCurrentSyncer.getValue())))
             .tooltipAutoUpdate(true);
+    }
+
+    @Override
+    protected Flow createPanelGap(ModularPanel parent, PanelSyncManager syncManager) {
+        return super.createPanelGap(parent, syncManager).child(createChartButton(syncManager));
+    }
+
+    private IWidget createChartButton(PanelSyncManager syncManager) {
+        IPanelHandler chartPanel = syncManager.panel("chart", (a, b) -> openChartPanel(syncManager), true);
+        return new ButtonWidget<>().onMousePressed(d -> {
+            if (!chartPanel.isPanelOpen()) {
+                chartPanel.openPanel();
+            } else {
+                chartPanel.closePanel();
+            }
+            return true;
+        });
+    }
+
+    private @NotNull ModularPanel openChartPanel(PanelSyncManager syncManager) {
+        return new ModularPanel("chart").coverChildren()
+            .padding(4)
+            .child(
+                Flow.column()
+                    .coverChildren()
+                    .child(
+                        new ChartWidget<Long>()
+                            .syncHandler(
+                                new GenericListSyncHandler<>(
+                                    multiblock::getOutputCurrentHistory,
+                                    multiblock::setOutputCurrentHistory,
+                                    PacketBuffer::readLong,
+                                    PacketBuffer::writeLong,
+                                    Long::equals,
+                                    null))
+                            .size(225, 150)
+                            .background(new Rectangle().setColor(Color.rgb(100, 30, 80)))));
+    }
+
+    @Override
+    protected void registerSyncValues(PanelSyncManager syncManager) {
+        super.registerSyncValues(syncManager);
+        // GenericListSyncHandler<Long> currentHistorySyncer = new GenericListSyncHandler<>(
+        // multiblock::getOutputCurrentHistory,
+        // multiblock::setOutputCurrentHistory,
+        // PacketBuffer::readLong,
+        // PacketBuffer::writeLong,
+        // Long::equals,
+        // null);
+        // syncManager.syncValue("outputHistory", currentHistorySyncer);
     }
 }
