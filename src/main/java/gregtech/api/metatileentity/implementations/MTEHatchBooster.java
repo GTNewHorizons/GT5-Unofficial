@@ -4,6 +4,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_EMS_HOUSING;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_EMS_HOUSING_GLOW;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -24,7 +25,8 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.multi.MTESuperConductorProcessor;
 
-public class MTEHatchBooster extends MTEHatch {
+
+public class MTEHatchBooster extends MTEHatch implements ISidedInventory {
 
     public MTEHatchBooster(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 5, 3, "Holds boosters for the SuperConductor Processor");
@@ -42,6 +44,20 @@ public class MTEHatchBooster extends MTEHatch {
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         openGui(aPlayer);
+        return true;
+    }
+
+    @Override
+    public boolean canInsertItem(int index, ItemStack itemStack, int ordinalSide) {
+
+        for (ItemStack stack : this.mInventory) {
+            if (GTUtility.areStacksEqual(stack, itemStack)) return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean canExtractItem(int index, ItemStack itemStack, int ordinalSide) {
         return true;
     }
 
@@ -105,6 +121,11 @@ public class MTEHatchBooster extends MTEHatch {
             if (GTUtility.areStacksEqual(stack, itemStack)) return false;
         }
         return MTESuperConductorProcessor.isValidBooster(itemStack);
+    }
+
+    @Override
+    public int getInventoryStackLimit() {
+        return 4;
     }
 
     @Override
