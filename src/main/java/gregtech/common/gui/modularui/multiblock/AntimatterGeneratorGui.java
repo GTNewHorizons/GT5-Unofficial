@@ -17,17 +17,14 @@ import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 
 import goodgenerator.blocks.tileEntity.AntimatterGenerator;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
 public class AntimatterGeneratorGui extends MTEMultiBlockBaseGui<AntimatterGenerator> {
@@ -54,19 +51,6 @@ public class AntimatterGeneratorGui extends MTEMultiBlockBaseGui<AntimatterGener
         syncManager.syncValue("energyProduced", new LongSyncValue(multiblock::getEnergyProduced));
         syncManager.syncValue("efficiencyCur", new DoubleSyncValue(multiblock::getEfficiency));
         syncManager.syncValue("efficiencyAvg", new DoubleSyncValue(multiblock::getAvgEfficiency));
-    }
-
-    @Override
-    protected Flow createTerminalRow(ModularPanel panel, PanelSyncManager syncManager) {
-        return new Row().size(getTerminalRowWidth(), getTerminalRowHeight())
-            .child(
-                new ParentWidget<>().size(getTerminalWidgetWidth(), getTerminalWidgetHeight())
-                    .padding(4)
-                    .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
-                    .child(
-                        createTerminalTextWidget(syncManager, panel)
-                            .size(getTerminalWidgetWidth() - 10, getTerminalWidgetHeight() - 8)
-                            .collapseDisabledChild()));
     }
 
     @Override
