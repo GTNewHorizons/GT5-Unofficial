@@ -138,7 +138,7 @@ tooltip.bw.yes.name=Yes
 tooltip.bw.no.name=No
 tooltip.bw.tier.name=Tier:
 tooltip.bw.empty.name=Empty
-tooltip.bw.mb_via.name=%s§7 via §2BartWorks
+tooltip.bw.bart_via_bw.name=Added by §abartimaeusnek§7 via §2BartWorks
 
 tooltip.bw.item.circuit.tagged=a circuit
 tooltip.bw.item.circuit.tagged.imprint=An imprint for: %s
