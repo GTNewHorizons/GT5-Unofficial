@@ -28,18 +28,12 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
-import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
-import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -55,11 +49,13 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
 import com.google.common.collect.ImmutableList;
-//import com.gtnewhorizon.gtnhlib.client.renderer.shader.AutoShaderUpdater;
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
 import com.gtnewhorizon.gtnhlib.client.renderer.vbo.IModelCustomExt;
 import com.gtnewhorizon.gtnhlib.client.renderer.vbo.VertexBuffer;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
+import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
+import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
@@ -1032,53 +1028,41 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     // TODO: figure out why isActive doesnt send to client by default???
     @Override
     public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
-        GL11.glPushMatrix();
-        GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
-
-        GL11.glTranslated(x + 0.5F, y+0.5f, z + 0.5F);
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glColor4f(1F, 1F, 1F, 1F);
-
-        Tessellator tessellator = Tessellator.instance;
-        tessellator.startDrawing(GL11.GL_LINES);
-        GL11.glLineWidth(15);
-
-
-        // x unit
-        tessellator.setColorRGBA_F(1, 0, 0, 1);
-        tessellator.addVertex(0, 0, 0);
-        tessellator.addVertex(4, 0, 0);
-        // y unit
-        tessellator.setColorRGBA_F(0, 1, 0, 1);
-        tessellator.addVertex(0, 0, 0);
-        tessellator.addVertex(0, 4, 0);
-        // z unit
-        tessellator.setColorRGBA_F(0, 0, 1, 1);
-        tessellator.addVertex(0, 0, 0);
-        tessellator.addVertex(0, 0, 4);
-
-        tessellator.draw();
-
-
-
-        applyRotation();
-        GL11.glColor4f(1F, 1F, 1F, 1F);
-
-        tessellator.startDrawing(GL11.GL_LINES);
-
-        GL11.glLineWidth(25);
-
-        tessellator.setColorRGBA_F(1, 1, 1, 1);
-
-        tessellator.addVertex(0, 0, 0);
-        tessellator.addVertex(0, 10, 0);
-
-        tessellator.draw();
-
-        GL11.glPopAttrib();
-        GL11.glPopMatrix();
         /*
+         * GL11.glPushMatrix();
+         * GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
+         * GL11.glTranslated(x + 0.5F, y+0.5f, z + 0.5F);
+         * GL11.glDisable(GL11.GL_LIGHTING);
+         * GL11.glDisable(GL11.GL_TEXTURE_2D);
+         * GL11.glColor4f(1F, 1F, 1F, 1F);
+         * Tessellator tessellator = Tessellator.instance;
+         * tessellator.startDrawing(GL11.GL_LINES);
+         * GL11.glLineWidth(15);
+         * // x unit
+         * tessellator.setColorRGBA_F(1, 0, 0, 1);
+         * tessellator.addVertex(0, 0, 0);
+         * tessellator.addVertex(4, 0, 0);
+         * // y unit
+         * tessellator.setColorRGBA_F(0, 1, 0, 1);
+         * tessellator.addVertex(0, 0, 0);
+         * tessellator.addVertex(0, 4, 0);
+         * // z unit
+         * tessellator.setColorRGBA_F(0, 0, 1, 1);
+         * tessellator.addVertex(0, 0, 0);
+         * tessellator.addVertex(0, 0, 4);
+         * tessellator.draw();
+         * applyRotation();
+         * GL11.glColor4f(1F, 1F, 1F, 1F);
+         * tessellator.startDrawing(GL11.GL_LINES);
+         * GL11.glLineWidth(25);
+         * tessellator.setColorRGBA_F(1, 1, 1, 1);
+         * tessellator.addVertex(0, 0, 0);
+         * tessellator.addVertex(0, 10, 0);
+         * tessellator.draw();
+         * GL11.glPopAttrib();
+         * GL11.glPopMatrix();
+         */
+
         // if (!shouldRender || !getBaseMetaTileEntity().isActive()) return;
 
         if (!renderInitialized) {
@@ -1119,7 +1103,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         GL11.glPopMatrix();
 
         ShaderProgram.clear();
-*/
+
     }
 
     private void initializeRender() {
@@ -1146,7 +1130,8 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                 "shaders/foundry.frag.glsl"
             );
             uGlowColor = ringProgram.getUniformLocation("u_Color");
-            uTexOffset = ringProgram.getUniformLocation("texOffset");
+          //  uTexOffset = ringProgram.getUniformLocation("texOffset");
+            renderInitialized = true;
          /*   AutoShaderUpdater.getInstance().registerShaderReload(
                 ringProgram,
                 GregTech.resourceDomain,
@@ -1227,17 +1212,9 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         GL11.glPopMatrix();
     }
 
-    private void applyRotation ()
-    {
-        //todo: idfk LMAO
+    private void applyRotation() {
         ExtendedFacing extendedFacing = this.getExtendedFacing();
 
-
-
-
-
-        //issues:  forge direction WEST + rotation normal / upside down
-        // forge direction: up / down + rotation: upside down
         Matrix4f rotationMatrix = new Matrix4f().identity();
         Rotation rotation = extendedFacing.getRotation();
         float localAngle = switch (rotation) {
@@ -1255,41 +1232,40 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         ForgeDirection direction = extendedFacing.getDirection();
         rotationMatrix.rotate(localAngle, direction.offsetX, direction.offsetY, direction.offsetZ);
 
-        float x = 0, y = 0;
+        float x = 0;
 
-        //special: direction = up, down
+        // this really sucks, but im not good with linalg so best i can do.
+        // flag for the strange outlier case that should work but just doesnt
+        boolean outlierFlag = false;
+
+        // special: direction = up, down
         float angle = switch (direction) {
             case DOWN, UP -> {
-                if(rotation == Rotation.UPSIDE_DOWN)
-                {
-                    x = 1;
-                    yield -90;
-                }
-                else {
-                    x = 1;
-                    yield -90;
-                }
+                outlierFlag = rotation == Rotation.UPSIDE_DOWN;
+                x = 1;
+                yield -90;
             }
             case UNKNOWN -> 0.0F;
             default -> 0.0f;
         };
         float radAngle = (float) Math.toRadians(angle);
 
-        float testAngle = (float) Math.toRadians(90);
-
         rotationMatrix.rotate(radAngle, x, 0, 0);
 
         AxisAngle4f rotationVector = new AxisAngle4f();
         rotationMatrix.getRotation(rotationVector);
 
-        final double rotationAngle = Math.toDegrees(rotationVector.angle); // (float) Math.PI * 180;
-        final double rotAxisX = rotationVector.x;
-        final double rotAxisY = rotationVector.y;
-        final double rotAxisZ = rotationVector.z;
-        GL11.glRotated(rotationAngle, rotAxisX, rotAxisY, rotAxisZ);
-    // -inf inf sqrt 2 /2
-    }
+        if (outlierFlag) {
+            GL11.glRotated(90, 1, 0, 0);
+        } else {
 
+            final double rotationAngle = Math.toDegrees(rotationVector.angle);
+            final double rotAxisX = rotationVector.x;
+            final double rotAxisY = rotationVector.y;
+            final double rotAxisZ = rotationVector.z;
+            GL11.glRotated(rotationAngle, rotAxisX, rotAxisY, rotAxisZ);
+        }
+    }
 
     @Override
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
