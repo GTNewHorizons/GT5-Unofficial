@@ -1,6 +1,5 @@
 package gregtech.common.gui.modularui.multiblock;
 
-import gregtech.common.gui.modularui.widget.LineChartWidget;
 import net.minecraft.network.PacketBuffer;
 
 import org.jetbrains.annotations.NotNull;
@@ -22,6 +21,7 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.multiblock.base.TTMultiblockBaseGui;
+import gregtech.common.gui.modularui.widget.LineChartWidget;
 import tectech.thing.metaTileEntity.multi.MTETeslaTower;
 
 public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
@@ -107,7 +107,7 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
                     Double::equals,
                     null))
             .size(225, 150)
-            .background(new Rectangle().setColor(Color.rgb(100, 30, 80)))
+            .background(new Rectangle().setColor(Color.rgb(100, 30, 80)), GTGuiTextures.BACKGROUND_TESLA_TOWER_CHART)
             .chartUnit("A")
             .dataPointLimit(30);
     }

@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.cleanroommc.modularui.utils.Alignment;
 import net.minecraft.client.renderer.Tessellator;
 
 import org.lwjgl.opengl.GL11;
@@ -15,6 +14,7 @@ import org.lwjgl.opengl.GL11;
 import com.cleanroommc.modularui.drawable.text.TextRenderer;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
 import com.cleanroommc.modularui.theme.WidgetThemeEntry;
+import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.SyncHandler;
@@ -51,7 +51,7 @@ public class LineChartWidget extends Widget<LineChartWidget> {
         return this;
     }
 
-    public LineChartWidget renderMinMaxText(boolean renderMinMaxText){
+    public LineChartWidget renderMinMaxText(boolean renderMinMaxText) {
         this.renderMinMaxText = renderMinMaxText;
         return this;
     }
@@ -131,7 +131,7 @@ public class LineChartWidget extends Widget<LineChartWidget> {
 
         tessellator.draw();
 
-        if(renderMinMaxText){
+        if (renderMinMaxText) {
             TextRenderer renderer = TextRenderer.SHARED;
             renderer.setAlignment(Alignment.CenterLeft, getArea().width);
             renderer.setColor(Color.WHITE.main);
@@ -145,7 +145,6 @@ public class LineChartWidget extends Widget<LineChartWidget> {
             renderer.setPos(0, (int) (getArea().height - renderer.getFontHeight()));
             renderer.draw(minValue + chartUnit);
         }
-
 
         GlStateManager.shadeModel(7424);
         GlStateManager.disableBlend();

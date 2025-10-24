@@ -96,6 +96,10 @@ public final class GTGuiTextures {
         .adaptable(1)
         .name(GTTextureIds.BACKGROUND_CHAOS_LOCATOR)
         .build();
+
+    public static final UITexture BACKGROUND_TESLA_TOWER_CHART = UITexture.builder()
+        .location(MODID, "gui/tesla_tower_chart_background")
+        .build();
     // endregion background
 
     // region overlay
