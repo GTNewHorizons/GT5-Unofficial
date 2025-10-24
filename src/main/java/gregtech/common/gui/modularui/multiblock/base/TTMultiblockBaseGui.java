@@ -2,6 +2,8 @@ package gregtech.common.gui.modularui.multiblock.base;
 
 import java.util.Collection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -144,15 +146,63 @@ public class TTMultiblockBaseGui extends MTEMultiBlockBaseGui<TTMultiblockBase> 
         Flow column = Flow.column()
             .coverChildren()
             .crossAxisAlignment(Alignment.CrossAxis.START);
-        parameters.forEach(
-            parameter -> column.child(
-                IKey.lang(parameter.getLangKey())
-                    .asWidget()
-                    .maxWidth(125)
-                    .margin(0, 2))
-                .child(parameter.createInputWidget()));
+
+        int i = 0;
+        for (Parameter<?> parameter : parameters) {
+            String key = parameter.getLangKey();
+            ButtonWidget<?> parameterEditButton = new ButtonWidget<>().overlay(IKey.lang(key))
+                .width(100)
+                .marginBottom(2);
+
+            String panelKey = "editParameter" + i;
+            IPanelHandler editParameterPanel = syncManager.panel(
+                panelKey,
+                (s, h) -> openParameterEditPanel(parameterEditButton, parameter, syncManager, panelKey),
+                true);
+            i++;
+
+            column.child(parameterEditButton.onMousePressed(d -> {
+                if (!editParameterPanel.isPanelOpen()) {
+                    editParameterPanel.openPanel();
+                } else {
+                    editParameterPanel.closePanel();
+                }
+                return true;
+            }));
+        }
 
         return panel.child(column);
     }
 
+    private @NotNull ModularPanel openParameterEditPanel(ButtonWidget<?> parameterEditButton, Parameter<?> parameter,
+        PanelSyncManager syncManager, String panelKey) {
+        return new ModularPanel(panelKey) {
+
+            @Override
+            public boolean isDraggable() {
+                return false;
+            }
+        }.coverChildren()
+            .relative(parameterEditButton)
+            .topRel(1)
+            .leftRel(0)
+            .child(
+                Flow.column()
+                    .coverChildren()
+                    .padding(4)
+                    .child(
+                        Flow.row()
+                            .coverChildren()
+                            .child(
+                                IKey.lang(parameter.getLangKey())
+                                    .asWidget()
+                                    .alignment(Alignment.CenterLeft)
+                                    .maxWidth(125)
+                                    .margin(0, 14, 2, 2))
+                            .child(
+                                ButtonWidget.panelCloseButton()
+                                    .top(0)
+                                    .right(0)))
+                    .child(parameter.createInputWidget()));
+    }
 }
