@@ -1,5 +1,7 @@
 package gregtech.common.gui.modularui.multiblock.base;
 
+import java.util.Collection;
+
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -23,6 +25,7 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import gregtech.api.modularui2.GTGuiTextures;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.parameter.IParametrized;
+import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
 
 public class TTMultiblockBaseGui extends MTEMultiBlockBaseGui<TTMultiblockBase> {
 
@@ -124,28 +127,30 @@ public class TTMultiblockBaseGui extends MTEMultiBlockBaseGui<TTMultiblockBase> 
 
     // Panel implementation will come with first parametrized multiblock port
     private ModularPanel getParameterPanel(ModularPanel parent, PanelSyncManager syncManager) {
+        Collection<Parameter<?>> parameters = multiblock.parameterMap.values();
+
         ModularPanel panel = new ModularPanel("parameters") {
 
             @Override
             public boolean isDraggable() {
                 return false;
             }
-        }.size(125, 191)
+        }.coverChildren()
             .relative(parent)
             .rightRel(0, 0, 1)
             .topRel(0)
             .padding(4);
 
         Flow column = Flow.column()
-            .coverChildren();
-        multiblock.parameterMap.values()
-            .forEach(
-                parameter -> {
-                    column.child(
-                        IKey.lang(parameter.getLangKey())
-                            .asWidget())
-                        .child(parameter.createInputWidget());
-                });
+            .coverChildren()
+            .crossAxisAlignment(Alignment.CrossAxis.START);
+        parameters.forEach(
+            parameter -> column.child(
+                IKey.lang(parameter.getLangKey())
+                    .asWidget()
+                    .maxWidth(125)
+                    .margin(0, 2))
+                .child(parameter.createInputWidget()));
 
         return panel.child(column);
     }

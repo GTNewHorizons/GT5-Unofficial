@@ -80,8 +80,10 @@ import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import tectech.thing.metaTileEntity.multi.base.LedStatus;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
+import tectech.thing.metaTileEntity.multi.base.parameter.BooleanParameter;
 import tectech.thing.metaTileEntity.multi.base.parameter.DoubleParameter;
 import tectech.thing.metaTileEntity.multi.base.parameter.IParametrized;
+import tectech.thing.metaTileEntity.multi.base.parameter.IntegerParameter;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
 public class MTETeslaTower extends TTMultiblockBase
@@ -383,6 +385,28 @@ public class MTETeslaTower extends TTMultiblockBase
                 () -> (Double) parameterMap.get("hysteresisLow")
                     .getValue(),
                 () -> 0.95));
+        parameterMap.put(
+            "transferRadius",
+            new IntegerParameter(
+                32,
+                "gt.blockmachines.multimachine.tm.teslaCoil.cfgi.2",
+                () -> 1,
+                () -> Integer.MAX_VALUE));
+        parameterMap.put(
+            "outputVoltage",
+            new IntegerParameter(
+                -1,
+                "gt.blockmachines.multimachine.tm.teslaCoil.cfgi.5",
+                () -> -1,
+                () -> Integer.MAX_VALUE));
+        parameterMap.put(
+            "outputCurrent",
+            new IntegerParameter(
+                -1,
+                "gt.blockmachines.multimachine.tm.teslaCoil.cfgi.6",
+                () -> -1,
+                () -> (int) outputCurrentMax));
+        parameterMap.put("overdrive", new BooleanParameter(false, "gt.blockmachines.multimachine.tm.teslaCoil.cfgi.8"));
     }
 
     private float getRangeMulti(int mTier, int vTier) {
