@@ -655,15 +655,7 @@ public class GTValues {
         createChromLetter("r", CHAOS, "ṟ", SPARKLES),
         createChromLetter("o", AIR, CIRCLE_CROSS, EMPTY_SET),
         createChromLetter("m", STAR, CIRCLE_STAR, "⏧"));
-    /*
-     * public static final Supplier<String> fancyAuthorChrom = chain(
-     * createChromLetter("C", "⌕","↋", "⍧"),
-     * createChromLetter("h", "⑁", ALEPH+SUBSCRIPT0),
-     * createChromLetter("r", "┝","⌥", ARROW_CORNER_NORTH_WEST),
-     * createChromLetter("o", "⏣", "⌀"),
-     * createChromLetter("m", "⏧","⎑","ඞ" )
-     * );
-     */
+
     public static final Supplier<String> AuthorThree = chain(
         animatedText(
             "Three",
@@ -676,16 +668,21 @@ public class GTValues {
     private static Supplier<String> createChromLetter(String letter, String... injectedUnicode) {
 
         XSTR random = XSTR.XSTR_INSTANCE;
-        int length = 4 + injectedUnicode.length * 2;// (1+random.nextInt(3));
+        // calculates the amount of cycles
+        int length = 4 + injectedUnicode.length * 2;
         String[] colorList = new String[length];
+
         int currentUnicodeIndex = 0;
         for (int i = 0; i < colorList.length; i++) {
             StringBuilder builder = new StringBuilder();
             int prependedFormattingCodes = 1 + random.nextInt(2);
             for (int codeStep = 0; codeStep < prependedFormattingCodes; codeStep++) {
+                // adds fun formatting codes
                 int randIndex = random.nextInt(formattingCodes.length);
                 builder.append(formattingCodes[randIndex]);
             }
+            // checks if its the correct positon to insert a special unicode character, injects if so, otherwise adds
+            // the letter
             if (currentUnicodeIndex < injectedUnicode.length && ((i + 1) % injectedUnicode.length == 0)) {
                 builder.append(injectedUnicode[currentUnicodeIndex]);
                 currentUnicodeIndex += 1;
