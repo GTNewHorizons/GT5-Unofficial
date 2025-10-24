@@ -5032,7 +5032,7 @@ public class ChemicalRecipes implements Runnable {
                 Materials.CobaltIINaphthenate.getDust(64),
                 Materials.CobaltIINaphthenate.getDust(64),
                 Materials.CobaltIINaphthenate.getDust(49))
-            .fluidInputs(Materials.NaphthenicAcid.getFluid(10_000))
+            .fluidInputs(Materials.NaphthenicAcid.getFluid(9_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(multiblockChemicalReactorRecipes);
