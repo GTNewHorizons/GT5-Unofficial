@@ -2,10 +2,25 @@ package gregtech.api.enums;
 
 import static bartworks.util.BWTooltipReference.TT;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.AQUA;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BLACK;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BLUE;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BOLD;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_AQUA;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_BLUE;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_GRAY;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_GREEN;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_PURPLE;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_RED;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GOLD;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GREEN;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.ITALIC;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.LIGHT_PURPLE;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.OBFUSCATED;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.RED;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.RESET;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.UNDERLINE;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.WHITE;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.YELLOW;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.animatedText;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.chain;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.text;
@@ -19,7 +34,6 @@ import java.util.function.Supplier;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
@@ -179,24 +193,22 @@ public class GTValues {
         "Error Voltage, report this" // 15
     };
 
-    public static final String[] TIER_COLORS = new String[] { EnumChatFormatting.RED.toString(), // ULV, 0
-        EnumChatFormatting.BLACK.toString(), // LV, 1
-        EnumChatFormatting.GOLD.toString(), // MV, 2
-        EnumChatFormatting.YELLOW.toString(), // HV, 3
-        EnumChatFormatting.DARK_GRAY.toString(), // EV, 4
-        EnumChatFormatting.BLUE.toString(), // IV, 5
-        EnumChatFormatting.LIGHT_PURPLE.toString(), // LuV, 6
-        EnumChatFormatting.AQUA.toString(), // ZPM, 7
-        EnumChatFormatting.DARK_GREEN.toString() + EnumChatFormatting.UNDERLINE, // UV, 8
-        EnumChatFormatting.DARK_RED.toString() + EnumChatFormatting.UNDERLINE, // UHV, 9
-        EnumChatFormatting.DARK_PURPLE.toString() + EnumChatFormatting.UNDERLINE, // UEV, 10
-        EnumChatFormatting.DARK_BLUE.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.UNDERLINE, // UIV, 11
-        EnumChatFormatting.RED.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.UNDERLINE, // UMV, 12
-        EnumChatFormatting.DARK_RED.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.UNDERLINE, // UXV, 13
-        EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.UNDERLINE, // MAX, 14
-        EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD
-            + EnumChatFormatting.UNDERLINE
-            + EnumChatFormatting.ITALIC, // MAX+, 15
+    public static final String[] TIER_COLORS = new String[] { RED, // ULV, 0
+        BLACK, // LV, 1
+        GOLD, // MV, 2
+        YELLOW, // HV, 3
+        DARK_GRAY, // EV, 4
+        BLUE, // IV, 5
+        LIGHT_PURPLE, // LuV, 6
+        AQUA, // ZPM, 7
+        DARK_GREEN + UNDERLINE, // UV, 8
+        DARK_RED + UNDERLINE, // UHV, 9
+        DARK_PURPLE + UNDERLINE, // UEV, 10
+        DARK_BLUE + BOLD + UNDERLINE, // UIV, 11
+        RED + BOLD + UNDERLINE, // UMV, 12
+        DARK_RED + BOLD + UNDERLINE, // UXV, 13
+        WHITE + BOLD + UNDERLINE, // MAX, 14
+        WHITE + BOLD + UNDERLINE + ITALIC, // MAX+, 15
     };
 
     /**
@@ -460,78 +472,69 @@ public class GTValues {
      * blackboard is null, we're in a unit test that hasn't set its env up properly and also want those checks to be
      * ran.
      */
-    public static boolean DEVENV = Launch.blackboard == null ? true
-        : (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
+    public static boolean DEVENV = Launch.blackboard == null
+        || (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
 
     /**
      * Pretty formatting for author names.
      */
-    public static final String AuthorColen = "" + EnumChatFormatting.DARK_RED
-        + EnumChatFormatting.BOLD
-        + EnumChatFormatting.ITALIC
-        + EnumChatFormatting.UNDERLINE
+    public static final String AuthorColen = DARK_RED + BOLD
+        + ITALIC
+        + UNDERLINE
         + "C"
-        + EnumChatFormatting.GOLD
-        + EnumChatFormatting.BOLD
-        + EnumChatFormatting.ITALIC
-        + EnumChatFormatting.UNDERLINE
+        + GOLD
+        + BOLD
+        + ITALIC
+        + UNDERLINE
         + "o"
-        + EnumChatFormatting.GREEN
-        + EnumChatFormatting.BOLD
-        + EnumChatFormatting.ITALIC
-        + EnumChatFormatting.UNDERLINE
+        + GREEN
+        + BOLD
+        + ITALIC
+        + UNDERLINE
         + "l"
-        + EnumChatFormatting.DARK_AQUA
-        + EnumChatFormatting.BOLD
-        + EnumChatFormatting.ITALIC
-        + EnumChatFormatting.UNDERLINE
+        + DARK_AQUA
+        + BOLD
+        + ITALIC
+        + UNDERLINE
         + "e"
-        + EnumChatFormatting.DARK_PURPLE
-        + EnumChatFormatting.BOLD
-        + EnumChatFormatting.ITALIC
-        + EnumChatFormatting.UNDERLINE
+        + DARK_PURPLE
+        + BOLD
+        + ITALIC
+        + UNDERLINE
         + "n";
 
-    public static final String AuthorKuba = "" + EnumChatFormatting.DARK_RED
-        + EnumChatFormatting.BOLD
+    public static final String AuthorKuba = DARK_RED + BOLD
         + "k"
-        + EnumChatFormatting.RED
-        + EnumChatFormatting.BOLD
+        + RED
+        + BOLD
         + "u"
-        + EnumChatFormatting.GOLD
-        + EnumChatFormatting.BOLD
+        + GOLD
+        + BOLD
         + "b"
-        + EnumChatFormatting.YELLOW
-        + EnumChatFormatting.BOLD
+        + YELLOW
+        + BOLD
         + "a"
-        + EnumChatFormatting.DARK_GREEN
-        + EnumChatFormatting.BOLD
+        + DARK_GREEN
+        + BOLD
         + "6"
-        + EnumChatFormatting.GREEN
-        + EnumChatFormatting.BOLD
+        + GREEN
+        + BOLD
         + "0"
-        + EnumChatFormatting.AQUA
-        + EnumChatFormatting.BOLD
+        + AQUA
+        + BOLD
         + "0"
-        + EnumChatFormatting.DARK_AQUA
-        + EnumChatFormatting.BOLD
+        + DARK_AQUA
+        + BOLD
         + "0";
 
-    public static final String AuthorPxx500 = "" + EnumChatFormatting.DARK_BLUE + EnumChatFormatting.BOLD + "Pxx500";
+    public static final String AuthorPxx500 = DARK_BLUE + BOLD + "Pxx500";
 
-    public static final String AuthorBlueWeabo = "" + EnumChatFormatting.BLUE
-        + EnumChatFormatting.BOLD
-        + "Blue"
-        + EnumChatFormatting.AQUA
-        + EnumChatFormatting.BOLD
-        + "Weabo";
+    public static final String AuthorBlueWeabo = BLUE + BOLD + "Blue" + AQUA + BOLD + "Weabo";
 
-    public static final String Authorminecraft7771 = "" + EnumChatFormatting.BLUE
-        + EnumChatFormatting.LIGHT_PURPLE
-        + "minecraft7771";
+    public static final String Authorminecraft7771 = BLUE + LIGHT_PURPLE + "minecraft7771";
 
     public static final Supplier<String> AuthorCloud = chain(
-        text("" + EnumChatFormatting.AQUA + EnumChatFormatting.BOLD),
+        text(AQUA + BOLD),
         animatedText(
             "C",
             1,
@@ -542,7 +545,7 @@ public class GTValues {
             DARK_AQUA + "\u0B83" + RESET + AQUA + BOLD,
             DARK_AQUA + OBFUSCATED + BOLD + "X" + RESET + AQUA + BOLD,
             DARK_AQUA + BOLD + "\u29BC" + RESET + AQUA + BOLD),
-        text(EnumChatFormatting.AQUA + EnumChatFormatting.BOLD.toString() + "loud" + EnumChatFormatting.RESET),
+        text(AQUA + BOLD + "loud" + RESET),
         animatedText(
             " ",
             1,
@@ -554,82 +557,50 @@ public class GTValues {
             DARK_AQUA + OBFUSCATED + BOLD + "X",
             DARK_AQUA + BOLD + "\u29BC"));
 
-    public static final String AuthorQuerns = "" + EnumChatFormatting.RED + "Querns";
-    public static final String AuthorSilverMoon = "" + EnumChatFormatting.AQUA + "SilverMoon";
-    public static final String AuthorTheEpicGamer274 = "" + EnumChatFormatting.DARK_AQUA + "TheEpicGamer274";
-    public static final String Ollie = EnumChatFormatting.GREEN.toString() + EnumChatFormatting.BOLD + "Ollie";
-    public static final String authorBaps = "" + EnumChatFormatting.GOLD
-        + "Ba"
-        + EnumChatFormatting.LIGHT_PURPLE
-        + "ps";
-    public static final String AuthorOmdaCZ = "" + EnumChatFormatting.BLUE + "Omda" + EnumChatFormatting.RED + "CZ";
+    public static final String AuthorQuerns = RED + "Querns";
+    public static final String AuthorSilverMoon = AQUA + "SilverMoon";
+    public static final String AuthorTheEpicGamer274 = DARK_AQUA + "TheEpicGamer274";
+    public static final String Ollie = GREEN + BOLD + "Ollie";
+    public static final String authorBaps = GOLD + "Ba" + LIGHT_PURPLE + "ps";
+    public static final String AuthorOmdaCZ = BLUE + "Omda" + RED + "CZ";
 
-    public static final String AuthorEvgenWarGold = "" + EnumChatFormatting.RED
-        + EnumChatFormatting.BOLD
-        + "Evgen"
-        + EnumChatFormatting.BLUE
-        + EnumChatFormatting.BOLD
-        + "War"
-        + EnumChatFormatting.GOLD
-        + EnumChatFormatting.BOLD
-        + "Gold";
-    public static final String AuthorVolence = "" + EnumChatFormatting.AQUA + "Volence";
+    public static final String AuthorEvgenWarGold = RED + BOLD + "Evgen" + BLUE + BOLD + "War" + GOLD + BOLD + "Gold";
+    public static final String AuthorVolence = AQUA + "Volence";
 
-    public static final String AuthorEigenRaven = "" + EnumChatFormatting.DARK_PURPLE
-        + "Eigen"
-        + EnumChatFormatting.BOLD
-        + "Raven";
+    public static final String AuthorEigenRaven = DARK_PURPLE + "Eigen" + BOLD + "Raven";
 
-    public static final String AuthorNotAPenguin = "" + EnumChatFormatting.WHITE
-        + EnumChatFormatting.BOLD
-        + "Not"
-        + EnumChatFormatting.AQUA
-        + EnumChatFormatting.BOLD
-        + "APenguin";
+    public static final String AuthorNotAPenguin = WHITE + BOLD + "Not" + AQUA + BOLD + "APenguin";
 
-    public static final String AuthorPineapple = "" + EnumChatFormatting.BLUE + "Recursive Pineapple";
+    public static final String AuthorPineapple = BLUE + "Recursive Pineapple";
 
     public static final Supplier<String> AuthorNoc = chain(
         animatedText(
             "Noc",
             0,
             500,
-            EnumChatFormatting.GOLD + BOLD,
-            EnumChatFormatting.DARK_GREEN + BOLD,
-            EnumChatFormatting.GOLD + BOLD,
-            EnumChatFormatting.DARK_GREEN + BOLD,
-            EnumChatFormatting.DARK_GREEN + OBFUSCATED + BOLD));
+            GOLD + BOLD,
+            DARK_GREEN + BOLD,
+            GOLD + BOLD,
+            DARK_GREEN + BOLD,
+            DARK_GREEN + OBFUSCATED + BOLD));
 
     public static final String TecTechHatches = "Supports " + TT + " laser and multi-amp hatches";
 
-    public static final String AuthorPureBluez = "" + EnumChatFormatting.WHITE
-        + "Pure"
-        + EnumChatFormatting.AQUA
+    public static final String AuthorPureBluez = WHITE + "Pure"
+        + AQUA
         + "B"
-        + EnumChatFormatting.DARK_AQUA
+        + DARK_AQUA
         + "l"
-        + EnumChatFormatting.BLUE
+        + BLUE
         + "u"
-        + EnumChatFormatting.DARK_BLUE
+        + DARK_BLUE
         + "ez";
 
     public static final Supplier<String> fancyAuthorChrom = chain(
-        animatedText(
-            "Chrom",
-            0,
-            1000,
-            EnumChatFormatting.WHITE + BOLD,
-            EnumChatFormatting.BLUE + BOLD,
-            EnumChatFormatting.GOLD + BOLD));
+        animatedText("Chrom", 0, 1000, WHITE + BOLD, BLUE + BOLD, GOLD + BOLD));
 
     public static final Supplier<String> AuthorThree = chain(
-        animatedText(
-            "Three",
-            0,
-            1000,
-            EnumChatFormatting.BLUE + BOLD,
-            EnumChatFormatting.RED + BOLD,
-            EnumChatFormatting.YELLOW + BOLD));
+        animatedText("Three", 0, 1000, BLUE + BOLD, RED + BOLD, YELLOW + BOLD));
 
     private static final long[] EXPLOSION_LOOKUP_V = new long[] { V[0], V[1], V[2], V[3], V[4], V[4] * 2, V[5], V[6],
         V[7], V[8], V[8] * 2, V[9], V[10], V[11], V[12], V[12] * 2, V[13], V[14], V[15] };
