@@ -1,4 +1,4 @@
-package tectech.thing.metaTileEntity.multi.base;
+package tectech.thing.metaTileEntity.multi.base.parameter;
 
 public interface IParametrized {
 

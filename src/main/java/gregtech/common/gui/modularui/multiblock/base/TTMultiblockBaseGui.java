@@ -20,7 +20,7 @@ import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import tectech.thing.metaTileEntity.multi.base.IParametrized;
+import tectech.thing.metaTileEntity.multi.base.parameter.IParametrized;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
 public class TTMultiblockBaseGui extends MTEMultiBlockBaseGui<TTMultiblockBase> {
