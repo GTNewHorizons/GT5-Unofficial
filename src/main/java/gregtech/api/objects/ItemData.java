@@ -22,7 +22,7 @@ public class ItemData {
 
     public ItemData(OrePrefixes aPrefix, Materials aMaterial, boolean aBlackListed) {
         mPrefix = aPrefix;
-        mMaterial = aMaterial == null ? null : new MaterialStack(aMaterial, aPrefix.mMaterialAmount);
+        mMaterial = aMaterial == null ? null : new MaterialStack(aMaterial, aPrefix.getMaterialAmount());
         mBlackListed = aBlackListed;
         mByProducts = aPrefix.mSecondaryMaterial == null || aPrefix.mSecondaryMaterial.mMaterial == null
             ? EMPTY_MATERIALSTACK_ARRAY
@@ -117,6 +117,6 @@ public class ItemData {
     @Override
     public String toString() {
         if (mPrefix == null || mMaterial == null || mMaterial.mMaterial == null) return "";
-        return mPrefix.name() + mMaterial.mMaterial.mName;
+        return mPrefix.getName() + mMaterial.mMaterial.mName;
     }
 }

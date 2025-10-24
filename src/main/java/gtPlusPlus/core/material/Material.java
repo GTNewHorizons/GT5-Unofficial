@@ -594,7 +594,7 @@ public class Material implements IOreMaterial {
 
             this.vChemicalSymbol = chemicalSymbol;
             if (this.vMaterialInput != null) {
-                this.vChemicalFormula = this.getToolTip(chemicalSymbol, OrePrefixes.dust.mMaterialAmount / M, true);
+                this.vChemicalFormula = this.getToolTip(chemicalSymbol, OrePrefixes.dust.getMaterialAmount() / M, true);
             } else if (!this.vChemicalSymbol.isEmpty()) {
                 Logger.MATERIALS("materialInput is null, using a valid chemical symbol.");
                 this.vChemicalFormula = this.vChemicalSymbol;
@@ -927,7 +927,7 @@ public class Material implements IOreMaterial {
     }
 
     public final ItemStack getComponentByPrefix(OrePrefixes aPrefix, int stacksize) {
-        String aKey = aPrefix.name();
+        String aKey = aPrefix.getName();
         Map<String, ItemStack> g = mComponentMap.get(this.unlocalizedName);
         if (g == null) {
             Map<String, ItemStack> aMap = new HashMap<>();
@@ -953,7 +953,7 @@ public class Material implements IOreMaterial {
                         Erg = ItemUtils.getOrePrefixStack(OrePrefixes.cellMolten, Erf, stacksize);
                         if (Erg != null) {
                             Logger.MATERIALS(
-                                "Found \"" + OrePrefixes.cellMolten.name()
+                                "Found \"" + OrePrefixes.cellMolten.getName()
                                     + this.unlocalizedName
                                     + "\" using backup GT Materials option.");
                             g.put(aKey, Erg);
@@ -1706,7 +1706,7 @@ public class Material implements IOreMaterial {
         if (aMap == null) {
             aMap = new HashMap<>();
         }
-        String aKey = aPrefix.name();
+        String aKey = aPrefix.getName();
         ItemStack x = aMap.get(aKey);
         if (x == null) {
             aMap.put(aKey, aStack);

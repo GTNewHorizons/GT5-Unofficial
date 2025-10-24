@@ -47,7 +47,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.EnderPearl, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Blaze, 1),
                 GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.EnderEye, OrePrefixes.dust.mMaterialAmount))
+            .itemOutputs(GTOreDictUnificator.getDust(Materials.EnderEye, OrePrefixes.dust.getMaterialAmount()))
             .duration(5 * SECONDS)
             .eut(48)
             .addTo(mixerRecipes);
@@ -57,7 +57,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silver, 1),
                 GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.Electrum, 2L * OrePrefixes.dust.mMaterialAmount))
+            .itemOutputs(GTOreDictUnificator.getDust(Materials.Electrum, 2L * OrePrefixes.dust.getMaterialAmount()))
             .duration(10 * SECONDS)
             .eut(8)
             .addTo(mixerRecipes);
@@ -67,7 +67,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 2),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Nickel, 1),
                 GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.Invar, 3L * OrePrefixes.dust.mMaterialAmount))
+            .itemOutputs(GTOreDictUnificator.getDust(Materials.Invar, 3L * OrePrefixes.dust.getMaterialAmount()))
             .duration(15 * SECONDS)
             .eut(8)
             .addTo(mixerRecipes);
@@ -77,7 +77,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tin, 1),
                 GTUtility.getIntegratedCircuit(5))
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.TinAlloy, 2L * OrePrefixes.dust.mMaterialAmount))
+            .itemOutputs(GTOreDictUnificator.getDust(Materials.TinAlloy, 2L * OrePrefixes.dust.getMaterialAmount()))
             .duration(5 * SECONDS)
             .eut(8)
             .addTo(mixerRecipes);
@@ -89,7 +89,8 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Manganese, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Chrome, 1),
                 GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.StainlessSteel, 9L * OrePrefixes.dust.mMaterialAmount))
+            .itemOutputs(
+                GTOreDictUnificator.getDust(Materials.StainlessSteel, 9L * OrePrefixes.dust.getMaterialAmount()))
             .duration(45 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
@@ -100,7 +101,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Chrome, 1),
                 GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.Kanthal, 3L * OrePrefixes.dust.mMaterialAmount))
+            .itemOutputs(GTOreDictUnificator.getDust(Materials.Kanthal, 3L * OrePrefixes.dust.getMaterialAmount()))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
@@ -110,7 +111,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 3),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Zinc, 1),
                 GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.Brass, 4L * OrePrefixes.dust.mMaterialAmount))
+            .itemOutputs(GTOreDictUnificator.getDust(Materials.Brass, 4L * OrePrefixes.dust.getMaterialAmount()))
             .duration(2 * SECONDS)
             .eut(8)
             .addTo(mixerRecipes);
@@ -120,7 +121,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 3),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tin, 1),
                 GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.Bronze, 4L * OrePrefixes.dust.mMaterialAmount))
+            .itemOutputs(GTOreDictUnificator.getDust(Materials.Bronze, 4L * OrePrefixes.dust.getMaterialAmount()))
             .duration(2 * SECONDS)
             .eut(8)
             .addTo(mixerRecipes);
@@ -130,7 +131,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Nickel, 1),
                 GTUtility.getIntegratedCircuit(3))
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.Cupronickel, 2L * OrePrefixes.dust.mMaterialAmount))
+            .itemOutputs(GTOreDictUnificator.getDust(Materials.Cupronickel, 2L * OrePrefixes.dust.getMaterialAmount()))
             .duration(10 * SECONDS)
             .eut(24)
             .addTo(mixerRecipes);
@@ -140,7 +141,8 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silver, 4),
                 GTUtility.getIntegratedCircuit(4))
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.SterlingSilver, 5L * OrePrefixes.dust.mMaterialAmount))
+            .itemOutputs(
+                GTOreDictUnificator.getDust(Materials.SterlingSilver, 5L * OrePrefixes.dust.getMaterialAmount()))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
@@ -150,7 +152,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 3),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Electrum, 2),
                 GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.BlackBronze, 5L * OrePrefixes.dust.mMaterialAmount))
+            .itemOutputs(GTOreDictUnificator.getDust(Materials.BlackBronze, 5L * OrePrefixes.dust.getMaterialAmount()))
             .duration(25 * SECONDS)
             .eut(8)
             .addTo(mixerRecipes);
@@ -160,7 +162,8 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Bismuth, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Brass, 4),
                 GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.BismuthBronze, 5L * OrePrefixes.dust.mMaterialAmount))
+            .itemOutputs(
+                GTOreDictUnificator.getDust(Materials.BismuthBronze, 5L * OrePrefixes.dust.getMaterialAmount()))
             .duration(25 * SECONDS)
             .eut(8)
             .addTo(mixerRecipes);
@@ -171,7 +174,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Nickel, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 3),
                 GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.BlackSteel, 5L * OrePrefixes.dust.mMaterialAmount))
+            .itemOutputs(GTOreDictUnificator.getDust(Materials.BlackSteel, 5L * OrePrefixes.dust.getMaterialAmount()))
             .duration(25 * SECONDS)
             .eut(8)
             .addTo(mixerRecipes);
@@ -183,7 +186,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.BlackSteel, 4),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 2),
                 GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.RedSteel, 8L * OrePrefixes.dust.mMaterialAmount))
+            .itemOutputs(GTOreDictUnificator.getDust(Materials.RedSteel, 8L * OrePrefixes.dust.getMaterialAmount()))
             .duration(40 * SECONDS)
             .eut(8)
             .addTo(mixerRecipes);
@@ -195,7 +198,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.BlackSteel, 4),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 2),
                 GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.BlueSteel, 8L * OrePrefixes.dust.mMaterialAmount))
+            .itemOutputs(GTOreDictUnificator.getDust(Materials.BlueSteel, 8L * OrePrefixes.dust.getMaterialAmount()))
             .duration(40 * SECONDS)
             .eut(8)
             .addTo(mixerRecipes);
@@ -208,7 +211,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Nickel, 5),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 15),
                 GTUtility.getIntegratedCircuit(14))
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.BlackSteel, 25L * OrePrefixes.dust.mMaterialAmount))
+            .itemOutputs(GTOreDictUnificator.getDust(Materials.BlackSteel, 25L * OrePrefixes.dust.getMaterialAmount()))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(mixerRecipes);
@@ -222,7 +225,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.BlackSteel, 20),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 10),
                 GTUtility.getIntegratedCircuit(15))
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.RedSteel, 40L * OrePrefixes.dust.mMaterialAmount))
+            .itemOutputs(GTOreDictUnificator.getDust(Materials.RedSteel, 40L * OrePrefixes.dust.getMaterialAmount()))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(mixerRecipes);
@@ -237,9 +240,9 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 40),
                 GTUtility.getIntegratedCircuit(16))
             .itemOutputs(
-                GTOreDictUnificator.getDust(Materials.BlueSteel, 64L * OrePrefixes.dust.mMaterialAmount),
-                GTOreDictUnificator.getDust(Materials.BlueSteel, 64L * OrePrefixes.dust.mMaterialAmount),
-                GTOreDictUnificator.getDust(Materials.BlueSteel, 32L * OrePrefixes.dust.mMaterialAmount))
+                GTOreDictUnificator.getDust(Materials.BlueSteel, 64L * OrePrefixes.dust.getMaterialAmount()),
+                GTOreDictUnificator.getDust(Materials.BlueSteel, 64L * OrePrefixes.dust.getMaterialAmount()),
+                GTOreDictUnificator.getDust(Materials.BlueSteel, 32L * OrePrefixes.dust.getMaterialAmount()))
             .duration(3 * MINUTES)
             .eut(TierEU.RECIPE_HV)
             .addTo(mixerRecipes);
@@ -251,7 +254,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Nickel, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Molybdenum, 1),
                 GTUtility.getIntegratedCircuit(2))
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.Ultimet, 9L * OrePrefixes.dust.mMaterialAmount))
+            .itemOutputs(GTOreDictUnificator.getDust(Materials.Ultimet, 9L * OrePrefixes.dust.getMaterialAmount()))
             .duration(45 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(mixerRecipes);
@@ -262,7 +265,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tin, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cobalt, 1),
                 GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.CobaltBrass, 9L * OrePrefixes.dust.mMaterialAmount))
+            .itemOutputs(GTOreDictUnificator.getDust(Materials.CobaltBrass, 9L * OrePrefixes.dust.getMaterialAmount()))
             .duration(45 * SECONDS)
             .eut(8)
             .addTo(mixerRecipes);
@@ -273,7 +276,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 3),
                 GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.Gunpowder, 6L * OrePrefixes.dust.mMaterialAmount))
+            .itemOutputs(GTOreDictUnificator.getDust(Materials.Gunpowder, 6L * OrePrefixes.dust.getMaterialAmount()))
             .duration(30 * SECONDS)
             .eut(8)
             .addTo(mixerRecipes);
@@ -284,7 +287,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Charcoal, 3),
                 GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.Gunpowder, 6L * OrePrefixes.dust.mMaterialAmount))
+            .itemOutputs(GTOreDictUnificator.getDust(Materials.Gunpowder, 6L * OrePrefixes.dust.getMaterialAmount()))
             .duration(30 * SECONDS)
             .eut(8)
             .addTo(mixerRecipes);
@@ -295,7 +298,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 3),
                 GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.Gunpowder, 6L * OrePrefixes.dust.mMaterialAmount))
+            .itemOutputs(GTOreDictUnificator.getDust(Materials.Gunpowder, 6L * OrePrefixes.dust.getMaterialAmount()))
             .duration(30 * SECONDS)
             .eut(8)
             .addTo(mixerRecipes);
@@ -307,7 +310,8 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Phosphorus, 1),
                 GTUtility.getIntegratedCircuit(1))
             .itemOutputs(
-                GTOreDictUnificator.getDust(Materials.IndiumGalliumPhosphide, 3L * OrePrefixes.dust.mMaterialAmount))
+                GTOreDictUnificator
+                    .getDust(Materials.IndiumGalliumPhosphide, 3L * OrePrefixes.dust.getMaterialAmount()))
             .duration(10 * SECONDS)
             .eut(8)
             .addTo(mixerRecipes);
@@ -316,7 +320,7 @@ public class MixerRecipes implements Runnable {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Brick, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Clay, 1))
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.Fireclay, 2L * OrePrefixes.dust.mMaterialAmount))
+            .itemOutputs(GTOreDictUnificator.getDust(Materials.Fireclay, 2L * OrePrefixes.dust.getMaterialAmount()))
             .duration(10 * SECONDS)
             .eut(8)
             .addTo(mixerRecipes);
@@ -326,7 +330,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Nickel, 4),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Chrome, 1),
                 GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.Nichrome, 5L * OrePrefixes.dust.mMaterialAmount))
+            .itemOutputs(GTOreDictUnificator.getDust(Materials.Nichrome, 5L * OrePrefixes.dust.getMaterialAmount()))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(mixerRecipes);
@@ -336,7 +340,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Osmium, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iridium, 3),
                 GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.Osmiridium, 4L * OrePrefixes.dust.mMaterialAmount))
+            .itemOutputs(GTOreDictUnificator.getDust(Materials.Osmiridium, 4L * OrePrefixes.dust.getMaterialAmount()))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(mixerRecipes);
@@ -346,7 +350,8 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Niobium, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Titanium, 1),
                 GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.NiobiumTitanium, 2L * OrePrefixes.dust.mMaterialAmount))
+            .itemOutputs(
+                GTOreDictUnificator.getDust(Materials.NiobiumTitanium, 2L * OrePrefixes.dust.getMaterialAmount()))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(mixerRecipes);
@@ -356,7 +361,8 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Vanadium, 3),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Gallium, 1),
                 GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.VanadiumGallium, 4L * OrePrefixes.dust.mMaterialAmount))
+            .itemOutputs(
+                GTOreDictUnificator.getDust(Materials.VanadiumGallium, 4L * OrePrefixes.dust.getMaterialAmount()))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(mixerRecipes);
@@ -366,7 +372,8 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tungsten, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1),
                 GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.TungstenCarbide, 2L * OrePrefixes.dust.mMaterialAmount))
+            .itemOutputs(
+                GTOreDictUnificator.getDust(Materials.TungstenCarbide, 2L * OrePrefixes.dust.getMaterialAmount()))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(mixerRecipes);
@@ -376,7 +383,8 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tungsten, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 1),
                 GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.TungstenSteel, 2L * OrePrefixes.dust.mMaterialAmount))
+            .itemOutputs(
+                GTOreDictUnificator.getDust(Materials.TungstenSteel, 2L * OrePrefixes.dust.getMaterialAmount()))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_EV)
             .addTo(mixerRecipes);
@@ -387,7 +395,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 3),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Vanadium, 1),
                 GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.TPV, 7L * OrePrefixes.dust.mMaterialAmount))
+            .itemOutputs(GTOreDictUnificator.getDust(Materials.TPV, 7L * OrePrefixes.dust.getMaterialAmount()))
             .duration(8 * SECONDS + 15 * TICKS)
             .eut(TierEU.RECIPE_EV)
             .addTo(mixerRecipes);
@@ -399,7 +407,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Molybdenum, 2),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Vanadium, 1),
                 GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.HSSG, 9L * OrePrefixes.dust.mMaterialAmount))
+            .itemOutputs(GTOreDictUnificator.getDust(Materials.HSSG, 9L * OrePrefixes.dust.getMaterialAmount()))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(mixerRecipes);
@@ -411,7 +419,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Manganese, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1),
                 GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.HSSE, 9L * OrePrefixes.dust.mMaterialAmount))
+            .itemOutputs(GTOreDictUnificator.getDust(Materials.HSSE, 9L * OrePrefixes.dust.getMaterialAmount()))
             .duration(35 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(mixerRecipes);
@@ -422,7 +430,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iridium, 2),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Osmium, 1),
                 GTUtility.getIntegratedCircuit(2))
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.HSSS, 9L * OrePrefixes.dust.mMaterialAmount))
+            .itemOutputs(GTOreDictUnificator.getDust(Materials.HSSS, 9L * OrePrefixes.dust.getMaterialAmount()))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(mixerRecipes);
@@ -433,7 +441,8 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Zinc, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 4),
                 GTUtility.getIntegratedCircuit(3))
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.FerriteMixture, 6L * OrePrefixes.dust.mMaterialAmount))
+            .itemOutputs(
+                GTOreDictUnificator.getDust(Materials.FerriteMixture, 6L * OrePrefixes.dust.getMaterialAmount()))
             .duration(10 * SECONDS)
             .eut(8)
             .addTo(mixerRecipes);
@@ -443,7 +452,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Boron, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glass, 7))
             .itemOutputs(
-                GTOreDictUnificator.getDust(Materials.BorosilicateGlass, 8L * OrePrefixes.dust.mMaterialAmount))
+                GTOreDictUnificator.getDust(Materials.BorosilicateGlass, 8L * OrePrefixes.dust.getMaterialAmount()))
             .duration(10 * SECONDS)
             .eut(8)
             .addTo(mixerRecipes);
