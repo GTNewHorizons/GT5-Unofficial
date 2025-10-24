@@ -12,15 +12,11 @@ import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
-import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 
 import goodgenerator.blocks.tileEntity.AntimatterForge;
-import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
 public class AntimatterForgeGui extends MTEMultiBlockBaseGui<AntimatterForge> {
@@ -44,19 +40,6 @@ public class AntimatterForgeGui extends MTEMultiBlockBaseGui<AntimatterForge> {
         syncManager.syncValue("PassiveCons", new LongSyncValue(multiblock::getPassiveConsumption));
         syncManager.syncValue("ActiveCons", new LongSyncValue(multiblock::getActiveConsumption));
         syncManager.syncValue("AMChange", new LongSyncValue(multiblock::getAntimatterChange));
-    }
-
-    protected Flow createTerminalRow(ModularPanel panel, PanelSyncManager syncManager) {
-        return new Row().size(getTerminalRowWidth(), getTerminalRowHeight())
-            .child(
-                new ParentWidget<>().size(getTerminalWidgetWidth(), getTerminalWidgetHeight())
-                    .padding(4)
-                    .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
-                    .child(
-                        createTerminalTextWidget(syncManager, panel)
-                            .size(getTerminalWidgetWidth() - 10, getTerminalWidgetHeight() - 8)
-                            .collapseDisabledChild()))
-            .child(createTerminalCornerColumn(panel, syncManager));
     }
 
     @Override
