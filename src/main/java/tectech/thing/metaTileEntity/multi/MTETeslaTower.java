@@ -366,12 +366,10 @@ public class MTETeslaTower extends TTMultiblockBase
 
     public MTETeslaTower(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
-        mStartUpCheck = 50;
     }
 
     public MTETeslaTower(String aName) {
         super(aName);
-        mStartUpCheck = 50;
     }
 
     @Override
