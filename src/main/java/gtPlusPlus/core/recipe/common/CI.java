@@ -115,10 +115,10 @@ public class CI {
             } else {
                 materialName = (StringUtils.sanitizeString(((Material) material).getLocalizedName()));
             }
-            Logger.INFO("Searching for a component named " + type.name() + materialName);
-            return (type.name() + materialName);
+            Logger.INFO("Searching for a component named " + type.getName() + materialName);
+            return (type.getName() + materialName);
         }
-        Logger.INFO("[Components] Failed getting a tiered component. " + type.name() + " | " + tier);
+        Logger.INFO("[Components] Failed getting a tiered component. " + type.getName() + " | " + tier);
         return null;
     }
 
@@ -289,12 +289,12 @@ public class CI {
             || aPrefix == OrePrefixes.cableGt12) {
             // Special Handler
             if (aTier == 10) {
-                switch (aPrefix) {
-                    case cableGt01 -> aPrefix = OrePrefixes.wireGt02;
-                    case cableGt02 -> aPrefix = OrePrefixes.wireGt04;
-                    case cableGt04 -> aPrefix = OrePrefixes.wireGt08;
-                    case cableGt08 -> aPrefix = OrePrefixes.wireGt12;
-                    case cableGt12 -> aPrefix = OrePrefixes.wireGt16;
+                switch (aPrefix.getName()) {
+                    case "cableGt01" -> aPrefix = OrePrefixes.wireGt02;
+                    case "cableGt02" -> aPrefix = OrePrefixes.wireGt04;
+                    case "cableGt04" -> aPrefix = OrePrefixes.wireGt08;
+                    case "cableGt08" -> aPrefix = OrePrefixes.wireGt12;
+                    case "cableGt12" -> aPrefix = OrePrefixes.wireGt16;
                 }
             } else {
                 return ItemUtils.getOrePrefixStack(aPrefix, aMaterial_Cables[aTier], aAmount);
@@ -337,10 +337,10 @@ public class CI {
             aPrefix = OrePrefixes.stick;
         }
 
-        switch (aPrefix) {
-            case gear, gearGt, rod, stick, screw, plate, plateDouble -> m = aMaster[0][aTier];
-            case stickLong, ingot, rotor, cell -> m = aMaster[1][aTier];
-            case bolt, ring, frame, frameGt -> m = aMaster[2][aTier];
+        switch (aPrefix.getName()) {
+            case "gear", "gearGt", "rod", "stick", "screw", "plate", "plateDouble" -> m = aMaster[0][aTier];
+            case "stickLong", "ingot", "rotor", "cell" -> m = aMaster[1][aTier];
+            case "bolt", "ring", "frame", "frameGt" -> m = aMaster[2][aTier];
             default -> m = aMaterial_Main[aTier];
         }
 
