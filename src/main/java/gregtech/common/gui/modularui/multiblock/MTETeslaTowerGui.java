@@ -96,7 +96,7 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
                 Flow.column()
                     .coverChildren()
                     .child(
-                        new ChartWidget<Double>()
+                        new ChartWidget()
                             .syncHandler(
                                 new GenericListSyncHandler<>(
                                     multiblock::getOutputCurrentHistory,
@@ -109,16 +109,4 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
                             .background(new Rectangle().setColor(Color.rgb(100, 30, 80)))));
     }
 
-    @Override
-    protected void registerSyncValues(PanelSyncManager syncManager) {
-        super.registerSyncValues(syncManager);
-        // GenericListSyncHandler<Long> currentHistorySyncer = new GenericListSyncHandler<>(
-        // multiblock::getOutputCurrentHistory,
-        // multiblock::setOutputCurrentHistory,
-        // PacketBuffer::readLong,
-        // PacketBuffer::writeLong,
-        // Long::equals,
-        // null);
-        // syncManager.syncValue("outputHistory", currentHistorySyncer);
-    }
 }

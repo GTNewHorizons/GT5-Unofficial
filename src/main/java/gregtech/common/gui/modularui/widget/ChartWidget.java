@@ -8,8 +8,10 @@ import net.minecraft.client.renderer.Tessellator;
 
 import org.lwjgl.opengl.GL11;
 
+import com.cleanroommc.modularui.drawable.text.TextRenderer;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
 import com.cleanroommc.modularui.theme.WidgetThemeEntry;
+import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.SyncHandler;
 import com.cleanroommc.modularui.widget.Widget;
@@ -18,6 +20,7 @@ import com.gtnewhorizons.modularui.api.GlStateManager;
 public class ChartWidget extends Widget<ChartWidget> {
 
     private GenericListSyncHandler<Double> dataSyncHandler;
+    private final int lineMargin = 11;
 
     @Override
     public boolean isValidSyncHandler(SyncHandler syncHandler) {
@@ -54,10 +57,16 @@ public class ChartWidget extends Widget<ChartWidget> {
         tessellator.startDrawing(GL_LINES);
 
         tessellator.setColorRGBA(30, 150, 30, 255);
-        double maxValue = getMaxValue(data);
+        double maxValue = data.stream()
+            .reduce(Double::max)
+            .orElse(1.0);
+        double minValue = data.stream()
+            .reduce(Double::min)
+            .orElse(0.0);
 
-        double lineWidth = (double) getArea().width / data.size();
-        double lastX = 0;
+        int startX = 2;
+        double lineWidth = (double) (getArea().width - startX) / data.size();
+        double lastX = startX;
         double lastY = getPointY(data.get(0), maxValue);
 
         for (int i = 1; i < data.size(); i++) {
@@ -72,6 +81,15 @@ public class ChartWidget extends Widget<ChartWidget> {
         }
 
         tessellator.draw();
+        TextRenderer renderer = new TextRenderer();
+        renderer.setColor(Color.WHITE.main);
+
+        renderer.setPos(0, 0);
+        renderer.draw(maxValue + "A");
+
+        renderer.setPos(0, (int) (getArea().height - renderer.getFontHeight()));
+        renderer.draw(minValue + "A");
+
         GlStateManager.shadeModel(7424);
         GlStateManager.disableBlend();
         GlStateManager.enableAlpha();
@@ -81,18 +99,9 @@ public class ChartWidget extends Widget<ChartWidget> {
 
     private double getPointY(double data, double maxValue) {
         if (maxValue == 0) {
-            return getArea().height;
+            return getArea().height - lineMargin;
         }
-        return getArea().height * (1 - data / maxValue);
-    }
-
-    private double getMaxValue(List<Double> data) {
-        double max = data.get(0);
-        for (double value : data) {
-            if (value > max) {
-                max = value;
-            }
-        }
-        return max;
+        double chartHeight = getArea().height - lineMargin * 2;
+        return chartHeight * (1 - data / maxValue) + lineMargin;
     }
 }
