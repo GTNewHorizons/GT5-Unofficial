@@ -48,6 +48,12 @@ public class MTEHatchBooster extends MTEHatch implements ISidedInventory {
     }
 
     @Override
+    public int[] getAccessibleSlotsFromSide(int side) {
+        int[] slots = new int[]{0, 1, 2};
+        return slots;
+    }
+
+    @Override
     public boolean canInsertItem(int index, ItemStack itemStack, int ordinalSide) {
 
         for (ItemStack stack : this.mInventory) {
