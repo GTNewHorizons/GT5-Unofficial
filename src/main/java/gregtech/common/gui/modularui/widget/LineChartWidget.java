@@ -20,7 +20,7 @@ import com.cleanroommc.modularui.value.sync.SyncHandler;
 import com.cleanroommc.modularui.widget.Widget;
 import com.gtnewhorizons.modularui.api.GlStateManager;
 
-public class ChartWidget extends Widget<ChartWidget> {
+public class LineChartWidget extends Widget<LineChartWidget> {
 
     private int lineMargin = 11;
     private int lineWidth = 3;
@@ -29,22 +29,22 @@ public class ChartWidget extends Widget<ChartWidget> {
 
     private GenericListSyncHandler<Double> dataSyncHandler;
 
-    public ChartWidget lineMargin(int lineMargin) {
+    public LineChartWidget lineMargin(int lineMargin) {
         this.lineMargin = lineMargin;
         return this;
     }
 
-    public ChartWidget lineWidth(int lineWidth) {
+    public LineChartWidget lineWidth(int lineWidth) {
         this.lineWidth = lineWidth;
         return this;
     }
 
-    public ChartWidget chartUnit(String chartUnit) {
+    public LineChartWidget chartUnit(String chartUnit) {
         this.chartUnit = chartUnit;
         return this;
     }
 
-    public ChartWidget dataPointLimit(int dataPointLimit) {
+    public LineChartWidget dataPointLimit(int dataPointLimit) {
         this.dataPointLimit = dataPointLimit;
         return this;
     }
@@ -54,7 +54,7 @@ public class ChartWidget extends Widget<ChartWidget> {
         return syncHandler instanceof GenericListSyncHandler<?>;
     }
 
-    public ChartWidget syncHandler(GenericListSyncHandler<Double> dataSyncHandler) {
+    public LineChartWidget syncHandler(GenericListSyncHandler<Double> dataSyncHandler) {
         this.dataSyncHandler = dataSyncHandler;
         setSyncHandler(dataSyncHandler);
         return this;
