@@ -514,6 +514,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 MULTI_MODULAR_SOLIDIFIER_CONTROLLER.ID,
                 "multimachine.modularsolidifier",
                 "Adaptive Foundry").getStackForm(1));
+        addItemTooltip(
+            ItemList.Machine_Multi_Modular_Solidifier.get(1),
+            chain(() -> "Author: ", GTValues.fancyAuthorChrom));
 
         ItemList.WormholeGenerator.set(
             new MTEWormholeGenerator(

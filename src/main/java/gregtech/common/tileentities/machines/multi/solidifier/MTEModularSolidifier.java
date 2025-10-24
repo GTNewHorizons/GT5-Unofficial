@@ -30,7 +30,6 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -59,7 +58,6 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.angelica.glsm.GLStateManager;
 
 import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.items.GGMaterial;
@@ -298,7 +296,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                 .buildAndChain(
                     onElementPass(MTEModularSolidifier::onCasingAdded, ofBlock(GregTechAPI.sBlockCasingsFoundry, 0))))
         // streamlined casters
-        .addElement('a', ofFrame(Materials.DraconiumAwakened))
+        .addElement('a', ofFrame(Materials.SuperconductorUEVBase))
         .addElement('b', ofBlock(GregTechAPI.sBlockCasingsFoundry, 10)) // Streamlined Caster
         .addElement('c', ofFrame(Materials.Tritanium))
         .addElement('T', ofBlock(GregTechAPI.sBlockMetal7, 10))
@@ -1029,6 +1027,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     @Override
     public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
         /*
+         * testing unit vectors
          * GL11.glPushMatrix();
          * GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
          * GL11.glTranslated(x + 0.5F, y+0.5f, z + 0.5F);
@@ -1065,45 +1064,37 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
 
         // if (!shouldRender || !getBaseMetaTileEntity().isActive()) return;
 
-        if (!renderInitialized) {
-            initializeRender();
-            if (!renderInitialized) return;
-        }
-        final TextureManager textureManager = Minecraft.getMinecraft()
-            .getTextureManager();
-        textureManager.bindTexture(ringTexture);
-
-        GLStateManager.enableDepthTest();
-        ringProgram.use();
-
-        GL20.glUniform1f(uTexOffset, ((System.currentTimeMillis() % 5000) / 5000f));
-
-        GL11.glPushMatrix();
-        GL11.glTranslated(x + 0.5f, y + 0.5f, z + 7.5F);
-
-        BloomShader.getInstance()
-            .bind();
-
-        renderRingOne(modules[0].rgbArr);
-        renderRingTwo(modules[1].rgbArr);
-        renderRingThree(modules[2].rgbArr);
-        renderRingFour(modules[3].rgbArr);
-        // RenderRings(x, y, z, timeSinceLastTick);
-        BloomShader.getInstance()
-            .unbind();
-
-        // RenderRings(x, y, z, timeSinceLastTick);
-
-        // TODO
-        renderRingOne(modules[0].rgbArr);
-        renderRingTwo(modules[1].rgbArr);
-        renderRingThree(modules[2].rgbArr);
-        renderRingFour(modules[3].rgbArr);
-
-        GL11.glPopMatrix();
-
-        ShaderProgram.clear();
-
+        /*
+         * if (!renderInitialized) {
+         * initializeRender();
+         * if (!renderInitialized) return;
+         * }
+         * final TextureManager textureManager = Minecraft.getMinecraft()
+         * .getTextureManager();
+         * textureManager.bindTexture(ringTexture);
+         * GLStateManager.enableDepthTest();
+         * ringProgram.use();
+         * GL20.glUniform1f(uTexOffset, ((System.currentTimeMillis() % 5000) / 5000f));
+         * GL11.glPushMatrix();
+         * GL11.glTranslated(x + 0.5f, y + 0.5f, z + 7.5F);
+         * BloomShader.getInstance()
+         * .bind();
+         * renderRingOne(modules[0].rgbArr);
+         * renderRingTwo(modules[1].rgbArr);
+         * renderRingThree(modules[2].rgbArr);
+         * renderRingFour(modules[3].rgbArr);
+         * // RenderRings(x, y, z, timeSinceLastTick);
+         * BloomShader.getInstance()
+         * .unbind();
+         * // RenderRings(x, y, z, timeSinceLastTick);
+         * // TODO
+         * renderRingOne(modules[0].rgbArr);
+         * renderRingTwo(modules[1].rgbArr);
+         * renderRingThree(modules[2].rgbArr);
+         * renderRingFour(modules[3].rgbArr);
+         * GL11.glPopMatrix();
+         * ShaderProgram.clear();
+         */
     }
 
     private void initializeRender() {
