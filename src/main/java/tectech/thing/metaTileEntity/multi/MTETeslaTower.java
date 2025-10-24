@@ -124,7 +124,10 @@ public class MTETeslaTower extends TTMultiblockBase
     private long outputVoltage;
     private long outputCurrent;
     private long outputCurrentLastTick;
-    private List<Long> outputCurrentHistory = new ArrayList<>();
+    private List<Double> outputCurrentHistory = new ArrayList<>();
+    private int ticksBetweenDataPoints = 5;
+    private int dataPointTick = 0;
+    private int dataPointSum = 0;
 
     // Prevents unnecessary offset calculation, saving on lag
     private byte oldRotation = -1;
@@ -795,7 +798,13 @@ public class MTETeslaTower extends TTMultiblockBase
         long usedAmps = TeslaUtil.powerTeslaNodeMap(this);
         outputCurrentDisplay.set(usedAmps);
         outputCurrentLastTick = usedAmps;
-        outputCurrentHistory.add(usedAmps);
+
+        dataPointSum += (int) usedAmps;
+        dataPointTick++;
+        if (dataPointTick % ticksBetweenDataPoints == 0) {
+            outputCurrentHistory.add((double) (dataPointSum / ticksBetweenDataPoints));
+            dataPointSum = 0;
+        }
 
         outputMaxDisplay.set(Math.max(outputCurrentDisplay.get(), outputMaxDisplay.get()));
         // TODO Encapsulate the spark sender
@@ -1000,12 +1009,8 @@ public class MTETeslaTower extends TTMultiblockBase
         return false;
     }
 
-    public List<Long> getOutputCurrentHistory() {
+    public List<Double> getOutputCurrentHistory() {
         return outputCurrentHistory;
-    }
-
-    public void setOutputCurrentHistory(List<Long> outputCurrentHistory) {
-        this.outputCurrentHistory = outputCurrentHistory;
     }
 
     @Override

@@ -96,14 +96,14 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
                 Flow.column()
                     .coverChildren()
                     .child(
-                        new ChartWidget<Long>()
+                        new ChartWidget<Double>()
                             .syncHandler(
                                 new GenericListSyncHandler<>(
                                     multiblock::getOutputCurrentHistory,
-                                    multiblock::setOutputCurrentHistory,
-                                    PacketBuffer::readLong,
-                                    PacketBuffer::writeLong,
-                                    Long::equals,
+                                    null,
+                                    PacketBuffer::readDouble,
+                                    PacketBuffer::writeDouble,
+                                    Double::equals,
                                     null))
                             .size(225, 150)
                             .background(new Rectangle().setColor(Color.rgb(100, 30, 80)))));

@@ -15,16 +15,16 @@ import com.cleanroommc.modularui.value.sync.SyncHandler;
 import com.cleanroommc.modularui.widget.Widget;
 import com.gtnewhorizons.modularui.api.GlStateManager;
 
-public class ChartWidget<T extends Number> extends Widget<ChartWidget<T>> {
+public class ChartWidget extends Widget<ChartWidget> {
 
-    private GenericListSyncHandler<T> dataSyncHandler;
+    private GenericListSyncHandler<Double> dataSyncHandler;
 
     @Override
     public boolean isValidSyncHandler(SyncHandler syncHandler) {
         return syncHandler instanceof GenericListSyncHandler<?>;
     }
 
-    public ChartWidget<T> syncHandler(GenericListSyncHandler<T> dataSyncHandler) {
+    public ChartWidget syncHandler(GenericListSyncHandler<Double> dataSyncHandler) {
         this.dataSyncHandler = dataSyncHandler;
         setSyncHandler(dataSyncHandler);
         return this;
@@ -35,7 +35,7 @@ public class ChartWidget<T extends Number> extends Widget<ChartWidget<T>> {
         if (dataSyncHandler == null) {
             return;
         }
-        List<T> data = dataSyncHandler.getValue();
+        List<Double> data = dataSyncHandler.getValue();
         if (data.isEmpty()) {
             return;
         }
@@ -79,19 +79,18 @@ public class ChartWidget<T extends Number> extends Widget<ChartWidget<T>> {
 
     }
 
-    private double getPointY(T data, double maxValue) {
+    private double getPointY(double data, double maxValue) {
         if (maxValue == 0) {
             return getArea().height;
         }
-        return getArea().height * (1 - data.doubleValue() / maxValue);
+        return getArea().height * (1 - data / maxValue);
     }
 
-    private double getMaxValue(List<T> data) {
-        double max = data.get(0)
-            .doubleValue();
-        for (T value : data) {
-            if (value.doubleValue() > max) {
-                max = value.doubleValue();
+    private double getMaxValue(List<Double> data) {
+        double max = data.get(0);
+        for (double value : data) {
+            if (value > max) {
+                max = value;
             }
         }
         return max;
