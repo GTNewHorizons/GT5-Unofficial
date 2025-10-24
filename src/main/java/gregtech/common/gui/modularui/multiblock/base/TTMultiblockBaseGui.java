@@ -190,19 +190,21 @@ public class TTMultiblockBaseGui extends MTEMultiBlockBaseGui<TTMultiblockBase> 
                 Flow.column()
                     .coverChildren()
                     .padding(4)
-                    .child(
-                        Flow.row()
-                            .coverChildren()
-                            .child(
-                                IKey.lang(parameter.getLangKey())
-                                    .asWidget()
-                                    .alignment(Alignment.CenterLeft)
-                                    .maxWidth(125)
-                                    .margin(0, 14, 2, 2))
-                            .child(
-                                ButtonWidget.panelCloseButton()
-                                    .top(0)
-                                    .right(0)))
+                    .child(createParameterEditLabelRow(parameter))
                     .child(parameter.createInputWidget()));
+    }
+
+    private IWidget createParameterEditLabelRow(Parameter<?> parameter) {
+        return Flow.row()
+            .coverChildren()
+            .child(
+                IKey.lang(parameter.getLangKey())
+                    .asWidget()
+                    .alignment(Alignment.CenterLeft)
+                    .margin(0, 14, 2, 2))
+            .child(
+                ButtonWidget.panelCloseButton()
+                    .top(0)
+                    .right(0));
     }
 }
