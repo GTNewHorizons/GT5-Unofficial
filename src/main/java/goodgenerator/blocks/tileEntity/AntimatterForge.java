@@ -38,7 +38,6 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import goodgenerator.blocks.structures.AntimatterStructures;
-import goodgenerator.blocks.tileEntity.gui.AntimatterForgeGui;
 import goodgenerator.blocks.tileEntity.render.TileAntimatter;
 import goodgenerator.items.GGMaterial;
 import goodgenerator.loader.Loaders;
@@ -64,6 +63,7 @@ import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.gui.modularui.multiblock.AntimatterForgeGui;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 
 public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterForge>
@@ -792,11 +792,6 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     protected long activeCostCache;
     protected long antimatterChangeCache;
     protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
-
-    @Override
-    protected boolean useMui2() {
-        return false;
-    }
 
     @Override
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {

@@ -1,4 +1,4 @@
-package goodgenerator.blocks.tileEntity.gui;
+package gregtech.common.gui.modularui.multiblock;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -20,12 +20,11 @@ import com.cleanroommc.modularui.widgets.layout.Row;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 
 import goodgenerator.blocks.tileEntity.AntimatterForge;
-import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.modularui2.GTWidgetThemes;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
-public class AntimatterForgeGui extends MTEMultiBlockBaseGui {
+public class AntimatterForgeGui extends MTEMultiBlockBaseGui<AntimatterForge> {
 
-    private final AntimatterForge base;
     protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
     protected static DecimalFormat standardFormat;
     static {
@@ -36,16 +35,15 @@ public class AntimatterForgeGui extends MTEMultiBlockBaseGui {
 
     public AntimatterForgeGui(AntimatterForge base) {
         super(base);
-        this.base = base;
     }
 
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        syncManager.syncValue("ContainedAM", new LongSyncValue(base::getAntimatterAmount));
-        syncManager.syncValue("PassiveCons", new LongSyncValue(base::getPassiveConsumption));
-        syncManager.syncValue("ActiveCons", new LongSyncValue(base::getActiveConsumption));
-        syncManager.syncValue("AMChange", new LongSyncValue(base::getAntimatterChange));
+        syncManager.syncValue("ContainedAM", new LongSyncValue(multiblock::getAntimatterAmount));
+        syncManager.syncValue("PassiveCons", new LongSyncValue(multiblock::getPassiveConsumption));
+        syncManager.syncValue("ActiveCons", new LongSyncValue(multiblock::getActiveConsumption));
+        syncManager.syncValue("AMChange", new LongSyncValue(multiblock::getAntimatterChange));
     }
 
     protected Flow createTerminalRow(ModularPanel panel, PanelSyncManager syncManager) {
@@ -63,14 +61,14 @@ public class AntimatterForgeGui extends MTEMultiBlockBaseGui {
 
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-        LongSyncValue containedSync = (LongSyncValue) syncManager.getSyncHandler("ContainedAM:0");
-        LongSyncValue passiveConsSync = (LongSyncValue) syncManager.getSyncHandler("PassiveCons:0");
-        LongSyncValue activeConsSync = (LongSyncValue) syncManager.getSyncHandler("ActiveCons:0");
-        LongSyncValue amChangeSync = (LongSyncValue) syncManager.getSyncHandler("AMChange:0");
+        LongSyncValue containedSync = syncManager.findSyncHandler("ContainedAM", LongSyncValue.class);
+        LongSyncValue passiveConsSync = syncManager.findSyncHandler("PassiveCons", LongSyncValue.class);
+        LongSyncValue activeConsSync = syncManager.findSyncHandler("ActiveCons", LongSyncValue.class);
+        LongSyncValue amChangeSync = syncManager.findSyncHandler("AMChange", LongSyncValue.class);
 
         return super.createTerminalTextWidget(syncManager, parent)
             .child(
-                new TextWidget(
+                new TextWidget<>(
                     IKey.dynamic(
                         () -> EnumChatFormatting.WHITE + StatCollector.translateToLocal("gui.AntimatterForge.0")
                             + ": "
@@ -79,7 +77,7 @@ public class AntimatterForgeGui extends MTEMultiBlockBaseGui {
                             + EnumChatFormatting.WHITE
                             + " L")))
             .child(
-                new TextWidget(
+                new TextWidget<>(
                     IKey.dynamic(
                         () -> EnumChatFormatting.WHITE + StatCollector.translateToLocal("gui.AntimatterForge.1")
                             + ": "
@@ -88,7 +86,7 @@ public class AntimatterForgeGui extends MTEMultiBlockBaseGui {
                             + EnumChatFormatting.WHITE
                             + " EU/t")))
             .child(
-                new TextWidget(
+                new TextWidget<>(
                     IKey.dynamic(
                         () -> EnumChatFormatting.WHITE + StatCollector.translateToLocal("gui.AntimatterForge.2")
                             + ": "
@@ -97,7 +95,7 @@ public class AntimatterForgeGui extends MTEMultiBlockBaseGui {
                             + EnumChatFormatting.WHITE
                             + " EU/t")))
             .child(
-                new TextWidget(
+                new TextWidget<>(
                     IKey.dynamic(
                         () -> EnumChatFormatting.WHITE + StatCollector.translateToLocal("gui.AntimatterForge.3")
                             + ": "
