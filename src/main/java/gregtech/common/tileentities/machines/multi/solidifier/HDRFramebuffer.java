@@ -15,10 +15,12 @@ import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.shader.Framebuffer;
 
 import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.*;
 
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
 import com.gtnewhorizons.angelica.glsm.GLStateManager;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+import org.lwjgl.opengl.GL30;
 
 public class HDRFramebuffer extends Framebuffer {
 
