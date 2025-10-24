@@ -2627,15 +2627,15 @@ public class OrePrefixes {
         // This only falls through, returning false, when the material has no overlap with `mMaterialGenerationBits`.
         // spotless:off
         if (!mGeneratedItems.contains(aMaterial))
-            if ((materialGenerationBits & 1) == 0 || !aMaterial.hasDustItems())
-                if ((materialGenerationBits & 2) == 0 || !aMaterial.hasMetalItems())
-                    if ((materialGenerationBits & 4) == 0 || !aMaterial.hasGemItems())
-                        if ((materialGenerationBits & 8) == 0 || !aMaterial.hasOresItems())
-                            if ((materialGenerationBits & 16) == 0 || !aMaterial.hasCell())
-                                if ((materialGenerationBits & 32) == 0 || !aMaterial.hasPlasma())
-                                    if ((materialGenerationBits & 64) == 0 || !aMaterial.hasToolHeadItems())
-                                        if ((materialGenerationBits & 128) == 0 || !aMaterial.hasGearItems())
-                                            if ((materialGenerationBits & 256) == 0 || !aMaterial.hasEmpty())
+            if ((materialGenerationBits & DUST) == 0 || !aMaterial.hasDustItems())
+                if ((materialGenerationBits & METAL) == 0 || !aMaterial.hasMetalItems())
+                    if ((materialGenerationBits & GEM) == 0 || !aMaterial.hasGemItems())
+                        if ((materialGenerationBits & ORE) == 0 || !aMaterial.hasOresItems())
+                            if ((materialGenerationBits & CELL) == 0 || !aMaterial.hasCell())
+                                if ((materialGenerationBits & PLASMA) == 0 || !aMaterial.hasPlasma())
+                                    if ((materialGenerationBits & TOOL) == 0 || !aMaterial.hasToolHeadItems())
+                                        if ((materialGenerationBits & GEAR) == 0 || !aMaterial.hasGearItems())
+                                            if ((materialGenerationBits & EMPTY) == 0 || !aMaterial.hasEmpty())
                                                 return false;
         // spotless:on
 
