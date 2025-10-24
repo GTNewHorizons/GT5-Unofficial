@@ -21,6 +21,7 @@ public class ChartWidget extends Widget<ChartWidget> {
 
     private GenericListSyncHandler<Double> dataSyncHandler;
     private final int lineMargin = 11;
+    private int lineWidth = 3;
 
     @Override
     public boolean isValidSyncHandler(SyncHandler syncHandler) {
@@ -53,6 +54,8 @@ public class ChartWidget extends Widget<ChartWidget> {
             GlStateManager.SourceFactor.ONE,
             GlStateManager.DestFactor.ZERO);
         GlStateManager.shadeModel(GL11.GL_SMOOTH);
+        GlStateManager.glLineWidth(lineWidth);
+
         final Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawing(GL_LINES);
 
