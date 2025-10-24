@@ -416,6 +416,9 @@ public final class GTGuiTextures {
     public static final UITexture STEAM_GAUGE_BG = UITexture.fullImage(GregTech.ID, "gui/background/steam_dial");
     public static final UITexture STEAM_GAUGE_BG_STEEL = UITexture
         .fullImage(GregTech.ID, "gui/background/steam_dial_steel");
+
+    public static final UITexture PROGRESSBAR_TESLA_TOWER_CURRENT = UITexture
+        .fullImage(MODID, "gui/tesla_tower_current");
     // endregion progressbar
 
     // region button

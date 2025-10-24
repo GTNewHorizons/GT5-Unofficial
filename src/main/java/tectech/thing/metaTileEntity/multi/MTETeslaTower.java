@@ -26,7 +26,6 @@ import java.util.stream.IntStream;
 
 import javax.annotation.Nonnull;
 
-import gregtech.common.gui.modularui.multiblock.MTETeslaTowerGui;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -65,6 +64,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.common.gui.modularui.multiblock.MTETeslaTowerGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import tectech.loader.ConfigHandler;
 import tectech.loader.NetworkDispatcher;
@@ -124,6 +124,7 @@ public class MTETeslaTower extends TTMultiblockBase
     // outputVoltage and current after settings
     private long outputVoltage;
     private long outputCurrent;
+    private long outputCurrentLastTick;
 
     // Prevents unnecessary offset calculation, saving on lag
     private byte oldRotation = -1;
@@ -791,7 +792,10 @@ public class MTETeslaTower extends TTMultiblockBase
         transferRadiusCoverUltimateDisplay.set(transferRadiusTower);
 
         // Power transfer
-        outputCurrentDisplay.set(TeslaUtil.powerTeslaNodeMap(this));
+        long usedAmps = TeslaUtil.powerTeslaNodeMap(this);
+        outputCurrentDisplay.set(usedAmps);
+        outputCurrentLastTick = usedAmps;
+
         outputMaxDisplay.set(Math.max(outputCurrentDisplay.get(), outputMaxDisplay.get()));
         // TODO Encapsulate the spark sender
         sparkCount--;
@@ -948,6 +952,10 @@ public class MTETeslaTower extends TTMultiblockBase
     @Override
     public long getTeslaOutputCurrent() {
         return outputCurrent;
+    }
+
+    public long getOutputCurrentLastTick() {
+        return outputCurrentLastTick;
     }
 
     @Override
