@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.cleanroommc.modularui.utils.Alignment;
 import net.minecraft.client.renderer.Tessellator;
 
 import org.lwjgl.opengl.GL11;
@@ -26,6 +27,7 @@ public class LineChartWidget extends Widget<LineChartWidget> {
     private int lineWidth = 3;
     private String chartUnit = "";
     private int dataPointLimit = 0;
+    private boolean renderMinMaxText = true;
 
     private GenericListSyncHandler<Double> dataSyncHandler;
 
@@ -46,6 +48,11 @@ public class LineChartWidget extends Widget<LineChartWidget> {
 
     public LineChartWidget dataPointLimit(int dataPointLimit) {
         this.dataPointLimit = dataPointLimit;
+        return this;
+    }
+
+    public LineChartWidget renderMinMaxText(boolean renderMinMaxText){
+        this.renderMinMaxText = renderMinMaxText;
         return this;
     }
 
@@ -123,14 +130,22 @@ public class LineChartWidget extends Widget<LineChartWidget> {
         }
 
         tessellator.draw();
-        TextRenderer renderer = new TextRenderer();
-        renderer.setColor(Color.WHITE.main);
 
-        renderer.setPos(0, 0);
-        renderer.draw(maxValue + chartUnit);
+        if(renderMinMaxText){
+            TextRenderer renderer = TextRenderer.SHARED;
+            renderer.setAlignment(Alignment.CenterLeft, getArea().width);
+            renderer.setColor(Color.WHITE.main);
+            renderer.setScale(1.0f);
+            renderer.setShadow(true);
+            renderer.setSimulate(false);
 
-        renderer.setPos(0, (int) (getArea().height - renderer.getFontHeight()));
-        renderer.draw(minValue + chartUnit);
+            renderer.setPos(0, 0);
+            renderer.draw(maxValue + chartUnit);
+
+            renderer.setPos(0, (int) (getArea().height - renderer.getFontHeight()));
+            renderer.draw(minValue + chartUnit);
+        }
+
 
         GlStateManager.shadeModel(7424);
         GlStateManager.disableBlend();
