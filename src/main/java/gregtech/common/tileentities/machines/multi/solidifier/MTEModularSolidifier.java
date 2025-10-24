@@ -1032,6 +1032,53 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     // TODO: figure out why isActive doesnt send to client by default???
     @Override
     public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
+        GL11.glPushMatrix();
+        GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
+
+        GL11.glTranslated(x + 0.5F, y+0.5f, z + 0.5F);
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glColor4f(1F, 1F, 1F, 1F);
+
+        Tessellator tessellator = Tessellator.instance;
+        tessellator.startDrawing(GL11.GL_LINES);
+        GL11.glLineWidth(15);
+
+
+        // x unit
+        tessellator.setColorRGBA_F(1, 0, 0, 1);
+        tessellator.addVertex(0, 0, 0);
+        tessellator.addVertex(4, 0, 0);
+        // y unit
+        tessellator.setColorRGBA_F(0, 1, 0, 1);
+        tessellator.addVertex(0, 0, 0);
+        tessellator.addVertex(0, 4, 0);
+        // z unit
+        tessellator.setColorRGBA_F(0, 0, 1, 1);
+        tessellator.addVertex(0, 0, 0);
+        tessellator.addVertex(0, 0, 4);
+
+        tessellator.draw();
+
+
+
+        applyRotation();
+        GL11.glColor4f(1F, 1F, 1F, 1F);
+
+        tessellator.startDrawing(GL11.GL_LINES);
+
+        GL11.glLineWidth(25);
+
+        tessellator.setColorRGBA_F(1, 1, 1, 1);
+
+        tessellator.addVertex(0, 0, 0);
+        tessellator.addVertex(0, 10, 0);
+
+        tessellator.draw();
+
+        GL11.glPopAttrib();
+        GL11.glPopMatrix();
+        /*
         // if (!shouldRender || !getBaseMetaTileEntity().isActive()) return;
 
         if (!renderInitialized) {
@@ -1072,7 +1119,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         GL11.glPopMatrix();
 
         ShaderProgram.clear();
-
+*/
     }
 
     private void initializeRender() {
@@ -1185,51 +1232,62 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         //todo: idfk LMAO
         ExtendedFacing extendedFacing = this.getExtendedFacing();
 
-        ForgeDirection direction = extendedFacing.getDirection();
-        Rotation rotation = extendedFacing.getRotation();
-        Flip flip = extendedFacing.getFlip();
+
+
+
 
         //issues:  forge direction WEST + rotation normal / upside down
         // forge direction: up / down + rotation: upside down
         Matrix4f rotationMatrix = new Matrix4f().identity();
-
+        Rotation rotation = extendedFacing.getRotation();
         float localAngle = switch (rotation) {
             case NORMAL -> 0;
             case CLOCKWISE -> 90;
             case COUNTER_CLOCKWISE -> -90;
             case UPSIDE_DOWN -> 180;
         };
+
+        Flip flip = extendedFacing.getFlip();
         localAngle *= (flip == Flip.HORIZONTAL || flip == Flip.VERTICAL) ? 1 : -1;
+
         localAngle = (float) Math.toRadians(localAngle);
+
+        ForgeDirection direction = extendedFacing.getDirection();
         rotationMatrix.rotate(localAngle, direction.offsetX, direction.offsetY, direction.offsetZ);
 
         float x = 0, y = 0;
+
+        //special: direction = up, down
         float angle = switch (direction) {
             case DOWN, UP -> {
-                x = 1;
-                yield -90;
-            }
-            case EAST, SOUTH -> {
-                y = 1;
-                yield 90;
-            }
-            case WEST, NORTH -> {
-                y = 1;
-                yield -90;
+                if(rotation == Rotation.UPSIDE_DOWN)
+                {
+                    x = 1;
+                    yield -90;
+                }
+                else {
+                    x = 1;
+                    yield -90;
+                }
             }
             case UNKNOWN -> 0.0F;
+            default -> 0.0f;
         };
-        angle = (float) Math.toRadians(angle);
-        rotationMatrix.rotate(angle, x, y, 0);
+        float radAngle = (float) Math.toRadians(angle);
+
+        float testAngle = (float) Math.toRadians(90);
+
+        rotationMatrix.rotate(radAngle, x, 0, 0);
 
         AxisAngle4f rotationVector = new AxisAngle4f();
         rotationMatrix.getRotation(rotationVector);
 
-        final var rotationAngle = rotationVector.angle / (float) Math.PI * 180;
-        final var rotAxisX = rotationVector.x;
-        final var rotAxisY = rotationVector.y;
-        final var rotAxisZ = rotationVector.z;
+        final double rotationAngle = Math.toDegrees(rotationVector.angle); // (float) Math.PI * 180;
+        final double rotAxisX = rotationVector.x;
+        final double rotAxisY = rotationVector.y;
+        final double rotAxisZ = rotationVector.z;
         GL11.glRotated(rotationAngle, rotAxisX, rotAxisY, rotAxisZ);
+    // -inf inf sqrt 2 /2
     }
 
 
