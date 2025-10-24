@@ -1,6 +1,5 @@
 package gregtech.api.enums;
 
-import static gregtech.api.enums.GTValues.B;
 import static gregtech.api.enums.GTValues.D2;
 import static gregtech.api.enums.GTValues.M;
 
@@ -48,15 +47,15 @@ public class OrePrefixes {
     private static final int LOG_STACK_SIZE = GTUtility.clamp(Gregtech.features.maxLogStackSize, 16, 64);
     private static final int OTHER_STACK_SIZE = GTUtility.clamp(Gregtech.features.maxOtherBlocksStackSize, 16, 64);
 
-    private static final int DUST = B[0];
-    private static final int METAL = B[1];
-    private static final int GEM = B[2];
-    private static final int ORE = B[3];
-    private static final int CELL = B[4];
-    private static final int PLASMA = B[5];
-    private static final int TOOL = B[6];
-    private static final int GEAR = B[7];
-    private static final int EMPTY = B[8];
+    private static final int DUST = 1;
+    private static final int METAL = 2;
+    private static final int GEM = 4;
+    private static final int ORE = 8;
+    private static final int CELL = 16;
+    private static final int PLASMA = 32;
+    private static final int TOOL = 64;
+    private static final int GEAR = 128;
+    private static final int EMPTY = 256;
 
     /** Used for removed prefixes to prevent id shifts. */
     public static final OrePrefixes ___placeholder___ = new OrePrefixBuilder("___placeholder___")
