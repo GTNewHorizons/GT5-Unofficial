@@ -62,7 +62,7 @@ public class ChartWidget extends Widget<ChartWidget> {
         tessellator.setColorRGBA(30, 150, 30, 255);
         double maxValue = data.stream()
             .reduce(Double::max)
-            .orElse(1.0);
+            .orElse(0.0);
         double minValue = data.stream()
             .reduce(Double::min)
             .orElse(0.0);
