@@ -106,6 +106,7 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchDataOutput;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchUncertainty;
+import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 import tectech.util.CommonValues;
 
@@ -199,6 +200,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         numberFormat.setMaximumFractionDigits(8);
     }
 
+    // Parameters for IParametrized multiblocks
+    protected List<Parameter<?>> parameterList;
     // endregion
 
     protected TTMultiblockBase(int aID, String aName, String aNameRegional) {
@@ -206,6 +209,9 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         parametrization = new Parameters(this);
         parametersInstantiation_EM();
         parametrization.setToDefaults(true, true);
+        if (this instanceof IParametrized parametrized) {
+            parametrized.initParameters();
+        }
     }
 
     protected TTMultiblockBase(String aName) {
@@ -213,6 +219,9 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         parametrization = new Parameters(this);
         parametersInstantiation_EM();
         parametrization.setToDefaults(true, true);
+        if (this instanceof IParametrized parametrized) {
+            parametrized.initParameters();
+        }
     }
 
     // region SUPER STRUCT
