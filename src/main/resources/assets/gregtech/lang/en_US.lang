@@ -3679,6 +3679,7 @@ machtype.bhc=BHC
 machtype.cleanroom=Cleanroom
 machtype.ore_factory=Ore Processor, IOF
 machtype.hi_engraver=Laser Engraver, HILE
+machtype.dehp=Geothermal Heat Pump, DEHP
 machtype.latex=Cable Coater, LATEX
 machtype.eic=Implosion Compressor, EIC
 
@@ -3691,6 +3692,14 @@ gt.mb.corepos.top_center=Top center
 gt.mb.hint_block=Hint block with dot %d
 
 # Multiblock Tooltip lines
+
+gt.dehp.tips.1=Consumes %sEU/t\nHas 2 Modes, use the Screwdriver to change them:\nDirect Steam and Coolant Heating\nDirect Steam Mode: Consumes §9Distilled Water§7 to produce §f%s§7L/s of §fSuperheated Steam\nCoolant Heating Mode: Converts %sL/s §bCoolant§7 to §cHot Coolant\nEach maintenance issue lowers output efficiency by §a10%%\nExplodes when it runs out of Distilled Water/Coolant\nBase cycle time: 1 tick
+gt.dehp.info.1=form the 3x1x3 Base
+gt.dehp.info.2=1x3x1 pillar above the center of the base (2 minimum total)
+gt.dehp.info.3=Each pillar's side and 1x3x1 on top
+gt.dehp.info.4=+, Any base casing
+gt.dehp.info.5=Any base casing
+gt.dehp.info.6=Mining Pipes, optional, any base casing
 
 gt.eic.tips.1=Explosions are fun!\nUses electricity instead of Explosives\n§6Parallels§7 are determined by §fContainment Block§7 Tier\n§fNeutronium§7 : §61§7 Parallel\n§cInfinity§7 : §64§7 Parallels\n§8Transcendent Metal§7 : §616§7 Parallels\n§dSpacetime§7 : §664§7 Parallels\n§3Universium§7 : §6256§7 Parallels
 gt.eic.info.1=Front 3rd layer center
