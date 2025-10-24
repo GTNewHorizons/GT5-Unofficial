@@ -2,15 +2,10 @@ package tectech.thing.metaTileEntity.multi.base.parameter;
 
 import java.util.function.Supplier;
 
-public class NumericParameter<T extends Number> extends Parameter<T> {
-
-    private final Supplier<T> min;
-    private final Supplier<T> max;
+public abstract class NumericParameter<T extends Number> extends Parameter<T> {
 
     public NumericParameter(T value, String langKey, Supplier<T> min, Supplier<T> max) {
-        super(value, langKey);
-        this.min = min;
-        this.max = max;
+        super(value, langKey, min, max);
     }
 
     @Override

@@ -2,6 +2,7 @@ package gregtech.common.gui.modularui.multiblock.base;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
+import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.value.IBoolValue;
 import com.cleanroommc.modularui.api.widget.IGuiAction;
 import com.cleanroommc.modularui.api.widget.IWidget;
@@ -20,8 +21,8 @@ import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import tectech.thing.metaTileEntity.multi.base.parameter.IParametrized;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
+import tectech.thing.metaTileEntity.multi.base.parameter.IParametrized;
 
 public class TTMultiblockBaseGui extends MTEMultiBlockBaseGui<TTMultiblockBase> {
 
@@ -123,7 +124,7 @@ public class TTMultiblockBaseGui extends MTEMultiBlockBaseGui<TTMultiblockBase> 
 
     // Panel implementation will come with first parametrized multiblock port
     private ModularPanel getParameterPanel(ModularPanel parent, PanelSyncManager syncManager) {
-        return new ModularPanel("parameters") {
+        ModularPanel panel = new ModularPanel("parameters") {
 
             @Override
             public boolean isDraggable() {
@@ -132,7 +133,21 @@ public class TTMultiblockBaseGui extends MTEMultiBlockBaseGui<TTMultiblockBase> 
         }.size(125, 191)
             .relative(parent)
             .rightRel(0, 0, 1)
-            .topRel(0);
+            .topRel(0)
+            .padding(4);
+
+        Flow column = Flow.column()
+            .coverChildren();
+        multiblock.parameterMap.values()
+            .forEach(
+                parameter -> {
+                    column.child(
+                        IKey.lang(parameter.getLangKey())
+                            .asWidget())
+                        .child(parameter.createInputWidget());
+                });
+
+        return panel.child(column);
     }
 
 }

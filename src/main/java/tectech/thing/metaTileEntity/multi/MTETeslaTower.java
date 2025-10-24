@@ -80,9 +80,12 @@ import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import tectech.thing.metaTileEntity.multi.base.LedStatus;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
+import tectech.thing.metaTileEntity.multi.base.parameter.DoubleParameter;
+import tectech.thing.metaTileEntity.multi.base.parameter.IParametrized;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
-public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstructable, ITeslaConnectable {
+public class MTETeslaTower extends TTMultiblockBase
+    implements ISurvivalConstructable, ITeslaConnectable, IParametrized {
 
     // Interface fields
     private final Multimap<Integer, ITeslaConnectableSimple> teslaNodeMap = MultimapBuilder.treeKeys()
@@ -359,6 +362,27 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
 
     public MTETeslaTower(String aName) {
         super(aName);
+    }
+
+    @Override
+    public void initParameters() {
+
+        parameterMap.put(
+            "hysteresisLow",
+            new DoubleParameter(
+                0.25,
+                "gt.blockmachines.multimachine.tm.teslaCoil.cfgi.0",
+                () -> 0.05,
+                () -> (Double) parameterMap.get("hysteresisHigh")
+                    .getValue()));
+        parameterMap.put(
+            "hysteresisHigh",
+            new DoubleParameter(
+                0.75,
+                "gt.blockmachines.multimachine.tm.teslaCoil.cfgi.1",
+                () -> (Double) parameterMap.get("hysteresisLow")
+                    .getValue(),
+                () -> 0.95));
     }
 
     private float getRangeMulti(int mTier, int vTier) {
