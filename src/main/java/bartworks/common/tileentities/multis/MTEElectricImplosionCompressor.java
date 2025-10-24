@@ -43,7 +43,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -213,36 +212,22 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Implosion Compressor, EIC")
-            .addInfo("Explosions are fun!")
-            .addInfo("Uses electricity instead of Explosives")
-            .addInfo(
-                EnumChatFormatting.GOLD + "Parallels"
-                    + EnumChatFormatting.GRAY
-                    + " are determined by "
-                    + EnumChatFormatting.WHITE
-                    + "Containment Block"
-                    + EnumChatFormatting.GRAY
-                    + " Tier")
-            .addInfo(createParallelText(EnumChatFormatting.WHITE, "Neutronium", 1))
-            .addInfo(createParallelText(EnumChatFormatting.RED, "Infinity", 4))
-            .addInfo(createParallelText(EnumChatFormatting.DARK_GRAY, "Transcendent Metal", 16))
-            .addInfo(createParallelText(EnumChatFormatting.LIGHT_PURPLE, "Spacetime", 64))
-            .addInfo(createParallelText(EnumChatFormatting.DARK_AQUA, "Universium", 256))
+        tt.addMachineType("machtype.eic")
+            .addInfo("gt.eic.tips.1")
             .addMaxTierSkips(1)
             .addTecTechHatchInfo()
             .beginStructureBlock(3, 9, 3, false)
-            .addController("Front 3rd layer center")
-            .addCasingInfoMin("Solid Steel Machine Casing", 8, false)
-            .addStructureInfo("Casings can be replaced with Explosion Hazard Signs")
-            .addOtherStructurePart("Transformer-Winding Blocks", "Outer layer 2,3,7,8")
-            .addOtherStructurePart("Nickel-Zinc-Ferrite Blocks", "Inner layer 2,3,7,8")
-            .addOtherStructurePart("Containment Blocks", "Layer 4,5,6")
-            .addMaintenanceHatch("Any Solid Steel Machine casing", 1)
-            .addInputBus("Any Solid Steel Machine casing", 1)
-            .addInputHatch("Any Solid Steel Machine casing", 1)
-            .addOutputBus("Any Solid Steel Machine casing", 1)
-            .addEnergyHatch("Bottom middle and/or top middle", 2)
+            .addController("gt.eic.info.1")
+            .addCasingInfoMin("gt.blockcasings2.0.name", 8)
+            .addStructureInfo("gt.eic.info.2")
+            .addStructurePart("BW_Machinery_Casings.1.name", "gt.eic.info.3")
+            .addStructurePart("BW_Machinery_Casings.0.name", "gt.eic.info.4")
+            .addStructurePart("GT5U.tooltip.structure.kaboom_containment", "gt.eic.info.5")
+            .addMaintenanceHatch("gt.eic.info.6", 1)
+            .addInputBus("gt.eic.info.6", 1)
+            .addInputHatch("gt.eic.info.6", 1)
+            .addOutputBus("gt.eic.info.6", 1)
+            .addEnergyHatch("gt.eic.info.7", 2)
             .addSubChannelUsage(GTStructureChannels.EIC_PISTON)
             .toolTipFinisher();
         return tt;
@@ -497,17 +482,5 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     @Override
     public void onPreviewStructureComplete(@NotNull ItemStack trigger) {
         resetPiston(this.mBlockTier);
-    }
-
-    private String createParallelText(EnumChatFormatting blockColor, String block, int parallels) {
-        return String.format(
-            "%s%s%s : %s%d%s %s",
-            blockColor,
-            block,
-            EnumChatFormatting.GRAY,
-            EnumChatFormatting.GOLD,
-            parallels,
-            EnumChatFormatting.GRAY,
-            parallels == 1 ? "Parallel" : "Parallels");
     }
 }

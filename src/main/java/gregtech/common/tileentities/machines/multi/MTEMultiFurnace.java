@@ -98,19 +98,19 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Furnace")
+        tt.addMachineType("gt.recipe.furnace")
             .addStaticParallelInfo(4)
             .addDynamicMultiplicativeParallelInfo(2, TooltipTier.COIL)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
-            .addController("Front bottom")
-            .addCasingInfoRange("Heat Proof Machine Casing", 8, 14, false)
-            .addOtherStructurePart("Heating Coils", "Middle layer")
-            .addEnergyHatch("Any bottom casing", 1)
-            .addMaintenanceHatch("Any bottom casing", 1)
-            .addMufflerHatch("Top Middle", 2)
-            .addInputBus("Any bottom casing", 1)
-            .addOutputBus("Any bottom casing", 1)
+            .addController("front_bottom_middle")
+            .addCasingInfoRange("gt.blockcasings.11.name", 8, 14, false)
+            .addStructurePart("GT5U.tooltip.structure.heating_coil", "gt.multi_furnace.info.1")
+            .addEnergyHatch("<bottom casing>", 1)
+            .addMaintenanceHatch("<bottom casing>", 1)
+            .addMufflerHatch("gt.multi_furnace.info.2", 2)
+            .addInputBus("<bottom casing>", 1)
+            .addOutputBus("<bottom casing>", 1)
             .toolTipFinisher();
         return tt;
     }
