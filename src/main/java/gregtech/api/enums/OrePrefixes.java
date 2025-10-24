@@ -2667,28 +2667,22 @@ public class OrePrefixes {
 
     public void processOre(Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
 
-        if (aMaterial == null) {
-            return;
-        }
-
-        if (aMaterial.contains(SubTag.NO_RECIPES)) {
-            return;
-        }
-
-        if (!((aMaterial != Materials._NULL || isSelfReferencing || !isMaterialBased)
-            && GTUtility.isStackValid(aStack))) {
-            return;
-        }
+        if (aMaterial == null) return;
+        if (aMaterial.contains(SubTag.NO_RECIPES)) return;
+        if (aMaterial == Materials._NULL && !isSelfReferencing && isMaterialBased) return;
+        if (!GTUtility.isStackValid(aStack)) return;
 
         for (IOreRecipeRegistrator tRegistrator : mOreProcessing) {
-            if (D2) GTLog.ore.println(
-                "Processing '" + aOreDictName
-                    + "' with the Prefix '"
-                    + name
-                    + "' and the Material '"
-                    + aMaterial.mName
-                    + "' at "
-                    + GTUtility.getClassName(tRegistrator));
+            if (D2) {
+                GTLog.ore.println(
+                    "Processing '" + aOreDictName
+                        + "' with the Prefix '"
+                        + name
+                        + "' and the Material '"
+                        + aMaterial.mName
+                        + "' at "
+                        + GTUtility.getClassName(tRegistrator));
+            }
             tRegistrator.registerOre(this, aMaterial, aOreDictName, aModName, GTUtility.copyAmount(1, aStack));
         }
     }
