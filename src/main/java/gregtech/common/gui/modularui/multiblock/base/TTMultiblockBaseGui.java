@@ -29,9 +29,9 @@ import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.parameter.IParametrized;
 import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
 
-public class TTMultiblockBaseGui extends MTEMultiBlockBaseGui<TTMultiblockBase> {
+public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlockBaseGui<T> {
 
-    public TTMultiblockBaseGui(TTMultiblockBase multiblock) {
+    public TTMultiblockBaseGui(T multiblock) {
         super(multiblock);
     }
 
