@@ -5008,8 +5008,10 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.getIntegratedCircuit(9),
-                GTOreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.CobaltIIHydroxide, 45))
+                GTOreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.CobaltIIAcetate, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.CobaltIIAcetate, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.CobaltIIAcetate, 7),
+                GTUtility.getIntegratedCircuit(9))
             .itemOutputs(
                 MaterialsKevlar.CobaltIINaphthenate.getDust(64),
                 MaterialsKevlar.CobaltIINaphthenate.getDust(64),
@@ -5017,17 +5019,16 @@ public class ChemicalRecipes implements Runnable {
                 MaterialsKevlar.CobaltIINaphthenate.getDust(64),
                 MaterialsKevlar.CobaltIINaphthenate.getDust(64),
                 MaterialsKevlar.CobaltIINaphthenate.getDust(49))
-            .fluidInputs(MaterialsKevlar.NaphthenicAcid.getFluid(10_000))
+            .fluidInputs(MaterialsKevlar.NaphthenicAcid.getFluid(9_000))
+            .fluidOutputs(Materials.AceticAcid.getFluid(13_500))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(multiblockChemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.getIntegratedCircuit(9),
-                GTOreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.CobaltIIAcetate, 64),
-                GTOreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.CobaltIIAcetate, 64),
-                GTOreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.CobaltIIAcetate, 7))
+                GTOreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.CobaltIIHydroxide, 45),
+                GTUtility.getIntegratedCircuit(9))
             .itemOutputs(
                 MaterialsKevlar.CobaltIINaphthenate.getDust(64),
                 MaterialsKevlar.CobaltIINaphthenate.getDust(64),
@@ -5035,8 +5036,7 @@ public class ChemicalRecipes implements Runnable {
                 MaterialsKevlar.CobaltIINaphthenate.getDust(64),
                 MaterialsKevlar.CobaltIINaphthenate.getDust(64),
                 MaterialsKevlar.CobaltIINaphthenate.getDust(49))
-            .fluidInputs(MaterialsKevlar.NaphthenicAcid.getFluid(10_000))
-            .fluidOutputs(Materials.AceticAcid.getFluid(15_000))
+            .fluidInputs(MaterialsKevlar.NaphthenicAcid.getFluid(9_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(multiblockChemicalReactorRecipes);
