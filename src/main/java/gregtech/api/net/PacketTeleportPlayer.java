@@ -14,18 +14,19 @@ import com.google.common.io.ByteArrayDataInput;
 import appeng.api.util.DimensionalCoord;
 import io.netty.buffer.ByteBuf;
 
-public class PacketDebugRedstoneCover extends GTPacket {
+public class PacketTeleportPlayer extends GTPacket {
 
     private int dim;
+
     private int[] coords;
     private boolean teleportPlayer;
     private EntityPlayerMP player;
 
-    public PacketDebugRedstoneCover() {}
+    public PacketTeleportPlayer() {}
 
     @Override
     public byte getPacketID() {
-        return GTPacketTypes.DEBUG_COVER.id;
+        return GTPacketTypes.PLAYER_TELEPORT.id;
     }
 
     @Override
@@ -39,12 +40,7 @@ public class PacketDebugRedstoneCover extends GTPacket {
 
     @Override
     public GTPacket decode(ByteArrayDataInput buf) {
-        return new PacketDebugRedstoneCover(
-            buf.readInt(),
-            buf.readInt(),
-            buf.readInt(),
-            buf.readInt(),
-            buf.readBoolean());
+        return new PacketTeleportPlayer(buf.readInt(), buf.readInt(), buf.readInt(), buf.readInt(), buf.readBoolean());
     }
 
     @Override
@@ -60,7 +56,7 @@ public class PacketDebugRedstoneCover extends GTPacket {
         int y = this.coords[1];
         int z = this.coords[2];
         ServerConfigurationManager manager = player.mcServer.getConfigurationManager();
-        if (this.teleportPlayer && manager.func_152596_g(player.getGameProfile())) { // Check if player is allowed to tp
+        if (this.teleportPlayer) { // Check if player is allowed to tp
             if (player.dimension != this.dim) {
                 manager.transferPlayerToDimension(player, this.dim);
             }
@@ -86,7 +82,7 @@ public class PacketDebugRedstoneCover extends GTPacket {
 
     }
 
-    public PacketDebugRedstoneCover(int dim, int x, int y, int z, boolean teleportPlayer) {
+    public PacketTeleportPlayer(int dim, int x, int y, int z, boolean teleportPlayer) {
         this.dim = dim;
         this.coords = new int[] { x, y, z };
         this.teleportPlayer = teleportPlayer;
