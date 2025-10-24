@@ -24,6 +24,7 @@ import cpw.mods.fml.relauncher.FMLLaunchHandler;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.objects.GTChunkManager;
+import gregtech.api.util.FakeCleanroom;
 import gregtech.api.util.GTMusicSystem;
 import gregtech.api.util.GTUtility;
 import gregtech.commands.GTBaseCommand;
@@ -46,14 +47,14 @@ public final class GTCommand extends GTBaseCommand {
 
     @Override
     public String getCommandUsage(ICommandSender sender) {
-        return "Usage: gt <subcommand>. Valid subcommands are: toggle, chunks, pollution, global_energy_add, global_energy_set, global_energy_join, dump_music_durations.";
+        return "Usage: gt <subcommand>. Valid subcommands are: toggle, chunks, cleanroom_bypass, pollution, global_energy_add, global_energy_set, global_energy_join, dump_music_durations.";
     }
 
     // spotless:off
     @Override
     protected List<IChatComponent> getHelpMessages() {
         final List<IChatComponent> list = new ArrayList<>();
-        list.add(new ChatComponentText("Usage: gt <toggle|chunks|pollution|global_energy_add|global_energy_set|global_energy_join|dump_music_durations>"));
+        list.add(new ChatComponentText("Usage: gt <toggle|chunks|cleanroom_bypass|pollution|global_energy_add|global_energy_set|global_energy_join|dump_music_durations>"));
         list.add(new ChatComponentText("\"toggle D1\" - toggles general.Debug (D1)"));
         list.add(new ChatComponentText("\"toggle D2\" - toggles general.Debug2 (D2)"));
         list.add(new ChatComponentText("\"toggle debugCleanroom\" - toggles cleanroom debug log"));
@@ -68,6 +69,7 @@ public final class GTCommand extends GTBaseCommand {
         list.add(new ChatComponentText("\"toggle debugChunkloaders\" - toggles chunkloaders debug"));
         list.add(new ChatComponentText("\"toggle debugMulti\" - toggles structurelib debug"));
         list.add(new ChatComponentText("\"chunks\" - print a list of the force loaded chunks"));
+        list.add(new ChatComponentText("\"cleanroom_bypass <on|off|status> <all|cleanroom|lowgrav>\" - Bypass cleanroom and/or low-grav requirements"));
         list.add(new ChatComponentText("\"pollution <amount>\" - adds the <amount> of the pollution to the current chunk, " + "\n if <amount> isnt specified, will add" + GTMod.proxy.mPollutionSmogLimit + "gibbl."));
         list.add(new ChatComponentText(EnumChatFormatting.GOLD + " --- Global wireless EU controls ---"));
         list.add(new ChatComponentText("Allows you to set the amount of EU in a users wireless network."));
@@ -95,7 +97,8 @@ public final class GTCommand extends GTBaseCommand {
                 "global_energy_set",
                 "global_energy_join",
                 "global_energy_display",
-                "dump_music_durations");
+                "dump_music_durations",
+                "cleanroom_bypass");
         }
 
         if (args.length == 2 && args[0].equals("toggle")) {
@@ -125,6 +128,14 @@ public final class GTCommand extends GTBaseCommand {
         if (args.length == 3 && args[0].equals("global_energy_join")) {
             // 2nd username of join command
             return getListOfStringsMatchingLastWord(args, getAllUsernames());
+        }
+
+        if (args.length == 2 && "cleanroom_bypass".equals(args[0])) {
+            return getListOfStringsMatchingLastWord(args, "on", "off", "status");
+        }
+
+        if (args.length == 3 && "cleanroom_bypass".equals(args[0])) {
+            return getListOfStringsMatchingLastWord(args, "all", "cleanroom", "lowgrav");
         }
 
         return Collections.emptyList();
@@ -316,6 +327,53 @@ public final class GTCommand extends GTBaseCommand {
                 }
                 GTMusicSystem.ClientSystem.dumpAllRecordDurations();
             }
+
+            case "cleanroom_bypass" -> {
+                if (strings.length < 2) {
+                    sendChatToPlayer(
+                        sender,
+                        EnumChatFormatting.RED + "Usage: gt cleanroom_bypass <on|off|status> <all|cleanroom|lowgrav>");
+                    break;
+                }
+                String act = strings[1].toLowerCase();
+                String spec = (strings.length >= 3 ? strings[2] : "all").toLowerCase();
+                switch (act) {
+                    case "status":
+                        break;
+
+                    case "on":
+                        switch (spec) {
+                            case "all" -> {
+                                FakeCleanroom.CLEANROOM_BYPASS = true;
+                                FakeCleanroom.LOWGRAV_BYPASS = true;
+                            }
+                            case "cleanroom" -> FakeCleanroom.CLEANROOM_BYPASS = true;
+                            case "lowgrav" -> FakeCleanroom.LOWGRAV_BYPASS = true;
+                        }
+                        break;
+
+                    case "off":
+                        switch (spec) {
+                            case "all" -> {
+                                FakeCleanroom.CLEANROOM_BYPASS = false;
+                                FakeCleanroom.LOWGRAV_BYPASS = false;
+                            }
+                            case "cleanroom" -> FakeCleanroom.CLEANROOM_BYPASS = false;
+                            case "lowgrav" -> FakeCleanroom.LOWGRAV_BYPASS = false;
+                        }
+                        break;
+                }
+                sendChatToPlayer(
+                    sender,
+                    EnumChatFormatting.YELLOW + "Cleanroom Bypass: "
+                        + (FakeCleanroom.CLEANROOM_BYPASS ? EnumChatFormatting.GREEN + "Enabled"
+                            : EnumChatFormatting.RED + "Disabled")
+                        + EnumChatFormatting.YELLOW
+                        + " & LowGrav Bypass: "
+                        + (FakeCleanroom.LOWGRAV_BYPASS ? EnumChatFormatting.GREEN + "Enabled"
+                            : EnumChatFormatting.RED + "Disabled"));
+            }
+
             default -> {
                 sendChatToPlayer(sender, EnumChatFormatting.RED + "Invalid command/syntax detected.");
                 sendHelpMessage(sender);

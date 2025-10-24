@@ -115,7 +115,7 @@ public class GregtechSimpleWasher {
                 1,
                 1,
                 true,
-                SoundResource.NONE,
+                SoundResource.GTCEU_LOOP_BATH,
                 SpecialEffects.NONE,
                 "SIMPLE_WASHER").setRecipeCatalystPriority(-tier)
                     .getStackForm(1L));

@@ -93,7 +93,6 @@ import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -382,9 +381,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private final ArrayList<FluidStack> validFuelList = new ArrayList<>() {
 
         {
-            add(MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(1));
-            add(MaterialsUEVplus.RawStarMatter.getFluid(1));
-            add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(1));
+            add(Materials.DimensionallyTranscendentResidue.getFluid(1));
+            add(Materials.RawStarMatter.getFluid(1));
+            add(Materials.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(1));
         }
     };
 
@@ -513,7 +512,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
                         ItemStack itemToAbsorb = STELLAR_FUEL;
                         if (isUpgradeActive(END) && internalBattery != 0) {
-                            itemToAbsorb = GTOreDictUnificator.get(OrePrefixes.gem, MaterialsUEVplus.GravitonShard, 1);
+                            itemToAbsorb = GTOreDictUnificator.get(OrePrefixes.gem, Materials.GravitonShard, 1);
                         }
 
                         int invLength = inputBus.getSizeInventory();
@@ -1182,10 +1181,10 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .widget(
                 new MultiChildWidget().addChild(
                     new FluidNameHolderWidget(
-                        () -> MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(1)
+                        () -> Materials.DimensionallyTranscendentResidue.getFluid(1)
                             .getUnlocalizedName()
                             .substring(6),
-                        (String) -> MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(1)
+                        (String) -> Materials.DimensionallyTranscendentResidue.getFluid(1)
                             .getUnlocalizedName()) {
 
                         @Override
@@ -1216,10 +1215,10 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .widget(
                 new MultiChildWidget().addChild(
                     new FluidNameHolderWidget(
-                        () -> MaterialsUEVplus.RawStarMatter.getFluid(1)
+                        () -> Materials.RawStarMatter.getFluid(1)
                             .getUnlocalizedName()
                             .substring(6),
-                        (String) -> MaterialsUEVplus.RawStarMatter.getFluid(1)
+                        (String) -> Materials.RawStarMatter.getFluid(1)
                             .getUnlocalizedName()) {
 
                         @Override
@@ -1248,10 +1247,10 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .widget(
                 new MultiChildWidget().addChild(
                     new FluidNameHolderWidget(
-                        () -> MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(1)
+                        () -> Materials.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(1)
                             .getUnlocalizedName()
                             .substring(6),
-                        (String) -> MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(1)
+                        (String) -> Materials.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(1)
                             .getUnlocalizedName()) {
 
                         @Override
@@ -3113,7 +3112,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
     private void ejectGravitonShards() {
         if (mOutputBusses.size() == 1) {
-            ItemStack shard = GTOreDictUnificator.get(OrePrefixes.gem, MaterialsUEVplus.GravitonShard, 1);
+            ItemStack shard = GTOreDictUnificator.get(OrePrefixes.gem, Materials.GravitonShard, 1);
 
             shard.stackSize = gravitonShardsAvailable;
 

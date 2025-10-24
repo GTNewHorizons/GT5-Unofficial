@@ -45,7 +45,6 @@ import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -142,7 +141,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
 
         while (i < inputFluids.size()) {
             FluidStack inputFluid = inputFluids.get(i);
-            if (inputFluid.isFluidEqual(MaterialsUEVplus.Antimatter.getFluid(1))) {
+            if (inputFluid.isFluidEqual(Materials.Antimatter.getFluid(1))) {
                 containedAntimatter += inputFluid.amount;
             } else {
                 catalystFluid = inputFluid.copy();
@@ -535,6 +534,11 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     protected float efficiencyCache;
     protected float avgEffCache;
     protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 
     @Override
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {

@@ -41,6 +41,7 @@ import gregtech.api.enums.Mods;
 import kubatech.commands.CommandHandler;
 import kubatech.config.Config;
 import kubatech.loaders.EIGBucketLoader;
+import kubatech.loaders.HTGRLoader;
 import kubatech.loaders.MTLoader;
 import kubatech.loaders.MobHandlerLoader;
 import kubatech.loaders.RecipeLoader;
@@ -75,6 +76,7 @@ public class CommonProxy {
     public void postInit(FMLPostInitializationEvent event) {
         RecipeLoader.addRecipes();
         EIGBucketLoader.LoadEIGBuckets();
+        HTGRLoader.load();
         if (Thaumcraft.isModLoaded()) TCLoader.init();
     }
 
