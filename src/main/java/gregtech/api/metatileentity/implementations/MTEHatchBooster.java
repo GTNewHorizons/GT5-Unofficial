@@ -131,7 +131,7 @@ public class MTEHatchBooster extends MTEHatch implements ISidedInventory {
 
     @Override
     public int getInventoryStackLimit() {
-        return 4;
+        return 3;
     }
 
     @Override

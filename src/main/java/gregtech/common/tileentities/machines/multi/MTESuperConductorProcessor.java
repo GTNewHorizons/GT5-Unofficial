@@ -20,9 +20,13 @@ import static gregtech.api.util.GTStructureUtility.ofSolenoidCoil;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import bartworks.system.material.WerkstoffLoader;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
@@ -236,13 +240,33 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
                 for (int j = 0; j < boosterHatch.getInventoryStackLimit(); j++) {
                     int sconID = getSconID(mOutputItems[i]);
                     int boosterID = boosterHatch.getBoosterIDInSlot(j);
-                    if (sconID != -1 && boosterID != -1 && sconID == boosterID) {
+                    if (boosterID != -1 && sconID == boosterID) {
                         mOutputItems[i].stackSize = (int) (mOutputItems[i].stackSize * 1.15);
                     }
                 }
             }
         }
         return result;
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (boosterHatch != null) {
+        for (int k = 0; k < 3; k++) {
+            int boosterID = boosterHatch.getBoosterIDInSlot(k);
+                if (boosterID >= 2 && boosterID <= 8) {
+                    for (MTEHatchInput hatch : mInputHatches) {
+                        FluidStack fluid = WerkstoffLoader.LiquidHelium.getFluidOrGas(1666);
+                        if (drain(hatch, fluid, false)) {
+                            drain(hatch, fluid, true);
+                            break;
+                        }
+                        //stopMachine(ShutDownReasonRegistry.outOfFluid(fluid));
+                    }
+                    }
+                }
+                }
+            super.onPostTick(aBaseMetaTileEntity, aTick);
     }
 
     private int getSconID(ItemStack scon) {
