@@ -41,7 +41,7 @@ public class BehaviourSoftMallet extends BehaviourNone {
                 aWorld.isRemote = true;
                 aWorld.setBlock(aX, aY, aZ, Blocks.redstone_lamp, 0, 0);
                 aWorld.isRemote = false;
-                GTUtility.sendSoundToPlayers(aWorld, SoundResource.GTCEU_OP_SOFT_HAMMER, 1.0F, 1.0F, aX, aY, aZ);
+                GTUtility.sendSoundToPlayers(aWorld, SoundResource.GTCEU_OP_SOFT_HAMMER, 1.0F, 1.0F, hitX, hitY, hitZ);
             }
             return true;
         }
@@ -50,7 +50,7 @@ public class BehaviourSoftMallet extends BehaviourNone {
                 aWorld.isRemote = true;
                 aWorld.setBlock(aX, aY, aZ, Blocks.lit_redstone_lamp, 0, 0);
                 aWorld.isRemote = false;
-                GTUtility.sendSoundToPlayers(aWorld, SoundResource.GTCEU_OP_SOFT_HAMMER, 1.0F, 1.0F, aX, aY, aZ);
+                GTUtility.sendSoundToPlayers(aWorld, SoundResource.GTCEU_OP_SOFT_HAMMER, 1.0F, 1.0F, hitX, hitY, hitZ);
             }
             return true;
         }
@@ -59,7 +59,7 @@ public class BehaviourSoftMallet extends BehaviourNone {
                 aWorld.isRemote = true;
                 aWorld.setBlock(aX, aY, aZ, aBlock, (aMeta + 8) % 16, 0);
                 aWorld.isRemote = false;
-                GTUtility.sendSoundToPlayers(aWorld, SoundResource.GTCEU_OP_SOFT_HAMMER, 1.0F, 1.0F, aX, aY, aZ);
+                GTUtility.sendSoundToPlayers(aWorld, SoundResource.GTCEU_OP_SOFT_HAMMER, 1.0F, 1.0F, hitX, hitY, hitZ);
             }
             return true;
         }
@@ -68,7 +68,7 @@ public class BehaviourSoftMallet extends BehaviourNone {
                 aWorld.isRemote = true;
                 aWorld.setBlock(aX, aY, aZ, aBlock, (aMeta + 8) % 16, 0);
                 aWorld.isRemote = false;
-                GTUtility.sendSoundToPlayers(aWorld, SoundResource.GTCEU_OP_SOFT_HAMMER, 1.0F, 1.0F, aX, aY, aZ);
+                GTUtility.sendSoundToPlayers(aWorld, SoundResource.GTCEU_OP_SOFT_HAMMER, 1.0F, 1.0F, hitX, hitY, hitZ);
             }
             return true;
         }
@@ -83,7 +83,7 @@ public class BehaviourSoftMallet extends BehaviourNone {
             || (aBlock == Blocks.dropper)) {
             if ((aPlayer.capabilities.isCreativeMode) || (((MetaGeneratedTool) aItem).doDamage(aStack, this.mCosts))) {
                 aWorld.setBlockMetadataWithNotify(aX, aY, aZ, (aMeta + 1) % 6, 3);
-                GTUtility.sendSoundToPlayers(aWorld, SoundResource.GTCEU_OP_SOFT_HAMMER, 1.0F, 1.0F, aX, aY, aZ);
+                GTUtility.sendSoundToPlayers(aWorld, SoundResource.GTCEU_OP_SOFT_HAMMER, 1.0F, 1.0F, hitX, hitY, hitZ);
             }
             return true;
         }
@@ -94,14 +94,14 @@ public class BehaviourSoftMallet extends BehaviourNone {
             || (aBlock == Blocks.trapped_chest)) {
             if ((aPlayer.capabilities.isCreativeMode) || (((MetaGeneratedTool) aItem).doDamage(aStack, this.mCosts))) {
                 aWorld.setBlockMetadataWithNotify(aX, aY, aZ, (aMeta - 1) % 4 + 2, 3);
-                GTUtility.sendSoundToPlayers(aWorld, SoundResource.GTCEU_OP_SOFT_HAMMER, 1.0F, 1.0F, aX, aY, aZ);
+                GTUtility.sendSoundToPlayers(aWorld, SoundResource.GTCEU_OP_SOFT_HAMMER, 1.0F, 1.0F, hitX, hitY, hitZ);
             }
             return true;
         }
         if (aBlock == Blocks.hopper) {
             if ((aPlayer.capabilities.isCreativeMode) || (((MetaGeneratedTool) aItem).doDamage(aStack, this.mCosts))) {
                 aWorld.setBlockMetadataWithNotify(aX, aY, aZ, (aMeta + 1) % 6 != 1 ? (aMeta + 1) % 6 : 2, 3);
-                GTUtility.sendSoundToPlayers(aWorld, SoundResource.GTCEU_OP_SOFT_HAMMER, 1.0F, 1.0F, aX, aY, aZ);
+                GTUtility.sendSoundToPlayers(aWorld, SoundResource.GTCEU_OP_SOFT_HAMMER, 1.0F, 1.0F, hitX, hitY, hitZ);
             }
             return true;
         }

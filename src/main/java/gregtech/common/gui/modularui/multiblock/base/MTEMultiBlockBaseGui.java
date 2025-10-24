@@ -976,7 +976,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                     t.add(getToolTipForReason(shutDownReasonSyncer.getValue()));
                 }
             })
-            .tooltipAutoUpdate(true);
+            .tooltipAutoUpdate(true)
+            .setEnabledIf(widget -> shouldShutdownReasonBeDisplayed(shutDownReasonSyncer.getValue()));
     }
 
     protected IWidget createInventoryRow(ModularPanel panel, PanelSyncManager syncManager) {
@@ -1072,12 +1073,12 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             () -> (multiblock.getTotalRunTime() - multiblock.getLastWorkingTick()) / 20);
         syncManager.syncValue("shutdownDuration", shutdownDurationSyncer);
 
-        syncManager.syncValue(
-            "shutdownReason",
-            new GenericSyncValue<ShutDownReason>(
-                baseMetaTileEntity::getLastShutDownReason,
-                baseMetaTileEntity::setShutDownReason,
-                new ShutdownReasonAdapter()));
+        GenericSyncValue<ShutDownReason> shutdownReasonSyncer = new GenericSyncValue<ShutDownReason>(
+            baseMetaTileEntity::getLastShutDownReason,
+            baseMetaTileEntity::setShutDownReason,
+            new ShutdownReasonAdapter());
+        syncManager.syncValue("shutdownReason", shutdownReasonSyncer);
+
         syncManager.syncValue(
             "shutdownDisplayString",
             new StringSyncValue(
@@ -1143,8 +1144,11 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             if (isPowerSwitchDisabled()) return;
             if (bool) multiblock.enableWorking();
             else {
-                if (multiblock.maxProgresstime() > 0) multiblock.disableWorking();
-                else multiblock.stopMachine(ShutDownReasonRegistry.NONE);
+                if (multiblock.maxProgresstime() > 0) {
+                    multiblock.disableWorking();
+                    wasShutDown.setValue(true);
+                    shutdownReasonSyncer.setValue(ShutDownReasonRegistry.NONE);
+                } else multiblock.stopMachine(ShutDownReasonRegistry.NONE);
             }
         });
         syncManager.syncValue("powerSwitch", powerSwitchSyncer);

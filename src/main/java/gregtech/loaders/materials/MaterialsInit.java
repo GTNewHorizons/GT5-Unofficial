@@ -5333,7 +5333,6 @@ public class MaterialsInit {
         Materials.Invar = loadInvar();
         Materials.Kanthal = loadKanthal();
         Materials.Lazurite = loadLazurite();
-        Materials.LiquidAir = loadLiquidAir();
         Materials.LiquidNitrogen = loadLiquidNitrogen();
         Materials.LiquidOxygen = loadLiquidOxygen();
         Materials.Magnalium = loadMagnalium();
@@ -6474,23 +6473,6 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
             .removeOrePrefix(OrePrefixes.lens)
-            .constructMaterial();
-    }
-
-    private static Materials loadLiquidAir() {
-        return new MaterialBuilder().setName("LiquidAir")
-            .setDefaultLocalName("Liquid Air")
-            .setIconSet(TextureSet.SET_FLUID)
-            .setColor(Dyes.dyeLightBlue)
-            .setARGB(0xf0a9d0f5)
-            .addCell()
-            .setMeltingPoint(4)
-            .addCentrifugeRecipe()
-            .addMaterial(Materials.Nitrogen, 40)
-            .addMaterial(Materials.Oxygen, 11)
-            .addMaterial(Materials.Argon, 1)
-            .addMaterial(Materials.NobleGases, 1)
-            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -9480,6 +9462,7 @@ public class MaterialsInit {
         Materials.Lapis = loadLapis();
         Materials.Lepidolite = loadLepidolite();
         Materials.Lignite = loadLignite();
+        Materials.LiquidAir = loadLiquidAir();
         Materials.LiveRoot = loadLiveRoot();
         Materials.Malachite = loadMalachite();
         Materials.Manyullyn = loadManyullyn();
@@ -10470,6 +10453,23 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
             .removeOrePrefix(OrePrefixes.lens)
+            .constructMaterial();
+    }
+
+    private static Materials loadLiquidAir() {
+        return new MaterialBuilder().setName("LiquidAir")
+            .setDefaultLocalName("Liquid Air")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLightBlue)
+            .setARGB(0xf0a9d0f5)
+            .addCell()
+            .setMeltingPoint(4)
+            .addCentrifugeRecipe()
+            .addMaterial(Materials.Nitrogen, 40)
+            .addMaterial(Materials.Oxygen, 11)
+            .addMaterial(Materials.Argon, 1)
+            .addMaterial(Materials.NobleGases, 1)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
