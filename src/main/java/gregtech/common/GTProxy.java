@@ -1742,7 +1742,7 @@ public class GTProxy implements IFuelHandler {
                                                 aEvent.Ore);
                                         }
                                     }
-                                    case plate -> {
+                                    case "plate" -> {
                                         if ((aMaterial == Materials.Polyethylene) || (aMaterial == Materials.Rubber)) {
                                             GTOreDictUnificator.registerOre(OrePrefixes.sheet, aMaterial, aEvent.Ore);
                                         } else if (aMaterial == Materials.Silicon) {
