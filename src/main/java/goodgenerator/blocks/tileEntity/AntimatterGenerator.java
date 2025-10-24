@@ -43,7 +43,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import bartworks.common.loaders.ItemRegistry;
 import goodgenerator.blocks.structures.AntimatterStructures;
-import goodgenerator.blocks.tileEntity.gui.AntimatterGeneratorGui;
+import gregtech.common.gui.modularui.multiblock.AntimatterGeneratorGui;
 import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HatchElement;
@@ -537,11 +537,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     protected float efficiencyCache;
     protected float avgEffCache;
     protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
-
-    @Override
-    protected boolean useMui2() {
-        return false;
-    }
 
     @Override
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {

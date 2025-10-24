@@ -1,4 +1,4 @@
-package goodgenerator.blocks.tileEntity.gui;
+package gregtech.common.gui.modularui.multiblock;
 
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
@@ -26,17 +26,14 @@ import com.cleanroommc.modularui.widgets.layout.Row;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 
 import goodgenerator.blocks.tileEntity.AntimatterGenerator;
-import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
-public class AntimatterGeneratorGui extends MTEMultiBlockBaseGui {
-
-    private final AntimatterGenerator base;
+public class AntimatterGeneratorGui extends MTEMultiBlockBaseGui<AntimatterGenerator> {
 
     public AntimatterGeneratorGui(AntimatterGenerator base) {
         super(base);
-        this.base = base;
     }
 
     protected static DecimalFormat standardFormat;
@@ -50,11 +47,13 @@ public class AntimatterGeneratorGui extends MTEMultiBlockBaseGui {
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        syncManager.syncValue("canUseWireless", new BooleanSyncValue(base::canUseWireless));
-        syncManager.syncValue("wirelessMode", new BooleanSyncValue(base::getWirelessMode, base::setWirelessEnabled));
-        syncManager.syncValue("energyProduced", new LongSyncValue(base::getEnergyProduced));
-        syncManager.syncValue("efficiencyCur", new DoubleSyncValue(base::getEfficiency));
-        syncManager.syncValue("efficiencyAvg", new DoubleSyncValue(base::getAvgEfficiency));
+        syncManager.syncValue("canUseWireless", new BooleanSyncValue(multiblock::canUseWireless));
+        syncManager.syncValue(
+            "wirelessMode",
+            new BooleanSyncValue(multiblock::getWirelessMode, multiblock::setWirelessEnabled));
+        syncManager.syncValue("energyProduced", new LongSyncValue(multiblock::getEnergyProduced));
+        syncManager.syncValue("efficiencyCur", new DoubleSyncValue(multiblock::getEfficiency));
+        syncManager.syncValue("efficiencyAvg", new DoubleSyncValue(multiblock::getAvgEfficiency));
     }
 
     @Override
@@ -72,12 +71,12 @@ public class AntimatterGeneratorGui extends MTEMultiBlockBaseGui {
 
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-        LongSyncValue energyProducedSync = (LongSyncValue) syncManager.getSyncHandler("energyProduced:0");
-        DoubleSyncValue curEfficiencySync = (DoubleSyncValue) syncManager.getSyncHandler("efficiencyCur:0");
-        DoubleSyncValue avgEfficiencySync = (DoubleSyncValue) syncManager.getSyncHandler("efficiencyAvg:0");
+        LongSyncValue energyProducedSync = syncManager.findSyncHandler("energyProduced", LongSyncValue.class);
+        DoubleSyncValue curEfficiencySync = syncManager.findSyncHandler("efficiencyCur", DoubleSyncValue.class);
+        DoubleSyncValue avgEfficiencySync = syncManager.findSyncHandler("efficiencyAvg", DoubleSyncValue.class);
         return super.createTerminalTextWidget(syncManager, parent)
             .child(
-                new TextWidget(
+                new TextWidget<>(
                     IKey.dynamic(
                         () -> EnumChatFormatting.WHITE + StatCollector.translateToLocal("gui.AntimatterGenerator.0")
                             + ": "
@@ -86,7 +85,7 @@ public class AntimatterGeneratorGui extends MTEMultiBlockBaseGui {
                             + EnumChatFormatting.WHITE
                             + " EU")))
             .child(
-                new TextWidget(
+                new TextWidget<>(
                     IKey.dynamic(
                         () -> EnumChatFormatting.WHITE + StatCollector.translateToLocal("gui.AntimatterGenerator.1")
                             + ": "
@@ -95,7 +94,7 @@ public class AntimatterGeneratorGui extends MTEMultiBlockBaseGui {
                             + EnumChatFormatting.WHITE
                             + " %")))
             .child(
-                new TextWidget(
+                new TextWidget<>(
                     IKey.dynamic(
                         () -> EnumChatFormatting.WHITE + StatCollector.translateToLocal("gui.AntimatterGenerator.1")
                             + ": ⟨ "
@@ -107,8 +106,8 @@ public class AntimatterGeneratorGui extends MTEMultiBlockBaseGui {
 
     @Override
     protected Flow createPanelGap(ModularPanel parent, PanelSyncManager syncManager) {
-        BooleanSyncValue canUseWireless = (BooleanSyncValue) syncManager.getSyncHandler("canUseWireless:0");
-        BooleanSyncValue wirelessMode = (BooleanSyncValue) syncManager.getSyncHandler("wirelessMode:0");
+        BooleanSyncValue canUseWireless = syncManager.findSyncHandler("canUseWireless", BooleanSyncValue.class);
+        BooleanSyncValue wirelessMode = syncManager.findSyncHandler("wirelessMode", BooleanSyncValue.class);
         return super.createPanelGap(parent, syncManager).child(
             new ButtonWidget<>().size(18, 18)
                 .playClickSound(true)
