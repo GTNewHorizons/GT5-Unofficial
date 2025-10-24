@@ -802,7 +802,7 @@ public class MTETeslaTower extends TTMultiblockBase
         dataPointSum += (int) usedAmps;
         dataPointTick++;
         if (dataPointTick % ticksBetweenDataPoints == 0) {
-            outputCurrentHistory.add((double) (dataPointSum / ticksBetweenDataPoints));
+            outputCurrentHistory.add((double) dataPointSum / ticksBetweenDataPoints);
             dataPointSum = 0;
         }
 
