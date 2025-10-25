@@ -116,7 +116,7 @@ public final class GTWidgetThemes {
                 new DrawableStack(
                     new Rectangle().setColor(Color.rgb(100, 30, 80)),
                     GTGuiTextures.BACKGROUND_TESLA_TOWER_CHART),
-                Color.GREEN.main,
+                Color.rgb(55, 255, 55),
                 0xFFFAFAFA,
                 false,
                 0))

@@ -215,8 +215,8 @@ public class LineChartWidget extends Widget<LineChartWidget> {
 
         GlStateManager.disableTexture2D();
         GlStateManager.enableAlpha();
-        GLStateManager.glColor4f(1, 1, 1, 1f);
         GLStateManager.disableBlend();
+        GLStateManager.glColor4f(1, 1, 1, 1f);
     }
 
     private double getPointY(double data, double minValue, double maxValue) {
