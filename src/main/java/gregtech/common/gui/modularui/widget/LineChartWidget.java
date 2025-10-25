@@ -68,6 +68,22 @@ public class LineChartWidget extends Widget<LineChartWidget> {
         return this;
     }
 
+    public LineChartWidget lineMargin(int horizontal, int vertical){
+        this.lineMarginLeft = horizontal;
+        this.lineMarginRight = horizontal;
+        this.lineMarginTop = vertical;
+        this.lineMarginBottom = vertical;
+        return this;
+    }
+
+    public LineChartWidget lineMargin(int margin){
+        this.lineMarginLeft = margin;
+        this.lineMarginRight = margin;
+        this.lineMarginTop = margin;
+        this.lineMarginBottom = margin;
+        return this;
+    }
+
     public LineChartWidget lineWidth(int lineWidth) {
         this.lineWidth = lineWidth;
         return this;
