@@ -26,7 +26,6 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
@@ -52,8 +51,8 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
-        switch (aPrefix) {
-            case dust -> {
+        switch (aPrefix.getName()) {
+            case "dust" -> {
                 if (aMaterial.mFuelPower > 0) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, aStack))
@@ -72,12 +71,12 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                 }
                 if (!aMaterial.mBlastFurnaceRequired) {
                     GTRecipeRegistrator
-                        .registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null, false);
+                        .registerReverseFluidSmelting(aStack, aMaterial, aPrefix.getMaterialAmount(), null, false);
                     if (aMaterial.mSmeltInto.mArcSmeltInto != aMaterial) {
                         GTRecipeRegistrator.registerReverseArcSmelting(
                             GTUtility.copyAmount(1, aStack),
                             aMaterial,
-                            aPrefix.mMaterialAmount,
+                            aPrefix.getMaterialAmount(),
                             null,
                             null,
                             null);
@@ -133,7 +132,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         && (aMaterial != Materials.Obsidian)
                         && (aMaterial != Materials.Glowstone)
                         && (aMaterial != Materials.Paper)
-                        && (aMaterial != MaterialsUEVplus.TranscendentMetal)
+                        && (aMaterial != Materials.TranscendentMetal)
                         && (aMaterial != Materials.Clay)
                         && (aMaterial != Materials.Wood)
                         && (aMaterial != Materials.Carbon)) {
@@ -374,7 +373,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     }
                 }
             }
-            case dustPure, dustImpure, dustRefined -> {
+            case "dustPure", "dustImpure", "dustRefined" -> {
                 if (aMaterial.contains(SubTag.NO_ORE_PROCESSING)) {
                     return;
                 }
@@ -524,7 +523,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         .addTo(centrifugeRecipes);
                 }
             }
-            case dustSmall -> {
+            case "dustSmall" -> {
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(4, aStack), ItemList.Schematic_Dust.get(0L))
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L))
@@ -533,19 +532,19 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     .addTo(packagerRecipes);
                 if (!aMaterial.mBlastFurnaceRequired) {
                     GTRecipeRegistrator
-                        .registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null, true);
+                        .registerReverseFluidSmelting(aStack, aMaterial, aPrefix.getMaterialAmount(), null, true);
                     if (aMaterial.mSmeltInto.mArcSmeltInto != aMaterial) {
                         GTRecipeRegistrator.registerReverseArcSmelting(
                             GTUtility.copyAmount(1, aStack),
                             aMaterial,
-                            aPrefix.mMaterialAmount,
+                            aPrefix.getMaterialAmount(),
                             null,
                             null,
                             null);
                     }
                 }
             }
-            case dustTiny -> {
+            case "dustTiny" -> {
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(9, aStack), ItemList.Schematic_Dust.get(0L))
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L))
@@ -554,12 +553,12 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     .addTo(packagerRecipes);
                 if (!aMaterial.mBlastFurnaceRequired) {
                     GTRecipeRegistrator
-                        .registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null, true);
+                        .registerReverseFluidSmelting(aStack, aMaterial, aPrefix.getMaterialAmount(), null, true);
                     if (aMaterial.mSmeltInto.mArcSmeltInto != aMaterial) {
                         GTRecipeRegistrator.registerReverseArcSmelting(
                             GTUtility.copyAmount(1, aStack),
                             aMaterial,
-                            aPrefix.mMaterialAmount,
+                            aPrefix.getMaterialAmount(),
                             null,
                             null,
                             null);

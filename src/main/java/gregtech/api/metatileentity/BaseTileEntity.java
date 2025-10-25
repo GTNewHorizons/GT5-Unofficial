@@ -62,7 +62,7 @@ import gregtech.api.net.GTPacketSetConfigurationCircuit;
 import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtility;
 import gregtech.common.data.GTBlockEventTracker;
-import gregtech.common.gui.modularui.uifactory.SelectItemUIFactory;
+import gregtech.common.gui.modularui.base.ItemSelectBaseGui;
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
 
@@ -906,7 +906,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
         final List<ItemStack> circuits = GTUtility.getAllIntegratedCircuits();
         uiContext.openClientWindow(
-            player -> new SelectItemUIFactory(
+            player -> new ItemSelectBaseGui(
                 StatCollector.translateToLocal("GT5U.machines.select_circuit"),
                 getStackForm(0),
                 this::onCircuitSelected,

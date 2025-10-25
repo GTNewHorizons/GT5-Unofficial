@@ -1749,6 +1749,12 @@ public enum ItemList implements IItemContainer {
     Casing_Item_Pipe_Fluxed_Electrum,
     Casing_Item_Pipe_Black_Plutonium,
 
+    Casing_Cable,
+    Casing_Graphite_Moderator,
+    Casing_Insulated_Fluid_Pipe,
+    Casing_Beryllium_Integrated_Reactor,
+    Casing_Refined_Graphite,
+
     MobRep_LV,
     MobRep_MV,
     MobRep_HV,
@@ -2202,6 +2208,7 @@ public enum ItemList implements IItemContainer {
     CasingIchorium,
     EntropicProcessor,
     DecayWarehouse,
+    LATEX,
     SuperConductorProcessor,
     AcceleratorLV,
     AcceleratorMV,
@@ -2675,6 +2682,9 @@ public enum ItemList implements IItemContainer {
     Intensely_Bonded_Netherite_Nanoparticles,
     Hot_Netherite_Scrap,
     LargeMolecularAssembler,
+    Beryllium_Shielding_Plate,
+    Alumina_Support_Ring,
+    Alumina_Support_Ring_Raw,
     Prismarine_Precipitate,
     Prismatic_Crystal,
     Radiation_Proof_Prismatic_Naquadah_Composite_Sheet,
@@ -2761,6 +2771,14 @@ public enum ItemList implements IItemContainer {
     Booster_UEV,
     Booster_UIV,
     Booster_UMV,
+
+    DebugEnergyHatch,
+
+    Machine_LV_CableCoater,
+    Machine_MV_CableCoater,
+    Machine_HV_CableCoater,
+    Machine_EV_CableCoater,
+    ChaosLocator,
 
     // semicolon after the comment to reduce merge conflicts
     ;
