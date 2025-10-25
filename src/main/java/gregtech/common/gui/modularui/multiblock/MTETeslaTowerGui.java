@@ -123,8 +123,7 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
             .widgetTheme(GTWidgetThemes.TESLA_TOWER_CHART)
             .renderTextureWithAlpha()
             .alpha(0.05f)
-            .chartUnit("A")
-            .dataPointLimit(30);
+            .chartUnit("A");
     }
 
 }

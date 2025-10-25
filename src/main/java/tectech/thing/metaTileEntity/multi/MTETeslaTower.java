@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -124,7 +125,8 @@ public class MTETeslaTower extends TTMultiblockBase
     private long outputVoltage;
     private long outputCurrent;
     private long outputCurrentLastTick;
-    private List<Double> outputCurrentHistory = new ArrayList<>();
+    private LinkedList<Double> outputCurrentHistory = new LinkedList<>();
+    private int historySizeLimit = 30;
     private int ticksBetweenDataPoints = 5;
     private int dataPointTick = 0;
     private int dataPointSum = 0;
@@ -802,7 +804,10 @@ public class MTETeslaTower extends TTMultiblockBase
         dataPointSum += (int) usedAmps;
         dataPointTick++;
         if (dataPointTick % ticksBetweenDataPoints == 0) {
-            outputCurrentHistory.add((double) dataPointSum / ticksBetweenDataPoints);
+            outputCurrentHistory.addLast((double) dataPointSum / ticksBetweenDataPoints);
+            if (outputCurrentHistory.size() > historySizeLimit) {
+                outputCurrentHistory.removeFirst();
+            }
             dataPointSum = 0;
         }
 
