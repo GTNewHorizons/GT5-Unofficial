@@ -685,7 +685,7 @@ public class OrePrefixes {
         .build();
 
     /** consisting out of 4 Plates, 1 Ring and 1 Screw. */
-    public static final OrePrefixes rotor = new OrePrefixBuilder("Rotor").withDefaultLocalName("Rotors")
+    public static final OrePrefixes rotor = new OrePrefixBuilder("rotor").withDefaultLocalName("Rotors")
         .withSuffix(" Rotor")
         .unifiable()
         .materialBased()
