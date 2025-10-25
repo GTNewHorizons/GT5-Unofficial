@@ -1749,6 +1749,19 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         return false;
     }
 
+    public ItemStack getConfigurationCircuit() {
+        for (MTEHatchInputBus tHatch : filterValidMTEs(mInputBusses)) {
+            if (tHatch.allowSelectCircuit()) {
+                // Grabs the first ghost circuit we can find and returns it
+                ItemStack stack = tHatch.getStackInSlot(tHatch.getCircuitSlot());
+                if (stack != null) {
+                    return stack;
+                }
+            }
+        }
+        return null;
+    }
+
     public ArrayList<ItemStack> getStoredInputs() {
         return getStoredInputsForColor(Optional.empty());
     }
