@@ -27,6 +27,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import gregtech.api.util.tooltip.TooltipHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -444,6 +445,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fluid Solidifier, Foundry")
             .addBulkMachineInfo(parallelScaleBase, speedModifierBase, euEffBase)
+            .addInfo("Toggle Render with Screwdriver")
             .addInfo(
                 "Will " + EnumChatFormatting.BOLD
                     + "not"
@@ -468,156 +470,181 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                     + "7"
                     + EnumChatFormatting.GRAY
                     + " different options")
-            .addInfo("Toggle Render with Screwdriver")
             .addTecTechHatchInfo()
             .addSeparator()
-            .addInfo("" + EnumChatFormatting.BOLD + EnumChatFormatting.RED + "Glorious Evolution!")
-
-            .beginStructureBlock(3, 5, 3, true)
-            .addController("Front Center")
-            .addCasingInfoRangeColored(
-                "Module-Enabled Foundry Casing",
-                EnumChatFormatting.GRAY,
-                300,
-                500,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Central Magnetic Foundry Chassis",
-                EnumChatFormatting.GRAY,
-                120,
-                EnumChatFormatting.GOLD,
-                true)
-            .addCasingInfoRangeColored(
-                "Any Tiered Glass",
-                EnumChatFormatting.GRAY,
-                100,
-                140,
-                EnumChatFormatting.GOLD,
-                true)
-            .addCasingInfoExactlyColored("Hypogen Coil", EnumChatFormatting.GRAY, 120, EnumChatFormatting.GOLD, false)
-            .addInputBus("Any Foundry Casing", 1)
-            .addOutputBus("Any Foundry Casing", 1)
-            .addInputHatch("Any Foundry Casing", 1)
-            .addEnergyHatch("Any Foundry Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addStructureInfoSeparator()
-            .addStructureInfo(EnumChatFormatting.AQUA + "Hypercooler Module")
-            .addStructureInfo(
-                "Consumes " + EnumChatFormatting.AQUA
-                    + "Cooling Fluid"
-                    + EnumChatFormatting.GRAY
-                    + " for "
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "Extra Overclocks"
-                    + EnumChatFormatting.GRAY
-                    + ". Limit of "
-                    + EnumChatFormatting.WHITE
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + " Per "
-                    + EnumChatFormatting.GOLD
-                    + "Solidifier")
-            .addStructureInfo(
-                "Drains " + coolingStrOrder("100", "50", "25")
-                    + " L/s of "
-                    + coolingStrOrder("Super Coolant", "Spacetime", "Eternity")
-                    + " to gain "
-                    + coolingStrOrder("1", "2", "3")
-                    + " Maximum Overclocks")
-            .addStructureInfo(EnumChatFormatting.AQUA + "20x" + EnumChatFormatting.GRAY + " Hypercooler Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "44x" + EnumChatFormatting.GRAY + " Any Tiered Glass")
-            .addStructureInfo(EnumChatFormatting.GOLD + "104x" + EnumChatFormatting.GRAY + " Infinity Cooled Casing")
-            .addStructureInfoSeparator()
-            .addStructureInfo(EnumChatFormatting.LIGHT_PURPLE + "Transcendent Reinforcement")
-            .addStructureInfo(
-                "Allows for " + EnumChatFormatting.LIGHT_PURPLE
-                    + "UEV+ Recipes"
-                    + EnumChatFormatting.GRAY
-                    + " to be processed")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "4x"
-                    + EnumChatFormatting.GRAY
-                    + " Spatially Transcendent Gravitational Lens Block")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "24x"
-                    + EnumChatFormatting.GRAY
-                    + " Transcendentally Amplified Magnetic Confinement Casing")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "52x" + EnumChatFormatting.GRAY + " Remote Graviton Flow Modulator")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "48x" + EnumChatFormatting.GRAY + " Transcendent Metal Frame Box")
-            .addStructureInfoSeparator()
-            .addStructureInfo(EnumChatFormatting.YELLOW + "Time Dilation System")
-            .addStructureInfo(
-                "Multiplies Speed and EU Consumption by " + EnumChatFormatting.GREEN
-                    + "6x"
-                    + EnumChatFormatting.GRAY
-                    + ". Limit of "
-                    + EnumChatFormatting.WHITE
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + " Per "
-                    + EnumChatFormatting.GOLD
-                    + "Solidifier")
-            .addStructureInfoSeparator()
-            .addStructureInfo(EnumChatFormatting.RED + "Efficient Overclocking Module")
-            .addStructureInfo(
-                "Adds " + EnumChatFormatting.DARK_PURPLE
-                    + "0.2"
-                    + EnumChatFormatting.GRAY
-                    + " to the "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + "Overclock Factor"
-                    + EnumChatFormatting.GRAY
-                    + ". Limit of "
-                    + EnumChatFormatting.WHITE
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + " Per "
-                    + EnumChatFormatting.GOLD
-                    + "Solidifier")
-            .addStructureInfoSeparator()
-            .addStructureInfo(EnumChatFormatting.DARK_AQUA + "Power Efficient Subsystems")
-            .addStructureInfo(
-                "Subtracts initial EU Consumption by " + EnumChatFormatting.AQUA
-                    + "20%"
-                    + EnumChatFormatting.GRAY
-                    + ", multiplies "
-                    + EnumChatFormatting.GREEN
-                    + "Speed"
-                    + EnumChatFormatting.GRAY
-                    + " by "
-                    + EnumChatFormatting.WHITE
-                    + "0.75x")
-            .addStructureInfoSeparator()
-            .addStructureInfo(EnumChatFormatting.GREEN + "Streamlined Casters")
-            .addStructureInfo(
-                "Multiplies Speed" + EnumChatFormatting.GRAY
-                    + " by "
-                    + EnumChatFormatting.GREEN
-                    + "1.25x"
-                    + EnumChatFormatting.GRAY
-                    + ". Ramps up speed over time to a maximum of "
-                    + EnumChatFormatting.GREEN
-                    + "2.5x"
-                    + EnumChatFormatting.GRAY
-                    + ", cools down at double that rate")
-            .addStructureInfo("Multiplies Parallels by " + EnumChatFormatting.GOLD + "0.5x")
-            .addStructureInfoSeparator()
-            .addStructureInfo(EnumChatFormatting.BLUE + "Extra Casting Basins")
-            .addStructureInfo(
+            .addInfo(EnumChatFormatting.YELLOW + "Extra Casting Basins")
+            .addInfo(
                 "Adds " + EnumChatFormatting.GOLD
                     + "12"
                     + EnumChatFormatting.GRAY
                     + " Parallels per "
                     + TooltipTier.VOLTAGE.getValue()
                     + " tier. Casings are valid for extra hatch space")
+            .addSeparator(EnumChatFormatting.GRAY,20)
+            .addInfo(EnumChatFormatting.RED+"Streamlined Casters")
+            .addInfo("Increases Base Speed by "+TooltipHelper.speedText("150%")+", Multiplies Parallels by "+TooltipHelper.parallelText("0.9x"))
+            .addSeparator(EnumChatFormatting.GRAY,20)
+            .addInfo(EnumChatFormatting.GREEN+"Proto-Volt Stabilizer")
+            .addInfo("Subtracts "+TooltipHelper.effText("10%")+" from Initial EU Cost, Multiplies EU cost by "+TooltipHelper.effText("0.8x")+", and Multiplies Speed by "+TooltipHelper.speedText("0.95x"))
+            .addSeparator(EnumChatFormatting.GRAY,20)
+            .addInfo(EnumChatFormatting.AQUA+"Sentient Overclocker")
+            .addInfo(addLimitingText())
+            .addInfo("Increases Overclock Factor by "+EnumChatFormatting.LIGHT_PURPLE+"0.35")
+            .addSeparator(EnumChatFormatting.GRAY,20)
+            .addInfo(EnumChatFormatting.DARK_AQUA + "Hypercooler Module")
+            .addInfo(addLimitingText())
+            .addInfo(
+                "Consumes " + EnumChatFormatting.AQUA
+                    + "Cooling Fluid"
+                    + EnumChatFormatting.GRAY
+                    + " for "
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + "Extra Overclocks"
+                    + EnumChatFormatting.GRAY)
+            .addInfo(
+                "Drains " + coolingStrOrder("100", "50", "25")
+                    + " L/s of "
+                    + coolingStrOrder("Super Coolant", "Spacetime", "Eternity")
+                    + " to gain "
+                    + coolingStrOrder("1", "2", "3")
+                    + " Maximum Overclocks")
+            .addSeparator(EnumChatFormatting.GRAY,20)
+            .addInfo(EnumChatFormatting.LIGHT_PURPLE + "Transcendent Reinforcement")
+            .addInfo("Allows for " + EnumChatFormatting.LIGHT_PURPLE + "UEV+ Recipes"
+                + EnumChatFormatting.GRAY
+                + " to be processed")
+            .addSeparator(EnumChatFormatting.GRAY,20)
+            .addInfo(EnumChatFormatting.GOLD+"Time Dilation System")
+            .addInfo(addLimitingText())
+            .addInfo("Multiplies Speed by "+ TooltipHelper.speedText("6x")+" and EU Consumption by "+TooltipHelper.coloredText("8x",EnumChatFormatting.RED))
+            .addSeparator()
+            .addInfo(EnumChatFormatting.RED + "Glorious Evolution!")
+            .beginStructureBlock(3, 5, 3, true)
+            .addController("Front Center")
+            .addCasingInfoMinColored(
+                "Primary Exo-Foundry Casing",
+                EnumChatFormatting.GRAY,
+                500,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored("Exo-Foundry Containment Glass", EnumChatFormatting.GRAY, 428, EnumChatFormatting.GOLD,false)
+            .addCasingInfoExactlyColored(
+                "Central Magnetic Chassis",
+                EnumChatFormatting.GRAY,
+                212,
+                EnumChatFormatting.GOLD,
+                true)
+            .addCasingInfoExactlyColored(
+                "Exo-Foundry Containment Glass",
+                EnumChatFormatting.GRAY,
+                100,
+                EnumChatFormatting.LIGHT_PURPLE,
+                false)
+            .addCasingInfoExactlyColored("Hypogen Coil", EnumChatFormatting.GRAY, 156, EnumChatFormatting.GOLD, false)
+            .addCasingInfoExactlyColored("Netherite Frame Box", EnumChatFormatting.GRAY, 192, EnumChatFormatting.GOLD,false)
+            .addCasingInfoExactlyColored("Black Plutonium Item Pipe Casing", EnumChatFormatting.GRAY, 60, EnumChatFormatting.GOLD,false)
 
-            .toolTipFinisher();
+            .addInputBus("Any Foundry Casing", 1)
+            .addOutputBus("Any Foundry Casing", 1)
+            .addInputHatch("Any Foundry Casing", 1)
+            .addEnergyHatch("Any Foundry Casing", 1)
+            .addStructureInfoSeparator();
 
+        addParallelModuleTooltip(tt);
+        addSpeedModuleTooltip(tt);
+        addPowerEfficiencyModuleTooltip(tt);
+        addEfficientOverclockingModuleTooltip(tt);
+        addHypercoolerModuleInformation(tt);
+        addTranscendentReinforcementModuleInformation(tt);
+        addTimeDilationSystemModuleInformation(tt);
+
+        tt.toolTipFinisher();
         return tt;
     }
+
+    private String addLimitingText()
+    {
+        return "Limit of " + EnumChatFormatting.WHITE + "1" + EnumChatFormatting.GRAY + " Per " + EnumChatFormatting.GOLD + "Foundry";
+    }
+
+    private void addHypercoolerModuleInformation(MultiblockTooltipBuilder tt)
+    {
+       tt.addStructureInfo(EnumChatFormatting.AQUA + "Hypercooler Module")
+        .addStructureInfo(TooltipHelper.coloredText("20x", EnumChatFormatting.AQUA)+" Advanced Cryogenic Casing")
+           .addStructureInfo(TooltipHelper.coloredText("20x", EnumChatFormatting.AQUA)+" Infinity Cooled Casing")
+           .addStructureInfo(TooltipHelper.coloredText("24x", EnumChatFormatting.AQUA)+" Non-photonic Matter Exclusion Glass")
+           .addStructureInfo(TooltipHelper.coloredText("32x", EnumChatFormatting.AQUA)+" Hypercooler Casing")
+           .addStructureInfo(TooltipHelper.coloredText("48x", EnumChatFormatting.AQUA)+" Frost Proof Machine Casing")
+        .addStructureInfo(TooltipHelper.coloredText("48x", EnumChatFormatting.AQUA)+" Netherite Frame Box")
+        .addStructureInfoSeparator();
+    }
+    private void addTranscendentReinforcementModuleInformation(MultiblockTooltipBuilder tt)
+    {
+        tt.addStructureInfo(EnumChatFormatting.LIGHT_PURPLE + "Transcendent Reinforcement")
+            .addStructureInfo(TooltipHelper.coloredText("8x", EnumChatFormatting.LIGHT_PURPLE)+" Block of Spacetime")
+            .addStructureInfo(TooltipHelper.coloredText("8x", EnumChatFormatting.LIGHT_PURPLE)+" Spacetime Frame Box")
+            .addStructureInfo(TooltipHelper.coloredText("11x", EnumChatFormatting.LIGHT_PURPLE)+" Spatially Transcendent Gravitational Lens Block")
+            .addStructureInfo(TooltipHelper.coloredText("24x", EnumChatFormatting.LIGHT_PURPLE)+" Transcendent Metal & "+EnumChatFormatting.RED+"Mellion"+EnumChatFormatting.GRAY+" & "+EnumChatFormatting.LIGHT_PURPLE+"Creon"+EnumChatFormatting.GRAY+" Frame Box")
+            .addStructureInfo(TooltipHelper.coloredText("44x", EnumChatFormatting.LIGHT_PURPLE)+" Transcendent Bolted Shirabon Casing")
+            .addStructureInfoSeparator();
+    }
+
+    private void addTimeDilationSystemModuleInformation(MultiblockTooltipBuilder tt)
+    {
+        tt.addStructureInfo(EnumChatFormatting.DARK_PURPLE+"Time Dilation System")
+                .addStructureInfo(TooltipHelper.coloredText("4x", EnumChatFormatting.DARK_PURPLE)+" "+EnumChatFormatting.WHITE+EnumChatFormatting.BOLD+"Gallifreyan"+EnumChatFormatting.GRAY+" Time Dilation Field Generator")
+                .addStructureInfo(TooltipHelper.coloredText("4x", EnumChatFormatting.DARK_PURPLE)+" Eternity Frame Box")
+                .addStructureInfo(TooltipHelper.coloredText("8x", EnumChatFormatting.DARK_PURPLE)+" Time Dilation System Casing")
+                .addStructureInfo(TooltipHelper.coloredText("16x", EnumChatFormatting.DARK_PURPLE)+" Black & White Dwarf Matter Block")
+                .addStructureInfo(TooltipHelper.coloredText("16x", EnumChatFormatting.DARK_PURPLE)+" Universium Frame Box")
+                .addStructureInfo(TooltipHelper.coloredText("20x", EnumChatFormatting.DARK_PURPLE)+" Black & White Dwarf Matter Frame Box")
+                .addStructureInfo(TooltipHelper.coloredText("24x", EnumChatFormatting.DARK_PURPLE)+" Reinforced Temporal Structure Casing")
+                .addStructureInfo(TooltipHelper.coloredText("32x", EnumChatFormatting.DARK_PURPLE)+" Reinforced Spatial Structure Casing");
+    }
+
+    private void addEfficientOverclockingModuleTooltip(MultiblockTooltipBuilder tt)
+    {
+        tt.addStructureInfo(EnumChatFormatting.AQUA+"Sentient Overclocker");
+            tt.addStructureInfo(TooltipHelper.coloredText("4x", EnumChatFormatting.AQUA)+" Gravity Stabilization Casing")
+            .addStructureInfo(TooltipHelper.coloredText("8x", EnumChatFormatting.AQUA)+" Magnetic Flux Casing")
+            .addStructureInfo(TooltipHelper.coloredText("16x", EnumChatFormatting.AQUA)+" Central Magnetic Chassis")
+            .addStructureInfo(TooltipHelper.coloredText("44x", EnumChatFormatting.AQUA)+" Antimatter Contaiment Casing")
+            .addStructureInfo(TooltipHelper.coloredText("76x", EnumChatFormatting.AQUA)+" Fusion Machine Casing MK IV")
+            .addStructureInfo(TooltipHelper.coloredText("88x", EnumChatFormatting.AQUA)+" Sentient Overclocker Casing")
+            .addStructureInfoSeparator();
+    }
+
+    private void addPowerEfficiencyModuleTooltip(MultiblockTooltipBuilder tt)
+    {
+        tt.addStructureInfo(EnumChatFormatting.GREEN+"Proto-Volt Stabilizer")
+            .addStructureInfo(TooltipHelper.coloredText("24x", EnumChatFormatting.GREEN)+" Rugged Botmium Machine Casing")
+            .addStructureInfo(TooltipHelper.coloredText("24x", EnumChatFormatting.GREEN)+" Samarium Frame Box")
+            .addStructureInfo(TooltipHelper.coloredText("32x", EnumChatFormatting.GREEN)+" Purified Tengam Frame Box")
+            .addStructureInfo(TooltipHelper.coloredText("60x", EnumChatFormatting.GREEN)+" Proto-Volt Stabilizer Casing")
+            .addStructureInfoSeparator();
+    }
+    private void addSpeedModuleTooltip(MultiblockTooltipBuilder tt)
+    {
+        tt.addStructureInfo(EnumChatFormatting.RED+"Streamlined Casters")
+            .addStructureInfo(TooltipHelper.coloredText("8x", EnumChatFormatting.RED)+" Block of Tritanium")
+            .addStructureInfo(TooltipHelper.coloredText("16x", EnumChatFormatting.RED)+" Tritanium & Superconductor Base UEV Frame Box")
+            .addStructureInfo(TooltipHelper.coloredText("16x", EnumChatFormatting.RED)+" Particle Containment Casing")
+            .addStructureInfo(TooltipHelper.coloredText("40x", EnumChatFormatting.RED)+" Elemental Confinement Casing")
+            .addStructureInfo(TooltipHelper.coloredText("40x", EnumChatFormatting.RED)+" Streamlined Casting Casing")
+            .addStructureInfoSeparator();
+    }
+    private void addParallelModuleTooltip(MultiblockTooltipBuilder tt)
+    {
+        tt.addStructureInfo(EnumChatFormatting.YELLOW + "Extra Casting Basins")
+            .addStructureInfo(TooltipHelper.coloredText("4x", EnumChatFormatting.YELLOW)+" Rebolted Precious Metals Casing")
+            .addStructureInfo(TooltipHelper.coloredText("8x", EnumChatFormatting.YELLOW)+" Erbium Frame Box")
+            .addStructureInfo(TooltipHelper.coloredText("16x", EnumChatFormatting.YELLOW)+" Solidifier Radiator")
+            .addStructureInfo(TooltipHelper.coloredText("24x", EnumChatFormatting.YELLOW)+" Bolted Precious Metals Casing")
+            .addStructureInfo(TooltipHelper.coloredText("36x", EnumChatFormatting.YELLOW)+" Primary Exo-Foundry Casing")
+            .addStructureInfo(TooltipHelper.coloredText("64x", EnumChatFormatting.YELLOW)+" Solidifier Casing");
+        tt.addStructureInfoSeparator();
+    }
+
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {

@@ -33,6 +33,6 @@ public class ItemCasingsFoundry extends ItemCasings {
     }
 
     private String createFoundryFlavorText(String key) {
-        return EnumChatFormatting.RED + "" + EnumChatFormatting.BOLD + StatCollector.translateToLocal(key);
+        return EnumChatFormatting.RED + StatCollector.translateToLocal(key);
     }
 }
