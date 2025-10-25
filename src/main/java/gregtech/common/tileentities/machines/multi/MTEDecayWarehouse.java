@@ -405,9 +405,9 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
                         SoundResource.GTCEU_OP_PLUNGER,
                         1.0F,
                         -1.0F,
-                        base.getXCoord(),
-                        base.getYCoord(),
-                        base.getZCoord());
+                        base.getXCoord() + .5,
+                        base.getYCoord() + .5,
+                        base.getZCoord() + .5);
 
                     return true;
                 }

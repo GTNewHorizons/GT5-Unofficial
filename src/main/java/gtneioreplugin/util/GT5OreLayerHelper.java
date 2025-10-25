@@ -1,18 +1,18 @@
 package gtneioreplugin.util;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 import com.google.common.collect.ImmutableMap;
 
+import gregtech.GTMod;
 import gregtech.api.enums.OreMixes;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
@@ -121,9 +121,18 @@ public class GT5OreLayerHelper {
                 info.material = ores[veinLayer];
                 info.stoneType = stoneType;
 
-                return Objects.requireNonNull(
-                    OreManager.getStack(info, 1),
-                    "getLayerOre: " + veinLayer + ", " + stoneType + ", " + Arrays.toString(ores));
+                ItemStack stack = OreManager.getStack(info, 1);
+
+                if (stack == null) {
+                    GTMod.GT_FML_LOGGER.warn(
+                        "Ore stack for vein was null: {} (vein: {}, index: {})",
+                        ores[veinLayer],
+                        veinName,
+                        veinLayer);
+                    stack = new ItemStack(Blocks.fire);
+                }
+
+                return stack;
             }
         }
 
