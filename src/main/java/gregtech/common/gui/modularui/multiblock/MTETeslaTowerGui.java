@@ -72,11 +72,11 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
 
     @Override
     protected Flow createPanelGap(ModularPanel parent, PanelSyncManager syncManager) {
-        return super.createPanelGap(parent, syncManager).child(createChartButton(syncManager));
+        return super.createPanelGap(parent, syncManager).child(createChartButton(syncManager, parent));
     }
 
-    private IWidget createChartButton(PanelSyncManager syncManager) {
-        IPanelHandler chartPanel = syncManager.panel("chart", (a, b) -> openChartPanel(syncManager), true);
+    private IWidget createChartButton(PanelSyncManager syncManager, ModularPanel parent) {
+        IPanelHandler chartPanel = syncManager.panel("chart", (a, b) -> openChartPanel(syncManager, parent), true);
         return new ButtonWidget<>().onMousePressed(d -> {
             if (!chartPanel.isPanelOpen()) {
                 chartPanel.openPanel();
@@ -84,11 +84,18 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
                 chartPanel.closePanel();
             }
             return true;
-        });
+        })
+            .tooltip(t -> t.addLine(IKey.lang("gt.blockmachines.multimachine.tm.teslaCoil.chartButtonTooltip")))
+            .overlay(
+                GTGuiTextures.OVERLAY_BUTTON_TESLA_TOWER_CHART.asIcon()
+                    .size(16));
     }
 
-    private @NotNull ModularPanel openChartPanel(PanelSyncManager syncManager) {
+    private @NotNull ModularPanel openChartPanel(PanelSyncManager syncManager, ModularPanel parent) {
         return new ModularPanel("chart").coverChildren()
+            .relative(parent)
+            .topRel(0)
+            .rightRel(1, 0, 0)
             .padding(4)
             .child(
                 Flow.column()

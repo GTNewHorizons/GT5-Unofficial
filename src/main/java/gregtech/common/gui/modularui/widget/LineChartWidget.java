@@ -177,10 +177,10 @@ public class LineChartWidget extends Widget<LineChartWidget> {
 
     }
 
-    //Normally UITextures are rendered without blend which eliminates opacity
+    // Normally UITextures are rendered without blend which eliminates opacity
     @Override
     public void drawBackground(ModularGuiContext context, WidgetThemeEntry<?> widgetTheme) {
-        if(!renderTextureWithAlpha) {
+        if (!renderTextureWithAlpha) {
             super.drawBackground(context, widgetTheme);
             return;
         }

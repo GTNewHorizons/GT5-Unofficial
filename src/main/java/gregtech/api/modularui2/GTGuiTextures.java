@@ -386,6 +386,9 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .build();
 
+    public static final UITexture OVERLAY_BUTTON_TESLA_TOWER_CHART = UITexture.builder()
+        .location(MODID, "gui/overlay_button/tesla_tower_chart")
+        .build();
     // endregion slot overlay
 
     // region progressbar
