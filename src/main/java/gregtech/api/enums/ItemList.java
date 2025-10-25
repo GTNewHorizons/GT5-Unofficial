@@ -2749,14 +2749,6 @@ public enum ItemList implements IItemContainer {
 
     ManaFly,
 
-
-
-
-
-
-
-
-
     Hatch_Booster,
     Booster_MV,
     Booster_HV,
