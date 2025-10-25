@@ -197,9 +197,10 @@ public class OrePrefixes {
         .materialGenerationBits(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
-  
+
     /** Prefix of EFR */
-    public static final OrePrefixes oreDeepslate = new OrePrefixBuilder("oreDeepslate").withDefaultLocalName("Deepslate Ores")
+    public static final OrePrefixes oreDeepslate = new OrePrefixBuilder("oreDeepslate")
+        .withDefaultLocalName("Deepslate Ores")
         .withPrefix("Deepslate ")
         .withSuffix(" Ore")
         .unifiable()

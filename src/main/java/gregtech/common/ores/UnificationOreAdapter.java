@@ -29,30 +29,25 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IStoneType;
-import gregtech.api.objects.GTItemStack;
 import gregtech.common.GTMockWorld;
 import gregtech.common.blocks.GTBlockOre;
 import gtPlusPlus.core.block.base.BlockBaseOre;
 import it.unimi.dsi.fastutil.Pair;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenCustomHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
 public class UnificationOreAdapter implements IOreAdapter<Materials> {
 
-    private static final ImmutableList<OrePrefixes> ORE_ORE_PREFIXES = Arrays.stream(OrePrefixes.values())
+    private static final ImmutableList<OrePrefixes> ORE_ORE_PREFIXES = Arrays.stream(OrePrefixes.VALUES)
         .filter(
-            p -> p.name()
+            p -> p.getName()
                 .startsWith("ore"))
         .filter(p -> p != OrePrefixes.oreNether && p != OrePrefixes.oreEnd)
         .collect(ImmutableList.toImmutableList());
 
     public static final UnificationOreAdapter INSTANCE = new UnificationOreAdapter();
 
-    private static final Table<OrePrefixes, Materials, ItemStack> STACK_TABLE = HashBasedTable.create();
     private static final Table<OrePrefixes, Materials, ImmutableBlockMeta> BLOCK_TABLE = HashBasedTable.create();
 
-    private static final Object2ObjectOpenCustomHashMap<ItemStack, Pair<OrePrefixes, Materials>> MAT_TABLE = new Object2ObjectOpenCustomHashMap<>(
-        GTItemStack.ITEMSTACK_HASH_STRATEGY2);
     private static final Object2ObjectOpenHashMap<ImmutableBlockMeta, Pair<OrePrefixes, Materials>> MAT_BLOCK_TABLE = new Object2ObjectOpenHashMap<>();
 
     private static boolean initialized = false;
@@ -100,9 +95,6 @@ public class UnificationOreAdapter implements IOreAdapter<Materials> {
 
             if (mat == Materials._NULL) continue;
 
-            STACK_TABLE.put(ore, mat, event.Ore.copy());
-            MAT_TABLE.put(event.Ore.copy(), Pair.of(ore, mat));
-
             BLOCK_TABLE.put(ore, mat, bm);
             MAT_BLOCK_TABLE.put(bm, Pair.of(ore, mat));
         }
@@ -131,9 +123,6 @@ public class UnificationOreAdapter implements IOreAdapter<Materials> {
                     if (block instanceof BlockBaseOre) return;
 
                     ImmutableBlockMeta bm = new BlockMeta(block, itemBlock.getMetadata(ore.getItemDamage()));
-
-                    STACK_TABLE.put(prefix, mat, ore.copy());
-                    MAT_TABLE.put(ore.copy(), Pair.of(prefix, mat));
 
                     BLOCK_TABLE.put(prefix, mat, bm);
                     MAT_BLOCK_TABLE.put(bm, Pair.of(prefix, mat));
