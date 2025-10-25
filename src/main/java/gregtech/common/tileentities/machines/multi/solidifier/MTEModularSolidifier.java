@@ -268,7 +268,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
         }))
         //spotless:on
-        .addElement('A', ofBlock(GregTechAPI.sBlockGlass1, 7))
+        .addElement('A', ofBlock(GregTechAPI.sBlockGlass1, 7)) // Foundry Glass
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings11, 7))
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings5, 12))
         .addElement('D', ofFrame(Materials.Netherite))
@@ -442,7 +442,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fluid Solidifier")
+        tt.addMachineType("Fluid Solidifier, Foundry")
             .addBulkMachineInfo(parallelScaleBase, speedModifierBase, euEffBase)
             .addInfo(
                 "Will " + EnumChatFormatting.BOLD

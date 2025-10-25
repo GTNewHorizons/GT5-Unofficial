@@ -513,7 +513,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEModularSolidifier(
                 MULTI_MODULAR_SOLIDIFIER_CONTROLLER.ID,
                 "multimachine.modularsolidifier",
-                "Adaptive Foundry").getStackForm(1));
+                "Exo-Foundry").getStackForm(1));
         addItemTooltip(
             ItemList.Machine_Multi_Modular_Solidifier.get(1),
             chain(() -> "Author: ", GTValues.fancyAuthorChrom));

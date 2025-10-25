@@ -36,7 +36,7 @@ public class BlockGlass1 extends BlockCasingsAbstract {
             translatedText("gt.casing.hawking-focus"));
         register(5, ItemList.NaniteShieldingGlass, "Nanite Shielding Glass");
         register(6, ItemList.Chamber_Grate, "Chamber Grate");
-        register(7, ItemList.Glass_Solidifier_Modular, "Exo-Foundry Shielding Glass");
+        register(7, ItemList.Glass_Solidifier_Modular, "Exo-Foundry Containment Glass");
 
     }
 
