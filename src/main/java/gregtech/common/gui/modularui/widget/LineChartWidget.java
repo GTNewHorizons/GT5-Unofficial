@@ -125,7 +125,7 @@ public class LineChartWidget extends Widget<LineChartWidget> {
     }
 
     public LineChartWidget lowerBoundAlwaysZero() {
-        this.renderTextureWithAlpha = true;
+        this.lowerBoundAlwaysZero = true;
         return this;
     }
 
