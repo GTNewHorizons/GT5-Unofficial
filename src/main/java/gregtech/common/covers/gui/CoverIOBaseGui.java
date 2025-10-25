@@ -1,5 +1,7 @@
 package gregtech.common.covers.gui;
 
+import net.minecraft.util.StatCollector;
+
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
@@ -10,7 +12,6 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverIOBase;
 import gregtech.common.covers.modes.BlockMode;
 import gregtech.common.covers.modes.MachineProcessingCondition;
@@ -41,7 +42,7 @@ public class CoverIOBaseGui extends CoverGui<CoverIOBase> {
         IWidget exportImportButtons = new EnumRowBuilder<>(TransferMode.class).value(ioModeSyncValue)
             .overlay(GTGuiTextures.OVERLAY_BUTTON_EXPORT, GTGuiTextures.OVERLAY_BUTTON_IMPORT)
             .build();
-        IWidget exportImportLabel = IKey.str(GTUtility.trans("229", "Export/Import"))
+        IWidget exportImportLabel = IKey.lang("gt.interact.desc.Pump.ExpImp")
             .asWidget();
 
         EnumSyncValue<MachineProcessingCondition> conditionModeSyncValue = new EnumSyncValue<>(
@@ -55,7 +56,7 @@ public class CoverIOBaseGui extends CoverGui<CoverIOBase> {
                 GTGuiTextures.OVERLAY_BUTTON_USE_PROCESSING_STATE,
                 GTGuiTextures.OVERLAY_BUTTON_USE_INVERTED_PROCESSING_STATE)
             .build();
-        IWidget conditionLabel = IKey.str(GTUtility.trans("230", "Conditional"))
+        IWidget conditionLabel = IKey.lang("gt.interact.desc.conveyor.Conditional")
             .asWidget();
 
         EnumSyncValue<BlockMode> blockModeSyncValue = new EnumSyncValue<>(
@@ -73,16 +74,19 @@ public class CoverIOBaseGui extends CoverGui<CoverIOBase> {
                         : GTGuiTextures.OVERLAY_BUTTON_BLOCK_OUTPUT))
             .tooltip(
                 IKey.dynamic(
-                    () -> ioModeSyncValue.getValue() == TransferMode.IMPORT ? GTUtility.trans("314", "Allow Input")
-                        : GTUtility.trans("312", "Allow Output")),
+                    () -> ioModeSyncValue.getValue() == TransferMode.IMPORT
+                        ? StatCollector.translateToLocal("gt.interact.desc.conveyor.AllowIn")
+                        : StatCollector.translateToLocal("gt.interact.desc.conveyor.AllowOut")),
                 IKey.dynamic(
-                    () -> ioModeSyncValue.getValue() == TransferMode.IMPORT ? GTUtility.trans("313", "Block Input")
-                        : GTUtility.trans("311", "Block Output")))
+                    () -> ioModeSyncValue.getValue() == TransferMode.IMPORT
+                        ? StatCollector.translateToLocal("gt.interact.desc.conveyor.BlockIn")
+                        : StatCollector.translateToLocal("gt.interact.desc.conveyor.BlockOut")))
             .build();
         IWidget blockingLabel = IKey
             .dynamic(
-                () -> ioModeSyncValue.getValue() == TransferMode.IMPORT ? GTUtility.trans("344", "Input Blocking")
-                    : GTUtility.trans("344.1", "Output Blocking"))
+                () -> ioModeSyncValue.getValue() == TransferMode.IMPORT
+                    ? StatCollector.translateToLocal("gt.interact.desc.conveyor.InputBlock")
+                    : StatCollector.translateToLocal("gt.interact.desc.conveyor.OutputBlock"))
             .asWidget();
 
         column.child(

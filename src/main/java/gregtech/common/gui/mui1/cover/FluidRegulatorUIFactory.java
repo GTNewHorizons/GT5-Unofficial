@@ -2,9 +2,10 @@ package gregtech.common.gui.mui1.cover;
 
 import static gregtech.common.covers.CoverFluidRegulator.TICK_RATE_MAX;
 import static gregtech.common.covers.CoverFluidRegulator.TICK_RATE_MIN;
-import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.drawable.Text;
@@ -58,35 +59,36 @@ public class FluidRegulatorUIFactory extends CoverUIFactory<CoverFluidRegulator>
                     coverData -> coverData.getSpeed() >= 0,
                     (coverData, state) -> coverData.setSpeed(Math.abs(coverData.getSpeed())),
                     widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_EXPORT)
-                        .addTooltip(translateToLocal("gt.interact.desc.export"))
+                        .addTooltip(StatCollector.translateToLocal("gt.interact.desc.export.tooltip"))
                         .setPos(spaceX * 0, spaceY * 0))
                 .addFollower(
                     CoverDataFollowerToggleButtonWidget.ofDisableable(),
                     coverData -> coverData.getSpeed() <= 0,
                     (coverData, state) -> coverData.setSpeed(-Math.abs(coverData.getSpeed())),
                     widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_IMPORT)
-                        .addTooltip(translateToLocal("gt.interact.desc.import"))
+                        .addTooltip(StatCollector.translateToLocal("gt.interact.desc.import.tooltip"))
                         .setPos(spaceX * 1, spaceY * 0))
                 .addFollower(
                     CoverDataFollowerToggleButtonWidget.ofDisableable(),
                     coverData -> coverData.getCondition() == CoverFluidRegulator.Conditional.Always,
                     (coverData, state) -> coverData.setCondition(CoverFluidRegulator.Conditional.Always),
                     widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_CHECKMARK)
-                        .addTooltip(GTUtility.trans("224", "Always On"))
+                        .addTooltip(StatCollector.translateToLocal("gt.interact.desc.fluid_regulator.AlwaysOn"))
                         .setPos(spaceX * 0, spaceY * 1))
                 .addFollower(
                     CoverDataFollowerToggleButtonWidget.ofDisableable(),
                     coverData -> coverData.getCondition() == CoverFluidRegulator.Conditional.Conditional,
                     (coverData, state) -> coverData.setCondition(CoverFluidRegulator.Conditional.Conditional),
                     widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_USE_PROCESSING_STATE)
-                        .addTooltip(GTUtility.trans("343", "Use Machine " + "Processing State"))
+                        .addTooltip(StatCollector.translateToLocal("gt.interact.desc.fluid_regulator.MachProcState"))
                         .setPos(spaceX * 1, spaceY * 1))
                 .addFollower(
                     CoverDataFollowerToggleButtonWidget.ofDisableable(),
                     coverData -> coverData.getCondition() == CoverFluidRegulator.Conditional.Inverted,
                     (coverData, state) -> coverData.setCondition(CoverFluidRegulator.Conditional.Inverted),
                     widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_USE_INVERTED_PROCESSING_STATE)
-                        .addTooltip(GTUtility.trans("343.1", "Use " + "Inverted Machine Processing State"))
+                        .addTooltip(
+                            StatCollector.translateToLocal("gt.interact.desc.fluid_regulator.InvertedMachProcState"))
                         .setPos(spaceX * 2, spaceY * 1))
                 .addFollower(
                     new CoverDataFollowerNumericWidget<>(),
@@ -137,26 +139,26 @@ public class FluidRegulatorUIFactory extends CoverUIFactory<CoverFluidRegulator>
                         .setSize(spaceX * 2 - 3, 12))
                 .setPos(startX, startY))
             .widget(
-                new TextWidget(GTUtility.trans("229", "Export/Import")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(StatCollector.translateToLocal("gt.interact.desc.fluid_regulator.ExpImp"))
                     .setPos(3 + startX + spaceX * 4, 4 + startY + spaceY * 0))
             .widget(
-                new TextWidget(GTUtility.trans("230", "Conditional")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(StatCollector.translateToLocal("gt.interact.desc.fluid_regulator.Conditional"))
                     .setPos(3 + startX + spaceX * 4, 4 + startY + spaceY * 1))
             .widget(
-                new TextWidget(GTUtility.trans("208", " L")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(StatCollector.translateToLocal("gt.interact.desc.fluid_regulator.L"))
                     .setPos(startX + spaceX * 4, 4 + startY + spaceY * 2))
             .widget(
-                new TextWidget(GTUtility.trans("209", " ticks")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(StatCollector.translateToLocal("gt.interact.desc.fluid_regulator.Ticks"))
                     .setPos(startX + spaceX * 7, 4 + startY + spaceY * 2))
             .widget(new TextWidget().setTextSupplier(() -> {
                 CoverFluidRegulator cover = getCover();
                 if (cover == null) return new Text("");
                 int tickRate = cover.getTickRateForUi();
                 return new Text(
-                    GTUtility.trans("210.1", "Average:") + " "
+                    StatCollector.translateToLocal("gt.interact.desc.fluid_regulator.Average")
                         + numberFormat.format(tickRate == 0 ? 0 : cover.getSpeed() * 20d / tickRate)
                         + " "
-                        + GTUtility.trans("210.2", "L/sec"))
+                        + StatCollector.translateToLocal("gt.interact.desc.fluid_regulator.L_Sec"))
                             .color(warn.get() ? COLOR_TEXT_WARN.get() : COLOR_TEXT_GRAY.get());
             })
                 .setPos(startX + spaceX * 0, 4 + startY + spaceY * 3));

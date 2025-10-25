@@ -52,11 +52,9 @@ public final class OverflowUIFactory extends CoverUIFactory<CoverOverflowValve> 
         builder
             .widget(
                 new TextWidget(StatCollector.translateToLocal("GTPP.gui.text" + ".cover_overflow_valve_overflow_point"))
-                    .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(xOP, yOP))
             .widget(
                 new TextWidget(StatCollector.translateToLocal("GTPP.gui.text" + ".cover_overflow_valve_liter"))
-                    .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(xOP + width + 3, yOP + 11))
             .widget(
                 new CoverDataControllerWidget<>(this::getCover, getUIBuildContext()).addFollower(
@@ -71,11 +69,9 @@ public final class OverflowUIFactory extends CoverUIFactory<CoverOverflowValve> 
                             .setSize(width, height))))
             .widget(
                 new TextWidget(StatCollector.translateToLocal("GTPP.gui.text" + ".cover_overflow_valve_voiding_rate"))
-                    .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(xVR + 6, yVR))
             .widget(
                 new TextWidget(StatCollector.translateToLocal("GTPP.gui.text" + ".cover_overflow_valve_l_per_update"))
-                    .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(xVR + width + 3, yVR + 11))
             .widget(
                 new CoverDataControllerWidget<>(this::getCover, getUIBuildContext()).addFollower(
