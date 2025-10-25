@@ -10,12 +10,14 @@ import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
@@ -106,7 +108,8 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
             .child(
                 Flow.column()
                     .coverChildren()
-                    .child(createChartWidget()));
+                    .child(createChartWidget())
+                    .child(createChartEditRow()));
     }
 
     private IWidget createChartWidget() {
@@ -122,7 +125,51 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
             .size(225, 150)
             .widgetTheme(GTWidgetThemes.TESLA_TOWER_CHART)
             .renderTextureWithAlpha(0.05f)
-            .chartUnit("A");
+            .chartUnit("A")
+            .marginBottom(2);
     }
 
+    private IWidget createChartEditRow() {
+        return Flow.column()
+            .widthRel(1)
+            .coverChildrenHeight()
+            .child(createTickRateRow())
+            .child(createDataLimitRow());
+    }
+
+    private IWidget createTickRateRow() {
+        return Flow.row()
+            .widthRel(1)
+            .coverChildrenHeight()
+            .child(
+                IKey.str("Update chart every")
+                    .asWidget()
+                    .marginRight(4))
+            .child(
+                new TextFieldWidget()
+                    .value(
+                        new IntSyncValue(multiblock::getTicksBetweenDataPoints, multiblock::setTicksBetweenDataPoints))
+                    .size(25, 12)
+                    .marginRight(4))
+            .child(
+                IKey.str("tick(s)")
+                    .asWidget());
+    }
+
+    private IWidget createDataLimitRow() {
+        return Flow.row()
+            .widthRel(1)
+            .coverChildrenHeight()
+            .child(
+                IKey.str("Show last")
+                    .asWidget()
+                    .marginRight(4))
+            .child(
+                new TextFieldWidget().value(new IntSyncValue(multiblock::getHistorySize, multiblock::setHistorySize))
+                    .size(25, 12)
+                    .marginRight(4))
+            .child(
+                IKey.str("measurement(s)")
+                    .asWidget());
+    }
 }

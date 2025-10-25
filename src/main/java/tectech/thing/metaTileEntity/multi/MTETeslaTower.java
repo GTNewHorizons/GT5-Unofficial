@@ -126,7 +126,7 @@ public class MTETeslaTower extends TTMultiblockBase
     private long outputCurrent;
     private long outputCurrentLastTick;
     private LinkedList<Double> outputCurrentHistory = new LinkedList<>();
-    private int historySizeLimit = 30;
+    private int historySize = 30;
     private int ticksBetweenDataPoints = 5;
     private int dataPointTick = 0;
     private int dataPointSum = 0;
@@ -803,12 +803,15 @@ public class MTETeslaTower extends TTMultiblockBase
 
         dataPointSum += (int) usedAmps;
         dataPointTick++;
-        if (dataPointTick % ticksBetweenDataPoints == 0) {
-            outputCurrentHistory.addLast((double) dataPointSum / ticksBetweenDataPoints);
-            if (outputCurrentHistory.size() > historySizeLimit) {
+        if (dataPointTick >= ticksBetweenDataPoints) {
+            outputCurrentHistory.addLast((double) dataPointSum / dataPointTick);
+            // Users are allowed to change this variable, so if it decreases everything outside of it
+            // Has to be removed
+            while (outputCurrentHistory.size() > historySize) {
                 outputCurrentHistory.removeFirst();
             }
             dataPointSum = 0;
+            dataPointTick = 0;
         }
 
         outputMaxDisplay.set(Math.max(outputCurrentDisplay.get(), outputMaxDisplay.get()));
@@ -1016,6 +1019,22 @@ public class MTETeslaTower extends TTMultiblockBase
 
     public List<Double> getOutputCurrentHistory() {
         return outputCurrentHistory;
+    }
+
+    public int getHistorySize() {
+        return historySize;
+    }
+
+    public void setHistorySize(int historySize) {
+        this.historySize = historySize;
+    }
+
+    public int getTicksBetweenDataPoints() {
+        return ticksBetweenDataPoints;
+    }
+
+    public void setTicksBetweenDataPoints(int ticksBetweenDataPoints) {
+        this.ticksBetweenDataPoints = ticksBetweenDataPoints;
     }
 
     @Override
