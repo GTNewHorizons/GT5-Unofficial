@@ -14,6 +14,7 @@ import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 
+import gregtech.common.misc.GlobalEnergyWorldSavedData;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 
 class IGlobalWirelessEnergy_UnitTest {
@@ -74,6 +75,8 @@ class IGlobalWirelessEnergy_UnitTest {
 
     @Test
     void IGlobalWirelessEnergy_TeamChange() {
+
+        GlobalEnergyWorldSavedData.INSTANCE = new GlobalEnergyWorldSavedData();
 
         UUID user_uuid_0 = UUID.randomUUID();
 

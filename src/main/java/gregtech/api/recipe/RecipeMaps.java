@@ -1310,6 +1310,10 @@ public final class RecipeMaps {
 
     public static final RecipeMap<RecipeMapBackend> scpRecipes = RecipeMapBuilder.of("gt.recipe.scp")
         .maxIO(2, 1, 2, 0)
+      
+    public static final RecipeMap<RecipeMapBackend> cableRecipes = RecipeMapBuilder
+        .of("gt.recipe.cable", RecipeMapBackend::new)
+        .maxIO(6, 1, 1, 0)
         .minInputs(1, 1)
         .progressBar(GTUITextures.PROGRESSBAR_ARROW)
         .build();

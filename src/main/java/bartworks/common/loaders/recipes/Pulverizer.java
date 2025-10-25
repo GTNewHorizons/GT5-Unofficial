@@ -9,7 +9,6 @@ import bartworks.common.loaders.ItemRegistry;
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 
@@ -78,7 +77,7 @@ public class Pulverizer implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(ItemRegistry.bw_glasses[1], 1, 0))
-            .itemOutputs(Materials.BorosilicateGlass.getDust(9), MaterialsUEVplus.TranscendentMetal.getDust(8))
+            .itemOutputs(Materials.BorosilicateGlass.getDust(9), Materials.TranscendentMetal.getDust(8))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_UMV)
             .addTo(maceratorRecipes);
