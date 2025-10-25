@@ -2758,7 +2758,7 @@ public enum ItemList implements IItemContainer {
     MagLevHarness,
 
     ManaFly,
-  
+
     DebugEnergyHatch,
 
     Hatch_Booster,
@@ -2778,9 +2778,8 @@ public enum ItemList implements IItemContainer {
     Machine_MV_CableCoater,
     Machine_HV_CableCoater,
     Machine_EV_CableCoater,
-  
-    ChaosLocator,
 
+    ChaosLocator,
     // semicolon after the comment to reduce merge conflicts
     ;
 

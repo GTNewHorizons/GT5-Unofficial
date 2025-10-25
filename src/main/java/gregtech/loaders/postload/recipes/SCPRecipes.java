@@ -9,7 +9,6 @@ import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
@@ -298,7 +297,7 @@ public class SCPRecipes implements Runnable {
             .itemOutputs(SuperconductorMV)
             .fluidInputs(
                 Materials.Pentacadmiummagnesiumhexaoxid.getMolten(72L * 3 * 64),
-                MaterialsUEVplus.SpaceTime.getMolten(4 * 64))
+                Materials.SpaceTime.getMolten(4 * 64))
             .duration(10 * 48 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(scpRecipes);
@@ -312,7 +311,7 @@ public class SCPRecipes implements Runnable {
             .itemOutputs(SuperconductorHV)
             .fluidInputs(
                 Materials.Titaniumonabariumdecacoppereikosaoxid.getMolten(72L * 6 * 64),
-                MaterialsUEVplus.SpaceTime.getMolten(8 * 64))
+                Materials.SpaceTime.getMolten(8 * 64))
             .duration(10 * 48 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(scpRecipes);
@@ -325,9 +324,7 @@ public class SCPRecipes implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.TungstenSteel, 6)),
                 GTUtility.copyAmountUnsafe(1 * 64, ItemList.Electric_Pump_EV.get(1)))
             .itemOutputs(SuperconductorEV)
-            .fluidInputs(
-                Materials.Uraniumtriplatinid.getMolten(72L * 9 * 64),
-                MaterialsUEVplus.SpaceTime.getMolten(12 * 64))
+            .fluidInputs(Materials.Uraniumtriplatinid.getMolten(72L * 9 * 64), Materials.SpaceTime.getMolten(12 * 64))
             .duration(10 * 48 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(scpRecipes);
@@ -340,9 +337,7 @@ public class SCPRecipes implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.NiobiumTitanium, 8)),
                 GTUtility.copyAmountUnsafe(1 * 64, ItemList.Electric_Pump_IV.get(1)))
             .itemOutputs(SuperconductorIV)
-            .fluidInputs(
-                Materials.Vanadiumtriindinid.getMolten(72L * 12 * 64),
-                MaterialsUEVplus.SpaceTime.getMolten(16 * 64))
+            .fluidInputs(Materials.Vanadiumtriindinid.getMolten(72L * 12 * 64), Materials.SpaceTime.getMolten(16 * 64))
             .duration(20 * 48 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(scpRecipes);
@@ -356,7 +351,7 @@ public class SCPRecipes implements Runnable {
             .itemOutputs(SuperconductorLuV)
             .fluidInputs(
                 Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid.getMolten(72L * 15 * 64),
-                MaterialsUEVplus.SpaceTime.getMolten(24 * 64))
+                Materials.SpaceTime.getMolten(24 * 64))
             .duration(20 * 48 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(scpRecipes);
@@ -370,7 +365,7 @@ public class SCPRecipes implements Runnable {
             .itemOutputs(SuperconductorZPM)
             .fluidInputs(
                 Materials.Tetranaquadahdiindiumhexaplatiumosminid.getMolten(72L * 18 * 64),
-                MaterialsUEVplus.SpaceTime.getMolten(32 * 64))
+                Materials.SpaceTime.getMolten(32 * 64))
             .duration(40 * 48 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(scpRecipes);
@@ -384,7 +379,7 @@ public class SCPRecipes implements Runnable {
             .itemOutputs(SuperconductorUV)
             .fluidInputs(
                 Materials.Longasssuperconductornameforuvwire.getMolten(72L * 21 * 64),
-                MaterialsUEVplus.SpaceTime.getMolten(40 * 64))
+                Materials.SpaceTime.getMolten(40 * 64))
             .duration(40 * 48 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .addTo(scpRecipes);
@@ -398,7 +393,7 @@ public class SCPRecipes implements Runnable {
             .itemOutputs(SuperconductorUHV)
             .fluidInputs(
                 Materials.Longasssuperconductornameforuhvwire.getMolten(72L * 24 * 64),
-                MaterialsUEVplus.SpaceTime.getMolten(48 * 64))
+                Materials.SpaceTime.getMolten(48 * 64))
             .duration(80 * 48 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(scpRecipes);
@@ -412,7 +407,7 @@ public class SCPRecipes implements Runnable {
             .itemOutputs(SuperconductorUEV)
             .fluidInputs(
                 Materials.SuperconductorUEVBase.getMolten(72L * 27 * 64),
-                MaterialsUEVplus.SpaceTime.getMolten(56 * 64))
+                Materials.SpaceTime.getMolten(56 * 64))
             .duration(80 * 48 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(scpRecipes);
@@ -422,12 +417,12 @@ public class SCPRecipes implements Runnable {
             .itemInputsUnsafe(
                 GTUtility.copyAmountUnsafe(
                     20 * 64,
-                    GTOreDictUnificator.get(OrePrefixes.pipeTiny, MaterialsUEVplus.TranscendentMetal, 20)),
+                    GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.TranscendentMetal, 20)),
                 GTUtility.copyAmountUnsafe(1 * 64, ItemList.Electric_Pump_UIV.get(1L)))
             .itemOutputs(SuperconductorUIV)
             .fluidInputs(
                 Materials.SuperconductorUIVBase.getMolten(72L * 30 * 64),
-                MaterialsUEVplus.SpaceTime.getMolten(68 * 64))
+                Materials.SpaceTime.getMolten(68 * 64))
             .duration(80 * 48 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .addTo(scpRecipes);
@@ -435,14 +430,13 @@ public class SCPRecipes implements Runnable {
         // UMV
         GTValues.RA.stdBuilder()
             .itemInputsUnsafe(
-                GTUtility.copyAmountUnsafe(
-                    22 * 64,
-                    GTOreDictUnificator.get(OrePrefixes.pipeTiny, MaterialsUEVplus.SpaceTime, 22)),
+                GTUtility
+                    .copyAmountUnsafe(22 * 64, GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.SpaceTime, 22)),
                 GTUtility.copyAmountUnsafe(1 * 64, ItemList.Electric_Pump_UMV.get(1)))
             .itemOutputs(SuperconductorUMV)
             .fluidInputs(
                 Materials.SuperconductorUMVBase.getMolten(72L * 33 * 64),
-                MaterialsUEVplus.SpaceTime.getMolten(72 * 64))
+                Materials.SpaceTime.getMolten(72 * 64))
             .duration(160 * 48 * SECONDS)
             .eut(TierEU.RECIPE_UMV)
             .addTo(scpRecipes);
