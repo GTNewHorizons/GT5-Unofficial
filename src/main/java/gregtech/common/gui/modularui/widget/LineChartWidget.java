@@ -122,6 +122,12 @@ public class LineChartWidget extends Widget<LineChartWidget> {
         return this;
     }
 
+    public LineChartWidget renderTextureWithAlpha(float alpha) {
+        this.renderTextureWithAlpha = true;
+        this.alpha = alpha;
+        return this;
+    }
+
     public LineChartWidget renderTextureWithAlpha(boolean renderTextureWithAlpha) {
         this.renderTextureWithAlpha = renderTextureWithAlpha;
         return this;
