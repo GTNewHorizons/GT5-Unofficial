@@ -34,9 +34,13 @@ public class LineChartWidget extends Widget<LineChartWidget> {
     private int lineWidth = 3;
     private String chartUnit = "";
     private int dataPointLimit = 0;
+
     private boolean renderMinMaxText = true;
+
     private boolean renderTextureWithAlpha = false;
     private float alpha = 1f;
+
+    private boolean lowerBoundAlwaysZero = false;
 
     private GenericListSyncHandler<Double> dataSyncHandler;
 
@@ -80,6 +84,16 @@ public class LineChartWidget extends Widget<LineChartWidget> {
         return this;
     }
 
+    public LineChartWidget lowerBoundAlwaysZero() {
+        this.renderTextureWithAlpha = true;
+        return this;
+    }
+
+    public LineChartWidget lowerBoundAlwaysZero(boolean lowerBoundAlwaysZero) {
+        this.lowerBoundAlwaysZero = lowerBoundAlwaysZero;
+        return this;
+    }
+
     @Override
     public boolean isValidSyncHandler(SyncHandler syncHandler) {
         return syncHandler instanceof GenericListSyncHandler<?>;
@@ -110,6 +124,18 @@ public class LineChartWidget extends Widget<LineChartWidget> {
             Collections.reverse(data);
         }
 
+        double maxValue = data.stream()
+            .reduce(Double::max)
+            .orElse(1.0);
+        double minValue;
+        if (lowerBoundAlwaysZero) {
+            minValue = 0;
+        } else {
+            minValue = data.stream()
+                .reduce(Double::min)
+                .orElse(0.0);
+        }
+
         GlStateManager.disableTexture2D();
         GlStateManager.enableBlend();
         GlStateManager.enableAlpha();
@@ -122,6 +148,20 @@ public class LineChartWidget extends Widget<LineChartWidget> {
         GlStateManager.shadeModel(GL11.GL_SMOOTH);
         GlStateManager.glLineWidth(lineWidth);
 
+        drawChartLines(data, widgetTheme, minValue, maxValue);
+
+        if (renderMinMaxText) {
+            drawChartText(widgetTheme, minValue, maxValue);
+        }
+
+        GlStateManager.shadeModel(7424);
+        GlStateManager.disableBlend();
+        GlStateManager.enableAlpha();
+        GlStateManager.enableTexture2D();
+
+    }
+
+    private void drawChartLines(List<Double> data, WidgetThemeEntry<?> widgetTheme, double minValue, double maxValue) {
         final Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawing(GL_LINE_STRIP);
 
@@ -132,12 +172,7 @@ public class LineChartWidget extends Widget<LineChartWidget> {
             Color.getGreen(lineColor),
             Color.getBlue(lineColor),
             Color.getAlpha(lineColor));
-        double maxValue = data.stream()
-            .reduce(Double::max)
-            .orElse(1.0);
-        double minValue = data.stream()
-            .reduce(Double::min)
-            .orElse(0.0);
+
         // Can't exactly have x to x chart and have the line at the top
         if (maxValue == minValue) {
             minValue = 0;
@@ -154,27 +189,23 @@ public class LineChartWidget extends Widget<LineChartWidget> {
         }
 
         tessellator.draw();
+    }
 
-        if (renderMinMaxText) {
-            TextRenderer renderer = TextRenderer.SHARED;
-            renderer.setAlignment(Alignment.CenterLeft, getArea().width);
-            renderer.setColor(theme.getTextColor());
-            renderer.setScale(1.0f);
-            renderer.setShadow(true);
-            renderer.setSimulate(false);
+    private void drawChartText(WidgetThemeEntry<?> widgetTheme, double minValue, double maxValue) {
+        TextRenderer renderer = TextRenderer.SHARED;
+        renderer.setAlignment(Alignment.CenterLeft, getArea().width);
+        renderer.setColor(
+            widgetTheme.getTheme()
+                .getTextColor());
+        renderer.setScale(1.0f);
+        renderer.setShadow(true);
+        renderer.setSimulate(false);
 
-            renderer.setPos(0, 0);
-            renderer.draw(maxValue + chartUnit);
+        renderer.setPos(0, 0);
+        renderer.draw(maxValue + chartUnit);
 
-            renderer.setPos(0, (int) (getArea().height - renderer.getFontHeight()));
-            renderer.draw(minValue + chartUnit);
-        }
-
-        GlStateManager.shadeModel(7424);
-        GlStateManager.disableBlend();
-        GlStateManager.enableAlpha();
-        GlStateManager.enableTexture2D();
-
+        renderer.setPos(0, (int) (getArea().height - renderer.getFontHeight()));
+        renderer.draw(minValue + chartUnit);
     }
 
     // Normally UITextures are rendered without blend which eliminates opacity
