@@ -78,6 +78,11 @@ public class LineChartWidget extends Widget<LineChartWidget> {
         return this;
     }
 
+    /**
+     * Sets the upper limit on how many latest data points the chart will render.
+     * <p>
+     * Please, limit the list going into the sync handler if possible before using this.
+     */
     public LineChartWidget dataPointLimit(int dataPointLimit) {
         this.dataPointLimit = dataPointLimit;
         return this;
