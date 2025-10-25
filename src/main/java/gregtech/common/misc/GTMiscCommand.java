@@ -24,6 +24,7 @@ import cpw.mods.fml.relauncher.FMLLaunchHandler;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.objects.GTChunkManager;
+import gregtech.api.util.FakeCleanroom;
 import gregtech.api.util.GTMusicSystem;
 import gregtech.api.util.GTUtility;
 import gregtech.commands.GTBaseCommand;
@@ -46,15 +47,16 @@ public final class GTMiscCommand extends GTBaseCommand {
 
     @Override
     public String getCommandUsage(ICommandSender sender) {
-        return "Usage: gt <chunks|dump_music_durations|global_energy_add|global_energy_display|global_energy_join|global_energy_set|pollution|toggle>";
+        return "Usage: gt <chunks|cleanroom_bypass|dump_music_durations|global_energy_add|global_energy_display|global_energy_join|global_energy_set|pollution|toggle>";
     }
 
     // spotless:off
     @Override
     protected List<IChatComponent> getHelpMessages() {
         final List<IChatComponent> list = new ArrayList<>();
-        list.add(new ChatComponentText("Usage: gt <chunks|dump_music_durations|global_energy_add|global_energy_display|global_energy_join|global_energy_set|pollution|toggle>"));
+        list.add(new ChatComponentText("Usage: gt <chunks|cleanroom_bypass|dump_music_durations|global_energy_add|global_energy_display|global_energy_join|global_energy_set|pollution|toggle>"));
         list.add(new ChatComponentText("\"chunks\" - print a list of the force loaded chunks"));
+        list.add(new ChatComponentText("\"cleanroom_bypass <on|off|status> <all|cleanroom|lowgrav>\" - Bypass cleanroom and/or low-grav requirements"));
         list.add(new ChatComponentText("\"dump_music_durations\" - dumps soundmeta/durations.json for all registered records in the game to the log. Client-only"));
         list.add(new ChatComponentText("\"pollution <amount>\" - adds the <amount> of the pollution to the current chunk, \n if <amount> isn't specified, will add" + GTMod.proxy.mPollutionSmogLimit + "gibbl."));
         list.add(new ChatComponentText("\"toggle D1\" - toggles general.Debug (D1)"));
@@ -89,6 +91,7 @@ public final class GTMiscCommand extends GTBaseCommand {
             return getListOfStringsMatchingLastWord(
                 args,
                 "chunks",
+                "cleanroom_bypass",
                 "dump_music_durations",
                 "global_energy_add",
                 "global_energy_display",
@@ -115,6 +118,9 @@ public final class GTMiscCommand extends GTBaseCommand {
                     "debugWorldData",
                     "debugWorldGen");
             }
+            if (args[0].equals("cleanroom_bypass")) {
+                return getListOfStringsMatchingLastWord(args, "on", "off", "status");
+            }
             if (GLOBAL_ENERGY_COMMANDS.contains(args[0])) {
                 // 1st username of wireless network commands
                 return getListOfStringsMatchingLastWord(args, getAllUsernames());
@@ -123,6 +129,9 @@ public final class GTMiscCommand extends GTBaseCommand {
             if (args[0].equals("global_energy_join")) {
                 // 2nd username of join command
                 return getListOfStringsMatchingLastWord(args, getAllUsernames());
+            }
+            if (args[0].equals("cleanroom_bypass")) {
+                return getListOfStringsMatchingLastWord(args, "all", "cleanroom", "lowgrav");
             }
         }
 
@@ -143,6 +152,7 @@ public final class GTMiscCommand extends GTBaseCommand {
         }
         switch (args[0]) {
             case "chunks" -> this.processChunksCommand(sender);
+            case "cleanroom_bypass" -> this.processCleanroomBypassCommand(sender, args);
             case "dump_music_durations" -> this.processDumpMusicDurationsCommand(sender);
             case "pollution" -> this.processPollutionCommand(sender, args);
             case "global_energy_add" -> this.processGlobalEnergyAddCommand(sender, args);
@@ -179,6 +189,52 @@ public final class GTMiscCommand extends GTBaseCommand {
         } catch (Exception e) {
             sendChatToPlayer(sender, "No such variable: " + args[0]);
         }
+    }
+
+    private void processCleanroomBypassCommand(ICommandSender sender, String[] args) {
+        if (args.length < 2) {
+            sendChatToPlayer(
+                sender,
+                EnumChatFormatting.RED + "Usage: gt cleanroom_bypass <on|off|status> <all|cleanroom|lowgrav>");
+            return;
+        }
+        String act = args[1].toLowerCase();
+        String spec = (args.length >= 3 ? args[2] : "all").toLowerCase();
+        switch (act) {
+            case "status":
+                break;
+
+            case "on":
+                switch (spec) {
+                    case "all" -> {
+                        FakeCleanroom.CLEANROOM_BYPASS = true;
+                        FakeCleanroom.LOWGRAV_BYPASS = true;
+                    }
+                    case "cleanroom" -> FakeCleanroom.CLEANROOM_BYPASS = true;
+                    case "lowgrav" -> FakeCleanroom.LOWGRAV_BYPASS = true;
+                }
+                break;
+
+            case "off":
+                switch (spec) {
+                    case "all" -> {
+                        FakeCleanroom.CLEANROOM_BYPASS = false;
+                        FakeCleanroom.LOWGRAV_BYPASS = false;
+                    }
+                    case "cleanroom" -> FakeCleanroom.CLEANROOM_BYPASS = false;
+                    case "lowgrav" -> FakeCleanroom.LOWGRAV_BYPASS = false;
+                }
+                break;
+        }
+        sendChatToPlayer(
+            sender,
+            EnumChatFormatting.YELLOW + "Cleanroom Bypass: "
+                + (FakeCleanroom.CLEANROOM_BYPASS ? EnumChatFormatting.GREEN + "Enabled"
+                    : EnumChatFormatting.RED + "Disabled")
+                + EnumChatFormatting.YELLOW
+                + " & LowGrav Bypass: "
+                + (FakeCleanroom.LOWGRAV_BYPASS ? EnumChatFormatting.GREEN + "Enabled"
+                    : EnumChatFormatting.RED + "Disabled"));
     }
 
     private void processChunksCommand(ICommandSender sender) {
