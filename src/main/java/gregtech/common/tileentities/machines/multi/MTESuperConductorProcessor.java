@@ -22,8 +22,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import bartworks.system.material.WerkstoffLoader;
-import gregtech.api.enums.MaterialsUEVplus;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -36,6 +34,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
@@ -275,41 +274,40 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
      */
 
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if(boosterHatch == null) {
+        if (boosterHatch == null) {
             super.onPostTick(aBaseMetaTileEntity, aTick);
             return;
         }
+        if (aBaseMetaTileEntity.isServerSide()) {
+            if (aTick % 20 == 0) {
+                List<FluidStack> fluids = new ArrayList<>();
+                for (int k = 0; k < 3; k++) {
+                    int boosterID = boosterHatch.getBoosterIDInSlot(k);
+                    if (boosterID == -1) break;
 
-        List<FluidStack> fluids = new ArrayList<FluidStack>();
-        for (int k = 0; k < 3; k++) {
-            int boosterID = boosterHatch.getBoosterIDInSlot(k);
-            if(boosterID == -1)
-                break;
+                    if (boosterID >= 2) {
+                        fluids.add(WerkstoffLoader.LiquidHelium.getFluidOrGas(33333));
+                    }
+                    if (boosterID >= 8) {
+                        fluids.add(Materials.LiquidNitrogen.getGas(3333));
+                    }
+                    if (boosterID >= 10) {
+                        fluids.add(Materials.SpaceTime.getMolten(333));
+                    }
 
-            if (boosterID >= 2) {
-                fluids.add(WerkstoffLoader.LiquidHelium.getFluidOrGas(50));
-            }
-            if (boosterID >= 8) {
-                fluids.add(Materials.LiquidNitrogen.getGas(50));
-            }
-            if (boosterID >= 10) {
-                fluids.add(MaterialsUEVplus.SpaceTime.getMolten(50));
-            }
-
-            for(FluidStack fluid : fluids) { //Check to see if all required fluids are available in a hatch
-                boolean foundFluid = false;
-                for (MTEHatchInput hatch : mInputHatches) {
-                    if (drain(hatch, fluid, false)) {
-                        drain(hatch, fluid, true);
-                        foundFluid = true;
-                        break;
+                    for (FluidStack fluid : fluids) { // Check to see if all required fluids are available in a hatch
+                        boolean foundFluid = false;
+                        for (MTEHatchInput hatch : mInputHatches) {
+                            if (drain(hatch, fluid, true)) {
+                                foundFluid = true;
+                                break;
+                            }
+                        }
+                        if (!foundFluid) this.stopMachine(ShutDownReasonRegistry.outOfFluid(fluid));
                     }
                 }
-                if(!foundFluid)
-                    this.stopMachine(ShutDownReasonRegistry.outOfFluid(fluid));
             }
         }
-
         super.onPostTick(aBaseMetaTileEntity, aTick);
     }
 
