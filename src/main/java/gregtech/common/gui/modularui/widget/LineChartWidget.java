@@ -30,7 +30,11 @@ import com.gtnewhorizons.modularui.api.GlStateManager;
 
 public class LineChartWidget extends Widget<LineChartWidget> {
 
-    private int lineMargin = 11;
+    private int lineMarginLeft = 2;
+    private int lineMarginTop = 11;
+    private int lineMarginRight = 0;
+    private int lineMarginBottom = 11;
+
     private int lineWidth = 3;
     private String chartUnit = "";
     private int dataPointLimit = 0;
@@ -44,8 +48,23 @@ public class LineChartWidget extends Widget<LineChartWidget> {
 
     private GenericListSyncHandler<Double> dataSyncHandler;
 
-    public LineChartWidget lineMargin(int lineMargin) {
-        this.lineMargin = lineMargin;
+    public LineChartWidget lineMarginLeft(int lineMarginLeft) {
+        this.lineMarginLeft = lineMarginLeft;
+        return this;
+    }
+
+    public LineChartWidget lineMarginTop(int lineMarginTop) {
+        this.lineMarginTop = lineMarginTop;
+        return this;
+    }
+
+    public LineChartWidget lineMarginRight(int lineMarginRight) {
+        this.lineMarginRight = lineMarginRight;
+        return this;
+    }
+
+    public LineChartWidget lineMarginBottom(int lineMarginBottom) {
+        this.lineMarginBottom = lineMarginBottom;
         return this;
     }
 
@@ -178,14 +197,17 @@ public class LineChartWidget extends Widget<LineChartWidget> {
             minValue = 0;
         }
 
-        int startX = 2;
-        double lineWidth = (double) (getArea().width - startX) / data.size();
+        double lineWidth = (double) (getArea().width - (lineMarginLeft + lineMarginRight)) / data.size();
+        // First vertex drawn twice (once here and once in the loop) so it's, well, a line
+        double x = lineMarginLeft;
+        double y = getPointY(data.get(0), minValue, maxValue);
+        tessellator.addVertex(x, y, 0);
 
         for (int i = 0; i < data.size(); i++) {
 
-            double x = lineWidth * i;
-            double y = getPointY(data.get(i), minValue, maxValue);
-            tessellator.addVertex(startX + x, y, 0);
+            x = lineMarginLeft + lineWidth * (i + 1);
+            y = getPointY(data.get(i), minValue, maxValue);
+            tessellator.addVertex(x, y, 0);
         }
 
         tessellator.draw();
@@ -252,9 +274,9 @@ public class LineChartWidget extends Widget<LineChartWidget> {
 
     private double getPointY(double data, double minValue, double maxValue) {
         if (maxValue == 0) {
-            return getArea().height - lineMargin;
+            return getArea().height - (lineMarginTop);
         }
-        double chartHeight = getArea().height - lineMargin * 2;
-        return chartHeight * (1 - (data - minValue) / (maxValue - minValue)) + lineMargin;
+        double chartHeight = getArea().height - (lineMarginTop + lineMarginBottom);
+        return chartHeight * (1 - (data - minValue) / (maxValue - minValue)) + lineMarginBottom;
     }
 }
