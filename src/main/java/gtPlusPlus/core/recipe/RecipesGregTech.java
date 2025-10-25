@@ -964,7 +964,7 @@ public class RecipesGregTech {
                 Materials.Tartarite.getDust(2),
                 TITANSTEEL.getDust(1),
                 Materials.Infinity.getDust(1))
-            .fluidInputs(Materials.DimensionallyTranscendentResidue.getFluid(1_000))
+            .fluidInputs(Materials.DTR.getFluid(1_000))
             .fluidOutputs(Materials.MoltenProtoHalkoniteBase.getFluid(8 * INGOTS))
             .eut(TierEU.RECIPE_UEV)
             .duration(60 * SECONDS)

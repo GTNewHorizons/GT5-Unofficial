@@ -149,7 +149,7 @@ public class RecipeLoaderChemicalSkips {
                 Materials.Chlorine.getGas(16_000),
                 Materials.Fluorine.getGas(16_000))
             .fluidOutputs(
-                Materials.Plastic.getMolten(4 * STACKS),
+                Materials.Polyethylene.getMolten(4 * STACKS),
                 Materials.PolyvinylChloride.getMolten(2 * STACKS),
                 Materials.Polystyrene.getMolten(1 * STACKS),
                 Materials.Polytetrafluoroethylene.getMolten(2 * STACKS),
@@ -168,7 +168,7 @@ public class RecipeLoaderChemicalSkips {
                 Materials.Hydrogen.getGas(16_000),
                 Materials.Chlorine.getGas(16_000))
             .fluidOutputs(
-                Materials.Silicone.getMolten(1 * STACKS),
+                Materials.RubberSilicone.getMolten(1 * STACKS),
                 Materials.StyreneButadieneRubber.getMolten(1 * STACKS),
                 Materials.PolyphenyleneSulfide.getMolten(2 * STACKS),
                 Materials.Rubber.getMolten(4 * STACKS))
@@ -185,7 +185,7 @@ public class RecipeLoaderChemicalSkips {
             .fluidInputs(Materials.Oxygen.getGas(10_000), Materials.Hydrogen.getGas(10_000))
             .fluidOutputs(
                 MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(32_000),
-                Materials.AdvancedGlue.getFluid(16_000),
+                Materials.GlueAdvanced.getFluid(16_000),
                 MaterialsAlloy.INDALLOY_140.getFluidStack(1 * STACKS),
                 Materials.SolderingAlloy.getMolten(2 * STACKS))
             .duration(20 * SECONDS)
@@ -511,7 +511,7 @@ public class RecipeLoaderChemicalSkips {
             .itemInputs(
                 GTUtility.getIntegratedCircuit(10),
                 CI.getEmptyCatalyst(1),
-                Materials.Silicone.getDust(64),
+                Materials.RubberSilicone.getDust(64),
                 Materials.StyreneButadieneRubber.getDust(64),
                 Materials.Carbon.getNanite(64))
             .itemOutputs(GregtechItemList.RubberPolymerCatalyst.get(1))

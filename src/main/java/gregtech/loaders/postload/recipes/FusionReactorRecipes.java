@@ -42,7 +42,7 @@ public class FusionReactorRecipes implements Runnable {
             .addTo(fusionRecipes); // FT1 Cheap - farmable
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Deuterium.getGas(125), Materials.Helium_3.getGas(125))
+            .fluidInputs(Materials.Deuterium.getGas(125), Materials.Helium3.getGas(125))
             .fluidOutputs(Materials.Helium.getPlasma(125))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_EV)
@@ -259,7 +259,7 @@ public class FusionReactorRecipes implements Runnable {
             .addTo(fusionRecipes); // FT2+
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Silver.getMolten(1 * INGOTS), Materials.Helium_3.getGas(375))
+            .fluidInputs(Materials.Silver.getMolten(1 * INGOTS), Materials.Helium3.getGas(375))
             .fluidOutputs(Materials.Tin.getPlasma(2 * INGOTS))
             .duration(16 * TICKS)
             .eut(49152)

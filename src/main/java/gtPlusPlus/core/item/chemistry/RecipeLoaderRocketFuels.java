@@ -50,7 +50,7 @@ public class RecipeLoaderRocketFuels {
     private static void createKerosene() {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(23))
-            .fluidInputs(Materials.Fuel.getFluid(250))
+            .fluidInputs(Materials.Diesel.getFluid(250))
             .fluidOutputs(new FluidStack(GTPPFluids.Kerosene, 150))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_MV / 2)

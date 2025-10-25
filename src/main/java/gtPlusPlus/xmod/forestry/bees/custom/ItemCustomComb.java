@@ -107,7 +107,7 @@ public class ItemCustomComb extends Item {
         tComb = getStackForType(CustomCombs.RUBBER);
         addSpecialCent(tComb, GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Rubber, 1), 30);
         tComb = getStackForType(CustomCombs.PLASTIC);
-        addSpecialCent(tComb, GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plastic, 1), 20);
+        addSpecialCent(tComb, GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Polyethylene, 1), 20);
         tComb = getStackForType(CustomCombs.PTFE);
         addSpecialCent(tComb, GTOreDictUnificator.get(OrePrefixes.dustTiny, GTPPBees.PTFE, 1), 10);
         tComb = getStackForType(CustomCombs.PBS);

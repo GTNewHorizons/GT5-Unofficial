@@ -509,10 +509,8 @@ public class PCBFactoryRecipes {
                     GTUtility.getIntegratedCircuit(1),
                     PCBFactoryManager.getPlasticMaterialFromTier(tier)
                         .getPlates(1),
-                    GTOreDictUnificator.get(
-                        OrePrefixes.foil,
-                        Materials.Longasssuperconductornameforuvwire,
-                        (long) (16 * (Math.sqrt(tier - 5)))),
+                    GTOreDictUnificator
+                        .get(OrePrefixes.foil, Materials.SuperconductorUVBase, (long) (16 * (Math.sqrt(tier - 5)))),
                     GTOreDictUnificator
                         .get(OrePrefixes.foil, Materials.Neutronium, (long) (16 * (Math.sqrt(tier - 5)))))
                 .fluidInputs(
@@ -539,10 +537,8 @@ public class PCBFactoryRecipes {
                     GTUtility.getIntegratedCircuit(2),
                     PCBFactoryManager.getPlasticMaterialFromTier(tier)
                         .getPlates(1),
-                    GTOreDictUnificator.get(
-                        OrePrefixes.foil,
-                        Materials.Longasssuperconductornameforuvwire,
-                        (long) (16 * (Math.sqrt(tier - 5)))),
+                    GTOreDictUnificator
+                        .get(OrePrefixes.foil, Materials.SuperconductorUVBase, (long) (16 * (Math.sqrt(tier - 5)))),
                     GTOreDictUnificator
                         .get(OrePrefixes.foil, Materials.Neutronium, (long) (16 * (Math.sqrt(tier - 5)))))
                 .fluidInputs(
@@ -570,10 +566,8 @@ public class PCBFactoryRecipes {
                     GTUtility.getIntegratedCircuit(3),
                     PCBFactoryManager.getPlasticMaterialFromTier(tier)
                         .getPlates(1),
-                    GTOreDictUnificator.get(
-                        OrePrefixes.foil,
-                        Materials.Longasssuperconductornameforuvwire,
-                        (long) (16 * (Math.sqrt(tier - 5)))),
+                    GTOreDictUnificator
+                        .get(OrePrefixes.foil, Materials.SuperconductorUVBase, (long) (16 * (Math.sqrt(tier - 5)))),
                     GTOreDictUnificator
                         .get(OrePrefixes.foil, Materials.Neutronium, (long) (16 * (Math.sqrt(tier - 5)))))
                 .fluidInputs(

@@ -433,8 +433,8 @@ public class RecipeLoaderMilling {
             .itemOutputs(
                 Materials.Ash.getDustTiny(5),
                 Materials.Ash.getDustTiny(5),
-                Materials.DarkAsh.getDustTiny(5),
-                Materials.DarkAsh.getDustTiny(5))
+                Materials.AshDark.getDustTiny(5),
+                Materials.AshDark.getDustTiny(5))
             .fluidInputs(Materials.Steam.getGas(5_000))
             .fluidOutputs(new FluidStack(GTPPFluids.PineOil, 500))
             .duration(60 * SECONDS)
@@ -447,8 +447,8 @@ public class RecipeLoaderMilling {
             .itemOutputs(
                 Materials.Ash.getDustTiny(5),
                 Materials.Ash.getDustTiny(5),
-                Materials.DarkAsh.getDustTiny(5),
-                Materials.DarkAsh.getDustTiny(5))
+                Materials.AshDark.getDustTiny(5),
+                Materials.AshDark.getDustTiny(5))
             .fluidInputs(FluidRegistry.getFluidStack("ic2superheatedsteam", 5_000))
             .fluidOutputs(new FluidStack(GTPPFluids.PineOil, 1_500))
             .duration(45 * SECONDS)

@@ -136,7 +136,7 @@ public class RecipeLoaderGenericChem {
             .itemInputs(
                 GTOreDictUnificator.get("fuelCoke", 8),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 16))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.AshDark, 1))
             .fluidOutputs(new FluidStack(GTPPFluids.CarbonDisulfide, 4_000))
             .duration(10 * MINUTES)
             .eut(TierEU.RECIPE_LV)

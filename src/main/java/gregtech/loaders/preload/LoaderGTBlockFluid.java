@@ -829,7 +829,7 @@ public class LoaderGTBlockFluid implements Runnable {
             "gt.blockgem1",
             new Materials[] { Materials.InfusedAir, Materials.Amber, Materials.Amethyst, Materials.InfusedWater,
                 Materials.BlueTopaz, Materials.CertusQuartz, Materials.Dilithium, Materials.EnderEye,
-                Materials.EnderPearl, Materials.FoolsRuby, Materials.Force, Materials.Forcicium, Materials.Forcillium,
+                Materials.EnderPearl, Materials.Spinel, Materials.Force, Materials.Forcicium, Materials.Forcillium,
                 Materials.GreenSapphire, Materials.InfusedFire, Materials.Jasper },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS9);
@@ -855,8 +855,7 @@ public class LoaderGTBlockFluid implements Runnable {
             new Materials[] { Materials.Cryolite, Materials.SiliconSG, Materials.NickelAluminide, Materials.SpaceTime,
                 Materials.TranscendentMetal, Materials.Oriharukon, Materials.WhiteDwarfMatter,
                 Materials.BlackDwarfMatter, Materials.Universium, Materials.Eternity, Materials.MagMatter,
-                Materials.SixPhasedCopper, Materials.HellishMetal,
-                Materials.MagnetohydrodynamicallyConstrainedStarMatter },
+                Materials.SixPhasedCopper, Materials.HellishMetal, Materials.MHDCSM },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS12);
 
@@ -1010,9 +1009,9 @@ public class LoaderGTBlockFluid implements Runnable {
             .withLocalizedName("Helium-3")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.Helium_3)
+            .configureMaterials(Materials.Helium3)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Helium_3, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Helium3, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("Methane")
             .withLocalizedName("Methane")
@@ -1115,9 +1114,9 @@ public class LoaderGTBlockFluid implements Runnable {
             .withLocalizedName("Natural Gas")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.NatruralGas)
+            .configureMaterials(Materials.NaturalGas)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials.NatruralGas, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.NaturalGas, 1L),
                 ItemList.Cell_Empty.get(1L));
         ItemList.sHydricSulfur = GTFluidFactory.builder("liquid_hydricsulfur")
             .withLocalizedName("Hydrogen Sulfide")
@@ -1314,9 +1313,9 @@ public class LoaderGTBlockFluid implements Runnable {
             .withLocalizedName("Diesel")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.Fuel)
+            .configureMaterials(Materials.Diesel)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Fuel, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Diesel, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("for.honey")
             .withLocalizedName("Honey")
@@ -1387,9 +1386,9 @@ public class LoaderGTBlockFluid implements Runnable {
             .withLocalizedName("Dimensionally Transcendent Residue")
             .withStateAndTemperature(LIQUID, 2000000000)
             .buildAndRegister()
-            .configureMaterials(Materials.DimensionallyTranscendentResidue)
+            .configureMaterials(Materials.DTR)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials.DimensionallyTranscendentResidue, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.DTR, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("ExcitedDTCC")
             .withLocalizedName("Excited Dimensionally Transcendent Crude Catalyst")
@@ -1614,12 +1613,12 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.Bottle_Empty.get(1L)));
         FluidContainerRegistry.registerFluidContainer(
             new FluidContainerRegistry.FluidContainerData(
-                Materials.Fuel.getFluid(100L),
+                Materials.Diesel.getFluid(100L),
                 ItemList.Tool_Lighter_Invar_Full.get(1L),
                 ItemList.Tool_Lighter_Invar_Empty.get(1L)));
         FluidContainerRegistry.registerFluidContainer(
             new FluidContainerRegistry.FluidContainerData(
-                Materials.Fuel.getFluid(1_000),
+                Materials.Diesel.getFluid(1_000),
                 ItemList.Tool_Lighter_Platinum_Full.get(1L),
                 ItemList.Tool_Lighter_Platinum_Empty.get(1L)));
 

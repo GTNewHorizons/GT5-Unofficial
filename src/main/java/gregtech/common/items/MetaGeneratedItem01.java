@@ -851,7 +851,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Fuel_Can_Plastic_Empty.ID,
                 "Empty Plastic Fuel Can",
                 "Used to store Fuels",
-                new ItemData(Materials.Plastic, OrePrefixes.plate.getMaterialAmount() * 1L),
+                new ItemData(Materials.Polyethylene, OrePrefixes.plate.getMaterialAmount()),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 1L)));
         ItemList.Fuel_Can_Plastic_Filled.set(
@@ -859,7 +859,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Fuel_Can_Plastic_Filled.ID,
                 "Plastic Fuel Can",
                 "Burns well in Diesel Generators",
-                new ItemData(Materials.Plastic, OrePrefixes.plate.getMaterialAmount() * 1L),
+                new ItemData(Materials.Polyethylene, OrePrefixes.plate.getMaterialAmount()),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 1L)));
 
@@ -883,7 +883,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "Keeping hot things hot and cold things cold",
                 new ItemData(
                     Materials.Aluminium,
-                    OrePrefixes.plateDouble.getMaterialAmount() * 1L + 2L * OrePrefixes.ring.getMaterialAmount()),
+                    OrePrefixes.plateDouble.getMaterialAmount() + 2L * OrePrefixes.ring.getMaterialAmount()),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
@@ -1281,7 +1281,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Battery_Hull_LV.ID,
                 "Small Battery Hull",
                 "An empty LV Battery Hull",
-                new ItemData(Materials.BatteryAlloy, OrePrefixes.plate.getMaterialAmount() * 1L),
+                new ItemData(Materials.BatteryAlloy, OrePrefixes.plate.getMaterialAmount()),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L)));
@@ -4175,7 +4175,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         GTModHandler.addCraftingRecipe(
             ItemList.Fuel_Can_Plastic_Empty.get(7L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { " PP", "P P", "PPP", 'P', OrePrefixes.plate.get(Materials.Plastic) });
+            new Object[] { " PP", "P P", "PPP", 'P', OrePrefixes.plate.get(Materials.Polyethylene) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Schematic_1by1.get(1L),

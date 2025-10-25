@@ -50,9 +50,7 @@ public class PlasmaForgeRecipes implements Runnable {
                     new FluidStack(celestialTungstenPlasma, 1 * STACKS + 32 * INGOTS),
                     Materials.RadoxHeavy.getFluid(32_000),
                     Materials.ExcitedDTSC.getFluid(2_000))
-                .fluidOutputs(
-                    Materials.DimensionallyShiftedSuperfluid.getFluid(360_000),
-                    Materials.DimensionallyTranscendentResidue.getFluid(4_000))
+                .fluidOutputs(Materials.DimensionallyShiftedSuperfluid.getFluid(360_000), Materials.DTR.getFluid(4_000))
                 .duration(7 * SECONDS + 10 * TICKS)
                 .eut((int) TierEU.RECIPE_UXV)
                 .metadata(COIL_HEAT, 13500)
@@ -71,9 +69,7 @@ public class PlasmaForgeRecipes implements Runnable {
                     new FluidStack(celestialTungstenPlasma, 48 * INGOTS),
                     Materials.RadoxHeavy.getFluid(4_000),
                     Materials.ExcitedDTEC.getFluid(2_000))
-                .fluidOutputs(
-                    Materials.DimensionallyShiftedSuperfluid.getFluid(90_000),
-                    Materials.DimensionallyTranscendentResidue.getFluid(2_000))
+                .fluidOutputs(Materials.DimensionallyShiftedSuperfluid.getFluid(90_000), Materials.DTR.getFluid(2_000))
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_UMV)
                 .metadata(COIL_HEAT, 13500)
@@ -93,9 +89,7 @@ public class PlasmaForgeRecipes implements Runnable {
                     new FluidStack(celestialTungstenPlasma, 24 * INGOTS),
                     Materials.RadoxSuperHeavy.getFluid(2_000),
                     Materials.ExcitedDTRC.getFluid(2_000))
-                .fluidOutputs(
-                    Materials.DimensionallyShiftedSuperfluid.getFluid(30_000),
-                    Materials.DimensionallyTranscendentResidue.getFluid(1_000))
+                .fluidOutputs(Materials.DimensionallyShiftedSuperfluid.getFluid(30_000), Materials.DTR.getFluid(1_000))
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_UMV)
                 .metadata(COIL_HEAT, 12600)
@@ -112,9 +106,7 @@ public class PlasmaForgeRecipes implements Runnable {
                     new FluidStack(celestialTungstenPlasma, 24 * INGOTS),
                     Materials.RadoxSuperHeavy.getFluid(2_000),
                     Materials.ExcitedDTPC.getFluid(1_000))
-                .fluidOutputs(
-                    Materials.DimensionallyShiftedSuperfluid.getFluid(7_500),
-                    Materials.DimensionallyTranscendentResidue.getFluid(250))
+                .fluidOutputs(Materials.DimensionallyShiftedSuperfluid.getFluid(7_500), Materials.DTR.getFluid(250))
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_UIV)
                 .metadata(COIL_HEAT, 10800)
@@ -142,7 +134,7 @@ public class PlasmaForgeRecipes implements Runnable {
                 new ItemStack(huiCircuit, 0, 4))
             .fluidInputs(Materials.ExcitedDTRC.getFluid(92), Materials.Duranium.getMolten(1 * INGOTS))
             .itemOutputs(GregtechItemList.Laser_Lens_Special.get(1))
-            .fluidOutputs(Materials.DimensionallyTranscendentResidue.getFluid(46))
+            .fluidOutputs(Materials.DTR.getFluid(46))
             .duration(60 * SECONDS)
             .eut((int) TierEU.RECIPE_UEV)
             .metadata(COIL_HEAT, 10800)

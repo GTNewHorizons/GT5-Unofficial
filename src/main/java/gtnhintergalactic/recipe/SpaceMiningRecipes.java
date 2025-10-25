@@ -723,7 +723,7 @@ public class SpaceMiningRecipes {
                 new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.oreEndstone, Materials.MysteriousCrystal, 64),
                     GTOreDictUnificator.get(OrePrefixes.oreEndstone, Materials.Mytryl, 64),
                     GTOreDictUnificator.get(OrePrefixes.oreEndstone, Materials.Oriharukon, 64),
-                    GTOreDictUnificator.get(OrePrefixes.oreEndstone, Materials.HeeEndium, 64),
+                    GTOreDictUnificator.get(OrePrefixes.oreEndstone, Materials.Endium, 64),
                     GTModHandler.getModItem(HardcoreEnderExpansion.ID, "end_powder_ore", 64) },
                 30,
                 60,

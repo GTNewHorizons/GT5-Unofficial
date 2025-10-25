@@ -325,11 +325,8 @@ public class CompressorRecipes implements Runnable {
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 64))
-            .itemOutputs(
-                GTOreDictUnificator
-                    .get(OrePrefixes.plateSuperdense, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.MHDCSM, 64))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.MHDCSM, 1))
             // Require stabilized black hole
             .metadata(CompressionTierKey.INSTANCE, 2)
             .duration(1 * HOURS + 15 * MINUTES)

@@ -270,7 +270,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .itemInputs(GTUtility.copyAmount(1, aStack))
                 .itemOutputs(
                     GTOreDictUnificator.get(OrePrefixes.compressed, aMaterial, 1L),
-                    GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1L))
+                    GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.AshDark, 1L))
                 .duration(1 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .metadata(ADDITIVE_AMOUNT, 2)

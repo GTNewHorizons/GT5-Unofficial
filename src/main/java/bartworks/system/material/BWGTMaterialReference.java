@@ -500,7 +500,7 @@ public class BWGTMaterialReference {
         Werkstoff.Types.COMPOUND,
         31_766 + 473);
     public static Werkstoff Plastic = new Werkstoff(
-        Materials.Plastic,
+        Materials.Polyethylene,
         ADD_CASINGS_ONLY,
         Werkstoff.Types.COMPOUND,
         31_766 + 874);

@@ -448,7 +448,7 @@ public class RecipeLoader {
                 GTUtility.copyAmount(4, insulator),
                 ItemList.Electric_Pump_LuV.get(1),
                 Materials.Silver.getDust(2))
-            .fluidInputs(Materials.Silicone.getMolten(2 * INGOTS))
+            .fluidInputs(Materials.RubberSilicone.getMolten(2 * INGOTS))
             .itemOutputs(new ItemStack(LanthItemList.CAPILLARY_EXCHANGE, 1))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_IV)

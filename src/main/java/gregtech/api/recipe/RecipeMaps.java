@@ -681,11 +681,11 @@ public final class RecipeMaps {
             for (Materials coal : new Materials[] { Materials.Coal, Materials.Charcoal }) {
                 coll.derive()
                     .setInputs(aInput1, aInput2, coal.getGems(aCoalAmount))
-                    .setOutputs(aOutput1, aOutput2, Materials.DarkAsh.getDust(aDustAmount))
+                    .setOutputs(aOutput1, aOutput2, Materials.AshDark.getDust(aDustAmount))
                     .setChances(coalChances);
                 coll.derive()
                     .setInputs(aInput1, aInput2, coal.getDust(aCoalAmount))
-                    .setOutputs(aOutput1, aOutput2, Materials.DarkAsh.getDust(aDustAmount))
+                    .setOutputs(aOutput1, aOutput2, Materials.AshDark.getDust(aDustAmount))
                     .setChances(coalChances);
             }
             int aDuration = builder.getDuration();
@@ -739,7 +739,7 @@ public final class RecipeMaps {
                 for (Materials coal : new Materials[] { Materials.Coal, Materials.Charcoal }) {
                     coll.derive()
                         .setInputs(aInput1, aInput2, coal.getBlocks(aCoalAmount))
-                        .setOutputs(aOutput1, aOutput2, Materials.DarkAsh.getDust(aCoalAmount))
+                        .setOutputs(aOutput1, aOutput2, Materials.AshDark.getDust(aCoalAmount))
                         .setDuration(aDuration * 10);
                 }
                 if (Railcraft.isModLoaded()) {

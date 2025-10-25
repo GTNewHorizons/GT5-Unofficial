@@ -43,7 +43,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
 
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(1, aStack))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.RawRubber, 1L))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.RubberRaw, 1L))
                 .duration(15 * SECONDS)
                 .eut(2)
                 .addTo(extractorRecipes);
