@@ -450,7 +450,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Invar;
     public static Materials Kanthal;
     public static Materials Lazurite;
-    public static Materials LiquidAir;
     public static Materials LiquidNitrogen;
     public static Materials LiquidOxygen;
     public static Materials Magnalium;
@@ -690,6 +689,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Lapis;
     public static Materials Lepidolite;
     public static Materials Lignite;
+    public static Materials LiquidAir;
     public static Materials LiveRoot;
     public static Materials Malachite;
     public static Materials Manyullyn;
