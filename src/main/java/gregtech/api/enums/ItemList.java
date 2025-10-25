@@ -1513,6 +1513,20 @@ public enum ItemList implements IItemContainer {
 
     Machine_Multi_Canner,
     Machine_Multi_Solidifier,
+    Machine_Multi_Modular_Solidifier,
+    Glass_Solidifier_Modular,
+    Casing_Solidifier_Modular,
+    Secondary_Casing_Solidifier_Modular,
+    Efficient_Overclocking_Solidifier_Modular,
+    Power_Efficient_Subsystems_Solidifier_Modular,
+    Transcendent_Reinforcement_Solidifier_Modular,
+    Extra_Casting_Basins_Solidifier_Modular,
+    Hypercooler_Solidifier_Modular,
+    Streamlined_Casters_Solidifier_Modular,
+    Active_Time_Dilation_System_Solidifier_Modular,
+    Magnetic_Chassis_T1_Solidifier_Modular,
+    Magnetic_Chassis_T2_Solidifier_Modular,
+    Magnetic_Chassis_T3_Solidifier_Modular,
 
     Casing_Fluid_Solidifier,
     Radiator_Fluid_Solidifier,
@@ -2755,7 +2769,6 @@ public enum ItemList implements IItemContainer {
     PlanetaryGasSiphonCasing,
 
     MagLevHarness,
-
     ManaFly,
     DebugEnergyHatch,
 
