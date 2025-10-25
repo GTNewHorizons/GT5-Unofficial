@@ -408,27 +408,7 @@ public class ItemUtils {
     }
 
     public static IInventory organiseInventory(IInventory aInputInventory) {
-        ItemStack[] p = new ItemStack[aInputInventory.getSizeInventory()];
-        for (int o = 0; o < aInputInventory.getSizeInventory(); o++) {
-            p[o] = aInputInventory.getStackInSlot(o);
-        }
-        // ItemStack[] g = organiseInventory(p);
-
-        for (int i = 0; i < p.length; ++i) {
-            for (int j = i + 1; j < p.length; ++j) {
-                if (p[j] != null && (p[i] == null || GTUtility.areStacksEqual(p[i], p[j]))) {
-                    GTUtility.moveStackFromSlotAToSlotB(
-                        aInputInventory,
-                        aInputInventory,
-                        j,
-                        i,
-                        (byte) 64,
-                        (byte) 1,
-                        (byte) 64,
-                        (byte) 1);
-                }
-            }
-        }
+        GTUtility.compactStandardInventory(aInputInventory);
 
         return aInputInventory;
     }
