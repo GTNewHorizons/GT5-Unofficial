@@ -2779,7 +2779,6 @@ public enum ItemList implements IItemContainer {
     Machine_HV_CableCoater,
     Machine_EV_CableCoater,
     ChaosLocator,
-
     // semicolon after the comment to reduce merge conflicts
     ;
 
