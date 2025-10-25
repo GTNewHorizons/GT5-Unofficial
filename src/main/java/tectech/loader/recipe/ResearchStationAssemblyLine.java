@@ -1,6 +1,7 @@
 package tectech.loader.recipe;
 
 import static com.google.common.math.LongMath.pow;
+import static goodgenerator.loader.Loaders.NeutronAccelerators;
 import static goodgenerator.loader.Loaders.compactFusionCoil;
 import static goodgenerator.loader.Loaders.yottaFluidTankCell;
 import static gregtech.api.enums.Mods.Avaritia;
@@ -67,6 +68,7 @@ import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.material.Particle;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtnhlanth.common.register.LanthItemList;
 import kekztech.common.Blocks;
 import kekztech.common.TileEntities;
 import tconstruct.tools.TinkerTools;
@@ -88,6 +90,7 @@ public class ResearchStationAssemblyLine implements Runnable {
         itemPartsUXVAsslineRecipes();
         addWirelessEnergyRecipes();
         addGodforgeRecipes();
+        addLHCRecipes();
 
         if (TinkersGregworks.isModLoaded() && Avaritia.isModLoaded() // Infinity, Cosmic Neutronium
             && ExtraUtilities.isModLoaded() // Bedrockium
@@ -2965,6 +2968,59 @@ public class ResearchStationAssemblyLine implements Runnable {
             CustomItemList.astralArrayFabricator.get(1),
             300 * SECONDS,
             (int) TierEU.RECIPE_UXV);
+    }
+
+    private void addLHCRecipes() {
+
+        ItemStack neutronAcceleratorUV = NeutronAccelerators[8].copy();
+        neutronAcceleratorUV.stackSize = 8;
+
+        // Controller
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
+            LanthItemList.SYNCHROTRON,
+            256_000,
+            256,
+            (int) TierEU.RECIPE_UV,
+            32,
+            new Object[] { CustomItemList.Machine_Multi_Research.get(8), neutronAcceleratorUV,
+                new ItemStack(compactFusionCoil, 64, 1), new ItemStack(compactFusionCoil, 32, 2),
+                new Object[] { OrePrefixes.circuit.get(Materials.UHV), 64L }, ItemList.Field_Generator_UV.get(64),
+                ItemList.Electromagnet_Samarium.get(1), ItemList.CMSCasing.get(8) },
+            new FluidStack[] { Materials.Neutronium.getMolten(64 * 9 * 8 * 144),
+                Materials.CosmicNeutronium.getMolten(64 * 9 * 8 * 144) },
+            ItemList.LargeHadronCollider.get(1),
+            300 * SECONDS,
+            (int) TierEU.RECIPE_UHV);
+
+        // Advanced Beamline Output Hatch
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
+            LanthItemList.LUV_BEAMLINE_OUTPUT_HATCH,
+            128_000,
+            256,
+            (int) TierEU.RECIPE_UV,
+            4,
+            new Object[] { LanthItemList.LUV_BEAMLINE_OUTPUT_HATCH, ItemList.Sensor_UV.get(4),
+                ItemList.Emitter_UV.get(4), ItemList.ActivatedCarbonFilterMesh.get(32), },
+            new FluidStack[] { Materials.UUMatter.getFluid(1000) },
+            ItemList.AdvancedBeamlineOutputHatch.get(1),
+            60 * SECONDS,
+            (int) TierEU.RECIPE_UV);
+
+        // CMS Casing (T1 LHC)
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
+            ItemList.ColliderCasing.get(1),
+            256_000,
+            256,
+            (int) TierEU.RECIPE_UV,
+            16,
+            new Object[] { ItemList.Superconducting_Magnet_Solenoid_UV.get(8),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.HSSS, 32),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.HSSS, 32), ItemList.Field_Generator_ZPM.get(4),
+                GTOreDictUnificator.get(OrePrefixes.screw, Materials.CosmicNeutronium, 64) },
+            new FluidStack[] { Materials.Neutronium.getMolten(9216), Materials.Americium.getPlasma(9216) },
+            ItemList.CMSCasing.get(4),
+            30 * SECONDS,
+            (int) TierEU.RECIPE_UHV);
     }
 
     private void addGodforgeRecipes() {
