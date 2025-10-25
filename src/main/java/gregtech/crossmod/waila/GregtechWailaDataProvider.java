@@ -44,7 +44,7 @@ public class GregtechWailaDataProvider implements IWailaDataProvider {
         return currenttip;
     }
 
-    public boolean hasAdvancedBody(ItemStack itemStack, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+    public boolean hasWailaAdvancedBody(ItemStack itemStack, IWailaDataAccessor accessor, IWailaConfigHandler config) {
         final TileEntity tile = accessor.getTileEntity();
 
         if (tile instanceof IGregtechWailaProvider) {
@@ -56,7 +56,7 @@ public class GregtechWailaDataProvider implements IWailaDataProvider {
             }
         }
 
-        return IWailaDataProvider.super.hasAdvancedBody(itemStack, accessor, config);
+        return IWailaDataProvider.super.hasWailaAdvancedBody(itemStack, accessor, config);
     }
 
     @Override
