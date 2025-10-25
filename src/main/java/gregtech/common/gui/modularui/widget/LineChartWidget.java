@@ -36,6 +36,7 @@ public class LineChartWidget extends Widget<LineChartWidget> {
     private int dataPointLimit = 0;
     private boolean renderMinMaxText = true;
     private boolean renderTextureWithAlpha = false;
+    private float alpha = 1f;
 
     private GenericListSyncHandler<Double> dataSyncHandler;
 
@@ -71,6 +72,11 @@ public class LineChartWidget extends Widget<LineChartWidget> {
 
     public LineChartWidget renderTextureWithAlpha(boolean renderTextureWithAlpha) {
         this.renderTextureWithAlpha = renderTextureWithAlpha;
+        return this;
+    }
+
+    public LineChartWidget alpha(float alpha){
+        this.alpha = alpha;
         return this;
     }
 
@@ -208,7 +214,7 @@ public class LineChartWidget extends Widget<LineChartWidget> {
         GlStateManager.enableTexture2D();
         GlStateManager.disableAlpha();
         GLStateManager.enableBlend();
-        GLStateManager.glColor4f(1, 1, 1, 0.05f);
+        GLStateManager.glColor4f(1, 1, 1, alpha);
 
         Minecraft.getMinecraft().renderEngine.bindTexture(texture.location);
         GuiDraw.drawTexture(0, 0, getArea().width, getArea().height, texture.u0, texture.v0, texture.u1, texture.v1, 0);
