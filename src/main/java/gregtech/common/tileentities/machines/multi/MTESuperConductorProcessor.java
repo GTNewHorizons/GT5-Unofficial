@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import bartworks.system.material.WerkstoffLoader;
-import gregtech.api.enums.MaterialsUEVplus;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -293,7 +292,7 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
                 fluids.add(Materials.LiquidNitrogen.getGas(50));
             }
             if (boosterID >= 10) {
-                fluids.add(MaterialsUEVplus.SpaceTime.getMolten(50));
+                fluids.add(Materials.SpaceTime.getMolten(50));
             }
 
             for(FluidStack fluid : fluids) { //Check to see if all required fluids are available in a hatch
