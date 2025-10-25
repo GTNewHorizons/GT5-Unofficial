@@ -816,6 +816,7 @@ public class OrePrefixes {
 
     public static final OrePrefixes capsule = new OrePrefixBuilder("capsule").withDefaultLocalName("Capsules")
         .withSuffix(" Capsule")
+        .materialBased()
         .selfReferencing()
         .container()
         .materialGenerationBits(CELL | EMPTY)
@@ -824,6 +825,7 @@ public class OrePrefixes {
 
     public static final OrePrefixes crystal = new OrePrefixBuilder("crystal").withDefaultLocalName("Crystals")
         .withSuffix(" Crystal")
+        .materialBased()
         .recyclable()
         .materialGenerationBits(GEM)
         .materialAmount(M * 1)
@@ -977,6 +979,7 @@ public class OrePrefixes {
 
     /** vanilly Sword */
     public static final OrePrefixes toolSword = new OrePrefixBuilder("toolSword").withDefaultLocalName("Swords")
+        .materialBased()
         .recyclable()
         .enchantable()
         .materialGenerationBits(TOOL)
@@ -986,6 +989,7 @@ public class OrePrefixes {
 
     /** vanilly Pickaxe */
     public static final OrePrefixes toolPickaxe = new OrePrefixBuilder("toolPickaxe").withDefaultLocalName("Pickaxes")
+        .materialBased()
         .recyclable()
         .enchantable()
         .materialGenerationBits(TOOL)
@@ -995,6 +999,7 @@ public class OrePrefixes {
 
     /** vanilly Shovel */
     public static final OrePrefixes toolShovel = new OrePrefixBuilder("toolShovel").withDefaultLocalName("Shovels")
+        .materialBased()
         .recyclable()
         .enchantable()
         .materialGenerationBits(TOOL)
@@ -1004,6 +1009,7 @@ public class OrePrefixes {
 
     /** vanilly Axe */
     public static final OrePrefixes toolAxe = new OrePrefixBuilder("toolAxe").withDefaultLocalName("Axes")
+        .materialBased()
         .recyclable()
         .enchantable()
         .materialGenerationBits(TOOL)
@@ -1013,6 +1019,7 @@ public class OrePrefixes {
 
     /** vanilly Hoe */
     public static final OrePrefixes toolHoe = new OrePrefixBuilder("toolHoe").withDefaultLocalName("Hoes")
+        .materialBased()
         .recyclable()
         .enchantable()
         .materialGenerationBits(TOOL)
@@ -1022,6 +1029,7 @@ public class OrePrefixes {
 
     /** vanilly Shears */
     public static final OrePrefixes toolShears = new OrePrefixBuilder("toolShears").withDefaultLocalName("Shears")
+        .materialBased()
         .recyclable()
         .enchantable()
         .materialGenerationBits(TOOL)
@@ -1210,12 +1218,13 @@ public class OrePrefixes {
 
     /** Prefix to determine which kind of Rock this is. */
     public static final OrePrefixes stone = new OrePrefixBuilder("stone").withDefaultLocalName("Stones")
+        .materialBased()
         .selfReferencing()
         .skipActiveUnification()
         .defaultStackSize(OTHER_STACK_SIZE)
         .build();
 
-    public static final OrePrefixes cobblestone = new OrePrefixBuilder("cobblestone")
+    public static final OrePrefixes cobblestone = new OrePrefixBuilder("cobblestone").materialBased()
         .withDefaultLocalName("Cobblestones")
         .selfReferencing()
         .defaultStackSize(OTHER_STACK_SIZE)
@@ -1223,6 +1232,7 @@ public class OrePrefixes {
 
     /** Prefix to determine which kind of Rock this is. */
     public static final OrePrefixes rock = new OrePrefixBuilder("rock").withDefaultLocalName("Rocks")
+        .materialBased()
         .selfReferencing()
         .skipActiveUnification()
         .defaultStackSize(OTHER_STACK_SIZE)
@@ -1277,6 +1287,7 @@ public class OrePrefixes {
 
     /** vanilly Helmet */
     public static final OrePrefixes armorHelmet = new OrePrefixBuilder("armorHelmet").withDefaultLocalName("Helmets")
+        .materialBased()
         .recyclable()
         .enchantable()
         .materialGenerationBits(TOOL)
@@ -1285,7 +1296,7 @@ public class OrePrefixes {
         .build();
 
     /** vanilly Chestplate */
-    public static final OrePrefixes armorChestplate = new OrePrefixBuilder("armorChestplate")
+    public static final OrePrefixes armorChestplate = new OrePrefixBuilder("armorChestplate").materialBased()
         .withDefaultLocalName("Chestplates")
         .recyclable()
         .enchantable()
@@ -1295,7 +1306,7 @@ public class OrePrefixes {
         .build();
 
     /** vanilly Pants */
-    public static final OrePrefixes armorLeggings = new OrePrefixBuilder("armorLeggings")
+    public static final OrePrefixes armorLeggings = new OrePrefixBuilder("armorLeggings").materialBased()
         .withDefaultLocalName("Leggings")
         .recyclable()
         .enchantable()
@@ -1306,6 +1317,7 @@ public class OrePrefixes {
 
     /** vanilly Boots */
     public static final OrePrefixes armorBoots = new OrePrefixBuilder("armorBoots").withDefaultLocalName("Boots")
+        .materialBased()
         .recyclable()
         .enchantable()
         .materialGenerationBits(TOOL)
@@ -1588,11 +1600,12 @@ public class OrePrefixes {
      * and Data Control Circuit Master (Tier 7) : Energy Flow Circuit and Lapotron Crystal Ultimate (Tier 8) : Data Orb
      * and Lapotronic Energy Orb Infinite (Cheaty)
      */
-    public static final OrePrefixes batterySingleuse = new OrePrefixBuilder("batterySingleuse")
+    public static final OrePrefixes batterySingleuse = new OrePrefixBuilder("batterySingleuse").materialBased()
         .withDefaultLocalName("Single Use Batteries")
         .build();
 
     public static final OrePrefixes battery = new OrePrefixBuilder("battery").withDefaultLocalName("Reusable Batteries")
+        .materialBased()
         .build();
 
     public static final OrePrefixes circuit = new OrePrefixBuilder("circuit").withDefaultLocalName("Circuits")
