@@ -35,6 +35,7 @@ public class LineChartWidget extends Widget<LineChartWidget> {
     private String chartUnit = "";
     private int dataPointLimit = 0;
     private boolean renderMinMaxText = true;
+    private boolean renderTextureWithAlpha = false;
 
     private GenericListSyncHandler<Double> dataSyncHandler;
 
@@ -60,6 +61,16 @@ public class LineChartWidget extends Widget<LineChartWidget> {
 
     public LineChartWidget renderMinMaxText(boolean renderMinMaxText) {
         this.renderMinMaxText = renderMinMaxText;
+        return this;
+    }
+
+    public LineChartWidget renderTextureWithAlpha() {
+        this.renderTextureWithAlpha = true;
+        return this;
+    }
+
+    public LineChartWidget renderTextureWithAlpha(boolean renderTextureWithAlpha) {
+        this.renderTextureWithAlpha = renderTextureWithAlpha;
         return this;
     }
 
@@ -166,8 +177,13 @@ public class LineChartWidget extends Widget<LineChartWidget> {
 
     }
 
+    //Normally UITextures are rendered without blend which eliminates opacity
     @Override
     public void drawBackground(ModularGuiContext context, WidgetThemeEntry<?> widgetTheme) {
+        if(!renderTextureWithAlpha) {
+            super.drawBackground(context, widgetTheme);
+            return;
+        }
         IDrawable bg = getCurrentBackground(context.getTheme(), widgetTheme);
         if (bg instanceof DrawableStack stack) {
             for (IDrawable drawable : stack.getDrawables()) {
