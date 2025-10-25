@@ -11,6 +11,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ResourceLocation;
 
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
+
 import gregtech.common.config.Client;
 import gregtech.mixin.interfaces.accessors.AbstractClientPlayerAccessor;
 
