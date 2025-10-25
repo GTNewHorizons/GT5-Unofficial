@@ -1738,6 +1738,12 @@ GT5U.gui.chat.powerfail.hidden=Disabled powerfail overlay rendering.
 GT5U.gui.text.BeamlineHatch.blacklist=Blacklist Selection
 GT5U.gui.text.BeamlineHatch.emptylist=No List to choose from :(
 
+GT5U.gui.text.LHC.beamenergykeV=Current Beam Energy
+GT5U.gui.text.LHC.beamrate=Current Beam Rate
+GT5U.gui.text.LHC.powercost=Current Power Draw
+GT5U.gui.text.LHC.acceleratormode=Accelerating beam...
+GT5U.gui.text.LHC.collidermode=Colliding beam...
+
 # Note to translators: this translation entry is supposed to be a number indicating how many taunts you define here
 # Game will randomly display one of them
 GT5U.item.programmed_circuit.no_screwdriver.count=3

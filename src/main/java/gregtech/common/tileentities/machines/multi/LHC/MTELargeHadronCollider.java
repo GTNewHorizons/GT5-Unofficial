@@ -17,6 +17,8 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
 
+import gregtech.common.gui.modularui.multiblock.MTEChamberCentrifugeGui;
+import gregtech.common.gui.modularui.multiblock.MTELargeHadronColliderGui;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -75,6 +77,9 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
     private int outputRate;
     private int outputParticleID;
     private float outputFocus;
+    public double playerTargetBeamEnergyeV = 1_000_000_000;
+    public int playerTargetAccelerationCycles = 10;
+
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
@@ -86,6 +91,8 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
             aNBT.setInteger("particleId", cachedOutputParticle.getParticleId());
             aNBT.setFloat("focus", cachedOutputParticle.getFocus());
         }
+        aNBT.setDouble("playerBeamEnergy", playerTargetBeamEnergyeV);
+        aNBT.setInteger("playerAccelCycles", playerTargetAccelerationCycles);
     }
 
     @Override
@@ -99,6 +106,8 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 aNBT.getInteger("particleId"),
                 aNBT.getFloat("focus"));
         }
+        playerTargetBeamEnergyeV = aNBT.getDouble("playerBeamEnergy");
+        playerTargetAccelerationCycles = aNBT.getInteger("playerAccelCycles");
     }
 
     @Override
@@ -207,7 +216,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "                                                           CCCCCCCCCCCCCA                                    ",
                 "                                          CCCCC           CC  CCCCC     D                                    ",
                 "                                         C     CCC      CC CCC     C    D                                    ",
-                "                                         C     CCC     CCC CCC     C    D                                    ",
+                "                                         C     CCC      CC CCC     C    D                                    ",
                 "                                         C     CCC      CC CCC     C    D                                    ",
                 "                                          CCCCC           CC  CCCCC     D                                    ",
                 "                                                           CCCCCCCCCCCCCA                                    ",
@@ -2599,8 +2608,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                     + "and the "
                     + EnumChatFormatting.BLUE
                     + "maximum number of cycles "
-                    + EnumChatFormatting.GRAY
-                    + "(up to 10)")
+                    + EnumChatFormatting.GRAY)
             .addInfo("Cycles every second")
             .addSeparator()
             .addInfo("" + EnumChatFormatting.WHITE + EnumChatFormatting.UNDERLINE + "Accelerator mode")
@@ -2864,11 +2872,17 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 + (dataPacket != null ? dataPacket.getTraceSize() : 0), };
     }
 
+    public double getCachedBeamEnergy(){
+        return cachedOutputParticle!=null?cachedOutputParticle.getEnergy():0;
+    }
+
+    public int getCachedBeamRate(){
+        return cachedOutputParticle!=null?cachedOutputParticle.getRate():0;
+    }
+
     public final float MAXIMUM_PARTICLE_ENERGY_keV = 2_000_000_000; // 2TeV max
     public final double keVEURatio = 0.1 / 1000; // 1 EU = 0.1 eV, so 1 EU = 0.1/1000 keV
     public final float rateScaleFactor = 1.1F;
-    public final int maxAccelerationCycles = 10;
-    public int playerTargetBeamEnergykeV = 1_000_000; // todo parse player input
 
     // todo: seriously test values, since unit conversion between eV, keV, MeV is a bit of a mess
 
@@ -2882,7 +2896,8 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
 
         long machineVoltage = getAverageInputVoltage();
 
-        if (inputEnergy <= playerTargetBeamEnergykeV) {
+        if (inputEnergy <= playerTargetBeamEnergyeV/1000) { // inputEnergy is in keV, playerTargetBeamEnergyeV is in eV
+                                                            // did this so player can type '2G eV' instead of '2M keV'
             outEnergy += (float) (Math.pow(accelerationCycleCounter + 1, 2) * this.mMaxProgresstime
                 * machineVoltage
                 * keVEURatio);
@@ -2905,7 +2920,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
     public long calculateEnergyCostAccelerator(BeamInformation particle) {
         long machineVoltage = getAverageInputVoltage();
 
-        return (long) (machineVoltage * Math.pow(min(accelerationCycleCounter + 1, maxAccelerationCycles), 2)
+        return (long) (machineVoltage * Math.pow(accelerationCycleCounter + 1, 2)
             * particle.getRate()); // counter starts at 0, so +1
     }
 
@@ -2922,7 +2937,6 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
     BeamInformation cachedOutputParticle = null;
     int accelerationCycleCounter = 0;
     final int MAXIMUM_ACCELERATION_CYCLES = 10;
-    int playerTargetAccelerationCycles = 8; // todo require player input
 
     @NotNull
     @Override
@@ -3107,11 +3121,9 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
         return true;
     }
 
-    @Override
-    protected @NotNull MTEMultiBlockBaseGui getGui() {
-        return new MTEMultiBlockBaseGui<>(this).withMachineModeIcons(
-            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_ACCELERATOR,
-            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_COLLIDER);
-    }
 
+    @Override
+    protected @NotNull MTELargeHadronColliderGui getGui() {
+        return new MTELargeHadronColliderGui(this);
+    }
 }
