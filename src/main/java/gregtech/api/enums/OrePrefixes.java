@@ -1213,8 +1213,7 @@ public class OrePrefixes {
         .defaultStackSize(OTHER_STACK_SIZE)
         .build();
 
-    public static final OrePrefixes cobblestone = new OrePrefixBuilder("cobblestone")
-        .materialBased()
+    public static final OrePrefixes cobblestone = new OrePrefixBuilder("cobblestone").materialBased()
         .withDefaultLocalName("Cobblestones")
         .selfReferencing()
         .defaultStackSize(OTHER_STACK_SIZE)
@@ -1286,8 +1285,7 @@ public class OrePrefixes {
         .build();
 
     /** vanilly Chestplate */
-    public static final OrePrefixes armorChestplate = new OrePrefixBuilder("armorChestplate")
-        .materialBased()
+    public static final OrePrefixes armorChestplate = new OrePrefixBuilder("armorChestplate").materialBased()
         .withDefaultLocalName("Chestplates")
         .recyclable()
         .enchantable()
@@ -1297,8 +1295,7 @@ public class OrePrefixes {
         .build();
 
     /** vanilly Pants */
-    public static final OrePrefixes armorLeggings = new OrePrefixBuilder("armorLeggings")
-        .materialBased()
+    public static final OrePrefixes armorLeggings = new OrePrefixBuilder("armorLeggings").materialBased()
         .withDefaultLocalName("Leggings")
         .recyclable()
         .enchantable()
@@ -1592,8 +1589,7 @@ public class OrePrefixes {
      * and Data Control Circuit Master (Tier 7) : Energy Flow Circuit and Lapotron Crystal Ultimate (Tier 8) : Data Orb
      * and Lapotronic Energy Orb Infinite (Cheaty)
      */
-    public static final OrePrefixes batterySingleuse = new OrePrefixBuilder("batterySingleuse")
-        .materialBased()
+    public static final OrePrefixes batterySingleuse = new OrePrefixBuilder("batterySingleuse").materialBased()
         .withDefaultLocalName("Single Use Batteries")
         .build();
 
