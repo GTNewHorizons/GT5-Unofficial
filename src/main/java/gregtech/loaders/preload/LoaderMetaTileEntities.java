@@ -227,6 +227,7 @@ import gregtech.common.tileentities.machines.steam.MTESteamFurnaceBronze;
 import gregtech.common.tileentities.machines.steam.MTESteamFurnaceSteel;
 import gregtech.common.tileentities.machines.steam.MTESteamMaceratorBronze;
 import gregtech.common.tileentities.machines.steam.MTESteamMaceratorSteel;
+import gregtech.common.tileentities.storage.MTEDebugTank;
 import gregtech.common.tileentities.storage.MTELocker;
 import gregtech.common.tileentities.storage.MTEQuantumChest;
 import gregtech.common.tileentities.storage.MTEQuantumTank;
@@ -9200,6 +9201,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             .set(new MTEQuantumTank(QUANTUM_TANK_EV.ID, "quantum.tank.tier.09", "Quantum Tank IV", 9).getStackForm(1L));
         ItemList.Quantum_Tank_IV
             .set(new MTEQuantumTank(QUANTUM_TANK_IV.ID, "quantum.tank.tier.10", "Quantum Tank V", 10).getStackForm(1L));
+        ItemList.Debug_Fluid_Tank
+            .set(new MTEDebugTank(DEBUG_FLUID_TANK.ID, "quantum.tank.debug", "Debug Fluid Tank", 10).getStackForm(1L));
     }
 
     private static void registerQuantumChest() {
