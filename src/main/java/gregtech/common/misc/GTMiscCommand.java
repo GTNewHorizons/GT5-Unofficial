@@ -30,12 +30,12 @@ import gregtech.commands.GTBaseCommand;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.pollution.Pollution;
 
-public final class GTCommand extends GTBaseCommand {
+public final class GTMiscCommand extends GTBaseCommand {
 
     private static final List<String> GLOBAL_ENERGY_COMMANDS = Arrays
         .asList("global_energy_set", "global_energy_add", "global_energy_join", "global_energy_display");
 
-    public GTCommand() {
+    public GTMiscCommand() {
         super("gt");
     }
 
@@ -56,7 +56,7 @@ public final class GTCommand extends GTBaseCommand {
         list.add(new ChatComponentText("Usage: gt <chunks|dump_music_durations|global_energy_add|global_energy_display|global_energy_join|global_energy_set|pollution|toggle>"));
         list.add(new ChatComponentText("\"chunks\" - print a list of the force loaded chunks"));
         list.add(new ChatComponentText("\"dump_music_durations\" - dumps soundmeta/durations.json for all registered records in the game to the log. Client-only"));
-        list.add(new ChatComponentText("\"pollution <amount>\" - adds the <amount> of the pollution to the current chunk, \n if <amount> isnt specified, will add" + GTMod.proxy.mPollutionSmogLimit + "gibbl."));
+        list.add(new ChatComponentText("\"pollution <amount>\" - adds the <amount> of the pollution to the current chunk, \n if <amount> isn't specified, will add" + GTMod.proxy.mPollutionSmogLimit + "gibbl."));
         list.add(new ChatComponentText("\"toggle D1\" - toggles general.Debug (D1)"));
         list.add(new ChatComponentText("\"toggle D2\" - toggles general.Debug2 (D2)"));
         list.add(new ChatComponentText("\"toggle debugChunkloaders\" - toggles chunkloaders debug"));
@@ -97,7 +97,7 @@ public final class GTCommand extends GTBaseCommand {
                 "pollution",
                 "toggle");
         } else if (args.length == 2) {
-            if(args[0].equals("toggle")) {
+            if (args[0].equals("toggle")) {
                 return getListOfStringsMatchingLastWord(
                     args,
                     "D1",
@@ -115,21 +115,24 @@ public final class GTCommand extends GTBaseCommand {
                     "debugWorldData",
                     "debugWorldGen");
             }
-            if(GLOBAL_ENERGY_COMMANDS.contains(args[0])) {
+            if (GLOBAL_ENERGY_COMMANDS.contains(args[0])) {
                 // 1st username of wireless network commands
                 return getListOfStringsMatchingLastWord(args, getAllUsernames());
             }
-        } else if (args.length == 3 && args[0].equals("global_energy_join")) {
-            // 2nd username of join command
-            return getListOfStringsMatchingLastWord(args, getAllUsernames());
+        } else if (args.length == 3) {
+            if (args[0].equals("global_energy_join")) {
+                // 2nd username of join command
+                return getListOfStringsMatchingLastWord(args, getAllUsernames());
+            }
         }
 
         return Collections.emptyList();
     }
-    
+
     @Override
     public boolean isUsernameIndex(String[] args, int index) {
-        return index == 1 && GLOBAL_ENERGY_COMMANDS.contains(args[0]) || index == 2 && args[0].equals("global_energy_join");
+        return index == 1 && GLOBAL_ENERGY_COMMANDS.contains(args[0])
+            || index == 2 && args[0].equals("global_energy_join");
     }
 
     @Override
@@ -161,7 +164,7 @@ public final class GTCommand extends GTBaseCommand {
         }
         if ("debugMulti".equals(args[1])) {
             StructureLib.DEBUG_MODE = !StructureLib.DEBUG_MODE;
-            sendChatToPlayer(sender, args[1] + " = " + (StructureLib.DEBUG_MODE ? "true" : "false"));
+            sendChatToPlayer(sender, args[1] + " = " + StructureLib.DEBUG_MODE);
             return;
         }
         try {
@@ -172,7 +175,7 @@ public final class GTCommand extends GTBaseCommand {
             }
             boolean b = !field.getBoolean(null);
             field.setBoolean(null, b);
-            sendChatToPlayer(sender, args[1] + " = " + (b ? "true" : "false"));
+            sendChatToPlayer(sender, args[1] + " = " + b);
         } catch (Exception e) {
             sendChatToPlayer(sender, "No such variable: " + args[0]);
         }
@@ -185,7 +188,7 @@ public final class GTCommand extends GTBaseCommand {
 
     private void processPollutionCommand(ICommandSender sender, String[] args) {
         ChunkCoordinates coordinates = sender.getPlayerCoordinates();
-        int amount = (args.length < 2) ? GTMod.proxy.mPollutionSmogLimit : Integer.parseInt(args[1]);
+        int amount = (args.length < 2) ? GTMod.proxy.mPollutionSmogLimit : parseInt(sender, args[1]);
         Pollution.addPollution(
             sender.getEntityWorld()
                 .getChunkFromBlockCoords(coordinates.posX, coordinates.posZ),
