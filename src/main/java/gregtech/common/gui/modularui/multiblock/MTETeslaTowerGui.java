@@ -92,7 +92,8 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
     }
 
     private @NotNull ModularPanel openChartPanel(PanelSyncManager syncManager, ModularPanel parent) {
-        return new ModularPanel("chart"){
+        return new ModularPanel("chart") {
+
             @Override
             public boolean isDraggable() {
                 return false;

@@ -1,6 +1,6 @@
 package gregtech.common.gui.modularui.widget;
 
-import static org.lwjgl.opengl.GL11.GL_LINES;
+import static org.lwjgl.opengl.GL11.GL_LINE_STRIP;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -75,7 +75,7 @@ public class LineChartWidget extends Widget<LineChartWidget> {
         return this;
     }
 
-    public LineChartWidget alpha(float alpha){
+    public LineChartWidget alpha(float alpha) {
         this.alpha = alpha;
         return this;
     }
@@ -123,7 +123,7 @@ public class LineChartWidget extends Widget<LineChartWidget> {
         GlStateManager.glLineWidth(lineWidth);
 
         final Tessellator tessellator = Tessellator.instance;
-        tessellator.startDrawing(GL_LINES);
+        tessellator.startDrawing(GL_LINE_STRIP);
 
         WidgetTheme theme = widgetTheme.getTheme();
         int lineColor = theme.getColor();
@@ -145,18 +145,12 @@ public class LineChartWidget extends Widget<LineChartWidget> {
 
         int startX = 2;
         double lineWidth = (double) (getArea().width - startX) / data.size();
-        double lastX = startX;
-        double lastY = getPointY(data.get(0), minValue, maxValue);
 
-        for (int i = 1; i < data.size(); i++) {
-            tessellator.addVertex(lastX, lastY, 0);
+        for (int i = 0; i < data.size(); i++) {
 
-            double currentX = lastX + lineWidth;
-            double currentY = getPointY(data.get(i), minValue, maxValue);
-            tessellator.addVertex(currentX, currentY, 0);
-
-            lastX = currentX;
-            lastY = currentY;
+            double x = lineWidth * i;
+            double y = getPointY(data.get(i), minValue, maxValue);
+            tessellator.addVertex(startX + x, y, 0);
         }
 
         tessellator.draw();
