@@ -556,10 +556,13 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
     @Override
     public void markDirty() {
-        // Avoid sending neighbor updates, just mark the chunk as dirty to make sure it gets saved
-        final Chunk chunk = worldObj.getChunkFromBlockCoords(xCoord, zCoord);
-        if (chunk != null) {
-            chunk.setChunkModified();
+        // If some code calls markDirty before worldObj is assigned, e.g., in loadNBTData we will crash
+        if (worldObj != null) {
+            // Avoid sending neighbor updates, just mark the chunk as dirty to make sure it gets saved
+            final Chunk chunk = worldObj.getChunkFromBlockCoords(xCoord, zCoord);
+            if (chunk != null) {
+                chunk.setChunkModified();
+            }
         }
     }
 

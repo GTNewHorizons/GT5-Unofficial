@@ -264,7 +264,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
                     + "1"
                     + EnumChatFormatting.GRAY
                     + " parallels per voltage tier")
-            .beginStructureBlock(15, 8, 7, false)
+            .beginStructureBlock(15, 10, 7, false)
             .addController("Front Center")
             .addCasingInfoMin("Electric Compressor Casing", 95, false)
             .addCasingInfoMin("Compressor Pipe Casing", 60, false)

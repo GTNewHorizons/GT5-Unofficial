@@ -39,7 +39,7 @@ public enum OrePrefixes {
 
     // used for removed prefixes to prevent id shifts
     ___placeholder___("Placeholder", "", "", false, false, false, false, false, false, false, false, false, false, 0, 0,
-        1, -1),
+        64, -1),
 
     /** In case of an End-Ores Mod. Ore -> Material is a Oneway Operation! */
     oreBlackgranite("Black Granite Ores", "Granite ", " Ore", true, true, false, false, false, true, false, false,

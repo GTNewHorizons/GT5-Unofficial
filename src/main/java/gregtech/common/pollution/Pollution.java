@@ -455,6 +455,11 @@ public class Pollution {
             // super class loads everything lazily. We force it to load them all.
             if (!e.world.isRemote) STORAGE.loadAll(e.world);
         }
+
+        @SubscribeEvent
+        public void onWorldUnload(WorldEvent.Unload e) {
+            GTMod.proxy.dimensionWisePollution.remove(e.world.provider.dimensionId);
+        }
     }
 
     @ParametersAreNonnullByDefault

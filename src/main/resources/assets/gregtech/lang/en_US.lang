@@ -688,8 +688,8 @@ GTPP.algae.tooltip.lifespan=Lifespan in days: %d
 GTPP.algae.tooltip.generation=Generation: %d
 
 # Power Goggles
-GT5U.power_goggles.open_config_gui=Open Goggles Config
-GT5U.power_goggles.toggle_power_chart=Toggle Power Chart
+GT5U.power_goggles.open_config_gui=Open Power Goggles Config
+GT5U.power_goggles.toggle_power_chart=Toggle Power Goggles Chart
 GT5U.power_goggles.link_lsc=Goggles linked to LSC at %d,%d,%d.
 GT5U.power_goggles.link_fail=That's not an LSC...
 GT5U.power_goggles.unlink=Goggles Unlinked.
@@ -793,6 +793,7 @@ GT5U.MBTT.Parallel.Additional=%s Parallels per %s Tier
 GT5U.MBTT.Parallel.Singular=%s Parallel
 GT5U.MBTT.Speed.Base=%s Speed
 GT5U.MBTT.Speed.Additional=%s Speed per %s Tier
+GT5U.MBTT.Speed.Absolute=Speed is %s times %s Tier
 GT5U.MBTT.EuDiscount.Base=%s EU Usage
 GT5U.MBTT.EuDiscount.Additional=%s EU Usage per %s Tier
 GT5U.MBTT.SteamDiscount.Base=%s Steam Usage

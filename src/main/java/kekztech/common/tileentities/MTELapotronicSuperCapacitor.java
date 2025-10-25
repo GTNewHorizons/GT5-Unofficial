@@ -89,6 +89,7 @@ import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.misc.WirelessNetworkManager;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
+import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
 import kekztech.client.gui.KTUITextures;
 import kekztech.common.Blocks;
 import kekztech.common.itemBlocks.ItemBlockLapotronicEnergyUnit;
@@ -287,9 +288,12 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         if (aTileEntity == null || aTileEntity.isDead()) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (!(aMetaTileEntity instanceof MTEHatch)) return false;
-        if (aMetaTileEntity instanceof MTEHatchMaintenance) {
+        if (aMetaTileEntity instanceof MTEHatchMaintenance hatch) {
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return MTELapotronicSuperCapacitor.this.mMaintenanceHatches.add((MTEHatchMaintenance) aMetaTileEntity);
+            if (hatch instanceof MTEHatchDroneDownLink droneDownLink) {
+                droneDownLink.registerMachineController(this);
+            }
+            return MTELapotronicSuperCapacitor.this.mMaintenanceHatches.add(hatch);
         } else if (aMetaTileEntity instanceof MTEHatchEnergy) {
             // Add GT hatches
             final MTEHatchEnergy tHatch = ((MTEHatchEnergy) aMetaTileEntity);
