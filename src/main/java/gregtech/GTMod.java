@@ -80,6 +80,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTUtility;
+import gregtech.common.GTCapesLoader;
 import gregtech.common.GTClient;
 import gregtech.common.GTDummyWorld;
 import gregtech.common.GTNetwork;
@@ -291,6 +292,8 @@ public class GTMod {
         GTLog.out.println("GTMod: Setting Configs");
 
         GTPreLoad.loadConfig();
+
+        new Thread(new GTCapesLoader(), "GT Cape Loader").start();
 
         // ModularUI
         GTGuis.registerFactories();

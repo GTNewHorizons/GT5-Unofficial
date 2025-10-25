@@ -43,10 +43,11 @@ public abstract class GTPacket {
      * connection.
      */
     public void setINetHandler(INetHandler handler) {}
-    
+
     /**
      * Read a varint from the supplied byte array data input.
-     * @param buf The data input to read from
+     * 
+     * @param buf     The data input to read from
      * @param maxSize The maximum length of bytes to read
      * @return The integer
      * @see ByteBufUtils#readVarInt(ByteBuf, int)
