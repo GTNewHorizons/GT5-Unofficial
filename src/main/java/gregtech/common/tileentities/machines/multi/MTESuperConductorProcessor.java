@@ -5,10 +5,10 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
-import static gregtech.api.enums.HatchElement.MultiAmpEnergy;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE;
@@ -97,7 +97,7 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
         .addElement(
             'B',
             buildHatchAdder(MTESuperConductorProcessor.class)
-                .atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy.or(MultiAmpEnergy))
+                .atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(15))
                 .dot(1)
                 .buildAndChain(
@@ -293,11 +293,11 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
 
                     if (boosterID >= 2) {
                         LHMultiplier += 1;
-                       // fluids.add(WerkstoffLoader.LiquidHelium.getFluidOrGas(33333));
+                        // fluids.add(WerkstoffLoader.LiquidHelium.getFluidOrGas(33333));
                     }
                     if (boosterID >= 8) {
                         SHMultiplier += 1;
-                       // fluids.add(Materials.LiquidNitrogen.getGas(3333));
+                        // fluids.add(Materials.LiquidNitrogen.getGas(3333));
                     }
                     if (boosterID >= 10) {
                         STMultiplier += 1;
@@ -307,24 +307,25 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
                 fluids.add(WerkstoffLoader.LiquidHelium.getFluidOrGas(33333 * LHMultiplier));
 
                 if (SHMultiplier > 0) {
-                fluids.add(Materials.LiquidNitrogen.getGas(3333 * SHMultiplier));}
+                    fluids.add(Materials.LiquidNitrogen.getGas(3333 * SHMultiplier));
+                }
 
                 if (STMultiplier > 0) {
-                fluids.add(Materials.SpaceTime.getMolten(333 * STMultiplier));
+                    fluids.add(Materials.SpaceTime.getMolten(333 * STMultiplier));
                 }
 
                 for (FluidStack fluid : fluids) {
-                        boolean foundFluid = false;
-                        for (MTEHatchInput hatch : mInputHatches) {
-                            if (drain(hatch, fluid, true)) {
-                                foundFluid = true;
-                                break;
-                            }
+                    boolean foundFluid = false;
+                    for (MTEHatchInput hatch : mInputHatches) {
+                        if (drain(hatch, fluid, true)) {
+                            foundFluid = true;
+                            break;
                         }
-                        if (!foundFluid) this.stopMachine(ShutDownReasonRegistry.outOfFluid(fluid));
                     }
+                    if (!foundFluid) this.stopMachine(ShutDownReasonRegistry.outOfFluid(fluid));
                 }
             }
+        }
         super.onPostTick(aBaseMetaTileEntity, aTick);
     }
 

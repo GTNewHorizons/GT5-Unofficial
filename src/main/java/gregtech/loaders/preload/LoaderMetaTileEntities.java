@@ -9313,7 +9313,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     private static void registerBoosterHatch() {
         ItemList.Hatch_Booster
-            .set(new MTEHatchBooster(BOOST_HATCH.ID, "hatch.booster_hatch", "Booster Hatch").getStackForm(1L));
+            .set(new MTEHatchBooster(BOOST_HATCH.ID, "hatch.booster_hatch", "Booster Housing").getStackForm(1L));
     }
 
     private static void registerInputBus() {

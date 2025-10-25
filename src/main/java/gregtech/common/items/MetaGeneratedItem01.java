@@ -3320,67 +3320,67 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Booster_MV.ID,
                 "Superconductor MV Booster",
-                "Shift-Click to change modes",
+                "Used with the Superconductor Processor",
                 new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 10)));
         ItemList.Booster_HV.set(
             addItem(
                 Booster_HV.ID,
                 "Superconductor HV Booster",
-                "Shift-Click to change modes",
+                "Used with the Superconductor Processor",
                 new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 20)));
         ItemList.Booster_EV.set(
             addItem(
                 Booster_EV.ID,
                 "Superconductor EV Booster",
-                "Shift-Click to change modes",
+                "Used with the Superconductor Processor",
                 new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 30)));
         ItemList.Booster_IV.set(
             addItem(
                 Booster_IV.ID,
                 "Superconductor IV Booster",
-                "Shift-Click to change modes",
+                "Used with the Superconductor Processor",
                 new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 40)));
         ItemList.Booster_LuV.set(
             addItem(
                 Booster_LuV.ID,
                 "Superconductor LuV Booster",
-                "Shift-Click to change modes",
+                "Used with the Superconductor Processor",
                 new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 50)));
         ItemList.Booster_ZPM.set(
             addItem(
                 Booster_ZPM.ID,
                 "Superconductor ZPM Booster",
-                "Shift-Click to change modes",
+                "Used with the Superconductor Processor",
                 new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 60)));
         ItemList.Booster_UV.set(
             addItem(
                 Booster_UV.ID,
                 "Superconductor UV Booster",
-                "Shift-Click to change modes",
+                "Used with the Superconductor Processor",
                 new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 70)));
         ItemList.Booster_UHV.set(
             addItem(
                 Booster_UHV.ID,
                 "Superconductor UHV Booster",
-                "Shift-Click to change modes",
+                "Used with the Superconductor Processor",
                 new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 80)));
         ItemList.Booster_UEV.set(
             addItem(
                 Booster_UEV.ID,
                 "Superconductor UEV Booster",
-                "Shift-Click to change modes",
+                "Used with the Superconductor Processor",
                 new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 90)));
         ItemList.Booster_UIV.set(
             addItem(
                 Booster_UIV.ID,
                 "Superconductor UIV Booster",
-                "Shift-Click to change modes",
+                "Used with the Superconductor Processor",
                 new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 100)));
         ItemList.Booster_UMV.set(
             addItem(
                 Booster_UMV.ID,
                 "Superconductor UMV Booster",
-                "Shift-Click to change modes",
+                "Used with the Superconductor Processor",
                 new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 110)));
         // Empty battery hulls
         ItemList.BatteryHull_EV.set(
