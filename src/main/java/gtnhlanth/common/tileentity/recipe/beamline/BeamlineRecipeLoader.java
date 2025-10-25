@@ -126,6 +126,23 @@ public class BeamlineRecipeLoader {
             .addTo(sourceChamberRecipes);
 
         /*
+         * PROTON
+         */
+        GTValues.RA.stdBuilder()
+            .fluidInputs(Materials.Hydrogen.getGas(1000))
+            .metadata(
+                SOURCE_CHAMBER_METADATA,
+                SourceChamberMetadata.builder()
+                    .particleID(Particle.PROTON.ordinal())
+                    .rate(10)
+                    .energy(100_000, 0.3f)
+                    .focus(99)
+                    .build())
+            .duration(20)
+            .eut(TierEU.RECIPE_UV)
+            .addTo(sourceChamberRecipes);
+
+        /*
          * TARGET CHAMBER
          */
 

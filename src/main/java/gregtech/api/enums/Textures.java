@@ -1940,6 +1940,12 @@ public class Textures {
         NANITE_SHIELDING_FRAME,
         OVERLAY_ENERGY_IN_DEBUG,
 
+        COLLIDER_CASING,
+        CMS_CASING,
+        ATLAS_CASING,
+        ALICE_CASING,
+        LHCB_CASING,
+
         // semicolon after the comment to reduce merge conflicts
         ;
 
