@@ -7,18 +7,25 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 
 import org.lwjgl.opengl.GL11;
 
+import com.cleanroommc.modularui.api.drawable.IDrawable;
+import com.cleanroommc.modularui.drawable.DrawableStack;
+import com.cleanroommc.modularui.drawable.GuiDraw;
+import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.drawable.text.TextRenderer;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
+import com.cleanroommc.modularui.theme.WidgetTheme;
 import com.cleanroommc.modularui.theme.WidgetThemeEntry;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.SyncHandler;
 import com.cleanroommc.modularui.widget.Widget;
+import com.gtnewhorizons.angelica.glsm.GLStateManager;
 import com.gtnewhorizons.modularui.api.GlStateManager;
 
 public class LineChartWidget extends Widget<LineChartWidget> {
@@ -101,7 +108,13 @@ public class LineChartWidget extends Widget<LineChartWidget> {
         final Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawing(GL_LINES);
 
-        tessellator.setColorRGBA(30, 150, 30, 255);
+        WidgetTheme theme = widgetTheme.getTheme();
+        int lineColor = theme.getColor();
+        tessellator.setColorRGBA(
+            Color.getRed(lineColor),
+            Color.getGreen(lineColor),
+            Color.getBlue(lineColor),
+            Color.getAlpha(lineColor));
         double maxValue = data.stream()
             .reduce(Double::max)
             .orElse(1.0);
@@ -134,7 +147,7 @@ public class LineChartWidget extends Widget<LineChartWidget> {
         if (renderMinMaxText) {
             TextRenderer renderer = TextRenderer.SHARED;
             renderer.setAlignment(Alignment.CenterLeft, getArea().width);
-            renderer.setColor(Color.WHITE.main);
+            renderer.setColor(theme.getTextColor());
             renderer.setScale(1.0f);
             renderer.setShadow(true);
             renderer.setSimulate(false);
@@ -151,6 +164,43 @@ public class LineChartWidget extends Widget<LineChartWidget> {
         GlStateManager.enableAlpha();
         GlStateManager.enableTexture2D();
 
+    }
+
+    @Override
+    public void drawBackground(ModularGuiContext context, WidgetThemeEntry<?> widgetTheme) {
+        IDrawable bg = getCurrentBackground(context.getTheme(), widgetTheme);
+        if (bg instanceof DrawableStack stack) {
+            for (IDrawable drawable : stack.getDrawables()) {
+                if (drawable instanceof UITexture texture) {
+                    renderTexture(texture);
+                } else {
+                    drawable.drawAtZero(context, getArea(), widgetTheme.getTheme());
+                }
+            }
+            return;
+        }
+
+        if (bg instanceof UITexture texture) {
+            renderTexture(texture);
+            return;
+        }
+
+        super.drawBackground(context, widgetTheme);
+    }
+
+    private void renderTexture(UITexture texture) {
+        GlStateManager.enableTexture2D();
+        GlStateManager.disableAlpha();
+        GLStateManager.enableBlend();
+        GLStateManager.glColor4f(1, 1, 1, 0.05f);
+
+        Minecraft.getMinecraft().renderEngine.bindTexture(texture.location);
+        GuiDraw.drawTexture(0, 0, getArea().width, getArea().height, texture.u0, texture.v0, texture.u1, texture.v1, 0);
+
+        GlStateManager.disableTexture2D();
+        GlStateManager.enableAlpha();
+        GLStateManager.glColor4f(1, 1, 1, 1f);
+        GLStateManager.disableBlend();
     }
 
     private double getPointY(double data, double minValue, double maxValue) {

@@ -7,7 +7,6 @@ import org.jetbrains.annotations.NotNull;
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.drawable.Rectangle;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
@@ -19,6 +18,7 @@ import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.multiblock.base.TTMultiblockBaseGui;
 import gregtech.common.gui.modularui.widget.LineChartWidget;
@@ -107,7 +107,7 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
                     Double::equals,
                     null))
             .size(225, 150)
-            .background(new Rectangle().setColor(Color.rgb(100, 30, 80)), GTGuiTextures.BACKGROUND_TESLA_TOWER_CHART)
+            .widgetTheme(GTWidgetThemes.TESLA_TOWER_CHART)
             .chartUnit("A")
             .dataPointLimit(30);
     }
