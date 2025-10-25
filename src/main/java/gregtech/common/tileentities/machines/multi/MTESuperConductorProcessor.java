@@ -273,6 +273,8 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
      * }
      */
 
+    List<FluidStack> fluids = new ArrayList<>();
+
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (boosterHatch == null) {
             super.onPostTick(aBaseMetaTileEntity, aTick);
@@ -280,22 +282,38 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
         }
         if (aBaseMetaTileEntity.isServerSide()) {
             if (aTick % 20 == 0) {
-                List<FluidStack> fluids = new ArrayList<>();
+                fluids.clear();
+                int LHMultiplier = 0;
+                int SHMultiplier = 0;
+                int STMultiplier = 0;
+
                 for (int k = 0; k < 3; k++) {
                     int boosterID = boosterHatch.getBoosterIDInSlot(k);
                     if (boosterID == -1) break;
 
                     if (boosterID >= 2) {
-                        fluids.add(WerkstoffLoader.LiquidHelium.getFluidOrGas(33333));
+                        LHMultiplier += 1;
+                       // fluids.add(WerkstoffLoader.LiquidHelium.getFluidOrGas(33333));
                     }
                     if (boosterID >= 8) {
-                        fluids.add(Materials.LiquidNitrogen.getGas(3333));
+                        SHMultiplier += 1;
+                       // fluids.add(Materials.LiquidNitrogen.getGas(3333));
                     }
                     if (boosterID >= 10) {
-                        fluids.add(Materials.SpaceTime.getMolten(333));
+                        STMultiplier += 1;
+                        // fluids.add(Materials.SpaceTime.getMolten(333));
                     }
+                }
+                fluids.add(WerkstoffLoader.LiquidHelium.getFluidOrGas(33333 * LHMultiplier));
 
-                    for (FluidStack fluid : fluids) { // Check to see if all required fluids are available in a hatch
+                if (SHMultiplier > 0) {
+                fluids.add(Materials.LiquidNitrogen.getGas(3333 * SHMultiplier));}
+
+                if (STMultiplier > 0) {
+                fluids.add(Materials.SpaceTime.getMolten(333 * STMultiplier));
+                }
+
+                for (FluidStack fluid : fluids) {
                         boolean foundFluid = false;
                         for (MTEHatchInput hatch : mInputHatches) {
                             if (drain(hatch, fluid, true)) {
@@ -307,7 +325,6 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
                     }
                 }
             }
-        }
         super.onPostTick(aBaseMetaTileEntity, aTick);
     }
 
