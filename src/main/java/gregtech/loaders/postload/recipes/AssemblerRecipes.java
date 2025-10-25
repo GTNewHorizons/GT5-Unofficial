@@ -3274,6 +3274,20 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Longasssuperconductornameforuvwire, 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.PrismaticNaquadah, 6),
+                ItemList.Electric_Pump_UV.get(4),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 4),
+                ItemList.Reactor_Coolant_Sp_6.get(1),
+                ItemList.Emitter_UV.get(1))
+            .itemOutputs(ItemList.Secondary_Casing_Solidifier_Modular.get(1))
+            .fluidInputs(Materials.CosmicNeutronium.getMolten(INGOTS * 16))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_UV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.block, Materials.Glass, 3),
                 GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Silver, 3),
                 GTOreDictUnificator.get(OrePrefixes.pipeSmall, Materials.Bronze, 1),

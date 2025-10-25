@@ -272,7 +272,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         .addElement('A', chainAllGlasses())
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings11, 7))
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings5, 12))
-        .addElement('D', ofFrame(Materials.TranscendentMetal))
+        .addElement('D', ofFrame(Materials.Netherite))
         .addElement('E', ofBlock(GregTechAPI.sBlockCasingsFoundry, 11))
         .addElement(
             'F',
