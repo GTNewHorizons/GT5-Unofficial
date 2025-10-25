@@ -2,6 +2,7 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.BuildCraftSilicon;
+import static gregtech.api.enums.Mods.UniversalSingularities;
 import static gregtech.api.recipe.RecipeMaps.formingPressRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -208,5 +209,18 @@ public class FormingPressRecipes implements Runnable {
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UXV)
             .addTo(formingPressRecipes);
+
+        if (UniversalSingularities.isModLoaded()) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.block, Materials.BorosilicateGlass, 8),
+                    ItemList.Naquarite_Universal_Insulator_Foil.get(8),
+                    getModItem(UniversalSingularities.ID, "general.singularity", 1, 13))
+                .fluidInputs(Materials.SuperCoolant.getFluid(64000))
+                .itemOutputs(ItemList.Glass_Solidifier_Modular.get(1))
+                .duration(16 * SECONDS)
+                .eut(TierEU.RECIPE_UHV)
+                .addTo(formingPressRecipes);
+        }
     }
 }

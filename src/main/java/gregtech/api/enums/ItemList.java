@@ -1514,6 +1514,7 @@ public enum ItemList implements IItemContainer {
     Machine_Multi_Canner,
     Machine_Multi_Solidifier,
     Machine_Multi_Modular_Solidifier,
+    Glass_Solidifier_Modular,
     Casing_Solidifier_Modular,
     Secondary_Casing_Solidifier_Modular,
     Efficient_Overclocking_Solidifier_Modular,

@@ -3275,7 +3275,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Longasssuperconductornameforuvwire, 1),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.PrismaticNaquadah, 6),
+                ItemList.Naquarite_Universal_Insulator_Foil.get(8),
                 ItemList.Electric_Pump_UV.get(4),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 4),
                 ItemList.Reactor_Coolant_Sp_6.get(1),
