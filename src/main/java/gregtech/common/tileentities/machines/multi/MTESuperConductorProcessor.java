@@ -17,16 +17,17 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofSolenoidCoil;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import bartworks.system.material.WerkstoffLoader;
-import gregtech.api.metatileentity.implementations.MTEHatchInput;
-import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.api.enums.MaterialsUEVplus;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
-
 import net.minecraftforge.fluids.FluidStack;
+
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
@@ -46,6 +47,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchBooster;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -55,6 +57,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.items.MetaGeneratedItem01;
 import gregtech.common.misc.GTStructureChannels;
@@ -249,24 +252,65 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
         return result;
     }
 
-    @Override
+    /*
+     * @Override
+     * public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+     * if (boosterHatch != null) {
+     * for (int k = 0; k < 3; k++) {
+     * int boosterID = boosterHatch.getBoosterIDInSlot(k);
+     * if (boosterID >= 2 && boosterID <= 8) {
+     * for (MTEHatchInput hatch : mInputHatches) {
+     * FluidStack fluid = WerkstoffLoader.LiquidHelium.getFluidOrGas(1666);
+     * if (drain(hatch, fluid, false)) {
+     * drain(hatch, fluid, true);
+     * break;
+     * }
+     * // stopMachine(ShutDownReasonRegistry.outOfFluid(fluid));
+     * }
+     * }
+     * }
+     * }
+     * super.onPostTick(aBaseMetaTileEntity, aTick);
+     * }
+     */
+
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (boosterHatch != null) {
+        if(boosterHatch == null) {
+            super.onPostTick(aBaseMetaTileEntity, aTick);
+            return;
+        }
+
+        List<FluidStack> fluids = new ArrayList<FluidStack>();
         for (int k = 0; k < 3; k++) {
             int boosterID = boosterHatch.getBoosterIDInSlot(k);
-                if (boosterID >= 2 && boosterID <= 8) {
-                    for (MTEHatchInput hatch : mInputHatches) {
-                        FluidStack fluid = WerkstoffLoader.LiquidHelium.getFluidOrGas(1666);
-                        if (drain(hatch, fluid, false)) {
-                            drain(hatch, fluid, true);
-                            break;
-                        }
-                        //stopMachine(ShutDownReasonRegistry.outOfFluid(fluid));
-                    }
+            if(boosterID == -1)
+                break;
+
+            if (boosterID >= 2) {
+                fluids.add(WerkstoffLoader.LiquidHelium.getFluidOrGas(50));
+            }
+            if (boosterID >= 8) {
+                fluids.add(Materials.LiquidNitrogen.getGas(50));
+            }
+            if (boosterID >= 10) {
+                fluids.add(MaterialsUEVplus.SpaceTime.getMolten(50));
+            }
+
+            for(FluidStack fluid : fluids) { //Check to see if all required fluids are available in a hatch
+                boolean foundFluid = false;
+                for (MTEHatchInput hatch : mInputHatches) {
+                    if (drain(hatch, fluid, false)) {
+                        drain(hatch, fluid, true);
+                        foundFluid = true;
+                        break;
                     }
                 }
-                }
-            super.onPostTick(aBaseMetaTileEntity, aTick);
+                if(!foundFluid)
+                    this.stopMachine(ShutDownReasonRegistry.outOfFluid(fluid));
+            }
+        }
+
+        super.onPostTick(aBaseMetaTileEntity, aTick);
     }
 
     private int getSconID(ItemStack scon) {

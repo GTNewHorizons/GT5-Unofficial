@@ -25,7 +25,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.multi.MTESuperConductorProcessor;
 
-
 public class MTEHatchBooster extends MTEHatch implements ISidedInventory {
 
     public MTEHatchBooster(int aID, String aName, String aNameRegional) {
@@ -49,7 +48,7 @@ public class MTEHatchBooster extends MTEHatch implements ISidedInventory {
 
     @Override
     public int[] getAccessibleSlotsFromSide(int side) {
-        int[] slots = new int[]{0, 1, 2};
+        int[] slots = new int[] { 0, 1, 2 };
         return slots;
     }
 
