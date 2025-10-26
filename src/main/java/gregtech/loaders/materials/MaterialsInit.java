@@ -7398,6 +7398,9 @@ public class MaterialsInit {
         Materials.TengamPurified = loadTengamPurified();
         Materials.TengamAttuned = loadTengamAttuned();
         Materials.TengamRaw = loadTengamRaw();
+        Materials.SuperfluidHelium = loadSuperfluidHelium();
+        Materials.SuperfluidStimulant = loadSuperfluidStimulant();
+        Materials.CoolantByproducts = loadCoolantByproducts();
     }
 
     private static Materials loadDenseSteam() {
@@ -7550,6 +7553,32 @@ public class MaterialsInit {
             .addOreByproduct(() -> Materials.SamariumMagnetic)
             .constructMaterial()
             .setProcessingMaterialTierEU(TierEU.RECIPE_UV);
+    }
+
+    private static Materials loadSuperfluidHelium() {
+        return new MaterialBuilder().setName("SuperfluidHelium")
+            .setDefaultLocalName("Superfluid Helium")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setARGB(0xeef783)
+            .addCell()
+            .constructMaterial();
+    }
+
+    private static Materials loadSuperfluidStimulant() {
+        return new MaterialBuilder().setName("SuperfluidStimulant")
+            .setDefaultLocalName("Superfluid Stimulant")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setARGB(0x5f86a4)
+            .addCell()
+            .constructMaterial();
+    }
+    private static Materials loadCoolantByproducts() {
+        return new MaterialBuilder().setName("CoolantByproducts")
+            .setDefaultLocalName("Coolant Byproducts")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setARGB(0xff051650)
+            .addCell()
+            .constructMaterial();
     }
 
     private static void loadUnclassified02() {

@@ -1542,6 +1542,7 @@ public enum ItemList implements IItemContainer {
     Machine_Multi_ChamberCentrifuge,
     Chamber_Casing,
     Chamber_Grate,
+    SCP_Casing,
 
     Machine_Multi_IndustrialLaserEngraver,
     Laser_Plate,

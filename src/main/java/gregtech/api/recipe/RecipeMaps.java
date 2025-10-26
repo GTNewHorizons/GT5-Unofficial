@@ -822,7 +822,7 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> vacuumFreezerRecipes = RecipeMapBuilder
         .of("gt.recipe.vacuumfreezer")
-        .maxIO(1, 1, 2, 1)
+        .maxIO(1, 1, 2, 2)
         .recipeEmitter(b -> {
             FluidStack in, out;
             if (isArrayOfLength(b.getItemInputsBasic(), 1) && isArrayOfLength(b.getItemOutputs(), 1)

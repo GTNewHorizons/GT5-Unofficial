@@ -14,6 +14,10 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SUPERCONDUCTORPROCESSOR;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SUPERCONDUCTORPROCESSOR_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SUPERCONDUCTORPROCESSOR_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SUPERCONDUCTORPROCESSOR_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofSolenoidCoil;
 
@@ -22,6 +26,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import gregtech.common.blocks.BlockCasings12;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -37,6 +42,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
@@ -57,7 +63,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.items.MetaGeneratedItem01;
 import gregtech.common.misc.GTStructureChannels;
 
@@ -75,33 +80,181 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
             STRUCTURE_PIECE_MAIN,
             // spotless:off
             new String[][]{{
-                "BDB",
-                "BBB",
-                "B~B",
-                "BBB",
-                "C C"
-            }, {
-                "BBB",
-                "A A",
-                "A A",
-                "BBB",
-                "   "
-            }, {
-                "BBB",
-                "BAB",
-                "BAB",
-                "BBB",
-                "C C"
-            }})
-        //spotless:on
-        .addElement(
-            'B',
-            buildHatchAdder(MTESuperConductorProcessor.class)
-                .atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(15))
-                .dot(1)
-                .buildAndChain(
-                    onElementPass(MTESuperConductorProcessor::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 15))))
+                "                       ",
+                "                       ",
+                "           D           ",
+                "         DD~DD         ",
+                "           D           ",
+                "                       "
+            },{
+                "                       ",
+                "           D           ",
+                "         EEEEE         ",
+                "    DD DDCCCCCDD DD    ",
+                "         EEEEE         ",
+                "           D           "
+            },{
+                "                       ",
+                "           D           ",
+                "       EEFFFFFEE       ",
+                "   DDDDCCBBBBBCCDDDD   ",
+                "       EEAFFFAEE       ",
+                "           D           "
+            },{
+                "                       ",
+                "           D           ",
+                "      EFFEEEEEFFE      ",
+                "  DDDDCBBCCCCCBBCDDDD  ",
+                "      EAAEEEEEAAE      ",
+                "           D           "
+            },{
+                "                       ",
+                "                       ",
+                "     EFEE  D  EEFE     ",
+                " DDDDCBCCDDGDDCCBCDDDD ",
+                "     EAEE  D  EEAE     ",
+                "                       "
+            },{
+                "                       ",
+                "                       ",
+                "    EFE         EFE    ",
+                " DDDCBCDD     DDCBCDDD ",
+                "    EAE         EAE    ",
+                "                       "
+            },{
+                "                       ",
+                "                       ",
+                "   EFE           EFE   ",
+                "  DCBCD         DCBCD  ",
+                "   EAE           EAE   ",
+                "                       "
+            },{
+                "                       ",
+                "                       ",
+                "  EFE             EFE  ",
+                " DCBCD E       E DCBCD ",
+                "  EAE             EAE  ",
+                "                       "
+            },{
+                "          E E          ",
+                "                       ",
+                "  EFE   E     E   EFE  ",
+                " DCBCD           DCBCD ",
+                "  EAE             EAE  ",
+                "                       "
+            },{
+                "          E E          ",
+                "         E   E         ",
+                " EFE               EFE ",
+                "DCBCD             DCBCD",
+                " EAE               EAE ",
+                "                       "
+            },{
+                "        EEE EEE        ",
+                "                       ",
+                " EFE               EFE ",
+                "DCBCD             DCBCD",
+                " EFE               EFE ",
+                "                       "
+            },{
+                "                       ",
+                " DDD               DDD ",
+                "DDFDD             DEFED",
+                "DCBCD             DCBCD",
+                "DDFDD             DEFED",
+                " DDD               DDD "
+            },{
+                "                       ",
+                "                       ",
+                " EFE               EFE ",
+                "DCBCD             DCBCD",
+                " EFE               EFE ",
+                "                       "
+            },{
+                "           E           ",
+                "                       ",
+                " EFE               EFE ",
+                "DCBCD             DCBCD",
+                " EAE               EAE ",
+                "                       "
+            },{
+                "          E E          ",
+                "           E           ",
+                "  EFE             EFE  ",
+                " DCBCD           DCBCD ",
+                "  EAE             EAE  ",
+                "                       "
+            },{
+                "         E   E         ",
+                "                       ",
+                "  EFE      E      EFE  ",
+                " DCBCD           DCBCD ",
+                "  EAE             EAE  ",
+                "                       "
+            },{
+                "                       ",
+                "                       ",
+                "   EFE           EFE   ",
+                "  DCBCD    E    DCBCD  ",
+                "   EAE           EAE   ",
+                "                       "
+            },{
+                "                       ",
+                "                       ",
+                "    EFE         EFE    ",
+                "   DCBCDD  E  DDCBCD   ",
+                "    EAE         EAE    ",
+                "                       "
+            },{
+                "                       ",
+                "                       ",
+                "     EFEE  D  EEFE     ",
+                "    DCBCCDDDDDCCBCD    ",
+                "     EAEE  D  EEAE     ",
+                "                       "
+            },{
+                "                       ",
+                "           D           ",
+                "      EFFEEEEEFFE      ",
+                "     DCBBCCCCCBBCD     ",
+                "      EAAEEEEEAAE      ",
+                "           D           "
+            },{
+                "                       ",
+                "           D           ",
+                "       EEFFFFFEE       ",
+                "      DCCBBBBBCCD      ",
+                "       EEAFFFAEE       ",
+                "           D           "
+            },{
+                "                       ",
+                "           D           ",
+                "         EEEEE         ",
+                "       DDCCCCCDD       ",
+                "         EEEEE         ",
+                "           D           "
+            },{
+                "                       ",
+                "                       ",
+                "           D           ",
+                "         DDDDD         ",
+                "           D           ",
+                "                       "
+            },{
+                "                       ",
+                "                       ",
+                "                       ",
+                "         DDDDD         ",
+                "                       ",
+                "                       "
+            },{
+                "                       ",
+                "                       ",
+                "                       ",
+                "          DDD          ",
+                "                       ",
+                "                       "
+            }})        //spotless:on
         .addElement(
             'A',
             lazy(
@@ -113,17 +266,36 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
                     -1,
                     MTESuperConductorProcessor::setCasingTier,
                     MTESuperConductorProcessor::getCasingTier)))
+
         .addElement(
-            'C',
+            'B',
             GTStructureChannels.SOLENOID.use(
                 ofSolenoidCoil(
                     MTESuperConductorProcessor::setSolenoidLevel,
                     MTESuperConductorProcessor::getSolenoidLevel)))
+
+        .addElement('C', ofBlock(GregTechAPI.sBlockCasings10, 9))
+
+
+        .addElement('D', ofBlock(GregTechAPI.sBlockCasings8, 10))
+
         .addElement(
-            'D',
+            'E',
+            buildHatchAdder(MTESuperConductorProcessor.class)
+                .atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                .casingIndex(((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(8))
+                .dot(1)
+                .buildAndChain(
+                    onElementPass(MTESuperConductorProcessor::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings12, 8))))
+
+        .addElement('F',             lazy(() ->
+            Casings.QuantumGlass.asElement())
+        )
+        .addElement(
+            'G',
             buildHatchAdder(MTESuperConductorProcessor.class).adder(MTESuperConductorProcessor::addboosterHatch)
                 .hatchClass(MTEHatchBooster.class)
-                .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(0))
+                .casingIndex(((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(8))
                 .dot(2)
                 .build())
         .build();
@@ -156,33 +328,33 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
             if (aActive) {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 15)),
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 8)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_BREWERY_ACTIVE)
+                        .addIcon(OVERLAY_FRONT_SUPERCONDUCTORPROCESSOR_ACTIVE)
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_BREWERY_ACTIVE_GLOW)
+                        .addIcon(OVERLAY_FRONT_SUPERCONDUCTORPROCESSOR_ACTIVE_GLOW)
                         .extFacing()
                         .glow()
                         .build() };
             } else {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 15)),
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 8)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_BREWERY)
+                        .addIcon(OVERLAY_FRONT_SUPERCONDUCTORPROCESSOR_GLOW)
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_BREWERY_GLOW)
+                        .addIcon(OVERLAY_FRONT_SUPERCONDUCTORPROCESSOR)
                         .extFacing()
                         .glow()
                         .build() };
             }
         } else {
             rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 15)) };
+                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 8)) };
         }
         return rTexture;
     }
@@ -210,13 +382,13 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 1, 2, 0);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 11, 3, 0);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 2, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 11, 3, 0, elementBudget, env, false, true);
     }
 
     private int casingAmount;
@@ -231,7 +403,7 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
         boosterHatch = null;
         this.casingTier = -1;
         casingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, 1, 2, 0) && casingAmount >= 1;
+        return checkPiece(STRUCTURE_PIECE_MAIN, 11, 3, 0) && casingAmount >= 1;
     }
 
     @Override
@@ -283,35 +455,34 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
         if (aBaseMetaTileEntity.isServerSide()) {
             if (aTick % 20 == 0) {
                 fluids.clear();
-                int LHMultiplier = 0;
-                int SHMultiplier = 0;
-                int STMultiplier = 0;
+                int Tier1Multiplier = 0;
+                int Tier2Multiplier = 0;
+                int Tier3Multiplier = 0;
 
                 for (int k = 0; k < 3; k++) {
                     int boosterID = boosterHatch.getBoosterIDInSlot(k);
-                    if (boosterID == -1) break;
+                    if (boosterID < 2) break;
 
                     if (boosterID >= 2) {
-                        LHMultiplier += 1;
-                        // fluids.add(WerkstoffLoader.LiquidHelium.getFluidOrGas(33333));
+                        Tier1Multiplier += 1;
                     }
                     if (boosterID >= 8) {
-                        SHMultiplier += 1;
-                        // fluids.add(Materials.LiquidNitrogen.getGas(3333));
+                        Tier2Multiplier += 1;
                     }
                     if (boosterID >= 10) {
-                        STMultiplier += 1;
-                        // fluids.add(Materials.SpaceTime.getMolten(333));
+                        Tier3Multiplier += 1;
                     }
                 }
-                fluids.add(WerkstoffLoader.LiquidHelium.getFluidOrGas(33333 * LHMultiplier));
-
-                if (SHMultiplier > 0) {
-                    fluids.add(Materials.LiquidNitrogen.getGas(3333 * SHMultiplier));
+                if  (Tier1Multiplier >0) {
+                fluids.add(WerkstoffLoader.LiquidHelium.getFluidOrGas(33333 * Tier1Multiplier));
                 }
 
-                if (STMultiplier > 0) {
-                    fluids.add(Materials.SpaceTime.getMolten(333 * STMultiplier));
+                if (Tier2Multiplier > 0) {
+                    fluids.add(Materials.LiquidNitrogen.getGas(3333 * Tier2Multiplier));
+                }
+
+                if (Tier3Multiplier > 0) {
+                    fluids.add(Materials.SpaceTime.getMolten(333 * Tier3Multiplier));
                 }
 
                 for (FluidStack fluid : fluids) {

@@ -384,6 +384,13 @@ public class VacuumFreezerRecipes implements Runnable {
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .addTo(vacuumFreezerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .fluidInputs(Materials.SuperfluidStimulant.getFluid(144L), Materials.LiquidNitrogen.getFluid(1440L))
+            .fluidOutputs(Materials.SuperfluidHelium.getFluid(144L), Materials.CoolantByproducts.getMolten(5000L))
+            .duration(100 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
+            .addTo(vacuumFreezerRecipes);
     }
 
     private void addProtoHalkonitePartRecipe(OrePrefixes prefix, final int multiplier) {
