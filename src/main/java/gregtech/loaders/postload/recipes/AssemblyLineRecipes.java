@@ -34,8 +34,6 @@ import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import tectech.thing.CustomItemList;
 
-import java.util.Objects;
-
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class AssemblyLineRecipes implements Runnable {
 
