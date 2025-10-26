@@ -1,6 +1,5 @@
 package gregtech.api.enums;
 
-import static bartworks.util.BWTooltipReference.TT;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.AQUA;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BLACK;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BLUE;
@@ -599,8 +598,6 @@ public class GTValues {
             GOLD + BOLD,
             DARK_GREEN + BOLD,
             DARK_GREEN + OBFUSCATED + BOLD));
-
-    public static final String TecTechHatches = "Supports " + TT + " laser and multi-amp hatches";
 
     public static final String AuthorPureBluez = WHITE + "Pure"
         + AQUA

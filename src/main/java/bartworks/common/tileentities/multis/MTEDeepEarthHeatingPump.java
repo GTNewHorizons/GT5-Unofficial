@@ -101,7 +101,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
             .addInputBus("gt.dehp.info.6")
             .addInputHatch("gt.dehp.info.5")
             .addOutputHatch("gt.dehp.info.5")
-            .toolTipFinisher("tooltip.bw.bart_via_bw.name");
+            .toolTipFinisher("tooltip.bw.author_bart_via_bw.name");
         return tt;
     }
 
