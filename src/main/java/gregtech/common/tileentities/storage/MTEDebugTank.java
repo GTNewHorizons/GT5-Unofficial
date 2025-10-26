@@ -49,7 +49,7 @@ public class MTEDebugTank extends MTEQuantumTank {
             if (mOutputFluid && (aTick % 20 == 0)) {
                 IFluidHandler tTank = aBaseMetaTileEntity.getITankContainerAtSide(aBaseMetaTileEntity.getFrontFacing());
                 if (tTank != null) {
-                    FluidStack tDrained = drain(2097152, false);
+                    FluidStack tDrained = drain(Integer.MAX_VALUE, false);
                     if (tDrained != null) {
                         int tFilledAmount = tTank.fill(aBaseMetaTileEntity.getBackFacing(), tDrained, false);
                         if (tFilledAmount > 0)
