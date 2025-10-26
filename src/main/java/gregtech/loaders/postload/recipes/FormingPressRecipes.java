@@ -1,5 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
+import static bartworks.common.loaders.ItemRegistry.bw_realglas;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.BuildCraftSilicon;
 import static gregtech.api.enums.Mods.UniversalSingularities;
@@ -213,7 +214,7 @@ public class FormingPressRecipes implements Runnable {
         if (UniversalSingularities.isModLoaded()) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.block, Materials.BorosilicateGlass, 8),
+                    new ItemStack(bw_realglas, 8, 0),
                     ItemList.Naquarite_Universal_Insulator_Foil.get(8),
                     getModItem(UniversalSingularities.ID, "general.singularity", 1, 13))
                 .fluidInputs(Materials.SuperCoolant.getFluid(64000))
