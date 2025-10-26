@@ -22,6 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -902,6 +903,16 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(ItemList.Block_MSSFUEL.get(4))
             .fluidInputs(Materials.GasolinePremium.getFluid(800))
             .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(mixerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .fluidInputs(
+                WerkstoffLoader.LiquidHelium.getFluidOrGas(1000),
+                Materials.SuperCoolant.getFluid(10000L),
+                Materials.Cryotheum.getFluid(10000L))
+            .fluidOutputs(Materials.SuperfluidStimulant.getFluid(1000L))
+            .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(mixerRecipes);
 

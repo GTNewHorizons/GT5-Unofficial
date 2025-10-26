@@ -7572,6 +7572,7 @@ public class MaterialsInit {
             .addCell()
             .constructMaterial();
     }
+
     private static Materials loadCoolantByproducts() {
         return new MaterialBuilder().setName("CoolantByproducts")
             .setDefaultLocalName("Coolant Byproducts")

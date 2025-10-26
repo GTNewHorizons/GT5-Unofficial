@@ -4,11 +4,15 @@ import static gregtech.api.recipe.RecipeMaps.fluidHeaterRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
+import gtnhlanth.common.register.WerkstoffMaterialPool;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class FluidHeaterRecipes implements Runnable {
@@ -92,5 +96,13 @@ public class FluidHeaterRecipes implements Runnable {
             .eut(160)
             .addTo(fluidHeaterRecipes);
 
+        // Recycling Coolant Byproducts
+        GTValues.RA.stdBuilder()
+            .fluidInputs(Materials.CoolantByproducts.getFluid(50))
+            .fluidOutputs(WerkstoffMaterialPool.HotSuperCoolant.getFluidOrGas(33))
+            .itemOutputs(new ItemStack(Items.blaze_rod))
+            .duration(10 * SECONDS)
+            .eut(120)
+            .addTo(fluidHeaterRecipes);
     }
 }

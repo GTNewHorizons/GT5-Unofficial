@@ -518,7 +518,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials SuperfluidHelium;
     public static Materials CoolantByproducts;
 
-
     // Unclassified 02 materials
     public static Materials Gas;
     public static Materials HeavyFuel;

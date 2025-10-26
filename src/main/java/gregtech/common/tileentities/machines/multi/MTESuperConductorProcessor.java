@@ -10,10 +10,6 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SUPERCONDUCTORPROCESSOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SUPERCONDUCTORPROCESSOR_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SUPERCONDUCTORPROCESSOR_ACTIVE_GLOW;
@@ -26,7 +22,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import gregtech.common.blocks.BlockCasings12;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -63,6 +58,8 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.blocks.BlockCasings12;
+import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.items.MetaGeneratedItem01;
 import gregtech.common.misc.GTStructureChannels;
 
@@ -81,177 +78,177 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
             // spotless:off
             new String[][]{{
                 "                       ",
-                "                       ",
-                "           D           ",
-                "         DD~DD         ",
-                "           D           ",
-                "                       "
+                "          EEE          ",
+                "         EDDDE         ",
+                "         ED~DE         ",
+                "         EDDDE         ",
+                "          EEE          "
             },{
                 "                       ",
-                "           D           ",
+                "          EEE          ",
                 "         EEEEE         ",
-                "    DD DDCCCCCDD DD    ",
+                "    EE EEEEEEEEE EE    ",
                 "         EEEEE         ",
-                "           D           "
+                "          EEE          "
             },{
                 "                       ",
+                "                       ",
+                "       DDFFFFFDD       ",
+                "   EEEECCBBBBBCCEEEE   ",
+                "       DDAFFFADD       ",
+                "                       "
+            },{
+                "                       ",
+                "                       ",
+                "      DFFDDDDDFFD      ",
+                "  EEEECBBCCCCCBBCEEEE  ",
+                "      DAADDDDDAAD      ",
+                "                       "
+            },{
+                "                       ",
+                "                       ",
+                "     DFDD     DDFD     ",
+                " EEEECBCCEEGEECCBCEEEE ",
+                "     DADD     DDAD     ",
+                "                       "
+            },{
+                "                       ",
+                "                       ",
+                "    DFD         DFD    ",
+                " EEECBCEE     EECBCEEE ",
+                "    DAD         DAD    ",
+                "                       "
+            },{
+                "                       ",
+                "                       ",
+                "   DFD           DFD   ",
+                "  ECBCE         ECBCE  ",
+                "   DAD           DAD   ",
+                "                       "
+            },{
+                "                       ",
+                "                       ",
+                "  DFD             DFD  ",
+                " ECBCE D       D ECBCE ",
+                "  DAD             DAD  ",
+                "                       "
+            },{
+                "          D D          ",
+                "                       ",
+                "  DFD   D     D   DFD  ",
+                " ECBCE           ECBCE ",
+                "  DAD             DAD  ",
+                "                       "
+            },{
+                "          D D          ",
+                "         D   D         ",
+                " DFD               DFD ",
+                "ECBCE             ECBCE",
+                " DAD               DAD ",
+                "                       "
+            },{
+                "        DDD DDD        ",
+                "                       ",
+                " DFD               DFD ",
+                "ECBCE             ECBCE",
+                " DFD               DFD ",
+                "                       "
+            },{
+                "                       ",
+                " EEE               EEE ",
+                "EEFEE             EDFDE",
+                "ECBCE             ECBCE",
+                "EEFEE             EDFDE",
+                " EEE               EEE "
+            },{
+                "                       ",
+                "                       ",
+                " DFD               DFD ",
+                "ECBCE             ECBCE",
+                " DFD               DFD ",
+                "                       "
+            },{
                 "           D           ",
-                "       EEFFFFFEE       ",
-                "   DDDDCCBBBBBCCDDDD   ",
-                "       EEAFFFAEE       ",
-                "           D           "
-            },{
                 "                       ",
+                " DFD               DFD ",
+                "ECBCE             ECBCE",
+                " DAD               DAD ",
+                "                       "
+            },{
+                "          D D          ",
                 "           D           ",
-                "      EFFEEEEEFFE      ",
-                "  DDDDCBBCCCCCBBCDDDD  ",
-                "      EAAEEEEEAAE      ",
-                "           D           "
+                "  DFD             DFD  ",
+                " ECBCE           ECBCE ",
+                "  DAD             DAD  ",
+                "                       "
             },{
+                "         D   D         ",
                 "                       ",
-                "                       ",
-                "     EFEE  D  EEFE     ",
-                " DDDDCBCCDDGDDCCBCDDDD ",
-                "     EAEE  D  EEAE     ",
+                "  DFD      D      DFD  ",
+                " ECBCE           ECBCE ",
+                "  DAD             DAD  ",
                 "                       "
             },{
                 "                       ",
                 "                       ",
-                "    EFE         EFE    ",
-                " DDDCBCDD     DDCBCDDD ",
-                "    EAE         EAE    ",
+                "   DFD           DFD   ",
+                "  ECBCE    D    ECBCE  ",
+                "   DAD           DAD   ",
                 "                       "
             },{
                 "                       ",
                 "                       ",
-                "   EFE           EFE   ",
-                "  DCBCD         DCBCD  ",
-                "   EAE           EAE   ",
+                "    DFD         DFD    ",
+                "   ECBCEE  D  EECBCE   ",
+                "    DAD         DAD    ",
                 "                       "
             },{
                 "                       ",
                 "                       ",
-                "  EFE             EFE  ",
-                " DCBCD E       E DCBCD ",
-                "  EAE             EAE  ",
-                "                       "
-            },{
-                "          E E          ",
-                "                       ",
-                "  EFE   E     E   EFE  ",
-                " DCBCD           DCBCD ",
-                "  EAE             EAE  ",
-                "                       "
-            },{
-                "          E E          ",
-                "         E   E         ",
-                " EFE               EFE ",
-                "DCBCD             DCBCD",
-                " EAE               EAE ",
-                "                       "
-            },{
-                "        EEE EEE        ",
-                "                       ",
-                " EFE               EFE ",
-                "DCBCD             DCBCD",
-                " EFE               EFE ",
+                "     DFDD  E  DDFD     ",
+                "    ECBCCEEEEECCBCE    ",
+                "     DADD  E  DDAD     ",
                 "                       "
             },{
                 "                       ",
-                " DDD               DDD ",
-                "DDFDD             DEFED",
-                "DCBCD             DCBCD",
-                "DDFDD             DEFED",
-                " DDD               DDD "
-            },{
-                "                       ",
-                "                       ",
-                " EFE               EFE ",
-                "DCBCD             DCBCD",
-                " EFE               EFE ",
-                "                       "
-            },{
                 "           E           ",
-                "                       ",
-                " EFE               EFE ",
-                "DCBCD             DCBCD",
-                " EAE               EAE ",
-                "                       "
+                "      DFFDDDDDFFD      ",
+                "     ECBBCCCCCBBCE     ",
+                "      DAADDDDDAAD      ",
+                "           E           "
             },{
-                "          E E          ",
+                "                       ",
                 "           E           ",
-                "  EFE             EFE  ",
-                " DCBCD           DCBCD ",
-                "  EAE             EAE  ",
-                "                       "
-            },{
-                "         E   E         ",
-                "                       ",
-                "  EFE      E      EFE  ",
-                " DCBCD           DCBCD ",
-                "  EAE             EAE  ",
-                "                       "
+                "       DDFFFFFDD       ",
+                "      ECCBBBBBCCE      ",
+                "       DDAFFFADD       ",
+                "           E           "
             },{
                 "                       ",
-                "                       ",
-                "   EFE           EFE   ",
-                "  DCBCD    E    DCBCD  ",
-                "   EAE           EAE   ",
-                "                       "
-            },{
-                "                       ",
-                "                       ",
-                "    EFE         EFE    ",
-                "   DCBCDD  E  DDCBCD   ",
-                "    EAE         EAE    ",
-                "                       "
-            },{
-                "                       ",
-                "                       ",
-                "     EFEE  D  EEFE     ",
-                "    DCBCCDDDDDCCBCD    ",
-                "     EAEE  D  EEAE     ",
-                "                       "
-            },{
-                "                       ",
-                "           D           ",
-                "      EFFEEEEEFFE      ",
-                "     DCBBCCCCCBBCD     ",
-                "      EAAEEEEEAAE      ",
-                "           D           "
-            },{
-                "                       ",
-                "           D           ",
-                "       EEFFFFFEE       ",
-                "      DCCBBBBBCCD      ",
-                "       EEAFFFAEE       ",
-                "           D           "
-            },{
-                "                       ",
-                "           D           ",
-                "         EEEEE         ",
-                "       DDCCCCCDD       ",
-                "         EEEEE         ",
-                "           D           "
-            },{
-                "                       ",
-                "                       ",
-                "           D           ",
+                "           E           ",
                 "         DDDDD         ",
-                "           D           ",
-                "                       "
-            },{
-                "                       ",
-                "                       ",
-                "                       ",
+                "       EECCCCCEE       ",
                 "         DDDDD         ",
+                "           E           "
+            },{
+                "                       ",
+                "                       ",
+                "           E           ",
+                "         EEEEE         ",
+                "           E           ",
+                "                       "
+            },{
+                "                       ",
+                "                       ",
+                "                       ",
+                "         EEEEE         ",
                 "                       ",
                 "                       "
             },{
                 "                       ",
                 "                       ",
                 "                       ",
-                "          DDD          ",
+                "          EEE          ",
                 "                       ",
                 "                       "
             }})        //spotless:on
@@ -274,13 +271,14 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
                     MTESuperConductorProcessor::setSolenoidLevel,
                     MTESuperConductorProcessor::getSolenoidLevel)))
 
+        // coolant duct
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings10, 9))
 
-
-        .addElement('D', ofBlock(GregTechAPI.sBlockCasings8, 10))
+        // naq casing
+        .addElement('E', ofBlock(GregTechAPI.sBlockCasings8, 10))
 
         .addElement(
-            'E',
+            'D',
             buildHatchAdder(MTESuperConductorProcessor.class)
                 .atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                 .casingIndex(((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(8))
@@ -288,14 +286,12 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
                 .buildAndChain(
                     onElementPass(MTESuperConductorProcessor::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings12, 8))))
 
-        .addElement('F',             lazy(() ->
-            Casings.QuantumGlass.asElement())
-        )
+        .addElement('F', lazy(() -> Casings.QuantumGlass.asElement()))
         .addElement(
             'G',
             buildHatchAdder(MTESuperConductorProcessor.class).adder(MTESuperConductorProcessor::addboosterHatch)
                 .hatchClass(MTEHatchBooster.class)
-                .casingIndex(((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(8))
+                .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10))
                 .dot(2)
                 .build())
         .build();
@@ -343,11 +339,11 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
                     Textures.BlockIcons
                         .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 8)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_SUPERCONDUCTORPROCESSOR_GLOW)
+                        .addIcon(OVERLAY_FRONT_SUPERCONDUCTORPROCESSOR)
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_SUPERCONDUCTORPROCESSOR)
+                        .addIcon(OVERLAY_FRONT_SUPERCONDUCTORPROCESSOR_GLOW)
                         .extFacing()
                         .glow()
                         .build() };
@@ -473,8 +469,8 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
                         Tier3Multiplier += 1;
                     }
                 }
-                if  (Tier1Multiplier >0) {
-                fluids.add(WerkstoffLoader.LiquidHelium.getFluidOrGas(33333 * Tier1Multiplier));
+                if (Tier1Multiplier > 0) {
+                    fluids.add(WerkstoffLoader.LiquidHelium.getFluidOrGas(33333 * Tier1Multiplier));
                 }
 
                 if (Tier2Multiplier > 0) {
