@@ -17,7 +17,11 @@ import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.shader.Framebuffer;
 
 import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.*;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
 
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
 import com.gtnewhorizons.angelica.glsm.GLStateManager;
@@ -120,16 +124,16 @@ public class HDRFramebuffer extends Framebuffer {
             tonemapShader.use();
             bindTextureSlot(tonemapShader, "uScene", 0);
             bindTextureSlot(tonemapShader, "uOverlay", 1);
-//            AutoShaderUpdater.getInstance()
-//                .registerShaderReload(
-//                    tonemapShader,
-//                    GregTech.resourceDomain,
-//                    "shaders/hdr/tonemap.vert.glsl",
-//                    "shaders/hdr/tonemap.frag.glsl",
-//                    (shader, vertexFile, fragmentFile) -> {
-//                        shader.bindTextureSlot("uScene", 0);
-//                        shader.bindTextureSlot("uOverlay", 1);
-//                    });
+            // AutoShaderUpdater.getInstance()
+            // .registerShaderReload(
+            // tonemapShader,
+            // GregTech.resourceDomain,
+            // "shaders/hdr/tonemap.vert.glsl",
+            // "shaders/hdr/tonemap.frag.glsl",
+            // (shader, vertexFile, fragmentFile) -> {
+            // shader.bindTextureSlot("uScene", 0);
+            // shader.bindTextureSlot("uOverlay", 1);
+            // });
             ShaderProgram.clear();
         }
         tonemapShader.use();
@@ -145,11 +149,10 @@ public class HDRFramebuffer extends Framebuffer {
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
     }
 
-    //TODO get rid of this
+    // TODO get rid of this
     public void bindTextureSlot(ShaderProgram shader, String sampler2DName, int index) {
         GL20.glUniform1i(shader.getUniformLocation(sampler2DName), index);
     }
-
 
     public void drawTexturedRect() {
         final Tessellator tessellator = Tessellator.instance;
