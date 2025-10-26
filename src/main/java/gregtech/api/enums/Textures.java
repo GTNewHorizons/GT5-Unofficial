@@ -1945,6 +1945,11 @@ public class Textures {
         ATLAS_CASING,
         ALICE_CASING,
         LHCB_CASING,
+        OVERLAY_FRONT_LHC,
+        OVERLAY_FRONT_LHC_ACCELERATOR_GLOW,
+        OVERLAY_FRONT_LHC_COLLIDER_GLOW,
+        OVERLAY_FRONT_LHC_ACCELERATOR,
+        OVERLAY_FRONT_LHC_COLLIDER,
 
         // semicolon after the comment to reduce merge conflicts
         ;

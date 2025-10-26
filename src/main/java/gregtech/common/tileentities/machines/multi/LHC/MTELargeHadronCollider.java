@@ -5,10 +5,11 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LHC;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LHC_ACCELERATOR;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LHC_ACCELERATOR_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LHC_COLLIDER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LHC_COLLIDER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -80,6 +81,9 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
     public double playerTargetBeamEnergyeV = 1_000_000_000;
     public int playerTargetAccelerationCycles = 10;
 
+    BeamInformation initialParticleInfo = null;
+    BeamInformation cachedOutputParticle = null;
+    public int accelerationCycleCounter = 0;
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
@@ -93,6 +97,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
         }
         aNBT.setDouble("playerBeamEnergy", playerTargetBeamEnergyeV);
         aNBT.setInteger("playerAccelCycles", playerTargetAccelerationCycles);
+        aNBT.setInteger("accelerationCycleCounter", accelerationCycleCounter);
     }
 
     @Override
@@ -108,6 +113,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
         }
         playerTargetBeamEnergyeV = aNBT.getDouble("playerBeamEnergy");
         playerTargetAccelerationCycles = aNBT.getInteger("playerAccelCycles");
+        accelerationCycleCounter = aNBT.getInteger("accelerationCycleCounter");
     }
 
     @Override
@@ -2560,32 +2566,43 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         ITexture[] rTexture;
         if (side == aFacing) {
-            if (aActive) {
+            if ((aActive) && (this.machineMode == 0)) {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
                         .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings13, 10)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_BREWERY_ACTIVE) // todo: new texture
+                        .addIcon(OVERLAY_FRONT_LHC_ACCELERATOR)
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_BREWERY_ACTIVE_GLOW) // todo: new texture
+                        .addIcon(OVERLAY_FRONT_LHC_ACCELERATOR_GLOW)
                         .extFacing()
                         .glow()
                         .build() };
-            } else {
+            }
+            else if ((aActive) && (this.machineMode == 1)) {
+                rTexture = new ITexture[]{
+                    Textures.BlockIcons
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings13, 10)),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_LHC_COLLIDER)
+                        .extFacing()
+                        .build(),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_LHC_COLLIDER_GLOW)
+                        .extFacing()
+                        .glow()
+                        .build()};
+            }
+            else {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
                         .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings13, 10)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_BREWERY) // todo: new texture
+                        .addIcon(OVERLAY_FRONT_LHC)
                         .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_BREWERY_GLOW) // todo: new texture
-                        .extFacing()
-                        .glow()
-                        .build() };
+                        .build()
+                };
             }
         } else {
             rTexture = new ITexture[] { Textures.BlockIcons
@@ -2933,10 +2950,17 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
         super.stopMachine(reason);
     }
 
-    BeamInformation initialParticleInfo = null;
-    BeamInformation cachedOutputParticle = null;
-    int accelerationCycleCounter = 0;
-    final int MAXIMUM_ACCELERATION_CYCLES = 10;
+    @Override
+    public void onValueUpdate(byte aValue) {
+        boolean oldMachineMode = machineMode==1;
+        machineMode = ((aValue & 1) == 1) ? 1 : 0;
+        if (oldMachineMode != (machineMode==1)) getBaseMetaTileEntity().issueTextureUpdate();
+    }
+
+    @Override
+    public byte getUpdateData() {
+        return (byte) ((machineMode == 1) ? 1 : 0);
+    }
 
     @NotNull
     @Override
@@ -2982,7 +3006,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                     }
 
                     if (accelerationCycleCounter
-                        < Math.min(playerTargetAccelerationCycles, MAXIMUM_ACCELERATION_CYCLES)) {
+                        < playerTargetAccelerationCycles) {
                         cachedOutputParticle = accelerateParticle(cachedOutputParticle);
                         accelerationCycleCounter += 1;
                     } else {

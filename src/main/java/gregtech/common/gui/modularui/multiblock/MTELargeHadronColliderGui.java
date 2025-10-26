@@ -52,6 +52,7 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
         syncManager.syncValue("cachedOutputBeamEnergy", new DoubleSyncValue(multiblock::getCachedBeamEnergy));
         syncManager.syncValue("cachedOutputBeamRate", new IntSyncValue(multiblock::getCachedBeamRate));
         syncManager.syncValue("machineMode", new IntSyncValue(() -> multiblock.machineMode, i-> multiblock.machineMode = i));
+        syncManager.syncValue("accelerationCycleCounter", new IntSyncValue(() -> multiblock.accelerationCycleCounter, i-> multiblock.accelerationCycleCounter = i));
         syncManager.syncValue("EUt",new LongSyncValue(()->multiblock.lEUt));
     }
 
@@ -100,6 +101,7 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
         DoubleSyncValue cachedOutputBeamEnergy = syncManager.findSyncHandler("cachedOutputBeamEnergy",DoubleSyncValue.class);
         IntSyncValue cachedOutputBeamRate = syncManager.findSyncHandler("cachedOutputBeamRate",IntSyncValue.class);
         IntSyncValue machineMode = syncManager.findSyncHandler("machineMode",IntSyncValue.class);
+        IntSyncValue accelerationCycleCounter = syncManager.findSyncHandler("accelerationCycleCounter",IntSyncValue.class);
         LongSyncValue EUt = syncManager.findSyncHandler("EUt",LongSyncValue.class);
 
         return new ListWidget<>().widthRel(1)
@@ -107,7 +109,7 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
                 new TextWidget<>(
                     IKey.dynamic(
                         () -> EnumChatFormatting.WHITE + StatCollector.translateToLocal("GT5U.gui.text.LHC.beamenergykeV")
-                            + ":\n"
+                            + ": "
                             + (cachedOutputBeamEnergy.getDoubleValue()*1000 > (playerTargetBeamEnergyeV.getDoubleValue()) ?
                             EnumChatFormatting.GREEN :
                             EnumChatFormatting.RED)
@@ -132,6 +134,16 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
                             + EnumChatFormatting.GOLD
                             + standardFormat.format(EUt.getLongValue())
                             + " EU/t"
+                    )
+                ).marginBottom(9)
+            )
+            .child(
+                new TextWidget<>(
+                    IKey.dynamic(
+                        () -> EnumChatFormatting.WHITE + StatCollector.translateToLocal("GT5U.gui.text.LHC.completedcycles")
+                            + ": "
+                            + EnumChatFormatting.GRAY
+                            + accelerationCycleCounter.getIntValue()
                     )
                 ).marginBottom(9)
             )
