@@ -27,6 +27,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import gregtech.api.util.tooltip.TooltipHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -34,6 +35,7 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -1040,7 +1042,17 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             + val3
             + EnumChatFormatting.GRAY;
     }
-
+    @Override
+    public IAlignmentLimits getAlignmentLimits() {
+        // only allowable upright due to chassis casing pattern.
+        return IAlignmentLimits.Builder.allowAll()
+            .deny(ForgeDirection.DOWN)
+            .deny(ForgeDirection.UP)
+            .deny(Rotation.UPSIDE_DOWN)
+            .deny(Rotation.CLOCKWISE)
+            .deny(Rotation.COUNTER_CLOCKWISE)
+            .build();
+    }
     // Render code
     private boolean shouldRender = true;
     private boolean renderInitialized;
@@ -1100,7 +1112,28 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         GLStateManager.enableDepthTest();
         ringProgram.use();
         GL11.glPushMatrix();
-        GL11.glTranslated(x + 0.5f, y + 0.5f, z + 7.5F);
+        float xTranslate = 0f;
+        float zTranslate = 0f;
+        switch(getDirection())
+        {
+            case NORTH -> {
+                xTranslate = 0.5f;
+                zTranslate =7.5f;
+            }
+            case SOUTH -> {
+                xTranslate = 0.5f;
+                zTranslate = -7.5f;
+            }
+            case WEST -> {
+                xTranslate = 7.5f;
+                zTranslate = 0.5f;
+            }
+            case EAST -> {
+                xTranslate = -7.5f;
+                zTranslate = 0.5f;
+            }
+        }
+        GL11.glTranslated(x + xTranslate, y + 0.5f, z + zTranslate);
         BloomShader.getInstance()
             .bind();
 
@@ -1133,6 +1166,12 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         ShaderProgram.clear();
 
     }
+
+    @Override
+    public AxisAlignedBB getRenderBoundingBox(int x, int y, int z) {
+        return AxisAlignedBB.getBoundingBox(x-10,y-10,z-10,x+10,y+40,z+10);
+    }
+
 
     private void renderRingsDebug() {
         int i = 0;
@@ -1233,60 +1272,6 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         GL11.glPopMatrix();
     }
 
-    private void applyRotation() {
-        ExtendedFacing extendedFacing = this.getExtendedFacing();
-
-        Matrix4f rotationMatrix = new Matrix4f().identity();
-        Rotation rotation = extendedFacing.getRotation();
-        float localAngle = switch (rotation) {
-            case NORMAL -> 0;
-            case CLOCKWISE -> 90;
-            case COUNTER_CLOCKWISE -> -90;
-            case UPSIDE_DOWN -> 180;
-        };
-
-        Flip flip = extendedFacing.getFlip();
-        localAngle *= (flip == Flip.HORIZONTAL || flip == Flip.VERTICAL) ? 1 : -1;
-
-        localAngle = (float) Math.toRadians(localAngle);
-
-        ForgeDirection direction = extendedFacing.getDirection();
-        rotationMatrix.rotate(localAngle, direction.offsetX, direction.offsetY, direction.offsetZ);
-
-        float x = 0;
-
-        // this really sucks, but im not good with linalg so best i can do.
-        // flag for the strange outlier case that should work but just doesnt
-        boolean outlierFlag = false;
-
-        // special: direction = up, down
-        float angle = switch (direction) {
-            case DOWN, UP -> {
-                outlierFlag = rotation == Rotation.UPSIDE_DOWN;
-                x = 1;
-                yield -90;
-            }
-            case UNKNOWN -> 0.0F;
-            default -> 0.0f;
-        };
-        float radAngle = (float) Math.toRadians(angle);
-
-        rotationMatrix.rotate(radAngle, x, 0, 0);
-
-        AxisAngle4f rotationVector = new AxisAngle4f();
-        rotationMatrix.getRotation(rotationVector);
-
-        if (outlierFlag) {
-            GL11.glRotated(90, 1, 0, 0);
-        } else {
-
-            final double rotationAngle = Math.toDegrees(rotationVector.angle);
-            final double rotAxisX = rotationVector.x;
-            final double rotAxisY = rotationVector.y;
-            final double rotAxisZ = rotationVector.z;
-            GL11.glRotated(rotationAngle, rotAxisX, rotAxisY, rotAxisZ);
-        }
-    }
 
     @Override
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,

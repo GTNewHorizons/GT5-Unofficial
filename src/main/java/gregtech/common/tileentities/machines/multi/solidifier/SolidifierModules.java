@@ -53,7 +53,6 @@ public enum SolidifierModules {
         this.rgbArr = rgbArr;
     }
 
-    // TODO sisyphus: get rid of multiplier
     private SolidifierModules(String display, String shortname, String structid, ItemStack icon, UITexture texture,
         float[] rgbArr, float multiplier) {
         this.displayName = display;
@@ -63,7 +62,7 @@ public enum SolidifierModules {
         this.texture = texture;
         this.rgbArr = rgbArr;
         for (int i = 0; i < rgbArr.length; i++) {
-            this.rgbArr[i] *= multiplier;
+            this.rgbArr[i] *= multiplier * (0.5f); // multiply by half to make color less intense
         }
     }
 
