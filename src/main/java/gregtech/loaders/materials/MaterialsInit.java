@@ -1,5 +1,6 @@
 package gregtech.loaders.materials;
 
+import bartworks.system.material.WerkstoffLoader;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -7561,6 +7562,7 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setARGB(0xeef783)
             .addCell()
+            .addFluid()
             .constructMaterial();
     }
 
@@ -7570,6 +7572,7 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setARGB(0x5f86a4)
             .addCell()
+            .addFluid()
             .constructMaterial();
     }
 
@@ -7579,6 +7582,7 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setARGB(0xff051650)
             .addCell()
+            .addFluid()
             .constructMaterial();
     }
 

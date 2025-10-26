@@ -399,7 +399,7 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
         boosterHatch = null;
         this.casingTier = -1;
         casingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, 11, 3, 0) && casingAmount >= 1;
+        return checkPiece(STRUCTURE_PIECE_MAIN, 11, 3, 0) && casingAmount >= 200;
     }
 
     @Override

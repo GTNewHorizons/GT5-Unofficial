@@ -1432,6 +1432,31 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.ExcitedDTSC, 1L),
                 ItemList.Cell_Empty.get(1L));
 
+        GTFluidFactory.builder("SuperfluidStimulant")
+            .withLocalizedName("Superfluid Stimulant")
+            .withStateAndTemperature(LIQUID, 15)
+            .buildAndRegister()
+            .configureMaterials(Materials.SuperfluidStimulant)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.SuperfluidStimulant, 1L),
+                ItemList.Cell_Empty.get(1L));
+        GTFluidFactory.builder("SuperfluidHelium")
+            .withLocalizedName("Superfluid Helium")
+            .withStateAndTemperature(LIQUID, 1)
+            .buildAndRegister()
+            .configureMaterials(Materials.SuperfluidHelium)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.SuperfluidHelium, 1L),
+                ItemList.Cell_Empty.get(1L));
+        GTFluidFactory.builder("CoolantByproducts")
+            .withLocalizedName("Coolant Byproducts")
+            .withStateAndTemperature(LIQUID, 30)
+            .buildAndRegister()
+            .configureMaterials(Materials.CoolantByproducts)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.CoolantByproducts, 1L),
+                ItemList.Cell_Empty.get(1L));
+
         GTFluidFactory.builder(Materials.RawStarMatter.mName)
             .withLocalizedName(Materials.RawStarMatter.mLocalizedName)
             .withStateAndTemperature(LIQUID, 10_000_000)

@@ -956,13 +956,12 @@ public class AssemblyLineRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Tetranaquadahdiindiumhexaplatiumosminid, 16),
                 GTOreDictUnificator.get(OrePrefixes.spring, Materials.Longasssuperconductornameforuvwire, 16),
                 new Object[] { OrePrefixes.circuit.get(Materials.UHV), 16 })
-            .itemOutputs(ItemList.SuperConductorProcessor.get(1))
+            .itemOutputs(ItemList.Hatch_Booster.get(1))
             .fluidInputs(
                 MaterialsElements.STANDALONE.GRANITE.getFluidStack(64 * INGOTS),
                 MaterialsAlloy.BOTMIUM.getFluidStack(32 * INGOTS),
                 MaterialsAlloy.PIKYONIUM.getFluidStack(16 * INGOTS),
                 WerkstoffLoader.TantalumHafniumCarbide.getMolten(1152))
-
             .duration(333 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(AssemblyLine);

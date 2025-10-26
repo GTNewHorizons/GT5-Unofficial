@@ -16,6 +16,7 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.mixerNonCellRecipes;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
+import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -907,10 +908,10 @@ public class MixerRecipes implements Runnable {
             .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()
+            .fluidInputs(new FluidStack(TFFluids.fluidCryotheum, 10000))
             .fluidInputs(
                 WerkstoffLoader.LiquidHelium.getFluidOrGas(1000),
-                Materials.SuperCoolant.getFluid(10000L),
-                Materials.Cryotheum.getFluid(10000L))
+                Materials.SuperCoolant.getFluid(10000L))
             .fluidOutputs(Materials.SuperfluidStimulant.getFluid(1000L))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
