@@ -24,6 +24,21 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.YELLOW;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.animatedText;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.chain;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.text;
+import static gregtech.api.util.CustomGlyphs.AIR;
+import static gregtech.api.util.CustomGlyphs.ALEPH;
+import static gregtech.api.util.CustomGlyphs.CHAOS;
+import static gregtech.api.util.CustomGlyphs.CIRCLE_CROSS;
+import static gregtech.api.util.CustomGlyphs.CIRCLE_STAR;
+import static gregtech.api.util.CustomGlyphs.EARTH;
+import static gregtech.api.util.CustomGlyphs.EMPTY_SET;
+import static gregtech.api.util.CustomGlyphs.HIGH_VOLTAGE;
+import static gregtech.api.util.CustomGlyphs.MAGNET;
+import static gregtech.api.util.CustomGlyphs.OMEGA;
+import static gregtech.api.util.CustomGlyphs.ORDER;
+import static gregtech.api.util.CustomGlyphs.SPARKLES;
+import static gregtech.api.util.CustomGlyphs.STAR;
+import static gregtech.api.util.CustomGlyphs.SUBSCRIPT0;
+import static gregtech.api.util.CustomGlyphs.SUPERSCRIPT0;
 
 import java.math.BigInteger;
 import java.util.Arrays;
@@ -45,6 +60,7 @@ import gregtech.api.fluid.GTFluidTank;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.internal.IGTRecipeAdder;
 import gregtech.api.net.IGT_NetworkHandler;
+import gregtech.api.objects.XSTR;
 import gregtech.api.util.GTChunkAssociatedData;
 
 /**
@@ -596,11 +612,69 @@ public class GTValues {
         + DARK_BLUE
         + "ez";
 
+    // a list specifically for random selection of formatting codes.
+    private static final String[] formattingCodes = new String[] { DARK_GREEN, DARK_AQUA, DARK_PURPLE, GOLD, BLUE,
+        GREEN, AQUA, RED, LIGHT_PURPLE, YELLOW, WHITE, OBFUSCATED, UNDERLINE };
+
     public static final Supplier<String> fancyAuthorChrom = chain(
-        animatedText("Chrom", 0, 1000, WHITE + BOLD, BLUE + BOLD, GOLD + BOLD));
+        createChromLetter("C", ORDER, MAGNET, HIGH_VOLTAGE),
+        createChromLetter("h", EARTH, ALEPH + SUBSCRIPT0, OMEGA + SUPERSCRIPT0),
+        createChromLetter("r", CHAOS, "ṟ", SPARKLES),
+        createChromLetter("o", AIR, CIRCLE_CROSS, EMPTY_SET),
+        createChromLetter("m", STAR, CIRCLE_STAR, "⏧"));
 
     public static final Supplier<String> AuthorThree = chain(
         animatedText("Three", 0, 1000, BLUE + BOLD, RED + BOLD, YELLOW + BOLD));
+
+    private static Supplier<String> createChromLetter(String letter, String... injectedUnicode) {
+
+        XSTR random = XSTR.XSTR_INSTANCE;
+        // calculates the amount of cycles
+        int length = 4 + injectedUnicode.length * 2;
+        String[] colorList = new String[length];
+
+        int currentUnicodeIndex = 0;
+        for (int i = 0; i < colorList.length; i++) {
+            StringBuilder builder = new StringBuilder();
+            int prependedFormattingCodes = 1 + random.nextInt(2);
+            for (int codeStep = 0; codeStep < prependedFormattingCodes; codeStep++) {
+                // adds fun formatting codes
+                int randIndex = random.nextInt(formattingCodes.length);
+                builder.append(formattingCodes[randIndex]);
+            }
+            // checks if its the correct positon to insert a special unicode character, injects if so, otherwise adds
+            // the letter
+            if (currentUnicodeIndex < injectedUnicode.length && ((i + 1) % injectedUnicode.length == 0)) {
+                builder.append(injectedUnicode[currentUnicodeIndex]);
+                currentUnicodeIndex += 1;
+            } else {
+                builder.append(letter);
+            }
+            colorList[i] = builder.toString();
+        }
+        return chromAnimatedText(" ", 1, 1000, colorList);
+    }
+
+    // special version of the animated text that strips the return value of spaces, don't bother using this elsewhere
+    private static Supplier<String> chromAnimatedText(String text, int posstep, int delay, String... formattingArray) {
+        if (text == null || formattingArray == null || formattingArray.length == 0) return () -> "";
+
+        final int finalDelay = Math.max(delay, 1);
+        final int finalPosstep = Math.max(posstep, 0);
+
+        return () -> {
+            StringBuilder sb = new StringBuilder(text.length() * 3);
+            int offset = (int) ((System.currentTimeMillis() / finalDelay) % formattingArray.length);
+            for (int i = 0; i < text.length(); i++) {
+                char c = text.charAt(i);
+                int indexColorArray = (i * finalPosstep + formattingArray.length - offset) % formattingArray.length;
+                sb.append(formattingArray[indexColorArray]);
+                sb.append(c);
+            }
+            return sb.toString()
+                .replaceAll("\\s", "");
+        };
+    }
 
     private static final long[] EXPLOSION_LOOKUP_V = new long[] { V[0], V[1], V[2], V[3], V[4], V[4] * 2, V[5], V[6],
         V[7], V[8], V[8] * 2, V[9], V[10], V[11], V[12], V[12] * 2, V[13], V[14], V[15] };
