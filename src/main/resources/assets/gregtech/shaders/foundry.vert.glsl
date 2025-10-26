@@ -1,11 +1,6 @@
 #version 120
 
-uniform float texOffset;
-
-varying vec2 vTexCoord;
-
 void main() {
-    vTexCoord = (gl_MultiTexCoord0.st + vec2(texOffset, 0)) * vec2(3, 3);
-
-    gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
+    vec4 translatedPos = gl_Vertex + vec3(0, 8 * gl_InstanceID, 0);
+    gl_Position = gl_ModelViewProjectionMatrix * translatedPos;
 }

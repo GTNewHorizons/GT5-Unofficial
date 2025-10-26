@@ -9,14 +9,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
 
-
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20;
 
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
 import com.gtnewhorizons.angelica.glsm.GLStateManager;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL20;
 
 public class BloomShader {
 
@@ -164,10 +163,6 @@ public class BloomShader {
         ShaderProgram.clear();
         GL11.glPopAttrib();
 
-        /*
-         * GLStateManager.enableLighting();
-         * GLStateManager.enableDepthTest();
-         */
     }
 
     public static BloomShader getInstance() {

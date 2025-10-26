@@ -30,6 +30,7 @@ import javax.annotation.Nullable;
 import gregtech.api.util.tooltip.TooltipHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -58,6 +59,7 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.angelica.glsm.GLStateManager;
 
 import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.items.GGMaterial;
@@ -1046,8 +1048,6 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     private static IModelCustomExt ring;
     private static ShaderProgram ringProgram;
     private int uGlowColor;
-    private int uTexOffset;
-    private VertexBuffer ringVBO;
 
     // TODO: figure out why isActive doesnt send to client by default???
     @Override
@@ -1090,37 +1090,57 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
 
         // if (!shouldRender || !getBaseMetaTileEntity().isActive()) return;
 
+        if (!renderInitialized) {
+            initializeRender();
+            if (!renderInitialized) return;
+        }
+        final TextureManager textureManager = Minecraft.getMinecraft()
+            .getTextureManager();
+        textureManager.bindTexture(ringTexture);
+        GLStateManager.enableDepthTest();
+        ringProgram.use();
+        GL11.glPushMatrix();
+        GL11.glTranslated(x + 0.5f, y + 0.5f, z + 7.5F);
+        BloomShader.getInstance()
+            .bind();
+
+        renderRingsDebug();
         /*
-         * if (!renderInitialized) {
-         * initializeRender();
-         * if (!renderInitialized) return;
-         * }
-         * final TextureManager textureManager = Minecraft.getMinecraft()
-         * .getTextureManager();
-         * textureManager.bindTexture(ringTexture);
-         * GLStateManager.enableDepthTest();
-         * ringProgram.use();
-         * GL20.glUniform1f(uTexOffset, ((System.currentTimeMillis() % 5000) / 5000f));
-         * GL11.glPushMatrix();
-         * GL11.glTranslated(x + 0.5f, y + 0.5f, z + 7.5F);
-         * BloomShader.getInstance()
-         * .bind();
-         * renderRingOne(modules[0].rgbArr);
-         * renderRingTwo(modules[1].rgbArr);
-         * renderRingThree(modules[2].rgbArr);
-         * renderRingFour(modules[3].rgbArr);
-         * // RenderRings(x, y, z, timeSinceLastTick);
-         * BloomShader.getInstance()
-         * .unbind();
-         * // RenderRings(x, y, z, timeSinceLastTick);
-         * // TODO
-         * renderRingOne(modules[0].rgbArr);
-         * renderRingTwo(modules[1].rgbArr);
-         * renderRingThree(modules[2].rgbArr);
-         * renderRingFour(modules[3].rgbArr);
-         * GL11.glPopMatrix();
-         * ShaderProgram.clear();
+        for (int i = 0; i < 4; i++) {
+            renderRing(i, modules[i].rgbArr);
+        }
+
          */
+        /*
+        renderRingOne(modules[0].rgbArr);
+        renderRingTwo(modules[1].rgbArr);
+        renderRingThree(modules[2].rgbArr);
+        renderRingFour(modules[3].rgbArr);
+
+         */
+        BloomShader.getInstance()
+            .unbind();
+        // TODO
+        /*
+        renderRingOne(modules[0].rgbArr);
+        renderRingTwo(modules[1].rgbArr);
+        renderRingThree(modules[2].rgbArr);
+        renderRingFour(modules[3].rgbArr);
+
+         */
+        renderRingsDebug();
+        GL11.glPopMatrix();
+        ShaderProgram.clear();
+
+    }
+
+    private void renderRingsDebug() {
+        int i = 0;
+        for (SolidifierModules module : SolidifierModules.values()) {
+            if (module == SolidifierModules.UNSET) continue;
+            renderRing(i, module.rgbArr);
+            i++;
+        }
     }
 
     private void initializeRender() {
@@ -1147,49 +1167,33 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                 "shaders/foundry.frag.glsl"
             );
             uGlowColor = ringProgram.getUniformLocation("u_Color");
-          //  uTexOffset = ringProgram.getUniformLocation("texOffset");
             renderInitialized = true;
-         /*   AutoShaderUpdater.getInstance().registerShaderReload(
-                ringProgram,
-                GregTech.resourceDomain,
-                "shaders/foundry.vert.glsl",
-                "shaders/foundry.frag.glsl",
-                (shader, vertexPath, fragmentPath) -> {
-                    uGlowColor = shader.getUniformLocation("u_Color");
-                    uTexOffset = shader.getUniformLocation("texOffset");
-                }
-
-            );*/
-
-            StructureVBO ringStructure = (new StructureVBO()).addMapping('b', GregTechAPI.sBlockCasings8, 14)
-                .addMapping('c', GregTechAPI.sBlockCasingsFoundry, 9)
-                .addMapping('d', GregTechAPI.sBlockCasingsFoundry, 9)
-                .addMapping('e', GregTechAPI.sBlockFrames, 581)
-                .addMapping('f', GregTechAPI.sBlockCasingsFoundry, 0)
-                .addMapping('g', GregTechAPI.sBlockCasingsFoundry, 7)
-                .addMapping('K', GregTechAPI.sBlockCasingsFoundry, 4)
-
-                .addMapping('q', GregTechAPI.sBlockCasingsFoundry, 8)
-                .addMapping('r', GregTechAPI.sBlockCasingsFoundry, 5)
-                .addMapping('s', GregTechAPI.sBlockCasingsFoundry, 10)
-                .addMapping('t', GregTechAPI.sBlockCasingsFoundry, 6)
-                .addMapping('A', GregTechAPI.sBlockGlass1, 0);
-            ringVBO = ringStructure.assignStructure(new String[][]{
-                    {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-                    {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-                    {"     bbbbb     ","   bcb   bcb   ","  bb       bb  "," bb         bb "," c           c ","bb           bb","b             b","b             b","b             b","bb           bb"," c           c "," bb         bb ","  bb       bb  ","   bcb   bcb   ","     bbbbb     "},
-                    {"     AbdbA     ","   AAA   AAA   ","  AA       AA  "," AA         AA "," A           A ","AA           AA","b             b","d             d","b             b","AA           AA"," A           A "," AA         AA ","  AA       AA  ","   AAA   AAA   ","     AbdbA     "},
-                    {"     bbbbb     ","   bcb   bcb   ","  bb       bb  "," bb         bb "," c           c ","bb           bb","b             b","b             b","b             b","bb           bb"," c           c "," bb         bb ","  bb       bb  ","   bcb   bcb   ","     bbbbb     "},
-                    {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-                    {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
-                })
-                .build();
+//            AutoShaderUpdater.getInstance().registerShaderReload(
+//                ringProgram,
+//                GregTech.resourceDomain,
+//                "shaders/foundry.vert.glsl",
+//                "shaders/foundry.frag.glsl",
+//                (shader, vertexPath, fragmentPath) -> {
+//                    uGlowColor = shader.getUniformLocation("u_Color");
+//                }
+//
+//            );
         } catch (Exception e) {
             GTMod.GT_FML_LOGGER.error(e.getMessage());
             return;
         }
         renderInitialized = true;
         // spotless:on
+    }
+
+    private void renderRing(int index, float[] rgb) {
+
+        GL11.glPushMatrix();
+        GL11.glTranslated(0, 9 + index * 8, 0);
+        GL11.glScalef(1.1f, 0.7f, 1.1f);
+        GL20.glUniform3f(uGlowColor, rgb[0], rgb[1], rgb[2]);
+        ring.renderAllVBO();
+        GL11.glPopMatrix();
     }
 
     private void renderRingOne(float[] rgba) {

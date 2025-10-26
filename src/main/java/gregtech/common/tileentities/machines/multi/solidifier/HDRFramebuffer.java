@@ -1,5 +1,7 @@
 package gregtech.common.tileentities.machines.multi.solidifier;
 
+import static gregtech.api.enums.Mods.GregTech;
+
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.io.File;
@@ -15,12 +17,10 @@ import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.shader.Framebuffer;
 
 import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.*;
 
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
 import com.gtnewhorizons.angelica.glsm.GLStateManager;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-import org.lwjgl.opengl.GL30;
 
 public class HDRFramebuffer extends Framebuffer {
 
@@ -112,40 +112,44 @@ public class HDRFramebuffer extends Framebuffer {
     }
 
     public void applyTonemapping() {
-        /*
-         * if (tonemapShader == null) {
-         * tonemapShader = new ShaderProgram(
-         * GregTech.resourceDomain,
-         * "shaders/hdr/tonemap.vert.glsl",
-         * "shaders/hdr/tonemap.frag.glsl");
-         * tonemapShader.use();
-         * tonemapShader.bindTextureSlot("uScene", 0);
-         * tonemapShader.bindTextureSlot("uOverlay", 1);
-         * AutoShaderUpdater.getInstance()
-         * .registerShaderReload(
-         * tonemapShader,
-         * GregTech.resourceDomain,
-         * "shaders/hdr/tonemap.vert.glsl",
-         * "shaders/hdr/tonemap.frag.glsl",
-         * (shader, vertexFile, fragmentFile) -> {
-         * shader.bindTextureSlot("uScene", 0);
-         * shader.bindTextureSlot("uOverlay", 1);
-         * });
-         * ShaderProgram.clear();
-         * }
-         * tonemapShader.use();
-         * GL13.glActiveTexture(GL13.GL_TEXTURE0);
-         * Minecraft.getMinecraft()
-         * .getFramebuffer()
-         * .bindFramebufferTexture();
-         * GL13.glActiveTexture(GL13.GL_TEXTURE1);
-         * bindFramebufferTexture();
-         * GLStateManager.disableBlend();
-         * drawTexturedRect();
-         * // this.copyTextureToFile("bloomshader", "framebuffer_final.png");
-         * GL13.glActiveTexture(GL13.GL_TEXTURE0);
-         */
+        if (tonemapShader == null) {
+            tonemapShader = new ShaderProgram(
+                GregTech.resourceDomain,
+                "shaders/hdr/tonemap.vert.glsl",
+                "shaders/hdr/tonemap.frag.glsl");
+            tonemapShader.use();
+            bindTextureSlot(tonemapShader, "uScene", 0);
+            bindTextureSlot(tonemapShader, "uOverlay", 1);
+//            AutoShaderUpdater.getInstance()
+//                .registerShaderReload(
+//                    tonemapShader,
+//                    GregTech.resourceDomain,
+//                    "shaders/hdr/tonemap.vert.glsl",
+//                    "shaders/hdr/tonemap.frag.glsl",
+//                    (shader, vertexFile, fragmentFile) -> {
+//                        shader.bindTextureSlot("uScene", 0);
+//                        shader.bindTextureSlot("uOverlay", 1);
+//                    });
+            ShaderProgram.clear();
+        }
+        tonemapShader.use();
+        GL13.glActiveTexture(GL13.GL_TEXTURE0);
+        Minecraft.getMinecraft()
+            .getFramebuffer()
+            .bindFramebufferTexture();
+        GL13.glActiveTexture(GL13.GL_TEXTURE1);
+        bindFramebufferTexture();
+        GLStateManager.disableBlend();
+        drawTexturedRect();
+        // this.copyTextureToFile("bloomshader", "framebuffer_final.png");
+        GL13.glActiveTexture(GL13.GL_TEXTURE0);
     }
+
+    //TODO get rid of this
+    public void bindTextureSlot(ShaderProgram shader, String sampler2DName, int index) {
+        GL20.glUniform1i(shader.getUniformLocation(sampler2DName), index);
+    }
+
 
     public void drawTexturedRect() {
         final Tessellator tessellator = Tessellator.instance;
