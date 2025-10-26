@@ -25,6 +25,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.GTValues.AuthorKuba;
 import static gregtech.api.enums.GTValues.AuthorPxx500;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTUtility.formatNumbers;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
@@ -311,90 +312,32 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Breeder Reactor, HTGR")
+        tt.addMachineType("machtype.htgr")
             .addInfo(
-                "Uses up to " + EnumChatFormatting.RED
-                    + GTUtility.formatNumbers(CONVERSION_FACTOR * 100)
-                    + EnumChatFormatting.GRAY
-                    + "% of fuel per operation, "
-                    + EnumChatFormatting.RED
-                    + "10"
-                    + EnumChatFormatting.GRAY
-                    + "% of this value is flat and "
-                    + EnumChatFormatting.RED
-                    + "90"
-                    + EnumChatFormatting.GRAY
-                    + "% dependent on the formula y=1-(1-x)^3 (x is % of pellet fill level)")
-            .addInfo(
-                "Maintenance problems decrease the efficiency of cooling by " + EnumChatFormatting.RED
-                    + "20"
-                    + EnumChatFormatting.GRAY
-                    + "% for each issue")
-            .addInfo(
-                "Uses " + EnumChatFormatting.RED
-                    + GTUtility.formatNumbers(POWER_USAGE)
-                    + EnumChatFormatting.GRAY
-                    + " EU/t increasing by up to "
-                    + EnumChatFormatting.RED
-                    + GTUtility.formatNumbers(POWER_PENALTY_WHEN_MINIMUM_HELIUM + 1)
-                    + EnumChatFormatting.GRAY
-                    + " times when lacking Helium Gas")
-            .addInfo(
-                "Helium gas increases effectiveness of heat exchangers linearly up to " + EnumChatFormatting.RED
-                    + "100"
-                    + EnumChatFormatting.GRAY
-                    + "% at max capacity")
-            .addInfo(
-                "The Reactor loses " + EnumChatFormatting.RED
-                    + GTUtility.formatNumbers(HELIUM_LOST_PER_CYCLE * 100)
-                    + EnumChatFormatting.GRAY
-                    + "% helium per operation and requires at least "
-                    + EnumChatFormatting.RED
-                    + GTUtility.formatNumbers(100 * MIN_HELIUM_NEEDED / HELIUM_NEEDED)
-                    + EnumChatFormatting.GRAY
-                    + "% helium to start operation")
-            .addInfo(
-                "One Operation takes longer based on reactor fill level (between " + EnumChatFormatting.RED
-                    + GTUtility.formatNumbers(BASE_PROCESSING_TIME / 20)
-                    + EnumChatFormatting.GRAY
-                    + "s and "
-                    + EnumChatFormatting.RED
-                    + GTUtility.formatNumbers((BASE_PROCESSING_TIME + SCALING_PROCESSING_TIME) / 20)
-                    + EnumChatFormatting.GRAY
-                    + "s)")
-            .addInfo(
-                "Providing coolant/water/both speeds up recipe by " + EnumChatFormatting.RED
-                    + GTUtility.formatNumbers(COOLANT_SPEEDUP * 20 * 100)
-                    + EnumChatFormatting.GRAY
-                    + "%/"
-                    + EnumChatFormatting.RED
-                    + GTUtility.formatNumbers(WATER_SPEEDUP * 20 * 100)
-                    + EnumChatFormatting.GRAY
-                    + "%/"
-                    + EnumChatFormatting.RED
-                    + GTUtility.formatNumbers(((COOLANT_SPEEDUP + WATER_SPEEDUP) * 20 * 100))
-                    + EnumChatFormatting.GRAY
-                    + "% total recipe time/second")
-            .addInfo(
-                "The amount of necessary fluid for maximum bonus speed scales with pellets, " + EnumChatFormatting.RED
-                    + GTUtility.formatNumbers(COOLANT_PER_PELLET)
-                    + EnumChatFormatting.GRAY
-                    + " coolant/tick/pellet and "
-                    + EnumChatFormatting.RED
-                    + GTUtility.formatNumbers(WATER_PER_PELLET)
-                    + EnumChatFormatting.GRAY
-                    + " water/tick/pellet")
+                "gt.htgr.tips.1",
+                formatNumbers(CONVERSION_FACTOR * 100),
+                formatNumbers(POWER_USAGE),
+                formatNumbers(POWER_PENALTY_WHEN_MINIMUM_HELIUM + 1),
+                formatNumbers(HELIUM_LOST_PER_CYCLE * 100),
+                formatNumbers(100 * MIN_HELIUM_NEEDED / HELIUM_NEEDED),
+                formatNumbers(BASE_PROCESSING_TIME / 20),
+                formatNumbers((BASE_PROCESSING_TIME + SCALING_PROCESSING_TIME) / 20),
+                formatNumbers(COOLANT_SPEEDUP * 20 * 100),
+                formatNumbers(WATER_SPEEDUP * 20 * 100),
+                formatNumbers(((COOLANT_SPEEDUP + WATER_SPEEDUP) * 20 * 100)),
+                formatNumbers(COOLANT_PER_PELLET),
+                formatNumbers(WATER_PER_PELLET))
             .beginStructureBlock(29, 16, 18, true)
-            .addController("Front center")
-            .addInputHatch("Top of the Pump", 1)
-            .addEnergyHatch("Top of the Pump", 1)
-            .addMaintenanceHatch("Top of the Pump", 1)
-            .addInputBus("Top of the Reactor", 2)
-            .addOutputBus("Bottom of the Reactor", 3)
-            .addInputHatch("Bottom of the first Coolant Tower", 4)
-            .addOutputHatch("Top of the first Coolant Tower", 5)
-            .addInputHatch("Top of the second Coolant Tower", 6)
-            .addOutputHatch("Bottom of the second Coolant Tower", 7)
+            .addController("front_center")
+            .addInputHatch("gt.htgr.info.1", 1)
+            .addEnergyHatch("gt.htgr.info.1", 1)
+            .addMaintenanceHatch("gt.htgr.info.1", 1)
+            .addInputBus("gt.htgr.info.2", 2)
+            .addOutputBus("gt.htgr.info.3", 3)
+            .addInputHatch("gt.htgr.info.4", 4)
+            .addOutputHatch("gt.htgr.info.5", 5)
+            .addInputHatch("gt.htgr.info.6", 6)
+            .addOutputHatch("gt.htgr.info.7", 7)
 
             .toolTipFinisher(AuthorKuba, AuthorPxx500);
         return tt;
@@ -774,7 +717,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                     "kubatech.infodata.htgr.stored_fuel_entry",
                     entry.getKey()
                         .getLocalizedNameForItem("%material"),
-                    GTUtility.formatNumbers(entry.getValue())))
+                    formatNumbers(entry.getValue())))
                 .append("\n");
         }
         sb.append(EnumChatFormatting.WHITE)
@@ -786,26 +729,26 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                     "kubatech.infodata.htgr.burned_fuel_entry",
                     entry.getKey()
                         .getLocalizedNameForItem("%material"),
-                    GTUtility.formatNumbers(entry.getValue() * 100d)))
+                    formatNumbers(entry.getValue() * 100d)))
                 .append("\n");
         }
         sb.append(EnumChatFormatting.WHITE)
             .append(
                 StatCollector.translateToLocalFormatted(
                     "kubatech.infodata.htgr.helium_supply",
-                    GTUtility.formatNumbers(this.heliumSupply)))
+                    formatNumbers(this.heliumSupply)))
             .append("\n");
         sb.append(EnumChatFormatting.WHITE)
             .append(
                 StatCollector.translateToLocalFormatted(
                     "kubatech.infodata.htgr.coolant_per_tick",
-                    GTUtility.formatNumbers(this.heliumSupply)))
+                    formatNumbers(this.heliumSupply)))
             .append("\n");
         sb.append(EnumChatFormatting.WHITE)
             .append(
                 StatCollector.translateToLocalFormatted(
                     "kubatech.infodata.htgr.water_per_tick",
-                    GTUtility.formatNumbers(this.heliumSupply)))
+                    formatNumbers(this.heliumSupply)))
             .append("\n");
         return sb.toString();
     }
