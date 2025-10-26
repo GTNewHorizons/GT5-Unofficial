@@ -1,7 +1,11 @@
 package gregtech.common.blocks;
 
 import static gregtech.GTMod.GT_FML_LOGGER;
-import static gregtech.api.util.MultiblockTooltipBuilder.TAB;
+import static gregtech.api.util.GTUtility.YAP_SEPARATOR;
+import static gregtech.api.util.GTUtility.translate;
+import static gregtech.api.util.MultiblockTooltipBuilder.INDENT;
+import static gregtech.api.util.MultiblockTooltipBuilder.INDENT_MARK;
+import static gregtech.api.util.MultiblockTooltipBuilder.SEPARATOR_MARK;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import static org.apache.commons.lang3.StringUtils.removeStart;
@@ -158,16 +162,18 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                     tParamsLoc.add(translated.equals(param) ? param : translated);
                 }
 
-                final String tTranslated = (tKey.startsWith(TAB) ? TAB : "")
-                    + translateToLocalFormatted(removeStart(tKey, TAB), tParamsLoc.toArray());
+                final String tTranslated = formatTranslatedLine(
+                    tKey,
+                    translate(removeStart(tKey, INDENT_MARK), tParamsLoc.toArray()));
                 if (aList != null) aList.add(tTranslated);
             } else {
-                final String tTranslated = (tDescLine.startsWith(TAB) ? TAB : "")
-                    + translateToLocal(removeStart(tDescLine, TAB));
+                final String tTranslated = formatTranslatedLine(
+                    tDescLine,
+                    translate(removeStart(tDescLine, INDENT_MARK)));
                 if (aList != null) aList.add(tTranslated.isEmpty() ? tDescLine : tTranslated);
             }
         }
-        splitLineByMark(aList, GTUtility.YAP_SEPARATOR);
+        splitLineByMark(aList, YAP_SEPARATOR);
         applySeparatorLine(aList);
     }
 
@@ -426,8 +432,8 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
 
         for (int i = 0; i < tooltips.size(); i++) {
             String line = tooltips.get(i);
-            if (line.contains("%SEPARATORLINE%")) {
-                tooltips.set(i, line.replace("%SEPARATORLINE%", separatorLine));
+            if (line.contains(SEPARATOR_MARK)) {
+                tooltips.set(i, line.replace(SEPARATOR_MARK, separatorLine));
             }
         }
     }
@@ -444,5 +450,10 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 i++;
             }
         }
+    }
+
+    private String formatTranslatedLine(String original, String translated) {
+        return (original.startsWith(INDENT_MARK) ? INDENT : "") + translated
+            .replace(YAP_SEPARATOR, original.startsWith(INDENT_MARK) ? YAP_SEPARATOR + INDENT : YAP_SEPARATOR);
     }
 }

@@ -62,7 +62,9 @@ import gregtech.api.util.tooltip.TooltipTier;
  */
 public class MultiblockTooltipBuilder {
 
-    public static final String TAB = "   ";
+    public static final String INDENT = "   ";
+    public static final String INDENT_MARK = "<INDENT>";
+    public static final String SEPARATOR_MARK = "<SEPARATOR>";
     private static final String COLON = translateToLocal("gt.string.colon").equals(":") ? ": "
         : translateToLocal("gt.string.colon");
     private static final String SEPARATOR = translateToLocal("gt.string.separator").equals(",") ? ", "
@@ -303,8 +305,8 @@ public class MultiblockTooltipBuilder {
     public MultiblockTooltipBuilder addSeparator(EnumChatFormatting color) {
         switch (GTMod.proxy.separatorStyle) {
             case 0 -> addInfo(" ");
-            case 1 -> addInfo(color + "%SEPARATORLINE%");
-            default -> addInfo("" + color + EnumChatFormatting.STRIKETHROUGH + "%SEPARATORLINE%");
+            case 1 -> addInfo(color + SEPARATOR_MARK);
+            default -> addInfo("" + color + EnumChatFormatting.STRIKETHROUGH + SEPARATOR_MARK);
         }
         return this;
     }
@@ -554,7 +556,7 @@ public class MultiblockTooltipBuilder {
      */
     @Deprecated
     public MultiblockTooltipBuilder addOtherStructurePart(String locKey, String info) {
-        addShiftInfo(TAB + "GT5U.MBTT.PartInfo", locKey, translateToLocal(info));
+        addShiftInfo(INDENT_MARK + "GT5U.MBTT.PartInfo", locKey, translateToLocal(info));
         return this;
     }
 
@@ -861,12 +863,12 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addStructureInfo(String info, Object... params) {
-        addShiftInfo(TAB + info, params);
+        addShiftInfo(INDENT_MARK + info, params);
         return this;
     }
 
     public MultiblockTooltipBuilder addStructureInfo(String info) {
-        addShiftInfo(TAB + info);
+        addShiftInfo(INDENT_MARK + info);
         return this;
     }
 
@@ -1012,8 +1014,8 @@ public class MultiblockTooltipBuilder {
         switch (GTMod.proxy.tooltipFinisherStyle) {
             case 0 -> {}
             case 1 -> addInfo(" ");
-            case 2 -> addInfo(separatorColor + "%SEPARATORLINE%");
-            default -> addInfo("" + separatorColor + EnumChatFormatting.STRIKETHROUGH + "%SEPARATORLINE%");
+            case 2 -> addInfo(separatorColor + SEPARATOR_MARK);
+            default -> addInfo("" + separatorColor + EnumChatFormatting.STRIKETHROUGH + SEPARATOR_MARK);
         }
 
         addInfo("GT5U.MBTT.HoldDisplay");

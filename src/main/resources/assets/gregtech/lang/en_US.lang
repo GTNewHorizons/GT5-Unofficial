@@ -3693,6 +3693,7 @@ gt.mb.hint_block=Hint block with dot %d
 
 # Multiblock Tooltip lines
 
+
 gt.dehp.tips.1=Consumes %sEU/t\nHas 2 Modes, use the Screwdriver to change them:\nDirect Steam and Coolant Heating\nDirect Steam Mode: Consumes §9Distilled Water§7 to produce §f%s§7L/s of §fSuperheated Steam\nCoolant Heating Mode: Converts %sL/s §bCoolant§7 to §cHot Coolant\nEach maintenance issue lowers output efficiency by §a10%%\nExplodes when it runs out of Distilled Water/Coolant\nBase cycle time: 1 tick
 gt.dehp.info.1=form the 3x1x3 Base
 gt.dehp.info.2=1x3x1 pillar above the center of the base (2 minimum total)
@@ -3753,11 +3754,11 @@ gt.cleanroom.info.1=  If width or length is even, it can be in either of the two
 gt.cleanroom.info.2=Top layer, except for edges
 gt.cleanroom.info.3=§f%s: §7Edges of top layer, all walls and floor. Minimum §6%s§7
 gt.cleanroom.info.4=Any Plascrete Block. Exactly one
-gt.cleanroom.info.5=Up to §6%s%%§7 of plascrete blocks can be replaced by other valid blocks\n   Try some of the following:\n   - Any §8EV+§7 tier glass\n   - Machine hulls or diodes for item and power transfer\n   - Reinforced Doors (§oIC2§r§7). Keep closed, no gaps allowed or efficiency will drop!\n   - Elevators (§oOpenBlocks§r§7) or Travel Anchors (§oEnderIO§r§7)\n   See §8config/GregTech/MachineStats.cfg§7 for more valid blocks\n   §eAll non-plascrete blocks now share the same limit. Feel free to mix and match!
+gt.cleanroom.info.5=Up to §6%s%%§7 of plascrete blocks can be replaced by other valid blocks\nTry some of the following:\n- Any §8EV+§7 tier glass\n- Machine hulls or diodes for item and power transfer\n- Reinforced Doors (§oIC2§r§7). Keep closed, no gaps allowed or efficiency will drop!\n- Elevators (§oOpenBlocks§r§7) or Travel Anchors (§oEnderIO§r§7)\See §8config/GregTech/MachineStats.cfg§7 for more valid blocks\n§eAll non-plascrete blocks now share the same limit. Feel free to mix and match!
 
 gt.bbf.tips.1=Usable for Steel and general Pyrometallurgy\nHas a useful interface, unlike other gregtech multis
 gt.bbf.info.1=Everything except the controller
-gt.bbf.info.2=The top block is also empty\n   You can share the walls of GT multis, so\n   each additional one costs less, up to 4
+gt.bbf.info.2=The top block is also empty\nYou can share the walls of GT multis, so\neach additional one costs less, up to 4
 
 gt.bhc.tips.1=§dUses the immense power of the event horizon to compress things\n§dNo longer requires heat management to perform superdense compression\n§dCan create advanced singularities!
 gt.bhc.tips.2=Insert a §fBlack Hole Seed§7 to open a black hole\nThe black hole will begin its life at §c100§7 stability and slowly decay\nStability decays by §c1/s§7 until it reaches 0\nAt 0 stability, the black hole is §4UNSTABLE\nOnce the black hole becomes unstable, it will void recipes and eventually close itself!
@@ -3781,7 +3782,7 @@ gt.eoh.tips.6=This multiblock can be overclocked by placing a programmed circuit
 gt.eoh.tips.7=If a recipe fails the EOH will output §aSuccess chance * %s * (%s)^(Recipe tier) §7L of molten\n%s instead of fluid/item outputs and output as much EU as a successful recipe
 gt.eoh.tips.8=This multiblock can perform parallel processing by placing Astral Array Fabricators into the input bus\nThey are stored internally and can be retrieved via right-clicking the controller with a wire cutter\nThe maximum amount of stored Astral Arrays is %s. Parallel amount is calculated via these formulas:\n§aParallel exponent = floor(log(%s * Astral Array amount) / log(%s))\n§aParallel = 2^(Parallel exponent)\nIf the EOH is running parallel recipes, the power calculation changes\nThe power needed for parallel processing is calculated as follows:\n§atotal EU = ((EU output - EU input * %s) / %s) * %s^(Parallel exponent)\nFurthermore, if parallel recipes are run, the recipes consume %s\ninstead of helium and hydrogen. Overflow penalties still apply\nThe required amount of fluid to start a recipe is §a12.4 / 10^6 * Helium amount * Parallel\nThe success or failure of each parallel is determined independently
 gt.eoh.tips.9=Animations can be disabled by using a screwdriver on the multiblock\nPlanet block can be inserted directly by right-clicking the controller with planet block
-gt.eoh.info.1=Requires §62§7 input hatches\n   Requires §61§7 ME output hatch\n   Requires §61§7 input bus\n   Requires §61§7 ME output bus
+gt.eoh.info.1=Requires §62§7 input hatches\nRequires §61§7 ME output hatch\nRequires §61§7 input bus\nRequires §61§7 ME output bus
 
 gt.solar_tower.tips.1=Contributing Green Energy towards the future\nSurround with rings of Solar Reflectors\nThe Reflectors increase the internal heat value of the Tower (see below for formula)\nEach Reflector ring increases tier, the first ring is required for the Tower to work\nInput: %s\nOutput: %s\nEvery cycle (10 seconds), heat increases and all the Cold Solar Salt is heated\nConverting Cold to Hot Solar Salt reduces heat, equal to the amount converted\nThis conversion only happens if heat >= 30000 and controller efficiency = 100%%\nIf there's more Cold Salt than heat, all the heat is used up and returns to 0\nThe heat increase is most efficient at exactly half of maximum heat\nMinimum efficiency at 0 or 100000 heat, maximum efficiency at 50000\nHeat Efficiency formula: ( 7000 - [|currentHeat - 50000| ^ 0.8] ) / 7000\nHeat gain per cycle: numberHeaters * heatEfficiency * (10 + bonus)\nBonus: 1 ring  = +1, 2 rings = +2, 3 rings = +4, 4 rings = +8, 5 rings = +16\nTotal number of reflectors based on how many rings are built:\n1 ring = 36, 2 rings = 88, 3 rings = 156, 4 rings = 240, 5 rings = 340
 gt.solar_tower.info.1=min 1
@@ -3826,7 +3827,7 @@ gt.lcr.info.3=You can have multiple hatches/buses
 
 gt.adv_assline.tips.1=Assembly Line with item pipelining\nAll fluids are consumed at the start of the recipe\nRecipe tier is limited by the lowest Energy Hatch tier
 gt.adv_assline.tips.2=Runs imperfect overclocks until Energy Hatch tier\nAdditional overclocks are increasingly more expensive\n§bMultiplier = 4^(Regular Overclocks) × 4.3 × 4.6 × … × (4 + 0.3 × Extra Overclocks)\n§bPower usage = Multiplier × (Active Slices) × (Recipe EU/t)\nOverclocking assumes all recipe slices are active\n§lDoes not overclock beyond 1 tick\nConstructed identically to the Assembly Line
-gt.adv_assline.info.1=From Bottom to Top, Left to Right\n   Layer 1 - Solid Steel Machine Casing, Input Bus, Solid Steel Machine Casing\n   Layer 2 - Glass, Assembly Line Casing, Glass\n   Layer 3 - Grate Machine Casing, Assembler Machine Casing, Grate Machine Casing\n   Layer 4 - Empty, Solid Steel Machine Casing, Empty\n   Up to 16 repeating slices, each one allows for 1 more item in recipes
+gt.adv_assline.info.1=From Bottom to Top, Left to Right\nLayer 1 - Solid Steel Machine Casing, Input Bus, Solid Steel Machine Casing\nLayer 2 - Glass, Assembly Line Casing, Glass\nLayer 3 - Grate Machine Casing, Assembler Machine Casing, Grate Machine Casing\nLayer 4 - Empty, Solid Steel Machine Casing, Empty\nUp to 16 repeating slices, each one allows for 1 more item in recipes
 gt.adv_assline.info.2=Either Grate on layer 3 of the first slice
 gt.adv_assline.info.3=Any layer 4 casing
 gt.adv_assline.info.4=Any layer 1 casing
