@@ -3325,7 +3325,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             2_048,
             (int) TierEU.RECIPE_UEV,
             8,
-            new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.PrismaticNaquadah, 1),
+            new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Netherite, 1),
                 ItemList.Optically_Perfected_CPU.get(32), ItemRefer.Advanced_Radiation_Protection_Plate.get(32),
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.Infinity, 6),
                 GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUEV, 4) },
