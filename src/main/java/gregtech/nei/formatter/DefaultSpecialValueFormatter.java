@@ -1,13 +1,12 @@
 package gregtech.nei.formatter;
 
-import static gregtech.api.util.GTUtility.trans;
-
 import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import gregtech.GTMod;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.RecipeDisplayInfo;
 
@@ -21,15 +20,15 @@ public class DefaultSpecialValueFormatter implements INEISpecialInfoFormatter {
     public List<String> format(RecipeDisplayInfo recipeInfo) {
         int specialValue = recipeInfo.recipe.mSpecialValue;
         if (specialValue == -100 && GTMod.proxy.mLowGravProcessing) {
-            return Collections.singletonList(trans("159", "Needs Low Gravity"));
+            return Collections.singletonList(GTUtility.translate("gt.recipe.needs_low_gravity"));
         } else if (specialValue == -200 && GTMod.proxy.mEnableCleanroom) {
-            return Collections.singletonList(trans("160", "Needs Cleanroom"));
+            return Collections.singletonList(GTUtility.translate("gt.recipe.needs_cleanroom"));
         } else if (specialValue == -201) {
-            return Collections.singletonList(trans("206", "Scan for Assembly Line"));
+            return Collections.singletonList(GTUtility.translate("gt.recipe.scan_ass_line"));
         } else if (specialValue == -300 && GTMod.proxy.mEnableCleanroom) {
-            return Collections.singletonList(trans("160.1", "Needs Cleanroom & LowGrav"));
+            return Collections.singletonList(GTUtility.translate("gt.recipe.needs_cleanroom_and_low_gravity"));
         } else if (specialValue == -400) {
-            return Collections.singletonList(trans("216", "Deprecated Recipe"));
+            return Collections.singletonList(GTUtility.translate("gt.recipe.deprecated_recipe"));
         }
         return Collections.emptyList();
     }

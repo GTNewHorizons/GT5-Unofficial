@@ -170,16 +170,16 @@ public class CoverFluidRegulator extends Cover {
 
     private String getScredriverClickChat() {
         if (Math.abs(speed) == getMaxSpeed()) {
-            return GTUtility.trans("316", "Pump speed limit reached!");
+            return GTUtility.translate("gt.interact.desc.pump_speed_limit_reached");
         }
         if (tickRate == 1) {
-            return GTUtility.trans("048", "Pump speed: ") + speed
-                + GTUtility.trans("049", "L/tick ")
+            return GTUtility.translate("gt.interact.desc.pump_speed") + speed
+                + GTUtility.translate("gt.interact.desc.l_tick")
                 + speed * 20
-                + GTUtility.trans("050", "L/sec");
+                + GTUtility.translate("gt.interact.desc.l_sec");
         }
         return String.format(
-            GTUtility.trans("207", "Pump speed: %dL every %d ticks, %.2f L/sec on average"),
+            GTUtility.translate("gt.interact.desc.pump_speed_every_tick"),
             speed,
             tickRate,
             speed * 20d / tickRate);

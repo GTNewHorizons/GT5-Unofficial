@@ -131,7 +131,7 @@ public class DetravScannerGUI extends GuiScreen {
                     info.add(
                         StatCollector.translateToLocal("gui.detrav.scanner.pollution") + ": "
                             + GTUtility.formatNumbers(amount)
-                            + GTUtility.trans("203", " gibbl"));
+                            + GTUtility.translate("gt.util.gibbl"));
                 }
 
                 func_146283_a(info, x, y);

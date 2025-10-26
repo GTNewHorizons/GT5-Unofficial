@@ -1,6 +1,5 @@
 package gregtech.api.recipe;
 
-import static gregtech.api.util.GTUtility.trans;
 import static net.minecraft.util.EnumChatFormatting.GRAY;
 
 import java.util.ArrayList;
@@ -35,6 +34,7 @@ import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.recipe.metadata.IRecipeMetadataStorage;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.nei.GTNEIDefaultHandler;
@@ -248,18 +248,18 @@ public class RecipeMapFrontend {
         if (recipe.owners != null) {
             if (recipe.owners.size() > 1) {
                 recipeInfo.drawText(
-                    EnumChatFormatting.ITALIC + trans("273", "Original Recipe by: ")
+                    EnumChatFormatting.ITALIC + GTUtility.translate("gt.recipe.original_by")
                         + recipe.owners.get(0)
                             .getName());
                 for (int i = 1; i < recipe.owners.size(); i++) {
                     recipeInfo.drawText(
-                        EnumChatFormatting.ITALIC + trans("274", "Modified by: ")
+                        EnumChatFormatting.ITALIC + GTUtility.translate("gt.recipe.modified_by")
                             + recipe.owners.get(i)
                                 .getName());
                 }
             } else if (!recipe.owners.isEmpty()) {
                 recipeInfo.drawText(
-                    EnumChatFormatting.ITALIC + trans("272", "Recipe by: ")
+                    EnumChatFormatting.ITALIC + GTUtility.translate("gt.recipe.recipe_by")
                         + recipe.owners.get(0)
                             .getName());
             }
@@ -301,7 +301,7 @@ public class RecipeMapFrontend {
     protected List<String> handleNEIItemInputTooltip(List<String> currentTip,
         GTNEIDefaultHandler.FixedPositionedStack pStack) {
         if (pStack.isNotConsumed()) {
-            currentTip.add(GRAY + trans("151", "Does not get consumed in the process"));
+            currentTip.add(GRAY + GTUtility.translate("gt.tooltip.not_consumed_in_process"));
         }
         return currentTip;
     }
@@ -309,7 +309,7 @@ public class RecipeMapFrontend {
     protected List<String> handleNEIItemOutputTooltip(List<String> currentTip,
         GTNEIDefaultHandler.FixedPositionedStack pStack) {
         if (pStack.isChanceBased()) {
-            currentTip.add(GRAY + trans("150", "Chance: ") + pStack.getChanceText());
+            currentTip.add(GRAY + GTUtility.translate("gt.tooltip.chance") + pStack.getChanceText());
         }
         return currentTip;
     }

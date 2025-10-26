@@ -4,8 +4,8 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
+import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.ItemMachines;
 
 public class MachineTooltipsLoader implements Runnable {
@@ -20,15 +20,15 @@ public class MachineTooltipsLoader implements Runnable {
                 ((ItemMachines) tStack.getItem()).registerDescription(i);
             }
         }
-        GTLanguageManager.addStringLocalization("TileEntity_EUp_IN", "Voltage IN: ");
-        GTLanguageManager.addStringLocalization("TileEntity_EUp_OUT", "Voltage OUT: ");
-        GTLanguageManager.addStringLocalization("TileEntity_EUp_AMOUNT", "Amperage: ");
-        GTLanguageManager.addStringLocalization("TileEntity_EUp_STORE", "Capacity: ");
-        GTLanguageManager.addStringLocalization("TileEntity_TANK_INFO", "Contains Fluid: ");
-        GTLanguageManager.addStringLocalization("TileEntity_TANK_AMOUNT", "Fluid Amount: ");
-        GTLanguageManager.addStringLocalization("TileEntity_CHEST_INFO", "Contains Item: ");
-        GTLanguageManager.addStringLocalization("TileEntity_CHEST_AMOUNT", "Item Amount: ");
-        GTLanguageManager.addStringLocalization("GT_TileEntity_MUFFLER", "has Muffler Upgrade");
-        GTLanguageManager.addStringLocalization("GT_TileEntity_STEAMTANKS", "Steam Tank Upgrades");
+        GTUtility.translate("gt.tooltip.volt_in");
+        GTUtility.translate("gt.tooltip.volt_out");
+        GTUtility.translate("gt.tooltip.amp");
+        GTUtility.translate("gt.tooltip.capacity");
+        GTUtility.translate("gt.tooltip.contains_fluid");
+        GTUtility.translate("gt.tooltip.fluid_amount");
+        GTUtility.translate("gt.tooltip.contains_item");
+        GTUtility.translate("gt.tooltip.item_amount");
+        GTUtility.translate("gt.tooltip.has_muffler");
+        GTUtility.translate("gt.tooltip.steam_tank_upgrades");
     }
 }

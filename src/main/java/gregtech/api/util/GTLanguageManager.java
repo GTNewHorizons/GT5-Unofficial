@@ -1,3 +1,5 @@
+// TODO: Remove this shit :D
+
 package gregtech.api.util;
 
 import static gregtech.api.enums.GTValues.E;

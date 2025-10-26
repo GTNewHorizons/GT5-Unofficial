@@ -543,14 +543,14 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder
             .widget(
-                new TextWidget(GTUtility.trans("138", "Incomplete Structure.")).setTextAlignment(Alignment.CenterLeft)
+                new TextWidget(GTUtility.translate("gt.gui.maintenance.incomplete"))
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mMachine)
                     .setPos(10, 8))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val))
             .widget(
-                new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.fusion_computer.hit_to_start"))
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(GTUtility.translate("gt.gui.maintenance.idle.0")).setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setTextAlignment(Alignment.Center)
                     .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive())
                     .setPos(-getGUIWidth() / 2, 170)
@@ -561,7 +561,7 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                     () -> getBaseMetaTileEntity().isActive(),
                     val -> getBaseMetaTileEntity().setActive(val)))
             .widget(
-                new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.fusion_computer.running_perfectly"))
+                new TextWidget(GTUtility.translate("gt.gui.maintenance.running"))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setTextAlignment(Alignment.Center)
                     .setEnabled(widget -> getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive())
@@ -589,7 +589,7 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                 if (clientEU > 5_120_000_000L && clientEU < 5_120_080_000L) {
                     clientEU = 5_120_000_000L;
                 }
-                return numberFormat.format(clientEU) + " EU";
+                return numberFormat.format(clientEU) + " " + GTUtility.translate("gt.info.eu");
             })
                 .setDefaultColor(COLOR_TEXT_RED.get())
                 .setTextAlignment(Alignment.Center)

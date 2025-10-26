@@ -36,7 +36,7 @@ public class BehaviourSwitchMetadata extends BehaviourNone {
 
     @Override
     public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
-        if (mShowModeSwitchTooltip) aList.add(GTUtility.trans("330", "Sneak Rightclick to switch Mode"));
+        if (mShowModeSwitchTooltip) aList.add(GTUtility.translate("gt.tooltip.behaviour.sneak_switch_mode"));
         return aList;
     }
 

@@ -1898,7 +1898,7 @@ public class GTModHandler {
                     } else {
                         GTUtility.sendChatToPlayer(
                             (EntityPlayer) aPlayer,
-                            GTUtility.trans("094.1", "Not enough soldering material!"));
+                            GTUtility.translate("gt.chat.interact.desc.not_enough_solder"));
                     }
                 }
             } else {
