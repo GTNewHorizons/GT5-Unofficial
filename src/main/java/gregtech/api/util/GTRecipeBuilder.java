@@ -368,6 +368,22 @@ public class GTRecipeBuilder {
         return this;
     }
 
+    public GTRecipeBuilder iCircuit(int circuitNumber) {
+        ItemStack circuit = GTUtility.getIntegratedCircuit(circuitNumber);
+
+        // Must be called AFTER .itemInputs() if there are items in the recipe
+        if (inputsBasic != null && inputsBasic.length > 0) {
+            ItemStack[] newInputs = new ItemStack[inputsBasic.length + 1];
+            System.arraycopy(inputsBasic, 0, newInputs, 0, inputsBasic.length);
+            newInputs[inputsBasic.length] = circuit;
+            inputsBasic = newInputs;
+        } else {
+            inputsBasic = new ItemStack[] { circuit };
+        }
+
+        return this;
+    }
+
     public GTRecipeBuilder special(Object special) {
         this.special = special;
         return this;
