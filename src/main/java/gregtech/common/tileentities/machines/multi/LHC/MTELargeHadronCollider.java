@@ -12,13 +12,12 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LHC_COLLIDER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LHC_COLLIDER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static java.lang.Math.max;
-import static java.lang.Math.min;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
 
-import gregtech.common.gui.modularui.multiblock.MTEChamberCentrifugeGui;
+import gregtech.api.enums.SoundResource;
 import gregtech.common.gui.modularui.multiblock.MTELargeHadronColliderGui;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -45,7 +44,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
@@ -55,7 +53,6 @@ import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.common.blocks.BlockCasings13;
-import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.Particle;
@@ -1881,7 +1878,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "CCCCCCCCCCC",
                 "CCDDDCDDDCC",
                 "CBCCCCCCCBC",
-                "CBC1CBC1CBC",
+                "CBC1CCC1CBC",
                 "CBCCCCCCCBC",
                 "CCDDDCDDDCC",
                 "CCCCCCCCCCC",
@@ -2140,7 +2137,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "CCCCCCCCCCC",
                 "CCDDDCDDDCC",
                 "CKCCCCCCCKC",
-                "CKC2C C2CKC",
+                "CKC2CCC2CKC",
                 "CKCCCCCCCKC",
                 "CCDDDCDDDCC",
                 "CCCCCCCCCCC",
@@ -2219,7 +2216,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "CIIIIIIIIIC",
                 "DCIICCCIICC",
                 "CIIC   CIIC",
-                "CIIC   CII ",
+                "CIIC   CIIC",
                 "CIIC   CIIC",
                 "DCIICCCIICC",
                 "CIIIIIIIIIC",
@@ -2358,7 +2355,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 "C         C",
                 "CC  CCC  CD",
                 "C  C   C  C",
-                "   C   C  C",
+                "C  C   C  C",
                 "C  C   C  C",
                 "CC  CCC  CD",
                 "C         C",
@@ -2627,7 +2624,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Particle Accelerator, Particle Collider")
+        tt.addMachineType("Particle Accelerator, Particle Collider, LHC")
             .addInfo("Accelerates particles to high energies and then collides them to generate new particles")
             .addInfo("Electrically neutral particles are unaffected")
             .addInfo(
@@ -2720,14 +2717,14 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
             .addInfo("then collide to generate new particles")
             .addInfo(
                 "The " + EnumChatFormatting.DARK_AQUA
-                    + "collision energy "
+                    + "Collision Energy "
                     + EnumChatFormatting.GRAY
                     + "is two times the "
                     + EnumChatFormatting.GOLD
-                    + "beam energy")
+                    + "Beam Energy")
             .addInfo(
                 "If the " + EnumChatFormatting.DARK_AQUA
-                    + "collision energy "
+                    + "Collision Energy "
                     + EnumChatFormatting.GRAY
                     + "exceeds the rest mass of a particle, that particle will start")
             .addInfo("appearing in the outputs")
@@ -2914,8 +2911,6 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
     public final double keVEURatio = 0.1 / 1000; // 1 EU = 0.1 eV, so 1 EU = 0.1/1000 keV
     public final float rateScaleFactor = 1.1F;
 
-    // todo: seriously test values, since unit conversion between eV, keV, MeV is a bit of a mess
-
     public BeamInformation accelerateParticle(BeamInformation particle) {
 
         float inputEnergy = particle.getEnergy();
@@ -2937,7 +2932,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                     outRate,
                     particle.getParticleId(),
                     particle.getFocus());
-                // todo: or should this crash the machine instead?
+                    // or should this crash the machine instead?
             }
 
         } else {
@@ -3005,8 +3000,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 }
                 if (!initialParticleInfo.isEqual(inputInfo)) {
                     // if the input beam is ever modified or interrupted, crash the LHC
-                    stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.noaccel"));
-                    // todo: new shutdown reason
+                    stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.inputinterrupt"));
                     return CheckRecipeResultRegistry.NO_RECIPE;
                 } else {
 
@@ -3048,7 +3042,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
             // Generate output particle:
 
             // 1. Determine output energy (= collision energy)
-            this.outputEnergy = (float) (inputEnergy) * 2; // output energy = collision energy = input energy * 2
+            this.outputEnergy = (inputEnergy) * 2; // output energy = collision energy = input energy * 2
 
             // 2. Use collision energy to generate particle ID
             this.outputParticleID = GenerateOutputParticleID(this.outputEnergy);
@@ -3163,4 +3157,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
     protected @NotNull MTELargeHadronColliderGui getGui() {
         return new MTELargeHadronColliderGui(this);
     }
+
+    protected SoundResource getProcessStartSound() { return SoundResource.GT_MACHINES_LHC_SPIN_UP; }
+
 }

@@ -6,7 +6,6 @@ import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
-import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
@@ -117,7 +116,7 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
                             + format((long)cachedOutputBeamEnergy.getDoubleValue()*1000) // *1000 because cached is in keV, but formatting expects eV
                             + "eV"
                     )
-                )
+                ).marginBottom(9)
             )
             .child(
                 new TextWidget<>(
@@ -125,7 +124,8 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
                         () -> EnumChatFormatting.WHITE + StatCollector.translateToLocal("GT5U.gui.text.LHC.beamrate")
                             + ": "
                             + EnumChatFormatting.YELLOW
-                            + cachedOutputBeamRate.getIntValue())).marginBottom(9)
+                            + cachedOutputBeamRate.getIntValue())
+                ).marginBottom(9)
             )
             .child(
                 new TextWidget<>(
