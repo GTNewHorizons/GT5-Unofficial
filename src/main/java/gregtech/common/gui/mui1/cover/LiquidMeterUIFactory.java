@@ -2,11 +2,12 @@ package gregtech.common.gui.mui1.cover;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import net.minecraft.util.StatCollector;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.gui.modularui.CoverUIBuildContext;
-import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverLiquidMeter;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
@@ -44,8 +45,8 @@ public class LiquidMeterUIFactory extends CoverUIFactory<CoverLiquidMeter> {
                         CoverDataFollowerToggleButtonWidget.ofRedstone(),
                         CoverLiquidMeter::isInverted,
                         CoverLiquidMeter::setInverted,
-                        widget -> widget.addTooltip(0, translateToLocal("gt.interact.desc.normal"))
-                            .addTooltip(1, translateToLocal("gt.interact.desc.inverted"))
+                        widget -> widget.addTooltip(0, translateToLocal("gt.interact.desc.normal.tooltip"))
+                            .addTooltip(1, translateToLocal("gt.interact.desc.inverted.tooltip"))
                             .setPos(spaceX * 0, spaceY * 0))
                     .addFollower(
                         new CoverDataFollowerNumericWidget<>(),
@@ -63,10 +64,9 @@ public class LiquidMeterUIFactory extends CoverUIFactory<CoverLiquidMeter> {
                         getCoverString(
                             c -> c.isInverted() ? translateToLocal("gt.interact.desc.inverted")
                                 : translateToLocal("gt.interact.desc.normal")))
-                    .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX + spaceX * 1, 4 + startY + spaceY * 0))
             .widget(
-                new TextWidget(GTUtility.trans("222", "Fluid threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(StatCollector.translateToLocal("gt.interact.desc.Fluid_Meter.FluidThreshold"))
                     .setPos(startX + spaceX * 5 - 10, startY + spaceY * 1 + 4));
     }
 }

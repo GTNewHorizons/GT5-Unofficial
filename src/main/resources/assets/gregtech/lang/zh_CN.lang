@@ -160,7 +160,6 @@ GT5U.machines.stalled_vent.tooltip.2=§7以旋转其蒸汽输出口
 GT5U.machines.stalled_vent.tooltip.3=§7指向没有遮挡的方向.
 GT5U.machines.stalled_vent.tooltip.extended=§7处理进度丢失了，
 GT5U.machines.stalled_vent.tooltip.extended.1=§7但处理产物还在.
-GT5U.machines.oreprocessor1=§e运行模式：
 GT5U.machines.oreprocessor2=§c时间：%s s
 GT5U.machines.oreprocessor.void=§e销毁石粉：%s
 GT5U.machines.industrialapiary.cancel.tooltip=§c取消处理
@@ -228,7 +227,7 @@ GT5U.multiblock.efficiency=效率
 GT5U.multiblock.problems=问题
 GT5U.multiblock.mei=最大输入
 GT5U.multiblock.usage=大概功率
-
+GT5U.multiblock.runningMode=§e运行模式：
 
 # NEI recipe handlers
 

@@ -328,7 +328,7 @@ public class MTEDieselEngine extends MTEEnhancedMultiBlockBase<MTEDieselEngine> 
 
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
-        return GTMod.gregtechproxy.mPollutionLargeCombustionEnginePerSecond;
+        return GTMod.proxy.mPollutionLargeCombustionEnginePerSecond;
     }
 
     @Override

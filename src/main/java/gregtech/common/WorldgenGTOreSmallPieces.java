@@ -3,117 +3,150 @@ package gregtech.common;
 import static gregtech.api.enums.GTValues.debugSmallOres;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import net.minecraft.world.World;
-import net.minecraft.world.WorldProviderEnd;
-import net.minecraft.world.WorldProviderHell;
-import net.minecraft.world.WorldProviderSurface;
 import net.minecraft.world.chunk.IChunkProvider;
 
+import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.GregTechAPI;
+import gregtech.api.interfaces.IOreMaterial;
+import gregtech.api.interfaces.IStoneCategory;
 import gregtech.api.util.GTLog;
+import gregtech.api.util.GTUtility;
 import gregtech.api.world.GTWorldgen;
-import gregtech.common.blocks.TileEntityOres;
+import gregtech.common.ores.OreManager;
+import gregtech.common.worldgen.IWorldgenLayer;
 
-public class WorldgenGTOreSmallPieces extends GTWorldgen {
+public class WorldgenGTOreSmallPieces extends GTWorldgen implements IWorldgenLayer {
 
+    public static final List<WorldgenGTOreSmallPieces> sList = new ArrayList<>();
     public final short mMinY;
     public final short mMaxY;
     public final short mAmount;
-    public final short mMeta;
-    public final boolean mOverworld;
-    public final boolean mNether;
-    public final boolean mEnd;
-    public final boolean twilightForest;
+    private final IOreMaterial mMaterial;
+
     public final String mBiome;
-    public static ArrayList<WorldgenGTOreSmallPieces> sList = new ArrayList<>();
-
-    public Class[] mAllowedProviders;
-    public String[] blackListedProviders;
-    public static Class tfProviderClass;
-
-    static {
-        try {
-            tfProviderClass = Class.forName("twilightforest.world.WorldProviderTwilightForest");
-        } catch (ClassNotFoundException ignored) {}
-    }
+    private final Set<String> mAllowedDimensions;
+    private final Set<IStoneCategory> mAllowedStone;
 
     public WorldgenGTOreSmallPieces(SmallOreBuilder ore) {
         super(ore.smallOreName, GregTechAPI.sWorldgenList, ore.enabledByDefault);
-        this.mOverworld = ore.dimsEnabled.getOrDefault(SmallOreBuilder.OW, false);
-        this.mNether = ore.dimsEnabled.getOrDefault(SmallOreBuilder.NETHER, false);
-        this.mEnd = ore.dimsEnabled.getOrDefault(SmallOreBuilder.THE_END, false);
-        this.twilightForest = ore.dimsEnabled.getOrDefault(SmallOreBuilder.TWILIGHT_FOREST, false);
 
         this.mMinY = (short) ore.minY;
         this.mMaxY = (short) Math.max(this.mMinY + 1, ore.maxY);
         this.mAmount = (short) Math.max(1, ore.amount);
-        this.mMeta = (short) ore.ore.mMetaItemSubID;
+        this.mMaterial = ore.ore;
         this.mBiome = "None";
+        this.mAllowedDimensions = new HashSet<>(ore.dimsEnabled);
+        this.mAllowedStone = ore.stoneCategories == null ? null : new HashSet<>(ore.stoneCategories);
 
         if (this.mEnabled) sList.add(this);
-
-        List<Class> allowedProviders = new ArrayList<>();
-        if (this.mNether) {
-            allowedProviders.add(WorldProviderHell.class);
-        }
-
-        if (this.mOverworld) {
-            allowedProviders.add(WorldProviderSurface.class);
-            if (!this.twilightForest) {
-                blackListedProviders = new String[] { "twilightforest.world.WorldProviderTwilightForest" };
-            }
-        }
-
-        if (tfProviderClass != null && this.twilightForest) {
-            allowedProviders.add(tfProviderClass);
-        }
-
-        if (this.mEnd) {
-            allowedProviders.add(WorldProviderEnd.class);
-        }
-        mAllowedProviders = allowedProviders.toArray(new Class[0]);
     }
 
     @Override
-    public boolean executeWorldgen(World aWorld, Random aRandom, String aBiome, int aDimensionType, int aChunkX,
-        int aChunkZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
-        if (!this.mBiome.equals("None") && !(this.mBiome.equals(aBiome))) {
+    public int getMinY() {
+        return mMinY;
+    }
+
+    @Override
+    public int getMaxY() {
+        return mMaxY;
+    }
+
+    @Override
+    public int getWeight() {
+        return mAmount;
+    }
+
+    @Override
+    public float getDensity() {
+        return GTUtility.clamp(mAmount / 64.0f, 0f, 1f);
+    }
+
+    @Override
+    public boolean canGenerateIn(String dimName) {
+        return mAllowedDimensions.contains(dimName);
+    }
+
+    @Override
+    public boolean canGenerateIn(IStoneCategory stoneType) {
+        return mAllowedStone != null && mAllowedStone.contains(stoneType);
+    }
+
+    @Override
+    public boolean isStoneSpecific() {
+        return mAllowedStone != null;
+    }
+
+    @Override
+    public boolean contains(IOreMaterial material) {
+        return material == mMaterial;
+    }
+
+    @Override
+    public IOreMaterial getOre(float k) {
+        return mMaterial;
+    }
+
+    @Override
+    public String getName() {
+        return mWorldGenName;
+    }
+
+    @Override
+    public boolean generatesBigOre() {
+        return false;
+    }
+
+    public Set<String> getAllowedDimensions() {
+        return mAllowedDimensions;
+    }
+
+    public IOreMaterial getMaterial() {
+        return mMaterial;
+    }
+
+    @Override
+    public boolean executeWorldgen(World world, Random random, String biome, int chunkX, int chunkZ,
+        IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
+        if (!this.mBiome.equals("None") && !(this.mBiome.equals(biome))) {
             return false; // Not the correct biome for ore mix
         }
-        if (!isGenerationAllowed(aWorld, mAllowedProviders)) {
+
+        if (!mAllowedDimensions.contains(DimensionDef.getDimensionName(world))) {
             return false;
         }
-        int count = 0;
-        // For optimal performance, this should be done upstream. Meh
-        String tDimensionName = aWorld.provider.getDimensionName();
-        boolean isUnderdark = tDimensionName.equals("Underdark");
 
-        if (this.mMeta > 0) {
-            int j = Math.max(1, this.mAmount / 2 + aRandom.nextInt(this.mAmount) / 2);
-            for (int i = 0; i < j; i++) {
-                TileEntityOres.setOreBlock(
-                    aWorld,
-                    aChunkX + 8 + aRandom.nextInt(16),
-                    this.mMinY + aRandom.nextInt(Math.max(1, this.mMaxY - this.mMinY)),
-                    aChunkZ + 8 + aRandom.nextInt(16),
-                    this.mMeta,
-                    true,
-                    isUnderdark);
+        int count = 0;
+
+        if (this.mMaterial != null) {
+            int smallOresToGenerate = Math.max(1, this.mAmount / 2 + random.nextInt(this.mAmount) / 2);
+
+            for (int i = 0; i < smallOresToGenerate; i++) {
+                OreManager.setOreForWorldGen(
+                    world,
+                    chunkX + 8 + random.nextInt(16),
+                    this.mMinY + random.nextInt(Math.max(1, this.mMaxY - this.mMinY)),
+                    chunkZ + 8 + random.nextInt(16),
+                    null,
+                    mMaterial,
+                    true);
                 count++;
             }
         }
         if (debugSmallOres) {
             GTLog.out.println(
                 "Small Ore:" + this.mWorldGenName
-                    + " @ dim="
-                    + aDimensionType
+                    + " @ DimName="
+                    + world.provider.getDimensionName()
                     + " mX="
-                    + aChunkX / 16
+                    + chunkX / 16
                     + " mZ="
-                    + aChunkZ / 16
+                    + chunkZ / 16
                     + " ore="
                     + count);
         }

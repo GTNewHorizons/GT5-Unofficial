@@ -76,11 +76,11 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
+            .addBulkMachineInfo(16, 3f, 0.75f)
             .addInfo("Factory Grade Auto Chisel")
             .addInfo("Target block goes in Controller slot for common Input Buses")
             .addInfo("You can also set a target block in each Chisel Input Bus and use them as an Input Bus")
             .addInfo("If no target is provided for common buses, the result of the first chisel is used")
-            .addInfo("Speed: +200% | EU Usage: 75% | Parallel: Tier x 16")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")
@@ -326,5 +326,4 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
     public int getPollutionPerSecond(ItemStack aStack) {
         return PollutionConfig.pollutionPerSecondMultiIndustrialChisel;
     }
-
 }

@@ -247,7 +247,7 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
                     + BASE_WATER_PER_SECOND
                     + " L/s"
                     + EnumChatFormatting.AQUA
-                    + " of Water, to a minimum of 250L/s."
+                    + " of Water, to a minimum of 250L/s"
                     + EnumChatFormatting.RESET)
             .addInfo(
                 EnumChatFormatting.RED + "Consumes: "
@@ -255,7 +255,7 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
                     + BASE_STEAM_PER_SECOND
                     + " L/s"
                     + EnumChatFormatting.RED
-                    + " of Steam."
+                    + " of Steam"
                     + EnumChatFormatting.RESET)
             .beginStructureBlock(3, 3, 4, false)
             .addOutputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
@@ -375,4 +375,8 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
         return SoundResource.GT_MACHINES_WATER_PUMP_LOOP;
     }
 
+    @Override
+    public int getThemeTier() {
+        return mSetTier;
+    }
 }

@@ -10,7 +10,10 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
-import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_NEW5;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_NEW_ACTIVE5;
+import static gregtech.api.enums.Textures.BlockIcons.TURBINE_NEW;
+import static gregtech.api.enums.Textures.BlockIcons.TURBINE_NEW_ACTIVE;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
@@ -45,7 +48,6 @@ import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 
 public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCentrifuge>
@@ -85,10 +87,8 @@ public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCen
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("125% faster than using single block machines of the same voltage")
+            .addBulkMachineInfo(6, 2.25F, 0.9F)
             .addInfo("Disable animations with a screwdriver")
-            .addInfo("Only uses 90% of the EU/t normally required")
-            .addInfo("Processes six items per voltage tier")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front Center")
@@ -238,9 +238,9 @@ public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCen
         this.mIsAnimated = !mIsAnimated;
         Logger.INFO("Is Centrifuge animated " + this.mIsAnimated);
         if (this.mIsAnimated) {
-            PlayerUtils.messagePlayer(aPlayer, "Using Animated Turbine Texture. ");
+            GTUtility.sendChatToPlayer(aPlayer, "Using Animated Turbine Texture. ");
         } else {
-            PlayerUtils.messagePlayer(aPlayer, "Using Static Turbine Texture. ");
+            GTUtility.sendChatToPlayer(aPlayer, "Using Static Turbine Texture. ");
         }
     }
 

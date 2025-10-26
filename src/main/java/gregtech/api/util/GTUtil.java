@@ -31,9 +31,6 @@ import gregtech.common.tileentities.machines.MTEHatchOutputME;
 
 public class GTUtil {
 
-    // Last broken tile entity
-    public static final ThreadLocal<TileEntity> LAST_BROKEN_TILEENTITY = new ThreadLocal<>();
-
     public static Tuple tuple(String key, Object value) {
         return new Tuple(key, value);
     }
@@ -106,11 +103,7 @@ public class GTUtil {
      */
     public static TileEntity getTileEntity(World world, int x, int y, int z, boolean aLoadUnloadedChunks) {
         if (aLoadUnloadedChunks || world.blockExists(x, y, z)) {
-            TileEntity tileEntity = world.getTileEntity(x, y, z);
-            if (tileEntity != null) return tileEntity;
-            tileEntity = LAST_BROKEN_TILEENTITY.get();
-            if (tileEntity != null && tileEntity.xCoord == x && tileEntity.yCoord == y && tileEntity.zCoord == z)
-                return tileEntity;
+            return world.getTileEntity(x, y, z);
         }
         return null;
     }

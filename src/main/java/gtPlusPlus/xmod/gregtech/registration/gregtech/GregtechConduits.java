@@ -24,10 +24,10 @@ import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialsElements;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
@@ -641,7 +641,7 @@ public class GregtechConduits {
 
         String output = materialName.substring(0, 1)
             .toUpperCase() + materialName.substring(1);
-        output = Utils.sanitizeString(output);
+        output = StringUtils.sanitizeString(output);
 
         if (output.equals("VoidMetal")) {
             output = "Void";
@@ -814,7 +814,7 @@ public class GregtechConduits {
     }
 
     public static boolean registerOre(OrePrefixes aPrefix, Material aMaterial, ItemStack aStack) {
-        return registerOre(aPrefix.get(Utils.sanitizeString(aMaterial.getLocalizedName())), aStack);
+        return registerOre(aPrefix.get(StringUtils.sanitizeString(aMaterial.getLocalizedName())), aStack);
     }
 
     public static boolean registerOre(Object aName, ItemStack aStack) {

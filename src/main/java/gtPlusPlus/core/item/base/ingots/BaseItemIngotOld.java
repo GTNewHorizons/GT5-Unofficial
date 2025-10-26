@@ -8,9 +8,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.Dyes;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 
 public class BaseItemIngotOld extends Item {
@@ -26,7 +26,7 @@ public class BaseItemIngotOld extends Item {
         this.unlocalName = unlocalizedName;
         this.setMaxStackSize(64);
         this.setTextureName(GTPlusPlus.ID + ":" + "itemIngot");
-        this.colour = colour;
+        this.colour = colour == 0 ? Dyes._NULL.toInt() : colour;
         this.materialName = materialName;
         this.sRadiation = sRadioactivity;
         GameRegistry.registerItem(this, unlocalizedName);
@@ -54,9 +54,6 @@ public class BaseItemIngotOld extends Item {
 
     @Override
     public int getColorFromItemStack(final ItemStack stack, final int HEX_OxFFFFFF) {
-        if (this.colour == 0) {
-            return MathUtils.generateSingularRandomHexValue();
-        }
         return this.colour;
     }
 

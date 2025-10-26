@@ -1,7 +1,7 @@
 package gtPlusPlus.core.item.general;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
-import static gregtech.api.enums.Mods.Names;
+import static gregtech.api.enums.Mods.ModIDs;
 
 import java.util.List;
 
@@ -19,6 +19,7 @@ import baubles.api.BaubleType;
 import baubles.api.IBauble;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.Mods;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -27,8 +28,8 @@ import ic2.api.item.IElectricItem;
 import ic2.api.item.IElectricItemManager;
 
 @Optional.InterfaceList(
-    value = { @Optional.Interface(iface = "baubles.api.IBauble", modid = Names.BAUBLES),
-        @Optional.Interface(iface = "baubles.api.BaubleType", modid = Names.BAUBLES) })
+    value = { @Optional.Interface(iface = "baubles.api.IBauble", modid = ModIDs.BAUBLES),
+        @Optional.Interface(iface = "baubles.api.BaubleType", modid = Mods.ModIDs.BAUBLES) })
 public class ItemCloakingDevice extends Item implements IElectricItem, IElectricItemManager, IBauble {
 
     private final String unlocalizedName = "personalCloakingDevice";

@@ -43,10 +43,10 @@ import mods.railcraft.api.core.items.IToolCrowbar;
  * null);
  */
 @Optional.InterfaceList({
-    @Optional.Interface(iface = "forestry.api.arboriculture.IToolGrafter", modid = Mods.Names.FORESTRY),
-    @Optional.Interface(iface = "mods.railcraft.api.core.items.IToolCrowbar", modid = Mods.Names.RAILCRAFT),
-    @Optional.Interface(iface = "buildcraft.api.tools.IToolWrench", modid = Mods.Names.BUILD_CRAFT_CORE),
-    @Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = Mods.Names.ENDER_I_O) })
+    @Optional.Interface(iface = "forestry.api.arboriculture.IToolGrafter", modid = Mods.ModIDs.FORESTRY),
+    @Optional.Interface(iface = "mods.railcraft.api.core.items.IToolCrowbar", modid = Mods.ModIDs.RAILCRAFT),
+    @Optional.Interface(iface = "buildcraft.api.tools.IToolWrench", modid = Mods.ModIDs.BUILD_CRAFT_CORE),
+    @Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = Mods.ModIDs.ENDER_I_O) })
 public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagableItem, IToolCrowbar, IToolWrench {
 
     /**
@@ -591,16 +591,16 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
         }
         final Materials aMaterial = getPrimaryMaterial(aStack);
         final HashMap<Integer, Integer> tMap = new HashMap<>(), tResult = new HashMap<>();
-        if (aMaterial.mEnchantmentTools != null) {
-            tMap.put(aMaterial.mEnchantmentTools.effectId, (int) aMaterial.mEnchantmentToolsLevel);
-            if (aMaterial.mEnchantmentTools == Enchantment.fortune) {
-                tMap.put(Enchantment.looting.effectId, (int) aMaterial.mEnchantmentToolsLevel);
+        if (aMaterial.mToolEnchantment != null) {
+            tMap.put(aMaterial.mToolEnchantment.effectId, (int) aMaterial.mToolEnchantmentLevel);
+            if (aMaterial.mToolEnchantment == Enchantment.fortune) {
+                tMap.put(Enchantment.looting.effectId, (int) aMaterial.mToolEnchantmentLevel);
             }
-            if (aMaterial.mEnchantmentTools == Enchantment.knockback) {
-                tMap.put(Enchantment.power.effectId, (int) aMaterial.mEnchantmentToolsLevel);
+            if (aMaterial.mToolEnchantment == Enchantment.knockback) {
+                tMap.put(Enchantment.power.effectId, (int) aMaterial.mToolEnchantmentLevel);
             }
-            if (aMaterial.mEnchantmentTools == Enchantment.fireAspect) {
-                tMap.put(Enchantment.flame.effectId, (int) aMaterial.mEnchantmentToolsLevel);
+            if (aMaterial.mToolEnchantment == Enchantment.fireAspect) {
+                tMap.put(Enchantment.flame.effectId, (int) aMaterial.mToolEnchantmentLevel);
             }
         }
         final Enchantment[] tEnchants = tStats.getEnchantments(aStack);

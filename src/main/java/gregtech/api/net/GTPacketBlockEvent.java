@@ -64,7 +64,7 @@ public class GTPacketBlockEvent extends GTPacket {
             final TileEntity tileEntity = world.getTileEntity(x, y, z);
             if (tileEntity == null) continue;
             final short idAndValue = idsAndValues.getShort(i);
-            final byte id = (byte) (idAndValue >> 8);
+            final byte id = (byte) (idAndValue >>> 8);
             final byte type = (byte) (idAndValue & 0xFF);
             tileEntity.receiveClientEvent(id, type);
         }

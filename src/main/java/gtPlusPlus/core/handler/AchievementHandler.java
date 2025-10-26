@@ -119,7 +119,7 @@ public class AchievementHandler {
             GregtechItemList.Boiler_Advanced_MV.get(1),
             aBaseAchievementName,
             false);
-        if (GTMod.gregtechproxy.mPollution) {
+        if (GTMod.proxy.mPollution) {
             this.registerAchievement(
                 "pollutionremoval",
                 -11,

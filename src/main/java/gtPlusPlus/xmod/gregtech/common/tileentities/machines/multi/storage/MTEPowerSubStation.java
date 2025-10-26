@@ -79,7 +79,6 @@ import gtPlusPlus.core.config.ASMConfiguration;
 import gtPlusPlus.core.util.MovingAverageLong;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 
@@ -130,7 +129,7 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
                 "Can be built with variable height between " + (CELL_HEIGHT_MIN + 2) + "-" + (CELL_HEIGHT_MAX + 2) + "")
             .addInfo("Hatches can be placed nearly anywhere")
             .addInfo("HV Energy/Dynamo Hatches are the lowest tier you can use")
-            .addInfo("Supports voltages >= UHV using MAX tier components.")
+            .addInfo("Supports voltages >= UHV using MAX tier components")
             .addController("Bottom Center")
             .addCasingInfoMin("Sub-Station External Casings", 10, false)
             .addDynamoHatch("Any Casing", 1)
@@ -156,8 +155,8 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
         if (side == this.getBaseMetaTileEntity()
             .getBackFacing()) {
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(24)),
-                mIsOutputtingPower ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[(int) this.getOutputTier()]
-                    : Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[(int) this.getInputTier()] };
+                mIsOutputtingPower ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_2A[(int) this.getOutputTier() + 1]
+                    : Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_2A[(int) this.getInputTier() + 1] };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(23)) };
     }
@@ -809,9 +808,9 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         mIsOutputtingPower = !mIsOutputtingPower;
         if (mIsOutputtingPower) {
-            PlayerUtils.messagePlayer(aPlayer, "Sub-Station is now outputting power from the controller.");
+            GTUtility.sendChatToPlayer(aPlayer, "Sub-Station is now outputting power from the controller.");
         } else {
-            PlayerUtils.messagePlayer(aPlayer, "Sub-Station is now inputting power into the controller.");
+            GTUtility.sendChatToPlayer(aPlayer, "Sub-Station is now inputting power into the controller.");
         }
     }
 
@@ -842,6 +841,11 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
     private float clientProgress;
 
     protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {

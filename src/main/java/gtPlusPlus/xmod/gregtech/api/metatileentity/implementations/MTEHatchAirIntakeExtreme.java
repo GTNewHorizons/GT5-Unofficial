@@ -4,7 +4,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 
-public class MTEHatchAirIntakeExtreme extends METHatchAirIntake {
+public class MTEHatchAirIntakeExtreme extends MTEHatchAirIntake {
 
     public MTEHatchAirIntakeExtreme(final int aID, final String aName, final String aNameRegional, final int aTier) {
         super(aID, aName, aNameRegional, aTier);
@@ -22,7 +22,7 @@ public class MTEHatchAirIntakeExtreme extends METHatchAirIntake {
 
     @Override
     public int getAmountOfFluidToGenerate() {
-        return 8000;
+        return 40000;
     }
 
     @Override

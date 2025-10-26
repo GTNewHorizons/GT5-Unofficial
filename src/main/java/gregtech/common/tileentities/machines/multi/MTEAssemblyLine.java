@@ -137,7 +137,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
             .addInfo("Used to craft complex machine parts (LuV+)")
             .addInfo("Items & Fluids are inserted in NEI order, one per slice")
             .addInfo("Does not run Assembler recipes")
-            .addInfo("Recipe tier is at most Energy Hatch tier + 1.")
+            .addMaxTierSkips(1)
             .beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false) // ?
             .addStructureInfo("From Bottom to Top, Left to Right")
             .addStructureInfo("Layer 1 - Solid Steel Machine Casing, Input Bus, Solid Steel Machine Casing")

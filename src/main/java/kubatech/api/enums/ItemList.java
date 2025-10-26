@@ -24,6 +24,7 @@ public enum ItemList implements IItemContainer {
     ExtremeIndustrialApiary,
     ExtremeIndustrialGreenhouse,
     DraconicEvolutionFusionCrafter,
+    HighTemperatureGasCooledReactor,
     LegendaryBlackTea,
     LegendaryButterflyTea,
     LegendaryEarlGrayTea,
@@ -74,8 +75,7 @@ public enum ItemList implements IItemContainer {
     DEFCWyvernSchematic,
     DEFCAwakenedSchematic,
     DEFCChaoticSchematic,
-
-    ;
+    KubaFakeItemEECVoid;
 
     private @Nullable ItemStack mStack;
     private boolean mHasNotBeenSet = true;

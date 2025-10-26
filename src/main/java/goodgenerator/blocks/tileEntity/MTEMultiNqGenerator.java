@@ -33,7 +33,6 @@ import goodgenerator.util.CrackRecipeAdder;
 import goodgenerator.util.DescTextLocalization;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -66,13 +65,13 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
 
     static {
         excitedLiquid = Arrays.asList(
-            Pair.of(MaterialsUEVplus.Space.getMolten(20L), ExcitedLiquidCoe[0]),
+            Pair.of(Materials.Space.getMolten(20L), ExcitedLiquidCoe[0]),
             Pair.of(GGMaterial.atomicSeparationCatalyst.getMolten(20), ExcitedLiquidCoe[1]),
             Pair.of(Materials.Naquadah.getMolten(20L), ExcitedLiquidCoe[2]),
             Pair.of(Materials.Uranium235.getMolten(180L), ExcitedLiquidCoe[3]),
             Pair.of(Materials.Caesium.getMolten(180L), ExcitedLiquidCoe[4]));
         coolant = Arrays.asList(
-            Pair.of(MaterialsUEVplus.Time.getMolten(20L), CoolantEfficiency[0]),
+            Pair.of(Materials.Time.getMolten(20L), CoolantEfficiency[0]),
             Pair.of(new FluidStack(TFFluids.fluidCryotheum, 1_000), CoolantEfficiency[1]),
             Pair.of(Materials.SuperCoolant.getFluid(1_000), CoolantEfficiency[2]),
             Pair.of(GTModHandler.getIC2Coolant(1_000), CoolantEfficiency[3]));
@@ -349,9 +348,9 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Naquadah Reactor")
+        tt.addMachineType("Naquadah Reactor, LNR")
             .addInfo("Environmentally Friendly!")
-            .addInfo("Generate power from high-energy liquids.")
+            .addInfo("Generate power from high-energy liquids")
             .addInfo(
                 String.format(
                     "Consumes %s%d L/s Liquid Air%s to keep running, otherwise" + EnumChatFormatting.YELLOW
@@ -366,7 +365,7 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
                     + " ONE"
                     + EnumChatFormatting.GRAY
                     + " type of fuel in hatches!")
-            .addInfo("Input liquid nuclear fuel or liquid naquadah fuel.")
+            .addInfo("Input liquid nuclear fuel or liquid naquadah fuel")
             .addSeparator()
             .addInfo(
                 "Can increase " + EnumChatFormatting.LIGHT_PURPLE
@@ -391,7 +390,7 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
                     + "consuming "
                     + EnumChatFormatting.RED
                     + "excited liquid:")
-            .addInfo(getExcitedTextFormatted("Molten Caseium", "180", ExcitedLiquidCoe[4]))
+            .addInfo(getExcitedTextFormatted("Molten Caesium", "180", ExcitedLiquidCoe[4]))
             .addInfo(getExcitedTextFormatted("Molten Uranium-235", "180", ExcitedLiquidCoe[3]))
             .addInfo(getExcitedTextFormatted("Molten Naquadah", "20", ExcitedLiquidCoe[2]))
             .addInfo(getExcitedTextFormatted("Molten Atomic Separation Catalyst", "20", ExcitedLiquidCoe[1]))

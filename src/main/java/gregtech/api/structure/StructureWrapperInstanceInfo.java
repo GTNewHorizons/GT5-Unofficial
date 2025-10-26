@@ -54,9 +54,9 @@ public class StructureWrapperInstanceInfo<MTE extends MTEMultiBlockBase & IAlign
     }
 
     /**
-     * Performs any post-structure check operations.
-     * Currently, this just updates the hatches with their proper texture. This is only needed if a hatch is within a
-     * tiered casing, since tiered casings typically have different background textures for each tier.
+     * Performs any post-structure check operations. Currently, this just updates the hatches with their proper texture.
+     * This is only needed if a hatch is within a tiered casing, since tiered casings typically have different
+     * background textures for each tier.
      */
     public void onPostCheck(MTE multi) {
         for (PendingHatch<MTE> hatch : pendingHatches) {

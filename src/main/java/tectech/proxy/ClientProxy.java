@@ -23,8 +23,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import tectech.Reference;
 import tectech.rendering.EOH.EOHItemRenderer;
 import tectech.rendering.EOH.EOHTileEntitySR;
-import tectech.thing.block.BlockGodforgeGlass;
-import tectech.thing.block.BlockQuantumGlass;
 import tectech.thing.block.RenderForgeOfGods;
 import tectech.thing.block.RenderGodforgeGlass;
 import tectech.thing.block.RenderQuantumGlass;
@@ -36,15 +34,13 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void registerRenderInfo() {
-        BlockQuantumGlass.renderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(BlockQuantumGlass.renderID, new RenderQuantumGlass());
+        RenderingRegistry.registerBlockHandler(new RenderQuantumGlass());
 
         MinecraftForgeClient
             .registerItemRenderer(Item.getItemFromBlock(eyeOfHarmonyRenderBlock), new EOHItemRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityEyeOfHarmony.class, new EOHTileEntitySR());
 
-        BlockGodforgeGlass.renderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(BlockGodforgeGlass.renderID, new RenderGodforgeGlass());
+        RenderingRegistry.registerBlockHandler(new RenderGodforgeGlass());
 
         MinecraftForgeClient
             .registerItemRenderer(Item.getItemFromBlock(forgeOfGodsRenderBlock), new ItemRenderForgeOfGods());

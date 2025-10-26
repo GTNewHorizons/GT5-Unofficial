@@ -77,9 +77,9 @@ public class RecipeLoaderAgriculturalChem {
         processOreDict("listAllmeatraw", mMeats);
         processOreDict("listAllfishraw", mFish);
         processOreDict("listAllfruit", mFruits);
-        processOreDict("listAllVeggie", mVege);
+        processOreDict("listAllveggie", mVege);
         processOreDict("listAllnut", mNuts);
-        processOreDict("listAllSeed", mSeeds);
+        processOreDict("listAllseed", mSeeds);
         processOreDict("brickPeat", mPeat);
         processOreDict("bone", mBones);
         processOreDict("dustBone", mBoneMeal);
@@ -434,7 +434,7 @@ public class RecipeLoaderAgriculturalChem {
             .addTo(centrifugeRecipes);
     }
 
-    @Optional.Method(modid = Mods.Names.FORESTRY)
+    @Optional.Method(modid = Mods.ModIDs.FORESTRY)
     private static void addMiscForestryRecipes() {
         if (ItemList.FR_Fertilizer.hasBeenSet()) {
             GTValues.RA.stdBuilder()

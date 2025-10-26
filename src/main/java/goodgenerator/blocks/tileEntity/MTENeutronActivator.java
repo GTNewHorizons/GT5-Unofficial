@@ -187,13 +187,13 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Neutron Activator, NA")
             .addInfo("Superluminal-velocity Motion.")
-            .addInfo("The minimum height of the Speeding Pipe Casing is 4.")
-            .addInfo("Per extra Speeding Pipe Casing will give time discount.")
-            .addInfo("But it will reduce the Neutron Accelerator efficiency.")
-            .addInfo("You need to input energy to the Neutron Accelerator to get it running.")
-            .addInfo("It will output correct products with Specific Neutron Kinetic Energy.")
-            .addInfo("Otherwise it will output trash.")
-            .addInfo("The Neutron Kinetic Energy will decrease 72KeV/s when no Neutron Accelerator is running.")
+            .addInfo("The minimum height of the Speeding Pipe Casing is 4")
+            .addInfo("Per extra Speeding Pipe Casing will give time discount")
+            .addInfo("But it will reduce the Neutron Accelerator efficiency")
+            .addInfo("You need to input energy to the Neutron Accelerator to get it running")
+            .addInfo("It will output correct products with Specific Neutron Kinetic Energy")
+            .addInfo("Otherwise it will output trash")
+            .addInfo("The Neutron Kinetic Energy will decrease 72KeV/s when no Neutron Accelerator is running")
             .addInfo(
                 "It will explode when the Neutron Kinetic Energy is over" + EnumChatFormatting.RED
                     + " 1200MeV"

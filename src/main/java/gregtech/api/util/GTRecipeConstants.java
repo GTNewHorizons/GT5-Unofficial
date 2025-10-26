@@ -61,9 +61,8 @@ public class GTRecipeConstants {
         .create(Long.class, "fusion_threshold");
 
     /**
-     * Scanning data used for scanner for assembly line recipes (time and voltage).
-     * Scanning time should be between 30 seconds and 3 minutes, and the voltage 1 tiers below the available scanner
-     * tier for the recipe.
+     * Scanning data used for scanner for assembly line recipes (time and voltage). Scanning time should be between 30
+     * seconds and 3 minutes, and the voltage 1 tiers below the available scanner tier for the recipe.
      */
     public static final RecipeMetadataKey<Scanning> SCANNING = SimpleRecipeMetadataKey
         .create(Scanning.class, "scanning");
@@ -267,8 +266,8 @@ public class GTRecipeConstants {
     public static final RecipeMetadataKey<Double> HALF_LIFE = SimpleRecipeMetadataKey.create(Double.class, "half-life");
 
     /**
-     * Just some trivia to show in the decay recipes, since they don't have a lot of relevant info.
-     * Maybe this will come in handy some day.
+     * Just some trivia to show in the decay recipes, since they don't have a lot of relevant info. Maybe this will come
+     * in handy some day.
      */
     public enum DecayType {
         Unknown,
@@ -293,8 +292,8 @@ public class GTRecipeConstants {
         .create(DecayType.class, "decay-type");
 
     /**
-     * Add a arc furnace recipe. Adds to both normal arc furnace and plasma arc furnace.
-     * Will override the fluid input with oxygen/plasma for the respective recipe maps, so there is no point setting it.
+     * Add a arc furnace recipe. Adds to both normal arc furnace and plasma arc furnace. Will override the fluid input
+     * with oxygen/plasma for the respective recipe maps, so there is no point setting it.
      */
     public static final IRecipeMap UniversalArcFurnace = IRecipeMap.newRecipeMap(builder -> {
         if (!GTUtility.isArrayOfLength(builder.getItemInputsBasic(), 1)
@@ -506,9 +505,8 @@ public class GTRecipeConstants {
     });
 
     /**
-     * The one and only :tm: assline recipe adder.
-     * Uses {@link #RESEARCH_ITEM} metadata as research item, and {@link #SCANNING} metadata as research time and
-     * voltage.
+     * The one and only :tm: assline recipe adder. Uses {@link #RESEARCH_ITEM} metadata as research item, and
+     * {@link #SCANNING} metadata as research time and voltage.
      */
     public static final IRecipeMap AssemblyLine = IRecipeMap.newRecipeMap(builder -> {
         Optional<GTRecipe.GTRecipe_WithAlt> rr = builder.forceOreDictInput()
@@ -692,10 +690,10 @@ public class GTRecipeConstants {
     });
 
     /**
-     * A universal fuel adder. It's actually just a dispatcher towards all actual fuel recipe maps.
-     * Dispatch based on {@link #FUEL_TYPE}. Uses {@link #FUEL_VALUE} as fuel value.
-     * Can use {@link FuelType#ordinal()} as a human-readable form of what FUEL_TYPE should be.
-     * You can bypass this and add to relevant fuel maps directly if you wish.
+     * A universal fuel adder. It's actually just a dispatcher towards all actual fuel recipe maps. Dispatch based on
+     * {@link #FUEL_TYPE}. Uses {@link #FUEL_VALUE} as fuel value. Can use {@link FuelType#ordinal()} as a
+     * human-readable form of what FUEL_TYPE should be. You can bypass this and add to relevant fuel maps directly if
+     * you wish.
      */
     public static IRecipeMap Fuel = IRecipeMap.newRecipeMap(builder -> {
         builder.validateInputCount(1, 1)

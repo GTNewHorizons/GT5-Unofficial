@@ -28,6 +28,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -61,7 +62,9 @@ public class MTEAdvImplosionCompressor extends GTPPMultiBlockBase<MTEAdvImplosio
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Factory Grade Advanced Implosion Compressor")
-            .addInfo("Speed: +100% | EU Usage: 100% | Parallel: ((Tier/2)+1)")
+            .addInfo(TooltipHelper.parallelText("1 + (Tier/2)") + " Parallels")
+            .addStaticSpeedInfo(2f)
+            .addStaticEuEffInfo(1f)
             .addInfo("Constructed exactly the same as a normal Implosion Compressor")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
@@ -171,5 +174,4 @@ public class MTEAdvImplosionCompressor extends GTPPMultiBlockBase<MTEAdvImplosio
     public int getMaxParallelRecipes() {
         return (GTUtility.getTier(this.getMaxInputVoltage()) / 2 + 1);
     }
-
 }

@@ -228,24 +228,18 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
                 + EnumChatFormatting.WHITE
                 + GTUtility.formatNumbers(getWaterTier())
                 + EnumChatFormatting.RESET)
-            .addInfo("Must be linked to a Purification Plant using a data stick to work.")
+            .addInfo("Must be linked to a Purification Plant using a data stick to work")
             .addSeparator()
-            .addInfo(
-                "During operation, swap the lens in the " + EnumChatFormatting.WHITE
-                    + "Lens Housing"
-                    + EnumChatFormatting.GRAY
-                    + ".")
+            .addInfo("During operation, swap the lens in the " + EnumChatFormatting.WHITE + "Lens Housing")
             .addInfo(
                 "The multiblock will output a signal through the " + EnumChatFormatting.WHITE + "Lens Indicator Hatch")
-            .addInfo("when the current lens must be swapped.")
+            .addInfo("when the current lens must be swapped")
             .addInfo(
                 "Lens swaps will be requested in random intervals of " + EnumChatFormatting.RED
                     + (MIN_TIME_BETWEEN_SWAPS / SECONDS)
                     + " to "
                     + (MAX_TIME_BETWEEN_SWAPS / SECONDS)
-                    + "s"
-                    + EnumChatFormatting.GRAY
-                    + ".")
+                    + "s")
             .addSeparator()
             .addInfo(
                 "Success chance is boosted by " + EnumChatFormatting.RED
@@ -253,10 +247,10 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
                     + "% "
                     + EnumChatFormatting.GRAY
                     + "for each successful swap performed.")
-            .addInfo("Removing a lens too early will fail the recipe.")
+            .addInfo("Removing a lens too early will fail the recipe")
             .addInfo("Find the order of lenses in the recipe in NEI,")
-            .addInfo("or use a portable scanner to view the currently requested lens.")
-            .addInfo("The recipe always starts at the Orundum Lens.")
+            .addInfo("or use a portable scanner to view the currently requested lens")
+            .addInfo("The recipe always starts at the Orundum Lens")
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.AQUA + ""

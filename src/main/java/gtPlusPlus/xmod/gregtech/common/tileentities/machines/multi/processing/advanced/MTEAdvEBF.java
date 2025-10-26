@@ -96,7 +96,9 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Factory Grade Advanced Blast Furnace")
-            .addInfo("Speed: +120% | EU Usage: 90% | Parallel: 8")
+            .addStaticParallelInfo(8)
+            .addStaticSpeedInfo(2.2f)
+            .addStaticEuEffInfo(0.9f)
             .addInfo("Consumes 10L of " + mHotFuelName + " per second during operation")
             .addInfo("Constructed exactly the same as a normal EBF")
             .addPollutionAmount(getPollutionPerSecond(null))

@@ -25,6 +25,7 @@ import appeng.core.CreativeTab;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.interfaces.ITileTooltip;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.CubicObject;
@@ -123,7 +124,7 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
      * @return Sanitized {@link String}, containing no spaces or illegal characters.
      */
     private String getTileEntityNameForTexturePathing() {
-        return Utils.sanitizeString(getTileEntityName().replace(" ", ""));
+        return StringUtils.sanitizeString(getTileEntityName().replace(" ", ""));
     }
 
     /**

@@ -62,7 +62,7 @@ import gregtech.api.net.GTPacketSetConfigurationCircuit;
 import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtility;
 import gregtech.common.data.GTBlockEventTracker;
-import gregtech.common.gui.modularui.uifactory.SelectItemUIFactory;
+import gregtech.common.gui.modularui.base.ItemSelectBaseGui;
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
 
@@ -556,18 +556,21 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
     @Override
     public void markDirty() {
-        // Avoid sending neighbor updates, just mark the chunk as dirty to make sure it gets saved
-        final Chunk chunk = worldObj.getChunkFromBlockCoords(xCoord, zCoord);
-        if (chunk != null) {
-            chunk.setChunkModified();
+        // If some code calls markDirty before worldObj is assigned, e.g., in loadNBTData we will crash
+        if (worldObj != null) {
+            // Avoid sending neighbor updates, just mark the chunk as dirty to make sure it gets saved
+            final Chunk chunk = worldObj.getChunkFromBlockCoords(xCoord, zCoord);
+            if (chunk != null) {
+                chunk.setChunkModified();
+            }
         }
     }
 
     /**
      * Gets items to be displayed for HoloInventory mod.
      *
-     * @return null if default implementation should be used, i.e. {@link IInventory#getStackInSlot}.
-     *         Otherwise, a list of items to be displayed. Null element may be contained.
+     * @return null if default implementation should be used, i.e. {@link IInventory#getStackInSlot}. Otherwise, a list
+     *         of items to be displayed. Null element may be contained.
      */
     @Nullable
     public List<ItemStack> getItemsForHoloGlasses() {
@@ -659,7 +662,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     }
 
     protected void addTitleToUI(ModularWindow.Builder builder, String title) {
-        if (GTMod.gregtechproxy.mTitleTabStyle == 2) {
+        if (GTMod.proxy.mTitleTabStyle == 2) {
             addTitleItemIconStyle(builder, title);
         } else {
             addTitleTextStyle(builder, title);
@@ -684,7 +687,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
         final TextWidget text = new TextWidget(title).setDefaultColor(getTitleColor())
             .setTextAlignment(Alignment.CenterLeft)
             .setMaxWidth(titleWidth);
-        if (GTMod.gregtechproxy.mTitleTabStyle == 1) {
+        if (GTMod.proxy.mTitleTabStyle == 1) {
             tab.setDrawable(getGUITextureSet().getTitleTabAngular())
                 .setPos(0, -(titleHeight + TAB_PADDING) + 1)
                 .setSize(getGUIWidth(), titleHeight + TAB_PADDING * 2);
@@ -866,7 +869,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
             @Override
             protected void phantomScroll(int direction) {
-                if (GTMod.gregtechproxy.invertCircuitScrollDirection) {
+                if (GTMod.proxy.invertCircuitScrollDirection) {
                     phantomClick(new ClickData(direction > 0 ? 0 : 1, false, false, false));
                 } else phantomClick(new ClickData(direction > 0 ? 1 : 0, false, false, false));
             }
@@ -903,7 +906,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
         final List<ItemStack> circuits = GTUtility.getAllIntegratedCircuits();
         uiContext.openClientWindow(
-            player -> new SelectItemUIFactory(
+            player -> new ItemSelectBaseGui(
                 StatCollector.translateToLocal("GT5U.machines.select_circuit"),
                 getStackForm(0),
                 this::onCircuitSelected,

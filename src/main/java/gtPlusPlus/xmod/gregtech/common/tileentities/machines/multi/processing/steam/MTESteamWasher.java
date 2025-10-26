@@ -51,6 +51,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -62,9 +63,10 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.BlockCasings1;
 import gregtech.common.blocks.BlockCasings2;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.gui.modularui.multiblock.base.MTESteamMultiBaseGui;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.gui.MTESteamWasherGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -350,9 +352,7 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("25% faster than using single block steam machines of the same pressure")
-            .addInfo("Only consumes steam at 62.5% of the steam flowrate normally required")
-            .addInfo("Processes up to 8 items at once")
+            .addSteamBulkMachineInfo(8, 1.25f, 0.625f)
             .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
             .beginStructureBlock(5, 5, 5, false)
             .addSteamInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
@@ -401,6 +401,11 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
         super.getWailaBody(itemStack, currenttip, accessor, config);
         NBTTagCompound tag = accessor.getNBTData();
         currenttip.add(
+            StatCollector.translateToLocal("GT5U.multiblock.runningMode") + " "
+                + EnumChatFormatting.WHITE
+                + StatCollector.translateToLocal("GT5U.GTPP_MULTI_WASH_PLANT.mode." + machineMode)
+                + EnumChatFormatting.RESET);
+        currenttip.add(
             StatCollector.translateToLocal("GTPP.machines.tier") + ": "
                 + EnumChatFormatting.YELLOW
                 + getSteamTierTextForWaila(tag)
@@ -409,11 +414,6 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
             StatCollector.translateToLocal("GT5U.multiblock.curparallelism") + ": "
                 + EnumChatFormatting.BLUE
                 + tag.getInteger("parallel")
-                + EnumChatFormatting.RESET);
-        currenttip.add(
-            StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
-                + EnumChatFormatting.WHITE
-                + StatCollector.translateToLocal("GT5U.GTPP_MULTI_WASH_PLANT.mode." + tag.getInteger("mode"))
                 + EnumChatFormatting.RESET);
     }
 
@@ -431,6 +431,7 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
         super.saveNBTData(aNBT);
         aNBT.setInteger("tierMachine", tierMachine);
         aNBT.setInteger("mMode", machineMode);
+        aNBT.setInteger("tierMachineCasing", tierMachineCasing);
     }
 
     @Override
@@ -438,6 +439,7 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
         super.loadNBTData(aNBT);
         tierMachine = aNBT.getInteger("tierMachine");
         machineMode = aNBT.getInteger("mMode");
+        tierMachineCasing = aNBT.getInteger("tierMachineCasing");
     }
 
     @Override
@@ -465,7 +467,6 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
 
     @Override
     public void setMachineModeIcons() {
-        machineModeIcons.clear();
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_WASHPLANT);
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_SIMPLEWASHER);
     }
@@ -554,7 +555,14 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
     }
 
     @Override
-    protected @NotNull MTESteamWasherGui getGui() {
-        return new MTESteamWasherGui(this);
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTESteamMultiBaseGui(this).withMachineModeIcons(
+            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_WASHPLANT,
+            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_SIMPLEWASHER);
+    }
+
+    @Override
+    public int getThemeTier() {
+        return tierMachineCasing;
     }
 }

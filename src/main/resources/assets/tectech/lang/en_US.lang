@@ -708,12 +708,21 @@ gt.blockmachines.multimachine.tm.teslaCoil.cfgo.7=Energy Fraction display
 gt.blockmachines.multimachine.tm.teslaCoil.cfgo.8=Scan time display
 gt.blockmachines.multimachine.tm.teslaCoil.cfgo.9=Output max display
 
+gt.blockmachines.multimachine.em.switch.type=Computation Network Switch, CNS
+gt.blockmachines.multimachine.em.switch.name=Weighted Network Switch With QoS
 gt.blockmachines.multimachine.em.switch.desc.0=Distributes computation to transmission connectors based on weights.
 gt.blockmachines.multimachine.em.switch.desc.1=Transmission connectors are assigned an ID.
 gt.blockmachines.multimachine.em.switch.desc.2=Scan connectors with a Portable Scanner to determine their ID.
 gt.blockmachines.multimachine.em.switch.desc.3=Computation output is configured via TecTech parameters.
 gt.blockmachines.multimachine.em.switch.desc.4=The first parameter in each group controls the hatch ID.
 gt.blockmachines.multimachine.em.switch.desc.5=The second parameter in each group controls the hatch weight.
+gt.blockmachines.multimachine.em.switch.adv.name=Static Network Switch With QoS
+gt.blockmachines.multimachine.em.switch.adv.desc.0=Variable-length version of the Weighted Network Switch.
+gt.blockmachines.multimachine.em.switch.adv.desc.1=Consumes §b524,288§7 EU/t per middle slice while active.
+gt.blockmachines.multimachine.em.switch.adv.desc.2=Computation output is configured by right clicking transmission connectors with a screwdriver.
+gt.blockmachines.multimachine.em.switch.adv.desc.3=Transmission connectors must be part of the structure for them to be configurable.
+gt.blockmachines.multimachine.em.switch.adv.desc.4=Computation output for a hatch is directly controlled by the hatch's setting.
+gt.blockmachines.multimachine.em.switch.adv.desc.5=For weighted computation distribution, use the §6%s§r.
 
 gt.blockmachines.multimachine.em.computer.name=Quantum Computer
 gt.blockmachines.multimachine.em.computer.machinetype=Quantum Computer, QC
@@ -729,6 +738,7 @@ gt.blockmachines.multimachine.em.computer.desc.1=Used to generate computation (a
 gt.blockmachines.multimachine.em.computer.desc.2=Use screwdriver to toggle wireless mode
 
 gt.blockmachines.multimachine.em.databank.name=Data Bank
+gt.blockmachines.multimachine.em.databank.type=Data Bank, DB
 gt.blockmachines.multimachine.em.databank.hint.0=1 - Classic Hatches or high power casing
 gt.blockmachines.multimachine.em.databank.hint.1=2 - Data Access/Data Bank Master Hatches or computer casing
 gt.blockmachines.multimachine.em.databank.desc.0=Controller block of the Data Bank
@@ -788,7 +798,7 @@ gt.blockmachines.multimachine.em.research.desc.2=Needs to be fed with computatio
 gt.blockmachines.multimachine.em.research.desc.3=Does not consume the item until the Data Stick is written
 gt.blockmachines.multimachine.em.research.desc.4=Use screwdriver to change mode
 gt.blockmachines.multimachine.em.research.desc.5=Computation required in scanner mode follows the formula:
-gt.blockmachines.multimachine.em.research.desc.6=Recipe duration in seconds * (2 ^ (Recipe voltage tier - 1))
+gt.blockmachines.multimachine.em.research.desc.6=Recipe duration in ticks * (2 ^ (Recipe voltage tier - 1))
 gt.blockmachines.multimachine.em.research.mode.Assembly_line=Mode: Research Station
 gt.blockmachines.multimachine.em.research.mode.Scanner=Mode: Scanner
 gt.blockmachines.multimachine.em.research.computation=Computation: %,d / %,d
@@ -1020,7 +1030,7 @@ fog.upgrade.text.8=Unlocks a configuration window for maximum battery size and i
 fog.upgrade.text.9=Increases maximum fuel consumption by 1 Stellar Fuel Unit/sec for every purchased upgrade.
 fog.upgrade.text.10=Adds a x2 multiplier to maximum parallel.
 fog.upgrade.text.11=Unlocks the Heliofusion Exoticizer module and quark gluon plasma creation. At this point this module is not affected by any other multipliers or bonuses from other upgrades.
-fog.upgrade.text.12=Improves the fuel consumption -> heat conversion formula. Improved formula: Power Forge Heat = log1.12(Stellar Fuel Units/sec) * 1000 + 12601, Melting Core Heat = log1.18(Stellar Fuel Units/sec) * 1000 + 12601
+fog.upgrade.text.12=Improves the fuel consumption -> heat conversion formula. Improved formula: Power Forge Heat = log_1.12(Stellar Fuel Units/sec) * 1000 + 12601, Melting Core Heat = log1.18(Stellar Fuel Units/sec) * 1000 + 12601
 fog.upgrade.text.13=Improves the formula of SA to: Multiplier = 1 + (Stellar Fuel Units/sec) / 5
 fog.upgrade.text.14=Improves the OC formula from 4/2 OCs to 4/2.3 OCs.
 fog.upgrade.text.15=Allows the Heliothermal Plasma Fabricator to process multi step plasmas. Tier restriction still applies.
@@ -1080,7 +1090,7 @@ fog.text.tooltip.ocdivisor=Divisor for recipe time reduction per overclock (does
 fog.text.tooltip.processingvoltage=Base processing voltage for recipes
 fog.text.tooltip.factorpreview=Enter fuel factor to simulate calculations with
 fog.text.tooltip.applysimulationchanges=Simulate new values
-fog.text.tooltip.voltageadjustment=Because of overflow concerns, actual processing voltage follows this formula:
+fog.text.tooltip.voltageadjustment=Because of overflow concerns, actual voltage follows this formula:
 fog.text.tooltip.voltageadjustment.1=Voltage = Min(Selected Voltage, 2^63 / Max Parallel)
 
 achievement.gt.blockmachines.multimachine.em.forge_of_gods=Forge of the Gods
@@ -1118,7 +1128,7 @@ gt.blockmachines.multimachine.FOG.fuelinfo.0=The Stellar Fuel Consumption Factor
 gt.blockmachines.multimachine.FOG.fuelinfo.1=Dimensionally Transcendent Residue: factor*300*1.15^factor
 gt.blockmachines.multimachine.FOG.fuelinfo.2=Condensed Raw Stellar Plasma Mixture: factor*2*1.08^factor
 gt.blockmachines.multimachine.FOG.fuelinfo.3=Magnetohydrodynamically Constrained Star Matter: factor/25
-gt.blockmachines.multimachine.FOG.fuelinfo.4=This factor also determines the base heat of the multiblock: Heat=log1.5(factor)*1000+12601
+gt.blockmachines.multimachine.FOG.fuelinfo.4=This factor also determines the base heat of the multiblock: Heat=log_1.5(factor)*1000+12601
 gt.blockmachines.multimachine.FOG.fuelinfo.5=Upgrades can influence these formulas, the changes are listed in the respective upgrades' descriptions.
 gt.blockmachines.multimachine.FOG.fueltype=Click to Select Fuel Type
 gt.blockmachines.multimachine.FOG.fuelusage=Fuel Usage
@@ -1132,7 +1142,7 @@ gt.blockmachines.multimachine.FOG.availableshards=Available Graviton Shards:
 gt.blockmachines.multimachine.FOG.modulestatus=Status:
 gt.blockmachines.multimachine.FOG.modulestatus.true=Connected
 gt.blockmachines.multimachine.FOG.modulestatus.false=Disconnected
-gt.blockmachines.multimachine.FOG.voltageinfo=Set processing voltage
+gt.blockmachines.multimachine.FOG.voltageinfo=Voltage Per Parallel
 gt.blockmachines.multimachine.FOG.totalprogress=Total Progress
 gt.blockmachines.multimachine.FOG.milestoneprogress=Current Milestone Level
 gt.blockmachines.multimachine.FOG.progress=Next Milestone at

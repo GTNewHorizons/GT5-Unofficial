@@ -63,8 +63,8 @@ public class TexturesGtBlock {
     }
 
     /*
-     * Add Some Custom Textures below. I am not sure whether I need to declare them as such, but better to be
-     * safe than sorry. Right?
+     * Add Some Custom Textures below. I am not sure whether I need to declare them as such, but better to be safe than
+     * sorry. Right?
      */
 
     // PlaceHolder Texture

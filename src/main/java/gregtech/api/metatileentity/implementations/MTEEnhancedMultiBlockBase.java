@@ -164,8 +164,8 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
 
     /**
      * When an old {@link ExtendedFacing} is loaded upon MTE deserialization, and the loaded facing cannot pass test of
-     * current {@link #getAlignmentLimits()}, this method will be called to retrieve a corrected version. This method
-     * is currently only intended to be used as a mean to migrate alignment limits, so if you never change the alignment
+     * current {@link #getAlignmentLimits()}, this method will be called to retrieve a corrected version. This method is
+     * currently only intended to be used as a mean to migrate alignment limits, so if you never change the alignment
      * limit then you can probably just use the default implementation.
      * <p>
      * The returned new facing must be able to pass the test of {@link #isNewExtendedFacingValid(ExtendedFacing)}

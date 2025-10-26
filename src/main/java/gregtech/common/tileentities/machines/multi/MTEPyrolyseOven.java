@@ -30,9 +30,12 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -45,6 +48,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipTier;
 
 public class MTEPyrolyseOven extends MTEEnhancedMultiBlockBase<MTEPyrolyseOven> implements ISurvivalConstructable {
 
@@ -70,7 +74,7 @@ public class MTEPyrolyseOven extends MTEEnhancedMultiBlockBase<MTEPyrolyseOven> 
             't',
             buildHatchAdder(MTEPyrolyseOven.class).atLeast(InputBus, InputHatch, Muffler)
                 .casingIndex(CASING_INDEX)
-                .dot(1)
+                .dot(2)
                 .buildAndChain(onElementPass(MTEPyrolyseOven::onCasingAdded, ofBlock(GregTechAPI.sBlockCasingsNH, 2))))
         .build();
 
@@ -89,8 +93,7 @@ public class MTEPyrolyseOven extends MTEEnhancedMultiBlockBase<MTEPyrolyseOven> 
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Coke Oven")
             .addInfo("Industrial Charcoal producer")
-            .addInfo("Processing speed scales linearly with Coil tier:")
-            .addInfo("CuNi: 50%, FeAlCr: 100%, Ni4Cr: 150%, TPV: 200%, etc.")
+            .addDynamicSpeedInfo(0.5f, TooltipTier.COIL)
             .addInfo("EU/t is not affected by Coil tier")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 4, 5, true)
@@ -185,7 +188,7 @@ public class MTEPyrolyseOven extends MTEEnhancedMultiBlockBase<MTEPyrolyseOven> 
 
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
-        return GTMod.gregtechproxy.mPollutionPyrolyseOvenPerSecond;
+        return GTMod.proxy.mPollutionPyrolyseOvenPerSecond;
     }
 
     @Override
@@ -232,5 +235,11 @@ public class MTEPyrolyseOven extends MTEEnhancedMultiBlockBase<MTEPyrolyseOven> 
             return true;
         }
         return false;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GTCEU_LOOP_FIRE;
     }
 }

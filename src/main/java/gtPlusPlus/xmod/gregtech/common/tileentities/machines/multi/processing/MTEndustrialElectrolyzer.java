@@ -61,9 +61,7 @@ public class MTEndustrialElectrolyzer extends GTPPMultiBlockBase<MTEndustrialEle
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("180% faster than using single block machines of the same voltage")
-            .addInfo("Only uses 90% of the EU/t normally required")
-            .addInfo("Processes two items per voltage tier")
+            .addBulkMachineInfo(2, 2.8f, 0.9f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front Center")
@@ -163,5 +161,4 @@ public class MTEndustrialElectrolyzer extends GTPPMultiBlockBase<MTEndustrialEle
     public int getMaxParallelRecipes() {
         return 2 * GTUtility.getTier(this.getMaxInputVoltage());
     }
-
 }

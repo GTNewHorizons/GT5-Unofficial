@@ -40,6 +40,12 @@ public class GTUtilityTest {
         assertEquals(GTUtility.powInt(-0.00, 0), Math.pow(-0.00, 0));
     }
 
+    @Test
+    void testPowIntDomain() {
+        for (int i = 0; i <= 1024; i++) assertEquals(Math.pow(2, i), GTUtility.powInt(2, i));
+        for (int i = 0; i <= 512; i++) assertEquals(Math.pow(4, i), GTUtility.powInt(4, i));
+    }
+
     @SuppressWarnings("ConstantValue")
     @Test
     void testLog2() {

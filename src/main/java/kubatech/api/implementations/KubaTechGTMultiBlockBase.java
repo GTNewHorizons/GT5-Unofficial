@@ -22,6 +22,7 @@ package kubatech.api.implementations;
 
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static kubatech.api.Variables.ln4;
+import static kubatech.api.gui.KubaTechUITextures.PICTURE_KUBATECH_LOGO;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,7 +39,6 @@ import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.math.MainAxisAlignment;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
@@ -70,6 +70,9 @@ import kubatech.Tags;
 
 public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBlockBase<T>>
     extends MTEExtendedPowerMultiBlockBase<T> {
+
+    @Deprecated
+    public int mEUt;
 
     @SuppressWarnings("unchecked")
     protected static <K extends KubaTechGTMultiBlockBase<?>> UIInfo<?, ?> createKTMetaTileEntityUI(
@@ -228,22 +231,18 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
             list.remove(0);
             wasSomethingRemoved = true;
             for (ItemStack stack : toOutputNow) {
-                addOutput(stack);
+                addOutputPartial(stack);
             }
         }
         return wasSomethingRemoved;
     }
-
-    // UI stuff
-
-    public static final UITexture PICTURE_KUBATECH_LOGO = UITexture.fullImage(Tags.MODID, "gui/logo_13x15_dark");
 
     @Override
     public void addGregTechLogo(ModularWindow.@NotNull Builder builder) {
         builder.widget(
             new DrawableWidget().setDrawable(PICTURE_KUBATECH_LOGO)
                 .setSize(13, 15)
-                .setPos(191 - 13, 86 - 15)
+                .setPos(191 - 16, 86 - 16)
                 .addTooltip(new Text(Tags.MODNAME).color(Color.GRAY.normal))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY));
     }
@@ -264,6 +263,11 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
     @Override
     public @NotNull Pos2d getStructureUpdateButtonPos() {
         return new Pos2d(174, 148 - (slotWidgets.size() * 18));
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
     }
 
     @Override
@@ -293,6 +297,7 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
                 .setSize(182, 79));
 
         builder.widget(createPowerSwitchButton(builder))
+            .widget(createMuffleButton(builder, this.canBeMuffled()))
             .widget(createVoidExcessButton(builder))
             .widget(createInputSeparationButton(builder))
             .widget(createBatchModeButton(builder))

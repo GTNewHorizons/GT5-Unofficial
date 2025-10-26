@@ -51,10 +51,8 @@ import gregtech.api.util.extensions.ArrayExt;
  * </li>
  * </ul>
  * </li>
- * <li>
- * {@link #checkRecipeInputs Single recipe check}: O(N + M), where
- * N = number of machine inputs and M = number of recipe inputs.
- * </li>
+ * <li>{@link #checkRecipeInputs Single recipe check}: O(N + M), where N = number of machine inputs and M = number of
+ * recipe inputs.</li>
  * </ul>
  */
 public class SingleRecipeCheck {
@@ -117,8 +115,8 @@ public class SingleRecipeCheck {
     }
 
     /**
-     * Checks the available inputs against the recipe cost and returns the number of parallel recipes
-     * that can be executed. Returns 0 if the recipe is not satisfied at all.
+     * Checks the available inputs against the recipe cost and returns the number of parallel recipes that can be
+     * executed. Returns 0 if the recipe is not satisfied at all.
      * <p>
      * Optionally, the method can consume (subtract) the used inputs.
      *
@@ -221,8 +219,8 @@ public class SingleRecipeCheck {
     /**
      * Serializes the recipe check data to an NBTTagCompound.
      * <p>
-     * The serialized data includes recipe inputs, outputs, chances, energy usage (EUT),
-     * duration, special value, and the computed item/fluid costs.
+     * The serialized data includes recipe inputs, outputs, chances, energy usage (EUT), duration, special value, and
+     * the computed item/fluid costs.
      *
      * @return a new NBTTagCompound containing the serialized recipe check data
      */
@@ -369,8 +367,8 @@ public class SingleRecipeCheck {
     }
 
     /**
-     * Tries to find the corresponding recipe from the recipe map using the data stored in the NBTTagCompound.
-     * It checks the inputs, outputs, fluid inputs, fluid outputs, chances, duration, EUT, and special value.
+     * Tries to find the corresponding recipe from the recipe map using the data stored in the NBTTagCompound. It checks
+     * the inputs, outputs, fluid inputs, fluid outputs, chances, duration, EUT, and special value.
      *
      * @param recipeMap the RecipeMap to search for the recipe
      * @param tag       the NBTTagCompound containing the serialized recipe data
@@ -449,8 +447,8 @@ public class SingleRecipeCheck {
     }
 
     /**
-     * Returns a human-friendly string representing the recipe.
-     * The caller can choose whether to include inputs and/or outputs.
+     * Returns a human-friendly string representing the recipe. The caller can choose whether to include inputs and/or
+     * outputs.
      *
      * @param recipe           GT recipe
      * @param includeInputs    if true, include item and fluid inputs.

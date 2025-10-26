@@ -22,9 +22,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.util.Utils;
 
 public class LeavesBase extends BlockLeaves {
 
@@ -35,7 +35,7 @@ public class LeavesBase extends BlockLeaves {
 
     public LeavesBase(String blockNameLocalized, String blockNameUnlocalized, ItemStack[] bonusDrops) {
         this.bonusDrops = bonusDrops;
-        String blockName = "block" + Utils.sanitizeString(blockNameLocalized) + "Leaves";
+        String blockName = "block" + StringUtils.sanitizeString(blockNameLocalized) + "Leaves";
         GameRegistry.registerBlock(this, ItemBlock.class, blockName);
         this.setBlockName(blockName);
         OreDictionary.registerOre("treeLeaves", new ItemStack(this, 1, GTRecipeBuilder.WILDCARD));

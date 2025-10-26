@@ -23,9 +23,14 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -46,10 +51,13 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class MTEIndustrialForgeHammer extends GTPPMultiBlockBase<MTEIndustrialForgeHammer>
@@ -81,7 +89,9 @@ public class MTEIndustrialForgeHammer extends GTPPMultiBlockBase<MTEIndustrialFo
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Speed: +100% | EU Usage: 100% | Parallel: Tier x Anvil Tier x 8")
+            .addInfo(TooltipHelper.parallelText("Voltage Tier * Anvil Tier * 8") + " Parallels")
+            .addStaticSpeedInfo(2f)
+            .addStaticEuEffInfo(1f)
             .addInfo("T1 - Vanilla Anvil");
         if (Railcraft.isModLoaded()) {
             tt.addInfo("T2 - Steel Anvil");
@@ -189,7 +199,7 @@ public class MTEIndustrialForgeHammer extends GTPPMultiBlockBase<MTEIndustrialFo
 
     @Override
     protected SoundResource getProcessStartSound() {
-        return SoundResource.RANDOM_ANVIL_USE;
+        return SoundResource.GTCEU_LOOP_FORGE_HAMMER;
     }
 
     @Override
@@ -245,5 +255,25 @@ public class MTEIndustrialForgeHammer extends GTPPMultiBlockBase<MTEIndustrialFo
 
     private int getAnvilTier() {
         return mAnvilTier;
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setInteger("tier", mAnvilTier);
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currentTip, accessor, config);
+        final NBTTagCompound tag = accessor.getNBTData();
+
+        currentTip.add(
+            StatCollector.translateToLocal("GT5U.machines.tier") + ": "
+                + EnumChatFormatting.YELLOW
+                + GTUtility.formatNumbers(tag.getInteger("tier"))
+                + EnumChatFormatting.RESET);
     }
 }

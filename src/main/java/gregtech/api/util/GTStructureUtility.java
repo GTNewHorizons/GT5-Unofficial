@@ -154,7 +154,9 @@ public class GTStructureUtility {
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
                 if (mIcons == null) {
                     mIcons = new IIcon[6];
-                    Arrays.fill(mIcons, aFrameMaterial.mIconSet.mTextures[OrePrefixes.frameGt.mTextureIndex].getIcon());
+                    Arrays.fill(
+                        mIcons,
+                        aFrameMaterial.mIconSet.mTextures[OrePrefixes.frameGt.getTextureIndex()].getIcon());
                 }
                 StructureLibAPI.hintParticleTinted(world, x, y, z, mIcons, aFrameMaterial.mRGBa);
                 return true;
@@ -636,9 +638,8 @@ public class GTStructureUtility {
      * Solenoid coil structure element.
      *
      * @param aSolenoidTierSetter Notify the controller of this new solenoid. Got called exactly once per solenoid.
-     *                            Might be
-     *                            called less times if structure test fails. If the setter returns false then it assumes
-     *                            the solenoid is rejected.
+     *                            Might be called less times if structure test fails. If the setter returns false then
+     *                            it assumes the solenoid is rejected.
      * @param aSolenoidTierGetter Get the solenoid voltage tier. Null means no tier recorded yet.
      */
     public static <T> IStructureElement<T> ofSolenoidCoil(BiPredicate<T, Byte> aSolenoidTierSetter,
@@ -743,6 +744,23 @@ public class GTStructureUtility {
             IMetaTileEntity tile = ItemMachines.getMetaTileEntity(is);
             return tile != null && list.stream()
                 .anyMatch(c -> c.isInstance(tile));
+        };
+    }
+
+    /**
+     * like {@link #filterByMTEClass(java.util.List)}, but adds a blacklist check to the predicate
+     *
+     * @param list
+     * @param blacklist
+     * @return predicate of all multis of same type as hatchelement, with blacklist omitted
+     */
+    @Nonnull
+    public static Predicate<ItemStack> filterByMTEClassWithBlacklist(
+        List<? extends Class<? extends IMetaTileEntity>> list, List<Class<? extends IMetaTileEntity>> blacklist) {
+        return is -> {
+            IMetaTileEntity tile = ItemMachines.getMetaTileEntity(is);
+            return tile != null && list.stream()
+                .anyMatch(c -> c.isInstance(tile) && !blacklist.contains(tile.getClass()));
         };
     }
 
@@ -1023,8 +1041,8 @@ public class GTStructureUtility {
     }
 
     /**
-     * Just a hatch element that proxies its operations to another one. Useful for overriding or hooking into
-     * specific operations while keeping the rest unchanged.
+     * Just a hatch element that proxies its operations to another one. Useful for overriding or hooking into specific
+     * operations while keeping the rest unchanged.
      */
     public static class ProxyHatchElement<T> implements IHatchElement<T> {
 

@@ -28,10 +28,27 @@ import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class FluidExtractorRecipes implements Runnable {
 
     @Override
     public void run() {
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stone, Materials.GraniteBlack, 1))
+            .fluidOutputs(Materials.GraniteBlack.getMolten(1 * INGOTS))
+            .duration(6 * SECONDS + 8 * TICKS)
+            .eut(4)
+            .recipeCategory(RecipeCategories.fluidExtractorRecycling)
+            .addTo(fluidExtractionRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stone, Materials.GraniteRed, 1))
+            .fluidOutputs(Materials.GraniteRed.getMolten(1 * INGOTS))
+            .duration(6 * SECONDS + 8 * TICKS)
+            .eut(4)
+            .recipeCategory(RecipeCategories.fluidExtractorRecycling)
+            .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Dye_SquidInk.get(1L))
@@ -208,15 +225,6 @@ public class FluidExtractorRecipes implements Runnable {
             .duration(20 * SECONDS)
             .eut(90)
             .recipeCategory(RecipeCategories.fluidExtractorRecycling)
-            .addTo(fluidExtractionRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getIC2Item("TritiumCell", 1))
-            .itemOutputs(ItemList.IC2_Fuel_Rod_Empty.get(1))
-            .outputChances(10000)
-            .fluidOutputs(Materials.Tritium.getGas(32))
-            .duration(16 * TICKS)
-            .eut(64)
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()

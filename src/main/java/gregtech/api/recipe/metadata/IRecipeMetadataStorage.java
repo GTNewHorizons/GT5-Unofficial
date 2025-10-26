@@ -12,8 +12,8 @@ import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 
 /**
- * Stores set of metadata for the recipe with key {@link RecipeMetadataKey}. More explicit way to store various info
- * on recipe than special value or special object. Type of the metadata can be anything.
+ * Stores set of metadata for the recipe with key {@link RecipeMetadataKey}. More explicit way to store various info on
+ * recipe than special value or special object. Type of the metadata can be anything.
  */
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault

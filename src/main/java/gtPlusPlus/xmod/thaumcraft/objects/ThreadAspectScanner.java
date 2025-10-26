@@ -14,8 +14,8 @@ import net.minecraft.item.ItemStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.FileUtils;
 import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
 
@@ -39,7 +39,7 @@ public class ThreadAspectScanner extends Thread {
             nameKey = aStack.getUnlocalizedName();
         } catch (NullPointerException n) {
             try {
-                nameKey = Utils.sanitizeString(
+                nameKey = StringUtils.sanitizeString(
                     aStack.getDisplayName()
                         .toLowerCase());
             } catch (NullPointerException n2) {

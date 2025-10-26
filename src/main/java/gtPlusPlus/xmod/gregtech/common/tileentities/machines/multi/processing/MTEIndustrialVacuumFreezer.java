@@ -96,7 +96,9 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Factory Grade Advanced Vacuum Freezer")
-            .addInfo("Speed: +100% | EU Usage: 100% | Parallel: 4")
+            .addStaticParallelInfo(8)
+            .addStaticSpeedInfo(2.2f)
+            .addStaticEuEffInfo(0.9f)
             .addInfo("Consumes 10L of " + CRYO_STACK.getLocalizedName() + "/s during operation")
             .addInfo("Constructed exactly the same as a normal Vacuum Freezer")
             .addPollutionAmount(getPollutionPerSecond(null))
@@ -128,6 +130,7 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
                     ofChain(
                         buildHatchAdder(MTEIndustrialVacuumFreezer.class)
                             .adder(MTEIndustrialVacuumFreezer::addCryotheumHatch)
+                            .shouldReject(x -> !x.mCryotheumHatches.isEmpty())
                             .hatchId(MetaTileEntityIDs.Hatch_Input_Cryotheum.ID)
                             .casingIndex(CASING_TEXTURE_ID)
                             .dot(1)
@@ -256,13 +259,14 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().noRecipeCaching()
-            .setSpeedBonus(1F / 2F)
+            .setSpeedBonus(1F / 2.2F)
+            .setEuModifier(0.9F)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
     public int getMaxParallelRecipes() {
-        return 4;
+        return 8;
     }
 
     @Override

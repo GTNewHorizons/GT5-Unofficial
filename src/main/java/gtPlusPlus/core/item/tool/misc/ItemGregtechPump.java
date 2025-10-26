@@ -51,7 +51,6 @@ import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.IElectricItemManager;
@@ -865,7 +864,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                     removal = 8 * (int) GTUtility.powInt(4, aTier);
                 }
                 if (!canUse(aStack, removal) && aTier > 0 && aTier < 4) {
-                    PlayerUtils.messagePlayer(aPlayer, "Not enough power.");
+                    GTUtility.sendChatToPlayer(aPlayer, "Not enough power.");
                     Logger.INFO("No Power");
                     return false;
                 }
@@ -936,7 +935,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                             Logger.INFO("Cleared Tank? " + b + " | mAmountInserted: " + mAmountInserted);
                             Logger.INFO("Returning " + b + " - drainTankGT.");
                             if (b) {
-                                PlayerUtils.messagePlayer(
+                                GTUtility.sendChatToPlayer(
                                     aPlayer,
                                     "Drained " + mAmountInserted + "L of " + aStored.getLocalizedName() + ".");
                             } else {

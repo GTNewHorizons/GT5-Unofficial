@@ -8,6 +8,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Air_Intake;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Air_Intake_Atmospheric;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Air_Intake_Extreme;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_Cryotheum;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_Debug_Steam;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_Pyrotheum;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_Steam;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_TurbineHousing;
@@ -50,7 +51,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.METHatchAirIntake;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchAirIntake;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchAirIntakeAtmosphere;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchAirIntakeExtreme;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchChiselBus;
@@ -61,6 +62,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSuper
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbineProvider;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTESuperBusOutput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEHatchCustomFluidBase;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEHatchCustomFluidBaseDebug;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 
 public class GregtechCustomHatches {
@@ -68,7 +70,7 @@ public class GregtechCustomHatches {
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Custom Fluid Hatches.");
         run1();
-        if (GTMod.gregtechproxy.mPollution) {
+        if (GTMod.proxy.mPollution) {
             run2();
         }
         run3();
@@ -107,7 +109,7 @@ public class GregtechCustomHatches {
 
         // Multiblock Air Intake Hatch
         GregtechItemList.Hatch_Air_Intake.set(
-            new METHatchAirIntake(Hatch_Air_Intake.ID, "hatch.air.intake.tier.00", "Air Intake Hatch", 5)
+            new MTEHatchAirIntake(Hatch_Air_Intake.ID, "hatch.air.intake.tier.00", "Air Intake Hatch", 5)
                 .getStackForm(1L));
         GregtechItemList.Hatch_Air_Intake_Extreme.set(
             new MTEHatchAirIntakeExtreme(
@@ -121,7 +123,9 @@ public class GregtechCustomHatches {
                 "hatch.air.intake.tier.02",
                 "Atmospheric Intake Hatch",
                 9).getStackForm(1L));
-        addItemTooltip(GregtechItemList.Hatch_Air_Intake_Atmospheric.get(1), GTValues.AuthorNoc);
+        addItemTooltip(
+            GregtechItemList.Hatch_Air_Intake_Atmospheric.get(1),
+            () -> "Author: " + GTValues.AuthorNoc.get());
 
         // Multiblock Reservoir Hatch
         GregtechItemList.Hatch_Reservoir.set(
@@ -139,6 +143,16 @@ public class GregtechCustomHatches {
                 "Steam Hatch", // Local name
                 0 // Casing texture
             ).getStackForm(1L));
+        // Debug Steam Hatch
+        GregtechItemList.Hatch_Input_Debug_Steam.set(
+            new MTEHatchCustomFluidBaseDebug(
+                Materials.Steam.getGas(1)
+                    .getFluid(), // Fluid to restrict hatch
+                Hatch_Input_Debug_Steam.ID, // ID
+                "hatch.steam.input.debug", // unlocal name
+                "Debug Steam Hatch", // local name
+                0) // casing texture
+                    .getStackForm(1));
     }
 
     private static void run2() {

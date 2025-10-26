@@ -8,6 +8,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
@@ -27,6 +28,16 @@ public class ToolMortar extends GTTool {
     @Override
     public float getBaseDamage() {
         return 2.0F;
+    }
+
+    @Override
+    public String getCraftingSound() {
+        return SoundResource.GTCEU_OP_MORTAR.toString();
+    }
+
+    @Override
+    public String getEntityHitSound() {
+        return SoundResource.GTCEU_OP_MORTAR.toString();
     }
 
     @Override

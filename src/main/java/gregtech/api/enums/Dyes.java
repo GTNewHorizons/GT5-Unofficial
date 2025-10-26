@@ -2,6 +2,7 @@ package gregtech.api.enums;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -73,10 +74,18 @@ public enum Dyes implements IColorModulationContainer {
     private final HashSet<Fluid> fluidDyesSet = new HashSet<>();
 
     /** Global mapping of fluids to the dye they produce when processed. */
-    private static final HashMap<Fluid, Dyes> fluidDyesMap = new HashMap<>();
+    private static final Map<Fluid, Dyes> fluidDyesMap = new HashMap<>();
+    private static final Map<String, Dyes> dyesFromName = new HashMap<>();
     /** Valid dye colors, indexed 0-15. */
     public static final Dyes[] VALUES = { dyeBlack, dyeRed, dyeGreen, dyeBrown, dyeBlue, dyePurple, dyeCyan,
         dyeLightGray, dyeGray, dyePink, dyeLime, dyeYellow, dyeLightBlue, dyeMagenta, dyeOrange, dyeWhite };
+
+    static {
+        for (Dyes dye : Dyes.values()) {
+            dyesFromName.put(dye.name(), dye);
+            dyesFromName.put(dye.mName, dye);
+        }
+    }
 
     Dyes(int index, int rgba, @NotNull String name) {
         this(index, rgba, name, EnumChatFormatting.GRAY);
@@ -108,30 +117,7 @@ public enum Dyes implements IColorModulationContainer {
     }
 
     public static @NotNull Dyes getOrDefault(@NotNull String color, @NotNull Dyes defaultDye) {
-        // spotless:off
-        return switch (color) {
-            case "Black"            -> Dyes.dyeBlack;
-            case "Red"              -> Dyes.dyeRed;
-            case "Green"            -> Dyes.dyeGreen;
-            case "Brown"            -> Dyes.dyeBrown;
-            case "Blue"             -> Dyes.dyeBlue;
-            case "Purple"           -> Dyes.dyePurple;
-            case "Cyan"             -> Dyes.dyeCyan;
-            case "Light Gray"       -> Dyes.dyeLightGray;
-            case "Gray"             -> Dyes.dyeGray;
-            case "Pink"             -> Dyes.dyePink;
-            case "Lime"             -> Dyes.dyeLime;
-            case "Yellow"           -> Dyes.dyeYellow;
-            case "Light Blue"       -> Dyes.dyeLightBlue;
-            case "Magenta"          -> Dyes.dyeMagenta;
-            case "Orange"           -> Dyes.dyeOrange;
-            case "White"            -> Dyes.dyeWhite;
-            case "INVALID COLOR"    -> Dyes._NULL;
-            case "Cable Insulation" -> Dyes.CABLE_INSULATION;
-            case "Machine Metal"    -> Dyes.MACHINE_METAL;
-            default                 -> defaultDye;
-        };
-        // spotless:on
+        return dyesFromName.getOrDefault(color, defaultDye);
     }
 
     public static boolean isDyeIndex(int index) {

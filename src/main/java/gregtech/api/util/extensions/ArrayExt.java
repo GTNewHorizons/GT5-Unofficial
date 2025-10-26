@@ -96,8 +96,8 @@ public class ArrayExt {
     }
 
     /**
-     * Returns a copy of the array without the null elements.
-     * Returns the singleton {@link gregtech.api.enums.GTValues#emptyFluidStackArray} if the array is empty.
+     * Returns a copy of the array without the null elements. Returns the singleton
+     * {@link gregtech.api.enums.GTValues#emptyFluidStackArray} if the array is empty.
      */
     @Nonnull
     public static FluidStack[] removeNullFluids(@Nonnull FluidStack[] fluids) {
@@ -142,8 +142,8 @@ public class ArrayExt {
     }
 
     /**
-     * Returns a copy of the array without any null elements at the end.
-     * Returns the singleton {@link gregtech.api.enums.GTValues#emptyItemStackArray} if the array is empty.
+     * Returns a copy of the array without any null elements at the end. Returns the singleton
+     * {@link gregtech.api.enums.GTValues#emptyItemStackArray} if the array is empty.
      */
     @Nonnull
     public static ItemStack[] removeTrailingNulls(@Nonnull ItemStack[] array) {
@@ -173,8 +173,8 @@ public class ArrayExt {
     }
 
     /**
-     * Returns a copy of the array without any null elements at the end.
-     * Returns the singleton {@link gregtech.api.enums.GTValues#emptyFluidStackArray} if the array is empty.
+     * Returns a copy of the array without any null elements at the end. Returns the singleton
+     * {@link gregtech.api.enums.GTValues#emptyFluidStackArray} if the array is empty.
      */
     @Nonnull
     public static FluidStack[] removeTrailingNulls(@Nonnull FluidStack[] array) {
@@ -205,9 +205,8 @@ public class ArrayExt {
 
     /**
      * Fixes the recipe chances array. It will return null if the array is null or if the array doesn't use any
-     * meaningful % chances value.
-     * The values of the returned array will be contained in the interval [1;10000]. It may return the same array
-     * instance or a new instance.
+     * meaningful % chances value. The values of the returned array will be contained in the interval [1;10000]. It may
+     * return the same array instance or a new instance.
      *
      * @param chances     the input chances array to fix
      * @param expectedLen the expected length of the returned array, can be -1 if you don't need to set the length

@@ -478,7 +478,9 @@ public class GTPPFluids {
             5,
             null,
             ItemList.Cell_Empty.get(1),
-            1000);
+            1000,
+            true,
+            true);
 
         Pyrotheum = FluidUtils.addGtFluid(
             "pyrotheum",
@@ -488,7 +490,9 @@ public class GTPPFluids {
             4000,
             null,
             ItemList.Cell_Empty.get(1),
-            1000);
+            1000,
+            true,
+            true);
 
         IndustrialStrengthHydrofluoricAcid = FluidUtils.addGtFluid(
             "hydrofluoricAcid",

@@ -1142,7 +1142,7 @@ public class TileEntityBase extends TileEntity
             this.doExplosion(
                 this.oOutput * (long) (this.getUniversalEnergyStored() >= this.getUniversalEnergyCapacity() ? 4
                     : (this.getUniversalEnergyStored() >= this.getUniversalEnergyCapacity() / 2L ? 2 : 1)));
-            GTMod arg9999 = GTMod.instance;
+            GTMod arg9999 = GTMod.GT;
             GTMod.achievements.issueAchievement(
                 this.getWorldObj()
                     .getPlayerEntityByName(this.mOwnerName),

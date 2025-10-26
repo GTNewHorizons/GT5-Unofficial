@@ -2,6 +2,7 @@
 
 #RecipeMaps
 kubatech.defusioncrafter=Draconic Evolution Fusion Crafter
+kubatech.htgrrecipes=High Temperature Gas Reactor
 
 #NEI
 kubatech.defusioncrafter.tier=Tier Casing: %s
@@ -37,6 +38,7 @@ GT5U.gui.text.EIG_seedOverflow=Too many seeds inside!
 GT5U.gui.text.EIG_missingwater=No water!
 GT5U.gui.text.EIG_ic2glass=Insufficient glass tier!
 
+## General
 kubatech.gui.text.configuration=Configuration
 
 kubatech.gui.text.tea_ultimate.status=STATUS
@@ -53,11 +55,22 @@ kubatech.gui.text.tea_acceptor.not_owner=This is not your block
 kubatech.gui.text.tea_acceptor.in=IN: %s/t
 kubatech.gui.text.tea_acceptor.in.tooltip=Average input from the last 5 seconds
 
-kubatech.gui.text.eec.infernal_drop=Is allowed to spawn infernal mobs
-kubatech.gui.text.eec.infernal_drop.always=Does not affect mobs that are always infernal!
-kubatech.gui.text.eec.void_all_damaged=Void all damaged and enchanted items
-kubatech.gui.text.eec.void_all_damaged.warning=Does not affect infernal drops and some special drops like Sticky Sword!
-kubatech.gui.tooltip.eec.ritual_mode=Ritual mode
+kubatech.gui.text.eec.preserve_weapon_on=Weapon Preservation: ON
+kubatech.gui.text.eec.preserve_weapon_off=Weapon Preservation: OFF
+kubatech.gui.text.eec.preserve_weapon_warning=Not using GUI weapon.
+kubatech.gui.text.eec.cycle_weapons_on=Weapon Cycling: ON
+kubatech.gui.text.eec.cycle_weapons_off=Weapon Cycling: OFF
+kubatech.gui.text.eec.cycle_weapons.info=If §fWeapon Preservation§r is enabled, moves almost broken weapons from the GUI to Output Buses, if there's space.
+kubatech.gui.text.eec.void_all_damaged_on=Void damaged and enchanted items: ON
+kubatech.gui.text.eec.void_all_damaged_off=Void damaged and enchanted items: OFF
+kubatech.gui.text.eec.void_all_damaged.warning=Does not affect infernal drops and some special drops like the Sticky Sword! Will never void the weapon in the GUI slot.
+kubatech.gui.text.eec.infernal_drop_on=Allow Infernal Spawns: ON
+kubatech.gui.text.eec.infernal_drop_off=Allow Infernal Spawns: OFF
+kubatech.gui.text.eec.infernal_drop_always=Does not affect mobs that are always infernal!
+kubatech.gui.text.eec.ritual_mode_on=Ritual Mode: ON
+kubatech.gui.text.eec.ritual_mode_off=Ritual Mode: OFF
+kubatech.gui.text.eec.ritual_mode_connected=Connected to ritual.
+kubatech.gui.text.eec.ritual_mode_error=Can't connect to ritual!
 
 kubatech.gui.text.inventory=Inventory
 kubatech.gui.text.status=Status
@@ -79,6 +92,16 @@ kubatech.gui.tooltip.dynamic_inventory.empty_slot=Empty slot
 kubatech.gui.tooltip.dynamic_inventory.eig.remaining_seed_types=Remaining seed types: %d
 kubatech.gui.tooltip.dynamic_inventory.eig.remaining_seed_capacity=Remaining seed capacity: %d
 
+#Chat Messages
+kubatech.chat.forbidden_while_running=Cannot change mode while running!
+
+kubatech.chat.eec.ritual_mode_enabled=Ritual mode enabled
+kubatech.chat.eec.ritual_mode_disabled=Ritual mode disabled
+kubatech.chat.eec.ritual_mode_connected=Successfully connected to ritual
+kubatech.chat.eec.ritual_mode_error=Can't connect to ritual!
+kubatech.chat.eec.infernal_drops_enabled=Mobs can spawn infernal
+kubatech.chat.eec.infernal_drops_disabled=Mobs will be prevented from spawning infernal
+
 # info data
 ## general
 kubatech.infodata.running_mode=Running in mode:
@@ -96,13 +119,17 @@ kubatech.infodata.eec.in_ritual_mode.yes=Is in ritual mode: §eYes
 kubatech.infodata.eec.in_ritual_mode.no=Is in ritual mode: §eNo
 kubatech.infodata.eec.connected_to_ritual.yes=Is connected to ritual: §aYes
 kubatech.infodata.eec.connected_to_ritual.no=Is connected to ritual: §cNo
+kubatech.infodata.eec.cycle_weapons.yes=Is cycling weapons: §eYes
+kubatech.infodata.eec.cycle_weapons.no=Is cycling weapons: §eNo
+kubatech.infodata.eec.weapon_preservation.yes=Is preserving weapons: §eYes
+kubatech.infodata.eec.weapon_preservation.no=Is preserving weapons: §eNo
 kubatech.infodata.eec.inserted_weapon.yes=Inserted weapon: §eYes
 kubatech.infodata.eec.inserted_weapon.no=Inserted weapon: §eNo
 kubatech.infodata.eec.weapon.damage=Weapon attack damage: §e%f
 kubatech.infodata.eec.weapon.looting_level=Weapon looting level: §e%d
 kubatech.infodata.eec.total_damage=Total attack damage: §e%f
 
-## Exreme Industrial Greenhouse
+## Extreme Industrial Greenhouse
 kubatech.infodata.eig.running_mode.setup_mode.input=Setup mode (input)
 kubatech.infodata.eig.running_mode.setup_mode.output=Setup mode (output)
 kubatech.infodata.eig.uses.water=Uses %dL/operation of water
@@ -122,10 +149,20 @@ kubatech.infodata.mia.running_mode.operating.normal=Operating mode (NORMAL)
 kubatech.infodata.mia.running_mode.operating.swarmer=Operating mode (SWARMER)
 kubatech.infodata.mia.running_mode.bee_storage=Bee storage (%s/%s):
 
+#HTGR
+kubatech.infodata.htgr.stored_fuel=Stored Fuel:
+kubatech.infodata.htgr.stored_fuel_entry=§f- §b%s §fx §6%s
+kubatech.infodata.htgr.burned_fuel=Burned Fuel:
+kubatech.infodata.htgr.burned_fuel_entry=§f- §b%s §fx §6%s%% to output
+kubatech.infodata.htgr.helium_supply=Helium Supply: §6%sL
+kubatech.infodata.htgr.coolant_per_tick=Coolant per tick: §6%sL
+kubatech.infodata.htgr.water_per_tick=Water per tick: §6%sL
 
 #Waila
 kubatech.waila.eec.mob_type=Mob Type: %s
 kubatech.waila.eec.no_mob=None
+kubatech.waila.eec.ritual_mode_connected=Connected to ritual
+kubatech.waila.eec.ritual_mode_error=Not connected to ritual!
 
 #Blocks
 kubablock.tea_acceptor.name=§4§lTea Acceptor
@@ -144,6 +181,12 @@ kubaitem.defc_schematic_t1.tip=This Schematic can be found in Pluto Dungeons
 kubaitem.defc_schematic_t2.name=Wyvern Core Schematic
 kubaitem.defc_schematic_t3.name=Awakened Core Schematic
 kubaitem.defc_schematic_t4.name=Chaotic Core Schematic
+
+item.htgr_item.0.name=TRISO Fuel Mixture (%s)
+item.htgr_item.1.name=Incomplete BISO Fuel (%s)
+item.htgr_item.2.name=Incomplete TRISO Fuel (%s)
+item.htgr_item.3.name=TRISO Fuel (%s)
+item.htgr_item.4.name=Burned Out TRISO Fuel (%s)
 
 #Tea
 kubaitem.tea.black_tea.name=Black Tea
@@ -232,3 +275,5 @@ kubatech.tooltip.tea_storage.0=Extends Tea Storage by %s
 kubatech.tooltip.tea_ingredient.0=This is Tea ingredient
 
 kubatech.tooltip.structure.flowers=Flowers
+
+kubatech.tooltip.htgr_material=Material for High Temperature Gas-cooled Reactor

@@ -62,6 +62,8 @@ import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.MachineStats;
+import ic2.core.block.EntityItnt;
+import ic2.core.block.EntityNuke;
 
 public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAddUIWidgets {
 
@@ -90,17 +92,17 @@ public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAd
         super(aName, aTier, 3, aDescription, aTextures);
     }
 
-    private static float calculateWeight(Entity aEntity) {
-        if ((aEntity instanceof EntityFishHook)) {
+    private static float calculateWeight(Entity entity) {
+        if ((entity instanceof EntityFishHook)) {
             return -1.0F;
         }
-        if ((aEntity instanceof EntityDragonPart)) {
+        if ((entity instanceof EntityDragonPart)) {
             return -1.0F;
         }
-        if ((aEntity instanceof EntityWeatherEffect)) {
+        if ((entity instanceof EntityWeatherEffect)) {
             return -1.0F;
         }
-        if ((aEntity instanceof EntityPlayer tPlayer)) {
+        if ((entity instanceof EntityPlayer tPlayer)) {
             int tCount = 64;
             for (int i = 0; i < 36; i++) {
                 if (tPlayer.inventory.getStackInSlot(i) != null) {
@@ -115,51 +117,49 @@ public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAd
             }
             return Math.min(5.0F, tCount / 666.6F);
         }
-        if (GTUtility.getClassName(aEntity)
-            .equals("EntityItnt")) {
+        if (entity instanceof EntityItnt) {
             return 5.0F;
         }
-        if (GTUtility.getClassName(aEntity)
-            .equals("EntityNuke")) {
+        if (entity instanceof EntityNuke) {
             return 50.0F;
         }
-        if ((aEntity instanceof EntityArrow)) {
+        if ((entity instanceof EntityArrow)) {
             return 0.001F;
         }
-        if ((aEntity instanceof EntityBoat)) {
+        if ((entity instanceof EntityBoat)) {
             return 0.1F;
         }
-        if ((aEntity instanceof EntityEnderCrystal)) {
+        if ((entity instanceof EntityEnderCrystal)) {
             return 2.0F;
         }
-        if ((aEntity instanceof EntityEnderEye)) {
+        if ((entity instanceof EntityEnderEye)) {
             return 0.001F;
         }
-        if ((aEntity instanceof EntityFireball)) {
+        if ((entity instanceof EntityFireball)) {
             return 0.001F;
         }
-        if ((aEntity instanceof EntityFireworkRocket)) {
+        if ((entity instanceof EntityFireworkRocket)) {
             return 0.001F;
         }
-        if ((aEntity instanceof EntityHanging)) {
+        if ((entity instanceof EntityHanging)) {
             return 0.005F;
         }
-        if ((aEntity instanceof EntityItem)) {
+        if ((entity instanceof EntityItem)) {
             return 0.001F;
         }
-        if ((aEntity instanceof EntityLiving)) {
+        if ((entity instanceof EntityLiving)) {
             return 0.5F;
         }
-        if ((aEntity instanceof EntityMinecart)) {
+        if ((entity instanceof EntityMinecart)) {
             return 0.1F;
         }
-        if ((aEntity instanceof EntityThrowable)) {
+        if ((entity instanceof EntityThrowable)) {
             return 0.001F;
         }
-        if ((aEntity instanceof EntityTNTPrimed)) {
+        if ((entity instanceof EntityTNTPrimed)) {
             return 5.0F;
         }
-        if ((aEntity instanceof EntityXPOrb)) {
+        if ((entity instanceof EntityXPOrb)) {
             return 0.001F;
         }
         return -1.0F;
@@ -425,11 +425,6 @@ public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAd
     @Override
     public long maxEUInput() {
         return V[mTier];
-    }
-
-    @Override
-    public long maxSteamStore() {
-        return maxEUStore();
     }
 
     @Override

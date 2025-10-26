@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
-import gtPlusPlus.core.util.Utils;
+import gregtech.api.util.StringUtils;
 
 /**
  * A Server Side safe object that can hold {@link IIcon}s.
@@ -32,7 +32,7 @@ public class SafeTexture implements Runnable {
     private final String mTextureName;
 
     private static @NotNull String getKey(@NotNull String aTexPath) {
-        String aNameKey = Utils.sanitizeString(aTexPath);
+        String aNameKey = StringUtils.sanitizeString(aTexPath);
         aNameKey = aNameKey.replace('/', ' ');
         aNameKey = aNameKey.toLowerCase();
         return aNameKey;

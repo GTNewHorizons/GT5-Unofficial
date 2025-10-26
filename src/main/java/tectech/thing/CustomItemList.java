@@ -135,7 +135,7 @@ public enum CustomItemList implements IItemContainer {
     eM_dynamoTunnel8_UXV,
     eM_dynamoTunnel9_UXV,
     eM_dynamoTunnel9001,
-
+    eM_dynamoWirelessMulti,
     eM_energyMulti4_EV,
     eM_energyMulti16_EV,
     eM_energyMulti64_EV,
