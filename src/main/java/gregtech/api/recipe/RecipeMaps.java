@@ -1313,4 +1313,10 @@ public final class RecipeMaps {
         .minInputs(1, 1)
         .progressBar(GTUITextures.PROGRESSBAR_ARROW)
         .build();
+
+    public static final RecipeMap<RecipeMapBackend> scpRecipes = RecipeMapBuilder.of("gt.recipe.scp")
+        .maxIO(2, 1, 2, 0)
+        .minInputs(1, 1)
+        .progressBar(GTUITextures.PROGRESSBAR_ARROW)
+        .build();
 }

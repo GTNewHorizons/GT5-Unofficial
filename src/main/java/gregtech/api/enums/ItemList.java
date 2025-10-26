@@ -2208,6 +2208,7 @@ public enum ItemList implements IItemContainer {
     CasingIchorium,
     EntropicProcessor,
     DecayWarehouse,
+    SuperConductorProcessor,
     LATEX,
     AcceleratorLV,
     AcceleratorMV,
@@ -2757,14 +2758,28 @@ public enum ItemList implements IItemContainer {
     MagLevHarness,
 
     ManaFly,
+
     DebugEnergyHatch,
+
+    Hatch_Booster,
+    Booster_MV,
+    Booster_HV,
+    Booster_EV,
+    Booster_IV,
+    Booster_LuV,
+    Booster_ZPM,
+    Booster_UV,
+    Booster_UHV,
+    Booster_UEV,
+    Booster_UIV,
+    Booster_UMV,
 
     Machine_LV_CableCoater,
     Machine_MV_CableCoater,
     Machine_HV_CableCoater,
     Machine_EV_CableCoater,
-    ChaosLocator,
 
+    ChaosLocator,
     // semicolon after the comment to reduce merge conflicts
     ;
 
