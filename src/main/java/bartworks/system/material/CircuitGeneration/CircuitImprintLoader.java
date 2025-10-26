@@ -13,6 +13,9 @@
 
 package bartworks.system.material.CircuitGeneration;
 
+import static gregtech.api.enums.GTValues.VP;
+import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -36,6 +39,7 @@ import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.util.BWUtil;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -55,9 +59,7 @@ public class CircuitImprintLoader {
     public static final ArrayListMultimap<NBTTagCompound, GTRecipe> recipeTagMap = ArrayListMultimap.create();
     public static final HashBiMap<Short, ItemList> circuitIIconRefs = HashBiMap.create(20);
     public static final HashSet<ItemStack> blacklistSet = new HashSet<>();
-    static final HashBiMap<CircuitData, ItemStack> bwCircuitTagMap = HashBiMap.create(20);
     private static final HashSet<IRecipe> recipeWorldCache = new HashSet<>();
-    private static final HashSet<GTRecipe> gtrecipeWorldCache = new HashSet<>();
     private static final HashSet<GTRecipe> ORIGINAL_CAL_RECIPES = new HashSet<>();
     private static final HashSet<GTRecipe> MODIFIED_CAL_RECIPES = new HashSet<>();
 
@@ -266,43 +268,30 @@ public class CircuitImprintLoader {
         recipeWorldCache.forEach(
             CraftingManager.getInstance()
                 .getRecipeList()::remove);
-        RecipeMaps.slicerRecipes.getBackend()
-            .removeRecipes(gtrecipeWorldCache);
         GTModHandler.sBufferRecipeList.removeAll(recipeWorldCache);
         recipeWorldCache.clear();
-        gtrecipeWorldCache.clear();
     }
 
     private static void makeAndAddCutterRecipe(NBTTagCompound tag) {
         ItemStack stack = CircuitImprintLoader.getStackFromTag(tag);
-        int eut = Integer.MAX_VALUE;
+        long eut = Long.MAX_VALUE;
 
         for (GTRecipe recipe : CircuitImprintLoader.recipeTagMap.get(tag)) {
             eut = Math.min(eut, recipe.mEUt);
         }
-
-        eut = Math.min(
-            eut,
-            BWUtil.getMachineVoltageFromTier(
-                BWUtil.getCircuitTierFromOreDictName(
-                    OreDictionary.getOreName(
-                        OreDictionary.getOreIDs(stack) != null && OreDictionary.getOreIDs(stack).length > 0
-                            ? OreDictionary.getOreIDs(stack)[0]
-                            : -1))));
-        GTRecipe cutterRecipe = new GTRecipe(
-            true,
-            new ItemStack[] { stack, ItemList.Shape_Slicer_Flat.get(0) },
-            new ItemStack[] { BWMetaItems.getCircuitParts()
-                .getStackWithNBT(tag, 1, 1) },
-            null,
-            null,
-            null,
-            null,
-            300,
-            eut,
-            BWUtil.CLEANROOM);
-        gtrecipeWorldCache.add(cutterRecipe);
-        RecipeMaps.cutterRecipes.add(cutterRecipe);
+        int tier = BWUtil.getCircuitTierFromOreDictName(
+            OreDictionary
+                .getOreName(OreDictionary.getOreIDs(stack).length > 0 ? OreDictionary.getOreIDs(stack)[0] : -1));
+        eut = Math.min(eut, VP[Math.max(tier, 0)]);
+        GTValues.RA.stdBuilder()
+            .itemInputs(stack, ItemList.Shape_Slicer_Flat.get(0))
+            .itemOutputs(
+                BWMetaItems.getCircuitParts()
+                    .getStackWithNBT(tag, 1, 1))
+            .duration(300)
+            .eut(eut)
+            .requiresCleanRoom()
+            .addTo(cutterRecipes);
     }
 
     private static void makeAndAddCraftingRecipes(NBTTagCompound tag) {

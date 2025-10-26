@@ -86,7 +86,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     implements ISurvivalConstructable {
 
     public boolean tier2Fluid = false;
-    public double mMode = 1.0; // i think it has to be a double cuz slider. 0 = speed, 1 = normal, 2 = heavy
+    public double mode = 1.0; // i think it has to be a double cuz slider. 0 = speed, 1 = normal, 2 = heavy
     public int RP = 0;
     public float speed = 3F;
     private final int horizontalOffset = 8; // base offset for tier 1
@@ -295,7 +295,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         tier = aNBT.getInteger("multiTier");
-        mMode = aNBT.getDouble("multiMode");
+        mode = aNBT.getDouble("multiMode");
         RP = aNBT.getInteger("RP");
         mStaticAnimations = aNBT.getBoolean("turbineAnimationsStatic");
         tier2Fluid = aNBT.getBoolean("tier2FluidOn");
@@ -309,7 +309,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setInteger("multiTier", tier);
-        aNBT.setDouble("multiMode", mMode);
+        aNBT.setDouble("multiMode", mode);
         aNBT.setBoolean("tier2FluidOn", tier2Fluid);
         aNBT.setInteger("RP", RP);
         aNBT.setBoolean("turbineAnimationsStatic", mStaticAnimations);
@@ -414,10 +414,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
                     + "100%"
                     + EnumChatFormatting.GRAY
                     + " Speed Bonus, "
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "0.9x"
-                    + EnumChatFormatting.GRAY
-                    + " Parallels, Maximum Recipe Tier is "
+                    + "Maximum Recipe Tier is "
                     + EnumChatFormatting.LIGHT_PURPLE
                     + "Voltage Tier - 3")
             .addInfo(EnumChatFormatting.GOLD + "Standard Mode" + EnumChatFormatting.GRAY + ": No Changes")
@@ -438,16 +435,16 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             .addInfo(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.DARK_RED + "Maahes guides the way...")
             .beginStructureBlock(17, 17, 17, false)
             .addController("Front Center")
-            .addCasingInfoRange("Any Tiered Glass", 81, 135, true)
+            .addCasingInfoExactly("Any Tiered Glass", 81, true)
             .addCasingInfoMin("Vibration-Safe Casing", 550, false)
             .addCasingInfoExactly("Chamber Grate", 144, false)
             .addCasingInfoExactly("Central Frame Blocks", 9, true)
             .addCasingInfoExactly("Central Rotor Blocks", 56, true)
             .addCasingInfoExactly("IsaMill Gearbox Casing", 54, false)
-            .addCasingInfoRange("PBI Pipe Casing", 160, 178, false)
-            .addCasingInfoRange("Turbine Shaft", 6, 24, false)
-            .addCasingInfoRange("Rotor Assembly", 2, 8, false)
-            .addCasingInfoRange("SC Turbine Casing", 66, 264, false)
+            .addCasingInfoExactly("PBI Pipe Casing", 160, false)
+            .addCasingInfoExactly("Turbine Shaft", 24, false)
+            .addCasingInfoExactly("Rotor Assembly", 8, false)
+            .addCasingInfoExactly("SC Turbine Casing", 264, false)
             .addInputBus("Any Vibration-Safe Casing", 1)
             .addOutputBus("Any Vibration-Safe Casing", 1)
             .addInputHatch("Any Vibration-Safe Casing", 1)
@@ -566,7 +563,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setMaxParallel(getTrueParallel());
-        if (mExoticEnergyHatches.isEmpty()) {
+        if (mExoticEnergyHatches.isEmpty() && !debugEnergyPresent) {
             logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
             logic.setAvailableAmperage(1L);
         } else super.setProcessingLogicPower(logic);
@@ -581,11 +578,11 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 amountToDrain = GTUtility.getTier(recipe.mEUt) * 10;
                 if (!checkFluid(7 * amountToDrain)) return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");
-                if (mMode == 0.0 && GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt) < 3)
+                if (mode == 0.0 && GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt) < 3)
                     return CheckRecipeResultRegistry.NO_RECIPE;
-                if (mMode == 2.0 && !tier2Fluid) return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");
+                if (mode == 2.0 && !tier2Fluid) return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");
 
-                if (recipe.getMetadataOrDefault(CentrifugeRecipeKey.INSTANCE, Boolean.FALSE) && mMode != 2.0)
+                if (recipe.getMetadataOrDefault(CentrifugeRecipeKey.INSTANCE, Boolean.FALSE) && mode != 2.0)
                     return CheckRecipeResultRegistry.NO_RECIPE;
 
                 getSpeed();
@@ -706,7 +703,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         if (tier2Fluid) {
             parallels = (int) Math.floor(parallels * 1.25);
         }
-        if (mMode == 2.0) {
+        if (mode == 2.0) {
             parallels /= 32;
         }
         return parallels > 0 ? parallels : 1; // if its 1, something messed up lol, just a failsafe in case i mess up
@@ -750,15 +747,12 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
 
     public int getRP() {
         RP = 4 * getSumRotorLevels();
-        if (mMode == 0.0) {
-            RP = (int) (RP * 0.9);
-        }
         return RP;
     }
 
     public float getSpeed() {
         speed = 3F;
-        if (mMode == 0.0) {
+        if (mode == 0.0) {
             speed = 4.0F;
         }
         return speed;
@@ -769,13 +763,13 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     }
 
     public String modeToString() {
-        if (mMode == 0.0) {
+        if (mode == 0.0) {
             return "Light";
         }
-        if (mMode == 1.0) {
+        if (mode == 1.0) {
             return "Standard";
         }
-        if (mMode == 2.0) {
+        if (mode == 2.0) {
             return "Heavy";
         }
         return "Unset";

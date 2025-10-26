@@ -57,12 +57,13 @@ public class BWGTMetaItems extends BWMetaGeneratedItems {
                     && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))
                 continue;
 
-            if (OreDictionary.doesOreNameExist(this.orePrefixes.name() + material.mDefaultLocalName.replace(" ", ""))) {
+            if (OreDictionary
+                .doesOreNameExist(this.orePrefixes.getName() + material.mDefaultLocalName.replace(" ", ""))) {
                 this.hiddenThings.add(i);
                 continue;
             }
             GTOreDictUnificator
-                .registerOre(this.orePrefixes.name() + material.mDefaultLocalName.replace(" ", ""), tStack);
+                .registerOre(this.orePrefixes.getName() + material.mDefaultLocalName.replace(" ", ""), tStack);
         }
 
         if (noSubIDMaterials != null) {
@@ -76,11 +77,12 @@ public class BWGTMetaItems extends BWMetaGeneratedItems {
                         && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))
                     continue;
 
-                if (OreDictionary.doesOreNameExist(this.orePrefixes.name() + w.mDefaultLocalName.replace(" ", ""))) {
+                if (OreDictionary.doesOreNameExist(this.orePrefixes.getName() + w.mDefaultLocalName.replace(" ", ""))) {
                     this.hiddenThings.add(i);
                     continue;
                 }
-                GTOreDictUnificator.registerOre(this.orePrefixes.name() + w.mDefaultLocalName.replace(" ", ""), tStack);
+                GTOreDictUnificator
+                    .registerOre(this.orePrefixes.getName() + w.mDefaultLocalName.replace(" ", ""), tStack);
             }
         }
     }
@@ -111,10 +113,10 @@ public class BWGTMetaItems extends BWMetaGeneratedItems {
 
     @Override
     public IIconContainer getIconContainer(int aMetaData) {
-        if (this.orePrefixes.mTextureIndex == -1) return this.getIconContainerBartWorks(aMetaData);
+        if (this.orePrefixes.getTextureIndex() == -1) return this.getIconContainerBartWorks(aMetaData);
         Materials material = this.getMaterialFromMeta(aMetaData);
         if (material != null) {
-            return material.mIconSet.mTextures[this.orePrefixes.mTextureIndex];
+            return material.mIconSet.mTextures[this.orePrefixes.getTextureIndex()];
         }
         return null;
     }

@@ -297,6 +297,7 @@ public class MaterialBuilder {
      * <li>{@link OrePrefixes#bolt}</li>
      * <li>{@link OrePrefixes#comb}</li>
      * <li>{@link OrePrefixes#screw}</li>
+     * <li>{@link OrePrefixes#lens}</li>
      * <li>{@link OrePrefixes#crystal}</li>
      * <li>{@link OrePrefixes#handleMallet}</li>
      * </ul>
