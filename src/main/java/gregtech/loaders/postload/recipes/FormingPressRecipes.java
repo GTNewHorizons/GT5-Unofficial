@@ -214,7 +214,7 @@ public class FormingPressRecipes implements Runnable {
         if (UniversalSingularities.isModLoaded()) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    new ItemStack(bw_realglas, 8, 0),
+                    new ItemStack(bw_realglas, 8, 10),
                     ItemList.Naquarite_Universal_Insulator_Foil.get(8),
                     getModItem(UniversalSingularities.ID, "general.singularity", 1, 13))
                 .fluidInputs(Materials.SuperCoolant.getFluid(64000))
