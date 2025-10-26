@@ -368,8 +368,8 @@ public class GTRecipeBuilder {
         return this;
     }
 
-    public GTRecipeBuilder iCircuit(int circuitNumber) {
-        ItemStack circuit = GTUtility.getIntegratedCircuit(circuitNumber);
+    public GTRecipeBuilder iCircuit(int integratedCircuitNumber) {
+        ItemStack circuit = GTUtility.getIntegratedCircuit(integratedCircuitNumber);
 
         // Must be called AFTER .itemInputs() if there are items in the recipe
         if (inputsBasic != null && inputsBasic.length > 0) {
