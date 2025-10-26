@@ -17,7 +17,6 @@ import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.OrePrefixes.cell;
 import static gregtech.api.enums.OrePrefixes.cellMolten;
 import static gregtech.api.enums.OrePrefixes.dust;
-import static gregtech.api.enums.OrePrefixes.values;
 
 import java.util.ArrayList;
 
@@ -53,7 +52,7 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
                     .constructMaterial();
 
         final Element[] ELEMENT_VALUES = Element.values();
-        for (OrePrefixes prefixes : values()) {
+        for (OrePrefixes prefixes : OrePrefixes.VALUES) {
             if (prefixes != cell || !Werkstoff.Types.ELEMENT.equals(werkstoff.getType())) {
                 if (prefixes == dust && Werkstoff.Types.ELEMENT.equals(werkstoff.getType())) {
                     boolean ElementSet = false;
