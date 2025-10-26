@@ -15,6 +15,7 @@ import javax.annotation.Nullable;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -30,7 +31,9 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
 import appeng.api.AEApi;
+import appeng.api.config.Upgrades;
 import appeng.api.implementations.IPowerChannelState;
+import appeng.api.implementations.items.IUpgradeModule;
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.security.BaseActionSource;
 import appeng.api.networking.security.IActionHost;
@@ -87,6 +90,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     private final HashSet<GTUtility.ItemId> lockedItems = new HashSet<>();
 
     boolean hadCell = false;
+    boolean blackList = false;
 
     public MTEHatchOutputBusME(int aID, String aName, String aNameRegional) {
         super(
@@ -132,7 +136,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
             boolean isOk = false;
 
             for (GTUtility.ItemId lockedItem : lockedItems) {
-                if (lockedItem.matches(stack)) {
+                if (blackList ^ lockedItem.matches(stack)) {
                     isOk = true;
 
                     break;
@@ -192,7 +196,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
 
     @Override
     public boolean isFilteredToItem(GTUtility.ItemId id) {
-        return lockedItems.contains(id);
+        return blackList ^ lockedItems.contains(id);
     }
 
     @Override
@@ -240,7 +244,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
             if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
 
             if (!hasAvailableSpace()) return false;
-            if (!lockedItems.isEmpty() && !lockedItems.contains(id)) return false;
+            if (!lockedItems.isEmpty() && !(blackList ^ lockedItems.contains(id))) return false;
 
             pendingItems.addTo(id, stack.stackSize);
             currentStored += stack.stackSize;
@@ -434,6 +438,19 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
             hadCell = true;
 
             if (this.lockedItems.isEmpty()) {
+                IInventory upgrades = ((ItemBasicStorageCell) upgradeItemStack.getItem())
+                    .getUpgradesInventory(upgradeItemStack);
+                for (int i = 0; i < upgrades.getSizeInventory(); i++) {
+                    ItemStack is = upgrades.getStackInSlot(i);
+                    if (is != null) {
+                        Upgrades u = ((IUpgradeModule) is.getItem()).getType(is);
+                        if (u == Upgrades.INVERTER) {
+                            blackList = true;
+                            break;
+                        }
+                    }
+                }
+
                 CellConfig cfg = (CellConfig) ((ItemBasicStorageCell) upgradeItemStack.getItem())
                     .getConfigInventory(upgradeItemStack);
 
