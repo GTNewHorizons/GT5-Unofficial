@@ -131,4 +131,10 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
         return new MTEHatchAdvancedOutputBeamlineGui(this).build(data, syncManager, uiSettings);
     }
 
+    @Override
+    public String[] getDescription() {
+        return new String[] { "Allows blacklisting of specific particle types in the Large Hadron Collider",
+            "Right click to open the GUI and change selections" };
+    }
+
 }

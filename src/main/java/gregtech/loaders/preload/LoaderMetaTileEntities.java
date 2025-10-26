@@ -11087,7 +11087,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEHatchAdvancedOutputBeamline(
                 HATCH_ADVANCED_BEAMLINE_OUTPUT.ID,
                 "hatch.advancedbeamlineoutput",
-                "Advanced Beamline Output Hatch",
+                "Filtered Beamline Output Hatch",
                 8).getStackForm(1));
 
         ItemList.LargeMolecularAssembler.set(

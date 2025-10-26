@@ -20,6 +20,7 @@ import java.util.Objects;
 
 import javax.annotation.Nullable;
 
+import gregtech.common.tileentities.machines.multi.LHC.MTEHatchAdvancedOutputBeamline;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -230,6 +231,10 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
 
         IMetaTileEntity mte = te.getMetaTileEntity();
         if (mte == null) return false;
+
+        if (mte instanceof MTEHatchAdvancedOutputBeamline) {
+            return false;
+        }
 
         if (mte instanceof MTEHatchOutputBeamline) {
             return this.mOutputBeamline.add((MTEHatchOutputBeamline) mte);

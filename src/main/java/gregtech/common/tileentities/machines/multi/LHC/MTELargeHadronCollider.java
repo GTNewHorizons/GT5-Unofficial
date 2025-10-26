@@ -2737,7 +2737,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                     + ", since they do")
             .addInfo("not interact via the strong force")
             .addInfo(
-                EnumChatFormatting.WHITE + "Advanced Beamline Output Hatches "
+                EnumChatFormatting.WHITE + "Filtered Beamline Output Hatches "
                     + EnumChatFormatting.GRAY
                     + "will allow you to see the list of possible outputs, and")
             .addInfo("filter them")

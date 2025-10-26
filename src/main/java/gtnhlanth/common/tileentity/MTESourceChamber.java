@@ -18,6 +18,7 @@ import static gtnhlanth.util.DescTextLocalization.addDotText;
 
 import java.util.ArrayList;
 
+import gregtech.common.tileentities.machines.multi.LHC.MTEHatchAdvancedOutputBeamline;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -182,6 +183,10 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
 
         IMetaTileEntity mte = te.getMetaTileEntity();
         if (mte == null) return false;
+
+        if (mte instanceof MTEHatchAdvancedOutputBeamline) {
+            return false;
+        }
 
         if (mte instanceof MTEHatchOutputBeamline) {
             return this.mOutputBeamline.add((MTEHatchOutputBeamline) mte);

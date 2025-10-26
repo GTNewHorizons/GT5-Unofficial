@@ -133,7 +133,8 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
                         () -> EnumChatFormatting.WHITE + StatCollector.translateToLocal("GT5U.gui.text.LHC.powercost")
                             + ": "
                             + EnumChatFormatting.GOLD
-                            + standardFormat.format(EUt.getLongValue())
+                            + ((cachedOutputBeamEnergy.getDoubleValue() > 0) ? standardFormat.format(EUt.getLongValue()) : "0")
+                            + EnumChatFormatting.WHITE
                             + " EU/t"
                     )
                 ).marginBottom(9)
