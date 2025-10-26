@@ -6,6 +6,7 @@ import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
@@ -148,9 +149,11 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
                 ).marginBottom(9)
             )
             .child(new TextWidget<>(IKey.dynamic(() -> "Status: " +
-                EnumChatFormatting.AQUA
-                + StatCollector.translateToLocal(getMachineModeText(machineMode.getIntValue()))
-                ))
+                    ((cachedOutputBeamEnergy.getDoubleValue() > 0 ) ?
+                        EnumChatFormatting.AQUA+StatCollector.translateToLocal(getMachineModeText(machineMode.getIntValue())) :
+                        EnumChatFormatting.GRAY+"Off")
+                    )
+                )
             )
             ;
     }

@@ -95,6 +95,12 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
             aNBT.setInteger("particleId", cachedOutputParticle.getParticleId());
             aNBT.setFloat("focus", cachedOutputParticle.getFocus());
         }
+        if (initialParticleInfo != null) {
+            aNBT.setFloat("iniParticleEnergy", initialParticleInfo.getEnergy());
+            aNBT.setInteger("iniParticleRate", initialParticleInfo.getRate());
+            aNBT.setInteger("iniParticleId", initialParticleInfo.getParticleId());
+            aNBT.setFloat("iniParticleFocus", initialParticleInfo.getFocus());
+        }
         aNBT.setDouble("playerBeamEnergy", playerTargetBeamEnergyeV);
         aNBT.setInteger("playerAccelCycles", playerTargetAccelerationCycles);
         aNBT.setInteger("accelerationCycleCounter", accelerationCycleCounter);
@@ -104,12 +110,19 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         machineMode = aNBT.getInteger("machineMode");
-        if (aNBT.hasKey("energy") && aNBT.hasKey("rate") && aNBT.hasKey("particleID") && aNBT.hasKey("focus")) {
+        if (aNBT.hasKey("energy") && aNBT.hasKey("rate") && aNBT.hasKey("particleId") && aNBT.hasKey("focus")) {
             cachedOutputParticle = new BeamInformation(
                 aNBT.getFloat("energy"),
                 aNBT.getInteger("rate"),
                 aNBT.getInteger("particleId"),
                 aNBT.getFloat("focus"));
+        }
+        if (aNBT.hasKey("iniParticleEnergy") && aNBT.hasKey("iniParticleRate") && aNBT.hasKey("iniParticleId") && aNBT.hasKey("iniParticleFocus")) {
+            initialParticleInfo = new BeamInformation(
+                aNBT.getFloat("iniParticleEnergy"),
+                aNBT.getInteger("iniParticleRate"),
+                aNBT.getInteger("iniParticleId"),
+                aNBT.getFloat("iniParticleFocus"));
         }
         playerTargetBeamEnergyeV = aNBT.getDouble("playerBeamEnergy");
         playerTargetAccelerationCycles = aNBT.getInteger("playerAccelCycles");
