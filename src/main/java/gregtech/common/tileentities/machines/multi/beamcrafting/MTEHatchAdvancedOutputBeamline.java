@@ -1,4 +1,4 @@
-package gregtech.common.tileentities.machines.multi.LHC;
+package gregtech.common.tileentities.machines.multi.beamcrafting;
 
 import java.util.HashMap;
 import java.util.List;

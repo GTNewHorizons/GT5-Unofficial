@@ -1,4 +1,4 @@
-package gregtech.common.tileentities.machines.multi.LHC;
+package gregtech.common.tileentities.machines.multi.beamcrafting;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;

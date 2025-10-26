@@ -24,7 +24,7 @@ import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
 import gregtech.api.modularui2.GTGuis;
-import gregtech.common.tileentities.machines.multi.LHC.MTEHatchAdvancedOutputBeamline;
+import gregtech.common.tileentities.machines.multi.beamcrafting.MTEHatchAdvancedOutputBeamline;
 import gtnhlanth.common.beamline.Particle;
 
 public class MTEHatchAdvancedOutputBeamlineGui {

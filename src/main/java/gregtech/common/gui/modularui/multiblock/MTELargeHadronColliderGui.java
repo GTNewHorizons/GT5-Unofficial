@@ -20,7 +20,7 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
-import gregtech.common.tileentities.machines.multi.LHC.MTELargeHadronCollider;
+import gregtech.common.tileentities.machines.multi.beamcrafting.MTELargeHadronCollider;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 

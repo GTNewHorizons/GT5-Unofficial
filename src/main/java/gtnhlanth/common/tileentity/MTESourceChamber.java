@@ -18,7 +18,7 @@ import static gtnhlanth.util.DescTextLocalization.addDotText;
 
 import java.util.ArrayList;
 
-import gregtech.common.tileentities.machines.multi.LHC.MTEHatchAdvancedOutputBeamline;
+import gregtech.common.tileentities.machines.multi.beamcrafting.MTEHatchAdvancedOutputBeamline;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
