@@ -680,11 +680,8 @@ public class MTETeslaTower extends TTMultiblockBase
         popogaSetting = hatch_0.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
         histHighSetting = hatch_1.makeInParameter(0, 0.75, HYSTERESIS_HIGH_SETTING_NAME, HYSTERESIS_HIGH_STATUS);
         popogaSetting = hatch_1.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
-        transferRadiusTowerSetting = hatch_2.makeInParameter(
-            0,
-            ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_TOWER,
-            TRANSFER_RADIUS_TOWER_SETTING_NAME,
-            TRANSFER_RADIUS_TOWER_STATUS);
+        transferRadiusTowerSetting = hatch_2
+            .makeInParameter(0, 256, TRANSFER_RADIUS_TOWER_SETTING_NAME, TRANSFER_RADIUS_TOWER_STATUS);
         popogaSetting = hatch_2.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
         transferRadiusTransceiverSetting = hatch_3.makeInParameter(
             0,

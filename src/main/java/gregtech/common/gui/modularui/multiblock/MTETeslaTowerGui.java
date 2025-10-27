@@ -35,8 +35,10 @@ import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
+import com.mojang.realmsclient.util.Pair;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.gui.ItemDisplayKey;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.util.GTUtility;
@@ -217,8 +219,8 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
 
     private @NotNull ModularPanel openHeatMapPanel(PanelSyncManager syncManager, ModularPanel parent) {
         return new ModularPanel("heatMap").relative(parent)
-            .topRel(0f)
-            .leftRel(0f)
+            .topRel(0)
+            .rightRel(1, 0, 0)
             .size(17 * 8, 17 * 8)
             .child(createNodeGrid(syncManager));
     }
@@ -238,20 +240,36 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
 
     private Widget<?> createMapSlot(PanelSyncManager syncManager, int i, int j) {
 
-        return new DynamicDrawable(() -> getDrawableAt(i, j)).asWidget()
+        return new DynamicDrawable(() -> getDrawableAt(syncManager, i, j)).asWidget()
             .size(8)
             .tooltipDynamic(t -> addTooltip(t, i, j))
             .tooltipAutoUpdate(true);
     }
 
-    private IDrawable getDrawableAt(int i, int j) {
+    private IDrawable getDrawableAt(PanelSyncManager syncManager, int i, int j) {
         Map<Vec3Impl, Integer> ampsAtChunk = chunkToAmpsMap.get(new Vec3Impl(i, 0, j));
 
         if (ampsAtChunk == null) {
             return IDrawable.EMPTY;
         }
+        int usedAmps = ampsAtChunk.values()
+            .stream()
+            .reduce(Integer::sum)
+            .orElse(0);
+        LongSyncValue maxCurrentSyncer = syncManager.findSyncHandler("maxCurrent", LongSyncValue.class);
+        long maxAmps = maxCurrentSyncer.getValue();
+        double percentage = (double) usedAmps / maxAmps;
 
-        return new Rectangle().setColor(Color.GREEN.main)
+        int color;
+        if (percentage < 0.1) {
+            color = Color.GREEN.main;
+        } else if (percentage < 0.25) {
+            color = Color.YELLOW.main;
+        } else {
+            color = Color.RED.main;
+        }
+
+        return new Rectangle().setColor(color)
             .asIcon()
             .size(8);
     }
@@ -269,15 +287,24 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
 
         World world = multiblock.getBaseMetaTileEntity()
             .getWorld();
+
+        Map<ItemDisplayKey, Pair<Integer, Integer>> machineGroupings = new HashMap<>();
         ampsAtChunk.forEach((coords, amps) -> {
             TileEntity tileEntity = world.getTileEntity(coords.get0(), coords.get1(), coords.get2());
             // This should never happen but who knows?
             if (!(tileEntity instanceof IGregTechTileEntity igte)) {
                 return;
             }
-            ItemStack itemStack = new ItemStack(tileEntity.blockType, 0, igte.getMetaTileID());
-            t.add(new ItemDrawable(itemStack))
-                .add(" " + amps + "A\n");
+            ItemStack itemStack = new ItemStack(tileEntity.blockType, 1, igte.getMetaTileID());
+            ItemDisplayKey key = new ItemDisplayKey(itemStack.getItem(), itemStack.getItemDamage());
+            Pair<Integer, Integer> machineGroup = machineGroupings.computeIfAbsent(key, k -> Pair.of(0, 0));
+            Pair<Integer, Integer> newMachineGroup = Pair.of(machineGroup.first() + 1, machineGroup.second() + amps);
+            machineGroupings.put(key, newMachineGroup);
+        });
+
+        machineGroupings.forEach((item, pair) -> {
+            t.add(new ItemDrawable(new ItemStack(item.item(), 1, item.damage())))
+                .add(" x" + pair.first() + " = " + pair.second() + "A\n");
         });
 
     }
