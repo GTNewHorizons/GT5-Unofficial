@@ -1344,6 +1344,7 @@ GT5U.machines.nano_forge.t4_info_text.7=Additionally, tier 1 & 2 nanites will re
 GT5U.machines.antimatter_forge.enableRender=Enable Antimatter Forge Render
 GT5U.machines.antimatter_forge.disableRender=Disable Antimatter Forge Render
 
+
 GT5U.recipe_filter.empty_representation_slot.tooltip=§7Click with a machine to set filter
 GT5U.recipe_filter.representation_slot.tooltip=§7Click to clear
 GT5U.type_filter.representation_slot.tooltip=§7Left click to cycle forward
@@ -2563,6 +2564,19 @@ achievement.gt.blockcasings5.12=Hypogen Coil
 achievement.gt.blockcasings5.12.desc=Pickup this item to see the recipe in NEI
 achievement.gt.blockcasings5.13=Eternal Coil
 achievement.gt.blockcasings5.13.desc=Pickup this item to see the recipe in NEI
+
+# Exo-Foundry
+gt.blockmachines.multimachine.foundry.basemodule=This is a module casing of the Exo-Foundry
+gt.blockmachines.multimachine.foundry.chassis1=Break Infinity
+gt.blockmachines.multimachine.foundry.chassis2=Become Eternal
+gt.blockmachines.multimachine.foundry.chassis3=Ascend Reality
+gt.blockmachines.multimachine.foundry.timedilation=Fractured Universe
+gt.blockmachines.multimachine.foundry.efficientoc=Optimized Overclocks
+gt.blockmachines.multimachine.foundry.powerefficient=Stable Current
+gt.blockmachines.multimachine.foundry.transcendentreinforcement=Raised Boundary
+gt.blockmachines.multimachine.foundry.parallel=Greater Fate
+gt.blockmachines.multimachine.foundry.hypercooler=Tempered Fury
+gt.blockmachines.multimachine.foundry.speed=Witch Time!
 
 achievement.gt.blockmachines.wireless.receiver.tier.00=ULV Wireless Energy Hatch
 achievement.gt.blockmachines.wireless.receiver.tier.00.desc=Pickup this item to see the recipe in NEI

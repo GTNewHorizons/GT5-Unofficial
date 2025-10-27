@@ -16,7 +16,9 @@ import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.drawable.ItemDrawable;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
@@ -34,18 +36,19 @@ import com.cleanroommc.modularui.widgets.layout.Row;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.solidifier.MTEModularSolidifier;
 import gregtech.common.tileentities.machines.multi.solidifier.SolidifierModules;
 
-public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
+public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui<MTEModularSolidifier> {
 
-    private final MTEModularSolidifier base;
     private final IItemHandlerModifiable itemHandler = new ItemStackHandler(8);
 
     public MTEModularSolidifierGui(MTEModularSolidifier base) {
         super(base);
-        this.base = base;
         // manual init :P
         for (int i = 0; i < 8; i++) {
             itemHandler.setStackInSlot(
@@ -60,22 +63,22 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
         super.registerSyncValues(syncManager);
         // all 4 module slots(enum values?) and values modified
         // values modified include: Parallels, Speed Bonus, Eu EFF, OC Factor.
-        syncManager.syncValue("Speed", new StringSyncValue(base::getSpeedStr));
-        syncManager.syncValue("Parallels", new StringSyncValue(base::getParallelsString));
-        syncManager.syncValue("EuEFF", new StringSyncValue(base::getEuEFFString));
-        syncManager.syncValue("OCFactor", new StringSyncValue(base::getOCFactorString));
+        syncManager.syncValue("Speed", new StringSyncValue(multiblock::getSpeedStr));
+        syncManager.syncValue("Parallels", new StringSyncValue(multiblock::getParallelsString));
+        syncManager.syncValue("EuEFF", new StringSyncValue(multiblock::getEuEFFString));
+        syncManager.syncValue("OCFactor", new StringSyncValue(multiblock::getOCFactorString));
         syncManager.syncValue(
             "Module1",
-            new IntSyncValue(() -> base.getModuleSynced(0), ordinal -> base.setModule(0, ordinal)));
+            new IntSyncValue(() -> multiblock.getModuleSynced(0), ordinal -> multiblock.setModule(0, ordinal)));
         syncManager.syncValue(
             "Module2",
-            new IntSyncValue(() -> base.getModuleSynced(1), ordinal -> base.setModule(1, ordinal)));
+            new IntSyncValue(() -> multiblock.getModuleSynced(1), ordinal -> multiblock.setModule(1, ordinal)));
         syncManager.syncValue(
             "Module3",
-            new IntSyncValue(() -> base.getModuleSynced(2), ordinal -> base.setModule(2, ordinal)));
+            new IntSyncValue(() -> multiblock.getModuleSynced(2), ordinal -> multiblock.setModule(2, ordinal)));
         syncManager.syncValue(
             "Module4",
-            new IntSyncValue(() -> base.getModuleSynced(3), ordinal -> base.setModule(3, ordinal)));
+            new IntSyncValue(() -> multiblock.getModuleSynced(3), ordinal -> multiblock.setModule(3, ordinal)));
     }
 
     @Override
@@ -165,7 +168,7 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
             .marginTop(4)
             .overlay(GuiTextures.GEAR)
             .onMousePressed(d -> {
-                base.terminalSwitch = !base.terminalSwitch;
+                multiblock.terminalSwitch = !multiblock.terminalSwitch;
                 return true;
             })
             .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.foundrymoduleselect")))
@@ -183,11 +186,12 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
                     .paddingRight(0)
                     .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
                     .child(
-                        (IWidget) createTerminalTextWidget(syncManager, panel).collapseDisabledChild()
-                            .setEnabledIf(widget -> !base.terminalSwitch)
+                        createTerminalTextWidget(syncManager, panel).collapseDisabledChild()
+                            .setEnabledIf(widget -> !multiblock.terminalSwitch)
                             .size(getTerminalWidgetWidth() - 4, getTerminalWidgetHeight() - 8))
                     .child(
-                        createModuleTerminalTextWidget(syncManager, panel).setEnabledIf(widget -> base.terminalSwitch)
+                        createModuleTerminalTextWidget(syncManager, panel)
+                            .setEnabledIf(widget -> multiblock.terminalSwitch)
                             .size(getTerminalWidgetWidth() - 10, getTerminalWidgetHeight() - 8)
                             .collapseDisabledChild())
                     .childIf(multiblock.supportsTerminalCornerColumn(), createTerminalCornerColumn(panel, syncManager))
@@ -205,10 +209,11 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
             .marginBottom(index != 0 ? 2 : 0)
             .child(
                 new ButtonWidget<>().size(16, 16)
-                    .tooltipBuilder(
-                        t -> t.addLine("Select Module " + (index + 1))
-                            .addLine(SolidifierModules.getModule(moduleSync.getIntValue()).displayName)
-                            .setAutoUpdate(true))
+                    .tooltipBuilder(t -> {
+                        t.addLine("Select Module " + (index + 1));
+                        createTooltipForModule(t, moduleSync.getIntValue());
+                        t.setAutoUpdate(true);
+                    })
                     .tooltipShowUpTimer(TOOLTIP_DELAY)
                     .overlay(GuiTextures.ADD)
                     .onMousePressed(d -> {
@@ -257,9 +262,7 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
                                 i -> new ButtonWidget<>().size(18)
                                     .overlay(
                                         new ItemDrawable(Objects.requireNonNull(this.itemHandler.getStackInSlot(i))))
-                                    .tooltipBuilder(
-                                        t -> t.add(SolidifierModules.getModule(i).displayName)
-                                            .newLine())
+                                    .tooltipBuilder(t -> createTooltipForModule(t, i))
                                     .onMouseTapped(mouseButton -> {
                                         moduleSync.setIntValue(i);
                                         return true;
@@ -267,6 +270,77 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
                             .build()
                             .topRel(0.5f)
                             .leftRel(0.4f)));
+    }
+
+    private void createTooltipForModule(RichTooltip t, int moduleIndex) {
+        SolidifierModules module = SolidifierModules.getModule(moduleIndex);
+        String name = module.color + module.displayName;
+        t.addLine(name);
+        t.textColor(Color.WHITE.main);
+        switch (module) {
+            case UNSET -> t.addLine("Empty");
+            case POWER_EFFICIENT_SUBSYSTEMS -> {
+                t.addLine(
+                    "Subtracts " + TooltipHelper.EFF_COLOR
+                        + "10%"
+                        + EnumChatFormatting.RESET
+                        + " from Initial EU Cost");
+                t.addLine("Multiplies EU cost by " + TooltipHelper.EFF_COLOR + "0.8x");
+                t.addLine("Multiplies Speed by " + TooltipHelper.SPEED_COLOR + "0.95x");
+            }
+            case EXTRA_CASTING_BASINS -> {
+                t.addLine(
+                    "Adds " + TooltipHelper.PARALLEL_COLOR
+                        + "12"
+                        + EnumChatFormatting.RESET
+                        + " Parallels per "
+                        + TooltipTier.VOLTAGE.getValue()
+                        + EnumChatFormatting.RESET
+                        + " tier");
+                t.addLine("Reduces Structure Casing Limit by " + EnumChatFormatting.GOLD + "36");
+            }
+            case STREAMLINED_CASTERS -> {
+                t.addLine("Increases Base Speed by " + TooltipHelper.SPEED_COLOR + "150%");
+                t.addLine("Multiplies Parallels by " + TooltipHelper.PARALLEL_COLOR + "0.9x");
+            }
+            case EFFICIENT_OC -> {
+                t.addLine(moduleLimitText);
+                t.addLine("Increases Overclock Factor by " + EnumChatFormatting.LIGHT_PURPLE + "0.35");
+            }
+            case HYPERCOOLER -> {
+                t.addLine(moduleLimitText);
+                t.addLine(
+                    "Consumes " + EnumChatFormatting.AQUA
+                        + "Cooling Fluid"
+                        + EnumChatFormatting.RESET
+                        + " for "
+                        + EnumChatFormatting.LIGHT_PURPLE
+                        + "Extra Overclocks"
+                        + EnumChatFormatting.RESET);
+                t.addLine(
+                    "Drains " + coolingStrOrder("100", "50", "25")
+                        + " L/s of "
+                        + coolingStrOrder("Super Coolant", "Spacetime", "Eternity")
+                        + " to gain "
+                        + coolingStrOrder("1", "2", "3")
+                        + " Maximum Overclocks");
+
+            }
+            case TRANSCENDENT_REINFORCEMENT -> {
+                t.addLine(
+                    "Allows for " + EnumChatFormatting.LIGHT_PURPLE
+                        + "UEV+ Recipes"
+                        + EnumChatFormatting.RESET
+                        + " to be processed");
+            }
+            case ACTIVE_TIME_DILATION_SYSTEM -> {
+                t.addLine(moduleLimitText);
+                t.addLine("Multiplies Speed by " + TooltipHelper.SPEED_COLOR + "6x");
+                t.addLine("Multiplies EU Consumption by " + EnumChatFormatting.RED + "8x");
+                t.addLine("Increases Structure Casing Limit by " + EnumChatFormatting.GOLD + "12");
+            }
+        }
+        t.addLine(createTierLine(module.voltageTier));
     }
 
     protected Flow createModuleTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
@@ -334,4 +408,28 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui {
         ;
 
     }
+
+    // copied methods so I can avoid a public static in MTEModularSolidifier class
+    private String coolingStrOrder(String val1, String val2, String val3) {
+        return EnumChatFormatting.BLUE + val1
+            + "/"
+            + EnumChatFormatting.LIGHT_PURPLE
+            + val2
+            + "/"
+            + EnumChatFormatting.GREEN
+            + val3
+            + EnumChatFormatting.RESET;
+    }
+
+    private String createTierLine(int tier) {
+        return "Tier: " + GTUtility.getColoredTierNameFromTier((byte) tier);
+    }
+
+    private final static String moduleLimitText = "Limit of " + EnumChatFormatting.WHITE
+        + "1"
+        + EnumChatFormatting.RESET
+        + " Per "
+        + EnumChatFormatting.GOLD
+        + "Foundry";
+
 }

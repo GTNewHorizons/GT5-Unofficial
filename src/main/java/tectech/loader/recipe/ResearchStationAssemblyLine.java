@@ -3497,7 +3497,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(147_456), GGMaterial.shirabon.getMolten(5760) },
             ItemList.Efficient_Overclocking_Solidifier_Modular.get(1),
             60 * SECONDS,
-            (int) TierEU.RECIPE_UIV);
+            (int) TierEU.RECIPE_UMV);
 
         // Transcendent Reinforcement
         TTRecipeAdder.addResearchableAssemblylineRecipe(
