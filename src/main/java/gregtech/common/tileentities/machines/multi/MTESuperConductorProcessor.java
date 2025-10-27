@@ -392,20 +392,35 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
                     + " EU discount (multiplicative)")
             .addInfo(TooltipHelper.coloredText("Supports TecTech Multi-Amp and Laser Hatches!", GREEN))
             .addSeparator()
-            .addInfo(TooltipHelper.coloredText("Superconductor boosters ", GOLD) +  "are available for every tier of superconductor wire")
-            .addInfo("Up to 3 unique" + TooltipHelper.coloredText(" boosters ", GOLD) + "can be inserted into the" + TooltipHelper.coloredText(" Booster Housing", GOLD))
             .addInfo(
-                "The" + TooltipHelper.coloredText(" booster's ", GOLD) + "corresponding superconductor will receive"
+                TooltipHelper.coloredText("Superconductor boosters ", GOLD)
+                    + "are available for every tier of superconductor wire")
+            .addInfo(
+                "Up to 3 unique" + TooltipHelper.coloredText(" boosters ", GOLD)
+                    + "can be inserted into the"
+                    + TooltipHelper.coloredText(" Booster Housing", GOLD))
+            .addInfo(
+                "The" + TooltipHelper.coloredText(" booster's ", GOLD)
+                    + "corresponding superconductor will receive"
                     + TooltipHelper.parallelText(" 2x ")
                     + "parallels and"
                     + TooltipHelper.coloredText(" 15% ", DARK_GREEN)
                     + "additional output")
-            .addInfo("Each" + TooltipHelper.coloredText(" booster ", GOLD) + "installed will incur a flat cost of" + TooltipHelper.coloredText(" coolants", LIGHT_PURPLE) + ", regardless of machine status")
             .addInfo(
-                "Failure to supply the correct amount of" + TooltipHelper.coloredText(" coolants ", LIGHT_PURPLE) + "will result in the machine"
+                "Each" + TooltipHelper.coloredText(" booster ", GOLD)
+                    + "installed will incur a flat cost of"
+                    + TooltipHelper.coloredText(" coolants", LIGHT_PURPLE)
+                    + ", regardless of machine status")
+            .addInfo(
+                "Failure to supply the correct amount of" + TooltipHelper.coloredText(" coolants ", LIGHT_PURPLE)
+                    + "will result in the machine"
                     + TooltipHelper.coloredText(" shutting down & voiding ", DARK_RED)
                     + "its current recipe")
-            .addInfo("Higher tiers of" + TooltipHelper.coloredText(" boosters ", GOLD) + "will require the" + TooltipHelper.coloredText(" coolants ", LIGHT_PURPLE) +"of all lower tiers")
+            .addInfo(
+                "Higher tiers of" + TooltipHelper.coloredText(" boosters ", GOLD)
+                    + "will require the"
+                    + TooltipHelper.coloredText(" coolants ", LIGHT_PURPLE)
+                    + "of all lower tiers")
             .addInfo(
                 TooltipHelper.coloredText("33,333 L/s", GREEN) + " : "
                     + TooltipHelper.coloredText("MV-ZPM", GOLD)
