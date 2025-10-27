@@ -7,8 +7,6 @@ import com.cleanroommc.modularui.drawable.UITexture;
 import gregtech.api.enums.ItemList;
 import gregtech.api.modularui2.GTGuiTextures;
 
-import java.util.Arrays;
-
 public enum SolidifierModules {
 
     // please dont hate me for the arbitrary transparent rectangle image
@@ -62,8 +60,8 @@ public enum SolidifierModules {
         for (int i = 0; i < rgbArr.length; i++) {
             this.rgbArr[i] *= multiplier * 0.5f;
         }
-        //this.gammaCorrectedRGB = acesFilter(rgbArr);
-        this.gammaCorrectedRGB = new float[] {0, 0, 0, 0}; //TODO idk this is so scuffed
+        // this.gammaCorrectedRGB = acesFilter(rgbArr);
+        this.gammaCorrectedRGB = new float[] { 0, 0, 0, 0 }; // TODO idk this is so scuffed
     }
 
     private float[] getBrightnessColor(float[] x) {
@@ -90,13 +88,13 @@ public enum SolidifierModules {
 
         for (int i = 0; i < 3; i++) {
             // ACES tone mapping
-            float numerator   = x[i] * (a * x[i] + b);
+            float numerator = x[i] * (a * x[i] + b);
             float denominator = x[i] * (c * x[i] + d) + e;
-            float toneMapped  = clamp(numerator / denominator, 0.0f, 1.0f);
+            float toneMapped = clamp(numerator / denominator, 0.0f, 1.0f);
 
             result[i] = toneMapped;
             // Gamma correction to sRGB
-            //result[i] = (float)Math.pow(toneMapped, gamma);
+            // result[i] = (float)Math.pow(toneMapped, gamma);
         }
 
         return result;

@@ -5,7 +5,6 @@ import static gregtech.api.enums.Mods.GregTech;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gtnewhorizon.gtnhlib.client.renderer.shader.AutoShaderUpdater;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -43,15 +42,15 @@ public class BloomShader {
             "shaders/bloom/downscale.frag.glsl");
         uTexelSize_downscale = downscaleProgram.getUniformLocation("texelSize");
 
-//        AutoShaderUpdater.getInstance()
-//            .registerShaderReload(
-//                downscaleProgram,
-//                GregTech.resourceDomain,
-//                "shaders/bloom/downscale.vert.glsl",
-//                "shaders/bloom/downscale.frag.glsl",
-//                (shader, vertexFile, fragmentFile) -> {
-//                    uTexelSize_downscale = shader.getUniformLocation("texelSize");
-//                });
+        // AutoShaderUpdater.getInstance()
+        // .registerShaderReload(
+        // downscaleProgram,
+        // GregTech.resourceDomain,
+        // "shaders/bloom/downscale.vert.glsl",
+        // "shaders/bloom/downscale.frag.glsl",
+        // (shader, vertexFile, fragmentFile) -> {
+        // uTexelSize_downscale = shader.getUniformLocation("texelSize");
+        // });
 
         upscaleProgram = new ShaderProgram(
             GregTech.resourceDomain,
@@ -60,16 +59,16 @@ public class BloomShader {
         uTexelSize_upscale = upscaleProgram.getUniformLocation("texelSize");
         uMultiplier = upscaleProgram.getUniformLocation("multiplier");
 
-//        AutoShaderUpdater.getInstance()
-//            .registerShaderReload(
-//                upscaleProgram,
-//                GregTech.resourceDomain,
-//                "shaders/bloom/upscale.vert.glsl",
-//                "shaders/bloom/upscale.frag.glsl",
-//                (shader, vertexFile, fragmentFile) -> {
-//                    uTexelSize_upscale = shader.getUniformLocation("texelSize");
-//                    uMultiplier = upscaleProgram.getUniformLocation("multiplier");
-//                });
+        // AutoShaderUpdater.getInstance()
+        // .registerShaderReload(
+        // upscaleProgram,
+        // GregTech.resourceDomain,
+        // "shaders/bloom/upscale.vert.glsl",
+        // "shaders/bloom/upscale.frag.glsl",
+        // (shader, vertexFile, fragmentFile) -> {
+        // uTexelSize_upscale = shader.getUniformLocation("texelSize");
+        // uMultiplier = upscaleProgram.getUniformLocation("multiplier");
+        // });
     }
 
     private void createFramebuffers() {
@@ -118,7 +117,7 @@ public class BloomShader {
         needsRendering = false;
         if (++ticks >= 100) {
             // remove the comment below to view the framebuffer debug
-            ticks = 0;
+            // ticks = 0;
         }
 
         GLStateManager.glColor4f(1, 1, 1, 1);
@@ -137,8 +136,11 @@ public class BloomShader {
             HDRFramebuffer framebuffer = framebuffers[i];
             framebuffer.framebufferClear();
             framebuffer.bindFramebuffer(true);
-            //TODO
-            GL20.glUniform2f(uTexelSize_downscale, 1f / framebuffer.framebufferWidth, 1f / framebuffer.framebufferHeight);
+            // TODO
+            GL20.glUniform2f(
+                uTexelSize_downscale,
+                1f / framebuffer.framebufferWidth,
+                1f / framebuffer.framebufferHeight);
 
             framebuffer.drawTexturedRect();
 
@@ -150,23 +152,19 @@ public class BloomShader {
 
         upscaleProgram.use();
         final int passes = framebuffers.length - 1;
-        GL20.glUniform1f(uMultiplier, (float) (1 - (1 / Math.sqrt(passes)))); //TODO cache this
+        GL20.glUniform1f(uMultiplier, (float) (1 - (1 / Math.sqrt(passes)))); // TODO cache this
         for (int i = framebuffers.length - 1; i >= 1; i--) {
             HDRFramebuffer framebuffer = framebuffers[i];
             HDRFramebuffer upscaledFramebuffer = framebuffers[i - 1];
             framebuffer.bindFramebufferTexture();
             upscaledFramebuffer.bindFramebuffer(true);
-            GL20.glUniform2f(
-                uTexelSize_upscale,
-                1f / framebuffer.framebufferWidth,
-                1f / framebuffer.framebufferHeight
-            );
-
+            GL20.glUniform2f(uTexelSize_upscale, 1f / framebuffer.framebufferWidth, 1f / framebuffer.framebufferHeight);
 
             upscaledFramebuffer.drawTexturedRect();
 
             if (ticks == 0) {
-                upscaledFramebuffer.copyTextureToFile("bloomshader", "framebuffer_upsample_" + (framebuffers.length - i) + ".png");
+                upscaledFramebuffer
+                    .copyTextureToFile("bloomshader", "framebuffer_upsample_" + (framebuffers.length - i) + ".png");
             }
         }
 

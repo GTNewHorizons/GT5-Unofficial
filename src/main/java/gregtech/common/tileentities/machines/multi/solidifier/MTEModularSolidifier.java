@@ -21,20 +21,13 @@ import static gregtech.api.util.GTUtility.getTier;
 import static tectech.thing.casing.TTCasingsContainer.GodforgeCasings;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.gtnewhorizon.gtnhlib.client.renderer.shader.AutoShaderUpdater;
-import com.gtnewhorizon.gtnhlib.client.renderer.vertex.DefaultVertexFormat;
-import com.gtnewhorizon.gtnhlib.client.renderer.vertex.VertexFormat;
-import gregtech.api.util.tooltip.TooltipHelper;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -1202,17 +1195,17 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
 
         renderRingsDebug(false);
 
-//        renderRingOne(modules[0].rgbArr);
-//        renderRingTwo(modules[1].rgbArr);
-//        renderRingThree(modules[2].rgbArr);
-//        renderRingFour(modules[3].rgbArr);
+        // renderRingOne(modules[0].rgbArr);
+        // renderRingTwo(modules[1].rgbArr);
+        // renderRingThree(modules[2].rgbArr);
+        // renderRingFour(modules[3].rgbArr);
         BloomShader.getInstance()
             .unbind();
         // TODO
-//        renderRingOne(modules[0].rgbArr);
-//        renderRingTwo(modules[1].rgbArr);
-//        renderRingThree(modules[2].rgbArr);
-//        renderRingFour(modules[3].rgbArr);
+        // renderRingOne(modules[0].rgbArr);
+        // renderRingTwo(modules[1].rgbArr);
+        // renderRingThree(modules[2].rgbArr);
+        // renderRingFour(modules[3].rgbArr);
         renderRingsDebug(true);
         GL11.glPopMatrix();
         ShaderProgram.clear();
