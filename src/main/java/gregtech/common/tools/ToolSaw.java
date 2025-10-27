@@ -3,6 +3,7 @@ package gregtech.common.tools;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.enums.TextureSet;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
@@ -85,7 +86,7 @@ public class ToolSaw extends GTTool {
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead
             ? MetaGeneratedTool
-                .getPrimaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadSaw.mTextureIndex]
+                .getPrimaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadSaw.getTextureIndex()]
             : MetaGeneratedTool.getSecondaryMaterial(aStack).mIconSet.mTextures[TextureSet.INDEX_handleSaw];
     }
 

@@ -1,5 +1,6 @@
 package gregtech.common.tools;
 
+import gregtech.api.enums.TextureSet;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -50,7 +51,7 @@ public class ToolFile extends GTTool {
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return !aIsToolHead
             ? MetaGeneratedTool.getPrimaryMaterial(
-                aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadFile.mTextureIndex]
+                aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadFile.getTextureIndex()]
             : MetaGeneratedTool.getSecondaryMaterial(aStack).mIconSet.mTextures[TextureSet.INDEX_handleFile];
     }
 
