@@ -1,12 +1,12 @@
 package gregtech.common.tileentities.machines.multi.solidifier;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 
 import com.cleanroommc.modularui.drawable.UITexture;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.modularui2.GTGuiTextures;
-import net.minecraft.util.EnumChatFormatting;
 
 public enum SolidifierModules {
 

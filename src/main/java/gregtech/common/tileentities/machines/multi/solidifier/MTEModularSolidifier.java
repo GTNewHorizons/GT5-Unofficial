@@ -11,10 +11,6 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.Mods.GregTech;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_FOUNDRY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_FOUNDRY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_FOUNDRY_ACTIVE_GLOW;
@@ -1095,7 +1091,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
 
         // if (!shouldRender || !getBaseMetaTileEntity().isActive()) return;
 
-        if(true) return;
+        if (true) return;
 
         if (!renderInitialized) {
             initializeRender();
