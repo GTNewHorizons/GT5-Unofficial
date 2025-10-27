@@ -33,21 +33,18 @@ vec3 InverseACESFilm(vec3 y){
 
 void main() {
     vec4 scene = texture2D(uScene, vTexCoord);
-    vec3 glow = texture2D(uOverlay, vTexCoord).rgb;
-    //vec3 aces = ACESFilm(glow);
-    //aces = pow(aces, vec3(1.0 / 2.2)); // or use the sRGB curve
 
     vec3 sceneColor = scene.rgb;
-    sceneColor = pow(sceneColor, vec3(2.2));
+    sceneColor = pow(sceneColor, vec3(2.2)); // inverse gamma
     sceneColor = InverseACESFilm(sceneColor);
 
-    //glow = pow(glow, vec3(2.2)); // only if it's gamma-encoded
+    vec3 glow = texture2D(uOverlay, vTexCoord).rgb;
+    //glow = pow(glow, vec3(2.2));
     sceneColor += glow;
 
     sceneColor = acesFilter(sceneColor);
     sceneColor = pow(sceneColor, vec3(1.0 / 2.2));
     gl_FragColor = vec4(sceneColor, scene.a);
-    //gl_FragColor = vec4((texture2D(uScene, vTexCoord).rgb + aces), 1.0f);
 }
 
 

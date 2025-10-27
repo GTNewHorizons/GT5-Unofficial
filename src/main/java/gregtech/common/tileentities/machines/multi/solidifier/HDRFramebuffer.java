@@ -10,6 +10,7 @@ import java.nio.IntBuffer;
 
 import javax.imageio.ImageIO;
 
+import com.gtnewhorizon.gtnhlib.client.renderer.shader.AutoShaderUpdater;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -124,16 +125,16 @@ public class HDRFramebuffer extends Framebuffer {
             tonemapShader.use();
             bindTextureSlot(tonemapShader, "uScene", 0);
             bindTextureSlot(tonemapShader, "uOverlay", 1);
-            // AutoShaderUpdater.getInstance()
-            // .registerShaderReload(
-            // tonemapShader,
-            // GregTech.resourceDomain,
-            // "shaders/hdr/tonemap.vert.glsl",
-            // "shaders/hdr/tonemap.frag.glsl",
-            // (shader, vertexFile, fragmentFile) -> {
-            // shader.bindTextureSlot("uScene", 0);
-            // shader.bindTextureSlot("uOverlay", 1);
-            // });
+//            AutoShaderUpdater.getInstance()
+//                .registerShaderReload(
+//                    tonemapShader,
+//                    GregTech.resourceDomain,
+//                    "shaders/hdr/tonemap.vert.glsl",
+//                    "shaders/hdr/tonemap.frag.glsl",
+//                    (shader, vertexFile, fragmentFile) -> {
+//                        shader.bindTextureSlot("uScene", 0);
+//                        shader.bindTextureSlot("uOverlay", 1);
+//                    });
             ShaderProgram.clear();
         }
         tonemapShader.use();

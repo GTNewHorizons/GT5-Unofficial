@@ -7,6 +7,8 @@ import com.cleanroommc.modularui.drawable.UITexture;
 import gregtech.api.enums.ItemList;
 import gregtech.api.modularui2.GTGuiTextures;
 
+import java.util.Arrays;
+
 public enum SolidifierModules {
 
     // please dont hate me for the arbitrary transparent rectangle image
@@ -28,29 +30,25 @@ public enum SolidifierModules {
         ItemList.Extra_Casting_Basins_Solidifier_Modular.get(1), GTGuiTextures.OVERLAY_BUTTON_CYCLIC,
         new float[] { 58f / 255f, 58f / 255f, 34f / 255f }, 3),
     HYPERCOOLER("Hypercooler", "H.C", "hypercooler", ItemList.Hypercooler_Solidifier_Modular.get(1),
-        GTGuiTextures.MODULAR_SOLIDIFIER_HC, new float[] { 10f / 255f, 0.6f, 0.6f, 0.8f }),
+        GTGuiTextures.MODULAR_SOLIDIFIER_HC, new float[] { 40f / 255f, 0.5f, 0.6f, }),
     STREAMLINED_CASTERS("Streamlined Casters", "S.L.C", "streamlined_casters",
         ItemList.Streamlined_Casters_Solidifier_Modular.get(1), GTGuiTextures.OVERLAY_BUTTON_CYCLIC,
-        new float[] { 130f / 255f, 10f / 255f, 10f / 255f }, 2);
+        new float[] { 130f / 255f, 30f / 255f, 30f / 255f }, 2);
 
     public final String displayName;
     public final String shorthand;
     public final String structureID;
     private final ItemStack icon;
     public final UITexture texture;
-    public final float[] rgbArr;
+    public float[] rgbArr;
+    public float[] gammaCorrectedRGB;
 
     // declaring it once here, instead of on every call
     private static final SolidifierModules[] lookupArray = values();
 
     private SolidifierModules(String display, String shortname, String structid, ItemStack icon, UITexture texture,
         float[] rgbArr) {
-        this.displayName = display;
-        this.shorthand = shortname;
-        this.structureID = structid;
-        this.icon = icon;
-        this.texture = texture;
-        this.rgbArr = rgbArr;
+        this(display, shortname, structid, icon, texture, rgbArr, 1);
     }
 
     private SolidifierModules(String display, String shortname, String structid, ItemStack icon, UITexture texture,
@@ -62,8 +60,46 @@ public enum SolidifierModules {
         this.texture = texture;
         this.rgbArr = rgbArr;
         for (int i = 0; i < rgbArr.length; i++) {
-            this.rgbArr[i] *= multiplier * (0.5f); // multiply by half to make color less intense
+            this.rgbArr[i] *= multiplier * 0.5f;
         }
+        //this.gammaCorrectedRGB = acesFilter(rgbArr);
+        this.gammaCorrectedRGB = new float[] {0, 0, 0, 0}; //TODO idk this is so scuffed
+    }
+
+    private float[] getBrightnessColor(float[] x) {
+        float brightness = 0.2126f * x[0] + 0.7152f * x[1] + 0.0722f * x[2];
+        return new float[] { brightness, brightness, brightness };
+    }
+
+    // Clamp helper
+    public static float clamp(float value, float min, float max) {
+        return Math.max(min, Math.min(max, value));
+    }
+
+    // ACES tone mapping + gamma correction (1/2.2)
+    public static float[] acesFilter(float[] x) {
+        // x = {r, g, b} in linear HDR space
+        final float a = 2.51f;
+        final float b = 0.03f;
+        final float c = 2.43f;
+        final float d = 0.59f;
+        final float e = 0.14f;
+
+        float gamma = 1.0f / 2.2f;
+        float[] result = new float[3];
+
+        for (int i = 0; i < 3; i++) {
+            // ACES tone mapping
+            float numerator   = x[i] * (a * x[i] + b);
+            float denominator = x[i] * (c * x[i] + d) + e;
+            float toneMapped  = clamp(numerator / denominator, 0.0f, 1.0f);
+
+            result[i] = toneMapped;
+            // Gamma correction to sRGB
+            //result[i] = (float)Math.pow(toneMapped, gamma);
+        }
+
+        return result;
     }
 
     public static SolidifierModules getModule(int ordinal) {

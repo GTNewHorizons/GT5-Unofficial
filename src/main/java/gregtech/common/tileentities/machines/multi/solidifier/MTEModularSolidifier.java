@@ -21,12 +21,17 @@ import static gregtech.api.util.GTUtility.getTier;
 import static tectech.thing.casing.TTCasingsContainer.GodforgeCasings;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.gtnewhorizon.gtnhlib.client.renderer.shader.AutoShaderUpdater;
+import com.gtnewhorizon.gtnhlib.client.renderer.vertex.DefaultVertexFormat;
+import com.gtnewhorizon.gtnhlib.client.renderer.vertex.VertexFormat;
+import gregtech.api.util.tooltip.TooltipHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureManager;
@@ -1119,7 +1124,6 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     // Render code
     private boolean shouldRender = true;
     private boolean renderInitialized;
-    private static ResourceLocation ringTexture;
     private static IModelCustomExt ring;
     private static ShaderProgram ringProgram;
     private int uGlowColor;
@@ -1164,14 +1168,11 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
          */
 
         // if (!shouldRender || !getBaseMetaTileEntity().isActive()) return;
-        if (true) return;
+
         if (!renderInitialized) {
             initializeRender();
             if (!renderInitialized) return;
         }
-        final TextureManager textureManager = Minecraft.getMinecraft()
-            .getTextureManager();
-        textureManager.bindTexture(ringTexture);
         GLStateManager.enableDepthTest();
         ringProgram.use();
         GL11.glPushMatrix();
@@ -1199,28 +1200,20 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         BloomShader.getInstance()
             .bind();
 
-        renderRingsDebug();
-        /*
-         * for (int i = 0; i < 4; i++) {
-         * renderRing(i, modules[i].rgbArr);
-         * }
-         */
-        /*
-         * renderRingOne(modules[0].rgbArr);
-         * renderRingTwo(modules[1].rgbArr);
-         * renderRingThree(modules[2].rgbArr);
-         * renderRingFour(modules[3].rgbArr);
-         */
+        renderRingsDebug(false);
+
+//        renderRingOne(modules[0].rgbArr);
+//        renderRingTwo(modules[1].rgbArr);
+//        renderRingThree(modules[2].rgbArr);
+//        renderRingFour(modules[3].rgbArr);
         BloomShader.getInstance()
             .unbind();
         // TODO
-        /*
-         * renderRingOne(modules[0].rgbArr);
-         * renderRingTwo(modules[1].rgbArr);
-         * renderRingThree(modules[2].rgbArr);
-         * renderRingFour(modules[3].rgbArr);
-         */
-        renderRingsDebug();
+//        renderRingOne(modules[0].rgbArr);
+//        renderRingTwo(modules[1].rgbArr);
+//        renderRingThree(modules[2].rgbArr);
+//        renderRingFour(modules[3].rgbArr);
+        renderRingsDebug(true);
         GL11.glPopMatrix();
         ShaderProgram.clear();
 
@@ -1231,12 +1224,13 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         return AxisAlignedBB.getBoundingBox(x - 10, y - 10, z - 10, x + 10, y + 40, z + 10);
     }
 
-    private void renderRingsDebug() {
+    private void renderRingsDebug(boolean gammaCorrected) {
         int i = 0;
         for (SolidifierModules module : SolidifierModules.values()) {
             if (module == SolidifierModules.UNSET) continue;
-            renderRing(i, module.rgbArr);
+            renderRing(i, gammaCorrected ? module.gammaCorrectedRGB : module.rgbArr);
             i++;
+            if (i == 4) return;
         }
     }
 
@@ -1248,14 +1242,6 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                 "textures/model/nano-forge-render-ring-one.obj"
             )
         );
-        ringTexture = new ResourceLocation(
-            GregTech.resourceDomain,
-            "textures/model/noiseTexture.png"
-        );
-
-        Minecraft.getMinecraft().renderEngine.bindTexture(ringTexture);
-        GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
-        GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
 
         try {
             ringProgram = new ShaderProgram(
@@ -1264,7 +1250,6 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                 "shaders/foundry.frag.glsl"
             );
             uGlowColor = ringProgram.getUniformLocation("u_Color");
-            renderInitialized = true;
 //            AutoShaderUpdater.getInstance().registerShaderReload(
 //                ringProgram,
 //                GregTech.resourceDomain,
@@ -1273,7 +1258,6 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
 //                (shader, vertexPath, fragmentPath) -> {
 //                    uGlowColor = shader.getUniformLocation("u_Color");
 //                }
-//
 //            );
         } catch (Exception e) {
             GTMod.GT_FML_LOGGER.error(e.getMessage());
