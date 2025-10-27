@@ -16,13 +16,27 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SUPERCONDUCTO
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SUPERCONDUCTORPROCESSOR_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofSolenoidCoil;
+import static net.minecraft.util.EnumChatFormatting.AQUA;
+import static net.minecraft.util.EnumChatFormatting.DARK_AQUA;
+import static net.minecraft.util.EnumChatFormatting.DARK_BLUE;
+import static net.minecraft.util.EnumChatFormatting.DARK_GRAY;
+import static net.minecraft.util.EnumChatFormatting.DARK_GREEN;
+import static net.minecraft.util.EnumChatFormatting.GOLD;
+import static net.minecraft.util.EnumChatFormatting.GREEN;
+import static net.minecraft.util.EnumChatFormatting.LIGHT_PURPLE;
+import static net.minecraft.util.EnumChatFormatting.RED;
+import static net.minecraft.util.EnumChatFormatting.WHITE;
+import static net.minecraft.util.EnumChatFormatting.YELLOW;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.api.util.tooltip.TooltipTier;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -366,20 +380,46 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Brewery")
-            .addBulkMachineInfo(4, 1.5F, 1F)
+        tt.addMachineType("Bulk Superconductor Assembler, SCP")
+            .addInfo(
+                DARK_GRAY + "" + EnumChatFormatting.ITALIC + "Secure. Contain. Produce.")
+            .addInfo(
+                "The" + TooltipHelper.coloredText( " Component Assembly Line Casing ", YELLOW)
+                    + "tier increases the parallels of the machine")
+            .addInfo(
+                "The parallel multiplier is" + TooltipHelper.italicText(" 0.95 * (1.32 ^ CoAL Casing Tier)"))
+            .addInfo(
+                "Recipes are completed 64 at a time, but at 75% of the assembler's speed")
+            .addInfo(
+                "Every" + TooltipHelper.coloredText(" Superconducting Solenoid Coil ", WHITE) + "tier above the recipe gives a " + TooltipHelper.coloredText("10%", AQUA) + " EU discount (multiplicative)")
+            .addInfo(TooltipHelper.coloredText("Supports TecTech Multi-Amp and Laser Hatches!", GREEN))
+            .addSeparator()
+            .addInfo(
+                "Up to 3 unique boosters can be inserted into the Booster Housing")
+            .addInfo(
+                "Boosted superconductors will receive" + TooltipHelper.parallelText(" 2x ") + "parallels and" + TooltipHelper.coloredText(" 15% ", DARK_GREEN) + "additional output")
+            .addInfo("Additionally, each booster inside of the Booster Hatch will passively incur a flat passive cost of coolants")
+            .addInfo("Higher tiers of boosters will require the coolants of all lower tiers")
+            .addInfo(TooltipHelper.coloredText("33,333 L/s", GREEN) + " : " +  TooltipHelper.coloredText("MV-ZPM", GOLD) + " : " + TooltipHelper.coloredText("Liquid Helium", LIGHT_PURPLE))
+            .addInfo(TooltipHelper.coloredText("3,333 L/s", GREEN) + " : " +  TooltipHelper.coloredText("UV-UHV", GOLD) + " : " + TooltipHelper.coloredText("Superfluid Helium", LIGHT_PURPLE))
+            .addInfo(TooltipHelper.coloredText("333 L/s", GREEN) + " : " +  TooltipHelper.coloredText("UEV-UMV", GOLD) + " : " + TooltipHelper.coloredText("SpaceTime", LIGHT_PURPLE))
+            .addSeparator()
+            .addInfo(RED + "Do I look dumb..?")
+
             .beginStructureBlock(3, 5, 3, true)
             .addController("Front Center")
-            .addCasingInfoMin("Reinforced Wooden Casing", 14, false)
-            .addCasingInfoExactly("Any Tiered Glass", 6, false)
-            .addCasingInfoExactly("Steel Frame Box", 4, false)
-            .addInputBus("Any Wooden Casing", 1)
-            .addOutputBus("Any Wooden Casing", 1)
-            .addInputHatch("Any Wooden Casing", 1)
-            .addOutputHatch("Any Wooden Casing", 1)
-            .addEnergyHatch("Any Wooden Casing", 1)
-            .addMaintenanceHatch("Any Wooden Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addCasingInfoMin("Quantum Convection Casing", 200, false)
+            .addCasingInfoExactly("Solenoid Superconducting Coil", 48, true)
+            .addCasingInfoExactly("Component Assembly Line Casing", 36, true)
+            .addCasingInfoExactly("Radiant Naquadah Alloy Casing", 186, false)
+            .addCasingInfoExactly("Coolant Duct", 96, false)
+            .addCasingInfoExactly("Quantum Glass", 60, false)
+            .addCasingInfoExactly("Radiation Proof Steel Frame Box", 12, false)
+            .addInputBus("Any Quantum Convection Casing", 1)
+            .addOutputBus("Any Quantum Convection Casing", 1)
+            .addInputHatch("Any Quantum Convection Casing", 1)
+            .addEnergyHatch("Any Quantum Convection Casing", 1)
+            .addMaintenanceHatch("Any Quantum Convection Casing", 1)
             .toolTipFinisher();
         return tt;
     }
