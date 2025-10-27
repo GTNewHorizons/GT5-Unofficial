@@ -58,7 +58,7 @@ public enum SolidifierModules {
         this.texture = texture;
         this.rgbArr = rgbArr;
         for (int i = 0; i < rgbArr.length; i++) {
-            this.rgbArr[i] *= multiplier * 0.5f;
+            this.rgbArr[i] *= multiplier * 4f;
         }
         // this.gammaCorrectedRGB = acesFilter(rgbArr);
         this.gammaCorrectedRGB = new float[] { 0, 0, 0, 0 }; // TODO idk this is so scuffed
