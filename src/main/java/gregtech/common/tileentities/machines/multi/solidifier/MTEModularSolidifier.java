@@ -1104,7 +1104,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
 
         // if (!shouldRender || !getBaseMetaTileEntity().isActive()) return;
 
-         if (true) return; // disable render for texture dev jar lol
+        if (true) return; // disable render for texture dev jar lol
 
         if (!renderInitialized) {
             initializeRender();
