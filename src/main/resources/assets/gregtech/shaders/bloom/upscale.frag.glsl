@@ -2,9 +2,9 @@
 
 varying vec2 vTexCoord;
 
-varying vec2 vTexelSize;
-
+uniform vec2 texelSize;
 uniform float multiplier;
+
 uniform sampler2D texture;
 
 vec3 tentFilter3x3(vec2 uv, vec2 texelSize) {
@@ -31,6 +31,6 @@ vec3 tentFilter3x3(vec2 uv, vec2 texelSize) {
 }
 
 void main() {
-    gl_FragColor = vec4(tentFilter3x3(vTexCoord, vTexelSize) * multiplier, 1.0f);
+    gl_FragColor = vec4(tentFilter3x3(vTexCoord, texelSize) * multiplier, 1.0f);
     //gl_FragColor = vec4(texture2D(texture, vTexCoord).rgb * 0.7f, 1.0f);
 }
