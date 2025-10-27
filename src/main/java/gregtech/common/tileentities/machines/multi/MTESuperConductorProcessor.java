@@ -437,7 +437,7 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
                     + " : "
                     + TooltipHelper.coloredText("SpaceTime", LIGHT_PURPLE))
             .addSeparator()
-            .addInfo(RED + "Do I look dumb..?")
+            .addInfo(RED + "Do I look dumb...?")
 
             .beginStructureBlock(3, 5, 3, true)
             .addController("Front Center")
