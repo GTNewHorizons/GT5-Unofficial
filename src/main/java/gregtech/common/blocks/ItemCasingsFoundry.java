@@ -113,6 +113,8 @@ public class ItemCasingsFoundry extends ItemCasings {
                         + " to gain "
                         + coolingStrOrder("1", "2", "3")
                         + " Maximum Overclocks");
+                tooltip.add(
+                    EnumChatFormatting.DARK_AQUA + "Requires an input hatch on any Hypercooler Casing to drain from!");
                 tooltip.add(createTierLine(11));
                 tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.hypercooler"));
             }

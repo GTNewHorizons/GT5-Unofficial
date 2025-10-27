@@ -324,6 +324,8 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui<MTEModularSoli
                         + " to gain "
                         + coolingStrOrder("1", "2", "3")
                         + " Maximum Overclocks");
+                t.addLine(
+                    EnumChatFormatting.DARK_AQUA + "Requires an input hatch on any Hypercooler Casing to drain from!");
 
             }
             case TRANSCENDENT_REINFORCEMENT -> {
@@ -340,7 +342,7 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui<MTEModularSoli
                 t.addLine("Increases Structure Casing Limit by " + EnumChatFormatting.GOLD + "12");
             }
         }
-        t.addLine(createTierLine(module.voltageTier));
+        if (module != SolidifierModules.UNSET) t.addLine(createTierLine(module.voltageTier));
     }
 
     protected Flow createModuleTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
@@ -409,7 +411,13 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui<MTEModularSoli
 
     }
 
-    // copied methods so I can avoid a public static in MTEModularSolidifier class
+    @Override
+    protected IDrawable.DrawableWidget makeLogoWidget() {
+        return super.makeLogoWidget().tooltip(
+            t -> t.addLine(EnumChatFormatting.DARK_AQUA + "Thank you to Sisyphus and IX for their hard work!"));
+    }
+
+    // copied methods so I can avoid a public static in MTEModularSolidifier
     private String coolingStrOrder(String val1, String val2, String val3) {
         return EnumChatFormatting.BLUE + val1
             + "/"

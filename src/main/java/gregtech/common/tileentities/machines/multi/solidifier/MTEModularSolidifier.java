@@ -101,7 +101,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     private final ArrayList<MTEHatchInput> mCoolantInputHatches = new ArrayList<>();
     private CoolingFluid currentCoolingFluid = null;
     private static final int horizontalOffset = 7;
-    private static final int verticalOffset = 43;
+    private static final int verticalOffset = 43 + 10;
     private static final int depthOffset = 0;
 
     public boolean terminalSwitch = false;
@@ -134,62 +134,72 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     public SolidifierModules[] modules = { SolidifierModules.UNSET, SolidifierModules.UNSET, SolidifierModules.UNSET,
         SolidifierModules.UNSET };
     private final int[] moduleHorizontalOffsets = { 7, 7, 7, 7 };
-    private final int[] moduleVerticalOffsets = { 12, 20, 28, 36 };
+    private final int[] moduleVerticalOffsets = { 12, 20, 38, 46 };
     private final int[] moduleDepthOffsets = { 0, 0, 0, 0 };
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
     private static final IStructureDefinition<MTEModularSolidifier> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEModularSolidifier>builder()
+        // spotless:off
         .addShape(
             STRUCTURE_PIECE_MAIN,
-            // spotless:off
             transpose(
                 new String[][]{
-                    {"     HHHHH     ","   DDHHHHHDD   ","  D  HHHHH  D  "," D    HHH    D "," D    HHH    D ","HHH  HHHHH  HHH","HHHHHHHHHHHHHHH","HHHHHHHHHHHHHHH","HHHHHHHHHHHHHHH","HHH  HHHHH  HHH"," D    HHH    D "," D    HHH    D ","  D  HHHHH  D  ","   DDHHHHHDD   ","     HHHHH     "},
-                    {"      HHH      ","       D       ","       D       ","       D       ","       D       ","               ","H             H","HDDDD     DDDDH","H             H","               ","       D       ","       D       ","       D       ","       D       ","      HHH      "},
-                    {"     HHHHH     ","   DDHHHHHDD   ","  D  HHHHH  D  "," D    HHH    D "," D    HHH    D ","HHH  HHHHH  HHH","HHHHHHHHHHHHHHH","HHHHHHHHHHHHHHH","HHHHHHHHHHHHHHH","HHH  HHHHH  HHH"," D    HHH    D "," D    HHH    D ","  D  HHHHH  D  ","   DDHHHHHDD   ","     HHHHH     "},
-                    {"               ","               ","     H   H     ","     HDDDH     ","               ","  HH   B   HH  ","   D   C   D   ","   D BC CB D   ","   D   C   D   ","  HH   B   HH  ","               ","     HDDDH     ","     H   H     ","               ","               "},
+                    {"     HHHHH     ","   DDHHBHHDD   ","  D  HHBHH  D  "," D  HHHBHHH  D "," D HHHBHBHHH D ","HHHHHHBHBHHHHHH","HHHHBBHHHBBHHHH","HBBBHHHBHHHBBBH","HHHHBBHHHBBHHHH","HHHHHHBHBHHHHHH"," D HHHBHBHHH D "," D  HHHBHHH  D ","  D  HHBHH  D  ","   DDHHBHHDD   ","     HHHHH     "},
+                    {"      HBH      ","       D       ","       D       ","       D       ","       D       ","               ","H             H","BDDDD     DDDDB","H             H","               ","       D       ","       D       ","       D       ","       D       ","      HBH      "},
+                    {"     HHHHH     ","   DDHBBBHDD   ","  D  HHHHH  D  "," D    HHH    D "," D    HHH    D ","HHH  HHEHH  HHH","HBHHHHEEEHHHHBH","HBHHHEEEEEHHHBH","HBHHHHEEEHHHHBH","HHH  HHEHH  HHH"," D    HHH    D "," D    HHH    D ","  D  HHHHH  D  ","   DDHBBBHDD   ","     HHHHH     "},
+                    {"               ","               ","     H   H     ","     HDDDH     ","               ","  HH  EBE  HH  ","   D E C E D   ","   D BC CB D   ","   D E C E D   ","  HH  EBE  HH  ","               ","     HDDDH     ","     H   H     ","               ","               "},
                     {"               ","               ","               ","     HAAAH     ","    H     H    ","   H   D   H   ","   A   C   A   ","   A DC CD A   ","   A   C   A   ","   H   D   H   ","    H     H    ","     HAAAH     ","               ","               ","               "},
                     {"               ","               ","               ","     HAAAH     ","    F     F    ","   H  EFE  H   ","   A E C E A   ","   A FC CF A   ","   A E C E A   ","   H  EFE  H   ","    F     F    ","     HAAAH     ","               ","               ","               "},
-                    {"               ","               ","               ","      AAA      ","    F     F    ","      EGE      ","   A E C E A   ","   A GC CG A   ","   A E C E A   ","      EGE      ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","      EBE      ","   A E C E A   ","   A BC CB A   ","   A E C E A   ","      EBE      ","    F     F    ","      AAA      ","               ","               ","               "},
                     {"               ","               ","               ","      AAA      ","    F     F    ","      EFE      ","   A E C E A   ","   A FC CF A   ","   A E C E A   ","      EFE      ","    F     F    ","      AAA      ","               ","               ","               "},
                     {"               ","               ","               ","      AAA      ","    F     F    ","       D       ","   A   C   A   ","   A DC CD A   ","   A   C   A   ","       D       ","    F     F    ","      AAA      ","               ","               ","               "},
                     {"               ","               ","               ","      AAA      ","    F     F    ","      EFE      ","   A E C E A   ","   A FC CF A   ","   A E C E A   ","      EFE      ","    F     F    ","      AAA      ","               ","               ","               "},
-                    {"               ","               ","               ","      AGA      ","    F  D  F    ","      EGE      ","   A E C E A   ","   GDGC CGDG   ","   A E C E A   ","      EGE      ","    F  D  F    ","      AGA      ","               ","               ","               "},
+                    {"               ","               ","               ","      ABA      ","    F  D  F    ","      EBE      ","   A E C E A   ","   BDBC CBDB   ","   A E C E A   ","      EBE      ","    F  D  F    ","      ABA      ","               ","               ","               "},
                     {"               ","               ","               ","      AAA      ","    F     F    ","      EFE      ","   A E C E A   ","   A FC CF A   ","   A E C E A   ","      EFE      ","    F     F    ","      AAA      ","               ","               ","               "},
                     {"               ","               ","               ","      AAA      ","    F     F    ","       D       ","   A   C   A   ","   A DC CD A   ","   A   C   A   ","       D       ","    F     F    ","      AAA      ","               ","               ","               "},
                     {"               ","               ","               ","      AAA      ","    F     F    ","      EFE      ","   A E C E A   ","   A FC CF A   ","   A E C E A   ","      EFE      ","    F     F    ","      AAA      ","               ","               ","               "},
-                    {"               ","               ","               ","      AAA      ","    F     F    ","      EGE      ","   A E C E A   ","   A GC CG A   ","   A E C E A   ","      EGE      ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","      EBE      ","   A E C E A   ","   A BC CB A   ","   A E C E A   ","      EBE      ","    F     F    ","      AAA      ","               ","               ","               "},
                     {"               ","               ","               ","      AAA      ","    F     F    ","      EFE      ","   A E C E A   ","   A FC CF A   ","   A E C E A   ","      EFE      ","    F     F    ","      AAA      ","               ","               ","               "},
                     {"               ","               ","               ","      AAA      ","    F     F    ","       D       ","   A   C   A   ","   A DC CD A   ","   A   C   A   ","       D       ","    F     F    ","      AAA      ","               ","               ","               "},
                     {"               ","               ","               ","      AAA      ","    F     F    ","      EFE      ","   A E C E A   ","   A FC CF A   ","   A E C E A   ","      EFE      ","    F     F    ","      AAA      ","               ","               ","               "},
-                    {"               ","               ","               ","      AGA      ","    F  D  F    ","      EGE      ","   A E C E A   ","   GDGC CGDG   ","   A E C E A   ","      EGE      ","    F  D  F    ","      AGA      ","               ","               ","               "},
+                    {"               ","               ","               ","      ABA      ","    F  D  F    ","      EBE      ","   A E C E A   ","   BDBC CBDB   ","   A E C E A   ","      EBE      ","    F  D  F    ","      ABA      ","               ","               ","               "},
                     {"               ","               ","               ","      AAA      ","    F     F    ","      EFE      ","   A E C E A   ","   A FC CF A   ","   A E C E A   ","      EFE      ","    F     F    ","      AAA      ","               ","               ","               "},
                     {"               ","               ","               ","      AAA      ","    F     F    ","       D       ","   A   C   A   ","   A DC CD A   ","   A   C   A   ","       D       ","    F     F    ","      AAA      ","               ","               ","               "},
                     {"               ","               ","               ","      AAA      ","    F     F    ","      EFE      ","   A E C E A   ","   A FC CF A   ","   A E C E A   ","      EFE      ","    F     F    ","      AAA      ","               ","               ","               "},
-                    {"               ","               ","               ","      AAA      ","    F     F    ","      EGE      ","   A E C E A   ","   A GC CG A   ","   A E C E A   ","      EGE      ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","      EBE      ","   A E C E A   ","   A BC CB A   ","   A E C E A   ","      EBE      ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","      EFE      ","   A E C E A   ","   A FC CF A   ","   A E C E A   ","      EFE      ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","       D       ","   A   C   A   ","   A DC CD A   ","   A   C   A   ","       D       ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","      HBH      ","   A H C H A   ","   A BC CB A   ","   A H C H A   ","      HBH      ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","      DBD      ","   A D C D A   ","   A BC CB A   ","   A D C D A   ","      DBD      ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","      DBD      ","   A D C D A   ","   A BC CB A   ","   A D C D A   ","      DBD      ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","      DBD      ","   A D C D A   ","   A BC CB A   ","   A D C D A   ","      DBD      ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","      HBH      ","   A H C H A   ","   A BC CB A   ","   A H C H A   ","      HBH      ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","       D       ","   A   C   A   ","   A DC CD A   ","   A   C   A   ","       D       ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","      EFE      ","   A E C E A   ","   A FC CF A   ","   A E C E A   ","      EFE      ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","      EBE      ","   A E C E A   ","   A BC CB A   ","   A E C E A   ","      EBE      ","    F     F    ","      AAA      ","               ","               ","               "},
                     {"               ","               ","               ","      AAA      ","    F     F    ","      EFE      ","   A E C E A   ","   A FC CF A   ","   A E C E A   ","      EFE      ","    F     F    ","      AAA      ","               ","               ","               "},
                     {"               ","               ","               ","      AAA      ","    F     F    ","       D       ","   A   C   A   ","   A DC CD A   ","   A   C   A   ","       D       ","    F     F    ","      AAA      ","               ","               ","               "},
                     {"               ","               ","               ","      AAA      ","    F     F    ","      EFE      ","   A E C E A   ","   A FC CF A   ","   A E C E A   ","      EFE      ","    F     F    ","      AAA      ","               ","               ","               "},
-                    {"               ","               ","               ","      AGA      ","    F  D  F    ","      EGE      ","   A E C E A   ","   GDGC CGDG   ","   A E C E A   ","      EGE      ","    F  D  F    ","      AGA      ","               ","               ","               "},
+                    {"               ","               ","               ","      ABA      ","    F  D  F    ","      EBE      ","   A E C E A   ","   BDBC CBDB   ","   A E C E A   ","      EBE      ","    F  D  F    ","      ABA      ","               ","               ","               "},
                     {"               ","               ","               ","      AAA      ","    F     F    ","      EFE      ","   A E C E A   ","   A FC CF A   ","   A E C E A   ","      EFE      ","    F     F    ","      AAA      ","               ","               ","               "},
                     {"               ","               ","               ","      AAA      ","    F     F    ","       D       ","   A   C   A   ","   A DC CD A   ","   A   C   A   ","       D       ","    F     F    ","      AAA      ","               ","               ","               "},
                     {"               ","               ","               ","      AAA      ","    F     F    ","      EFE      ","   A E C E A   ","   A FC CF A   ","   A E C E A   ","      EFE      ","    F     F    ","      AAA      ","               ","               ","               "},
-                    {"               ","               ","               ","      AAA      ","    F     F    ","      EGE      ","   A E C E A   ","   A GC CG A   ","   A E C E A   ","      EGE      ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","      EBE      ","   A E C E A   ","   A BC CB A   ","   A E C E A   ","      EBE      ","    F     F    ","      AAA      ","               ","               ","               "},
                     {"               ","               ","               ","      AAA      ","    F     F    ","      EFE      ","   A E C E A   ","   A FC CF A   ","   A E C E A   ","      EFE      ","    F     F    ","      AAA      ","               ","               ","               "},
                     {"               ","               ","               ","      AAA      ","    F     F    ","       D       ","   A   C   A   ","   A DC CD A   ","   A   C   A   ","       D       ","    F     F    ","      AAA      ","               ","               ","               "},
                     {"               ","               ","               ","      AAA      ","    F     F    ","      EFE      ","   A E C E A   ","   A FC CF A   ","   A E C E A   ","      EFE      ","    F     F    ","      AAA      ","               ","               ","               "},
-                    {"               ","               ","               ","      AGA      ","    F  D  F    ","      EGE      ","   A E C E A   ","   GDGC CGDG   ","   A E C E A   ","      EGE      ","    F  D  F    ","      AGA      ","               ","               ","               "},
+                    {"               ","               ","               ","      ABA      ","    F  D  F    ","      EBE      ","   A E C E A   ","   BDBC CBDB   ","   A E C E A   ","      EBE      ","    F  D  F    ","      ABA      ","               ","               ","               "},
                     {"               ","               ","               ","      AAA      ","    F     F    ","      EFE      ","   A E C E A   ","   A FC CF A   ","   A E C E A   ","      EFE      ","    F     F    ","      AAA      ","               ","               ","               "},
                     {"               ","               ","               ","      AAA      ","    F     F    ","       D       ","   A   C   A   ","   A DC CD A   ","   A   C   A   ","       D       ","    F     F    ","      AAA      ","               ","               ","               "},
                     {"               ","               ","               ","      AAA      ","    F     F    ","      EFE      ","   A E C E A   ","   A FC CF A   ","   A E C E A   ","      EFE      ","    F     F    ","      AAA      ","               ","               ","               "},
-                    {"               ","               ","               ","      AAA      ","    F     F    ","      EGE      ","   A E C E A   ","   A GC CG A   ","   A E C E A   ","      EGE      ","    F     F    ","      AAA      ","               ","               ","               "},
+                    {"               ","               ","               ","      AAA      ","    F     F    ","      EBE      ","   A E C E A   ","   A BC CB A   ","   A E C E A   ","      EBE      ","    F     F    ","      AAA      ","               ","               ","               "},
                     {"               ","               ","               ","     HAAAH     ","    F     F    ","   H  EFE  H   ","   A E C E A   ","   A FC CF A   ","   A E C E A   ","   H  EFE  H   ","    F     F    ","     HAAAH     ","               ","               ","               "},
                     {"               ","               ","               ","     HAAAH     ","    H     H    ","   H   D   H   ","   A   C   A   ","   A DC CD A   ","   A   C   A   ","   H   D   H   ","    H     H    ","     HAAAH     ","               ","               ","               "},
-                    {"               ","               ","     H   H     ","     HDDDH     ","               ","  HH   B   HH  ","   D   C   D   ","   D BC CB D   ","   D   C   D   ","  HH   B   HH  ","               ","     HDDDH     ","     H   H     ","               ","               "},
-                    {"     HHHHH     ","   DDHHHHHDD   ","  D  HHHHH  D  "," D    HHH    D "," D    HHH    D ","HHH  HHHHH  HHH","HHHHHHHHHHHHHHH","HHHHHHHHHHHHHHH","HHHHHHHHHHHHHHH","HHH  HHHHH  HHH"," D    HHH    D "," D    HHH    D ","  D  HHHHH  D  ","   DDHHHHHDD   ","     HHHHH     "},
-                    {"      H~H      ","       D       ","       D       ","       D       ","       D       ","               ","H             H","HDDDD     DDDDH","H             H","               ","       D       ","       D       ","       D       ","       D       ","      HHH      "},
-                    {"     HHHHH     ","   DDHHHHHDD   ","  D  HHHHH  D  "," D    HHH    D "," D    HHH    D ","HHH  HHHHH  HHH","HHHHHHHHHHHHHHH","HHHHHHHHHHHHHHH","HHHHHHHHHHHHHHH","HHH  HHHHH  HHH"," D    HHH    D "," D    HHH    D ","  D  HHHHH  D  ","   DDHHHHHDD   ","     HHHHH     "}
+                    {"               ","               ","     H   H     ","     HDDDH     ","               ","  HH  EBE  HH  ","   D E C E D   ","   D BC CB D   ","   D E C E D   ","  HH  EBE  HH  ","               ","     HDDDH     ","     H   H     ","               ","               "},
+                    {"     HHHHH     ","   DDHBBBHDD   ","  D  HHHHH  D  "," D    HHH    D "," D    HHH    D ","HHH  HHEHH  HHH","HBHHHHEEEHHHHBH","HBHHHEEEEEHHHBH","HBHHHHHEEHHHHBH","HHH  HHEHH  HHH"," D    HHH    D "," D    HHH    D ","  D  HHHHH  D  ","   DDHBBBHDD   ","     HHHHH     "},
+                    {"      H~H      ","       D       ","       D       ","       D       ","       D       ","               ","H             H","BDDDD     DDDDB","H             H","               ","       D       ","       D       ","       D       ","       D       ","      HBH      "},
+                    {"     HHHHH     ","   DDHHBHHDD   ","  D  HHBHH  D  "," D  HHHBHHH  D "," D HHHBHBHHH D ","HHHHHHBHBHHHHHH","HHHHBBHHHBBHHHH","HBBBHHHBHHHBBBH","HHHHBBHHHBBHHHH","HHHHHHBHBHHHHHH"," D HHHBHBHHH D "," D  HHHBHHH  D ","  D  HHBHH  D  ","   DDHHBHHDD   ","     HHHHH     "}
                 }))
         .addShape(SolidifierModules.STREAMLINED_CASTERS.structureID, transpose(new String[][]{
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
@@ -473,54 +483,51 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             .addInfo("Toggle Render with Screwdriver")
             .addTecTechHatchInfo()
             .addSeparator()
-            .addInfo("Thank you to Sisyphus and IX for their work")
             .addInfo(EnumChatFormatting.RED + "Glorious Evolution!")
             .beginStructureBlock(15, 55, 15, true)
             .addController("Front Center")
             .addCasingInfoMinColored(
                 "Primary Exo-Foundry Casing",
                 EnumChatFormatting.GRAY,
-                500,
+                485 - 27, // balance around having 25 recipe hatches on a foundry.
                 EnumChatFormatting.GOLD,
                 false)
             .addCasingInfoExactlyColored(
                 "Exo-Foundry Containment Glass",
                 EnumChatFormatting.GRAY,
-                428,
+                548,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "Inner Foundry Siphon Casing",
+                EnumChatFormatting.GRAY,
+                281,
                 EnumChatFormatting.GOLD,
                 false)
             .addCasingInfoExactlyColored(
                 "Central Magnetic Chassis",
                 EnumChatFormatting.GRAY,
-                212,
+                260,
                 EnumChatFormatting.GOLD,
                 true)
             .addCasingInfoExactlyColored(
-                "Exo-Foundry Containment Glass",
-                EnumChatFormatting.GRAY,
-                100,
-                EnumChatFormatting.LIGHT_PURPLE,
-                false)
-            .addCasingInfoExactlyColored("Hypogen Coil", EnumChatFormatting.GRAY, 156, EnumChatFormatting.GOLD, false)
-            .addCasingInfoExactlyColored(
                 "Netherite Frame Box",
                 EnumChatFormatting.GRAY,
-                192,
+                224,
                 EnumChatFormatting.GOLD,
                 false)
+            .addCasingInfoExactlyColored("Hypogen Coil", EnumChatFormatting.GRAY, 196, EnumChatFormatting.GOLD, false)
             .addCasingInfoExactlyColored(
                 "Black Plutonium Item Pipe Casing",
                 EnumChatFormatting.GRAY,
-                60,
+                173,
                 EnumChatFormatting.GOLD,
                 false)
-
             .addInputBus("Any Foundry Casing", 1)
             .addOutputBus("Any Foundry Casing", 1)
             .addInputHatch("Any Foundry Casing", 1)
             .addEnergyHatch("Any Foundry Casing", 1)
             .addStructureInfoSeparator();
-
         addParallelModuleTooltip(tt);
         addSpeedModuleTooltip(tt);
         addPowerEfficiencyModuleTooltip(tt);
@@ -724,9 +731,10 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         casingAmount = 0;
         tier = -1;
         mCoolantInputHatches.clear();
-        // limit hatch space to about 25 hatches without modules. T.D.S removes 12 for balance, and casters adds 36.
+        // limit hatch space to about 25 hatches without modules. T.D.S removes 12 for balance, and casters adds 36 by
+        // proxy.
         if (checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, depthOffset)
-            && casingAmount >= 500 + (tdsPresent ? 12 : 0)) {
+            && casingAmount >= 458 + (tdsPresent ? 12 : 0)) {
             return checkModules();
         }
         return false;
@@ -992,6 +1000,10 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         if (index > modules.length - 1) return;
         SolidifierModules moduleToAdd = SolidifierModules.getModule(ordinal);
 
+        if (moduleToAdd == SolidifierModules.TRANSCENDENT_REINFORCEMENT) {
+            checkSolidifierModules();
+            if (uevRecipesEnabled) return;
+        }
         if (moduleToAdd == SolidifierModules.HYPERCOOLER) {
             checkSolidifierModules();
             if (hypercoolerPresent) return;
@@ -1092,7 +1104,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
 
         // if (!shouldRender || !getBaseMetaTileEntity().isActive()) return;
 
-        if (true) return;
+         if (true) return; // disable render for texture dev jar lol
 
         if (!renderInitialized) {
             initializeRender();
@@ -1195,7 +1207,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     private void renderRing(int index, float[] rgb) {
 
         GL11.glPushMatrix();
-        GL11.glTranslated(0, 9 + index * 8, 0);
+        GL11.glTranslated(0, 9 + index * 8 + (index > 1 ? 10 : 0), 0);
         GL11.glScalef(1.1f, 0.7f, 1.1f);
         GL20.glUniform3f(uGlowColor, rgb[0], rgb[1], rgb[2]);
         ring.renderAllVBO();
