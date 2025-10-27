@@ -17,8 +17,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SUPERCONDUCTO
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofSolenoidCoil;
 import static net.minecraft.util.EnumChatFormatting.AQUA;
-import static net.minecraft.util.EnumChatFormatting.DARK_AQUA;
-import static net.minecraft.util.EnumChatFormatting.DARK_BLUE;
 import static net.minecraft.util.EnumChatFormatting.DARK_GRAY;
 import static net.minecraft.util.EnumChatFormatting.DARK_GREEN;
 import static net.minecraft.util.EnumChatFormatting.GOLD;
@@ -33,8 +31,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import gregtech.api.util.tooltip.TooltipHelper;
-import gregtech.api.util.tooltip.TooltipTier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -72,6 +68,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.blocks.BlockCasings12;
 import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.items.MetaGeneratedItem01;
@@ -381,28 +378,43 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Bulk Superconductor Assembler, SCP")
+            .addInfo(DARK_GRAY + "" + EnumChatFormatting.ITALIC + "Secure. Contain. Produce.")
             .addInfo(
-                DARK_GRAY + "" + EnumChatFormatting.ITALIC + "Secure. Contain. Produce.")
-            .addInfo(
-                "The" + TooltipHelper.coloredText( " Component Assembly Line Casing ", YELLOW)
+                "The" + TooltipHelper.coloredText(" Component Assembly Line Casing ", YELLOW)
                     + "tier increases the parallels of the machine")
+            .addInfo("The parallel multiplier is" + TooltipHelper.italicText(" 0.95 * (1.32 ^ CoAL Casing Tier)"))
+            .addInfo("Recipes are completed in batches of 64, at 75% of the original recipe's time")
             .addInfo(
-                "The parallel multiplier is" + TooltipHelper.italicText(" 0.95 * (1.32 ^ CoAL Casing Tier)"))
-            .addInfo(
-                "Recipes are completed in batches of 64, at 75% of the original recipe's time")
-            .addInfo(
-                "Every" + TooltipHelper.coloredText(" Superconducting Solenoid Coil ", WHITE) + "tier above the recipe gives a " + TooltipHelper.coloredText("10%", AQUA) + " EU discount (multiplicative)")
+                "Every" + TooltipHelper.coloredText(" Superconducting Solenoid Coil ", WHITE)
+                    + "tier above the recipe gives a "
+                    + TooltipHelper.coloredText("10%", AQUA)
+                    + " EU discount (multiplicative)")
             .addInfo(TooltipHelper.coloredText("Supports TecTech Multi-Amp and Laser Hatches!", GREEN))
             .addSeparator()
+            .addInfo("Up to 3 unique boosters can be inserted into the Booster Housing")
             .addInfo(
-                "Up to 3 unique boosters can be inserted into the Booster Housing")
+                "Boosted superconductors will receive" + TooltipHelper.parallelText(" 2x ")
+                    + "parallels and"
+                    + TooltipHelper.coloredText(" 15% ", DARK_GREEN)
+                    + "additional output")
             .addInfo(
-                "Boosted superconductors will receive" + TooltipHelper.parallelText(" 2x ") + "parallels and" + TooltipHelper.coloredText(" 15% ", DARK_GREEN) + "additional output")
-            .addInfo("Additionally, each booster inside of the Booster Hatch will passively incur a flat passive cost of coolants")
+                "Additionally, each booster inside of the Booster Hatch will passively incur a flat passive cost of coolants")
             .addInfo("Higher tiers of boosters will require the coolants of all lower tiers")
-            .addInfo(TooltipHelper.coloredText("33,333 L/s", GREEN) + " : " +  TooltipHelper.coloredText("MV-ZPM", GOLD) + " : " + TooltipHelper.coloredText("Liquid Helium", LIGHT_PURPLE))
-            .addInfo(TooltipHelper.coloredText("3,333 L/s", GREEN) + " : " +  TooltipHelper.coloredText("UV-UHV", GOLD) + " : " + TooltipHelper.coloredText("Superfluid Helium", LIGHT_PURPLE))
-            .addInfo(TooltipHelper.coloredText("333 L/s", GREEN) + " : " +  TooltipHelper.coloredText("UEV-UMV", GOLD) + " : " + TooltipHelper.coloredText("SpaceTime", LIGHT_PURPLE))
+            .addInfo(
+                TooltipHelper.coloredText("33,333 L/s", GREEN) + " : "
+                    + TooltipHelper.coloredText("MV-ZPM", GOLD)
+                    + " : "
+                    + TooltipHelper.coloredText("Liquid Helium", LIGHT_PURPLE))
+            .addInfo(
+                TooltipHelper.coloredText("3,333 L/s", GREEN) + " : "
+                    + TooltipHelper.coloredText("UV-UHV", GOLD)
+                    + " : "
+                    + TooltipHelper.coloredText("Superfluid Helium", LIGHT_PURPLE))
+            .addInfo(
+                TooltipHelper.coloredText("333 L/s", GREEN) + " : "
+                    + TooltipHelper.coloredText("UEV-UMV", GOLD)
+                    + " : "
+                    + TooltipHelper.coloredText("SpaceTime", LIGHT_PURPLE))
             .addSeparator()
             .addInfo(RED + "Do I look dumb..?")
 
