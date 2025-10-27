@@ -205,7 +205,7 @@ public class SCPRecipes implements Runnable {
             .itemOutputs(ItemList.Booster_UV.get(1))
             .fluidInputs(Materials.SuperfluidHelium.getFluid(100000))
             .duration(30 * SECONDS)
-            .eut(TierEU.UEV)
+            .eut(TierEU.RECIPE_UEV)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -215,7 +215,7 @@ public class SCPRecipes implements Runnable {
             .itemOutputs(ItemList.Booster_UHV.get(1))
             .fluidInputs(Materials.SuperfluidHelium.getFluid(100000))
             .duration(30 * SECONDS)
-            .eut(TierEU.UIV)
+            .eut(TierEU.RECIPE_UIV)
             .addTo(assemblerRecipes);
 
         // Tier 3 Boosters
@@ -227,7 +227,7 @@ public class SCPRecipes implements Runnable {
             .itemOutputs(ItemList.Booster_UEV.get(1))
             .fluidInputs(Materials.SpaceTime.getMolten(10000))
             .duration(30 * SECONDS)
-            .eut(TierEU.UMV)
+            .eut(TierEU.RECIPE_UMV)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -237,7 +237,7 @@ public class SCPRecipes implements Runnable {
             .itemOutputs(ItemList.Booster_UIV.get(1))
             .fluidInputs(Materials.SpaceTime.getMolten(100000))
             .duration(30 * SECONDS)
-            .eut(TierEU.UXV)
+            .eut(TierEU.RECIPE_UXV)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -247,7 +247,7 @@ public class SCPRecipes implements Runnable {
             .itemOutputs(ItemList.Booster_UMV.get(1))
             .fluidInputs(Materials.SpaceTime.getMolten(1000000))
             .duration(30 * SECONDS)
-            .eut(TierEU.MAX)
+            .eut(TierEU.RECIPE_MAX)
             .addTo(assemblerRecipes);
 
         // Scon w/Helium input (MV-UHV)
