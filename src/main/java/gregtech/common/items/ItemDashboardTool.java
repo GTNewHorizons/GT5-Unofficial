@@ -86,14 +86,16 @@ public class ItemDashboardTool extends GTGenericItem {
                     .setRenderLines(true)
                     .setRenderDots(false))
                 .addElement(
-                    new GraphElement(() ->
-                        (double) (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()))
-                        .size(280, 80)
-                        .offsetVertical(110)
-                        .setDelay(2)
-                        .setDataSize(100)
-                        .setDynamicColor(false)
-                        .colorRGBA(0.0f, 1.0f, 0.5f, 0.8f)));
+                    new GraphElement(
+                        () -> (double) (Runtime.getRuntime()
+                            .totalMemory()
+                            - Runtime.getRuntime()
+                                .freeMemory())).size(280, 80)
+                                    .offsetVertical(110)
+                                    .setDelay(2)
+                                    .setDataSize(100)
+                                    .setDynamicColor(false)
+                                    .colorRGBA(0.0f, 1.0f, 0.5f, 0.8f)));
 
         hud.addWidget(
             new CompositeWidget(320, 10).isConfigurable()
