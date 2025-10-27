@@ -685,40 +685,35 @@ public class GTRecipeRegistrator {
                 .eut(aEUt)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTOreDictUnificator.get(prefix1, aMaterial, 2L / multiplier))
+                .itemInputs(GTOreDictUnificator.get(prefix1, aMaterial, 2L / multiplier))
                 .iCircuit(2)
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt02, aMaterial, 1L))
                 .duration(((int) (baseDuration * 1.5f)) * TICKS)
                 .eut(aEUt)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTOreDictUnificator.get(prefix1, aMaterial, 4L / multiplier))
+                .itemInputs(GTOreDictUnificator.get(prefix1, aMaterial, 4L / multiplier))
                 .iCircuit(4)
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt04, aMaterial, 1L))
                 .duration(baseDuration * 2 * TICKS)
                 .eut(aEUt)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTOreDictUnificator.get(prefix1, aMaterial, 8L / multiplier))
+                .itemInputs(GTOreDictUnificator.get(prefix1, aMaterial, 8L / multiplier))
                 .iCircuit(8)
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt08, aMaterial, 1L))
                 .duration(((int) (baseDuration * 2.5f)) * TICKS)
                 .eut(aEUt)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTOreDictUnificator.get(prefix1, aMaterial, 12L / multiplier))
+                .itemInputs(GTOreDictUnificator.get(prefix1, aMaterial, 12L / multiplier))
                 .iCircuit(12)
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt12, aMaterial, 1L))
                 .duration(baseDuration * 3 * TICKS)
                 .eut(aEUt)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTOreDictUnificator.get(prefix1, aMaterial, 16L / multiplier))
+                .itemInputs(GTOreDictUnificator.get(prefix1, aMaterial, 16L / multiplier))
                 .iCircuit(16)
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt16, aMaterial, 1L))
                 .duration(((int) (baseDuration * 3.5f)) * TICKS)
@@ -736,40 +731,35 @@ public class GTRecipeRegistrator {
                 .eut(aEUt)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTOreDictUnificator.get(prefix2, aMaterial, 4L / multiplier))
+                .itemInputs(GTOreDictUnificator.get(prefix2, aMaterial, 4L / multiplier))
                 .iCircuit(2)
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt02, aMaterial, 1L))
                 .duration(baseDuration * TICKS)
                 .eut(aEUt)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTOreDictUnificator.get(prefix2, aMaterial, 8L / multiplier))
+                .itemInputs(GTOreDictUnificator.get(prefix2, aMaterial, 8L / multiplier))
                 .iCircuit(4)
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt04, aMaterial, 1L))
                 .duration(((int) (baseDuration * 1.5f)) * TICKS)
                 .eut(aEUt)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTOreDictUnificator.get(prefix2, aMaterial, 16L / multiplier))
+                .itemInputs(GTOreDictUnificator.get(prefix2, aMaterial, 16L / multiplier))
                 .iCircuit(8)
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt08, aMaterial, 1L))
                 .duration(baseDuration * 2 * TICKS)
                 .eut(aEUt)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTOreDictUnificator.get(prefix2, aMaterial, 24L / multiplier))
+                .itemInputs(GTOreDictUnificator.get(prefix2, aMaterial, 24L / multiplier))
                 .iCircuit(12)
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt12, aMaterial, 1L))
                 .duration(((int) (baseDuration * 2.5f)) * TICKS)
                 .eut(aEUt)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTOreDictUnificator.get(prefix2, aMaterial, 32L / multiplier))
+                .itemInputs(GTOreDictUnificator.get(prefix2, aMaterial, 32L / multiplier))
                 .iCircuit(16)
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt16, aMaterial, 1L))
                 .duration(baseDuration * 3 * TICKS)
