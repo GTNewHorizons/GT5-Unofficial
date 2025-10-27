@@ -15,6 +15,10 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_FOUNDRY;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_FOUNDRY_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_FOUNDRY_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_FOUNDRY_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.getTier;
@@ -406,11 +410,11 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                     Textures.BlockIcons
                         .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasingsFoundry, 0)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE)
+                        .addIcon(OVERLAY_FRONT_FOUNDRY_ACTIVE)
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW)
+                        .addIcon(OVERLAY_FRONT_FOUNDRY_ACTIVE_GLOW)
                         .extFacing()
                         .glow()
                         .build() };
@@ -419,11 +423,11 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                     Textures.BlockIcons
                         .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasingsFoundry, 0)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE)
+                        .addIcon(OVERLAY_FRONT_FOUNDRY)
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_GLOW)
+                        .addIcon(OVERLAY_FRONT_FOUNDRY_GLOW)
                         .extFacing()
                         .glow()
                         .build() };
@@ -1090,6 +1094,8 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
          */
 
         // if (!shouldRender || !getBaseMetaTileEntity().isActive()) return;
+
+        if(true) return;
 
         if (!renderInitialized) {
             initializeRender();
