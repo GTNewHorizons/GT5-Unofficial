@@ -34,7 +34,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
-import gregtech.api.util.GTUtility;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GTBees;
 import gtPlusPlus.core.material.MaterialMisc;
@@ -98,7 +97,7 @@ public class NetheriteRecipes {
                 .addTo(dissolutionTankRecipes);
 
             GTValues.RA.stdBuilder() // Extraction
-                .itemInputs(GTUtility.getIntegratedCircuit(1))
+                .iCircuit(1)
                 .fluidInputs(
                     Materials.PrismarineSolution.getFluid(1000),
                     new FluidStack(FluidRegistry.getFluid("nitrobenzene"), 2000))
@@ -110,7 +109,7 @@ public class NetheriteRecipes {
                 .addTo(chemicalBathRecipes);
 
             GTValues.RA.stdBuilder() // Looped Extraction
-                .itemInputs(GTUtility.getIntegratedCircuit(1))
+                .iCircuit(1)
                 .fluidInputs(
                     Materials.PrismarineSolution.getFluid(1000),
                     Materials.PrismarineContaminatedNitrobenzeSolution.getFluid(3000))
@@ -171,9 +170,8 @@ public class NetheriteRecipes {
         // Naquarite
         {
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTUtility.getIntegratedCircuit(2),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.NaquadahEnriched, 32))
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.NaquadahEnriched, 32))
+                .iCircuit(2)
                 .fluidInputs(Materials.PrismaticAcid.getFluid(8000))
                 .fluidOutputs(Materials.PrismaticNaquadah.getMolten(2304))
                 .duration(20 * SECONDS)
@@ -264,7 +262,7 @@ public class NetheriteRecipes {
             .addTo(GTRecipeConstants.Fuel);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(1))
+            .iCircuit(1)
             .fluidInputs(Materials.Grade1PurifiedWater.getFluid(4_000), Materials.NefariousGas.getFluid(16_000))
             .fluidOutputs(Materials.NefariousOil.getFluid(12_000))
             .duration(26 * SECONDS)
@@ -272,7 +270,7 @@ public class NetheriteRecipes {
             .addTo(crackingRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(1))
+            .iCircuit(1)
             .fluidInputs(Materials.Grade2PurifiedWater.getFluid(1_000), Materials.NefariousGas.getFluid(16_000))
             .fluidOutputs(Materials.NefariousOil.getFluid(18_000))
             .duration(6 * SECONDS)
@@ -371,7 +369,8 @@ public class NetheriteRecipes {
             .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(1), ItemList.Netherite_Nanoparticles.get(1))
+            .itemInputs(ItemList.Netherite_Nanoparticles.get(1))
+            .iCircuit(1)
             .fluidInputs(Materials.HellishMetal.getMolten(1 * INGOTS))
             .itemOutputs(ItemList.Intensely_Bonded_Netherite_Nanoparticles.get(1))
             .fluidOutputs(Materials.Thaumium.getMolten(2 * NUGGETS))
@@ -383,9 +382,9 @@ public class NetheriteRecipes {
         if (Forestry.isModLoaded()) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTUtility.getIntegratedCircuit(2),
                     ItemList.Netherite_Nanoparticles.get(1),
                     GTBees.combs.getStackForType(CombType.NETHERITE, 32))
+                .iCircuit(2)
                 .fluidInputs(Materials.HellishMetal.getMolten(1 * INGOTS))
                 .itemOutputs(ItemList.Intensely_Bonded_Netherite_Nanoparticles.get(2))
                 .fluidOutputs(Materials.Thaumium.getMolten(2 * NUGGETS))
@@ -422,9 +421,8 @@ public class NetheriteRecipes {
         }
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Netherite, 4),
-                GTUtility.getIntegratedCircuit(4))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Netherite, 4))
+            .iCircuit(4)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Netherite, 1))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_ZPM)
