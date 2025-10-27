@@ -5414,21 +5414,17 @@ public class GTUtility {
         };
 
         if (isFormatShortened) {
+            ret.append(" (");
+            ret.append(EnumChatFormatting.GRAY);
             if (perSecond <= 1) {
-                ret.append(" (");
-                ret.append(EnumChatFormatting.GRAY);
                 ret.append(progressTime / amount);
                 ret.append("s/each");
-                ret.append(EnumChatFormatting.WHITE);
-                ret.append(")");
             } else {
-                ret.append(" (");
-                ret.append(EnumChatFormatting.GRAY);
                 ret.append(formatShortenedLong((long) perSecond));
                 ret.append("/s");
-                ret.append(EnumChatFormatting.WHITE);
-                ret.append(")");
             }
+            ret.append(EnumChatFormatting.WHITE);
+            ret.append(")");
         } else {
             ret.append(EnumChatFormatting.RESET);
             ret.append(
