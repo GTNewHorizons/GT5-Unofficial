@@ -180,7 +180,7 @@ public final class GTBaseGuiBuilder {
         if (doesAddGregTechLogo) {
             panel.child(createGregTechLogo());
         }
-        if (doesAddMufflerButton && mte instanceof MTEMultiBlockBase && ((MTEMultiBlockBase) mte).canBeMuffled()) {
+        if (doesAddMufflerButton && mte instanceof MTEMultiBlockBase) {
             panel.child(createMufflerButton());
         }
         syncManager.addCloseListener($ -> mte.markDirty());

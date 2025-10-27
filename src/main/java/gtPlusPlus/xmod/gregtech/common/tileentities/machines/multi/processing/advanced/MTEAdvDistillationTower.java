@@ -177,7 +177,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
             .addInfo("Distillery Mode (requires full height tower)")
             .addInfo(TooltipHelper.parallelText("8 * Voltage Tier") + " Parallels")
             .addStaticSpeedInfo(2f)
-            .addStaticEuEffInfo(0.85f)
+            .addStaticEuEffInfo(0.15f)
             .addSeparator()
             .addInfo("Distillation Tower Mode")
             .addStaticParallelInfo(DT_MODE_MAX_PARALLELS)

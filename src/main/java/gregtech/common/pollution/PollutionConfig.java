@@ -114,7 +114,7 @@ public class PollutionConfig {
     @Config.Comment({
         "Pollution released by tier, with the following formula: PollutionBaseDieselGeneratorPerSecond * PollutionDieselGeneratorReleasedByTier[Tier]",
         "The first entry has meaning as it is here to since machine tier with array index: LV is 1, etc." })
-    @Config.DefaultDoubleList({ 0.1, 1.0, 0.9, 0.8 })
+    @Config.DefaultDoubleList({ 0.1, 1.0, 0.9, 0.8, 0.7, 0.6 })
     @Config.RequiresMcRestart
     public static double[] pollutionDieselGeneratorReleasedByTier;
 

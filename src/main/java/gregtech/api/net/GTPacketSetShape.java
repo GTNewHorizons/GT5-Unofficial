@@ -92,11 +92,6 @@ public class GTPacketSetShape extends GTPacket {
         ItemStack phantom = MTEHatchExtrusion.findMatchingShape(shape);
         if (phantom == null) return;
 
-        if (tile instanceof IHasInventory inv) {
-            inv.setInventorySlotContents(MTEHatchExtrusion.shapeSlot, phantom);
-            baseTile.markDirty();
-            world.markBlockForUpdate(mX, mY, mZ);
-        }
 
         if (gregTechTile != null && gregTechTile.getMetaTileEntity() instanceof MTEHatchExtrusion meta) {
             meta.setInventorySlotContents(MTEHatchExtrusion.shapeSlot, phantom);

@@ -36,7 +36,7 @@ public enum GTPacketTypes {
     CREATE_TILE_ENTITY(28, new GTPacketCreateTE()),
     NODE_INFO(29, new GTPacketNodeInfo()),
     COIL_STATUS(30, new GTCoilStatus()),
-    DEBUG_COVER(31, new PacketDebugRedstoneCover()),
+    PLAYER_TELEPORT(31, new PacketTeleportPlayer()),
     LMA_CRAFTING_FX(32, new GTPacketLMACraftingFX()),
     SEND_WIRELESS_EU(33, new GTPacketUpdatePowerGoggles()),
     OVERWRITE_POWER_GOGGLES_MEASUREMENTS(34, new GTPacketOverwritePowerGogglesMeasurements()),
