@@ -30,15 +30,15 @@ public enum PartOrePrefix {
     }
 
     public static @Nullable PartOrePrefix fromPrefix(OrePrefixes prefix) {
-        return switch (prefix) {
-            case plate -> PartOrePrefix.plate;
-            case foil -> PartOrePrefix.foil;
-            case stickLong -> PartOrePrefix.stickLong;
-            case stick -> PartOrePrefix.stick;
-            case bolt -> PartOrePrefix.bolt;
-            case ring -> PartOrePrefix.ring;
-            case wireFine -> PartOrePrefix.wireFine;
-            case lens -> PartOrePrefix.lens;
+        return switch (prefix.getName()) {
+            case "plate" -> PartOrePrefix.plate;
+            case "foil" -> PartOrePrefix.foil;
+            case "stickLong" -> PartOrePrefix.stickLong;
+            case "stick" -> PartOrePrefix.stick;
+            case "bolt" -> PartOrePrefix.bolt;
+            case "ring" -> PartOrePrefix.ring;
+            case "wireFine" -> PartOrePrefix.wireFine;
+            case "lens" -> PartOrePrefix.lens;
             default -> null;
         };
     }

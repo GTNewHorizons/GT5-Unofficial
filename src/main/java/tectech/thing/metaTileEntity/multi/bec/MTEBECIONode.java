@@ -694,7 +694,6 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         return ret.toString();
     }
 
-    @Override
     protected boolean showRecipeOutputTooltips() {
         return false;
     }
@@ -704,7 +703,6 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         return "";
     }
 
-    @Override
     protected void generateRate(StringBuffer ret, double amount) {
         // do nothing, rates can't be calculated easily
     }

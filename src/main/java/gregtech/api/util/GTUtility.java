@@ -5413,4 +5413,119 @@ public class GTUtility {
             return text.substring(0, limit) + "...";
         }
     }
+
+    // helper function (from MultiblockBase that creates a string of timed dates
+    public static String appendRate(boolean isLiquid, Long amount, boolean isFormatShortened, int maxProgressTicks) {
+        final StringBuffer ret = new StringBuffer();
+        final DecimalFormat df = new DecimalFormat("0.00");
+        final double progressTime = (double) maxProgressTicks / 20;
+        double perTick = amount / (double) maxProgressTicks;
+        double perSecond = amount / progressTime;
+        double perMinute = perSecond * 60;
+        double perHour = perSecond * 3_600;
+        double perDay = perSecond * 86_400;
+
+        final String amountText = translateToLocal("GT5U.gui.text.amount") + " ";
+        final String perTickText = translateToLocal("GT5U.gui.text.per_tick") + " ";
+        final String perSecondText = translateToLocal("GT5U.gui.text.per_second") + " ";
+        final String perMinuteText = translateToLocal("GT5U.gui.text.per_minute") + " ";
+        final String perHourText = translateToLocal("GT5U.gui.text.per_hour") + " ";
+        final String perDayText = translateToLocal("GT5U.gui.text.per_day") + " ";
+
+        final Function<Double, Double> roundNumber = (number) -> {
+            if (Math.abs(number) < 10) {
+                return Math.round(number * 100) / 100.0;
+            } else {
+                return Math.floor(number);
+            }
+        };
+
+        if (isFormatShortened) {
+            ret.append(" (");
+            ret.append(EnumChatFormatting.GRAY);
+            ret.append(perSecond > 1 ? formatShortenedLong((long) perSecond) : df.format(perSecond));
+            ret.append("/s");
+            ret.append(EnumChatFormatting.WHITE);
+            ret.append(")");
+        } else {
+            ret.append(EnumChatFormatting.RESET);
+            ret.append(
+                amountText + EnumChatFormatting.GOLD
+                    + formatNumbers(amount)
+                    + (isLiquid ? "L" : "")
+                    + EnumChatFormatting.RESET);
+            ret.append("\n");
+            ret.append(
+                perTickText + EnumChatFormatting.GOLD
+                    + formatNumbers(roundNumber.apply(perTick))
+                    + (isLiquid ? "L" : "")
+                    + (perSecond > 1_000_000
+                        ? EnumChatFormatting.WHITE + " ["
+                            + EnumChatFormatting.GRAY
+                            + formatShortenedLong((long) perTick)
+                            + EnumChatFormatting.WHITE
+                            + "]"
+                        : "")
+                    + EnumChatFormatting.RESET);
+            ret.append("\n");
+            ret.append(
+                perSecondText + EnumChatFormatting.GOLD
+                    + formatNumbers(roundNumber.apply(perSecond))
+                    + (isLiquid ? "L" : "")
+                    + (perSecond > 1_000_000
+                        ? EnumChatFormatting.WHITE + " ["
+                            + EnumChatFormatting.GRAY
+                            + formatShortenedLong((long) perSecond)
+                            + EnumChatFormatting.WHITE
+                            + "]"
+                        : "")
+                    + EnumChatFormatting.RESET);
+            ret.append("\n");
+            ret.append(
+                perMinuteText + EnumChatFormatting.GOLD
+                    + formatNumbers(roundNumber.apply(perMinute))
+                    + (isLiquid ? "L" : "")
+                    + (perMinute > 1_000_000
+                        ? EnumChatFormatting.WHITE + " ["
+                            + EnumChatFormatting.GRAY
+                            + formatShortenedLong((long) perMinute)
+                            + EnumChatFormatting.WHITE
+                            + "]"
+                        : "")
+                    + EnumChatFormatting.RESET);
+            ret.append("\n");
+            ret.append(
+                perHourText + EnumChatFormatting.GOLD
+                    + formatNumbers(roundNumber.apply(perHour))
+                    + (isLiquid ? "L" : "")
+                    + (perHour > 1_000_000
+                        ? EnumChatFormatting.WHITE + " ["
+                            + EnumChatFormatting.GRAY
+                            + formatShortenedLong((long) perHour)
+                            + EnumChatFormatting.WHITE
+                            + "]"
+                        : "")
+                    + EnumChatFormatting.RESET);
+            ret.append("\n");
+            ret.append(
+                perDayText + EnumChatFormatting.GOLD
+                    + formatNumbers(roundNumber.apply(perDay))
+                    + (isLiquid ? "L" : "")
+                    + (perDay > 1_000_000
+                        ? EnumChatFormatting.WHITE + " ["
+                            + EnumChatFormatting.GRAY
+                            + formatShortenedLong((long) perDay)
+                            + EnumChatFormatting.WHITE
+                            + "]"
+                        : "")
+                    + EnumChatFormatting.RESET);
+        }
+        return ret.toString();
+    }
+
+    public static boolean isRealPlayer(EntityLivingBase entity) {
+        return entity instanceof EntityPlayer p && !p.getClass()
+            .getName()
+            .contains("Fake");
+    }
 }

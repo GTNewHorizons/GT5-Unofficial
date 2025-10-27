@@ -700,7 +700,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         return this.checkRecipeResult.wasSuccessful();
     }
 
-    protected boolean shouldCheckRecipeThisTick(long aTick) {
+    private boolean shouldCheckRecipeThisTick(long aTick) {
         // do a recipe check if any crafting input hatch just got pushed in items
         boolean shouldCheck = false;
         // check all of them (i.e. do not return early) to reset the state of all of them.
@@ -3083,77 +3083,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         numberFormat.setMinimumFractionDigits(1);
         numberFormat.setMaximumFractionDigits(1);
         numberFormat.format((double) mProgresstime / mMaxProgresstime * 100, ret);
-        ret.append("%)\n");
+        ret.append("%)");
         numberFormat.setMinimumFractionDigits(0);
         numberFormat.setMaximumFractionDigits(2);
 
-        LongConsumer appendRate = (amount) -> {
-            double processPerTick = (double) amount / mMaxProgresstime * 20;
-            ret.append(" (");
-            if (processPerTick > 1) {
-                numberFormat.format(Math.round(processPerTick * 10) / 10.0, ret);
-                ret.append("/s)");
-            } else {
-                numberFormat.format(Math.round(1 / processPerTick * 10) / 10.0, ret);
-                ret.append("s/ea)");
-            }
-        };
-
-        int lines = 0;
-        int MAX_LINES = 10;
-
-        if (mOutputItems != null) {
-            HashMap<String, Long> nameToAmount = new HashMap<>();
-            for (var item : mOutputItems) {
-                if (item == null || item.stackSize <= 0) continue;
-                nameToAmount.merge(item.getDisplayName(), (long) item.stackSize, Long::sum);
-            }
-            for (Map.Entry<String, Long> entry : nameToAmount.entrySet()) {
-                if (lines >= MAX_LINES) {
-                    ret.append("...");
-                    return ret.toString();
-                }
-                lines++;
-                ret.append(EnumChatFormatting.AQUA)
-                    .append(entry.getKey())
-                    .append(EnumChatFormatting.WHITE)
-                    .append(" x ")
-                    .append(EnumChatFormatting.GOLD);
-                numberFormat.format(entry.getValue(), ret);
-                ret.append(EnumChatFormatting.WHITE);
-                appendRate.accept(entry.getValue());
-                ret.append('\n');
-            }
-        }
-        if (mOutputFluids != null) {
-            HashMap<String, Long> nameToAmount = new HashMap<>();
-            for (var fluid : mOutputFluids) {
-                if (fluid == null || fluid.amount <= 0) continue;
-                nameToAmount.merge(fluid.getLocalizedName(), (long) fluid.amount, Long::sum);
-            }
-            for (Map.Entry<String, Long> entry : nameToAmount.entrySet()) {
-                if (lines >= MAX_LINES) {
-                    ret.append("...");
-                    return ret.toString();
-                }
-                lines++;
-                ret.append(EnumChatFormatting.AQUA)
-                    .append(entry.getKey())
-                    .append(EnumChatFormatting.WHITE)
-                    .append(" x ")
-                    .append(EnumChatFormatting.GOLD);
-                numberFormat.format(entry.getValue(), ret);
-                ret.append("L")
-                    .append(EnumChatFormatting.WHITE);
-                appendRate.accept(entry.getValue());
-                ret.append('\n');
-            }
-        }
         return ret.toString();
-    }
-
-    protected boolean showRecipeOutputTooltips() {
-        return true;
     }
 
     protected Widget generateCurrentRecipeInfoWidget() {
@@ -3175,39 +3109,31 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 .collect(Collectors.toList());
 
             for (Map.Entry<ItemStack, Long> entry : sortedMap) {
-
-                Widget icon = new ItemDrawable(
-                    entry.getKey()
-                        .copy()).asWidget()
-                    .setSize(8, 8)
-                    .setPos(0, 0);
-
                 Long itemCount = entry.getValue();
-
                 String itemName = entry.getKey()
                     .getDisplayName();
-
                 String itemAmountString = EnumChatFormatting.WHITE + " x "
                     + EnumChatFormatting.GOLD
                     + formatShortenedLong(itemCount)
                     + EnumChatFormatting.WHITE
                     + appendRate(false, itemCount, true);
+                String lineText = EnumChatFormatting.AQUA + truncateText(itemName, 40 - itemAmountString.length())
+                    + itemAmountString;
+                String lineTooltip = EnumChatFormatting.AQUA + itemName + "\n" + appendRate(false, itemCount, false);
 
-                String lineText = EnumChatFormatting.AQUA + truncateText(itemName, 40 - itemAmountString.length()) + itemAmountString;
-
-                TextWidget outputName = new TextWidget(lineText).setTextAlignment(Alignment.CenterLeft);
-                outputName.setPos(10, 1);
-
-                if (showRecipeOutputTooltips()) {
-                    String lineTooltip = EnumChatFormatting.AQUA + itemName + "\n" + appendRate(false, itemCount, false);
-
-                    outputName.addTooltip(lineTooltip);
-                }
-
-                processingDetails.widget(new MultiChildWidget().addChild(icon).addChild(outputName));
+                processingDetails.widget(
+                    new MultiChildWidget().addChild(
+                        new ItemDrawable(
+                            entry.getKey()
+                                .copy()).asWidget()
+                                    .setSize(8, 8)
+                                    .setPos(0, 0))
+                        .addChild(
+                            new TextWidget(lineText).setTextAlignment(Alignment.CenterLeft)
+                                .addTooltip(lineTooltip)
+                                .setPos(10, 1)));
             }
         }
-
         if (mOutputFluids != null) {
             final Map<FluidStack, Long> nameToAmount = new HashMap<>();
 
@@ -3224,36 +3150,32 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 .collect(Collectors.toList());
 
             for (Map.Entry<FluidStack, Long> entry : sortedMap) {
-                Widget icon = new FluidDrawable()
-                    .setFluid(entry.getKey().getFluid())
-                    .asWidget()
-                    .setSize(8, 8)
-                    .setPos(0, 0);
-
                 Long itemCount = entry.getValue();
-
                 String itemName = entry.getKey()
                     .getLocalizedName();
-
                 String itemAmountString = EnumChatFormatting.WHITE + " x "
                     + EnumChatFormatting.GOLD
                     + formatShortenedLong(itemCount)
                     + "L"
                     + EnumChatFormatting.WHITE
                     + appendRate(false, itemCount, true);
+                String lineText = EnumChatFormatting.AQUA + truncateText(itemName, 40 - itemAmountString.length())
+                    + itemAmountString;
+                String lineTooltip = EnumChatFormatting.AQUA + itemName + "\n" + appendRate(true, itemCount, false);
 
-                String lineText = EnumChatFormatting.AQUA + truncateText(itemName, 40 - itemAmountString.length()) + itemAmountString;
+                processingDetails.widget(
+                    new MultiChildWidget().addChild(
+                        new FluidDrawable().setFluid(
+                            entry.getKey()
+                                .getFluid())
+                            .asWidget()
+                            .setSize(8, 8)
+                            .setPos(0, 0))
+                        .addChild(
+                            new TextWidget(lineText).setTextAlignment(Alignment.CenterLeft)
+                                .addTooltip(lineTooltip)
+                                .setPos(10, 1)));
 
-                TextWidget outputName = new TextWidget(lineText).setTextAlignment(Alignment.CenterLeft);
-                outputName.setPos(10, 1);
-
-                if (showRecipeOutputTooltips()) {
-                    String lineTooltip = EnumChatFormatting.AQUA + itemName + "\n" + appendRate(true, itemCount, false);
-
-                    outputName.addTooltip(lineTooltip);
-                }
-
-                processingDetails.widget(new MultiChildWidget().addChild(icon).addChild(outputName));
             }
         }
         return processingDetails;
@@ -3290,60 +3212,64 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             ret.append(EnumChatFormatting.WHITE);
             ret.append(")");
         } else {
-            ret.append(EnumChatFormatting.RESET)
-                .append(amountText)
-                .append(EnumChatFormatting.GOLD)
-                .append(formatNumbers(amount))
-                .append(isLiquid ? "L" : "")
-                .append(EnumChatFormatting.RESET)
-                .append("\n")
-                .append(perSecondText)
-                .append(EnumChatFormatting.GOLD)
-                .append(formatNumbers(roundNumber.apply(perSecond)))
-                .append(isLiquid ? "L" : "")
-                .append(perSecond > 1_000_000 ? EnumChatFormatting.WHITE
-                    + " ["
-                    + EnumChatFormatting.GRAY
-                    + formatShortenedLong((long) perSecond)
-                    + EnumChatFormatting.WHITE
-                    + "]" : "")
-                .append(EnumChatFormatting.RESET)
-                .append("\n")
-                .append(perMinuteText)
-                .append(EnumChatFormatting.GOLD)
-                .append(formatNumbers(roundNumber.apply(perMinute)))
-                .append(isLiquid ? "L" : "")
-                .append(perMinute > 1_000_000 ? EnumChatFormatting.WHITE
-                    + " ["
-                    + EnumChatFormatting.GRAY
-                    + formatShortenedLong((long) perMinute)
-                    + EnumChatFormatting.WHITE
-                    + "]" : "")
-                .append(EnumChatFormatting.RESET)
-                .append("\n")
-                .append(perHourText)
-                .append(EnumChatFormatting.GOLD)
-                .append(formatNumbers(roundNumber.apply(perHour)))
-                .append(isLiquid ? "L" : "")
-                .append(perHour > 1_000_000 ? EnumChatFormatting.WHITE
-                    + " ["
-                    + EnumChatFormatting.GRAY
-                    + formatShortenedLong((long) perHour)
-                    + EnumChatFormatting.WHITE
-                    + "]" : "")
-                .append(EnumChatFormatting.RESET)
-                .append("\n")
-                .append(perDayText)
-                .append(EnumChatFormatting.GOLD)
-                .append(formatNumbers(roundNumber.apply(perDay)))
-                .append(isLiquid ? "L" : "")
-                .append(perDay > 1_000_000 ? EnumChatFormatting.WHITE
-                    + " ["
-                    + EnumChatFormatting.GRAY
-                    + formatShortenedLong((long) perDay)
-                    + EnumChatFormatting.WHITE
-                    + "]" : "")
-                .append(EnumChatFormatting.RESET);
+            ret.append(EnumChatFormatting.RESET);
+            ret.append(
+                amountText + EnumChatFormatting.GOLD
+                    + formatNumbers(amount)
+                    + (isLiquid ? "L" : "")
+                    + EnumChatFormatting.RESET);
+            ret.append("\n");
+            ret.append(
+                perSecondText + EnumChatFormatting.GOLD
+                    + formatNumbers(roundNumber.apply(perSecond))
+                    + (isLiquid ? "L" : "")
+                    + (perSecond > 1_000_000
+                        ? EnumChatFormatting.WHITE + " ["
+                            + EnumChatFormatting.GRAY
+                            + formatShortenedLong((long) perSecond)
+                            + EnumChatFormatting.WHITE
+                            + "]"
+                        : "")
+                    + EnumChatFormatting.RESET);
+            ret.append("\n");
+            ret.append(
+                perMinuteText + EnumChatFormatting.GOLD
+                    + formatNumbers(roundNumber.apply(perMinute))
+                    + (isLiquid ? "L" : "")
+                    + (perMinute > 1_000_000
+                        ? EnumChatFormatting.WHITE + " ["
+                            + EnumChatFormatting.GRAY
+                            + formatShortenedLong((long) perMinute)
+                            + EnumChatFormatting.WHITE
+                            + "]"
+                        : "")
+                    + EnumChatFormatting.RESET);
+            ret.append("\n");
+            ret.append(
+                perHourText + EnumChatFormatting.GOLD
+                    + formatNumbers(roundNumber.apply(perHour))
+                    + (isLiquid ? "L" : "")
+                    + (perHour > 1_000_000
+                        ? EnumChatFormatting.WHITE + " ["
+                            + EnumChatFormatting.GRAY
+                            + formatShortenedLong((long) perHour)
+                            + EnumChatFormatting.WHITE
+                            + "]"
+                        : "")
+                    + EnumChatFormatting.RESET);
+            ret.append("\n");
+            ret.append(
+                perDayText + EnumChatFormatting.GOLD
+                    + formatNumbers(roundNumber.apply(perDay))
+                    + (isLiquid ? "L" : "")
+                    + (perDay > 1_000_000
+                        ? EnumChatFormatting.WHITE + " ["
+                            + EnumChatFormatting.GRAY
+                            + formatShortenedLong((long) perDay)
+                            + EnumChatFormatting.WHITE
+                            + "]"
+                        : "")
+                    + EnumChatFormatting.RESET);
         }
         return ret.toString();
     }
@@ -3377,33 +3303,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         numberFormat.setMinimumFractionDigits(0);
         numberFormat.setMaximumFractionDigits(2);
         return ret.toString();
-    }
-
-    protected void generateRecipeProgressString(StringBuffer ret) {
-        numberFormat.setMinimumFractionDigits(2);
-        numberFormat.setMaximumFractionDigits(2);
-        numberFormat.format((double) mProgresstime / 20, ret);
-        ret.append("s / ");
-        numberFormat.format((double) mMaxProgresstime / 20, ret);
-        ret.append("s (");
-        numberFormat.setMinimumFractionDigits(1);
-        numberFormat.setMaximumFractionDigits(1);
-        numberFormat.format((double) mProgresstime / mMaxProgresstime * 100, ret);
-        ret.append("%)\n");
-        numberFormat.setMinimumFractionDigits(0);
-        numberFormat.setMaximumFractionDigits(2);
-    }
-
-    protected void generateRate(StringBuffer ret, double amount) {
-        double processPerTick = amount / mMaxProgresstime * 20;
-        ret.append(" (");
-        if (processPerTick > 1) {
-            numberFormat.format(Math.round(processPerTick * 10) / 10.0, ret);
-            ret.append("/s)");
-        } else {
-            numberFormat.format(Math.round(1 / processPerTick * 10) / 10.0, ret);
-            ret.append("s/ea)");
-        }
     }
 
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {

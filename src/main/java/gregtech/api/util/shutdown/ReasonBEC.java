@@ -43,6 +43,11 @@ public class ReasonBEC implements ShutDownReason {
         return "bec";
     }
 
+    @Override
+    public String getKey() {
+        return getID();
+    }
+
     @NotNull
     @Override
     public String getDisplayString() {
