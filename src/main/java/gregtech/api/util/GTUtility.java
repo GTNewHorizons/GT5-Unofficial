@@ -5414,12 +5414,21 @@ public class GTUtility {
         };
 
         if (isFormatShortened) {
-            ret.append(" (");
-            ret.append(EnumChatFormatting.GRAY);
-            ret.append(perSecond > 1 ? formatShortenedLong((long) perSecond) : df.format(perSecond));
-            ret.append("/s");
-            ret.append(EnumChatFormatting.WHITE);
-            ret.append(")");
+            if (amount == 1) {
+                ret.append(" (");
+                ret.append(EnumChatFormatting.GRAY);
+                ret.append(progressTime);
+                ret.append("s/each");
+                ret.append(EnumChatFormatting.WHITE);
+                ret.append(")");
+            } else {
+                ret.append(" (");
+                ret.append(EnumChatFormatting.GRAY);
+                ret.append(perSecond > 1 ? formatShortenedLong((long) perSecond) : df.format(perSecond));
+                ret.append("/s");
+                ret.append(EnumChatFormatting.WHITE);
+                ret.append(")");
+            }
         } else {
             ret.append(EnumChatFormatting.RESET);
             ret.append(
