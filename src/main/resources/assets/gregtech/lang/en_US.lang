@@ -262,8 +262,8 @@ gt.interact.desc.need_maint_rotor_lo=Emit if rotor needs maintenance low accurac
 gt.interact.desc.need_maint_rotor_hi=Emit if rotor needs maintenance high accuracy mod
 gt.interact.desc.issue=1 Issue
 gt.interact.desc.issues=%s Issues
-gt.interact.desc.issue_rotor_low=Rotor < 20%
-gt.interact.desc.issue_rotor_dead=Rotor ≈ 0%
+gt.interact.desc.issue_rotor_low=Rotor < 20%%
+gt.interact.desc.issue_rotor_dead=Rotor ≈ 0%%
 
 # GT++ items
 item.GTPP.air_intake_hatch.name=Air Intake Hatch
@@ -1472,7 +1472,7 @@ GT5U.gui.text.pump_rate.2= L/t
 GT5U.gui.text.pump_recovery.1=Recovering §b%s§r
 GT5U.gui.text.pump_recovery.2= L per operation
 GT5U.gui.text.not_enough_energy=§7Not enough energy
-GT5U.gui.text.power_overflow=§7Power overflowed
+GT5U.gui.text.power_overflow=§7Power Overflowed: Supplied Energy is too high for this machine.
 GT5U.gui.text.duration_overflow=§7Processing time overflowed
 GT5U.gui.text.insufficient_power=§7Recipe needs more power to start. Required: %s EU/t (%s§7)
 GT5U.gui.text.insufficient_voltage=§7Recipe needs a higher voltage to start. Required: %s EU/t (%s§7)
@@ -1551,6 +1551,9 @@ GT5U.gui.text.alpha-transfer=Alpha Transfer
 GT5U.gui.text.beta-minus=Beta Minus Decay
 GT5U.gui.text.beta-plus=Beta Plus Decay
 GT5U.gui.text.invalidfluidsup=Invalid Fluid Supplied
+GT5U.gui.text.amperage=Amperage
+GT5U.gui.text.voltagetier=Voltage Tier
+GT5U.gui.text.ticks_between_refill=Ticks Between Refills
 
 
 GT5U.gui.hoverable.runningfine=Running Fine.
@@ -3020,6 +3023,11 @@ gt.item.redstone_sniffer.locate=Locate
 gt.item.redstone_sniffer.teleport=Teleport
 gt.item.redstone_sniffer.highlight_message=Highlighting cover at %d,%d,%d
 gt.item.redstone_sniffer.wrong_dim_message=Cannot highlight because you're not in the same dimension!
+gt.item.chaos_locator.warp=WARP
+gt.item.chaos_locator.coords=Enter Coordinates
+gt.item.chaos_locator.tooltip.01=Tracking works across dimensions
+gt.item.chaos_locator.x=X * 10k
+gt.item.chaos_locator.z=Z * 10k
 
 gt.cover.info.format.tick_rate=§b%s§r %s
 gt.cover.info.chat.tick_rate=Cover tick rate set to %s

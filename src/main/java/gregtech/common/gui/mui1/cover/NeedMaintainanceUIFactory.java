@@ -87,11 +87,11 @@ public class NeedMaintainanceUIFactory extends CoverLegacyDataUIFactory {
                 new TextWidget(getIssuesCount(5)).setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX + spaceX * 5 + 4, 4 + startY + spaceY * 0))
             .widget(
-                new TextWidget(translateToLocal("gt.interact.desc.issue_rotor_low"))
+                TextWidget.localised("gt.interact.desc.issue_rotor_low")
                     .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX + spaceX * 5 + 4, 4 + startY + spaceY * 1))
             .widget(
-                new TextWidget(translateToLocal("gt.interact.desc.issue_rotor_dead"))
+                TextWidget.localised("gt.interact.desc.issue_rotor_dead")
                     .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX + spaceX * 5 + 4, 4 + startY + spaceY * 2))
             .widget(

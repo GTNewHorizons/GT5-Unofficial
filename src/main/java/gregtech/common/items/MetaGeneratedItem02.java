@@ -2400,6 +2400,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
             .set(new ItemRedstoneSniffer("Item_Redstone_Sniffer", "Redstone Sniffer", "What are these frequencies?!"));
         ItemList.Vajra_Core.set(addItem(Vajra_Core.ID, "Vajra Core", ""));
         ItemList.Magnetron.set(addItem(Magnetron.ID, "Magnetron", ""));
+        ItemList.ChaosLocator
+            .set(new ItemChaosLocator("Item_Chaos_Locator", "Chaos Locator", "Warps to areas with extreme entropy"));
 
         try {
             CropCard tCrop;
@@ -3096,7 +3098,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
 
     @Override
     public boolean doesShowInCreative(OrePrefixes aPrefix, Materials aMaterial, boolean aDoShowAllItems) {
-        return (aDoShowAllItems) || (!aPrefix.name()
+        return (aDoShowAllItems) || (!aPrefix.getName()
             .startsWith("toolHead"));
     }
 
