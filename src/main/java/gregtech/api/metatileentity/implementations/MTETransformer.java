@@ -240,15 +240,17 @@ public class MTETransformer extends MTETieredMachineBlock {
 
     @Override
     public String getAlternativeModeText() {
-        return (getBaseMetaTileEntity().isAllowedToWork() ? GTUtility.trans("145", "Step Down, In: ")
-            : GTUtility.trans("146", "Step Up, In: ")) + maxEUInput()
-            + GTUtility.trans("148", "V ")
+        return (getBaseMetaTileEntity().isAllowedToWork() ? GTUtility.translate("gt.gui.step_down_in")
+            : GTUtility.translate("gt.gui.step_up_in")) + maxEUInput()
+            + GTUtility.translate("gt.info.volt")
+            + " "
             + maxAmperesIn()
-            + GTUtility.trans("147", "A, Out: ")
+            + GTUtility.translate("gt.gui.amp_out")
             + maxEUOutput()
-            + GTUtility.trans("148", "V ")
+            + GTUtility.translate("gt.info.volt")
+            + " "
             + maxAmperesOut()
-            + GTUtility.trans("149", "A");
+            + GTUtility.translate("gt.info.amp");
     }
 
     @Override
@@ -270,7 +272,8 @@ public class MTETransformer extends MTETieredMachineBlock {
         currenttip.add(
             String.format(
                 "%s %s(%dA) -> %s(%dA)",
-                (allowedToWork ? (GREEN + "Step Down") : (RED + "Step Up")) + RESET,
+                (allowedToWork ? (GREEN + GTUtility.translate("gt.gui.step_down"))
+                    : (RED + GTUtility.translate("gt.gui.step_up"))) + RESET,
                 GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(inputTier)
                     : tag.getLong("maxEUInput"),
                 tag.getLong("maxAmperesIn"),
@@ -281,14 +284,14 @@ public class MTETransformer extends MTETieredMachineBlock {
         if ((side == facing && allowedToWork) || (side != facing && !allowedToWork)) {
             currenttip.add(
                 String.format(
-                    GOLD + "Input:" + RESET + " %s(%dA)",
+                    GOLD + GTUtility.translate("gt.gui.input_1") + RESET + " %s(%dA)",
                     GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(inputTier)
                         : tag.getLong("maxEUInput"),
                     tag.getLong("maxAmperesIn")));
         } else {
             currenttip.add(
                 String.format(
-                    BLUE + "Output:" + RESET + " %s(%dA)",
+                    BLUE + GTUtility.translate("gt.gui.output_1") + RESET + " %s(%dA)",
                     GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(outputTier)
                         : tag.getLong("maxEUOutput"),
                     tag.getLong("maxAmperesOut")));

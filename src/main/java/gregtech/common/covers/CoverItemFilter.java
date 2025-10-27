@@ -145,10 +145,12 @@ public class CoverItemFilter extends Cover {
         final ItemStack tStack = aPlayer.inventory.getCurrentItem();
         if (tStack != null) {
             filter.setStackInSlot(0, tStack);
-            GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("299", "Item Filter: ") + tStack.getDisplayName());
+            GTUtility.sendChatToPlayer(
+                aPlayer,
+                GTUtility.translate("gt.chat.interact.desc.item_filter") + tStack.getDisplayName());
         } else {
             filter.setStackInSlot(0, null);
-            GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("300", "Filter Cleared!"));
+            GTUtility.sendChatToPlayer(aPlayer, GTUtility.translate("gt.chat.interact.desc.filter_cleared"));
         }
         return true;
     }
@@ -158,7 +160,8 @@ public class CoverItemFilter extends Cover {
         mWhitelist = !mWhitelist;
         GTUtility.sendChatToPlayer(
             aPlayer,
-            mWhitelist ? GTUtility.trans("124.1", "Blacklist Mode") : GTUtility.trans("125.1", "Whitelist Mode"));
+            mWhitelist ? GTUtility.translate("gt.chat.interact.desc.blacklist_mode")
+                : GTUtility.translate("gt.chat.interact.desc.whitelist_mode"));
     }
 
     @Override

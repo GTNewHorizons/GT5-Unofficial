@@ -1,6 +1,5 @@
 package tectech.recipe;
 
-import static gregtech.api.util.GTUtility.trans;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.Collections;
@@ -56,7 +55,7 @@ public class ResearchStationFrontend extends RecipeMapFrontend {
                 "tt.nei.research.max_eu",
                 GTUtility.formatNumbers(
                     (1 + (computation - minComputationPerSec) / minComputationPerSec) * eut * ampere * 20)));
-        recipeInfo.drawText(trans("153", "Usage: ") + GTUtility.formatNumbers(eut * ampere) + " EU/t");
+        recipeInfo.drawText(GTUtility.translate("gt.recipe.usage", GTUtility.formatNumbers(eut * ampere)));
         recipeInfo
             .drawText(translateToLocalFormatted("tt.nei.research.computation", GTUtility.formatNumbers(computation)));
         recipeInfo.drawText(

@@ -356,14 +356,14 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
     @Override
     public String[] getInfoData() {
         String tRunning = mMaxProgresstime > 0
-            ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.turbine.running.true")
+            ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("gt.infodata.turbine.running.true")
                 + EnumChatFormatting.RESET
-            : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.turbine.running.false")
+            : EnumChatFormatting.RED + StatCollector.translateToLocal("gt.infodata.turbine.running.false")
                 + EnumChatFormatting.RESET;
         String tMaintainance = getIdealStatus() == getRepairStatus()
-            ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.turbine.maintenance.false")
+            ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("gt.infodata.turbine.maintenance.false")
                 + EnumChatFormatting.RESET
-            : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.turbine.maintenance.true")
+            : EnumChatFormatting.RED + StatCollector.translateToLocal("gt.infodata.turbine.maintenance.true")
                 + EnumChatFormatting.RESET;
         int tDura = 0;
 
@@ -389,12 +389,12 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
                 + EnumChatFormatting.RESET
                 + " EU/t", /* 1 */
             tMaintainance, /* 2 */
-            StatCollector.translateToLocal("GT5U.turbine.efficiency") + ": "
+            StatCollector.translateToLocal("gt.infodata.turbine.efficiency") + ": "
                 + EnumChatFormatting.YELLOW
                 + (mEfficiency / 100F)
                 + EnumChatFormatting.RESET
                 + "%", /* 2 */
-            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
+            StatCollector.translateToLocal("gt.infodata.multiblock.energy") + ": "
                 + EnumChatFormatting.GREEN
                 + GTUtility.formatNumbers(storedEnergy)
                 + EnumChatFormatting.RESET
@@ -403,7 +403,7 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
                 + GTUtility.formatNumbers(maxEnergy)
                 + EnumChatFormatting.RESET
                 + " EU",
-            StatCollector.translateToLocal("GT5U.turbine.flow") + ": "
+            StatCollector.translateToLocal("gt.infodata.turbine.flow") + ": "
                 + EnumChatFormatting.YELLOW
                 + GTUtility.formatNumbers(GTUtility.safeInt((long) realOptFlow))
                 + EnumChatFormatting.RESET
@@ -411,17 +411,20 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
                 + (this.mMaxProgresstime == 1 ? 't' : 's')
                 + /* 4 */ EnumChatFormatting.YELLOW
                 + " ("
-                + (looseFit ? StatCollector.translateToLocal("GT5U.turbine.loose")
-                    : StatCollector.translateToLocal("GT5U.turbine.tight"))
+                + (looseFit ? StatCollector.translateToLocal("gt.infodata.turbine.loose")
+                    : StatCollector.translateToLocal("gt.infodata.turbine.tight"))
                 + ")", /* 5 */
-            StatCollector.translateToLocal("GT5U.turbine.fuel") + ": "
+            StatCollector.translateToLocal("gt.infodata.turbine.fuel") + ": "
                 + EnumChatFormatting.GOLD
                 + GTUtility.formatNumbers(storedFluid)
                 + EnumChatFormatting.RESET
                 + "L", /* 6 */
-            StatCollector.translateToLocal(
-                "GT5U.turbine.dmg") + ": " + EnumChatFormatting.RED + tDura + EnumChatFormatting.RESET + "%", /* 7 */
-            StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
+            StatCollector.translateToLocal("gt.infodata.turbine.dmg") + ": "
+                + EnumChatFormatting.RED
+                + tDura
+                + EnumChatFormatting.RESET
+                + "%", /* 7 */
+            StatCollector.translateToLocal("gt.infodata.multiblock.pollution") + ": "
                 + EnumChatFormatting.GREEN
                 + getAveragePollutionPercentage()
                 + EnumChatFormatting.RESET
@@ -441,8 +444,8 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
             looseFit ^= true;
             GTUtility.sendChatToPlayer(
                 aPlayer,
-                looseFit ? GTUtility.trans("500", "Fitting: Loose - More Flow")
-                    : GTUtility.trans("501", "Fitting: Tight - More Efficiency"));
+                looseFit ? GTUtility.translate("gt.chat.interact.desc.fitting_more_flow")
+                    : GTUtility.translate("gt.chat.interact.desc.fitting_more_efficiency"));
         }
     }
 

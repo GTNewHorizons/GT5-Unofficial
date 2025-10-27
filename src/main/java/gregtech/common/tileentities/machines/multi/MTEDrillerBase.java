@@ -266,8 +266,8 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
             mChunkLoadingEnabled = !mChunkLoadingEnabled;
             GTUtility.sendChatToPlayer(
                 entityPlayer,
-                mChunkLoadingEnabled ? GTUtility.trans("502", "Mining chunk loading enabled")
-                    : GTUtility.trans("503", "Mining chunk loading disabled"));
+                mChunkLoadingEnabled ? GTUtility.translate("gt.chat.interact.desc.mining_chunk_enabled")
+                    : GTUtility.translate("gt.chat.interact.desc.mining_chunk_disabled"));
             return true;
         }
         return super.onSolderingToolRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ, aTool);
@@ -813,8 +813,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
                 .dynamicTooltip(
                     () -> ImmutableList.of(
                         StatCollector.translateToLocal(
-                            mChunkLoadingEnabled ? "GT5U.gui.button.chunk_loading_on"
-                                : "GT5U.gui.button.chunk_loading_off")))
+                            mChunkLoadingEnabled ? "gt.tooltip.chunk_loading_on" : "gt.tooltip.chunk_loading_off")))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setPos(new Pos2d(80, BUTTON_Y_LEVEL))
                 .setSize(16, 16))
@@ -836,8 +835,8 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
                     .dynamicTooltip(
                         () -> ImmutableList.of(
                             StatCollector.translateToLocalFormatted(
-                                workState == STATE_ABORT ? "GT5U.gui.button.drill_retract_pipes_active"
-                                    : "GT5U.gui.button.drill_retract_pipes")))
+                                workState == STATE_ABORT ? "gt.tooltip.drill_retract_pipes_active"
+                                    : "gt.tooltip.drill_retract_pipes")))
                     .setTooltipShowUpDelay(TOOLTIP_DELAY)
                     .setPos(new Pos2d(174, 112))
                     .setSize(16, 16));

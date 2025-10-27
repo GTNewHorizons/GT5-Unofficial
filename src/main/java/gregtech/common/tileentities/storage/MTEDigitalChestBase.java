@@ -219,8 +219,8 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         GTUtility.sendChatToPlayer(
             aPlayer,
             StatCollector.translateToLocal(
-                mVoidOverflow ? "GT5U.machines.digitalchest.voidoverflow.enabled"
-                    : "GT5U.machines.digitalchest.voidoverflow.disabled"));
+                mVoidOverflow ? "gt.chat.digitalchest.voidoverflow.enabled"
+                    : "gt.chat.digitalchest.voidoverflow.disabled"));
     }
 
     @Override
@@ -230,8 +230,8 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         GTUtility.sendChatToPlayer(
             aPlayer,
             StatCollector.translateToLocal(
-                mDisableFilter ? "GT5U.machines.digitalchest.inputfilter.disabled"
-                    : "GT5U.machines.digitalchest.inputfilter.enabled"));
+                mDisableFilter ? "gt.chat.digitalchest.inputfilter_disabled"
+                    : "gt.chat.digitalchest.inputfilter_enabled"));
         return true;
     }
 
