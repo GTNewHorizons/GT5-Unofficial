@@ -19,6 +19,7 @@ import static gregtech.api.util.GTStructureUtility.ofSolenoidCoil;
 import static net.minecraft.util.EnumChatFormatting.AQUA;
 import static net.minecraft.util.EnumChatFormatting.DARK_GRAY;
 import static net.minecraft.util.EnumChatFormatting.DARK_GREEN;
+import static net.minecraft.util.EnumChatFormatting.DARK_RED;
 import static net.minecraft.util.EnumChatFormatting.GOLD;
 import static net.minecraft.util.EnumChatFormatting.GREEN;
 import static net.minecraft.util.EnumChatFormatting.LIGHT_PURPLE;
@@ -391,14 +392,19 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
                     + " EU discount (multiplicative)")
             .addInfo(TooltipHelper.coloredText("Supports TecTech Multi-Amp and Laser Hatches!", GREEN))
             .addSeparator()
+            .addInfo("Superconductor Boosters are available for every tier of superconductor wire")
             .addInfo("Up to 3 unique boosters can be inserted into the Booster Housing")
             .addInfo(
-                "Boosted superconductors will receive" + TooltipHelper.parallelText(" 2x ")
+                "Each one will boost the output of its respective tier's superconductor, receiving"
+                    + TooltipHelper.parallelText(" 2x ")
                     + "parallels and"
                     + TooltipHelper.coloredText(" 15% ", DARK_GREEN)
                     + "additional output")
+            .addInfo("Each booster installed will incur a flat cost of coolants, regardless of machine status")
             .addInfo(
-                "Additionally, each booster inside of the Booster Hatch will passively incur a flat passive cost of coolants")
+                "Failure to supply the correct amount of fluids will result in the machine instantly"
+                    + TooltipHelper.coloredText(" shutting down & voiding ", DARK_RED)
+                    + "its current recipe")
             .addInfo("Higher tiers of boosters will require the coolants of all lower tiers")
             .addInfo(
                 TooltipHelper.coloredText("33,333 L/s", GREEN) + " : "
