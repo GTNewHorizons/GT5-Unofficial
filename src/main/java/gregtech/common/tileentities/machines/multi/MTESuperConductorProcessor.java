@@ -389,7 +389,7 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
             .addInfo(
                 "The parallel multiplier is" + TooltipHelper.italicText(" 0.95 * (1.32 ^ CoAL Casing Tier)"))
             .addInfo(
-                "Recipes are completed 64 at a time, but at 75% of the assembler's speed")
+                "Recipes are completed in batches of 64, at 75% of the original recipe's time")
             .addInfo(
                 "Every" + TooltipHelper.coloredText(" Superconducting Solenoid Coil ", WHITE) + "tier above the recipe gives a " + TooltipHelper.coloredText("10%", AQUA) + " EU discount (multiplicative)")
             .addInfo(TooltipHelper.coloredText("Supports TecTech Multi-Amp and Laser Hatches!", GREEN))
