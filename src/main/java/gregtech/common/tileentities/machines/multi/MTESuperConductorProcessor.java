@@ -87,7 +87,7 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
                 "                       ",
                 "          EEE          ",
                 "         EEEEE         ",
-                "    EE EEEEEEEEE EE    ",
+                "    EE EECCCCCEE EE    ",
                 "    F    EEEEE    F    ",
                 "    F     EEE     F    "
             },{
