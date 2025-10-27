@@ -960,7 +960,8 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         }
         GTRecipeBuilder recipeBuilder = GTValues.RA.stdBuilder();
         recipeBuilder
-            .itemInputs(GTUtility.copyAmount(9, getStackForType(comb)), GTUtility.getIntegratedCircuit(circuitNumber))
+            .itemInputs(GTUtility.copyAmount(9, getStackForType(comb)))
+            .iCircuit(circuitNumber)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 4))
             .fluidInputs(Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass() + volt.getUUAmplifier()) / 10))))
             .duration(((int) (aMaterial.getMass() * 128)) * TICKS)
