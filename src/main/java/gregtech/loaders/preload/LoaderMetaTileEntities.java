@@ -516,7 +516,11 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Exo-Foundry").getStackForm(1));
         addItemTooltip(
             ItemList.Machine_Multi_Modular_Solidifier.get(1),
-            chain(() -> "Author: ", GTValues.fancyAuthorChrom));
+            chain(
+                GTValues.AUTHORS_SUPPLIER,
+                GTValues.fancyAuthorChrom,
+                GTValues.AND_SUPPLIER,
+                GTValues.AuthorAuynonymous));
 
         ItemList.WormholeGenerator.set(
             new MTEWormholeGenerator(
@@ -572,11 +576,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Spinmatron-2737").getStackForm(1));
         addItemTooltip(
             ItemList.Machine_Multi_ChamberCentrifuge.get(1),
-            chain(
-                () -> "Authors: ",
-                GTValues.fancyAuthorChrom,
-                () -> EnumChatFormatting.GRAY + " & ",
-                GTValues.AuthorNoc));
+            chain(GTValues.AUTHORS_SUPPLIER, GTValues.fancyAuthorChrom, GTValues.AND_SUPPLIER, GTValues.AuthorNoc));
 
         ItemList.Machine_Multi_Autoclave.set(
             new MTEMultiAutoclave(MULTI_AUTOCLAVE_CONTROLLER.ID, "multimachine.autoclave", "Industrial Autoclave")
