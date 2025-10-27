@@ -17,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableList;
 
@@ -2410,7 +2411,6 @@ public class OrePrefixes {
     public ItemStack mContainerItem = null;
     public ICondition<ISubTagContainer> mCondition = null;
     public MaterialStack mSecondaryMaterial = null;
-    public OrePrefixes mPrefixInto = this;
     public float mHeatDamage = 0.0F; // Negative for Frost Damage
     private final ObjectSet<ItemStack> mContainsTestCache = new ObjectOpenCustomHashSet<>(
         512,
@@ -2464,14 +2464,16 @@ public class OrePrefixes {
         if (!this.mDisabledItems.contains(aMaterial)) this.mDisabledItems.add(aMaterial);
     }
 
-    public static OrePrefixes getOrePrefix(String aOre) {
-        for (OrePrefixes tPrefix : VALUES) if (aOre.startsWith(tPrefix.toString())) {
-            if (tPrefix == oreNether && aOre.equals("oreNetherQuartz")) return ore;
-            if (tPrefix == oreNether && aOre.equals("oreNetherStar")) return ore;
-            if (tPrefix == oreBasalt && aOre.equals("oreBasalticMineralSand")) return ore;
-            if (tPrefix == stickLong && aOre.equals("stickLongasssuperconductornameforuvwire")) return stick;
-            if (tPrefix == stickLong && aOre.equals("stickLongasssuperconductornameforuhvwire")) return stick;
-            return tPrefix;
+    public static @Nullable OrePrefixes getOrePrefix(String ore) {
+        for (OrePrefixes prefix : VALUES) {
+            if (ore.startsWith(prefix.toString())) {
+                if (prefix == oreNether && ore.equals("oreNetherQuartz")) return OrePrefixes.ore;
+                if (prefix == oreNether && ore.equals("oreNetherStar")) return OrePrefixes.ore;
+                if (prefix == oreBasalt && ore.equals("oreBasalticMineralSand")) return OrePrefixes.ore;
+                if (prefix == stickLong && ore.equals("stickLongasssuperconductornameforuvwire")) return stick;
+                if (prefix == stickLong && ore.equals("stickLongasssuperconductornameforuhvwire")) return stick;
+                return prefix;
+            }
         }
         return null;
     }
