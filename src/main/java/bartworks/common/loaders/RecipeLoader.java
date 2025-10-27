@@ -22,7 +22,6 @@ import bartworks.common.loaders.recipes.ChemicalReactor;
 import bartworks.common.loaders.recipes.CraftingRecipes;
 import bartworks.common.loaders.recipes.Electrolyzer;
 import bartworks.common.loaders.recipes.Extractor;
-import bartworks.common.loaders.recipes.FakeRecipes;
 import bartworks.common.loaders.recipes.FluidHeater;
 import bartworks.common.loaders.recipes.FluidSolidifier;
 import bartworks.common.loaders.recipes.FormingPress;
@@ -47,7 +46,6 @@ public class RecipeLoader {
         new CraftingRecipes().run();
         new Electrolyzer().run();
         new Extractor().run();
-        new FakeRecipes().run();
         new FluidHeater().run();
         new FluidSolidifier().run();
         new FormingPress().run();

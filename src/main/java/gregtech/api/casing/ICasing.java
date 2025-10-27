@@ -19,23 +19,21 @@ import gregtech.api.structure.IStructureInstance;
 public interface ICasing extends ImmutableBlockMeta {
 
     /**
-     * Gets the casing texture id. Used to update the background of hatches.
-     * If this casing does not have a texture id, this method must throw an {@link UnsupportedOperationException} or an
-     * equivalent exception.
+     * Gets the casing texture id. Used to update the background of hatches. If this casing does not have a texture id,
+     * this method must throw an {@link UnsupportedOperationException} or an equivalent exception.
      */
     int getTextureId();
 
     /**
-     * Gets a tiered casing background texture, if possible.
-     * Defaults to the standard untiered background.
+     * Gets a tiered casing background texture, if possible. Defaults to the standard untiered background.
      */
     default <T> int getTextureId(T t, CasingElementContext<T> context) {
         return getTextureId();
     }
 
     /**
-     * Gets an ITexture for this casing. May return a valid value when {@link #getTextureId()} does not since
-     * textures do not have to be registered in the GT texture index.
+     * Gets an ITexture for this casing. May return a valid value when {@link #getTextureId()} does not since textures
+     * do not have to be registered in the GT texture index.
      */
     default ITexture getCasingTexture() {
         return getCasingTextureForId(getTextureId());
@@ -49,8 +47,8 @@ public interface ICasing extends ImmutableBlockMeta {
     }
 
     /**
-     * Must return true when the casing can be represented by more than one block+meta.
-     * If this casing only represents a single block+meta, this must return false.
+     * Must return true when the casing can be represented by more than one block+meta. If this casing only represents a
+     * single block+meta, this must return false.
      */
     boolean isTiered();
 
@@ -70,8 +68,8 @@ public interface ICasing extends ImmutableBlockMeta {
     }
 
     /**
-     * The context for converting an ICasing to an IStructureElement.
-     * This exists primarily to make refactoring easier if we ever need to include another field here.
+     * The context for converting an ICasing to an IStructureElement. This exists primarily to make refactoring easier
+     * if we ever need to include another field here.
      */
     interface CasingElementContext<T> {
 

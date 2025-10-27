@@ -80,7 +80,8 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
             aTier,
             0,
             new String[] { "Special I/O port for AE2FC.", "Directly connected YOTTank with AE fluid storage system.",
-                "Use screwdriver to set storage priority", "Use soldering iron to set read/write mode" });
+                "Use screwdriver to set storage priority", "Use soldering iron to set read/write mode",
+                "Use wire cutter to enable/disable sticky mode" });
     }
 
     public MTEYOTTAHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -100,6 +101,7 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
         aNBT.setInteger("mAEPriority", this.priority);
         aNBT.setInteger("mAEMode", this.readMode.ordinal());
         aNBT.setBoolean("mAESticky", this.isSticky);
+        getProxy().writeToNBT(aNBT);
     }
 
     @Override
@@ -108,6 +110,7 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
         this.priority = aNBT.getInteger("mAEPriority");
         this.readMode = AEModes[aNBT.getInteger("mAEMode")];
         this.isSticky = aNBT.getBoolean("mAESticky");
+        getProxy().readFromNBT(aNBT);
     }
 
     @Override
@@ -166,8 +169,11 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
     public AENetworkProxy getProxy() {
         if (gridProxy == null) {
             gridProxy = new AENetworkProxy(this, "proxy", Loaders.YFH, true);
-            gridProxy.onReady();
+
             gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
+            if (getBaseMetaTileEntity().getWorld() != null) gridProxy.setOwner(
+                getBaseMetaTileEntity().getWorld()
+                    .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
         }
         return this.gridProxy;
     }
@@ -267,7 +273,7 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick(aBaseMetaTileEntity);
-        getProxy();
+        getProxy().onReady();
     }
 
     private void postUpdate(AENetworkProxy proxy, FluidStack fluid, BigInteger amt) {

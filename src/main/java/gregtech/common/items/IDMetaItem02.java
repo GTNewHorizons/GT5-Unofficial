@@ -200,6 +200,7 @@ public enum IDMetaItem02 {
     Cover_WirelessActivityDetector(584),
     Vajra_Core(585),
     Magnetron(586),
+    Plank_Cherry_EFR(587),
     Display_ITS_FREE(765);
 
     public final int ID;

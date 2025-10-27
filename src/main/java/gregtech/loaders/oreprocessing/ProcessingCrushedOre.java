@@ -30,8 +30,8 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
             return;
         }
 
-        switch (aPrefix) {
-            case crushedCentrifuged -> {
+        switch (aPrefix.getName()) {
+            case "crushedCentrifuged" -> {
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack))
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L))
@@ -52,7 +52,7 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
                     .eut(2)
                     .addTo(maceratorRecipes);
             }
-            case crushedPurified -> {
+            case "crushedPurified" -> {
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack))
                     .itemOutputs(

@@ -14,8 +14,8 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
 
 /**
- * Nicely display NEI with many items and fluids. Remember to call
- * If row count >= 6, it doesn't fit in 2 recipes per page, so change it via IMC.
+ * Nicely display NEI with many items and fluids. Remember to call If row count >= 6, it doesn't fit in 2 recipes per
+ * page, so change it via IMC.
  */
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault

@@ -20,6 +20,7 @@ import gregtech.loaders.oreprocessing.ProcessingFoil;
 import gregtech.loaders.oreprocessing.ProcessingFood;
 import gregtech.loaders.oreprocessing.ProcessingGear;
 import gregtech.loaders.oreprocessing.ProcessingGem;
+import gregtech.loaders.oreprocessing.ProcessingIceOre;
 import gregtech.loaders.oreprocessing.ProcessingIngot;
 import gregtech.loaders.oreprocessing.ProcessingItem;
 import gregtech.loaders.oreprocessing.ProcessingLens;
@@ -87,6 +88,7 @@ public class LoaderOreProcessing implements Runnable {
         new ProcessingOrePoor();
         new ProcessingOreSmelting();
         new ProcessingRawOre();
+        new ProcessingIceOre();
         new ProcessingPipe();
         new ProcessingPlank();
         new ProcessingPlate();

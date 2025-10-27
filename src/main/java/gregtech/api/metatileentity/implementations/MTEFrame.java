@@ -5,6 +5,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITemporaryTE;
@@ -36,7 +37,17 @@ public class MTEFrame extends MetaPipeEntity implements ITemporaryTE {
 
     @Override
     public byte getTileEntityBaseType() {
-        return (byte) (4 + (mMaterial == null ? 0 : GTUtility.clamp(mMaterial.mToolQuality, 0, 3)));
+        final int level = (mMaterial == null) ? 0 : GTUtility.clamp(mMaterial.mToolQuality, 0, 3);
+
+        HarvestTool tool = switch (level) {
+            case 0 -> HarvestTool.WrenchPipeLevel0;
+            case 1 -> HarvestTool.WrenchPipeLevel1;
+            case 2 -> HarvestTool.WrenchPipeLevel2;
+            case 3 -> HarvestTool.WrenchPipeLevel3;
+            default -> throw new IllegalStateException("Unexpected tool quality level: " + level);
+        };
+
+        return tool.toTileEntityBaseType();
     }
 
     @Override
@@ -48,7 +59,7 @@ public class MTEFrame extends MetaPipeEntity implements ITemporaryTE {
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection, int connections,
         int colorIndex, boolean active, boolean redstoneLevel) {
         return new ITexture[] { TextureFactory.of(
-            mMaterial.mIconSet.mTextures[OrePrefixes.frameGt.mTextureIndex],
+            mMaterial.mIconSet.mTextures[OrePrefixes.frameGt.getTextureIndex()],
             Dyes.getModulation(colorIndex, mMaterial.mRGBa)) };
     }
 

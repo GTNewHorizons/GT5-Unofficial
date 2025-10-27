@@ -429,7 +429,7 @@ public class CropLoader implements Runnable {
                 new String[] { "Toxic", "Mushroom", "Ingredient" },
                 new ItemStack(Blocks.red_mushroom, 1),
                 null,
-                "gt.crop.mr._kenny.name");
+                "gt.crop.red_mushrooms.name");
             new GTBaseCrop(
                 145,
                 "Argentia",

@@ -63,7 +63,7 @@ public class PosteaTransformers implements Runnable {
             }
             // Not a frame box if the material for this id does not have a frame box associated with it.
             // Apparently the DEFC ID overlaps with the material ID for a Bastnasite frame box for example
-            if ((GregTechAPI.sGeneratedMaterials[indexInMaterialList].mTypes & 0x2) == 0) {
+            if (!GregTechAPI.sGeneratedMaterials[indexInMaterialList].hasMetalItems()) {
                 return tag;
             }
             Item frameItem = GameRegistry.findItem(Mods.GregTech, "gt.blockframes");

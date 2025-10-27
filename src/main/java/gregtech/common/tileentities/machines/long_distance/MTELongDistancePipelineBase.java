@@ -285,7 +285,7 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
 
     protected int getDistanceToSelf(ChunkCoordinates aCoords) {
         return Math.abs(getBaseMetaTileEntity().getXCoord() - aCoords.posX)
-            + Math.abs(getBaseMetaTileEntity().getYCoord() - aCoords.posY) / 2
+            + Math.abs(getBaseMetaTileEntity().getYCoord() - aCoords.posY)
             + Math.abs(getBaseMetaTileEntity().getZCoord() - aCoords.posZ);
     }
 

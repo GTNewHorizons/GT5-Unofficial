@@ -26,8 +26,7 @@ public interface IDualInputHatch {
     boolean supportsFluids();
 
     /**
-     * Get the shared items in the inventory.
-     * Commonly, in the extra or manual slots, providing like Molds.
+     * Get the shared items in the inventory. Commonly, in the extra or manual slots, providing like Molds.
      *
      * @return the shared items in the inventory
      */

@@ -12,7 +12,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import codechicken.lib.math.MathHelper;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.util.GTLanguageManager;
@@ -53,9 +52,9 @@ public class BehaviourLighter extends BehaviourNone {
                     SoundResource.FIRE_IGNITE,
                     1.0F,
                     1.0F,
-                    MathHelper.floor_double(aEntity.posX),
-                    MathHelper.floor_double(aEntity.posY),
-                    MathHelper.floor_double(aEntity.posZ));
+                    aEntity.posX,
+                    aEntity.posY,
+                    aEntity.posZ);
                 ((EntityCreeper) aEntity).func_146079_cb();
                 if (!aPlayer.capabilities.isCreativeMode) {
                     tFuelAmount -= 1L;
@@ -88,7 +87,7 @@ public class BehaviourLighter extends BehaviourNone {
         prepare(aStack);
         long tFuelAmount = GTUtility.ItemNBT.getLighterFuel(aStack);
         if (GTUtility.areStacksEqual(aStack, this.mUsedLighter, true)) {
-            GTUtility.sendSoundToPlayers(aWorld, SoundResource.FIRE_IGNITE, 1.0F, 1.0F, aX, aY, aZ);
+            GTUtility.sendSoundToPlayers(aWorld, SoundResource.FIRE_IGNITE, 1.0F, 1.0F, hitX, hitY, hitZ);
             aWorld.setBlock(aX, aY, aZ, Blocks.fire);
             if (!aPlayer.capabilities.isCreativeMode) {
                 tFuelAmount -= 1L;

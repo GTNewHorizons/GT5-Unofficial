@@ -137,7 +137,7 @@ public class MTENetworkSwitch extends TTMultiblockBase
     public MultiblockTooltipBuilder createTooltip() {
         StructureWrapperTooltipBuilder<MTENetworkSwitch> tt = new StructureWrapperTooltipBuilder<>(structure);
 
-        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.switch.name"));
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.switch.type"));
 
         tt.addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.0"));
         tt.addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.1"));

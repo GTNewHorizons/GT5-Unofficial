@@ -5,7 +5,6 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import net.minecraft.item.ItemStack;
 
-import bartworks.common.tileentities.multis.MTEHighTempGasCooledReactor;
 import bartworks.common.tileentities.multis.MTEThoriumHighTempReactor;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
@@ -41,36 +40,5 @@ public class FormingPress implements Runnable {
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(formingPressRecipes);
-
-        int i = 0;
-        for (MTEHighTempGasCooledReactor.HTGRMaterials.Fuel_ fuel : MTEHighTempGasCooledReactor.HTGRMaterials.sHTGR_Fuel) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 1, i),
-                    Materials.Carbon.getDust(64))
-                .itemOutputs(new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 1, i + 1))
-                .duration(2 * SECONDS)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(formingPressRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 1, i + 1),
-                    Materials.Silicon.getDust(64))
-                .itemOutputs(new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 1, i + 2))
-                .duration(2 * SECONDS)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(formingPressRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 1, i + 2),
-                    Materials.Graphite.getDust(64))
-                .itemOutputs(new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 1, i + 3))
-                .duration(2 * SECONDS)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(formingPressRecipes);
-            i += MTEHighTempGasCooledReactor.HTGRMaterials.MATERIALS_PER_FUEL;
-        }
     }
 }

@@ -33,7 +33,6 @@ import gtPlusPlus.api.objects.minecraft.BTF_FluidTank;
 import gtPlusPlus.core.inventories.InventoryPestKiller;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 
 public class TileEntityPestKiller extends TileEntity implements ISidedInventory, IFluidHandler {
@@ -158,7 +157,7 @@ public class TileEntityPestKiller extends TileEntity implements ISidedInventory,
                                     this.mTank.drain(1, true);
                                 }
                             }
-                            EntityUtils.doDamage(e, DamageSource.generic, Short.MAX_VALUE);
+                            e.attackEntityFrom(DamageSource.generic, Short.MAX_VALUE);
                             e.setDead();
                             killed = true;
                         }

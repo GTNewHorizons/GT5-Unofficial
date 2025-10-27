@@ -70,7 +70,8 @@ public class MTEMonsterRepellent extends MTETieredMachineBlock {
 
     @Override
     public void onPostTick(IGregTechTileEntity mte, long aTimer) {
-        if (mte.isAllowedToWork() && mte.isServerSide()) {
+        if (!mte.isServerSide()) return;
+        if (mte.isAllowedToWork()) {
             final int prevRange = mRange;
             if (mte.isUniversalEnergyStored(getMinimumStoredEU())
                 && mte.decreaseStoredEnergyUnits(1L << (this.mTier * 2), false)) {
@@ -79,12 +80,12 @@ public class MTEMonsterRepellent extends MTETieredMachineBlock {
                 mRange = getRepellentRange(mTier, false);
             }
             if (prevRange != mRange) {
-                GTMod.gregtechproxy.spawnEventHandler.putRepellent(
-                    mte.getWorld().provider.dimensionId,
-                    mte.getXCoord(),
-                    mte.getYCoord(),
-                    mte.getZCoord(),
-                    mRange);
+                GTMod.proxy.spawnEventHandler.putRepellent(mte, mRange);
+            }
+        } else {
+            if (mRange != -1) {
+                GTMod.proxy.spawnEventHandler.removeRepellent(mte);
+                mRange = -1;
             }
         }
     }
@@ -93,11 +94,7 @@ public class MTEMonsterRepellent extends MTETieredMachineBlock {
     public void onRemoval() {
         final IGregTechTileEntity mte = this.getBaseMetaTileEntity();
         if (mte.isServerSide()) {
-            GTMod.gregtechproxy.spawnEventHandler.removeRepellent(
-                mte.getWorld().provider.dimensionId,
-                mte.getXCoord(),
-                mte.getYCoord(),
-                mte.getZCoord());
+            GTMod.proxy.spawnEventHandler.removeRepellent(mte);
         }
     }
 
@@ -105,11 +102,7 @@ public class MTEMonsterRepellent extends MTETieredMachineBlock {
     public void onUnload() {
         final IGregTechTileEntity mte = this.getBaseMetaTileEntity();
         if (mte.isServerSide()) {
-            GTMod.gregtechproxy.spawnEventHandler.removeRepellent(
-                mte.getWorld().provider.dimensionId,
-                mte.getXCoord(),
-                mte.getYCoord(),
-                mte.getZCoord());
+            GTMod.proxy.spawnEventHandler.removeRepellent(mte);
         }
     }
 

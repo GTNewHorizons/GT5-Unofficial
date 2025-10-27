@@ -1,6 +1,8 @@
 package gregtech.loaders.postload.recipes;
 
+import static gregtech.api.enums.Mods.BiomesOPlenty;
 import static gregtech.api.enums.Mods.HardcoreEnderExpansion;
+import static gregtech.api.enums.Mods.ProjectRedExploration;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
@@ -14,7 +16,6 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
@@ -139,8 +140,8 @@ public class ForgeHammerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Tesseract.get(1L), GregtechItemList.Laser_Lens_Special.get(1))
-            .fluidInputs(MaterialsUEVplus.SpaceTime.getMolten(20 * INGOTS))
-            .fluidOutputs(MaterialsUEVplus.Space.getMolten(10 * INGOTS), MaterialsUEVplus.Time.getMolten(10 * INGOTS))
+            .fluidInputs(Materials.SpaceTime.getMolten(20 * INGOTS))
+            .fluidOutputs(Materials.Space.getMolten(10 * INGOTS), Materials.Time.getMolten(10 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UXV)
             .addTo(hammerRecipes);
@@ -151,6 +152,24 @@ public class ForgeHammerRecipes implements Runnable {
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushed, Materials.HeeEndium, 1))
                 .duration(16)
                 .eut(10)
+                .addTo(hammerRecipes);
+        }
+
+        if (BiomesOPlenty.isModLoaded()) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(getModItem(BiomesOPlenty.ID, "gemOre", 1, 5))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Olivine, 9))
+                .duration(5 * SECONDS)
+                .eut(24)
+                .addTo(hammerRecipes);
+        }
+
+        if (ProjectRedExploration.isModLoaded()) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(getModItem(ProjectRedExploration.ID, "projectred.exploration.stone", 1, 7))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Olivine, 9))
+                .duration(5 * SECONDS)
+                .eut(24)
                 .addTo(hammerRecipes);
         }
     }

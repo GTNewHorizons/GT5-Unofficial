@@ -1,7 +1,5 @@
 package gtnhlanth.common.tileentity.recipe.beamline;
 
-import static gregtech.api.util.GTUtility.trans;
-
 import java.util.List;
 
 import net.minecraft.util.EnumChatFormatting;
@@ -61,9 +59,9 @@ public class TargetChamberFrontend extends RecipeMapFrontend {
 
         // recipeInfo.drawText(trans("152", "Total: ") + getTotalPowerString(recipeInfo.calculator));
 
-        recipeInfo.drawText(trans("153", "Usage: ") + getEUtDisplay(recipeInfo.calculator));
-        recipeInfo.drawText(trans("154", "Voltage: ") + getVoltageString(recipeInfo.calculator));
-        recipeInfo.drawText(trans("155", "Amperage: ") + getAmperageString(recipeInfo.calculator));
+        recipeInfo.drawText(getEUtDisplay(recipeInfo.calculator));
+        recipeInfo.drawText(getVoltageString(recipeInfo.calculator));
+        recipeInfo.drawText(getAmperageString(recipeInfo.calculator));
 
     }
 
@@ -84,17 +82,20 @@ public class TargetChamberFrontend extends RecipeMapFrontend {
         return Util.getGridPositions(itemInputCount, 8, 20, 3, 1, 20);
     }
 
+    // todo: use an OverclockDescriber here
     private String getEUtDisplay(OverclockCalculator calculator) {
-        return getEUtWithoutTier(calculator);
-    }
-
-    private String getEUtWithoutTier(OverclockCalculator calculator) {
-        return GTUtility.formatNumbers(calculator.getConsumption()) + " EU/t";
+        return StatCollector.translateToLocalFormatted(
+            "GT5U.nei.display.usage",
+            GTUtility.formatNumbers(calculator.getConsumption()),
+            "");
     }
 
     private String getVoltageString(OverclockCalculator calculator) {
         long voltage = computeVoltageForEURate(calculator.getConsumption());
-        return GTUtility.formatNumbers(voltage) + " EU/t" + GTUtility.getTierNameWithParentheses(voltage);
+        return StatCollector.translateToLocalFormatted(
+            "GT5U.nei.display.voltage",
+            GTUtility.formatNumbers(voltage),
+            GTUtility.getTierNameWithParentheses(voltage));
     }
 
     private long computeVoltageForEURate(long euPerTick) {
@@ -102,7 +103,7 @@ public class TargetChamberFrontend extends RecipeMapFrontend {
     }
 
     private String getAmperageString(OverclockCalculator calculator) {
-        return GTUtility.formatNumbers(1);
+        return StatCollector.translateToLocalFormatted("GT5U.nei.display.amperage", GTUtility.formatNumbers(1));
     }
 
 }

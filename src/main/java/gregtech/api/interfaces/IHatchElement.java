@@ -116,6 +116,15 @@ public interface IHatchElement<T> {
     default <T2 extends T> IHatchElement<T2> or(IHatchElement<? super T2> fallback) {
         return new HatchElementEither<>(this, fallback);
     }
+
+    /**
+     * Allows Specific exclusion of this HatchElement's subclasses in the NEI projection
+     * Override with the '.class' call of the subclasses to omit for that HatchElement
+     * Works with the general use {@link gregtech.api.util.HatchElementBuilder#atLeast(java.util.Map)} method
+     */
+    default List<Class<? extends IMetaTileEntity>> mteBlacklist() {
+        return ImmutableList.of();
+    }
 }
 
 class HatchElementEither<T> implements IHatchElement<T> {

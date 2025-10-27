@@ -1,13 +1,14 @@
 package gregtech.api.metatileentity.implementations;
 
-import static gregtech.api.enums.GTValues.GT;
 import static gregtech.api.metatileentity.BaseTileEntity.BATTERY_SLOT_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.BATTERY_SLOT_TOOLTIP_ALT;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
+import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.HarvestTool;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -34,9 +35,9 @@ public abstract class MTETieredMachineBlock extends MetaTileEntity {
         String aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aInvSlotCount);
         mTier = (byte) Math.max(0, Math.min(aTier, 14));
-        mDescriptionArray = aDescription == null ? new String[0] : new String[] { aDescription };
+        mDescriptionArray = aDescription == null ? GTValues.emptyStringArray : new String[] { aDescription };
         // must always be the last call!
-        if (GT.isClientSide()) mTextures = getTextureSet(aTextures);
+        if (GTMod.GT.isClientSide()) mTextures = getTextureSet(aTextures);
         else mTextures = null;
     }
 
@@ -44,10 +45,10 @@ public abstract class MTETieredMachineBlock extends MetaTileEntity {
         String[] aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aInvSlotCount);
         mTier = (byte) Math.max(0, Math.min(aTier, 15));
-        mDescriptionArray = aDescription == null ? new String[0] : aDescription;
+        mDescriptionArray = aDescription == null ? GTValues.emptyStringArray : aDescription;
 
         // must always be the last call!
-        if (GT.isClientSide()) mTextures = getTextureSet(aTextures);
+        if (GTMod.GT.isClientSide()) mTextures = getTextureSet(aTextures);
         else mTextures = null;
     }
 
@@ -55,13 +56,20 @@ public abstract class MTETieredMachineBlock extends MetaTileEntity {
         ITexture[][][] aTextures) {
         super(aName, aInvSlotCount);
         mTier = (byte) aTier;
-        mDescriptionArray = aDescription == null ? new String[0] : aDescription;
+        mDescriptionArray = aDescription == null ? GTValues.emptyStringArray : aDescription;
         mTextures = aTextures;
     }
 
     @Override
     public byte getTileEntityBaseType() {
-        return (byte) (Math.min(3, mTier <= 0 ? 0 : 1 + ((mTier - 1) / 4)));
+        if (mTier <= 0) return HarvestTool.WrenchLevel0.toTileEntityBaseType();
+
+        // Require better wrench every 4 tiers.
+        return switch (1 + (mTier - 1) / 4) {
+            case 1 -> HarvestTool.WrenchLevel1.toTileEntityBaseType();
+            case 2 -> HarvestTool.WrenchLevel2.toTileEntityBaseType();
+            default -> HarvestTool.WrenchLevel3.toTileEntityBaseType();
+        };
     }
 
     @Override

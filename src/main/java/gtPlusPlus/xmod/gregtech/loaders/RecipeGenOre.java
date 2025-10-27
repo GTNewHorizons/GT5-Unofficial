@@ -328,6 +328,15 @@ public class RecipeGenOre extends RecipeGenBase {
         Logger.MATERIALS("[ForgeHammer] Added Recipe: 'Crushed Centrifuged to Pure Dust'");
 
         GTValues.RA.stdBuilder()
+            .itemInputs(material.getCrushed(1))
+            .itemOutputs(material.getDustImpure(1))
+            .duration(10 * TICKS)
+            .eut(tVoltageMultiplier / 4)
+            .addTo(hammerRecipes);
+
+        Logger.MATERIALS("[ForgeHammer] Added Recipe: 'Crushed to Impure Dust'");
+
+        GTValues.RA.stdBuilder()
             .itemInputs(material.getCrushedPurified(1))
             .itemOutputs(material.getDustPurified(1))
             .duration(10 * TICKS)

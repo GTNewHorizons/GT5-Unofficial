@@ -10,8 +10,7 @@ import gregtech.api.factory.IFactoryGrid;
 import gregtech.api.factory.IFactoryNetwork;
 
 /**
- * A pretty basic factory network.
- * This doesn't do much beyond tracking elements and components.
+ * A pretty basic factory network. This doesn't do much beyond tracking elements and components.
  */
 public class StandardFactoryNetwork<TSelf extends IFactoryNetwork<TSelf, TElement, TGrid>, TElement extends IFactoryElement<TElement, TSelf, TGrid>, TGrid extends IFactoryGrid<TGrid, TElement, TSelf>>
     implements IFactoryNetwork<TSelf, TElement, TGrid> {

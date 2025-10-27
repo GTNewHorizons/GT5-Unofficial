@@ -47,16 +47,8 @@ public class ProcessingDye implements IOreRecipeRegistrator {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, stack), GTUtility.getIntegratedCircuit(1))
-            .fluidInputs(Materials.Water.getFluid(216L))
-            .fluidOutputs(FluidRegistry.getFluidStack(fluidName, 192))
-            .duration(16 * TICKS)
-            .eut(4)
-            .addTo(mixerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(1, stack), GTUtility.getIntegratedCircuit(1))
             .fluidInputs(GTModHandler.getDistilledWater(2 * INGOTS))
-            .fluidOutputs(FluidRegistry.getFluidStack(fluidName, 216))
+            .fluidOutputs(FluidRegistry.getFluidStack(fluidName, 288))
             .duration(16 * TICKS)
             .eut(4)
             .addTo(mixerRecipes);

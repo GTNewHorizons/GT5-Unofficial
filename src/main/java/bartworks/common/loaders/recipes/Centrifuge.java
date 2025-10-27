@@ -12,7 +12,6 @@ import net.minecraftforge.fluids.FluidStack;
 import bartworks.common.loaders.BioCultureLoader;
 import bartworks.common.loaders.BioItemList;
 import bartworks.common.loaders.FluidLoader;
-import bartworks.common.tileentities.multis.MTEHighTempGasCooledReactor;
 import bartworks.common.tileentities.multis.MTEThoriumHighTempReactor;
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
@@ -21,7 +20,9 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
+import kubatech.tileentity.gregtech.multiblock.MTEHighTempGasCooledReactor;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class Centrifuge implements Runnable {
 
     @Override
@@ -70,28 +71,6 @@ public class Centrifuge implements Runnable {
 
         int i = 0;
         for (MTEHighTempGasCooledReactor.HTGRMaterials.Fuel_ fuel : MTEHighTempGasCooledReactor.HTGRMaterials.sHTGR_Fuel) {
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 1, i + 3),
-                    GTUtility.getIntegratedCircuit(17))
-                .itemOutputs(
-                    new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 64, i + 4),
-                    new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 64, i + 4),
-                    new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 64, i + 4),
-                    new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 64, i + 4))
-                .duration(10 * MINUTES)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(centrifugeRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 1, i + 5),
-                    GTUtility.getIntegratedCircuit(17))
-                .itemOutputs(new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 64, i + 6))
-                .duration(2 * MINUTES + 30 * SECONDS)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(centrifugeRecipes);
 
             GTRecipeBuilder recipeBuilder = GTValues.RA.stdBuilder()
                 .itemInputs(new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 1, i + 6))

@@ -1,6 +1,6 @@
 package kubatech.tileentity.gregtech.multiblock.eigmodes;
 
-import static kubatech.api.utils.StringUtils.voltageTooltipFormatted;
+import static gregtech.api.util.StringUtils.voltageTooltipFormatted;
 
 import net.minecraft.util.EnumChatFormatting;
 

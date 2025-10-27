@@ -86,6 +86,12 @@ public class ShutDownReasonRegistry {
     public static final ShutDownReason CRITICAL_NONE = SimpleShutDownReason.ofCritical("none");
 
     /**
+     * Shut down due to insufficient dynamo size
+     */
+    @Nonnull
+    public static final ShutDownReason INSUFFICIENT_DYNAMO = SimpleShutDownReason.ofCritical("insufficient_dyamo");
+
+    /**
      * Fluid that needs to be constantly supplied are out. E.g. PCB coolant with cooling upgrades enabled.
      */
     @Nonnull

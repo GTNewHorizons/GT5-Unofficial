@@ -29,15 +29,15 @@ import it.unimi.dsi.fastutil.objects.Reference2ReferenceMap;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 
 /**
- * This class tracks all active heating coils. Each instance is responsible for one world.
- * The main reason this exists is so that wallshare coils deactivate properly. Without the ref counter, wallshared coils
- * would deactivate incorrect when one multi deactivates but not the other.
+ * This class tracks all active heating coils. Each instance is responsible for one world. The main reason this exists
+ * is so that wallshare coils deactivate properly. Without the ref counter, wallshared coils would deactivate incorrect
+ * when one multi deactivates but not the other.
  * <p />
  * Additionally, it gives us more control over the activation syncing. Since coil activation meta is only stored on the
- * client, there needs to be a way to sync it from the server.
- * Coil meta is only stored on the client to prevent weird interactions with e.g. the structure checker and so that we
- * have more control over the process. We don't want to check structures every time the coils activate, for instance.
- * The reduction in network bandwidth and CPU usage (since we aren't sending chunk updates) is a nice side effect.
+ * client, there needs to be a way to sync it from the server. Coil meta is only stored on the client to prevent weird
+ * interactions with e.g. the structure checker and so that we have more control over the process. We don't want to
+ * check structures every time the coils activate, for instance. The reduction in network bandwidth and CPU usage (since
+ * we aren't sending chunk updates) is a nice side effect.
  * <p />
  * Since the coil list is produced by structure checks, and structure checks only run on the server, syncing that info
  * is the easiest way to tell the client which coils are active.
@@ -53,32 +53,29 @@ public class GTCoilTracker {
     private final WeakReference<GTCoilTracker> self;
 
     /**
-     * Ref counter to make sure there aren't any race conditions/conflicts when deactivating coils.
-     * {packed x,y,z: ref count}
+     * Ref counter to make sure there aren't any race conditions/conflicts when deactivating coils. {packed x,y,z: ref
+     * count}
      */
     private final Long2IntOpenHashMap activeBlocks = new Long2IntOpenHashMap();
 
     /**
-     * Used to send active coils when the player views a new chunk.
-     * {packed chunk x,0,chunk z: set of packed x,y,z active coils}
+     * Used to send active coils when the player views a new chunk. {packed chunk x,0,chunk z: set of packed x,y,z
+     * active coils}
      */
     private final Long2ReferenceOpenHashMap<LongSet> activeBlocksByChunk = new Long2ReferenceOpenHashMap<>();
 
     /**
-     * Used to sync activations to clients in one packet.
-     * [packed x,y,z]
+     * Used to sync activations to clients in one packet. [packed x,y,z]
      */
     private LongSet pendingActivations = new LongOpenHashSet();
 
     /**
-     * Used to sync deactivations to clients in one packet.
-     * [packed x,y,z]
+     * Used to sync deactivations to clients in one packet. [packed x,y,z]
      */
     private LongSet pendingDeactivations = new LongOpenHashSet();
 
     /**
-     * Used to prevent duplicate lease registrations by the same multi.
-     * {multi reference: lease reference}
+     * Used to prevent duplicate lease registrations by the same multi. {multi reference: lease reference}
      */
     private final Reference2ReferenceMap<MTEMultiBlockBase, MultiCoilLease> leasesByMulti = new Reference2ReferenceOpenHashMap<>();
 

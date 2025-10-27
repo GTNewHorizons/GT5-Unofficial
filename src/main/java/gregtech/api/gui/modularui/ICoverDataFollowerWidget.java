@@ -11,11 +11,10 @@ import gregtech.common.covers.Cover;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 
 /**
- * Widget whose state is controlled by specific data. Data can be anything, e.g. {@link Cover} or machine
- * recipe mode. <br>
+ * Widget whose state is controlled by specific data. Data can be anything, e.g. {@link Cover} or machine recipe mode.
+ * <br>
  * No widgets implementing this interface should not sync; Instead, {@link CoverDataControllerWidget} will sync data,
- * either
- * when this widget triggers update on client or data update is detected on server.
+ * either when this widget triggers update on client or data update is detected on server.
  *
  * @param <T> Data type stored in the parent widget
  * @param <U> State type stored in this widget

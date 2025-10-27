@@ -1,5 +1,7 @@
 package gregtech.api.objects.overclockdescriber;
 
+import static gregtech.api.util.GTRecipeConstants.FUSION_THRESHOLD;
+
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.util.EnumChatFormatting;
@@ -25,7 +27,7 @@ public class FusionOverclockDescriber extends EUOverclockDescriber {
     @Override
     public OverclockCalculator createCalculator(OverclockCalculator template, GTRecipe recipe) {
         return super.createCalculator(template, recipe)
-            .setMaxOverclocks(maxOverclocks(recipe.mSpecialValue, recipe.mEUt))
+            .setMaxOverclocks(maxOverclocks(recipe.getMetadataOrDefault(FUSION_THRESHOLD, 0L), recipe.mEUt))
             .setEUtIncreasePerOC(getEUtIncreasePerOC())
             .setDurationDecreasePerOC(getDurationDecreasePerOC());
     }
@@ -49,7 +51,7 @@ public class FusionOverclockDescriber extends EUOverclockDescriber {
         if (this.tier < tier) {
             return false;
         }
-        return this.capableStartup >= recipe.mSpecialValue;
+        return this.capableStartup >= recipe.getMetadataOrDefault(FUSION_THRESHOLD, 0L);
     }
 
     protected int maxOverclocks(long startEnergy, long voltage) {

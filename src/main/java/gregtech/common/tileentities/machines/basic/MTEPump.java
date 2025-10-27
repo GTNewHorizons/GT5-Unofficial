@@ -22,7 +22,10 @@ import net.minecraftforge.fluids.IFluidBlock;
 
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -47,11 +50,11 @@ public class MTEPump extends MTEBasicMachine {
         .getBlockFromStack(GTModHandler.getIC2Item("miningPipeTip", 0));
 
     public static int getMaxDistanceForTier(int aTier) {
-        return (10 * ((int) Math.pow(1.6D, aTier)));
+        return (10 * ((int) GTUtility.powInt(1.6D, aTier)));
     }
 
     public static long getEuUsagePerTier(int aTier) {
-        return (16 * ((long) Math.pow(4, aTier)));
+        return (16 * ((long) GTUtility.powInt(4, aTier)));
     }
 
     public ArrayDeque<ChunkPosition> mPumpList = new ArrayDeque<>();
@@ -75,7 +78,7 @@ public class MTEPump extends MTEBasicMachine {
             1,
             new String[] { "The best way to empty Oceans!",
                 getEuUsagePerTier(aTier) + " EU/operation, "
-                    + GTUtility.safeInt(160 / 20 / (long) Math.pow(2, aTier))
+                    + GTUtility.safeInt(160 / 20 / (long) GTUtility.powInt(2, aTier))
                     + " sec per bucket, no stuttering",
                 "Maximum pumping area: " + (getMaxDistanceForTier(aTier) * 2 + 1)
                     + "x"
@@ -423,7 +426,7 @@ public class MTEPump extends MTEBasicMachine {
                                         break;
                                     }
                                 }
-                                this.mPumpTimer = GTUtility.safeInt(160 / (long) Math.pow(2, this.mTier));
+                                this.mPumpTimer = GTUtility.safeInt(160 / (long) GTUtility.powInt(2, this.mTier));
                                 this.mPumpTimer = mPumpTimer == 0 ? 1 : mPumpTimer;
 
                                 mMaxProgresstime = mPumpTimer;
@@ -844,4 +847,11 @@ public class MTEPump extends MTEBasicMachine {
                 + " "
                 + StatCollector.translateToLocal("GT5U.machines.blocks") };
     }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GTCEU_LOOP_PUMP;
+    }
+
 }

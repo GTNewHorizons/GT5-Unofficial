@@ -25,18 +25,15 @@ import tectech.thing.CustomItemList;
 
 public class TTRecipeAdder extends RecipeAdder {
 
-    public static final ItemStack[] nullItem = new ItemStack[0];
-    public static final FluidStack[] nullFluid = new FluidStack[0];
-
     @Deprecated
     public static boolean addResearchableAssemblylineRecipe(ItemStack aResearchItem, int totalComputationRequired,
         int computationRequiredPerSec, int researchEUt, int researchAmperage, ItemStack[] aInputs,
         FluidStack[] aFluidInputs, ItemStack aOutput, int assDuration, int assEUt) {
         if (aInputs == null) {
-            aInputs = nullItem;
+            aInputs = GTValues.emptyItemStackArray;
         }
         if (aFluidInputs == null) {
-            aFluidInputs = nullFluid;
+            aFluidInputs = GTValues.emptyFluidStackArray;
         }
         if (aResearchItem == null || totalComputationRequired <= 0 || aOutput == null || aInputs.length > 16) {
             return false;
@@ -103,10 +100,10 @@ public class TTRecipeAdder extends RecipeAdder {
         int computationRequiredPerSec, int researchEUt, int researchAmperage, Object[] aInputs,
         FluidStack[] aFluidInputs, ItemStack aOutput, int assDuration, int assEUt) {
         if (aInputs == null) {
-            aInputs = nullItem;
+            aInputs = GTValues.emptyItemStackArray;
         }
         if (aFluidInputs == null) {
-            aFluidInputs = nullFluid;
+            aFluidInputs = GTValues.emptyFluidStackArray;
         }
         if (aResearchItem == null || totalComputationRequired <= 0
             || aOutput == null

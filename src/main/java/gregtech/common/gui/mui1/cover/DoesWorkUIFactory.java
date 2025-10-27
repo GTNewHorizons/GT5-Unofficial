@@ -8,7 +8,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 
@@ -57,16 +56,15 @@ public class DoesWorkUIFactory extends CoverLegacyDataUIFactory {
                 int coverVariable = c.getVariable();
 
                 if (isFlagSet(coverVariable, FLAG_ENABLED)) {
-                    return GTUtility.trans("271", "Machine enabled");
+                    return translateToLocal("gt.interact.desc.MachineEnabled");
                 } else if (isFlagSet(coverVariable, FLAG_PROGRESS)) {
-                    return GTUtility.trans("242", "Machine idle");
+                    return translateToLocal("gt.interact.desc.MachineIdle");
                 } else {
-                    return GTUtility.trans("241", "Recipe progress");
+                    return translateToLocal("gt.interact.desc.RecipeProgress");
                 }
 
             }))
                 .setSynced(false)
-                .setDefaultColor(COLOR_TEXT_GRAY.get())
                 .setPos(startX + spaceX * 3, 4 + startY + spaceY * 0))
             .widget(
                 TextWidget
@@ -76,7 +74,6 @@ public class DoesWorkUIFactory extends CoverLegacyDataUIFactory {
                                 ? translateToLocal("gt.interact.desc.inverted")
                                 : translateToLocal("gt.interact.desc.normal")))
                     .setSynced(false)
-                    .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX + spaceX * 3, 4 + startY + spaceY * 1));
     }
 

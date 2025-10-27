@@ -152,7 +152,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
     public List<CachedDefaultRecipe> getCache() {
         SortedRecipeListCache cacheHolder = getCacheHolder();
         List<CachedDefaultRecipe> cache;
-        if (cacheHolder.getCachedRecipesVersion() != GTMod.gregtechproxy.getNEIReloadCount()
+        if (cacheHolder.getCachedRecipesVersion() != GTMod.proxy.getNEIReloadCount()
             || (cache = cacheHolder.getCachedRecipes()) == null) {
             try {
                 RecipeCategory defaultCategory = recipeMap.getDefaultRecipeCategory();
@@ -196,7 +196,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                 // model, so we do not need any synchronization here even if it does break, at worst case it's just
                 // recreating the cache multiple times, which should be fine
                 cacheHolder.setCachedRecipes(cache);
-                cacheHolder.setCachedRecipesVersion(GTMod.gregtechproxy.getNEIReloadCount());
+                cacheHolder.setCachedRecipesVersion(GTMod.proxy.getNEIReloadCount());
             } catch (Exception e) {
                 throw new RuntimeException(
                     "Could not construct GT NEI Handler cache for category " + recipeCategory
@@ -580,7 +580,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                             .getSlotIndex();
                         final Object input;
                         if (aRecipe instanceof GTRecipe.GTRecipe_WithAlt withAltRecipe) {
-                            input = withAltRecipe.getRepresentativeInput(i);
+                            input = withAltRecipe.getAltRepresentativeInput(i);
                         } else {
                             ItemStack[] inputs = GTNEIDefaultHandler.this.neiProperties.itemInputsGetter.apply(aRecipe);
                             if (i < inputs.length && inputs[i] != null) {
@@ -722,7 +722,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
 
         @Override
         public List<PositionedStack> getIngredients() {
-            return getCycledIngredients(cycleTicksStatic / 10, this.mInputs);
+            return getCycledIngredients(cycleTicksStatic / 20, this.mInputs);
         }
 
         @Override

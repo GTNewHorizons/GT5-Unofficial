@@ -40,6 +40,7 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import static gregtech.api.util.GTUtility.formatShortenedLong;
 import static gregtech.api.util.GTUtility.truncateText;
+import static kubatech.api.gui.KubaTechUITextures.APIARY_INVENTORY_BACKGROUND;
 import static kubatech.api.utils.ItemUtils.readItemStackFromNBT;
 import static kubatech.api.utils.ItemUtils.writeItemStackToNBT;
 
@@ -80,7 +81,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
-import com.gtnewhorizons.modularui.api.drawable.shapes.Rectangle;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.math.MainAxisAlignment;
@@ -309,8 +309,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
 
     /**
      * Checks the block in the given world and block position, and remove the entries in the {@link #flowerCheckingMap}
-     * if it matches any.
-     * This function will be called during the structural check, see structure definition also.
+     * if it matches any. This function will be called during the structural check, see structure definition also.
      *
      * @see #flowerCheckingMap
      */
@@ -322,8 +321,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     }
 
     /**
-     * This should be called when {@link #mStorage} is changed.
-     * And this will trigger the flower check update.
+     * This should be called when {@link #mStorage} is changed. And this will trigger the flower check update.
      * <p>
      * The flower check should be ignored when the storage is updated when loading world (or loadNBTData specifically),
      * which the world itself is not ready yet.
@@ -334,7 +332,8 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
      */
     protected void onStorageContentChanged(boolean ignoreFlowerCheck) {
         flowerRequiredMap = mStorage.stream()
-            .collect(Collectors.toMap(BeeSimulator::getFlowerType, BeeSimulator::getFlowerTypeDescription));
+            .collect(
+                Collectors.toMap(BeeSimulator::getFlowerType, BeeSimulator::getFlowerTypeDescription, (k1, k2) -> k1));
         flowerRequiredMap.remove("");
 
         if (!ignoreFlowerCheck) {
@@ -387,7 +386,6 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             .addSeparator()
             .addInfo(EnumChatFormatting.GOLD + "Operating Mode:")
             .addInfo("- NORMAL:")
-            .addInfo("  - For each " + voltageTooltipFormatted(6) + " amp you can insert 1 bee")
             .addInfo("  - Processing time: 5 seconds")
             .addInfo("  - Uses 1 " + voltageTooltipFormatted(6) + " amp per queen")
             .addInfo("  - All bees are accelerated 64 times")
@@ -785,9 +783,15 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         }
     }
 
+    private static final int INVENTORY_WIDTH = 128;
+    private static final int INVENTORY_HEIGHT = 60;
+    private static final int INVENTORY_X = 10;
+    private static final int INVENTORY_Y = 16;
+    private static final int INVENTORY_BORDER_WIDTH = 3;
+
     DynamicInventory<BeeSimulator> dynamicInventory = new DynamicInventory<>(
-        128,
-        60,
+        INVENTORY_WIDTH,
+        INVENTORY_HEIGHT,
         () -> mMaxSlots,
         mStorage,
         s -> s.queenStack).allowInventoryInjection(input -> {
@@ -836,15 +840,24 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                 .setPos(4, 4)
                 .setSize(190, 85)
                 .setEnabled(w -> !isInInventory));
+
+        final int backgroundPadding = INVENTORY_BORDER_WIDTH * 2;
+        builder.widget(
+            new DrawableWidget().setDrawable(APIARY_INVENTORY_BACKGROUND)
+                .setPos(INVENTORY_X - INVENTORY_BORDER_WIDTH, INVENTORY_Y - INVENTORY_BORDER_WIDTH)
+                .setSize(INVENTORY_WIDTH + backgroundPadding, INVENTORY_HEIGHT + backgroundPadding)
+                .setEnabled(w -> isInInventory));
+
         builder.widget(
             dynamicInventory.asWidget(builder, buildContext)
-                .setPos(10, 16)
-                .setBackground(new Rectangle().setColor(Color.rgb(163, 163, 198)))
+                .setPos(INVENTORY_X, INVENTORY_Y)
                 .setEnabled(w -> isInInventory));
 
         builder.widget(
             new CycleButtonWidget().setToggle(() -> isInInventory, i -> isInInventory = i)
-                .setTextureGetter(i -> i == 0 ? new Text("Inventory") : new Text("Status"))
+                .setTextureGetter(
+                    i -> i == 0 ? new Text(StatCollector.translateToLocal("kubatech.gui.text.inventory"))
+                        : new Text(StatCollector.translateToLocal("kubatech.gui.text.status")))
                 .setBackground(GTUITextures.BUTTON_STANDARD)
                 .setPos(140, 91)
                 .setSize(55, 16));
@@ -859,6 +872,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                 .setEnabled(w -> !isInInventory));
 
         builder.widget(createPowerSwitchButton(builder))
+            .widget(createMuffleButton(builder, this.canBeMuffled()))
             .widget(createVoidExcessButton(builder))
             .widget(createInputSeparationButton(builder))
             .widget(createBatchModeButton(builder))
@@ -885,7 +899,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                         .openSyncedWindow(CONFIGURATION_WINDOW_ID);
                 })
                 .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_CYCLIC)
-                .addTooltip("Configuration")
+                .addTooltip(StatCollector.translateToLocal("kubatech.gui.text.configuration"))
                 .setSize(16, 16));
     }
 
@@ -896,7 +910,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CYCLIC)
                 .setPos(5, 5)
                 .setSize(16, 16))
-            .widget(new TextWidget("Configuration").setPos(25, 9))
+            .widget(new TextWidget(StatCollector.translateToLocal("kubatech.gui.text.configuration")).setPos(25, 9))
             .widget(
                 ButtonWidget.closeWindowButton(true)
                     .setPos(185, 3))
@@ -924,21 +938,35 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                                     break;
                             }
                         })
-                        .addTooltip(0, new Text("Input").color(Color.YELLOW.dark(3)))
-                        .addTooltip(1, new Text("Output").color(Color.YELLOW.dark(3)))
-                        .addTooltip(2, new Text("Operating").color(Color.GREEN.dark(3)))
+                        .addTooltip(
+                            0,
+                            new Text(StatCollector.translateToLocal("kubatech.gui.text.input"))
+                                .color(Color.YELLOW.dark(3)))
+                        .addTooltip(
+                            1,
+                            new Text(StatCollector.translateToLocal("kubatech.gui.text.output"))
+                                .color(Color.YELLOW.dark(3)))
+                        .addTooltip(
+                            2,
+                            new Text(StatCollector.translateToLocal("kubatech.gui.text.operating"))
+                                .color(Color.GREEN.dark(3)))
                         .setTextureGetter(
-                            i -> i == 0 ? new Text("Input").color(Color.YELLOW.dark(3))
-                                .withFixedSize(70 - 18, 18, 15, 0)
-                                : i == 1 ? new Text("Output").color(Color.YELLOW.dark(3))
+                            i -> i == 0
+                                ? new Text(StatCollector.translateToLocal("kubatech.gui.text.input"))
+                                    .color(Color.YELLOW.dark(3))
                                     .withFixedSize(70 - 18, 18, 15, 0)
-                                    : new Text("Operating").color(Color.GREEN.dark(3))
+                                : i == 1
+                                    ? new Text(StatCollector.translateToLocal("kubatech.gui.text.output"))
+                                        .color(Color.YELLOW.dark(3))
+                                        .withFixedSize(70 - 18, 18, 15, 0)
+                                    : new Text(StatCollector.translateToLocal("kubatech.gui.text.operating"))
+                                        .color(Color.GREEN.dark(3))
                                         .withFixedSize(70 - 18, 18, 15, 0))
                         .setBackground(
                             ModularUITextures.VANILLA_BACKGROUND,
                             GTUITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
                         .setSize(70, 18)
-                        .addTooltip("Primary mode"))
+                        .addTooltip(StatCollector.translateToLocal("kubatech.gui.text.mia.primary_mode")))
                     .widget(
                         new CycleButtonWidget().setLength(2)
                             .setGetter(() -> mSecondaryMode)
@@ -960,30 +988,46 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                                         break;
                                 }
                             })
-                            .addTooltip(0, new Text("Normal").color(Color.GREEN.dark(3)))
-                            .addTooltip(1, new Text("Swarmer").color(Color.YELLOW.dark(3)))
+                            .addTooltip(
+                                0,
+                                new Text(StatCollector.translateToLocal("kubatech.gui.text.mia.normal"))
+                                    .color(Color.GREEN.dark(3)))
+                            .addTooltip(
+                                1,
+                                new Text(StatCollector.translateToLocal("kubatech.gui.text.mia.swarmer"))
+                                    .color(Color.YELLOW.dark(3)))
                             .setTextureGetter(
-                                i -> i == 0 ? new Text("Normal").color(Color.GREEN.dark(3))
-                                    .withFixedSize(70 - 18, 18, 15, 0)
-                                    : new Text("Swarmer").color(Color.YELLOW.dark(3))
+                                i -> i == 0
+                                    ? new Text(StatCollector.translateToLocal("kubatech.gui.text.mia.normal"))
+                                        .color(Color.GREEN.dark(3))
+                                        .withFixedSize(70 - 18, 18, 15, 0)
+                                    : new Text(StatCollector.translateToLocal("kubatech.gui.text.mia.swarmer"))
+                                        .color(Color.YELLOW.dark(3))
                                         .withFixedSize(70 - 18, 18, 15, 0))
                             .setBackground(
                                 ModularUITextures.VANILLA_BACKGROUND,
                                 GTUITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
                             .setSize(70, 18)
-                            .addTooltip("Secondary mode"))
+                            .addTooltip(StatCollector.translateToLocal("kubatech.gui.text.mia.secondary_mode")))
                     .setEnabled(widget -> !getBaseMetaTileEntity().isActive())
                     .setPos(10, 30))
             .widget(
-                new Column().widget(new TextWidget("Primary mode").setSize(100, 18))
-                    .widget(new TextWidget("Secondary mode").setSize(100, 18))
+                new Column()
+                    .widget(
+                        new TextWidget(StatCollector.translateToLocal("kubatech.gui.text.mia.primary_mode"))
+                            .setSize(100, 18))
+                    .widget(
+                        new TextWidget(StatCollector.translateToLocal("kubatech.gui.text.mia.secondary_mode"))
+                            .setSize(100, 18))
                     .setEnabled(widget -> !getBaseMetaTileEntity().isActive())
                     .setPos(80, 30))
             .widget(
                 new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CROSS)
                     .setSize(18, 18)
                     .setPos(10, 30)
-                    .addTooltip(new Text("Can't change configuration when running !").color(Color.RED.dark(3)))
+                    .addTooltip(
+                        new Text(StatCollector.translateToLocal("GT5U.gui.text.cannot_change_when_running"))
+                            .color(Color.RED.dark(3)))
                     .setEnabled(widget -> getBaseMetaTileEntity().isActive()));
         return builder.build();
     }

@@ -10,6 +10,7 @@ import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.implosionRecipes;
+import static gregtech.api.util.GTModHandler.RecipeBits.BITS_STD;
 import static gregtech.api.util.GTModHandler.RecipeBits.BUFFERED;
 import static gregtech.api.util.GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
@@ -22,7 +23,6 @@ import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
-import static gregtech.common.GTProxy.tBits;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -78,16 +78,16 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         final boolean aNoWorking = aMaterial.contains(SubTag.NO_WORKING);
         final long aMaterialMass = aMaterial.getMass();
 
-        switch (aPrefix) {
-            case plate -> registerPlate(aMaterial, aStack, aNoSmashing);
-            case plateDouble -> registerPlateDouble(aMaterial, aStack, aNoSmashing, aMaterialMass);
-            case plateTriple -> registerPlateTriple(aMaterial, aStack, aNoSmashing, aMaterialMass);
-            case plateQuadruple -> registerPlateQuadruple(aMaterial, aStack, aNoSmashing, aMaterialMass, aNoWorking);
-            case plateQuintuple -> registerPlateQuintuple(aMaterial, aStack, aNoSmashing, aMaterialMass);
-            case plateDense -> registerPlateDense(aMaterial, aStack, aNoSmashing, aMaterialMass);
-            case plateSuperdense -> registerPlateSuperdense(aMaterial, aStack, aNoSmashing, aMaterialMass);
-            case itemCasing -> registerItemCasing(aPrefix, aMaterial, aStack, aNoSmashing);
-            case plateAlloy -> registerPlateAlloy(aOreDictName, aStack);
+        switch (aPrefix.getName()) {
+            case "plate" -> registerPlate(aMaterial, aStack, aNoSmashing);
+            case "plateDouble" -> registerPlateDouble(aMaterial, aStack, aNoSmashing, aMaterialMass);
+            case "plateTriple" -> registerPlateTriple(aMaterial, aStack, aNoSmashing, aMaterialMass);
+            case "plateQuadruple" -> registerPlateQuadruple(aMaterial, aStack, aNoSmashing, aMaterialMass, aNoWorking);
+            case "plateQuintuple" -> registerPlateQuintuple(aMaterial, aStack, aNoSmashing, aMaterialMass);
+            case "plateDense" -> registerPlateDense(aMaterial, aStack, aNoSmashing, aMaterialMass);
+            case "plateSuperdense" -> registerPlateSuperdense(aMaterial, aStack, aNoSmashing, aMaterialMass);
+            case "itemCasing" -> registerItemCasing(aPrefix, aMaterial, aStack, aNoSmashing);
+            case "plateAlloy" -> registerPlateAlloy(aOreDictName, aStack);
             default -> {}
         }
     }
@@ -125,7 +125,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
         GTModHandler.addCraftingRecipe(
             GTOreDictUnificator.get(OrePrefixes.foil, aMaterial, 2L),
-            tBits, // DO_NOT_CHECK_FOR_COLLISIONS|BUFFERED|ONLY_ADD_IF_RESULT_IS_NOT_NULL|NOT_REMOVABLE
+            BITS_STD,
             new Object[] { "hX", 'X', OrePrefixes.plate.get(aMaterial) });
 
         if (aMaterial == Materials.Paper) {
@@ -135,20 +135,20 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 new Object[] { "XXX", 'X', new ItemStack(Items.reeds, 1, WILDCARD) });
         }
 
-        if (aMaterial.mUnificatable && aMaterial.mMaterialInto == aMaterial) {
+        if (aMaterial.mUnifiable && aMaterial.mMaterialInto == aMaterial) {
 
             if (!aNoSmashing) {
 
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
                         aMaterial.getPlates(1),
-                        tBits, // DO_NOT_CHECK_FOR_COLLISIONS|BUFFERED|ONLY_ADD_IF_RESULT_IS_NOT_NULL|NOT_REMOVABLE
+                        BITS_STD,
                         new Object[] { "h", // craftingToolHardHammer
                             "X", "X", 'X', OrePrefixes.ingot.get(aMaterial) });
 
                     GTModHandler.addCraftingRecipe(
                         aMaterial.getPlates(1),
-                        tBits, // DO_NOT_CHECK_FOR_COLLISIONS|BUFFERED|ONLY_ADD_IF_RESULT_IS_NOT_NULL|NOT_REMOVABLE
+                        BITS_STD,
                         new Object[] { "h", // craftingToolHardHammer
                             "X", 'X', OrePrefixes.gem.get(aMaterial) });
                 }
@@ -159,7 +159,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     GTModHandler.addShapelessCraftingRecipe(
                         aMaterial.getDust(1),
-                        tBits, // DO_NOT_CHECK_FOR_COLLISIONS|BUFFERED|ONLY_ADD_IF_RESULT_IS_NOT_NULL|NOT_REMOVABLE
+                        BITS_STD,
                         new Object[] { ToolDictNames.craftingToolMortar, OrePrefixes.plate.get(aMaterial) });
                 }
             }
@@ -412,12 +412,12 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .addTo(fluidSolidifierRecipes);
         }
 
-        if (aMaterial.mUnificatable && aMaterial.mMaterialInto == aMaterial && !aNoSmashing) {
+        if (aMaterial.mUnifiable && aMaterial.mMaterialInto == aMaterial && !aNoSmashing) {
 
             if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                 GTModHandler.addCraftingRecipe(
                     GTOreDictUnificator.get(OrePrefixes.itemCasing, aMaterial, 1L),
-                    tBits, // DO_NOT_CHECK_FOR_COLLISIONS|BUFFERED|ONLY_ADD_IF_RESULT_IS_NOT_NULL|NOT_REMOVABLE
+                    BITS_STD,
                     new Object[] { "h X", 'X', OrePrefixes.plate.get(aMaterial) });
             }
         }

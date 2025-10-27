@@ -375,6 +375,6 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
      */
     @Override
     public int getRenderId() {
-        return BlockSpaceElevatorCable.getRenderID();
+        return BlockSpaceElevatorCable.renderID;
     }
 }

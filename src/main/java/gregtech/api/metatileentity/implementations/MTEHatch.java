@@ -143,8 +143,8 @@ public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProv
     }
 
     /**
-     * Some multiblocks restrict hatches by tier. This method allows hatches to specify custom tier used for
-     * structure check, while keeping {@link #mTier} for other uses.
+     * Some multiblocks restrict hatches by tier. This method allows hatches to specify custom tier used for structure
+     * check, while keeping {@link #mTier} for other uses.
      *
      * @return Tier used for multiblock structure
      */

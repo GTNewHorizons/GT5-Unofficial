@@ -115,8 +115,8 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
             @Override
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return OverclockCalculator.ofNoOverclock(recipe)
-                    .setDuration((int) Math.ceil(recipe.mDuration * Math.pow(0.9f, height - 4)))
-                    .setDurationUnderOneTickSupplier(() -> recipe.mDuration * Math.pow(0.9f, height - 4));
+                    .setDuration((int) Math.ceil(recipe.mDuration * GTUtility.powInt(0.9f, height - 4)))
+                    .setDurationUnderOneTickSupplier(() -> recipe.mDuration * GTUtility.powInt(0.9f, height - 4));
             }
 
             @NotNull
@@ -187,13 +187,13 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Neutron Activator, NA")
             .addInfo("Superluminal-velocity Motion.")
-            .addInfo("The minimum height of the Speeding Pipe Casing is 4.")
-            .addInfo("Per extra Speeding Pipe Casing will give time discount.")
-            .addInfo("But it will reduce the Neutron Accelerator efficiency.")
-            .addInfo("You need to input energy to the Neutron Accelerator to get it running.")
-            .addInfo("It will output correct products with Specific Neutron Kinetic Energy.")
-            .addInfo("Otherwise it will output trash.")
-            .addInfo("The Neutron Kinetic Energy will decrease 72KeV/s when no Neutron Accelerator is running.")
+            .addInfo("The minimum height of the Speeding Pipe Casing is 4")
+            .addInfo("Per extra Speeding Pipe Casing will give time discount")
+            .addInfo("But it will reduce the Neutron Accelerator efficiency")
+            .addInfo("You need to input energy to the Neutron Accelerator to get it running")
+            .addInfo("It will output correct products with Specific Neutron Kinetic Energy")
+            .addInfo("Otherwise it will output trash")
+            .addInfo("The Neutron Kinetic Energy will decrease 72KeV/s when no Neutron Accelerator is running")
             .addInfo(
                 "It will explode when the Neutron Kinetic Energy is over" + EnumChatFormatting.RED
                     + " 1200MeV"
@@ -344,7 +344,7 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
                     anyWorking = true;
                     this.eV += Math.max(
                         (R.nextInt(tHatch.getMaxEUConsume() + 1) + tHatch.getMaxEUConsume()) * 10
-                            * Math.pow(0.95, height - 4),
+                            * GTUtility.powInt(0.95, height - 4),
                         10);
                 }
             }
@@ -405,7 +405,7 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
             if (tHatch.getBaseMetaTileEntity()
                 .isActive()) {
                 currentNKEInput += (R.nextInt(tHatch.getMaxEUConsume() + 1) + tHatch.getMaxEUConsume()) * 10
-                    * Math.pow(0.95, height - 4);
+                    * GTUtility.powInt(0.95, height - 4);
                 anyWorking = true;
             }
         }

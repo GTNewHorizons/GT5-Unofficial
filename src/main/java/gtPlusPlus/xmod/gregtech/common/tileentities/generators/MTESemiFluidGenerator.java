@@ -90,7 +90,7 @@ public class MTESemiFluidGenerator extends MTEBasicGenerator {
     public ITexture[] getFront(byte aColor) {
         return new ITexture[] { super.getFront(aColor)[0],
             TextureFactory.of(Textures.BlockIcons.DIESEL_GENERATOR_FRONT),
-            Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier] };
+            Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier + 1] };
     }
 
     @Override
@@ -119,7 +119,7 @@ public class MTESemiFluidGenerator extends MTEBasicGenerator {
     public ITexture[] getFrontActive(byte aColor) {
         return new ITexture[] { super.getFrontActive(aColor)[0],
             TextureFactory.of(Textures.BlockIcons.DIESEL_GENERATOR_FRONT_ACTIVE),
-            Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier] };
+            Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier + 1] };
     }
 
     @Override

@@ -39,7 +39,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
-import gregtech.common.GTProxy;
 
 public class CraftingMaterialLoader implements IWerkstoffRunnable {
 
@@ -90,7 +89,7 @@ public class CraftingMaterialLoader implements IWerkstoffRunnable {
 
             GTModHandler.addCraftingRecipe(
                 werkstoff.get(screw),
-                GTProxy.tBits,
+                GTModHandler.RecipeBits.BITS_STD,
                 new Object[] { "fX", "X ", 'X', werkstoff.get(bolt) });
 
             if (werkstoff.hasItemType(gem)) return;
@@ -110,13 +109,13 @@ public class CraftingMaterialLoader implements IWerkstoffRunnable {
 
             GTModHandler.addCraftingRecipe(
                 werkstoff.get(ring),
-                GTProxy.tBits,
+                GTModHandler.RecipeBits.BITS_STD,
                 new Object[] { "h ", "fX", 'X', werkstoff.get(stick) });
 
             // Gear
             GTModHandler.addCraftingRecipe(
                 werkstoff.get(gearGt),
-                GTProxy.tBits,
+                GTModHandler.RecipeBits.BITS_STD,
                 new Object[] { "SPS", "PwP", "SPS", 'P', werkstoff.get(plate), 'S', werkstoff.get(stick) });
 
             GTValues.RA.stdBuilder()
@@ -176,13 +175,13 @@ public class CraftingMaterialLoader implements IWerkstoffRunnable {
 
             GTModHandler.addCraftingRecipe(
                 werkstoff.get(gearGtSmall),
-                GTProxy.tBits,
+                GTModHandler.RecipeBits.BITS_STD,
                 new Object[] { " S ", "hPx", " S ", 'S', werkstoff.get(stick), 'P', werkstoff.get(plate) });
 
             // Rotor
             GTModHandler.addCraftingRecipe(
                 werkstoff.get(rotor),
-                GTProxy.tBits,
+                GTModHandler.RecipeBits.BITS_STD,
                 new Object[] { "PhP", "SRf", "PdP", 'P', werkstoff.get(plate), 'R', werkstoff.get(ring), 'S',
                     werkstoff.get(screw) });
 

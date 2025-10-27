@@ -62,24 +62,24 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
     protected final String itemTypeLocalizedName;
 
     public BWMetaGeneratedItems(OrePrefixes orePrefixes, Object unused) {
-        super("bwMetaGeneratedGTEnhancement" + orePrefixes.name(), (short) 32766, (short) 0);
+        super("bwMetaGeneratedGTEnhancement" + orePrefixes.getName(), (short) 32766, (short) 0);
         this.orePrefixes = orePrefixes;
         this.itemTypeLocalizedName = GTLanguageManager.addStringLocalization(
             "bw.itemtype." + orePrefixes,
-            orePrefixes.mLocalizedMaterialPre + "%material" + orePrefixes.mLocalizedMaterialPost);
+            orePrefixes.getMaterialPrefix() + "%material" + orePrefixes.getMaterialPostfix());
     }
 
     public BWMetaGeneratedItems(OrePrefixes orePrefixes) {
-        super("bwMetaGenerated" + orePrefixes.name(), (short) 32766, (short) 0);
+        super("bwMetaGenerated" + orePrefixes.getName(), (short) 32766, (short) 0);
         this.orePrefixes = orePrefixes;
         this.itemTypeLocalizedName = GTLanguageManager.addStringLocalization(
             "bw.itemtype." + orePrefixes,
-            orePrefixes.mLocalizedMaterialPre + "%material" + orePrefixes.mLocalizedMaterialPost);
+            orePrefixes.getMaterialPrefix() + "%material" + orePrefixes.getMaterialPostfix());
         this.setCreativeTab(BWMetaGeneratedItems.metaTab);
         for (Werkstoff w : Werkstoff.werkstoffHashSet) {
             ItemStack tStack = new ItemStack(this, 1, w.getmID());
             if (!w.hasItemType(this.orePrefixes)) continue;
-            GTOreDictUnificator.registerOre(this.orePrefixes.name() + w.getVarName(), tStack);
+            GTOreDictUnificator.registerOre(this.orePrefixes.getName() + w.getVarName(), tStack);
         }
     }
 
@@ -151,9 +151,9 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
     @Override
     public IIconContainer getIconContainer(int aMetaData) {
         if (Werkstoff.werkstoffHashMap.get((short) aMetaData) == null) return null;
-        if (this.orePrefixes.mTextureIndex == -1) return this.getIconContainerBartWorks(aMetaData);
+        if (this.orePrefixes.getTextureIndex() == -1) return this.getIconContainerBartWorks(aMetaData);
         return Werkstoff.werkstoffHashMap.get((short) aMetaData)
-            .getTexSet().mTextures[this.orePrefixes.mTextureIndex];
+            .getTexSet().mTextures[this.orePrefixes.getTextureIndex()];
     }
 
     protected IIconContainer getIconContainerBartWorks(int aMetaData) {
@@ -214,7 +214,7 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
 
     @Override
     public int getItemStackLimit(ItemStack aStack) {
-        return this.orePrefixes.mDefaultStackSize;
+        return this.orePrefixes.getDefaultStackSize();
     }
 
     @Override

@@ -1,12 +1,12 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEHatchDynamoBuffer extends MTEHatchDynamo {
 
@@ -21,12 +21,12 @@ public class MTEHatchDynamoBuffer extends MTEHatchDynamo {
 
     @Override
     public ITexture[] getTexturesActive(final ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TexturesGtBlock.OVERLAYS_ENERGY_OUT_MULTI_BUFFER[this.mTier] };
+        return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_BUFFER[this.mTier + 1] };
     }
 
     @Override
     public ITexture[] getTexturesInactive(final ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TexturesGtBlock.OVERLAYS_ENERGY_OUT_MULTI_BUFFER[this.mTier] };
+        return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_BUFFER[this.mTier + 1] };
     }
 
     @Override

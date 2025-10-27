@@ -48,8 +48,6 @@ import goodgenerator.util.MaterialFix;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsKevlar;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
@@ -104,7 +102,7 @@ public class RecipeLoader {
                 new Object[] { OrePrefixes.circuit.get(Materials.UV), 4 },
                 GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorLuV, 8),
                 GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Naquadah, 4),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahAlloy, 8),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.PrismaticNaquadah, 8),
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.Osmium, 16))
             .fluidInputs(
                 Materials.Trinium.getMolten(4 * INGOTS),
@@ -119,6 +117,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemRefer.Radiation_Protection_Plate.get(6),
+                ItemList.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet.get(2),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Europium, 1),
                 ItemList.Field_Generator_MV.get(1),
                 GTUtility.getIntegratedCircuit(1))
@@ -130,7 +129,7 @@ public class RecipeLoader {
         // LNR Frame
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.NaquadahAlloy, 8),
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.PrismaticNaquadah, 8),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.HSSE, 4),
                 GTUtility.getIntegratedCircuit(24))
             .itemOutputs(ItemRefer.Radiation_Proof_Steel_Frame_Box.get(1))
@@ -692,7 +691,8 @@ public class RecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Trinium, 4),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahAlloy, 4),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Osmiridium, 4),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.VibrantAlloy, 4))
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.VibrantAlloy, 4),
+                ItemList.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet.get(4))
             .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(8 * INGOTS))
             .itemOutputs(ItemRefer.Advanced_Radiation_Protection_Plate.get(1))
             .eut(TierEU.RECIPE_ZPM / 2)
@@ -777,14 +777,14 @@ public class RecipeLoader {
                     ItemList.Electric_Pump_UEV.get(8),
                     GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUHV, 64),
                     GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUHV, 64),
-                    GTOreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.TranscendentMetal, 8),
+                    GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.TranscendentMetal, 8),
                     GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Infinity, 16),
                     ItemList.Circuit_Wafer_PPIC.get(64),
                     new Object[] { OrePrefixes.circuit.get(Materials.UIV), 1L })
                 .fluidInputs(
                     WerkstoffLoader.Oganesson.getFluidOrGas(1_000),
                     Materials.Neutronium.getMolten(1 * STACKS),
-                    MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(64_000))
+                    Materials.DimensionallyShiftedSuperfluid.getFluid(64_000))
                 .itemOutputs(ItemRefer.Field_Restriction_Coil_T3.get(1))
                 .eut(TierEU.RECIPE_UHV)
                 .duration(60 * SECONDS)
@@ -795,19 +795,19 @@ public class RecipeLoader {
                 .metadata(RESEARCH_ITEM, ItemRefer.Field_Restriction_Coil_T3.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES + 10 * SECONDS, TierEU.RECIPE_UEV))
                 .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SpaceTime, 1),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 1),
                     ItemList.Field_Generator_UIV.get(2),
                     ItemList.Electric_Pump_UIV.get(8),
                     GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUEV, 64),
                     GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUEV, 64),
-                    GTOreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.SpaceTime, 8),
-                    GTOreDictUnificator.get(OrePrefixes.pipeMedium, MaterialsUEVplus.SpaceTime, 16),
+                    GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.SpaceTime, 8),
+                    GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.SpaceTime, 16),
                     ItemList.Circuit_Wafer_PPIC.get(64),
                     new Object[] { OrePrefixes.circuit.get(Materials.UXV), 1L })
                 .fluidInputs(
                     GGMaterial.metastableOganesson.getMolten(1_000),
-                    MaterialsUEVplus.TranscendentMetal.getMolten(1 * STACKS),
-                    MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(64_000))
+                    Materials.TranscendentMetal.getMolten(1 * STACKS),
+                    Materials.DimensionallyShiftedSuperfluid.getFluid(64_000))
                 .itemOutputs(ItemRefer.Field_Restriction_Coil_T4.get(1))
                 .eut(TierEU.RECIPE_UEV)
                 .duration(60 * SECONDS)
@@ -875,6 +875,23 @@ public class RecipeLoader {
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(extruderRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemRefer.Special_Ceramics_Dust.get(2), ItemList.Shape_Mold_Casing.get(0))
+            .itemOutputs(ItemRefer.Special_Ceramics_Plate.get(1))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(formingPressRecipes);
+
+        // Advanced Recipe with netherite
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Netherite, 1),
+                ItemList.Shape_Mold_Casing.get(0))
+            .itemOutputs(ItemRefer.Special_Ceramics_Plate.get(32))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
+            .addTo(formingPressRecipes);
 
         GTModHandler.addCraftingRecipe(
             ItemRefer.Raw_Cylinder.get(1),
@@ -1196,7 +1213,7 @@ public class RecipeLoader {
                 ItemList.Hull_MAX.get(1L),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUV, 4),
                 GGMaterial.orundum.get(OrePrefixes.plate, 2),
-                GTOreDictUnificator.get(OrePrefixes.plateTriple, MaterialsKevlar.Kevlar, 8),
+                GTOreDictUnificator.get(OrePrefixes.plateTriple, Materials.Kevlar, 8),
                 ItemList.UV_Coil.get(8),
                 GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Neutronium, 16),
                 ItemList.Electric_Motor_UHV.get(2),
@@ -1218,7 +1235,7 @@ public class RecipeLoader {
                 ItemList.Hull_UEV.get(1L),
                 GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Draconium, 4),
                 GGMaterial.orundum.get(OrePrefixes.plate, 8),
-                GTOreDictUnificator.get(OrePrefixes.plateDense, MaterialsKevlar.Kevlar, 16),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Kevlar, 16),
                 ItemList.UHV_Coil.get(8),
                 GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.TengamAttuned, 16),
                 ItemList.Electric_Motor_UEV.get(2),
@@ -1248,7 +1265,7 @@ public class RecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUHV, 4))
             .fluidInputs(
                 GGMaterial.metastableOganesson.getMolten(12 * INGOTS),
-                MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(4_000),
+                Materials.DimensionallyShiftedSuperfluid.getFluid(4_000),
                 Materials.Grade7PurifiedWater.getFluid(16_000))
             .itemOutputs(Loaders.NeutronAccelerators[11].copy())
             .eut(TierEU.RECIPE_UIV)
@@ -1262,18 +1279,18 @@ public class RecipeLoader {
             .itemInputs(
                 ItemRefer.Inverter.get(64),
                 ItemList.Hull_UMV.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, MaterialsUEVplus.SpaceTime, 4),
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SpaceTime, 4),
                 MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getPlate(32),
                 GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.RadoxPolymer, 1),
                 ItemList.EnergisedTesseract.get(12),
                 ItemList.Electromagnet_Tengam.get(1),
                 ItemList.Electric_Motor_UMV.get(2),
-                GTOreDictUnificator.get(OrePrefixes.stickLong, MaterialsUEVplus.Creon, 16),
-                GTOreDictUnificator.get(OrePrefixes.stickLong, MaterialsUEVplus.Mellion, 16),
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Creon, 16),
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Mellion, 16),
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUEV, 4))
             .fluidInputs(
                 GGMaterial.shirabon.getMolten(3 * INGOTS),
-                MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(8_000),
+                Materials.DimensionallyShiftedSuperfluid.getFluid(8_000),
                 Materials.Grade8PurifiedWater.getFluid(16_000))
             .itemOutputs(Loaders.NeutronAccelerators[12].copy())
             .eut(TierEU.RECIPE_UMV)

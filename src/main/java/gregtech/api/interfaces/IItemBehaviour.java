@@ -12,6 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.BlockSnapshot;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.SubTag;
@@ -28,18 +29,30 @@ public interface IItemBehaviour<E extends Item> {
     }
 
     /**
+     * Allows a GT Tool wielded in the offhand to perform an action on a placed block in the same tick.
+     * 
+     * @param blockSnapshot Data about what block was placed and where
+     * @param itemStack     The tool being used
+     * @param player        The player initiating the action
+     * @return true to cancel all further tool actions, false to keep going
+     */
+    default boolean onBlockPlacedWhileWieldingOffhanded(BlockSnapshot blockSnapshot, ItemStack itemStack,
+        EntityPlayer player) {
+        return false;
+    }
+
+    /**
      * Suppresses standard block activation for a {@link gregtech.common.blocks.BlockMachines GT machine block}. Put
      * your item's right click activation in
-     * {@link #onItemUse(Item, ItemStack, EntityPlayer, World, int, int, int, int, float, float, float) onItemUse}
-     * for best results.
+     * {@link #onItemUse(Item, ItemStack, EntityPlayer, World, int, int, int, int, float, float, float) onItemUse} for
+     * best results.
      * <p>
      * Typically used when the item needs support for the Ring of Loki (from Botania.) If you don't care about that,
      * using
      * {@link #onItemUseFirst(Item, ItemStack, EntityPlayer, World, int, int, int, ForgeDirection, float, float, float)
-     * onItemUseFirst}
-     * instead of {@link #onItemUse(Item, ItemStack, EntityPlayer, World, int, int, int, int, float, float, float)
-     * onItemUse}
-     * will act before block activation with a little less overhead.
+     * onItemUseFirst} instead of
+     * {@link #onItemUse(Item, ItemStack, EntityPlayer, World, int, int, int, int, float, float, float) onItemUse} will
+     * act before block activation with a little less overhead.
      *
      * @param player     the player making the request
      * @param tileEntity the tile entity that is attempting to be activated

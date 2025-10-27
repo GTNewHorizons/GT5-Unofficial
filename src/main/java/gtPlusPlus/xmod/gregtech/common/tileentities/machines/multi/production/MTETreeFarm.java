@@ -42,7 +42,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -310,10 +309,10 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
             @Nonnull
             public CheckRecipeResult process() {
                 if (inputItems == null) {
-                    inputItems = new ItemStack[0];
+                    inputItems = GTValues.emptyItemStackArray;
                 }
                 if (inputFluids == null) {
-                    inputFluids = new FluidStack[0];
+                    inputFluids = GTValues.emptyFluidStackArray;
                 }
 
                 ItemStack sapling = findSapling();
@@ -396,8 +395,9 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
             if (shouldDamage) {
                 if (!canDamage || GTModHandler.isElectricItem(stack)
                     && !GTModHandler.canUseElectricItem(stack, TOOL_CHARGE_PER_OPERATION)) {
-                    depleteInput(stack);
-                    addOutput(stack);
+                    if (addOutputAtomic(stack)) {
+                        depleteInput(stack);
+                    }
                 }
             }
             if (canDamage) {
@@ -498,8 +498,11 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
             // We first try to swap it with a sapling from an input bus to not interrupt existing setups.
             if (!legacyToolSwap()) {
                 // Swap failed, output whatever is blocking the slot.
-                addOutput(controllerSlot);
-                mInventory[1] = null;
+                if (addOutputAtomic(controllerSlot)) {
+                    mInventory[1] = null;
+                } else {
+                    return null;
+                }
             }
         }
 

@@ -1,11 +1,12 @@
 package gtPlusPlus.core.material.nuclear;
 
+import gregtech.api.util.CustomGlyphs;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.core.client.CustomTextureSet.TextureSets;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.material.state.MaterialState;
-import gtPlusPlus.core.util.data.StringUtils;
 
 public final class MaterialsNuclides {
 
@@ -19,7 +20,7 @@ public final class MaterialsNuclides {
         -1, // Protons
         -1, // Neutrons
         false, // Uses Blast furnace?
-        StringUtils.subscript(StringUtils.superscript("7") + "Li2BeF4"), // Chemical Formula
+        StringUtils.subscript(CustomGlyphs.SUPERSCRIPT7 + "Li2BeF4"), // Chemical Formula
         4, // Radioactivity Level
            // Material Stacks with Percentage of required elements.
         new MaterialStack(MaterialsFluorides.LITHIUM_FLUORIDE, 2),
@@ -35,7 +36,7 @@ public final class MaterialsNuclides {
         -1, // Protons
         -1, // Neutrons
         false, // Uses Blast furnace?
-        StringUtils.subscript(StringUtils.superscript("7") + "LiFBeF2ThF4UF4"), // Chemical Formula
+        StringUtils.subscript(CustomGlyphs.SUPERSCRIPT7 + "LiFBeF2ThF4UF4"), // Chemical Formula
         5, // Radioactivity Level
            // Material Stacks with Percentage of required elements.
         new MaterialStack(MaterialsFluorides.LITHIUM_FLUORIDE, 65),
@@ -53,7 +54,7 @@ public final class MaterialsNuclides {
         -1, // Protons
         -1, // Neutrons
         false, // Uses Blast furnace?
-        StringUtils.subscript(StringUtils.superscript("7") + "LiFBeF2ZrF4UF4"), // Chemical Formula
+        StringUtils.subscript(CustomGlyphs.SUPERSCRIPT7 + "LiFBeF2ZrF4UF4"), // Chemical Formula
         5, // Radioactivity Level
            // Material Stacks with Percentage of required elements.
         new MaterialStack(MaterialsFluorides.LITHIUM_FLUORIDE, 65),
@@ -71,8 +72,8 @@ public final class MaterialsNuclides {
         -1, // Protons
         -1, // Neutrons
         false, // Uses Blast furnace?
-        StringUtils.subscript(StringUtils.superscript("7") + "LiFBeF2ZrF4") + StringUtils.superscript("235U"), // Chemical
-                                                                                                               // Formula
+        StringUtils.subscript(CustomGlyphs.SUPERSCRIPT7 + "LiFBeF2ZrF4") + StringUtils.superscript("235U"), // Chemical
+                                                                                                            // Formula
         5, // Radioactivity Level
            // Material Stacks with Percentage of required elements.
         new MaterialStack(MaterialsFluorides.LITHIUM_FLUORIDE, 55),
@@ -90,7 +91,7 @@ public final class MaterialsNuclides {
         -1, // Protons
         -1, // Neutrons
         false, // Uses Blast furnace?
-        StringUtils.subscript(StringUtils.superscript("7") + "LiBeF2UF4FP"), // Chemical Formula
+        StringUtils.subscript(CustomGlyphs.SUPERSCRIPT7 + "LiBeF2UF4FP"), // Chemical Formula
         // Material Stacks with Percentage of required elements.
         new MaterialStack(MaterialsElements.getInstance().LITHIUM, 1),
         new MaterialStack(MaterialsFluorides.BERYLLIUM_FLUORIDE, 1),
@@ -106,7 +107,7 @@ public final class MaterialsNuclides {
         -1, // Protons
         -1, // Neutrons
         false, // Uses Blast furnace?
-        StringUtils.subscript(StringUtils.superscript("7") + "LiBeF2UF4FP"), // Chemical Formula
+        StringUtils.subscript(CustomGlyphs.SUPERSCRIPT7 + "LiBeF2UF4FP"), // Chemical Formula
         // Material Stacks with Percentage of required elements.
         new MaterialStack(MaterialsElements.getInstance().LITHIUM, 1),
         new MaterialStack(MaterialsFluorides.BERYLLIUM_FLUORIDE, 1),
@@ -123,7 +124,7 @@ public final class MaterialsNuclides {
         -1, // Protons
         -1, // Neutrons
         false, // Uses Blast furnace?
-        StringUtils.subscript(StringUtils.superscript("7") + "LiFBeF2UF4FP"), // Chemical Formula
+        StringUtils.subscript(CustomGlyphs.SUPERSCRIPT7 + "LiFBeF2UF4FP"), // Chemical Formula
         // Material Stacks with Percentage of required elements.
         new MaterialStack(MaterialsFluorides.LITHIUM_FLUORIDE, 1),
         new MaterialStack(MaterialsFluorides.BERYLLIUM_FLUORIDE, 1),
@@ -139,7 +140,7 @@ public final class MaterialsNuclides {
         -1, // Protons
         -1, // Neutrons
         false, // Uses Blast furnace?
-        StringUtils.subscript(StringUtils.superscript("7") + "LiFBeF2UF4FP"), // Chemical Formula
+        StringUtils.subscript(CustomGlyphs.SUPERSCRIPT7 + "LiFBeF2UF4FP"), // Chemical Formula
         // Material Stacks with Percentage of required elements.
         new MaterialStack(MaterialsFluorides.LITHIUM_FLUORIDE, 1),
         new MaterialStack(MaterialsFluorides.BERYLLIUM_FLUORIDE, 1),
@@ -170,7 +171,7 @@ public final class MaterialsNuclides {
         -1, // Protons
         -1, // Neutrons
         false, // Uses Blast furnace?
-        StringUtils.subscript(StringUtils.superscript("7") + "LiFBeF2"), // Chemical Formula
+        StringUtils.subscript(CustomGlyphs.SUPERSCRIPT7 + "LiFBeF2"), // Chemical Formula
         // Material Stacks with Percentage of required elements.
         new MaterialStack(MaterialsFluorides.LITHIUM_FLUORIDE, 1),
         new MaterialStack(MaterialsFluorides.BERYLLIUM_FLUORIDE, 1));
@@ -184,7 +185,7 @@ public final class MaterialsNuclides {
         -1, // Protons
         -1, // Neutrons
         false, // Uses Blast furnace?
-        StringUtils.subscript(StringUtils.superscript("7") + "LiFBeF2UF4"), // Chemical Formula
+        StringUtils.subscript(CustomGlyphs.SUPERSCRIPT7 + "LiFBeF2UF4"), // Chemical Formula
         // Material Stacks with Percentage of required elements.
         new MaterialStack(LiFBeF2, 1),
         new MaterialStack(MaterialsFluorides.URANIUM_TETRAFLUORIDE, 1));
@@ -201,7 +202,7 @@ public final class MaterialsNuclides {
         -1, // Protons
         -1, // Neutrons
         false, // Uses Blast furnace?
-        StringUtils.subscript(StringUtils.superscript("7") + "LiFThF4"), // Chemical Formula
+        StringUtils.subscript(CustomGlyphs.SUPERSCRIPT7 + "LiFThF4"), // Chemical Formula
         // Material Stacks with Percentage of required elements.
         new MaterialStack(MaterialsFluorides.LITHIUM_FLUORIDE, 1),
         new MaterialStack(MaterialsFluorides.THORIUM_TETRAFLUORIDE, 1));
@@ -216,7 +217,7 @@ public final class MaterialsNuclides {
         -1, // Protons
         -1, // Neutrons
         false, // Uses Blast furnace?
-        StringUtils.subscript(StringUtils.superscript("7") + "LiFBeF2ThF4"), // Chemical Formula
+        StringUtils.subscript(CustomGlyphs.SUPERSCRIPT7 + "LiFBeF2ThF4"), // Chemical Formula
         // Material Stacks with Percentage of required elements.
         new MaterialStack(MaterialsFluorides.LITHIUM_FLUORIDE, 1),
         new MaterialStack(MaterialsFluorides.BERYLLIUM_FLUORIDE, 1),
@@ -232,7 +233,7 @@ public final class MaterialsNuclides {
         -1, // Protons
         -1, // Neutrons
         false, // Uses Blast furnace?
-        StringUtils.subscript(StringUtils.superscript("7") + "LiFThF4"), // Chemical Formula
+        StringUtils.subscript(CustomGlyphs.SUPERSCRIPT7 + "LiFThF4"), // Chemical Formula
         // Material Stacks with Percentage of required elements.
         new MaterialStack(MaterialsFluorides.LITHIUM_FLUORIDE, 1),
         new MaterialStack(MaterialsFluorides.THORIUM_TETRAFLUORIDE, 1));
@@ -247,7 +248,7 @@ public final class MaterialsNuclides {
         -1, // Protons
         -1, // Neutrons
         false, // Uses Blast furnace?
-        StringUtils.subscript(StringUtils.superscript("7") + "LiFBeF2ThF4"), // Chemical Formula
+        StringUtils.subscript(CustomGlyphs.SUPERSCRIPT7 + "LiFBeF2ThF4"), // Chemical Formula
         // Material Stacks with Percentage of required elements.
         new MaterialStack(MaterialsFluorides.LITHIUM_FLUORIDE, 1),
         new MaterialStack(MaterialsFluorides.BERYLLIUM_FLUORIDE, 1),

@@ -16,14 +16,12 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -31,6 +29,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.BlockBaseModular;
@@ -81,7 +80,6 @@ import gtPlusPlus.core.material.MaterialsOther;
 import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
 import gtPlusPlus.core.material.nuclear.MaterialsNuclides;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.data.StringUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
@@ -201,12 +199,7 @@ public final class ModItems {
 
     public static void init() {
 
-        Item magicFeather = new ItemMagicFeather();
-        GregtechItemList.MagicFeather.set(magicFeather);
-        MinecraftForge.EVENT_BUS.register(magicFeather);
-        FMLCommonHandler.instance()
-            .bus()
-            .register(magicFeather);
+        GregtechItemList.MagicFeather.set(new ItemMagicFeather());
 
         GregtechItemList.AlkalusDisk.set(
             new BaseItemDamageable(
@@ -938,6 +931,8 @@ public final class ModItems {
             .registerOre("catalystAlgagenicGrowthPromoter");
         GregtechItemList.HellishForceCatalyst.set(new ItemStack(genericChemItem, 1, 34))
             .registerOre("catalystHellishForce");
+        GregtechItemList.CrystalColorizationCatalyst.set(new ItemStack(genericChemItem, 1, 35))
+            .registerOre("catalystCrystalColorization");
 
         // Milled Ore Processing
         GregtechItemList.MilledSphalerite

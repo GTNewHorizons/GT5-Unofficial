@@ -144,7 +144,7 @@ public class MTESupercriticalFluidTurbine extends MTELargeTurbineBase {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Supercritical Steam Turbine")
             .addInfo("Needs a Turbine, place inside controller")
-            .addInfo("Use Supercritical Steam to generate power.")
+            .addInfo("Use Supercritical Steam to generate power")
             .addInfo("Outputs 1L of SH Steam per 1L of SC Steam as well as producing power")
             .addInfo("Power output depends on turbine and fitting")
             .addInfo("Use screwdriver to adjust fitting of turbine")

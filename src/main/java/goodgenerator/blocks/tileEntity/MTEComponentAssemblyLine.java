@@ -210,14 +210,14 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("High-Capacity Component Assembler, CoAL")
-            .addInfo("Assembles basic components (motors, pumps, etc.) in large batches.")
+            .addInfo("Assembles basic components (motors, pumps, etc.) in large batches")
             .addInfo(
                 "The " + EnumChatFormatting.BOLD
                     + EnumChatFormatting.YELLOW
                     + "Component Assembly Line Casing "
                     + EnumChatFormatting.RESET
                     + EnumChatFormatting.GRAY
-                    + "limits the recipes the machine can perform. See the NEI pages for details.")
+                    + "limits the recipes the machine can perform. See the NEI pages for details")
             .addInfo("Using casings above the required recipe tier provides a speed bonus:")
             .addInfo(EnumChatFormatting.YELLOW + "Halves recipe time per tier above recipe")
             .addInfo(EnumChatFormatting.ITALIC + "Much more efficient than other competing brands!")
@@ -305,7 +305,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
             @Nonnull
             @Override
             protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                speedBonus = 1 / Math.pow(2, casingTier + 1 - recipe.mSpecialValue);
+                speedBonus = GTUtility.powInt(2, -(casingTier + 1 - recipe.mSpecialValue));
                 return super.createOverclockCalculator(recipe).setDurationModifier(speedBonus);
             }
         };

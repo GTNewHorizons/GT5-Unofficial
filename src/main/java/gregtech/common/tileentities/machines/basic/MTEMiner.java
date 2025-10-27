@@ -10,7 +10,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkPosition;
@@ -18,6 +17,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -29,8 +31,6 @@ import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
-import gregtech.common.blocks.BlockOresAbstract;
-import gregtech.common.blocks.TileEntityOres;
 import gregtech.common.misc.DrillingLogicDelegate;
 import gregtech.common.misc.IDrillingLogicDelegateOwner;
 
@@ -61,7 +61,7 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
                 "Use Soft Mallet to disable and retract the pipe",
                 String.format("%d EU/t, %d sec per block, no stuttering", ENERGY[aTier], SPEED[aTier] / 20),
                 String.format("Maximum work area %dx%d", (RADIUS[aTier] * 2 + 1), (RADIUS[aTier] * 2 + 1)),
-                String.format("Fortune bonus of %d", aTier) },
+                String.format("Small ore fortune bonus of %d", aTier) },
             2,
             2,
             TextureFactory.of(
@@ -277,13 +277,7 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
                 Block block = aBaseMetaTileEntity.getBlockOffset(x, pipe.getTipDepth(), z);
                 int blockMeta = aBaseMetaTileEntity.getMetaIDOffset(x, pipe.getTipDepth(), z);
 
-                // todo some weird checks. refactorings needed
-                if (block instanceof BlockOresAbstract) {
-                    TileEntity oreEntity = aBaseMetaTileEntity.getTileEntityOffset(x, pipe.getTipDepth(), z);
-                    if (oreEntity instanceof TileEntityOres && ((TileEntityOres) oreEntity).mNatural) {
-                        oreBlockPositions.add(new ChunkPosition(x, pipe.getTipDepth(), z));
-                    }
-                } else if (GTUtility.isOre(block, blockMeta)) {
+                if (GTUtility.isOre(block, blockMeta)) {
                     oreBlockPositions.add(new ChunkPosition(x, pipe.getTipDepth(), z));
                 }
             }
@@ -403,5 +397,11 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
         return super.getUIProperties().toBuilder()
             .progressBarTexture(progressBarTexture)
             .build();
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GTCEU_LOOP_MINER;
     }
 }

@@ -18,9 +18,9 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.tileentities.general.TileEntityInfiniteFluid;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 public class BlockFluidTankInfinite extends BlockContainer {
 
@@ -74,10 +74,10 @@ public class BlockFluidTankInfinite extends BlockContainer {
             if (tank != null) {
                 if (player.isSneaking()) {
                     switch (tank.changeMode()) {
-                        case TileEntityInfiniteFluid.SINGLE_FLUID -> PlayerUtils
-                            .messagePlayer(player, "This tank is now in single fluid mode.");
-                        case TileEntityInfiniteFluid.SUPPLY_ALL_FLUIDS -> PlayerUtils
-                            .messagePlayer(player, "This tank is now in supply all fluids mode.");
+                        case TileEntityInfiniteFluid.SINGLE_FLUID -> GTUtility
+                            .sendChatToPlayer(player, "This tank is now in single fluid mode.");
+                        case TileEntityInfiniteFluid.SUPPLY_ALL_FLUIDS -> GTUtility
+                            .sendChatToPlayer(player, "This tank is now in supply all fluids mode.");
                     }
                     return true;
                 }
@@ -104,18 +104,18 @@ public class BlockFluidTankInfinite extends BlockContainer {
                     String fluidName = tank.getFluid()
                         .getLocalizedName();
                     switch (tank.mode) {
-                        case TileEntityInfiniteFluid.SINGLE_FLUID -> PlayerUtils
-                            .messagePlayer(player, "This tank contains " + fluidName + ".");
-                        case TileEntityInfiniteFluid.SUPPLY_ALL_FLUIDS -> PlayerUtils.messagePlayer(
+                        case TileEntityInfiniteFluid.SINGLE_FLUID -> GTUtility
+                            .sendChatToPlayer(player, "This tank contains " + fluidName + ".");
+                        case TileEntityInfiniteFluid.SUPPLY_ALL_FLUIDS -> GTUtility.sendChatToPlayer(
                             player,
                             "This tank contains " + fluidName + " and can supply any fluid that is requested from it.");
                     }
                 } else {
                     switch (tank.mode) {
-                        case TileEntityInfiniteFluid.SINGLE_FLUID -> PlayerUtils
-                            .messagePlayer(player, "This tank is empty.");
-                        case TileEntityInfiniteFluid.SUPPLY_ALL_FLUIDS -> PlayerUtils
-                            .messagePlayer(player, "This tank can supply any fluid that is requested from it.");
+                        case TileEntityInfiniteFluid.SINGLE_FLUID -> GTUtility
+                            .sendChatToPlayer(player, "This tank is empty.");
+                        case TileEntityInfiniteFluid.SUPPLY_ALL_FLUIDS -> GTUtility
+                            .sendChatToPlayer(player, "This tank can supply any fluid that is requested from it.");
                     }
                 }
                 return true;

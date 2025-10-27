@@ -183,15 +183,15 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
                     + EnumChatFormatting.WHITE
                     + GTUtility.formatNumbers(getWaterTier())
                     + EnumChatFormatting.RESET)
-            .addInfo("Must be linked to a Purification Plant using a data stick to work.")
+            .addInfo("Must be linked to a Purification Plant using a data stick to work")
             .addSeparator()
-            .addInfo("Requires a filter made of Activated Carbon to work.")
+            .addInfo("Requires a filter made of Activated Carbon to work")
             .addInfo(
                 "Every cycle, has a " + EnumChatFormatting.RED
                     + GTUtility.formatNumbers(FILTER_DAMAGE_RATE)
                     + "%"
                     + EnumChatFormatting.GRAY
-                    + " chance to destroy the filter.")
+                    + " chance to destroy the filter")
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.AQUA + ""

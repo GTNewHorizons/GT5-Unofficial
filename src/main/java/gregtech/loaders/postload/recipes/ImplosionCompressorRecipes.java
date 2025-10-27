@@ -14,6 +14,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class ImplosionCompressorRecipes implements Runnable {
 
     @Override

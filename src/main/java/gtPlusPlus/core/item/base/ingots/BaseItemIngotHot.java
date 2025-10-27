@@ -15,12 +15,12 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.minecraft.EntityUtils;
 
 public class BaseItemIngotHot extends BaseItemIngot {
 
@@ -62,16 +62,13 @@ public class BaseItemIngotHot extends BaseItemIngot {
     }
 
     @Override
-    public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
+    public void onUpdate(final ItemStack stack, final World world, final Entity entity, final int p_77663_4_,
         final boolean p_77663_5_) {
-        if (this.componentMaterial != null) {
-            if (entityHolding instanceof EntityPlayer) {
-                if (!((EntityPlayer) entityHolding).capabilities.isCreativeMode) {
-                    EntityUtils.applyHeatDamageToEntity(1, world, entityHolding);
-                }
-            }
+        if (this.componentMaterial != null && entity instanceof EntityPlayer player
+            && !player.capabilities.isCreativeMode) {
+            GTUtility.applyHeatDamageFromItem(player, 1, stack);
         }
-        super.onUpdate(iStack, world, entityHolding, p_77663_4_, p_77663_5_);
+        super.onUpdate(stack, world, entity, p_77663_4_, p_77663_5_);
     }
 
     @Override

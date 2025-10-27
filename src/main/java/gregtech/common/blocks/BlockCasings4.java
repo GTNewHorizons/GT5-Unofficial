@@ -6,6 +6,7 @@ import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
+import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.util.GTRenderingWorld;
@@ -57,8 +58,20 @@ public class BlockCasings4 extends BlockCasingsAbstract {
         register(14, ItemList.Casing_MiningOsmiridium, "Mining Osmiridium Casing");
         register(15, ItemList.Casing_Firebricks, "Firebricks");
 
-        GTMod.gregtechproxy.mCTMBlockCache.put(this, (byte) 6, true);
-        GTMod.gregtechproxy.mCTMBlockCache.put(this, (byte) 8, true);
+        GTMod.proxy.mCTMBlockCache.put(this, (byte) 6, true);
+        GTMod.proxy.mCTMBlockCache.put(this, (byte) 8, true);
+    }
+
+    @Override
+    public String getHarvestTool(int meta) {
+        if (meta == 15) return HarvestTool.PickaxeLevel2.getHarvestTool();
+        return super.getHarvestTool(meta);
+    }
+
+    @Override
+    public int getHarvestLevel(int meta) {
+        if (meta == 15) return HarvestTool.PickaxeLevel2.getHarvestLevel();
+        return super.getHarvestLevel(meta);
     }
 
     @Override

@@ -31,10 +31,10 @@ public class BWMetaGeneratedWerkstoffBlocks extends BWMetaGeneratedBlocks {
 
     public BWMetaGeneratedWerkstoffBlocks(Material p_i45386_1_, Class<? extends TileEntity> tileEntity,
         String blockName) {
-        super(p_i45386_1_, tileEntity, blockName);
+        super(p_i45386_1_, tileEntity, blockName, OrePrefixes.block);
         this.blockTypeLocalizedName = GTLanguageManager.addStringLocalization(
             "bw.blocktype." + OrePrefixes.block,
-            OrePrefixes.block.mLocalizedMaterialPre + "%material" + OrePrefixes.block.mLocalizedMaterialPost);
+            OrePrefixes.block.getMaterialPrefix() + "%material" + OrePrefixes.block.getMaterialPostfix());
     }
 
     @Override

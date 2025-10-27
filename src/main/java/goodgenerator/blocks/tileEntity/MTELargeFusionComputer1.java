@@ -45,7 +45,7 @@ public class MTELargeFusionComputer1 extends MTELargeFusionComputer {
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fusion Reactor")
-            .addInfo("Millions of nuclear.")
+            .addInfo("Power overload!!!")
             .addInfo(
                 EnumChatFormatting.AQUA + GTUtility.formatNumbers(getSingleHatchPower())
                     + EnumChatFormatting.GRAY
@@ -61,7 +61,7 @@ public class MTELargeFusionComputer1 extends MTELargeFusionComputer {
                 "If the recipe requires a voltage tier over " + GTUtility.getColoredTierNameFromTier((byte) tier())
                     + EnumChatFormatting.GRAY
                     + " , you can't do it either")
-            .addInfo("It can run 64x recipes at most.")
+            .addInfo(createParallelText())
             .addTecTechHatchInfo()
             .addCasingInfoMin("LuV Machine Casing", 1664, false)
             .addCasingInfoMin("Ameliorated Superconduct Coil", 560, false)

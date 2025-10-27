@@ -471,6 +471,10 @@ public class GTUITextures {
         .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_singularity");
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_STEAM = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_dehp_steam");
+    public static final UITexture OVERLAY_BUTTON_MUFFLE_ON = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/muffle_on");
+    public static final UITexture OVERLAY_BUTTON_MUFFLE_OFF = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/muffle_off");
 
     /**
      * Can adjust size as needed.

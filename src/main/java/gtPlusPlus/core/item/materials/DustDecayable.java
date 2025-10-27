@@ -61,19 +61,11 @@ public class DustDecayable extends BaseItemTickable {
     @Override
     public void onUpdate(final ItemStack stack, final World world, final Entity entityHolding, final int slot,
         final boolean heldInHand) {
-        if (world == null || stack == null) {
+        if (world == null || stack == null || world.isRemote) {
             return;
         }
-        if (world.isRemote) {
-            return;
-        }
-
         if (entityHolding instanceof EntityPlayer) {
-            if (!((EntityPlayer) entityHolding).capabilities.isCreativeMode) {
-                EntityUtils.applyRadiationDamageToEntity(stack.stackSize, this.radLevel, world, entityHolding);
-            }
-            // don't decay when held by a player
-            return;
+            EntityUtils.applyRadiationDamageToEntity(stack.stackSize, this.radLevel, world, entityHolding);
         }
     }
 

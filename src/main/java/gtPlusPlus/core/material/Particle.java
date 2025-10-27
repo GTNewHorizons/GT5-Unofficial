@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
 
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.chemistry.IonParticles;
-import gtPlusPlus.core.util.Utils;
 
 public class Particle {
 
@@ -121,9 +121,9 @@ public class Particle {
     public static ItemStack getIon(String aElementName, int aCharge) {
         for (String g : gtPlusPlus.core.item.chemistry.IonParticles.NameToMetaMap.keySet()) {
             if (g.toLowerCase()
-                .equals(Utils.sanitizeString(aElementName.toLowerCase()))) {
+                .equals(StringUtils.sanitizeString(aElementName.toLowerCase()))) {
                 Integer meta = gtPlusPlus.core.item.chemistry.IonParticles.NameToMetaMap
-                    .get(Utils.sanitizeString(aElementName.toLowerCase()));
+                    .get(StringUtils.sanitizeString(aElementName.toLowerCase()));
                 if (meta == null) {
                     meta = 0;
                 }
@@ -138,7 +138,7 @@ public class Particle {
     }
 
     public static ItemStack getBaseParticle(Particle aParticle) {
-        String aPartName = Utils.sanitizeString(aParticle.mParticleName.toLowerCase());
+        String aPartName = StringUtils.sanitizeString(aParticle.mParticleName.toLowerCase());
         for (String g : gtPlusPlus.core.item.chemistry.StandardBaseParticles.NameToMetaMap.keySet()) {
             if (g.toLowerCase()
                 .equals(aPartName)) {

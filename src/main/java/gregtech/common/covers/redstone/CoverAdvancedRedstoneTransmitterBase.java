@@ -18,6 +18,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverPosition;
+import gregtech.common.gui.modularui.cover.base.CoverAdvancedRedstoneTransmitterBaseGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import io.netty.buffer.ByteBuf;
 
 public abstract class CoverAdvancedRedstoneTransmitterBase extends CoverAdvancedWirelessRedstoneBase {
@@ -108,5 +110,10 @@ public abstract class CoverAdvancedRedstoneTransmitterBase extends CoverAdvanced
             invert ? translateToLocal("gt.interact.desc.inverted") : translateToLocal("gt.interact.desc.normal"));
     }
     // GUI stuff
+
+    @Override
+    protected @NotNull CoverBaseGui<?> getCoverGui() {
+        return new CoverAdvancedRedstoneTransmitterBaseGui(this);
+    }
 
 }

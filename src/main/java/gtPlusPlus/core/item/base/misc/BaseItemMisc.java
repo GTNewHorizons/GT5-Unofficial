@@ -18,6 +18,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.Utils;
 
@@ -33,7 +34,7 @@ public class BaseItemMisc extends Item {
 
         // Set-up the Misc Generic Item
         this.displayName = displayName;
-        String unlocalName = Utils.sanitizeString(displayName);
+        String unlocalName = StringUtils.sanitizeString(displayName);
         this.unlocalName = "item" + miscType.TYPE + unlocalName;
         this.miscType = miscType;
         this.setCreativeTab(AddToCreativeTab.tabMisc);

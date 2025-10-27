@@ -18,20 +18,38 @@ public class GTSoundLoop extends MovingSound {
     public static final float VOLUME_RAMP = 0.0625f;
     private final boolean whileActive;
     private final boolean whileInactive;
-    private final int worldID, machineX, machineY, machineZ;
+    private final int worldID;
 
     private boolean fadeMe = false;
+    private final int tileX;
+    private final int tileY;
+    private final int tileZ;
     private float targetVolume = 1, volumeRamp;
 
-    public GTSoundLoop(ResourceLocation p_i45104_1_, IGregTechTileEntity base, boolean stopWhenActive,
-        boolean stopWhenInactive) {
-        super(p_i45104_1_);
+    /**
+     * Constructs a GTSoundLoop.
+     *
+     * @param soundResource    the sound file location
+     * @param tileEntity       the tile entity associated with this sound
+     * @param stopWhenActive   flag to stop the sound when the block is active
+     * @param stopWhenInactive flag to stop the sound when the block is inactive
+     * @param soundX           positional sound X coordinate
+     * @param soundY           positional sound Y coordinate
+     * @param soundZ           positional sound Z coordinate
+     */
+    public GTSoundLoop(ResourceLocation soundResource, IGregTechTileEntity tileEntity, boolean stopWhenActive,
+        boolean stopWhenInactive, float soundX, float soundY, float soundZ) {
+
+        super(soundResource);
         this.whileActive = stopWhenActive;
         this.whileInactive = stopWhenInactive;
-        xPosF = machineX = base.getXCoord();
-        yPosF = machineY = base.getYCoord();
-        zPosF = machineZ = base.getZCoord();
-        worldID = base.getWorld().provider.dimensionId;
+        tileX = tileEntity.getXCoord();
+        tileY = tileEntity.getYCoord();
+        tileZ = tileEntity.getZCoord();
+        xPosF = soundX;
+        yPosF = soundY;
+        zPosF = soundZ;
+        worldID = tileEntity.getWorld().provider.dimensionId;
         repeat = true;
         volumeRamp = VOLUME_RAMP;
         volume = VOLUME_RAMP;
@@ -57,6 +75,50 @@ public class GTSoundLoop extends MovingSound {
         }
     }
 
+    /**
+     * Constructs a GTSoundLoop.
+     *
+     * @param soundResource    the sound file location
+     * @param tileEntity       the tile entity associated with this sound
+     * @param stopWhenActive   flag to stop the sound when the block is active
+     * @param stopWhenInactive flag to stop the sound when the block is inactive
+     *
+     * @implNote positional sound coordinates centred on tile
+     */
+    public GTSoundLoop(ResourceLocation soundResource, IGregTechTileEntity tileEntity, boolean stopWhenActive,
+        boolean stopWhenInactive) {
+        this(
+            soundResource,
+            tileEntity,
+            stopWhenActive,
+            stopWhenInactive,
+            tileEntity.getXCoord() + .5f,
+            tileEntity.getYCoord() + .5f,
+            tileEntity.getZCoord() + .5f);
+    }
+
+    /**
+     * Constructs a GTSoundLoop.
+     *
+     * @param soundResource    the sound file location
+     * @param tileEntity       the tile entity associated with this sound
+     * @param stopWhenActive   flag to stop the sound when the block is active
+     * @param stopWhenInactive flag to stop the sound when the block is inactive
+     *
+     * @implNote positional sound coordinates centred on tile
+     */
+    public GTSoundLoop(ResourceLocation soundResource, IGregTechTileEntity tileEntity, boolean stopWhenActive,
+        boolean stopWhenInactive) {
+        this(
+            soundResource,
+            tileEntity,
+            stopWhenActive,
+            stopWhenInactive,
+            tileEntity.getXCoord() + .5f,
+            tileEntity.getYCoord() + .5f,
+            tileEntity.getZCoord() + .5f);
+    }
+
     @Override
     public void update() {
         if (donePlaying) {
@@ -73,19 +135,27 @@ public class GTSoundLoop extends MovingSound {
         }
         World world = Minecraft.getMinecraft().thePlayer.worldObj;
         donePlaying = world.provider.dimensionId != worldID
-            || !world.checkChunksExist(machineX, machineY, machineZ, machineX, machineY, machineZ);
+            || !world.checkChunksExist(tileX, tileY, tileZ, tileX, tileY, tileZ);
         if (donePlaying) return;
-        TileEntity tile = world.getTileEntity(machineX, machineY, machineZ);
-        if (tile instanceof IGregTechTileEntity igte) {
-            fadeMe |= igte.isActive() ? whileActive : whileInactive;
+        TileEntity tile = world.getTileEntity(tileX, tileY, tileZ);
+        if ((tile instanceof IGregTechTileEntity iGregTechTileEntity)) {
+            fadeMe |= iGregTechTileEntity.isActive() ? whileActive : whileInactive;
 
-            if (igte.getMetaTileEntity() instanceof ISoundLoopAware loopAware) {
+            if (iGregTechTileEntity.getMetaTileEntity() instanceof ISoundLoopAware loopAware) {
                 loopAware.onSoundLoopTicked(this);
             }
             return;
         }
 
         donePlaying = true;
+    }
+
+    public void setDonePlaying(boolean value) {
+        donePlaying = value;
+    }
+
+    public void setFadeMe(boolean value) {
+        fadeMe = value;
     }
 
     public void setPosition(float x, float y, float z) {
@@ -110,9 +180,5 @@ public class GTSoundLoop extends MovingSound {
         } else {
             this.volume = volume;
         }
-    }
-
-    public void setDonePlaying(boolean isDone) {
-        this.donePlaying = isDone;
     }
 }

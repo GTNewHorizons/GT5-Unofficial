@@ -46,7 +46,7 @@ public class SemiFluidFuelHandler {
                 g.mSpecialValue *= aContainsCreosote ? 6 : 3;
                 Logger.INFO(
                     "Added " + g.mFluidInputs[0].getLocalizedName()
-                        + " to the Semi-Fluid Generator fuel map. Fuel Produces "
+                        + " to the Semifluid Generator fuel map. Fuel Produces "
                         + g.mSpecialValue
                         + "EU per 1000L.");
                 semiFluidFuels.add(g);
@@ -82,7 +82,7 @@ public class SemiFluidFuelHandler {
                 Logger.INFO(
                     "Added " + p.getKey()
                         .getLocalizedName()
-                        + " to the Semi-Fluid Generator fuel map. Fuel Produces "
+                        + " to the Semifluid Generator fuel map. Fuel Produces "
                         + (aFuelValue * 1000)
                         + "EU per 1000L.");
 

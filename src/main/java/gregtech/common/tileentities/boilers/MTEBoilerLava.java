@@ -69,7 +69,7 @@ public class MTEBoilerLava extends MTEBoiler {
             aName,
             aNameRegional,
             new String[] { "A Boiler running off Lava", "Produces " + PRODUCTION_PER_SECOND + "L of Steam per second",
-                "Causes " + GTMod.gregtechproxy.mPollutionHighPressureLavaBoilerPerSecond + " Pollution per second",
+                "Causes " + GTMod.proxy.mPollutionHighPressureLavaBoilerPerSecond + " Pollution per second",
                 "Consumes " + ((double) CONSUMPTION_PER_HEATUP / ENERGY_PER_LAVA)
                     + "L of Lava every "
                     + COOLDOWN_INTERVAL
@@ -106,7 +106,7 @@ public class MTEBoilerLava extends MTEBoiler {
         ITexture[][][] rTextures = new ITexture[6][17][];
         for (byte color = -1; color < 16; color++) {
             int i = color + 1;
-            short[] colorModulation = Dyes.getModulation(color, Dyes._NULL.mRGBa);
+            short[] colorModulation = Dyes.getModulation(color);
             rTextures[0][i] = new ITexture[] { TextureFactory.of(MACHINE_STEELBRICKS_BOTTOM, colorModulation) };
             rTextures[1][i] = new ITexture[] { TextureFactory.of(MACHINE_STEELBRICKS_TOP, colorModulation),
                 TextureFactory.of(OVERLAY_DRAIN), TextureFactory.of(FLUID_IN_SIGN) };
@@ -142,7 +142,7 @@ public class MTEBoilerLava extends MTEBoiler {
 
     @Override
     protected int getPollution() {
-        return GTMod.gregtechproxy.mPollutionHighPressureLavaBoilerPerSecond;
+        return GTMod.proxy.mPollutionHighPressureLavaBoilerPerSecond;
     }
 
     @Override
@@ -449,13 +449,13 @@ public class MTEBoilerLava extends MTEBoiler {
     }
 
     @Override
-    protected com.cleanroommc.modularui.widget.Widget<?> createFuelSlot() {
+    public com.cleanroommc.modularui.widget.Widget<?> createFuelSlot() {
         return new FluidSlot().syncHandler(lavaTank)
             .widgetTheme(GTWidgetThemes.OVERLAY_FLUID_SLOT_IN);
     }
 
     @Override
-    protected com.cleanroommc.modularui.widget.Widget<?> createAshSlot() {
+    public com.cleanroommc.modularui.widget.Widget<?> createAshSlot() {
         return super.createAshSlot().widgetTheme(GTWidgetThemes.OVERLAY_ITEM_SLOT_BLOCK);
     }
 

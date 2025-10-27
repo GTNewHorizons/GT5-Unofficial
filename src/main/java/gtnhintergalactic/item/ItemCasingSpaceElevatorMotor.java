@@ -6,10 +6,11 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
+import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.ItemCasings;
 import gtnhintergalactic.tile.multi.elevator.ElevatorUtil;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
 /**
  * Items of the space elevator motors
@@ -39,13 +40,13 @@ public class ItemCasingSpaceElevatorMotor extends ItemCasings {
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, @SuppressWarnings("rawtypes") List tooltip,
         boolean f3_h) {
-        tooltip.add(GCCoreUtil.translate("gt.blockcasings.ig.motor.desc0"));
+        tooltip.add(GTUtility.translate("gt.blockcasings.ig.motor.desc0"));
         tooltip.add(
             EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                + GCCoreUtil.translate("gt.blockcasings.ig.motor.t" + (stack.getItemDamage() + 1) + ".desc1"));
+                + GTUtility.translate("gt.blockcasings.ig.motor.t" + (stack.getItemDamage() + 1) + ".desc1"));
         tooltip.add(
-            String.format(
-                GCCoreUtil.translate("gt.blockcasings.ig.motor.desc2"),
+            StatCollector.translateToLocalFormatted(
+                "gt.blockcasings.ig.motor.desc2",
                 ElevatorUtil.getModuleSlotsUnlocked(stack.getItemDamage() + 1)));
     }
 }

@@ -20,7 +20,6 @@ import goodgenerator.items.GGMaterial;
 import goodgenerator.util.ItemRefer;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
@@ -152,13 +151,13 @@ public class FuelRecipeLoader {
         // Alternate higher tier recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.TranscendentMetal, 16),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.TranscendentMetal, 16),
                 GGMaterial.atomicSeparationCatalyst.get(OrePrefixes.dust, 48))
             .fluidInputs(
                 GGMaterial.naquadahBasedFuelMkIV.getFluidOrGas(2_000),
                 Materials.RadoxHeavy.getFluid(250),
-                MaterialsUEVplus.Mellion.getMolten(2 * INGOTS),
-                MaterialsUEVplus.Creon.getMolten(2 * INGOTS))
+                Materials.Mellion.getMolten(2 * INGOTS),
+                Materials.Creon.getMolten(2 * INGOTS))
             .fluidOutputs(GGMaterial.naquadahBasedFuelMkV.getFluidOrGas(750))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(300_000_000)
@@ -187,7 +186,7 @@ public class FuelRecipeLoader {
             .fluidInputs(
                 GGMaterial.naquadahBasedFuelMkV.getFluidOrGas(2_000),
                 GGMaterial.shirabon.getMolten(2 * INGOTS + 1 * HALF_INGOTS),
-                MaterialsUEVplus.RawStarMatter.getFluid(60L))
+                Materials.RawStarMatter.getFluid(60L))
             .fluidOutputs(GGMaterial.naquadahBasedFuelMkVI.getFluidOrGas(1_250))
             .duration(3 * SECONDS)
             .eut(TierEU.RECIPE_UXV)

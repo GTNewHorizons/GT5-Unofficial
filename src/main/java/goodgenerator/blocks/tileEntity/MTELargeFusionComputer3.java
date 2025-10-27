@@ -45,7 +45,7 @@ public class MTELargeFusionComputer3 extends MTELargeFusionComputer {
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fusion Reactor")
-            .addInfo("Millions of nuclear.")
+            .addInfo("Critical Power!!!")
             .addInfo(
                 EnumChatFormatting.AQUA + GTUtility.formatNumbers(getSingleHatchPower())
                     + EnumChatFormatting.GRAY
@@ -61,9 +61,7 @@ public class MTELargeFusionComputer3 extends MTELargeFusionComputer {
                 "If the recipe requires a voltage tier over " + GTUtility.getColoredTierNameFromTier((byte) tier())
                     + EnumChatFormatting.GRAY
                     + " , you can't do it either")
-            .addInfo("Startup < 160,000,000 EU: 192x Parallel")
-            .addInfo("Startup < 320,000,000 EU: 128x Parallel")
-            .addInfo("Startup >= 320,000,000 EU: 64x Parallel")
+            .addInfo(createParallelText())
             .addTecTechHatchInfo()
             .addCasingInfoMin("Fusion Machine Casing MK II", 1664, false)
             .addCasingInfoMin("Advanced Compact Fusion Coil", 560, false)

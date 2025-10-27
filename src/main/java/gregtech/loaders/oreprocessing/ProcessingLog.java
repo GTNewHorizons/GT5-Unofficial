@@ -148,7 +148,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                             .itemInputs(new ItemStack(aStack.getItem(), 1, i))
                             .itemOutputs(
                                 GTUtility.copyAmount(
-                                    GTMod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
+                                    GTMod.proxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
                                     tStack),
                                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
                             .fluidInputs(Materials.Water.getFluid(Math.min(1_000, 200 * 8 / 320)))
@@ -159,7 +159,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                             .itemInputs(new ItemStack(aStack.getItem(), 1, i))
                             .itemOutputs(
                                 GTUtility.copyAmount(
-                                    GTMod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
+                                    GTMod.proxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
                                     tStack),
                                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
                             .fluidInputs(GTModHandler.getDistilledWater(3))
@@ -169,13 +169,12 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                         GTModHandler.removeRecipeDelayed(new ItemStack(aStack.getItem(), 1, i));
                         GTModHandler.addCraftingRecipe(
                             GTUtility.copyAmount(
-                                GTMod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
+                                GTMod.proxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
                                 tStack),
                             GTModHandler.RecipeBits.BUFFERED,
                             new Object[] { "s", "L", 'L', new ItemStack(aStack.getItem(), 1, i) });
                         GTModHandler.addShapelessCraftingRecipe(
-                            GTUtility
-                                .copyAmount(tStack.stackSize / (GTMod.gregtechproxy.mNerfedWoodPlank ? 2 : 1), tStack),
+                            GTUtility.copyAmount(tStack.stackSize / (GTMod.proxy.mNerfedWoodPlank ? 2 : 1), tStack),
                             GTModHandler.RecipeBits.BUFFERED,
                             new Object[] { new ItemStack(aStack.getItem(), 1, i) });
                     }
@@ -205,7 +204,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                         .itemInputs(GTUtility.copyAmount(1, aStack))
                         .itemOutputs(
                             GTUtility.copyAmount(
-                                GTMod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
+                                GTMod.proxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
                                 tStack),
                             GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
                         .fluidInputs(Materials.Water.getFluid(Math.min(1_000, 200 * 8 / 320)))
@@ -216,7 +215,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                         .itemInputs(GTUtility.copyAmount(1, aStack))
                         .itemOutputs(
                             GTUtility.copyAmount(
-                                GTMod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
+                                GTMod.proxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
                                 tStack),
                             GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
                         .fluidInputs(GTModHandler.getDistilledWater(3))
@@ -226,11 +225,11 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                     GTModHandler.removeRecipeDelayed(GTUtility.copyAmount(1, aStack));
                     GTModHandler.addCraftingRecipe(
                         GTUtility.copyAmount(
-                            GTMod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
+                            GTMod.proxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
                             tStack),
                         new Object[] { "s", "L", 'L', GTUtility.copyAmount(1, aStack) });
                     GTModHandler.addShapelessCraftingRecipe(
-                        GTUtility.copyAmount(tStack.stackSize / (GTMod.gregtechproxy.mNerfedWoodPlank ? 2 : 1), tStack),
+                        GTUtility.copyAmount(tStack.stackSize / (GTMod.proxy.mNerfedWoodPlank ? 2 : 1), tStack),
                         new Object[] { GTUtility.copyAmount(1, aStack) });
                 }
             }
@@ -244,8 +243,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
     }
 
     /**
-     * Add Pyrolyse Oven Recipes for Logs.
-     * Used in NHCoreMod.
+     * Add Pyrolyse Oven Recipes for Logs. Used in NHCoreMod.
      */
     @SuppressWarnings("unused")
     public static void addPyrolyeOvenRecipes(ItemStack logStack) {

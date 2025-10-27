@@ -3,7 +3,6 @@ package gregtech.loaders.postload;
 import java.util.Set;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemPickaxe;
@@ -27,9 +26,6 @@ public class BlockResistanceLoader implements Runnable {
         Blocks.tnt.setHarvestLevel("pickaxe", 0);
         Blocks.sponge.setHarvestLevel("axe", 0);
         Blocks.monster_egg.setHarvestLevel("pickaxe", 0);
-
-        GTUtility.callMethod(Material.tnt, "func_85158_p", true, false, false);
-        GTUtility.callMethod(Material.tnt, "setAdventureModeExempt", true, false, false);
 
         Set<Block> tSet = (Set<Block>) GTUtility.getFieldContent(ItemAxe.class, "field_150917_c", true, true);
         tSet.add(Blocks.bed);

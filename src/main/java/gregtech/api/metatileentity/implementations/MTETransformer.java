@@ -53,29 +53,29 @@ public class MTETransformer extends MTETieredMachineBlock {
         ITexture[][][] rTextures = new ITexture[12][17][];
         for (byte i = -1; i < 16; i++) {
             rTextures[0][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_4A[mTier + 1] };
             rTextures[1][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_4A[mTier + 1] };
             rTextures[2][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_4A[mTier + 1] };
             rTextures[3][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN[mTier + 2] };
             rTextures[4][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN[mTier + 2] };
             rTextures[5][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN[mTier + 2] };
             rTextures[6][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_IN[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_4A[mTier + 1] };
             rTextures[7][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_IN[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_4A[mTier + 1] };
             rTextures[8][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_IN[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_4A[mTier + 1] };
             rTextures[9][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier + 2] };
             rTextures[10][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier + 2] };
             rTextures[11][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier + 2] };
         }
         return rTextures;
     }
@@ -271,10 +271,10 @@ public class MTETransformer extends MTETieredMachineBlock {
             String.format(
                 "%s %s(%dA) -> %s(%dA)",
                 (allowedToWork ? (GREEN + "Step Down") : (RED + "Step Up")) + RESET,
-                GTMod.gregtechproxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(inputTier)
+                GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(inputTier)
                     : tag.getLong("maxEUInput"),
                 tag.getLong("maxAmperesIn"),
-                GTMod.gregtechproxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(outputTier)
+                GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(outputTier)
                     : tag.getLong("maxEUOutput"),
                 tag.getLong("maxAmperesOut")));
 
@@ -282,14 +282,14 @@ public class MTETransformer extends MTETieredMachineBlock {
             currenttip.add(
                 String.format(
                     GOLD + "Input:" + RESET + " %s(%dA)",
-                    GTMod.gregtechproxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(inputTier)
+                    GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(inputTier)
                         : tag.getLong("maxEUInput"),
                     tag.getLong("maxAmperesIn")));
         } else {
             currenttip.add(
                 String.format(
                     BLUE + "Output:" + RESET + " %s(%dA)",
-                    GTMod.gregtechproxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(outputTier)
+                    GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(outputTier)
                         : tag.getLong("maxEUOutput"),
                     tag.getLong("maxAmperesOut")));
         }

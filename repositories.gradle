@@ -19,7 +19,7 @@ repositories {
         }
     }
     ivy {
-        url 'https://files.vexatos.com/'
+        url = 'https://files.vexatos.com/'
         patternLayout {
             artifact "[module]/[artifact]-[revision](-[classifier])(.[ext])"
         }
@@ -28,6 +28,17 @@ repositories {
         }
         metadataSources {
             artifact()
+        }
+    }
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = 'glease'
+                url = 'https://maven.glease.net/repos/releases/'
+            }
+        }
+        filter {
+            includeGroup('net.glease')
         }
     }
 }

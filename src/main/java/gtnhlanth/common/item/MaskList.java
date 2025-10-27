@@ -28,7 +28,8 @@ public enum MaskList {
     RAM("ram", "Random Access Memory", 200, "", BLANK1, Dyes.dyeCyan, TierEU.RECIPE_MV, 2e-3f, 4e-3f, 40, 2,
         ItemList.Circuit_Wafer_Ram.get(1), null, ItemList.Circuit_Silicon_Wafer),
     NAND("nand", "NAND", 200, "", BLANK2, Dyes._NULL, TierEU.RECIPE_HV, 7e-3f, 12e-3f, 40, 1,
-        ItemList.Circuit_Wafer_NAND.get(1), null, ItemList.Circuit_Silicon_Wafer), // NAND uses only Ender Pearl lens,
+        ItemList.Circuit_Wafer_NAND.get(1), null, ItemList.Circuit_Silicon_Wafer), // NAND uses only Ender Pearl
+                                                                                   // lens,
                                                                                    // don't
     // ask me why
     NOR("nor", "NOR", 100, "", BLANK2, Dyes._NULL, TierEU.RECIPE_HV, 8e-3f, 10e-3f, 40, 1,
@@ -91,7 +92,8 @@ public enum MaskList {
 
     CCPU("ccpu", "Crystal Central Processing Unit", 100, "", CBLANK, Dyes.dyeGreen, 10_000, 1, 3, 50, 6,
         ItemList.Circuit_Chip_CrystalCPU.get(1), ItemList.Circuit_Parts_Crystal_Chip_Elite.get(1)), // For producing
-                                                                                                    // Crystal CPUs from
+                                                                                                    // Crystal CPUs
+                                                                                                    // from
                                                                                                     // Engraved CCs
     CSOC("csoc", "Crystal SoC", 100, "", CBLANK, Dyes.dyeBlue, 40_000, 2, 7, 50, 8,
         ItemList.Circuit_Chip_CrystalSoC.get(1), ItemList.Circuit_Chip_CrystalCPU.get(1)),

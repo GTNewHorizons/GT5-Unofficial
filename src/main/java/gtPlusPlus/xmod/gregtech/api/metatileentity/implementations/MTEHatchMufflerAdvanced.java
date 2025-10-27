@@ -20,6 +20,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
 import gregtech.common.pollution.Pollution;
 import gtPlusPlus.core.item.general.ItemAirFilter;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -125,7 +126,7 @@ public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGreg
         if (mTier < 2) return (int) (aPollution * 0.95);
         if (mTier > 8) return 0;
 
-        return (int) (aPollution * Math.pow(0.64D, mTier - 1));
+        return (int) (aPollution * GTUtility.powInt(0.64D, mTier - 1));
     }
 
     /**
@@ -257,7 +258,7 @@ public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGreg
         boolean chk2;
         boolean chk3;
         int aPollutionAmount = Pollution.getPollution(getBaseMetaTileEntity());
-        if (aPollutionAmount >= GTMod.gregtechproxy.mPollutionSmogLimit) {
+        if (aPollutionAmount >= GTMod.proxy.mPollutionSmogLimit) {
             ran2 = GTPPCore.RANDOM.nextFloat();
             ran3 = GTPPCore.RANDOM.nextFloat();
             chk2 = ran2 * 100.0F < (float) this.calculatePollutionReduction(100);

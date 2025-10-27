@@ -110,7 +110,7 @@ public class RecipeLoaderMilling {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 22),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Nickel, 64),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Nickel, 36),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Promethium, 20),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 20),
                 MaterialsElements.getInstance().HAFNIUM.getDust(10))
             .fluidInputs(new FluidStack(GTPPFluids.PentlanditeFlotationFroth, 4_000))
             .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2_000), Materials.Water.getFluid(2_000))
@@ -396,8 +396,8 @@ public class RecipeLoaderMilling {
                 GTOreDictUnificator.get(OrePrefixes.milled, Materials.Netherrack, 64))
             .fluidInputs(Materials.NefariousOil.getFluid(8_000))
             .fluidOutputs(new FluidStack(GTPPFluids.NetherrackFlotationFroth, 1_000))
-            .duration(8 * MINUTES)
-            .eut(TierEU.RECIPE_IV)
+            .duration(2 * MINUTES)
+            .eut(TierEU.RECIPE_LuV)
             .addTo(flotationCellRecipes);
     }
 

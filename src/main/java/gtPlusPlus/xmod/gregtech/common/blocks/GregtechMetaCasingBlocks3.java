@@ -11,6 +11,7 @@ import net.minecraft.world.IBlockAccess;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.GTMod;
 import gregtech.api.enums.TAE;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
@@ -99,6 +100,8 @@ public class GregtechMetaCasingBlocks3 extends GregtechMetaCasingBlocksAbstract 
         for (int i = 4; i < 9; i++) {
             GTStructureChannels.PSS_CELL.registerAsIndicator(new ItemStack(this, 1, i), i - 2);
         }
+
+        GTMod.proxy.mCTMBlockCache.put(this, (byte) 12, true);
     }
 
     @Override

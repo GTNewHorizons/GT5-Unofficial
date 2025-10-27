@@ -12,7 +12,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
@@ -76,10 +75,10 @@ public class ResearchableAssemblyLine implements Runnable {
             1_280,
             (int) TierEU.RECIPE_UIV,
             32,
-            new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.TranscendentMetal, 4),
-                GTOreDictUnificator.get(OrePrefixes.screw, MaterialsUEVplus.TranscendentMetal, 24),
-                HYPOGEN.getPlateDouble(64), new Object[] { OrePrefixes.circuit.get(Materials.UMV), 4 },
-                ItemList.ZPM4.get(8L), ItemList.Field_Generator_UIV.get(4), ItemList.Circuit_Wafer_QPIC.get(64),
+            new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TranscendentMetal, 4),
+                GTOreDictUnificator.get(OrePrefixes.screw, Materials.TranscendentMetal, 24), HYPOGEN.getPlateDouble(64),
+                new Object[] { OrePrefixes.circuit.get(Materials.UMV), 4 }, ItemList.ZPM4.get(8L),
+                ItemList.Field_Generator_UIV.get(4), ItemList.Circuit_Wafer_QPIC.get(64),
                 ItemList.Circuit_Wafer_QPIC.get(64),
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.RawPicoWafer", 64),
                 ItemList.Circuit_Parts_DiodeXSMD.get(64), ItemList.Circuit_Parts_InductorXSMD.get(32),
@@ -98,10 +97,10 @@ public class ResearchableAssemblyLine implements Runnable {
             12_288,
             (int) TierEU.RECIPE_UMV,
             64,
-            new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SpaceTime, 4),
-                GTOreDictUnificator.get(OrePrefixes.screw, MaterialsUEVplus.SpaceTime, 24),
-                DRAGON_METAL.getPlateDouble(64), new Object[] { OrePrefixes.circuit.get(Materials.UXV), 4 },
-                ItemList.ZPM5.get(8L), ItemList.Field_Generator_UMV.get(4), ItemList.Circuit_Wafer_QPIC.get(64),
+            new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 4),
+                GTOreDictUnificator.get(OrePrefixes.screw, Materials.SpaceTime, 24), DRAGON_METAL.getPlateDouble(64),
+                new Object[] { OrePrefixes.circuit.get(Materials.UXV), 4 }, ItemList.ZPM5.get(8L),
+                ItemList.Field_Generator_UMV.get(4), ItemList.Circuit_Wafer_QPIC.get(64),
                 ItemList.Circuit_Wafer_QPIC.get(64),
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 64),
                 ItemList.Circuit_Parts_DiodeXSMD.get(64), ItemList.Circuit_Parts_InductorXSMD.get(64),

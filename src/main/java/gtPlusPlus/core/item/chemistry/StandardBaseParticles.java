@@ -14,6 +14,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.core.item.base.misc.BaseItemParticle;
 import gtPlusPlus.core.material.Particle;
 import gtPlusPlus.core.material.Particle.ElementaryGroup;
@@ -40,8 +41,8 @@ public class StandardBaseParticles extends BaseItemParticle {
 
         for (String s : aTypes) {
             // Map names to Meta
-            NameToMetaMap.put(Utils.sanitizeString(s.toLowerCase()), key);
-            MetaToNameMap.put(key, Utils.sanitizeString(s.toLowerCase()));
+            NameToMetaMap.put(StringUtils.sanitizeString(s.toLowerCase()), key);
+            MetaToNameMap.put(key, StringUtils.sanitizeString(s.toLowerCase()));
             for (Particle o : Particle.aMap) {
                 int aColour = 0;
                 if (o.mParticleName.equalsIgnoreCase(s)) {
@@ -89,8 +90,8 @@ public class StandardBaseParticles extends BaseItemParticle {
     public static Particle getParticle(ItemStack aStack) {
         ArrayList<Particle> g = Particle.aMap;
         for (Particle p : g) {
-            String aPartName = Utils.sanitizeString(p.mParticleName.toLowerCase());
-            String expectedPart = Utils.sanitizeString(aTypes[aStack.getItemDamage()].toLowerCase());
+            String aPartName = StringUtils.sanitizeString(p.mParticleName.toLowerCase());
+            String expectedPart = StringUtils.sanitizeString(aTypes[aStack.getItemDamage()].toLowerCase());
             if (aPartName.equals(expectedPart)) {
                 return p;
             }

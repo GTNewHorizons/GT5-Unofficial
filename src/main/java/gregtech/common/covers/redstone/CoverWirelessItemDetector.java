@@ -14,6 +14,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.common.covers.CoverItemMeter;
 import gregtech.common.covers.CoverPosition;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
+import gregtech.common.gui.modularui.cover.redstone.CoverWirelessItemDetectorGui;
 import gregtech.common.gui.mui1.cover.WirelessItemDetectorUIFactory;
 import io.netty.buffer.ByteBuf;
 
@@ -50,7 +52,7 @@ public class CoverWirelessItemDetector extends CoverAdvancedRedstoneTransmitterB
         return this.threshold;
     }
 
-    public CoverWirelessItemDetector setThresdhold(int threshold) {
+    public CoverWirelessItemDetector setThreshold(int threshold) {
         this.threshold = threshold;
         return this;
     }
@@ -139,4 +141,8 @@ public class CoverWirelessItemDetector extends CoverAdvancedRedstoneTransmitterB
         return new WirelessItemDetectorUIFactory(buildContext).createWindow();
     }
 
+    @Override
+    protected @NotNull CoverBaseGui<?> getCoverGui() {
+        return new CoverWirelessItemDetectorGui(this);
+    }
 }

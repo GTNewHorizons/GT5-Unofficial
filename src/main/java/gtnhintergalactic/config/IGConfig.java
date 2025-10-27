@@ -13,7 +13,7 @@ import gregtech.api.enums.Mods;
 import gregtech.api.util.GTModHandler;
 import gtnhintergalactic.GTNHIntergalactic;
 
-@Config(modid = Mods.Names.G_T_N_H_INTERGALACTIC, filename = "gtnhintergalactic")
+@Config(modid = Mods.ModIDs.G_T_N_H_INTERGALACTIC, filename = "gtnhintergalactic")
 public class IGConfig {
 
     public static SpaceElevator spaceElevator = new SpaceElevator();

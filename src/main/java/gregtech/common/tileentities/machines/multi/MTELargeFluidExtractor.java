@@ -56,6 +56,8 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -203,7 +205,8 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
                 setSpeedBonus(1.0f / getSpeedBonus());
                 return super.process();
             }
-        }.setMaxParallelSupplier(this::getTrueParallel);
+        }.noRecipeCaching()
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -265,25 +268,14 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
 
         // spotless:off
-        tt.addMachineType("Fluid Extractor")
+        tt.addMachineType("Fluid Extractor, LFE")
+            .addDynamicParallelInfo(PARALLELS_PER_SOLENOID, TooltipTier.SOLENOID)
+            .addStaticSpeedInfo((float) BASE_SPEED_BONUS)
+            .addStaticEuEffInfo((float) BASE_EU_MULTIPLIER)
             .addInfo(String.format(
-                "%d%% faster than single block machines of the same voltage",
-                (int) Math.round((BASE_SPEED_BONUS - 1) * 100)
-            ))
-            .addInfo(String.format(
-                "Only uses %d%% of the EU/t normally required",
-                (int) Math.round(BASE_EU_MULTIPLIER * 100)
-            ))
-            .addInfo(String.format(
-                "Every coil tier gives a +%d%% speed bonus and a %d%% EU/t discount (multiplicative)",
-                (int) Math.round(SPEED_PER_COIL * 100),
-                (int) Math.round((1 - HEATING_COIL_EU_MULTIPLIER) * 100)
-            ))
-            .addInfo(String.format(
-                "Every solenoid tier gives %s%d * tier%s parallels (MV is tier 2)",
-                EnumChatFormatting.ITALIC,
-                PARALLELS_PER_SOLENOID,
-                EnumChatFormatting.GRAY
+                "Every coil tier gives a %s speed bonus and a %s EU/t discount (multiplicative)",
+                TooltipHelper.speedText("+") + TooltipHelper.speedText((float) SPEED_PER_COIL),
+                TooltipHelper.effText((float) (1-HEATING_COIL_EU_MULTIPLIER))
             ))
             .addInfo(String.format(
                 "The EU multiplier is %s%.2f * (%.2f ^ Heating Coil Tier)%s, prior to overclocks",
@@ -292,7 +284,7 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
                 HEATING_COIL_EU_MULTIPLIER,
                 EnumChatFormatting.GRAY
             ))
-            .addInfo("The energy hatch tier is limited by the glass tier. UEV glass unlocks all tiers.")
+            .addInfo("The energy hatch tier is limited by the glass tier. UEV glass unlocks all tiers")
             .beginStructureBlock(5, 9, 5, false)
             .addController("Front Center (Bottom Layer)")
             .addCasingInfoMin("Robust Tungstensteel Machine Casing", BASE_CASING_COUNT - MAX_HATCHES_ALLOWED, false)
@@ -315,17 +307,24 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
     }
 
     @Override
+    protected boolean useMui2() {
+        return false;
+    }
+
+    @Override
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
         super.drawTexts(screenElements, inventorySlot);
 
         screenElements.widgets(TextWidget.dynamicString(() -> {
             if (mStructureBadCasingCount) {
-                return String.format(
-                    "%sNot enough casings: need %d, but\nhave %d.%s",
-                    EnumChatFormatting.DARK_RED,
-                    BASE_CASING_COUNT - MAX_HATCHES_ALLOWED,
-                    mCasingAmount,
-                    RESET);
+                return EnumChatFormatting.DARK_RED
+                    + StatCollector
+                        .translateToLocalFormatted(
+                            "GT5U.gui.text.large_fluid_extractor.not_enough_casings",
+                            BASE_CASING_COUNT - MAX_HATCHES_ALLOWED,
+                            mCasingAmount)
+                        .replace("\\n", "\n")
+                    + EnumChatFormatting.RESET;
             }
 
             if (mStructureBadGlassTier) {
@@ -411,7 +410,8 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
     }
 
     public float getEUMultiplier() {
-        double heatingBonus = (mCoilLevel == null ? 0 : Math.pow(HEATING_COIL_EU_MULTIPLIER, mCoilLevel.getTier()));
+        double heatingBonus = (mCoilLevel == null ? 0
+            : GTUtility.powInt(HEATING_COIL_EU_MULTIPLIER, mCoilLevel.getTier()));
 
         return (float) (BASE_EU_MULTIPLIER * heatingBonus);
     }

@@ -234,7 +234,7 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
 
         // We'll just steal the icons from Water. They are all the same anyway (except _NULL is broken for cells).
         for (CellType cellType : CellType.values()) {
-            IIconContainer iconContainer = Materials.Water.mIconSet.mTextures[cellType.prefix.mTextureIndex];
+            IIconContainer iconContainer = Materials.Water.mIconSet.mTextures[cellType.prefix.getTextureIndex()];
             INSTANCE.iconContainerMap.put(cellType, iconContainer);
         }
     }
@@ -291,8 +291,8 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
 
         GTLanguageManager.addStringLocalization(
             getUnlocalizedName(aCell.mStack) + ".name",
-            cellType.prefix.mLocalizedMaterialPre + fluid.getLocalizedName(fluidStack)
-                + cellType.prefix.mLocalizedMaterialPost);
+            cellType.prefix.getMaterialPrefix() + fluid.getLocalizedName(fluidStack)
+                + cellType.prefix.getMaterialPostfix());
 
         int color = fluid.getColor();
         short[] rgba = GTUtil.getRGBaArray(color);

@@ -169,11 +169,11 @@ public class GTItemIterator implements Runnable {
                         tBlock.setHarvestLevel("scoop", 0);
                         ToolScoop.sBeeHiveMaterial = tBlock.getMaterial();
                     }
-                    if (OrePrefixes.stone.mDefaultStackSize < tItem.getItemStackLimit(new ItemStack(tItem, 1, 0))) {
+                    if (OrePrefixes.stone.getDefaultStackSize() < tItem.getItemStackLimit(new ItemStack(tItem, 1, 0))) {
                         if ((tBlock.isReplaceableOreGen(GTValues.DW, 0, 0, 0, Blocks.stone))
                             || (tBlock.isReplaceableOreGen(GTValues.DW, 0, 0, 0, Blocks.netherrack))
                             || (tBlock.isReplaceableOreGen(GTValues.DW, 0, 0, 0, Blocks.end_stone))) {
-                            tItem.setMaxStackSize(OrePrefixes.stone.mDefaultStackSize);
+                            tItem.setMaxStackSize(OrePrefixes.stone.getDefaultStackSize());
                         }
                     }
                     if (tName.equals("tile.tankBlock") && tBlock instanceof buildcraft.factory.BlockTank) {

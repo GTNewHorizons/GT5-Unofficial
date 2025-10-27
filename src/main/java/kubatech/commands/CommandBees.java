@@ -41,6 +41,7 @@ import com.google.common.io.Files;
 import forestry.api.apiculture.IAlleleBeeSpecies;
 import forestry.api.apiculture.IBee;
 import forestry.api.apiculture.IBeeGenome;
+import gregtech.api.util.GTUtility;
 import kubatech.api.utils.ModUtils;
 
 public class CommandBees extends CommandBase {
@@ -146,6 +147,6 @@ public class CommandBees extends CommandBase {
     }
 
     private double productChanceOld(int upgradeCount, double beeSpeed, double chance) {
-        return chance * beeSpeed * Math.pow(1.2d, upgradeCount);
+        return chance * beeSpeed * GTUtility.powInt(1.2d, upgradeCount);
     }
 }

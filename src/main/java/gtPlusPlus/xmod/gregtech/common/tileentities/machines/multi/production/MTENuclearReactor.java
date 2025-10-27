@@ -108,7 +108,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
             .beginStructureBlock(7, 4, 7, true)
             .addController("Bottom Center")
             .addCasingInfoMin("Hastelloy-N Reactor Casing", 27, false)
-            .addCasingInfoMin("Zeron-100 Reactor Shielding", 26, false)
+            .addCasingInfoMin("Reactor Shield Casing", 26, false)
             .addInputHatch("Top or bottom layer edges", 1)
             .addOutputHatch("Top or bottom layer edges", 1)
             .addDynamoHatch("Top or bottom layer edges", 1)

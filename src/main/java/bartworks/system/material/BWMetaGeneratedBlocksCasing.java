@@ -78,8 +78,8 @@ public class BWMetaGeneratedBlocksCasing extends BWMetaGeneratedBlocks
 
     @Override
     public String getUnlocalizedName() {
-        if (this._prefixes == OrePrefixes.blockCasing) return "bw.werkstoffblockscasing.01";
-        if (this._prefixes == OrePrefixes.blockCasingAdvanced) return "bw.werkstoffblockscasingadvanced.01";
+        if (this.prefix == OrePrefixes.blockCasing) return "bw.werkstoffblockscasing.01";
+        if (this.prefix == OrePrefixes.blockCasingAdvanced) return "bw.werkstoffblockscasingadvanced.01";
         return "";
     }
 

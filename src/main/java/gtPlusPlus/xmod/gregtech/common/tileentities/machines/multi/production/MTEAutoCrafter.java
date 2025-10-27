@@ -67,8 +67,7 @@ public class MTEAutoCrafter extends GTPPMultiBlockBase<MTEAutoCrafter> implement
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Highly Advanced Assembling Machine")
-            .addInfo("200% faster than using single block machines of the same voltage")
-            .addInfo("Processes two items per voltage tier")
+            .addBulkMachineInfo(2, 3f, 1f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front Center")

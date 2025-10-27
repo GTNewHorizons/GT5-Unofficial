@@ -12,7 +12,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
@@ -226,8 +225,8 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.ZPM5.get(1),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.TranscendentMetal, 4),
-                GTOreDictUnificator.get(OrePrefixes.screw, MaterialsUEVplus.TranscendentMetal, 24),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TranscendentMetal, 4),
+                GTOreDictUnificator.get(OrePrefixes.screw, Materials.TranscendentMetal, 24),
                 GTUtility.getIntegratedCircuit(6))
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 9))
             .duration(10 * MINUTES + 40 * SECONDS)
@@ -238,8 +237,8 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.ZPM6.get(1),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SpaceTime, 4),
-                GTOreDictUnificator.get(OrePrefixes.screw, MaterialsUEVplus.SpaceTime, 24),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 4),
+                GTOreDictUnificator.get(OrePrefixes.screw, Materials.SpaceTime, 24),
                 GTUtility.getIntegratedCircuit(6))
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 10))
             .duration(10 * MINUTES + 40 * SECONDS)

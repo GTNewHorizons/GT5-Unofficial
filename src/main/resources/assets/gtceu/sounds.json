@@ -1,0 +1,281 @@
+{
+  "gtceu.ArcLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "arc",
+        "stream": false
+      }
+    ]
+  },
+  "gtceu.AssemblerLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "assembler",
+        "stream": false
+      }
+    ]
+  },
+  "gtceu.BathLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "bath",
+        "stream": false
+      }
+    ]
+  },
+  "gtceu.BoilerLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "boiler",
+        "stream": false
+      }
+    ]
+  },
+  "gtceu.CentrifugeLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "centrifuge",
+        "stream": false
+      }
+    ]
+  },
+  "gtceu.ChemicalLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "chemical",
+        "stream": false
+      }
+    ]
+  },
+  "gtceu.ClickOp": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "click",
+        "stream": false
+      }
+    ]
+  },
+  "gtceu.CompressorLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "compressor",
+        "stream": false
+      }
+    ]
+  },
+  "gtceu.CoolingLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "cooling",
+        "stream": false
+      }
+    ]
+  },
+  "gtceu.CutLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "cut",
+        "stream": false
+      }
+    ]
+  },
+  "gtceu.ElectrolyzerLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "electrolyzer",
+        "stream": false
+      }
+    ]
+  },
+  "gtceu.FileOp": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "file",
+        "stream": false
+      }
+    ]
+  },
+  "gtceu.FireLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "fire",
+        "stream": false
+      }
+    ]
+  },
+  "gtceu.ForgeHammerLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "forge_hammer",
+        "stream": false
+      }
+    ]
+  },
+  "gtceu.FurnaceLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "furnace",
+        "stream": false
+      }
+    ]
+  },
+  "gtceu.HumLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "hum",
+        "stream": false
+      }
+    ]
+  },
+  "gtceu.MaceratorLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "macerator",
+        "stream": false
+      }
+    ]
+  },
+  "gtceu.MinerLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "miner",
+        "stream": false
+      }
+    ]
+  },
+  "gtceu.MixerLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "mixer",
+        "stream": false
+      }
+    ]
+  },
+  "gtceu.MortarOp": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "mortar",
+        "stream": false
+      }
+    ]
+  },
+  "gtceu.MotorLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "motor",
+        "stream": false
+      }
+    ]
+  },
+  "gtceu.PlungerOp": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "plunger",
+        "stream": false
+      }
+    ]
+  },
+  "gtceu.PortableScannerOp": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "portable_scanner",
+        "stream": false
+      }
+    ]
+  },
+  "gtceu.PumpLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "pump",
+        "stream": false
+      }
+    ]
+  },
+  "gtceu.ReplicatorLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "replicator",
+        "stream": false
+      }
+    ]
+  },
+  "gtceu.SawOp": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "saw",
+        "stream": false
+      }
+    ]
+  },
+  "gtceu.ScrewdriverOp": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "screwdriver",
+        "stream": false
+      }
+    ]
+  },
+  "gtceu.SoftHammerOp": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "soft_hammer",
+        "stream": false
+      }
+    ]
+  },
+  "gtceu.SprayCanOp": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "spray_can",
+        "stream": false
+      }
+    ]
+  },
+  "gtceu.WirecutterOp": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "wirecutter",
+        "stream": false
+      }
+    ]
+  },
+  "gtceu.WrenchOp": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "wrench",
+        "stream": false
+      }
+    ]
+  }
+}

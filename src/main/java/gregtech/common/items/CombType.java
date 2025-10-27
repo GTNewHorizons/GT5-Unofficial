@@ -217,6 +217,18 @@ public enum CombType {
     NEODYMIUM(166, "neodymium", true, Materials.Neodymium, 50, 0x555555, 0x4F4F4F, ItemComb.Voltage.HV),
     EUROPIUM(167, "europium", true, Materials.Europium, 10, 0xDAA0E2, 0xAB7EB1, ItemComb.Voltage.LuV),
     MACHINIST(168, "machinist", true, Materials._NULL, 100, 0x552582, 0xFDB927, ItemComb.Voltage.MV),
+    NETHERITE(169, "netherite", true, Materials._NULL, 10, 0x31292a, 0xada9aa, ItemComb.Voltage.LuV),
+    // Gem Addition
+    PRISMATIC(170, "prismatic", true, Materials._NULL, 10, 0x117777, 0xcfe4e4, ItemComb.Voltage.UHV),
+    REFINEDRAREEARTH(171, "refined_rare_earth", true, Materials._NULL, 85, 0x160822, 0x8A97B0, ItemComb.Voltage.IV),
+    // Metals Addition
+    PYRITE(172, "pyrite", true, Materials.Pyrite, 100, 0xB67206, 0x654004, ItemComb.Voltage.HV),
+    // Botania Line
+    MANASTEEL(173, "manasteel", true, Materials.Manasteel, 50, 0x4BAFFB, 0xCEEAFD, ItemComb.Voltage.LV),
+    MMM(174, "M-M-M", true, Materials._NULL, 50, 0x3F9B7B, 0x76FFCF, ItemComb.Voltage.EV),
+    ELVEN(175, "elven", true, Materials._NULL, 50, 0xC72ED9, 0xEFBFF9, ItemComb.Voltage.EV),
+    TERRASTEEL(176, "terrasteel", true, Materials.Terrasteel, 50, 0x51BA00, 0xAEFF6B, ItemComb.Voltage.IV),
+    GAIASPIRIT(177, "gaia_spirit", true, Materials.GaiaSpirit, 50, 0x758997, 0xB7D6EB, ItemComb.Voltage.LuV),
 
     // ALWAYS KEEP _NULL AT THE BOTTOM
     _NULL(-1, "INVALIDCOMB", false, Materials._NULL, 0, 0, 0);

@@ -32,6 +32,7 @@ import static kubatech.api.enums.ItemList.EarlGrayTea;
 import static kubatech.api.enums.ItemList.FermentedTeaLeaf;
 import static kubatech.api.enums.ItemList.GreenTea;
 import static kubatech.api.enums.ItemList.GreenTeaLeaf;
+import static kubatech.api.enums.ItemList.KubaFakeItemEECVoid;
 import static kubatech.api.enums.ItemList.LegendaryBlackTea;
 import static kubatech.api.enums.ItemList.LegendaryButterflyTea;
 import static kubatech.api.enums.ItemList.LegendaryEarlGrayTea;
@@ -71,12 +72,12 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import kubatech.loaders.item.ItemProxy;
-import kubatech.loaders.item.KubaItems;
-import kubatech.loaders.item.items.ItemTea;
-import kubatech.loaders.item.items.ItemTeaCollection;
-import kubatech.loaders.item.items.ItemTeaIngredient;
-import kubatech.loaders.item.items.ItemTeaUltimate;
+import kubatech.loaders.item.kubaitem.ItemProxy;
+import kubatech.loaders.item.kubaitem.KubaItems;
+import kubatech.loaders.item.kubaitem.items.ItemTea;
+import kubatech.loaders.item.kubaitem.items.ItemTeaCollection;
+import kubatech.loaders.item.kubaitem.items.ItemTeaIngredient;
+import kubatech.loaders.item.kubaitem.items.ItemTeaUltimate;
 
 public class ItemLoader {
 
@@ -145,5 +146,8 @@ public class ItemLoader {
         DEFCAwakenedSchematic.set(kubaitems.registerProxyItem(new ItemProxy("defc_schematic_t3")));
         DEFCChaoticSchematic.set(kubaitems.registerProxyItem(new ItemProxy("defc_schematic_t4")));
 
+        // Fake EEC button item
+        KubaFakeItemEECVoid.set(kubaitems.registerProxyItem(new ItemProxy("fakeitem_eecvoid")))
+            .hidden();
     }
 }

@@ -16,7 +16,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverLegacyData;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 // TODO: Figure out what anything in this class is even supposed to do.
 public class CoverToggleVisual extends CoverLegacyData {
@@ -46,7 +45,7 @@ public class CoverToggleVisual extends CoverLegacyData {
 
     @Override
     public boolean onCoverRightClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        PlayerUtils.messagePlayer(aPlayer, GTUtility.trans("756", "Connectable: ") + getConnectionState());
+        GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("756", "Connectable: ") + getConnectionState());
         return super.onCoverRightClick(aPlayer, aX, aY, aZ);
     }
 

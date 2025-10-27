@@ -30,6 +30,7 @@ public abstract class CoverAdvancedWirelessRedstoneBase extends Cover {
 
     /**
      * If UUID is set to null, the cover frequency is public, rather than private
+     *
      **/
     protected UUID uuid;
 
@@ -231,6 +232,14 @@ public abstract class CoverAdvancedWirelessRedstoneBase extends Cover {
     @Override
     public int getDefaultTickRate() {
         return 5;
+    }
+
+    public void syncPrivacyState(boolean b, UUID uuid) {
+        this.uuid = b ? uuid : null;
+    }
+
+    public boolean getPrivacyState() {
+        return this.uuid != null;
     }
 
     // GUI stuff

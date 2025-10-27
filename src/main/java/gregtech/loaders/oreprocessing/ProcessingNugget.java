@@ -67,9 +67,9 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
             }
         }
 
-        GTRecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null, true);
+        GTRecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.getMaterialAmount(), null, true);
         GTRecipeRegistrator
-            .registerReverseMacerating(aStack, aMaterial, aPrefix.mMaterialAmount, null, null, null, false, true);
+            .registerReverseMacerating(aStack, aMaterial, aPrefix.getMaterialAmount(), null, null, null, false, true);
         if (!aMaterial.contains(SubTag.NO_SMELTING)
             && GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L) != null) {
             GTValues.RA.stdBuilder()

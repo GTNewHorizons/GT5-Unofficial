@@ -32,9 +32,10 @@ public class TileEntityForgeOfGods extends TileEntity {
     // current color data
     private int currentColor = Color.rgb(DEFAULT_RED, DEFAULT_GREEN, DEFAULT_BLUE);
     private float gamma = DEFAULT_GAMMA;
+    private long lastColorUpdateTime = 0;
 
     // interpolation color data
-    private int cycleStep;
+    private float cycleStep;
     private int interpIndex;
     private int interpA;
     private int interpB;
@@ -54,6 +55,8 @@ public class TileEntityForgeOfGods extends TileEntity {
     public static final float BACK_PLATE_DISTANCE = -121.5f, BACK_PLATE_RADIUS = 13f;
     private static final double RING_RADIUS = 63;
     private static final double BEAM_LENGTH = 59;
+
+    private static final float COLOR_CYCLE_SPEED = 16f;
 
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
@@ -203,25 +206,31 @@ public class TileEntityForgeOfGods extends TileEntity {
     }
 
     public void incrementColors() {
-        if (starColor.numColors() > 1) {
-            cycleStep += starColor.getCycleSpeed();
-
-            if (cycleStep < 255) {
-                // interpolate like normal between these two colors
-                interpolateColors();
-            } else if (cycleStep == 255) {
-                // interpolate like normal, but then update interp values to the next set and reset cycleStep
-                cycleStarColors();
-                currentColor = interpA;
-                gamma = interpGammaA;
-                cycleStep = 0;
-            } else {
-                // update interp values to the next set, reset cycleStep then interpolate
-                cycleStep -= 255;
-                cycleStarColors();
-                interpolateColors();
-            }
+        if (starColor.numColors() <= 1) {
+            return;
         }
+
+        long currentTime = System.currentTimeMillis();
+
+        if (lastColorUpdateTime == 0) {
+            lastColorUpdateTime = currentTime;
+            return;
+        }
+
+        long deltaTime = currentTime - lastColorUpdateTime;
+        lastColorUpdateTime = currentTime;
+
+        float increment = starColor.getCycleSpeed() * (deltaTime / COLOR_CYCLE_SPEED);
+        cycleStep += increment;
+
+        while (cycleStep >= 255.0f) {
+            cycleStep -= 255.0f;
+            cycleStarColors();
+            currentColor = interpA;
+            gamma = interpGammaA;
+        }
+
+        interpolateColors();
     }
 
     private void interpolateColors() {

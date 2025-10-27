@@ -46,7 +46,7 @@ public class GregtechIndustrialMassFabricator {
 
         // Basic UUA2
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(19), ItemList.IC2_Scrap.get(1L))
+            .itemInputs(GTUtility.getIntegratedCircuit(19), ItemList.IC2_Scrapbox.get(1L))
             .fluidOutputs(Materials.UUAmplifier.getFluid(1))
             .duration(9 * SECONDS)
             .eut(TierEU.RECIPE_LV)

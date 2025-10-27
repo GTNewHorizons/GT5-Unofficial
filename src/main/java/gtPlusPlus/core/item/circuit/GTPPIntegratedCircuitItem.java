@@ -30,7 +30,7 @@ import gregtech.api.interfaces.INetworkUpdatableItem;
 import gregtech.api.net.GTPacketUpdateItem;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.common.gui.modularui.uifactory.SelectItemUIFactory;
+import gregtech.common.gui.modularui.base.ItemSelectBaseGui;
 import gtPlusPlus.core.util.math.MathUtils;
 
 // TODO Remove after 2.8
@@ -167,7 +167,7 @@ public class GTPPIntegratedCircuitItem extends Item implements INetworkUpdatable
     private void openSelectorGui(ItemStack configurator, int meta, EntityPlayer player) {
         UIInfos.openClientUI(
             player,
-            buildContext -> new SelectItemUIFactory(
+            buildContext -> new ItemSelectBaseGui(
                 StatCollector.translateToLocal("GT5U.item.programmed_circuit.select.header"),
                 configurator,
                 GTPPIntegratedCircuitItem::onConfigured,

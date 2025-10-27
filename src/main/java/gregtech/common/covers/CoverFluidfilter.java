@@ -22,11 +22,11 @@ import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.util.GTUtility;
-import gregtech.common.covers.gui.CoverFluidfilterGui;
-import gregtech.common.covers.gui.CoverGui;
 import gregtech.common.covers.modes.BlockMode;
 import gregtech.common.covers.modes.FilterDirectionMode;
 import gregtech.common.covers.modes.FilterType;
+import gregtech.common.gui.modularui.cover.CoverFluidfilterGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.gui.mui1.cover.FluidFilterUIFactory;
 import io.netty.buffer.ByteBuf;
 
@@ -273,7 +273,7 @@ public class CoverFluidfilter extends Cover {
     // GUI stuff
 
     @Override
-    protected @NotNull CoverGui<?> getCoverGui() {
+    protected @NotNull CoverBaseGui<?> getCoverGui() {
         return new CoverFluidfilterGui(this);
     }
 
