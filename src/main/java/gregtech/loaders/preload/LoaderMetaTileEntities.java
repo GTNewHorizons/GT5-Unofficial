@@ -202,6 +202,7 @@ import gregtech.common.tileentities.machines.multi.compressor.MTEIndustrialCompr
 import gregtech.common.tileentities.machines.multi.compressor.MTENeutroniumCompressor;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
+import gregtech.common.tileentities.machines.multi.foundry.MTEExoFoundry;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchDegasifierControl;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchLensHousing;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchLensIndicator;
@@ -215,7 +216,6 @@ import gregtech.common.tileentities.machines.multi.purification.MTEPurificationU
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitPhAdjustment;
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitPlasmaHeater;
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitUVTreatment;
-import gregtech.common.tileentities.machines.multi.solidifier.MTEModularSolidifier;
 import gregtech.common.tileentities.machines.steam.MTESteamAlloySmelterBronze;
 import gregtech.common.tileentities.machines.steam.MTESteamAlloySmelterSteel;
 import gregtech.common.tileentities.machines.steam.MTESteamCompressorBronze;
@@ -509,13 +509,11 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Machine_Multi_Solidifier.set(
             new MTEMultiSolidifier(MULTI_SOLIDIFIER_CONTROLLER.ID, "multimachine.solidifier", "Fluid Shaper")
                 .getStackForm(1));
-        ItemList.Machine_Multi_Modular_Solidifier.set(
-            new MTEModularSolidifier(
-                MULTI_MODULAR_SOLIDIFIER_CONTROLLER.ID,
-                "multimachine.modularsolidifier",
-                "Exo-Foundry").getStackForm(1));
+        ItemList.Machine_Multi_ExoFoundry.set(
+            new MTEExoFoundry(MULTI_EXOFOUNDRY_CONTROLLER.ID, "multimachine.exofoundry", "Exo-Foundry")
+                .getStackForm(1));
         addItemTooltip(
-            ItemList.Machine_Multi_Modular_Solidifier.get(1),
+            ItemList.Machine_Multi_ExoFoundry.get(1),
             chain(
                 GTValues.AUTHORS_SUPPLIER,
                 GTValues.fancyAuthorChrom,

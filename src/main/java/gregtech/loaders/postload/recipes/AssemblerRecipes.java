@@ -3280,7 +3280,7 @@ public class AssemblerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 4),
                 ItemList.Reactor_Coolant_Sp_6.get(1),
                 ItemList.Emitter_UV.get(1))
-            .itemOutputs(ItemList.Secondary_Casing_Solidifier_Modular.get(1))
+            .itemOutputs(ItemList.Secondary_Casing_ExoFoundry.get(1))
             .fluidInputs(Materials.CosmicNeutronium.getMolten(INGOTS * 16))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UV)

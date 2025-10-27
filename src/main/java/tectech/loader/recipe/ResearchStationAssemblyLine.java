@@ -3315,7 +3315,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(9216),
                 GGMaterial.preciousMetalAlloy.getMolten(4608), GGMaterial.metastableOganesson.getMolten(2880),
                 MaterialsElements.STANDALONE.DRAGON_METAL.getFluidStack(1440) },
-            ItemList.Machine_Multi_Modular_Solidifier.get(1),
+            ItemList.Machine_Multi_ExoFoundry.get(1),
             60 * SECONDS,
             (int) TierEU.RECIPE_UIV);
         // base casing
@@ -3332,7 +3332,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(576),
                 new FluidStack(FluidRegistry.getFluid("oganesson"), 500),
                 GGMaterial.enrichedNaquadahAlloy.getMolten(288) },
-            ItemList.Casing_Solidifier_Modular.get(1),
+            ItemList.Casing_ExoFoundry.get(1),
             15 * SECONDS,
             (int) TierEU.RECIPE_UEV);
         // ------------------------ Central Chassis ------------------------
@@ -3351,13 +3351,13 @@ public class ResearchStationAssemblyLine implements Runnable {
             new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(576),
                 Materials.SuperconductorUEVBase.getMolten(288),
                 MaterialsElements.STANDALONE.RHUGNOR.getFluidStack(144) },
-            ItemList.Magnetic_Chassis_T1_Solidifier_Modular.get(1),
+            ItemList.Magnetic_Chassis_T1_ExoFoundry.get(1),
             30 * SECONDS,
             (int) TierEU.RECIPE_UEV);
 
         // t2 chassis
         TTRecipeAdder.addResearchableAssemblylineRecipe(
-            ItemList.Magnetic_Chassis_T1_Solidifier_Modular.get(1),
+            ItemList.Magnetic_Chassis_T1_ExoFoundry.get(1),
             2_000_000,
             4_096,
             (int) TierEU.RECIPE_UIV,
@@ -3372,14 +3372,14 @@ public class ResearchStationAssemblyLine implements Runnable {
                 ItemList.Field_Generator_UIV.get(1) },
             new FluidStack[] { Materials.MoltenProtoHalkoniteBase.getFluid(2880), Materials.Mellion.getMolten(576),
                 Materials.Creon.getMolten(576), Materials.DimensionallyShiftedSuperfluid.getFluid(20000) },
-            ItemList.Magnetic_Chassis_T2_Solidifier_Modular.get(1),
+            ItemList.Magnetic_Chassis_T2_ExoFoundry.get(1),
             30 * SECONDS,
             (int) TierEU.RECIPE_UIV);
 
         // t3 chassis
 
         TTRecipeAdder.addResearchableAssemblylineRecipe(
-            ItemList.Magnetic_Chassis_T2_Solidifier_Modular.get(1),
+            ItemList.Magnetic_Chassis_T2_ExoFoundry.get(1),
             4_000_000,
             8_192,
             (int) TierEU.RECIPE_UXV,
@@ -3399,7 +3399,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             new FluidStack[] { Materials.MoltenProtoHalkoniteBase.getFluid(589_824), // <-- TODO: replace with exo-halk
                 Materials.QuarkGluonPlasma.getFluid(100_000), Materials.MagMatter.getMolten(5760),
                 Materials.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(64) },
-            ItemList.Magnetic_Chassis_T3_Solidifier_Modular.get(1),
+            ItemList.Magnetic_Chassis_T3_ExoFoundry.get(1),
             30 * SECONDS,
             (int) TierEU.RECIPE_UXV);
 
@@ -3412,7 +3412,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             2_048,
             (int) TierEU.RECIPE_UEV,
             64,
-            new Object[] { ItemList.Magnetic_Chassis_T1_Solidifier_Modular.get(1), ItemList.UHTResistantMesh.get(16),
+            new Object[] { ItemList.Magnetic_Chassis_T1_ExoFoundry.get(1), ItemList.UHTResistantMesh.get(16),
                 GGMaterial.preciousMetalAlloy.get(OrePrefixes.plate, 6),
                 GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.SuperconductorUEVBase, 4),
                 GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.InfinityCatalyst, 2),
@@ -3421,7 +3421,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Neutronium, 2), },
             new FluidStack[] { Materials.Naquadria.getMolten(64000), Materials.Promethium.getMolten(16000),
                 MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(2880) },
-            ItemList.Extra_Casting_Basins_Solidifier_Modular.get(1),
+            ItemList.Extra_Casting_Basins_ExoFoundry.get(1),
             30 * SECONDS,
             (int) TierEU.RECIPE_UEV);
         // Streamlined Casters
@@ -3431,14 +3431,14 @@ public class ResearchStationAssemblyLine implements Runnable {
             2_048,
             (int) TierEU.RECIPE_UEV,
             64,
-            new Object[] { ItemList.Magnetic_Chassis_T1_Solidifier_Modular.get(1),
+            new Object[] { ItemList.Magnetic_Chassis_T1_ExoFoundry.get(1),
                 GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Enderium, 16),
                 ItemList.AcceleratorUV.get(8), CELESTIAL_TUNGSTEN.getRotor(4),
                 new Object[] { OrePrefixes.circuit.get(Materials.UEV), 2 }, ItemList.Electric_Pump_UEV.get(1) },
             new FluidStack[] { Materials.Holmium.getMolten(5760),
                 MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(2880),
                 GGMaterial.enrichedNaquadahAlloy.getMolten(1440) },
-            ItemList.Streamlined_Casters_Solidifier_Modular.get(1),
+            ItemList.Streamlined_Casters_ExoFoundry.get(1),
             30 * SECONDS,
             (int) TierEU.RECIPE_UEV);
         // Power Efficient Subsystems
@@ -3448,7 +3448,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             2_048,
             (int) TierEU.RECIPE_UEV,
             64,
-            new Object[] { ItemList.Magnetic_Chassis_T1_Solidifier_Modular.get(1),
+            new Object[] { ItemList.Magnetic_Chassis_T1_ExoFoundry.get(1),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.TengamAttuned, 6),
                 ItemList.Circuit_Wafer_QPIC.get(64), ItemList.Cover_SolarPanel_UV.get(2),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUEV, 2),
@@ -3458,7 +3458,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(2880)
 
             },
-            ItemList.Power_Efficient_Subsystems_Solidifier_Modular.get(1),
+            ItemList.Power_Efficient_Subsystems_ExoFoundry.get(1),
             30 * SECONDS,
             (int) TierEU.RECIPE_UEV);
         // Hypercooler
@@ -3468,7 +3468,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             2_048,
             (int) TierEU.RECIPE_UIV,
             64,
-            new Object[] { ItemList.Magnetic_Chassis_T2_Solidifier_Modular.get(1),
+            new Object[] { ItemList.Magnetic_Chassis_T2_ExoFoundry.get(1),
                 GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Netherite, 64),
                 GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.SixPhasedCopper, 32),
                 GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.TranscendentMetal, 16),
@@ -3477,25 +3477,24 @@ public class ResearchStationAssemblyLine implements Runnable {
             new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(147_456),
                 Materials.DimensionallyShiftedSuperfluid.getFluid(90000),
                 Materials.MoltenProtoHalkoniteBase.getFluid(1152), Materials.SpaceTime.getMolten(36) },
-            ItemList.Hypercooler_Solidifier_Modular.get(1),
+            ItemList.Hypercooler_ExoFoundry.get(1),
             60 * SECONDS,
             (int) TierEU.RECIPE_UIV);
         // Efficient Overclocker
         TTRecipeAdder.addResearchableAssemblylineRecipe(
-            ItemList.Magnetic_Chassis_T2_Solidifier_Modular.get(1),
+            ItemList.Magnetic_Chassis_T2_ExoFoundry.get(1),
             4_000_000,
             4_096,
             (int) TierEU.RECIPE_UMV,
             256,
-            new Object[] { ItemList.Magnetic_Chassis_T2_Solidifier_Modular.get(1),
-                ItemRefer.Field_Restriction_Coil_T4.get(1),
+            new Object[] { ItemList.Magnetic_Chassis_T2_ExoFoundry.get(1), ItemRefer.Field_Restriction_Coil_T4.get(1),
                 GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.SuperconductorUMVBase, 16),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.ProtoHalkonite, 8),
                 new Object[] { OrePrefixes.circuit.get(Materials.UXV), 8 }, ItemList.Electric_Pump_UMV.get(4),
                 ItemList.Field_Generator_UMV.get(1) },
             new FluidStack[] { Materials.DimensionallyShiftedSuperfluid.getFluid(300000),
                 MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(147_456), GGMaterial.shirabon.getMolten(5760) },
-            ItemList.Efficient_Overclocking_Solidifier_Modular.get(1),
+            ItemList.Efficient_Overclocking_ExoFoundry.get(1),
             60 * SECONDS,
             (int) TierEU.RECIPE_UMV);
 
@@ -3506,25 +3505,25 @@ public class ResearchStationAssemblyLine implements Runnable {
             2_048,
             (int) TierEU.RECIPE_UIV,
             64,
-            new Object[] { ItemList.Magnetic_Chassis_T2_Solidifier_Modular.get(1),
+            new Object[] { ItemList.Magnetic_Chassis_T2_ExoFoundry.get(1),
                 GTOreDictUnificator.get(OrePrefixes.bolt, Materials.TranscendentMetal, 32),
                 new Object[] { OrePrefixes.circuit.get(Materials.UMV), 4 }, RHUGNOR.getGear(4),
                 GGMaterial.shirabon.get(OrePrefixes.plateDense, 2), ItemList.Sensor_UIV.get(1),
                 ItemList.Emitter_UIV.get(1) },
             new FluidStack[] { GGMaterial.metastableOganesson.getMolten(4608), Materials.Mellion.getMolten(1440),
                 Materials.Creon.getMolten(1440), Materials.SpaceTime.getMolten(576) },
-            ItemList.Transcendent_Reinforcement_Solidifier_Modular.get(1),
+            ItemList.Transcendent_Reinforcement_ExoFoundry.get(1),
             60 * SECONDS,
             (int) TierEU.RECIPE_UMV);
 
         // Time Dilation System
         TTRecipeAdder.addResearchableAssemblylineRecipe(
-            ItemList.Magnetic_Chassis_T3_Solidifier_Modular.get(1),
+            ItemList.Magnetic_Chassis_T3_ExoFoundry.get(1),
             128_000_000,
             16_000,
             (int) TierEU.RECIPE_MAX,
             256,
-            new Object[] { ItemList.Magnetic_Chassis_T3_Solidifier_Modular.get(4),
+            new Object[] { ItemList.Magnetic_Chassis_T3_ExoFoundry.get(4),
                 CustomItemList.StabilisationFieldGeneratorTier8.get(32), ItemList.Timepiece.get(64),
                 GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Eternity, 64),
                 ItemList.Field_Generator_UXV.get(8),
@@ -3532,7 +3531,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 CustomItemList.eM_dynamoTunnel7_UXV.get(1), new ItemStack(lscLapotronicEnergyUnit, 1, 8) },
             new FluidStack[] { Materials.Time.getMolten(4_000_000), Materials.Space.getMolten(4_000_000),
                 Materials.Eternity.getMolten(1_000_000), Materials.PhononMedium.getFluid(1_000_000) },
-            ItemList.Active_Time_Dilation_System_Solidifier_Modular.get(1),
+            ItemList.Active_Time_Dilation_System_ExoFoundry.get(1),
             60 * SECONDS,
             (int) TierEU.RECIPE_UXV); // <-- maybe make this MAX voltage
     }

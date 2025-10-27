@@ -1,4 +1,4 @@
-package gregtech.common.tileentities.machines.multi.solidifier;
+package gregtech.common.tileentities.machines.multi.foundry;
 
 import static gregtech.api.enums.Mods.GregTech;
 

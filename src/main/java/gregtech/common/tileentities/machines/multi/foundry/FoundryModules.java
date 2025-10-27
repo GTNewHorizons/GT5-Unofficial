@@ -1,4 +1,4 @@
-package gregtech.common.tileentities.machines.multi.solidifier;
+package gregtech.common.tileentities.machines.multi.foundry;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -8,30 +8,30 @@ import com.cleanroommc.modularui.drawable.UITexture;
 import gregtech.api.enums.ItemList;
 import gregtech.api.modularui2.GTGuiTextures;
 
-public enum SolidifierModules {
+public enum FoundryModules {
 
     // please dont hate me for the arbitrary transparent rectangle image
-    UNSET("Unset", "UN.", "", ItemList.Display_ITS_FREE.get(1), GTGuiTextures.MODULAR_SOLIDIFIER_UNSET,
+    UNSET("Unset", "UN.", "", ItemList.Display_ITS_FREE.get(1), GTGuiTextures.EXOFOUNDRY_UNSET,
         new float[] { 0f, 0f, 0f }, EnumChatFormatting.GRAY, 0),
     ACTIVE_TIME_DILATION_SYSTEM("Time Dilation System", "T.D.S", "tds",
-        ItemList.Active_Time_Dilation_System_Solidifier_Modular.get(0), GTGuiTextures.MODULAR_SOLIDIFIER_TDS,
+        ItemList.Active_Time_Dilation_System_ExoFoundry.get(0), GTGuiTextures.EXOFOUNDRY_TDS,
         new float[] { 10f / 255f, 24f / 255f, 43f / 255f }, 5, EnumChatFormatting.DARK_PURPLE, 13),
-    EFFICIENT_OC("Efficient Overclocking System", "E.O.C", "eff_oc",
-        ItemList.Efficient_Overclocking_Solidifier_Modular.get(1), GTGuiTextures.MODULAR_SOLIDIFIER_EFF_OC,
-        new float[] { 107f / 255f, 33f / 255f, 196f / 255f }, EnumChatFormatting.DARK_AQUA, 12),
-    POWER_EFFICIENT_SUBSYSTEMS("Power Efficient Subsytems", "P.E.S", "power_efficient_subsystems",
-        ItemList.Power_Efficient_Subsystems_Solidifier_Modular.get(1), GTGuiTextures.OVERLAY_BUTTON_CYCLIC,
+    EFFICIENT_OC("Efficient Overclocking System", "E.O.C", "eff_oc", ItemList.Efficient_Overclocking_ExoFoundry.get(1),
+        GTGuiTextures.EXOFOUNDRY_EFF_OC, new float[] { 107f / 255f, 33f / 255f, 196f / 255f },
+        EnumChatFormatting.DARK_AQUA, 12),
+    POWER_EFFICIENT_SUBSYSTEMS("Power Efficient Subsystems", "P.E.S", "power_efficient_subsystems",
+        ItemList.Power_Efficient_Subsystems_ExoFoundry.get(1), GTGuiTextures.EXOFOUNDRY_PES,
         new float[] { 10f / 255f, 143f / 255f, 38f / 255f }, 0.9f, EnumChatFormatting.GREEN, 10),
     TRANSCENDENT_REINFORCEMENT("Transcendent Reinforcement", "T.R", "transcendent_reinforcement",
-        ItemList.Transcendent_Reinforcement_Solidifier_Modular.get(1), GTGuiTextures.MODULAR_SOLIDIFIER_TR_RE,
+        ItemList.Transcendent_Reinforcement_ExoFoundry.get(1), GTGuiTextures.EXOFOUNDRY_TR_RE,
         new float[] { 150f / 255f, 10 / 255f, 150f / 255f }, 1.5f, EnumChatFormatting.LIGHT_PURPLE, 12),
     EXTRA_CASTING_BASINS("Extra Casting Basins", "E.C.B", "extra_casting_basins",
-        ItemList.Extra_Casting_Basins_Solidifier_Modular.get(1), GTGuiTextures.OVERLAY_BUTTON_CYCLIC,
+        ItemList.Extra_Casting_Basins_ExoFoundry.get(1), GTGuiTextures.EXOFOUNDRY_ECB,
         new float[] { 58f / 255f, 58f / 255f, 34f / 255f }, 3, EnumChatFormatting.YELLOW, 10),
-    HYPERCOOLER("Hypercooler", "H.C", "hypercooler", ItemList.Hypercooler_Solidifier_Modular.get(1),
-        GTGuiTextures.MODULAR_SOLIDIFIER_HC, new float[] { 40f / 255f, 0.5f, 0.6f, }, EnumChatFormatting.AQUA, 11),
+    HYPERCOOLER("Hypercooler", "H.C", "hypercooler", ItemList.Hypercooler_ExoFoundry.get(1),
+        GTGuiTextures.EXOFOUNDRY_HC, new float[] { 40f / 255f, 0.5f, 0.6f, }, EnumChatFormatting.AQUA, 11),
     STREAMLINED_CASTERS("Streamlined Casters", "S.L.C", "streamlined_casters",
-        ItemList.Streamlined_Casters_Solidifier_Modular.get(1), GTGuiTextures.OVERLAY_BUTTON_CYCLIC,
+        ItemList.Streamlined_Casters_ExoFoundry.get(1), GTGuiTextures.EXOFOUNDRY_SLC,
         new float[] { 130f / 255f, 30f / 255f, 30f / 255f }, 2, EnumChatFormatting.RED, 10);
 
     public final String displayName;
@@ -45,14 +45,14 @@ public enum SolidifierModules {
     public final int voltageTier;
 
     // declaring it once here, instead of on every call
-    private static final SolidifierModules[] lookupArray = values();
+    private static final FoundryModules[] lookupArray = values();
 
-    private SolidifierModules(String display, String shortname, String structid, ItemStack icon, UITexture texture,
+    private FoundryModules(String display, String shortname, String structid, ItemStack icon, UITexture texture,
         float[] rgbArr, EnumChatFormatting color, int voltageTier) {
         this(display, shortname, structid, icon, texture, rgbArr, 1, color, voltageTier);
     }
 
-    private SolidifierModules(String display, String shortname, String structid, ItemStack icon, UITexture texture,
+    private FoundryModules(String display, String shortname, String structid, ItemStack icon, UITexture texture,
         float[] rgbArr, float multiplier, EnumChatFormatting color, int voltageTier) {
         this.displayName = display;
         this.shorthand = shortname;
@@ -105,7 +105,7 @@ public enum SolidifierModules {
         return result;
     }
 
-    public static SolidifierModules getModule(int ordinal) {
+    public static FoundryModules getModule(int ordinal) {
         return lookupArray[ordinal];
     }
 

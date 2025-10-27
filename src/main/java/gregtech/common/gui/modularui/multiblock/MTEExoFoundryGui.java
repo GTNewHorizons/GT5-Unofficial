@@ -40,20 +40,20 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
-import gregtech.common.tileentities.machines.multi.solidifier.MTEModularSolidifier;
-import gregtech.common.tileentities.machines.multi.solidifier.SolidifierModules;
+import gregtech.common.tileentities.machines.multi.foundry.FoundryModules;
+import gregtech.common.tileentities.machines.multi.foundry.MTEExoFoundry;
 
-public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui<MTEModularSolidifier> {
+public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
 
     private final IItemHandlerModifiable itemHandler = new ItemStackHandler(8);
 
-    public MTEModularSolidifierGui(MTEModularSolidifier base) {
+    public MTEExoFoundryGui(MTEExoFoundry base) {
         super(base);
         // manual init :P
         for (int i = 0; i < 8; i++) {
             itemHandler.setStackInSlot(
                 i,
-                SolidifierModules.getModule(i)
+                FoundryModules.getModule(i)
                     .getItemIcon());
         }
     }
@@ -61,7 +61,6 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui<MTEModularSoli
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        // all 4 module slots(enum values?) and values modified
         // values modified include: Parallels, Speed Bonus, Eu EFF, OC Factor.
         syncManager.syncValue("Speed", new StringSyncValue(multiblock::getSpeedStr));
         syncManager.syncValue("Parallels", new StringSyncValue(multiblock::getParallelsString));
@@ -228,9 +227,9 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui<MTEModularSoli
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
-                        () -> EnumChatFormatting.WHITE
-                            + SolidifierModules.getModule(moduleSync.getIntValue()).shorthand)).scale(0.5f)
-                                .size(20, 16));
+                        () -> EnumChatFormatting.WHITE + FoundryModules.getModule(moduleSync.getIntValue()).shorthand))
+                            .scale(0.5f)
+                            .size(20, 16));
 
     }
 
@@ -273,7 +272,7 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui<MTEModularSoli
     }
 
     private void createTooltipForModule(RichTooltip t, int moduleIndex) {
-        SolidifierModules module = SolidifierModules.getModule(moduleIndex);
+        FoundryModules module = FoundryModules.getModule(moduleIndex);
         String name = module.color + module.displayName;
         t.addLine(name);
         t.textColor(Color.WHITE.main);
@@ -342,7 +341,7 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui<MTEModularSoli
                 t.addLine("Increases Structure Casing Limit by " + EnumChatFormatting.GOLD + "12");
             }
         }
-        if (module != SolidifierModules.UNSET) t.addLine(createTierLine(module.voltageTier));
+        if (module != FoundryModules.UNSET) t.addLine(createTierLine(module.voltageTier));
     }
 
     protected Flow createModuleTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
@@ -354,7 +353,7 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui<MTEModularSoli
             .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
             .background(IDrawable.EMPTY)
             .child(
-                GTGuiTextures.MODULAR_SOLIDIFIER_BASE.asWidget()
+                GTGuiTextures.EXOFOUNDRY_BASE.asWidget()
                     .size(60, 80)
                     .marginRight(60))
             .child(
@@ -370,12 +369,12 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui<MTEModularSoli
                                     .marginBottom(1)
                                     .overlay(
                                         new DynamicDrawable(
-                                            () -> SolidifierModules.getModule(module4Sync.getIntValue()).texture)))
+                                            () -> FoundryModules.getModule(module4Sync.getIntValue()).texture)))
                             .child(
                                 new Widget<>().size(28, 11)
                                     .overlay(
                                         new DynamicDrawable(
-                                            () -> SolidifierModules.getModule(module3Sync.getIntValue()).texture)))
+                                            () -> FoundryModules.getModule(module3Sync.getIntValue()).texture)))
 
                     )
 
@@ -388,12 +387,12 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui<MTEModularSoli
                                     .marginBottom(1)
                                     .overlay(
                                         new DynamicDrawable(
-                                            () -> SolidifierModules.getModule(module2Sync.getIntValue()).texture)))
+                                            () -> FoundryModules.getModule(module2Sync.getIntValue()).texture)))
                             .child(
                                 new Widget<>().size(28, 11)
                                     .overlay(
                                         new DynamicDrawable(
-                                            () -> SolidifierModules.getModule(module1Sync.getIntValue()).texture))))
+                                            () -> FoundryModules.getModule(module1Sync.getIntValue()).texture))))
 
             )
             // module selecting
@@ -417,7 +416,7 @@ public class MTEModularSolidifierGui extends MTEMultiBlockBaseGui<MTEModularSoli
             t -> t.addLine(EnumChatFormatting.DARK_AQUA + "Thank you to Sisyphus and IX for their hard work!"));
     }
 
-    // copied methods so I can avoid a public static in MTEModularSolidifier
+    // copied methods so I can avoid a public static in MTEExoFoundry
     private String coolingStrOrder(String val1, String val2, String val3) {
         return EnumChatFormatting.BLUE + val1
             + "/"

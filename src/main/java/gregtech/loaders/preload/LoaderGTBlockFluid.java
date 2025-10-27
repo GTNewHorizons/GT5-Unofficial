@@ -891,8 +891,6 @@ public class LoaderGTBlockFluid implements Runnable {
         GTLog.out.println("GTMod: Registering the NanoForgeRender.");
         GameRegistry.registerTileEntity(TileEntityNanoForgeRenderer.class, "NanoForgeRender");
 
-        GTLog.out.println("GTMod: Registering the ModularSolidifierRender.");
-
         GTLog.out.println("GTMod: Registering the BaseMetaPipeEntity.");
         GameRegistry.registerTileEntity(BaseMetaPipeEntity.class, "BaseMetaPipeEntity");
         FMLInterModComms.sendMessage(AppliedEnergistics2.ID, "whitelist-spatial", BaseMetaPipeEntity.class.getName());

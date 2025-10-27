@@ -112,12 +112,13 @@ public final class GTTextureIds {
     public static final String PICTURE_DECAY_TIME_INSIDE = "bartworks:picture_bw_decay_time_inside";
     public static final String PICTURE_RADIATION_SHUTTER_FRAME = "bartworks:picture_bw_shutter_frame";
     public static final String PICTURE_RADIATION_SHUTTER_INSIDE = "bartworks:picture_bw_shutter_frame_inside";
-    public static final String PICTURE_MODULAR_SOLIDIFIER_BASE = "gregtech:picture_modular_solidifier_base";
-    public static final String PICTURE_MODULAR_SOLIDIFIER_TR_RE = "gregtech:picture_modular_solidifier_tr_re";
-    public static final String PICTURE_MODULAR_SOLIDIFIER_HC = "gregtech:picture_modular_solidifier_hyper_cooler";
-    public static final String PICTURE_MODULAR_SOLIDIFIER_TDS = "gregtech:picture_modular_solidifier_time_dilation_system";
-    public static final String PICTURE_MODULAR_SOLIDIFIER_UNSET = "gregtech:picture_modular_solidifier_unset";
-    public static final String PICTURE_MODULAR_SOLIDIFIER_EOC = "gregtech:picture_modular_solidifier_efficient_overclock";
-    public static final String PICTURE_MODULAR_SOLIDIFIER_ECB = "gregtech:picture_modular_solidifier_extra_casting_basins";
-    public static final String PICTURE_MODULAR_SOLIDIFIER_SC = "gregtech:picture_modular_solidifier_streamlined_casters";
+    public static final String PICTURE_EXOFOUNDRY_BASE = "gregtech:picture_exofoundry_base";
+    public static final String PICTURE_EXOFOUNDRY_UNSET = "gregtech:picture_exofoundry_unset";
+    public static final String PICTURE_EXOFOUNDRY_TR_RE = "gregtech:picture_exofoundry_transcendent_reinforcement";
+    public static final String PICTURE_EXOFOUNDRY_HC = "gregtech:picture_exofoundry_hyper_cooler";
+    public static final String PICTURE_EXOFOUNDRY_TDS = "gregtech:picture_exofoundry_time_dilation_system";
+    public static final String PICTURE_EXOFOUNDRY_EOC = "gregtech:picture_exofoundry_efficient_overclock";
+    public static final String PICTURE_EXOFOUNDRY_ECB = "gregtech:picture_exofoundry_extra_casting_basins";
+    public static final String PICTURE_EXOFOUNDRY_SLC = "gregtech:picture_exofoundry_streamlined_casters";
+    public static final String PICTURE_EXOFOUNDRY_PES = "gregtech:picture_exofoundry_power_efficient_subsystems";
 }

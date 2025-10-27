@@ -218,7 +218,7 @@ public class FormingPressRecipes implements Runnable {
                     ItemList.Naquarite_Universal_Insulator_Foil.get(8),
                     getModItem(UniversalSingularities.ID, "universal.general.singularity", 1, 13))
                 .fluidInputs(Materials.SuperCoolant.getFluid(64000))
-                .itemOutputs(ItemList.Glass_Solidifier_Modular.get(8))
+                .itemOutputs(ItemList.Glass_ExoFoundry.get(8))
                 .duration(16 * SECONDS)
                 .eut(TierEU.RECIPE_UHV)
                 .addTo(formingPressRecipes);

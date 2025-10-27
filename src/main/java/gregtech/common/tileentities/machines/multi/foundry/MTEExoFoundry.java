@@ -1,4 +1,4 @@
-package gregtech.common.tileentities.machines.multi.solidifier;
+package gregtech.common.tileentities.machines.multi.foundry;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
@@ -11,10 +11,10 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.Mods.GregTech;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_FOUNDRY;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_FOUNDRY_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_FOUNDRY_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_FOUNDRY_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXOFOUNDRY;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXOFOUNDRY_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXOFOUNDRY_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXOFOUNDRY_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.getTier;
@@ -82,7 +82,7 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.blocks.BlockCasingsFoundry;
-import gregtech.common.gui.modularui.multiblock.MTEModularSolidifierGui;
+import gregtech.common.gui.modularui.multiblock.MTEExoFoundryGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.render.IMTERenderer;
 import gtPlusPlus.core.block.ModBlocks;
@@ -90,7 +90,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolid
 import tectech.thing.block.BlockGodforgeGlass;
 import tectech.thing.casing.TTCasingsContainer;
 
-public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModularSolidifier>
+public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     implements ISurvivalConstructable, IMTERenderer {
 
     private static final List<CoolingFluid> COOLING_FLUIDS = ImmutableList.of(
@@ -131,15 +131,15 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     private float parallelScaleAdj = parallelScaleBase;
 
     // array of ordinals for nbt saving purposes
-    public SolidifierModules[] modules = { SolidifierModules.UNSET, SolidifierModules.UNSET, SolidifierModules.UNSET,
-        SolidifierModules.UNSET };
+    public FoundryModules[] modules = { FoundryModules.UNSET, FoundryModules.UNSET, FoundryModules.UNSET,
+        FoundryModules.UNSET };
     private final int[] moduleHorizontalOffsets = { 7, 7, 7, 7 };
     private final int[] moduleVerticalOffsets = { 12, 20, 38, 46 };
     private final int[] moduleDepthOffsets = { 0, 0, 0, 0 };
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
-    private static final IStructureDefinition<MTEModularSolidifier> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTEModularSolidifier>builder()
+    private static final IStructureDefinition<MTEExoFoundry> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTEExoFoundry>builder()
         // spotless:off
         .addShape(
             STRUCTURE_PIECE_MAIN,
@@ -201,7 +201,8 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                     {"      H~H      ","       D       ","       D       ","       D       ","       D       ","               ","H             H","BDDDD     DDDDB","H             H","               ","       D       ","       D       ","       D       ","       D       ","      HBH      "},
                     {"     HHHHH     ","   DDHHBHHDD   ","  D  HHBHH  D  "," D  HHHBHHH  D "," D HHHBHBHHH D ","HHHHHHBHBHHHHHH","HHHHBBHHHBBHHHH","HBBBHHHBHHHBBBH","HHHHBBHHHBBHHHH","HHHHHHBHBHHHHHH"," D HHHBHBHHH D "," D  HHHBHHH  D ","  D  HHBHH  D  ","   DDHHBHHDD   ","     HHHHH     "}
                 }))
-        .addShape(SolidifierModules.STREAMLINED_CASTERS.structureID, transpose(new String[][]{
+        .addShape(
+            FoundryModules.STREAMLINED_CASTERS.structureID, transpose(new String[][]{
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
             {"     UUbUU     ","   bbb   bbb   ","  Ub       bU  "," bb         bb "," b           b ","Ub           bU","U             U","b             b","U             U","Ub           bU"," b           b "," bb         bb ","  Ub       bU  ","   bbb   bbb   ","     UUbUU     "},
@@ -210,7 +211,8 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
         }))
-        .addShape(SolidifierModules.POWER_EFFICIENT_SUBSYSTEMS.structureID, transpose(new String[][]{
+        .addShape(
+            FoundryModules.POWER_EFFICIENT_SUBSYSTEMS.structureID, transpose(new String[][]{
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
             {"     gfffg     ","   ddd   ddd   ","  gd       dg  "," dd         dd "," d           d ","gd           dg","f             f","f             f","f             f","gd           dg"," d           d "," dd         dd ","  gd       dg  ","   ddd   ddd   ","     gfffg     "},
@@ -219,7 +221,8 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
         }))
-        .addShape(SolidifierModules.EXTRA_CASTING_BASINS.structureID, transpose(new String[][]{
+        .addShape(
+            FoundryModules.EXTRA_CASTING_BASINS.structureID, transpose(new String[][]{
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
             {"      jjj      ","      hhh      ","               ","               ","               ","               ","jh           hj","jh           hj","jh           hj","               ","               ","               ","               ","      hhh      ","      jjj      "},
             {"     jhmhj     ","   jjhHHHhjj   ","  k         k  "," j           j "," j           j ","jh           hj","hH           Hh","mH           Hm","hH           Hh","jh           hj"," j           j "," j           j ","  k         k  ","   jjhHHHhjj   ","     jhmhj     "},
@@ -228,7 +231,8 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             {"      jjj      ","      hhh      ","               ","               ","               ","               ","jh           hj","jh           hj","jh           hj","               ","               ","               ","               ","      hhh      ","      jjj      "},
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
         }))
-        .addShape(SolidifierModules.HYPERCOOLER.structureID, transpose(new String[][]{
+        .addShape(
+            FoundryModules.HYPERCOOLER.structureID, transpose(new String[][]{
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
             {"      qoq      ","    qq   qq    ","               ","               "," q           q "," q           q ","q             q","o             o","q             q"," q           q "," q           q ","               ","               ","    qq   qq    ","      qoq      "},
             {"     npspn     ","   pnn   nnp   ","               "," p           p "," n           n ","nn           nn","p             p","s             s","p             p","nn           nn"," n           n "," p           p ","               ","   pnn   nnp   ","     npspn     "},
@@ -237,7 +241,8 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             {"      qoq      ","    qq   qq    ","               ","               "," q           q "," q           q ","q             q","o             o","q             q"," q           q "," q           q ","               ","               ","    qq   qq    ","      qoq      "},
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
         }))
-        .addShape(SolidifierModules.EFFICIENT_OC.structureID, transpose(new String[][]{
+        .addShape(
+            FoundryModules.EFFICIENT_OC.structureID, transpose(new String[][]{
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
             {"      ttt      ","    tt   tt    ","               ","               "," t           t "," t           t ","t             t","t             t","t             t"," t           t "," t           t ","               ","               ","    tt   tt    ","      ttt      "},
             {"     vvtvv     ","   tvv F vvt   ","  Mv       vM  "," tv         vt "," v           v ","vv           vv","v             v","tF           Ft","v             v","vv           vv"," v           v "," tv         vt ","  Mv       vM  ","   tvv F vvt   ","     vvtvv     "},
@@ -246,7 +251,8 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             {"      ttt      ","    tt   tt    ","               ","               "," t           t "," t           t ","t             t","t             t","t             t"," t           t "," t           t ","               ","               ","    tt   tt    ","      ttt      "},
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
         }))
-        .addShape(SolidifierModules.TRANSCENDENT_REINFORCEMENT.structureID, transpose(new String[][]{
+        .addShape(
+            FoundryModules.TRANSCENDENT_REINFORCEMENT.structureID, transpose(new String[][]{
             {"     24442     ","               ","               ","               ","               ","3             3","4             4","4             4","4             4","3             3","               ","               ","               ","               ","     24442     "},
             {"       8       ","   22     22   ","               "," 3           3 "," 3           3 ","               ","               ","8             8","               ","               "," 3           3 "," 3           3 ","               ","   22     22   ","       8       "},
             {"      777      ","    88   88    ","  5         5  ","               "," 8           8 "," 8           8 ","7             7","7             7","7             7"," 8           8 "," 8           8 ","               ","  5         5  ","    88   88    ","      777      "},
@@ -255,7 +261,8 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             {"       8       ","   33     33   ","               "," 2           2 "," 2           2 ","               ","               ","8             8","               ","               "," 2           2 "," 2           2 ","               ","   33     33   ","       8       "},
             {"     34443     ","               ","               ","               ","               ","2             2","4             4","4             4","4             4","2             2","               ","               ","               ","               ","     34443     "}
         }))
-        .addShape(SolidifierModules.ACTIVE_TIME_DILATION_SYSTEM.structureID, transpose(new String[][]{
+        .addShape(
+            FoundryModules.ACTIVE_TIME_DILATION_SYSTEM.structureID, transpose(new String[][]{
             {"               ","       #       ","               ","               ","               ","               ","               "," #           # ","               ","               ","               ","               ","               ","       #       ","               "},
             {"     &@ @^     ","    && ! ^^    ","               ","               "," ^           & ","^^           &&","@             @"," !           ! ","@             @","&&           ^^"," &           ^ ","               ","               ","    ^^ ! &&    ","     ^@ @&     "},
             {"      @!@      ","   &**   XX^   ","   &       ^   "," ^^         && "," X           * "," X           * ","@             @","!             !","@             @"," *           X "," *           X "," &&         ^^ ","   ^       &   ","   ^XX   **&   ","      @!@      "},
@@ -264,7 +271,8 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             {"     ^@ @&     ","    ^^ ! &&    ","               ","               "," &           ^ ","&&           ^^","@             @"," !           ! ","@             @","^^           &&"," ^           & ","               ","               ","    && ! ^^    ","     &@ @^     "},
             {"               ","       #       ","               ","               ","               ","               ","               "," #           # ","               ","               ","               ","               ","               ","       #       ","               "}
         }))
-        .addShape(SolidifierModules.UNSET.structureID, transpose(new String[][]{
+        .addShape(
+            FoundryModules.UNSET.structureID, transpose(new String[][]{
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
@@ -283,23 +291,22 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             'F',
             GTStructureChannels.MAGNETIC_CHASSIS.use(
                 ofBlocksTiered(
-                    MTEModularSolidifier::getTierFromMeta,
+                    MTEExoFoundry::getTierFromMeta,
                     ImmutableList.of(
                         Pair.of(GregTechAPI.sBlockCasingsFoundry, 1),
                         Pair.of(GregTechAPI.sBlockCasingsFoundry, 2),
                         Pair.of(GregTechAPI.sBlockCasingsFoundry, 3)),
                     -1,
-                    MTEModularSolidifier::setMachineTier,
-                    MTEModularSolidifier::getMachineTier)))
+                    MTEExoFoundry::setMachineTier,
+                    MTEExoFoundry::getMachineTier)))
         .addElement('G', ofBlock(GregTechAPI.sBlockCasings11, 7)) // item pipe casing
         .addElement(
             'H',
-            buildHatchAdder(MTEModularSolidifier.class)
-                .atLeast(InputHatch, OutputBus, InputBus, Energy.or(ExoticEnergy))
+            buildHatchAdder(MTEExoFoundry.class).atLeast(InputHatch, OutputBus, InputBus, Energy.or(ExoticEnergy))
                 .dot(1)
                 .casingIndex(((BlockCasingsFoundry) GregTechAPI.sBlockCasingsFoundry).getTextureIndex(0))
                 .buildAndChain(
-                    onElementPass(MTEModularSolidifier::onCasingAdded, ofBlock(GregTechAPI.sBlockCasingsFoundry, 0))))
+                    onElementPass(MTEExoFoundry::onCasingAdded, ofBlock(GregTechAPI.sBlockCasingsFoundry, 0))))
         // streamlined casters
         .addElement('a', ofFrame(Materials.SuperconductorUEVBase))
         .addElement('b', ofBlock(GregTechAPI.sBlockCasingsFoundry, 10)) // Streamlined Caster
@@ -328,8 +335,8 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         .addElement('o', ofBlock(GregTechAPI.sBlockCasings8, 14))
         .addElement(
             'p',
-            buildHatchAdder(MTEModularSolidifier.class).hatchClass(MTEHatchInput.class)
-                .adder(MTEModularSolidifier::addCoolantInputToMachineList)
+            buildHatchAdder(MTEExoFoundry.class).hatchClass(MTEHatchInput.class)
+                .adder(MTEExoFoundry::addCoolantInputToMachineList)
                 .casingIndex(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasingsFoundry, 9))
                 .dot(2)
                 .buildAndChain(GregTechAPI.sBlockCasingsFoundry, 9))
@@ -366,11 +373,11 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         .addElement('Z', lazy(() -> ofBlock(TTCasingsContainer.TimeAccelerationFieldGenerator, 8)))
         .build();
 
-    public MTEModularSolidifier(final int aID, final String aName, final String aNameRegional) {
+    public MTEExoFoundry(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEModularSolidifier(String aName) {
+    public MTEExoFoundry(String aName) {
         super(aName);
     }
 
@@ -378,10 +385,10 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         tier = aNBT.getInteger("multiTier");
-        modules[0] = SolidifierModules.getModule(aNBT.getInteger("module1OR"));
-        modules[1] = SolidifierModules.getModule(aNBT.getInteger("module2OR"));
-        modules[2] = SolidifierModules.getModule(aNBT.getInteger("module3OR"));
-        modules[3] = SolidifierModules.getModule(aNBT.getInteger("module4OR"));
+        modules[0] = FoundryModules.getModule(aNBT.getInteger("module1OR"));
+        modules[1] = FoundryModules.getModule(aNBT.getInteger("module2OR"));
+        modules[2] = FoundryModules.getModule(aNBT.getInteger("module3OR"));
+        modules[3] = FoundryModules.getModule(aNBT.getInteger("module4OR"));
         shouldRender = aNBT.getBoolean("shouldRender");
     }
 
@@ -397,13 +404,13 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     }
 
     @Override
-    public IStructureDefinition<MTEModularSolidifier> getStructureDefinition() {
+    public IStructureDefinition<MTEExoFoundry> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEModularSolidifier(this.mName);
+        return new MTEExoFoundry(this.mName);
     }
 
     @Override
@@ -416,11 +423,11 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                     Textures.BlockIcons
                         .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasingsFoundry, 0)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_FOUNDRY_ACTIVE)
+                        .addIcon(OVERLAY_FRONT_EXOFOUNDRY_ACTIVE)
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_FOUNDRY_ACTIVE_GLOW)
+                        .addIcon(OVERLAY_FRONT_EXOFOUNDRY_ACTIVE_GLOW)
                         .extFacing()
                         .glow()
                         .build() };
@@ -429,11 +436,11 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                     Textures.BlockIcons
                         .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasingsFoundry, 0)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_FOUNDRY)
+                        .addIcon(OVERLAY_FRONT_EXOFOUNDRY)
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_FOUNDRY_GLOW)
+                        .addIcon(OVERLAY_FRONT_EXOFOUNDRY_GLOW)
                         .extFacing()
                         .glow()
                         .build() };
@@ -658,8 +665,8 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, horizontalOffset, verticalOffset, depthOffset);
         for (int i = 0; i < 2 + (tier - 1); i++) {
-            SolidifierModules m = modules[i];
-            if (m != SolidifierModules.UNSET) {
+            FoundryModules m = modules[i];
+            if (m != FoundryModules.UNSET) {
                 buildPiece(
                     m.structureID,
                     stackSize,
@@ -687,8 +694,8 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             false,
             true);
         for (int i = 0; i < 2 + (tier - 1); i++) {
-            SolidifierModules m = modules[i];
-            if (m != SolidifierModules.UNSET) {
+            FoundryModules m = modules[i];
+            if (m != FoundryModules.UNSET) {
                 built += survivalBuildPiece(
                     m.structureID,
                     stackSize,
@@ -742,7 +749,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
 
     private boolean checkModules() {
         for (int i = 0; i < 2 + (tier - 1); i++) {
-            SolidifierModules m = modules[i];
+            FoundryModules m = modules[i];
             if (!checkPiece(
                 m.structureID,
                 moduleHorizontalOffsets[i],
@@ -750,7 +757,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                 moduleDepthOffsets[i])) {
                 return false;
             }
-            if (m == SolidifierModules.HYPERCOOLER && mCoolantInputHatches.size() != 1) return false;
+            if (m == FoundryModules.HYPERCOOLER && mCoolantInputHatches.size() != 1) return false;
         }
         return true;
 
@@ -801,7 +808,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         resetParameters();
         // loop through each module. based on tier. 2 - 4 modules.
         for (int i = 0; i < 2 + (tier - 1); i++) {
-            SolidifierModules checkedModule = modules[i];
+            FoundryModules checkedModule = modules[i];
             switch (checkedModule) {
                 case UNSET:
                     break;
@@ -979,8 +986,8 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     }
 
     @Override
-    protected @NotNull MTEModularSolidifierGui getGui() {
-        return new MTEModularSolidifierGui(this);
+    protected @NotNull MTEExoFoundryGui getGui() {
+        return new MTEExoFoundryGui(this);
     }
 
     @Override
@@ -990,7 +997,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
 
     // getters/setters for mui syncing
     public int getModuleSynced(int index) {
-        if (index > SolidifierModules.values().length - 1) index = 0;
+        if (index > FoundryModules.values().length - 1) index = 0;
 
         return modules[index].ordinal();
     }
@@ -998,21 +1005,21 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     public void setModule(int index, int ordinal) {
         // just in case, shouldn't be possible
         if (index > modules.length - 1) return;
-        SolidifierModules moduleToAdd = SolidifierModules.getModule(ordinal);
+        FoundryModules moduleToAdd = FoundryModules.getModule(ordinal);
 
-        if (moduleToAdd == SolidifierModules.TRANSCENDENT_REINFORCEMENT) {
+        if (moduleToAdd == FoundryModules.TRANSCENDENT_REINFORCEMENT) {
             checkSolidifierModules();
             if (uevRecipesEnabled) return;
         }
-        if (moduleToAdd == SolidifierModules.HYPERCOOLER) {
+        if (moduleToAdd == FoundryModules.HYPERCOOLER) {
             checkSolidifierModules();
             if (hypercoolerPresent) return;
         }
-        if (moduleToAdd == SolidifierModules.ACTIVE_TIME_DILATION_SYSTEM) {
+        if (moduleToAdd == FoundryModules.ACTIVE_TIME_DILATION_SYSTEM) {
             checkSolidifierModules();
             if (tdsPresent) return;
         }
-        if (moduleToAdd == SolidifierModules.EFFICIENT_OC) {
+        if (moduleToAdd == FoundryModules.EFFICIENT_OC) {
             checkSolidifierModules();
             if (effOCPresent) return;
         }
@@ -1163,8 +1170,8 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
 
     private void renderRingsDebug(boolean gammaCorrected) {
         int i = 0;
-        for (SolidifierModules module : SolidifierModules.values()) {
-            if (module == SolidifierModules.UNSET) continue;
+        for (FoundryModules module : FoundryModules.values()) {
+            if (module == FoundryModules.UNSET) continue;
             renderRing(i, gammaCorrected ? module.gammaCorrectedRGB : module.rgbArr);
             i++;
             if (i == 4) return;

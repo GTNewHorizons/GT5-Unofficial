@@ -133,7 +133,7 @@ public class ItemCasingsFoundry extends ItemCasings {
         return "Tier: " + GTUtility.getColoredTierNameFromTier((byte) tier);
     }
 
-    // copied methods so I can avoid a public static in MTEModularSolidifier class
+    // copied methods so I can avoid a public static in MTEExoFoundry class
     private String coolingStrOrder(String val1, String val2, String val3) {
         return EnumChatFormatting.BLUE + val1
             + "/"
