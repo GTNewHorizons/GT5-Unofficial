@@ -4,6 +4,8 @@ import static gregtech.api.recipe.RecipeMaps.fluidHeaterRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GTOreDictUnificator;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
@@ -96,9 +98,9 @@ public class FluidHeaterRecipes implements Runnable {
 
         // Recycling Coolant Byproducts
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.CoolantByproducts.getFluid(50))
-            .fluidOutputs(WerkstoffMaterialPool.HotSuperCoolant.getFluidOrGas(33))
-            .itemOutputs(new ItemStack(Items.blaze_rod))
+            .fluidInputs(Materials.CoolantByproducts.getFluid(500))
+            .fluidOutputs(WerkstoffMaterialPool.HotSuperCoolant.getFluidOrGas(333))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Pyrotheum, 1L))
             .outputChances(35 * 100)
             .duration(10 * SECONDS)
             .eut(120)
