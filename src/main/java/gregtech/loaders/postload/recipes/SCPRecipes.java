@@ -1,6 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.GraviSuite;
+import static gregtech.api.enums.Mods.UniversalSingularities;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.scpRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
@@ -56,6 +57,7 @@ public class SCPRecipes implements Runnable {
         ItemStack SuperconductorUMV = GTUtility
             .copyAmountUnsafe(33 * 64, GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUMV, 1));
         ItemStack MVF = GTUtility.copyAmount(16, ItemRegistry.megaMachines[1]);
+        ItemStack coolingCore = GraviSuite.isModLoaded() ? getModItem(GraviSuite.ID, "itemSimpleItem", 8, 2) : ItemList.Tool_DataStick.get(1);
 
         // Superconductor Processor Controller
         GTValues.RA.stdBuilder()
@@ -82,7 +84,6 @@ public class SCPRecipes implements Runnable {
             .addTo(AssemblyLine);
 
         // Quantum Convection Casing
-        if (GraviSuite.isModLoaded()) {
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, GregtechItemList.Casing_AdvancedVacuum.get(1))
                 .metadata(SCANNING, new Scanning(15 * SECONDS, TierEU.RECIPE_UV))
@@ -90,7 +91,7 @@ public class SCPRecipes implements Runnable {
                     GregtechItemList.Casing_AdvancedVacuum.get(4),
                     new Object[] { OrePrefixes.circuit.get(Materials.UV), 16 },
                     ItemList.Naquarite_Universal_Insulator_Foil.get(8),
-                    getModItem(GraviSuite.ID, "itemSimpleItem", 8, 2),
+                    coolingCore,
                     ItemList.Reactor_Coolant_Sp_6.get(1),
                     ItemList.Electric_Pump_UV.get(4))
                 .itemOutputs(ItemList.SCP_Casing.get(1))
@@ -102,7 +103,6 @@ public class SCPRecipes implements Runnable {
                 .eut(TierEU.RECIPE_UV)
                 .addTo(AssemblyLine);
 
-        }
         // Booster Housing
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, GregtechItemList.Bus_Milling_Balls.get(1))

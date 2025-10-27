@@ -99,6 +99,7 @@ public class FluidHeaterRecipes implements Runnable {
             .fluidInputs(Materials.CoolantByproducts.getFluid(50))
             .fluidOutputs(WerkstoffMaterialPool.HotSuperCoolant.getFluidOrGas(33))
             .itemOutputs(new ItemStack(Items.blaze_rod))
+            .outputChances(35 * 100)
             .duration(10 * SECONDS)
             .eut(120)
             .addTo(fluidHeaterRecipes);
