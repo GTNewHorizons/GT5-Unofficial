@@ -19,9 +19,11 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -97,6 +99,7 @@ public class MTETeslaTower extends TTMultiblockBase
         .linkedListValues()
         .build();
     private final HashSet<ThaumSpark> sparkList = new HashSet<>();
+    private Map<ITeslaConnectableSimple, Integer> ampsLastTickMap = new HashMap<>();
     private int sparkCount = 20;
     // Face icons
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
@@ -797,11 +800,16 @@ public class MTETeslaTower extends TTMultiblockBase
         transferRadiusCoverUltimateDisplay.set(transferRadiusTower);
 
         // Power transfer
-        long usedAmps = TeslaUtil.powerTeslaNodeMap(this);
+        ampsLastTickMap = TeslaUtil.powerTeslaNodeMap(this);
+        int usedAmps = ampsLastTickMap.values()
+            .stream()
+            .reduce(Integer::sum)
+            .orElse(0);
+
         outputCurrentDisplay.set(usedAmps);
         outputCurrentLastTick = usedAmps;
 
-        dataPointSum += (int) usedAmps;
+        dataPointSum += usedAmps;
         dataPointTick++;
         if (dataPointTick >= ticksBetweenDataPoints) {
             outputCurrentHistory.addLast((double) dataPointSum / dataPointTick);
@@ -1035,6 +1043,10 @@ public class MTETeslaTower extends TTMultiblockBase
 
     public void setTicksBetweenDataPoints(int ticksBetweenDataPoints) {
         this.ticksBetweenDataPoints = ticksBetweenDataPoints;
+    }
+
+    public Map<ITeslaConnectableSimple, Integer> getAmpsLastTickMap() {
+        return ampsLastTickMap;
     }
 
     @Override
