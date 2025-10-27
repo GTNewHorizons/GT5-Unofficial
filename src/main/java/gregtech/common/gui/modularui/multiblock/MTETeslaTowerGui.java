@@ -5,22 +5,30 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
+import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.DynamicDrawable;
+import com.cleanroommc.modularui.drawable.ItemDrawable;
 import com.cleanroommc.modularui.drawable.Rectangle;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widget.ParentWidget;
+import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
@@ -39,6 +47,10 @@ import gregtech.common.gui.modularui.widget.LineChartWidget;
 import tectech.thing.metaTileEntity.multi.MTETeslaTower;
 
 public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
+
+    private Map<Vec3Impl, Map<Vec3Impl, Integer>> chunkToAmpsMap = new HashMap<>();
+    private final int gridChunkSize = 17;
+    private final int gridChunkRadius = 8;
 
     public MTETeslaTowerGui(MTETeslaTower multiblock) {
         super(multiblock);
@@ -212,6 +224,65 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
     }
 
     private IWidget createNodeGrid(PanelSyncManager syncManager) {
+        com.cleanroommc.modularui.widget.ParentWidget<?> parent = new ParentWidget<>().size(17 * 8, 17 * 8);
+
+        for (int i = 0; i < gridChunkSize; i++) {
+            for (int j = 0; j < gridChunkSize; j++) {
+                parent.child(
+                    createMapSlot(syncManager, i, j).pos(8 * i, 8 * j)
+                        .size(8));
+            }
+        }
+        return parent;
+    }
+
+    private Widget<?> createMapSlot(PanelSyncManager syncManager, int i, int j) {
+
+        return new DynamicDrawable(() -> getDrawableAt(i, j)).asWidget()
+            .size(8)
+            .tooltipDynamic(t -> addTooltip(t, i, j))
+            .tooltipAutoUpdate(true);
+    }
+
+    private IDrawable getDrawableAt(int i, int j) {
+        Map<Vec3Impl, Integer> ampsAtChunk = chunkToAmpsMap.get(new Vec3Impl(i, 0, j));
+
+        if (ampsAtChunk == null) {
+            return IDrawable.EMPTY;
+        }
+
+        return new Rectangle().setColor(Color.GREEN.main)
+            .asIcon()
+            .size(8);
+    }
+
+    private void addTooltip(RichTooltip t, int i, int j) {
+        Map<Vec3Impl, Integer> ampsAtChunk = chunkToAmpsMap.get(new Vec3Impl(i, 0, j));
+        if (ampsAtChunk == null) {
+            return;
+        }
+        int totalAmps = ampsAtChunk.values()
+            .stream()
+            .reduce(Integer::sum)
+            .orElse(0);
+        t.addLine(totalAmps + "A");
+
+        World world = multiblock.getBaseMetaTileEntity()
+            .getWorld();
+        ampsAtChunk.forEach((coords, amps) -> {
+            TileEntity tileEntity = world.getTileEntity(coords.get0(), coords.get1(), coords.get2());
+            // This should never happen but who knows?
+            if (!(tileEntity instanceof IGregTechTileEntity igte)) {
+                return;
+            }
+            ItemStack itemStack = new ItemStack(tileEntity.blockType, 0, igte.getMetaTileID());
+            t.add(new ItemDrawable(itemStack))
+                .add(" " + amps + "A\n");
+        });
+
+    }
+
+    private IWidget createLegacyNodeGrid(PanelSyncManager syncManager) {
         TeslaNodeListSyncHandler teslaNodeListSyncer = syncManager
             .findSyncHandler("teslaNodes", TeslaNodeListSyncHandler.class);
         List<TeslaNodeData> nodes = teslaNodeListSyncer.getValue();
@@ -252,15 +323,38 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        TeslaNodeListSyncHandler teslaNodeSyncer = new TeslaNodeListSyncHandler(() -> {
-            List<TeslaNodeData> result = new ArrayList<>();
-            multiblock.getAmpsLastTickMap()
-                .forEach((node, amps) -> {
-                    Vec3Impl coords = node.getTeslaPosition();
-                    result.add(new TeslaNodeData(coords, amps));
-                });
-            return result;
-        });
+        TeslaNodeListSyncHandler teslaNodeSyncer = new TeslaNodeListSyncHandler(
+            this::getTeslaNodes,
+            this::setTeslaNodes);
         syncManager.syncValue("teslaNodes", teslaNodeSyncer);
+    }
+
+    private List<TeslaNodeData> getTeslaNodes() {
+        List<TeslaNodeData> result = new ArrayList<>();
+        multiblock.getAmpsLastTickMap()
+            .forEach((node, amps) -> {
+                Vec3Impl coords = node.getTeslaPosition();
+                result.add(new TeslaNodeData(coords, amps));
+            });
+        return result;
+    }
+
+    private void setTeslaNodes(List<TeslaNodeData> teslaNodeData) {
+        IGregTechTileEntity base = multiblock.getBaseMetaTileEntity();
+        World world = base.getWorld();
+
+        // X,Z Chunk to machineCoords to Amps used
+        Map<Vec3Impl, Map<Vec3Impl, Integer>> newMap = new HashMap<>();
+
+        Chunk multiblockChunk = world.getChunkFromBlockCoords(base.getXCoord(), base.getZCoord());
+        for (TeslaNodeData node : teslaNodeData) {
+            Vec3Impl coords = node.getCoords();
+            Chunk nodeChunk = world.getChunkFromBlockCoords(coords.get0(), coords.get2());
+            int mapOffsetX = multiblockChunk.xPosition - nodeChunk.xPosition + gridChunkRadius;
+            int mapOffsetZ = multiblockChunk.zPosition - nodeChunk.zPosition + gridChunkRadius;
+            newMap.computeIfAbsent(new Vec3Impl(mapOffsetX, 0, mapOffsetZ), k -> new HashMap<>())
+                .put(coords, node.getUsedAmps());
+        }
+        chunkToAmpsMap = newMap;
     }
 }
