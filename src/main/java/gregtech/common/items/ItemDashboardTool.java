@@ -86,7 +86,9 @@ public class ItemDashboardTool extends GTGenericItem {
                     .setRenderLines(true)
                     .setRenderDots(false))
                 .addElement(
-                    new GraphElement(() -> Math.sin(System.currentTimeMillis() * 0.001) * 10 + 50).size(280, 80)
+                    new GraphElement(() ->
+                        (double) (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()))
+                        .size(280, 80)
                         .offsetVertical(110)
                         .setDelay(2)
                         .setDataSize(100)

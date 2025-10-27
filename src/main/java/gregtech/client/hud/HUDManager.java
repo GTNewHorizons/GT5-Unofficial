@@ -111,8 +111,8 @@ public class HUDManager {
         public static final float PROGRESS_FILL_R = 0.2f, PROGRESS_FILL_G = 0.8f, PROGRESS_FILL_B = 0.2f, PROGRESS_FILL_ALPHA = 0.9f;
         public static final float OVERLAY_BG_R = 0f, OVERLAY_BG_G = 0f, OVERLAY_BG_B = 0f, OVERLAY_BG_ALPHA = 0.5f;
         public static final float MODAL_BG_R = 0.2f, MODAL_BG_G = 0.2f, MODAL_BG_B = 0.2f, MODAL_BG_ALPHA = 0.9f;
-        public static final float GRAPH_UP_R = 1f, GRAPH_UP_G = 0f, GRAPH_UP_B = 0f, GRAPH_UP_ALPHA = 1f;
-        public static final float GRAPH_DOWN_R = 0f, GRAPH_DOWN_G = 1f, GRAPH_DOWN_B = 0f, GRAPH_DOWN_ALPHA = 1f;
+        public static final float GRAPH_UP_R = 0f, GRAPH_UP_G = 1f, GRAPH_UP_B = 0f, GRAPH_UP_ALPHA = 1f;
+        public static final float GRAPH_DOWN_R = 1f, GRAPH_DOWN_G = 0f, GRAPH_DOWN_B = 0f, GRAPH_DOWN_ALPHA = 1f;
         public static final float GRAPH_NEUTRAL_R = 0.5f, GRAPH_NEUTRAL_G = 0.5f, GRAPH_NEUTRAL_B = 0.5f, GRAPH_NEUTRAL_ALPHA = 1f;
 
         // Layout
