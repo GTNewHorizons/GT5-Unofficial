@@ -26,7 +26,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -236,7 +235,7 @@ public class DEFCRecipes {
                 GTModHandler.getModItem(DraconicEvolution.ID, "awakenedCore", 4, 0),
                 GTModHandler.getModItem(DraconicEvolution.ID, "chaosFragment", 2, 2),
                 kubatech.api.enums.ItemList.DEFCChaoticSchematic.get(0L))
-            .fluidInputs(MaterialsUEVplus.SpaceTime.getMolten(10 * INGOTS))
+            .fluidInputs(Materials.SpaceTime.getMolten(10 * INGOTS))
             .itemOutputs(GTModHandler.getModItem(DraconicEvolution.ID, "chaoticCore", 1, 0))
             .eut(24_000_000)
             .duration(3200)
