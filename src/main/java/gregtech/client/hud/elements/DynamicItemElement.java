@@ -36,14 +36,15 @@ public class DynamicItemElement extends WidgetElement<DynamicItemElement> implem
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
 
-        GL11.glTranslatef(absLeft(baseX) + offsetHorizontal, absTop(baseY) + offsetVertical, 0);
-        GL11.glScalef(scale, scale, scale);
+        GL11.glTranslatef(absLeft(baseX) + offsetHorizontal, absTop(baseY) + offsetVertical, 0.0f);
+        GL11.glScalef(scale, scale, 1.0f);
 
         RenderHelper.enableGUIStandardItemLighting();
         RenderItem renderItem = RenderItem.getInstance();
         renderItem.renderItemAndEffectIntoGUI(fr, mc.getTextureManager(), stack, 0, 0);
         RenderHelper.disableStandardItemLighting();
-
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glDisable(GL11.GL_ALPHA_TEST);
         GL11.glPopMatrix();
     }
 

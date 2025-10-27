@@ -134,20 +134,20 @@ public class GraphElement extends WidgetElement<GraphElement> implements Configu
 
             void apply(float r, float g, float b, float a) {
                 GL11.glColor4f(
-                    HUDManager.UIConstants.GRAPH_UP_R,
-                    HUDManager.UIConstants.GRAPH_UP_G,
-                    HUDManager.UIConstants.GRAPH_UP_B,
-                    HUDManager.UIConstants.GRAPH_UP_ALPHA);
+                    HUDManager.UIConstants.GRAPH_DOWN_R,
+                    HUDManager.UIConstants.GRAPH_DOWN_G,
+                    HUDManager.UIConstants.GRAPH_DOWN_B,
+                    HUDManager.UIConstants.GRAPH_DOWN_ALPHA);
             }
         },
         DOWN {
 
             void apply(float r, float g, float b, float a) {
                 GL11.glColor4f(
-                    HUDManager.UIConstants.GRAPH_DOWN_R,
-                    HUDManager.UIConstants.GRAPH_DOWN_G,
-                    HUDManager.UIConstants.GRAPH_DOWN_B,
-                    HUDManager.UIConstants.GRAPH_DOWN_ALPHA);
+                    HUDManager.UIConstants.GRAPH_UP_R,
+                    HUDManager.UIConstants.GRAPH_UP_G,
+                    HUDManager.UIConstants.GRAPH_UP_B,
+                    HUDManager.UIConstants.GRAPH_UP_ALPHA);
             }
         },
         NEUTRAL {

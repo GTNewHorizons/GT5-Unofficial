@@ -8,6 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -275,34 +276,38 @@ public class HUDManager {
     public static class HUDUtils {
 
         public static void drawHudRect(int left, int top, int right, int bottom, float r, float g, float b, float a) {
+            if (a == 0.0f) return;
             GL11.glDisable(GL11.GL_TEXTURE_2D);
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             GL11.glColor4f(r, g, b, a);
-            GL11.glBegin(GL11.GL_QUADS);
-            GL11.glVertex2i(left, top);
-            GL11.glVertex2i(left, bottom);
-            GL11.glVertex2i(right, bottom);
-            GL11.glVertex2i(right, top);
-            GL11.glEnd();
+            Tessellator tess = Tessellator.instance;
+            tess.startDrawingQuads();
+            tess.addVertex(left, bottom, 0);
+            tess.addVertex(right, bottom, 0);
+            tess.addVertex(right, top, 0);
+            tess.addVertex(left, top, 0);
+            tess.draw();
             GL11.glDisable(GL11.GL_BLEND);
             GL11.glEnable(GL11.GL_TEXTURE_2D);
         }
 
         public static void drawRectOutline(int left, int top, int right, int bottom, float r, float g, float b, float a,
             int thickness) {
+            if (a == 0.0f) return;
             GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glDisable(GL11.GL_TEXTURE_2D);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             GL11.glColor4f(r, g, b, a);
             GL11.glLineWidth(thickness);
-            GL11.glBegin(GL11.GL_LINE_LOOP);
-            GL11.glVertex2d(left, bottom);
-            GL11.glVertex2d(right, bottom);
-            GL11.glVertex2d(right, top);
-            GL11.glVertex2d(left, top);
-            GL11.glEnd();
+            Tessellator tess = Tessellator.instance;
+            tess.startDrawing(GL11.GL_LINE_LOOP);
+            tess.addVertex(left, bottom, 0);
+            tess.addVertex(right, bottom, 0);
+            tess.addVertex(right, top, 0);
+            tess.addVertex(left, top, 0);
+            tess.draw();
             GL11.glPopAttrib();
         }
 
@@ -316,7 +321,6 @@ public class HUDManager {
         HUDRenderer.renderOverlay(event, true, 1.0f);
     }
 
-    // Mouse handling methods now delegate to HUDInputHandler
     public void handleMouseClick(int mouseXScaled, int mouseYScaled, int button, float hudScale) {
         HUDInputHandler.handleMouseClick(mouseXScaled, mouseYScaled, button, hudScale, this);
     }
