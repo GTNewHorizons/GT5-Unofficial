@@ -1432,7 +1432,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.ExcitedDTSC, 1L),
                 ItemList.Cell_Empty.get(1L));
 
-        GTFluidFactory.builder("SuperfluidStimulant")
+        GTFluidFactory.builder("superfluidstimulant")
             .withLocalizedName("Superfluid Stimulant")
             .withStateAndTemperature(LIQUID, 15)
             .buildAndRegister()
@@ -1440,7 +1440,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .registerBContainers(
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.SuperfluidStimulant, 1L),
                 ItemList.Cell_Empty.get(1L));
-        GTFluidFactory.builder("SuperfluidHelium")
+        GTFluidFactory.builder("superfluidhelium")
             .withLocalizedName("Superfluid Helium")
             .withStateAndTemperature(LIQUID, 1)
             .buildAndRegister()
@@ -1448,7 +1448,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .registerBContainers(
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.SuperfluidHelium, 1L),
                 ItemList.Cell_Empty.get(1L));
-        GTFluidFactory.builder("CoolantByproducts")
+        GTFluidFactory.builder("coolantbyproducts")
             .withLocalizedName("Coolant Byproducts")
             .withStateAndTemperature(LIQUID, 30)
             .buildAndRegister()

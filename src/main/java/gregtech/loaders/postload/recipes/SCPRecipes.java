@@ -1,11 +1,21 @@
 package gregtech.loaders.postload.recipes;
 
+import static gregtech.api.enums.Mods.GraviSuite;
+import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.scpRecipes;
+import static gregtech.api.util.GTModHandler.getModItem;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.STACKS;
+import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
+import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
+import static gregtech.api.util.GTRecipeConstants.SCANNING;
 
 import net.minecraft.item.ItemStack;
 
+import bartworks.common.loaders.ItemRegistry;
 import bartworks.system.material.WerkstoffLoader;
+import goodgenerator.util.ItemRefer;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -13,6 +23,11 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.recipe.Scanning;
+import gtPlusPlus.core.material.MaterialsAlloy;
+import gtPlusPlus.core.material.MaterialsElements;
+import gtPlusPlus.core.recipe.common.CI;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class SCPRecipes implements Runnable {
 
@@ -40,8 +55,202 @@ public class SCPRecipes implements Runnable {
             .copyAmountUnsafe(30 * 64, GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUIV, 1));
         ItemStack SuperconductorUMV = GTUtility
             .copyAmountUnsafe(33 * 64, GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUMV, 1));
+        ItemStack MVF = GTUtility.copyAmount(16, ItemRegistry.megaMachines[1]);
 
-        // Scon w/SpaceTime input (MV-UHV)
+        // Superconductor Processor Controller
+        GTValues.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemRefer.Component_Assembly_Line.get(1))
+            .metadata(SCANNING, new Scanning(15 * SECONDS, TierEU.RECIPE_UV))
+            .itemInputs(
+                ItemRefer.Precise_Assembler.get(16),
+                MVF,
+                ItemList.FluidSolidifierUV.get(16),
+                ItemList.WiremillUV.get(16),
+                ItemRefer.Precise_Electronic_Unit_T4.get(16),
+                GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Neutronium, 32),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Americium, 4),
+                ItemList.Conveyor_Module_UV.get(16),
+                ItemList.Electric_Pump_UV.get(16),
+                new Object[] { OrePrefixes.circuit.get(Materials.UHV), 16 })
+            .itemOutputs(ItemList.SuperConductorProcessor.get(1))
+            .fluidInputs(
+                Materials.Lubricant.getFluid(10000),
+                MaterialsAlloy.INDALLOY_140.getFluidStack(15 * STACKS + 40 * INGOTS),
+                WerkstoffLoader.Oganesson.getFluidOrGas(2880))
+            .duration(120 * SECONDS)
+            .eut(TierEU.RECIPE_UHV)
+            .addTo(AssemblyLine);
+
+        // Quantum Convection Casing
+        if (GraviSuite.isModLoaded()) {
+            GTValues.RA.stdBuilder()
+                .metadata(RESEARCH_ITEM, GregtechItemList.Casing_AdvancedVacuum.get(1))
+                .metadata(SCANNING, new Scanning(15 * SECONDS, TierEU.RECIPE_UV))
+                .itemInputs(
+                    GregtechItemList.Casing_AdvancedVacuum.get(4),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 16 },
+                    ItemList.Naquarite_Universal_Insulator_Foil.get(8),
+                    getModItem(GraviSuite.ID, "itemSimpleItem", 8, 2),
+                    ItemList.Reactor_Coolant_Sp_6.get(1),
+                    ItemList.Electric_Pump_UV.get(4))
+                .itemOutputs(ItemList.SCP_Casing.get(1))
+                .fluidInputs(
+                    Materials.SuperCoolant.getFluid(100000L),
+                    Materials.MysteriousCrystal.getMolten(50000L),
+                    Materials.SuperfluidHelium.getFluid(25000L))
+                .duration(10 * SECONDS)
+                .eut(TierEU.RECIPE_UV)
+                .addTo(AssemblyLine);
+
+        }
+        // Booster Housing
+        GTValues.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, GregtechItemList.Bus_Milling_Balls.get(1))
+            .metadata(SCANNING, new Scanning(150 * SECONDS, TierEU.RECIPE_UHV))
+            .itemInputs(
+                CI.getTieredGTPPMachineCasing(8, 8),
+                ItemList.Field_Generator_UV.get(16),
+                GregtechItemList.Energy_Core_ZPM.get(8),
+                GTOreDictUnificator.get(OrePrefixes.round, Materials.Vanadiumtriindinid, 64),
+                GTOreDictUnificator.get(
+                    OrePrefixes.plateDense,
+                    Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid,
+                    16),
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Tetranaquadahdiindiumhexaplatiumosminid, 16),
+                GTOreDictUnificator.get(OrePrefixes.spring, Materials.Longasssuperconductornameforuvwire, 16),
+                new Object[] { OrePrefixes.circuit.get(Materials.UHV), 16 })
+            .itemOutputs(ItemList.Hatch_Booster.get(1))
+            .fluidInputs(
+                MaterialsElements.STANDALONE.GRANITE.getFluidStack(64 * INGOTS),
+                MaterialsAlloy.BOTMIUM.getFluidStack(32 * INGOTS),
+                MaterialsAlloy.PIKYONIUM.getFluidStack(16 * INGOTS),
+                WerkstoffLoader.TantalumHafniumCarbide.getMolten(1152))
+            .duration(333 * SECONDS)
+            .eut(TierEU.RECIPE_UHV)
+            .addTo(AssemblyLine);
+
+        // Tier 1 Boosters
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Superconducting_Magnet_Solenoid_ZPM.get(16),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Pentacadmiummagnesiumhexaoxid, 12),
+                ItemList.Field_Generator_HV.get(4))
+            .itemOutputs(ItemList.Booster_MV.get(1))
+            .fluidInputs(Materials.SuperfluidHelium.getFluid(10000))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(assemblerRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Superconducting_Magnet_Solenoid_ZPM.get(16),
+                GTOreDictUnificator
+                    .get(OrePrefixes.plateSuperdense, Materials.Titaniumonabariumdecacoppereikosaoxid, 12),
+                ItemList.Field_Generator_EV.get(4))
+            .itemOutputs(ItemList.Booster_HV.get(1))
+            .fluidInputs(Materials.SuperfluidHelium.getFluid(10000))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
+            .addTo(assemblerRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Superconducting_Magnet_Solenoid_ZPM.get(16),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Uraniumtriplatinid, 12),
+                ItemList.Field_Generator_IV.get(4))
+            .itemOutputs(ItemList.Booster_EV.get(1))
+            .fluidInputs(Materials.SuperfluidHelium.getFluid(10000))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_LuV)
+            .addTo(assemblerRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Superconducting_Magnet_Solenoid_ZPM.get(16),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Vanadiumtriindinid, 12),
+                ItemList.Field_Generator_LuV.get(4))
+            .itemOutputs(ItemList.Booster_IV.get(1))
+            .fluidInputs(Materials.SuperfluidHelium.getFluid(10000))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_ZPM)
+            .addTo(assemblerRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Superconducting_Magnet_Solenoid_ZPM.get(16),
+                GTOreDictUnificator.get(
+                    OrePrefixes.plateSuperdense,
+                    Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid,
+                    12),
+                ItemList.Field_Generator_ZPM.get(4))
+            .itemOutputs(ItemList.Booster_LuV.get(1))
+            .fluidInputs(Materials.SuperfluidHelium.getFluid(10000))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_UV)
+            .addTo(assemblerRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Superconducting_Magnet_Solenoid_ZPM.get(16),
+                GTOreDictUnificator
+                    .get(OrePrefixes.plateSuperdense, Materials.Tetranaquadahdiindiumhexaplatiumosminid, 12),
+                ItemList.Field_Generator_UV.get(4))
+            .itemOutputs(ItemList.Booster_ZPM.get(1))
+            .fluidInputs(Materials.SuperfluidHelium.getFluid(10000))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_UHV)
+            .addTo(assemblerRecipes);
+
+        // Tier 2 Boosters
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Superconducting_Magnet_Solenoid_UHV.get(32),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Longasssuperconductornameforuvwire, 24),
+                ItemList.Field_Generator_UHV.get(16))
+            .itemOutputs(ItemList.Booster_UV.get(1))
+            .fluidInputs(Materials.SuperfluidHelium.getFluid(100000))
+            .duration(30 * SECONDS)
+            .eut(TierEU.UEV)
+            .addTo(assemblerRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Superconducting_Magnet_Solenoid_UHV.get(32),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Longasssuperconductornameforuhvwire, 24),
+                ItemList.Field_Generator_UEV.get(16))
+            .itemOutputs(ItemList.Booster_UHV.get(1))
+            .fluidInputs(Materials.SuperfluidHelium.getFluid(100000))
+            .duration(30 * SECONDS)
+            .eut(TierEU.UIV)
+            .addTo(assemblerRecipes);
+
+        // Tier 3 Boosters
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Superconducting_Magnet_Solenoid_UEV.get(64),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.SuperconductorUEVBase, 48),
+                ItemList.Field_Generator_UIV.get(64))
+            .itemOutputs(ItemList.Booster_UEV.get(1))
+            .fluidInputs(Materials.SpaceTime.getMolten(10000))
+            .duration(30 * SECONDS)
+            .eut(TierEU.UMV)
+            .addTo(assemblerRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Superconducting_Magnet_Solenoid_UIV.get(64),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.SuperconductorUIVBase, 48),
+                ItemList.Field_Generator_UMV.get(64))
+            .itemOutputs(ItemList.Booster_UIV.get(1))
+            .fluidInputs(Materials.SpaceTime.getMolten(100000))
+            .duration(30 * SECONDS)
+            .eut(TierEU.UXV)
+            .addTo(assemblerRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Superconducting_Magnet_Solenoid_UMV.get(64),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.SuperconductorUMVBase, 48),
+                ItemList.Field_Generator_UXV.get(64))
+            .itemOutputs(ItemList.Booster_UMV.get(1))
+            .fluidInputs(Materials.SpaceTime.getMolten(1000000))
+            .duration(30 * SECONDS)
+            .eut(TierEU.MAX)
+            .addTo(assemblerRecipes);
+
+        // Scon w/Helium input (MV-UHV)
 
         // MV
         GTValues.RA.stdBuilder()

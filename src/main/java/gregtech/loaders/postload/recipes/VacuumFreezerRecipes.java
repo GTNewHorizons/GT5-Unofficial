@@ -387,8 +387,8 @@ public class VacuumFreezerRecipes implements Runnable {
 
         // Superfluid Helium
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.SuperfluidStimulant.getFluid(144L), Materials.LiquidNitrogen.getFluid(1440L))
-            .fluidOutputs(Materials.SuperfluidHelium.getFluid(144L), Materials.CoolantByproducts.getMolten(5000L))
+            .fluidInputs(Materials.SuperfluidStimulant.getFluid(144L), Materials.LiquidNitrogen.getGas(1440L))
+            .fluidOutputs(Materials.SuperfluidHelium.getFluid(144L), Materials.CoolantByproducts.getFluid(5000L))
             .duration(100 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(vacuumFreezerRecipes);

@@ -88,140 +88,140 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
                 "          EEE          ",
                 "         EEEEE         ",
                 "    EE EEEEEEEEE EE    ",
-                "         EEEEE         ",
-                "          EEE          "
+                "    F    EEEEE    F    ",
+                "    F     EEE     F    "
             },{
                 "                       ",
                 "                       ",
-                "       DDFFFFFDD       ",
+                "       DDGGGGGDD       ",
                 "   EEEECCBBBBBCCEEEE   ",
-                "       DDAFFFADD       ",
+                "       DDAGGGADD       ",
                 "                       "
             },{
                 "                       ",
                 "                       ",
-                "      DFFDDDDDFFD      ",
+                "      DGGDDDDDGGD      ",
                 "  EEEECBBCCCCCBBCEEEE  ",
                 "      DAADDDDDAAD      ",
                 "                       "
             },{
                 "                       ",
                 "                       ",
-                "     DFDD     DDFD     ",
-                " EEEECBCCEEGEECCBCEEEE ",
-                "     DADD     DDAD     ",
-                "                       "
+                "     DGDD     DDGD     ",
+                " EEEECBCCEEHEECCBCEEEE ",
+                " F   DADD     DDAD   F ",
+                " F                   F "
             },{
                 "                       ",
                 "                       ",
-                "    DFD         DFD    ",
+                "    DGD         DGD    ",
                 " EEECBCEE     EECBCEEE ",
                 "    DAD         DAD    ",
                 "                       "
             },{
                 "                       ",
                 "                       ",
-                "   DFD           DFD   ",
+                "   DGD           DGD   ",
                 "  ECBCE         ECBCE  ",
                 "   DAD           DAD   ",
                 "                       "
             },{
                 "                       ",
                 "                       ",
-                "  DFD             DFD  ",
+                "  DGD             DGD  ",
                 " ECBCE D       D ECBCE ",
                 "  DAD             DAD  ",
                 "                       "
             },{
                 "          D D          ",
                 "                       ",
-                "  DFD   D     D   DFD  ",
+                "  DGD   D     D   DGD  ",
                 " ECBCE           ECBCE ",
                 "  DAD             DAD  ",
                 "                       "
             },{
                 "          D D          ",
                 "         D   D         ",
-                " DFD               DFD ",
+                " DGD               DGD ",
                 "ECBCE             ECBCE",
                 " DAD               DAD ",
                 "                       "
             },{
                 "        DDD DDD        ",
                 "                       ",
-                " DFD               DFD ",
+                " DGD               DGD ",
                 "ECBCE             ECBCE",
-                " DFD               DFD ",
+                " DGD               DGD ",
                 "                       "
             },{
                 "                       ",
                 " EEE               EEE ",
-                "EEFEE             EDFDE",
+                "EEGEE             EDGDE",
                 "ECBCE             ECBCE",
-                "EEFEE             EDFDE",
+                "EEGEE             EDGDE",
                 " EEE               EEE "
             },{
                 "                       ",
                 "                       ",
-                " DFD               DFD ",
+                " DGD               DGD ",
                 "ECBCE             ECBCE",
-                " DFD               DFD ",
+                " DGD               DGD ",
                 "                       "
             },{
                 "           D           ",
                 "                       ",
-                " DFD               DFD ",
+                " DGD               DGD ",
                 "ECBCE             ECBCE",
                 " DAD               DAD ",
                 "                       "
             },{
                 "          D D          ",
                 "           D           ",
-                "  DFD             DFD  ",
+                "  DGD             DGD  ",
                 " ECBCE           ECBCE ",
                 "  DAD             DAD  ",
                 "                       "
             },{
                 "         D   D         ",
                 "                       ",
-                "  DFD      D      DFD  ",
+                "  DGD      D      DGD  ",
                 " ECBCE           ECBCE ",
                 "  DAD             DAD  ",
                 "                       "
             },{
                 "                       ",
                 "                       ",
-                "   DFD           DFD   ",
+                "   DGD           DGD   ",
                 "  ECBCE    D    ECBCE  ",
                 "   DAD           DAD   ",
                 "                       "
             },{
                 "                       ",
                 "                       ",
-                "    DFD         DFD    ",
+                "    DGD         DGD    ",
                 "   ECBCEE  D  EECBCE   ",
                 "    DAD         DAD    ",
                 "                       "
             },{
                 "                       ",
                 "                       ",
-                "     DFDD  E  DDFD     ",
+                "     DGDD  E  DDGD     ",
                 "    ECBCCEEEEECCBCE    ",
                 "     DADD  E  DDAD     ",
                 "                       "
             },{
                 "                       ",
                 "           E           ",
-                "      DFFDDDDDFFD      ",
+                "      DGGDDDDDGGD      ",
                 "     ECBBCCCCCBBCE     ",
                 "      DAADDDDDAAD      ",
                 "           E           "
             },{
                 "                       ",
                 "           E           ",
-                "       DDFFFFFDD       ",
+                "       DDGGGGGDD       ",
                 "      ECCBBBBBCCE      ",
-                "       DDAFFFADD       ",
+                "       DDAGGGADD       ",
                 "           E           "
             },{
                 "                       ",
@@ -249,9 +249,10 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
                 "                       ",
                 "                       ",
                 "          EEE          ",
-                "                       ",
-                "                       "
-            }})        //spotless:on
+                "          F F          ",
+                "          F F          "
+            }})       //spotless:on
+        // coal casings
         .addElement(
             'A',
             lazy(
@@ -264,6 +265,7 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
                     MTESuperConductorProcessor::setCasingTier,
                     MTESuperConductorProcessor::getCasingTier)))
 
+        // solenoids
         .addElement(
             'B',
             GTStructureChannels.SOLENOID.use(
@@ -274,9 +276,7 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
         // coolant duct
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings10, 9))
 
-        // naq casing
-        .addElement('E', ofBlock(GregTechAPI.sBlockCasings8, 10))
-
+        // quantum convection casing
         .addElement(
             'D',
             buildHatchAdder(MTESuperConductorProcessor.class)
@@ -286,9 +286,17 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
                 .buildAndChain(
                     onElementPass(MTESuperConductorProcessor::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings12, 8))))
 
-        .addElement('F', lazy(() -> Casings.QuantumGlass.asElement()))
+        // naq casing
+        .addElement('E', ofBlock(GregTechAPI.sBlockCasings8, 10))
+
+        // radiation proof steel frame box
+        .addElement('F', ofBlock(Loaders.radiationProtectionSteelFrame, 0))
+
+        // quantum glass
+        .addElement('G', lazy(() -> Casings.QuantumGlass.asElement()))
+        // booster housing
         .addElement(
-            'G',
+            'H',
             buildHatchAdder(MTESuperConductorProcessor.class).adder(MTESuperConductorProcessor::addboosterHatch)
                 .hatchClass(MTEHatchBooster.class)
                 .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10))

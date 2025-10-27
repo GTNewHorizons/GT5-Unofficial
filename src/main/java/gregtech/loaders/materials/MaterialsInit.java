@@ -1,6 +1,5 @@
 package gregtech.loaders.materials;
 
-import bartworks.system.material.WerkstoffLoader;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.util.EnumChatFormatting;
 

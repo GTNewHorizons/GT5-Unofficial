@@ -1,8 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.Mods.GraviSuite;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
-import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -14,9 +12,6 @@ import static gregtech.api.util.GTRecipeConstants.SCANNING;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 
-import bartworks.common.loaders.ItemRegistry;
-import bartworks.system.material.WerkstoffLoader;
-import goodgenerator.util.ItemRefer;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -25,13 +20,9 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.ExternalMaterials;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsAlloy;
-import gtPlusPlus.core.material.MaterialsElements;
-import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import tectech.thing.CustomItemList;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
@@ -890,79 +881,6 @@ public class AssemblyLineRecipes implements Runnable {
                 MaterialsAlloy.INDALLOY_140.getFluidStack(15 * STACKS + 40 * INGOTS),
                 MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(2_000))
             .duration(60 * SECONDS)
-            .eut(TierEU.RECIPE_UHV)
-            .addTo(AssemblyLine);
-
-        ItemStack MVF = GTUtility.copyAmount(16, ItemRegistry.megaMachines[1]);
-
-        // Superconductor Processor Controller
-        GTValues.RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, ItemRefer.Component_Assembly_Line.get(1))
-            .metadata(SCANNING, new Scanning(15 * SECONDS, TierEU.RECIPE_UV))
-            .itemInputs(
-                ItemRefer.Precise_Assembler.get(16),
-                MVF,
-                ItemList.FluidSolidifierUV.get(16),
-                ItemRefer.Precise_Electronic_Unit_T4.get(16),
-                GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Neutronium, 32),
-                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Americium, 4),
-                ItemList.Conveyor_Module_UV.get(16),
-                ItemList.Electric_Pump_UV.get(16),
-                new Object[] { OrePrefixes.circuit.get(Materials.UHV), 16 })
-            .itemOutputs(ItemList.SuperConductorProcessor.get(1))
-            .fluidInputs(
-                Materials.Lubricant.getFluid(10000),
-                MaterialsAlloy.INDALLOY_140.getFluidStack(15 * STACKS + 40 * INGOTS),
-                WerkstoffLoader.Oganesson.getFluidOrGas(2880))
-            .duration(120 * SECONDS)
-            .eut(TierEU.RECIPE_UHV)
-            .addTo(AssemblyLine);
-
-        // Quantum Convection Casing
-        if (GraviSuite.isModLoaded()) {
-            GTValues.RA.stdBuilder()
-                .metadata(RESEARCH_ITEM, GregtechItemList.Casing_AdvancedVacuum.get(1))
-                .metadata(SCANNING, new Scanning(15 * SECONDS, TierEU.RECIPE_UV))
-                .itemInputs(
-                    GregtechItemList.Casing_AdvancedVacuum.get(4),
-                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 16 },
-                    ItemList.Naquarite_Universal_Insulator_Foil.get(8),
-                    getModItem(GraviSuite.ID, "itemSimpleItem", 8, 2),
-                    ItemList.Reactor_Coolant_Sp_6.get(1),
-                    ItemList.Electric_Pump_UV.get(4))
-                .itemOutputs(ItemList.SCP_Casing.get(1))
-                .fluidInputs(
-                    Materials.SuperCoolant.getFluid(100000L),
-                    Materials.MysteriousCrystal.getMolten(50000L),
-                    Materials.SuperfluidHelium.getFluid(25000L))
-                .duration(10 * SECONDS)
-                .eut(TierEU.RECIPE_UV)
-                .addTo(AssemblyLine);
-
-        }
-        // Booster Housing
-        GTValues.RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, GregtechItemList.Bus_Milling_Balls.get(1))
-            .metadata(SCANNING, new Scanning(150 * SECONDS, TierEU.RECIPE_UHV))
-            .itemInputs(
-                CI.getTieredGTPPMachineCasing(8, 8),
-                ItemList.Field_Generator_UV.get(16),
-                GregtechItemList.Energy_Core_ZPM.get(8),
-                GTOreDictUnificator.get(OrePrefixes.round, Materials.Vanadiumtriindinid, 64),
-                GTOreDictUnificator.get(
-                    OrePrefixes.plateDense,
-                    Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid,
-                    16),
-                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Tetranaquadahdiindiumhexaplatiumosminid, 16),
-                GTOreDictUnificator.get(OrePrefixes.spring, Materials.Longasssuperconductornameforuvwire, 16),
-                new Object[] { OrePrefixes.circuit.get(Materials.UHV), 16 })
-            .itemOutputs(ItemList.Hatch_Booster.get(1))
-            .fluidInputs(
-                MaterialsElements.STANDALONE.GRANITE.getFluidStack(64 * INGOTS),
-                MaterialsAlloy.BOTMIUM.getFluidStack(32 * INGOTS),
-                MaterialsAlloy.PIKYONIUM.getFluidStack(16 * INGOTS),
-                WerkstoffLoader.TantalumHafniumCarbide.getMolten(1152))
-            .duration(333 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(AssemblyLine);
     }
