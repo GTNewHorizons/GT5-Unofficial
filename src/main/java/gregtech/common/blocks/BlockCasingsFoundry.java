@@ -39,21 +39,53 @@ public class BlockCasingsFoundry extends BlockCasingsAbstract {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int ordinalSide, int aMeta) {
-        return switch (aMeta) {
-            case 0 -> Textures.BlockIcons.MODULAR_SOLIDIFIER_CASING.getIcon();
-            case 1 -> Textures.BlockIcons.MACHINE_CASING_THAUMIUM.getIcon();
-            case 2 -> Textures.BlockIcons.MACHINE_CASING_VOID.getIcon();
-            case 3 -> Textures.BlockIcons.MACHINE_CASING_ICHORIUM.getIcon();
-            case 4 -> Textures.BlockIcons.MODULAR_SOLIDIFIER_ACTIVE_TIME_DILATION_SYSTEM.getIcon();
-            case 5 -> Textures.BlockIcons.MODULAR_SOLIDIFIER_EFFICIENT_OVERCLOCKING.getIcon();
-            case 6 -> Textures.BlockIcons.MODULAR_SOLIDIFIER_POWER_EFFICIENT_SUBSYSTEMS.getIcon();
-            case 7 -> Textures.BlockIcons.MODULAR_SOLIDIFIER_TRANSCENDENT_REINFORCEMENT.getIcon();
-            case 8 -> Textures.BlockIcons.MODULAR_SOLIDIFIER_EXTRA_CASTING_BASINS.getIcon();
-            case 9 -> Textures.BlockIcons.MODULAR_SOLIDIFIER_HYPERCOOLER.getIcon();
-            case 10 -> Textures.BlockIcons.MODULAR_SOLIDIFIER_STREAMLINED_CASTERS.getIcon();
-            case 11 -> Textures.BlockIcons.MODULAR_SOLIDIFIER_SECONDARY_CASING.getIcon();
-            default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
+        switch (aMeta) {
+            case 0 -> {
+                return Textures.BlockIcons.MACHINE_FOUNDRY_CASING.getIcon();
+            }
+            case 1 -> {
+                if (ordinalSide == 0 || ordinalSide == 1)
+                    return Textures.BlockIcons.MACHINE_FOUNDRY_INFINITE_CHASSIS_TOP.getIcon();
+                return Textures.BlockIcons.MACHINE_FOUNDRY_INFINITE_CHASSIS.getIcon();
+            }
+            case 2 -> {
+                if (ordinalSide == 0 || ordinalSide == 1)
+                    return Textures.BlockIcons.MACHINE_FOUNDRY_ETERNAL_CHASSIS_TOP.getIcon();
+                return Textures.BlockIcons.MACHINE_FOUNDRY_ETERNAL_CHASSIS.getIcon();
+            }
+            case 3 -> {
+                if (ordinalSide == 0 || ordinalSide == 1)
+                    return Textures.BlockIcons.MACHINE_FOUNDRY_CELESTIAL_CHASSIS_TOP.getIcon();
+                return Textures.BlockIcons.MACHINE_FOUNDRY_CELESTIAL_CHASSIS.getIcon();
+            }
+            case 4 -> {
+                return Textures.BlockIcons.MODULAR_SOLIDIFIER_ACTIVE_TIME_DILATION_SYSTEM.getIcon();
+            }
+            case 5 -> {
+                return Textures.BlockIcons.MODULAR_SOLIDIFIER_EFFICIENT_OVERCLOCKING.getIcon();
+            }
+            case 6 -> {
+                return Textures.BlockIcons.MODULAR_SOLIDIFIER_POWER_EFFICIENT_SUBSYSTEMS.getIcon();
+            }
+            case 7 -> {
+                return Textures.BlockIcons.MODULAR_SOLIDIFIER_TRANSCENDENT_REINFORCEMENT.getIcon();
+            }
+            case 8 -> {
+                return Textures.BlockIcons.MODULAR_SOLIDIFIER_EXTRA_CASTING_BASINS.getIcon();
+            }
+            case 9 -> {
+                return Textures.BlockIcons.MODULAR_SOLIDIFIER_HYPERCOOLER.getIcon();
+            }
+            case 10 -> {
+                return Textures.BlockIcons.MODULAR_SOLIDIFIER_STREAMLINED_CASTERS.getIcon();
+            }
+            case 11 -> {
+                return Textures.BlockIcons.MACHINE_FOUNDRY_SIPHON_CASING.getIcon();
+            }
+            default -> {
+                return Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
+            }
 
-        };
+        }
     }
 }

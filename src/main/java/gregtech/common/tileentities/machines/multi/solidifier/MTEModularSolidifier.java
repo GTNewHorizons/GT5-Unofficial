@@ -473,8 +473,9 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             .addInfo("Toggle Render with Screwdriver")
             .addTecTechHatchInfo()
             .addSeparator()
+            .addInfo("Thank you to Sisyphus and IX for their work")
             .addInfo(EnumChatFormatting.RED + "Glorious Evolution!")
-            .beginStructureBlock(3, 5, 3, true)
+            .beginStructureBlock(15, 55, 15, true)
             .addController("Front Center")
             .addCasingInfoMinColored(
                 "Primary Exo-Foundry Casing",
