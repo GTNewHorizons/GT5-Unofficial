@@ -1,8 +1,6 @@
 package gtPlusPlus.xmod.gregtech.api.items;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -214,23 +212,19 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
         return super.getItemStackLimit(aStack);
     }
 
-    private static final Map<String, Integer> COLOR_MAP;
+    private static final Map<String, Integer> COLOR_MAP = Map.ofEntries(
+        Map.entry("Sodium", Utils.rgbtoHexValue(90, 90, 255)),
+        Map.entry("Cadmium", Utils.rgbtoHexValue(150, 150, 80)),
+        Map.entry("Lithium", Utils.rgbtoHexValue(225, 220, 255)),
+        Map.entry("Wrought", Utils.rgbtoHexValue(200, 180, 180)),
+        Map.entry("Bronze", Utils.rgbtoHexValue(255, 128, 0)),
+        Map.entry("Brass", Utils.rgbtoHexValue(255, 180, 0)),
+        Map.entry("Invar", Utils.rgbtoHexValue(180, 180, 120)),
 
-    static {
-        Map<String, Integer> map = new HashMap<>();
-        map.put("Sodium", Utils.rgbtoHexValue(90, 90, 255));
-        map.put("Cadmium", Utils.rgbtoHexValue(150, 150, 80));
-        map.put("Lithium", Utils.rgbtoHexValue(225, 220, 255));
-        map.put("Wrought", Utils.rgbtoHexValue(200, 180, 180));
-        map.put("Bronze", Utils.rgbtoHexValue(255, 128, 0));
-        map.put("Brass", Utils.rgbtoHexValue(255, 180, 0));
-        map.put("Invar", Utils.rgbtoHexValue(180, 180, 120));
-        map.put("ULV", Utils.rgbtoHexValue(200, 180, 180));
-        map.put("LuV", Utils.rgbtoHexValue(255, 204, 204));
-        map.put("ZPM", Utils.rgbtoHexValue(255, 230, 0));
-        map.put("UV", Utils.rgbtoHexValue(255, 180, 0));
-        COLOR_MAP = Collections.unmodifiableMap(map);
-    }
+        Map.entry("ULV", Utils.rgbtoHexValue(200, 180, 180)),
+        Map.entry("LuV", Utils.rgbtoHexValue(255, 204, 204)),
+        Map.entry("ZPM", Utils.rgbtoHexValue(255, 230, 0)),
+        Map.entry("UV", Utils.rgbtoHexValue(255, 180, 0)));
 
     @Override
     public int getColorFromItemStack(final ItemStack stack, int defaultColor) {
