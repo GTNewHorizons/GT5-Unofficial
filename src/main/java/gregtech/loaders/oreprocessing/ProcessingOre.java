@@ -157,7 +157,7 @@ public class ProcessingOre implements IOreRecipeRegistrator {
                             GTOreDictUnificator.get(OrePrefixes.dust, Materials.Calcite, aMultiplier))
                         .itemOutputs(
                             GTUtility.mul(aMultiplier * 3 * aMaterial.mSmeltingMultiplier, tSmeltInto),
-                            GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1L))
+                            GTOreDictUnificator.get(OrePrefixes.dust, Materials.AshDark, 1L))
                         .outputChances(10000, 2500)
                         .duration(tSmeltInto.stackSize * 25 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
@@ -169,7 +169,7 @@ public class ProcessingOre implements IOreRecipeRegistrator {
                             GTOreDictUnificator.get(OrePrefixes.dust, Materials.Quicklime, aMultiplier))
                         .itemOutputs(
                             GTUtility.mul(aMultiplier * 3 * aMaterial.mSmeltingMultiplier, tSmeltInto),
-                            GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1L))
+                            GTOreDictUnificator.get(OrePrefixes.dust, Materials.AshDark, 1L))
                         .outputChances(10000, 2500)
                         .duration(tSmeltInto.stackSize * 25 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
@@ -184,7 +184,7 @@ public class ProcessingOre implements IOreRecipeRegistrator {
                             GTOreDictUnificator.get(OrePrefixes.dust, Materials.Calcite, aMultiplier))
                         .itemOutputs(
                             GTUtility.mul(aMultiplier * 2 * aMaterial.mSmeltingMultiplier, tSmeltInto),
-                            GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1L))
+                            GTOreDictUnificator.get(OrePrefixes.dust, Materials.AshDark, 1L))
                         .outputChances(10000, 2500)
                         .duration(tSmeltInto.stackSize * 25 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
@@ -196,7 +196,7 @@ public class ProcessingOre implements IOreRecipeRegistrator {
                             GTOreDictUnificator.get(OrePrefixes.dust, Materials.Quicklime, aMultiplier))
                         .itemOutputs(
                             GTUtility.mul(aMultiplier * 2 * aMaterial.mSmeltingMultiplier, tSmeltInto),
-                            GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1L))
+                            GTOreDictUnificator.get(OrePrefixes.dust, Materials.AshDark, 1L))
                         .outputChances(10000, 2500)
                         .duration(tSmeltInto.stackSize * 25 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
