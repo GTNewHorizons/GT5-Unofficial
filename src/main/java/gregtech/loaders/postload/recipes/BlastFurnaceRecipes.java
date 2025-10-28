@@ -23,7 +23,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialsElements;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
@@ -458,8 +457,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.SuperconductorUEVBase, 1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.SuperconductorUEVBase, 1))
             .iCircuit(11)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorUEVBase, 1))
             .duration(13 * MINUTES + 6 * SECONDS)
@@ -471,8 +469,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .addTo(BlastFurnaceWithGas);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.SuperconductorUIVBase, 1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.SuperconductorUIVBase, 1))
             .iCircuit(11)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorUIVBase, 1))
             .duration(13 * MINUTES + 6 * SECONDS)
@@ -484,8 +481,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .addTo(BlastFurnaceWithGas);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.SuperconductorUMVBase, 1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.SuperconductorUMVBase, 1))
             .iCircuit(11)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorUMVBase, 1))
             .duration(13 * MINUTES + 6 * SECONDS)
@@ -617,8 +613,7 @@ public class BlastFurnaceRecipes implements Runnable {
         // Rh + 3Cl = RhCl3
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.dust), 1, 78))
+            .itemInputs(new ItemStack(WerkstoffLoader.items.get(OrePrefixes.dust), 1, 78))
             .iCircuit(2)
             .itemOutputs(Materials.RhodiumChloride.getDust(4))
             .fluidInputs(Materials.Chlorine.getGas(3_000))
