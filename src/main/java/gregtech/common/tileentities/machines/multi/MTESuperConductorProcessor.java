@@ -383,10 +383,11 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
             .addInfo("Assembles superconductor wires in large batches")
             .addTecTechHatchInfo()
             .addSeparator()
-            .addInfo(TooltipHelper.coloredText("Parallels ", GOLD)
-                + "increase with higher tiers of "
-                + TooltipTier.COMPONENT_ASSEMBLY_LINE_CASING.getValue())
-            .addInfo(TooltipHelper.coloredText("Parallel Count", GOLD)
+            .addInfo(
+                TooltipHelper.coloredText("Parallels ", GOLD) + "increase with higher tiers of "
+                    + TooltipTier.COMPONENT_ASSEMBLY_LINE_CASING.getValue())
+            .addInfo(
+                TooltipHelper.coloredText("Parallel Count", GOLD)
                     + TooltipHelper.coloredText(" = 0.95 * (1.32 ^ CoAL Casing Tier)", WHITE))
             .addInfo(
                 "Gains a" + TooltipHelper.coloredText(" 10% ", AQUA)
