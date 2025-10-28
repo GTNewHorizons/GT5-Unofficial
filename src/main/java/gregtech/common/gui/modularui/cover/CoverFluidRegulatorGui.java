@@ -17,6 +17,7 @@ import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverFluidRegulator;
 import gregtech.common.covers.modes.MachineProcessingCondition;
 import gregtech.common.covers.modes.TransferMode;
@@ -144,9 +145,9 @@ public class CoverFluidRegulatorGui extends CoverBaseGui<CoverFluidRegulator> {
     }
 
     private @NotNull String getAverageSpeedText() {
-        return IKey.lang("gt.interact.desc.fluid_regulator.Average") + " "
+        return GTUtility.translate("gt.interact.desc.fluid_regulator.Average") + " "
             + numberFormat.format(cover.getTickRateForUi() == 0 ? 0 : cover.getSpeed() * 20d / cover.getTickRateForUi())
             + " "
-            + IKey.lang("gt.interact.desc.fluid_regulator.L_Sec");
+            + GTUtility.translate("gt.interact.desc.fluid_regulator.L_Sec");
     }
 }
