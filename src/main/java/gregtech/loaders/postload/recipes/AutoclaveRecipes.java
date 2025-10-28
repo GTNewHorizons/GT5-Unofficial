@@ -20,7 +20,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class AutoclaveRecipes implements Runnable {
@@ -232,8 +231,7 @@ public class AutoclaveRecipes implements Runnable {
             .addTo(autoclaveRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1))
             .iCircuit(1)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3))
             .outputChances(7500)
@@ -243,8 +241,7 @@ public class AutoclaveRecipes implements Runnable {
             .addTo(autoclaveRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1))
             .iCircuit(1)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3))
             .outputChances(9000)
