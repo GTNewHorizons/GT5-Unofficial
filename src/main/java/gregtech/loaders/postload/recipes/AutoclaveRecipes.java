@@ -233,8 +233,8 @@ public class AutoclaveRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1),
-                GTUtility.getIntegratedCircuit(1))
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1))
+            .iCircuit(1)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3))
             .outputChances(7500)
             .fluidInputs(Materials.Water.getFluid(1_000))
@@ -244,8 +244,8 @@ public class AutoclaveRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1),
-                GTUtility.getIntegratedCircuit(1))
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1))
+            .iCircuit(1)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3))
             .outputChances(9000)
             .fluidInputs(GTModHandler.getDistilledWater(1_000))
