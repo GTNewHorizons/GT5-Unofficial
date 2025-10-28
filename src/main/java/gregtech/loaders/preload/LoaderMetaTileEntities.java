@@ -45,6 +45,7 @@ import static gregtech.api.recipe.RecipeMaps.slicerRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 
+import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamCrafter;
 import net.minecraft.util.EnumChatFormatting;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -592,6 +593,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 LARGE_HADRON_COLLIDER.ID,
                 "multimachine.large-hadron-collider",
                 "Large Hadron Collider").getStackForm(1));
+
+        ItemList.BeamCrafter.set(
+            new MTEBeamCrafter(
+                BEAM_CRAFTER.ID,
+                "multimachine.beam-crafter",
+                "(WIP) Beam Crafter").getStackForm(1));
 
         ItemList.LATEX.set(new MTELatex(LATEX.ID, "multimachine.latex", "L.A.T.E.X.").getStackForm(1));
         addItemTooltip(ItemList.LATEX.get(1), chain(() -> "Author: ", GTValues.AuthorThree));

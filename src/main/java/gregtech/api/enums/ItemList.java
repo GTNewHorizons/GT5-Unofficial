@@ -2764,6 +2764,8 @@ public enum ItemList implements IItemContainer {
     LHCbCasing,
     AdvancedBeamlineOutputHatch,
 
+    BeamCrafter,
+
     ManaFly,
     DebugEnergyHatch,
 
