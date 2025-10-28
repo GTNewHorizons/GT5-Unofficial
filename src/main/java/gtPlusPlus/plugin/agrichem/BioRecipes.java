@@ -218,7 +218,7 @@ public class BioRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(16), GregtechItemList.CellulosePulp.get(4))
             .fluidInputs(Materials.AceticAcid.getFluid(500), new FluidStack(GTPPFluids.PropionicAcid, 500))
-            .fluidOutputs(Materials.Plastic.getMolten(1_000))
+            .fluidOutputs(Materials.Polyethylene.getMolten(1_000))
             .duration(10 * SECONDS)
             .eut(240)
             .metadata(CHEMPLANT_CASING_TIER, 2)
