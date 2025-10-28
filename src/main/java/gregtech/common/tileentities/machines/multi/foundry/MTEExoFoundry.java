@@ -1183,7 +1183,6 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
 
     private void initializeRender() {
         // spotless:off
-        // This model is so hard to work with... So many visual imperfections
         ring = (IModelCustomExt) AdvancedModelLoader.loadModel(
             new ResourceLocation(
                 GregTech.resourceDomain,
@@ -1225,14 +1224,23 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     }
 
     @Override
-    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
-        shouldRender = !shouldRender;
-        getBaseMetaTileEntity().issueTileUpdate();
-        GTUtility.sendChatToPlayer(
-            aPlayer,
-            StatCollector.translateToLocal("GT5U.machines.animations." + (shouldRender ? "enabled" : "disabled")));
-
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ, ItemStack aTool) {
+        if (aPlayer.isSneaking()) {
+            batchMode = !batchMode;
+            if (batchMode) {
+                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+            } else {
+                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+            }
+        } else {
+            shouldRender = !shouldRender;
+            getBaseMetaTileEntity().issueTileUpdate();
+            GTUtility.sendChatToPlayer(
+                aPlayer,
+                StatCollector.translateToLocal("GT5U.machines.animations." + (shouldRender ? "enabled" : "disabled")));
+        }
+        return true;
     }
 
     @Override
