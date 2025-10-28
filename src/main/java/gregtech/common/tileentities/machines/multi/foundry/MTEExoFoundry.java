@@ -1154,7 +1154,6 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         renderRingsDebug(true);
         GL11.glPopMatrix();
         ShaderProgram.clear();
-
     }
 
     @Override
@@ -1171,7 +1170,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             if (gammaCorrected) {
                 renderRing(
                     i,
-                    FoundryModules.tonemap(module.red), //TODO does this even do anything bor
+                    FoundryModules.tonemap(module.red), // TODO does this even do anything bor
                     FoundryModules.tonemap(module.green),
                     FoundryModules.tonemap(module.blue));
             } else {
@@ -1219,7 +1218,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     private void renderRing(int index, float red, float green, float blue) {
         GL11.glPushMatrix();
         GL11.glTranslated(0, 9 + index * 8 + (index > 1 ? 10 : 0), 0);
-        GL11.glScalef(1.2f, 0.8f, 1.2f);
+        // GL11.glScalef(1.2f, 0.8f, 1.2f);
         GL20.glUniform3f(uGlowColor, red, green, blue);
         ring.renderAllVBO();
         GL11.glPopMatrix();
