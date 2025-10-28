@@ -20,5 +20,5 @@ void main() {
     tex += sampleTexel(vTexCoord + vec2(-1, 1) * texelSize, 0.125f);
     tex += sampleTexel(vTexCoord + vec2(1, 1) * texelSize, 0.125f);
     tex += sampleTexel(vTexCoord + vec2(1, -1) * texelSize, 0.125f);
-    gl_FragColor = vec4(tex.rgb, 1.0);
+    gl_FragColor.rgb = tex.rgb;
 }

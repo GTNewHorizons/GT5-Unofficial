@@ -25,10 +25,10 @@ public class BloomShader {
 
     private HDRFramebuffer[] framebuffers;
 
-    private ShaderProgram downscaleProgram;
+    private final ShaderProgram downscaleProgram;
     private int uTexelSize_downscale;
 
-    private ShaderProgram upscaleProgram;
+    private final ShaderProgram upscaleProgram;
     private int uTexelSize_upscale;
     private int uMultiplier;
 
@@ -75,7 +75,7 @@ public class BloomShader {
         float width = mc.displayWidth;
         float height = mc.displayHeight;
         List<HDRFramebuffer> framebufferList = new ArrayList<>();
-        while (width + height > 10) {
+        while (width + height > 2) {
             HDRFramebuffer framebuffer = new HDRFramebuffer(Math.round(width), Math.round(height));
             framebufferList.add(framebuffer);
             framebuffer.setFramebufferFilter(GL11.GL_LINEAR);
@@ -85,6 +85,7 @@ public class BloomShader {
 
             width /= 2;
             height /= 2;
+            // if (framebufferList.size() >= 7) break;
         }
         framebuffers = framebufferList.toArray(new HDRFramebuffer[0]);
     }
@@ -152,7 +153,7 @@ public class BloomShader {
 
         upscaleProgram.use();
         final int passes = framebuffers.length - 1;
-        GL20.glUniform1f(uMultiplier, (float) (1 - (1 / Math.sqrt(passes)))); // TODO cache this
+        GL20.glUniform1f(uMultiplier, (float) (1 - (1 / Math.sqrt(passes))));
         for (int i = framebuffers.length - 1; i >= 1; i--) {
             HDRFramebuffer framebuffer = framebuffers[i];
             HDRFramebuffer upscaledFramebuffer = framebuffers[i - 1];

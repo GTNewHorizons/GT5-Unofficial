@@ -53,7 +53,6 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.angelica.glsm.GLStateManager;
 
 import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.items.GGMaterial;
@@ -1067,6 +1066,8 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     private static IModelCustomExt ring;
     private static ShaderProgram ringProgram;
     private int uGlowColor;
+    // -1 -> uninitialized; 0 -> inactive
+    private long lastInactiveTime = -1;
 
     // TODO: figure out why isActive doesnt send to client by default???
     @Override
@@ -1107,7 +1108,21 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
          * GL11.glPopMatrix();
          */
 
-        // if (!shouldRender || !getBaseMetaTileEntity().isActive()) return;
+        if (/* !getBaseMetaTileEntity().isActive() */false) {
+            lastInactiveTime = 0;
+            return;
+        }
+
+        if (!shouldRender) return;
+
+        // Do a cool startup animation
+        if (lastInactiveTime <= 0) {
+            if (lastInactiveTime == 0) {
+                lastInactiveTime = System.currentTimeMillis();
+            } else {
+                lastInactiveTime = System.currentTimeMillis() + 60_000;
+            }
+        }
 
         // if (true) return; // disable render for texture dev jar lol
 
@@ -1115,7 +1130,6 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             initializeRender();
             if (!renderInitialized) return;
         }
-        GLStateManager.enableDepthTest();
         ringProgram.use();
         GL11.glPushMatrix();
         ForgeDirection dir = getDirection();
@@ -1132,7 +1146,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         // renderRingFour(modules[3].rgbArr);
         BloomShader.getInstance()
             .unbind();
-        // TODO
+
         // renderRingOne(modules[0].rgbArr);
         // renderRingTwo(modules[1].rgbArr);
         // renderRingThree(modules[2].rgbArr);
@@ -1150,9 +1164,19 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
 
     private void renderRingsDebug(boolean gammaCorrected) {
         int i = 0;
+        float time = (System.currentTimeMillis() - lastInactiveTime) / 2000f;
+        float multiplier = 1 - (1 / (time + 1));
         for (FoundryModules module : FoundryModules.values()) {
             if (module == FoundryModules.UNSET) continue;
-            renderRing(i, gammaCorrected ? module.gammaCorrectedRGB : module.rgbArr);
+            if (gammaCorrected) {
+                renderRing(
+                    i,
+                    FoundryModules.tonemap(module.red),
+                    FoundryModules.tonemap(module.green),
+                    FoundryModules.tonemap(module.blue));
+            } else {
+                renderRing(i, module.red * multiplier, module.green * multiplier, module.blue * multiplier);
+            }
             i++;
             if (i == 4) return;
         }
@@ -1160,6 +1184,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
 
     private void initializeRender() {
         // spotless:off
+        // This model is so hard to work with... So many visual imperfections
         ring = (IModelCustomExt) AdvancedModelLoader.loadModel(
             new ResourceLocation(
                 GregTech.resourceDomain,
@@ -1191,49 +1216,11 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         // spotless:on
     }
 
-    private void renderRing(int index, float[] rgb) {
-
+    private void renderRing(int index, float red, float green, float blue) {
         GL11.glPushMatrix();
         GL11.glTranslated(0, 9 + index * 8 + (index > 1 ? 10 : 0), 0);
-        GL11.glScalef(1.1f, 0.7f, 1.1f);
-        GL20.glUniform3f(uGlowColor, rgb[0], rgb[1], rgb[2]);
-        ring.renderAllVBO();
-        GL11.glPopMatrix();
-    }
-
-    private void renderRingOne(float[] rgba) {
-
-        GL11.glPushMatrix();
-        GL11.glTranslated(0, 9, 0);
-        GL11.glScalef(1.1f, 0.7f, 1.1f);
-        GL20.glUniform3f(uGlowColor, rgba[0], rgba[1], rgba[2]);
-        ring.renderAllVBO();
-        GL11.glPopMatrix();
-    }
-
-    private void renderRingTwo(float[] rgba) {
-        GL11.glPushMatrix();
-        GL11.glTranslated(0, 17, 0);
-        GL11.glScalef(1.1f, 0.7f, 1.1f);
-        GL20.glUniform3f(uGlowColor, rgba[0], rgba[1], rgba[2]);
-        ring.renderAllVBO();
-        GL11.glPopMatrix();
-    }
-
-    private void renderRingThree(float[] rgba) {
-        GL11.glPushMatrix();
-        GL11.glTranslated(0, 25, 0);
-        GL11.glScalef(1.1f, 0.7f, 1.1f);
-        GL20.glUniform3f(uGlowColor, rgba[0], rgba[1], rgba[2]);
-        ring.renderAllVBO();
-        GL11.glPopMatrix();
-    }
-
-    private void renderRingFour(float[] rgba) {
-        GL11.glPushMatrix();
-        GL11.glTranslated(0, 33, 0);
-        GL11.glScalef(1.1f, 0.7f, 1.1f);
-        GL20.glUniform3f(uGlowColor, rgba[0], rgba[1], rgba[2]);
+        GL11.glScalef(1.05f, 0.6f, 1.05f);
+        GL20.glUniform3f(uGlowColor, red, green, blue);
         ring.renderAllVBO();
         GL11.glPopMatrix();
     }

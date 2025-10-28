@@ -29,90 +29,89 @@ import com.gtnewhorizons.angelica.glsm.GLStateManager;
 public class HDRFramebuffer extends Framebuffer {
 
     private static ShaderProgram tonemapShader;
+    private static int settings;
+
+    public static final int FRAMEBUFFER_DEPTH_ENABLED = 0x1; // This uses a depth renderbuffer by default
+    public static final int FRAMEBUFFER_DEPTH_TEXTURE = 0x2 | 0x1;
+    public static final int FRAMEBUFFER_STENCIL_BUFFER = 0x4;
+    public static final int FRAMEBUFFER_TEXTURE_LINEAR = 0x8;
+    public static final int FRAMEBUFFER_ALPHA_CHANNEL = 0x10;
+    public static final int FRAMEBUFFER_HDR_COLORS = 0x20;
 
     public HDRFramebuffer(int width, int height) {
-        this(width, height, true);
+        this(width, height, FRAMEBUFFER_DEPTH_ENABLED);
     }
 
-    public HDRFramebuffer(int width, int height, boolean useDepth) {
-        super(width, height, useDepth);
-        this.useDepth = useDepth; // TODO remove
+    public HDRFramebuffer(int width, int height, int settings) {
+        super(width, height, (settings & FRAMEBUFFER_DEPTH_ENABLED) != 0);
         setFramebufferColor(0, 0, 0, 0);
     }
 
     @Override
     public void createFramebuffer(int p_147605_1_, int p_147605_2_) {
-        this.useDepth = true;
+        this.useDepth = true; // TODO
         this.framebufferWidth = p_147605_1_;
         this.framebufferHeight = p_147605_2_;
         this.framebufferTextureWidth = p_147605_1_;
         this.framebufferTextureHeight = p_147605_2_;
 
-        if (!OpenGlHelper.isFramebufferEnabled()) {
-            this.framebufferClear();
-        } else {
-            this.framebufferObject = OpenGlHelper.func_153165_e();
-            this.framebufferTexture = TextureUtil.glGenTextures();
+        this.framebufferObject = OpenGlHelper.func_153165_e();
+        this.framebufferTexture = TextureUtil.glGenTextures();
 
-            if (useDepth) {
-                this.depthBuffer = OpenGlHelper.func_153185_f();
-            }
-
-            this.setFramebufferFilter(GL11.GL_LINEAR);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.framebufferTexture);
-            GL11.glTexImage2D(
-                GL11.GL_TEXTURE_2D,
-                0,
-                GL30.GL_RGBA32F,
-                this.framebufferTextureWidth,
-                this.framebufferTextureHeight,
-                0,
-                GL11.GL_RGBA,
-                GL11.GL_UNSIGNED_BYTE,
-                (ByteBuffer) null);
-            OpenGlHelper.func_153171_g(OpenGlHelper.field_153198_e, this.framebufferObject);
-            OpenGlHelper.func_153188_a(
-                OpenGlHelper.field_153198_e,
-                OpenGlHelper.field_153200_g,
-                3553,
-                this.framebufferTexture,
-                0);
-
-            if (useDepth) {
-                OpenGlHelper.func_153176_h(OpenGlHelper.field_153199_f, this.depthBuffer);
-                if (net.minecraftforge.client.MinecraftForgeClient.getStencilBits() == 0) {
-                    OpenGlHelper.func_153186_a(
-                        OpenGlHelper.field_153199_f,
-                        33190,
-                        this.framebufferTextureWidth,
-                        this.framebufferTextureHeight);
-                    OpenGlHelper.func_153190_b(
-                        OpenGlHelper.field_153198_e,
-                        OpenGlHelper.field_153201_h,
-                        OpenGlHelper.field_153199_f,
-                        this.depthBuffer);
-                } else {
-                    OpenGlHelper.func_153186_a(
-                        OpenGlHelper.field_153199_f,
-                        org.lwjgl.opengl.EXTPackedDepthStencil.GL_DEPTH24_STENCIL8_EXT,
-                        this.framebufferTextureWidth,
-                        this.framebufferTextureHeight);
-                    OpenGlHelper.func_153190_b(
-                        OpenGlHelper.field_153198_e,
-                        org.lwjgl.opengl.EXTFramebufferObject.GL_DEPTH_ATTACHMENT_EXT,
-                        OpenGlHelper.field_153199_f,
-                        this.depthBuffer);
-                    OpenGlHelper.func_153190_b(
-                        OpenGlHelper.field_153198_e,
-                        org.lwjgl.opengl.EXTFramebufferObject.GL_STENCIL_ATTACHMENT_EXT,
-                        OpenGlHelper.field_153199_f,
-                        this.depthBuffer);
-                }
-            }
-
-            this.framebufferClear();
-            this.unbindFramebufferTexture();
+        if (useDepth) {
+            this.depthBuffer = OpenGlHelper.func_153185_f();
         }
+
+        this.setFramebufferFilter(GL11.GL_LINEAR);
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.framebufferTexture);
+        GL11.glTexImage2D(
+            GL11.GL_TEXTURE_2D,
+            0,
+            GL30.GL_RGB32F,
+            this.framebufferTextureWidth,
+            this.framebufferTextureHeight,
+            0,
+            GL11.GL_RGB,
+            GL11.GL_UNSIGNED_BYTE,
+            (ByteBuffer) null);
+        OpenGlHelper.func_153171_g(OpenGlHelper.field_153198_e, this.framebufferObject);
+        OpenGlHelper
+            .func_153188_a(OpenGlHelper.field_153198_e, OpenGlHelper.field_153200_g, 3553, this.framebufferTexture, 0);
+
+        if (useDepth) {
+            OpenGlHelper.func_153176_h(OpenGlHelper.field_153199_f, this.depthBuffer);
+            if (net.minecraftforge.client.MinecraftForgeClient.getStencilBits() == 0) {
+                OpenGlHelper.func_153186_a(
+                    OpenGlHelper.field_153199_f,
+                    33190,
+                    this.framebufferTextureWidth,
+                    this.framebufferTextureHeight);
+                OpenGlHelper.func_153190_b(
+                    OpenGlHelper.field_153198_e,
+                    OpenGlHelper.field_153201_h,
+                    OpenGlHelper.field_153199_f,
+                    this.depthBuffer);
+            } else {
+                OpenGlHelper.func_153186_a(
+                    OpenGlHelper.field_153199_f,
+                    org.lwjgl.opengl.EXTPackedDepthStencil.GL_DEPTH24_STENCIL8_EXT,
+                    this.framebufferTextureWidth,
+                    this.framebufferTextureHeight);
+                OpenGlHelper.func_153190_b(
+                    OpenGlHelper.field_153198_e,
+                    org.lwjgl.opengl.EXTFramebufferObject.GL_DEPTH_ATTACHMENT_EXT,
+                    OpenGlHelper.field_153199_f,
+                    this.depthBuffer);
+                OpenGlHelper.func_153190_b(
+                    OpenGlHelper.field_153198_e,
+                    org.lwjgl.opengl.EXTFramebufferObject.GL_STENCIL_ATTACHMENT_EXT,
+                    OpenGlHelper.field_153199_f,
+                    this.depthBuffer);
+            }
+        }
+
+        this.framebufferClear();
+        this.unbindFramebufferTexture();
     }
 
     public void applyTonemapping() {
