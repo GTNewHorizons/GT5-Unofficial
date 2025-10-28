@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import ganymedes01.etfuturum.tileentities.TileEntitySmoker;
 import gregtech.common.pollution.FurnacePollution;
 
-@Mixin(TileEntitySmoker.class)
+@Mixin(value = TileEntitySmoker.class, remap = false)
 public abstract class MixinTileEntitySmokerPollution extends TileEntity {
 
     @Shadow

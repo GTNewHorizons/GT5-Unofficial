@@ -11,6 +11,8 @@ import java.util.function.IntFunction;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+import org.jetbrains.annotations.Nullable;
+
 import it.unimi.dsi.fastutil.objects.ObjectIterators;
 
 /**
@@ -124,11 +126,13 @@ public class GTDataUtils {
         return -1;
     }
 
-    public static <T> T getIndexSafe(T[] array, int index) {
+    @Nullable
+    public static <T> T getIndexSafe(@Nullable T @Nullable [] array, int index) {
         return array == null || index < 0 || index >= array.length ? null : array[index];
     }
 
-    public static <T> T getIndexSafe(List<T> list, int index) {
+    @Nullable
+    public static <T> T getIndexSafe(@Nullable List<@Nullable T> list, int index) {
         return list == null || index < 0 || index >= list.size() ? null : list.get(index);
     }
 

@@ -252,11 +252,15 @@ public final class SubTag implements ICondition<ISubTagContainer> {
      * This material has ice ores, but not rock ores or ore items
      */
     public static final SubTag ICE_ORE = getNewSubTag("ICE_ORE");
-
     /**
      * If this material should generate Multi-plates (triple, quadruple, quintuple)
      */
     public static final SubTag MULTI_PLATE = getNewSubTag("MULTI_PLATE");
+    /**
+     * If this material's nuggets should have witching gadgets transmutation recipes. The recipe generation is all done
+     * in Witching Gadgets, not GT.
+     */
+    public static final SubTag TRANSMUTABLE_NUGGETS = getNewSubTag("TRANSMUTABLE_NUGGETS");
 
     public final Collection<ISubTagContainer> mRelevantTaggedItems = new HashSet<>(1);
 

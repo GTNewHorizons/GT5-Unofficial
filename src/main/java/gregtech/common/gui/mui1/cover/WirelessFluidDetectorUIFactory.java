@@ -52,10 +52,9 @@ public class WirelessFluidDetectorUIFactory
     protected void addUIWidgets(ModularWindow.Builder builder) {
         setMaxCapacity();
         super.addUIWidgets(builder);
-        builder
-            .widget(
-                new TextWidget(StatCollector.translateToLocal("gt.interact.desc.Wireless_Fluid_Detector.FluidTHR"))
-                    .setPos(startX + spaceX * 5, 4 + startY + spaceY * 2))
+        builder.widget(
+            new TextWidget(StatCollector.translateToLocal("gt.interact.desc.Wireless_Fluid_Detector.FluidThreshold"))
+                .setPos(startX + spaceX * 5, 4 + startY + spaceY * 2))
             .widget(
                 TextWidget
                     .dynamicString(

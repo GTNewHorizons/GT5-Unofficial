@@ -247,9 +247,9 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
             mMaintenanceSound,
             mMaintenanceSoundStrength,
             mMaintenanceSoundModulation,
-            tMte.getXCoord(),
-            tMte.getYCoord(),
-            tMte.getZCoord());
+            tMte.getXCoord() + .5,
+            tMte.getYCoord() + .5,
+            tMte.getZCoord() + .5);
 
         setMaintenanceSound((String) null, 1.0F, 1.0F);
     }
