@@ -1120,7 +1120,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             if (lastInactiveTime == 0) {
                 lastInactiveTime = System.currentTimeMillis();
             } else {
-                lastInactiveTime = System.currentTimeMillis() + 60_000;
+                lastInactiveTime = System.currentTimeMillis() - 60_000;
             }
         }
 
@@ -1171,7 +1171,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             if (gammaCorrected) {
                 renderRing(
                     i,
-                    FoundryModules.tonemap(module.red),
+                    FoundryModules.tonemap(module.red), //TODO does this even do anything bor
                     FoundryModules.tonemap(module.green),
                     FoundryModules.tonemap(module.blue));
             } else {
