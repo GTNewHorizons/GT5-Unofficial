@@ -70,7 +70,7 @@ public class PowerfailLayerManager extends InteractableLayerManager {
         // Copy the set because java is stupid and doesn't like to allow generic upcasting.
         // We also use a linked collection to prevent what looks like z fighting in the HUD minimap.
         // It isn't actually z fighting, hashed collections just have pseudorandom/arbitrary iteration order.
-        Set<ILocationProvider> locs = new LinkedHashSet<>(wrappers.values());
+        Set<ILocationProvider> locs = new LinkedHashSet<>(getVisibleLocations());
 
         layerRenderer.values()
             .forEach(layer -> layer.refreshVisibleElements(locs));

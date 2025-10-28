@@ -45,6 +45,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchMagnet;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -55,9 +56,9 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings10;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.items.MetaGeneratedItem01;
 import gregtech.common.misc.GTStructureChannels;
-import gregtech.common.tileentities.machines.multi.gui.MTEIndustrialElectromagneticSeparatorGui;
 
 public class MTEIndustrialElectromagneticSeparator
     extends MTEExtendedPowerMultiBlockBase<MTEIndustrialElectromagneticSeparator> implements ISurvivalConstructable {
@@ -433,7 +434,9 @@ public class MTEIndustrialElectromagneticSeparator
     }
 
     @Override
-    protected @NotNull MTEIndustrialElectromagneticSeparatorGui getGui() {
-        return new MTEIndustrialElectromagneticSeparatorGui(this);
+    protected @NotNull MTEMultiBlockBaseGui getGui() {
+        return new MTEMultiBlockBaseGui(this).withMachineModeIcons(
+            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_SEPARATOR,
+            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_POLARIZER);
     }
 }

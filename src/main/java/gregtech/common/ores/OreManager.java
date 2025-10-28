@@ -20,6 +20,7 @@ import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
 import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
+import gregtech.api.util.OptionalBoolean;
 
 public final class OreManager {
 
@@ -28,18 +29,20 @@ public final class OreManager {
     private static final List<IOreAdapter<?>> ORE_ADAPTERS = ImmutableList
         .of(GTOreAdapter.INSTANCE, GTPPOreAdapter.INSTANCE, BWOreAdapter.INSTANCE);
 
-    public static boolean isOre(Block block, int meta) {
+    public static OptionalBoolean isOre(Block block, int meta) {
         int size = ORE_ADAPTERS.size();
 
         for (int i = 0; i < size; i++) {
             IOreAdapter<?> oreAdapter = ORE_ADAPTERS.get(i);
 
             try (OreInfo<?> info = oreAdapter.getOreInfo(block, meta)) {
-                if (info != null && info.isNatural) return true;
+                if (info != null) {
+                    return info.isNatural ? OptionalBoolean.TRUE : OptionalBoolean.FALSE;
+                }
             }
         }
 
-        return false;
+        return OptionalBoolean.NONE;
     }
 
     public static OreInfo<IOreMaterial> getOreInfo(IBlockAccess world, int x, int y, int z) {

@@ -33,7 +33,6 @@ import goodgenerator.util.CrackRecipeAdder;
 import goodgenerator.util.DescTextLocalization;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -66,13 +65,13 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
 
     static {
         excitedLiquid = Arrays.asList(
-            Pair.of(MaterialsUEVplus.Space.getMolten(20L), ExcitedLiquidCoe[0]),
+            Pair.of(Materials.Space.getMolten(20L), ExcitedLiquidCoe[0]),
             Pair.of(GGMaterial.atomicSeparationCatalyst.getMolten(20), ExcitedLiquidCoe[1]),
             Pair.of(Materials.Naquadah.getMolten(20L), ExcitedLiquidCoe[2]),
             Pair.of(Materials.Uranium235.getMolten(180L), ExcitedLiquidCoe[3]),
             Pair.of(Materials.Caesium.getMolten(180L), ExcitedLiquidCoe[4]));
         coolant = Arrays.asList(
-            Pair.of(MaterialsUEVplus.Time.getMolten(20L), CoolantEfficiency[0]),
+            Pair.of(Materials.Time.getMolten(20L), CoolantEfficiency[0]),
             Pair.of(new FluidStack(TFFluids.fluidCryotheum, 1_000), CoolantEfficiency[1]),
             Pair.of(Materials.SuperCoolant.getFluid(1_000), CoolantEfficiency[2]),
             Pair.of(GTModHandler.getIC2Coolant(1_000), CoolantEfficiency[3]));
