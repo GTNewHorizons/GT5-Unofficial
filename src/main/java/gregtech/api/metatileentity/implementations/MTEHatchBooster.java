@@ -1,7 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_EMS_HOUSING;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_EMS_HOUSING_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOOSTER_HOUSING;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -69,27 +68,17 @@ public class MTEHatchBooster extends MTEHatch implements ISidedInventory {
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture, TextureFactory.builder()
-            .addIcon(OVERLAY_EMS_HOUSING)
+            .addIcon(OVERLAY_BOOSTER_HOUSING)
             .extFacing()
-            .build(),
-            TextureFactory.builder()
-                .addIcon(OVERLAY_EMS_HOUSING_GLOW)
-                .extFacing()
-                .glow()
-                .build() };
+            .build(), };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture, TextureFactory.builder()
-            .addIcon(OVERLAY_EMS_HOUSING)
+            .addIcon(OVERLAY_BOOSTER_HOUSING)
             .extFacing()
-            .build(),
-            TextureFactory.builder()
-                .addIcon(OVERLAY_EMS_HOUSING_GLOW)
-                .extFacing()
-                .glow()
-                .build() };
+            .build(), };
     }
 
     @Override
