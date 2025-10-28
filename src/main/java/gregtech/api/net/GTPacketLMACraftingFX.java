@@ -109,5 +109,8 @@ public class GTPacketLMACraftingFX extends GTPacket {
         if (prev != null) prev.setDead();
 
         Minecraft.getMinecraft().effectRenderer.addEffect(fx);
+
+        CRAFTING_FXS.values()
+            .removeIf(lmaCraftingFX -> lmaCraftingFX.isDead);
     }
 }
