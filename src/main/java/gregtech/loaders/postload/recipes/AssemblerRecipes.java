@@ -1240,8 +1240,7 @@ public class AssemblerRecipes implements Runnable {
                 flask.setTagCompound(nbtFlask);
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.VOLUMETRIC_FLASK.get(1))
+                    .itemInputs(ItemList.VOLUMETRIC_FLASK.get(1))
                     .iCircuit(circuitConfigurations[i])
                     .itemOutputs(flask)
                     .duration(10 * TICKS)
