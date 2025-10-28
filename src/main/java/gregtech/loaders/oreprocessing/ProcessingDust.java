@@ -89,8 +89,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         GTModHandler.removeFurnaceSmelting(aStack);
                         if (aMaterial.mAutoGenerateBlastFurnaceRecipes) {
                             GTRecipeBuilder recipeBuilder = GTValues.RA.stdBuilder();
-                            recipeBuilder
-                                .itemInputs(GTUtility.copyAmount(1, aStack))
+                            recipeBuilder.itemInputs(GTUtility.copyAmount(1, aStack))
                                 .iCircuit(1);
                             if (aMaterial.mBlastFurnaceTemp > 1750) {
                                 recipeBuilder.itemOutputs(
