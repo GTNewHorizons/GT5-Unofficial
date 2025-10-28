@@ -165,7 +165,7 @@ public enum CombType {
     DRAGONESSENCE(124, "dragon_essence", true, Materials._NULL, 30, 0x911ECE, 0xFFA12B, ItemComb.Voltage.IV),
     ENDERMAN(125, "enderman", true, Materials._NULL, 25, 0x6200e7, 0x161616, ItemComb.Voltage.IV),
     SILVERFISH(126, "silverfish", true, Materials._NULL, 25, 0x0000000, 0xEE053D, ItemComb.Voltage.EV),
-    ENDIUM(127, "endium", true, Materials.HeeEndium, 50, 0x2F5A6C, 0xa0ffff, ItemComb.Voltage.HV),
+    ENDIUM(127, "endium", true, Materials.Endium, 50, 0x2F5A6C, 0xa0ffff, ItemComb.Voltage.HV),
     RUNEI(128, "rune_type_1", true, Materials._NULL, 10, 0x0104D9, 0xE31010, ItemComb.Voltage.IV),
     RUNEII(129, "rune_type_2", true, Materials._NULL, 10, 0xE31010, 0x0104D9, ItemComb.Voltage.IV),
     FIREESSENSE(130, "fire_essence", true, Materials._NULL, 30, 0xFFA157, 0xD41238, ItemComb.Voltage.IV),
