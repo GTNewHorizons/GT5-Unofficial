@@ -63,6 +63,7 @@ import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.gui.modularui.multiblock.AntimatterForgeGui;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 
 public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterForge>
@@ -770,19 +771,19 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                 + " L" };
     }
 
-    private long getAntimatterAmount() {
+    public long getAntimatterAmount() {
         return this.guiAntimatterAmount;
     }
 
-    private long getPassiveConsumption() {
+    public long getPassiveConsumption() {
         return this.guiPassiveEnergy;
     }
 
-    private long getActiveConsumption() {
+    public long getActiveConsumption() {
         return this.guiActiveEnergy / 20;
     }
 
-    private long getAntimatterChange() {
+    public long getAntimatterChange() {
         return this.guiAntimatterChange;
     }
 
@@ -791,11 +792,6 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     protected long activeCostCache;
     protected long antimatterChangeCache;
     protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
-
-    @Override
-    protected boolean useMui2() {
-        return false;
-    }
 
     @Override
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
@@ -846,6 +842,21 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get()))
             .widget(new FakeSyncWidget.LongSyncer(this::getAntimatterChange, val -> antimatterChangeCache = val));
+    }
+
+    @Override
+    public boolean supportsLogo() {
+        return false;
+    }
+
+    @Override
+    protected @NotNull AntimatterForgeGui getGui() {
+        return new AntimatterForgeGui(this);
+    }
+
+    @Override
+    public boolean canBeMuffled() {
+        return false;
     }
 
     @Override

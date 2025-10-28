@@ -27,17 +27,17 @@ public class ProcessingOrePoor implements gregtech.api.interfaces.IOreRecipeRegi
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
         int aMultiplier = 1;
-        switch (aPrefix) {
-            case oreSmall:
+        switch (aPrefix.getName()) {
+            case "oreSmall":
                 aMultiplier = 1;
                 break;
-            case orePoor:
+            case "orePoor":
                 aMultiplier = 2;
                 break;
-            case oreNormal:
+            case "oreNormal":
                 aMultiplier = 3;
                 break;
-            case oreRich:
+            case "oreRich":
                 aMultiplier = 4;
             default:
                 break;
