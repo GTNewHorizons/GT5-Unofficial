@@ -8,7 +8,6 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
-import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SUPERCONDUCTORPROCESSOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SUPERCONDUCTORPROCESSOR_ACTIVE;
@@ -17,6 +16,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SUPERCONDUCTO
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofSolenoidCoil;
 import static net.minecraft.util.EnumChatFormatting.AQUA;
+import static net.minecraft.util.EnumChatFormatting.DARK_AQUA;
 import static net.minecraft.util.EnumChatFormatting.DARK_GRAY;
 import static net.minecraft.util.EnumChatFormatting.DARK_GREEN;
 import static net.minecraft.util.EnumChatFormatting.DARK_RED;
@@ -25,7 +25,6 @@ import static net.minecraft.util.EnumChatFormatting.GREEN;
 import static net.minecraft.util.EnumChatFormatting.LIGHT_PURPLE;
 import static net.minecraft.util.EnumChatFormatting.RED;
 import static net.minecraft.util.EnumChatFormatting.WHITE;
-import static net.minecraft.util.EnumChatFormatting.YELLOW;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,6 +69,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.blocks.BlockCasings12;
 import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.items.MetaGeneratedItem01;
@@ -292,7 +292,7 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
         .addElement(
             'D',
             buildHatchAdder(MTESuperConductorProcessor.class)
-                .atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                .atLeast(InputBus, InputHatch, OutputBus, Energy.or(ExoticEnergy))
                 .casingIndex(((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(8))
                 .dot(1)
                 .buildAndChain(
@@ -380,34 +380,40 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Bulk Superconductor Assembler, SCP")
             .addInfo(DARK_GRAY + "" + EnumChatFormatting.ITALIC + "Secure. Contain. Produce.")
-            .addInfo(
-                "The" + TooltipHelper.coloredText(" Component Assembly Line Casing ", YELLOW)
-                    + "tier increases the parallels of the machine")
-            .addInfo("The parallel multiplier is" + TooltipHelper.italicText(" 0.95 * (1.32 ^ CoAL Casing Tier)"))
-            .addInfo("Recipes are completed in batches of 64, at 75% of the original recipe's time")
-            .addInfo(
-                "Every" + TooltipHelper.coloredText(" Superconducting Solenoid Coil ", WHITE)
-                    + "tier above the recipe gives a "
-                    + TooltipHelper.coloredText("10%", AQUA)
-                    + " EU discount (multiplicative)")
-            .addInfo(TooltipHelper.coloredText("Supports TecTech Multi-Amp and Laser Hatches!", GREEN))
+            .addInfo("Assembles superconductor wires in large batches")
+            .addTecTechHatchInfo()
             .addSeparator()
             .addInfo(
-                TooltipHelper.coloredText("Superconductor boosters ", GOLD)
+                "The " + TooltipTier.COMPONENT_ASSEMBLY_LINE_CASING.getValue()
+                    + " tier increases the"
+                    + TooltipHelper.coloredText(" parallels ", GOLD)
+                    + "of the machine")
+            .addInfo(
+                "The" + TooltipHelper.coloredText(" parallel multiplier ", GOLD)
+                    + "is"
+                    + TooltipHelper.coloredText(" 0.95 * (1.32 ^ CoAL Casing Tier)", WHITE))
+            .addInfo(
+                "Gains a" + TooltipHelper.coloredText(" 10% ", AQUA)
+                    + "EU discount (multiplicative) for each "
+                    + TooltipTier.SOLENOID.getValue()
+                    + " tier above the recipe")
+            .addSeparator()
+            .addInfo(
+                TooltipHelper.coloredText("Superconductor boosters ", DARK_AQUA)
                     + "are available for every tier of superconductor wire")
             .addInfo(
-                "Up to 3 unique" + TooltipHelper.coloredText(" boosters ", GOLD)
+                "Up to 3 unique" + TooltipHelper.coloredText(" boosters ", DARK_AQUA)
                     + "can be inserted into the"
-                    + TooltipHelper.coloredText(" Booster Housing", GOLD))
+                    + TooltipHelper.coloredText(" Booster Housing", DARK_AQUA))
             .addInfo(
-                "The" + TooltipHelper.coloredText(" booster's ", GOLD)
+                "The" + TooltipHelper.coloredText(" booster's ", DARK_AQUA)
                     + "corresponding superconductor will receive"
                     + TooltipHelper.parallelText(" 2x ")
                     + "parallels and"
                     + TooltipHelper.coloredText(" 15% ", DARK_GREEN)
                     + "additional output")
             .addInfo(
-                "Each" + TooltipHelper.coloredText(" booster ", GOLD)
+                "Each" + TooltipHelper.coloredText(" booster ", DARK_AQUA)
                     + "installed will incur a flat cost of"
                     + TooltipHelper.coloredText(" coolants", LIGHT_PURPLE)
                     + ", regardless of machine status")
@@ -417,7 +423,7 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
                     + TooltipHelper.coloredText(" shutting down & voiding ", DARK_RED)
                     + "its current recipe")
             .addInfo(
-                "Higher tiers of" + TooltipHelper.coloredText(" boosters ", GOLD)
+                "Higher tiers of" + TooltipHelper.coloredText(" boosters ", DARK_AQUA)
                     + "will require the"
                     + TooltipHelper.coloredText(" coolants ", LIGHT_PURPLE)
                     + "of all lower tiers")
@@ -439,7 +445,7 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
             .addSeparator()
             .addInfo(RED + "Do I look dumb...?")
 
-            .beginStructureBlock(3, 5, 3, true)
+            .beginStructureBlock(23, 6, 25, true)
             .addController("Front Center")
             .addCasingInfoMin("Quantum Convection Casing", 200, false)
             .addCasingInfoExactly("Radiant Naquadah Alloy Casing", 186, false)
@@ -452,7 +458,6 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
             .addOutputBus("Any Quantum Convection Casing", 1)
             .addInputHatch("Any Quantum Convection Casing", 1)
             .addEnergyHatch("Any Quantum Convection Casing", 1)
-            .addMaintenanceHatch("Any Quantum Convection Casing", 1)
             .toolTipFinisher();
         return tt;
     }
