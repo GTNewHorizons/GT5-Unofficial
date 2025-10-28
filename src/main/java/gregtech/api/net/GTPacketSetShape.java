@@ -12,7 +12,6 @@ import com.google.common.io.ByteArrayDataInput;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.tileentity.IHasInventory;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.util.GTByteBuffer;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchExtrusion;
@@ -91,7 +90,6 @@ public class GTPacketSetShape extends GTPacket {
         IGregTechTileEntity gregTechTile = baseTile.getIGregTechTileEntityOffset(0, 0, 0);
         ItemStack phantom = MTEHatchExtrusion.findMatchingShape(shape);
         if (phantom == null) return;
-
 
         if (gregTechTile != null && gregTechTile.getMetaTileEntity() instanceof MTEHatchExtrusion meta) {
             meta.setInventorySlotContents(MTEHatchExtrusion.shapeSlot, phantom);
