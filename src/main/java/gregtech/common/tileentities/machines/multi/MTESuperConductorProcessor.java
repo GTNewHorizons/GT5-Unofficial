@@ -386,10 +386,8 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
             .addInfo(TooltipHelper.coloredText("Parallels ", GOLD)
                 + "increase with higher tiers of "
                 + TooltipTier.COMPONENT_ASSEMBLY_LINE_CASING.getValue())
-            .addInfo(
-                "The" + TooltipHelper.coloredText(" parallel multiplier ", GOLD)
-                    + "is"
-                    + TooltipHelper.coloredText(" 0.95 * (1.32 ^ CoAL Casing Tier)", WHITE))
+            .addInfo(TooltipHelper.coloredText("Parallel Count ", GOLD)
+                    + TooltipHelper.coloredText(" = 0.95 * (1.32 ^ CoAL Casing Tier)", WHITE))
             .addInfo(
                 "Gains a" + TooltipHelper.coloredText(" 10% ", AQUA)
                     + "EU discount (multiplicative) for each "

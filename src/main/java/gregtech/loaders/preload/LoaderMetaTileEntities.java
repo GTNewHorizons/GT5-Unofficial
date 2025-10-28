@@ -594,7 +594,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTESuperConductorProcessor(
                 SUPERCONDUCTOR_PROCESSOR.ID,
                 "multimachine.superconductor-processor",
-                "SuperConductor Processor").getStackForm(1));
+                "SuperConductor Processor-914").getStackForm(1));
         addItemTooltip(ItemList.SuperConductorProcessor.get(1), chain(() -> "Author: ", GTValues.AuthorThree));
 
         if (Thaumcraft.isModLoaded()) {
