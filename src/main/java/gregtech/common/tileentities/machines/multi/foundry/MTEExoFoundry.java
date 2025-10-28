@@ -744,6 +744,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             getBaseMetaTileEntity().issueTileUpdate(); // update for the tier variable
             return checkModules();
         }
+        getBaseMetaTileEntity().issueTileUpdate(); // update for the tier variable
         return false;
     }
 
@@ -1247,6 +1248,10 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         return true;
     }
 
+
+    /* packet of render information.
+        Sends on world load, on module set, on wire cutter right click, and on structure check
+     */
     @Override
     public NBTTagCompound getDescriptionData() {
         NBTTagCompound tag = new NBTTagCompound();
