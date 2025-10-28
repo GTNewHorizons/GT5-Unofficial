@@ -12,6 +12,9 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.util.StringUtils;
@@ -29,6 +32,7 @@ import gregtech.api.net.cape.GTPacketBroadcastCapes;
 import gregtech.api.util.GTLog;
 
 @EventBusSubscriber
+@ParametersAreNonnullByDefault
 public class GTCapesLoader implements Runnable {
 
     private static final Multimap<UUID, String> AVAILABLE_CAPES_UUID = HashMultimap.create();
@@ -72,7 +76,7 @@ public class GTCapesLoader implements Runnable {
         SELECTED_CAPES.clear();
     }
 
-    public static Collection<String> getAvailableCapes(EntityPlayer player) {
+    public static Collection<String> getAvailableCapes(@Nullable EntityPlayer player) {
         if (player == null) {
             return Collections.emptySet();
         }

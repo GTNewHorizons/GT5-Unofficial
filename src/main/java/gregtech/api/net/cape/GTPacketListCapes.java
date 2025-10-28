@@ -3,6 +3,8 @@ package gregtech.api.net.cape;
 import java.util.Collection;
 import java.util.HashSet;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
@@ -21,6 +23,7 @@ import io.netty.buffer.ByteBuf;
 /**
  * Sent from the client to the server (capes == null) and back (capes != null)
  */
+@ParametersAreNonnullByDefault
 public class GTPacketListCapes extends GTPacket {
 
     private Collection<String> capes;

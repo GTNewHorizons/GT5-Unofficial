@@ -5,6 +5,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
@@ -15,6 +18,7 @@ import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 import gregtech.common.config.Client;
 import gregtech.mixin.interfaces.accessors.AbstractClientPlayerAccessor;
 
+@ParametersAreNonnullByDefault
 public class GTCapesClientHandler {
 
     // spotless:off
@@ -86,7 +90,7 @@ public class GTCapesClientHandler {
             .addChatMessage(new ChatComponentText("Available capes: " + String.join(", ", capes)));
     }
 
-    private static ResourceLocation capeFromString(String capeName) {
+    private static ResourceLocation capeFromString(@Nullable String capeName) {
         return switch (capeName) {
             case "capefriedi" -> CAPE_BRAINTECHCAPE;
             case "capebrain" -> CAPE_MRBRAINCAPE;

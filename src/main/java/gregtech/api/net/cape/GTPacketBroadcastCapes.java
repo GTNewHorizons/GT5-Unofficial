@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.world.IBlockAccess;
 
 import com.google.common.io.ByteArrayDataInput;
@@ -19,6 +21,7 @@ import io.netty.buffer.ByteBuf;
 /**
  * Sent from the server to the client, informing it about what cape one or multiple players selected.
  */
+@ParametersAreNonnullByDefault
 public class GTPacketBroadcastCapes extends GTPacket {
 
     private Map<UUID, String> capes;
