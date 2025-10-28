@@ -741,6 +741,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         // proxy.
         if (checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, depthOffset)
             && casingAmount >= 458 + (tdsPresent ? 12 : 0)) {
+            getBaseMetaTileEntity().issueTileUpdate(); // update for the tier variable
             return checkModules();
         }
         return false;
@@ -1025,6 +1026,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
 
         modules[index] = moduleToAdd;
         // structure check on module set, to prevent cheesing
+        getBaseMetaTileEntity().issueTileUpdate(); // tile update to sync to client
         this.setStructureUpdateTime(1);
     }
 
@@ -1113,7 +1115,8 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             return;
         }
 
-        if (!shouldRender) return;
+        if (!shouldRender || !this.getBaseMetaTileEntity()
+            .isActive()) return;
 
         // Do a cool startup animation
         if (lastInactiveTime <= 0) {
@@ -1123,8 +1126,6 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                 lastInactiveTime = System.currentTimeMillis() - 60_000;
             }
         }
-
-        // if (true) return; // disable render for texture dev jar lol
 
         if (!renderInitialized) {
             initializeRender();
@@ -1166,7 +1167,11 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         float time = (System.currentTimeMillis() - lastInactiveTime) / 2000f;
         float multiplier = 1 - (1 / (time + 1));
         for (FoundryModules module : modules) {// FoundryModules.values()) {
-            if (module == FoundryModules.UNSET) continue;
+            if (i == tier + 1) return;
+            if (module == FoundryModules.UNSET) {
+                i++;
+                continue;
+            }
             if (gammaCorrected) {
                 renderRing(
                     i,
@@ -1177,7 +1182,6 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                 renderRing(i, module.red * multiplier, module.green * multiplier, module.blue * multiplier);
             }
             i++;
-            if (i == 4) return;
         }
     }
 
@@ -1246,6 +1250,11 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     @Override
     public NBTTagCompound getDescriptionData() {
         NBTTagCompound tag = new NBTTagCompound();
+        tag.setInteger("multiTier", tier);
+        tag.setInteger("module1OR", modules[0].ordinal());
+        tag.setInteger("module2OR", modules[1].ordinal());
+        tag.setInteger("module3OR", modules[2].ordinal());
+        tag.setInteger("module4OR", modules[3].ordinal());
         tag.setBoolean("shouldRender", shouldRender);
         return tag;
     }
@@ -1253,7 +1262,12 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     @Override
     public void onDescriptionPacket(NBTTagCompound data) {
         super.onDescriptionPacket(data);
-        if (data.hasKey("shouldRender")) shouldRender = data.getBoolean("shouldRender");
+        tier = data.getInteger("multiTier");
+        modules[0] = FoundryModules.getModule(data.getInteger("module1OR"));
+        modules[1] = FoundryModules.getModule(data.getInteger("module2OR"));
+        modules[2] = FoundryModules.getModule(data.getInteger("module3OR"));
+        modules[3] = FoundryModules.getModule(data.getInteger("module4OR"));
+        shouldRender = data.getBoolean("shouldRender");
     }
 
     // data class
