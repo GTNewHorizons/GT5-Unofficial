@@ -66,7 +66,6 @@ public class ItemCasingsFoundry extends ItemCasings {
                 tooltip.add(moduleBaseText);
                 tooltip.add("Subtracts " + TooltipHelper.effText("10%") + " from Initial EU Cost");
                 tooltip.add("Multiplies EU cost by " + TooltipHelper.effText("0.8x"));
-                tooltip.add("Multiplies Speed by " + TooltipHelper.speedText("0.95x"));
                 tooltip.add(createTierLine(10));
                 tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.powerefficient"));
             }
@@ -121,7 +120,6 @@ public class ItemCasingsFoundry extends ItemCasings {
             case 10 -> {
                 tooltip.add(moduleBaseText);
                 tooltip.add("Increases Base Speed by " + TooltipHelper.speedText("150%"));
-                tooltip.add("Multiplies Parallels by " + TooltipHelper.parallelText("0.9x"));
                 tooltip.add(createTierLine(10));
                 tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.speed"));
             }

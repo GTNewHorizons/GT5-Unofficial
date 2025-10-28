@@ -285,7 +285,6 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                         + EnumChatFormatting.RESET
                         + " from Initial EU Cost");
                 t.addLine("Multiplies EU cost by " + TooltipHelper.EFF_COLOR + "0.8x");
-                t.addLine("Multiplies Speed by " + TooltipHelper.SPEED_COLOR + "0.95x");
             }
             case EXTRA_CASTING_BASINS -> {
                 t.addLine(
@@ -300,7 +299,6 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
             }
             case STREAMLINED_CASTERS -> {
                 t.addLine("Increases Base Speed by " + TooltipHelper.SPEED_COLOR + "150%");
-                t.addLine("Multiplies Parallels by " + TooltipHelper.PARALLEL_COLOR + "0.9x");
             }
             case EFFICIENT_OC -> {
                 t.addLine(moduleLimitText);

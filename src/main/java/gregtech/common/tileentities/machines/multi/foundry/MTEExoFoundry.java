@@ -830,7 +830,6 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                     break;
                 case STREAMLINED_CASTERS:
                     speedAdditive += 1.5F;
-                    parallelScaleMultiplier *= 0.9f;
                     break;
                 case EXTRA_CASTING_BASINS:
                     parallelScaleAdditive += 12;
@@ -838,7 +837,6 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                 case POWER_EFFICIENT_SUBSYSTEMS:
                     euEffAdditive -= 0.1f;
                     euEffMultiplier *= 0.8f;
-                    speedMultiplier *= 0.95f;
                     break;
             }
         }
@@ -1122,11 +1120,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         GL11.glPushMatrix();
         ForgeDirection dir = getDirection();
         // Translate by 7 in the opposite direction of the controller's facing
-        GL11.glTranslatef(
-            (float) x + 0.5f - dir.offsetX * 7,
-            (float) y + 0.5f,
-            (float) z + 0.5f - dir.offsetZ * 7
-        );
+        GL11.glTranslatef((float) x + 0.5f - dir.offsetX * 7, (float) y + 0.5f, (float) z + 0.5f - dir.offsetZ * 7);
         BloomShader.getInstance()
             .bind();
 
