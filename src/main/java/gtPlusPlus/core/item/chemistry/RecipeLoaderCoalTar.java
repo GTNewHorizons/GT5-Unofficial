@@ -157,7 +157,7 @@ public class RecipeLoaderCoalTar {
             .itemInputs(
                 GTUtility.getIntegratedCircuit(8),
                 GTOreDictUnificator.get(OrePrefixes.gem, Materials.Lignite, 16))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.DarkAsh, 2))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.AshDark, 2))
             .fluidOutputs(new FluidStack(GTPPFluids.CoalTar, 800))
             .duration(54 * SECONDS)
             .eut(60)
@@ -166,7 +166,7 @@ public class RecipeLoaderCoalTar {
         // Coal
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(8), GTOreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 12))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.DarkAsh, 2))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.AshDark, 2))
             .fluidOutputs(new FluidStack(GTPPFluids.CoalTar, 2_200))
             .duration(36 * SECONDS)
             .eut(TierEU.RECIPE_MV)
