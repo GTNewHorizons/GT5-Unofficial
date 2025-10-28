@@ -3379,7 +3379,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.SuperconductorUMVBase, 16), },
             new FluidStack[] { Materials.MoltenProtoHalkoniteBase.getFluid(589_824), // <-- TODO: replace with exo-halk
                 Materials.QuarkGluonPlasma.getFluid(100_000), Materials.MagMatter.getMolten(5760),
-                Materials.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(64) },
+                Materials.MHDCSM.getMolten(64) },
             ItemList.Magnetic_Chassis_T3_ExoFoundry.get(1),
             30 * SECONDS,
             (int) TierEU.RECIPE_UXV);
@@ -3400,7 +3400,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.TengamAttuned, 2),
                 GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.CosmicNeutronium, 2),
                 GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Neutronium, 2), },
-            new FluidStack[] { Materials.Naquadria.getMolten(64000), Materials.Promethium.getMolten(16000),
+            new FluidStack[] { Materials.Naquadria.getMolten(64000), Materials.Manyullyn.getMolten(16000),
                 MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(2880) },
             ItemList.Extra_Casting_Basins_ExoFoundry.get(1),
             30 * SECONDS,
@@ -3509,7 +3509,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Eternity, 64),
                 ItemList.Field_Generator_UXV.get(8),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.MagMatter, 4),
-                CustomItemList.eM_dynamoTunnel7_UXV.get(1), new ItemStack(lscLapotronicEnergyUnit, 1, 8) },
+                CustomItemList.eM_dynamoTunnel7_UXV.get(1), new ItemStack(lscLapotronicEnergyUnit, 1, 10) },
             new FluidStack[] { Materials.Time.getMolten(4_000_000), Materials.Space.getMolten(4_000_000),
                 Materials.Eternity.getMolten(1_000_000), Materials.PhononMedium.getFluid(1_000_000) },
             ItemList.Active_Time_Dilation_System_ExoFoundry.get(1),
