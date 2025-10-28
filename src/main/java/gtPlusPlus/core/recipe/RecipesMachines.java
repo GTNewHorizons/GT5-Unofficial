@@ -798,7 +798,7 @@ public class RecipesMachines {
                 CI.getTieredGTPPMachineCasing(2, 4),
                 CI.getTieredComponentOfMaterial(Materials.Aluminium, OrePrefixes.gearGt, 4),
                 CI.getTieredComponentOfMaterial(Materials.AnnealedCopper, OrePrefixes.plate, 16),
-                CI.getTieredComponentOfMaterial(Materials.Plastic, OrePrefixes.pipeLarge, 4),
+                CI.getTieredComponentOfMaterial(Materials.Polyethylene, OrePrefixes.pipeLarge, 4),
                 CI.getTieredComponent(OrePrefixes.frameGt, 2, 4))
             .itemOutputs(GregtechItemList.ChemicalPlant_Controller.get(1))
             .fluidInputs(MaterialsAlloy.STEEL_BLACK.getFluidStack(8 * INGOTS))
@@ -1599,7 +1599,7 @@ public class RecipesMachines {
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 1L),
                 CI.getGear(1, 2))
             .itemOutputs(GregtechItemList.Generator_SemiFluid_LV.get(1))
-            .fluidInputs(Materials.Plastic.getMolten(1 * INGOTS))
+            .fluidInputs(Materials.Polyethylene.getMolten(1 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
@@ -1614,7 +1614,7 @@ public class RecipesMachines {
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 1L),
                 CI.getGear(2, 2))
             .itemOutputs(GregtechItemList.Generator_SemiFluid_MV.get(1))
-            .fluidInputs(Materials.Plastic.getMolten(1 * INGOTS))
+            .fluidInputs(Materials.Polyethylene.getMolten(1 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -1629,7 +1629,7 @@ public class RecipesMachines {
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 1L),
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Chrome, 2))
             .itemOutputs(GregtechItemList.Generator_SemiFluid_HV.get(1))
-            .fluidInputs(Materials.Plastic.getMolten(1 * INGOTS))
+            .fluidInputs(Materials.Polyethylene.getMolten(1 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -1644,7 +1644,7 @@ public class RecipesMachines {
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L),
                 CI.getGear(4, 2))
             .itemOutputs(GregtechItemList.Generator_SemiFluid_EV.get(1))
-            .fluidInputs(Materials.Plastic.getMolten(1 * INGOTS))
+            .fluidInputs(Materials.Polyethylene.getMolten(1 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);

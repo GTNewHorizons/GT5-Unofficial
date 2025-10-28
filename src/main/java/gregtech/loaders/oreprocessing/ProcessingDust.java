@@ -311,7 +311,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             .itemInputs(GTUtility.copyAmount(4, aStack))
                             .itemOutputs(
                                 ItemList.IC2_Industrial_Diamond.get(3L),
-                                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 16L))
+                                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.AshDark, 16L))
                             .duration(1 * SECONDS)
                             .eut(TierEU.RECIPE_LV)
                             .metadata(ADDITIVE_AMOUNT, 32)
@@ -324,7 +324,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             .itemInputs(GTUtility.copyAmount(4, aStack))
                             .itemOutputs(
                                 GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 3L),
-                                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 16L))
+                                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.AshDark, 16L))
                             .duration(1 * SECONDS)
                             .eut(TierEU.RECIPE_LV)
                             .metadata(ADDITIVE_AMOUNT, 32)
@@ -345,7 +345,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             .itemInputs(GTUtility.copyAmount(4, aStack))
                             .itemOutputs(
                                 GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 3L),
-                                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 12L))
+                                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.AshDark, 12L))
                             .duration(1 * SECONDS)
                             .eut(TierEU.RECIPE_LV)
                             .metadata(ADDITIVE_AMOUNT, 24)
@@ -365,7 +365,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             .itemInputs(GTUtility.copyAmount(4, aStack))
                             .itemOutputs(
                                 GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 3L),
-                                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 8L))
+                                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.AshDark, 8L))
                             .duration(1 * SECONDS)
                             .eut(TierEU.RECIPE_LV)
                             .metadata(ADDITIVE_AMOUNT, 16)

@@ -74,7 +74,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     private static final FluidStack[] gravityUpgrades = { Materials.SpaceTime.getMolten(1L),
         Materials.Space.getMolten(1L), Materials.Eternity.getMolten(1L) };
     private static final FluidStack[] containmentUpgrades = { GGMaterial.shirabon.getMolten(1),
-        Materials.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(1L) };
+        Materials.MHDCSM.getMolten(1L) };
     private static final FluidStack[] activationUpgrades = { GGMaterial.naquadahBasedFuelMkVDepleted.getFluidOrGas(1),
         GGMaterial.naquadahBasedFuelMkVIDepleted.getFluidOrGas(1) };
 

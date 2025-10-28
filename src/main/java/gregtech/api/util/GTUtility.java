@@ -5422,8 +5422,13 @@ public class GTUtility {
         if (isFormatShortened) {
             ret.append(" (");
             ret.append(EnumChatFormatting.GRAY);
-            ret.append(perSecond > 1 ? formatShortenedLong((long) perSecond) : df.format(perSecond));
-            ret.append("/s");
+            if (perSecond <= 1) {
+                ret.append(progressTime / amount);
+                ret.append("s/each");
+            } else {
+                ret.append(formatShortenedLong((long) perSecond));
+                ret.append("/s");
+            }
             ret.append(EnumChatFormatting.WHITE);
             ret.append(")");
         } else {

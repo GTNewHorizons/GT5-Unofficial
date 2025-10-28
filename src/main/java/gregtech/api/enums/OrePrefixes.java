@@ -385,6 +385,7 @@ public class OrePrefixes {
         .unifiable()
         .materialBased()
         .selfReferencing()
+        .recyclable()
         .materialGenerationBits(GEM)
         .materialAmount(M * 1)
         .defaultStackSize(OTHER_STACK_SIZE)
