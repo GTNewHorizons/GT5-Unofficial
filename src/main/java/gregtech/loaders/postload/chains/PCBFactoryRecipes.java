@@ -508,10 +508,8 @@ public class PCBFactoryRecipes {
                 .itemInputs(
                     PCBFactoryManager.getPlasticMaterialFromTier(tier)
                         .getPlates(1),
-                    GTOreDictUnificator.get(
-                        OrePrefixes.foil,
-                        Materials.Longasssuperconductornameforuvwire,
-                        (long) (16 * (Math.sqrt(tier - 5)))),
+                    GTOreDictUnificator
+                        .get(OrePrefixes.foil, Materials.SuperconductorUVBase, (long) (16 * (Math.sqrt(tier - 5)))),
                     GTOreDictUnificator
                         .get(OrePrefixes.foil, Materials.Neutronium, (long) (16 * (Math.sqrt(tier - 5)))))
                 .iCircuit(1)
@@ -538,10 +536,8 @@ public class PCBFactoryRecipes {
                 .itemInputs(
                     PCBFactoryManager.getPlasticMaterialFromTier(tier)
                         .getPlates(1),
-                    GTOreDictUnificator.get(
-                        OrePrefixes.foil,
-                        Materials.Longasssuperconductornameforuvwire,
-                        (long) (16 * (Math.sqrt(tier - 5)))),
+                    GTOreDictUnificator
+                        .get(OrePrefixes.foil, Materials.SuperconductorUVBase, (long) (16 * (Math.sqrt(tier - 5)))),
                     GTOreDictUnificator
                         .get(OrePrefixes.foil, Materials.Neutronium, (long) (16 * (Math.sqrt(tier - 5)))))
                 .iCircuit(2)
@@ -569,10 +565,8 @@ public class PCBFactoryRecipes {
                 .itemInputs(
                     PCBFactoryManager.getPlasticMaterialFromTier(tier)
                         .getPlates(1),
-                    GTOreDictUnificator.get(
-                        OrePrefixes.foil,
-                        Materials.Longasssuperconductornameforuvwire,
-                        (long) (16 * (Math.sqrt(tier - 5)))),
+                    GTOreDictUnificator
+                        .get(OrePrefixes.foil, Materials.SuperconductorUVBase, (long) (16 * (Math.sqrt(tier - 5)))),
                     GTOreDictUnificator
                         .get(OrePrefixes.foil, Materials.Neutronium, (long) (16 * (Math.sqrt(tier - 5)))))
                 .iCircuit(3)

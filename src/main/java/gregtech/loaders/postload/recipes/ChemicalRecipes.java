@@ -145,7 +145,9 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Items.sugar), GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plastic, 1))
+            .itemInputs(
+                new ItemStack(Items.sugar),
+                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Polyethylene, 1))
             .itemOutputs(ItemList.GelledToluene.get(2))
             .fluidInputs(new FluidStack(ItemList.sToluene, 133))
             .duration(7 * SECONDS)
@@ -153,7 +155,9 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Items.sugar, 9), GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plastic, 1))
+            .itemInputs(
+                new ItemStack(Items.sugar, 9),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Polyethylene, 1))
             .itemOutputs(ItemList.GelledToluene.get(18))
             .fluidInputs(new FluidStack(ItemList.sToluene, 1_197))
             .duration(1 * MINUTES + 3 * SECONDS)
@@ -185,14 +189,14 @@ public class ChemicalRecipes implements Runnable {
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.HydricSulfide, 1),
                 Materials.Empty.getCells(1))
-            .fluidInputs(Materials.NatruralGas.getGas(16_000))
+            .fluidInputs(Materials.NaturalGas.getGas(16_000))
             .fluidOutputs(Materials.Gas.getGas(16_000))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.NatruralGas, 2))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.NaturalGas, 2))
             .iCircuit(4)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Gas, 2))
             .fluidInputs(Materials.Hydrogen.getGas(250))
@@ -354,7 +358,7 @@ public class ChemicalRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Calcite, 1),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1))
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.AshDark, 1))
                 .itemOutputs(ItemList.IC2_Fertilizer.get(1))
                 .fluidInputs(new FluidStack(tFluid, 1_000))
                 .duration(5 * SECONDS)
@@ -404,7 +408,7 @@ public class ChemicalRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Calcium, 1),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1))
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.AshDark, 1))
                 .itemOutputs(ItemList.IC2_Fertilizer.get(2))
                 .fluidInputs(new FluidStack(tFluid, 1_000))
                 .duration(10 * SECONDS)
@@ -454,7 +458,7 @@ public class ChemicalRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Apatite, 1),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1))
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.AshDark, 1))
                 .itemOutputs(ItemList.IC2_Fertilizer.get(2))
                 .fluidInputs(new FluidStack(tFluid, 1_000))
                 .duration(10 * SECONDS)
@@ -504,7 +508,7 @@ public class ChemicalRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glauconite, 1),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1))
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.AshDark, 1))
                 .itemOutputs(ItemList.IC2_Fertilizer.get(2))
                 .fluidInputs(new FluidStack(tFluid, 1_000))
                 .duration(10 * SECONDS)
@@ -554,7 +558,7 @@ public class ChemicalRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.GlauconiteSand, 1),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1))
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.AshDark, 1))
                 .itemOutputs(ItemList.IC2_Fertilizer.get(2))
                 .fluidInputs(new FluidStack(tFluid, 1_000))
                 .duration(10 * SECONDS)
@@ -731,7 +735,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.RawRubber, 9),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.RubberRaw, 9),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1))
             .fluidOutputs(Materials.Rubber.getMolten(9 * INGOTS))
             .duration(30 * SECONDS)
@@ -740,7 +744,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.RawRubber, 1),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.RubberRaw, 1),
                 GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Sulfur, 1))
             .fluidOutputs(Materials.Rubber.getMolten(1 * INGOTS))
             .duration(5 * SECONDS)
@@ -2492,7 +2496,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Polydimethylsiloxane.getDust(9), Materials.Sulfur.getDust(1))
-            .fluidOutputs(Materials.Silicone.getMolten(9 * INGOTS))
+            .fluidOutputs(Materials.RubberSilicone.getMolten(9 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -3463,7 +3467,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Cell_Air.get(1))
             .iCircuit(1)
-            .itemOutputs(Materials.RawRubber.getDust(1), Materials.Empty.getCells(1))
+            .itemOutputs(Materials.RubberRaw.getDust(1), Materials.Empty.getCells(1))
             .fluidInputs(Materials.Isoprene.getFluid(144))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -3472,7 +3476,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Oxygen.getCells(2))
             .iCircuit(1)
-            .itemOutputs(Materials.RawRubber.getDust(3), Materials.Empty.getCells(2))
+            .itemOutputs(Materials.RubberRaw.getDust(3), Materials.Empty.getCells(2))
             .fluidInputs(Materials.Isoprene.getFluid(288))
             .duration(16 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -3481,7 +3485,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Isoprene.getCells(1))
             .iCircuit(1)
-            .itemOutputs(Materials.RawRubber.getDust(7), Materials.Empty.getCells(1))
+            .itemOutputs(Materials.RubberRaw.getDust(7), Materials.Empty.getCells(1))
             .fluidInputs(Materials.Air.getGas(14_000))
             .duration(56 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -3490,7 +3494,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Isoprene.getCells(2))
             .iCircuit(1)
-            .itemOutputs(Materials.RawRubber.getDust(21), Materials.Empty.getCells(2))
+            .itemOutputs(Materials.RubberRaw.getDust(21), Materials.Empty.getCells(2))
             .fluidInputs(Materials.Oxygen.getGas(14_000))
             .duration(1 * MINUTES + 52 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -4204,7 +4208,7 @@ public class ChemicalRecipes implements Runnable {
         addDefaultPolymerizationRecipes(
             Materials.Ethylene.mGas,
             Materials.Ethylene.getCells(1),
-            Materials.Plastic.mStandardMoltenFluid);
+            Materials.Polyethylene.mStandardMoltenFluid);
 
         addDefaultPolymerizationRecipes(
             Materials.Tetrafluoroethylene.mGas,
@@ -5730,7 +5734,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .iCircuit(2)
-            .itemOutputs(Materials.RawRubber.getDust(18))
+            .itemOutputs(Materials.RubberRaw.getDust(18))
             .fluidInputs(
                 Materials.Isoprene.getFluid(1728),
                 Materials.Air.getGas(6_000),
@@ -5741,7 +5745,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .iCircuit(2)
-            .itemOutputs(Materials.RawRubber.getDust(24))
+            .itemOutputs(Materials.RubberRaw.getDust(24))
             .fluidInputs(
                 Materials.Isoprene.getFluid(1728),
                 Materials.Oxygen.getGas(6_000),
@@ -5844,14 +5848,14 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .iCircuit(24)
             .fluidInputs(Materials.LightFuel.getFluid(20_000), Materials.HeavyFuel.getFluid(4_000))
-            .fluidOutputs(Materials.Fuel.getFluid(24_000))
+            .fluidOutputs(Materials.Diesel.getFluid(24_000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(multiblockChemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
             .iCircuit(24)
-            .fluidInputs(Materials.Fuel.getFluid(10_000), Materials.Tetranitromethane.getFluid(200))
+            .fluidInputs(Materials.Diesel.getFluid(10_000), Materials.Tetranitromethane.getFluid(200))
             .fluidOutputs(Materials.NitroFuel.getFluid(10_000))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_HV)

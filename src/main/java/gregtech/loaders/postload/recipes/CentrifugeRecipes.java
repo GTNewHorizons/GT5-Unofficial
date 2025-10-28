@@ -417,7 +417,7 @@ public class CentrifugeRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.IC2_Resin.get(1))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.RawRubber, 3),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.RubberRaw, 3),
                 ItemList.IC2_Plantball.get(1))
             .outputChances(10000, 1000)
             .fluidOutputs(Materials.Glue.getFluid(100))
@@ -493,7 +493,7 @@ public class CentrifugeRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(Materials.Helium.getGas(80))
-            .fluidOutputs(Materials.Helium_3.getGas(5))
+            .fluidOutputs(Materials.Helium3.getGas(5))
             .duration(8 * SECONDS)
             .eut(80)
             .addTo(centrifugeRecipes);
@@ -694,7 +694,7 @@ public class CentrifugeRecipes implements Runnable {
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.AshDark, 1))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1))
