@@ -128,6 +128,8 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
             Pair.of(STRUCTURE_SHAPE_MIDDLE, new String[][] { MIDDLE }),
             Pair.of(STRUCTURE_SHAPE_LAST, new String[][] { LAST }));
 
+        structure.useWrapperControllerPosition();
+
         return structure.getStructureBuilder(shapes)
             .build();
     }

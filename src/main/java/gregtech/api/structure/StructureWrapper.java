@@ -2,6 +2,7 @@ package gregtech.api.structure;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -12,11 +13,17 @@ import javax.annotation.Nonnull;
 import net.minecraft.item.ItemStack;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
+import com.gtnewhorizon.structurelib.coords.ControllerRelativeCoords;
+import com.gtnewhorizon.structurelib.coords.Position;
+import com.gtnewhorizon.structurelib.coords.StructureDefinitionCoords;
+import com.gtnewhorizon.structurelib.coords.WorldCoords;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition.Builder;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
+
 import gregtech.GTMod;
 import gregtech.api.casing.ICasing;
 import gregtech.api.casing.ICasingGroup;
@@ -26,12 +33,13 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.util.GTDataUtils;
-import gregtech.api.util.GTStructureUtility;
+import gregtech.api.util.GTStructureUtility.ProxyHatchElement;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.IGTHatchAdder;
 import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.chars.Char2IntArrayMap;
 import it.unimi.dsi.fastutil.chars.Char2ObjectArrayMap;
+import it.unimi.dsi.fastutil.chars.CharCharPair;
 
 /**
  * A wrapper that helps reduce structure check boilerplate. This should only be created in the prototype MTE, then
@@ -48,17 +56,28 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
 
     public IStructureDefinition<MTE> structureDefinition;
 
-    public Vec3Impl controllerOffset, minSize, maxSize;
+    public Vec3Impl minSize, maxSize;
     public Char2ObjectArrayMap<CasingInfo<MTE>> casings;
     public Char2IntArrayMap minCasingCounts, maxCasingCounts;
-    public Char2ObjectArrayMap<SocketInfo> sockets;
 
     public Function<MTE, IStructureInstance<MTE>> instanceExtractor;
 
+    public final List<CharCharPair> sockets = new ArrayList<>();
+
+    public ControllerPosition controllerPosSource = ControllerPosition.StructureLib;
+    public Position<StructureDefinitionCoords> controllerOffset, manualControllerOffset;
+
+    public enum ControllerPosition {
+        /// The controller structure offset will come from the wrapper analyzing [IStructureProvider#getDefinition()].
+        Wrapper,
+        /// The controller structure offset will come from [IStructureDefinition#getControllerPosition(String)].
+        StructureLib,
+        /// The controller structure offset will be manually specified.
+        Manual
+    }
+
     public StructureWrapper(IStructureProvider<MTE> provider) {
         this.provider = provider;
-
-        this.loadStructure();
     }
 
     public void loadStructure() {
@@ -67,7 +86,6 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
         minCasingCounts = new Char2IntArrayMap();
         maxCasingCounts = new Char2IntArrayMap();
         controllerOffset = null;
-        sockets = new Char2ObjectArrayMap<>();
 
         try {
             String[][] definitionText = provider.getDefinition();
@@ -90,7 +108,7 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
 
         int z = 0;
         for (String[] layer : definitionText) {
-            int y = layer.length - 1;
+            int y = 0;
             height = Math.max(height, layer.length);
             for (String row : layer) {
                 width = Math.max(width, row.length());
@@ -106,21 +124,15 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
                                 "Structure definition for " + provider + " contains two tildes");
                         }
 
-                        controllerOffset = new Vec3Impl(x, y, z);
+                        controllerOffset = new Position<>(x, y, z);
                     }
                 }
-                y--;
+                y++;
             }
             z++;
         }
 
         minSize = new Vec3Impl(width, height, length);
-
-        if (controllerOffset == null) {
-            throw new IllegalStateException(
-                "Structure definition for " + provider
-                    + " did not contain a tilde! This is required so that the wrapper knows where the controller is.");
-        }
     }
 
     private void analyzeMaxDefinition() {
@@ -146,7 +158,7 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
         maxSize = new Vec3Impl(width, height, length);
     }
 
-    private void ensureStructureLoaded() {
+    public void ensureStructureLoaded() {
         if (structureDefinition == null) {
             loadStructure();
         }
@@ -156,10 +168,6 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
 
     public IStructureDefinition<MTE> getStructureDefinition() {
         return structureDefinition;
-    }
-
-    public Vec3Impl getControllerOffset() {
-        return controllerOffset;
     }
 
     public Vec3Impl getMinSize() {
@@ -198,6 +206,8 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
 
     private boolean checkStructureImpl(MTE instance, String piece, Vec3Impl pieceOffset) {
         final IGregTechTileEntity tTile = instance.getBaseMetaTileEntity();
+        var controller = getControllerPosition(piece);
+
         return structureDefinition.check(
             instance,
             piece,
@@ -206,9 +216,9 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
             tTile.getXCoord(),
             tTile.getYCoord(),
             tTile.getZCoord(),
-            controllerOffset.get0() + (pieceOffset == null ? 0 : pieceOffset.get0()),
-            controllerOffset.get1() + (pieceOffset == null ? 0 : pieceOffset.get1()),
-            controllerOffset.get2() + (pieceOffset == null ? 0 : pieceOffset.get2()),
+            controller.x + (pieceOffset == null ? 0 : pieceOffset.get0()),
+            controller.y + (pieceOffset == null ? 0 : pieceOffset.get1()),
+            controller.z + (pieceOffset == null ? 0 : pieceOffset.get2()),
             !instance.mMachine);
     }
 
@@ -241,6 +251,8 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
 
     private void constructImpl(MTE instance, ItemStack trigger, boolean hintsOnly, String piece, Vec3Impl pieceOffset) {
         final IGregTechTileEntity tTile = instance.getBaseMetaTileEntity();
+        var controller = getControllerPosition(piece);
+
         structureDefinition.buildOrHints(
             instance,
             trigger,
@@ -250,9 +262,9 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
             tTile.getXCoord(),
             tTile.getYCoord(),
             tTile.getZCoord(),
-            controllerOffset.get0() + (pieceOffset == null ? 0 : pieceOffset.get0()),
-            controllerOffset.get1() + (pieceOffset == null ? 0 : pieceOffset.get1()),
-            controllerOffset.get2() + (pieceOffset == null ? 0 : pieceOffset.get2()),
+            controller.x + (pieceOffset == null ? 0 : pieceOffset.get0()),
+            controller.y + (pieceOffset == null ? 0 : pieceOffset.get1()),
+            controller.z + (pieceOffset == null ? 0 : pieceOffset.get2()),
             hintsOnly);
     }
 
@@ -288,6 +300,8 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
     private int survivalConstructImpl(MTE instance, ItemStack trigger, int elementBudget, ISurvivalBuildEnvironment env,
         String piece, Vec3Impl pieceOffset) {
         final IGregTechTileEntity tTile = instance.getBaseMetaTileEntity();
+        var controller = getControllerPosition(piece);
+
         int built = structureDefinition.survivalBuild(
             instance,
             trigger,
@@ -297,9 +311,9 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
             tTile.getXCoord(),
             tTile.getYCoord(),
             tTile.getZCoord(),
-            controllerOffset.get0() + (pieceOffset == null ? 0 : pieceOffset.get0()),
-            controllerOffset.get1() + (pieceOffset == null ? 0 : pieceOffset.get1()),
-            controllerOffset.get2() + (pieceOffset == null ? 0 : pieceOffset.get2()),
+            controller.x + (pieceOffset == null ? 0 : pieceOffset.get0()),
+            controller.y + (pieceOffset == null ? 0 : pieceOffset.get1()),
+            controller.z + (pieceOffset == null ? 0 : pieceOffset.get2()),
             elementBudget,
             env,
             false);
@@ -307,6 +321,14 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
         if (built > 0) instance.checkStructure(true, tTile);
 
         return built;
+    }
+
+    public Position<StructureDefinitionCoords> getControllerPosition(String piece) {
+        return switch (this.controllerPosSource) {
+            case Wrapper -> new Position<>(controllerOffset);
+            case StructureLib -> structureDefinition.getControllerPosition(piece);
+            case Manual -> manualControllerOffset;
+        };
     }
 
     // #endregion
@@ -359,7 +381,7 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
     /**
      * A hatch proxy that adds valid hatches to the structure's pending hatch list.
      */
-    static class HatchInterceptor<T> extends GTStructureUtility.ProxyHatchElement<T> {
+    static class HatchInterceptor<T> extends ProxyHatchElement<T> {
 
         private final CasingInfo<T> casing;
 
@@ -435,15 +457,24 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
         return new CasingBuilder(c, casingInfo);
     }
 
-    public void addSocket(char c, char replacement) {
-        sockets.put(c, new SocketInfo(c, replacement));
+    public void addSocket(char name, char replacement) {
+        sockets.add(CharCharPair.of(name, replacement));
+    }
+
+    public void useWrapperControllerPosition() {
+        this.controllerPosSource = ControllerPosition.Wrapper;
+    }
+
+    public void useManualControllerPosition(int x, int y, int z) {
+        this.controllerPosSource = ControllerPosition.Manual;
+        this.manualControllerOffset = new Position<>(x, y, z);
     }
 
     /**
      * Sets up a builder but doesn't build it. Useful if you need to modify it in some non-standard way.
      */
-    public StructureDefinition.Builder<MTE> getStructureBuilder(List<Pair<String, String[][]>> shapes) {
-        StructureDefinition.Builder<MTE> builder = StructureDefinition.builder();
+    public Builder<MTE> getStructureBuilder(List<Pair<String, String[][]>> shapes) {
+        Builder<MTE> builder = StructureDefinition.builder();
 
         for (char casing : casings.keySet()) {
             builder.addElement(casing, getStructureElement(casing));
@@ -453,6 +484,10 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
             builder.addShape(shape.left(), shape.right());
         }
 
+        for (var socket : sockets) {
+            builder.addSocket(socket.leftChar(), socket.rightChar());
+        }
+
         return builder;
     }
 
@@ -460,39 +495,24 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
      * Creates a structure definition with a single shape called {@code main}.
      */
     public IStructureDefinition<MTE> buildStructure(String[][] definition) {
-        findSockets(definition);
-
         return getStructureBuilder(Arrays.asList(Pair.of(StructureWrapper.STRUCTURE_SHAPE_MAIN, definition))).build();
     }
 
-    private void findSockets(String[][] definitionText) {
-        int z = 0;
-        for (String[] layer : definitionText) {
-            int y = 0;
-            for (String row : layer) {
-                for (int x = 0; x < row.length(); x++) {
-                    char c = row.charAt(x);
+    public Position<WorldCoords> getSocket(MTE mte, String piece, char name) {
+        ensureStructureLoaded();
 
-                    if (c == ' ' || c == '-' || c == '+') continue;
+        IGregTechTileEntity igte = mte.getBaseMetaTileEntity();
+        Objects.requireNonNull(igte, "Base tile must be valid: " + mte);
 
-                    SocketInfo socket = sockets.get(c);
+        var p1 = structureDefinition.getSocket(piece, name);
+        var p2 = structureDefinition.getCoordinateSystem(piece)
+            .translateInverse(p1);
+        var p3 = mte.getExtendedFacing()
+            .asCoordinateSystem()
+            .translateInverse(p2);
+        var p4 = ControllerRelativeCoords.translateInverse(p3, igte.getXCoord(), igte.getYCoord(), igte.getZCoord());
 
-                    if (socket == null) continue;
-
-                    socket.coordinates.add(x, y, z);
-                }
-                y++;
-            }
-            z++;
-        }
-
-        for (String[] a : definitionText) {
-            for (int i = 0; i < definitionText.length; i++) {
-                for (SocketInfo socket : sockets.values()) {
-                    a[i] = a[i].replace(socket.original, socket.replacement);
-                }
-            }
-        }
+        return p4;
     }
 
     @SuppressWarnings("FieldCanBeLocal")

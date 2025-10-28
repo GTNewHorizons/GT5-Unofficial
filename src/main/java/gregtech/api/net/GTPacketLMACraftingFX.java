@@ -6,10 +6,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.world.IBlockAccess;
 
 import com.google.common.io.ByteArrayDataInput;
+import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
 import appeng.api.storage.data.IAEItemStack;
 import appeng.util.item.AEItemStack;
-import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GTLog;

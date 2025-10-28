@@ -47,6 +47,7 @@ public class StructureWrapperTooltipBuilder<MTE extends MTEEnhancedMultiBlockBas
 
     public StructureWrapperTooltipBuilder(StructureWrapper<MTE> structure) {
         this.structure = structure;
+        structure.ensureStructureLoaded();
     }
 
     /**

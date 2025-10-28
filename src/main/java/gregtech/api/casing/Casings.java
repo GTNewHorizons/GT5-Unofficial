@@ -11,12 +11,13 @@ import net.minecraft.block.Block;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
-import appeng.api.AEApi;
-import bartworks.API.BorosilicateGlass;
-import bartworks.system.material.WerkstoffLoader;
 import com.gtnewhorizon.gtnhlib.util.data.BlockSupplier;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
+
+import appeng.api.AEApi;
+import bartworks.API.BorosilicateGlass;
+import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;

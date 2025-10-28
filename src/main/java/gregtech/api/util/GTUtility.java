@@ -5017,6 +5017,11 @@ public class GTUtility {
         return signal;
     }
 
+    public static Iterable<NBTTagCompound> getTagList(NBTTagCompound tag, String key) {
+        // noinspection unchecked
+        return tag.getTagList(key, Constants.NBT.TAG_COMPOUND).tagList;
+    }
+
     public static Stream<NBTTagCompound> streamCompounds(NBTTagList list) {
         if (list == null) return Stream.empty();
         return IntStream.range(0, list.tagCount())

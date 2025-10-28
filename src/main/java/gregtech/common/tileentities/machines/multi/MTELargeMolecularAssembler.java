@@ -4,8 +4,8 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -19,13 +19,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -34,29 +33,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
-import appeng.api.AEApi;
-import appeng.api.networking.GridFlags;
-import appeng.api.networking.IGridNode;
-import appeng.api.networking.crafting.ICraftingPatternDetails;
-import appeng.api.networking.crafting.ICraftingProvider;
-import appeng.api.networking.crafting.ICraftingProviderHelper;
-import appeng.api.networking.events.MENetworkCraftingPatternChange;
-import appeng.api.networking.security.BaseActionSource;
-import appeng.api.networking.security.IActionHost;
-import appeng.api.networking.security.MachineSource;
-import appeng.api.storage.IMEMonitor;
-import appeng.api.storage.data.IAEItemStack;
-import appeng.api.util.DimensionalCoord;
-import appeng.core.worlddata.WorldData;
-import appeng.items.misc.ItemEncodedPattern;
-import appeng.me.GridAccessException;
-import appeng.me.GridNode;
-import appeng.me.helpers.AENetworkProxy;
-import appeng.me.helpers.IGridProxyable;
-import appeng.util.Platform;
-import appeng.util.item.AEItemStack;
-import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.coords.Position;
+import com.gtnewhorizon.structurelib.coords.WorldCoords;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
@@ -66,6 +45,23 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.mojang.authlib.GameProfile;
+
+import appeng.api.AEApi;
+import appeng.api.networking.GridFlags;
+import appeng.api.networking.IGridNode;
+import appeng.api.networking.crafting.ICraftingPatternDetails;
+import appeng.api.networking.crafting.ICraftingProvider;
+import appeng.api.networking.crafting.ICraftingProviderHelper;
+import appeng.api.networking.events.MENetworkCraftingPatternChange;
+import appeng.api.networking.security.IActionHost;
+import appeng.api.util.DimensionalCoord;
+import appeng.core.worlddata.WorldData;
+import appeng.items.misc.ItemEncodedPattern;
+import appeng.me.GridAccessException;
+import appeng.me.GridNode;
+import appeng.me.helpers.AENetworkProxy;
+import appeng.me.helpers.IGridProxyable;
+import appeng.util.Platform;
 import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
@@ -88,11 +84,9 @@ import gregtech.api.structure.StructureWrapperInstanceInfo;
 import gregtech.api.structure.StructureWrapperTooltipBuilder;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.ItemEjectionHelper;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
-import it.unimi.dsi.fastutil.objects.Object2LongMap;
-import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
-import it.unimi.dsi.fastutil.objects.ObjectIterator;
 
 public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<MTELargeMolecularAssembler>
     implements ICraftingProvider, IActionHost, IGridProxyable, ISurvivalConstructable,
@@ -101,71 +95,33 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
     protected final StructureWrapper<MTELargeMolecularAssembler> structure;
     protected final StructureWrapperInstanceInfo<MTELargeMolecularAssembler> structureInstanceInfo;
 
-    private static final String MACHINE_TYPE = "Molecular Assembler, LMA";
     private static final int EU_PER_TICK_BASIC = 16;
     private static final int EU_PER_TICK_CRAFTING = 64;
-    private static final String NBT_KEY_CACHED_OUTPUTS = "cachedOutputs";
-    private static final String NBT_KEY_CONFIG_HIDDEN_CRAFTING_FX = "config:hiddenCraftingFX";
-    private static final int STRUCTURE_HORIZONTAL_OFFSET = 2;
-    private static final int STRUCTURE_VERTICAL_OFFSET = 4;
-    private static final int STRUCTURE_DEPTH_OFFSET = 0;
-    private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final IStructureDefinition<MTELargeMolecularAssembler> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTELargeMolecularAssembler>builder()
-        .addShape(
-            STRUCTURE_PIECE_MAIN,
-            transpose(
-                new String[][] { { "CCCCC", "CGGGC", "CGGGC", "CGGGC", "CCCCC" },
-                    { "CGGGC", "G---G", "G---G", "G---G", "CGGGC" }, { "CGGGC", "G---G", "G-X-G", "G---G", "CGGGC" },
-                    { "CGGGC", "G---G", "G---G", "G---G", "CGGGC" },
-                    { "CC~CC", "CGGGC", "CGGGC", "CGGGC", "CCCCC" }, }))
-        .addElement(
-            'C',
-            ofChain(
-                ofHatchAdder(MTELargeMolecularAssembler::addToLargeMolecularAssemblerList, CASING_INDEX, 1),
-                buildHatchAdder(MTELargeMolecularAssembler.class).atLeast(Energy, InputBus, Maintenance)
-                    .casingIndex(CASING_INDEX)
-                    .dot(1)
-                    .build(),
-                onElementPass(it -> it.casing++, ofBlock(GregTechAPI.sBlockCasings4, 0))))
-        .addElement(
-            'G',
-            ofBlockAnyMeta(
-                AEApi.instance()
-                    .definitions()
-                    .blocks()
-                    .quartzVibrantGlass()
-                    .maybeBlock()
-                    .get()))
-        .addElement('X', (IStructureElementCheckOnly<MTELargeMolecularAssembler>) (mte, world, x, y, z) -> {
-            if (world.isAirBlock(x, y, z)) {
-                mte.craftingDisplayPoint = new CraftingDisplayPoint(world, x, y, z);
-                return true;
-            }
-            return false;
-        })
-        .build();
-
-    private byte casing;
-    private CraftingDisplayPoint craftingDisplayPoint;
-
-    private ItemStack cachedDataOrb;
-    private List<List<ItemStack>> cachedAeJobs = new ArrayList<>();
-    private boolean aeJobsDirty;
 
     private List<ICraftingPatternDetails> cachedPatternDetails = new ArrayList<>();
-    private Map<ItemStack, Pair<NBTTagCompound, ICraftingPatternDetails>> patternDetailCache = new IdentityHashMap<>();
+    private final Map<ItemStack, Pair<NBTTagCompound, ICraftingPatternDetails>> patternDetailCache = new IdentityHashMap<>();
 
-    private BaseActionSource requestSource;
-    private long lastOutputTick;
-    private boolean justEjectedContainers = false;
-
-    private final Object2LongOpenHashMap<GTUtility.ItemId> cachedOutputs = new Object2LongOpenHashMap<>();
     private final ArrayDeque<ItemStack> pendingCrafts = new ArrayDeque<>();
+    private boolean hasNewJobs = false;
 
-    public boolean hiddenCraftingFX;
+    private boolean hiddenCraftingFX;
 
     private AENetworkProxy gridProxy;
+
+    private static class OverclockInfo {
+
+        public final int craftingProgressTime;
+        public final long craftingEUt;
+        public final int parallels;
+
+        public OverclockInfo(int craftingProgressTime, long craftingEUt, int parallels) {
+            this.craftingProgressTime = craftingProgressTime;
+            this.craftingEUt = craftingEUt;
+            this.parallels = parallels;
+        }
+    }
+
+    private OverclockInfo overclockInfo;
 
     public MTELargeMolecularAssembler(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -174,7 +130,7 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
         structureInstanceInfo = null;
     }
 
-    public MTELargeMolecularAssembler(MTELargeMolecularAssembler prototype) {
+    protected MTELargeMolecularAssembler(MTELargeMolecularAssembler prototype) {
         super(prototype.mName);
 
         structure = prototype.structure;
@@ -202,7 +158,7 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public IStructureDefinition<MTELargeMolecularAssembler> compile(String[][] definition) {
         structure.addCasing('C', Casings.RobustTungstensteelMachineCasing)
-            .withHatches(1, 19, Arrays.asList(Energy, InputBus, Maintenance));
+            .withHatches(1, 19, Arrays.asList(Energy, InputBus, Maintenance, OutputBus));
         structure.addCasing('G', Casings.VibrantGlass);
 
         structure.addSocket('X', '-');
@@ -219,10 +175,11 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean active, boolean redstoneLevel) {
         if (side == facing) {
-            return new ITexture[] { Casings.RobustTungstensteelMachineCasing.getCasingTexture(), TextureFactory.builder()
-                .addIcon(Textures.BlockIcons.OVERLAY_ME_HATCH)
-                .extFacing()
-                .build() };
+            return new ITexture[] { Casings.RobustTungstensteelMachineCasing.getCasingTexture(),
+                TextureFactory.builder()
+                    .addIcon(Textures.BlockIcons.OVERLAY_ME_HATCH)
+                    .extFacing()
+                    .build() };
         }
         return new ITexture[] { Casings.RobustTungstensteelMachineCasing.getCasingTexture() };
     }
@@ -232,14 +189,12 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
         super.onPostTick(aBaseMetaTileEntity, aTick);
 
         if (aBaseMetaTileEntity.isServerSide()) {
-            flushCachedOutputsIfNeeded(aTick);
             syncAEProxyActive(aBaseMetaTileEntity);
             issuePatternChangeIfNeeded(aTick);
         }
     }
 
-    @Override
-    public @NotNull CheckRecipeResult checkProcessing() {
+    private void updateOverclockInfo() {
         int craftingProgressTime = 20;
         long craftingEUt = EU_PER_TICK_CRAFTING;
 
@@ -252,137 +207,143 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
             craftingEUt *= 4;
         }
 
-        int parallel = 2 << extraTier;
+        int parallels = 2 << extraTier;
         craftingEUt = craftingEUt << 2 * extraTier;
 
-        List<ItemStack> outputs = new ArrayList<>();
-
-        while (parallel > 0 && !pendingCrafts.isEmpty()) {
-            ItemStack first = pendingCrafts.getFirst();
-
-            int toRemove = Math.min(parallel, first.stackSize);
-            parallel -= toRemove;
-
-            outputs.add(first.splitStack(toRemove));
-
-            if (first.stackSize == 0) {
-                pendingCrafts.removeFirst();
-            }
-        }
-
-        if (!outputs.isEmpty()) {
-            mOutputItems = outputs.toArray(GTValues.emptyItemStackArray);
-
-            mMaxProgresstime = craftingProgressTime;
-            lEUt = -craftingEUt;
-            mEfficiency = 10000 - (getIdealStatus() - getRepairStatus()) * 1000;
-
-            addCraftingFX(mOutputItems[0]);
-
-            return CheckRecipeResultRegistry.SUCCESSFUL;
-        } else {
-            mMaxProgresstime = 0;
-            lEUt = 0;
-            mEfficiency = 0;
-
-            return CheckRecipeResultRegistry.NO_RECIPE;
-        }
+        overclockInfo = new OverclockInfo(craftingProgressTime, craftingEUt, parallels);
     }
 
     @Override
-    public boolean addItemOutputs(ItemStack[] outputItems) {
-        for (ItemStack stack : outputItems) {
-            cachedOutputs.addTo(GTUtility.ItemId.create(stack), stack.stackSize);
+    protected boolean shouldCheckRecipeThisTick() {
+        boolean check = hasNewJobs;
+        hasNewJobs = false;
+        return check;
+    }
+
+    @Override
+    public @NotNull CheckRecipeResult checkProcessing() {
+        updateOverclockInfo();
+
+        if (pendingCrafts.isEmpty()) {
+            this.mMaxProgresstime = 0;
+            this.lEUt = 0;
+            this.mEfficiency = 0;
+
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
-        markDirty();
+        ItemEjectionHelper ejectionHelper = new ItemEjectionHelper(this);
 
-        return true;
+        // Check if we can fit the outputs, if not don't craft anything
+        if (ejectionHelper.ejectItems(new ArrayList<>(pendingCrafts), 1) == 0) {
+            return CheckRecipeResultRegistry.ITEM_OUTPUT_FULL;
+        }
+
+        mOutputItems = pendingCrafts.toArray(GTValues.emptyItemStackArray);
+        pendingCrafts.clear();
+
+        mMaxProgresstime = overclockInfo.craftingProgressTime;
+        lEUt = -overclockInfo.craftingEUt;
+        mEfficiency = 10000 - (getIdealStatus() - getRepairStatus()) * 1000;
+
+        addCraftingFX(mOutputItems[0]);
+
+        return CheckRecipeResultRegistry.SUCCESSFUL;
+    }
+
+    @Override
+    public ArrayList<ItemStack> getDroppedItem() {
+        return super.getDroppedItem();
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
 
-        NBTTagList isList = new NBTTagList();
+        aNBT.setInteger("version", 1);
 
-        for (var e : cachedOutputs.object2LongEntrySet()) {
-            if (e.getLongValue() <= 0) break;
-            NBTTagCompound tag = new NBTTagCompound();
-            NBTTagCompound isTag = new NBTTagCompound();
-            e.getKey().getItemStack().writeToNBT(isTag);
-            tag.setTag("itemStack", isTag);
-            tag.setLong("size", e.getLongValue());
-            isList.appendTag(tag);
-        }
-        aNBT.setTag(NBT_KEY_CACHED_OUTPUTS, isList);
+        aNBT.setBoolean("config:hiddenCraftingFX", hiddenCraftingFX);
 
-        aNBT.setBoolean(NBT_KEY_CONFIG_HIDDEN_CRAFTING_FX, hiddenCraftingFX);
         NBTTagCompound proxyTag = new NBTTagCompound();
         getProxy().writeToNBT(proxyTag);
         aNBT.setTag("proxy", proxyTag);
+
+        NBTTagList pendingCrafts = new NBTTagList();
+
+        for (ItemStack stack : this.pendingCrafts) {
+            if (stack.stackSize <= 0) break;
+
+            pendingCrafts.appendTag(stack.writeToNBT(new NBTTagCompound()));
+        }
+
+        aNBT.setTag("pendingCrafts", pendingCrafts);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
 
-        NBTBase nbtBase = aNBT.getTag(NBT_KEY_CACHED_OUTPUTS);
-        if (nbtBase instanceof NBTTagList isList) {
-            for (int i = 0; i < isList.tagCount(); i++) {
-                NBTTagCompound tag = isList.getCompoundTagAt(i);
-                NBTTagCompound stackTag = tag.getCompoundTag("itemStack");
+        switch (aNBT.getInteger("version")) {
+            case 0 -> {
+                hiddenCraftingFX = aNBT.getBoolean("config:hiddenCraftingFX");
+                if (aNBT.hasKey("proxy")) {
+                    getProxy().readFromNBT(aNBT.getCompoundTag("proxy"));
+                }
 
-                ItemStack itemStack = GTUtility.loadItem(stackTag);
-                long size = tag.getLong("size");
+                if (aNBT.getTag("cachedOutputs") instanceof NBTTagList isList) {
+                    for (int i = 0; i < isList.tagCount(); i++) {
+                        NBTTagCompound tag = isList.getCompoundTagAt(i);
+                        NBTTagCompound stackTag = tag.getCompoundTag("itemStack");
 
-                cachedOutputs.put(GTUtility.ItemId.create(itemStack), size);
+                        ItemStack itemStack = GTUtility.loadItem(stackTag);
+                        // If someone's somehow storing more than 2.7 billion items in an LMA, this truncation is their
+                        // problem :kekw:
+                        itemStack.stackSize = GTUtility.longToInt(tag.getLong("size"));
+
+                        // Stick any cachedOutputs back into the pendingCrafts queue.
+                        // This isn't very elegant, but it's better than having a ton of migration code specifically to
+                        // prevent these items from being voided (which will probably never happen because no one uses
+                        // the LMA :kekw:).
+                        pendingCrafts.add(itemStack);
+                    }
+                }
             }
-        }
+            case 1 -> {
+                hiddenCraftingFX = aNBT.getBoolean("config:hiddenCraftingFX");
 
-        hiddenCraftingFX = aNBT.getBoolean(NBT_KEY_CONFIG_HIDDEN_CRAFTING_FX);
-        if (aNBT.hasKey("proxy")) {
-            getProxy().readFromNBT(aNBT.getCompoundTag("proxy"));
+                if (aNBT.hasKey("proxy")) {
+                    getProxy().readFromNBT(aNBT.getCompoundTag("proxy"));
+                }
+
+                for (NBTTagCompound tag : GTUtility.getTagList(aNBT, "pendingCrafts")) {
+                    ItemStack stack = ItemStack.loadItemStackFromNBT(tag);
+                    if (stack != null) pendingCrafts.add(stack);
+                }
+            }
+            default -> {
+
+            }
         }
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        StructureWrapperTooltipBuilder<MTELargeMolecularAssembler> tt = new StructureWrapperTooltipBuilder<>(this.structure);
+        StructureWrapperTooltipBuilder<MTELargeMolecularAssembler> tt = new StructureWrapperTooltipBuilder<>(
+            this.structure);
 
-        tt.addMachineType(MACHINE_TYPE)
-            .addInfo(
-                "Basic: " + EnumChatFormatting.GREEN
-                    + EU_PER_TICK_BASIC
-                    + EnumChatFormatting.GRAY
-                    + " EU/t, unaffected by overclocking")
-            .addInfo(
-                "Crafting: " + EnumChatFormatting.GREEN
-                    + EU_PER_TICK_CRAFTING
-                    + EnumChatFormatting.GRAY
-                    + " EU/t, Finish "
-                    + EnumChatFormatting.WHITE
-                    + "2"
-                    + EnumChatFormatting.GRAY
-                    + " Jobs in "
-                    + EnumChatFormatting.WHITE
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + "s")
-            .addInfo("The first two Overclocks:")
-            .addInfo(
-                "-Reduce the Finish time to " + EnumChatFormatting.WHITE
-                    + "0.5"
-                    + EnumChatFormatting.GRAY
-                    + "s and "
-                    + EnumChatFormatting.WHITE
-                    + "0.25"
-                    + EnumChatFormatting.GRAY
-                    + "s")
-            .addInfo("Subsequent Overclocks:")
-            .addInfo("-Double the number of Jobs finished at once");
+        tt.addMachineType("Molecular Assembler, LMA")
+            .addInfo("Consumes §a" + EU_PER_TICK_BASIC + "§7 EU/t prior to overclocks.")
+            .addInfo("Crafts take §fone§7 second to finish initially.")
+            .addInfo("The first two overclocks halve crafting time, for a total of §f0.25§7 seconds.")
+            .addInfo("Subsequent overclocks double the number of items crafted per batch.")
+            .addSeparator()
+            .addInfo("Place crafting patterns in the input busses.")
+            .addInfo("The controller must be enabled for it connect to an ME cable.")
+            .addInfo("Once crafted, items and container are placed into the output busses.");
 
-        tt.beginStructureBlock(true).addAllCasingInfo().toolTipFinisher();
+        tt.beginStructureBlock(true)
+            .addAllCasingInfo()
+            .toolTipFinisher();
 
         return tt;
     }
@@ -412,7 +373,7 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
     private void addCraftingFX(ItemStack itemStack) {
         if (hiddenCraftingFX) return;
 
-        BlockPos displayPoint = structureInstanceInfo.getSocket(this, 'X');
+        Position<WorldCoords> displayPoint = structure.getSocket(this, "main", 'X');
 
         if (displayPoint != null) {
             GTPacketLMACraftingFX packet = new GTPacketLMACraftingFX(
@@ -420,7 +381,9 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
                 displayPoint.y,
                 displayPoint.z,
                 mMaxProgresstime + 10,
-                AEApi.instance().storage().createItemStack(itemStack));
+                AEApi.instance()
+                    .storage()
+                    .createItemStack(itemStack));
 
             GTValues.NW.sendPacketToAllPlayersInRange(
                 getBaseMetaTileEntity().getWorld(),
@@ -430,45 +393,42 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
         }
     }
 
-    private BaseActionSource getRequest() {
-        if (requestSource == null) {
-            requestSource = new MachineSource((IActionHost) getBaseMetaTileEntity());
-        }
-        return requestSource;
+    @Override
+    public boolean isBatchModeEnabled() {
+        return false;
     }
 
-    private void flushCachedOutputsIfNeeded(long tick) {
-        if (tick <= lastOutputTick + 40 && !justEjectedContainers) {
-            return;
+    @Override
+    public VoidingMode getVoidingMode() {
+        return VoidingMode.VOID_NONE;
+    }
+
+    @Override
+    public boolean protectsExcessItem() {
+        return true;
+    }
+
+    @Override
+    public void onBlockDestroyed() {
+        super.onBlockDestroyed();
+
+        IGregTechTileEntity igte = getBaseMetaTileEntity();
+
+        World world = igte.getWorld();
+        int x = igte.getXCoord();
+        int y = igte.getYCoord();
+        int z = igte.getZCoord();
+
+        // The player shouldn't have these items without crafting them, but it's either this or we void the items since
+        // we can't undo the recipes. There isn't much of a reason to exploit this behaviour, it's faster to just use
+        // the LMA properly.
+        for (ItemStack stack : pendingCrafts) {
+            EntityItem item = new EntityItem(world, x, y, z, stack);
+
+            world.spawnEntityInWorld(item);
         }
 
-        try {
-            AENetworkProxy proxy = getProxy();
-            IMEMonitor<IAEItemStack> storage = proxy.getStorage()
-                .getItemInventory();
-
-            for (ObjectIterator<Object2LongMap.Entry<GTUtility.ItemId>> iterator = cachedOutputs.object2LongEntrySet().iterator(); iterator.hasNext(); ) {
-                var e = iterator.next();
-
-                IAEItemStack stack = AEItemStack.create(e.getKey().getItemStack(1)).setStackSize(e.getLongValue());
-
-                IAEItemStack rejected = Platform.poweredInsert(proxy.getEnergy(), storage, stack, getRequest());
-
-                if (rejected != null && rejected.getStackSize() > 0) {
-                    e.setValue(rejected.getStackSize());
-                } else {
-                    iterator.remove();
-                }
-            }
-        } catch (GridAccessException ignored) {
-            // :P
-        }
-
-        if (!justEjectedContainers) {
-            lastOutputTick = tick;
-        }
-
-        justEjectedContainers = false;
+        pendingCrafts.clear();
     }
 
     private void issuePatternChangeIfNeeded(long tick) {
@@ -556,6 +516,18 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
         ItemStack mainOutput = patternDetails.getOutput(table, w);
         if (mainOutput == null) return false;
 
+        int usedParallels = pendingCrafts.stream()
+            .mapToInt(s -> s.stackSize)
+            .sum();
+
+        int availableParallels = overclockInfo == null ? 0 : overclockInfo.parallels;
+
+        int remainingParallels = availableParallels - usedParallels;
+
+        if (remainingParallels <= 0) return false;
+
+        hasNewJobs = true;
+
         FMLCommonHandler.instance()
             .firePlayerCraftingEvent(Platform.getPlayer((WorldServer) w), mainOutput, table);
 
@@ -581,8 +553,11 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
 
             if (container == null) continue;
 
-            cachedOutputs.addTo(GTUtility.ItemId.create(container), container.stackSize);
-            justEjectedContainers = true;
+            // Try to immediately eject the container. If it fails, add it to the pendingCrafts (the player will just
+            // have to lose the one parallel :caught:)
+            if (!addOutputAtomic(container)) {
+                pendingCrafts.add(container);
+            }
         }
 
         return true;
@@ -670,15 +645,5 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setPos(80, 91)
                 .setSize(16, 16));
-    }
-
-    @Override
-    public boolean isBatchModeEnabled() {
-        return false;
-    }
-
-    @Override
-    public VoidingMode getVoidingMode() {
-        return VoidingMode.VOID_NONE;
     }
 }

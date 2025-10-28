@@ -700,7 +700,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         return this.checkRecipeResult.wasSuccessful();
     }
 
-    private boolean shouldCheckRecipeThisTick(long aTick) {
+    protected boolean shouldCheckRecipeThisTick() {
         // do a recipe check if any crafting input hatch just got pushed in items
         boolean shouldCheck = false;
         // check all of them (i.e. do not return early) to reset the state of all of them.
@@ -767,7 +767,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             // Check if the machine is enabled in the first place!
             if (aBaseMetaTileEntity.isAllowedToWork()) {
 
-                if (shouldCheckRecipeThisTick(aTick) || aBaseMetaTileEntity.hasWorkJustBeenEnabled()
+                if (shouldCheckRecipeThisTick() || aBaseMetaTileEntity.hasWorkJustBeenEnabled()
                     || aBaseMetaTileEntity.hasInventoryBeenModified()) {
                     if (checkRecipe()) {
                         markDirty();
