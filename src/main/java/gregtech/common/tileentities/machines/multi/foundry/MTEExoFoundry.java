@@ -1188,7 +1188,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         ring = (IModelCustomExt) AdvancedModelLoader.loadModel(
             new ResourceLocation(
                 GregTech.resourceDomain,
-                "textures/model/nano-forge-render-ring-one.obj"
+                "textures/model/foundry_ring.obj"
             )
         );
 
@@ -1219,7 +1219,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     private void renderRing(int index, float red, float green, float blue) {
         GL11.glPushMatrix();
         GL11.glTranslated(0, 9 + index * 8 + (index > 1 ? 10 : 0), 0);
-        GL11.glScalef(1.05f, 0.6f, 1.05f);
+        GL11.glScalef(1.2f, 0.8f, 1.2f);
         GL20.glUniform3f(uGlowColor, red, green, blue);
         ring.renderAllVBO();
         GL11.glPopMatrix();
