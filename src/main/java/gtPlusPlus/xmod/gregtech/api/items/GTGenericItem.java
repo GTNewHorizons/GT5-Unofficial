@@ -2,10 +2,7 @@ package gtPlusPlus.xmod.gregtech.api.items;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -177,30 +174,32 @@ public class GTGenericItem extends Item implements IProjectileItem {
         }
     }
 
-    private static final Map<String, Integer> COLOR_MAP;
-
-    static {
-        Map<String, Integer> map = new HashMap<>();
-        map.put("LuV", 0xffffcc);
-        map.put("ZPM", 0xace600);
-        map.put("UV", 0xffff00);
-        map.put("MAX", 0xff0000);
-        map.put("Sodium", Utils.rgbtoHexValue(0, 0, 150));
-        map.put("Cadmium", Utils.rgbtoHexValue(50, 50, 60));
-        map.put("Lithium", Utils.rgbtoHexValue(225, 220, 255));
-        COLOR_MAP = Collections.unmodifiableMap(map);
-    }
-
     @Override
-    public int getColorFromItemStack(final ItemStack stack, int defaultColor) {
-        String name = stack.getDisplayName();
-
-        for (Map.Entry<String, Integer> entry : COLOR_MAP.entrySet()) {
-            if (name.contains(entry.getKey())) {
-                return entry.getValue();
-            }
-        }
-
-        return defaultColor;
+    public int getColorFromItemStack(final ItemStack stack, int HEX_OxFFFFFF) {
+        if (stack.getDisplayName()
+            .contains("LuV")) {
+            HEX_OxFFFFFF = 0xffffcc;
+        } else if (stack.getDisplayName()
+            .contains("ZPM")) {
+                HEX_OxFFFFFF = 0xace600;
+            } else if (stack.getDisplayName()
+                .contains("UV")) {
+                    HEX_OxFFFFFF = 0xffff00;
+                } else if (stack.getDisplayName()
+                    .contains("MAX")) {
+                        HEX_OxFFFFFF = 0xff0000;
+                    } else if (stack.getDisplayName()
+                        .contains("Sodium")) {
+                            HEX_OxFFFFFF = Utils.rgbtoHexValue(0, 0, 150);
+                        } else if (stack.getDisplayName()
+                            .contains("Cadmium")) {
+                                HEX_OxFFFFFF = Utils.rgbtoHexValue(50, 50, 60);
+                            } else if (stack.getDisplayName()
+                                .contains("Lithium")) {
+                                    HEX_OxFFFFFF = Utils.rgbtoHexValue(225, 220, 255);
+                                } else {
+                                    HEX_OxFFFFFF = 0xffffff;
+                                }
+        return HEX_OxFFFFFF;
     }
 }
