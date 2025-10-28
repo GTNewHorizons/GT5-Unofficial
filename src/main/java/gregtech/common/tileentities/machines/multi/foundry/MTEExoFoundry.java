@@ -486,7 +486,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                 EnumChatFormatting.GOLD + "Module"
                     + EnumChatFormatting.GRAY
                     + " stats are show in NEI and the Controller")
-            .addInfo("Toggle Render with Screwdriver")
+            .addInfo("Toggle Render with Wirecutters")
             .addTecTechHatchInfo()
             .addSeparator()
             .addInfo(EnumChatFormatting.RED + "Glorious Evolution!")
@@ -1165,7 +1165,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         int i = 0;
         float time = (System.currentTimeMillis() - lastInactiveTime) / 2000f;
         float multiplier = 1 - (1 / (time + 1));
-        for (FoundryModules module : FoundryModules.values()) {
+        for (FoundryModules module : modules) {// FoundryModules.values()) {
             if (module == FoundryModules.UNSET) continue;
             if (gammaCorrected) {
                 renderRing(
