@@ -36,6 +36,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
@@ -87,7 +88,6 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import org.lwjgl.input.Keyboard;
 
-import com.github.bsideup.jabel.Desugar;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -189,6 +189,7 @@ public class GTProxy implements IFuelHandler {
         OreGenEvent.GenerateMinable.EventType.QUARTZ);
     public final HashSet<ItemStack> mRegisteredOres = new HashSet<>(10000);
     private final Collection<OreDictEventContainer> oreDictEvents = new HashSet<>();
+
     private static final Collection<String> IGNORED_ITEMS = new HashSet<>(
         Arrays.asList(
             "itemGhastTear",
@@ -266,6 +267,7 @@ public class GTProxy implements IFuelHandler {
             "itemMagmaWhippingCream",
             "itemMultimeter",
             "itemSuperconductor"));
+
     private static final Collection<String> IGNORED_NAMES = new HashSet<>(
         Arrays.asList(
             "grubBee",
@@ -426,6 +428,50 @@ public class GTProxy implements IFuelHandler {
             "paper",
             "brick",
             "chest"));
+
+    private static final HashMap<String, Predicate<OreRegisterEvent>> EVENT_MAP = new HashMap<>();
+
+    static {
+        EVENT_MAP.put("stoneSmooth", register("stoneSmooth", true));
+        EVENT_MAP.put("cobblestone", register("stoneCobble", true));
+        EVENT_MAP.put("copperWire", register(OreDictNames.craftingWireCopper, false));
+        EVENT_MAP.put("oreHeeEndrium", register(OrePrefixes.ore, Materials.HeeEndium, false));
+        EVENT_MAP.put("sheetPlastic", register(OrePrefixes.plate, Materials.Plastic, false));
+        EVENT_MAP.put("itemRubber", register(OrePrefixes.ingot, Materials.Rubber, true));
+        EVENT_MAP.put("shardAir", register(OrePrefixes.gem, Materials.InfusedAir, true));
+        EVENT_MAP.put("shardWater", register(OrePrefixes.gem, Materials.InfusedWater, true));
+        EVENT_MAP.put("shardFire", register(OrePrefixes.gem, Materials.InfusedFire, true));
+        EVENT_MAP.put("shardEarth", register(OrePrefixes.gem, Materials.InfusedEarth, true));
+        EVENT_MAP.put("shardOrder", register(OrePrefixes.gem, Materials.InfusedOrder, true));
+        EVENT_MAP.put("shardEntropy", register(OrePrefixes.gem, Materials.InfusedEntropy, true));
+        EVENT_MAP.put("fieryIngot", register(OrePrefixes.ingot, Materials.FierySteel, true));
+        EVENT_MAP.put("ironwood", register(OrePrefixes.ingot, Materials.IronWood, true));
+        EVENT_MAP.put("steeleaf", register(OrePrefixes.ingot, Materials.Steeleaf, true));
+        EVENT_MAP.put("knightmetal", register(OrePrefixes.ingot, Materials.Knightmetal, true));
+        EVENT_MAP.put("compressedAluminum", register(OrePrefixes.compressed, Materials.Aluminium, true));
+    }
+
+    private static Predicate<OreRegisterEvent> register(OreDictNames oreDict, boolean exit) {
+        return event -> {
+            GTOreDictUnificator.registerOre(oreDict, event.Ore);
+            return exit;
+        };
+    }
+
+    private static Predicate<OreRegisterEvent> register(OrePrefixes prefix, Materials material, boolean exit) {
+        return event -> {
+            GTOreDictUnificator.registerOre(prefix, material, event.Ore);
+            return exit;
+        };
+    }
+
+    private static Predicate<OreRegisterEvent> register(String name, boolean exit) {
+        return event -> {
+            GTOreDictUnificator.registerOre(name, event.Ore);
+            return exit;
+        };
+    }
+
     private final Collection<String> mInvalidNames = new HashSet<>(
         Arrays.asList(
             "diamondShard",
@@ -1505,11 +1551,11 @@ public class GTProxy implements IFuelHandler {
 
         mRegisteredOres.add(event.Ore);
 
+        final Predicate<OreRegisterEvent> eventHandler = EVENT_MAP.get(event.Name);
+        if (eventHandler != null && eventHandler.test(event)) return;
+
         if (IGNORED_ITEMS.contains(event.Name)) {
             GTLog.ore.println(modToName);
-            if (event.Name.equals("itemRubber")) {
-                GTOreDictUnificator.registerOre(OrePrefixes.ingot, Materials.Rubber, event.Ore);
-            }
             return;
         }
 
@@ -1531,47 +1577,9 @@ public class GTProxy implements IFuelHandler {
             return;
         }
 
-        if (this.mInvalidNames.contains(event.Name)) {
+        if (mInvalidNames.contains(event.Name)) {
             GTLog.ore.println(modToName + " is wrongly registered and therefor getting ignored.");
             return;
-        }
-
-        if (event.Name.equals("stone")) {
-            GTOreDictUnificator.registerOre("stoneSmooth", event.Ore);
-            return;
-        }
-
-        if (event.Name.equals("cobblestone")) {
-            GTOreDictUnificator.registerOre("stoneCobble", event.Ore);
-            return;
-        }
-
-        @Desugar
-        record PrefixMaterial(OrePrefixes prefix, Materials material) {}
-
-        HashMap<String, PrefixMaterial> map = new HashMap<>();
-        map.put("shardAir", new PrefixMaterial(OrePrefixes.gem, Materials.InfusedAir));
-        map.put("shardWater", new PrefixMaterial(OrePrefixes.gem, Materials.InfusedWater));
-        map.put("shardFire", new PrefixMaterial(OrePrefixes.gem, Materials.InfusedFire));
-        map.put("shardEarth", new PrefixMaterial(OrePrefixes.gem, Materials.InfusedEarth));
-        map.put("shardOrder", new PrefixMaterial(OrePrefixes.gem, Materials.InfusedOrder));
-        map.put("shardEntropy", new PrefixMaterial(OrePrefixes.gem, Materials.InfusedEntropy));
-        map.put("fieryIngot", new PrefixMaterial(OrePrefixes.ingot, Materials.FierySteel));
-        map.put("ironwood", new PrefixMaterial(OrePrefixes.ingot, Materials.IronWood));
-        map.put("steeleaf", new PrefixMaterial(OrePrefixes.ingot, Materials.Steeleaf));
-        map.put("knightmetal", new PrefixMaterial(OrePrefixes.ingot, Materials.Knightmetal));
-        map.put("compressedAluminum", new PrefixMaterial(OrePrefixes.compressed, Materials.Aluminium));
-
-        PrefixMaterial prefixMaterial = map.get(event.Name);
-        if (prefixMaterial != null) {
-            GTOreDictUnificator.registerOre(prefixMaterial.prefix, prefixMaterial.material, event.Ore);
-            return;
-        }
-
-        switch (event.Name) {
-            case "copperWire" -> GTOreDictUnificator.registerOre(OreDictNames.craftingWireCopper, event.Ore);
-            case "oreHeeEndrium" -> GTOreDictUnificator.registerOre(OrePrefixes.ore, Materials.HeeEndium, event.Ore);
-            case "sheetPlastic" -> GTOreDictUnificator.registerOre(OrePrefixes.plate, Materials.Plastic, event.Ore);
         }
 
         final OrePrefixes prefix = OrePrefixes.getOrePrefix(event.Name);
@@ -1690,14 +1698,14 @@ public class GTProxy implements IFuelHandler {
 
     private static @Nullable Materials getMaterial(OreRegisterEvent event, String materialName, OrePrefixes prefix,
         String modToName) {
-        Materials material;
-        material = Materials.get(materialName);
+        final Materials material = Materials.get(materialName);
+
         if (isDeprecatedMaterial(event, material, prefix, modToName)) return null;
         if (!prefix.isIgnored(material)) prefix.add(GTUtility.copyAmount(1, event.Ore));
 
         if (material == Materials._NULL) {
-            for (Dyes tDye : Dyes.VALUES) {
-                final String dyeName = tDye.name()
+            for (Dyes dye : Dyes.VALUES) {
+                final String dyeName = dye.name()
                     .replaceFirst("dye", "");
                 if (event.Name.endsWith(dyeName)) {
                     GTOreDictUnificator.addToBlacklist(event.Ore);
@@ -1710,21 +1718,20 @@ public class GTProxy implements IFuelHandler {
             return null;
         }
 
-        Materials tReRegisteredMaterial;
-        for (Iterator<Materials> i$ = material.mOreReRegistrations.iterator(); i$.hasNext(); GTOreDictUnificator
-            .registerOre(prefix, tReRegisteredMaterial, event.Ore)) {
-            tReRegisteredMaterial = i$.next();
+        for (Materials reRegisteredMaterial : material.mOreReRegistrations) {
+            GTOreDictUnificator.registerOre(prefix, reRegisteredMaterial, event.Ore);
         }
+
         material.add(GTUtility.copyAmount(1, event.Ore));
 
         if (GregTechAPI.sThaumcraftCompat != null && prefix.doGenerateItem(material) && !prefix.isIgnored(material)) {
-            List<TC_AspectStack> tAspects = new ArrayList<>();
-            for (TC_AspectStack aspect : prefix.mAspects) aspect.addToAspectList(tAspects);
+            List<TC_AspectStack> aspects = new ArrayList<>();
+            for (TC_AspectStack aspect : prefix.mAspects) aspect.addToAspectList(aspects);
             if (prefix.getMaterialAmount() >= 3628800 || prefix.getMaterialAmount() < 0) {
-                for (TC_AspectStack tAspect : material.mAspects) tAspect.addToAspectList(tAspects);
+                for (TC_AspectStack aspect : material.mAspects) aspect.addToAspectList(aspects);
             }
             GregTechAPI.sThaumcraftCompat
-                .registerThaumcraftAspectsToItem(GTUtility.copyAmount(1, event.Ore), tAspects, event.Name);
+                .registerThaumcraftAspectsToItem(GTUtility.copyAmount(1, event.Ore), aspects, event.Name);
         }
 
         yeet(event, prefix, material);
