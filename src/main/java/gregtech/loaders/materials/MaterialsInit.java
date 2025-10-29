@@ -13938,6 +13938,7 @@ public class MaterialsInit {
     private static Materials loadPrismaticNaquadah() {
         return new MaterialBuilder().setName("prismaticnaquadah")
             .setDefaultLocalName("Prismatic Naquadah")
+            .setChemicalFormula(Materials.Naquadah.mChemicalFormula + "\u0394")
             .setIconSet(TextureSet.SET_METALLIC)
             .setARGB(0x00373737)
             .addDustItems()
@@ -15214,7 +15215,8 @@ public class MaterialsInit {
     private static Materials loadSpaceTime() {
         return new MaterialBuilder().setName("SpaceTime")
             .setDefaultLocalName("SpaceTime")
-            .setChemicalFormula("Reality itself distilled into physical form")
+            .setChemicalFormula("\u03A6")
+            .setFlavorText("Reality itself distilled into physical form")
             .setIconSet(new TextureSet("spacetime", true))
             .setARGB(0x00ffffff)
             .setTool(10_485_760, 25, 320.0f)
@@ -15264,6 +15266,7 @@ public class MaterialsInit {
                     + CustomGlyphs.GALAXY
                     + CustomGlyphs.ARROW_CORNER_NORTH_WEST
                     + "⇱")
+            .setFlavorText("Stabilised core of a dead star")
             .setIconSet(new TextureSet("MagnetohydrodynamicallyConstrainedStarMatter", true))
             .setARGB(0x00ffffff)
             .setTool(10485760, 25, 320.0f)
@@ -15365,7 +15368,8 @@ public class MaterialsInit {
     private static Materials loadUniversium() {
         return new MaterialBuilder().setName("Universium")
             .setDefaultLocalName("Universium")
-            .setChemicalFormula("A tear into the space beyond space")
+            .setChemicalFormula("Un\u221e")
+            .setFlavorText("A tear into the space beyond space")
             .setIconSet(new TextureSet("universium", true))
             .setARGB(0xff263145)
             .setTool(10_485_760, 30, 1.0f)
@@ -15446,6 +15450,7 @@ public class MaterialsInit {
                     + "g"
                     + EnumChatFormatting.OBFUSCATED
                     + "X")
+            .setFlavorText("Matter beyond structure")
             .setIconSet(TextureSet.SET_FLUID)
             .setARGB(0x00ffffff)
             .addCell()
