@@ -1114,7 +1114,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public float mGasMultiplier = 1.0F;
     public float mPlasmaMultiplier = 1.0F;
     public String mChemicalFormula = "?";
-    public String mFlavorText = "";
+    public String mFlavorText;
     public String mName;
     public String mDefaultLocalName;
     public String mCustomID = "null";

@@ -1,10 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.items;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -214,44 +211,56 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
         return super.getItemStackLimit(aStack);
     }
 
-    private static final Map<String, Integer> COLOR_MAP;
-
-    static {
-        Map<String, Integer> map = new HashMap<>();
-        map.put("Sodium", Utils.rgbtoHexValue(90, 90, 255));
-        map.put("Cadmium", Utils.rgbtoHexValue(150, 150, 80));
-        map.put("Lithium", Utils.rgbtoHexValue(225, 220, 255));
-        map.put("Wrought", Utils.rgbtoHexValue(200, 180, 180));
-        map.put("Bronze", Utils.rgbtoHexValue(255, 128, 0));
-        map.put("Brass", Utils.rgbtoHexValue(255, 180, 0));
-        map.put("Invar", Utils.rgbtoHexValue(180, 180, 120));
-        map.put("ULV", Utils.rgbtoHexValue(200, 180, 180));
-        map.put("LuV", Utils.rgbtoHexValue(255, 204, 204));
-        map.put("ZPM", Utils.rgbtoHexValue(255, 230, 0));
-        map.put("UV", Utils.rgbtoHexValue(255, 180, 0));
-        COLOR_MAP = Collections.unmodifiableMap(map);
-    }
-
     @Override
-    public int getColorFromItemStack(final ItemStack stack, int defaultColor) {
-        int meta = stack.getItemDamage();
-        String name = stack.getDisplayName();
+    public int getColorFromItemStack(final ItemStack stack, int HEX_OxFFFFFF) {
 
-        if (meta > 50 && meta != 150) {
-            return Utils.rgbtoHexValue(255, 255, 255);
-        }
-
-        if (name.contains("MAX")) {
-            return Utils
-                .rgbtoHexValue(MathUtils.randInt(220, 250), MathUtils.randInt(221, 251), MathUtils.randInt(220, 250));
-        }
-
-        for (Map.Entry<String, Integer> entry : COLOR_MAP.entrySet()) {
-            if (name.contains(entry.getKey())) {
-                return entry.getValue();
-            }
-        }
-
-        return defaultColor;
+        int aMeta = stack.getItemDamage();
+        if (stack.getDisplayName()
+            .contains("Sodium")) {
+            HEX_OxFFFFFF = Utils.rgbtoHexValue(90, 90, 255);
+        } else if (stack.getDisplayName()
+            .contains("Cadmium")) {
+                HEX_OxFFFFFF = Utils.rgbtoHexValue(150, 150, 80);
+            } else if (stack.getDisplayName()
+                .contains("Lithium")) {
+                    HEX_OxFFFFFF = Utils.rgbtoHexValue(225, 220, 255);
+                } else if (stack.getDisplayName()
+                    .contains("Wrought")) {
+                        HEX_OxFFFFFF = Utils.rgbtoHexValue(200, 180, 180);
+                    } else if (stack.getDisplayName()
+                        .contains("Bronze")) {
+                            HEX_OxFFFFFF = Utils.rgbtoHexValue(255, 128, 0);
+                        } else if (stack.getDisplayName()
+                            .contains("Brass")) {
+                                HEX_OxFFFFFF = Utils.rgbtoHexValue(255, 180, 0);
+                            } else if (stack.getDisplayName()
+                                .contains("Invar")) {
+                                    HEX_OxFFFFFF = Utils.rgbtoHexValue(180, 180, 120);
+                                } else {
+                                    if (aMeta > 50 && aMeta != 150) {
+                                        HEX_OxFFFFFF = 0xffffff;
+                                    } else if (stack.getDisplayName()
+                                        .contains("ULV")) {
+                                            HEX_OxFFFFFF = Utils.rgbtoHexValue(200, 180, 180);
+                                        } else if (stack.getDisplayName()
+                                            .contains("LuV")) {
+                                                HEX_OxFFFFFF = 0xffffcc;
+                                            } else if (stack.getDisplayName()
+                                                .contains("ZPM")) {
+                                                    HEX_OxFFFFFF = 0xffe600;
+                                                } else if (stack.getDisplayName()
+                                                    .contains("UV")) {
+                                                        HEX_OxFFFFFF = 0xffb300;
+                                                    } else if (stack.getDisplayName()
+                                                        .contains("MAX")) {
+                                                            HEX_OxFFFFFF = Utils.rgbtoHexValue(
+                                                                MathUtils.randInt(220, 250),
+                                                                MathUtils.randInt(221, 251),
+                                                                MathUtils.randInt(220, 250));
+                                                        } else {
+                                                            HEX_OxFFFFFF = 0xffffff;
+                                                        }
+                                }
+        return HEX_OxFFFFFF;
     }
 }
