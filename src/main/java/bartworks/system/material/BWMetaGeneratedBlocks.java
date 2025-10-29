@@ -59,7 +59,7 @@ public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer implem
         if (this.prefix != null) {
             this.blockTypeLocalizedName = GTLanguageManager.addStringLocalization(
                 "bw.blocktype." + this.prefix,
-                this.prefix.mLocalizedMaterialPre + "%material" + this.prefix.mLocalizedMaterialPost);
+                this.prefix.getMaterialPrefix() + "%material" + this.prefix.getMaterialPostfix());
         }
         Werkstoff.werkstoffHashSet.forEach(this::doRegistrationStuff);
     }
@@ -92,14 +92,14 @@ public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer implem
                 .get(set);
 
             if (baseIcon == null) {
-                baseIcon = TextureSet.SET_NONE.mTextures[OrePrefixes.block.mTextureIndex];
+                baseIcon = TextureSet.SET_NONE.mTextures[OrePrefixes.block.getTextureIndex()];
             }
 
             baseTexture = TextureFactory.of(baseIcon, mat.getRGBA());
         }
 
         if (baseTexture == null) {
-            baseTexture = TextureFactory.of(TextureSet.SET_NONE.mTextures[OrePrefixes.block.mTextureIndex]);
+            baseTexture = TextureFactory.of(TextureSet.SET_NONE.mTextures[OrePrefixes.block.getTextureIndex()]);
         }
 
         ITexture[] texture = new ITexture[] { TextureFactory.of(Blocks.iron_block), baseTexture };

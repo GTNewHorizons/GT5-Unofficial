@@ -370,7 +370,7 @@ public class Pulverizer implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 2))
                 .itemOutputs(
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plastic, 12),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Polyethylene, 12),
                     GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Aluminium, 3))
                 .duration(22 * SECONDS + 10 * TICKS)
                 .eut(8)
@@ -685,7 +685,7 @@ public class Pulverizer implements Runnable {
             .itemInputs(new ItemStack(Items.item_frame, 1, 32767))
             .itemOutputs(
                 new ItemStack(Items.leather, 1),
-                GTOreDictUnificator.getDust(Materials.Wood, OrePrefixes.stick.mMaterialAmount * 4L))
+                GTOreDictUnificator.getDust(Materials.Wood, OrePrefixes.stick.getMaterialAmount() * 4L))
             .outputChances(10000, 9500)
             .duration(20 * SECONDS)
             .eut(2)
@@ -696,7 +696,7 @@ public class Pulverizer implements Runnable {
             .itemInputs(new ItemStack(Items.bow, 1, 0))
             .itemOutputs(
                 new ItemStack(Items.string, 3),
-                GTOreDictUnificator.getDust(Materials.Wood, OrePrefixes.stick.mMaterialAmount * 3))
+                GTOreDictUnificator.getDust(Materials.Wood, OrePrefixes.stick.getMaterialAmount() * 3))
             .outputChances(10000, 9500)
             .duration(20 * SECONDS)
             .eut(2)
@@ -730,7 +730,7 @@ public class Pulverizer implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(getModItem(HardcoreEnderExpansion.ID, "endium_ore", 1))
                 .itemOutputs(
-                    GTOreDictUnificator.get(OrePrefixes.crushed, Materials.HeeEndium, 2),
+                    GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Endium, 2),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Endstone, 1))
                 .outputChances(10000, 5000)
                 .duration(20 * SECONDS)
