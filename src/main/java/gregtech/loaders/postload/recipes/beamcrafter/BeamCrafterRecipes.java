@@ -27,8 +27,8 @@ public class BeamCrafterRecipes implements Runnable {
                     .builder()
                     .particleID_A(PROTON.getId())
                     .particleID_B(ELECTRON.getId())
-                    .amount_A(10000)
-                    .amount_B(10000)
+                    .amount_A(120*10)
+                    .amount_B(120*60)
                     .energy_A(1)
                     .energy_B(1)
                     .build()
@@ -39,7 +39,6 @@ public class BeamCrafterRecipes implements Runnable {
             .addTo(beamcrafterRecipes);
 
         GTValues.RA.stdBuilder()
-            // todo: beam inputs
             .fluidInputs(Materials.Duranium.getMolten(40L))
             .itemInputs(new ItemStack(ModItems.itemStandarParticleBase, 1, 24)
             )
@@ -50,8 +49,8 @@ public class BeamCrafterRecipes implements Runnable {
                     .builder()
                     .particleID_A(NEUTRON.getId())
                     .particleID_B(NEUTRON.getId())
-                    .amount_A(10000)
-                    .amount_B(10000)
+                    .amount_A(25*10)
+                    .amount_B(25*10)
                     .energy_A(1)
                     .energy_B(1)
                     .build()

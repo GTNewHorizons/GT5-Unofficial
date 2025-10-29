@@ -95,17 +95,17 @@ public class BeamlineRecipeLoader {
          * NEUTRON
          */
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialsElements.getInstance().CALIFORNIUM.getDust(1))
+            .itemInputs(MaterialsElements.getInstance().BERYLLIUM.getLongRod(1))
             .metadata(
                 SOURCE_CHAMBER_METADATA,
                 SourceChamberMetadata.builder()
                     .particleID(Particle.NEUTRON.ordinal())
                     .rate(10)
-                    .energy(9000, 999)
+                    .energy(1_000_000, 999)
                     .focus(95)
                     .build())
             .duration(20)
-            .eut(TierEU.RECIPE_EV)
+            .eut(TierEU.RECIPE_LuV)
             .addTo(sourceChamberRecipes);
 
         /*

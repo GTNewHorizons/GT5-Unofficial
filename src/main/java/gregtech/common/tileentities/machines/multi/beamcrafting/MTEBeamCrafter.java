@@ -308,7 +308,6 @@ public class MTEBeamCrafter extends MTEExtendedPowerMultiBlockBase<gregtech.comm
     }
 
     @Override
-    //todo: make new recipemap with particle compatibility
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.beamcrafterRecipes;
     }
