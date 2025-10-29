@@ -16,6 +16,7 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -103,13 +104,16 @@ public class Pulverizer implements Runnable {
             .recipeCategory(RecipeCategories.maceratorRecycling)
             .addTo(maceratorRecipes);
 
-        // marbe dust( stone dust
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.block, Materials.Marble, 1))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Marble, 1))
-            .duration(8 * SECONDS)
-            .eut(4)
-            .addTo(maceratorRecipes);
+        // marble dust, stone dust
+
+        for (ItemStack marble : OreDictionary.getOres("blockMarble")) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(marble)
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Marble, 1))
+                .duration(8 * SECONDS)
+                .eut(4)
+                .addTo(maceratorRecipes);
+        }
 
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Thaumcraft.ID, "ItemResource", 1, 18))

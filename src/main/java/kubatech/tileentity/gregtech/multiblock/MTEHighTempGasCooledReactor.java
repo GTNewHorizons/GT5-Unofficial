@@ -383,7 +383,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                     + EnumChatFormatting.RED
                     + GTUtility.formatNumbers(WATER_PER_PELLET)
                     + EnumChatFormatting.GRAY
-                    + " water/tick/pellet")
+                    + " distilled water/tick/pellet")
             .beginStructureBlock(29, 16, 18, true)
             .addController("Front center")
             .addInputHatch("Top of the Pump", 1)
@@ -778,6 +778,13 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                 .append("\n");
         }
         sb.append(EnumChatFormatting.WHITE)
+            .append(
+                StatCollector.translateToLocalFormatted(
+                    "kubatech.infodata.htgr.fuel_supply",
+                    GTUtility.formatNumbers(this.fuelsupply),
+                    GTUtility.formatNumbers(MAX_CAPACITY)))
+            .append("\n");
+        sb.append(EnumChatFormatting.WHITE)
             .append(StatCollector.translateToLocal("kubatech.infodata.htgr.burned_fuel"))
             .append("\n");
         for (Map.Entry<Materials, Double> entry : mStoredBurnedFuels.entrySet()) {
@@ -799,13 +806,13 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             .append(
                 StatCollector.translateToLocalFormatted(
                     "kubatech.infodata.htgr.coolant_per_tick",
-                    GTUtility.formatNumbers(this.heliumSupply)))
+                    GTUtility.formatNumbers(this.coolanttaking)))
             .append("\n");
         sb.append(EnumChatFormatting.WHITE)
             .append(
                 StatCollector.translateToLocalFormatted(
                     "kubatech.infodata.htgr.water_per_tick",
-                    GTUtility.formatNumbers(this.heliumSupply)))
+                    GTUtility.formatNumbers(this.watertaking)))
             .append("\n");
         return sb.toString();
     }
