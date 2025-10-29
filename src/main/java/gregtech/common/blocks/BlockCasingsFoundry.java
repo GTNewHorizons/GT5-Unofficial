@@ -25,6 +25,7 @@ public class BlockCasingsFoundry extends BlockCasingsAbstract {
         register(9, ItemList.Hypercooler_ExoFoundry, "Hypercooler Casing");
         register(10, ItemList.Streamlined_Casters_ExoFoundry, "Streamlined Casting Casing");
         register(11, ItemList.Secondary_Casing_ExoFoundry, "Inner Exo-Foundry Siphon Casing");
+        register(12, ItemList.Central_Casing_ExoFoundry, "Central Exo-Foundry Regulation Casing");
         for (int i = 1; i <= 3; i++) {
             GTStructureChannels.MAGNETIC_CHASSIS.registerAsIndicator(new ItemStack(this, 1, i), i);
         }
@@ -81,6 +82,9 @@ public class BlockCasingsFoundry extends BlockCasingsAbstract {
             }
             case 11 -> {
                 return Textures.BlockIcons.EXOFOUNDRY_SECONDARY_CASING.getIcon();
+            }
+            case 12 -> {
+                return Textures.BlockIcons.EXOFOUNDRY_CENTRAL_CASING.getIcon();
             }
             default -> {
                 return Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();

@@ -92,25 +92,6 @@ import tectech.thing.casing.TTCasingsContainer;
 public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     implements ISurvivalConstructable, IMTERenderer {
 
-    /**
-     * Balance Ideas:
-     * TR RE:
-     * TR RE is now down-tiered to late UIV from early UMV
-     * TR RE now gates UIV+ recipes instead of UEV+
-     *
-     * ECB:
-     * Reduce Parallels per tier, and make it mainly focused on the hatch space
-     *
-     * SLC/PVS:
-     * Buff stats of these, nerfing base stats of Foundry even more.
-     *
-     * TDS:
-     * The worst case, nerf this guy to be weaker
-     *
-     * Hypogen Coils:
-     * change these out for a new casing / change the coil / ???
-     *
-     */
     private static final List<CoolingFluid> COOLING_FLUIDS = ImmutableList.of(
         new CoolingFluid(Materials.SuperCoolant, 1, 100),
         new CoolingFluid(Materials.SpaceTime, 2, 50),
@@ -302,7 +283,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         //spotless:on
         .addElement('A', ofBlock(GregTechAPI.sBlockGlass1, 7)) // Foundry Glass
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings11, 7))
-        .addElement('C', ofBlock(GregTechAPI.sBlockCasings5, 12))
+        .addElement('C', ofBlock(GregTechAPI.sBlockCasingsFoundry, 12))
         .addElement('D', ofFrame(Materials.Netherite))
         .addElement('E', ofBlock(GregTechAPI.sBlockCasingsFoundry, 11))
         .addElement(
@@ -541,7 +522,12 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                 224,
                 EnumChatFormatting.GOLD,
                 false)
-            .addCasingInfoExactlyColored("Hypogen Coil", EnumChatFormatting.GRAY, 196, EnumChatFormatting.GOLD, false)
+            .addCasingInfoExactlyColored(
+                "Central Exo-Foundry Regulation Casing",
+                EnumChatFormatting.GRAY,
+                196,
+                EnumChatFormatting.GOLD,
+                false)
             .addCasingInfoExactlyColored(
                 "Black Plutonium Item Pipe Casing",
                 EnumChatFormatting.GRAY,

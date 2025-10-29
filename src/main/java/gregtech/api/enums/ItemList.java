@@ -1521,6 +1521,7 @@ public enum ItemList implements IItemContainer {
     Glass_ExoFoundry,
     Casing_ExoFoundry,
     Secondary_Casing_ExoFoundry,
+    Central_Casing_ExoFoundry,
     Magnetic_Chassis_T1_ExoFoundry,
     Magnetic_Chassis_T2_ExoFoundry,
     Magnetic_Chassis_T3_ExoFoundry,
