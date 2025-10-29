@@ -296,7 +296,7 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
                 return;
             }
             ItemStack itemStack = new ItemStack(tileEntity.blockType, 1, igte.getMetaTileID());
-            ItemDisplayKey key = new ItemDisplayKey(itemStack.getItem(), itemStack.getItemDamage());
+            ItemDisplayKey key = new ItemDisplayKey(itemStack.getItem(), itemStack.getItemDamage(), null);
             Pair<Integer, Integer> machineGroup = machineGroupings.computeIfAbsent(key, k -> Pair.of(0, 0));
             Pair<Integer, Integer> newMachineGroup = Pair.of(machineGroup.first() + 1, machineGroup.second() + amps);
             machineGroupings.put(key, newMachineGroup);
