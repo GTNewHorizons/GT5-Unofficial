@@ -129,6 +129,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
@@ -142,6 +143,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
@@ -303,61 +305,27 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Powered Spawner, EEC")
-            .addInfo("Spawns and kills monsters for you!")
-            .addInfo(
-                "Produces " + EnumChatFormatting.GREEN + "120 Liquid XP" + EnumChatFormatting.GRAY + " per operation")
-            .addInfo("Powered Spawner goes in Controller Slot")
-            .addInfo("Base energy usage: " + EnumChatFormatting.AQUA + "1920" + EnumChatFormatting.GRAY + " EU/t")
-            .addInfo("Supports " + EnumChatFormatting.LIGHT_PURPLE + "perfect OC!")
+        tt.addMachineType("machtype.eec")
+            .addInfo("gt.eec.tips.1")
             .addSeparator()
-            .addInfo("Has a minimum recipe time of 20 ticks, further overclocks multiply outputs by 4x")
-            .addInfo("Recipe time is based on mob health")
-            .addInfo("You can additionally put a weapon inside the GUI")
-            .addInfo(
-                "It will speed up the process and apply the looting level from the weapon (maximum " + MAX_LOOTING_LEVEL
-                    + " levels)")
-            .addInfo("Enable Weapon Preservation to prevent the weapon from breaking on it's last hit")
-            .addInfo(
-                "Enable Weapon Cycling to pull a weapon from input when the current one breaks or is moved to an output")
-            .addInfo(EnumChatFormatting.RED + "Enchanting the spikes inside the structure does nothing!")
+            .addInfo("gt.eec.tips.2", MAX_LOOTING_LEVEL)
             .addSeparator()
-            .addInfo(
-                "If the mob spawns " + EnumChatFormatting.RED
-                    + "infernal"
-                    + EnumChatFormatting.GRAY
-                    + ", it will drain 8 times more power!")
-            .addInfo(
-                "You can prevent " + EnumChatFormatting.RED
-                    + "infernal"
-                    + EnumChatFormatting.GRAY
-                    + " spawns by shift clicking with a screwdriver")
-            .addInfo(
-                "Mobs who are always " + EnumChatFormatting.RED
-                    + "infernal"
-                    + EnumChatFormatting.GRAY
-                    + " will ignore this factor")
-            .addSeparator()
-            .addInfo("You can enable ritual mode with a screwdriver")
-            .addInfo("When in ritual mode, can link to above Well of Suffering rituals")
-            .addInfo("The Ritual must be built directly centered above the machine")
-            .addInfo("When linked, mobs will start to buffer and die very slowly, providing blood to the linked altar")
-            .addSeparator()
-            .addInfo("You can disable mob animation with a soldering iron")
-            .addInfo(
-                "You can enable batch mode with wire cutters. Providing " + EnumChatFormatting.BLUE
-                    + " 16x Time, Output, Weapon Damage")
+            .addManyInfo("gt.eec.tips.3", "gt.eec.tips.4", "gt.eec.tips.5")
             .addGlassEnergyLimitInfo(VoltageIndex.UV)
             .beginStructureBlock(5, 7, 5, true)
-            .addController("Front Bottom Center")
-            .addCasingInfoMin("Solid Steel Machine Casing", 35, false)
-            .addCasingInfoExactly("Any Tiered Glass", 60, false)
-            .addCasingInfoExactly("Steel Frame Box", 20, false)
-            .addCasingInfoExactly("Diamond Spike", 9, false)
-            .addOutputBus("Any bottom casing", 1)
-            .addOutputHatch("Any bottom casing", 1)
-            .addEnergyHatch("Any bottom casing", 1)
-            .addMaintenanceHatch("Any bottom casing", 1)
+            .addController("front_botton_middle")
+            .addCasingInfoMin("gt.blockcasings2.0.name", 35, false)
+            .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 60, true)
+            .addCasingInfoExactly(
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1)
+                    .getDisplayName(),
+                20,
+                false)
+            .addCasingInfoExactly("tile.extrautils:spike_base_diamond.name", 9, false)
+            .addOutputBus("<bottom casing>", 1)
+            .addOutputHatch("<bottom casing>", 1)
+            .addEnergyHatch("<bottom casing>", 1)
+            .addMaintenanceHatch("<bottom casing>", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(GTValues.AuthorKuba);
         return tt;
