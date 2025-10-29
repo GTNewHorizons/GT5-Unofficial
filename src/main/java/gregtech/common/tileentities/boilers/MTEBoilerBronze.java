@@ -199,7 +199,7 @@ public class MTEBoilerBronze extends MTEBoiler {
             .getUnlocalizedName()
             .toLowerCase();
         if (couldProduceDarkAshes(fuel, lowerCaseBlockName)) {
-            return Optional.of(Materials.DarkAsh);
+            return Optional.of(Materials.AshDark);
         }
         if (couldProduceRegularAshes(fuel, lowerCaseBlockName, burnTime)) {
             return Optional.of(Materials.Ash);

@@ -169,7 +169,7 @@ public class RecipeLoader2 {
                 GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiPart", 1, 440),
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.CertusQuartz, 8),
                 GTUtility.getIntegratedCircuit(1))
-            .fluidInputs(Materials.Plastic.getMolten(1 * INGOTS))
+            .fluidInputs(Materials.Polyethylene.getMolten(1 * INGOTS))
             .itemOutputs(Loaders.YFH)
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -180,7 +180,7 @@ public class RecipeLoader2 {
                 ItemList.Large_Fluid_Cell_Steel.get(12L),
                 GTOreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.Tin, 4),
                 GTUtility.getIntegratedCircuit(1))
-            .fluidInputs(Materials.Plastic.getMolten(1 * INGOTS))
+            .fluidInputs(Materials.Polyethylene.getMolten(1 * INGOTS))
             .itemOutputs(ItemRefer.Fluid_Storage_Core_T1.get(1))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -191,7 +191,7 @@ public class RecipeLoader2 {
                 ItemList.Large_Fluid_Cell_Aluminium.get(3L),
                 GTOreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.Tin, 4),
                 GTUtility.getIntegratedCircuit(1))
-            .fluidInputs(Materials.Plastic.getMolten(1 * INGOTS))
+            .fluidInputs(Materials.Polyethylene.getMolten(1 * INGOTS))
             .itemOutputs(ItemRefer.Fluid_Storage_Core_T1.get(1))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -202,7 +202,7 @@ public class RecipeLoader2 {
                 ItemList.Large_Fluid_Cell_StainlessSteel.get(2L),
                 GTOreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.Tin, 4),
                 GTUtility.getIntegratedCircuit(1))
-            .fluidInputs(Materials.Plastic.getMolten(1 * INGOTS))
+            .fluidInputs(Materials.Polyethylene.getMolten(1 * INGOTS))
             .itemOutputs(ItemRefer.Fluid_Storage_Core_T1.get(1))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -425,7 +425,7 @@ public class RecipeLoader2 {
                 ItemList.Electric_Pump_HV.get(8),
                 GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.StainlessSteel, 4),
                 GTUtility.getIntegratedCircuit(5))
-            .fluidInputs(Materials.Plastic.getMolten(1 * INGOTS))
+            .fluidInputs(Materials.Polyethylene.getMolten(1 * INGOTS))
             .itemOutputs(ItemRefer.YOTTank_Cell_T1.get(1))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -1056,7 +1056,7 @@ public class RecipeLoader2 {
                     GTModHandler.getIC2Item("reactorVentCore", 1L, 1))
                 .itemOutputs(ItemRefer.HiC_T2.get(1))
                 .fluidInputs(
-                    Materials.Plastic.getMolten(2 * INGOTS),
+                    Materials.Polyethylene.getMolten(2 * INGOTS),
                     GGMaterial.signalium.getMolten(1 * INGOTS),
                     GGMaterial.lumiium.getMolten(1 * HALF_INGOTS),
                     Materials.Enderium.getMolten(1 * HALF_INGOTS))
@@ -1072,7 +1072,7 @@ public class RecipeLoader2 {
                     GTOreDictUnificator.get(OrePrefixes.rotor, Materials.Aluminium, 2))
                 .itemOutputs(ItemRefer.HiC_T2.get(1))
                 .fluidInputs(
-                    Materials.Plastic.getMolten(2 * INGOTS),
+                    Materials.Polyethylene.getMolten(2 * INGOTS),
                     GGMaterial.signalium.getMolten(1 * INGOTS),
                     GGMaterial.lumiium.getMolten(1 * HALF_INGOTS),
                     Materials.Enderium.getMolten(1 * HALF_INGOTS))
@@ -1453,7 +1453,7 @@ public class RecipeLoader2 {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Plastic, 2),
+                GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Polyethylene, 2),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1),
                 GTUtility.getIntegratedCircuit(1))
             .fluidInputs(Materials.Concrete.getMolten(16 * INGOTS))
@@ -1540,7 +1540,7 @@ public class RecipeLoader2 {
                 GGMaterial.metastableOganesson.getMolten(8 * INGOTS),
                 GGMaterial.preciousMetalAlloy.getMolten(16 * INGOTS),
                 Materials.SpaceTime.getMolten(2 * INGOTS),
-                Materials.DimensionallyTranscendentResidue.getFluid(5_000))
+                Materials.DTR.getFluid(5_000))
             .fluidOutputs(GGMaterial.shirabon.getMolten(1 * INGOTS))
             .duration(10 * SECONDS)
             .eut(1_500_000_000)

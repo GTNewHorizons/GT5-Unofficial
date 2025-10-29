@@ -149,7 +149,7 @@ public class ForgeHammerRecipes implements Runnable {
         if (HardcoreEnderExpansion.isModLoaded()) {
             GTValues.RA.stdBuilder()
                 .itemInputs(getModItem(HardcoreEnderExpansion.ID, "endium_ore", 1))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushed, Materials.HeeEndium, 1))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Endium, 1))
                 .duration(16)
                 .eut(10)
                 .addTo(hammerRecipes);

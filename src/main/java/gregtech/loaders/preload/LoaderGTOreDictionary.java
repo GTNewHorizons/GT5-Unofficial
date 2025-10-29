@@ -403,11 +403,11 @@ public class LoaderGTOreDictionary implements Runnable {
             GTModHandler.getModItem(Botania.ID, "storage", 1L, 3));
         GTOreDictUnificator.registerOre(
             OrePrefixes.gem,
-            Materials.BotaniaDragonstone,
+            Materials.Dragonstone,
             GTModHandler.getModItem(Botania.ID, "manaResource", 1L, 9));
         GTOreDictUnificator.registerOre(
             OrePrefixes.block,
-            Materials.BotaniaDragonstone,
+            Materials.Dragonstone,
             GTModHandler.getModItem(Botania.ID, "storage", 1L, 4));
 
         GTOreDictUnificator.registerOre(
