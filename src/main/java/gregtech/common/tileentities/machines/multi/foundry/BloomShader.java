@@ -199,6 +199,7 @@ public class BloomShader {
         ShaderProgram.clear();
 
         GLStateManager.enableDepthTest();
+        GLStateManager.enableAlphaTest();
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         QuadRenderer.unbind();
     }
