@@ -45,6 +45,8 @@ import static gregtech.api.enums.MetaTileEntityIDs.Hatch_SuperBus_Output_UHV;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_SuperBus_Output_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_SuperBus_Output_ZPM;
 
+import net.minecraft.util.EnumChatFormatting;
+
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
@@ -64,7 +66,6 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTESuperBusOu
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEHatchCustomFluidBase;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEHatchCustomFluidBaseDebug;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
-import net.minecraft.util.EnumChatFormatting;
 
 public class GregtechCustomHatches {
 

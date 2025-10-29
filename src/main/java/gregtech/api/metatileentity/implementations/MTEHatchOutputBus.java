@@ -9,10 +9,6 @@ import static gregtech.api.util.GTUtility.moveMultipleItemStacks;
 
 import java.util.BitSet;
 
-import com.gtnewhorizons.modularui.api.ModularUITextures;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
@@ -23,9 +19,12 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.forge.ItemHandlerHelper;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.GTMod;
 import gregtech.api.enums.ItemList;
@@ -36,6 +35,7 @@ import gregtech.api.interfaces.IOutputBus;
 import gregtech.api.interfaces.IOutputBusTransaction;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IItemLockable;
+import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
