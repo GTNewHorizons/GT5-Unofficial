@@ -206,7 +206,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Autoclave")
             .addDynamicParallelInfo(12, TooltipTier.ITEM_PIPE_CASING)
-            .addDynamicSpeedInfo(0.25f, TooltipTier.COIL)
+            .addDynamicSpeedBonusInfo(0.25f, TooltipTier.COIL)
             .addDynamicEuEffInfo(0.0833f, TooltipTier.PIPE_CASING)
             .beginStructureBlock(7, 7, 9, true)
             .addController("Front Center")

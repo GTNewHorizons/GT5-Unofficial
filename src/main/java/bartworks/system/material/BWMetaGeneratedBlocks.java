@@ -16,31 +16,37 @@ package bartworks.system.material;
 import static bartworks.system.material.BWMetaGeneratedItems.metaTab;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import bartworks.client.renderer.BWBlockOreRenderer;
+import org.jetbrains.annotations.Nullable;
+
+import bartworks.client.textures.PrefixTextureLinker;
 import bartworks.common.blocks.BWTileEntityContainer;
 import bartworks.util.BWUtil;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TextureSet;
+import gregtech.api.interfaces.IBlockWithTextures;
+import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
+import gregtech.common.render.GTRendererBlock;
 
-public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer {
+public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer implements IBlockWithTextures {
 
     public static ThreadLocal<TileEntityMetaGeneratedBlock> mTemporaryTileEntity = new ThreadLocal<>();
-    protected OrePrefixes _prefixes;
+    protected final OrePrefixes prefix;
     protected String blockTypeLocalizedName;
-
-    public BWMetaGeneratedBlocks(Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName) {
-        this(p_i45386_1_, tileEntity, blockName, null);
-    }
 
     public BWMetaGeneratedBlocks(Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName,
         OrePrefixes types) {
@@ -49,11 +55,11 @@ public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer {
         this.setResistance(5.0F);
         this.setBlockTextureName("stone");
         this.setCreativeTab(metaTab);
-        this._prefixes = types;
-        if (this._prefixes != null) {
+        this.prefix = types;
+        if (this.prefix != null) {
             this.blockTypeLocalizedName = GTLanguageManager.addStringLocalization(
-                "bw.blocktype." + this._prefixes,
-                this._prefixes.mLocalizedMaterialPre + "%material" + this._prefixes.mLocalizedMaterialPost);
+                "bw.blocktype." + this.prefix,
+                this.prefix.getMaterialPrefix() + "%material" + this.prefix.getMaterialPostfix());
         }
         Werkstoff.werkstoffHashSet.forEach(this::doRegistrationStuff);
     }
@@ -66,6 +72,39 @@ public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer {
     @Override
     public int getRenderBlockPass() {
         return 1;
+    }
+
+    @Override
+    public int getRenderType() {
+        return GTRendererBlock.RENDER_ID;
+    }
+
+    @Override
+    public @Nullable ITexture[][] getTextures(int meta) {
+        ITexture baseTexture = null;
+
+        Werkstoff mat = Werkstoff.werkstoffHashMap.get((short) meta);
+
+        if (mat != null) {
+            TextureSet set = mat.getTexSet();
+
+            IIconContainer baseIcon = PrefixTextureLinker.texMapBlocks.getOrDefault(prefix, Collections.emptyMap())
+                .get(set);
+
+            if (baseIcon == null) {
+                baseIcon = TextureSet.SET_NONE.mTextures[OrePrefixes.block.getTextureIndex()];
+            }
+
+            baseTexture = TextureFactory.of(baseIcon, mat.getRGBA());
+        }
+
+        if (baseTexture == null) {
+            baseTexture = TextureFactory.of(TextureSet.SET_NONE.mTextures[OrePrefixes.block.getTextureIndex()]);
+        }
+
+        ITexture[] texture = new ITexture[] { TextureFactory.of(Blocks.iron_block), baseTexture };
+
+        return new ITexture[][] { texture, texture, texture, texture, texture, texture };
     }
 
     @Override
@@ -91,11 +130,6 @@ public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer {
     @Override
     protected boolean canSilkHarvest() {
         return false;
-    }
-
-    @Override
-    public int getRenderType() {
-        return BWBlockOreRenderer.renderID;
     }
 
     @Override

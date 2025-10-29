@@ -1,9 +1,9 @@
 package gtPlusPlus.core.item.base.itemblock;
 
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -14,14 +14,15 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import gregtech.api.interfaces.IOreMaterial;
+import gregtech.common.WorldgenGTOreLayer;
 import gtPlusPlus.core.block.base.BlockBaseOre;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
-import toxiceverglades.gen.WorldGenEvergladesOreLayer;
-import toxiceverglades.gen.WorldGenEvergladesOres;
+import gtneioreplugin.util.DimensionHelper;
 
 public class ItemBlockOre extends ItemBlock {
 
@@ -42,32 +43,27 @@ public class ItemBlockOre extends ItemBlock {
         }
     }
 
-    private static final Map<String, HashSet<String>> mMapOreBlockItemToDimName = new LinkedHashMap<>();
+    private static final Map<Material, Set<String>> mMapOreBlockItemToDimName = new LinkedHashMap<>();
     private static boolean mInitOres_Everglades = false;
-    private HashSet<String> mDimsForThisOre = new HashSet<>();
+
+    private static void initVeinInfo() {
+        for (WorldgenGTOreLayer oreLayer : WorldgenGTOreLayer.sList) {
+            IOreMaterial[] mats = { oreLayer.mPrimary, oreLayer.mSecondary, oreLayer.mBetween, oreLayer.mSporadic };
+
+            for (IOreMaterial mat : mats) {
+                if (mat instanceof Material gtppMat) {
+                    mMapOreBlockItemToDimName.put(gtppMat, oreLayer.getAllowedDimensions());
+                }
+            }
+        }
+    }
 
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List<String> list,
         final boolean bool) {
 
         if (!mInitOres_Everglades) {
-            for (WorldGenEvergladesOreLayer f : WorldGenEvergladesOres.validOreveins.values()) {
-                Material[] m2 = new Material[] { f.mPrimary, f.mSecondary, f.mBetween, f.mSporadic };
-                for (Material m1 : m2) {
-                    HashSet<String> aMap = mMapOreBlockItemToDimName.get(
-                        m1.getUnlocalizedName()
-                            .toLowerCase());
-                    if (aMap == null) {
-                        aMap = new HashSet<>();
-                    }
-                    String aDimName = "Everglades";
-                    aMap.add(aDimName);
-                    mMapOreBlockItemToDimName.put(
-                        m1.getUnlocalizedName()
-                            .toLowerCase(),
-                        aMap);
-                }
-            }
+            initVeinInfo();
             mInitOres_Everglades = true;
         }
 
@@ -107,19 +103,12 @@ public class ItemBlockOre extends ItemBlock {
                 }
             }
 
-            if (mDimsForThisOre.isEmpty()) {
-                HashSet<String> A = mMapOreBlockItemToDimName.get(
-                    this.mThisMaterial.getUnlocalizedName()
-                        .toLowerCase());
-                if (A != null) {
-                    mDimsForThisOre = A;
-                }
-            }
+            Set<String> dims = mMapOreBlockItemToDimName.get(this.mThisMaterial);
 
             list.add(StatCollector.translateToLocal("GTPP.tooltip.ore.found"));
-            if (!mDimsForThisOre.isEmpty()) {
-                for (String m : mDimsForThisOre) {
-                    list.add("- " + m);
+            if (dims != null && !dims.isEmpty()) {
+                for (String m : dims) {
+                    list.add("- " + DimensionHelper.getDimLocalizedName(m));
                 }
             } else {
                 list.add(StatCollector.translateToLocal("GTPP.tooltip.ore.unknown"));

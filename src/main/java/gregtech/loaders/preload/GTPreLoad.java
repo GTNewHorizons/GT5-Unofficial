@@ -358,7 +358,6 @@ public class GTPreLoad {
         GTValues.debugBlockPump = Gregtech.debug.debugBlockPump;
         GTValues.debugEntityCramming = Gregtech.debug.debugEntityCramming;
         GTValues.debugWorldData = Gregtech.debug.debugWorldData;
-        GTValues.oreveinPercentage = Gregtech.general.oreveinPercentage;
         GTValues.oreveinAttempts = Gregtech.general.oreveinAttempts;
         GTValues.oreveinMaxPlacementAttempts = Gregtech.general.oreveinMaxPlacementAttempts;
         GTValues.oreveinPlacerOres = Gregtech.general.oreveinPlacerOres;
@@ -384,7 +383,6 @@ public class GTPreLoad {
         GTMod.proxy.mNerfedWoodPlank = Gregtech.general.nerfedWoodPlank;
         GTMod.proxy.mChangeWoodenVanillaTools = Gregtech.general.changedWoodenVanillaTools;
         GTMod.proxy.mAchievements = Gregtech.general.achievements;
-        GTMod.proxy.mHideUnusedOres = Gregtech.general.hideUnusedOres;
         GTMod.proxy.mEnableAllMaterials = Gregtech.general.enableAllMaterials;
         GTMod.proxy.mExplosionItemDrop = Gregtech.general.explosionItemDrop;
         GTMod.proxy.mEnableCleanroom = Gregtech.general.enableCleanroom;
@@ -502,20 +500,6 @@ public class GTPreLoad {
 
         // features
         GTMod.proxy.mUpgradeCount = Math.min(64, Math.max(1, Gregtech.features.upgradeStackSize));
-        for (OrePrefixes tPrefix : OrePrefixes.values()) {
-            if (tPrefix.mIsUsedForOreProcessing) {
-                tPrefix.mDefaultStackSize = ((byte) Math.min(64, Math.max(1, Gregtech.features.maxOreStackSize)));
-            } else if (tPrefix == OrePrefixes.plank) {
-                tPrefix.mDefaultStackSize = ((byte) Math.min(64, Math.max(16, Gregtech.features.maxPlankStackSize)));
-            } else if ((tPrefix == OrePrefixes.wood) || (tPrefix == OrePrefixes.treeLeaves)
-                || (tPrefix == OrePrefixes.treeSapling)
-                || (tPrefix == OrePrefixes.log)) {
-                    tPrefix.mDefaultStackSize = ((byte) Math.min(64, Math.max(16, Gregtech.features.maxLogStackSize)));
-                } else if (tPrefix.mIsUsedForBlocks) {
-                    tPrefix.mDefaultStackSize = ((byte) Math
-                        .min(64, Math.max(16, Gregtech.features.maxOtherBlocksStackSize)));
-                }
-        }
 
         GTRecipeBuilder.onConfigLoad();
     }

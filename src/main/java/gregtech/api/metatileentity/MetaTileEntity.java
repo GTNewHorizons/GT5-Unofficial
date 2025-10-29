@@ -655,7 +655,14 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
         final int tY = getBaseMetaTileEntity().getYCoord();
         final int tZ = getBaseMetaTileEntity().getZCoord();
         final World tWorld = getBaseMetaTileEntity().getWorld();
-        GTUtility.sendSoundToPlayers(tWorld, SoundResource.IC2_MACHINES_MACHINE_OVERLOAD, 1.0F, -1, tX, tY, tZ);
+        GTUtility.sendSoundToPlayers(
+            tWorld,
+            SoundResource.IC2_MACHINES_MACHINE_OVERLOAD,
+            1.0F,
+            -1,
+            tX + .5,
+            tY + .5,
+            tZ + .5);
         tWorld.setBlock(tX, tY, tZ, Blocks.air);
         if (GregTechAPI.sMachineExplosions) tWorld.createExplosion(null, tX + 0.5, tY + 0.5, tZ + 0.5, tStrength, true);
     }

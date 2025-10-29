@@ -29,8 +29,8 @@ public class BaseItemMilledOre extends BaseOreComponent {
         ItemStack millingBall_Alumina = GregtechItemList.Milling_Ball_Alumina.get(0);
         ItemStack millingBall_Soapstone = GregtechItemList.Milling_Ball_Soapstone.get(0);
 
-        for (OrePrefixes tPrefix : OrePrefixes.values()) {
-            if ((tPrefix.name()
+        for (OrePrefixes tPrefix : OrePrefixes.VALUES) {
+            if ((tPrefix.getName()
                 .startsWith("ore")) && (tPrefix != OrePrefixes.orePoor)
                 && (tPrefix != OrePrefixes.oreSmall)
                 && (tPrefix != OrePrefixes.oreNormal)
@@ -42,7 +42,7 @@ public class BaseItemMilledOre extends BaseOreComponent {
                 boolean tIsRich = (GTMod.proxy.mNetherOreYieldMultiplier && tPrefix == OrePrefixes.oreNetherrack)
                     || (GTMod.proxy.mEndOreYieldMultiplier && tPrefix == OrePrefixes.oreEndstone);
                 ItemStack oreStack = ItemUtils.getItemStackOfAmountFromOreDictNoBroken(
-                    tPrefix.name() + StringUtils.sanitizeString(material.getUnlocalizedName()),
+                    tPrefix.getName() + StringUtils.sanitizeString(material.getUnlocalizedName()),
                     tIsRich ? 8 : 16);
 
                 if (oreStack == null) continue;

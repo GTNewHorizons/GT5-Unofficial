@@ -63,7 +63,10 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
 
             if ((tMaterial.contains(SubTag.SMELTING_TO_FLUID)) && (!tMaterial.contains(SubTag.NO_SMELTING))
                 && !tMaterial.contains(SubTag.SMELTING_TO_GEM)) {
-                registerMolten(tMaterial, tMaterial.mMetaItemSubID);
+                // extra check for if the material is not in the molten cell blacklist.
+                if (!cellMolten.mNotGeneratedItems.contains(tMaterial)) {
+                    registerMolten(tMaterial, tMaterial.mMetaItemSubID);
+                }
                 if (tMaterial.mSmeltInto != tMaterial && tMaterial.mSmeltInto.mMetaItemSubID >= 0
                     && tMaterial.mSmeltInto.mMetaItemSubID < 1_000) {
                     registerMolten(tMaterial.mSmeltInto, tMaterial.mSmeltInto.mMetaItemSubID);
@@ -89,9 +92,9 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
             cellMolten.getDefaultLocalNameFormatForItem(tMaterial));
         GTLanguageManager.addStringLocalization(
             getUnlocalizedName(tStack) + ".tooltip",
-            tMaterial.getToolTip(cellMolten.mMaterialAmount / M));
+            tMaterial.getToolTip(cellMolten.getMaterialAmount() / M));
 
-        if (cellMolten.mIsUnificatable) {
+        if (cellMolten.isUnifiable()) {
             GTOreDictUnificator.set(cellMolten, tMaterial, tStack);
         } else {
             GTOreDictUnificator.registerOre(cellMolten.get(tMaterial), tStack);
@@ -109,9 +112,9 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
                 prefix.getDefaultLocalNameFormatForItem(tMaterial));
             GTLanguageManager.addStringLocalization(
                 getUnlocalizedName(tStack) + ".tooltip",
-                tMaterial.getToolTip(prefix.mMaterialAmount / M));
+                tMaterial.getToolTip(prefix.getMaterialAmount() / M));
 
-            if (prefix.mIsUnificatable) {
+            if (prefix.isUnifiable()) {
                 GTOreDictUnificator.set(prefix, tMaterial, tStack);
             } else {
                 GTOreDictUnificator.registerOre(prefix.get(tMaterial), tStack);
@@ -197,7 +200,7 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
         Materials material = getMaterial(aMetaData);
         OrePrefixes prefix = getOrePrefix(aMetaData);
         if (material != null && prefix != null) {
-            return material.mIconSet.mTextures[prefix.mTextureIndex];
+            return material.mIconSet.mTextures[prefix.getTextureIndex()];
         }
         return null;
     }
@@ -206,7 +209,7 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
     public int getItemStackLimit(ItemStack aStack) {
         OrePrefixes prefix = getOrePrefix(aStack.getItemDamage());
         if (prefix != null) {
-            return prefix.mDefaultStackSize;
+            return prefix.getDefaultStackSize();
         } else {
             return 64;
         }
