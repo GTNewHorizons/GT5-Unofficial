@@ -1527,7 +1527,7 @@ public enum ItemList implements IItemContainer {
     Streamlined_Casters_ExoFoundry,
     Power_Efficient_Subsystems_ExoFoundry,
     Extra_Casting_Basins_ExoFoundry,
-    Transcendent_Reinforcement_ExoFoundry,
+    Harmonic_Reinforcement_ExoFoundry,
     Hypercooler_ExoFoundry,
     Efficient_Overclocking_ExoFoundry,
     Active_Time_Dilation_System_ExoFoundry,

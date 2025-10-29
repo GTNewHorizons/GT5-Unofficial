@@ -295,7 +295,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                         + TooltipTier.VOLTAGE.getValue()
                         + EnumChatFormatting.RESET
                         + " tier");
-                t.addLine("Reduces Structure Casing Limit by " + EnumChatFormatting.GOLD + "36");
+                t.addLine("Increases Hatch Space by " + EnumChatFormatting.GOLD + "36");
             }
             case STREAMLINED_CASTERS -> {
                 t.addLine("Increases Base Speed by " + TooltipHelper.SPEED_COLOR + "150%");
@@ -322,10 +322,19 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                         + coolingStrOrder("1", "2", "3")
                         + " Maximum Overclocks");
                 t.addLine(
+                    "Only drains " + EnumChatFormatting.AQUA
+                        + "cooling fluid"
+                        + EnumChatFormatting.GRAY
+                        + " when the "
+                        + EnumChatFormatting.GOLD
+                        + "Foundry"
+                        + EnumChatFormatting.GRAY
+                        + " is active");
+                t.addLine(
                     EnumChatFormatting.DARK_AQUA + "Requires an input hatch on any Hypercooler Casing to drain from!");
 
             }
-            case TRANSCENDENT_REINFORCEMENT -> {
+            case HARMONIC_REINFORCEMENT -> {
                 t.addLine(
                     "Allows for " + EnumChatFormatting.LIGHT_PURPLE
                         + "UEV+ Recipes"
@@ -334,9 +343,9 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
             }
             case ACTIVE_TIME_DILATION_SYSTEM -> {
                 t.addLine(moduleLimitText);
-                t.addLine("Multiplies Speed by " + TooltipHelper.SPEED_COLOR + "6x");
+                t.addLine("Multiplies Speed by " + TooltipHelper.SPEED_COLOR + "4x");
                 t.addLine("Multiplies EU Consumption by " + EnumChatFormatting.RED + "8x");
-                t.addLine("Increases Structure Casing Limit by " + EnumChatFormatting.GOLD + "12");
+                t.addLine("Reduces Hatch Space by " + EnumChatFormatting.GOLD + "20");
             }
         }
         if (module != FoundryModules.UNSET) t.addLine(createTierLine(module.voltageTier));
@@ -417,9 +426,11 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
     // copied methods so I can avoid a public static in MTEExoFoundry
     private String coolingStrOrder(String val1, String val2, String val3) {
         return EnumChatFormatting.BLUE + val1
+            + EnumChatFormatting.GRAY
             + "/"
             + EnumChatFormatting.LIGHT_PURPLE
             + val2
+            + EnumChatFormatting.GRAY
             + "/"
             + EnumChatFormatting.GREEN
             + val3

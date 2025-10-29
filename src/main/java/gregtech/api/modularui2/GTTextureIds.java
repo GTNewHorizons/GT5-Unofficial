@@ -114,7 +114,7 @@ public final class GTTextureIds {
     public static final String PICTURE_RADIATION_SHUTTER_INSIDE = "bartworks:picture_bw_shutter_frame_inside";
     public static final String PICTURE_EXOFOUNDRY_BASE = "gregtech:picture_exofoundry_base";
     public static final String PICTURE_EXOFOUNDRY_UNSET = "gregtech:picture_exofoundry_unset";
-    public static final String PICTURE_EXOFOUNDRY_TR_RE = "gregtech:picture_exofoundry_transcendent_reinforcement";
+    public static final String PICTURE_EXOFOUNDRY_HR = "gregtech:picture_exofoundry_harmonic_reinforcement";
     public static final String PICTURE_EXOFOUNDRY_HC = "gregtech:picture_exofoundry_hyper_cooler";
     public static final String PICTURE_EXOFOUNDRY_TDS = "gregtech:picture_exofoundry_time_dilation_system";
     public static final String PICTURE_EXOFOUNDRY_EOC = "gregtech:picture_exofoundry_efficient_overclock";

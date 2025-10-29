@@ -641,11 +641,11 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.PICTURE_EXOFOUNDRY_UNSET)
         .build();
-    public static final UITexture EXOFOUNDRY_TR_RE = UITexture.builder()
-        .location(GregTech.ID, "gui/picture/exofoundry_transcendent_reinforcement")
+    public static final UITexture EXOFOUNDRY_HR = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/exofoundry_harmonic_reinforcement")
         .fullImage()
         .canApplyTheme()
-        .name(GTTextureIds.PICTURE_EXOFOUNDRY_TR_RE)
+        .name(GTTextureIds.PICTURE_EXOFOUNDRY_HR)
         .build();
     public static final UITexture EXOFOUNDRY_HC = UITexture.builder()
         .location(GregTech.ID, "gui/picture/exofoundry_hypercooler")

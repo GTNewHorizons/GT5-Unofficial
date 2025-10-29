@@ -3482,7 +3482,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             60 * SECONDS,
             (int) TierEU.RECIPE_UMV);
 
-        // Transcendent Reinforcement
+        // Harmonic Reinforcement
         TTRecipeAdder.addResearchableAssemblylineRecipe(
             GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.TranscendentMetal, 1),
             4_000_000,
@@ -3490,15 +3490,15 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UIV,
             64,
             new Object[] { ItemList.Magnetic_Chassis_T2_ExoFoundry.get(1),
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.SixPhasedCopper, 6),
                 GTOreDictUnificator.get(OrePrefixes.bolt, Materials.TranscendentMetal, 32),
-                new Object[] { OrePrefixes.circuit.get(Materials.UMV), 4 }, RHUGNOR.getGear(4),
-                GGMaterial.shirabon.get(OrePrefixes.plateDense, 2), ItemList.Sensor_UIV.get(1),
-                ItemList.Emitter_UIV.get(1) },
-            new FluidStack[] { GGMaterial.metastableOganesson.getMolten(4608), Materials.Mellion.getMolten(1440),
-                Materials.Creon.getMolten(1440), Materials.SpaceTime.getMolten(576) },
-            ItemList.Transcendent_Reinforcement_ExoFoundry.get(1),
+                new Object[] { OrePrefixes.circuit.get(Materials.UIV), 4 }, RHUGNOR.getGear(4),
+                ItemList.Sensor_UIV.get(1), ItemList.Emitter_UIV.get(1) },
+            new FluidStack[] { GGMaterial.metastableOganesson.getMolten(5760), Materials.Mellion.getMolten(2880),
+                Materials.Creon.getMolten(2880), Materials.SpaceTime.getMolten(288) },
+            ItemList.Harmonic_Reinforcement_ExoFoundry.get(1),
             60 * SECONDS,
-            (int) TierEU.RECIPE_UMV);
+            (int) TierEU.RECIPE_UIV);
 
         // Time Dilation System
         TTRecipeAdder.addResearchableAssemblylineRecipe(

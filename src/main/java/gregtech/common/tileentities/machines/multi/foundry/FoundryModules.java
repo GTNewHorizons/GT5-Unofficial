@@ -47,13 +47,13 @@ public enum FoundryModules {
         EnumChatFormatting.GREEN,
         10
     ),
-    TRANSCENDENT_REINFORCEMENT(
-        "Transcendent Reinforcement", "T.R", "transcendent_reinforcement",
-        ItemList.Transcendent_Reinforcement_ExoFoundry.get(1),
-        GTGuiTextures.EXOFOUNDRY_TR_RE,
+    HARMONIC_REINFORCEMENT(
+        "Harmonic Reinforcement", "H.R", "harmonic_reinforcement",
+        ItemList.Harmonic_Reinforcement_ExoFoundry.get(1),
+        GTGuiTextures.EXOFOUNDRY_HR,
         150f / 255f * 1.5f, 10 / 255f * 1.5f, 150f / 255f * 1.5f,
         EnumChatFormatting.LIGHT_PURPLE,
-        12
+        11
     ),
     EXTRA_CASTING_BASINS("Extra Casting Basins", "E.C.B", "extra_casting_basins",
         ItemList.Extra_Casting_Basins_ExoFoundry.get(1),

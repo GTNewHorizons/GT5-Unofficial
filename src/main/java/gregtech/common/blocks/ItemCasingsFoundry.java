@@ -46,9 +46,9 @@ public class ItemCasingsFoundry extends ItemCasings {
             case 4 -> {
                 tooltip.add(moduleBaseText);
                 tooltip.add(moduleLimitText);
-                tooltip.add("Multiplies Speed by " + TooltipHelper.SPEED_COLOR + "6x");
+                tooltip.add("Multiplies Speed by " + TooltipHelper.SPEED_COLOR + "4x");
                 tooltip.add("Multiplies EU Consumption by " + EnumChatFormatting.RED + "8x");
-                tooltip.add("Increases Structure Casing Limit by " + EnumChatFormatting.GOLD + "12");
+                tooltip.add("Reduces Hatch Space by " + EnumChatFormatting.GOLD + "20");
                 tooltip.add(createTierLine(13));
                 tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.timedilation"));
             }
@@ -77,8 +77,8 @@ public class ItemCasingsFoundry extends ItemCasings {
                         + "UEV+ Recipes"
                         + EnumChatFormatting.GRAY
                         + " to be processed");
-                tooltip.add(createTierLine(12));
-                tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.transcendentreinforcement"));
+                tooltip.add(createTierLine(11));
+                tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.harmonicreinforcement"));
             }
             case 8 -> {
                 tooltip.add(moduleBaseText);
@@ -90,7 +90,7 @@ public class ItemCasingsFoundry extends ItemCasings {
                         + TooltipTier.VOLTAGE.getValue()
                         + EnumChatFormatting.GRAY
                         + " tier");
-                tooltip.add("Reduces Structure Casing Limit by " + EnumChatFormatting.GOLD + "36");
+                tooltip.add("Increases Hatch Space by " + EnumChatFormatting.GOLD + "36");
                 tooltip.add(createTierLine(10));
 
                 tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.parallel"));
@@ -113,6 +113,15 @@ public class ItemCasingsFoundry extends ItemCasings {
                         + coolingStrOrder("1", "2", "3")
                         + " Maximum Overclocks");
                 tooltip.add(
+                    "Only drains " + EnumChatFormatting.AQUA
+                        + "cooling fluid"
+                        + EnumChatFormatting.GRAY
+                        + " when the "
+                        + EnumChatFormatting.GOLD
+                        + "Foundry"
+                        + EnumChatFormatting.GRAY
+                        + " is active");
+                tooltip.add(
                     EnumChatFormatting.DARK_AQUA + "Requires an input hatch on any Hypercooler Casing to drain from!");
                 tooltip.add(createTierLine(11));
                 tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.hypercooler"));
@@ -134,9 +143,11 @@ public class ItemCasingsFoundry extends ItemCasings {
     // copied methods so I can avoid a public static in MTEExoFoundry class
     private String coolingStrOrder(String val1, String val2, String val3) {
         return EnumChatFormatting.BLUE + val1
+            + EnumChatFormatting.GRAY
             + "/"
             + EnumChatFormatting.LIGHT_PURPLE
             + val2
+            + EnumChatFormatting.GRAY
             + "/"
             + EnumChatFormatting.GREEN
             + val3

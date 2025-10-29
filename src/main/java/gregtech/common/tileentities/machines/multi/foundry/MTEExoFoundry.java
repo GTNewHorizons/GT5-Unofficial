@@ -92,6 +92,25 @@ import tectech.thing.casing.TTCasingsContainer;
 public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     implements ISurvivalConstructable, IMTERenderer {
 
+    /**
+     * Balance Ideas:
+     * TR RE:
+     * TR RE is now down-tiered to late UIV from early UMV
+     * TR RE now gates UIV+ recipes instead of UEV+
+     *
+     * ECB:
+     * Reduce Parallels per tier, and make it mainly focused on the hatch space
+     *
+     * SLC/PVS:
+     * Buff stats of these, nerfing base stats of Foundry even more.
+     *
+     * TDS:
+     * The worst case, nerf this guy to be weaker
+     *
+     * Hypogen Coils:
+     * change these out for a new casing / change the coil / ???
+     *
+     */
     private static final List<CoolingFluid> COOLING_FLUIDS = ImmutableList.of(
         new CoolingFluid(Materials.SuperCoolant, 1, 100),
         new CoolingFluid(Materials.SpaceTime, 2, 50),
@@ -251,7 +270,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
         }))
         .addShape(
-            FoundryModules.TRANSCENDENT_REINFORCEMENT.structureID, transpose(new String[][]{
+            FoundryModules.HARMONIC_REINFORCEMENT.structureID, transpose(new String[][]{
             {"     24442     ","               ","               ","               ","               ","3             3","4             4","4             4","4             4","3             3","               ","               ","               ","               ","     24442     "},
             {"       8       ","   22     22   ","               "," 3           3 "," 3           3 ","               ","               ","8             8","               ","               "," 3           3 "," 3           3 ","               ","   22     22   ","       8       "},
             {"      777      ","    88   88    ","  5         5  ","               "," 8           8 "," 8           8 ","7             7","7             7","7             7"," 8           8 "," 8           8 ","               ","  5         5  ","    88   88    ","      777      "},
@@ -350,7 +369,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         .addElement('M', lazy(() -> ofBlock(Loaders.magneticFluxCasing, 0)))
         .addElement('N', lazy(() -> ofBlock(Loaders.gravityStabilizationCasing, 0)))
 
-        // transcendent reinforcement
+        // harmonic reinforcement
         .addElement('1', ofBlock(GregTechAPI.sBlockCasingsFoundry, 7))
         .addElement('2', ofFrame(Materials.Mellion))
         .addElement('3', ofFrame(Materials.Creon))
@@ -486,7 +505,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                 EnumChatFormatting.GOLD + "Module"
                     + EnumChatFormatting.GRAY
                     + " stats are show in NEI and the Controller")
-            .addInfo("Toggle Render with Wirecutters")
+            .addInfo("Toggle Render with Screwdriver")
             .addTecTechHatchInfo()
             .addSeparator()
             .addInfo(EnumChatFormatting.RED + "Glorious Evolution!")
@@ -539,7 +558,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         addPowerEfficiencyModuleTooltip(tt);
         addEfficientOverclockingModuleTooltip(tt);
         addHypercoolerModuleInformation(tt);
-        addTranscendentReinforcementModuleInformation(tt);
+        addHarmonicReinforcementModuleInformation(tt);
         addTimeDilationSystemModuleInformation(tt);
 
         tt.toolTipFinisher();
@@ -558,8 +577,8 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             .addStructureInfoSeparator();
     }
 
-    private void addTranscendentReinforcementModuleInformation(MultiblockTooltipBuilder tt) {
-        tt.addStructureInfo(EnumChatFormatting.LIGHT_PURPLE + "Transcendent Reinforcement")
+    private void addHarmonicReinforcementModuleInformation(MultiblockTooltipBuilder tt) {
+        tt.addStructureInfo(EnumChatFormatting.LIGHT_PURPLE + "Harmonic Reinforcement")
             .addStructureInfo(TooltipHelper.coloredText("8x", EnumChatFormatting.LIGHT_PURPLE) + " Block of Spacetime")
             .addStructureInfo(TooltipHelper.coloredText("8x", EnumChatFormatting.LIGHT_PURPLE) + " Spacetime Frame Box")
             .addStructureInfo(
@@ -576,8 +595,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                     + EnumChatFormatting.GRAY
                     + " Frame Box")
             .addStructureInfo(
-                TooltipHelper.coloredText("44x", EnumChatFormatting.LIGHT_PURPLE)
-                    + " Transcendent Bolted Shirabon Casing")
+                TooltipHelper.coloredText("44x", EnumChatFormatting.LIGHT_PURPLE) + " Harmonic Reinforcement Casing")
             .addStructureInfoSeparator();
     }
 
@@ -737,10 +755,10 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         casingAmount = 0;
         tier = -1;
         mCoolantInputHatches.clear();
-        // limit hatch space to about 25 hatches without modules. T.D.S removes 12 for balance, and casters adds 36 by
+        // limit hatch space to about 25 hatches without modules. T.D.S removes 20 for balance, and casters adds 36 by
         // proxy.
         if (checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, depthOffset)
-            && casingAmount >= 458 + (tdsPresent ? 12 : 0)) {
+            && casingAmount >= 458 + (tdsPresent ? 20 : 0)) {
             getBaseMetaTileEntity().issueTileUpdate(); // update for the tier variable
             return checkModules();
         }
@@ -816,7 +834,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                 case HYPERCOOLER:
                     hypercoolerPresent = true;
                     break;
-                case TRANSCENDENT_REINFORCEMENT:
+                case HARMONIC_REINFORCEMENT:
                     uevRecipesEnabled = true;
                     break;
                 case EFFICIENT_OC:
@@ -827,7 +845,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                     if (tdsPresent) break;
                     tdsPresent = true;
                     euEffMultiplier *= 8;
-                    speedMultiplier *= 6;
+                    speedMultiplier *= 4;
                     break;
                 case STREAMLINED_CASTERS:
                     speedAdditive += 1.5F;
@@ -1006,7 +1024,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         if (index > modules.length - 1) return;
         FoundryModules moduleToAdd = FoundryModules.getModule(ordinal);
 
-        if (moduleToAdd == FoundryModules.TRANSCENDENT_REINFORCEMENT) {
+        if (moduleToAdd == FoundryModules.HARMONIC_REINFORCEMENT) {
             checkSolidifierModules();
             if (uevRecipesEnabled) return;
         }
@@ -1229,28 +1247,18 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     }
 
     @Override
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
-        if (aPlayer.isSneaking()) {
-            batchMode = !batchMode;
-            if (batchMode) {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
-            } else {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
-            }
-        } else {
-            shouldRender = !shouldRender;
-            getBaseMetaTileEntity().issueTileUpdate();
-            GTUtility.sendChatToPlayer(
-                aPlayer,
-                StatCollector.translateToLocal("GT5U.machines.animations." + (shouldRender ? "enabled" : "disabled")));
-        }
-        return true;
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        shouldRender = !shouldRender;
+        getBaseMetaTileEntity().issueTileUpdate();
+        GTUtility.sendChatToPlayer(
+            aPlayer,
+            StatCollector.translateToLocal("GT5U.machines.animations." + (shouldRender ? "enabled" : "disabled")));
     }
 
     /*
      * packet of render information.
-     * Sends on world load, on module set, on wire cutter right click, and on structure check
+     * Sends on world load, on module set, on screwdriver right click, and on structure check
      */
     @Override
     public NBTTagCompound getDescriptionData() {

@@ -20,7 +20,7 @@ public class BlockCasingsFoundry extends BlockCasingsAbstract {
         register(4, ItemList.Active_Time_Dilation_System_ExoFoundry, "Time Dilation System Casing");
         register(5, ItemList.Efficient_Overclocking_ExoFoundry, "Sentient Overclocker Casing");
         register(6, ItemList.Power_Efficient_Subsystems_ExoFoundry, "Proto-Volt Stabilizer Casing");
-        register(7, ItemList.Transcendent_Reinforcement_ExoFoundry, "Transcendental Bolted Shirabon Casing");
+        register(7, ItemList.Harmonic_Reinforcement_ExoFoundry, "Harmonic Reinforcement Casing");
         register(8, ItemList.Extra_Casting_Basins_ExoFoundry, "Superdense Casting Basin Casing");
         register(9, ItemList.Hypercooler_ExoFoundry, "Hypercooler Casing");
         register(10, ItemList.Streamlined_Casters_ExoFoundry, "Streamlined Casting Casing");
@@ -68,7 +68,7 @@ public class BlockCasingsFoundry extends BlockCasingsAbstract {
                 return Textures.BlockIcons.EXOFOUNDRY_POWER_EFFICIENT_SUBSYSTEMS.getIcon();
             }
             case 7 -> {
-                return Textures.BlockIcons.EXOFOUNDRY_TRANSCENDENT_REINFORCEMENT.getIcon();
+                return Textures.BlockIcons.EXOFOUNDRY_HARMONIC_REINFORCEMENT.getIcon();
             }
             case 8 -> {
                 return Textures.BlockIcons.EXOFOUNDRY_EXTRA_CASTING_BASINS.getIcon();
