@@ -2242,6 +2242,7 @@ public class MaterialsInit {
         Materials.NutrientBroth = loadNutrientBroth();
         Materials.SterilizationFluid = loadSterilizationFluid();
         Materials.NeuralFluid = loadNeuralFluid();
+        Materials.PsycofluxSubstrate = loadPsycofluxSubstrate();
     }
 
     private static Materials loadPrimordialSoup() {
@@ -2293,6 +2294,20 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setMeltingPoint(273)
             .setARGB(72)
+            .setColor(Dyes.dyePurple)
+            .addCell()
+            .addFluid()
+            .addAspect(TCAspects.COGNITIO, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadPsycofluxSubstrate() {
+        return new MaterialBuilder().setName("PsycofluxRegenerativeSubstrate")
+            .setDefaultLocalName("Psycoflux Regenerative Substrate")
+            .setMetaItemSubID(575)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setMeltingPoint(273)
+            .setARGB(0xFF7A9F8F)
             .setColor(Dyes.dyePurple)
             .addCell()
             .addFluid()

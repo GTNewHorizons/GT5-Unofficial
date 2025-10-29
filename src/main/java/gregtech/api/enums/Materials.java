@@ -161,6 +161,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials NutrientBroth;
     public static Materials SterilizationFluid;
     public static Materials NeuralFluid;
+    public static Materials PsycofluxSubstrate;
 
     // Random
     public static Materials AnyBronze;
