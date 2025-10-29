@@ -1,5 +1,7 @@
 package gregtech.api.net.cape;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
@@ -19,6 +21,7 @@ import io.netty.buffer.ByteBuf;
 /**
  * Sent from client to server, informing it about the player's cape choice. The choice is verified.
  */
+@ParametersAreNonnullByDefault
 public class GTPacketSetCape extends GTPacket {
 
     private String cape;
