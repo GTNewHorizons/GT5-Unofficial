@@ -778,6 +778,13 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                 .append("\n");
         }
         sb.append(EnumChatFormatting.WHITE)
+            .append(
+                StatCollector.translateToLocalFormatted(
+                    "kubatech.infodata.htgr.fuel_supply",
+                    GTUtility.formatNumbers(this.fuelsupply),
+                    GTUtility.formatNumbers(MAX_CAPACITY)))
+            .append("\n");
+        sb.append(EnumChatFormatting.WHITE)
             .append(StatCollector.translateToLocal("kubatech.infodata.htgr.burned_fuel"))
             .append("\n");
         for (Map.Entry<Materials, Double> entry : mStoredBurnedFuels.entrySet()) {
