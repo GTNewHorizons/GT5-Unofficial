@@ -437,7 +437,7 @@ public class AdditionalRecipes {
         // Milk
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(1))
+            .iCircuit(1)
             .itemOutputs(
                 Materials.Sugar.getDustSmall(21),
                 Materials.Calcium.getDustTiny(1),
