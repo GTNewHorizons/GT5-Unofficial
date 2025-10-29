@@ -27,6 +27,7 @@ import static net.minecraft.util.EnumChatFormatting.RED;
 import static net.minecraft.util.EnumChatFormatting.WHITE;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -502,35 +503,14 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
         return result;
     }
 
-    /*
-     * @Override
-     * public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-     * if (boosterHatch != null) {
-     * for (int k = 0; k < 3; k++) {
-     * int boosterID = boosterHatch.getBoosterIDInSlot(k);
-     * if (boosterID >= 2 && boosterID <= 8) {
-     * for (MTEHatchInput hatch : mInputHatches) {
-     * FluidStack fluid = WerkstoffLoader.LiquidHelium.getFluidOrGas(1666);
-     * if (drain(hatch, fluid, false)) {
-     * drain(hatch, fluid, true);
-     * break;
-     * }
-     * // stopMachine(ShutDownReasonRegistry.outOfFluid(fluid));
-     * }
-     * }
-     * }
-     * }
-     * super.onPostTick(aBaseMetaTileEntity, aTick);
-     * }
-     */
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
+    }
 
     List<FluidStack> fluids = new ArrayList<>();
 
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (boosterHatch == null) {
-            super.onPostTick(aBaseMetaTileEntity, aTick);
-            return;
-        }
         if (aBaseMetaTileEntity.isServerSide()) {
             if (aTick % 20 == 0) {
                 fluids.clear();
@@ -540,28 +520,24 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
 
                 for (int k = 0; k < 3; k++) {
                     int boosterID = boosterHatch.getBoosterIDInSlot(k);
-                    if (boosterID < 2) break;
 
-                    if (boosterID >= 2) {
-                        Tier1Multiplier += 1;
-                    }
-                    if (boosterID >= 8) {
-                        Tier2Multiplier += 1;
-                    }
-                    if (boosterID >= 10) {
-                        Tier3Multiplier += 1;
-                    }
+                    if (boosterID >= 2) Tier1Multiplier++;
+
+                    if (boosterID >= 8) Tier2Multiplier++;
+
+                    if (boosterID >= 10) Tier3Multiplier++;
+
                 }
                 if (Tier1Multiplier > 0) {
                     fluids.add(WerkstoffLoader.LiquidHelium.getFluidOrGas(33333 * Tier1Multiplier));
                 }
 
                 if (Tier2Multiplier > 0) {
-                    fluids.add(Materials.LiquidNitrogen.getGas(3333 * Tier2Multiplier));
+                    fluids.add(Materials.SuperfluidHelium.getFluid(3333L * Tier2Multiplier));
                 }
 
                 if (Tier3Multiplier > 0) {
-                    fluids.add(Materials.SpaceTime.getMolten(333 * Tier3Multiplier));
+                    fluids.add(Materials.SpaceTime.getMolten(333L * Tier3Multiplier));
                 }
 
                 for (FluidStack fluid : fluids) {
@@ -577,6 +553,32 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
             }
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
+    }
+
+    private final int[] lastBoosterIDs = new int[3];
+
+    @Override
+    public boolean onRunningTick(ItemStack aStack) {
+        for (int j = 0; j < 3; j++) {
+            int boosterID = boosterHatch.getBoosterIDInSlot(j);
+            int lastID = lastBoosterIDs[j];
+
+            if (lastID >= 2 && boosterID < 2) {
+                Arrays.fill(lastBoosterIDs, -1);
+                stopMachine(ShutDownReasonRegistry.NONE);
+                return false;
+            }
+            if (boosterID >= 2 && lastID >= 2 && boosterID < lastID) {
+                Arrays.fill(lastBoosterIDs, -1);
+                stopMachine(ShutDownReasonRegistry.NONE);
+                return false;
+            }
+            if (boosterID < 2 && lastID < 2) {
+                continue;
+            }
+            lastBoosterIDs[j] = boosterID;
+        }
+        return super.onRunningTick(aStack);
     }
 
     private int getSconID(ItemStack scon) {
