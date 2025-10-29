@@ -35,6 +35,13 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.BACKGROUND_BRONZE, GTTextureIds.BACKGROUND_STEEL, GTTextureIds.BACKGROUND_PRIMITIVE)
         .build();
+    public static final UITexture BACKGROUND_FOUNDRY = UITexture.builder()
+        .location(GregTech.ID, "gui/background/foundry_default")
+        .imageSize(176, 166)
+        .adaptable(4)
+        .canApplyTheme()
+        .name(GTTextureIds.BACKGROUND_FOUNDRY)
+        .build();
     public static final UITexture BACKGROUND_TITLE_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/tab/title_dark")
         .imageSize(28, 28)
@@ -52,7 +59,13 @@ public final class GTGuiTextures {
             GTTextureIds.BACKGROUND_TITLE_STEEL,
             GTTextureIds.BACKGROUND_TITLE_PRIMITIVE)
         .build();
-
+    public static final UITexture BACKGROUND_TITLE_FOUNDRY = UITexture.builder()
+        .location(GregTech.ID, "gui/tab/title_foundry")
+        .imageSize(28, 28)
+        .adaptable(4)
+        .canApplyTheme()
+        .name(GTTextureIds.BACKGROUND_TITLE_FOUNDRY)
+        .build();
     public static final UITexture BACKGROUND_POPUP_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/background/popup")
         .imageSize(195, 136)
@@ -82,6 +95,13 @@ public final class GTGuiTextures {
         .imageSize(90, 72)
         .adaptable(2)
         .name(GTTextureIds.BACKGROUND_TERMINAL_TECTECH)
+        .build();
+
+    public static final UITexture FOUNDRY_BACKGROUND_TEXT_FIELD = UITexture.builder()
+        .location(GregTech.ID, "gui/background/popup_foundry")
+        .imageSize(195, 136)
+        .adaptable(4)
+        .name(GTTextureIds.BACKGROUND_POPUP_FOUNDRY)
         .build();
 
     public static final UITexture BACKGROUND_REDSTONE_SNIFFER = UITexture.builder()
@@ -160,6 +180,15 @@ public final class GTGuiTextures {
         .adaptable(1)
         .canApplyTheme()
         .build();
+
+    public static final UITexture SLOT_ITEM_FOUNDRY = UITexture.builder()
+        .location(GregTech.ID, "gui/slot/item_foundry")
+        .imageSize(18, 18)
+        .adaptable(1)
+        .canApplyTheme()
+        .name(GTTextureIds.SLOT_ITEM_FOUNDRY)
+        .build();
+
     public static final UITexture SLOT_FLUID_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/slot/fluid_standard")
         .imageSize(18, 18)
@@ -452,6 +481,20 @@ public final class GTGuiTextures {
             GTTextureIds.BUTTON_STEEL_PRESSED,
             GTTextureIds.BUTTON_PRIMITIVE_PRESSED)
         .build();
+    public static final UITexture BUTTON_FOUNDRY = UITexture.builder()
+        .location(GregTech.ID, "gui/button/foundry")
+        .imageSize(18, 18)
+        .adaptable(1)
+        .canApplyTheme()
+        .name(GTTextureIds.BUTTON_FOUNDRY)
+        .build();
+    public static final UITexture BUTTON_FOUNDRY_PRESSED = UITexture.builder()
+        .location(GregTech.ID, "gui/button/foundry_pressed")
+        .imageSize(18, 18)
+        .adaptable(1)
+        .canApplyTheme()
+        .name(GTTextureIds.BUTTON_FOUNDRY_PRESSED)
+        .build();
     public static final UITexture BUTTON_COVER_TAB_NORMAL_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/tab/cover_normal")
         .fullImage()
@@ -592,6 +635,11 @@ public final class GTGuiTextures {
         .location(MainMod.MOD_ID, "GUI/picture/bw_logo_47x21")
         .fullImage()
         .name(GTTextureIds.PICTURE_BW_LOGO_STANDARD)
+        .build();
+    public static final UITexture PICTURE_EXOFOUNDRY_LOGO = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/exofoundry_logo")
+        .fullImage()
+        .name(GTTextureIds.PICTURE_LOGO_EXOFOUNDRY)
         .build();
 
     public static final UITexture PICTURE_TRANSPARENT = UITexture.builder()
