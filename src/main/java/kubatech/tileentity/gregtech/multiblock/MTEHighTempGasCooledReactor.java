@@ -799,13 +799,13 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             .append(
                 StatCollector.translateToLocalFormatted(
                     "kubatech.infodata.htgr.coolant_per_tick",
-                    GTUtility.formatNumbers(this.heliumSupply)))
+                    GTUtility.formatNumbers(this.coolanttaking)))
             .append("\n");
         sb.append(EnumChatFormatting.WHITE)
             .append(
                 StatCollector.translateToLocalFormatted(
                     "kubatech.infodata.htgr.water_per_tick",
-                    GTUtility.formatNumbers(this.heliumSupply)))
+                    GTUtility.formatNumbers(this.watertaking)))
             .append("\n");
         return sb.toString();
     }
