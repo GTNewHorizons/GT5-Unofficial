@@ -839,7 +839,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                     break;
                 case EFFICIENT_OC:
                     effOCPresent = true;
-                    ocFactorAdditive += 0.35F;
+                    ocFactorAdditive += 0.25F;
                     break;
                 case ACTIVE_TIME_DILATION_SYSTEM:
                     if (tdsPresent) break;
