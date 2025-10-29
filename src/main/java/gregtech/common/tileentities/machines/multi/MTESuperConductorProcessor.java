@@ -557,7 +557,7 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
                 }
 
                 if (Tier2Multiplier > 0) {
-                    fluids.add(Materials.LiquidNitrogen.getGas(3333 * Tier2Multiplier));
+                    fluids.add(Materials.SuperfluidHelium.getFluid(3333 * Tier2Multiplier));
                 }
 
                 if (Tier3Multiplier > 0) {
@@ -663,6 +663,11 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.scpRecipes;
+    }
+
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
     }
 
     @Override
