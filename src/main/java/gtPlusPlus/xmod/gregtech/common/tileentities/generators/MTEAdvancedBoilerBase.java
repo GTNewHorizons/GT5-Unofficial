@@ -275,7 +275,7 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
                     .contains("coke")) {
                 tile.addStackToSlot(3, GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
             } else {
-                tile.addStackToSlot(3, GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1L));
+                tile.addStackToSlot(3, GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.AshDark, 1L));
             }
         }
     }

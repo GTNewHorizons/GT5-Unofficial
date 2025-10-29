@@ -365,7 +365,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         .addTo(extruderRecipes);
                 }
 
-                if (!(aMaterial == Materials.StyreneButadieneRubber || aMaterial == Materials.Silicone)) {
+                if (!(aMaterial == Materials.StyreneButadieneRubber || aMaterial == Materials.RubberSilicone)) {
                     if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                         if (GTOreDictUnificator.get(OrePrefixes.plate, aMaterial.mSmeltInto, 1L) != null) {
                             GTValues.RA.stdBuilder()
