@@ -161,7 +161,7 @@ public class FluidSolidifierRecipes implements Runnable {
             .addTo(fluidSolidifierRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(1))
+            .iCircuit(1)
             .itemOutputs(Materials.Boron.getDust(1))
             .fluidInputs(Materials.Boron.getMolten(1 * INGOTS))
             .duration(1 * SECONDS + 10 * TICKS)
