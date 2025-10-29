@@ -168,6 +168,11 @@ particle.neutron=Neutron
 particle.proton=Proton
 GT5U.gui.text.dissolution_ratio=§7Wrong fluid input ratio
 
+beamcrafting.energy_A=Energy 1
+beamcrafting.energy_B=Energy 2
+beamcrafting.amount_A=Amount 1
+beamcrafting.amount_B=Amount 2
+
 tooltip.gtnhlanth.particle.rest_mass=Rest Mass: %f MeV
 tooltip.gtnhlanth.particle.charge=Charge: %s e
 tooltip.gtnhlanth.photomask.desc_spectrum=Suitable for the %s segment of the electromagnetic spectrum and lower

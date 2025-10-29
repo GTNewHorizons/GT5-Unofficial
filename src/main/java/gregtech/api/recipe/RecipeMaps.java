@@ -30,8 +30,16 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
+import gregtech.api.recipe.metadata.SimpleRecipeMetadataKey;
+import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterFrontend;
+import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterMetadata;
+import gtnhlanth.common.beamline.Particle;
+import gtnhlanth.common.register.LanthItemList;
+import gtnhlanth.common.tileentity.recipe.beamline.TargetChamberFrontend;
+import gtnhlanth.common.tileentity.recipe.beamline.TargetChamberMetadata;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
@@ -1313,4 +1321,59 @@ public final class RecipeMaps {
         .minInputs(1, 1)
         .progressBar(GTUITextures.PROGRESSBAR_ARROW)
         .build();
+
+
+    public static final RecipeMetadataKey<BeamCrafterMetadata> BEAMCRAFTER_METADATA = SimpleRecipeMetadataKey
+        .create(BeamCrafterMetadata.class, "beamcrafter_metadata");
+
+    public static final RecipeMap<RecipeMapBackend> beamcrafterRecipes = RecipeMapBuilder
+        .of("gt.recipe.beamcrafter",RecipeMapBackend::new)
+        .minInputs(0, 0)
+        .frontend(BeamCrafterFrontend::new)
+        .neiSpecialInfoFormatter(((recipeInfo) -> {
+            BeamCrafterMetadata metadata = recipeInfo.recipe.getMetadata(BEAMCRAFTER_METADATA);
+            if (metadata == null) return Collections.emptyList();
+
+            float minEnergy_A = metadata.minEnergy_A;
+            float minEnergy_B = metadata.minEnergy_B;
+
+            float amount_A = metadata.amount_A;
+            float amount_B = metadata.amount_B;
+
+            Particle particle_A = Particle.getParticleFromId(metadata.particleID_A);
+            Particle particle_B = Particle.getParticleFromId(metadata.particleID_B);
+
+            return Arrays.asList(
+                StatCollector.translateToLocal("beamcrafting.energy_A") + ": "
+                    + GTUtility.formatNumbers(minEnergy_A) + "keV",
+
+                StatCollector.translateToLocal("beamcrafting.energy_B") + ": "
+                    + GTUtility.formatNumbers(minEnergy_B) + "keV",
+
+                StatCollector.translateToLocal("beamcrafting.amount_A") + ": " + GTUtility.formatNumbers(amount_A),
+                StatCollector.translateToLocal("beamcrafting.amount_B") + ": " + GTUtility.formatNumbers(amount_B)
+
+            );}
+        ))
+        .neiItemInputsGetter(recipe -> {
+            BeamCrafterMetadata metadata = recipe.getMetadata(BEAMCRAFTER_METADATA);
+            if (metadata == null) return GTValues.emptyItemStackArray;
+            ItemStack particleStack_A = new ItemStack(LanthItemList.PARTICLE_ITEM, 1, metadata.particleID_A);
+            ItemStack particleStack_B = new ItemStack(LanthItemList.PARTICLE_ITEM, 1, metadata.particleID_B);
+
+            List<ItemStack> ret = new ArrayList<>();
+            ret.addAll(Arrays.asList(recipe.mInputs));
+            ret.add(particleStack_A);
+            ret.add(particleStack_B);
+
+            return ret.toArray(new ItemStack[0]);
+        })
+        .progressBarPos(70, 22)
+        .neiTransferRect(100, 22, 28, 18)
+        .maxIO(4, 2, 2, 2)
+        .progressBar(GTUITextures.PROGRESSBAR_BEAMCRAFTER)
+        .progressBarSize(50,30)
+        .build();
+
 }
+

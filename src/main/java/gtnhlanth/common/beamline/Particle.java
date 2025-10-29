@@ -1,5 +1,7 @@
 package gtnhlanth.common.beamline;
 
+import gtnhlanth.common.item.ItemParticle;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.drawable.UITexture;
@@ -125,6 +127,10 @@ public enum Particle {
 
     public final UITexture getTexture() {
         return this.texture;
+    }
+
+    public static boolean isParticle(ItemStack itemstack){
+        return (itemstack.getItem() instanceof ItemParticle);
     }
 
 }
