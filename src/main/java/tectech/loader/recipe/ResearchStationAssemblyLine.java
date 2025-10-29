@@ -43,6 +43,7 @@ import static kubatech.api.enums.ItemList.DEFCWyvernSchematic;
 import static kubatech.api.enums.ItemList.DraconicEvolutionFusionCrafter;
 import static kubatech.loaders.BlockLoader.defcCasingBlock;
 import static tectech.loader.recipe.BaseRecipeLoader.getItemContainer;
+import static tectech.thing.CustomItemList.Godforge_SingularityShieldingCasing;
 import static tectech.thing.CustomItemList.eM_dynamoTunnel5_UMV;
 
 import net.minecraft.item.ItemStack;
@@ -3366,17 +3367,19 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UXV,
             256,
             new Object[] { kubatech.api.enums.ItemList.DEFCCasingT5.get(1), ItemRefer.Field_Restriction_Coil_T4.get(4),
+                Godforge_SingularityShieldingCasing.get(4),
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.Universium, 4),
                 getModItem(EternalSingularity.ID, "combined_singularity", 64, 15),
-                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.SpaceTime, 32),
                 new Object[] { OrePrefixes.circuit.get(Materials.UXV), 16L }, ItemList.Field_Generator_UMV.get(8),
                 new ItemStack(lscLapotronicEnergyUnit, 1, 5),
-                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Eternity, 64),
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.SpaceTime, 64),
                 GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.SuperconductorUMVBase, 64),
-                GGMaterial.shirabon.get(OrePrefixes.stickLong, 64),
-                GGMaterial.metastableOganesson.get(OrePrefixes.stickLong, 64),
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Eternity, 64),
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.MagMatter, 64),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.SpaceTime, 16),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.SuperconductorUMVBase, 16),
                 GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Eternity, 16),
-                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.SuperconductorUMVBase, 16), },
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.MagMatter, 16) },
             new FluidStack[] { Materials.MoltenProtoHalkoniteBase.getFluid(589_824), // <-- TODO: replace with exo-halk
                 Materials.QuarkGluonPlasma.getFluid(100_000), Materials.MagMatter.getMolten(5760),
                 Materials.MHDCSM.getMolten(64) },

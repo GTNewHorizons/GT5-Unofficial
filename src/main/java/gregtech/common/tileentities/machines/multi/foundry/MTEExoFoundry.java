@@ -1276,7 +1276,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     }
 
     // data class
-    private static class CoolingFluid {
+    protected static class CoolingFluid {
 
         public Materials material;
         public int grantedOC;
