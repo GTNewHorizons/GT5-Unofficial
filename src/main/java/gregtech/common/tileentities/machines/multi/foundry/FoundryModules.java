@@ -104,9 +104,9 @@ public enum FoundryModules {
         this.texture = texture;
         this.color = color;
         this.voltageTier = voltageTier;
-        this.red = red * 3;
-        this.green = green * 3;
-        this.blue = blue * 3;
+        this.red = red * 8 * 3;
+        this.green = green * 8 * 3;
+        this.blue = blue * 8 * 3;
     }
 
     // ACES tonemapping filter

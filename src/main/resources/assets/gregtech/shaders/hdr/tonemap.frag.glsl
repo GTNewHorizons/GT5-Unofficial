@@ -2,6 +2,8 @@
 
 varying vec2 vTexCoord;
 
+uniform float multiplier;
+
 uniform sampler2D uScene;
 uniform sampler2D uOverlay;
 
@@ -33,12 +35,10 @@ void main() {
     vec4 scene = texture2D(uScene, vTexCoord);
 
     vec3 sceneColor = scene.rgb;
-    sceneColor = pow(sceneColor, vec3(2.2));
     sceneColor = InverseACESFilm(sceneColor);
 
-    sceneColor += texture2D(uOverlay, vTexCoord).rgb;
+    sceneColor += pow(texture2D(uOverlay, vTexCoord).rgb * multiplier, vec3(1 / 1.9));
 
     sceneColor = acesFilter(sceneColor);
-    sceneColor = pow(sceneColor, vec3(1.0 / 2.2));
     gl_FragColor = vec4(sceneColor, scene.a);
 }

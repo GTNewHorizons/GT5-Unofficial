@@ -27,6 +27,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.gtnewhorizon.gtnhlib.client.renderer.vertex.DefaultVertexFormat;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -45,6 +46,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
 import com.google.common.collect.ImmutableList;
+import com.gtnewhorizon.gtnhlib.client.renderer.shader.AutoShaderUpdater;
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
 import com.gtnewhorizon.gtnhlib.client.renderer.vbo.IModelCustomExt;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
@@ -1122,13 +1124,12 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
          * GL11.glPopMatrix();
          */
 
-        if (/* !getBaseMetaTileEntity().isActive() */false) {
-            lastInactiveTime = 0;
-            return;
-        }
+//        if (!getBaseMetaTileEntity().isActive()) {
+//            lastInactiveTime = 0;
+//            return;
+//        }
 
-        if (!shouldRender || !this.getBaseMetaTileEntity()
-            .isActive()) return;
+        if (!shouldRender) return;
 
         // Do a cool startup animation
         if (lastInactiveTime <= 0) {
@@ -1143,6 +1144,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             initializeRender();
             if (!renderInitialized) return;
         }
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
         ringProgram.use();
         GL11.glPushMatrix();
         ForgeDirection dir = getDirection();
@@ -1157,8 +1159,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         // renderRingTwo(modules[1].rgbArr);
         // renderRingThree(modules[2].rgbArr);
         // renderRingFour(modules[3].rgbArr);
-        BloomShader.getInstance()
-            .unbind();
+        BloomShader.unbind();
 
         // renderRingOne(modules[0].rgbArr);
         // renderRingTwo(modules[1].rgbArr);
@@ -1179,17 +1180,19 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         float time = (System.currentTimeMillis() - lastInactiveTime) / 2000f;
         float multiplier = 1 - (1 / (time + 1));
         for (FoundryModules module : modules) {// FoundryModules.values()) {
-            if (i == tier + 1) return;
+            // if (i == tier + 1) return;
             if (module == FoundryModules.UNSET) {
                 i++;
                 continue;
             }
             if (gammaCorrected) {
-                renderRing(
-                    i,
-                    FoundryModules.tonemap(module.red), // TODO does this even do anything bor
-                    FoundryModules.tonemap(module.green),
-                    FoundryModules.tonemap(module.blue));
+                // renderRing(
+                // i,
+                // FoundryModules.tonemap(module.red), // TODO does this even do anything bor
+                // FoundryModules.tonemap(module.green),
+                // FoundryModules.tonemap(module.blue));
+
+                renderRing(i, 0, 0, 0);
             } else {
                 renderRing(i, module.red * multiplier, module.green * multiplier, module.blue * multiplier);
             }
@@ -1205,6 +1208,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                 "textures/model/foundry_ring.obj"
             )
         );
+        ring.setVertexFormat(DefaultVertexFormat.POSITION);
 
         try {
             ringProgram = new ShaderProgram(
@@ -1213,15 +1217,15 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                 "shaders/foundry.frag.glsl"
             );
             uGlowColor = ringProgram.getUniformLocation("u_Color");
-//            AutoShaderUpdater.getInstance().registerShaderReload(
-//                ringProgram,
-//                GregTech.resourceDomain,
-//                "shaders/foundry.vert.glsl",
-//                "shaders/foundry.frag.glsl",
-//                (shader, vertexPath, fragmentPath) -> {
-//                    uGlowColor = shader.getUniformLocation("u_Color");
-//                }
-//            );
+            AutoShaderUpdater.getInstance().registerShaderReload(
+                ringProgram,
+                GregTech.resourceDomain,
+                "shaders/foundry.vert.glsl",
+                "shaders/foundry.frag.glsl",
+                (shader, vertexPath, fragmentPath) -> {
+                    uGlowColor = shader.getUniformLocation("u_Color");
+                }
+            );
         } catch (Exception e) {
             GTMod.GT_FML_LOGGER.error(e.getMessage());
             return;
@@ -1233,7 +1237,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     private void renderRing(int index, float red, float green, float blue) {
         GL11.glPushMatrix();
         GL11.glTranslated(0, 9 + index * 8 + (index > 1 ? 10 : 0), 0);
-        // GL11.glScalef(1.2f, 0.8f, 1.2f);
+        GL11.glScalef(1, 1.2f, 1);
         GL20.glUniform3f(uGlowColor, red, green, blue);
         ring.renderAllVBO();
         GL11.glPopMatrix();

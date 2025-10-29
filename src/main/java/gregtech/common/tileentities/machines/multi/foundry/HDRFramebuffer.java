@@ -12,7 +12,6 @@ import javax.imageio.ImageIO;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.shader.Framebuffer;
 
@@ -23,13 +22,13 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
+import com.gtnewhorizon.gtnhlib.client.renderer.shader.AutoShaderUpdater;
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
 import com.gtnewhorizons.angelica.glsm.GLStateManager;
 
 public class HDRFramebuffer extends Framebuffer {
 
-    private static ShaderProgram tonemapShader;
-    private static int settings;
+    private int settings;
 
     public static final int FRAMEBUFFER_DEPTH_ENABLED = 0x1; // This uses a depth renderbuffer by default
     public static final int FRAMEBUFFER_DEPTH_TEXTURE = 0x2 | 0x1;
@@ -38,13 +37,16 @@ public class HDRFramebuffer extends Framebuffer {
     public static final int FRAMEBUFFER_ALPHA_CHANNEL = 0x10;
     public static final int FRAMEBUFFER_HDR_COLORS = 0x20;
 
+    private static ShaderProgram tonemapShader;
+    private static int uMultiplier;
+    private static float tonemapMultiplier;
+
     public HDRFramebuffer(int width, int height) {
         this(width, height, FRAMEBUFFER_DEPTH_ENABLED);
     }
 
     public HDRFramebuffer(int width, int height, int settings) {
         super(width, height, (settings & FRAMEBUFFER_DEPTH_ENABLED) != 0);
-        setFramebufferColor(0, 0, 0, 0);
     }
 
     @Override
@@ -110,57 +112,50 @@ public class HDRFramebuffer extends Framebuffer {
             }
         }
 
+        setFramebufferColor(0, 0, 0, 0);
         this.framebufferClear();
         this.unbindFramebufferTexture();
     }
 
-    public void applyTonemapping() {
+    public void applyTonemapping(float multiplier) {
         if (tonemapShader == null) {
             tonemapShader = new ShaderProgram(
                 GregTech.resourceDomain,
                 "shaders/hdr/tonemap.vert.glsl",
                 "shaders/hdr/tonemap.frag.glsl");
             tonemapShader.use();
-            bindTextureSlot(tonemapShader, "uScene", 0);
-            bindTextureSlot(tonemapShader, "uOverlay", 1);
-            // AutoShaderUpdater.getInstance()
-            // .registerShaderReload(
-            // tonemapShader,
-            // GregTech.resourceDomain,
-            // "shaders/hdr/tonemap.vert.glsl",
-            // "shaders/hdr/tonemap.frag.glsl",
-            // (shader, vertexFile, fragmentFile) -> {
-            // shader.bindTextureSlot("uScene", 0);
-            // shader.bindTextureSlot("uOverlay", 1);
-            // });
+            uMultiplier = tonemapShader.getUniformLocation("multiplier");
+            tonemapShader.bindTextureSlot("uScene", 0);
+            tonemapShader.bindTextureSlot("uOverlay", 1);
+            AutoShaderUpdater.getInstance()
+                .registerShaderReload(
+                    tonemapShader,
+                    GregTech.resourceDomain,
+                    "shaders/hdr/tonemap.vert.glsl",
+                    "shaders/hdr/tonemap.frag.glsl",
+                    (shader, vertexFile, fragmentFile) -> {
+                        uMultiplier = tonemapShader.getUniformLocation("multiplier");
+                        tonemapMultiplier = 0;
+                        shader.bindTextureSlot("uScene", 0);
+                        shader.bindTextureSlot("uOverlay", 1);
+                    });
             ShaderProgram.clear();
         }
+
         tonemapShader.use();
-        GL13.glActiveTexture(GL13.GL_TEXTURE0);
+        if (tonemapMultiplier != multiplier) {
+            GL20.glUniform1f(uMultiplier, multiplier);
+            tonemapMultiplier = multiplier;
+        }
         Minecraft.getMinecraft()
             .getFramebuffer()
             .bindFramebufferTexture();
         GL13.glActiveTexture(GL13.GL_TEXTURE1);
         bindFramebufferTexture();
         GLStateManager.disableBlend();
-        drawTexturedRect();
+        QuadRenderer.renderFullscreenQuad();
         // this.copyTextureToFile("bloomshader", "framebuffer_final.png");
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
-    }
-
-    // TODO get rid of this
-    public void bindTextureSlot(ShaderProgram shader, String sampler2DName, int index) {
-        GL20.glUniform1i(shader.getUniformLocation(sampler2DName), index);
-    }
-
-    public void drawTexturedRect() {
-        final Tessellator tessellator = Tessellator.instance;
-        tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV(-1, 1, 0, 0, 1);
-        tessellator.addVertexWithUV(1, 1, 0, 1, 1);
-        tessellator.addVertexWithUV(1, -1, 0, 1, 0);
-        tessellator.addVertexWithUV(-1, -1, 0, 0, 0);
-        tessellator.draw();
     }
 
     public void copyTextureToFile(String category, String filename) {
@@ -205,7 +200,6 @@ public class HDRFramebuffer extends Framebuffer {
     }
 
     public void copyDepthFromFramebuffer(Framebuffer other) {
-        // TODO
         OpenGlHelper.func_153171_g(GL30.GL_READ_FRAMEBUFFER, other.framebufferObject);
         OpenGlHelper.func_153171_g(GL30.GL_DRAW_FRAMEBUFFER, framebufferObject);
         GL30.glBlitFramebuffer(
@@ -220,5 +214,28 @@ public class HDRFramebuffer extends Framebuffer {
             GL11.GL_DEPTH_BUFFER_BIT,
             GL11.GL_NEAREST);
 
+    }
+
+    public void clearBindFramebuffer() {
+        bindFramebuffer(false);
+        GL11.glClearDepth(1.0D);
+        GL11.glClearColor(0, 0, 0, 0);
+        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+    }
+
+    public void clearBindFramebuffer(boolean viewport) {
+        bindFramebuffer(viewport);
+        GL11.glClearDepth(1.0D);
+        GL11.glClearColor(0, 0, 0, 0);
+        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+    }
+
+    @Override
+    public void framebufferClear() {
+        super.framebufferClear();
+    }
+
+    public void setViewport() {
+        GL11.glViewport(0, 0, this.framebufferWidth, this.framebufferHeight);
     }
 }
