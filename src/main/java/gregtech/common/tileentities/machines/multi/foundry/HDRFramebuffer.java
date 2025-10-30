@@ -22,7 +22,6 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
-import com.gtnewhorizon.gtnhlib.client.renderer.shader.AutoShaderUpdater;
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
 import com.gtnewhorizons.angelica.glsm.GLStateManager;
 
@@ -127,18 +126,18 @@ public class HDRFramebuffer extends Framebuffer {
             uMultiplier = tonemapShader.getUniformLocation("multiplier");
             tonemapShader.bindTextureSlot("uScene", 0);
             tonemapShader.bindTextureSlot("uOverlay", 1);
-            AutoShaderUpdater.getInstance()
-                .registerShaderReload(
-                    tonemapShader,
-                    GregTech.resourceDomain,
-                    "shaders/hdr/tonemap.vert.glsl",
-                    "shaders/hdr/tonemap.frag.glsl",
-                    (shader, vertexFile, fragmentFile) -> {
-                        uMultiplier = tonemapShader.getUniformLocation("multiplier");
-                        tonemapMultiplier = 0;
-                        shader.bindTextureSlot("uScene", 0);
-                        shader.bindTextureSlot("uOverlay", 1);
-                    });
+            // AutoShaderUpdater.getInstance()
+            // .registerShaderReload(
+            // tonemapShader,
+            // GregTech.resourceDomain,
+            // "shaders/hdr/tonemap.vert.glsl",
+            // "shaders/hdr/tonemap.frag.glsl",
+            // (shader, vertexFile, fragmentFile) -> {
+            // uMultiplier = tonemapShader.getUniformLocation("multiplier");
+            // tonemapMultiplier = 0;
+            // shader.bindTextureSlot("uScene", 0);
+            // shader.bindTextureSlot("uOverlay", 1);
+            // });
             ShaderProgram.clear();
         }
 

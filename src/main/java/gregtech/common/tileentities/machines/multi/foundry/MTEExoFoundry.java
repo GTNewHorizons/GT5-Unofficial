@@ -27,7 +27,6 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.gtnewhorizon.gtnhlib.client.renderer.vertex.DefaultVertexFormat;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -46,9 +45,9 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
 import com.google.common.collect.ImmutableList;
-import com.gtnewhorizon.gtnhlib.client.renderer.shader.AutoShaderUpdater;
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
 import com.gtnewhorizon.gtnhlib.client.renderer.vbo.IModelCustomExt;
+import com.gtnewhorizon.gtnhlib.client.renderer.vertex.DefaultVertexFormat;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
@@ -690,16 +689,6 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         if (mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
         int built = 0;
-        built += survivalBuildPiece(
-            STRUCTURE_PIECE_MAIN,
-            stackSize,
-            horizontalOffset,
-            verticalOffset,
-            depthOffset,
-            realBudget,
-            env,
-            false,
-            true);
         for (int i = 0; i < 2 + (tier - 1); i++) {
             FoundryModules m = modules[i];
             if (m != FoundryModules.UNSET) {
@@ -715,6 +704,16 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                     true);
             }
         }
+        built += survivalBuildPiece(
+            STRUCTURE_PIECE_MAIN,
+            stackSize,
+            horizontalOffset,
+            verticalOffset,
+            depthOffset,
+            realBudget,
+            env,
+            false,
+            true);
 
         return built;
     }
@@ -995,11 +994,6 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         return GTGuiThemes.EXOFOUNDRY;
     }
 
-    @Override
-    protected boolean forceUseMui2() {
-        return true;
-    }
-
     // getters/setters for mui syncing
     public int getModuleSynced(int index) {
         if (index > FoundryModules.values().length - 1) index = 0;
@@ -1117,12 +1111,12 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
          * GL11.glPopMatrix();
          */
 
-//        if (!getBaseMetaTileEntity().isActive()) {
-//            lastInactiveTime = 0;
-//            return;
-//        }
+        // if (!getBaseMetaTileEntity().isActive()) {
+        // lastInactiveTime = 0;
+        // return;
+        // }
 
-        if (!shouldRender) return;
+        if (!shouldRender || !getBaseMetaTileEntity().isActive()) return;
 
         // Do a cool startup animation
         if (lastInactiveTime <= 0) {
@@ -1210,15 +1204,15 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                 "shaders/foundry.frag.glsl"
             );
             uGlowColor = ringProgram.getUniformLocation("u_Color");
-            AutoShaderUpdater.getInstance().registerShaderReload(
-                ringProgram,
-                GregTech.resourceDomain,
-                "shaders/foundry.vert.glsl",
-                "shaders/foundry.frag.glsl",
-                (shader, vertexPath, fragmentPath) -> {
-                    uGlowColor = shader.getUniformLocation("u_Color");
-                }
-            );
+       //    AutoShaderUpdater.getInstance().registerShaderReload(
+       //        ringProgram,
+       //        GregTech.resourceDomain,
+       //        "shaders/foundry.vert.glsl",
+       //        "shaders/foundry.frag.glsl",
+       //        (shader, vertexPath, fragmentPath) -> {
+       //            uGlowColor = shader.getUniformLocation("u_Color");
+       //        }
+       //    );
         } catch (Exception e) {
             GTMod.GT_FML_LOGGER.error(e.getMessage());
             return;

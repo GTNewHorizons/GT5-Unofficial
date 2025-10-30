@@ -44,15 +44,15 @@ public class BloomShader {
             "shaders/bloom/downscale.frag.glsl");
         uTexelSize_downscale = downscaleProgram.getUniformLocation("texelSize");
 
-        AutoShaderUpdater.getInstance()
-            .registerShaderReload(
-                downscaleProgram,
-                GregTech.resourceDomain,
-                "shaders/bloom/downscale.vert.glsl",
-                "shaders/bloom/downscale.frag.glsl",
-                (shader, vertexFile, fragmentFile) -> {
-                    uTexelSize_downscale = shader.getUniformLocation("texelSize");
-                });
+        // AutoShaderUpdater.getInstance()
+        // .registerShaderReload(
+        // downscaleProgram,
+        // GregTech.resourceDomain,
+        // "shaders/bloom/downscale.vert.glsl",
+        // "shaders/bloom/downscale.frag.glsl",
+        // (shader, vertexFile, fragmentFile) -> {
+        // uTexelSize_downscale = shader.getUniformLocation("texelSize");
+        // });
 
         upscaleProgram = new ShaderProgram(
             GregTech.resourceDomain,
@@ -82,7 +82,6 @@ public class BloomShader {
 
         int screenWidth = dm.getWidth();
         int screenHeight = dm.getHeight();
-
 
         multiplier = 0.5f;
         if (width < screenWidth || height < screenHeight) {
