@@ -38,6 +38,9 @@ public enum ChatMessage {
 
     Dimension(args -> GTUtility.getDimensionName((Integer) args[0])),
 
+    OutputBusMEHeader(plural("GT5U.gui.text.me_bus.header", "GT5U.gui.text.me_bus.header.plural", 0)),
+    LMAHeader(plural("GT5U.gui.text.lma.header", "GT5U.gui.text.lma.header.plural", 0)),
+
     ;
 
     interface Localizer {

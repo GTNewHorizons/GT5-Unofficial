@@ -21,10 +21,13 @@ import java.util.stream.IntStream;
 
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -64,6 +67,7 @@ import appeng.me.helpers.IGridProxyable;
 import appeng.util.Platform;
 import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.ChatMessage;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoidingMode;
@@ -83,10 +87,13 @@ import gregtech.api.structure.StructureWrapper;
 import gregtech.api.structure.StructureWrapperInstanceInfo;
 import gregtech.api.structure.StructureWrapperTooltipBuilder;
 import gregtech.api.util.GTLog;
+import gregtech.api.util.GTTextBuilder;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ItemEjectionHelper;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<MTELargeMolecularAssembler>
     implements ICraftingProvider, IActionHost, IGridProxyable, ISurvivalConstructable,
@@ -102,9 +109,8 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
     private final Map<ItemStack, Pair<NBTTagCompound, ICraftingPatternDetails>> patternDetailCache = new IdentityHashMap<>();
 
     private final ArrayDeque<ItemStack> pendingCrafts = new ArrayDeque<>();
-    private boolean hasNewJobs = false;
 
-    private boolean hiddenCraftingFX;
+    private boolean hiddenCraftingFX, active;
 
     private AENetworkProxy gridProxy;
 
@@ -175,11 +181,13 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean active, boolean redstoneLevel) {
         if (side == facing) {
-            return new ITexture[] { Casings.RobustTungstensteelMachineCasing.getCasingTexture(),
-                TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.OVERLAY_ME_HATCH)
-                    .extFacing()
-                    .build() };
+            return new ITexture[] { Casings.RobustTungstensteelMachineCasing.getCasingTexture(), TextureFactory
+                .builder()
+                .addIcon(
+                    baseMetaTileEntity.isAllowedToWork() && this.active ? Textures.BlockIcons.OVERLAY_ME_HATCH_ACTIVE
+                        : Textures.BlockIcons.OVERLAY_ME_HATCH)
+                .extFacing()
+                .build() };
         }
         return new ITexture[] { Casings.RobustTungstensteelMachineCasing.getCasingTexture() };
     }
@@ -215,9 +223,7 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
 
     @Override
     protected boolean shouldCheckRecipeThisTick() {
-        boolean check = hasNewJobs;
-        hasNewJobs = false;
-        return check;
+        return !pendingCrafts.isEmpty() || super.shouldCheckRecipeThisTick();
     }
 
     @Override
@@ -327,6 +333,57 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+
+        NBTTagList pendingCrafts = new NBTTagList();
+
+        for (ItemStack stack : this.pendingCrafts) {
+            if (stack.stackSize <= 0) break;
+
+            pendingCrafts.appendTag(stack.writeToNBT(new NBTTagCompound()));
+        }
+
+        tag.setTag("pendingCrafts", pendingCrafts);
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> ss, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, ss, accessor, config);
+
+        List<ItemStack> stacks = new ArrayList<>();
+
+        for (NBTTagCompound tag : GTUtility.getTagList(accessor.getNBTData(), "pendingCrafts")) {
+            ItemStack stack = ItemStack.loadItemStackFromNBT(tag);
+            if (stack != null) stacks.add(stack);
+        }
+
+        if (stacks.isEmpty()) {
+            ss.add(GTUtility.translate("GT5U.gui.text.lma.empty"));
+        } else {
+            if (!accessor.getPlayer()
+                .isSneaking()) {
+                ss.add(GTUtility.translate("GT5U.gui.text.sneak_for_more_info"));
+            } else {
+                ss.add(
+                    new GTTextBuilder(ChatMessage.LMAHeader).setBase(EnumChatFormatting.GRAY)
+                        .addNumber(stacks.size())
+                        .toString());
+
+                for (ItemStack stack : stacks) {
+                    ss.add(
+                        new GTTextBuilder("GT5U.gui.text.lma.entry").setBase(EnumChatFormatting.GRAY)
+                            .add(null, stack.getDisplayName())
+                            .addNumber(stack.stackSize)
+                            .toString());
+                }
+            }
+        }
+    }
+
+    @Override
     protected MultiblockTooltipBuilder createTooltip() {
         StructureWrapperTooltipBuilder<MTELargeMolecularAssembler> tt = new StructureWrapperTooltipBuilder<>(
             this.structure);
@@ -339,7 +396,7 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
             .addSeparator()
             .addInfo("Place crafting patterns in the input busses.")
             .addInfo("The controller must be enabled for it connect to an ME cable.")
-            .addInfo("Once crafted, items and container are placed into the output busses.");
+            .addInfo("Once crafted, items and containers are placed into the output busses.");
 
         tt.beginStructureBlock(true)
             .addAllCasingInfo()
@@ -502,6 +559,11 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
                 .isEmpty()) {
                 proxy.setValidSides(EnumSet.complementOf(EnumSet.of(ForgeDirection.UNKNOWN)));
             }
+
+            if (this.active != proxy.isActive()) {
+                this.active = proxy.isActive();
+                baseMetaTileEntity.issueTileUpdate();
+            }
         } else {
             if (!proxy.getConnectableSides()
                 .isEmpty()) {
@@ -511,22 +573,31 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
+    public NBTTagCompound getDescriptionData() {
+        NBTTagCompound tag = super.getDescriptionData();
+
+        if (tag == null) tag = new NBTTagCompound();
+
+        tag.setBoolean("isActive", active);
+
+        return tag;
+    }
+
+    @Override
+    public void onDescriptionPacket(NBTTagCompound data) {
+        super.onDescriptionPacket(data);
+
+        active = data.getBoolean("isActive");
+        getBaseMetaTileEntity().issueTextureUpdate();
+    }
+
+    @Override
     public boolean pushPattern(ICraftingPatternDetails patternDetails, InventoryCrafting table) {
         World w = getBaseMetaTileEntity().getWorld();
         ItemStack mainOutput = patternDetails.getOutput(table, w);
         if (mainOutput == null) return false;
 
-        int usedParallels = pendingCrafts.stream()
-            .mapToInt(s -> s.stackSize)
-            .sum();
-
-        int availableParallels = overclockInfo == null ? 0 : overclockInfo.parallels;
-
-        int remainingParallels = availableParallels - usedParallels;
-
-        if (remainingParallels <= 0) return false;
-
-        hasNewJobs = true;
+        if (getRemainingParallels() <= 0) return false;
 
         FMLCommonHandler.instance()
             .firePlayerCraftingEvent(Platform.getPlayer((WorldServer) w), mainOutput, table);
@@ -565,7 +636,17 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
 
     @Override
     public boolean isBusy() {
-        return mMaxProgresstime > 0;
+        return getRemainingParallels() <= 0;
+    }
+
+    private int getRemainingParallels() {
+        int usedParallels = pendingCrafts.stream()
+            .mapToInt(s -> s.stackSize)
+            .sum();
+
+        int availableParallels = overclockInfo == null ? 0 : overclockInfo.parallels;
+
+        return availableParallels - usedParallels;
     }
 
     @Override

@@ -1554,6 +1554,16 @@ GT5U.gui.text.invalidfluidsup=Invalid Fluid Supplied
 GT5U.gui.text.amperage=Amperage
 GT5U.gui.text.voltagetier=Voltage Tier
 GT5U.gui.text.ticks_between_refill=Ticks Between Refills
+GT5U.gui.text.sneak_for_more_info=Sneak for more info
+GT5U.gui.text.me_bus.empty=This bus has no cached stacks
+GT5U.gui.text.me_bus.header=This bus contains %s cached stack:
+GT5U.gui.text.me_bus.header.plural=This bus contains %s cached stacks:
+GT5U.gui.text.me_bus.entry=%s: %s
+GT5U.gui.text.me_bus.truncated=And %s more...
+GT5U.gui.text.lma.empty=This Large Molecular Assembler has no pending jobs
+GT5U.gui.text.lma.header=This Large Molecular Assembler contains %s pending job:
+GT5U.gui.text.lma.header.plural=This Large Molecular Assembler contains %s pending jobs:
+GT5U.gui.text.lma.entry=%s: %s
 
 
 GT5U.gui.hoverable.runningfine=Running Fine.

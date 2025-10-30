@@ -2128,23 +2128,6 @@ public class GTUtility {
         return histogram;
     }
 
-    public static List<ItemStack> getStacksOfSize(Object2LongOpenHashMap<ItemId> map, int maxStackSize) {
-        ArrayList<ItemStack> list = new ArrayList<>();
-
-        map.forEach((item, amount) -> {
-            while (amount > 0) {
-                int toRemove = Math
-                    .min(amount > Integer.MAX_VALUE ? Integer.MAX_VALUE : amount.intValue(), maxStackSize);
-
-                list.add(item.getItemStack(toRemove));
-
-                amount -= toRemove;
-            }
-        });
-
-        return list;
-    }
-
     public static synchronized boolean removeIC2BottleRecipe(ItemStack aContainer, ItemStack aInput,
         Map<ic2.api.recipe.ICannerBottleRecipeManager.Input, RecipeOutput> aRecipeList, ItemStack aOutput) {
         if ((isStackInvalid(aInput) && isStackInvalid(aOutput) && isStackInvalid(aContainer)) || aRecipeList == null)

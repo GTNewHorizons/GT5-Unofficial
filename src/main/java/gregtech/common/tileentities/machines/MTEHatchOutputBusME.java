@@ -12,7 +12,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
@@ -54,6 +53,7 @@ import appeng.util.item.AEItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
+import gregtech.api.enums.ChatMessage;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OutputBusType;
@@ -65,6 +65,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTTextBuilder;
 import gregtech.api.util.GTUtility;
 import it.unimi.dsi.fastutil.objects.Object2LongMaps;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
@@ -694,40 +695,39 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
                 GTUtility.formatNumbers(tag.getLong("cacheCapacity")),
                 EnumChatFormatting.RESET));
 
-        if (!GuiScreen.isShiftKeyDown()) {
-            ss.add("Hold Shift for more info");
-            return;
-        }
-
         NBTTagList stacks = tag.getTagList("stacks", 10);
         int stackCount = tag.getInteger("stackCount");
 
         if (stackCount == 0) {
-            ss.add("This bus has no cached stacks");
+            ss.add(GTUtility.translate("GT5U.gui.text.me_bus.empty"));
         } else {
+            if (!accessor.getPlayer()
+                .isSneaking()) {
+                ss.add(GTUtility.translate("GT5U.gui.text.sneak_for_more_info"));
+                return;
+            }
+
             ss.add(
-                String.format(
-                    "The bus contains %s%d%s cached stack%s: ",
-                    EnumChatFormatting.GOLD,
-                    stackCount,
-                    EnumChatFormatting.RESET,
-                    stackCount > 1 ? "s" : ""));
+                new GTTextBuilder(ChatMessage.OutputBusMEHeader).setBase(EnumChatFormatting.GRAY)
+                    .addNumber(stackCount)
+                    .toString());
 
             for (int i = 0; i < stacks.tagCount(); i++) {
                 IAEItemStack stack = AEItemStack.loadItemStackFromNBT(stacks.getCompoundTagAt(i));
 
                 ss.add(
-                    String.format(
-                        "%s: %s%s%s",
-                        stack.getItemStack()
-                            .getDisplayName(),
-                        EnumChatFormatting.GOLD,
-                        GTUtility.formatNumbers(stack.getStackSize()),
-                        EnumChatFormatting.RESET));
+                    new GTTextBuilder("GT5U.gui.text.me_bus.entry").setBase(EnumChatFormatting.GRAY)
+                        .add(null, stack.getDisplayName())
+                        .addNumber(stack.getStackSize())
+                        .toString());
             }
 
             if (stackCount > stacks.tagCount()) {
-                ss.add(EnumChatFormatting.ITALIC + "And " + (stackCount - stacks.tagCount()) + " more...");
+                String style = EnumChatFormatting.GRAY.toString() + EnumChatFormatting.ITALIC;
+                ss.add(
+                    style
+                        + new GTTextBuilder("GT5U.gui.text.me_bus.truncated").addNumber(stackCount - stacks.tagCount())
+                            .toString());
             }
         }
     }
