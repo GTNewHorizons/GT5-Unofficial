@@ -44,7 +44,7 @@ class SingleUseToolRecipeLoader implements Runnable {
         // Soft tool recipes
         addSingleUseToolRecipes(Materials.Rubber, SingleUseTool.SOFT_TOOLS);
         addSingleUseToolRecipes(Materials.StyreneButadieneRubber, SingleUseTool.SOFT_TOOLS);
-        addSingleUseToolRecipes(Materials.Silicone, SingleUseTool.SOFT_TOOLS);
+        addSingleUseToolRecipes(Materials.RubberSilicone, SingleUseTool.SOFT_TOOLS);
 
         // Mold recipes
         for (SingleUseTool singleUseTool : SingleUseTool.values()) {

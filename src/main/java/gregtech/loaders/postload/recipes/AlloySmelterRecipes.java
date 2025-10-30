@@ -106,7 +106,7 @@ public class AlloySmelterRecipes implements Runnable {
         // We use rubber
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.RawRubber, 3L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.RubberRaw, 3L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Rubber, 1L))
             .duration(10 * SECONDS)
