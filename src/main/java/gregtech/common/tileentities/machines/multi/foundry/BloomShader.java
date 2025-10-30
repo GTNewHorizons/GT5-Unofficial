@@ -2,7 +2,9 @@ package gregtech.common.tileentities.machines.multi.foundry;
 
 import static gregtech.api.enums.Mods.GregTech;
 
-import java.awt.*;
+import java.awt.DisplayMode;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.util.ArrayList;
 import java.util.List;
 
