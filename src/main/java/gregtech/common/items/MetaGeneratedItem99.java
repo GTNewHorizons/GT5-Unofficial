@@ -7,7 +7,6 @@ import java.util.BitSet;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -93,7 +92,7 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
             cellMolten.getDefaultLocalNameFormatForItem(tMaterial));
         GTLanguageManager.addStringLocalization(
             getUnlocalizedName(tStack) + ".tooltip",
-            tMaterial.getChemicalTooltip(cellMolten.getMaterialAmount() / M));
+            tMaterial.getToolTip(cellMolten.getMaterialAmount() / M));
 
         if (cellMolten.isUnifiable()) {
             GTOreDictUnificator.set(cellMolten, tMaterial, tStack);
@@ -113,7 +112,7 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
                 prefix.getDefaultLocalNameFormatForItem(tMaterial));
             GTLanguageManager.addStringLocalization(
                 getUnlocalizedName(tStack) + ".tooltip",
-                tMaterial.getChemicalTooltip(prefix.getMaterialAmount() / M));
+                tMaterial.getToolTip(prefix.getMaterialAmount() / M));
 
             if (prefix.isUnifiable()) {
                 GTOreDictUnificator.set(prefix, tMaterial, tStack);
@@ -213,16 +212,6 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
             return prefix.getDefaultStackSize();
         } else {
             return 64;
-        }
-    }
-
-    @Override
-    protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
-        Materials material = getMaterial(aStack.getItemDamage());
-        if (material == null) return;
-        String flavorText = material.getFlavorText();
-        if (flavorText != null && !flavorText.isEmpty()) {
-            aList.add("§8§o" + flavorText);
         }
     }
 }
