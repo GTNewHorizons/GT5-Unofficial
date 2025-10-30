@@ -5,8 +5,10 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -17,17 +19,25 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.blocks.BlockCasings13;
 import gregtech.common.misc.GTStructureChannels;
+import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterMetadata;
+import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
+import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.register.LanthItemList;
+import gtnhlanth.common.tileentity.recipe.beamline.TargetChamberMetadata;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
@@ -43,9 +53,11 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_GLOW;
+import static gregtech.api.recipe.RecipeMaps.BEAMCRAFTER_METADATA;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.TARGET_CHAMBER_METADATA;
 
 public class MTEBeamCrafter extends MTEExtendedPowerMultiBlockBase<gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamCrafter>
     implements ISurvivalConstructable {
@@ -256,6 +268,47 @@ public class MTEBeamCrafter extends MTEExtendedPowerMultiBlockBase<gregtech.comm
 
     public int craftProgress = 0;
 
+    @Nullable
+    private BeamInformation getInputParticle_A() {
+        for (MTEHatchInputBeamline in : this.mInputBeamline) {
+            if (in.dataPacket == null) return new BeamInformation(0, 0, 0, 0);
+            return in.dataPacket.getContent();
+        }
+        return null;
+    }
+    @Nullable
+    private BeamInformation getInputParticle_B() {
+        int i = 0;
+        for (MTEHatchInputBeamline in : this.mInputBeamline) {
+            if (i == 1) {
+                if (in.dataPacket == null) return new BeamInformation(0, 0, 0, 0);
+                return in.dataPacket.getContent();
+            }
+            i += 1;
+        }
+        return null;
+    }
+
+    private boolean checkIfInputParticleInRecipe(BeamInformation inputParticle_A,BeamInformation inputParticle_B,BeamCrafterMetadata metadata) {
+
+        int particleID_x = metadata.particleID_A;
+        int particleID_y = metadata.particleID_B;
+        float minEnergy_x = metadata.minEnergy_A;
+        float minEnergy_y = metadata.minEnergy_B;
+
+        int inputParticleID_A = inputParticle_A.getParticleId();
+        int inputParticleID_B = inputParticle_B.getParticleId();
+        float inputEnergy_A = inputParticle_A.getEnergy();
+        float inputEnergy_B = inputParticle_B.getEnergy();
+
+        // possibilities: (A = x, B = y); (A = y, B = x)
+
+        return ((inputParticleID_A == particleID_x && inputParticleID_B == particleID_y && inputEnergy_A > minEnergy_x && inputEnergy_B > minEnergy_y)
+            || (inputParticleID_A == particleID_y && inputParticleID_B == particleID_x && inputEnergy_A > minEnergy_y && inputEnergy_B > minEnergy_x));
+
+    }
+
+    private GTRecipe lastRecipe;
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
 
@@ -291,44 +344,65 @@ public class MTEBeamCrafter extends MTEExtendedPowerMultiBlockBase<gregtech.comm
         // linear scaling of processing speed with particleRate?
 
 
+        ArrayList<ItemStack> tItems = this.getStoredInputs();
+        ItemStack[] inputItems = tItems.toArray(new ItemStack[0]);
+        ArrayList<FluidStack> tFluids = this.getStoredFluids();
+        FluidStack[] inputFluids = tFluids.toArray(new FluidStack[0]);
+
+        long tVoltageActual = GTValues.VP[(int) this.getInputVoltageTier()];
+
+        GTRecipe tRecipe = RecipeMaps.beamcrafterRecipes.findRecipeQuery()
+            .items(inputItems)
+            .fluids(inputFluids)
+            .voltage(tVoltageActual)
+            .filter((GTRecipe recipe) -> {
+                BeamCrafterMetadata metadata = recipe.getMetadata(BEAMCRAFTER_METADATA);
+                if (metadata == null) return false;
+
+                BeamInformation inputParticle_A = this.getInputParticle_A();
+                BeamInformation inputParticle_B = this.getInputParticle_B();
+
+                if ((inputParticle_A != null) || (inputParticle_B != null)) {
+                    return checkIfInputParticleInRecipe(inputParticle_A,inputParticle_B,metadata);
+                }
+                return false;
+            })
+            .cachedRecipe(this.lastRecipe)
+            .find();
+        if (tRecipe == null) return CheckRecipeResultRegistry.NO_RECIPE;
+
+        BeamCrafterMetadata metadata = tRecipe.getMetadata(BEAMCRAFTER_METADATA);
+        if (metadata == null) return CheckRecipeResultRegistry.NO_RECIPE;
+
+        BeamInformation inputParticle_A = this.getInputParticle_A();
+        BeamInformation inputParticle_B = this.getInputParticle_B();
+        if (inputParticle_A == null || inputParticle_B == null) return CheckRecipeResultRegistry.NO_RECIPE;
+
+        if (!checkIfInputParticleInRecipe(inputParticle_A,inputParticle_B,metadata)) return CheckRecipeResultRegistry.NO_RECIPE;
+
+        this.mMaxProgresstime = 20;
+        if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1) return CheckRecipeResultRegistry.NO_RECIPE;
+
+        if (!tRecipe.equals(this.lastRecipe)) this.lastRecipe = tRecipe;
+
+        // todo: subticking
+
+        tRecipe.consumeInput(1, GTValues.emptyFluidStackArray, inputItems);
+        ItemStack[] itemOutputArray = ArrayExt.copyItemsIfNonEmpty(tRecipe.mOutputs);
+        this.mOutputItems = itemOutputArray;
+
+        this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
+        this.mEfficiencyIncrease = 10000;
+
+        mEUt = (int) -tVoltageActual;
+        if (this.mEUt > 0) this.mEUt = (-this.mEUt);
+
+        this.updateSlots();
         return CheckRecipeResultRegistry.SUCCESSFUL;
-    }
-
-    @Override
-    //todo: what is this
-    protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 1.5F)
-            .setMaxParallelSupplier(this::getTrueParallel);
-    }
-
-    @Override
-    //todo: think about parallels
-    public int getMaxParallelRecipes() {
-        return (4 * GTUtility.getTier(this.getMaxInputVoltage()));
     }
 
     @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.beamcrafterRecipes;
-    }
-
-    @Override
-    public boolean supportsVoidProtection() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsBatchMode() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
     }
 }

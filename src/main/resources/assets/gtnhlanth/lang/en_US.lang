@@ -168,8 +168,8 @@ particle.neutron=Neutron
 particle.proton=Proton
 GT5U.gui.text.dissolution_ratio=§7Wrong fluid input ratio
 
-beamcrafting.energy_A=Energy 1
-beamcrafting.energy_B=Energy 2
+beamcrafting.energy_A=min Energy 1
+beamcrafting.energy_B=min Energy 2
 beamcrafting.amount_A=Amount 1
 beamcrafting.amount_B=Amount 2
 

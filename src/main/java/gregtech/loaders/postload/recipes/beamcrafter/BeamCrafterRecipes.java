@@ -27,14 +27,16 @@ public class BeamCrafterRecipes implements Runnable {
                     .builder()
                     .particleID_A(PROTON.getId())
                     .particleID_B(ELECTRON.getId())
-                    .amount_A(120*10)
-                    .amount_B(120*60)
+                    .amount_A(1)
+                    .amount_B(1)
+                    //.amount_A(120*10)
+                    //.amount_B(120*60)
                     .energy_A(1)
                     .energy_B(1)
                     .build()
             )
             .outputChances(2000)
-            .duration(120 * SECONDS) // todo: this needs to depend purely on beam rates, like target chamber
+            .duration(1 * SECONDS) // todo: this needs to depend purely on beam rates, like target chamber
             .eut(30720)
             .addTo(beamcrafterRecipes);
 

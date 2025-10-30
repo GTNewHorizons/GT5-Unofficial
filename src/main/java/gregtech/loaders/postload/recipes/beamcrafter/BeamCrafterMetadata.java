@@ -2,8 +2,6 @@ package gregtech.loaders.postload.recipes.beamcrafter;
 
 import java.util.Objects;
 
-import gtnhlanth.common.tileentity.recipe.beamline.TargetChamberMetadata;
-import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import gtnhlanth.common.beamline.Particle;
