@@ -1555,6 +1555,8 @@ public class RecipeLoader2 {
                 ItemList.Field_Generator_UHV.get(1))
             .fluidInputs(Materials.TungstenCarbide.getMolten(5760), Materials.NaquadahEnriched.getMolten(5760))
             .itemOutputs(ItemList.Central_Casing_ExoFoundry.get(4))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_UHV)
             .metadata(PRECISE_ASSEMBLER_CASING_TIER, 3)
             .addTo(preciseAssemblerRecipes);
     }
