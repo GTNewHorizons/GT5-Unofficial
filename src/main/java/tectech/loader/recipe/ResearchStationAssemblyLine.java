@@ -3416,7 +3416,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UEV,
             64,
             new Object[] { ItemList.Magnetic_Chassis_T1_ExoFoundry.get(1),
-                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Enderium, 16),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Tritanium, 16),
                 ItemList.AcceleratorUV.get(8), CELESTIAL_TUNGSTEN.getRotor(4),
                 new Object[] { OrePrefixes.circuit.get(Materials.UEV), 2 }, ItemList.Electric_Pump_UEV.get(1) },
             new FluidStack[] { Materials.Holmium.getMolten(5760),
