@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.machines.basic;
 
 import static gregtech.api.enums.GTValues.D1;
+import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GalacticraftMars;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_SCANNER;
@@ -367,10 +368,11 @@ public class MTEScanner extends MTEBasicMachine {
                         // Use Assline Utils
                         if (AssemblyLineUtils.setAssemblyLineRecipeOnDataStick(this.mOutputItems[0], tRecipe)) {
                             aStack.stackSize -= matchingRecipe.mInputs[0].stackSize;
-                            calculateOverclockedNess(tRecipe.mResearchVoltage, tRecipe.mResearchTime);
                             // In case recipe is too OP for that machine
-                            if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
+                            if (tRecipe.mResearchVoltage > V[this.mTier]) {
                                 return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+                            }
+                            calculateOverclockedNess(tRecipe.mResearchVoltage, tRecipe.mResearchTime);
                             getSpecialSlot().stackSize -= 1;
                             return 2;
                         }
