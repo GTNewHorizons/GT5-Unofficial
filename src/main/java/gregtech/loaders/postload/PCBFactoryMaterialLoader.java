@@ -7,7 +7,7 @@ public class PCBFactoryMaterialLoader {
 
     public static void load() {
         // add Plastics
-        PCBFactoryManager.addPlasticTier(Materials.Plastic, 1);
+        PCBFactoryManager.addPlasticTier(Materials.Polyethylene, 1);
         PCBFactoryManager.addPlasticTier(Materials.PolyvinylChloride, 2);
         PCBFactoryManager.addPlasticTier(Materials.Polytetrafluoroethylene, 3);
         PCBFactoryManager.addPlasticTier(Materials.Epoxid, 4);
