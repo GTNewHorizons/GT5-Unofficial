@@ -367,11 +367,11 @@ public class MTEScanner extends MTEBasicMachine {
 
                         // Use Assline Utils
                         if (AssemblyLineUtils.setAssemblyLineRecipeOnDataStick(this.mOutputItems[0], tRecipe)) {
-                            aStack.stackSize -= matchingRecipe.mInputs[0].stackSize;
                             // In case recipe is too OP for that machine
                             if (tRecipe.mResearchVoltage > V[this.mTier]) {
                                 return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
                             }
+                            aStack.stackSize -= matchingRecipe.mInputs[0].stackSize;
                             calculateOverclockedNess(tRecipe.mResearchVoltage, tRecipe.mResearchTime);
                             getSpecialSlot().stackSize -= 1;
                             return 2;
