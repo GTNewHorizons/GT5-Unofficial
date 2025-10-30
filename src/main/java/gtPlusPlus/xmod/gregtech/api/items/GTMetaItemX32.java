@@ -1,10 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.items;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -23,6 +20,8 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 
 /**
  * @author Gregorius Techneticies
@@ -214,28 +213,26 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
         return super.getItemStackLimit(aStack);
     }
 
-    private static final Map<String, Integer> COLOR_MAP;
+    private static final Object2IntMap<String> COLOR_MAP = new Object2IntOpenHashMap<>();
 
     static {
-        Map<String, Integer> map = new HashMap<>();
-        map.put("Sodium", Utils.rgbtoHexValue(90, 90, 255));
-        map.put("Cadmium", Utils.rgbtoHexValue(150, 150, 80));
-        map.put("Lithium", Utils.rgbtoHexValue(225, 220, 255));
-        map.put("Wrought", Utils.rgbtoHexValue(200, 180, 180));
-        map.put("Bronze", Utils.rgbtoHexValue(255, 128, 0));
-        map.put("Brass", Utils.rgbtoHexValue(255, 180, 0));
-        map.put("Invar", Utils.rgbtoHexValue(180, 180, 120));
-        map.put("ULV", Utils.rgbtoHexValue(200, 180, 180));
-        map.put("LuV", Utils.rgbtoHexValue(255, 204, 204));
-        map.put("ZPM", Utils.rgbtoHexValue(255, 230, 0));
-        map.put("UV", Utils.rgbtoHexValue(255, 180, 0));
-        COLOR_MAP = Collections.unmodifiableMap(map);
+        COLOR_MAP.put("Sodium", Utils.rgbtoHexValue(90, 90, 255));
+        COLOR_MAP.put("Cadmium", Utils.rgbtoHexValue(150, 150, 80));
+        COLOR_MAP.put("Lithium", Utils.rgbtoHexValue(225, 220, 255));
+        COLOR_MAP.put("Wrought", Utils.rgbtoHexValue(200, 180, 180));
+        COLOR_MAP.put("Bronze", Utils.rgbtoHexValue(255, 128, 0));
+        COLOR_MAP.put("Brass", Utils.rgbtoHexValue(255, 180, 0));
+        COLOR_MAP.put("Invar", Utils.rgbtoHexValue(180, 180, 120));
+        COLOR_MAP.put("ULV", Utils.rgbtoHexValue(200, 180, 180));
+        COLOR_MAP.put("LuV", Utils.rgbtoHexValue(255, 204, 204));
+        COLOR_MAP.put("ZPM", Utils.rgbtoHexValue(255, 230, 0));
+        COLOR_MAP.put("UV", Utils.rgbtoHexValue(255, 180, 0));
     }
 
     @Override
     public int getColorFromItemStack(final ItemStack stack, int defaultColor) {
-        int meta = stack.getItemDamage();
-        String name = stack.getDisplayName();
+        final int meta = stack.getItemDamage();
+        final String name = stack.getDisplayName();
 
         if (meta > 50 && meta != 150) {
             return Utils.rgbtoHexValue(255, 255, 255);
@@ -246,9 +243,9 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
                 .rgbtoHexValue(MathUtils.randInt(220, 250), MathUtils.randInt(221, 251), MathUtils.randInt(220, 250));
         }
 
-        for (Map.Entry<String, Integer> entry : COLOR_MAP.entrySet()) {
+        for (Object2IntMap.Entry<String> entry : COLOR_MAP.object2IntEntrySet()) {
             if (name.contains(entry.getKey())) {
-                return entry.getValue();
+                return entry.getIntValue();
             }
         }
 

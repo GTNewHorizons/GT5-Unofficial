@@ -6,10 +6,8 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.BitSet;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -33,6 +31,9 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.util.Utils;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 
 public abstract class GTMetaItem extends GTMetaItemBase {
 
@@ -299,24 +300,22 @@ public abstract class GTMetaItem extends GTMetaItemBase {
         return this.mFluidContainerStats.get((short) aStack.getItemDamage());
     }
 
-    private static final Map<String, Integer> COLOR_MAP;
+    private static final Object2IntMap<String> COLOR_MAP = new Object2IntOpenHashMap<>();
 
     static {
-        Map<String, Integer> map = new HashMap<>();
-        map.put("LuV", 0xffffcc);
-        map.put("ZPM", 0xace600);
-        map.put("UV", 0xffff00);
-        map.put("MAX", 0xff0000);
-        COLOR_MAP = Collections.unmodifiableMap(map);
+        COLOR_MAP.put("LuV", Utils.rgbtoHexValue(255, 255, 204));
+        COLOR_MAP.put("ZPM", Utils.rgbtoHexValue(172, 230, 0));
+        COLOR_MAP.put("UV", Utils.rgbtoHexValue(255, 255, 0));
+        COLOR_MAP.put("MAX", Utils.rgbtoHexValue(255, 0, 0));
     }
 
     @Override
     public int getColorFromItemStack(final ItemStack stack, int defaultColor) {
-        String name = stack.getDisplayName();
+        final String name = stack.getDisplayName();
 
-        for (Map.Entry<String, Integer> entry : COLOR_MAP.entrySet()) {
+        for (Object2IntMap.Entry<String> entry : COLOR_MAP.object2IntEntrySet()) {
             if (name.contains(entry.getKey())) {
-                return entry.getValue();
+                return entry.getIntValue();
             }
         }
 
