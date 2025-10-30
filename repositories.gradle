@@ -41,5 +41,4 @@ repositories {
             includeGroup('net.glease')
         }
     }
-    mavenLocal()
 }
