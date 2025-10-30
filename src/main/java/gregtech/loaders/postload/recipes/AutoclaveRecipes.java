@@ -172,7 +172,7 @@ public class AutoclaveRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 4))
             .itemOutputs(GTModHandler.getIC2Item("carbonFiber", 1L))
             .outputChances(10000)
-            .fluidInputs(Materials.Plastic.getMolten(1 * QUARTER_INGOTS))
+            .fluidInputs(Materials.Polyethylene.getMolten(1 * QUARTER_INGOTS))
             .duration(1 * SECONDS + 17 * TICKS)
             .eut((int) TierEU.RECIPE_LV)
             .addTo(autoclaveRecipes);

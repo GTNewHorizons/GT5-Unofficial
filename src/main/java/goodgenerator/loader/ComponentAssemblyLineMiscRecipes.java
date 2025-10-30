@@ -394,10 +394,8 @@ public class ComponentAssemblyLineMiscRecipes {
             1 << (t - 3),
             (int) TierEU.RECIPE_UMV,
             1,
-            new Object[] {
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 1),
-                GTOreDictUnificator
-                    .get(OrePrefixes.plateDense, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 3),
+            new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.MHDCSM, 1),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.MHDCSM, 3),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.MagMatter, 3),
                 ComponentType.Robot_Arm.getComponent(t)
                     .get(8),
@@ -405,10 +403,9 @@ public class ComponentAssemblyLineMiscRecipes {
                     .get(10),
                 ComponentType.Electric_Motor.getComponent(t)
                     .get(16),
-                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 2),
+                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.MHDCSM, 2),
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.MagMatter, 2),
-                GTOreDictUnificator
-                    .get(OrePrefixes.gearGtSmall, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 8),
+                GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.MHDCSM, 8),
                 GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.MagMatter, 8),
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SpaceTime, 8), getALCircuit(t, 8),
                 getALCircuit(t - 1, 16) },
