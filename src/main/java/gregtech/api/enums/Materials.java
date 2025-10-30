@@ -1113,7 +1113,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public float mGasMultiplier = 1.0F;
     public float mPlasmaMultiplier = 1.0F;
     public String mChemicalFormula = "?";
-    public String mFlavorText;
+    public String flavorText;
     public String mName;
     public String mDefaultLocalName;
     public String mCustomID = "null";
@@ -1222,7 +1222,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
                 .replaceAll("_", "-");
         }
 
-        this.mFlavorText = flavorText;
+        this.flavorText = flavorText;
 
         // Set texture and colors
         mIconSet = iconSet;
@@ -1773,7 +1773,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     }
 
     public String getFlavorText() {
-        return mFlavorText;
+        return flavorText;
     }
 
     /**
