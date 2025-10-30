@@ -41,6 +41,7 @@ public class ChamferedRectElement extends WidgetElement<ChamferedRectElement> im
         renderChamferedRect(baseX, baseY, width, height, cornerCut, red, green, blue, alpha, outlineThickness);
     }
 
+    // TODO: redo this piece of shit
     private void renderChamferedRect(int x, int y, int width, int height, int cut, float r, float g, float b, float a,
         float outlineW) {
         if (width <= 0 || height <= 0 || a == 0) return;
