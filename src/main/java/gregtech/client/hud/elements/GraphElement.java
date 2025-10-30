@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.Tessellator;
 
 import org.lwjgl.opengl.GL11;
 
@@ -88,17 +89,18 @@ public class GraphElement extends WidgetElement<GraphElement> implements Configu
     }
 
     private void drawGraph(int mode, double min, double range, int baseX, int baseY) {
-        GL11.glBegin(mode);
+        Tessellator tess = Tessellator.instance;
+        tess.startDrawing(mode);
         for (int i = 0; i < data.size(); i++) {
             double val = data.get(i);
             double x = absLeft(baseX) + i * (width / (double) Math.max(1, data.size() - 1));
             double y = absBottom(baseY) - ((val - min) / range * height);
-            y = Math.max(absTop(baseY), Math.min(absBottom(baseY), y)); // clamp
-
+            y = Math.max(absTop(baseY), Math.min(absBottom(baseY), y));
             getColor(val, i).apply(graphRed, graphGreen, graphBlue, graphAlpha);
-            GL11.glVertex2d(x, y);
+            tess.setColorRGBA_F(graphRed, graphGreen, graphBlue, graphAlpha);
+            tess.addVertex(x, y, 0.0D);
         }
-        GL11.glEnd();
+        tess.draw();
     }
 
     private GraphColorState getColor(double cur, int i) {

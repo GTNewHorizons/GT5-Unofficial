@@ -276,11 +276,17 @@ public class HUDManager {
     public static class HUDUtils {
 
         public static void drawHudRect(int left, int top, int right, int bottom, float r, float g, float b, float a) {
-            if (a == 0.0f) return;
-            GL11.glDisable(GL11.GL_TEXTURE_2D);
-            GL11.glEnable(GL11.GL_BLEND);
-            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            if (a == 0.0f) return; // fully transparent - skip
+
+            // enable blending only if color is semi-transparent
+            if (a < 1.0f) {
+                GL11.glDisable(GL11.GL_TEXTURE_2D);
+                GL11.glEnable(GL11.GL_BLEND);
+                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            }
+
             GL11.glColor4f(r, g, b, a);
+
             Tessellator tess = Tessellator.instance;
             tess.startDrawingQuads();
             tess.addVertex(left, bottom, 0);
@@ -288,19 +294,29 @@ public class HUDManager {
             tess.addVertex(right, top, 0);
             tess.addVertex(left, top, 0);
             tess.draw();
-            GL11.glDisable(GL11.GL_BLEND);
-            GL11.glEnable(GL11.GL_TEXTURE_2D);
+
+            if (a < 1.0f) { // restore states
+                GL11.glDisable(GL11.GL_BLEND);
+                GL11.glEnable(GL11.GL_TEXTURE_2D);
+            }
         }
 
         public static void drawRectOutline(int left, int top, int right, int bottom, float r, float g, float b, float a,
             int thickness) {
-            if (a == 0.0f) return;
+            if (a == 0.0f) return; // fully transparent - skip
+
             GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
-            GL11.glEnable(GL11.GL_BLEND);
-            GL11.glDisable(GL11.GL_TEXTURE_2D);
-            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
+            // enable blending only if color is semi-transparent
+            if (a < 1.0f) {
+                GL11.glDisable(GL11.GL_TEXTURE_2D);
+                GL11.glEnable(GL11.GL_BLEND);
+                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            }
+
             GL11.glColor4f(r, g, b, a);
             GL11.glLineWidth(thickness);
+
             Tessellator tess = Tessellator.instance;
             tess.startDrawing(GL11.GL_LINE_LOOP);
             tess.addVertex(left, bottom, 0);
@@ -308,7 +324,8 @@ public class HUDManager {
             tess.addVertex(right, top, 0);
             tess.addVertex(left, top, 0);
             tess.draw();
-            GL11.glPopAttrib();
+
+            GL11.glPopAttrib(); // restore GL state
         }
 
         @Desugar
