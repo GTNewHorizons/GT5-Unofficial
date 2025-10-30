@@ -953,13 +953,6 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         return RecipeMaps.fluidSolidifierRecipes;
     }
 
-    /*
-     * things to consider with processing math
-     * Things get added and multiplied(parallel,eu/t, speed bonus)
-     * Order of operations: ADD/SUB First, MUL/DIV After
-     * OC Factor changes (overclock calculator can deal with this)
-     * Hypercooler adds OC's based on fluid supplied
-     */
     @Override
     public boolean supportsVoidProtection() {
         return true;
