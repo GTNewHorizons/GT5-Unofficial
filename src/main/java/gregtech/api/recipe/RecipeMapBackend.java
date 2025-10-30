@@ -451,14 +451,14 @@ public class RecipeMapBackend {
             if (stack == null) continue;
             Item item = stack.getItem();
             assert item != null;
-            hash += item.hashCode();
+            hash ^= item.hashCode();
             if (item.getHasSubtypes()) hash += Items.feather.getDamage(stack);
         }
         for (int i = 0; i < fluids.length; i++) {
             FluidStack stack = fluids[i];
             if (stack == null) continue;
             Fluid fluid = stack.getFluid();
-            hash += fluid.hashCode();
+            hash ^= fluid.hashCode();
         }
         return hash;
     }
