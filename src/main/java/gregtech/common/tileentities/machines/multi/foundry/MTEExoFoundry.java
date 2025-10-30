@@ -113,7 +113,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     private final float euEffBase = 1.0F;
     private final int parallelScaleBase = 16;
     private final float ocFactorBase = 2.0F;
-    private int additionaloverclocks = 0;
+    private int additionalOverclocks = 0;
     private boolean uevRecipesEnabled = false;
     private boolean hypercoolerPresent = false;
     private boolean tdsPresent = false;
@@ -904,14 +904,14 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                additionaloverclocks = 0;
+                additionalOverclocks = 0;
 
                 if (hypercoolerPresent) {
                     currentCoolingFluid = findCoolingFluid();
                     if (currentCoolingFluid == null) {
                         return CheckRecipeResultRegistry.NO_FUEL_FOUND;
                     }
-                    additionaloverclocks = currentCoolingFluid.grantedOC;
+                    additionalOverclocks = currentCoolingFluid.grantedOC;
                 }
 
                 if (GTUtility.getTier(recipe.mEUt) >= VoltageIndex.UEV && !uevRecipesEnabled) {
@@ -923,7 +923,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             @Override
             protected @NotNull OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe)
-                    .setMaxOverclocks(additionaloverclocks + (getTier(getAverageInputVoltage()) - getTier(recipe.mEUt)))
+                    .setMaxOverclocks(additionalOverclocks + (getTier(getAverageInputVoltage()) - getTier(recipe.mEUt)))
                     .setDurationDecreasePerOC(ocFactorBase + ocFactorAdditive);
 
             }
