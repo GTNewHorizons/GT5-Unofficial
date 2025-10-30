@@ -3696,6 +3696,8 @@ gt.mb.hint_block=Hint block with dot %d
 
 # Multiblock Tooltip lines
 
+gt.multi_autoclave.info.1=Any Pressure Containment Casing
+
 gt.mapiary.tips.1=The ideal home for your bees\nUse screwdriver to change primary mode (INPUT/OUTPUT/OPERATING)\nUse screwdriver + shift to change operation mode (NORMAL/SWARMER)
 gt.mapiary.tips.2=§6Input Mode:\n- Does not take power\n- Put your queens in the input bus to put them in the internal buffer
 gt.mapiary.tips.3=§6Output Mode:\n- Does not take power\n- Will give your bees back to output bus
