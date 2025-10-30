@@ -771,81 +771,21 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Nanite Fabricator")
-            .addInfo("Requires insane amounts of power to create nanites")
-            .addInfo("Each tier requires some structural changes")
-            .addInfo("Machine tier depends on Nanite in controller slot")
-            .addInfo("Tier 4 has additional mechanics, check the controller")
-            .addSeparator()
-            .addInfo("Requires a Carbon Nanite to use tier " + EnumChatFormatting.DARK_PURPLE + 1)
-            .addInfo("Requires a Neutronium Nanite to use tier " + EnumChatFormatting.DARK_BLUE + 2)
-            .addInfo("Requires a Transcendent Metal Nanite to use tier " + EnumChatFormatting.DARK_AQUA + 3)
-            .addInfo("Requires an Eternity Nanite to use tier " + EnumChatFormatting.DARK_GREEN + 4)
-            .addSeparator()
-            .addInfo(
-                "Performs " + EnumChatFormatting.LIGHT_PURPLE
-                    + "perfect overclocks"
-                    + EnumChatFormatting.GRAY
-                    + " on lower-tier recipes")
+        tt.addMachineType("machtype.nano_forge")
+            .addManyInfo("gt.nano_forge.tips.1", "gt.nano_forge.tips.2", "gt.nano_forge.tips.3")
             .addTecTechHatchInfo()
             .addUnlimitedTierSkips()
             .beginStructureBlock(30, 38, 13, false)
-            .addStructureInfo("Total blocks needed for the structure at tier " + getTieredText("1", "2", "3"))
-            .addStructureInfo(getTieredText("522", "670", "898") + "Radiant Naquadah Alloy Casing")
-            .addStructureInfo(getTieredText("170", "170", "254") + "Stellar Alloy Frame Box")
-            .addStructureInfo(getTieredText("0", "16", "32") + "Assembly Line Casing")
+            .addStructureInfo(
+                "gt.nano_forge.info.1",
+                getTieredText("1", "2", "3"),
+                getTieredText("522", "670", "898"),
+                getTieredText("170", "170", "254"),
+                getTieredText("0", "16", "32"))
             .addStructureInfoSeparator()
-            .addStructureInfo(
-                "Tier " + EnumChatFormatting.DARK_GREEN
-                    + "4 "
-                    + EnumChatFormatting.GRAY
-                    + "requires a whole new set of blocks")
-            .addStructureInfo("Check the NEI preview for specifics")
-            .addStructureInfo("Maintenance hatch is not required for tier " + EnumChatFormatting.DARK_GREEN + "4")
+            .addStructureInfo("gt.nano_forge.info.2")
             .addStructureInfoSeparator()
-            .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + "-"
-                    + EnumChatFormatting.GOLD
-                    + "2"
-                    + EnumChatFormatting.GRAY
-                    + " energy hatches or "
-                    + EnumChatFormatting.GOLD
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + " TT energy hatch")
-            .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " maintenance hatch")
-            .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD
-                    + 1
-                    + EnumChatFormatting.GRAY
-                    + "+"
-                    + EnumChatFormatting.GRAY
-                    + " input hatches")
-            .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD
-                    + 0
-                    + EnumChatFormatting.GRAY
-                    + "+"
-                    + EnumChatFormatting.GRAY
-                    + " output hatches")
-            .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD
-                    + 1
-                    + EnumChatFormatting.GRAY
-                    + "+"
-                    + EnumChatFormatting.GRAY
-                    + " input buses")
-            .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD
-                    + 1
-                    + EnumChatFormatting.GRAY
-                    + "+"
-                    + EnumChatFormatting.GRAY
-                    + " output buses")
+            .addStructureInfo("gt.nano_forge.info.3")
             .toolTipFinisher(AuthorBlueWeabo);
         return tt;
     }

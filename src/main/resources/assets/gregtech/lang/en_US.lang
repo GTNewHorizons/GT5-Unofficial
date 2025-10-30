@@ -3685,6 +3685,7 @@ machtype.htgr=Breeder Reactor, HTGR
 machtype.eec=Powered Spawner, EEC
 machtype.defc=Fusion Crafter, DEFC
 machtype.mapiary=Mega Apiary, Mapiary
+machtype.nano_forge=Nanite Fabricator
 
 # Used in addController. These are some commonly used shared ones
 # CONTEXT: Controller: (corepos)
@@ -3695,6 +3696,12 @@ gt.mb.corepos.top_center=Top center
 gt.mb.hint_block=Hint block with dot %d
 
 # Multiblock Tooltip lines
+gt.nano_forge.tips.1=Requires insane amounts of power to create nanites\nEach tier requires some structural changes\nMachine tier depends on Nanite in controller slot\nTier 4 has additional mechanics, check the controller
+gt.nano_forge.tips.2=Requires a Carbon Nanite to use tier §51\nRequires a Neutronium Nanite to use tier §12\nRequires a Transcendent Metal Nanite to use tier §b3\nRequires an Eternity Nanite to use tier §24
+gt.nano_forge.tips.3=Performs §dperfect overclocks§7 on lower-tier recipes
+gt.nano_forge.info.1=Total blocks needed for the structure at tier %s\n%sRadiant Naquadah Alloy Casing\n%sStellar Alloy Frame Box\n%sAssembly Line Casing
+gt.nano_forge.info.2=Tier §24 §7requires a whole new set of blocks\nCheck the NEI preview for specifics\nMaintenance hatch is not required for tier §24
+gt.nano_forge.info.3=Requires §61§7-§62§7 energy hatches or §61§7 TT energy hatch\nRequires §61§7 maintenance hatch\nRequires §61§7+ input hatches\nRequires §60§7+ output hatches\nRequires §61§7+ input buses\nRequires §61§7+ output buses
 
 gt.multi_autoclave.info.1=Any Pressure Containment Casing
 
