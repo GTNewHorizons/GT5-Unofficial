@@ -379,6 +379,7 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
     public boolean supportsSingleRecipeLocking() {
         return false;
     }
+
     @Override
     public int getThemeTier() {
         return mSetTier;
