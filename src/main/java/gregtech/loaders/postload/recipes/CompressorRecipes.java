@@ -186,7 +186,7 @@ public class CompressorRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.IC2_Compressed_Coal_Chunk.get(1))
-            .itemOutputs(ItemList.IC2_Industrial_Diamond.get(1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Diamond, 1))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(compressorRecipes);

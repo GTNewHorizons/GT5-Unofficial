@@ -157,6 +157,7 @@ kubatech.infodata.htgr.burned_fuel_entry=§f- §b%s §fx §6%s%% to output
 kubatech.infodata.htgr.helium_supply=Helium Supply: §6%sL
 kubatech.infodata.htgr.coolant_per_tick=Coolant per tick: §6%sL
 kubatech.infodata.htgr.water_per_tick=Water per tick: §6%sL
+kubatech.infodata.htgr.fuel_supply=Fill level %s out of %s
 
 #Waila
 kubatech.waila.eec.mob_type=Mob Type: %s
