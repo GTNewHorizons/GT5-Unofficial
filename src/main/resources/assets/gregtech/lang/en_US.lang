@@ -1759,6 +1759,54 @@ GT5U.item.pipe.amount=Pipe Amount
 GT5U.item.pipe.empty=Empty
 GT5U.item.pipe.swap=Pipe Swapped:
 
+# Modular Armor
+
+item.itemHelmetMech.name=Mechanical Helmet
+item.itemChestplateMech.name=Mechanical Chestplate
+item.itemLeggingsMech.name=Mechanical Leggings
+item.itemBootsMech.name=Mechanical Boots
+
+GT5U.armor.behavior.nightvision=Night Vision
+GT5U.armor.behavior.gogglesofrevealing=Thaumic Sight
+GT5U.armor.behavior.creativeflight=Gravity Manipulation
+GT5U.armor.behavior.jetpack=Jetpack
+GT5U.armor.behavior.jetpackhover=Jetpack Hover Mode
+GT5U.armor.behavior.jetpackperfecthover=Jetpack Stabilization
+GT5U.armor.behavior.fireimmunity=Fire Immunity
+GT5U.armor.behavior.stepassist=Step Assist
+GT5U.armor.behavior.inertiacanceling=Inertia Canceling
+GT5U.armor.behavior.omnimovement=Omni Movement
+GT5U.armor.behavior.hazmat=Hazmat Armor
+GT5U.armor.behavior.apiarist=Apiarist Protection
+GT5U.armor.behavior.swimspeed=Enhanced Swimming
+GT5U.armor.behavior.knockbackresistance=Knockback Resistance
+GT5U.armor.behavior.speedboost=Speed Boost
+GT5U.armor.behavior.jumpboost=Jump Boost
+GT5U.armor.behavior.fallprotection=Fall Protection
+GT5U.armor.behavior.spacesuit=Space Suit
+GT5U.armor.behavior.infiniteenergy=Infinite Energy
+GT5U.armor.behavior.forcefield=Force Field
+GT5U.armor.behavior.waterbreathing=Water Breathing
+GT5U.armor.behavior.teleporter=Personal Teleporter
+
+GT5U.armor.message.enabled=%s Enabled
+GT5U.armor.message.disabled=%s Disabled
+GT5U.armor.message.installed=%s Installed
+
+GT5U.armor.tooltip.energycoreminimum=Minimum Energy Core Tier: %s
+GT5U.armor.tooltip.energycore=Energy Core Tier: %s
+GT5U.armor.tooltip.applicable=Applicable To:
+GT5U.armor.tooltip.effects=Adds Effect:
+GT5U.armor.tooltip.requires=Requires Effect:
+GT5U.armor.tooltip.incompatible=Incompatible With:
+GT5U.armor.tooltip.stackable= (Stackable)
+GT5U.armor.tooltip.category=Category: %s
+GT5U.armor.tooltip.slots=Armor Slots:
+GT5U.armor.tooltip.protection=§6Protection§r
+GT5U.armor.tooltip.movement=§aMovement§r
+GT5U.armor.tooltip.utility=§dUtility§r
+GT5U.armor.tooltip.prismatic=§6Pri§asma§dtic§r
+
 gt.behaviour.paintspray.infinite.gui.header=Select a Color
 gt.behaviour.paintspray.infinite.gui.lock_error=§eSpray can is §clocked§e! §bSneak + MMB to unlock.
 gt.behaviour.paintspray.infinite.gui.solvent=Solvent
