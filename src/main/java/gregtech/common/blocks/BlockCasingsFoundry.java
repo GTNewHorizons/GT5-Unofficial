@@ -84,6 +84,8 @@ public class BlockCasingsFoundry extends BlockCasingsAbstract {
                 return Textures.BlockIcons.EXOFOUNDRY_SECONDARY_CASING.getIcon();
             }
             case 12 -> {
+                if (ordinalSide == 0 || ordinalSide == 1)
+                    return Textures.BlockIcons.EXOFOUNDRY_CENTRAL_CASING_TOP.getIcon();
                 return Textures.BlockIcons.EXOFOUNDRY_CENTRAL_CASING.getIcon();
             }
             default -> {

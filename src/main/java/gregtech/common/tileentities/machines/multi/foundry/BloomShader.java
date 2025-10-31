@@ -15,7 +15,6 @@ import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
-import com.gtnewhorizon.gtnhlib.client.renderer.shader.AutoShaderUpdater;
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
 import com.gtnewhorizons.angelica.glsm.GLStateManager;
 
@@ -62,13 +61,13 @@ public class BloomShader {
             "shaders/bloom/upscale.frag.glsl");
         uTexelSize_upscale = upscaleProgram.getUniformLocation("texelSize");
 
-        AutoShaderUpdater.getInstance()
-            .registerShaderReload(
-                upscaleProgram,
-                GregTech.resourceDomain,
-                "shaders/bloom/upscale.vert.glsl",
-                "shaders/bloom/upscale.frag.glsl",
-                (shader, vertexFile, fragmentFile) -> uTexelSize_upscale = shader.getUniformLocation("texelSize"));
+        // AutoShaderUpdater.getInstance()
+        // .registerShaderReload(
+        // upscaleProgram,
+        // GregTech.resourceDomain,
+        // "shaders/bloom/upscale.vert.glsl",
+        // "shaders/bloom/upscale.frag.glsl",
+        // (shader, vertexFile, fragmentFile) -> uTexelSize_upscale = shader.getUniformLocation("texelSize"));
 
         createFramebuffers();
     }
