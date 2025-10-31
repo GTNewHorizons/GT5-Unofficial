@@ -43,6 +43,18 @@ public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProv
         return (aTier + 1) * (aTier + 1);
     }
 
+    private int getOffsetTier() {
+        return mTier < 4 ? 0 : mTier - 1;
+    }
+
+    public int getOffsetX() {
+        return getOffsetTier() * 2;
+    }
+
+    public int getOffsetY() {
+        return getOffsetTier() * 16;
+    }
+
     @Override
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         return new ITexture[0][0][0];

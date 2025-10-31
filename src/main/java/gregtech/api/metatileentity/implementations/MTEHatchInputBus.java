@@ -351,29 +351,29 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
             .setStaticTexture(picture)
             .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(6 + (uiButtonCount++ * BUTTON_SIZE), 60 + (mTier < 4 ? 0 : 16 * (mTier - 1)))
+            .setPos(6 + (uiButtonCount++ * BUTTON_SIZE), 60 + getOffsetY())
             .setSize(BUTTON_SIZE, BUTTON_SIZE)
             .setGTTooltip(tooltipDataSupplier);
     }
 
     @Override
     public int getGUIWidth() {
-        return super.getGUIWidth() + (mTier < 4 ? 0 : 2 * (mTier - 1));
+        return super.getGUIWidth() + getOffsetX();
     }
 
     @Override
     public int getGUIHeight() {
-        return super.getGUIHeight() + (mTier < 4 ? 0 : 16 * (mTier - 1));
+        return super.getGUIHeight() + getOffsetY();
     }
 
     @Override
     public int getCircuitSlotX() {
-        return 153 + (mTier < 4 ? 0 : 2 * (mTier - 1));
+        return 153 + getOffsetX();
     }
 
     @Override
     public int getCircuitSlotY() {
-        return 60 + (mTier < 4 ? 0 : 16 * (mTier - 1));
+        return 60 + getOffsetY();
     }
 
     /**

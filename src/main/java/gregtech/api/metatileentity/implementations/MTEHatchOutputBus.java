@@ -313,7 +313,7 @@ public class MTEHatchOutputBus extends MTEHatch
 
         if (acceptsItemLock()) {
             builder.widget(
-                new PhantomItemButton(this).setPos(6, 60 + (mTier < 4 ? 0 : 16 * (mTier - 1)))
+                new PhantomItemButton(this).setPos(6, 60 + getOffsetY())
                     .setBackground(PhantomItemButton.FILTER_BACKGROUND));
         }
     }
@@ -353,17 +353,17 @@ public class MTEHatchOutputBus extends MTEHatch
         builder.widget(
             new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
                 .setSize(18, 18)
-                .setPos(152 + (mTier < 4 ? 0 : 2 * (mTier - 1)), 60 + (mTier < 4 ? 0 : 16 * (mTier - 1))));
+                .setPos(152 + getOffsetX(), 60 + getOffsetY()));
     }
 
     @Override
     public int getGUIWidth() {
-        return super.getGUIWidth() + (mTier < 4 ? 0 : 2 * (mTier - 1));
+        return super.getGUIWidth() + getOffsetX();
     }
 
     @Override
     public int getGUIHeight() {
-        return super.getGUIHeight() + (mTier < 4 ? 0 : 16 * (mTier - 1));
+        return super.getGUIHeight() + getOffsetY();
     }
 
     @Override
