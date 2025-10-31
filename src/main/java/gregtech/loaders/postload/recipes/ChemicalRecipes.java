@@ -686,7 +686,7 @@ public class ChemicalRecipes implements Runnable {
             .itemInputs(Materials.Carbon.getDust(1), GTUtility.getIntegratedCircuit(1))
             .fluidInputs(Materials.Hydrogen.getGas(4_000))
             .fluidOutputs(Materials.Methane.getGas(1_000))
-            .duration(10 * SECONDS)
+            .duration(100 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
 
