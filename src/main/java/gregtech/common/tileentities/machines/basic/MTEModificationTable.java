@@ -34,6 +34,7 @@ import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
+import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.google.common.collect.ImmutableMap;
@@ -274,7 +275,7 @@ public class MTEModificationTable extends MetaTileEntity {
     LimitingItemStackHandler augmentsSlotHandler = new LimitingItemStackHandler(AUGMENT_SLOTS_COUNT, 1);
 
     @Override
-    protected boolean forceUseMui2() {
+    protected boolean useMui2() {
         return true;
     }
 
@@ -295,8 +296,15 @@ public class MTEModificationTable extends MetaTileEntity {
         syncManager.registerSlotGroup("armor", 1);
         syncManager.registerSlotGroup("augments", LARGEST_FRAME);
 
-        ParentWidget<?> slots = new ParentWidget<>().pos(50, 4)
+        ParentWidget<?> slots = new ParentWidget<>().alignX(0.3f)
+            .top(4)
             .size(18, 18);
+
+        Flow armorConfigurationColumn = Flow.column()
+            .coverChildrenHeight()
+            .width(18)
+            .alignX(0.1f)
+            .top(4);
 
         for (int i = 0; i < LARGEST_FRAME; i++) {
             slots.child(buildAugmentSlot(i, CATEGORY_PROTECTION));
@@ -304,7 +312,6 @@ public class MTEModificationTable extends MetaTileEntity {
             slots.child(buildAugmentSlot(i, CATEGORY_UTILITY));
             slots.child(buildAugmentSlot(i, CATEGORY_PRISMATIC));
         }
-
         ItemSlot armorSlot = new ItemSlot().slot(
             new ModularSlot(armorSlotHandler, 0).slotGroup("armor")
                 .filter((x) -> x.getItem() instanceof MechArmorBase)
@@ -315,7 +322,6 @@ public class MTEModificationTable extends MetaTileEntity {
                     }
                     setFrame(newFrame);
                 }))
-            .pos(16, 4)
             .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_ARMOR);
         ItemSlot frameSlot = new ItemSlot()
             .slot(
@@ -324,7 +330,6 @@ public class MTEModificationTable extends MetaTileEntity {
                     .slotGroup("armor")
                     .filter((x) -> x.getItem() instanceof ItemAugmentFrame)
                     .changeListener((newItem, onlyAmountChanged, client, init) -> { updateFrameSlot(newItem); }))
-            .pos(16, 22)
             .setEnabledIf((slot) -> armorSlotHandler.getStackInSlot(0) != null)
             .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_ARMOR_FRAME);
         ItemSlot coreSlot = new ItemSlot()
@@ -335,12 +340,11 @@ public class MTEModificationTable extends MetaTileEntity {
                     .changeListener((newItem, onlyAmountChanged, client, init) -> { updateCoreSlot(newItem); }))
             .setEnabledIf(
                 (slot) -> armorSlotHandler.getStackInSlot(0) != null && armorSlotHandler.getStackInSlot(1) != null)
-            .pos(16, 40)
             .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_ARMOR_CORE);
-
-        panel.child(armorSlot);
-        panel.child(frameSlot);
-        panel.child(coreSlot);
+        armorConfigurationColumn.child(armorSlot)
+            .child(frameSlot)
+            .child(coreSlot);
+        panel.child(armorConfigurationColumn);
         panel.child(slots);
 
         return panel;
