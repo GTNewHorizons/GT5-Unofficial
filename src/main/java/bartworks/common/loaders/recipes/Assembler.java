@@ -105,7 +105,7 @@ public class Assembler implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.AnnealedCopper, 64L),
                 GTUtility.getIntegratedCircuit(17))
             .itemOutputs(new ItemStack(ItemRegistry.BW_BLOCKS[2], 1, 1))
-            .fluidInputs(Materials.Plastic.getMolten(8 * INGOTS))
+            .fluidInputs(Materials.Polyethylene.getMolten(8 * INGOTS))
             .duration(1 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
