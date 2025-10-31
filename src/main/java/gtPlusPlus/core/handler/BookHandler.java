@@ -1,8 +1,5 @@
 package gtPlusPlus.core.handler;
 
-import static gtPlusPlus.core.util.Utils.addBookPagesLocalization;
-import static gtPlusPlus.core.util.Utils.addBookTitleLocalization;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,8 +8,10 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTSplit;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
@@ -250,14 +249,23 @@ public class BookHandler {
 
     private static BookTemplate writeBookTemplate(String aMapping, String aTitle, String aAuthor, String[] aPages) {
         mBookKeeperCount++;
-        for (int i = 0; i < aPages.length; i++) {
-            aPages[i] = aPages[i].replaceAll("\n", "<BR>");
-        }
         addBookTitleLocalization(aTitle);
         addBookPagesLocalization(aTitle, aPages);
         BookTemplate mTemp = new BookTemplate(mBookKeeperCount, aMapping, aTitle, aAuthor, aPages);
         mBookMap.put(mBookKeeperCount - 1, mTemp);
         return mTemp;
+    }
+
+    public static void addBookTitleLocalization(final String aTitle) {
+        GTLanguageManager.addStringLocalization("Book." + aTitle + ".Name", aTitle);
+    }
+
+    public static void addBookPagesLocalization(final String aTitle, final String[] aPages) {
+        for (byte i = 0; i < aPages.length; i = (byte) (i + 1)) {
+            GTLanguageManager.addStringLocalization(
+                "Book." + aTitle + ".Page" + ((i < 10) ? "0" + i : Byte.valueOf(i)),
+                aPages[i].replace("\n", GTSplit.LB));
+        }
     }
 
     public static class BookTemplate {

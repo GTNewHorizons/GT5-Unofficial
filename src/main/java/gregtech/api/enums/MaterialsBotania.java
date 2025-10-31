@@ -199,15 +199,15 @@ public class MaterialsBotania {
             new TCAspects.TC_AspectStack(TCAspects.AURAM, 4)));
 
     public static void init() {
-        GaiaSpirit.mChemicalFormula = "Gs";
-        Manasteel.mChemicalFormula = "Ms";
-        Livingwood.mChemicalFormula = "Lw";
-        Dreamwood.mChemicalFormula = "Dw";
-        BotaniaDragonstone.mChemicalFormula = "Dg";
-        Livingrock.mChemicalFormula = "Lv";
-        Terrasteel.mChemicalFormula = "Tr";
-        ElvenElementium.mChemicalFormula = "Ef";
-        ManaDiamond.mChemicalFormula = "Ma\u2084C";
+        GaiaSpirit.setChemicalFormula("Gs");
+        Manasteel.setChemicalFormula("Ms");
+        Livingwood.setChemicalFormula("Lw");
+        Dreamwood.setChemicalFormula("Dw");
+        BotaniaDragonstone.setChemicalFormula("Dg");
+        Livingrock.setChemicalFormula("Lv");
+        Terrasteel.setChemicalFormula("Tr");
+        ElvenElementium.setChemicalFormula("Ef");
+        ManaDiamond.setChemicalFormula("Ma\u2084C");
 
         Livingrock.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         Livingwood.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);

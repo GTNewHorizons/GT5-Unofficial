@@ -54,10 +54,12 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.ILocalizedMetaPipeEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
@@ -69,7 +71,7 @@ import gregtech.common.covers.CoverFluidRegulator;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEFluidPipe extends MetaPipeEntity {
+public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEntity {
 
     protected static final EnumMap<ForgeDirection, EnumMap<Border, ForgeDirection>> FACE_BORDER_MAP = new EnumMap<>(
         ForgeDirection.class);
@@ -113,15 +115,18 @@ public class MTEFluidPipe extends MetaPipeEntity {
      * Bitmask for whether disable fluid input form each side.
      */
     public byte mDisableInput = 0;
+    private String mPrefixKey;
+    private String mMaterialNameKey;
 
-    public MTEFluidPipe(int aID, String aName, String aNameRegional, float aThickNess, Materials aMaterial,
-        int aCapacity, int aHeatResistance, boolean aGasProof) {
-        this(aID, aName, aNameRegional, aThickNess, aMaterial, aCapacity, aHeatResistance, aGasProof, 1);
+    public MTEFluidPipe(int aID, String aName, String aPrefixKey, float aThickNess, Materials aMaterial, int aCapacity,
+        int aHeatResistance, boolean aGasProof) {
+        this(aID, aName, aPrefixKey, aThickNess, aMaterial, aCapacity, aHeatResistance, aGasProof, 1);
     }
 
-    public MTEFluidPipe(int aID, String aName, String aNameRegional, float aThickNess, Materials aMaterial,
-        int aCapacity, int aHeatResistance, boolean aGasProof, int aFluidTypes) {
-        super(aID, aName, aNameRegional, 0, false);
+    public MTEFluidPipe(int aID, String aName, String aPrefixKey, float aThickNess, Materials aMaterial, int aCapacity,
+        int aHeatResistance, boolean aGasProof, int aFluidTypes) {
+        super(aID, aName, 0, false);
+        mPrefixKey = aPrefixKey;
         mThickNess = aThickNess;
         mMaterial = aMaterial;
         mCapacity = aCapacity;
@@ -913,22 +918,26 @@ public class MTEFluidPipe extends MetaPipeEntity {
     public String[] getDescription() {
         List<String> descriptions = new ArrayList<>();
         descriptions.add(
-            EnumChatFormatting.BLUE + "Fluid Capacity: %%%"
-                + GTUtility.formatNumbers(mCapacity * 20L)
-                + "%%% L/sec"
-                + EnumChatFormatting.GRAY);
+            StatCollector.translateToLocalFormatted(
+                "gt.blockmachines.fluidpipe.capacity.desc",
+                GTUtility.formatNumbers(mCapacity * 20L)));
         descriptions.add(
-            EnumChatFormatting.RED + "Heat Limit: %%%"
-                + GTUtility.formatNumbers(mHeatResistance)
-                + "%%% K"
-                + EnumChatFormatting.GRAY);
+            StatCollector.translateToLocalFormatted(
+                "gt.blockmachines.fluidpipe.heat.desc",
+                GTUtility.formatNumbers(mHeatResistance)));
         if (!mGasProof) {
-            descriptions.add(EnumChatFormatting.DARK_GREEN + "Cannot handle gas" + EnumChatFormatting.GRAY);
+            descriptions.add(StatCollector.translateToLocal("gt.blockmachines.fluidpipe.no_gas_proof.desc"));
         }
         if (mPipeAmount != 1) {
-            descriptions.add(EnumChatFormatting.AQUA + "Pipe Amount: %%%" + mPipeAmount + EnumChatFormatting.GRAY);
+            descriptions.add(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.fluidpipe.pipe_amount.desc", mPipeAmount));
         }
         return descriptions.toArray(new String[0]);
+    }
+
+    @Override
+    public boolean isSkipGenerateDescription() {
+        return true;
     }
 
     @Override
@@ -1011,6 +1020,30 @@ public class MTEFluidPipe extends MetaPipeEntity {
     protected static ForgeDirection getSideAtBorder(ForgeDirection side, Border border) {
         return FACE_BORDER_MAP.get(side)
             .get(border);
+    }
+
+    @Override
+    public Materials getMaterial() {
+        return mMaterial;
+    }
+
+    @Override
+    public String getPrefixKey() {
+        return mPrefixKey;
+    }
+
+    @Override
+    public String getMaterialNewNameKey() {
+        return mMaterialNameKey;
+    }
+
+    public MTEFluidPipe renameMaterial(String newName) {
+        if (newName == null) return this;
+        final String key = "Material." + mMaterial.mName.toLowerCase()
+            .replace(" ", "") + ".fluidpipe.newname";
+        GTLanguageManager.addStringLocalization(key, newName);
+        this.mMaterialNameKey = key;
+        return this;
     }
 
     protected enum Border {

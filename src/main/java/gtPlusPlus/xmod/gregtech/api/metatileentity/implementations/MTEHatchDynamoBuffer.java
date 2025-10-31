@@ -5,7 +5,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
-import gtPlusPlus.core.lib.GTPPCore;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEHatchDynamoBuffer extends MTEHatchDynamo {
@@ -46,12 +46,9 @@ public class MTEHatchDynamoBuffer extends MTEHatchDynamo {
 
     @Override
     public String[] getDescription() {
-        String[] g;
-        g = new String[] { "Dynamo with internal storage and additional Amp capacity",
-            "Does not accept more than " + (this.maxEUOutput() * this.maxAmperesIn()) + "EU/t as input",
-            GTPPCore.GT_Tooltip.get() };
-
-        return g;
+        return Utils.splitLocalizedFormattedWithGTPP(
+            "gt.blockmachines.dynamo_hatch_buffer.desc",
+            this.maxEUOutput() * this.maxAmperesIn());
     }
 
     @Override

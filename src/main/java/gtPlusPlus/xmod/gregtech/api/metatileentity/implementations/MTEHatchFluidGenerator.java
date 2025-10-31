@@ -1,8 +1,5 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
-import java.util.Arrays;
-import java.util.stream.Stream;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -17,6 +14,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 
@@ -44,14 +42,11 @@ public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
 
     @Override
     public synchronized String[] getDescription() {
-        return Stream
-            .concat(
-                Stream.of(
-                    mDescriptionArray[0],
-                    "Capacity: " + GTUtility.formatNumbers(getCapacity()) + "L",
-                    "Hatch Tier: " + GTUtility.getColoredTierNameFromTier(mTier)),
-                Arrays.stream(getCustomTooltip()))
-            .toArray(String[]::new);
+        return GTSplit.splitLocalizedFormattedWithSuffix(
+            "gt.blockmachines.input_hatch_generator.desc",
+            getCustomTooltip(),
+            GTUtility.formatNumbers(getCapacity()) + "L",
+            GTUtility.getColoredTierNameFromTier(mTier));
     }
 
     @Override

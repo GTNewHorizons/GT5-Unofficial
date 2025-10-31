@@ -98,6 +98,7 @@ public class FluidLoader {
                         .withLocalizedName(B.getLocalisedName() + " Fluid")
                         .withStateAndTemperature(FluidState.LIQUID, 300)
                         .buildAndRegister()
+                        .addLocalizedName()
                         .asFluid());
 
                 GTValues.RA.stdBuilder()
@@ -129,6 +130,7 @@ public class FluidLoader {
                     (short) color.getAlpha() })
             .withStateAndTemperature(FluidState.LIQUID, 300)
             .buildAndRegister()
+            .addLocalizedName()
             .asFluid();
     }
 
@@ -141,6 +143,7 @@ public class FluidLoader {
                     (short) color.getAlpha() })
             .withStateAndTemperature(FluidState.LIQUID, temperature)
             .buildAndRegister()
+            .addLocalizedName()
             .asFluid();
     }
 }

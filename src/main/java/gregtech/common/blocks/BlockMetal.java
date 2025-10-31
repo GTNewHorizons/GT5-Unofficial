@@ -12,7 +12,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 
 public class BlockMetal extends BlockStorage {
@@ -32,9 +31,7 @@ public class BlockMetal extends BlockStorage {
 
         for (int i = 0; i < aMats.length; i++) {
             if (aMats[i].mMetaItemSubID > 0 && aMats[i].mHasParentMod) {
-                GTLanguageManager.addStringLocalization(
-                    getUnlocalizedName() + "." + i + ".name",
-                    "Block of " + (GTLanguageManager.i18nPlaceholder ? "%material" : aMats[i].mDefaultLocalName));
+                Materials materials = aMats[i];
                 if (aPrefix.mIsUnificatable) {
                     GTOreDictUnificator.set(aPrefix, aMats[i], new ItemStack(this, 1, i));
                 } else {

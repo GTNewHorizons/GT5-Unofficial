@@ -126,10 +126,12 @@ public class ItemFluidDisplay extends GTGenericItem {
                 if (isCell(tContainer)) {
                     Materials tMaterial = getMaterialFromCell(tContainer);
                     if (!tMaterial.equals(Materials._NULL)) {
-                        if (tMaterial.mChemicalFormula.equals("?")) {
+                        if (tMaterial.getChemicalFormula()
+                            .equals("?")) {
                             return "";
                         } else {
-                            if (!tMaterial.mChemicalFormula.isEmpty()) {
+                            if (!tMaterial.getChemicalFormula()
+                                .isEmpty()) {
                                 // Check if its a werkstoff. If so, use that tooltip instead
                                 Werkstoff w = WerkstoffLoader.fluids.inverse()
                                     .get(fluid);
@@ -137,7 +139,7 @@ public class ItemFluidDisplay extends GTGenericItem {
                                     return w.getLocalizedToolTip();
                                 }
                             }
-                            return tMaterial.mChemicalFormula;
+                            return tMaterial.getToolTip();
                         }
                     } else {
                         // For GT++ Fluid Display

@@ -9,6 +9,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -16,7 +17,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -59,13 +59,11 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
             if (tMaterial == null) continue;
             if (doesMaterialAllowGeneration(tPrefix, tMaterial)) {
                 ItemStack tStack = new ItemStack(this, 1, i);
-                GTLanguageManager.addStringLocalization(
-                    getUnlocalizedName(tStack) + ".name",
-                    GTLanguageManager.i18nPlaceholder ? getDefaultLocalizationFormat(tPrefix, tMaterial, i)
-                        : getDefaultLocalization(tPrefix, tMaterial, i));
-                GTLanguageManager.addStringLocalization(
-                    getUnlocalizedName(tStack) + ".tooltip",
-                    tMaterial.getToolTip(tPrefix.mMaterialAmount / M));
+                int finalI = i;
+                names[i] = () -> StatCollector.translateToLocalFormatted(
+                    GTUtility.getOreprefixKey(getDefaultLocalizationFormat(tPrefix, tMaterial, finalI)),
+                    tMaterial.getLocalizedName());
+                tooltips[i] = () -> tMaterial.getToolTip(tPrefix.mMaterialAmount / M);
                 if (tPrefix.mIsUnificatable) {
                     GTOreDictUnificator.set(tPrefix, tMaterial, tStack);
                 } else {
@@ -155,6 +153,7 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
     public String getItemStackDisplayName(ItemStack aStack) {
         String aName = super.getItemStackDisplayName(aStack);
         int aDamage = aStack.getItemDamage();
+        if (names[aDamage] != null) return names[aDamage].get();
         if (aDamage < 32000 && aDamage >= 0) return Materials.getLocalizedNameForItem(aName, aDamage % 1000);
         return aName;
     }

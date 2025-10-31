@@ -42,7 +42,7 @@ public class MTELongDistancePipelineFluid extends MTELongDistancePipelineBase {
     static final FluidTankInfo[] emptyTank = { new FluidTankInfo(null, Integer.MAX_VALUE) };
 
     public MTELongDistancePipelineFluid(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, "Sends fluids over long distances");
+        super(aID, aName, aNameRegional, aTier);
     }
 
     public MTELongDistancePipelineFluid(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

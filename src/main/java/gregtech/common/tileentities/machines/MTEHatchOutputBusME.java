@@ -59,6 +59,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -84,16 +85,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     boolean hadCell = false;
 
     public MTEHatchOutputBusME(int aID, String aName, String aNameRegional) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            3,
-            new String[] { "Item Output for Multiblocks", "Stores directly into ME", "Can cache 1600 items by default",
-                "Change cache size by inserting a storage cell",
-                "Change ME connection behavior by right-clicking with wire cutter",
-                "Partition the inserted Storage Cell to filter accepted outputs" },
-            1);
+        super(aID, aName, aNameRegional, 3, null, 1);
     }
 
     public MTEHatchOutputBusME(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -668,5 +660,10 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     @Override
     public boolean acceptsItemLock() {
         return false;
+    }
+
+    @Override
+    public String[] getDescription() {
+        return GTSplit.splitLocalized("gt.blockmachines.output_bus_me.desc");
     }
 }

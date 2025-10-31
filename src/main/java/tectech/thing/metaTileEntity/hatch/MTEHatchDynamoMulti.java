@@ -176,4 +176,9 @@ public class MTEHatchDynamoMulti extends MTEHatch {
         ItemStack aStack) {
         return false;
     }
+
+    @Override
+    public boolean isSkipGenerateDescription() {
+        return true;
+    }
 }

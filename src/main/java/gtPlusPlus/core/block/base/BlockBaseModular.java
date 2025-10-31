@@ -9,6 +9,7 @@ import java.util.Map;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -17,7 +18,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
@@ -57,7 +57,6 @@ public class BlockBaseModular extends BasicBlock {
         registerComponent();
         sBlockCache.put(material.getUnlocalizedName() + "." + blockType.name(), this);
         thisBlockMaterialTranslatedName = material.getTranslatedName();
-        GTLanguageManager.addStringLocalization("gtplusplus." + getUnlocalizedName() + ".name", getProperName());
     }
 
     protected BlockBaseModular(final String unlocalizedName, final String blockMaterialString,
@@ -149,29 +148,32 @@ public class BlockBaseModular extends BasicBlock {
     }
 
     public String getProperName() {
-        String tempIngot = null;
-        if (this.thisBlock == BlockTypes.STANDARD) {
-            tempIngot = "Block of %material";
-        } else if (this.thisBlock == BlockTypes.FRAME) {
-            tempIngot = "%material Frame Box";
-        } else if (this.thisBlock == BlockTypes.ORE) {
-            tempIngot = "%material Ore [Old]";
+        switch (this.thisBlock) {
+            case STANDARD -> {
+                return "Block of %s";
+            }
+            case FRAME -> {
+                return "%s Frame Box";
+            }
+            case ORE -> {
+                return "%s Ore [Old]";
+            }
         }
-        return tempIngot;
+        return null;
     }
 
     public String getUnlocalizedProperName() {
-        return getProperName().replace("%s", "%temp")
-            .replace("%material", this.thisBlockMaterial)
-            .replace("%temp", "%s");
+        return String.format(getProperName(), this.thisBlockMaterial);
     }
 
     @Override
     public String getLocalizedName() {
-        return GTLanguageManager.getTranslation("gtplusplus." + getUnlocalizedName() + ".name")
-            .replace("%s", "%temp")
-            .replace("%material", this.thisBlockMaterialTranslatedName)
-            .replace("%temp", "%s");
+        return String.format(
+            StatCollector.translateToLocal(
+                "gt.oreprefix." + getProperName().toLowerCase()
+                    .replace(" ", "_")
+                    .replace("%s", "material")),
+            this.thisBlockMaterialTranslatedName);
     }
 
     @Override

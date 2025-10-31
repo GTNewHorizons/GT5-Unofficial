@@ -30,7 +30,7 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.extensions.ArrayExt;
+import gregtech.api.util.GTSplit;
 
 public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemLockable, IDataCopyable {
 
@@ -44,17 +44,7 @@ public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemL
     }
 
     public MTEHatchOutputBus(int id, String name, String nameRegional, int tier, int slots) {
-        super(
-            id,
-            name,
-            nameRegional,
-            tier,
-            slots,
-            ArrayExt.of(
-                "Item Output for Multiblocks",
-                "Capacity: " + getSlots(tier) + " stack" + (getSlots(tier) >= 2 ? "s" : ""),
-                "Left click with data stick to save filter config",
-                "Right click with data stick to load filter config"));
+        super(id, name, nameRegional, tier, slots, (String) null);
     }
 
     public MTEHatchOutputBus(int aID, String aName, String aNameRegional, int aTier, String[] aDescription) {
@@ -325,6 +315,17 @@ public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemL
 
     @Override
     public boolean acceptsItemLock() {
+        return true;
+    }
+
+    @Override
+    public String[] getDescription() {
+        final String suffix = getSlots(mTier) >= 2 ? ".singular.desc" : ".desc";
+        return GTSplit.splitLocalizedFormatted("gt.blockmachines.output_bus" + suffix, getSlots(mTier));
+    }
+
+    @Override
+    public boolean isSkipGenerateDescription() {
         return true;
     }
 }

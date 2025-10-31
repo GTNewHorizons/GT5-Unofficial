@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -20,6 +19,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 
 public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationCircuitSupport {
@@ -50,15 +50,9 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            "Fluid Input with Mold for " + EnumChatFormatting.YELLOW + "Fluid Shaper" + EnumChatFormatting.RESET,
-            "Capacity: " + GTUtility.formatNumbers(getCapacity()) + "L",
-            "Added by: " + EnumChatFormatting.AQUA
-                + "Quetz4l"
-                + " - "
-                + EnumChatFormatting.RED
-                + "[GT++]"
-                + EnumChatFormatting.RESET };
+        return GTSplit.splitLocalizedFormatted(
+            "gt.blockmachines.input_hatch_solidifier.desc",
+            GTUtility.formatNumbers(getCapacity()) + "L");
     }
 
     public MTEHatchSolidifier(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

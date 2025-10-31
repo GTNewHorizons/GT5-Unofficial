@@ -22,6 +22,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
 
 public class MTEHatchVoidBus extends MTEHatchOutputBus {
 
@@ -32,13 +33,7 @@ public class MTEHatchVoidBus extends MTEHatchOutputBus {
     private final IItemHandlerModifiable lockedInventoryHandler = new ItemStackHandler(lockedItems);
 
     public MTEHatchVoidBus(int aID, String aName, String aNameRegional) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            1,
-            new String[] { "Voids items from Multiblocks", "Must be configured to work" },
-            0);
+        super(aID, aName, aNameRegional, 1, null, 0);
     }
 
     @Override
@@ -192,5 +187,10 @@ public class MTEHatchVoidBus extends MTEHatchOutputBus {
             }
         }
         return false;
+    }
+
+    @Override
+    public String[] getDescription() {
+        return GTSplit.splitLocalized("gt.blockmachines.output_bus_void.desc");
     }
 }

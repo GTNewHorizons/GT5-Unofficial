@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
@@ -65,7 +66,7 @@ public class GT5OreLayerHelper {
 
     public static class OreLayerWrapper {
 
-        public final String veinName, worldGenHeightRange, localizedName;
+        public final String veinName, worldGenHeightRange;
         public final short[] Meta = new short[4];
         public final short randomWeight, size, density;
         public final Map<String, Boolean> allowedDimWithOrigNames;
@@ -74,14 +75,16 @@ public class GT5OreLayerHelper {
         public final Materials mSecondaryMaterial;
         public final Materials mBetweenMaterial;
         public final Materials mSporadicMaterial;
+        public final List<String> materialKeys;
 
         public OreLayerWrapper(OreMixBuilder mix) {
             this.veinName = mix.oreMixName;
-            this.localizedName = mix.localizedName;
             this.Meta[0] = (short) mix.primary.mMetaItemSubID;
             this.Meta[1] = (short) mix.secondary.mMetaItemSubID;
             this.Meta[2] = (short) mix.between.mMetaItemSubID;
             this.Meta[3] = (short) mix.sporadic.mMetaItemSubID;
+
+            this.materialKeys = mix.materialKeys;
 
             this.mPrimaryVeinMaterial = mix.primary;
             this.mSecondaryMaterial = mix.secondary;
@@ -113,6 +116,23 @@ public class GT5OreLayerHelper {
                 || Meta[OreVeinLayer.VEIN_SECONDARY] == materialIndex
                 || Meta[OreVeinLayer.VEIN_BETWEEN] == materialIndex
                 || Meta[OreVeinLayer.VEIN_SPORADIC] == materialIndex;
+        }
+
+        public String getLocalizedName() {
+            if (materialKeys.size() > 1) {
+                String localizedName = String.join(
+                    ", ",
+                    materialKeys.stream()
+                        .map(StatCollector::translateToLocal)
+                        .toArray(String[]::new));
+                int index = localizedName.lastIndexOf(", ");
+                if (index != -1) {
+                    localizedName = localizedName.substring(0, index) + " & " + localizedName.substring(index + 2);
+                }
+                return localizedName;
+            } else {
+                return StatCollector.translateToLocal(materialKeys.get(0));
+            }
         }
     }
 }

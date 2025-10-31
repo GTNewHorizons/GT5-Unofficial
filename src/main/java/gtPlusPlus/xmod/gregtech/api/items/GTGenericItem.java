@@ -37,25 +37,17 @@ import gtPlusPlus.core.util.Utils;
  */
 public class GTGenericItem extends Item implements IProjectileItem {
 
-    private final String mName, mTooltip;
+    private final String mName, mTooltipKey;
     protected IIcon mIcon;
 
     public GTGenericItem(final String aUnlocalized, final String aEnglish, final String aEnglishTooltip) {
-        this(aUnlocalized, aEnglish, aEnglishTooltip, true);
-    }
-
-    public GTGenericItem(final String aUnlocalized, final String aEnglish, final String aEnglishTooltip,
-        final boolean aWriteToolTipIntoLangFile) {
         super();
         this.mName = aUnlocalized;
         GTLanguageManager.addStringLocalization(this.mName + ".name", aEnglish);
         if (GTUtility.isStringValid(aEnglishTooltip)) {
-            GTLanguageManager.addStringLocalization(
-                this.mTooltip = this.mName + ".tooltip_main",
-                aEnglishTooltip,
-                aWriteToolTipIntoLangFile);
+            GTLanguageManager.addStringLocalization(this.mTooltipKey = this.mName + ".tooltip_main", aEnglishTooltip);
         } else {
-            this.mTooltip = null;
+            this.mTooltipKey = null;
         }
         this.setCreativeTab(AddToCreativeTab.tabMachines);
         GameRegistry.registerItem(this, this.mName, GTPlusPlus.ID);
@@ -104,8 +96,8 @@ public class GTGenericItem extends Item implements IProjectileItem {
         if ((this.getMaxDamage() > 0) && !this.getHasSubtypes()) {
             aList.add((aStack.getMaxDamage() - this.getDamage(aStack)) + " / " + aStack.getMaxDamage());
         }
-        if (this.mTooltip != null) {
-            aList.add(GTLanguageManager.getTranslation(this.mTooltip));
+        if (this.mTooltipKey != null) {
+            aList.add(GTLanguageManager.getTranslation(this.mTooltipKey));
         }
         if (GTModHandler.isElectricItem(aStack)) {
             aList.add(StatCollector.translateToLocalFormatted("GT5U.tooltip.electric.tier", this.getTier(aStack)));

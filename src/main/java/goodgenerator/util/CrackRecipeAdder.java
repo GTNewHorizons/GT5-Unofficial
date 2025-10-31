@@ -198,7 +198,7 @@ public class CrackRecipeAdder {
             new MTEFluidPipe(
                 ID,
                 "GT_Pipe_" + unName + "_Tiny",
-                "Tiny " + Name + " Fluid Pipe",
+                "gt.oreprefix.tiny_material_fluid_pipe",
                 0.25F,
                 material.getBridgeMaterial(),
                 flow / 6,
@@ -209,7 +209,7 @@ public class CrackRecipeAdder {
             new MTEFluidPipe(
                 ID + 1,
                 "GT_Pipe_" + unName + "_Small",
-                "Small " + Name + " Fluid Pipe",
+                "gt.oreprefix.small_material_fluid_pipe",
                 0.375F,
                 material.getBridgeMaterial(),
                 flow / 3,
@@ -220,7 +220,7 @@ public class CrackRecipeAdder {
             new MTEFluidPipe(
                 ID + 2,
                 "GT_Pipe_" + unName,
-                Name + " Fluid Pipe",
+                "gt.oreprefix.tiny_material_fluid_pipe",
                 0.5F,
                 material.getBridgeMaterial(),
                 flow,
@@ -231,7 +231,7 @@ public class CrackRecipeAdder {
             new MTEFluidPipe(
                 ID + 3,
                 "GT_Pipe_" + unName + "_Large",
-                "Large " + Name + " Fluid Pipe",
+                "gt.oreprefix.large_material_fluid_pipe",
                 0.75F,
                 material.getBridgeMaterial(),
                 flow * 2,
@@ -242,7 +242,7 @@ public class CrackRecipeAdder {
             new MTEFluidPipe(
                 ID + 4,
                 "GT_Pipe_" + unName + "_Huge",
-                "Huge " + Name + " Fluid Pipe",
+                "gt.oreprefix.huge_material_fluid_pipe",
                 0.875F,
                 material.getBridgeMaterial(),
                 flow * 4,
@@ -347,11 +347,8 @@ public class CrackRecipeAdder {
         String unName = material.getDefaultName()
             .replace(" ", "_")
             .toLowerCase();
-        String Name = material.getDefaultName();
         String aTextWire1 = "wire.";
         String aTextCable1 = "cable.";
-        String aTextWire2 = " Wire";
-        String aTextCable2 = " Cable";
         int aLossInsulated = aLoss / 4;
         GTOreDictUnificator.registerOre(
             OrePrefixes.wireGt01,
@@ -359,7 +356,7 @@ public class CrackRecipeAdder {
             new MTECable(
                 ID + 0,
                 aTextWire1 + unName + ".01",
-                "1x " + Name + aTextWire2,
+                "gt.oreprefix.1x_material_wire",
                 0.125F,
                 material.getBridgeMaterial(),
                 aLoss,
@@ -373,7 +370,7 @@ public class CrackRecipeAdder {
             new MTECable(
                 ID + 1,
                 aTextWire1 + unName + ".02",
-                "2x " + Name + aTextWire2,
+                "gt.oreprefix.2x_material_wire",
                 0.25F,
                 material.getBridgeMaterial(),
                 aLoss,
@@ -387,7 +384,7 @@ public class CrackRecipeAdder {
             new MTECable(
                 ID + 2,
                 aTextWire1 + unName + ".04",
-                "4x " + Name + aTextWire2,
+                "gt.oreprefix.4x_material_wire",
                 0.375F,
                 material.getBridgeMaterial(),
                 aLoss,
@@ -401,7 +398,7 @@ public class CrackRecipeAdder {
             new MTECable(
                 ID + 3,
                 aTextWire1 + unName + ".08",
-                "8x " + Name + aTextWire2,
+                "gt.oreprefix.8x_material_wire",
                 0.5F,
                 material.getBridgeMaterial(),
                 aLoss,
@@ -415,7 +412,7 @@ public class CrackRecipeAdder {
             new MTECable(
                 ID + 4,
                 aTextWire1 + unName + ".12",
-                "12x " + Name + aTextWire2,
+                "gt.oreprefix.12x_material_wire",
                 0.625F,
                 material.getBridgeMaterial(),
                 aLoss,
@@ -429,7 +426,7 @@ public class CrackRecipeAdder {
             new MTECable(
                 ID + 5,
                 aTextWire1 + unName + ".16",
-                "16x " + Name + aTextWire2,
+                "gt.oreprefix.16x_material_wire",
                 0.75F,
                 material.getBridgeMaterial(),
                 aLoss,
@@ -444,7 +441,7 @@ public class CrackRecipeAdder {
                 new MTECable(
                     ID + 6,
                     aTextCable1 + unName + ".01",
-                    "1x " + Name + aTextCable2,
+                    "gt.oreprefix.1x_material_cable",
                     0.25F,
                     material.getBridgeMaterial(),
                     aLossInsulated,
@@ -458,7 +455,7 @@ public class CrackRecipeAdder {
                 new MTECable(
                     ID + 7,
                     aTextCable1 + unName + ".02",
-                    "2x " + Name + aTextCable2,
+                    "gt.oreprefix.2x_material_cable",
                     0.375F,
                     material.getBridgeMaterial(),
                     aLossInsulated,
@@ -472,7 +469,7 @@ public class CrackRecipeAdder {
                 new MTECable(
                     ID + 8,
                     aTextCable1 + unName + ".04",
-                    "4x " + Name + aTextCable2,
+                    "gt.oreprefix.4x_material_cable",
                     0.5F,
                     material.getBridgeMaterial(),
                     aLossInsulated,
@@ -486,7 +483,7 @@ public class CrackRecipeAdder {
                 new MTECable(
                     ID + 9,
                     aTextCable1 + unName + ".08",
-                    "8x " + Name + aTextCable2,
+                    "gt.oreprefix.8x_material_cable",
                     0.625F,
                     material.getBridgeMaterial(),
                     aLossInsulated,
@@ -500,7 +497,7 @@ public class CrackRecipeAdder {
                 new MTECable(
                     ID + 10,
                     aTextCable1 + unName + ".12",
-                    "12x " + Name + aTextCable2,
+                    "gt.oreprefix.12x_material_cable",
                     0.75F,
                     material.getBridgeMaterial(),
                     aLossInsulated,
@@ -514,7 +511,7 @@ public class CrackRecipeAdder {
                 new MTECable(
                     ID + 11,
                     aTextCable1 + unName + ".16",
-                    "16x " + Name + aTextCable2,
+                    "gt.oreprefix.16x_material_cable",
                     0.875F,
                     material.getBridgeMaterial(),
                     aLossInsulated,

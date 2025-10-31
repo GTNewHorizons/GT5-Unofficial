@@ -84,7 +84,7 @@ public enum OreMixes {
         .secondary(Materials.Magnetite)
         .inBetween(Materials.VanadiumMagnetite)
         .sporadic(Materials.Gold)
-        .localize(Materials.Gold)),
+        .setLocalizeName(Materials.Gold)),
 
     Iron(new OreMixBuilder().name("ore.mix.iron")
         .heightRange(10, 40)
@@ -97,7 +97,7 @@ public enum OreMixes {
         .secondary(Materials.YellowLimonite)
         .inBetween(Materials.BandedIron)
         .sporadic(Materials.Malachite)
-        .localize(Materials.Iron)),
+        .setLocalizeName(Materials.Iron)),
 
     Cassiterite(new OreMixBuilder().name("ore.mix.cassiterite")
         .heightRange(60, 220)
@@ -110,7 +110,7 @@ public enum OreMixes {
         .secondary(Materials.Tin)
         .inBetween(Materials.Cassiterite)
         .sporadic(Materials.Tin)
-        .localize(Materials.Cassiterite)),
+        .setLocalizeName(Materials.Cassiterite)),
 
     Tetrahedrite(new OreMixBuilder().name("ore.mix.tetrahedrite")
         .heightRange(80, 120)
@@ -159,7 +159,7 @@ public enum OreMixes {
         .secondary(Materials.Iron)
         .inBetween(Materials.Pyrite)
         .sporadic(Materials.Copper)
-        .localize(Materials.Copper)),
+        .setLocalizeName(Materials.Copper)),
 
     Bauxite(new OreMixBuilder().name("ore.mix.bauxite")
         .heightRange(10, 80)
@@ -196,7 +196,7 @@ public enum OreMixes {
         .secondary(Materials.Salt)
         .inBetween(Materials.Lepidolite)
         .sporadic(Materials.Spodumene)
-        .localize(Materials.Salt)),
+        .setLocalizeName(Materials.Salt)),
 
     Redstone(new OreMixBuilder().name("ore.mix.redstone")
         .heightRange(5, 40)
@@ -233,7 +233,7 @@ public enum OreMixes {
         .secondary(Materials.Nickel)
         .inBetween(Materials.Cobaltite)
         .sporadic(Materials.Pentlandite)
-        .localize(Materials.Nickel)),
+        .setLocalizeName(Materials.Nickel)),
 
     Platinum(new OreMixBuilder().name("ore.mix.platinum")
         .heightRange(40, 50)
@@ -245,7 +245,7 @@ public enum OreMixes {
         .secondary(Materials.Palladium)
         .inBetween(Materials.Platinum)
         .sporadic(Materials.Iridium)
-        .localize(Materials.Platinum)),
+        .setLocalizeName(Materials.Platinum)),
 
     Pitchblende(new OreMixBuilder().name("ore.mix.pitchblende")
         .heightRange(30, 60)
@@ -268,7 +268,7 @@ public enum OreMixes {
         .secondary(Materials.Bastnasite)
         .inBetween(Materials.Monazite)
         .sporadic(Materials.Neodymium)
-        .localize(Materials.Monazite)),
+        .setLocalizeName(Materials.Monazite)),
 
     Molybdenum(new OreMixBuilder().name("ore.mix.molybdenum")
         .heightRange(20, 50)
@@ -281,7 +281,7 @@ public enum OreMixes {
         .secondary(Materials.Molybdenite)
         .inBetween(Materials.Molybdenum)
         .sporadic(Materials.Powellite)
-        .localize(Materials.Molybdenum)),
+        .setLocalizeName(Materials.Molybdenum)),
 
     Tungstate(new OreMixBuilder().name("ore.mix.tungstate")
         .heightRange(20, 60)
@@ -307,7 +307,7 @@ public enum OreMixes {
         .secondary(Materials.Scheelite)
         .inBetween(Materials.Tungstate)
         .sporadic(Materials.Lithium)
-        .localize(Materials.Tungstate)),
+        .setLocalizeName(Materials.Tungstate)),
 
     Sapphire(new OreMixBuilder().name("ore.mix.sapphire")
         .heightRange(10, 25)
@@ -320,7 +320,7 @@ public enum OreMixes {
         .secondary(Materials.Pyrope)
         .inBetween(Materials.Sapphire)
         .sporadic(Materials.GreenSapphire)
-        .localize(Materials.Sapphire)),
+        .setLocalizeName(Materials.Sapphire)),
 
     Manganese(new OreMixBuilder().name("ore.mix.manganese")
         .heightRange(20, 30)
@@ -333,7 +333,7 @@ public enum OreMixes {
         .secondary(Materials.Spessartine)
         .inBetween(Materials.Pyrolusite)
         .sporadic(Materials.Tantalite)
-        .localize(Materials.Manganese)),
+        .setLocalizeName(Materials.Manganese)),
 
     Quartz(new OreMixBuilder().name("ore.mix.quartz")
         .heightRange(80, 120)
@@ -358,7 +358,7 @@ public enum OreMixes {
         .secondary(Materials.Graphite)
         .inBetween(Materials.Diamond)
         .sporadic(Materials.Coal)
-        .localize(Materials.Diamond)),
+        .setLocalizeName(Materials.Diamond)),
 
     Olivine(new OreMixBuilder().name("ore.mix.olivine")
         .heightRange(10, 25)
@@ -371,7 +371,7 @@ public enum OreMixes {
         .secondary(Materials.Magnesite)
         .inBetween(Materials.Olivine)
         .sporadic(Materials.Glauconite)
-        .localize(Materials.Olivine)),
+        .setLocalizeName(Materials.Olivine)),
 
     Apatite(new OreMixBuilder().name("ore.mix.apatite")
         .heightRange(40, 60)
@@ -406,7 +406,7 @@ public enum OreMixes {
         .secondary(Materials.Sodalite)
         .inBetween(Materials.Lapis)
         .sporadic(Materials.Calcite)
-        .localize(Materials.Lapis)),
+        .setLocalizeName(Materials.Lapis)),
 
     Beryllium(new OreMixBuilder().name("ore.mix.beryllium")
         .heightRange(5, 30)
@@ -441,7 +441,7 @@ public enum OreMixes {
         .secondary(Materials.Uraninite)
         .inBetween(Materials.Uranium)
         .sporadic(Materials.Uranium)
-        .localize(Materials.Uranium)),
+        .setLocalizeName(Materials.Uranium)),
     OilSand(new OreMixBuilder().name("ore.mix.oilsand")
         .heightRange(50, 80)
         .weight(40)
@@ -475,7 +475,7 @@ public enum OreMixes {
         .secondary(Materials.InfusedFire)
         .inBetween(Materials.Amber)
         .sporadic(Materials.Cinnabar)
-        .localize(Materials.InfusedWater, Materials.InfusedFire, Materials.Amber)),
+        .setLocalizeName(Materials.InfusedWater, Materials.InfusedFire, Materials.Amber)),
 
     TerraAer(new OreMixBuilder().name("ore.mix.terraaer")
         .heightRange(5, 20)
@@ -488,7 +488,7 @@ public enum OreMixes {
         .secondary(Materials.InfusedAir)
         .inBetween(Materials.Amber)
         .sporadic(Materials.Cinnabar)
-        .localize(Materials.InfusedEarth, Materials.InfusedAir)),
+        .setLocalizeName(Materials.InfusedEarth, Materials.InfusedAir)),
 
     PerditioOrdo(new OreMixBuilder().name("ore.mix.perditioordo")
         .heightRange(5, 20)
@@ -501,7 +501,7 @@ public enum OreMixes {
         .secondary(Materials.InfusedOrder)
         .inBetween(Materials.Amber)
         .sporadic(Materials.Cinnabar)
-        .localize(Materials.InfusedEntropy, Materials.InfusedOrder)),
+        .setLocalizeName(Materials.InfusedEntropy, Materials.InfusedOrder)),
 
     CopperTin(new OreMixBuilder().name("ore.mix.coppertin")
         .heightRange(80, 200)
@@ -513,7 +513,7 @@ public enum OreMixes {
         .secondary(Materials.Vermiculite)
         .inBetween(Materials.Cassiterite)
         .sporadic(Materials.Alunite)
-        .localize(Materials.Vermiculite)),
+        .setLocalizeName(Materials.Vermiculite)),
 
     TitaniumChrome(new OreMixBuilder().name("ore.mix.titaniumchrome")
         .heightRange(10, 70)
@@ -549,7 +549,7 @@ public enum OreMixes {
         .secondary(Materials.GarnetSand)
         .inBetween(Materials.Asbestos)
         .sporadic(Materials.Diatomite)
-        .localize(Materials.Tin)),
+        .setLocalizeName(Materials.Tin)),
 
     KaoliniteZeolite(new OreMixBuilder().name("ore.mix.kaolinitezeolite")
         .heightRange(50, 70)
@@ -574,7 +574,7 @@ public enum OreMixes {
         .secondary(Materials.Mica)
         .inBetween(Materials.Cassiterite)
         .sporadic(Materials.Pollucite)
-        .localize(Materials.Mica)),
+        .setLocalizeName(Materials.Mica)),
 
     Dolomite(new OreMixBuilder().name("ore.mix.dolomite")
         .heightRange(150, 200)
@@ -598,7 +598,7 @@ public enum OreMixes {
         .secondary(Materials.Chrome)
         .inBetween(Materials.Cooperite)
         .sporadic(Materials.Palladium)
-        .localize(Materials.Palladium)),
+        .setLocalizeName(Materials.Palladium)),
 
     IridiumMytryl(new OreMixBuilder().name("ore.mix.iridiummytryl")
         .heightRange(15, 40)
@@ -610,7 +610,7 @@ public enum OreMixes {
         .secondary(Materials.Iridium)
         .inBetween(Materials.Palladium)
         .sporadic(Materials.Mithril)
-        .localize(Materials.Iridium)),
+        .setLocalizeName(Materials.Iridium)),
 
     Osmium(new OreMixBuilder().name("ore.mix.osmium")
         .heightRange(5, 30)
@@ -622,7 +622,7 @@ public enum OreMixes {
         .secondary(Materials.Osmium)
         .inBetween(Materials.Iridium)
         .sporadic(Materials.Nickel)
-        .localize(Materials.Osmium)),
+        .setLocalizeName(Materials.Osmium)),
 
     SaltPeterElectrotine(new OreMixBuilder().name("ore.mix.saltpeterelectrotine")
         .heightRange(5, 45)
@@ -635,7 +635,7 @@ public enum OreMixes {
         .secondary(Materials.Diatomite)
         .inBetween(Materials.Electrotine)
         .sporadic(Materials.Alunite)
-        .localize(Materials.Electrotine)),
+        .setLocalizeName(Materials.Electrotine)),
 
     Desh(new OreMixBuilder().name("ore.mix.desh")
         .heightRange(5, 40)
@@ -735,7 +735,7 @@ public enum OreMixes {
         .secondary(Materials.Gold)
         .inBetween(Materials.InfusedGold)
         .sporadic(Materials.Platinum)
-        .localize(Materials.InfusedGold)),
+        .setLocalizeName(Materials.InfusedGold)),
 
     Niobium(new OreMixBuilder().name("ore.mix.niobium")
         .heightRange(5, 30)
@@ -791,7 +791,7 @@ public enum OreMixes {
         .secondary(Materials.NetherStar)
         .inBetween(Materials.GarnetRed)
         .sporadic(Materials.GarnetYellow)
-        .localize(Materials.NetherStar)),
+        .setLocalizeName(Materials.NetherStar)),
 
     Garnet(new OreMixBuilder().name("ore.mix.garnet")
         .heightRange(10, 30)
@@ -814,7 +814,7 @@ public enum OreMixes {
         .secondary(Materials.Caesium)
         .inBetween(Materials.Lanthanum)
         .sporadic(Materials.Cerium)
-        .localize(Materials.RareEarth)),
+        .setLocalizeName(Materials.RareEarth)),
 
     RichNuclear(new OreMixBuilder().name("ore.mix.richnuclear")
         .heightRange(5, 40)
@@ -826,7 +826,7 @@ public enum OreMixes {
         .secondary(Materials.Plutonium)
         .inBetween(Materials.Thorium)
         .sporadic(Materials.Thorium)
-        .localize(Materials.Plutonium)),
+        .setLocalizeName(Materials.Plutonium)),
 
     HeavyPentele(new OreMixBuilder().name("ore.mix.heavypentele")
         .heightRange(40, 60)
@@ -882,7 +882,7 @@ public enum OreMixes {
         .secondary(Materials.Barite)
         .inBetween(Materials.CertusQuartz)
         .sporadic(Materials.CertusQuartz)
-        .localize(Materials.Quartz)),
+        .setLocalizeName(Materials.Quartz)),
 
     Rutile(new OreMixBuilder().name("ore.mix.rutile")
         .heightRange(5, 20)
@@ -906,7 +906,7 @@ public enum OreMixes {
         .secondary(Materials.Silver)
         .inBetween(Materials.Lead)
         .sporadic(Materials.Cryolite)
-        .localize(Materials.Cryolite)),
+        .setLocalizeName(Materials.Cryolite)),
 
     LuVTantalite(new OreMixBuilder().name("ore.mix.luvtantalite")
         .heightRange(20, 30)
@@ -940,7 +940,7 @@ public enum OreMixes {
         .secondary(Materials.Adamantium)
         .inBetween(Materials.InfinityCatalyst)
         .sporadic(Materials.Bedrockium)
-        .localize(Materials.InfinityCatalyst)),
+        .setLocalizeName(Materials.InfinityCatalyst)),
 
     CosmicNeutronium(new OreMixBuilder().name("ore.mix.cosmicneutronium")
         .heightRange(5, 20)
@@ -952,7 +952,7 @@ public enum OreMixes {
         .secondary(Materials.CosmicNeutronium)
         .inBetween(Materials.BlackPlutonium)
         .sporadic(Materials.Bedrockium)
-        .localize(Materials.CosmicNeutronium)),
+        .setLocalizeName(Materials.CosmicNeutronium)),
 
     Dilithium(new OreMixBuilder().name("ore.mix.dilithium")
         .heightRange(30, 100)
@@ -975,7 +975,7 @@ public enum OreMixes {
         .secondary(Materials.NaquadahEnriched)
         .inBetween(Materials.Naquadria)
         .sporadic(Materials.Trinium)
-        .localize(Materials.Naquadria)),
+        .setLocalizeName(Materials.Naquadria)),
 
     AwakenedDraconium(new OreMixBuilder().name("ore.mix.awakeneddraconium")
         .heightRange(20, 40)
@@ -987,7 +987,7 @@ public enum OreMixes {
         .secondary(Materials.Draconium)
         .inBetween(Materials.DraconiumAwakened)
         .sporadic(Materials.NetherStar)
-        .localize(Materials.DraconiumAwakened)),
+        .setLocalizeName(Materials.DraconiumAwakened)),
 
     Tengam(new OreMixBuilder().name("ore.mix.tengam")
         .heightRange(30, 180)

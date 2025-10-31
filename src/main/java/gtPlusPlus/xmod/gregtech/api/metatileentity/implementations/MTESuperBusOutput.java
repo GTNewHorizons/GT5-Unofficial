@@ -11,7 +11,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.lib.GTPPCore;
+import gtPlusPlus.core.util.Utils;
 
 public class MTESuperBusOutput extends MTEHatchOutputBus {
 
@@ -76,9 +76,7 @@ public class MTESuperBusOutput extends MTEHatchOutputBus {
 
     @Override
     public String[] getDescription() {
-        return new String[] { "Item Output for Multiblocks", getSlots(this.mTier) + " Slots",
-            "Left click with data stick to save filter config", "Right click with data stick to load filter config",
-            GTPPCore.GT_Tooltip.get() };
+        return Utils.splitLocalizedFormattedWithGTPP("gt.blockmachines.output_bus_super.desc", getSlots(this.mTier));
     }
 
     @Override

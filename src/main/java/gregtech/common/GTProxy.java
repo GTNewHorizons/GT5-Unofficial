@@ -2162,6 +2162,7 @@ public class GTProxy implements IFuelHandler {
             .withStateAndTemperature(LIQUID, aMaterial.getLiquidTemperature())
             .buildAndRegister()
             .configureMaterials(aMaterial)
+            .addLocalizedName(aMaterial)
             .registerBContainers(GTOreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L), ItemList.Cell_Empty.get(1L))
             .asFluid();
     }
@@ -2180,6 +2181,7 @@ public class GTProxy implements IFuelHandler {
             .withStateAndTemperature(GAS, aMaterial.getGasTemperature())
             .buildAndRegister()
             .configureMaterials(aMaterial)
+            .addLocalizedName(aMaterial)
             .registerBContainers(GTOreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L), ItemList.Cell_Empty.get(1L))
             .asFluid();
     }
@@ -2199,6 +2201,7 @@ public class GTProxy implements IFuelHandler {
             .withStateAndTemperature(PLASMA, 10000)
             .buildAndRegister()
             .configureMaterials(aMaterial)
+            .addLocalizedName(aMaterial)
             .registerContainers(
                 GTOreDictUnificator.get(OrePrefixes.cellPlasma, aMaterial, 1L),
                 ItemList.Cell_Empty.get(1L),
@@ -2221,6 +2224,7 @@ public class GTProxy implements IFuelHandler {
             .withStateAndTemperature(MOLTEN, aMaterial.mMeltingPoint < 0 ? 1000 : aMaterial.mMeltingPoint)
             .buildAndRegister()
             .configureMaterials(aMaterial)
+            .addLocalizedName(aMaterial)
             .registerContainers(
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, aMaterial, 1L),
                 ItemList.Cell_Empty.get(1L),
@@ -2248,6 +2252,7 @@ public class GTProxy implements IFuelHandler {
                 .withColorRGBA(aMaterial.mRGBa)
                 .withStateAndTemperature(GAS, 775)
                 .buildAndRegister()
+                .addLocalizedName(aMaterial)
                 .registerBContainers(
                     GTOreDictUnificator.get(orePrefixes[i], aMaterial, 1L),
                     ItemList.Cell_Empty.get(1L))
@@ -2309,6 +2314,7 @@ public class GTProxy implements IFuelHandler {
                 .withColorRGBA(aMaterial.mRGBa)
                 .withStateAndTemperature(GAS, 775)
                 .buildAndRegister()
+                .addLocalizedName(aMaterial)
                 .registerBContainers(
                     GTOreDictUnificator.get(orePrefixes[i], aMaterial, 1L),
                     ItemList.Cell_Empty.get(1L))

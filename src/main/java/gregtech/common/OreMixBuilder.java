@@ -1,8 +1,11 @@
 package gregtech.common;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import net.minecraft.util.StatCollector;
 
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.Materials;
@@ -18,7 +21,7 @@ public class OreMixBuilder {
     public Map<String, Boolean> dimsEnabled = new HashMap<>();
     public int minY, maxY, weight, density, size;
     public Materials primary, secondary, between, sporadic, representative;
-    public String localizedName;
+    public List<String> materialKeys = new ArrayList<>();
 
     public OreMixBuilder name(String name) {
         this.oreMixName = name;
@@ -67,9 +70,9 @@ public class OreMixBuilder {
 
     public OreMixBuilder primary(Materials primary) {
         this.primary = primary;
-        if (representative == null || localizedName == null) {
+        if (representative == null || materialKeys.isEmpty()) {
             representative = primary;
-            localizedName = primary.mLocalizedName;
+            materialKeys.add(primary.getLocalizedNameKey());
         }
         return this;
     }
@@ -96,22 +99,28 @@ public class OreMixBuilder {
      * @param materials The materials to be used for localization. The first material in the array will be used to
      *                  represent to ore mix in GUI's. If none are provided the {@link #primary} will be used.
      */
-    public OreMixBuilder localize(Materials... materials) {
-        if (materials.length > 1) {
+    public OreMixBuilder setLocalizeName(Materials... materials) {
+        if (materials.length == 1) this.representative = materials[0];
+        for (Materials m : materials) {
+            materialKeys.add(m.getLocalizedNameKey());
+        }
+        return this;
+    }
+
+    public String getLocalizedName() {
+        if (materialKeys.size() > 1) {
             String localizedName = String.join(
                 ", ",
-                Arrays.stream(materials)
-                    .map(material -> material.mLocalizedName)
+                materialKeys.stream()
+                    .map(StatCollector::translateToLocal)
                     .toArray(String[]::new));
             int index = localizedName.lastIndexOf(", ");
             if (index != -1) {
                 localizedName = localizedName.substring(0, index) + " & " + localizedName.substring(index + 2);
             }
-            this.localizedName = localizedName;
+            return localizedName;
         } else {
-            this.localizedName = materials[0].mLocalizedName;
+            return StatCollector.translateToLocal(materialKeys.get(0));
         }
-        this.representative = materials[0];
-        return this;
     }
 }

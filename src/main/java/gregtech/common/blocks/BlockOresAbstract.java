@@ -34,7 +34,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.items.GTGenericBlock;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.render.GTRendererBlock;
@@ -42,7 +41,9 @@ import gregtech.common.render.GTRendererBlock;
 public abstract class BlockOresAbstract extends GTGenericBlock implements ITileEntityProvider {
 
     private static final String DOT_NAME = ".name";
-    private static final String DOT_TOOLTIP = ".tooltip";
+
+    public final static String[] NAME = new String[32767];
+    public final static String[] TOOLTIP = new String[32767];
     public static ThreadLocal<TileEntityOres> mTemporaryTileEntity = new ThreadLocal<>();
     public static boolean FUCKING_LOCK = false;
     public static boolean tHideOres;
@@ -61,32 +62,14 @@ public abstract class BlockOresAbstract extends GTGenericBlock implements ITileE
             if (GregTechAPI.sGeneratedMaterials[i] != null) {
                 for (int j = 0; j < aOreMetaCount; j++) {
                     if (!this.getEnabledMetas()[j]) continue;
-                    GTLanguageManager.addStringLocalization(
-                        getUnlocalizedName() + "." + (i + (j * 1000)) + DOT_NAME,
-                        GTLanguageManager.i18nPlaceholder ? getLocalizedNameFormat(GregTechAPI.sGeneratedMaterials[i])
-                            : getLocalizedName(GregTechAPI.sGeneratedMaterials[i]));
-                    GTLanguageManager.addStringLocalization(
-                        getUnlocalizedName() + "." + (i + (j * 1000)) + DOT_TOOLTIP,
-                        GregTechAPI.sGeneratedMaterials[i].getToolTip());
-                    GTLanguageManager.addStringLocalization(
-                        getUnlocalizedName() + "." + ((i + 16000) + (j * 1000)) + DOT_NAME,
-                        "Small " + (GTLanguageManager.i18nPlaceholder
-                            ? getLocalizedNameFormat(GregTechAPI.sGeneratedMaterials[i])
-                            : getLocalizedName(GregTechAPI.sGeneratedMaterials[i])));
-                    GTLanguageManager.addStringLocalization(
-                        getUnlocalizedName() + "." + ((i + 16000) + (j * 1000)) + DOT_TOOLTIP,
-                        GregTechAPI.sGeneratedMaterials[i].getToolTip());
-                    if ((GregTechAPI.sGeneratedMaterials[i].mTypes & 0x8) != 0
-                        && !aBlockedOres.contains(GregTechAPI.sGeneratedMaterials[i])) {
+                    Materials material = GregTechAPI.sGeneratedMaterials[i];
+                    if ((material.mTypes & 0x8) != 0 && !aBlockedOres.contains(material)) {
                         if (this.getProcessingPrefix()[j] != null && this.getProcessingPrefix()[j].mIsUnificatable) {
-                            GTOreDictUnificator.set(
-                                this.getProcessingPrefix()[j],
-                                GregTechAPI.sGeneratedMaterials[i],
-                                new ItemStack(this, 1, i + (j * 1000)));
+                            GTOreDictUnificator
+                                .set(this.getProcessingPrefix()[j], material, new ItemStack(this, 1, i + (j * 1000)));
                         } else {
                             GTOreDictUnificator.registerOre(
-                                this.getProcessingPrefix()[j] != null
-                                    ? this.getProcessingPrefix()[j].get(GregTechAPI.sGeneratedMaterials[i])
+                                this.getProcessingPrefix()[j] != null ? this.getProcessingPrefix()[j].get(material)
                                     : "",
                                 new ItemStack(this, 1, i + (j * 1000)));
                         }
@@ -204,6 +187,21 @@ public abstract class BlockOresAbstract extends GTGenericBlock implements ITileE
     @Override
     public String getLocalizedName() {
         return StatCollector.translateToLocal(getUnlocalizedName() + DOT_NAME);
+    }
+
+    public static Materials getMaterial(int meta) {
+        return meta < 16000 ? GregTechAPI.sGeneratedMaterials[meta % 1000]
+            : GregTechAPI.sGeneratedMaterials[(meta - 16000) % 1000];
+    }
+
+    public static String getDisplayName(int meta) {
+        return StatCollector.translateToLocalFormatted(
+            meta < 16000 ? "gt.oreprefix.material_ore" : "gt.oreprefix.small_material_ore",
+            getMaterial(meta).getLocalizedName());
+    }
+
+    public static String getTooltip(int meta) {
+        return getMaterial(meta).getToolTip();
     }
 
     @Override

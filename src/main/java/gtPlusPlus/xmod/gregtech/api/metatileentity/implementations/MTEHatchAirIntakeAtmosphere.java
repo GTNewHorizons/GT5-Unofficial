@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.util.GTSplit;
 
 public class MTEHatchAirIntakeAtmosphere extends MTEHatchAirIntake {
 
@@ -17,11 +18,8 @@ public class MTEHatchAirIntakeAtmosphere extends MTEHatchAirIntake {
 
     @Override
     public String[] getCustomTooltip() {
-        String[] aTooltip = new String[3];
-        aTooltip[0] = "§cDO NOT OBSTRUCT THE INPUT!";
-        aTooltip[1] = "Draws in Air from the surrounding environment";
-        aTooltip[2] = "Completelly fills up every " + getMaxTickTime() + " ticks";
-        return aTooltip;
+        return GTSplit
+            .splitLocalizedFormatted("gt.blockmachines.input_hatch_generator.atmosphere.desc", getMaxTickTime());
     }
 
     @Override

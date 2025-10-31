@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.entity.Entity;
@@ -22,6 +23,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -32,9 +34,9 @@ import com.gtnewhorizons.modularui.api.KeyboardUtil;
 import gregtech.GTMod;
 import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IItemBehaviour;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
@@ -46,6 +48,10 @@ public abstract class MetaBaseItem extends GTGenericItem
 
     /* ---------- CONSTRUCTOR AND MEMBER VARIABLES ---------- */
     private final ConcurrentHashMap<Short, ArrayList<IItemBehaviour<MetaBaseItem>>> mItemBehaviors = new ConcurrentHashMap<>();
+    @SuppressWarnings("unchecked")
+    protected final Supplier<String>[] names = (Supplier<String>[]) new Supplier[32767];
+    @SuppressWarnings("unchecked")
+    protected final Supplier<String>[] tooltips = (Supplier<String>[]) new Supplier[32767];
 
     /**
      * Creates the Item using these Parameters.
@@ -224,12 +230,17 @@ public abstract class MetaBaseItem extends GTGenericItem
 
     @Override
     public final void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
-        String tKey = getUnlocalizedName(aStack) + ".tooltip";
-        String[] tStrings = GTLanguageManager.getTranslation(tKey)
-            .split("/n ");
-        for (String tString : tStrings)
-            if (GTUtility.isStringValid(tString) && !tKey.equals(tString)) aList.add(tString);
-
+        final String tTooltip;
+        if (tooltips[aStack.getItemDamage()] != null) {
+            tTooltip = tooltips[aStack.getItemDamage()].get();
+        } else if (StatCollector.canTranslate(getUnlocalizedName() + ".tooltip")) {
+            tTooltip = StatCollector.translateToLocal(getUnlocalizedName() + ".tooltip");
+        } else {
+            tTooltip = null;
+        }
+        if (tTooltip != null) {
+            for (String tString : GTSplit.split(tTooltip)) if (GTUtility.isStringValid(tString)) aList.add(tString);
+        }
         Long[] tStats = getElectricStats(aStack);
         if (tStats != null) {
             if (tStats[3] > 0) {

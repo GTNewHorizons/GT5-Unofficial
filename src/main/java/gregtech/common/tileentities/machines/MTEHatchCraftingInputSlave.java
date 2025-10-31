@@ -31,6 +31,7 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -42,15 +43,7 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     private boolean masterSet = false; // indicate if values of masterX, masterY, masterZ are valid
 
     public MTEHatchCraftingInputSlave(int aID, String aName, String aNameRegional) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            11,
-            0,
-            new String[] { "Proxy for Crafting Input Buffer/Bus", "Hatch Tier: " + TIER_COLORS[11] + VN[11],
-                "Link with Crafting Input Buffer/Bus using Data Stick to share inventory",
-                "Left click on the Crafting Input Buffer/Bus, then right click on this block to link them", });
+        super(aID, aName, aNameRegional, 11, 0, null);
         disableSort = true;
     }
 
@@ -318,5 +311,11 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     @Override
     public void setProcessingLogic(ProcessingLogic pl) {
         if (getMaster() != null) getMaster().setProcessingLogic(pl);
+    }
+
+    @Override
+    public String[] getDescription() {
+        return GTSplit
+            .splitLocalizedFormatted("gt.blockmachines.input_bus_crafting_slave.desc", TIER_COLORS[11] + VN[11]);
     }
 }

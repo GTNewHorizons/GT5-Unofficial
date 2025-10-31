@@ -10,6 +10,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 
 import com.google.common.collect.ImmutableList;
 
@@ -21,8 +22,8 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedItem;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 
 public class MetaGeneratedItem99 extends MetaGeneratedItem {
 
@@ -83,13 +84,8 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
     private void registerMolten(Materials tMaterial, int i) {
         ItemStack tStack = new ItemStack(this, 1, i);
         enabled.set(i);
-
-        GTLanguageManager.addStringLocalization(
-            getUnlocalizedName(tStack) + ".name",
-            cellMolten.getDefaultLocalNameFormatForItem(tMaterial));
-        GTLanguageManager.addStringLocalization(
-            getUnlocalizedName(tStack) + ".tooltip",
-            tMaterial.getToolTip(cellMolten.mMaterialAmount / M));
+        names[i] = () -> StatCollector.translateToLocal("gt.oreprefix.molten_material_cell");
+        tooltips[i] = () -> tMaterial.getToolTip(cellMolten.mMaterialAmount / M);
 
         if (cellMolten.mIsUnificatable) {
             GTOreDictUnificator.set(cellMolten, tMaterial, tStack);
@@ -103,13 +99,9 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
         for (OrePrefixes prefix : CRACKED_CELL_TYPES) {
             ItemStack tStack = new ItemStack(this, 1, offset + i);
             enabled.set(offset + i);
-
-            GTLanguageManager.addStringLocalization(
-                getUnlocalizedName(tStack) + ".name",
-                prefix.getDefaultLocalNameFormatForItem(tMaterial));
-            GTLanguageManager.addStringLocalization(
-                getUnlocalizedName(tStack) + ".tooltip",
-                tMaterial.getToolTip(prefix.mMaterialAmount / M));
+            names[offset + i] = () -> StatCollector
+                .translateToLocal(GTUtility.getOreprefixKey(prefix.getDefaultLocalNameFormatForItem(tMaterial)));
+            tooltips[offset + i] = () -> tMaterial.getToolTip(prefix.mMaterialAmount / M);
 
             if (prefix.mIsUnificatable) {
                 GTOreDictUnificator.set(prefix, tMaterial, tStack);
@@ -161,7 +153,7 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
         String aName = super.getItemStackDisplayName(aStack);
         Materials material = getMaterial(aStack.getItemDamage());
         if (material != null) {
-            return material.getLocalizedNameForItem(aName);
+            return String.format(names[aStack.getItemDamage()].get(), material.getLocalizedName());
         }
         return aName;
     }

@@ -22,15 +22,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GTLanguageManager;
 
 public class BWMetaGeneratedSmallOres extends BWMetaGeneratedOres {
 
     public BWMetaGeneratedSmallOres(Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName) {
         super(p_i45386_1_, tileEntity, blockName);
-        this.blockTypeLocalizedName = GTLanguageManager.addStringLocalization(
-            "bw.blocktype." + OrePrefixes.oreSmall,
-            OrePrefixes.oreSmall.mLocalizedMaterialPre + "%material" + OrePrefixes.oreSmall.mLocalizedMaterialPost);
+        this._prefixes = OrePrefixes.oreSmall;
     }
 
     @Override

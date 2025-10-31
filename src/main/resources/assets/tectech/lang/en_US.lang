@@ -593,7 +593,7 @@ gt.blockcasingsTT.0.desc.1=The power levels are rising!
 gt.blockcasingsTT.1.name=Computer Casing
 gt.blockcasingsTT.1.desc.0=Nice and clean casing.
 gt.blockcasingsTT.1.desc.1=Dust can break it!?
-gt.3blockcasingsTT.2.name=Computer Heat Vent
+gt.blockcasingsTT.2.name=Computer Heat Vent
 gt.blockcasingsTT.2.desc.0=Air vent with a filter.
 gt.blockcasingsTT.2.desc.1=Perfectly muffled sound!
 gt.blockcasingsTT.3.name=Advanced Computer Casing
@@ -859,6 +859,9 @@ gt.blockmachines.multimachine.em.blackholegenerator.hint.0=1 - Classic Hatches o
 gt.blockmachines.multimachine.em.blackholegenerator.hint.1=2 - Elemental Hatches or Molecular Casing
 gt.blockmachines.multimachine.em.blackholegenerator.desc.0=Controller block of the Black Hole Generator
 gt.blockmachines.multimachine.em.blackholegenerator.desc.1=Uses a black hole to generate power
+
+gt.blockmachines.pipe.energystream.block.name=Laser Vacuum Pipe Casing
+gt.blockmachines.pipe.datastream.block.name=Optical Fiber Cable Casing
 
 # Eye of Harmony
 achievement.gt.blockmachines.multimachine.em.eye_of_harmony=Eye of Harmony Controller
@@ -2035,3 +2038,28 @@ tt.gui.tooltip.full_led_desc.in.id=ID: %s:%s:§bI %s
 tt.gui.tooltip.full_led_desc.out.id=ID: %s:%s:§bO %s
 tt.gui.tooltip.full_led_desc.value=Value: %s
 tt.gui.tooltip.full_led_desc.unused=Unused
+
+EOH_Controller_PlanetBlock=Current Planet Block: %s
+EOH_Controller_AstralArrayAmount=Stored Astral Arrays: %s
+
+EOH.Recipe.Hydrogen.In=Hydrogen: %s L
+EOH.Recipe.Helium.In=Helium: %s L
+EOH.Recipe.SpacetimeTier=Spacetime Tier: %s
+EOH.Recipe.EU.Out=EU Output: %s EU
+EOH.Recipe.EU.In=EU Input: %s EU
+EOH.Recipe.BaseRecipeChance=Base Recipe Chance: %s%%
+EOH.Recipe.RecipeEnergyEfficiency=Recipe Energy Efficiency: %s%%
+EOH.Recipe.Warning=§4§lWarning§r: Not all items displayed.
+
+gt.blockmachines.dynamo_hatch.wireless=§7Stores energy globally in a network, up to 2^(2^31) EU.\n§7Does not connect to wires. This block accepts EU into the network.\nAuthor: §4§l§o§nC§6§l§o§no§a§l§o§nl§3§l§o§ne§5§l§o§nn§7§l & §a§lChrom
+gt.blockmachines.energy_hatch.wireless=§7Stores energy globally in a network, up to 2^(2^31) EU.\n§7Does not connect to wires. This block withdraws EU from the network.\n%s\nAuthor: §4§l§o§nC§6§l§o§no§a§l§o§nl§3§l§o§ne§5§l§o§nn§7§l & §9§lCloud
+
+gt.godforgecasing.0.name=Singularity Reinforced Stellar Shielding Casing
+gt.godforgecasing.1.name=Celestial Matter Guidance Casing
+gt.godforgecasing.2.name=Boundless Gravitationally Severed Structure Casing
+gt.godforgecasing.3.name=Transcendentally Amplified Magnetic Confinement Casing
+gt.godforgecasing.4.name=Stellar Energy Siphon Casing
+gt.godforgecasing.5.name=Remote Graviton Flow Modulator
+gt.godforgecasing.6.name=Medial Graviton Flow Modulator
+gt.godforgecasing.7.name=Central Graviton Flow Modulator
+gt.godforgecasing.8.name=Harmonic Phonon Transmission Conduit

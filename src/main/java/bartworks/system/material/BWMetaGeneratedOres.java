@@ -31,16 +31,12 @@ import net.minecraft.world.World;
 
 import bartworks.util.MathUtils;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 
 public class BWMetaGeneratedOres extends BWMetaGeneratedBlocks {
 
     public BWMetaGeneratedOres(Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName) {
-        super(p_i45386_1_, tileEntity, blockName);
-        this.blockTypeLocalizedName = GTLanguageManager.addStringLocalization(
-            "bw.blocktype." + OrePrefixes.ore,
-            OrePrefixes.ore.mLocalizedMaterialPre + "%material" + OrePrefixes.ore.mLocalizedMaterialPost);
+        super(p_i45386_1_, tileEntity, blockName, OrePrefixes.ore);
     }
 
     @Override

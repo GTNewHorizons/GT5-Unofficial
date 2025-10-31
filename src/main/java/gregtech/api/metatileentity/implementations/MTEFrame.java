@@ -2,6 +2,7 @@ package gregtech.api.metatileentity.implementations;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Dyes;
@@ -11,20 +12,21 @@ import gregtech.api.interfaces.ITemporaryTE;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.ILocalizedMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 
-public class MTEFrame extends MetaPipeEntity implements ITemporaryTE {
+public class MTEFrame extends MetaPipeEntity implements ITemporaryTE, ILocalizedMetaPipeEntity {
 
-    private static final String localizedDescFormat = GTLanguageManager
-        .addStringLocalization("gt.blockmachines.gt_frame.desc.format", "Just something you can put covers on.");
+    public static final String LOCALIZED_DESC_FORMAT = "gt.blockmachines.gt_frame.desc.format";
     public final Materials mMaterial;
+    private String mPrefixKey;
 
-    public MTEFrame(int aID, String aName, String aNameRegional, Materials aMaterial) {
-        super(aID, aName, aNameRegional, 0);
+    public MTEFrame(int aID, String aName, String aPrefixKey, Materials aMaterial) {
+        super(aID, aName, 0);
         mMaterial = aMaterial;
+        mPrefixKey = aPrefixKey;
         // Hide TileEntity frame in NEI, since we have the block version now that should always be used
         codechicken.nei.api.API.hideItem(this.getStackForm(1));
     }
@@ -54,7 +56,13 @@ public class MTEFrame extends MetaPipeEntity implements ITemporaryTE {
 
     @Override
     public String[] getDescription() {
-        return localizedDescFormat.split("\\R");
+        return StatCollector.translateToLocal(LOCALIZED_DESC_FORMAT)
+            .split("\\R");
+    }
+
+    @Override
+    public boolean isSkipGenerateDescription() {
+        return true;
     }
 
     @Override
@@ -117,5 +125,15 @@ public class MTEFrame extends MetaPipeEntity implements ITemporaryTE {
     @Override
     public boolean isMachineBlockUpdateRecursive() {
         return true;
+    }
+
+    @Override
+    public Materials getMaterial() {
+        return mMaterial;
+    }
+
+    @Override
+    public String getPrefixKey() {
+        return mPrefixKey;
     }
 }

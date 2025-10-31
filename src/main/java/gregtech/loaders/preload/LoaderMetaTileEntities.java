@@ -2100,172 +2100,83 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
     }
 
     private static void registerMachineHull() {
-        ItemList.Hull_Bronze.set(
-            new MTEBasicHullBronze(HULL_BRONZE.ID, "hull.bronze", "Bronze Hull", 0, "For your first Steam Machines")
-                .getStackForm(1L));
+        ItemList.Hull_Bronze
+            .set(new MTEBasicHullBronze(HULL_BRONZE.ID, "hull.bronze", "Bronze Hull", 0).getStackForm(1L));
         ItemList.Hull_Bronze_Bricks.set(
-            new MTEBasicHullBronzeBricks(
-                HULL_BRICKED_BRONZE.ID,
-                "hull.bronze_bricked",
-                "Bricked Bronze Hull",
-                0,
-                "For your first Steam Machines").getStackForm(1L));
-        ItemList.Hull_HP.set(
-            new MTEBasicHullSteel(HULL_STEEL.ID, "hull.steel", "Steel Hull", 0, "For improved Steam Machines")
+            new MTEBasicHullBronzeBricks(HULL_BRICKED_BRONZE.ID, "hull.bronze_bricked", "Bricked Bronze Hull", 0)
                 .getStackForm(1L));
+        ItemList.Hull_HP.set(new MTEBasicHullSteel(HULL_STEEL.ID, "hull.steel", "Steel Hull", 0).getStackForm(1L));
         ItemList.Hull_HP_Bricks.set(
-            new MTEBasicHullSteelBricks(
-                HULL_WROUGHT_IRON.ID,
-                "hull.steel_bricked",
-                "Bricked Wrought Iron Hull",
-                0,
-                "For improved Steam Machines").getStackForm(1L));
-
-        ItemList.Hull_ULV
-            .set(new MTEBasicHull(HULL_ULV.ID, "hull.tier.00", "ULV Machine Hull", 0, imagination).getStackForm(1L));
-        ItemList.Hull_LV
-            .set(new MTEBasicHull(HULL_LV.ID, "hull.tier.01", "LV Machine Hull", 1, imagination).getStackForm(1L));
-        ItemList.Hull_MV
-            .set(new MTEBasicHull(HULL_MV.ID, "hull.tier.02", "MV Machine Hull", 2, imagination).getStackForm(1L));
-        ItemList.Hull_HV
-            .set(new MTEBasicHull(HULL_HV.ID, "hull.tier.03", "HV Machine Hull", 3, imagination).getStackForm(1L));
-        ItemList.Hull_EV
-            .set(new MTEBasicHull(HULL_EV.ID, "hull.tier.04", "EV Machine Hull", 4, imagination).getStackForm(1L));
-        ItemList.Hull_IV
-            .set(new MTEBasicHull(HULL_IV.ID, "hull.tier.05", "IV Machine Hull", 5, imagination).getStackForm(1L));
-        ItemList.Hull_LuV
-            .set(new MTEBasicHull(HULL_LuV.ID, "hull.tier.06", "LuV Machine Hull", 6, imagination).getStackForm(1L));
-        ItemList.Hull_ZPM
-            .set(new MTEBasicHull(HULL_ZPM.ID, "hull.tier.07", "ZPM Machine Hull", 7, imagination).getStackForm(1L));
-        ItemList.Hull_UV
-            .set(new MTEBasicHull(HULL_UV.ID, "hull.tier.08", "UV Machine Hull", 8, imagination).getStackForm(1L));
-        ItemList.Hull_MAX
-            .set(new MTEBasicHull(HULL_UHV.ID, "hull.tier.09", "UHV Machine Hull", 9, imagination).getStackForm(1L));
-
-        ItemList.Hull_UEV.set(
-            new MTEBasicHull(HULL_UEV.ID, "hull.tier.10", "UEV Machine Hull", 10, LoaderMetaTileEntities.imagination)
+            new MTEBasicHullSteelBricks(HULL_WROUGHT_IRON.ID, "hull.steel_bricked", "Bricked Wrought Iron Hull", 0)
                 .getStackForm(1L));
 
-        ItemList.Hull_UIV.set(
-            new MTEBasicHull(HULL_UIV.ID, "hull.tier.11", "UIV Machine Hull", 11, LoaderMetaTileEntities.imagination)
-                .getStackForm(1L));
+        ItemList.Hull_ULV.set(new MTEBasicHull(HULL_ULV.ID, "hull.tier.00", "ULV Machine Hull", 0).getStackForm(1L));
+        ItemList.Hull_LV.set(new MTEBasicHull(HULL_LV.ID, "hull.tier.01", "LV Machine Hull", 1).getStackForm(1L));
+        ItemList.Hull_MV.set(new MTEBasicHull(HULL_MV.ID, "hull.tier.02", "MV Machine Hull", 2).getStackForm(1L));
+        ItemList.Hull_HV.set(new MTEBasicHull(HULL_HV.ID, "hull.tier.03", "HV Machine Hull", 3).getStackForm(1L));
+        ItemList.Hull_EV.set(new MTEBasicHull(HULL_EV.ID, "hull.tier.04", "EV Machine Hull", 4).getStackForm(1L));
+        ItemList.Hull_IV.set(new MTEBasicHull(HULL_IV.ID, "hull.tier.05", "IV Machine Hull", 5).getStackForm(1L));
+        ItemList.Hull_LuV.set(new MTEBasicHull(HULL_LuV.ID, "hull.tier.06", "LuV Machine Hull", 6).getStackForm(1L));
+        ItemList.Hull_ZPM.set(new MTEBasicHull(HULL_ZPM.ID, "hull.tier.07", "ZPM Machine Hull", 7).getStackForm(1L));
+        ItemList.Hull_UV.set(new MTEBasicHull(HULL_UV.ID, "hull.tier.08", "UV Machine Hull", 8).getStackForm(1L));
+        ItemList.Hull_MAX.set(new MTEBasicHull(HULL_UHV.ID, "hull.tier.09", "UHV Machine Hull", 9).getStackForm(1L));
 
-        ItemList.Hull_UMV.set(
-            new MTEBasicHull(HULL_UMV.ID, "hull.tier.12", "UMV Machine Hull", 12, LoaderMetaTileEntities.imagination)
-                .getStackForm(1L));
+        ItemList.Hull_UEV.set(new MTEBasicHull(HULL_UEV.ID, "hull.tier.10", "UEV Machine Hull", 10).getStackForm(1L));
 
-        ItemList.Hull_UXV.set(
-            new MTEBasicHull(HULL_UXV.ID, "hull.tier.13", "UXV Machine Hull", 13, LoaderMetaTileEntities.imagination)
-                .getStackForm(1L));
+        ItemList.Hull_UIV.set(new MTEBasicHull(HULL_UIV.ID, "hull.tier.11", "UIV Machine Hull", 11).getStackForm(1L));
 
-        ItemList.Hull_MAXV.set(
-            new MTEBasicHull(HULL_MAX.ID, "hull.tier.14", "MAX Machine Hull", 14, LoaderMetaTileEntities.imagination)
-                .getStackForm(1L));
+        ItemList.Hull_UMV.set(new MTEBasicHull(HULL_UMV.ID, "hull.tier.12", "UMV Machine Hull", 12).getStackForm(1L));
+
+        ItemList.Hull_UXV.set(new MTEBasicHull(HULL_UXV.ID, "hull.tier.13", "UXV Machine Hull", 13).getStackForm(1L));
+
+        ItemList.Hull_MAXV.set(new MTEBasicHull(HULL_MAX.ID, "hull.tier.14", "MAX Machine Hull", 14).getStackForm(1L));
     }
 
     private static void registerTransformer() {
         ItemList.Transformer_LV_ULV.set(
-            new MTETransformer(
-                transformer_LV_ULV.ID,
-                "transformer.tier.00",
-                "Ultra Low Voltage Transformer",
-                0,
-                "LV -> ULV (Use Soft Mallet to invert)").getStackForm(1L));
+            new MTETransformer(transformer_LV_ULV.ID, "transformer.tier.00", "Ultra Low Voltage Transformer", 0)
+                .getStackForm(1L));
         ItemList.Transformer_MV_LV.set(
-            new MTETransformer(
-                transformer_MV_LV.ID,
-                "transformer.tier.01",
-                "Low Voltage Transformer",
-                1,
-                "MV -> LV (Use Soft Mallet to invert)").getStackForm(1L));
+            new MTETransformer(transformer_MV_LV.ID, "transformer.tier.01", "Low Voltage Transformer", 1)
+                .getStackForm(1L));
         ItemList.Transformer_HV_MV.set(
-            new MTETransformer(
-                transformer_HV_MV.ID,
-                "transformer.tier.02",
-                "Medium Voltage Transformer",
-                2,
-                "HV -> MV (Use Soft Mallet to invert)").getStackForm(1L));
+            new MTETransformer(transformer_HV_MV.ID, "transformer.tier.02", "Medium Voltage Transformer", 2)
+                .getStackForm(1L));
         ItemList.Transformer_EV_HV.set(
-            new MTETransformer(
-                transformer_EV_HV.ID,
-                "transformer.tier.03",
-                "High Voltage Transformer",
-                3,
-                "EV -> HV (Use Soft Mallet to invert)").getStackForm(1L));
+            new MTETransformer(transformer_EV_HV.ID, "transformer.tier.03", "High Voltage Transformer", 3)
+                .getStackForm(1L));
         ItemList.Transformer_IV_EV.set(
-            new MTETransformer(
-                transformer_IV_EV.ID,
-                "transformer.tier.04",
-                "Extreme Transformer",
-                4,
-                "IV -> EV (Use Soft Mallet to invert)").getStackForm(1L));
+            new MTETransformer(transformer_IV_EV.ID, "transformer.tier.04", "Extreme Transformer", 4).getStackForm(1L));
         ItemList.Transformer_LuV_IV.set(
-            new MTETransformer(
-                transformer_LuV_IV.ID,
-                "transformer.tier.05",
-                "Insane Transformer",
-                5,
-                "LuV -> IV (Use Soft Mallet to invert)").getStackForm(1L));
+            new MTETransformer(transformer_LuV_IV.ID, "transformer.tier.05", "Insane Transformer", 5).getStackForm(1L));
         ItemList.Transformer_ZPM_LuV.set(
-            new MTETransformer(
-                transformer_ZPM_LuV.ID,
-                "transformer.tier.06",
-                "Ludicrous Transformer",
-                6,
-                "ZPM -> LuV (Use Soft Mallet to invert)").getStackForm(1L));
+            new MTETransformer(transformer_ZPM_LuV.ID, "transformer.tier.06", "Ludicrous Transformer", 6)
+                .getStackForm(1L));
         ItemList.Transformer_UV_ZPM.set(
-            new MTETransformer(
-                transformer_UV_ZPM.ID,
-                "transformer.tier.07",
-                "ZPM Voltage Transformer",
-                7,
-                "UV -> ZPM (Use Soft Mallet to invert)").getStackForm(1L));
+            new MTETransformer(transformer_UV_ZPM.ID, "transformer.tier.07", "ZPM Voltage Transformer", 7)
+                .getStackForm(1L));
         ItemList.Transformer_MAX_UV.set(
-            new MTETransformer(
-                transformer_UHV_UV.ID,
-                "transformer.tier.08",
-                "Ultimate Transformer",
-                8,
-                "UHV -> UV (Use Soft Mallet to invert)").getStackForm(1L));
+            new MTETransformer(transformer_UHV_UV.ID, "transformer.tier.08", "Ultimate Transformer", 8)
+                .getStackForm(1L));
         ItemList.Transformer_UEV_UHV.set(
-            new MTETransformer(
-                TRANSFORMER_UEV_UHV.ID,
-                "transformer.tier.09",
-                "Highly Ultimate Transformer",
-                9,
-                "UEV -> UHV (Use Soft Mallet to invert)").getStackForm(1L));
+            new MTETransformer(TRANSFORMER_UEV_UHV.ID, "transformer.tier.09", "Highly Ultimate Transformer", 9)
+                .getStackForm(1L));
 
         ItemList.Transformer_UIV_UEV.set(
-            new MTETransformer(
-                TRANSFORMER_UIV_UEV.ID,
-                "transformer.tier.10",
-                "Extremely Ultimate Transformer",
-                10,
-                "UIV -> UEV (Use Soft Mallet to invert)").getStackForm(1L));
+            new MTETransformer(TRANSFORMER_UIV_UEV.ID, "transformer.tier.10", "Extremely Ultimate Transformer", 10)
+                .getStackForm(1L));
 
         ItemList.Transformer_UMV_UIV.set(
-            new MTETransformer(
-                TRANSFORMER_UMV_UIV.ID,
-                "transformer.tier.11",
-                "Insanely Ultimate Transformer",
-                11,
-                "UMV -> UIV (Use Soft Mallet to invert)").getStackForm(1L));
+            new MTETransformer(TRANSFORMER_UMV_UIV.ID, "transformer.tier.11", "Insanely Ultimate Transformer", 11)
+                .getStackForm(1L));
 
         ItemList.Transformer_UXV_UMV.set(
-            new MTETransformer(
-                TRANSFORMER_UXV_UMV.ID,
-                "transformer.tier.12",
-                "Mega Ultimate Transformer",
-                12,
-                "UXV -> UMV (Use Soft Mallet to invert)").getStackForm(1L));
+            new MTETransformer(TRANSFORMER_UXV_UMV.ID, "transformer.tier.12", "Mega Ultimate Transformer", 12)
+                .getStackForm(1L));
 
         ItemList.Transformer_MAX_UXV.set(
-            new MTETransformer(
-                TRANSFORMER_MAX_UXV.ID,
-                "transformer.tier.13",
-                "Extended Mega Ultimate Transformer",
-                13,
-                "MAX -> UXV (Use Soft Mallet to invert)").getStackForm(1L));
+            new MTETransformer(TRANSFORMER_MAX_UXV.ID, "transformer.tier.13", "Extended Mega Ultimate Transformer", 13)
+                .getStackForm(1L));
     }
 
     private void registerChemicalBath() {
@@ -10193,112 +10104,86 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 WET_TRANSFORMER_LV_ULV.ID,
                 "wettransformer.tier.00",
                 "Ultra Low Voltage Power Transformer",
-                0,
-                "LV -> ULV (Use Soft Mallet to invert)").getStackForm(1L));
+                0).getStackForm(1L));
 
         ItemList.WetTransformer_MV_LV.set(
-            new MTEWetTransformer(
-                WET_TRANSFORMER_MV_LV.ID,
-                "wetransformer.tier.01",
-                "Low Voltage Power Transformer",
-                1,
-                "MV -> LV (Use Soft Mallet to invert)").getStackForm(1L));
+            new MTEWetTransformer(WET_TRANSFORMER_MV_LV.ID, "wetransformer.tier.01", "Low Voltage Power Transformer", 1)
+                .getStackForm(1L));
 
         ItemList.WetTransformer_HV_MV.set(
             new MTEWetTransformer(
                 WET_TRANSFORMER_HV_MV.ID,
                 "wettransformer.tier.02",
                 "Medium Voltage Power Transformer",
-                2,
-                "HV -> MV (Use Soft Mallet to invert)").getStackForm(1L));
+                2).getStackForm(1L));
 
         ItemList.WetTransformer_EV_HV.set(
             new MTEWetTransformer(
                 WET_TRANSFORMER_EV_HV.ID,
                 "wettransformer.tier.03",
                 "High Voltage Power Transformer",
-                3,
-                "EV -> HV (Use Soft Mallet to invert)").getStackForm(1L));
+                3).getStackForm(1L));
 
         ItemList.WetTransformer_IV_EV.set(
-            new MTEWetTransformer(
-                WET_TRANSFORMER_IV_EV.ID,
-                "wettransformer.tier.04",
-                "Extreme Power Transformer",
-                4,
-                "IV -> EV (Use Soft Mallet to invert)").getStackForm(1L));
+            new MTEWetTransformer(WET_TRANSFORMER_IV_EV.ID, "wettransformer.tier.04", "Extreme Power Transformer", 4)
+                .getStackForm(1L));
 
         ItemList.WetTransformer_LuV_IV.set(
-            new MTEWetTransformer(
-                WET_TRANSFORMER_LuV_IV.ID,
-                "wettransformer.tier.05",
-                "Insane Power Transformer",
-                5,
-                "LuV -> IV (Use Soft Mallet to invert)").getStackForm(1L));
+            new MTEWetTransformer(WET_TRANSFORMER_LuV_IV.ID, "wettransformer.tier.05", "Insane Power Transformer", 5)
+                .getStackForm(1L));
 
         ItemList.WetTransformer_ZPM_LuV.set(
             new MTEWetTransformer(
                 WET_TRANSFORMER_ZPM_LuV.ID,
                 "wettransformer.tier.06",
                 "Ludicrous Power Transformer",
-                6,
-                "ZPM -> LuV (Use Soft Mallet to invert)").getStackForm(1L));
+                6).getStackForm(1L));
 
         ItemList.WetTransformer_UV_ZPM.set(
             new MTEWetTransformer(
                 WET_TRANSFORMER_UV_ZPM.ID,
                 "wettransformer.tier.07",
                 "ZPM Voltage Power Transformer",
-                7,
-                "UV -> ZPM (Use Soft Mallet to invert)").getStackForm(1L));
+                7).getStackForm(1L));
 
         ItemList.WetTransformer_UHV_UV.set(
-            new MTEWetTransformer(
-                WET_TRANSFORMER_UHV_UV.ID,
-                "wettransformer.tier.08",
-                "Ultimate Power Transformer",
-                8,
-                "UHV -> UV (Use Soft Mallet to invert)").getStackForm(1L));
+            new MTEWetTransformer(WET_TRANSFORMER_UHV_UV.ID, "wettransformer.tier.08", "Ultimate Power Transformer", 8)
+                .getStackForm(1L));
 
         ItemList.WetTransformer_UEV_UHV.set(
             new MTEWetTransformer(
                 WET_TRANSFORMER_UEV_UHV.ID,
                 "wettransformer.tier.09",
                 "Highly Ultimate Power Transformer",
-                9,
-                "UEV -> UHV (Use Soft Mallet to invert)").getStackForm(1L));
+                9).getStackForm(1L));
 
         ItemList.WetTransformer_UIV_UEV.set(
             new MTEWetTransformer(
                 WET_TRANSFORMER_UIV_UEV.ID,
                 "wettransformer.tier.10",
                 "Extremely Ultimate Power Transformer",
-                10,
-                "UIV -> UEV (Use Soft Mallet to invert)").getStackForm(1L));
+                10).getStackForm(1L));
 
         ItemList.WetTransformer_UMV_UIV.set(
             new MTEWetTransformer(
                 WET_TRANSFORMER_UMV_UIV.ID,
                 "wettransformer.tier.11",
                 "Insanely Ultimate Power Transformer",
-                11,
-                "UMV -> UIV (Use Soft Mallet to invert)").getStackForm(1L));
+                11).getStackForm(1L));
 
         ItemList.WetTransformer_UXV_UMV.set(
             new MTEWetTransformer(
                 WET_TRANSFORMER_UXV_UMV.ID,
                 "wettransformer.tier.12",
                 "Mega Ultimate Power Transformer",
-                12,
-                "UXV -> UMV (Use Soft Mallet to invert)").getStackForm(1L));
+                12).getStackForm(1L));
 
         ItemList.WetTransformer_MAX_UXV.set(
             new MTEWetTransformer(
                 WET_TRANSFORMER_MAX_UXV.ID,
                 "wettransformer.tier.13",
                 "Extended Mega Ultimate Power Transformer",
-                13,
-                "MAX -> UXV (Use Soft Mallet to invert)").getStackForm(1L));
+                13).getStackForm(1L));
     }
 
     private void registerHighAmpTransformer() {
@@ -10307,36 +10192,31 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 HIGH_AMP_TRANSFORMER_UEV_UHV.ID,
                 "transformer.ha.tier.09",
                 "Highly Ultimate Hi-Amp Transformer",
-                9,
-                "UEV -> UHV (Use Soft Mallet to invert)").getStackForm(1L));
+                9).getStackForm(1L));
         ItemList.Transformer_HA_UIV_UEV.set(
             new MTETransformerHiAmp(
                 HIGH_AMP_TRANSFORMER_UIV_UEV.ID,
                 "transformer.ha.tier.10",
                 "Extremely Ultimate Hi-Amp Transformer",
-                10,
-                "UIV -> UEV (Use Soft Mallet to invert)").getStackForm(1L));
+                10).getStackForm(1L));
         ItemList.Transformer_HA_UMV_UIV.set(
             new MTETransformerHiAmp(
                 HIGH_AMP_TRANSFORMER_UMV_UIV.ID,
                 "transformer.ha.tier.11",
                 "Insanely Ultimate Hi-Amp Transformer",
-                11,
-                "UMV -> UIV (Use Soft Mallet to invert)").getStackForm(1L));
+                11).getStackForm(1L));
         ItemList.Transformer_HA_UXV_UMV.set(
             new MTETransformerHiAmp(
                 HIGH_AMP_TRANSFORMER_UXV_UMV.ID,
                 "transformer.ha.tier.12",
                 "Mega Ultimate Hi-Amp Transformer",
-                12,
-                "UXV -> UMV (Use Soft Mallet to invert)").getStackForm(1L));
+                12).getStackForm(1L));
         ItemList.Transformer_HA_MAX_UXV.set(
             new MTETransformerHiAmp(
                 HIGH_AMP_TRANSFORMER_MAX_UXV.ID,
                 "transformer.ha.tier.13",
                 "Extended Mega Ultimate Hi-Amp Transformer",
-                13,
-                "MAX -> UXV (Use Soft Mallet to invert)").getStackForm(1L));
+                13).getStackForm(1L));
 
     }
 

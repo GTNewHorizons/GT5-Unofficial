@@ -30,17 +30,11 @@ import bartworks.util.BWUtil;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GTLanguageManager;
 
 public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer {
 
     public static ThreadLocal<TileEntityMetaGeneratedBlock> mTemporaryTileEntity = new ThreadLocal<>();
     protected OrePrefixes _prefixes;
-    protected String blockTypeLocalizedName;
-
-    public BWMetaGeneratedBlocks(Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName) {
-        this(p_i45386_1_, tileEntity, blockName, null);
-    }
 
     public BWMetaGeneratedBlocks(Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName,
         OrePrefixes types) {
@@ -50,11 +44,6 @@ public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer {
         this.setBlockTextureName("stone");
         this.setCreativeTab(metaTab);
         this._prefixes = types;
-        if (this._prefixes != null) {
-            this.blockTypeLocalizedName = GTLanguageManager.addStringLocalization(
-                "bw.blocktype." + this._prefixes,
-                this._prefixes.mLocalizedMaterialPre + "%material" + this._prefixes.mLocalizedMaterialPost);
-        }
         Werkstoff.werkstoffHashSet.forEach(this::doRegistrationStuff);
     }
 

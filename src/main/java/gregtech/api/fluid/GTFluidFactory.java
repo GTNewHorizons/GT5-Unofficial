@@ -58,6 +58,7 @@ public class GTFluidFactory {
             .withStateAndTemperature(state, temperature)
             .buildAndRegister()
             .configureMaterials(material)
+            .addLocalizedName(material)
             .asFluid();
     }
 
@@ -75,6 +76,7 @@ public class GTFluidFactory {
         return builder(fluidName).withLocalizedName(localizedName)
             .withStateAndTemperature(state, temperature)
             .buildAndRegister()
+            .addLocalizedName()
             .asFluid();
     }
 

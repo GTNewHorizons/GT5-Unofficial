@@ -269,9 +269,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
         if (aTileEntity != null) {
             if (aTileEntity instanceof TileEntityOres gt_entity) {
                 short meta = gt_entity.getMetaData();
-                String format = LanguageRegistry.instance()
-                    .getStringLocalization("gt.blockores." + meta + ".name");
-                String name = Materials.getLocalizedNameForItem(format, meta % 1000);
+                String name = BlockOresAbstract.getDisplayName(meta);
                 addOreToHashMap(name, aPlayer);
                 if (!aPlayer.capabilities.isCreativeMode) aItem.doDamage(aStack, this.mCosts);
             }
@@ -327,9 +325,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
                             try {
                                 try {
                                     tMetaID = (short) tAssotiation.mMaterial.mMaterial.mMetaItemSubID;
-                                    String format = LanguageRegistry.instance()
-                                        .getStringLocalization("gt.blockores." + tMetaID + ".name");
-                                    String name = Materials.getLocalizedNameForItem(format, tMetaID % 1000);
+                                    String name = BlockOresAbstract.getDisplayName(tMetaID);
                                     addOreToHashMap(name, aPlayer);
                                 } catch (Exception e1) {
                                     String name = tAssotiation.toString();

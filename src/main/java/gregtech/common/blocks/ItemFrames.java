@@ -6,10 +6,11 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
-import gregtech.api.util.GTLanguageManager;
+import gregtech.api.metatileentity.implementations.MTEFrame;
 
 public class ItemFrames extends ItemBlock {
 
@@ -35,7 +36,7 @@ public class ItemFrames extends ItemBlock {
     public String getItemStackDisplayName(ItemStack aStack) {
         String aName = super.getItemStackDisplayName(aStack);
         if (this.block() instanceof BlockFrameBox) {
-            aName = Materials.getLocalizedNameForItem(aName, aStack.getItemDamage());
+            aName = BlockFrameBox.getDisplayName(aStack.getItemDamage());
         }
         return aName;
     }
@@ -50,8 +51,10 @@ public class ItemFrames extends ItemBlock {
 
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
-        aList.add(GTLanguageManager.getTranslation("gt.blockframes." + aStack.getItemDamage() + ".tooltip"));
-        aList.add(GTLanguageManager.getTranslation("gt.blockmachines.gt_frame.desc.format"));
+        if (this.block() instanceof BlockFrameBox) {
+            aList.add(BlockFrameBox.getTooltip(aStack.getItemDamage()));
+        }
+        aList.add(StatCollector.translateToLocal(MTEFrame.LOCALIZED_DESC_FORMAT));
     }
 
     @Override

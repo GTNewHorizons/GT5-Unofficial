@@ -5,23 +5,22 @@ import static gregtech.api.enums.GTValues.V;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
+import tectech.util.CommonValues;
 
 public class MTEWetTransformer extends MTETransformer {
 
     private boolean mHalfMode = false;
 
-    public MTEWetTransformer(int aID, String aName, String aNameRegional, int aTier, String aDescription) {
-        super(aID, aName, aNameRegional, aTier, aDescription);
+    public MTEWetTransformer(int aID, String aName, String aNameRegional, int aTier) {
+        super(aID, aName, aNameRegional, aTier);
     }
 
     public MTEWetTransformer(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -67,15 +66,12 @@ public class MTEWetTransformer extends MTETransformer {
 
     @Override
     public String[] getDescription() {
-        return ArrayUtils.addAll(
-            mDescriptionArray,
-            "Accepts 16A and outputs 64A",
-            "Toggle 2A/8A half-mode with Screwdriver",
-            EnumChatFormatting.BLUE + "Tec"
-                + EnumChatFormatting.DARK_BLUE
-                + "Tech"
-                + EnumChatFormatting.BLUE
-                + ": Interdimensional");
+        return GTSplit.splitLocalizedFormattedWithWarped(
+            super.getDescription()[0],
+            "gt.blockmachines.transformer_advanced.desc",
+            CommonValues.TEC_MARK_GENERAL,
+            16,
+            64);
     }
 
     @Override

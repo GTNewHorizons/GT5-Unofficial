@@ -1,5 +1,7 @@
 package gregtech.common.items;
 
+import net.minecraft.util.StatCollector;
+
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GTLanguageManager;
 
@@ -16,6 +18,10 @@ public enum PollenType {
     PollenType(String pName, boolean show) {
         this.name = pName;
         this.showInList = show;
+        GTLanguageManager.addStringLocalization(
+            "pollen." + this.name,
+            this.name.substring(0, 1)
+                .toUpperCase() + this.name.substring(1) + " Pollen");
     }
 
     public void setHidden() {
@@ -23,10 +29,7 @@ public enum PollenType {
     }
 
     public String getName() {
-        return GTLanguageManager.addStringLocalization(
-            "pollen." + this.name,
-            this.name.substring(0, 1)
-                .toUpperCase() + this.name.substring(1) + " Pollen");
+        return StatCollector.translateToLocal("pollen." + this.name);
     }
 
     public int[] getColours() {

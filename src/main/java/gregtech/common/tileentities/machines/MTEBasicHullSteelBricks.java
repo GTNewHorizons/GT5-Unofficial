@@ -1,5 +1,7 @@
 package gregtech.common.tileentities.machines;
 
+import net.minecraft.util.StatCollector;
+
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -10,8 +12,8 @@ import gregtech.api.render.TextureFactory;
 
 public class MTEBasicHullSteelBricks extends MTEBasicHullNonElectric {
 
-    public MTEBasicHullSteelBricks(int aID, String aName, String aNameRegional, int aTier, String aDescription) {
-        super(aID, aName, aNameRegional, aTier, aDescription);
+    public MTEBasicHullSteelBricks(int aID, String aName, String aNameRegional, int aTier) {
+        super(aID, aName, aNameRegional, aTier);
     }
 
     public MTEBasicHullSteelBricks(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -37,5 +39,10 @@ public class MTEBasicHullSteelBricks extends MTEBasicHullNonElectric {
             rTextures[2][(i + 1)] = tmp2;
         }
         return rTextures;
+    }
+
+    @Override
+    public String[] getDescription() {
+        return new String[] { StatCollector.translateToLocal("gt.blockmachines.highpressure_hull.desc") };
     }
 }

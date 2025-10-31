@@ -58,7 +58,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
 
     public BehaviourSprayColorInfinite(ItemStack sprayCan) {
         super(sprayCan, sprayCan, sprayCan, Other.sprayCanChainRange, 0);
-        this.mTooltip = "";
+        this.mTooltipKey = "";
         mCurrentColor = 0;
     }
 
@@ -119,7 +119,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
         }
 
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.infinite"));
-        aList.add(mTooltipChain);
+        aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.chain"));
         aList.add(" ");
 
         if (!statuses.isEmpty()) {
@@ -134,7 +134,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
     public Optional<List<String>> getAdditionalToolTipsWhileSneaking(final MetaBaseItem aItem, final List<String> aList,
         final ItemStack aStack) {
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.infinite"));
-        aList.add(mTooltipChain);
+        aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.chain"));
         aList.add(" ");
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.switch"));
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.gui"));

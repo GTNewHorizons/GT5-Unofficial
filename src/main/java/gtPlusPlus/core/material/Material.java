@@ -23,7 +23,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
@@ -46,7 +45,6 @@ public class Material {
 
     private String unlocalizedName;
     private String localizedName;
-    private String translatedName;
 
     private MaterialState materialState;
     private TextureSet textureSet;
@@ -359,7 +357,7 @@ public class Material {
             blastFurnace,
             chemicalSymbol,
             radiationLevel,
-            true,
+            generateCells,
             true,
             inputs);
     }
@@ -368,6 +366,29 @@ public class Material {
         final long durability, short[] rgba, final int meltingPoint, final int boilingPoint, final long protons,
         final long neutrons, final boolean blastFurnace, String chemicalSymbol, final int radiationLevel,
         boolean generateCells, boolean generateFluid, final MaterialStack... inputs) {
+        this(
+            materialName,
+            materialName,
+            defaultState,
+            set,
+            durability,
+            rgba,
+            meltingPoint,
+            boilingPoint,
+            protons,
+            neutrons,
+            blastFurnace,
+            chemicalSymbol,
+            radiationLevel,
+            generateCells,
+            generateFluid,
+            inputs);
+    }
+
+    public Material(final String materialName, final String materialDefaultLocalName, final MaterialState defaultState,
+        final TextureSet set, final long durability, short[] rgba, final int meltingPoint, final int boilingPoint,
+        final long protons, final long neutrons, final boolean blastFurnace, String chemicalSymbol,
+        final int radiationLevel, boolean generateCells, boolean generateFluid, final MaterialStack... inputs) {
 
         mMaterialMap.add(this);
 
@@ -379,9 +400,8 @@ public class Material {
 
         try {
             this.unlocalizedName = StringUtils.sanitizeString(materialName);
-            this.localizedName = materialName;
-            this.translatedName = GTLanguageManager
-                .addStringLocalization("gtplusplus.material." + unlocalizedName, localizedName);
+            this.localizedName = materialDefaultLocalName;
+            MaterialUtils.generateMaterialLocalizedName(unlocalizedName, localizedName);
             mMaterialCache.put(getLocalizedName().toLowerCase(), this);
             Logger.INFO("Stored " + getLocalizedName() + " to cache with key: " + getLocalizedName().toLowerCase());
 
@@ -641,8 +661,8 @@ public class Material {
                 }
             }
 
-            sChemicalFormula.put(materialName.toLowerCase(), this.vChemicalFormula);
-            Logger.MATERIALS("Creating a Material instance for " + materialName);
+            sChemicalFormula.put(materialDefaultLocalName.toLowerCase(), this.vChemicalFormula);
+            Logger.MATERIALS("Creating a Material instance for " + materialDefaultLocalName);
             Logger.MATERIALS(
                 "Formula: " + this.vChemicalFormula
                     + " Smallest Stack: "
@@ -655,7 +675,7 @@ public class Material {
             Logger.MATERIALS("Melting Point: " + this.meltingPointC + "C.");
             Logger.MATERIALS("Boiling Point: " + this.boilingPointC + "C.");
         } catch (Throwable t) {
-            Logger.MATERIALS("Stack Trace for " + materialName);
+            Logger.MATERIALS("Stack Trace for " + materialDefaultLocalName);
             t.printStackTrace();
         }
     }
@@ -812,10 +832,7 @@ public class Material {
     }
 
     public final String getTranslatedName() {
-        if (this.translatedName != null) {
-            return this.translatedName;
-        }
-        return "ERROR.BAD.TRANSLATED.NAME";
+        return MaterialUtils.getMaterialLocalizedName(unlocalizedName);
     }
 
     public final MaterialState getState() {

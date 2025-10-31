@@ -39,9 +39,9 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTClientPreference;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.extensions.ArrayExt;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -66,16 +66,7 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
     }
 
     public MTEHatchInputBus(int id, String name, String nameRegional, int tier, int slots) {
-        super(
-            id,
-            name,
-            nameRegional,
-            tier,
-            slots,
-            ArrayExt.of(
-                "Item Input for Multiblocks",
-                "Shift + right click with screwdriver to turn Sort mode on/off",
-                "Capacity: " + getSlots(tier) + " stack" + (getSlots(tier) >= 2 ? "s" : "")));
+        super(id, name, nameRegional, tier, slots, (String) null);
     }
 
     public MTEHatchInputBus(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -332,5 +323,16 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
             .setPos(7 + (uiButtonCount++ * BUTTON_SIZE), 62)
             .setSize(BUTTON_SIZE, BUTTON_SIZE)
             .setGTTooltip(tooltipDataSupplier);
+    }
+
+    @Override
+    public String[] getDescription() {
+        final String suffix = getSlots(mTier) >= 2 ? ".singular.desc" : ".desc";
+        return GTSplit.splitLocalizedFormatted("gt.blockmachines.input_bus" + suffix, getSlots(mTier));
+    }
+
+    @Override
+    public boolean isSkipGenerateDescription() {
+        return true;
     }
 }

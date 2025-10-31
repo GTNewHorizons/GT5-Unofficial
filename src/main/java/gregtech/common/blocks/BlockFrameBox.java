@@ -17,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -46,9 +47,6 @@ public class BlockFrameBox extends BlockContainer {
 
     protected final String mUnlocalizedName;
 
-    private static final String DOT_NAME = ".name";
-    private static final String DOT_TOOLTIP = ".tooltip";
-
     // We need to keep around a temporary TE to preserve this TE after breaking the block, so we can
     // properly call getDrops() on it
     private static final ThreadLocal<IGregTechTileEntity> mTemporaryTileEntity = new ThreadLocal<>();
@@ -62,16 +60,6 @@ public class BlockFrameBox extends BlockContainer {
 
         GameRegistry.registerBlock(this, ItemFrames.class, getUnlocalizedName());
 
-        for (int meta = 1; meta < GregTechAPI.sGeneratedMaterials.length; meta++) {
-            Materials material = GregTechAPI.sGeneratedMaterials[meta];
-            if (material != null && (material.mTypes & 0x02) != 0) {
-                GTLanguageManager.addStringLocalization(
-                    getUnlocalizedName() + "." + meta + DOT_NAME,
-                    GTLanguageManager.i18nPlaceholder ? getLocalizedNameFormat(material) : getLocalizedName(material));
-                GTLanguageManager
-                    .addStringLocalization(getUnlocalizedName() + "." + meta + DOT_TOOLTIP, material.getToolTip());
-            }
-        }
         GregTechAPI.registerMachineBlock(this, -1);
     }
 
@@ -90,10 +78,6 @@ public class BlockFrameBox extends BlockContainer {
     @Override
     public String getUnlocalizedName() {
         return mUnlocalizedName;
-    }
-
-    public String getLocalizedName(Materials aMaterial) {
-        return aMaterial.getDefaultLocalizedNameForItem(getLocalizedNameFormat(aMaterial));
     }
 
     private void createFrame(World worldIn, int x, int y, int z, BaseMetaPipeEntity baseMte) {
@@ -119,6 +103,15 @@ public class BlockFrameBox extends BlockContainer {
     // Get the material that this frame box is made of
     public static Materials getMaterial(int meta) {
         return GregTechAPI.sGeneratedMaterials[meta];
+    }
+
+    public static String getDisplayName(int meta) {
+        return StatCollector
+            .translateToLocalFormatted("gt.oreprefix.material_frame_box", getMaterial(meta).getLocalizedName());
+    }
+
+    public static String getTooltip(int meta) {
+        return getMaterial(meta).getToolTip();
     }
 
     @Override

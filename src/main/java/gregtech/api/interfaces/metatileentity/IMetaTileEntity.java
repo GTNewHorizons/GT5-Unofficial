@@ -316,9 +316,60 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
         ArrayList<String> aList);
 
     /**
-     * get a small Description
+     * Get the description for the TileEntity.
+     * <p>
+     * The behavior of this method depends on the value returned by {@link #isSkipGenerateDescription()}:
+     * </p>
+     * <ul>
+     * <li>When {@link #isSkipGenerateDescription()} returns <code>true</code>, the returned value is displayed directly
+     * in the game.</li>
+     * <li>When {@link #isSkipGenerateDescription()} returns <code>false</code>, the returned value is automatically
+     * added to <code>GregTech.lang</code>, and display the value from <code>GregTech.lang</code> in the game</li>
+     * </ul>
+     * <p>
+     * Additional notes when {@link #isSkipGenerateDescription()} returns <code>false</code>:
+     * </p>
+     * <ul>
+     * <li>To use the %s format specifier, you can use the {@link #addFormattedString(String)}</li>
+     * <li>Only static text is supported(because of <code>GregTech.lang</code>); dynamic text (e.g. display different
+     * random text each time) should also use the {@link #addFormattedString(String)}</li>
+     * </ul>
+     *
+     * @return the description, will display in the tooltips
+     * @see #isSkipGenerateDescription()
+     * @see #addFormattedString(String)
      */
     String[] getDescription();
+
+    /**
+     * Add a formatting marker for automatic parameter substitution.
+     * <p>
+     * This can also be used to display raw text.
+     * 
+     * @param formattedStr the String to be formatted with parameter substitution markers.
+     * @return the special formatting markers for automatic parsing.
+     * @apiNote this method should NOT be used when {@link #isSkipGenerateDescription()} returns <code>true</code>,
+     *          otherwise the game will display the format used for marking.
+     * @see #getDescription()
+     */
+    default String addFormattedString(String formattedStr) {
+        return "%%%" + formattedStr + "%%%";
+    }
+
+    /**
+     * Decide whether to skip generating the tooltips.
+     * <p>
+     * 
+     * @return <code>true</code> to skip the generating the tooltips, and display the raw texts of
+     *         {@link #getDescription()};
+     *         <code>false</code> to display the texts by <code>GregTech.lang</code> system.
+     * @apiNote please ensure the return of {@link #getDescription()} is not Hardcoded if this returns
+     *          <code>true</code>.
+     * @see #getDescription()
+     */
+    default boolean isSkipGenerateDescription() {
+        return false;
+    }
 
     /**
      * In case the Output Voltage varies.

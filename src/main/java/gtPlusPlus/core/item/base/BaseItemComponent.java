@@ -17,6 +17,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.Fluid;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -25,8 +26,8 @@ import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.config.Configuration;
@@ -72,12 +73,10 @@ public class BaseItemComponent extends Item {
             GTOreDictUnificator.registerOre("gear" + material.getUnlocalizedName(), new ItemStack(this));
         }
         registerComponent();
-
-        GTLanguageManager.addStringLocalization("gtplusplus.item." + unlocalName + ".name", getFormattedLangName());
     }
 
     // For Cell Generation
-    public BaseItemComponent(final String unlocalName, final String localName, final short[] RGBA) {
+    public BaseItemComponent(final String unlocalName, final Fluid fluid, final String localName, final short[] RGBA) {
 
         // Handles .'s from fluid internal names.
         String aFormattedNameForFluids;
@@ -91,9 +90,7 @@ public class BaseItemComponent extends Item {
         this.componentMaterial = aTempMaterial;
         this.unlocalName = "itemCell" + aFormattedNameForFluids;
         this.materialName = localName;
-        this.translatedMaterialName = getFluidName(
-            "fluid." + this.materialName.toLowerCase()
-                .replace(" ", ""));
+        this.translatedMaterialName = GTUtility.getFluidName(fluid, true);
         this.componentType = ComponentTypes.CELL;
         this.setCreativeTab(AddToCreativeTab.tabMisc);
         this.setUnlocalizedName(aFormattedNameForFluids);
@@ -107,14 +104,6 @@ public class BaseItemComponent extends Item {
             ComponentTypes.CELL.getOreDictName() + StringUtils.sanitizeStringKeepBrackets(localName),
             new ItemStack(this));
         registerComponent();
-
-        GTLanguageManager
-            .addStringLocalization("gtplusplus.item." + this.unlocalName + ".name", getFormattedLangName());
-    }
-
-    private String getFormattedLangName() {
-        return componentType.getName()
-            .replace("@", "%material");
     }
 
     public boolean registerComponent() {
@@ -184,25 +173,14 @@ public class BaseItemComponent extends Item {
         return this.materialName;
     }
 
-    public String getFluidName(String aKey) {
-        String trans;
-        trans = GTLanguageManager.getTranslation(aKey);
-        if (!trans.equals(aKey)) return trans;
-        aKey = "fluid." + aKey;
-        trans = GTLanguageManager.getTranslation(aKey);
-        if (!trans.equals(aKey)) return trans;
-        return GTLanguageManager.addStringLocalization(
-            "gtplusplus.fluid." + this.materialName.toLowerCase()
-                .replace(" ", ""),
-            this.materialName);
-    }
-
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
-        return GTLanguageManager.getTranslation("gtplusplus.item." + unlocalName + ".name")
-            .replace("%s", "%temp")
-            .replace("%material", translatedMaterialName)
-            .replace("%temp", "%s");
+        return StatCollector.translateToLocalFormatted(
+            "gt.oreprefix." + componentType.getName()
+                .toLowerCase()
+                .replace(" ", "_")
+                .replace("@", "material"),
+            translatedMaterialName);
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })

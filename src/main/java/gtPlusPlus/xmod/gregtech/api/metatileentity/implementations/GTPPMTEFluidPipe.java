@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
+import net.minecraft.util.StatCollector;
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -10,9 +12,9 @@ public class GTPPMTEFluidPipe extends MTEFluidPipe {
 
     public final PipeStats pipeStats;
 
-    public GTPPMTEFluidPipe(int aID, String aName, String aNameRegional, float aThickNess, PipeStats pipeStats,
+    public GTPPMTEFluidPipe(int aID, String aName, String aPrefixKey, float aThickNess, PipeStats pipeStats,
         int aCapacity, int aHeatResistance, boolean aGasProof) {
-        this(aID, aName, aNameRegional, aThickNess, pipeStats, aCapacity, aHeatResistance, aGasProof, 1);
+        this(aID, aName, aPrefixKey, aThickNess, pipeStats, aCapacity, aHeatResistance, aGasProof, 1);
     }
 
     public GTPPMTEFluidPipe(final String aName, final float aThickNess, final PipeStats pipeStats, final int aCapacity,
@@ -20,9 +22,9 @@ public class GTPPMTEFluidPipe extends MTEFluidPipe {
         this(aName, aThickNess, pipeStats, aCapacity, aHeatResistance, aGasProof, 1);
     }
 
-    public GTPPMTEFluidPipe(int aID, String aName, String aNameRegional, float aThickNess, PipeStats pipeStats,
+    public GTPPMTEFluidPipe(int aID, String aName, String aPrefixKey, float aThickNess, PipeStats pipeStats,
         int aCapacity, int aHeatResistance, boolean aGasProof, int aFluidTypes) {
-        super(aID, aName, aNameRegional, aThickNess, null, aCapacity, aHeatResistance, aGasProof, aFluidTypes);
+        super(aID, aName, aPrefixKey, aThickNess, null, aCapacity, aHeatResistance, aGasProof, aFluidTypes);
         this.mLastReceivedFrom = 0;
         this.oLastReceivedFrom = 0;
         this.pipeStats = pipeStats;
@@ -55,5 +57,12 @@ public class GTPPMTEFluidPipe extends MTEFluidPipe {
     @Override
     protected ITexture getBaseTexture(boolean connected, int colorIndex) {
         return getBaseTexture(getThickness(), mPipeAmount, pipeStats.iconSet, pipeStats.rgba, connected, colorIndex);
+    }
+
+    @Override
+    public String getLocalizedName() {
+        return StatCollector.translateToLocalFormatted(
+            getPrefixKey(),
+            StatCollector.translateToLocal(pipeStats.getLocalizedMaterialKey()));
     }
 }

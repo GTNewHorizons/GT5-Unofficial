@@ -29,7 +29,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.INetworkUpdatableItem;
 import gregtech.api.net.GTPacketUpdateItem;
 import gregtech.api.objects.XSTR;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.common.gui.modularui.uifactory.SelectItemUIFactory;
 import gtPlusPlus.core.util.math.MathUtils;
 
@@ -66,16 +65,9 @@ public class GTPPIntegratedCircuitItem extends Item implements INetworkUpdatable
     public void addInformation(ItemStack aStack, EntityPlayer p_77624_2_, List<String> aList, boolean p_77624_4_) {
         try {
             aList.add(
-                StatCollector.translateToLocalFormatted(
-                    "gtpp.tooltip.integrated_circuit.configuration",
-                    aStack.getItemDamage()));
-            aList.add(
-                GTLanguageManager
-                    .addStringLocalization(getUnlocalizedName() + ".tooltip.0", "Right click to reconfigure"));
-            aList.add(
-                GTLanguageManager.addStringLocalization(
-                    getUnlocalizedName() + ".tooltip.1",
-                    "Needs a screwdriver or circuit programming tool"));
+                StatCollector.translateToLocalFormatted("gtpp.tooltip.integrated_circuit.0", aStack.getItemDamage()));
+            aList.add(StatCollector.translateToLocal("gtpp.tooltip.integrated_circuit.1"));
+            aList.add(StatCollector.translateToLocal("gtpp.tooltip.integrated_circuit.2"));
         } catch (Throwable t) {
             t.printStackTrace();
         }

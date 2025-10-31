@@ -3,7 +3,6 @@ package gtPlusPlus.core.item.base.dusts;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
-import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.HashMap;
@@ -24,6 +23,7 @@ import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.MaterialUtils;
 
 public class BaseItemDustUnique extends Item {
 
@@ -46,6 +46,7 @@ public class BaseItemDustUnique extends Item {
         this.setCreativeTab(tabMisc);
         this.colour = colour == 0 ? Dyes._NULL.toInt() : colour;
         this.materialName = materialName;
+        MaterialUtils.generateMaterialLocalizedName(materialName);
         if (mChemicalFormula == null || mChemicalFormula.isEmpty() || mChemicalFormula.equals("NullFormula")) {
             this.chemicalNotation = StringUtils.subscript(materialName);
         } else {
@@ -53,16 +54,6 @@ public class BaseItemDustUnique extends Item {
         }
         this.sRadiation = ItemUtils.getRadioactivityLevel(materialName);
         GameRegistry.registerItem(this, unlocalizedName);
-
-        if (this.getUnlocalizedName()
-            .contains("DustTiny")) {
-            this.typeLoc = "gt.component.dusttiny";
-        } else if (this.getUnlocalizedName()
-            .contains("DustSmall")) {
-                this.typeLoc = "gt.component.dustsmall";
-            } else {
-                this.typeLoc = "gt.component.dust";
-            }
 
         String temp = "";
         Logger.WARNING("Unlocalized name for OreDict nameGen: " + this.getUnlocalizedName());
@@ -75,15 +66,14 @@ public class BaseItemDustUnique extends Item {
             temp = this.getUnlocalizedName();
         }
         if (temp.contains("DustTiny")) {
-            temp = temp.replace("itemD", "d");
-            Logger.WARNING("Generating OreDict Name: " + temp);
+            this.typeLoc = "gt.oreprefix.tiny_pile_of_material";
         } else if (temp.contains("DustSmall")) {
-            temp = temp.replace("itemD", "d");
-            Logger.WARNING("Generating OreDict Name: " + temp);
+            this.typeLoc = "gt.oreprefix.small_pile_of_material_dust";
         } else {
-            temp = temp.replace("itemD", "d");
-            Logger.WARNING("Generating OreDict Name: " + temp);
+            this.typeLoc = "gt.oreprefix.material_dust";
         }
+        temp = temp.replace("itemD", "d");
+        Logger.WARNING("Generating OreDict Name: " + temp);
         if (!temp.isEmpty()) {
             GTOreDictUnificator.registerOre(temp, new ItemStack(this));
         }
@@ -116,9 +106,7 @@ public class BaseItemDustUnique extends Item {
 
     @Override
     public String getItemStackDisplayName(final ItemStack iStack) {
-        return translateToLocalFormatted(
-            typeLoc,
-            translateToLocal("gtpp.material." + materialName.replaceAll("[^a-zA-Z0-9]", "")));
+        return translateToLocalFormatted(typeLoc, MaterialUtils.getMaterialLocalizedName(this.materialName));
     }
 
     private String getCorrectTexture(final String pileSize) {

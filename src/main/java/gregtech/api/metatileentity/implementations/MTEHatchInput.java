@@ -25,6 +25,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTClientPreference;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -36,13 +37,7 @@ public class MTEHatchInput extends MTEHatch {
     public boolean disableFilter = true;
 
     public MTEHatchInput(int aID, String aName, String aNameRegional, int aTier) {
-        this(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            new String[] { "Fluid Input for Multiblocks", "Right click with screwdriver to toggle input filter",
-                "Capacity: " + GTUtility.formatNumbers(8000L * (1L << aTier)) + "L" });
+        this(aID, aName, aNameRegional, aTier, null);
     }
 
     public MTEHatchInput(int aID, String aName, String aNameRegional, int aTier, String[] aDescription) {
@@ -50,14 +45,7 @@ public class MTEHatchInput extends MTEHatch {
     }
 
     public MTEHatchInput(int aID, int aSlot, String aName, String aNameRegional, int aTier) {
-        this(
-            aID,
-            aSlot,
-            aName,
-            aNameRegional,
-            aTier,
-            new String[] { "Fluid Input for Multiblocks", "", "Can hold " + aSlot + " types of fluid." });
-        mDescriptionArray[1] = "Capacity: " + GTUtility.formatNumbers(getCapacityPerTank(aTier, aSlot)) + "L";
+        this(aID, aSlot, aName, aNameRegional, aTier, null);
     }
 
     public MTEHatchInput(int aID, int aSlot, String aName, String aNameRegional, int aTier, String[] aDescription) {
@@ -217,5 +205,21 @@ public class MTEHatchInput extends MTEHatch {
             GTUtility
                 .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableFilter." + disableFilter));
         }
+    }
+
+    @Override
+    public String[] getDescription() {
+        final int slots = mInventory.length;
+        if (slots == 3) return GTSplit
+            .splitLocalizedFormatted("gt.blockmachines.input_hatch.desc", GTUtility.formatNumbers(getCapacity()) + "L");
+        return GTSplit.splitLocalizedFormatted(
+            "gt.blockmachines.input_hatch_multislot.desc",
+            GTUtility.formatNumbers(getCapacityPerTank(mTier, slots)) + "L",
+            slots);
+    }
+
+    @Override
+    public boolean isSkipGenerateDescription() {
+        return true;
     }
 }

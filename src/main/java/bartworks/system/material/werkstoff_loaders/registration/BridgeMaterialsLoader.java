@@ -21,6 +21,8 @@ import static gregtech.api.enums.OrePrefixes.values;
 
 import java.util.ArrayList;
 
+import net.minecraft.util.StatCollector;
+
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import gregtech.api.enchants.EnchantmentRadioactivity;
@@ -140,12 +142,13 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
                 }
                 werkstoffBridgeMaterial.mName = werkstoff.getVarName();
                 werkstoffBridgeMaterial.mDefaultLocalName = werkstoff.getDefaultName();
-                werkstoffBridgeMaterial.mChemicalFormula = werkstoff.getToolTip();
-                if ("null".equals(werkstoffBridgeMaterial.mLocalizedName))
-                    // only reload from lang file if not localized already
-                    werkstoffBridgeMaterial.mLocalizedName = GTLanguageManager.addStringLocalization(
-                        "Material." + werkstoffBridgeMaterial.mName.toLowerCase(),
+                werkstoffBridgeMaterial.setChemicalFormula(werkstoff.getLocalizedToolTip());
+                // only reload from lang file if not localized already
+                if (!StatCollector.canTranslate(werkstoffBridgeMaterial.getLocalizedNameKey())) {
+                    GTLanguageManager.addStringLocalization(
+                        werkstoffBridgeMaterial.getLocalizedNameKey(),
                         werkstoffBridgeMaterial.mDefaultLocalName);
+                }
                 if (Thaumcraft.isModLoaded()) {
                     werkstoffBridgeMaterial.mAspects = werkstoff.getGTWrappedTCAspects();
                 }

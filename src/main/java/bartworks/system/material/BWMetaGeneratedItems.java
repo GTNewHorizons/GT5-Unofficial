@@ -31,6 +31,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import bartworks.API.IRadMaterial;
@@ -44,8 +45,8 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.hazards.HazardProtection;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedItem;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import ic2.core.IC2Potion;
 
 public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMaterial {
@@ -59,22 +60,15 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
     };
 
     protected final OrePrefixes orePrefixes;
-    protected final String itemTypeLocalizedName;
 
     public BWMetaGeneratedItems(OrePrefixes orePrefixes, Object unused) {
         super("bwMetaGeneratedGTEnhancement" + orePrefixes.name(), (short) 32766, (short) 0);
         this.orePrefixes = orePrefixes;
-        this.itemTypeLocalizedName = GTLanguageManager.addStringLocalization(
-            "bw.itemtype." + orePrefixes,
-            orePrefixes.mLocalizedMaterialPre + "%material" + orePrefixes.mLocalizedMaterialPost);
     }
 
     public BWMetaGeneratedItems(OrePrefixes orePrefixes) {
         super("bwMetaGenerated" + orePrefixes.name(), (short) 32766, (short) 0);
         this.orePrefixes = orePrefixes;
-        this.itemTypeLocalizedName = GTLanguageManager.addStringLocalization(
-            "bw.itemtype." + orePrefixes,
-            orePrefixes.mLocalizedMaterialPre + "%material" + orePrefixes.mLocalizedMaterialPost);
         this.setCreativeTab(BWMetaGeneratedItems.metaTab);
         for (Werkstoff w : Werkstoff.werkstoffHashSet) {
             ItemStack tStack = new ItemStack(this, 1, w.getmID());
@@ -145,7 +139,8 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
         int aMetaData = aStack.getItemDamage();
         Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) aMetaData);
         if (werkstoff == null) werkstoff = Werkstoff.default_null_Werkstoff;
-        return this.itemTypeLocalizedName.replace("%material", werkstoff.getLocalizedName());
+        return StatCollector
+            .translateToLocalFormatted(GTUtility.getOreprefixKey(this.orePrefixes), werkstoff.getLocalizedName());
     }
 
     @Override

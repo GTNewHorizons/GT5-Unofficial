@@ -117,8 +117,10 @@ public class GTPreLoad {
             .parallelStream()
             .filter(Objects::nonNull)
             .forEach(
-                aMaterial -> aMaterial.mLocalizedName = GTLanguageManager
-                    .addStringLocalization("Material." + aMaterial.mName.toLowerCase(), aMaterial.mDefaultLocalName));
+                aMaterial -> {
+                    GTLanguageManager
+                        .addStringLocalization(aMaterial.getLocalizedNameKey(), aMaterial.mDefaultLocalName);
+                });
     }
 
     public static void getConfiguration(File configDir) {

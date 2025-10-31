@@ -1,6 +1,5 @@
 package gregtech.api.metatileentity.implementations;
 
-import static gregtech.api.enums.GTValues.AuthorColen;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
@@ -9,13 +8,13 @@ import static gregtech.common.misc.WirelessNetworkManager.totalStorage;
 
 import java.util.UUID;
 
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.util.GTSplit;
 
 @Deprecated
 /*
@@ -65,10 +64,7 @@ public class MTEWirelessDynamo extends MTEHatchDynamo {
 
     @Override
     public String[] getDescription() {
-        return new String[] { EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update",
-            EnumChatFormatting.GRAY + "Stores energy globally in a network, up to 2^(2^31) EU.",
-            EnumChatFormatting.GRAY + "Does not connect to wires. This block accepts EU into the network.",
-            AuthorColen };
+        return GTSplit.splitLocalized("gt.blockmachines.dynamo_hatch_wireless.desc");
     }
 
     @Override

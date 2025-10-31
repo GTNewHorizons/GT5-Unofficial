@@ -23,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IChatComponent;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -255,6 +256,10 @@ public class HatchElementBuilder<T> {
     public HatchElementBuilder<T> hint(Supplier<String> aSupplier) {
         if (aSupplier == null) throw new IllegalArgumentException();
         mHatchItemType = aSupplier;
+        GTLanguageManager.addStringLocalization(
+            "Hatch_Type_" + mHatchItemType.get()
+                .replace(" ", "_"),
+            mHatchItemType.get());
         mCacheHint = false;
         return this;
     }
@@ -262,6 +267,10 @@ public class HatchElementBuilder<T> {
     public HatchElementBuilder<T> cacheHint(Supplier<String> aSupplier) {
         if (aSupplier == null) throw new IllegalArgumentException();
         mHatchItemType = aSupplier;
+        GTLanguageManager.addStringLocalization(
+            "Hatch_Type_" + mHatchItemType.get()
+                .replace(" ", "_"),
+            mHatchItemType.get());
         mCacheHint = true;
         return this;
     }
@@ -456,7 +465,7 @@ public class HatchElementBuilder<T> {
                 String tHint = mHatchItemType.get();
                 if (tHint == null) return "?";
                 // TODO move this to some .lang instead of half ass it into the crappy gt lang file
-                tHint = GTLanguageManager.addStringLocalization("Hatch_Type_" + tHint.replace(' ', '_'), tHint);
+                tHint = StatCollector.translateToLocal("Hatch_Type_" + tHint.replace(' ', '_'));
                 if (mCacheHint) {
                     mHint = tHint;
                     if (mHint != null)

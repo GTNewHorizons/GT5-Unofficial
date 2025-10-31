@@ -20,7 +20,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbine;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.GTPPCore;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.MTELargerTurbineBase;
 
@@ -41,11 +41,7 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
 
     @Override
     public String[] getDescription() {
-        return new String[] { "An automation port for Large Turbines",
-            "Will attempt once per 1200 ticks to fill the turbine slot of it's parent turbine",
-            "You may adjust this with a screwdriver", "Hold shift to adjust in finer amounts",
-            "Hold control to adjust direction", "Left Click with Screwdriver to reset",
-            "This module assumes the entire turbine is in the same Chunk", GTPPCore.GT_Tooltip.get() };
+        return Utils.splitLocalizedWithGTPP("gt.blockmachines.input_bus_turbine.desc");
     }
 
     private MTELargeTurbine mParent = null;

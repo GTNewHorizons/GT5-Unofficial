@@ -22,7 +22,6 @@ public class MTEHumongousInputHatch extends MTEHatchInput {
 
     public MTEHumongousInputHatch(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 13);
-        this.mDescriptionArray[1] = "Capacity: 2,000,000,000L";
     }
 
     public MTEHumongousInputHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

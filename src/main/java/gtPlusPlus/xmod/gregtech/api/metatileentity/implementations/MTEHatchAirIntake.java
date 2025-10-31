@@ -11,6 +11,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gtPlusPlus.core.lib.GTPPCore;
+import gtPlusPlus.core.util.Utils;
 
 public class MTEHatchAirIntake extends MTEHatchFluidGenerator {
 
@@ -30,12 +31,10 @@ public class MTEHatchAirIntake extends MTEHatchFluidGenerator {
 
     @Override
     public String[] getCustomTooltip() {
-        String[] aTooltip = new String[4];
-        aTooltip[0] = "§cDO NOT OBSTRUCT THE INPUT!";
-        aTooltip[1] = "Draws in Air from the surrounding environment";
-        aTooltip[2] = "Creates " + getAmountOfFluidToGenerate() + "L of Air every " + getMaxTickTime() + " ticks";
-        aTooltip[3] = "§7Added by: §2Alkalus §7- §c[GT++]";
-        return aTooltip;
+        return Utils.splitLocalizedFormattedWithGTPP(
+            "gt.blockmachines.input_hatch_generator.airintake.desc",
+            getAmountOfFluidToGenerate(),
+            getMaxTickTime());
     }
 
     @Override

@@ -19,7 +19,6 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
@@ -299,12 +298,11 @@ public class FluidUtils {
         } else if (gFluid != null) {
             rFluid = gFluid;
         } else {
-            rFluid = new FluidGT6(aName, aTexture, (aRGBa != null) ? aRGBa : Dyes._NULL.getRGBA());
+            rFluid = new FluidGT6(aName, aTexture, (aRGBa != null) ? aRGBa : Dyes._NULL.getRGBA(), aLocalName);
             register = true;
         }
 
         if (register) {
-            GTLanguageManager.addStringLocalization(rFluid.getUnlocalizedName(), aLocalName);
             if (FluidRegistry.registerFluid(rFluid)) {
                 switch (aState) {
                     case 0 -> {
@@ -367,7 +365,7 @@ public class FluidUtils {
                     .toUpperCase() + aMatName.substring(1);
             }
             Logger.INFO("Generating cell for " + aMatName + ", " + aLocalName);
-            tempCell = new BaseItemComponent(aMatName, aLocalName, aRGBa);
+            tempCell = new BaseItemComponent(aMatName, rFluid, aLocalName, aRGBa);
             aFullContainer = new ItemStack(tempCell);
         }
 

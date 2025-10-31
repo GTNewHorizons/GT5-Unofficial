@@ -24,7 +24,7 @@ import gregtech.api.metatileentity.implementations.MTETransformer;
 public class MTEEnergyDistributor extends MTETransformer {
 
     public MTEEnergyDistributor(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, null);
+        super(aID, aName, aNameRegional, aTier);
     }
 
     public MTEEnergyDistributor(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

@@ -8,6 +8,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -17,7 +18,6 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.util.ColoredBlockContainer;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Other;
 
@@ -28,18 +28,7 @@ public class BehaviourSprayColor extends BehaviourNone {
     private final ItemStack mFull;
     private final long mUses;
     private final byte mColor;
-    protected String mTooltip;
-    private final String mTooltipUses = GTLanguageManager
-        .addStringLocalization("gt.behaviour.paintspray.uses", "Remaining Uses:");
-    private final String mTooltipUnstackable = GTLanguageManager
-        .addStringLocalization("gt.behaviour.unstackable", "Not usable when stacked!");
-    protected final String mTooltipChain = GTLanguageManager.addStringLocalization(
-        "gt.behaviour.paintspray.chain",
-        "If used while sneaking it will spray a chain of blocks");
-
-    protected final String mTooltipChainAmount = GTLanguageManager.addStringLocalization(
-        "gt.behaviour.paintspray.chain_amount",
-        "Sprays up to %d blocks, in the direction you're looking at");
+    protected String mTooltipKey;
 
     public BehaviourSprayColor(ItemStack aEmpty, ItemStack aUsed, ItemStack aFull, long aUses, int aColor) {
         this.mEmpty = aEmpty;
@@ -47,9 +36,7 @@ public class BehaviourSprayColor extends BehaviourNone {
         this.mFull = aFull;
         this.mUses = aUses;
         this.mColor = ((byte) aColor);
-        this.mTooltip = GTLanguageManager.addStringLocalization(
-            "gt.behaviour.paintspray." + this.mColor + ".tooltip",
-            "Can Color things in " + Dyes.get(this.mColor).mName);
+        this.mTooltipKey = "gt.behaviour.paintspray.tooltip";
     }
 
     public BehaviourSprayColor(ItemStack aEmpty, ItemStack aUsed, ItemStack aFull, long aUses) {
@@ -58,7 +45,7 @@ public class BehaviourSprayColor extends BehaviourNone {
         this.mFull = aFull;
         this.mUses = aUses;
         this.mColor = 0;
-        mTooltip = "";
+        mTooltipKey = "";
     }
 
     @Override
@@ -199,14 +186,22 @@ public class BehaviourSprayColor extends BehaviourNone {
 
     @Override
     public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
-        aList.add(this.mTooltip);
-        aList.add(this.mTooltipChain);
-        aList.add(String.format(this.mTooltipChainAmount, Other.sprayCanChainRange));
+        if (!this.mTooltipKey.isEmpty()) {
+            if (this instanceof BehaviourSprayColorRemover) aList.add(StatCollector.translateToLocal(this.mTooltipKey));
+            else aList.add(
+                StatCollector.translateToLocalFormatted(
+                    this.mTooltipKey,
+                    Dyes.get(this.mColor)
+                        .getLocalizedDyeName()));
+        }
+        aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.chain"));
+        aList.add(
+            StatCollector.translateToLocalFormatted("gt.behaviour.paintspray.chain_amount", Other.sprayCanChainRange));
         NBTTagCompound tNBT = aStack.getTagCompound();
         long tRemainingPaint = tNBT == null ? this.mUses
             : GTUtility.areStacksEqual(aStack, this.mFull, true) ? this.mUses : tNBT.getLong("GT.RemainingPaint");
-        aList.add(this.mTooltipUses + " " + tRemainingPaint);
-        aList.add(this.mTooltipUnstackable);
+        aList.add(StatCollector.translateToLocalFormatted("gt.behaviour.paintspray.uses", tRemainingPaint));
+        aList.add(StatCollector.translateToLocal("gt.behaviour.unstackable"));
         return aList;
     }
 }

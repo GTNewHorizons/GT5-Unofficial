@@ -178,7 +178,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                     .atLeast(InputBus)
                     .dot(3)
                     .adder(MTEPurificationUnitPhAdjustment::addAlkalineBusToMachineList)
-                    .cacheHint(() -> "Input Bus (" + ALKALINE_MATERIAL.mLocalizedName + ")")
+                    .cacheHint(() -> "Input Bus (" + ALKALINE_MATERIAL.getLocalizedName() + ")")
                     .casingIndex(CASING_INDEX_TOWER)
                     .allowOnly(ForgeDirection.UP)
                     .build()))
@@ -189,7 +189,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                     .atLeast(InputHatch)
                     .dot(4)
                     .adder(MTEPurificationUnitPhAdjustment::addAcidHatchToMachineList)
-                    .cacheHint(() -> "Input Hatch (" + ACIDIC_MATERIAL.mLocalizedName + ")")
+                    .cacheHint(() -> "Input Hatch (" + ACIDIC_MATERIAL.getLocalizedName() + ")")
                     .casingIndex(CASING_INDEX_TOWER)
                     .allowOnly(ForgeDirection.UP)
                     .build()))
@@ -349,11 +349,11 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                     + EnumChatFormatting.GRAY
                     + " ticks, consumes ALL "
                     + EnumChatFormatting.WHITE
-                    + ALKALINE_MATERIAL.mLocalizedName
+                    + addFormattedString(ALKALINE_MATERIAL.getLocalizedName())
                     + EnumChatFormatting.GRAY
                     + " and "
                     + EnumChatFormatting.WHITE
-                    + ACIDIC_MATERIAL.mLocalizedName
+                    + addFormattedString(ACIDIC_MATERIAL.getLocalizedName())
                     + EnumChatFormatting.GRAY
                     + " in the special hatches.")
             .addInfo(

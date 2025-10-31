@@ -5,8 +5,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -14,14 +12,14 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETransformer;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.lib.GTPPCore;
+import gtPlusPlus.core.util.Utils;
 
 public class MTETransformerHiAmp extends MTETransformer {
 
     private boolean mHalfMode = false;
 
-    public MTETransformerHiAmp(int aID, String aName, String aNameRegional, int aTier, String aDescription) {
-        super(aID, aName, aNameRegional, aTier, aDescription);
+    public MTETransformerHiAmp(int aID, String aName, String aNameRegional, int aTier) {
+        super(aID, aName, aNameRegional, aTier);
     }
 
     public MTETransformerHiAmp(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -88,11 +86,11 @@ public class MTETransformerHiAmp extends MTETransformer {
 
     @Override
     public String[] getDescription() {
-        return ArrayUtils.addAll(
-            this.mDescriptionArray,
-            "Accepts 4A and outputs 16A",
-            "Toggle 2A/8A half-mode with Screwdriver",
-            GTPPCore.GT_Tooltip.get());
+        return Utils.splitLocalizedFormattedWithPrefixAndGTPP(
+            super.getDescription()[0],
+            "gt.blockmachines.transformer_advanced.desc",
+            4,
+            16);
     }
 
     @Override

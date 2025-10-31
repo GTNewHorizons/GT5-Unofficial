@@ -1,10 +1,7 @@
 package tectech.thing.metaTileEntity.hatch;
 
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BLUE;
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BOLD;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GRAY;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.YELLOW;
-import static gregtech.api.enums.GTValues.AuthorColen;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
@@ -34,6 +31,7 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 
 public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti {
@@ -57,22 +55,7 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti {
     public UUID owner_uuid;
 
     public MTEHatchWirelessMulti(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            0,
-            new String[] { GRAY + "Stores energy globally in a network, up to 2^(2^31) EU.",
-                GRAY + "Does not connect to wires. This block withdraws EU from the network.",
-                translateToLocal("gt.blockmachines.hatch.screwdrivertooltip"),
-                AuthorColen + GRAY + BOLD + " & " + BLUE + BOLD + "Cloud",
-                translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
-                    + YELLOW
-                    + GTUtility.formatNumbers(aAmp * V[aTier])
-                    + GRAY
-                    + " EU/t" },
-            aAmp);
+        super(aID, aName, aNameRegional, aTier, 0, null, aAmp);
     }
 
     @Override
@@ -238,5 +221,17 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti {
                     .setSize(70, 18)
                     .setPos(x, y + 16)
                     .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
+    }
+
+    @Override
+    public String[] getDescription() {
+        return GTSplit.splitLocalizedFormattedWithSuffix(
+            "gt.blockmachines.energy_hatch.wireless",
+            translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
+                + YELLOW
+                + GTUtility.formatNumbers(maxAmperes * V[mTier])
+                + GRAY
+                + " EU/t",
+            translateToLocal("gt.blockmachines.hatch.screwdrivertooltip"));
     }
 }
