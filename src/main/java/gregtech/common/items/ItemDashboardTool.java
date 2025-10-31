@@ -9,13 +9,23 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.items.GTGenericItem;
 import gregtech.client.hud.CompositeWidget;
 import gregtech.client.hud.HUDGui;
 import gregtech.client.hud.HUDManager;
-import gregtech.client.hud.elements.*;
+import gregtech.client.hud.elements.ButtonElement;
+import gregtech.client.hud.elements.ChamferedRectElement;
+import gregtech.client.hud.elements.CheckboxElement;
+import gregtech.client.hud.elements.ColumnElement;
+import gregtech.client.hud.elements.DroplistElement;
+import gregtech.client.hud.elements.DynamicItemElement;
+import gregtech.client.hud.elements.GraphElement;
+import gregtech.client.hud.elements.RectElement;
+import gregtech.client.hud.elements.SliderElement;
+import gregtech.client.hud.elements.TextElement;
+import gregtech.client.hud.elements.TextInputElement;
 
 public class ItemDashboardTool extends GTGenericItem {
 
@@ -25,9 +35,12 @@ public class ItemDashboardTool extends GTGenericItem {
         super(unlocalized, english, tooltip);
         setMaxStackSize(1);
 
-        HUDManager hud = HUDManager.getInstance();
-        hud.register();
-        hud.setEditGuiSupplier(() -> new HUDGui.GuiHUDEdit(hud));
+        if (FMLCommonHandler.instance()
+            .getEffectiveSide() == Side.CLIENT) {
+            HUDManager hud = HUDManager.getInstance();
+            hud.register();
+            hud.setEditGuiSupplier(() -> new HUDGui.GuiHUDEdit(hud));
+        }
     }
 
     @Override
@@ -59,7 +72,6 @@ public class ItemDashboardTool extends GTGenericItem {
     private String inputText = "Hello World";
     private List<Double> columnData = Arrays.asList(25.0, 45.0, 60.0, 30.0, 75.0, 90.0, 15.0);
 
-    @SideOnly(Side.CLIENT)
     private void createWidgets() {
         HUDManager hud = HUDManager.getInstance();
         hud.clearWidgets();

@@ -10,8 +10,6 @@ import net.minecraft.client.gui.GuiScreen;
 
 import org.lwjgl.input.Mouse;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.client.hud.HUDManager.UIConstants;
 import gregtech.client.hud.elements.ButtonElement;
 import gregtech.client.hud.elements.CheckboxElement;
@@ -21,7 +19,6 @@ import gregtech.client.hud.elements.TextElement;
 import gregtech.client.hud.elements.TextInputElement;
 import gregtech.client.hud.elements.WidgetElement;
 
-@SideOnly(Side.CLIENT)
 public class HUDGui {
 
     // ----- GUI Widget Manager -----

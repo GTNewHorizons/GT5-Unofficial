@@ -10,11 +10,8 @@ import net.minecraft.item.ItemStack;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.client.hud.HUDGui;
 
-@SideOnly(Side.CLIENT)
 public class DynamicItemElement extends WidgetElement<DynamicItemElement> implements Configurable {
 
     private final Supplier<ItemStack> stackSupplier;
