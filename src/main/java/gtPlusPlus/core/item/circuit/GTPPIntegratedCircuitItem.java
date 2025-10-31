@@ -159,7 +159,7 @@ public class GTPPIntegratedCircuitItem extends Item implements INetworkUpdatable
     private void openSelectorGui(ItemStack configurator, int meta, EntityPlayer player) {
         UIInfos.openClientUI(
             player,
-            buildContext -> new SelectItemUIFactory(
+            buildContext -> new ItemSelectBaseGui(
                 StatCollector.translateToLocal("GT5U.item.programmed_circuit.select.header"),
                 configurator,
                 GTPPIntegratedCircuitItem::onConfigured,

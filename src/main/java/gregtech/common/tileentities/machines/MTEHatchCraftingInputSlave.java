@@ -174,14 +174,17 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
         var tileEntity = getBaseMetaTileEntity().getWorld()
             .getTileEntity(x, y, z);
         if (tileEntity == null) return null;
-        if (!(tileEntity instanceof IGregTechTileEntity gtTileEntity)) return null;
-        var metaTileEntity = gtTileEntity.getMetaTileEntity();
-        if (!(metaTileEntity instanceof MTEHatchCraftingInputME)) return null;
+        if (!(tileEntity instanceof IGregTechTileEntity GTTE)) return null;
+        if (!(GTTE.getMetaTileEntity() instanceof MTEHatchCraftingInputME newMaster)) return null;
+        if (master != newMaster) {
+            if (master != null) master.removeProxyHatch(this);
+            master = newMaster;
+            master.addProxyHatch(this);
+        }
         masterX = x;
         masterY = y;
         masterZ = z;
         masterSet = true;
-        master = (MTEHatchCraftingInputME) metaTileEntity;
         return master;
     }
 
@@ -238,6 +241,12 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     }
 
     @Override
+    public void onRemoval() {
+        super.onRemoval();
+        if (master != null) master.removeProxyHatch(this);
+    }
+
+    @Override
     public String getCopiedDataIdentifier(EntityPlayer player) {
         return COPIED_DATA_IDENTIFIER;
     }
@@ -247,10 +256,7 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
         if (nbt == null || !COPIED_DATA_IDENTIFIER.equals(nbt.getString("type"))) return false;
         if (nbt.hasKey("master")) {
             NBTTagCompound masterNBT = nbt.getCompoundTag("master");
-            masterX = masterNBT.getInteger("x");
-            masterY = masterNBT.getInteger("y");
-            masterZ = masterNBT.getInteger("z");
-            masterSet = true;
+            trySetMasterFromCoord(masterNBT.getInteger("x"), masterNBT.getInteger("y"), masterNBT.getInteger("z"));
         }
         return true;
     }

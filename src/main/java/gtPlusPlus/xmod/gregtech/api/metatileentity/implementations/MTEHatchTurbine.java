@@ -427,12 +427,12 @@ public class MTEHatchTurbine extends MTEHatch {
                         GTUtility.sendChatToPlayer(aPlayer, tChat);
                         GTUtility.sendSoundToPlayers(
                             g.getWorld(),
-                            SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE,
+                            SoundResource.IC2_TOOLS_BATTERY_USE,
                             1.0F,
                             -1,
-                            g.getXCoord(),
-                            g.getYCoord(),
-                            g.getZCoord());
+                            g.getXCoord() + .5,
+                            g.getYCoord() + .5,
+                            g.getZCoord() + .5);
                         return true;
                     }
                 }

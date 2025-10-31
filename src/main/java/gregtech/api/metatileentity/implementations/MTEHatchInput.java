@@ -32,11 +32,18 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEHatchInput extends MTEHatch {
 
-    public RecipeMap<?> mRecipeMap = null;
     // hatch filter is disabled by default, meaning any fluid can be inserted when in structure.
     public boolean disableFilter = true;
+    public RecipeMap<?> mRecipeMap = null;
 
     public MTEHatchInput(int aID, String aName, String aNameRegional, int aTier) {
+        super(
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            4,
+            (String) null);
         this(aID, aName, aNameRegional, aTier, null);
     }
 
@@ -131,7 +138,6 @@ public class MTEHatchInput extends MTEHatch {
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setByte("color", getBaseMetaTileEntity().getColorization());
-
     }
 
     @Override
@@ -140,14 +146,10 @@ public class MTEHatchInput extends MTEHatch {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         byte color = accessor.getNBTData()
             .getByte("color");
-        if (color >= 0 && color < 16) currenttip.add(
-            "Color Channel: " + Dyes.VALUES[color].formatting + Dyes.VALUES[color].mName + EnumChatFormatting.GRAY);
-    }
-
-    @Override
-    public boolean doesFillContainers() {
-        // return true;
-        return false;
+        if (color >= 0 && color < 16) {
+            currenttip.add(
+                "Color Channel: " + Dyes.VALUES[color].formatting + Dyes.VALUES[color].mName + EnumChatFormatting.GRAY);
+        }
     }
 
     @Override
@@ -200,11 +202,9 @@ public class MTEHatchInput extends MTEHatch {
         ItemStack aTool) {
         if (!getBaseMetaTileEntity().getCoverAtSide(side)
             .isGUIClickable()) return;
-        else {
-            disableFilter = !disableFilter;
-            GTUtility
-                .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableFilter." + disableFilter));
-        }
+        disableFilter = !disableFilter;
+        GTUtility
+            .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableFilter." + disableFilter));
     }
 
     @Override

@@ -173,19 +173,15 @@ public class GTRecipeRegistrator {
 
     public static void registerMaterialRecycling(ItemStack aStack, ItemData aData) {
         if (GTUtility.isStackInvalid(aStack) || GTUtility.areStacksEqual(new ItemStack(Items.blaze_rod), aStack)
+            || GTUtility.areStacksEqual(GTOreDictUnificator.get(OrePrefixes.block, Materials.Ichorium, 1L), aStack)
+            || GTUtility.areStacksEqual(new ItemStack(Blocks.quartz_block, 1), aStack)
             || GTUtility.areStacksEqual(new ItemStack(Blocks.obsidian), aStack)
             || aData == null
             || !aData.hasValidMaterialData()
             || !aData.mMaterial.mMaterial.mAutoGenerateRecycleRecipes
             || aData.mMaterial.mAmount <= 0
             || GTUtility.getFluidForFilledItem(aStack, false) != null) return;
-        // Prevents registering a quartz block -> 9x quartz dust recipe
-        if (!GTUtility.areStacksEqual(new ItemStack(Blocks.quartz_block, 1), aStack)
-            && (!GTUtility.areStacksEqual(new ItemStack(Blocks.netherrack, 1), aStack))
-            && (!GTUtility.areStacksEqual(new ItemStack(Blocks.end_stone, 1), aStack))
-            && (!GTUtility.areStacksEqual(new ItemStack(Blocks.glowstone, 1), aStack))) {
-            registerReverseMacerating(GTUtility.copyAmount(1, aStack), aData, aData.mPrefix == null, true);
-        }
+        registerReverseMacerating(GTUtility.copyAmount(1, aStack), aData, aData.mPrefix == null, true);
         if (!GTUtility.areStacksEqual(GTModHandler.getIC2Item("iridiumOre", 1L), aStack)) {
             registerReverseSmelting(
                 GTUtility.copyAmount(1, aStack),
@@ -614,7 +610,9 @@ public class GTRecipeRegistrator {
                                 new ItemData(
                                     aItemData.mMaterial.mMaterial,
                                     aItemData.mMaterial.mAmount * tRecipe.amount1,
-                                    new MaterialStack(tMaterial, OrePrefixes.stick.mMaterialAmount * tRecipe.amount2)));
+                                    new MaterialStack(
+                                        tMaterial,
+                                        OrePrefixes.stick.getMaterialAmount() * tRecipe.amount2)));
 
                         if (aRecipeReplacing && aPlate != null && sShapesA[i] != null && sShapesA[i].length > 1) {
                             assert aItemData != null;

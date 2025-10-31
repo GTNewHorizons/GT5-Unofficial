@@ -12,6 +12,7 @@ import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeConstants.DEFC_CASING_TIER;
+import static kubatech.api.gui.KubaTechUITextures.SLOT_FUSION_CRAFTER;
 
 import java.util.Arrays;
 
@@ -21,13 +22,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
-
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -40,7 +38,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.nei.formatter.SimpleSpecialValueFormatter;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPPCombType;
-import kubatech.Tags;
 
 public class DEFCRecipes {
 
@@ -49,9 +46,7 @@ public class DEFCRecipes {
         .maxIO(9, 1, 1, 1)
         .minInputs(1, 0)
         .neiSpecialInfoFormatter(new SimpleSpecialValueFormatter("kubatech.defusioncrafter.tier"))
-        .slotOverlays(
-            (index, isFluid, isOutput,
-                isSpecial) -> !isFluid && !isOutput ? UITexture.fullImage(Tags.MODID, "gui/slot/fusion_crafter") : null)
+        .slotOverlays((index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? SLOT_FUSION_CRAFTER : null)
         .build();
 
     public static void addRecipes() {
@@ -240,7 +235,7 @@ public class DEFCRecipes {
                 GTModHandler.getModItem(DraconicEvolution.ID, "awakenedCore", 4, 0),
                 GTModHandler.getModItem(DraconicEvolution.ID, "chaosFragment", 2, 2),
                 kubatech.api.enums.ItemList.DEFCChaoticSchematic.get(0L))
-            .fluidInputs(MaterialsUEVplus.SpaceTime.getMolten(10 * INGOTS))
+            .fluidInputs(Materials.SpaceTime.getMolten(10 * INGOTS))
             .itemOutputs(GTModHandler.getModItem(DraconicEvolution.ID, "chaoticCore", 1, 0))
             .eut(24_000_000)
             .duration(3200)

@@ -16,7 +16,6 @@ public class BlockConcretes extends BlockStonesAbstract implements IBlockOnWalkO
     public BlockConcretes() {
         super(ItemConcretes.class, "gt.blockconcretes");
         setResistance(20.0F);
-        // this.slipperiness = 0.9F;
         GTOreDictUnificator.registerOre(OrePrefixes.stone, Materials.Concrete, new ItemStack(this, 1, 0));
         GTOreDictUnificator.registerOre(OrePrefixes.stone, Materials.Concrete, new ItemStack(this, 1, 1));
         GTOreDictUnificator.registerOre(OrePrefixes.stone, Materials.Concrete, new ItemStack(this, 1, 2));
@@ -48,14 +47,16 @@ public class BlockConcretes extends BlockStonesAbstract implements IBlockOnWalkO
         return gregtech.api.enums.Textures.BlockIcons.CONCRETES[0].getIcon();
     }
 
+    // Increase horizontal movement speed. Should be the same as Chisel's concrete (0.05 + chisel.cfg value).
     @Override
-    public void onWalkOver(EntityLivingBase aEntity, World aWorld, int aX, int aY, int aZ) {
-        if ((aEntity.motionX != 0 || aEntity.motionZ != 0) && !aEntity.isInWater()
-            && !aEntity.isWet()
-            && !aEntity.isSneaking()) {
-            double tSpeed = (aWorld.getBlock(aX, aY - 1, aZ).slipperiness >= 0.8 ? 1.5 : 1.2);
-            aEntity.motionX *= tSpeed;
-            aEntity.motionZ *= tSpeed;
-        }
+    public void onWalkOver(EntityLivingBase entity, World world, int x, int y, int z) {
+        if (entity.motionX == 0 && entity.motionZ == 0) return;
+        if (entity.isInWater()) return;
+        if (entity.isWet()) return;
+        if (entity.isSneaking()) return;
+
+        final double tSpeed = 1.4;
+        entity.motionX *= tSpeed;
+        entity.motionZ *= tSpeed;
     }
 }

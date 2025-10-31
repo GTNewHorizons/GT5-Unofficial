@@ -34,8 +34,6 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsKevlar;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
@@ -75,7 +73,7 @@ import gregtech.common.blocks.BlockLaser;
 import gregtech.common.blocks.BlockMachines;
 import gregtech.common.blocks.BlockMetal;
 import gregtech.common.blocks.BlockNanoForgeRenderer;
-import gregtech.common.blocks.BlockOres;
+import gregtech.common.blocks.BlockOresLegacy;
 import gregtech.common.blocks.BlockReinforced;
 import gregtech.common.blocks.BlockStones;
 import gregtech.common.blocks.BlockTintedIndustrialGlass;
@@ -97,6 +95,7 @@ import gregtech.common.items.MetaGeneratedItem03;
 import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.items.MetaGeneratedItem99;
 import gregtech.common.items.MetaGeneratedTool01;
+import gregtech.common.ores.GTOreAdapter;
 import gregtech.common.tileentities.render.TileEntityBlackhole;
 import gregtech.common.tileentities.render.TileEntityDrone;
 import gregtech.common.tileentities.render.TileEntityLaser;
@@ -265,9 +264,10 @@ public class LoaderGTBlockFluid implements Runnable {
                 50_000,
                 0.4F,
                 0,
-                0.25F,
+                1F,
                 ItemList.DepletedRodThorium.get(1),
-                false));
+                false,
+                1F));
         ItemList.RodThorium2.set(
             new ItemRadioactiveCellIC(
                 "rodThorium2",
@@ -276,9 +276,10 @@ public class LoaderGTBlockFluid implements Runnable {
                 50_000,
                 0.4F,
                 0,
-                0.25F,
+                1F,
                 ItemList.DepletedRodThorium2.get(1),
-                false));
+                false,
+                1F));
         ItemList.RodThorium4.set(
             new ItemRadioactiveCellIC(
                 "rodThorium4",
@@ -287,9 +288,10 @@ public class LoaderGTBlockFluid implements Runnable {
                 50_000,
                 0.4F,
                 0,
-                0.25F,
+                1F,
                 ItemList.DepletedRodThorium4.get(1),
-                false));
+                false,
+                1F));
 
         // Uranium
         ItemList.DepletedRodUranium.set(new ItemDepletedCell("depletedRodUranium", "Fuel Rod (Depleted Uranium)", 1));
@@ -306,9 +308,10 @@ public class LoaderGTBlockFluid implements Runnable {
                 20_000,
                 2F,
                 1,
-                1F,
+                4F,
                 ItemList.DepletedRodUranium.get(1),
-                false));
+                false,
+                1F));
         ItemList.RodUranium2.set(
             new ItemRadioactiveCellIC(
                 "rodUranium2",
@@ -317,9 +320,10 @@ public class LoaderGTBlockFluid implements Runnable {
                 20_000,
                 2F,
                 1,
-                1F,
+                4F,
                 ItemList.DepletedRodUranium2.get(1),
-                false));
+                false,
+                1F));
         ItemList.RodUranium4.set(
             new ItemRadioactiveCellIC(
                 "rodUranium4",
@@ -328,9 +332,10 @@ public class LoaderGTBlockFluid implements Runnable {
                 20_000,
                 2F,
                 1,
-                1F,
+                4F,
                 ItemList.DepletedRodUranium4.get(1),
-                false));
+                false,
+                1F));
 
         // MOX
         ItemList.DepletedRodMOX.set(new ItemDepletedCell("depletedRodMOX", "Fuel Rod (Depleted MOX)", 1));
@@ -345,9 +350,10 @@ public class LoaderGTBlockFluid implements Runnable {
                 10_000,
                 2F,
                 1,
-                1F,
+                4F,
                 ItemList.DepletedRodMOX.get(1),
-                true));
+                true,
+                1.5F));
         ItemList.RodMOX2.set(
             new ItemRadioactiveCellIC(
                 "rodMOX2",
@@ -356,9 +362,10 @@ public class LoaderGTBlockFluid implements Runnable {
                 10_000,
                 2F,
                 1,
-                1F,
+                4F,
                 ItemList.DepletedRodMOX2.get(1),
-                true));
+                true,
+                1.5F));
         ItemList.RodMOX4.set(
             new ItemRadioactiveCellIC(
                 "rodMOX4",
@@ -367,9 +374,10 @@ public class LoaderGTBlockFluid implements Runnable {
                 10_000,
                 2F,
                 1,
-                1F,
+                4F,
                 ItemList.DepletedRodMOX4.get(1),
-                true));
+                true,
+                1.5F));
 
         // High Density Uranium
         ItemList.DepletedRodHighDensityUranium.set(
@@ -391,33 +399,36 @@ public class LoaderGTBlockFluid implements Runnable {
                 "Fuel Rod (High Density Uranium)",
                 1,
                 70_000,
-                100,
-                800,
+                4,
+                2,
                 4,
                 ItemList.DepletedRodHighDensityUranium.get(1),
-                false));
+                false,
+                1F));
         ItemList.RodHighDensityUranium2.set(
             new ItemRadioactiveCellIC(
                 "rodHighDensityUranium2",
                 "Dual Fuel Rod (High Density Uranium)",
                 2,
                 70_000,
-                100,
-                1_600,
+                4,
+                2,
                 4,
                 ItemList.DepletedRodHighDensityUranium2.get(1),
-                false));
+                false,
+                1F));
         ItemList.RodHighDensityUranium4.set(
             new ItemRadioactiveCellIC(
                 "rodHighDensityUranium4",
                 "Quad Fuel Rod (High Density Uranium)",
                 4,
                 70_000,
-                100,
-                3_200,
+                4,
+                2,
                 4,
                 ItemList.DepletedRodHighDensityUranium4.get(1),
-                false));
+                false,
+                1F));
 
         // High Density Plutonium
         ItemList.DepletedRodHighDensityPlutonium.set(
@@ -439,33 +450,36 @@ public class LoaderGTBlockFluid implements Runnable {
                 "Fuel Rod (High Density Plutonium)",
                 1,
                 70_000,
-                50,
-                1_000,
+                2,
+                3,
                 4,
                 ItemList.DepletedRodHighDensityPlutonium.get(1),
-                true));
+                true,
+                6F));
         ItemList.RodHighDensityPlutonium2.set(
             new ItemRadioactiveCellIC(
                 "rodHighDensityPlutonium2",
                 "Dual Fuel Rod (High Density Plutonium)",
                 2,
                 70_000,
-                50,
-                2_000,
+                2,
+                3,
                 4,
                 ItemList.DepletedRodHighDensityPlutonium2.get(1),
-                true));
+                true,
+                6F));
         ItemList.RodHighDensityPlutonium4.set(
             new ItemRadioactiveCellIC(
                 "rodHighDensityPlutonium4",
                 "Quad Fuel Rod (High Density Plutonium)",
                 4,
                 70_000,
-                50,
-                4_000,
+                2,
+                3,
                 4,
                 ItemList.DepletedRodHighDensityPlutonium4.get(1),
-                true));
+                true,
+                6F));
 
         // Excited Uranium
         ItemList.DepletedRodExcitedUranium
@@ -481,33 +495,36 @@ public class LoaderGTBlockFluid implements Runnable {
                 "Fuel Rod (Excited Uranium)",
                 1,
                 6_000,
-                1_200,
-                8_000,
+                48,
+                2,
                 64,
                 ItemList.DepletedRodExcitedUranium.get(1),
-                false));
+                false,
+                1F));
         ItemList.RodExcitedUranium2.set(
             new ItemRadioactiveCellIC(
                 "rodExcitedUranium2",
                 "Dual Fuel Rod (Excited Uranium)",
                 2,
                 6_000,
-                1_200,
-                8_000,
+                48,
+                2,
                 64,
                 ItemList.DepletedRodExcitedUranium2.get(1),
-                false));
+                false,
+                1F));
         ItemList.RodExcitedUranium4.set(
             new ItemRadioactiveCellIC(
                 "rodExcitedUranium4",
                 "Quad Fuel Rod (Excited Uranium)",
                 4,
                 6_000,
-                1_200,
-                8_000,
+                48,
+                2,
                 64,
                 ItemList.DepletedRodExcitedUranium4.get(1),
-                false));
+                false,
+                1F));
 
         // Excited Plutonium
         ItemList.DepletedRodExcitedPlutonium
@@ -523,33 +540,36 @@ public class LoaderGTBlockFluid implements Runnable {
                 "Fuel Rod (Excited Plutonium)",
                 1,
                 10_000,
-                1_600,
-                10_000,
+                64,
+                3,
                 64,
                 ItemList.DepletedRodExcitedPlutonium.get(1),
-                true));
+                true,
+                2F));
         ItemList.RodExcitedPlutonium2.set(
             new ItemRadioactiveCellIC(
                 "rodExcitedPlutonium2",
-                "Fuel Rod (Excited Plutonium)",
+                "Dual Fuel Rod (Excited Plutonium)",
                 2,
                 10_000,
-                1_600,
-                10_000,
+                64,
+                3,
                 64,
                 ItemList.DepletedRodExcitedPlutonium2.get(1),
-                true));
+                true,
+                2F));
         ItemList.RodExcitedPlutonium4.set(
             new ItemRadioactiveCellIC(
                 "rodExcitedPlutonium4",
-                "Fuel Rod (Excited Plutonium)",
+                "Quad Fuel Rod (Excited Plutonium)",
                 4,
                 10_000,
-                1_600,
-                10_000,
+                64,
+                3,
                 64,
                 ItemList.DepletedRodExcitedPlutonium4.get(1),
-                true));
+                true,
+                2F));
 
         // Naquadah
         ItemList.DepletedRodNaquadah
@@ -568,9 +588,10 @@ public class LoaderGTBlockFluid implements Runnable {
                 100_000,
                 4F,
                 1,
-                1F,
+                4F,
                 ItemList.DepletedRodNaquadah.get(1),
-                false));
+                false,
+                1F));
         ItemList.RodNaquadah2.set(
             new ItemRadioactiveCellIC(
                 "rodNaquadah2",
@@ -579,9 +600,10 @@ public class LoaderGTBlockFluid implements Runnable {
                 100_000,
                 4F,
                 1,
-                1F,
+                4F,
                 ItemList.DepletedRodNaquadah2.get(1),
-                false));
+                false,
+                1F));
         ItemList.RodNaquadah4.set(
             new ItemRadioactiveCellIC(
                 "rodNaquadah4",
@@ -592,7 +614,8 @@ public class LoaderGTBlockFluid implements Runnable {
                 1,
                 1F,
                 ItemList.DepletedRodNaquadah4.get(1),
-                false));
+                false,
+                1F));
         ItemList.RodNaquadah32.set(
             new ItemRadioactiveCellIC(
                 "rodNaquadah32",
@@ -601,9 +624,10 @@ public class LoaderGTBlockFluid implements Runnable {
                 100_000,
                 8F,
                 32,
-                1F,
+                4F,
                 ItemList.DepletedRodNaquadah32.get(1),
-                false));
+                false,
+                1F));
 
         // Naquadria
         ItemList.DepletedRodNaquadria
@@ -621,9 +645,10 @@ public class LoaderGTBlockFluid implements Runnable {
                 100_000,
                 4F,
                 1,
-                1F,
+                4F,
                 ItemList.DepletedRodNaquadria.get(1),
-                true));
+                true,
+                1.5F));
         ItemList.RodNaquadria2.set(
             new ItemRadioactiveCellIC(
                 "rodNaquadria2",
@@ -632,9 +657,10 @@ public class LoaderGTBlockFluid implements Runnable {
                 100_000,
                 4F,
                 1,
-                1F,
+                4F,
                 ItemList.DepletedRodNaquadria2.get(1),
-                true));
+                true,
+                1.5F));
         ItemList.RodNaquadria4.set(
             new ItemRadioactiveCellIC(
                 "rodNaquadria4",
@@ -643,9 +669,10 @@ public class LoaderGTBlockFluid implements Runnable {
                 100_000,
                 4F,
                 1,
-                1F,
+                4F,
                 ItemList.DepletedRodNaquadria4.get(1),
-                true));
+                true,
+                1.5F));
 
         // Tiberium
         ItemList.DepletedRodTiberium
@@ -663,9 +690,10 @@ public class LoaderGTBlockFluid implements Runnable {
                 50_000,
                 2F,
                 1,
-                0.5F,
+                2F,
                 ItemList.DepletedRodTiberium.get(1),
-                false));
+                false,
+                1F));
         ItemList.RodTiberium2.set(
             new ItemRadioactiveCellIC(
                 "rodTiberium2",
@@ -674,9 +702,10 @@ public class LoaderGTBlockFluid implements Runnable {
                 50_000,
                 2F,
                 1,
-                0.5F,
+                2F,
                 ItemList.DepletedRodTiberium2.get(1),
-                false));
+                false,
+                1F));
         ItemList.RodTiberium4.set(
             new ItemRadioactiveCellIC(
                 "rodTiberium4",
@@ -685,9 +714,10 @@ public class LoaderGTBlockFluid implements Runnable {
                 50_000,
                 2F,
                 1,
-                0.5F,
+                2F,
                 ItemList.DepletedRodTiberium4.get(1),
-                false));
+                false,
+                1F));
 
         GTLog.out.println("GTMod: Adding Blocks.");
         GregTechAPI.sBlockMachines = new BlockMachines();
@@ -708,7 +738,7 @@ public class LoaderGTBlockFluid implements Runnable {
         GregTechAPI.sBlockLongDistancePipes = new BlockLongDistancePipe();
         GregTechAPI.sBlockConcretes = new BlockConcretes();
         GregTechAPI.sBlockStones = new BlockStones();
-        GregTechAPI.sBlockOres1 = new BlockOres();
+        GregTechAPI.sBlockOres1 = new BlockOresLegacy();
         GregTechAPI.sBlockFrames = new BlockFrameBox();
         GregTechAPI.sDroneRender = new BlockDrone();
         GregTechAPI.sBlockGlass1 = new BlockGlass1();
@@ -717,6 +747,8 @@ public class LoaderGTBlockFluid implements Runnable {
         GregTechAPI.sWormholeRender = new BlockWormholeRender();
         GregTechAPI.sBlackholeRender = new BlockBlackholeRenderer();
         GregTechAPI.nanoForgeRender = new BlockNanoForgeRenderer();
+
+        GTOreAdapter.INSTANCE.init();
 
         // meta ID order, DO NOT CHANGE ORDER
 
@@ -797,7 +829,7 @@ public class LoaderGTBlockFluid implements Runnable {
             "gt.blockgem1",
             new Materials[] { Materials.InfusedAir, Materials.Amber, Materials.Amethyst, Materials.InfusedWater,
                 Materials.BlueTopaz, Materials.CertusQuartz, Materials.Dilithium, Materials.EnderEye,
-                Materials.EnderPearl, Materials.FoolsRuby, Materials.Force, Materials.Forcicium, Materials.Forcillium,
+                Materials.EnderPearl, Materials.Spinel, Materials.Force, Materials.Forcicium, Materials.Forcillium,
                 Materials.GreenSapphire, Materials.InfusedFire, Materials.Jasper },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS9);
@@ -820,11 +852,10 @@ public class LoaderGTBlockFluid implements Runnable {
 
         GregTechAPI.sBlockMetal9 = new BlockMetal(
             "gt.blockmetal9",
-            new Materials[] { Materials.Cryolite, Materials.SiliconSG, MaterialsKevlar.NickelAluminide,
-                MaterialsUEVplus.SpaceTime, MaterialsUEVplus.TranscendentMetal, Materials.Oriharukon,
-                MaterialsUEVplus.WhiteDwarfMatter, MaterialsUEVplus.BlackDwarfMatter, MaterialsUEVplus.Universium,
-                MaterialsUEVplus.Eternity, MaterialsUEVplus.MagMatter, MaterialsUEVplus.SixPhasedCopper,
-                Materials.HellishMetal, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter },
+            new Materials[] { Materials.Cryolite, Materials.SiliconSG, Materials.NickelAluminide, Materials.SpaceTime,
+                Materials.TranscendentMetal, Materials.Oriharukon, Materials.WhiteDwarfMatter,
+                Materials.BlackDwarfMatter, Materials.Universium, Materials.Eternity, Materials.MagMatter,
+                Materials.SixPhasedCopper, Materials.HellishMetal, Materials.MHDCSM },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS12);
 
@@ -991,10 +1022,10 @@ public class LoaderGTBlockFluid implements Runnable {
             .withLocalizedName("Helium-3")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.Helium_3)
-            .addLocalizedName(Materials.Helium_3)
+            .configureMaterials(Materials.Helium3)
+            .addLocalizedName(Materials.Helium3)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Helium_3, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Helium3, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("Methane")
             .withLocalizedName("Methane")
@@ -1109,10 +1140,10 @@ public class LoaderGTBlockFluid implements Runnable {
             .withLocalizedName("Natural Gas")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.NatruralGas)
-            .addLocalizedName(Materials.NatruralGas)
+            .configureMaterials(Materials.NaturalGas)
+            .addLocalizedName(Materials.NaturalGas)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials.NatruralGas, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.NaturalGas, 1L),
                 ItemList.Cell_Empty.get(1L));
         ItemList.sHydricSulfur = GTFluidFactory.builder("liquid_hydricsulfur")
             .withLocalizedName("Hydrogen Sulfide")
@@ -1332,10 +1363,10 @@ public class LoaderGTBlockFluid implements Runnable {
             .withLocalizedName("Diesel")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.Fuel)
-            .addLocalizedName(Materials.Fuel)
+            .configureMaterials(Materials.Diesel)
+            .addLocalizedName(Materials.Diesel)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Fuel, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Diesel, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("for.honey")
             .withLocalizedName("Honey")
@@ -1414,145 +1445,145 @@ public class LoaderGTBlockFluid implements Runnable {
             .withLocalizedName("Dimensionally Transcendent Residue")
             .withStateAndTemperature(LIQUID, 2000000000)
             .buildAndRegister()
-            .configureMaterials(MaterialsUEVplus.DimensionallyTranscendentResidue)
-            .addLocalizedName(MaterialsUEVplus.DimensionallyTranscendentResidue)
+            .configureMaterials(Materials.DTR)
+            .addLocalizedName(Materials.DTR)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.DimensionallyTranscendentResidue, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.DTR, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("ExcitedDTCC")
             .withLocalizedName("Excited Dimensionally Transcendent Crude Catalyst")
             .withStateAndTemperature(LIQUID, 500000000)
             .buildAndRegister()
-            .configureMaterials(MaterialsUEVplus.ExcitedDTCC)
-            .addLocalizedName(MaterialsUEVplus.ExcitedDTCC)
+            .configureMaterials(Materials.ExcitedDTCC)
+            .addLocalizedName(Materials.ExcitedDTCC)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.ExcitedDTCC, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.ExcitedDTCC, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("ExcitedDTPC")
             .withLocalizedName("Excited Dimensionally Transcendent Prosaic Catalyst")
             .withStateAndTemperature(LIQUID, 500000000)
             .buildAndRegister()
-            .configureMaterials(MaterialsUEVplus.ExcitedDTPC)
-            .addLocalizedName(MaterialsUEVplus.ExcitedDTPC)
+            .configureMaterials(Materials.ExcitedDTPC)
+            .addLocalizedName(Materials.ExcitedDTPC)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.ExcitedDTPC, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.ExcitedDTPC, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("ExcitedDTRC")
             .withLocalizedName("Excited Dimensionally Transcendent Resplendent Catalyst")
             .withStateAndTemperature(LIQUID, 500000000)
             .buildAndRegister()
-            .configureMaterials(MaterialsUEVplus.ExcitedDTRC)
-            .addLocalizedName(MaterialsUEVplus.ExcitedDTRC)
+            .configureMaterials(Materials.ExcitedDTRC)
+            .addLocalizedName(Materials.ExcitedDTRC)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.ExcitedDTRC, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.ExcitedDTRC, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("ExcitedDTEC")
             .withLocalizedName("Excited Dimensionally Transcendent Exotic Catalyst")
             .withStateAndTemperature(LIQUID, 500000000)
             .buildAndRegister()
-            .configureMaterials(MaterialsUEVplus.ExcitedDTEC)
-            .addLocalizedName(MaterialsUEVplus.ExcitedDTEC)
+            .configureMaterials(Materials.ExcitedDTEC)
+            .addLocalizedName(Materials.ExcitedDTEC)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.ExcitedDTEC, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.ExcitedDTEC, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("ExcitedDTSC")
             .withLocalizedName("Excited Dimensionally Transcendent Stellar Catalyst")
             .withStateAndTemperature(LIQUID, 500000000)
             .buildAndRegister()
-            .configureMaterials(MaterialsUEVplus.ExcitedDTSC)
-            .addLocalizedName(MaterialsUEVplus.ExcitedDTSC)
+            .configureMaterials(Materials.ExcitedDTSC)
+            .addLocalizedName(Materials.ExcitedDTSC)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.ExcitedDTSC, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.ExcitedDTSC, 1L),
                 ItemList.Cell_Empty.get(1L));
 
-        GTFluidFactory.builder(MaterialsUEVplus.RawStarMatter.mName)
-            .withLocalizedName(MaterialsUEVplus.RawStarMatter.mDefaultLocalName)
+        GTFluidFactory.builder(Materials.RawStarMatter.mName)
+            .withLocalizedName(Materials.RawStarMatter.mDefaultLocalName)
             .withStateAndTemperature(LIQUID, 10_000_000)
             .buildAndRegister()
-            .configureMaterials(MaterialsUEVplus.RawStarMatter)
-            .addLocalizedName(MaterialsUEVplus.RawStarMatter)
+            .configureMaterials(Materials.RawStarMatter)
+            .addLocalizedName(Materials.RawStarMatter)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.RawStarMatter, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.RawStarMatter, 1L),
                 ItemList.Cell_Empty.get(1L));
 
-        GTFluidFactory.builder(MaterialsUEVplus.Space.mName)
-            .withLocalizedName(MaterialsUEVplus.Space.mDefaultLocalName)
+        GTFluidFactory.builder(Materials.Space.mName)
+            .withLocalizedName(Materials.Space.mDefaultLocalName)
             .withStateAndTemperature(MOLTEN, 0)
             .buildAndRegister()
-            .configureMaterials(MaterialsUEVplus.Space)
-            .addLocalizedName(MaterialsUEVplus.Space)
+            .configureMaterials(Materials.Space)
+            .addLocalizedName(Materials.Space)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.Space, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Space, 1L),
                 ItemList.Cell_Empty.get(1L));
 
-        GTFluidFactory.builder(MaterialsUEVplus.Time.mName)
-            .withLocalizedName(MaterialsUEVplus.Time.mDefaultLocalName)
+        GTFluidFactory.builder(Materials.Time.mName)
+            .withLocalizedName(Materials.Time.mDefaultLocalName)
             .withStateAndTemperature(MOLTEN, 0)
             .buildAndRegister()
-            .configureMaterials(MaterialsUEVplus.Time)
-            .addLocalizedName(MaterialsUEVplus.Time)
+            .configureMaterials(Materials.Time)
+            .addLocalizedName(Materials.Time)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.Time, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Time, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("PrimordialMatter")
-            .withLocalizedName(MaterialsUEVplus.PrimordialMatter.mDefaultLocalName)
+            .withLocalizedName(Materials.PrimordialMatter.mDefaultLocalName)
             .withStateAndTemperature(LIQUID, 2_000_000_000)
             .buildAndRegister()
-            .configureMaterials(MaterialsUEVplus.PrimordialMatter)
-            .addLocalizedName(MaterialsUEVplus.PrimordialMatter)
+            .configureMaterials(Materials.PrimordialMatter)
+            .addLocalizedName(Materials.PrimordialMatter)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.PrimordialMatter, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.PrimordialMatter, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("QuarkGluonPlasma")
-            .withLocalizedName(MaterialsUEVplus.QuarkGluonPlasma.mDefaultLocalName)
+            .withLocalizedName(Materials.QuarkGluonPlasma.mDefaultLocalName)
             .withStateAndTemperature(LIQUID, 2_000_000_000)
             .buildAndRegister()
-            .configureMaterials(MaterialsUEVplus.QuarkGluonPlasma)
-            .addLocalizedName(MaterialsUEVplus.QuarkGluonPlasma)
+            .configureMaterials(Materials.QuarkGluonPlasma)
+            .addLocalizedName(Materials.QuarkGluonPlasma)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.QuarkGluonPlasma, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.QuarkGluonPlasma, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("PhononMedium")
-            .withLocalizedName(MaterialsUEVplus.PhononMedium.mDefaultLocalName)
+            .withLocalizedName(Materials.PhononMedium.mDefaultLocalName)
             .withStateAndTemperature(LIQUID, 500)
             .buildAndRegister()
-            .configureMaterials(MaterialsUEVplus.PhononMedium)
-            .addLocalizedName(MaterialsUEVplus.PhononMedium)
+            .configureMaterials(Materials.PhononMedium)
+            .addLocalizedName(Materials.PhononMedium)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.PhononMedium, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.PhononMedium, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("PhononCrystalSolution")
-            .withLocalizedName(MaterialsUEVplus.PhononCrystalSolution.mDefaultLocalName)
+            .withLocalizedName(Materials.PhononCrystalSolution.mDefaultLocalName)
             .withStateAndTemperature(LIQUID, 500)
             .buildAndRegister()
-            .configureMaterials(MaterialsUEVplus.PhononCrystalSolution)
-            .addLocalizedName(MaterialsUEVplus.PhononCrystalSolution)
+            .configureMaterials(Materials.PhononCrystalSolution)
+            .addLocalizedName(Materials.PhononCrystalSolution)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.PhononCrystalSolution, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.PhononCrystalSolution, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("antimatter")
-            .withLocalizedName(MaterialsUEVplus.Antimatter.mDefaultLocalName)
+            .withLocalizedName(Materials.Antimatter.mDefaultLocalName)
             .withStateAndTemperature(LIQUID, 1000000)
             .buildAndRegister()
-            .configureMaterials(MaterialsUEVplus.Antimatter)
-            .addLocalizedName(MaterialsUEVplus.Antimatter)
+            .configureMaterials(Materials.Antimatter)
+            .addLocalizedName(Materials.Antimatter)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.Antimatter, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Antimatter, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("protomatter")
-            .withLocalizedName(MaterialsUEVplus.Protomatter.mDefaultLocalName)
+            .withLocalizedName(Materials.Protomatter.mDefaultLocalName)
             .withStateAndTemperature(LIQUID, 1)
             .buildAndRegister()
-            .configureMaterials(MaterialsUEVplus.Protomatter)
-            .addLocalizedName(MaterialsUEVplus.Protomatter)
+            .configureMaterials(Materials.Protomatter)
+            .addLocalizedName(Materials.Protomatter)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.Protomatter, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Protomatter, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("plasma.infinity")
@@ -1664,12 +1695,12 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.Bottle_Empty.get(1L)));
         FluidContainerRegistry.registerFluidContainer(
             new FluidContainerRegistry.FluidContainerData(
-                Materials.Fuel.getFluid(100L),
+                Materials.Diesel.getFluid(100L),
                 ItemList.Tool_Lighter_Invar_Full.get(1L),
                 ItemList.Tool_Lighter_Invar_Empty.get(1L)));
         FluidContainerRegistry.registerFluidContainer(
             new FluidContainerRegistry.FluidContainerData(
-                Materials.Fuel.getFluid(1_000),
+                Materials.Diesel.getFluid(1_000),
                 ItemList.Tool_Lighter_Platinum_Full.get(1L),
                 ItemList.Tool_Lighter_Platinum_Empty.get(1L)));
 
@@ -1785,7 +1816,7 @@ public class LoaderGTBlockFluid implements Runnable {
                     GTMod.proxy.addAutogeneratedMoltenFluid(tMaterial.mSmeltInto);
                 }
             }
-            if (tMaterial.mElement != null || (tMaterial.mHasPlasma && !tMaterial.mIconSet.is_custom)) {
+            if (tMaterial.mElement != null || (tMaterial.hasPlasma() && !tMaterial.mIconSet.is_custom)) {
                 GTMod.proxy.addAutogeneratedPlasmaFluid(tMaterial);
             }
             if (tMaterial.hasCorrespondingFluid()) {

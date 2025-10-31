@@ -42,6 +42,8 @@ import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.modularui2.GTModularScreen;
 import gregtech.api.modularui2.MetaTileEntityGuiHandler;
+import gregtech.api.render.ISBRInventoryContext;
+import gregtech.api.render.ISBRWorldContext;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 
@@ -193,13 +195,13 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
 
     @Override
     public final void sendSound(byte aIndex) {
-        if (!getBaseMetaTileEntity().hasMufflerUpgrade()) {
+        if (!getBaseMetaTileEntity().isMuffled()) {
             getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.DO_SOUND, aIndex);
         }
     }
 
     public final void sendLoopStart(byte aIndex) {
-        if (!getBaseMetaTileEntity().hasMufflerUpgrade()) {
+        if (!getBaseMetaTileEntity().isMuffled()) {
             getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.START_SOUND_LOOP, aIndex);
         }
         mSoundRequests++;
@@ -207,7 +209,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
 
     @Override
     public final void sendLoopEnd(byte aIndex) {
-        if (!getBaseMetaTileEntity().hasMufflerUpgrade()) {
+        if (!getBaseMetaTileEntity().isMuffled()) {
             getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.STOP_SOUND_LOOP, aIndex);
         }
     }
@@ -518,6 +520,18 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
+    public boolean renderInInventory(ISBRInventoryContext ctx) {
+        return false;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean renderInWorld(ISBRWorldContext ctx) {
+        return false;
+    }
+
+    @Override
     public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB inputAABB,
         List<AxisAlignedBB> outputAABB, Entity collider) {
         AxisAlignedBB axisalignedbb1 = getCollisionBoundingBoxFromPool(world, x, y, z);
@@ -564,6 +578,12 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
         } else {
             GTUIInfos.openGTTileEntityUI(getBaseMetaTileEntity(), player);
         }
+
+        onGuiOpened(player);
+    }
+
+    protected void onGuiOpened(EntityPlayer player) {
+
     }
 
     /**

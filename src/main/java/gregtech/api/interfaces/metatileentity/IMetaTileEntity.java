@@ -33,7 +33,8 @@ import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
-import gregtech.api.render.SBRContextBase;
+import gregtech.api.render.ISBRInventoryContext;
+import gregtech.api.render.ISBRWorldContext;
 
 /**
  * Warning, this Interface has just been made to be able to add multiple kinds of MetaTileEntities (Cables, Pipes,
@@ -47,13 +48,21 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     /**
      * This determines the BaseMetaTileEntity belonging to this MetaTileEntity by using the Meta ID of the Block itself.
      * <p/>
-     * 0 = BaseMetaTileEntity, Wrench lvl 0 to dismantle 1 = BaseMetaTileEntity, Wrench lvl 1 to dismantle 2 =
-     * BaseMetaTileEntity, Wrench lvl 2 to dismantle 3 = BaseMetaTileEntity, Wrench lvl 3 to dismantle 4 =
-     * BaseMetaPipeEntity, Wrench lvl 0 to dismantle 5 = BaseMetaPipeEntity, Wrench lvl 1 to dismantle 6 =
-     * BaseMetaPipeEntity, Wrench lvl 2 to dismantle 7 = BaseMetaPipeEntity, Wrench lvl 3 to dismantle 8 =
-     * BaseMetaPipeEntity, Cutter lvl 0 to dismantle 9 = BaseMetaPipeEntity, Cutter lvl 1 to dismantle 10 =
-     * BaseMetaPipeEntity, Cutter lvl 2 to dismantle 11 = BaseMetaPipeEntity, Cutter lvl 3 to dismantle 12 = GT++ 13 =
-     * GT++ 14 = GT++ 15 = GT++
+     * // spotless:off
+     * 0 = BaseMetaTileEntity, Wrench lvl 0 to dismantle
+     * 1 = BaseMetaTileEntity, Wrench lvl 1 to dismantle
+     * 2 = BaseMetaTileEntity, Wrench lvl 2 to dismantle
+     * 3 = BaseMetaTileEntity, Wrench lvl 3 to dismantle
+     * 4 = BaseMetaPipeEntity, Wrench lvl 0 to dismantle
+     * 5 = BaseMetaPipeEntity, Wrench lvl 1 to dismantle
+     * 6 = BaseMetaPipeEntity, Wrench lvl 2 to dismantle
+     * 7 = BaseMetaPipeEntity, Wrench lvl 3 to dismantle
+     * 8 = BaseMetaPipeEntity, Cutter lvl 0 to dismantle
+     * 9 = BaseMetaPipeEntity, Cutter lvl 1 to dismantle
+     * 10 = BaseMetaPipeEntity, Cutter lvl 2 to dismantle
+     * 11 = BaseMetaPipeEntity, Cutter lvl 3 to dismantle
+     * 12 = GT++ 13 = GT++ 14 = GT++ 15 = GT++
+     * // spotless:on
      */
     byte getTileEntityBaseType();
 
@@ -404,9 +413,13 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * @return true if you override the Rendering.
      */
     @SideOnly(Side.CLIENT)
-    default boolean render(SBRContextBase ctx) {
-        return false;
-    }
+    boolean renderInInventory(ISBRInventoryContext ctx);
+
+    /**
+     * @return true if you override the Rendering.
+     */
+    @SideOnly(Side.CLIENT)
+    boolean renderInWorld(ISBRWorldContext ctx);
 
     /**
      * Gets the Output for the comparator on the given Side

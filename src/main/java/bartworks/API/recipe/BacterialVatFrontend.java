@@ -94,7 +94,7 @@ public class BacterialVatFrontend extends RecipeMapFrontend {
 
         recipeInfo.drawText(StatCollector.translateToLocalFormatted("nei.biovat.0.name", GTValues.VN[glassTier]));
         if (sievert != 0) {
-            if (!isExact) {
+            if (isExact) {
                 recipeInfo.drawText(StatCollector.translateToLocalFormatted("nei.biovat.1.name", sievert));
             } else {
                 recipeInfo.drawText(StatCollector.translateToLocalFormatted("nei.biovat.2.name", sievert));

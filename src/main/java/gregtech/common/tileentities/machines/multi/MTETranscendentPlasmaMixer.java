@@ -121,10 +121,10 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Transcendent Mixer, TPM")
-            .addInfo("Assisting in all your DTPF needs.")
-            .addInfo("This multiblock will run in parallel according to the amount set")
-            .addInfo("in the parallel menu. All inputs will scale, except time.")
-            .addInfo("All EU is deducted from wireless EU networks only.")
+            .addInfo("Assisting in all your DTPF needs!")
+            .addInfo("This multiblock will run in parallel according to the amount set in the parallel menu")
+            .addInfo("All inputs will scale, except time...")
+            .addInfo("All EU is deducted from wireless EU networks only")
             .beginStructureBlock(5, 7, 5, false)
             .addController("Front Center")
             .addCasingInfoExactly("Dimensionally Transcendent Casing", 48, false)
@@ -289,6 +289,11 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
     }
 
     private static final int PARALLEL_WINDOW_ID = 10;
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {

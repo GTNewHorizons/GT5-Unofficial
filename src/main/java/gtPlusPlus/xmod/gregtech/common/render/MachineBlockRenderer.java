@@ -34,8 +34,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IPipeRenderedTileEntity;
 import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
-import gregtech.api.render.SBRInventoryContext;
-import gregtech.api.render.SBRWorldContext;
+import gregtech.api.render.ISBRInventoryContext;
+import gregtech.api.render.ISBRWorldContext;
 import gregtech.common.blocks.BlockMachines;
 import gregtech.common.render.GTRendererBlock;
 import gregtech.mixin.interfaces.accessors.TesselatorAccessor;
@@ -58,7 +58,7 @@ public class MachineBlockRenderer extends GTRendererBlock {
     }
 
     // spotless:off
-    private static void renderNormalInventoryMetaTileEntity(SBRInventoryContext ctx) {
+    private static void renderNormalInventoryMetaTileEntity(ISBRInventoryContext ctx) {
         if (ctx.getMeta() > 0 && ctx.getMeta() < GregTechAPI.METATILEENTITIES.length) {
             IMetaTileEntity tMetaTileEntity = GregTechAPI.METATILEENTITIES[ctx.getMeta()];
             if (tMetaTileEntity != null) {
@@ -131,7 +131,7 @@ public class MachineBlockRenderer extends GTRendererBlock {
     }
     // spotless:on
 
-    public boolean renderStandardBlock(SBRWorldContext ctx) {
+    public boolean renderStandardBlock(ISBRWorldContext ctx) {
         final TileEntity te = ctx.getBlockAccess()
             .getTileEntity(ctx.getX(), ctx.getY(), ctx.getZ());
         return te instanceof ITexturedTileEntity && renderStandardBlock(
@@ -144,11 +144,10 @@ public class MachineBlockRenderer extends GTRendererBlock {
                 GTMethodHelper.getTexture(te, ctx.getBlock(), ForgeDirection.EAST) });
     }
 
-    public boolean renderStandardBlock(SBRWorldContext ctx, ITexture[][] aTextures) {
+    public boolean renderStandardBlock(ISBRWorldContext ctx, ITexture[][] aTextures) {
         ctx.getBlock()
             .setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         ctx.setRenderBoundsFromBlock();
-        ctx.setFullBlock(true);
         ctx.renderNegativeYFacing(aTextures[DOWN.ordinal()]);
         ctx.renderPositiveYFacing(aTextures[UP.ordinal()]);
         ctx.renderNegativeZFacing(aTextures[ForgeDirection.NORTH.ordinal()]);
@@ -159,7 +158,7 @@ public class MachineBlockRenderer extends GTRendererBlock {
     }
 
     // spotless:off
-    public boolean renderPipeBlock(SBRWorldContext ctx, IPipeRenderedTileEntity aTileEntity) {
+    public boolean renderPipeBlock(ISBRWorldContext ctx, IPipeRenderedTileEntity aTileEntity) {
         final int aConnections = aTileEntity.getConnections();
         float tThickness = aTileEntity.getThickNess();
         if (tThickness >= 0.99F) {
@@ -480,7 +479,7 @@ public class MachineBlockRenderer extends GTRendererBlock {
     }
     // spotless:on
 
-    public static void renderNegativeYFacing(SBRWorldContext ctx, ITexture[] aIcon, boolean aFullBlock) {
+    public static void renderNegativeYFacing(ISBRWorldContext ctx, ITexture[] aIcon, boolean aFullBlock) {
         if (ctx.getBlockAccess() != null) {
             if (aFullBlock && !ctx.getRenderBlocks().renderAllFaces
                 && !ctx.getBlock()
@@ -508,7 +507,7 @@ public class MachineBlockRenderer extends GTRendererBlock {
     }
 
     @SuppressWarnings("MethodWithTooManyParameters")
-    public static void renderPositiveYFacing(SBRWorldContext ctx, ITexture[] aIcon, boolean aFullBlock) {
+    public static void renderPositiveYFacing(ISBRWorldContext ctx, ITexture[] aIcon, boolean aFullBlock) {
         if (ctx.getBlockAccess() != null) {
             if (aFullBlock && !ctx.getRenderBlocks().renderAllFaces
                 && !ctx.getBlock()
@@ -537,7 +536,7 @@ public class MachineBlockRenderer extends GTRendererBlock {
     }
 
     @SuppressWarnings("MethodWithTooManyParameters")
-    public static void renderNegativeZFacing(SBRWorldContext ctx, ITexture[] aIcon, boolean aFullBlock) {
+    public static void renderNegativeZFacing(ISBRWorldContext ctx, ITexture[] aIcon, boolean aFullBlock) {
         if (ctx.getBlockAccess() != null) {
             if (aFullBlock && !ctx.getRenderBlocks().renderAllFaces
                 && !ctx.getBlock()
@@ -567,7 +566,7 @@ public class MachineBlockRenderer extends GTRendererBlock {
     }
 
     @SuppressWarnings("MethodWithTooManyParameters")
-    public static void renderPositiveZFacing(SBRWorldContext ctx, ITexture[] aIcon, boolean aFullBlock) {
+    public static void renderPositiveZFacing(ISBRWorldContext ctx, ITexture[] aIcon, boolean aFullBlock) {
         if (ctx.getBlockAccess() != null) {
             if (aFullBlock && !ctx.getRenderBlocks().renderAllFaces
                 && !ctx.getBlock()
@@ -596,7 +595,7 @@ public class MachineBlockRenderer extends GTRendererBlock {
     }
 
     @SuppressWarnings("MethodWithTooManyParameters")
-    public static void renderNegativeXFacing(SBRWorldContext ctx, ITexture[] aIcon, boolean aFullBlock) {
+    public static void renderNegativeXFacing(ISBRWorldContext ctx, ITexture[] aIcon, boolean aFullBlock) {
         if (ctx.getBlockAccess() != null) {
             if (aFullBlock && !ctx.getRenderBlocks().renderAllFaces
                 && !ctx.getBlock()
@@ -626,12 +625,12 @@ public class MachineBlockRenderer extends GTRendererBlock {
 
     @Override
     public void renderInventoryBlock(Block aBlock, int aMeta, int aModelID, RenderBlocks aRenderer) {
-        final SBRInventoryContext ctx = sbrContextHolder.getSBRInventoryContext(aBlock, aMeta, aModelID, aRenderer);
+        final ISBRInventoryContext ctx = sbrContextHolder.getSBRInventoryContext(aBlock, aMeta, aModelID, aRenderer);
         aMeta += 30400;
         if (aBlock instanceof BlockMachines) {
             if (aMeta > 0 && aMeta < GregTechAPI.METATILEENTITIES.length
                 && GregTechAPI.METATILEENTITIES[aMeta] != null
-                && !GregTechAPI.METATILEENTITIES[aMeta].render(ctx)) {
+                && !GregTechAPI.METATILEENTITIES[aMeta].renderInInventory(ctx)) {
                 renderNormalInventoryMetaTileEntity(ctx);
             }
         }
@@ -644,14 +643,14 @@ public class MachineBlockRenderer extends GTRendererBlock {
     public boolean renderWorldBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, int aModelID,
         RenderBlocks aRenderer) {
         final TesselatorAccessor tessAccess = (TesselatorAccessor) Tessellator.instance;
-        final SBRWorldContext ctx = sbrContextHolder.getSBRWorldContext(aX, aY, aZ, aBlock, aModelID, aRenderer);
+        final ISBRWorldContext ctx = sbrContextHolder.getSBRWorldContext(aX, aY, aZ, aBlock, aModelID, aRenderer);
 
         TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         return aTileEntity != null && (aTileEntity instanceof IGregTechTileEntity
             && ((IGregTechTileEntity) aTileEntity).getMetaTileEntity() != null
             && tessAccess.gt5u$hasVertices()
             && ((IGregTechTileEntity) aTileEntity).getMetaTileEntity()
-                .render(ctx)
+                .renderInWorld(ctx)
             || (aTileEntity instanceof IPipeRenderedTileEntity
                 ? renderPipeBlock(ctx, (IPipeRenderedTileEntity) aTileEntity)
                 : renderStandardBlock(ctx)));

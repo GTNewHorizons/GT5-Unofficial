@@ -453,7 +453,6 @@ import static gregtech.common.items.IDMetaItem01.Tool_MatchBox_Used;
 import static gregtech.common.items.IDMetaItem01.Tool_Matches;
 import static gregtech.common.items.IDMetaItem01.Tool_Scanner;
 import static gregtech.common.items.IDMetaItem01.Upgrade_Lock;
-import static gregtech.common.items.IDMetaItem01.Upgrade_Muffler;
 import static gregtech.common.items.IDMetaItem01.ZPM2;
 import static gregtech.common.items.IDMetaItem01.ZPM3;
 import static gregtech.common.items.IDMetaItem01.ZPM4;
@@ -475,6 +474,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.World;
 
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTechAPI;
@@ -657,7 +657,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 IDMetaItem01.Coin_Chocolate.ID,
                 "Chocolate Coin",
                 "Wrapped in Gold",
-                new ItemData(Materials.Gold, OrePrefixes.foil.mMaterialAmount),
+                new ItemData(Materials.Gold, OrePrefixes.foil.getMaterialAmount()),
                 new GTFoodStat(
                     1,
                     0.1F,
@@ -855,7 +855,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Fuel_Can_Plastic_Empty.ID,
                 "Empty Plastic Fuel Can",
                 "Used to store Fuels",
-                new ItemData(Materials.Plastic, OrePrefixes.plate.mMaterialAmount * 1L),
+                new ItemData(Materials.Polyethylene, OrePrefixes.plate.getMaterialAmount()),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 1L)));
         ItemList.Fuel_Can_Plastic_Filled.set(
@@ -863,7 +863,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Fuel_Can_Plastic_Filled.ID,
                 "Plastic Fuel Can",
                 "Burns well in Diesel Generators",
-                new ItemData(Materials.Plastic, OrePrefixes.plate.mMaterialAmount * 1L),
+                new ItemData(Materials.Polyethylene, OrePrefixes.plate.getMaterialAmount()),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 1L)));
 
@@ -874,9 +874,9 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "Used for making Sprays",
                 new ItemData(
                     Materials.Tin,
-                    OrePrefixes.plate.mMaterialAmount * 2L,
+                    OrePrefixes.plate.getMaterialAmount() * 2L,
                     Materials.Redstone,
-                    OrePrefixes.dust.mMaterialAmount),
+                    OrePrefixes.dust.getMaterialAmount()),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)));
 
@@ -887,7 +887,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "Keeping hot things hot and cold things cold",
                 new ItemData(
                     Materials.Aluminium,
-                    OrePrefixes.plateDouble.mMaterialAmount * 1L + 2L * OrePrefixes.ring.mMaterialAmount),
+                    OrePrefixes.plateDouble.getMaterialAmount() + 2L * OrePrefixes.ring.getMaterialAmount()),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
@@ -899,8 +899,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "",
                 new ItemData(
                     Materials.Steel,
-                    OrePrefixes.plateDouble.mMaterialAmount * 4L,
-                    new MaterialStack(Materials.Bronze, OrePrefixes.ring.mMaterialAmount * 4L)),
+                    OrePrefixes.plateDouble.getMaterialAmount() * 4L,
+                    new MaterialStack(Materials.Bronze, OrePrefixes.ring.getMaterialAmount() * 4L)),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 2L)));
 
@@ -911,8 +911,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "",
                 new ItemData(
                     Materials.TungstenSteel,
-                    OrePrefixes.plateDouble.mMaterialAmount * 4L,
-                    new MaterialStack(Materials.Platinum, OrePrefixes.ring.mMaterialAmount * 4L)),
+                    OrePrefixes.plateDouble.getMaterialAmount() * 4L,
+                    new MaterialStack(Materials.Platinum, OrePrefixes.ring.getMaterialAmount() * 4L)),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 9L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 7L)));
 
@@ -923,8 +923,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "",
                 new ItemData(
                     Materials.Aluminium,
-                    OrePrefixes.plateDouble.mMaterialAmount * 4L,
-                    new MaterialStack(Materials.Silver, OrePrefixes.ring.mMaterialAmount * 4L)),
+                    OrePrefixes.plateDouble.getMaterialAmount() * 4L,
+                    new MaterialStack(Materials.Silver, OrePrefixes.ring.getMaterialAmount() * 4L)),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 5L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 3L)));
 
@@ -935,8 +935,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "",
                 new ItemData(
                     Materials.StainlessSteel,
-                    OrePrefixes.plateDouble.mMaterialAmount * 4L,
-                    new MaterialStack(Materials.Electrum, OrePrefixes.ring.mMaterialAmount * 4L)),
+                    OrePrefixes.plateDouble.getMaterialAmount() * 4L,
+                    new MaterialStack(Materials.Electrum, OrePrefixes.ring.getMaterialAmount() * 4L)),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 6L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 4L)));
 
@@ -947,8 +947,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "",
                 new ItemData(
                     Materials.Titanium,
-                    OrePrefixes.plateDouble.mMaterialAmount * 4L,
-                    new MaterialStack(Materials.RoseGold, OrePrefixes.ring.mMaterialAmount * 4L)),
+                    OrePrefixes.plateDouble.getMaterialAmount() * 4L,
+                    new MaterialStack(Materials.RoseGold, OrePrefixes.ring.getMaterialAmount() * 4L)),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 7L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 5L)));
 
@@ -959,8 +959,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "",
                 new ItemData(
                     Materials.Chrome,
-                    OrePrefixes.plateDouble.mMaterialAmount * 4L,
-                    new MaterialStack(Materials.Palladium, OrePrefixes.ring.mMaterialAmount * 4L)),
+                    OrePrefixes.plateDouble.getMaterialAmount() * 4L,
+                    new MaterialStack(Materials.Palladium, OrePrefixes.ring.getMaterialAmount() * 4L)),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 6L)));
 
@@ -971,8 +971,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "",
                 new ItemData(
                     Materials.Iridium,
-                    OrePrefixes.plateDouble.mMaterialAmount * 4L,
-                    new MaterialStack(Materials.Naquadah, OrePrefixes.ring.mMaterialAmount * 4L)),
+                    OrePrefixes.plateDouble.getMaterialAmount() * 4L,
+                    new MaterialStack(Materials.Naquadah, OrePrefixes.ring.getMaterialAmount() * 4L)),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 10L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 8L)));
 
@@ -983,8 +983,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "",
                 new ItemData(
                     Materials.Osmium,
-                    OrePrefixes.plateDouble.mMaterialAmount * 4L,
-                    new MaterialStack(Materials.ElectrumFlux, OrePrefixes.ring.mMaterialAmount * 4L)),
+                    OrePrefixes.plateDouble.getMaterialAmount() * 4L,
+                    new MaterialStack(Materials.ElectrumFlux, OrePrefixes.ring.getMaterialAmount() * 4L)),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 11L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 9L)));
 
@@ -995,8 +995,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "",
                 new ItemData(
                     Materials.Neutronium,
-                    OrePrefixes.plateDouble.mMaterialAmount * 4L,
-                    new MaterialStack(Materials.Draconium, OrePrefixes.ring.mMaterialAmount * 4L)),
+                    OrePrefixes.plateDouble.getMaterialAmount() * 4L,
+                    new MaterialStack(Materials.Draconium, OrePrefixes.ring.getMaterialAmount() * 4L)),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 12L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 10L)));
 
@@ -1039,9 +1039,9 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "Used for making Spray Can Solvent",
                 new ItemData(
                     Materials.Aluminium,
-                    OrePrefixes.plateDouble.mMaterialAmount * 4L,
+                    OrePrefixes.plateDouble.getMaterialAmount() * 4L,
                     Materials.Redstone,
-                    OrePrefixes.dust.mMaterialAmount),
+                    OrePrefixes.dust.getMaterialAmount()),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)));
 
@@ -1085,7 +1085,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Tool_Lighter_Invar_Empty.ID,
                 "Lighter (Empty)",
                 "",
-                new ItemData(Materials.Invar, OrePrefixes.plate.mMaterialAmount * 2L),
+                new ItemData(Materials.Invar, OrePrefixes.plate.getMaterialAmount() * 2L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L)));
         ItemList.Tool_Lighter_Invar_Used.set(
@@ -1093,7 +1093,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Tool_Lighter_Invar_Used.ID,
                 "Lighter",
                 "",
-                new ItemData(Materials.Invar, OrePrefixes.plate.mMaterialAmount * 2L),
+                new ItemData(Materials.Invar, OrePrefixes.plate.getMaterialAmount() * 2L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1L),
                 SubTag.INVISIBLE));
@@ -1102,7 +1102,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Tool_Lighter_Invar_Full.ID,
                 "Lighter (Full)",
                 "",
-                new ItemData(Materials.Invar, OrePrefixes.plate.mMaterialAmount * 2L),
+                new ItemData(Materials.Invar, OrePrefixes.plate.getMaterialAmount() * 2L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 2L)));
 
@@ -1111,7 +1111,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Tool_Lighter_Platinum_Empty.ID,
                 "Platinum Lighter (Empty)",
                 "A known Prank Master is engraved on it",
-                new ItemData(Materials.Platinum, OrePrefixes.plate.mMaterialAmount * 2L),
+                new ItemData(Materials.Platinum, OrePrefixes.plate.getMaterialAmount() * 2L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L)));
@@ -1120,7 +1120,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Tool_Lighter_Platinum_Used.ID,
                 "Platinum Lighter",
                 "A known Prank Master is engraved on it",
-                new ItemData(Materials.Platinum, OrePrefixes.plate.mMaterialAmount * 2L),
+                new ItemData(Materials.Platinum, OrePrefixes.plate.getMaterialAmount() * 2L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1L),
@@ -1130,7 +1130,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Tool_Lighter_Platinum_Full.ID,
                 "Platinum Lighter (Full)",
                 "A known Prank Master is engraved on it",
-                new ItemData(Materials.Platinum, OrePrefixes.plate.mMaterialAmount * 2L),
+                new ItemData(Materials.Platinum, OrePrefixes.plate.getMaterialAmount() * 2L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 2L)));
@@ -1285,7 +1285,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Battery_Hull_LV.ID,
                 "Small Battery Hull",
                 "An empty LV Battery Hull",
-                new ItemData(Materials.BatteryAlloy, OrePrefixes.plate.mMaterialAmount * 1L),
+                new ItemData(Materials.BatteryAlloy, OrePrefixes.plate.getMaterialAmount()),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L)));
@@ -1294,7 +1294,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Battery_Hull_MV.ID,
                 "Medium Battery Hull",
                 "An empty MV Battery Hull",
-                new ItemData(Materials.BatteryAlloy, OrePrefixes.plate.mMaterialAmount * 3L),
+                new ItemData(Materials.BatteryAlloy, OrePrefixes.plate.getMaterialAmount() * 3L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L)));
@@ -1303,7 +1303,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Battery_Hull_HV.ID,
                 "Large Battery Hull",
                 "An empty HV Battery Hull",
-                new ItemData(Materials.BatteryAlloy, OrePrefixes.plate.mMaterialAmount * 9L),
+                new ItemData(Materials.BatteryAlloy, OrePrefixes.plate.getMaterialAmount() * 9L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L)));
@@ -2917,13 +2917,6 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 6L),
                 OreDictNames.craftingGrinder));
 
-        ItemList.Upgrade_Muffler.set(
-            addItem(
-                Upgrade_Muffler.ID,
-                "Muffler Upgrade",
-                "Makes Machines silent",
-                new TCAspects.TC_AspectStack(TCAspects.SENSUS, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2L)));
         ItemList.Upgrade_Lock.set(
             addItem(
                 Upgrade_Lock.ID,
@@ -2936,7 +2929,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Component_Filter.ID,
                 "Item Filter",
                 "",
-                new ItemData(Materials.Zinc, OrePrefixes.foil.mMaterialAmount * 16L),
+                new ItemData(Materials.Zinc, OrePrefixes.foil.getMaterialAmount() * 16L),
                 new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.SENSUS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 1L),
@@ -3323,7 +3316,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 BatteryHull_EV.ID,
                 "Small Sunnarium Battery (Empty)",
                 "An empty EV Battery Container",
-                new ItemData(Materials.BlueSteel, OrePrefixes.plate.mMaterialAmount * 2L),
+                new ItemData(Materials.BlueSteel, OrePrefixes.plate.getMaterialAmount() * 2L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 8L)));
@@ -3332,7 +3325,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 BatteryHull_IV.ID,
                 "Medium Sunnarium Battery (Empty)",
                 "An empty IV Battery Container",
-                new ItemData(Materials.RoseGold, OrePrefixes.plate.mMaterialAmount * 6L),
+                new ItemData(Materials.RoseGold, OrePrefixes.plate.getMaterialAmount() * 6L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 16L)));
@@ -3341,7 +3334,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 BatteryHull_LuV.ID,
                 "Large Sunnarium Battery (Empty)",
                 "An empty LuV Battery Container",
-                new ItemData(Materials.RedSteel, OrePrefixes.plate.mMaterialAmount * 18L),
+                new ItemData(Materials.RedSteel, OrePrefixes.plate.getMaterialAmount() * 18L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 32L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 32L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 32L)));
@@ -3350,7 +3343,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 BatteryHull_ZPM.ID,
                 "Medium Naquadria Battery (Empty)",
                 "An empty ZPM Energy Storage",
-                new ItemData(Materials.Europium, OrePrefixes.plate.mMaterialAmount * 6L),
+                new ItemData(Materials.Europium, OrePrefixes.plate.getMaterialAmount() * 6L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 64L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 64L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 64L)));
@@ -3359,7 +3352,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 BatteryHull_UV.ID,
                 "Large Naquadria Battery (Empty)",
                 "An empty UV Energy Storage",
-                new ItemData(Materials.Americium, OrePrefixes.plate.mMaterialAmount * 18L),
+                new ItemData(Materials.Americium, OrePrefixes.plate.getMaterialAmount() * 18L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 128L)));
@@ -3368,7 +3361,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 BatteryHull_UHV.ID,
                 "Small Neutronium Battery (Empty)",
                 "An empty UHV Energy Storage",
-                new ItemData(Materials.Naquadah, OrePrefixes.plate.mMaterialAmount * 24L),
+                new ItemData(Materials.Naquadah, OrePrefixes.plate.getMaterialAmount() * 24L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 256L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 256L)));
@@ -3377,7 +3370,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 BatteryHull_UEV.ID,
                 "Medium Neutronium Battery (Empty)",
                 "An empty UEV Energy Storage",
-                new ItemData(Materials.NaquadahEnriched, OrePrefixes.plate.mMaterialAmount * 36L),
+                new ItemData(Materials.NaquadahEnriched, OrePrefixes.plate.getMaterialAmount() * 36L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 512L)));
@@ -3386,7 +3379,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 BatteryHull_UIV.ID,
                 "Large Neutronium Battery (Empty)",
                 "An empty UIV Energy Storage",
-                new ItemData(Materials.NaquadahAlloy, OrePrefixes.plate.mMaterialAmount * 48L),
+                new ItemData(Materials.NaquadahAlloy, OrePrefixes.plate.getMaterialAmount() * 48L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1024L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1024L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1024L)));
@@ -3395,7 +3388,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 BatteryHull_UMV.ID,
                 "Medium Plasma Battery (Empty)",
                 "An empty UMV Energy Storage",
-                new ItemData(Materials.Neutronium, OrePrefixes.plate.mMaterialAmount * 56L),
+                new ItemData(Materials.Neutronium, OrePrefixes.plate.getMaterialAmount() * 56L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 2048L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2048L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2048L)));
@@ -3404,7 +3397,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 BatteryHull_UxV.ID,
                 "Large Plasma Battery (Empty)",
                 "An empty UXV Energy Storage",
-                new ItemData(Materials.DraconiumAwakened, OrePrefixes.plate.mMaterialAmount * 64L),
+                new ItemData(Materials.DraconiumAwakened, OrePrefixes.plate.getMaterialAmount() * 64L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 4096L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4096L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 4096L)));
@@ -3550,6 +3543,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                         aItemEntity.setEntityItemStack(
                             GTOreDictUnificator
                                 .get(OrePrefixes.dust, aMaterial, aItemEntity.getEntityItem().stackSize));
+                        aItemEntity.delayBeforeCanPickup = 0;
+                        cancelMovementAndTeleport(aItemEntity, tX, tY, tZ);
                         aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
                         return true;
                     }
@@ -3560,6 +3555,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                         aItemEntity.setEntityItemStack(
                             GTOreDictUnificator
                                 .get(OrePrefixes.crushedPurified, aMaterial, aItemEntity.getEntityItem().stackSize));
+                        aItemEntity.delayBeforeCanPickup = 0;
+                        cancelMovementAndTeleport(aItemEntity, tX, tY, tZ);
                         aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
                         return true;
                     }
@@ -3568,6 +3565,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                     int tMetaData = aItemEntity.worldObj.getBlockMetadata(tX, tY, tZ);
                     if ((tBlock == Blocks.cauldron) && (tMetaData > 0)) {
                         aItemEntity.setEntityItemStack(ItemList.Food_Dough.get(aItemEntity.getEntityItem().stackSize));
+                        aItemEntity.delayBeforeCanPickup = 0;
+                        cancelMovementAndTeleport(aItemEntity, tX, tY, tZ);
                         aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
                         return true;
                     }
@@ -3575,6 +3574,76 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean onItemUse(final ItemStack oldItemStack, final EntityPlayer player, final World world, final int x,
+        final int y, final int z, final int ordinalSide, final float hitX, final float hitY, final float hitZ) {
+        final Block blockClicked = world.getBlock(x, y, z);
+        final int metadata = world.getBlockMetadata(x, y, z);
+
+        if (blockClicked == Blocks.cauldron && metadata > 0) {
+            final int damage = oldItemStack.getItemDamage();
+
+            if ((damage < 32000) && (damage >= 0)) {
+                final Materials oldMaterial = GregTechAPI.sGeneratedMaterials[(damage % 1000)];
+                final OrePrefixes oldPrefix = this.mGeneratedPrefixList[(damage / 1000)];
+                final ItemStack newItemStack = getCauldronWashingResult(oldPrefix, oldMaterial, oldItemStack.stackSize);
+
+                if (newItemStack != null) {
+                    world.setBlockMetadataWithNotify(x, y, z, metadata - 1, 3);
+                    player.inventory.setInventorySlotContents(player.inventory.currentItem, newItemStack);
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns a function to get a new ItemStack after washing.
+     *
+     * @param oldPrefix   The old prefix of the stack being converted
+     * @param oldMaterial The old material to be converted
+     * @param stackSize   The stack size to be returned
+     * @return the new ItemStack after washing, or null if the material/prefix was invalid
+     */
+    static ItemStack getCauldronWashingResult(final OrePrefixes oldPrefix, final Materials oldMaterial,
+        final int stackSize) {
+        if ((oldMaterial != null) && (oldMaterial != Materials.Empty) && (oldMaterial != Materials._NULL)) {
+            switch (oldPrefix.getName()) {
+                case "dustImpure":
+                case "dustPure":
+                    return GTOreDictUnificator
+                        .get(OrePrefixes.dust, cauldronRemap.getOrDefault(oldMaterial, oldMaterial), stackSize);
+                case "crushed":
+                    return GTOreDictUnificator.get(OrePrefixes.crushedPurified, oldMaterial, stackSize);
+                case "dust":
+                    if (oldMaterial == Materials.Wheat) {
+                        return ItemList.Food_Dough.get(stackSize);
+                    }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Cancels the movement of an EntityItem and teleports it above the cauldron.
+     *
+     * @param entityItem The item entity to move
+     * @param x          The X coordinate of the cauldron
+     * @param y          The Y coordinate of the cauldron
+     * @param z          The Z coordinate of the cauldron
+     */
+    static void cancelMovementAndTeleport(EntityItem entityItem, int x, int y, int z) {
+        entityItem.motionX = 0;
+        entityItem.motionY = 0;
+        entityItem.motionZ = 0;
+        entityItem.posX = x + 0.5;
+        entityItem.posY = y + 1.5;
+        entityItem.posZ = z + 0.5;
     }
 
     @Override
@@ -3595,7 +3664,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
     public boolean isPlasmaCellUsed(OrePrefixes aPrefix, Materials aMaterial) {
         // Materials has a plasma fluid
         if (aPrefix == OrePrefixes.cellPlasma && aMaterial.getPlasma(1L) != null) {
-            if (aMaterial.mHasPlasma) return true;
+            if (aMaterial.hasPlasma()) return true;
             // Loop through fusion recipes
             for (GTRecipe recipe : RecipeMaps.fusionRecipes.getAllRecipes()) {
                 // Make sure fluid output can't be null (not sure if possible)
@@ -4111,7 +4180,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         GTModHandler.addCraftingRecipe(
             ItemList.Fuel_Can_Plastic_Empty.get(7L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { " PP", "P P", "PPP", 'P', OrePrefixes.plate.get(Materials.Plastic) });
+            new Object[] { " PP", "P P", "PPP", 'P', OrePrefixes.plate.get(Materials.Polyethylene) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Schematic_1by1.get(1L),

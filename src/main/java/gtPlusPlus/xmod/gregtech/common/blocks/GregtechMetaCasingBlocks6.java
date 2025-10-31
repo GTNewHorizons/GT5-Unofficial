@@ -12,6 +12,7 @@ import net.minecraft.world.IBlockAccess;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.GTMod;
 import gregtech.api.enums.TAE;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.blocks.MaterialCasings;
@@ -49,6 +50,8 @@ public class GregtechMetaCasingBlocks6 extends GregtechMetaCasingBlocksAbstract 
         TAE.registerTexture(3, 6, TextureFactory.of(this, 2));
         GregtechItemList.Casing_Fusion_External2.set(new ItemStack(this, 1, 0));
         GregtechItemList.Casing_Fusion_Internal2.set(new ItemStack(this, 1, 1));
+
+        GTMod.proxy.mCTMBlockCache.put(this, (byte) 0, true);
     }
 
     @Override

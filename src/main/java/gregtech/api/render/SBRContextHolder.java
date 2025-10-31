@@ -6,6 +6,9 @@ import net.minecraft.item.Item;
 
 import org.jetbrains.annotations.NotNull;
 
+import gregtech.common.render.SBRInventoryContext;
+import gregtech.common.render.SBRWorldContext;
+
 /**
  * Holds and manages single instances of {@link SBRInventoryContext} and {@link SBRWorldContext},
  * intended to be reused and reconfigured for each rendering operation.
@@ -29,7 +32,7 @@ public final class SBRContextHolder {
      * @param renderBlocks the {@link RenderBlocks} renderer to use
      * @return the configured {@link SBRInventoryContext} instance unique to this holder
      */
-    public SBRInventoryContext getSBRInventoryContext(@NotNull Block block, int meta, int modelId,
+    public ISBRInventoryContext getSBRInventoryContext(@NotNull Block block, int meta, int modelId,
         @NotNull RenderBlocks renderBlocks) {
         return inventoryContext.setup(block, meta, modelId, renderBlocks);
     }
@@ -47,7 +50,7 @@ public final class SBRContextHolder {
      * @return the configured {@link SBRWorldContext} instance unique to this holder
      */
     @SuppressWarnings("MethodWithTooManyParameters") // Blame ISimpleBlockRenderingHandler.renderWorldBlock
-    public SBRWorldContext getSBRWorldContext(int x, int y, int z, @NotNull Block block, int modelId,
+    public ISBRWorldContext getSBRWorldContext(int x, int y, int z, @NotNull Block block, int modelId,
         @NotNull RenderBlocks renderer) {
         return worldContext.setup(x, y, z, block, modelId, renderer);
     }

@@ -60,6 +60,9 @@ import tectech.thing.gui.TecTechUITextures;
  * Module that allows the user to manage their space projects
  *
  * @author minecraft7771
+ *
+ *         RECIPE IS CURRENTLY TEMPORARILY COMMENTED OUT IN MachineLoader.java FYI
+ *         BLOCK IS ALSO HIDDEN IN NEIGTNewHorizonsConfig.java IN COREMOD
  */
 public class TileEntityModuleManager extends TileEntityModuleBase {
 

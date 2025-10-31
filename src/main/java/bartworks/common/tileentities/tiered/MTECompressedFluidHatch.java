@@ -26,6 +26,8 @@ import gregtech.api.util.GTUtility;
 
 public class MTECompressedFluidHatch extends MTEHatchInput {
 
+    final int CAPACITY = 100_000_000;
+
     public MTECompressedFluidHatch(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 0);
     }
@@ -36,7 +38,7 @@ public class MTECompressedFluidHatch extends MTEHatchInput {
 
     @Override
     public int getCapacity() {
-        return 100_000_000;
+        return CAPACITY;
     }
 
     @Override

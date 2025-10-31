@@ -1,6 +1,6 @@
 package gregtech.common.render;
 
-import static gregtech.api.render.SBRWorldContext.MAX_BRIGHTNESS;
+import static gregtech.api.render.ISBRWorldContext.MAX_BRIGHTNESS;
 
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,7 +20,7 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.render.SBRContextBase;
+import gregtech.api.render.ISBRContext;
 
 public class GTRenderedTexture extends GTTextureBase implements ITexture, IColorModulationContainer {
 
@@ -41,16 +41,17 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
     }
 
     @Override
-    public void renderXPos(SBRContextBase ctx) {
-        startDrawingQuads(ctx.getRenderBlocks(), 1.0f, 0.0f, 0.0f);
+    public void renderXPos(ISBRContext ctx) {
+        final RenderBlocks renderBlocks = ctx.getRenderBlocks();
+        startDrawingQuads(renderBlocks, 1.0f, 0.0f, 0.0f);
         ctx.reset();
-        final boolean enableAO = ctx.getRenderBlocks().enableAO;
+        final boolean enableAO = renderBlocks.enableAO;
         if (glow) {
             if (!GTMod.proxy.mRenderGlowTextures) {
-                draw(ctx.getRenderBlocks());
+                draw(renderBlocks);
                 return;
             }
-            ctx.getRenderBlocks().enableAO = false;
+            renderBlocks.enableAO = false;
             ctx.setLightnessOverride(1.0F);
             ctx.setBrightnessOverride(MAX_BRIGHTNESS);
         }
@@ -64,21 +65,22 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
             ctx.setupColor(ForgeDirection.EAST, 0xffffff);
             renderFaceXPos(ctx, overlayIcon, rotation);
         }
-        ctx.getRenderBlocks().enableAO = enableAO;
-        draw(ctx.getRenderBlocks());
+        renderBlocks.enableAO = enableAO;
+        draw(renderBlocks);
     }
 
     @Override
-    public void renderXNeg(SBRContextBase ctx) {
-        startDrawingQuads(ctx.getRenderBlocks(), -1.0f, 0.0f, 0.0f);
+    public void renderXNeg(ISBRContext ctx) {
+        final RenderBlocks renderBlocks = ctx.getRenderBlocks();
+        startDrawingQuads(renderBlocks, -1.0f, 0.0f, 0.0f);
         ctx.reset();
-        final boolean enableAO = ctx.getRenderBlocks().enableAO;
+        final boolean enableAO = renderBlocks.enableAO;
         if (glow) {
             if (!GTMod.proxy.mRenderGlowTextures) {
-                draw(ctx.getRenderBlocks());
+                draw(renderBlocks);
                 return;
             }
-            ctx.getRenderBlocks().enableAO = false;
+            renderBlocks.enableAO = false;
             ctx.setLightnessOverride(1.0F);
             ctx.setBrightnessOverride(MAX_BRIGHTNESS);
         }
@@ -92,21 +94,22 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
             ctx.setupColor(ForgeDirection.WEST, 0xffffff);
             renderFaceXNeg(ctx, overlayIcon, rotation);
         }
-        ctx.getRenderBlocks().enableAO = enableAO;
-        draw(ctx.getRenderBlocks());
+        renderBlocks.enableAO = enableAO;
+        draw(renderBlocks);
     }
 
     @Override
-    public void renderYPos(SBRContextBase ctx) {
-        startDrawingQuads(ctx.getRenderBlocks(), 0.0f, 1.0f, 0.0f);
+    public void renderYPos(ISBRContext ctx) {
+        final RenderBlocks renderBlocks = ctx.getRenderBlocks();
+        startDrawingQuads(renderBlocks, 0.0f, 1.0f, 0.0f);
         ctx.reset();
-        final boolean enableAO = ctx.getRenderBlocks().enableAO;
+        final boolean enableAO = renderBlocks.enableAO;
         if (glow) {
             if (!GTMod.proxy.mRenderGlowTextures) {
-                draw(ctx.getRenderBlocks());
+                draw(renderBlocks);
                 return;
             }
-            ctx.getRenderBlocks().enableAO = false;
+            renderBlocks.enableAO = false;
             ctx.setLightnessOverride(1.0F);
             ctx.setBrightnessOverride(MAX_BRIGHTNESS);
         }
@@ -120,21 +123,22 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
             ctx.setupColor(ForgeDirection.UP, 0xffffff);
             renderFaceYPos(ctx, overlayIcon, rotation);
         }
-        ctx.getRenderBlocks().enableAO = enableAO;
-        draw(ctx.getRenderBlocks());
+        renderBlocks.enableAO = enableAO;
+        draw(renderBlocks);
     }
 
     @Override
-    public void renderYNeg(SBRContextBase ctx) {
-        startDrawingQuads(ctx.getRenderBlocks(), 0.0f, -1.0f, 0.0f);
+    public void renderYNeg(ISBRContext ctx) {
+        final RenderBlocks renderBlocks = ctx.getRenderBlocks();
+        startDrawingQuads(renderBlocks, 0.0f, -1.0f, 0.0f);
         ctx.reset();
-        final boolean enableAO = ctx.getRenderBlocks().enableAO;
+        final boolean enableAO = renderBlocks.enableAO;
         if (glow) {
             if (!GTMod.proxy.mRenderGlowTextures) {
-                draw(ctx.getRenderBlocks());
+                draw(renderBlocks);
                 return;
             }
-            ctx.getRenderBlocks().enableAO = false;
+            renderBlocks.enableAO = false;
             ctx.setLightnessOverride(1.0F);
             ctx.setBrightnessOverride(MAX_BRIGHTNESS);
         }
@@ -148,21 +152,22 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
             ctx.setupColor(ForgeDirection.DOWN, 0xffffff);
             renderFaceYNeg(ctx, overlayIcon, rotation);
         }
-        ctx.getRenderBlocks().enableAO = enableAO;
-        draw(ctx.getRenderBlocks());
+        renderBlocks.enableAO = enableAO;
+        draw(renderBlocks);
     }
 
     @Override
-    public void renderZPos(SBRContextBase ctx) {
-        startDrawingQuads(ctx.getRenderBlocks(), 0.0f, 0.0f, 1.0f);
+    public void renderZPos(ISBRContext ctx) {
+        final RenderBlocks renderBlocks = ctx.getRenderBlocks();
+        startDrawingQuads(renderBlocks, 0.0f, 0.0f, 1.0f);
         ctx.reset();
-        final boolean enableAO = ctx.getRenderBlocks().enableAO;
+        final boolean enableAO = renderBlocks.enableAO;
         if (glow) {
             if (!GTMod.proxy.mRenderGlowTextures) {
-                draw(ctx.getRenderBlocks());
+                draw(renderBlocks);
                 return;
             }
-            ctx.getRenderBlocks().enableAO = false;
+            renderBlocks.enableAO = false;
             ctx.setLightnessOverride(1.0F);
             ctx.setBrightnessOverride(MAX_BRIGHTNESS);
         }
@@ -176,21 +181,22 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
             ctx.setupColor(ForgeDirection.SOUTH, 0xffffff);
             renderFaceZPos(ctx, overlayIcon, rotation);
         }
-        ctx.getRenderBlocks().enableAO = enableAO;
-        draw(ctx.getRenderBlocks());
+        renderBlocks.enableAO = enableAO;
+        draw(renderBlocks);
     }
 
     @Override
-    public void renderZNeg(SBRContextBase ctx) {
-        startDrawingQuads(ctx.getRenderBlocks(), 0.0f, 0.0f, -1.0f);
+    public void renderZNeg(ISBRContext ctx) {
+        final RenderBlocks renderBlocks = ctx.getRenderBlocks();
+        startDrawingQuads(renderBlocks, 0.0f, 0.0f, -1.0f);
         ctx.reset();
-        final boolean enableAO = ctx.getRenderBlocks().enableAO;
+        final boolean enableAO = renderBlocks.enableAO;
         if (glow) {
             if (!GTMod.proxy.mRenderGlowTextures) {
-                draw(ctx.getRenderBlocks());
+                draw(renderBlocks);
                 return;
             }
-            ctx.getRenderBlocks().enableAO = false;
+            renderBlocks.enableAO = false;
             ctx.setLightnessOverride(1.0F);
             ctx.setBrightnessOverride(MAX_BRIGHTNESS);
         }
@@ -204,8 +210,8 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
             ctx.setupColor(ForgeDirection.NORTH, 0xffffff);
             renderFaceZNeg(ctx, overlayIcon, rotation);
         }
-        ctx.getRenderBlocks().enableAO = enableAO;
-        draw(ctx.getRenderBlocks());
+        renderBlocks.enableAO = enableAO;
+        draw(renderBlocks);
     }
 
     @Override
@@ -221,7 +227,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
     /**
      * Renders the given texture to the bottom face of the block. Args: block, x, y, z, texture
      */
-    protected void renderFaceYNeg(SBRContextBase ctx, IIcon icon, ExtendedFacing extendedFacing) {
+    protected void renderFaceYNeg(ISBRContext ctx, IIcon icon, ExtendedFacing extendedFacing) {
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
         renderBlocks.uvRotateBottom = getRotation(extendedFacing);
         icon = getFlipped(ForgeDirection.DOWN, extendedFacing, icon);
@@ -234,7 +240,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
     /**
      * Renders the given texture to the top face of the block. Args: block, x, y, z, texture
      */
-    protected void renderFaceYPos(SBRContextBase ctx, IIcon icon, ExtendedFacing extendedFacing) {
+    protected void renderFaceYPos(ISBRContext ctx, IIcon icon, ExtendedFacing extendedFacing) {
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
 
         renderBlocks.uvRotateTop = getRotation(extendedFacing);
@@ -248,7 +254,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
     /**
      * Renders the given texture to the north (z-negative) face of the block. Args: block, x, y, z, texture
      */
-    protected void renderFaceZNeg(SBRContextBase ctx, IIcon icon, ExtendedFacing extendedFacing) {
+    protected void renderFaceZNeg(ISBRContext ctx, IIcon icon, ExtendedFacing extendedFacing) {
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
 
         renderBlocks.uvRotateEast = getRotation(extendedFacing);
@@ -264,7 +270,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
     /**
      * Renders the given texture to the south (z-positive) face of the block. Args: block, x, y, z, texture
      */
-    protected void renderFaceZPos(SBRContextBase ctx, IIcon icon, ExtendedFacing extendedFacing) {
+    protected void renderFaceZPos(ISBRContext ctx, IIcon icon, ExtendedFacing extendedFacing) {
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
 
         renderBlocks.uvRotateWest = getRotation(extendedFacing);
@@ -278,7 +284,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
     /**
      * Renders the given texture to the west (x-negative) face of the block. Args: block, x, y, z, texture
      */
-    protected void renderFaceXNeg(SBRContextBase ctx, IIcon icon, ExtendedFacing extendedFacing) {
+    protected void renderFaceXNeg(ISBRContext ctx, IIcon icon, ExtendedFacing extendedFacing) {
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
 
         renderBlocks.uvRotateNorth = getRotation(extendedFacing);
@@ -292,7 +298,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
     /**
      * Renders the given texture to the east (x-positive) face of the block. Args: block, x, y, z, texture
      */
-    protected void renderFaceXPos(SBRContextBase ctx, IIcon icon, ExtendedFacing extendedFacing) {
+    protected void renderFaceXPos(ISBRContext ctx, IIcon icon, ExtendedFacing extendedFacing) {
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
 
         renderBlocks.uvRotateSouth = getRotation(extendedFacing);

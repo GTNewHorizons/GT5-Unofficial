@@ -73,7 +73,11 @@ public class TextureSet {
         SET_CRYSTALLINE = new TextureSet("crystalline", true), SET_MELODIC = new TextureSet("melodic", true),
         SET_STELLAR = new TextureSet("stellar", true), SET_VIVID = new TextureSet("vivid", true),
         SET_DRACONIUM = new TextureSet("draconium", false),
-        SET_AWOKEN_DRACONIUM = new TextureSet("awakeneddraconium", false);;
+        SET_AWOKEN_DRACONIUM = new TextureSet("awakeneddraconium", false),
+        SET_ELECTROTINE = new TextureSet("electrotine", false), SET_REDSTONE = new TextureSet("redstone", false),
+        SET_GLOWSTONE = new TextureSet("glowstone", false), SET_PYROTHEUM = new TextureSet("pyrotheum", false),
+        SET_CRYOTHEUM = new TextureSet("cryotheum", false), SET_BLAZE = new TextureSet("blaze", false),
+        SET_BLIZZ = new TextureSet("blizz", false);
 
     /**
      * For the Indices of OrePrefixes you need to look into the OrePrefix Enum.
@@ -89,7 +93,7 @@ public class TextureSet {
         for (int i = 0; i < 128; i++) {
             if (IS_BLOCK_TEXTURE[i] == TextureType.BLOCK) {
                 switch (SUFFIXES[i]) {
-                    case "/frameGt", "/ore", "/oreSmall" -> mTextures[i] = new Textures.BlockIcons.CustomAlphaIcon(
+                    case "/ore", "/oreSmall" -> mTextures[i] = new Textures.BlockIcons.CustomAlphaIcon(
                         aTextMatIconDir + aSetName + SUFFIXES[i]);
                     default -> mTextures[i] = new Textures.BlockIcons.CustomIcon(
                         aTextMatIconDir + aSetName + SUFFIXES[i]);

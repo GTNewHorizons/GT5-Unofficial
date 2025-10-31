@@ -92,12 +92,12 @@ public class MTEPlasmaModule extends MTEBaseModule {
             @Override
             protected CheckRecipeResult onRecipeStart(@NotNull GTRecipe recipe) {
                 wirelessEUt = (long) recipe.mEUt * maxParallel;
-                if (!addEUToGlobalEnergyMap(userUUID, -calculatedEut * duration)) {
+                BigInteger powerForRecipe = BigInteger.valueOf(calculatedEut)
+                    .multiply(BigInteger.valueOf(duration));
+                if (!addEUToGlobalEnergyMap(userUUID, powerForRecipe.negate())) {
                     return CheckRecipeResultRegistry.insufficientPower(wirelessEUt * recipe.mDuration);
                 }
-                addToPowerTally(
-                    BigInteger.valueOf(calculatedEut)
-                        .multiply(BigInteger.valueOf(duration)));
+                addToPowerTally(powerForRecipe);
                 addToRecipeTally(calculatedParallels);
                 currentParallel = calculatedParallels;
                 EUt = calculatedEut;
@@ -263,14 +263,14 @@ public class MTEPlasmaModule extends MTEBaseModule {
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Plasma Fabricator")
-            .addInfo("This is a module of the Godforge.")
-            .addInfo("Must be part of a Godforge to function.")
-            .addInfo("Used for extreme temperature matter ionization.")
+            .addInfo("This is a module of the Godforge")
+            .addInfo("Must be part of a Godforge to function")
+            .addInfo("Used for extreme temperature matter ionization")
             .addSeparator(EnumChatFormatting.AQUA, 74)
             .addInfo("The third module of the Godforge, this module infuses materials with extreme amounts")
             .addInfo("of heat, ionizing and turning them into plasma directly. Not all plasmas can be produced")
-            .addInfo("right away, some of them require certain upgrades to be unlocked.")
-            .addInfo("This module is specialized towards energy and overclock efficiency.")
+            .addInfo("right away, some of them require certain upgrades to be unlocked")
+            .addInfo("This module is specialized towards energy and overclock efficiency")
             .beginStructureBlock(7, 7, 13, false)
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "20"

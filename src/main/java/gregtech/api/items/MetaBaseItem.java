@@ -25,6 +25,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.BlockSnapshot;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
@@ -137,6 +138,12 @@ public abstract class MetaBaseItem extends GTGenericItem
 
     public boolean onMiddleClick(ItemStack aStack, EntityPlayer aPlayer) {
         return forEachBehavior(aStack, behavior -> behavior.onMiddleClick(this, aStack, aPlayer));
+    }
+
+    public void onBlockPlacedWhileWieldingOffhanded(BlockSnapshot snapshot, ItemStack itemStack, EntityPlayer player) {
+        forEachBehavior(
+            itemStack,
+            behavior -> behavior.onBlockPlacedWhileWieldingOffhanded(snapshot, itemStack, player));
     }
 
     @Override

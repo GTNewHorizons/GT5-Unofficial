@@ -3,21 +3,21 @@ package gregtech.api.interfaces;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 
-import gregtech.api.render.SBRContextBase;
+import gregtech.api.render.ISBRContext;
 
 public interface ITexture {
 
-    void renderXPos(SBRContextBase ctx);
+    void renderXPos(ISBRContext ctx);
 
-    void renderXNeg(SBRContextBase ctx);
+    void renderXNeg(ISBRContext ctx);
 
-    void renderYPos(SBRContextBase ctx);
+    void renderYPos(ISBRContext ctx);
 
-    void renderYNeg(SBRContextBase ctx);
+    void renderYNeg(ISBRContext ctx);
 
-    void renderZPos(SBRContextBase ctx);
+    void renderZPos(ISBRContext ctx);
 
-    void renderZNeg(SBRContextBase ctx);
+    void renderZNeg(ISBRContext ctx);
 
     boolean isValidTexture();
 

@@ -1,6 +1,6 @@
 package gregtech.common.gui.mui1.cover;
 
-import static net.minecraft.util.StatCollector.translateToLocal;
+import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
@@ -39,10 +39,9 @@ public abstract class AdvancedRedstoneTransmitterBaseUIFactory<C extends CoverAd
             TextWidget
                 .dynamicString(
                     getCoverString(
-                        c -> c.isInverted() ? translateToLocal("gt.interact.desc.inverted")
-                            : translateToLocal("gt.interact.desc.normal")))
+                        c -> c.isInverted() ? StatCollector.translateToLocal("gt.interact.desc.inverted")
+                            : StatCollector.translateToLocal("gt.interact.desc.normal")))
                 .setSynced(false)
-                .setDefaultColor(COLOR_TEXT_GRAY.get())
                 .setPos(startX + spaceX * 10, 4 + startY + spaceY * getButtonRow()));
     }
 
@@ -56,8 +55,8 @@ public abstract class AdvancedRedstoneTransmitterBaseUIFactory<C extends CoverAd
                 coverData.setInverted(state);
                 return coverData;
             },
-            widget -> widget.addTooltip(0, translateToLocal("gt.interact.desc.normal"))
-                .addTooltip(1, translateToLocal("gt.interact.desc.inverted"))
+            widget -> widget.addTooltip(0, StatCollector.translateToLocal("gt.interact.desc.normal.tooltip"))
+                .addTooltip(1, StatCollector.translateToLocal("gt.interact.desc.inverted.tooltip"))
                 .setPos(spaceX * 9, spaceY * getButtonRow()));
     }
 }

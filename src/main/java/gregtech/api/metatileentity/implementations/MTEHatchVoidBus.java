@@ -17,11 +17,15 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 
+import gregtech.api.enums.OutputBusType;
 import gregtech.api.gui.widgets.PhantomItemButton;
+import gregtech.api.interfaces.IOutputBus;
+import gregtech.api.interfaces.IOutputBusTransaction;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTSplit;
 
 public class MTEHatchVoidBus extends MTEHatchOutputBus {
@@ -108,17 +112,6 @@ public class MTEHatchVoidBus extends MTEHatchOutputBus {
     }
 
     @Override
-    public boolean storePartial(ItemStack stack, boolean simulate) {
-        for (ItemStack lockedItem : lockedItems) {
-            if (lockedItem != null && lockedItem.isItemEqual(stack)) {
-                stack.stackSize = 0;
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
     public boolean pushOutputInventory() {
         return false;
     }
@@ -175,10 +168,6 @@ public class MTEHatchVoidBus extends MTEHatchOutputBus {
                 .setPos(70, 25));
     }
 
-    public ItemStack[] getLockedItems() {
-        return lockedItems;
-    }
-
     @Override
     public boolean isLocked() {
         for (ItemStack lockedItem : lockedItems) {
@@ -187,6 +176,75 @@ public class MTEHatchVoidBus extends MTEHatchOutputBus {
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean isFiltered() {
+        return true;
+    }
+
+    @Override
+    public boolean isFilteredToItem(GTUtility.ItemId id) {
+        for (ItemStack lockedItem : lockedItems) {
+            if (lockedItem != null && id.matches(lockedItem)) return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public OutputBusType getBusType() {
+        return OutputBusType.Void;
+    }
+
+    @Override
+    public boolean storePartial(ItemStack stack, boolean simulate) {
+        for (ItemStack lockedItem : lockedItems) {
+            if (lockedItem != null && lockedItem.isItemEqual(stack)) {
+                stack.stackSize = 0;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public IOutputBusTransaction createTransaction() {
+        return new VoidingTransaction();
+    }
+
+    class VoidingTransaction implements IOutputBusTransaction {
+
+        @Override
+        public IOutputBus getBus() {
+            return MTEHatchVoidBus.this;
+        }
+
+        @Override
+        public boolean hasAvailableSpace() {
+            return true;
+        }
+
+        @Override
+        public boolean storePartial(GTUtility.ItemId id, ItemStack stack) {
+            for (ItemStack lockedItem : lockedItems) {
+                if (lockedItem != null && lockedItem.isItemEqual(stack)) {
+                    stack.stackSize = 0;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        @Override
+        public void completeItem(GTUtility.ItemId id) {
+            // do nothing
+        }
+
+        @Override
+        public void commit() {
+            // do nothing
+        }
     }
 
     @Override

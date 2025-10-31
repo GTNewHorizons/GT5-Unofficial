@@ -75,7 +75,7 @@ public class MTEGeothermalGenerator extends MTEBasicGenerator {
     @Override
     public ITexture[] getFront(final byte aColor) {
         return new ITexture[] { super.getFront(aColor)[0], TextureFactory.of(Textures.BlockIcons.DIESEL_GENERATOR_SIDE),
-            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_2A[this.mTier] };
+            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_2A[this.mTier + 1] };
     }
 
     @Override
@@ -105,7 +105,7 @@ public class MTEGeothermalGenerator extends MTEBasicGenerator {
     public ITexture[] getFrontActive(final byte aColor) {
         return new ITexture[] { super.getFrontActive(aColor)[0],
             TextureFactory.of(Textures.BlockIcons.DIESEL_GENERATOR_SIDE_ACTIVE),
-            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_2A[this.mTier] };
+            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_2A[this.mTier + 1] };
     }
 
     @Override

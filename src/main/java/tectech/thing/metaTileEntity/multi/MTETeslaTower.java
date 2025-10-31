@@ -775,7 +775,7 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
         return getBaseMetaTileEntity().isActive() ? super.getEUVar() : 1;
     }
 
-    private boolean addCapacitorToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+    public boolean addCapacitorToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) {
             return false;
         }
@@ -789,7 +789,7 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
         }
         if (aMetaTileEntity instanceof MTEHatchMaintenance) {
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mMaintenanceHatches.add((MTEHatchMaintenance) aMetaTileEntity);
+            return addMaintenanceToMachineList(aTileEntity, aBaseCasingIndex);
         }
         if (aMetaTileEntity instanceof MTEHatchEnergy) {
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);

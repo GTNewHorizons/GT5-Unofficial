@@ -53,6 +53,8 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 import org.jetbrains.annotations.Nullable;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import ganymedes01.etfuturum.recipes.BlastFurnaceRecipes;
+import ganymedes01.etfuturum.recipes.SmokerRecipes;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -685,10 +687,10 @@ public class GTModHandler {
                     case 3    -> OrePrefixes.pipeMedium.get(Materials.StainlessSteel);
                     case 4    -> OrePrefixes.pipeMedium.get(Materials.Titanium);
                     case 5    -> OrePrefixes.pipeMedium.get(Materials.TungstenSteel);
-                    case 6    -> OrePrefixes.pipeSmall.get(Materials.Ultimate);
-                    case 7    -> OrePrefixes.pipeMedium.get(Materials.Ultimate);
-                    case 8    -> OrePrefixes.pipeLarge.get(Materials.Ultimate);
-                    default   -> OrePrefixes.pipeHuge.get(Materials.Ultimate);
+                    case 6    -> OrePrefixes.pipeSmall.get(Materials.ZPM);
+                    case 7    -> OrePrefixes.pipeMedium.get(Materials.ZPM);
+                    case 8    -> OrePrefixes.pipeLarge.get(Materials.ZPM);
+                    default   -> OrePrefixes.pipeHuge.get(Materials.ZPM);
                 };
 
                 case COIL_HEATING -> switch (machineTier) {
@@ -1654,6 +1656,34 @@ public class GTModHandler {
         if (aInput == null || aInput.stackSize < 1) return null;
         ItemStack rStack = GTOreDictUnificator.get(
             FurnaceRecipes.smelting()
+                .getSmeltingResult(aInput));
+
+        if (rStack != null && (aOutputSlot == null || (GTUtility.areStacksEqual(rStack, aOutputSlot)
+            && rStack.stackSize + aOutputSlot.stackSize <= aOutputSlot.getMaxStackSize()))) {
+            if (aRemoveInput) aInput.stackSize--;
+            return rStack;
+        }
+        return null;
+    }
+
+    public static ItemStack getEFRBlastingOutput(ItemStack aInput, boolean aRemoveInput, ItemStack aOutputSlot) {
+        if (aInput == null || aInput.stackSize < 1) return null;
+        ItemStack rStack = GTOreDictUnificator.get(
+            BlastFurnaceRecipes.smelting()
+                .getSmeltingResult(aInput));
+
+        if (rStack != null && (aOutputSlot == null || (GTUtility.areStacksEqual(rStack, aOutputSlot)
+            && rStack.stackSize + aOutputSlot.stackSize <= aOutputSlot.getMaxStackSize()))) {
+            if (aRemoveInput) aInput.stackSize--;
+            return rStack;
+        }
+        return null;
+    }
+
+    public static ItemStack getEFRSmokingOutput(ItemStack aInput, boolean aRemoveInput, ItemStack aOutputSlot) {
+        if (aInput == null || aInput.stackSize < 1) return null;
+        ItemStack rStack = GTOreDictUnificator.get(
+            SmokerRecipes.smelting()
                 .getSmeltingResult(aInput));
 
         if (rStack != null && (aOutputSlot == null || (GTUtility.areStacksEqual(rStack, aOutputSlot)

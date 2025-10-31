@@ -15,6 +15,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.Textures.BlockIcons.CustomIcon;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -101,7 +102,7 @@ public abstract class MTEBaseFactoryPipe extends MetaPipeEntity implements IActi
 
     @Override
     public byte getTileEntityBaseType() {
-        return 4;
+        return HarvestTool.WrenchPipeLevel0.toTileEntityBaseType();
     }
 
     @Override

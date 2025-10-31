@@ -261,7 +261,7 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
                 .addIcon(MACHINE_CASING_MAGIC_GLOW)
                 .glow()
                 .build(),
-            OVERLAYS_ENERGY_OUT[mTier] };
+            OVERLAYS_ENERGY_OUT[mTier + 1] };
     }
 
     @Override
@@ -303,7 +303,7 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
                 .addIcon(MACHINE_CASING_MAGIC_ACTIVE_GLOW)
                 .glow()
                 .build(),
-            OVERLAYS_ENERGY_OUT[mTier] };
+            OVERLAYS_ENERGY_OUT[mTier + 1] };
     }
 
     @Override

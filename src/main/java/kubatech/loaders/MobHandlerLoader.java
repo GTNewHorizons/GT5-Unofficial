@@ -87,13 +87,17 @@ public class MobHandlerLoader {
                 | IllegalAccessException e) {
                 throw new RuntimeException(e);
             }
-            mDuration = Math.max(MOB_SPAWN_INTERVAL, (int) ((recipe.maxEntityHealth / DIAMOND_SPIKES_DAMAGE) * 10d));
+            mDuration = getProgressTimeForAttackDamage(DIAMOND_SPIKES_DAMAGE);
+        }
+
+        public final int getProgressTimeForAttackDamage(final double attackDamage) {
+            return Math.max(MOB_SPAWN_INTERVAL, (int) ((recipe.maxEntityHealth / attackDamage) * 10d));
         }
 
         public ItemStack[] generateOutputs(Random rnd, MTEExtremeEntityCrusher MTE, double attackDamage,
             int lootinglevel, boolean preferInfernalDrops, boolean voidAllDamagedAndEnchantedItems) {
             MTE.lEUt = mEUt;
-            MTE.mMaxProgresstime = Math.max(MOB_SPAWN_INTERVAL, (int) ((recipe.maxEntityHealth / attackDamage) * 10d));
+            MTE.mMaxProgresstime = getProgressTimeForAttackDamage(attackDamage);
             ArrayList<ItemStack> stacks = new ArrayList<>(this.mOutputs.size());
             this.entityCopy.setPosition(
                 MTE.getBaseMetaTileEntity()

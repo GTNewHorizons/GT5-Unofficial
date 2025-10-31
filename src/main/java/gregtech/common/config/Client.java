@@ -3,6 +3,7 @@ package gregtech.common.config;
 import static gregtech.api.recipe.RecipeCategorySetting.ENABLE;
 
 import com.gtnewhorizon.gtnhlib.config.Config;
+import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
 import gregtech.api.enums.Mods;
 import gregtech.api.recipe.RecipeCategorySetting;
@@ -31,6 +32,13 @@ public class Client {
 
     @Config.Comment("NEI section")
     public static final NEI nei = new NEI();
+
+    @Config.Comment("Chat message section")
+    public static final Chat chat = new Chat();
+
+    public static void save() {
+        ConfigurationManager.save(Client.class);
+    }
 
     @Config.LangKey("GT5U.gui.config.client.color_modulation")
     public static class ColorModulation {
@@ -216,6 +224,15 @@ public class Client {
         @Config.Name("Render MagLev Tethers")
         public boolean renderMagLevTethers;
 
+        @Config.DefaultBoolean(true)
+        @Config.Name("Render Powerfail Notifications")
+        public boolean renderPowerfailNotifications;
+
+        @Config.Comment("When >0, powerfail notifications will stop rendering after this many seconds.")
+        @Config.DefaultInt(0)
+        @Config.Name("Powerfail Notification Timeout")
+        public int powerfailNotificationTimeout;
+
         @Config.Comment("Enables or disables Trans Metal rendering, also impacts motors, pistons etc with same rendering. Accessibility option.")
         @Config.DefaultBoolean(true)
         public boolean renderTransMetalFancy;
@@ -297,5 +314,19 @@ public class Client {
             @Config.DefaultEnum("ENABLE")
             public RecipeCategorySetting absNonAlloyRecipes = ENABLE;
         }
+    }
+
+    @Config.LangKey("GT5U.gui.config.client.chat")
+    public static class Chat {
+
+        @Config.Comment("Displays a chat message when a powerfail occurs.")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Print Powerfail Notifications")
+        public boolean powerfailNotifications;
+
+        @Config.Comment("Prints the powerfail command help text when receiving a powerfail. The message is only printed once per game session.")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Print Powerfail Help Text")
+        public boolean printPowerfailHelpText;
     }
 }

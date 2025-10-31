@@ -167,7 +167,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
                 .dot(2)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasingsDyson, 2))) // Deployment Unit Base Casing
         .addElement('j', ofBlock(GregTechAPI.sBlockCasingsDyson, 3)) // Deployment Unit Core
-        .addElement('k', ofFrame(Materials.Longasssuperconductornameforuhvwire))
+        .addElement('k', ofFrame(Materials.SuperconductorUHVBase))
         .addElement('m', ofBlock(GregTechAPI.sBlockCasingsDyson, 4)) // Deployment Unit Superconducting Magnet
         .addElement(
             'o',

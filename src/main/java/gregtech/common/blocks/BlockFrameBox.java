@@ -30,6 +30,8 @@ import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.interfaces.IBlockWithTextures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -43,13 +45,16 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.common.render.GTRendererBlock;
 
-public class BlockFrameBox extends BlockContainer {
+public class BlockFrameBox extends BlockContainer implements IBlockWithTextures {
 
     protected final String mUnlocalizedName;
 
     // We need to keep around a temporary TE to preserve this TE after breaking the block, so we can
     // properly call getDrops() on it
     private static final ThreadLocal<IGregTechTileEntity> mTemporaryTileEntity = new ThreadLocal<>();
+
+    // Texture[meta][side][layer]
+    private ITexture[][][] textures = new ITexture[1000][][];
 
     public BlockFrameBox() {
         super(new MaterialMachines());
@@ -60,6 +65,17 @@ public class BlockFrameBox extends BlockContainer {
 
         GameRegistry.registerBlock(this, ItemFrames.class, getUnlocalizedName());
 
+        for (int meta = 1; meta < GregTechAPI.sGeneratedMaterials.length; meta++) {
+            Materials material = GregTechAPI.sGeneratedMaterials[meta];
+            if (material != null && material.hasMetalItems()) {
+
+                ITexture[] texture = { TextureFactory.of(
+                    material.mIconSet.mTextures[OrePrefixes.frameGt.getTextureIndex()],
+                    Dyes.getModulation(-1, material.mRGBa)) };
+
+                textures[meta] = new ITexture[][] { texture, texture, texture, texture, texture, texture };
+            }
+        }
         GregTechAPI.registerMachineBlock(this, -1);
     }
 
@@ -144,7 +160,7 @@ public class BlockFrameBox extends BlockContainer {
 
     @Override
     public int getRenderType() {
-        return GTRendererBlock.mRenderID;
+        return GTRendererBlock.RENDER_ID;
     }
 
     @Override
@@ -154,7 +170,18 @@ public class BlockFrameBox extends BlockContainer {
 
     @Override
     public int getRenderBlockPass() {
-        return 1;
+        return 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @implNote Can render in both passes: cut-out and alpha-blended.<br>
+     *           Final choice on {@link ITexture} or {@link IIconContainer}.
+     */
+    @Override
+    public boolean canRenderInPass(int pass) {
+        return pass == 0 || pass == 1;
     }
 
     @Override
@@ -163,7 +190,7 @@ public class BlockFrameBox extends BlockContainer {
         for (int i = 0; i < GregTechAPI.sGeneratedMaterials.length; i++) {
             Materials tMaterial = GregTechAPI.sGeneratedMaterials[i];
             // If material is not null and has a frame box item associated with it
-            if ((tMaterial != null) && ((tMaterial.mTypes & 0x02) != 0)) {
+            if (tMaterial != null && tMaterial.hasMetalItems()) {
                 aList.add(new ItemStack(aItem, 1, i));
             }
         }
@@ -433,15 +460,29 @@ public class BlockFrameBox extends BlockContainer {
     public IIcon getIcon(int side, int meta) {
         Materials material = GregTechAPI.sGeneratedMaterials[meta];
         if (material == null) return null;
-        return material.mIconSet.mTextures[OrePrefixes.frameGt.mTextureIndex].getIcon();
+        return material.mIconSet.mTextures[OrePrefixes.frameGt.getTextureIndex()].getIcon();
     }
 
-    public ITexture[] getTexture(int meta) {
-        Materials material = getMaterial(meta);
-        if (material == null) return null;
-        return new ITexture[] { TextureFactory.of(
-            material.mIconSet.mTextures[OrePrefixes.frameGt.mTextureIndex],
-            Dyes.getModulation(-1, material.mRGBa)) };
+    @Override
+    public ITexture[][] getTextures(IBlockAccess world, int x, int y, int z) {
+        TileEntity te = world.getTileEntity(x, y, z);
+
+        if (te instanceof BaseMetaPipeEntity bmpe) {
+            ITexture[][] textures = new ITexture[6][];
+
+            for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+                textures[dir.ordinal()] = bmpe.getTexture(this, dir);
+            }
+
+            return textures;
+        }
+
+        return getTextures(world.getBlockMetadata(x, y, z));
+    }
+
+    @Override
+    public ITexture[][] getTextures(int meta) {
+        return meta < 0 || meta >= 1000 ? null : textures[meta];
     }
 
     @Override

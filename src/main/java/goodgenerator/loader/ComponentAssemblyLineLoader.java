@@ -4,8 +4,6 @@ import static bartworks.system.material.WerkstoffLoader.Ruridit;
 import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.componentAssemblyLineRecipes;
 import static gregtech.api.enums.ItemList.*;
 import static gregtech.api.enums.Materials.*;
-import static gregtech.api.enums.MaterialsKevlar.Kevlar;
-import static gregtech.api.enums.MaterialsUEVplus.*;
 import static gregtech.api.enums.OrePrefixes.*;
 import static gregtech.api.enums.TierEU.RECIPE_EV;
 import static gregtech.api.enums.TierEU.RECIPE_HV;
@@ -74,9 +72,8 @@ import gregtech.api.util.GTUtility;
  *     <li>Convert fluids to their "basic" form when needed, like converting
  *           Magnetic Samarium to normal, as magnetic has no molten form.
  * </ul>
- * Circuit Numbers (LuV+ only):
+ * Circuit Numbers (IV+ only):
  * <ul>
- *     <li>None: Field Generator
  *     <li>1: Motor
  *     <li>2: Piston
  *     <li>3: Pump
@@ -84,6 +81,7 @@ import gregtech.api.util.GTUtility;
  *     <li>5: Conveyor
  *     <li>6: Emitter
  *     <li>7: Sensor
+ *     <li>8: Field Generator
  * </ul>
  * </pre>
  */
@@ -105,13 +103,14 @@ public class ComponentAssemblyLineLoader {
         COAL_UXV = 13;
 
     private static final int
-        MOTOR_CIRCUIT     = 1,
-        PISTON_CIRCUIT    = 2,
-        PUMP_CIRCUIT      = 3,
-        ROBOT_ARM_CIRCUIT = 4,
-        CONVEYOR_CIRCUIT  = 5,
-        EMITTER_CIRCUIT   = 6,
-        SENSOR_CIRCUIT    = 7;
+        MOTOR_CIRCUIT           = 1,
+        PISTON_CIRCUIT          = 2,
+        PUMP_CIRCUIT            = 3,
+        ROBOT_ARM_CIRCUIT       = 4,
+        CONVEYOR_CIRCUIT        = 5,
+        EMITTER_CIRCUIT         = 6,
+        SENSOR_CIRCUIT          = 7,
+        FIELD_GENERATOR_CIRCUIT = 8;
 
     public static void run() {
         ComponentAssemblyLineMiscRecipes.run();
@@ -187,7 +186,7 @@ public class ComponentAssemblyLineLoader {
             .metadata(COAL_CASING_TIER, COAL_LV)
             .addTo(componentAssemblyLineRecipes);
 
-        for (var rubber : new Materials[] { Rubber, Silicone, StyreneButadieneRubber }) {
+        for (var rubber : new Materials[] { Rubber, RubberSilicone, StyreneButadieneRubber }) {
             // Pump
             GTValues.RA.stdBuilder()
                 .itemOutputs(Electric_Pump_LV.get(64))
@@ -302,7 +301,7 @@ public class ComponentAssemblyLineLoader {
             .metadata(COAL_CASING_TIER, COAL_MV)
             .addTo(componentAssemblyLineRecipes);
 
-        for (var rubber : new Materials[] { Rubber, Silicone, StyreneButadieneRubber }) {
+        for (var rubber : new Materials[] { Rubber, RubberSilicone, StyreneButadieneRubber }) {
             // Pump
             GTValues.RA.stdBuilder()
                 .itemOutputs(Electric_Pump_MV.get(64))
@@ -415,7 +414,7 @@ public class ComponentAssemblyLineLoader {
             .metadata(COAL_CASING_TIER, COAL_HV)
             .addTo(componentAssemblyLineRecipes);
 
-        for (var rubber : new Materials[] { Rubber, Silicone, StyreneButadieneRubber }) {
+        for (var rubber : new Materials[] { Rubber, RubberSilicone, StyreneButadieneRubber }) {
             // Pump
             GTValues.RA.stdBuilder()
                 .itemOutputs(Electric_Pump_HV.get(64))
@@ -528,7 +527,7 @@ public class ComponentAssemblyLineLoader {
             .metadata(COAL_CASING_TIER, COAL_EV)
             .addTo(componentAssemblyLineRecipes);
 
-        for (var rubber : new Materials[] { Rubber, Silicone, StyreneButadieneRubber }) {
+        for (var rubber : new Materials[] { Rubber, RubberSilicone, StyreneButadieneRubber }) {
             // Pump
             GTValues.RA.stdBuilder()
                 .itemOutputs(Electric_Pump_EV.get(64))
@@ -607,7 +606,8 @@ public class ComponentAssemblyLineLoader {
                 get(stickLong, NeodymiumMagnetic, 24),
                 get(stickLong, TungstenSteel, 48),
                 get(wireGt16, Graphene, 48),
-                get(cableGt16, Tungsten, 12))
+                get(cableGt16, Tungsten, 12),
+                getIntegratedCircuit(MOTOR_CIRCUIT))
             .duration(48 * SECONDS)
             .eut(RECIPE_EV)
             .metadata(COAL_CASING_TIER, COAL_IV)
@@ -621,7 +621,8 @@ public class ComponentAssemblyLineLoader {
                 get(plateDense, TungstenSteel, 16),
                 get(stickLong, TungstenSteel, 48),
                 get(cableGt16, Tungsten, 6),
-                get(gearGt, TungstenSteel, 12))
+                get(gearGt, TungstenSteel, 12),
+                getIntegratedCircuit(PISTON_CIRCUIT))
             .duration(48 * SECONDS)
             .eut(RECIPE_EV)
             .metadata(COAL_CASING_TIER, COAL_IV)
@@ -635,13 +636,14 @@ public class ComponentAssemblyLineLoader {
                 get(Electric_Piston_IV, 48),
                 get(stickLong, TungstenSteel, 48),
                 get(wrapCircuit, IV, 3),
-                get(cableGt16, Tungsten, 9))
+                get(cableGt16, Tungsten, 9),
+                getIntegratedCircuit(ROBOT_ARM_CIRCUIT))
             .duration(48 * SECONDS)
             .eut(RECIPE_EV)
             .metadata(COAL_CASING_TIER, COAL_IV)
             .addTo(componentAssemblyLineRecipes);
 
-        for (var rubber : new Materials[] { Silicone, StyreneButadieneRubber }) {
+        for (var rubber : new Materials[] {RubberSilicone, StyreneButadieneRubber }) {
             // Pump
             GTValues.RA.stdBuilder()
                 .itemOutputs(Electric_Pump_IV.get(64))
@@ -650,7 +652,8 @@ public class ComponentAssemblyLineLoader {
                     get(rotor, TungstenSteel, 48),
                     get(screw, TungstenSteel, 48),
                     get(cableGt16, Tungsten, 3),
-                    get(pipeMedium, TungstenSteel, 48))
+                    get(pipeMedium, TungstenSteel, 48),
+                    getIntegratedCircuit(PUMP_CIRCUIT))
                 .fluidInputs(
                     rubber.getMolten(24 * INGOTS))
                 .duration(48 * SECONDS)
@@ -664,7 +667,8 @@ public class ComponentAssemblyLineLoader {
                 .itemInputsUnsafe(
                     get(Electric_Motor_IV, 96),
                     get(plateDense, rubber, 32),
-                    get(cableGt16, Tungsten, 3))
+                    get(cableGt16, Tungsten, 3),
+                    getIntegratedCircuit(CONVEYOR_CIRCUIT))
                 .duration(48 * SECONDS)
                 .eut(RECIPE_EV)
                 .metadata(COAL_CASING_TIER, COAL_IV)
@@ -678,7 +682,8 @@ public class ComponentAssemblyLineLoader {
                 get(QuantumStar, 48),
                 get(plateDense, TungstenSteel, 21),
                 get(stickLong, Iridium, 24),
-                get(wrapCircuit, IV, 3))
+                get(wrapCircuit, IV, 3),
+                getIntegratedCircuit(SENSOR_CIRCUIT))
             .duration(48 * SECONDS)
             .eut(RECIPE_EV)
             .metadata(COAL_CASING_TIER, COAL_IV)
@@ -690,7 +695,8 @@ public class ComponentAssemblyLineLoader {
             .itemInputsUnsafe(
                 get(QuantumStar, 48),
                 get(wrapCircuit, IV, 6),
-                get(cableGt16, Tungsten, 6))
+                get(cableGt16, Tungsten, 6),
+                getIntegratedCircuit(EMITTER_CIRCUIT))
             .fluidInputs(
                 Iridium.getMolten(1 * STACKS + 32 * INGOTS))
             .duration(48 * SECONDS)
@@ -703,7 +709,8 @@ public class ComponentAssemblyLineLoader {
             .itemOutputs(Field_Generator_IV.get(64))
             .itemInputsUnsafe(
                 get(QuantumStar, 48),
-                get(wrapCircuit, Materials.ZPM, 12))
+                get(wrapCircuit, Materials.ZPM, 12),
+                getIntegratedCircuit(FIELD_GENERATOR_CIRCUIT))
             .fluidInputs(
                 HSSS.getMolten(3 * STACKS))
             .duration(24 * MINUTES)
@@ -747,7 +754,7 @@ public class ComponentAssemblyLineLoader {
             .metadata(COAL_CASING_TIER, COAL_LuV)
             .addTo(componentAssemblyLineRecipes);
 
-        for (var rubber : new Materials[] { Silicone, StyreneButadieneRubber }) {
+        for (var rubber : new Materials[] {RubberSilicone, StyreneButadieneRubber }) {
             // Pump
             GTValues.RA.stdBuilder()
                 .itemOutputs(Electric_Pump_LuV.get(64))
@@ -853,7 +860,8 @@ public class ComponentAssemblyLineLoader {
                 get(QuantumStar, 96),
                 get(Emitter_LuV, 192),
                 get(wrapCircuit, Materials.ZPM, 12),
-                get(cableGt16, YttriumBariumCuprate, 24))
+                get(cableGt16, YttriumBariumCuprate, 24),
+                getIntegratedCircuit(FIELD_GENERATOR_CIRCUIT))
             .fluidInputs(
                 INDALLOY_140.getFluidStack(3 * STACKS),
                 Ruridit.getMolten(24 * STACKS))
@@ -918,7 +926,7 @@ public class ComponentAssemblyLineLoader {
             .metadata(COAL_CASING_TIER, COAL_ZPM)
             .addTo(componentAssemblyLineRecipes);
 
-        for (var rubber : new Materials[] { Silicone, StyreneButadieneRubber }) {
+        for (var rubber : new Materials[] {RubberSilicone, StyreneButadieneRubber }) {
             // Pump
             GTValues.RA.stdBuilder()
                 .itemOutputs(Electric_Pump_ZPM.get(64))
@@ -1003,7 +1011,8 @@ public class ComponentAssemblyLineLoader {
                 get(plateDense, NaquadahAlloy, 32),
                 get(QuantumStar, 96),
                 get(Emitter_ZPM, 192),
-                get(wrapCircuit, UV, 12))
+                get(wrapCircuit, UV, 12),
+                getIntegratedCircuit(FIELD_GENERATOR_CIRCUIT))
             .fluidInputs(
                 INDALLOY_140.getFluidStack(6 * STACKS),
                 Europium.getMolten(24 * STACKS),
@@ -1072,7 +1081,7 @@ public class ComponentAssemblyLineLoader {
             .metadata(COAL_CASING_TIER, COAL_UV)
             .addTo(componentAssemblyLineRecipes);
 
-        for (var rubber : new Materials[] { Silicone, StyreneButadieneRubber }) {
+        for (var rubber : new Materials[] {RubberSilicone, StyreneButadieneRubber }) {
             // Pump
             GTValues.RA.stdBuilder()
                 .itemOutputs(Electric_Pump_UV.get(64))
@@ -1159,7 +1168,8 @@ public class ComponentAssemblyLineLoader {
                 get(plateDense, Neutronium, 32),
                 get(Gravistar, 96),
                 get(Emitter_UV, 192),
-                get(wrapCircuit, UHV, 12))
+                get(wrapCircuit, UHV, 12),
+                getIntegratedCircuit(FIELD_GENERATOR_CIRCUIT))
             .fluidInputs(
                 INDALLOY_140.getFluidStack(12 * STACKS),
                 Americium.getMolten(36 * STACKS),
@@ -1229,7 +1239,7 @@ public class ComponentAssemblyLineLoader {
             .metadata(COAL_CASING_TIER, COAL_UHV)
             .addTo(componentAssemblyLineRecipes);
 
-        for (var rubber : new Materials[] { Silicone, StyreneButadieneRubber }) {
+        for (var rubber : new Materials[] {RubberSilicone, StyreneButadieneRubber }) {
             // Pump
             GTValues.RA.stdBuilder()
                 .itemOutputs(Electric_Pump_UHV.get(64))
@@ -1318,7 +1328,8 @@ public class ComponentAssemblyLineLoader {
                 get(plateDense, CosmicNeutronium, 32),
                 get(Gravistar, 192),
                 get(Emitter_UHV, 192),
-                get(wrapCircuit, UEV, 12))
+                get(wrapCircuit, UEV, 12),
+                getIntegratedCircuit(FIELD_GENERATOR_CIRCUIT))
             .fluidInputs(
                 INDALLOY_140.getFluidStack(13 * STACKS + 32 * INGOTS),
                 Neutronium.getMolten(48 * STACKS),
@@ -1388,7 +1399,7 @@ public class ComponentAssemblyLineLoader {
             .metadata(COAL_CASING_TIER, COAL_UEV)
             .addTo(componentAssemblyLineRecipes);
 
-        for (var rubber : new Materials[] { Silicone, StyreneButadieneRubber }) {
+        for (var rubber : new Materials[] {RubberSilicone, StyreneButadieneRubber }) {
             // Pump
             GTValues.RA.stdBuilder()
                 .itemOutputs(Electric_Pump_UEV.get(64))
@@ -1477,7 +1488,8 @@ public class ComponentAssemblyLineLoader {
                 get(plateDense, Infinity, 32),
                 get(Gravistar, 384),
                 get(Emitter_UEV, 192),
-                get(wrapCircuit, UIV, 12))
+                get(wrapCircuit, UIV, 12),
+                getIntegratedCircuit(FIELD_GENERATOR_CIRCUIT))
             .fluidInputs(
                 MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
                 Tritanium.getMolten(48 * STACKS),
@@ -1574,7 +1586,7 @@ public class ComponentAssemblyLineLoader {
             .metadata(COAL_CASING_TIER, COAL_UIV)
             .addTo(componentAssemblyLineRecipes);
 
-        for (var rubber : new Materials[] { Silicone, StyreneButadieneRubber }) {
+        for (var rubber : new Materials[] {RubberSilicone, StyreneButadieneRubber }) {
             // Pump
             GTValues.RA.stdBuilder()
                 .itemOutputs(Electric_Pump_UIV.get(64))
@@ -1670,7 +1682,8 @@ public class ComponentAssemblyLineLoader {
                 get(NuclearStar, 48),
                 get(Emitter_UIV, 192),
                 get(wrapCircuit, UMV, 12),
-                get(cableGt16, NetherStar, 96))
+                get(cableGt16, NetherStar, 96),
+                getIntegratedCircuit(FIELD_GENERATOR_CIRCUIT))
             .fluidInputs(
                 MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
                 DimensionallyShiftedSuperfluid.getFluid(12 * STACKS),
@@ -1690,7 +1703,8 @@ public class ComponentAssemblyLineLoader {
                 get(NuclearStar, 48),
                 get(Emitter_UIV, 192),
                 get(wrapCircuit, UMV, 12),
-                get(cableGt16, NetherStar, 96))
+                get(cableGt16, NetherStar, 96),
+                getIntegratedCircuit(FIELD_GENERATOR_CIRCUIT))
             .fluidInputs(
                 MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
                 DimensionallyShiftedSuperfluid.getFluid(12 * STACKS),
@@ -1764,7 +1778,7 @@ public class ComponentAssemblyLineLoader {
             .metadata(COAL_CASING_TIER, COAL_UMV)
             .addTo(componentAssemblyLineRecipes);
 
-        for (var rubber : new Materials[] { Silicone, StyreneButadieneRubber }) {
+        for (var rubber : new Materials[] {RubberSilicone, StyreneButadieneRubber }) {
             // Pump
             GTValues.RA.stdBuilder()
                 .itemOutputs(Electric_Pump_UMV.get(64))
@@ -1861,7 +1875,8 @@ public class ComponentAssemblyLineLoader {
                 get(plateDense, SpaceTime, 32),
                 get(NuclearStar, 96),
                 get(Emitter_UMV, 192),
-                get(wrapCircuit, UXV, 12))
+                get(wrapCircuit, UXV, 12),
+                getIntegratedCircuit(FIELD_GENERATOR_CIRCUIT))
             .fluidInputs(
                 MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
                 HYPOGEN.getFluidStack(51 * STACKS),
@@ -1893,7 +1908,7 @@ public class ComponentAssemblyLineLoader {
                 getIntegratedCircuit(MOTOR_CIRCUIT))
             .fluidInputs(
                 DimensionallyShiftedSuperfluid.getFluid(384_000),
-                MagnetohydrodynamicallyConstrainedStarMatter.getMolten(31 * STACKS + 10 * INGOTS + 6 * NUGGETS),
+                MHDCSM.getMolten(31 * STACKS + 10 * INGOTS + 6 * NUGGETS),
                 Eternity.getMolten(28 * STACKS + 10 * INGOTS + 6 * NUGGETS),
                 Universium.getMolten(15 * STACKS),
                 MagMatter.getMolten(12 * STACKS),
@@ -1914,7 +1929,7 @@ public class ComponentAssemblyLineLoader {
                 getIntegratedCircuit(PISTON_CIRCUIT))
             .fluidInputs(
                 DimensionallyShiftedSuperfluid.getFluid(384_000),
-                MagnetohydrodynamicallyConstrainedStarMatter.getMolten(26 * STACKS + 21 * INGOTS + 3 * NUGGETS),
+                MHDCSM.getMolten(26 * STACKS + 21 * INGOTS + 3 * NUGGETS),
                 Eternity.getMolten(23 * STACKS + 21 * INGOTS + 3 * NUGGETS),
                 SpaceTime.getMolten(15 * STACKS),
                 MagMatter.getMolten(9 * STACKS),
@@ -1939,7 +1954,7 @@ public class ComponentAssemblyLineLoader {
             .fluidInputs(
                 DimensionallyShiftedSuperfluid.getFluid(384_000),
                 SpaceTime.getMolten(21 * STACKS),
-                MagnetohydrodynamicallyConstrainedStarMatter.getMolten(19 * STACKS + 32 * INGOTS),
+                MHDCSM.getMolten(19 * STACKS + 32 * INGOTS),
                 Eternity.getMolten(16 * STACKS + 32 * INGOTS),
                 MagMatter.getMolten(10 * STACKS + 32 * INGOTS),
                 Universium.getMolten(3 * STACKS))
@@ -1959,7 +1974,7 @@ public class ComponentAssemblyLineLoader {
                 getIntegratedCircuit(PUMP_CIRCUIT))
             .fluidInputs(
                 DimensionallyShiftedSuperfluid.getFluid(384_000),
-                MagnetohydrodynamicallyConstrainedStarMatter.getMolten(20 * STACKS + 5 * INGOTS + 3 * NUGGETS),
+                MHDCSM.getMolten(20 * STACKS + 5 * INGOTS + 3 * NUGGETS),
                 Eternity.getMolten(17 * STACKS + 5 * INGOTS + 3 * NUGGETS),
                 MagMatter.getMolten(12 * STACKS + 48 * INGOTS),
                 RadoxPolymer.getMolten(12 * STACKS),
@@ -1984,7 +1999,7 @@ public class ComponentAssemblyLineLoader {
                 DimensionallyShiftedSuperfluid.getFluid(384_000),
                 RadoxPolymer.getMolten(59 * STACKS + 58 * INGOTS),
                 Kevlar.getMolten(59 * STACKS + 58 * INGOTS),
-                MagnetohydrodynamicallyConstrainedStarMatter.getMolten(11 * STACKS + 21 * INGOTS + 3 * NUGGETS),
+                MHDCSM.getMolten(11 * STACKS + 21 * INGOTS + 3 * NUGGETS),
                 Eternity.getMolten(8 * STACKS + 21 * INGOTS + 3 * NUGGETS),
                 SpaceTime.getMolten(3 * STACKS),
                 Universium.getMolten(3 * STACKS))
@@ -1997,7 +2012,7 @@ public class ComponentAssemblyLineLoader {
         GTValues.RA.stdBuilder()
             .itemOutputs(Sensor_UXV.get(64))
             .itemInputsUnsafe(
-                get(frameGt, MagnetohydrodynamicallyConstrainedStarMatter, 48),
+                get(frameGt, MHDCSM, 48),
                 get(Electric_Motor_UXV, 48),
                 get(NuclearStar, 768),
                 get(wrapCircuit, UXV, 12),
@@ -2007,7 +2022,7 @@ public class ComponentAssemblyLineLoader {
             .fluidInputs(
                 MUTATED_LIVING_SOLDER.getFluidStack(75 * STACKS),
                 SpaceTime.getMolten(36 * STACKS),
-                MagnetohydrodynamicallyConstrainedStarMatter.getMolten(21 * STACKS),
+                MHDCSM.getMolten(21 * STACKS),
                 Eternity.getMolten(18 * STACKS),
                 Universium.getMolten(15 * STACKS),
                 MagMatter.getMolten(12 * STACKS))
@@ -2020,7 +2035,7 @@ public class ComponentAssemblyLineLoader {
         GTValues.RA.stdBuilder()
             .itemOutputs(Emitter_UXV.get(64))
             .itemInputsUnsafe(
-                get(frameGt, MagnetohydrodynamicallyConstrainedStarMatter, 48),
+                get(frameGt, MHDCSM, 48),
                 get(Electric_Motor_UXV, 48),
                 get(NuclearStar, 768),
                 get(wrapCircuit, UXV, 12),
@@ -2030,7 +2045,7 @@ public class ComponentAssemblyLineLoader {
             .fluidInputs(
                 MUTATED_LIVING_SOLDER.getFluidStack(75 * STACKS),
                 SpaceTime.getMolten(36 * STACKS),
-                MagnetohydrodynamicallyConstrainedStarMatter.getMolten(21 * STACKS),
+                MHDCSM.getMolten(21 * STACKS),
                 Eternity.getMolten(18 * STACKS),
                 Universium.getMolten(15 * STACKS),
                 MagMatter.getMolten(12 * STACKS))
@@ -2043,16 +2058,17 @@ public class ComponentAssemblyLineLoader {
         GTValues.RA.stdBuilder()
             .itemOutputs(Field_Generator_UXV.get(64))
             .itemInputsUnsafe(
-                get(frameGt, MagnetohydrodynamicallyConstrainedStarMatter, 48),
+                get(frameGt, MHDCSM, 48),
                 get(NuclearStar, 3072),
                 get(Emitter_UXV, 192),
                 get(wrapCircuit, UXV, 24),
                 get(wrapCircuit, UHV, 66),
-                get(nanite, Gold, 36))
+                get(nanite, Gold, 36),
+                getIntegratedCircuit(FIELD_GENERATOR_CIRCUIT))
             .fluidInputs(
                 MUTATED_LIVING_SOLDER.getFluidStack(75 * STACKS),
                 SpaceTime.getMolten(27 * STACKS),
-                MagnetohydrodynamicallyConstrainedStarMatter.getMolten(19 * STACKS + 32 * INGOTS),
+                MHDCSM.getMolten(19 * STACKS + 32 * INGOTS),
                 Eternity.getMolten(16 * STACKS + 32 * INGOTS),
                 Universium.getMolten(15 * STACKS),
                 MagMatter.getMolten(12 * STACKS),

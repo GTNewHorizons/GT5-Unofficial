@@ -22,7 +22,6 @@ import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.RecipeMaps;
@@ -91,7 +90,7 @@ public class PCBFactoryRecipes {
                 GTOreDictUnificator.get(OrePrefixes.rotor, Materials.Infinity, 2),
                 Materials.Thulium.getPlates(6))
             .itemOutputs(ItemList.InfinityCooledCasing.get(1))
-            .fluidInputs(MaterialsUEVplus.SpaceTime.getMolten(8 * INGOTS))
+            .fluidInputs(Materials.SpaceTime.getMolten(8 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UMV)
             .addTo(assemblerRecipes);
@@ -510,10 +509,8 @@ public class PCBFactoryRecipes {
                     GTUtility.getIntegratedCircuit(1),
                     PCBFactoryManager.getPlasticMaterialFromTier(tier)
                         .getPlates(1),
-                    GTOreDictUnificator.get(
-                        OrePrefixes.foil,
-                        Materials.Longasssuperconductornameforuvwire,
-                        (long) (16 * (Math.sqrt(tier - 5)))),
+                    GTOreDictUnificator
+                        .get(OrePrefixes.foil, Materials.SuperconductorUVBase, (long) (16 * (Math.sqrt(tier - 5)))),
                     GTOreDictUnificator
                         .get(OrePrefixes.foil, Materials.Neutronium, (long) (16 * (Math.sqrt(tier - 5)))))
                 .fluidInputs(
@@ -540,10 +537,8 @@ public class PCBFactoryRecipes {
                     GTUtility.getIntegratedCircuit(2),
                     PCBFactoryManager.getPlasticMaterialFromTier(tier)
                         .getPlates(1),
-                    GTOreDictUnificator.get(
-                        OrePrefixes.foil,
-                        Materials.Longasssuperconductornameforuvwire,
-                        (long) (16 * (Math.sqrt(tier - 5)))),
+                    GTOreDictUnificator
+                        .get(OrePrefixes.foil, Materials.SuperconductorUVBase, (long) (16 * (Math.sqrt(tier - 5)))),
                     GTOreDictUnificator
                         .get(OrePrefixes.foil, Materials.Neutronium, (long) (16 * (Math.sqrt(tier - 5)))))
                 .fluidInputs(
@@ -571,10 +566,8 @@ public class PCBFactoryRecipes {
                     GTUtility.getIntegratedCircuit(3),
                     PCBFactoryManager.getPlasticMaterialFromTier(tier)
                         .getPlates(1),
-                    GTOreDictUnificator.get(
-                        OrePrefixes.foil,
-                        Materials.Longasssuperconductornameforuvwire,
-                        (long) (16 * (Math.sqrt(tier - 5)))),
+                    GTOreDictUnificator
+                        .get(OrePrefixes.foil, Materials.SuperconductorUVBase, (long) (16 * (Math.sqrt(tier - 5)))),
                     GTOreDictUnificator
                         .get(OrePrefixes.foil, Materials.Neutronium, (long) (16 * (Math.sqrt(tier - 5)))))
                 .fluidInputs(

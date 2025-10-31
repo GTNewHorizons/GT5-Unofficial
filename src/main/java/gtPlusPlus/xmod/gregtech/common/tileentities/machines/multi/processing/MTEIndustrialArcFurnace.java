@@ -44,6 +44,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
@@ -76,15 +77,17 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
 
     @Override
     public String getMachineType() {
-        return "Arc Furnace, Plasma Arc Furnace";
+        return "Arc Furnace, Plasma Arc Furnace, IAF";
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Processes voltage tier * W items in Electric mode or 8 * voltage tier * W items in Plasma mode")
+            .addInfo(TooltipHelper.parallelText("Width * Voltage Tier") + " Parallels")
+            .addInfo(TooltipHelper.parallelText("8x") + " Parallels in Plasma Mode")
             .addStaticSpeedInfo(3.5f)
+            .addStaticEuEffInfo(1f)
             .addInfo("Right-click controller with a Screwdriver to change modes")
             .addInfo("Max Size required to process Plasma recipes")
             .addPollutionAmount(getPollutionPerSecond(null))
@@ -197,6 +200,8 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
         mSize = 0;
         int tier = 0;
         while (tier < MAX_TIER && checkPiece(STRUCTURE_PIECE_FRONT + (tier + 1), (tier + 1), (tier + 1), 0)) {
+            mCasing = 0;
+            clearHatches();
             tier++;
         }
         if (tier <= 0) return false;

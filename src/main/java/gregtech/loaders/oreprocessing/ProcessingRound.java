@@ -33,7 +33,7 @@ public class ProcessingRound implements gregtech.api.interfaces.IOreRecipeRegist
                     .addTo(latheRecipes);
             }
 
-            if ((aMaterial.mUnificatable) && (aMaterial.mMaterialInto == aMaterial)) {
+            if ((aMaterial.mUnifiable) && (aMaterial.mMaterialInto == aMaterial)) {
                 GTModHandler.addCraftingRecipe(
                     GTOreDictUnificator.get(OrePrefixes.round, aMaterial, 1L),
                     GTModHandler.RecipeBits.BITS_STD,

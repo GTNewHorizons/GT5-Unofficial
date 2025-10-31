@@ -116,7 +116,7 @@ public class BaseItemComponent extends Item {
             aMap = new HashMap<>();
         }
         String aKey = componentType.getGtOrePrefix()
-            .name();
+            .getName();
         ItemStack x = aMap.get(aKey);
         if (x == null) {
             aMap.put(aKey, new ItemStack(this));

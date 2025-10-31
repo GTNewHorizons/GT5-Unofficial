@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import org.apache.commons.lang3.StringUtils;
@@ -35,7 +36,11 @@ public class ItemOres extends ItemBlock implements IItemFirestoneBurning {
 
     @Override
     public String getItemStackDisplayName(ItemStack aStack) {
-        return BlockOresAbstract.getDisplayName(aStack.getItemDamage());
+        String aName = super.getItemStackDisplayName(aStack);
+        if (this.field_150939_a instanceof BlockOresAbstract) {
+            aName = Materials.getLocalizedNameForItem(aName, aStack.getItemDamage() % 1000);
+        }
+        return aName;
     }
 
     @Override
@@ -69,7 +74,8 @@ public class ItemOres extends ItemBlock implements IItemFirestoneBurning {
 
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
-        String formula = BlockOresAbstract.getTooltip(aStack.getItemDamage());
+        String formula = StatCollector
+            .translateToLocal(field_150939_a.getUnlocalizedName() + '.' + getDamage(aStack) + ".tooltip");
         if (!StringUtils.isBlank(formula)) aList.add(formula);
     }
 

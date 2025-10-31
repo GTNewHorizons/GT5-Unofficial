@@ -77,9 +77,9 @@ public class MTEBuckConverter extends MTETieredMachineBlock implements IAddUIWid
         int colorIndex, boolean aActive, boolean aRedstone) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1],
             side == facing ? (aActive ? BUCK_ACTIVE : BUCK)
-                : (side == facing.getOpposite() ? Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_16A[mTier]
-                    : (aActive ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_16A[mTier]
-                        : Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_16A[mTier])) };
+                : (side == facing.getOpposite() ? Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_16A[mTier + 1]
+                    : (aActive ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_16A[mTier + 1]
+                        : Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_16A[mTier + 1])) };
     }
 
     @Override

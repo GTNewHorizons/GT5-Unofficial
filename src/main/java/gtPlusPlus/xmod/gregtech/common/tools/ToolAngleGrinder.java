@@ -70,12 +70,12 @@ public class ToolAngleGrinder extends GTTool {
 
     @Override
     public String getCraftingSound() {
-        return SoundResource.RANDOM_ANVIL_USE.toString();
+        return SoundResource.GTCEU_OP_FILE.toString();
     }
 
     @Override
     public String getEntityHitSound() {
-        return SoundResource.RANDOM_ANVIL_BREAK.toString();
+        return SoundResource.GTCEU_OP_FILE.toString();
     }
 
     @Override

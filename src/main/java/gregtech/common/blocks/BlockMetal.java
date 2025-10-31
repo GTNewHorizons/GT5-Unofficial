@@ -32,10 +32,10 @@ public class BlockMetal extends BlockStorage {
         for (int i = 0; i < aMats.length; i++) {
             if (aMats[i].mMetaItemSubID > 0 && aMats[i].mHasParentMod) {
                 Materials materials = aMats[i];
-                if (aPrefix.mIsUnificatable) {
-                    GTOreDictUnificator.set(aPrefix, aMats[i], new ItemStack(this, 1, i));
+                if (aPrefix.isUnifiable()) {
+                    GTOreDictUnificator.set(aPrefix, materials, new ItemStack(this, 1, i));
                 } else {
-                    GTOreDictUnificator.registerOre(aPrefix.get(aMats[i]), new ItemStack(this, 1, i));
+                    GTOreDictUnificator.registerOre(aPrefix.get(materials), new ItemStack(this, 1, i));
                 }
             }
         }

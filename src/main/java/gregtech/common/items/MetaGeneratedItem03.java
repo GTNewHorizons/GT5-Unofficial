@@ -23,6 +23,9 @@ import static gregtech.client.GTTooltipHandler.Tier.UXV;
 import static gregtech.client.GTTooltipHandler.Tier.ZPM;
 import static gregtech.client.GTTooltipHandler.registerTieredTooltip;
 import static gregtech.common.items.IDMetaItem03.Activated_Carbon_Filter_Mesh;
+import static gregtech.common.items.IDMetaItem03.Alumina_Support_Ring;
+import static gregtech.common.items.IDMetaItem03.Alumina_Support_Ring_Raw;
+import static gregtech.common.items.IDMetaItem03.Beryllium_Shielding_Plate;
 import static gregtech.common.items.IDMetaItem03.Brittle_Netherite_Scrap;
 import static gregtech.common.items.IDMetaItem03.Circuit_Biomainframe;
 import static gregtech.common.items.IDMetaItem03.Circuit_Bioprocessor;
@@ -204,6 +207,7 @@ import static gregtech.common.items.IDMetaItem03.KevlarFiber;
 import static gregtech.common.items.IDMetaItem03.LV_Coil;
 import static gregtech.common.items.IDMetaItem03.LuV_Coil;
 import static gregtech.common.items.IDMetaItem03.MV_Coil;
+import static gregtech.common.items.IDMetaItem03.Manafly;
 import static gregtech.common.items.IDMetaItem03.NandChip;
 import static gregtech.common.items.IDMetaItem03.Naquarite_Universal_Insulator_Foil;
 import static gregtech.common.items.IDMetaItem03.Netherite_Nanoparticles;
@@ -283,6 +287,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTSplit;
 import gregtech.common.covers.CoverMetricsTransmitter;
 import gregtech.common.covers.CoverSolarPanel;
+import gregtech.common.powergoggles.ItemPowerGoggles;
 import gregtech.common.render.items.GlitchEffectMetaItemRenderer;
 import gregtech.common.render.items.InfinityMetaItemRenderer;
 import gregtech.common.render.items.RainbowOverlayMetaItemRenderer;
@@ -971,345 +976,188 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 IndustrialApiary_Upgrade_Acceleration_1.ID,
                 "Acceleration Upgrade x2",
-                "Acceleration upgrade for Industrial Apiary" + GTSplit.LB
-                    + "Maximum Installed: 1"
-                    + GTSplit.LB
-                    + "* Unlocks 2x acceleration level"
-                    + GTSplit.LB
-                    + "* Energy Consumption +1 AMP LV",
-                OrePrefixes.apiaryUpgrade.name()));
+                "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 2x acceleration level/n * Energy Consumption +1 AMP LV",
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_Acceleration_2.set(
             addItem(
                 IndustrialApiary_Upgrade_Acceleration_2.ID,
                 "Acceleration Upgrade x4",
-                "Acceleration upgrade for Industrial Apiary" + GTSplit.LB
-                    + "Maximum Installed: 1"
-                    + GTSplit.LB
-                    + "* Unlocks 4x acceleration level"
-                    + GTSplit.LB
-                    + "* Energy Consumption +1 AMP MV",
-                OrePrefixes.apiaryUpgrade.name()));
+                "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 4x acceleration level/n * Energy Consumption +1 AMP MV",
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_Acceleration_3.set(
             addItem(
                 IndustrialApiary_Upgrade_Acceleration_3.ID,
                 "Acceleration Upgrade x8",
-                "Acceleration upgrade for Industrial Apiary" + GTSplit.LB
-                    + "Maximum Installed: 1"
-                    + GTSplit.LB
-                    + "* Unlocks 8x acceleration level"
-                    + GTSplit.LB
-                    + "* Energy Consumption +1 AMP HV",
-                OrePrefixes.apiaryUpgrade.name()));
+                "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 8x acceleration level/n * Energy Consumption +1 AMP HV",
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_Acceleration_4.set(
             addItem(
                 IndustrialApiary_Upgrade_Acceleration_4.ID,
                 "Acceleration Upgrade x16",
-                "Acceleration upgrade for Industrial Apiary" + GTSplit.LB
-                    + "Maximum Installed: 1"
-                    + GTSplit.LB
-                    + "* Unlocks 16x acceleration level"
-                    + GTSplit.LB
-                    + "* Energy Consumption +1 AMP EV",
-                OrePrefixes.apiaryUpgrade.name()));
+                "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 16x acceleration level/n * Energy Consumption +1 AMP EV",
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_Acceleration_5.set(
             addItem(
                 IndustrialApiary_Upgrade_Acceleration_5.ID,
                 "Acceleration Upgrade x32",
-                "Acceleration upgrade for Industrial Apiary" + GTSplit.LB
-                    + "Maximum Installed: 1"
-                    + GTSplit.LB
-                    + "* Unlocks 32x acceleration level"
-                    + GTSplit.LB
-                    + "* Energy Consumption +1 AMP IV",
-                OrePrefixes.apiaryUpgrade.name()));
+                "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 32x acceleration level/n * Energy Consumption +1 AMP IV",
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_Acceleration_6.set(
             addItem(
                 IndustrialApiary_Upgrade_Acceleration_6.ID,
                 "Acceleration Upgrade x64",
-                "Acceleration upgrade for Industrial Apiary" + GTSplit.LB
-                    + "Maximum Installed: 1"
-                    + GTSplit.LB
-                    + "* Unlocks 64x acceleration level"
-                    + GTSplit.LB
-                    + "* Energy Consumption +1 AMP LuV",
-                OrePrefixes.apiaryUpgrade.name()));
+                "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 64x acceleration level/n * Energy Consumption +1 AMP LuV",
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_Acceleration_7.set(
             addItem(
                 IndustrialApiary_Upgrade_Acceleration_7.ID,
                 "Acceleration Upgrade x128",
-                "Acceleration upgrade for Industrial Apiary" + GTSplit.LB
-                    + "Maximum Installed: 1"
-                    + GTSplit.LB
-                    + "* Unlocks 128x acceleration level"
-                    + GTSplit.LB
-                    + "* Energy Consumption +1 AMP ZPM",
-                OrePrefixes.apiaryUpgrade.name()));
+                "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 128x acceleration level/n * Energy Consumption +1 AMP ZPM",
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_Acceleration_8.set(
             addItem(
                 IndustrialApiary_Upgrade_Acceleration_8.ID,
                 "Acceleration Upgrade x256",
-                "Acceleration upgrade for Industrial Apiary" + GTSplit.LB
-                    + "Maximum Installed: 1"
-                    + GTSplit.LB
-                    + "* Unlocks 256x acceleration level"
-                    + GTSplit.LB
-                    + "* Energy Consumption +1 AMP UV",
-                OrePrefixes.apiaryUpgrade.name()));
+                "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 256x acceleration level/n * Energy Consumption +1 AMP UV",
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_Acceleration_8_Upgraded.set(
             addItem(
                 IndustrialApiary_Upgrade_Acceleration_8_Upgraded.ID,
                 "Upgraded Acceleration Upgrade x256",
-                "Acceleration upgrade for Industrial Apiary" + GTSplit.LB
-                    + "Maximum Installed: 1"
-                    + GTSplit.LB
-                    + "* Unlocks 256x acceleration level"
-                    + GTSplit.LB
-                    + "* Will also grant 8x production upgrade"
-                    + GTSplit.LB
-                    + "* Energy Consumption +1 AMP UV",
-                OrePrefixes.apiaryUpgrade.name()));
+                "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 256x acceleration level/n * Will also grant 8x production upgrade/n * Energy Consumption +1 AMP UV",
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_PRODUCTION.set(
             addItem(
                 IndustrialApiary_Upgrade_PRODUCTION.ID,
                 "Production Upgrade",
-                "Production upgrade for Industrial Apiary" + GTSplit.LB
-                    + "Maximum Installed: 8"
-                    + GTSplit.LB
-                    + "Increases production modifier by 0.25"
-                    + GTSplit.LB
-                    + "Energy Consumption +40%",
-                OrePrefixes.apiaryUpgrade.name()));
+                "Production upgrade for Industrial Apiary/n Maximum Installed: 8/n Increases production modifier by 0.25/n Energy Consumption +40%",
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_PLAINS.set(
             addItem(
                 IndustrialApiary_Upgrade_PLAINS.ID,
                 "Plains Emulation Upgrade",
-                "Plains emulation upgrade for Industrial Apiary" + GTSplit.LB
-                    + "Maximum Installed: 1"
-                    + GTSplit.LB
-                    + "* Biome Override: Plains"
-                    + GTSplit.LB
-                    + "* Energy Consumption +40%",
-                OrePrefixes.apiaryUpgrade.name()));
+                "Plains emulation upgrade for Industrial Apiary/n Maximum Installed: 1/n * Biome Override: Plains/n * Energy Consumption +40%",
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_LIGHT.set(
             addItem(
                 IndustrialApiary_Upgrade_LIGHT.ID,
                 "Light Upgrade",
-                "Light upgrade for Industrial Apiary" + GTSplit.LB
-                    + "Maximum Installed: 1"
-                    + GTSplit.LB
-                    + "* Internal Lighting"
-                    + GTSplit.LB
-                    + "* Energy Consumption +5%",
-                OrePrefixes.apiaryUpgrade.name()));
+                "Light upgrade for Industrial Apiary/n Maximum Installed: 1/n * Internal Lighting/n * Energy Consumption +5%",
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_FLOWERING.set(
             addItem(
                 IndustrialApiary_Upgrade_FLOWERING.ID,
                 "Flowering Upgrade",
-                "Flowering upgrade for Industrial Apiary" + GTSplit.LB
-                    + "Maximum Installed: 8"
-                    + GTSplit.LB
-                    + "* Flowering and Pollination +20%"
-                    + GTSplit.LB
-                    + "* Energy Consumption +10%",
-                OrePrefixes.apiaryUpgrade.name()));
+                "Flowering upgrade for Industrial Apiary/n Maximum Installed: 8/n * Flowering and Pollination +20%/n * Energy Consumption +10%",
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_WINTER.set(
             addItem(
                 IndustrialApiary_Upgrade_WINTER.ID,
                 "Winter Emulation Upgrade",
-                "Winter emulation upgrade for Industrial Apiary" + GTSplit.LB
-                    + "Maximum Installed: 1"
-                    + GTSplit.LB
-                    + "* Biome Override: Taiga"
-                    + GTSplit.LB
-                    + "* Energy Consumption +50%",
-                OrePrefixes.apiaryUpgrade.name()));
+                "Winter emulation upgrade for Industrial Apiary/n Maximum Installed: 1/n * Biome Override: Taiga/n * Energy Consumption +50%",
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_DRYER.set(
             addItem(
                 IndustrialApiary_Upgrade_DRYER.ID,
                 "Dryer Upgrade",
-                "Dryer upgrade for Industrial Apiary" + GTSplit.LB
-                    + "Maximum Installed: 16"
-                    + GTSplit.LB
-                    + "* Humidity -12.5%"
-                    + GTSplit.LB
-                    + "* Energy Consumption +2.5%",
-                OrePrefixes.apiaryUpgrade.name()));
+                "Dryer upgrade for Industrial Apiary/n Maximum Installed: 16/n * Humidity -12.5%/n * Energy Consumption +2.5%",
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_AUTOMATION.set(
             addItem(
                 IndustrialApiary_Upgrade_AUTOMATION.ID,
                 "Automation Upgrade",
-                "Automation upgrade for Industrial Apiary" + GTSplit.LB
-                    + "Maximum Installed: 1"
-                    + GTSplit.LB
-                    + "* Automation"
-                    + GTSplit.LB
-                    + "* Energy Consumption +10%",
-                OrePrefixes.apiaryUpgrade.name()));
+                "Automation upgrade for Industrial Apiary/n Maximum Installed: 1/n * Automation/n * Energy Consumption +10%",
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_HUMIDIFIER.set(
             addItem(
                 IndustrialApiary_Upgrade_HUMIDIFIER.ID,
                 "Humidifier Upgrade",
-                "Humidifier upgrade for Industrial Apiary" + GTSplit.LB
-                    + "Maximum Installed: 16"
-                    + GTSplit.LB
-                    + "* Humidity +12.5%"
-                    + GTSplit.LB
-                    + "* Energy Consumption +2.5%",
-                OrePrefixes.apiaryUpgrade.name()));
+                "Humidifier upgrade for Industrial Apiary/n Maximum Installed: 16/n * Humidity +12.5%/n * Energy Consumption +2.5%",
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_HELL.set(
             addItem(
                 IndustrialApiary_Upgrade_HELL.ID,
                 "HELL Emulation Upgrade",
-                "HELL emulation upgrade for Industrial Apiary" + GTSplit.LB
-                    + "Maximum Installed: 1"
-                    + GTSplit.LB
-                    + "* Biome Override: HELL"
-                    + GTSplit.LB
-                    + "* Energy Consumption +50%",
-                OrePrefixes.apiaryUpgrade.name()));
+                "HELL emulation upgrade for Industrial Apiary/n Maximum Installed: 1/n * Biome Override: HELL/n * Energy Consumption +50%",
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_POLLEN.set(
             addItem(
                 IndustrialApiary_Upgrade_POLLEN.ID,
                 "Pollen Scrubber Upgrade",
-                "Pollen scrubber upgrade for Industrial Apiary" + GTSplit.LB
-                    + "Maximum Installed: 1"
-                    + GTSplit.LB
-                    + "* Flowering and Pollination -100%"
-                    + GTSplit.LB
-                    + "* Energy Consumption +30%",
-                OrePrefixes.apiaryUpgrade.name()));
+                "Pollen scrubber upgrade for Industrial Apiary/n Maximum Installed: 1/n * Flowering and Pollination -100%/n * Energy Consumption +30%",
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_DESERT.set(
             addItem(
                 IndustrialApiary_Upgrade_DESERT.ID,
                 "Desert Emulation Upgrade",
-                "Desert emulation upgrade for Industrial Apiary" + GTSplit.LB
-                    + "Maximum Installed: 1"
-                    + GTSplit.LB
-                    + "* Biome Override: Desert"
-                    + GTSplit.LB
-                    + "* Energy Consumption +20%",
-                OrePrefixes.apiaryUpgrade.name()));
+                "Desert emulation upgrade for Industrial Apiary/n Maximum Installed: 1/n * Biome Override: Desert/n * Energy Consumption +20%",
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_COOLER.set(
             addItem(
                 IndustrialApiary_Upgrade_COOLER.ID,
                 "Cooler Upgrade",
-                "Cooler upgrade for Industrial Apiary" + GTSplit.LB
-                    + "Maximum Installed: 16"
-                    + GTSplit.LB
-                    + "* Temperature -12.5%"
-                    + GTSplit.LB
-                    + "* Energy Consumption +2.5%",
-                OrePrefixes.apiaryUpgrade.name()));
+                "Cooler upgrade for Industrial Apiary/n Maximum Installed: 16/n * Temperature -12.5%/n * Energy Consumption +2.5%",
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_LIFESPAN.set(
             addItem(
                 IndustrialApiary_Upgrade_LIFESPAN.ID,
                 "Lifespan Upgrade",
-                "Lifespan upgrade for Industrial Apiary" + GTSplit.LB
-                    + "Maximum Installed: 4"
-                    + GTSplit.LB
-                    + "* Lifespan -33%"
-                    + GTSplit.LB
-                    + "* Energy Consumption +5%",
-                OrePrefixes.apiaryUpgrade.name()));
+                "Lifespan upgrade for Industrial Apiary/n Maximum Installed: 4/n * Lifespan -33%/n * Energy Consumption +5%",
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_SEAL.set(
             addItem(
                 IndustrialApiary_Upgrade_SEAL.ID,
                 "Seal Upgrade",
-                "Seal upgrade for Industrial Apiary" + GTSplit.LB
-                    + "Maximum Installed: 1"
-                    + GTSplit.LB
-                    + "* Rain Protection"
-                    + GTSplit.LB
-                    + "* Energy Consumption +5%",
-                OrePrefixes.apiaryUpgrade.name()));
+                "Seal upgrade for Industrial Apiary/n Maximum Installed: 1/n * Rain Protection/n * Energy Consumption +5%",
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_STABILIZER.set(
             addItem(
                 IndustrialApiary_Upgrade_STABILIZER.ID,
                 "Genetic Stabilizer Upgrade",
-                "Genetic stabilizer upgrade for Industrial Apiary" + GTSplit.LB
-                    + "Maximum Installed: 1"
-                    + GTSplit.LB
-                    + "* Genetic Decay -100%"
-                    + GTSplit.LB
-                    + "* Energy Consumption +150%",
-                OrePrefixes.apiaryUpgrade.name()));
+                "Genetic stabilizer upgrade for Industrial Apiary/n Maximum Installed: 1/n * Genetic Decay -100%/n * Energy Consumption +150%",
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_JUNGLE.set(
             addItem(
                 IndustrialApiary_Upgrade_JUNGLE.ID,
                 "Jungle Emulation Upgrade",
-                "Jungle emulation upgrade for Industrial Apiary" + GTSplit.LB
-                    + "Maximum Installed: 1"
-                    + GTSplit.LB
-                    + "* Biome Override: Jungle"
-                    + GTSplit.LB
-                    + "* Energy Consumption +20%",
-                OrePrefixes.apiaryUpgrade.name()));
+                "Jungle emulation upgrade for Industrial Apiary/n Maximum Installed: 1/n * Biome Override: Jungle/n * Energy Consumption +20%",
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_TERRITORY.set(
             addItem(
                 IndustrialApiary_Upgrade_TERRITORY.ID,
                 "Territory Upgrade",
-                "Territory upgrade for Industrial Apiary" + GTSplit.LB
-                    + "Maximum Installed: 4"
-                    + GTSplit.LB
-                    + "* Territory +50%"
-                    + GTSplit.LB
-                    + "* Energy Consumption +5%",
-                OrePrefixes.apiaryUpgrade.name()));
+                "Territory upgrade for Industrial Apiary/n Maximum Installed: 4/n * Territory +50%/n * Energy Consumption +5%",
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_OCEAN.set(
             addItem(
                 IndustrialApiary_Upgrade_OCEAN.ID,
                 "Ocean Emulation Upgrade",
-                "Ocean emulation upgrade for Industrial Apiary" + GTSplit.LB
-                    + "Maximum Installed: 1"
-                    + GTSplit.LB
-                    + "* Biome Override: Ocean"
-                    + GTSplit.LB
-                    + "* Energy Consumption +20%",
-                OrePrefixes.apiaryUpgrade.name()));
+                "Ocean emulation upgrade for Industrial Apiary/n Maximum Installed: 1/n * Biome Override: Ocean/n * Energy Consumption +20%",
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_SKY.set(
             addItem(
                 IndustrialApiary_Upgrade_SKY.ID,
                 "Open Sky Upgrade",
-                "Open sky upgrade for Industrial Apiary" + GTSplit.LB
-                    + "Maximum Installed: 1"
-                    + GTSplit.LB
-                    + "* Open Sky Simulation"
-                    + GTSplit.LB
-                    + "* Energy Consumption +5%",
-                OrePrefixes.apiaryUpgrade.name()));
+                "Open sky upgrade for Industrial Apiary/n Maximum Installed: 1/n * Open Sky Simulation/n * Energy Consumption +5%",
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_HEATER.set(
             addItem(
                 IndustrialApiary_Upgrade_HEATER.ID,
                 "Heater Upgrade",
-                "Heater upgrade for Industrial Apiary" + GTSplit.LB
-                    + "Maximum Installed: 16"
-                    + GTSplit.LB
-                    + "* Temperature +12.5%"
-                    + GTSplit.LB
-                    + "* Energy Consumption +2.5%",
-                OrePrefixes.apiaryUpgrade.name()));
+                "Heater upgrade for Industrial Apiary/n Maximum Installed: 16/n * Temperature +12.5%/n * Energy Consumption +2.5%",
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_SIEVE.set(
             addItem(
                 IndustrialApiary_Upgrade_SIEVE.ID,
                 "Sieve Upgrade",
-                "Sieve upgrade for Industrial Apiary" + GTSplit.LB
-                    + "Maximum Installed: 1"
-                    + GTSplit.LB
-                    + "* Pollen Collection"
-                    + GTSplit.LB
-                    + "* Energy Consumption +25%",
-                OrePrefixes.apiaryUpgrade.name()));
+                "Sieve upgrade for Industrial Apiary/n Maximum Installed: 1/n * Pollen Collection/n * Energy Consumption +25%",
+                OrePrefixes.apiaryUpgrade.getName()));
         ItemList.IndustrialApiary_Upgrade_UNLIGHT.set(
             addItem(
                 IndustrialApiary_Upgrade_UNLIGHT.ID,
                 "Night Upgrade",
-                "Night upgrade for Industrial Apiary" + GTSplit.LB
-                    + "Maximum Installed: 1"
-                    + GTSplit.LB
-                    + "* Internal Darkness"
-                    + GTSplit.LB
-                    + "* Energy Consumption +5%",
-                OrePrefixes.apiaryUpgrade.name()));
+                "Night upgrade for Industrial Apiary/n Maximum Installed: 1/n * Internal Darkness/n * Energy Consumption +5%",
+                OrePrefixes.apiaryUpgrade.getName()));
 
         ItemList.NuclearStar
             .set(
@@ -1425,6 +1273,18 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Intensely_Bonded_Netherite_Nanoparticles
             .set(addItem(Intensely_Bonded_Netherite_Nanoparticles.ID, "Intensely Bonded Netherite Nanoparticles", ""));
         ItemList.Hot_Netherite_Scrap.set(addItem(Hot_Netherite_Scrap.ID, "Hot Netherite Scrap", "Activated?"));
+        ItemList.Beryllium_Shielding_Plate.set(
+            addItem(
+                Beryllium_Shielding_Plate.ID,
+                "Beryllium Shielding Plate",
+                "A plate made of Beryllium, used for reactor shielding"));
+        ItemList.Alumina_Support_Ring.set(
+            addItem(Alumina_Support_Ring.ID, "Alumina Support Ring", "A support ring used for insulated fluid pipes"));
+        ItemList.Alumina_Support_Ring_Raw.set(
+            addItem(
+                Alumina_Support_Ring_Raw.ID,
+                "Raw Alumina Support Ring",
+                "An unfired support ring used for insulated fluid pipes"));
         ItemList.Prismarine_Precipitate.set(addItem(Prismarine_Precipitate.ID, "Prismarine Precipitate", ""));
         ItemList.Prismatic_Crystal.set(addItem(Prismatic_Crystal.ID, "Prismatic Crystal", ""));
         ItemList.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet
@@ -1580,6 +1440,14 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 White_Dwarf_Shape_Extruder_ToolHeadDrill.ID,
                 "White Dwarf Extruder Shape (Drill Head)",
                 "White Dwarf Extruder Shape for a Drill Head"));
+        ItemList.ManaFly.set(
+            addItem(
+                Manafly.ID,
+                "Manafly",
+                "If you sift this, you're a monster",
+                new TCAspects.TC_AspectStack(TCAspects.AQUA, 10L),
+                new TCAspects.TC_AspectStack(TCAspects.HERBA, 10L)));
+
         registerAllTieredTooltips();
         registerAllAnimatedTooltips();
         initOrePrefixes();
