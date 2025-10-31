@@ -291,7 +291,8 @@ public class HUDManager {
             restoreGL(a);
         }
 
-        public static void drawRectOutline(int left, int top, int right, int bottom, float r, float g, float b, float a, int thickness) {
+        public static void drawRectOutline(int left, int top, int right, int bottom, float r, float g, float b, float a,
+            int thickness) {
             if (a == 0.0f) return;
 
             GL11.glPushAttrib(GL11.GL_ENABLE_BIT);

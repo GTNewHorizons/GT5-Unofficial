@@ -41,61 +41,71 @@ public class ChamferedRectElement extends WidgetElement<ChamferedRectElement> im
         renderChamferedRect(baseX, baseY, width, height, cornerCut, red, green, blue, alpha, outlineThickness);
     }
 
-    // TODO: redo this piece of shit
     private void renderChamferedRect(int x, int y, int width, int height, int cut, float r, float g, float b, float a,
         float outlineW) {
-        if (width <= 0 || height <= 0 || a == 0) return;
+
+        if (width <= 0 || height <= 0 || a == 0f) return;
 
         int c = Math.max(0, Math.min(cut, Math.min(width / 2, height / 2)));
+
+        float x0 = x;
+        float x1 = x + c;
+        float x2 = x + width - c;
+        float x3 = x + width;
+        float y0 = y;
+        float y1 = y + c;
+        float y2 = y + height - c;
+        float y3 = y + height;
         float cx = x + width * 0.5f;
         float cy = y + height * 0.5f;
 
-        Tessellator tess = Tessellator.instance;
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        Tessellator t = Tessellator.instance;
+
+        GL11.glPushAttrib(GL11.GL_ENABLE_BIT | GL11.GL_LINE_BIT);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL11.GL_CULL_FACE);
-        GL11.glColor4f(r, g, b, a);
 
-        tess.startDrawing(GL11.GL_TRIANGLE_FAN);
-        tess.addVertex(cx, cy, 0);
-        tess.addVertex(x + c, y, 0);
-        tess.addVertex(x + width - c, y, 0);
-        tess.addVertex(x + width, y + c, 0);
-        tess.addVertex(x + width, y + height - c, 0);
-        tess.addVertex(x + width - c, y + height, 0);
-        tess.addVertex(x + c, y + height, 0);
-        tess.addVertex(x, y + height - c, 0);
-        tess.addVertex(x, y + c, 0);
-        tess.addVertex(x + c, y, 0);
-        tess.draw();
-        if (outlineW > 0f) {
-            float or = Math.max(0f, r * 0.6f);
-            float og = Math.max(0f, g * 0.6f);
-            float ob = Math.max(0f, b * 0.6f);
-
-            GL11.glLineWidth(outlineW);
-            GL11.glEnable(GL11.GL_LINE_SMOOTH);
-            GL11.glColor4f(or, og, ob, a);
-
-            tess.startDrawing(GL11.GL_LINE_LOOP);
-            tess.addVertex(x + c, y, 0);
-            tess.addVertex(x + width - c, y, 0);
-            tess.addVertex(x + width, y + c, 0);
-            tess.addVertex(x + width, y + height - c, 0);
-            tess.addVertex(x + width - c, y + height, 0);
-            tess.addVertex(x + c, y + height, 0);
-            tess.addVertex(x, y + height - c, 0);
-            tess.addVertex(x, y + c, 0);
-            tess.draw();
-
-            GL11.glDisable(GL11.GL_LINE_SMOOTH);
-            GL11.glLineWidth(1.0f);
+        // enable blending
+        if (a < 1.0f) {
+            GL11.glEnable(GL11.GL_BLEND);
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         }
 
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glEnable(GL11.GL_CULL_FACE);
-        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glColor4f(r, g, b, a);
+
+        // Fill
+        t.startDrawing(GL11.GL_TRIANGLE_FAN);
+        t.addVertex(cx, cy, 0);
+        t.addVertex(x1, y0, 0);
+        t.addVertex(x2, y0, 0);
+        t.addVertex(x3, y1, 0);
+        t.addVertex(x3, y2, 0);
+        t.addVertex(x2, y3, 0);
+        t.addVertex(x1, y3, 0);
+        t.addVertex(x0, y2, 0);
+        t.addVertex(x0, y1, 0);
+        t.addVertex(x1, y0, 0);
+        t.draw();
+
+        // Outline
+        if (outlineW > 0f) {
+            GL11.glLineWidth(outlineW);
+            GL11.glEnable(GL11.GL_LINE_SMOOTH);
+            GL11.glColor4f(r * 0.6f, g * 0.6f, b * 0.6f, a);
+
+            t.startDrawing(GL11.GL_LINE_LOOP);
+            t.addVertex(x1, y0, 0);
+            t.addVertex(x2, y0, 0);
+            t.addVertex(x3, y1, 0);
+            t.addVertex(x3, y2, 0);
+            t.addVertex(x2, y3, 0);
+            t.addVertex(x1, y3, 0);
+            t.addVertex(x0, y2, 0);
+            t.addVertex(x0, y1, 0);
+            t.draw();
+        }
+
+        GL11.glPopAttrib();
     }
 
     @Override
