@@ -34,7 +34,7 @@ public class BlockCasingsFoundry extends BlockCasingsAbstract {
 
     @Override
     public int getTextureIndex(int aMeta) {
-        return (16 << 7) | (aMeta + 96);
+        return (8 << 7) | (aMeta + 80);
     }
 
     @Override

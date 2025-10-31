@@ -3466,7 +3466,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UIV);
         // Efficient Overclocker
         TTRecipeAdder.addResearchableAssemblylineRecipe(
-            ItemList.Magnetic_Chassis_T2_ExoFoundry.get(1),
+            ItemRefer.AntimatterContainmentCasing.get(1),
             4_000_000,
             4_096,
             (int) TierEU.RECIPE_UMV,
