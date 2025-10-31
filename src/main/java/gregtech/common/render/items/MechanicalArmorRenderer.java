@@ -25,13 +25,6 @@ import gregtech.common.render.GTRenderUtil;
 
 public class MechanicalArmorRenderer implements IItemRenderer {
 
-    public MechanicalArmorRenderer() {
-        MinecraftForgeClient.registerItemRenderer(ItemList.Mechanical_Helmet.getItem(), this);
-        MinecraftForgeClient.registerItemRenderer(ItemList.Mechanical_Chestplate.getItem(), this);
-        MinecraftForgeClient.registerItemRenderer(ItemList.Mechanical_Leggings.getItem(), this);
-        MinecraftForgeClient.registerItemRenderer(ItemList.Mechanical_Boots.getItem(), this);
-    }
-
     @Override
     public boolean handleRenderType(final ItemStack item, final ItemRenderType type) {
         return type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON
