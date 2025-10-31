@@ -14,6 +14,7 @@ import java.util.function.BooleanSupplier;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import com.cleanroommc.modularui.screen.UISettings;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -33,7 +34,7 @@ import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
-import com.cleanroommc.modularui.widgets.ItemSlot;
+import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.google.common.collect.ImmutableMap;
 
@@ -284,11 +285,11 @@ public class MTEModificationTable extends MetaTileEntity {
     }
 
     @Override
-    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager) {
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         EnumSyncValue<Frames> frameSyncHandler = new EnumSyncValue<>(Frames.class, this::getFrame, this::setFrame);
         syncManager.syncValue("frame", frameSyncHandler);
 
-        ModularPanel panel = GTGuis.mteTemplatePanelBuilder(this, data, syncManager)
+        ModularPanel panel = GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings)
             .build();
 
         syncManager.registerSlotGroup("armor", 1);
