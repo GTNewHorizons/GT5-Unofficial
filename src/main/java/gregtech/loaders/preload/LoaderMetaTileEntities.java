@@ -46,6 +46,9 @@ import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 
 import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamCrafter;
+import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMirror;
+import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamSplitter;
+import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamStabilizer;
 import net.minecraft.util.EnumChatFormatting;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -599,6 +602,23 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 BEAM_CRAFTER.ID,
                 "multimachine.beam-crafter",
                 "(WIP) Beam Crafter").getStackForm(1));
+
+        ItemList.BeamMirror.set(
+            new MTEBeamMirror(
+                BEAM_MIRROR.ID,
+                "multimachine.beam-mirror",
+                "Beam Mirror").getStackForm(1));
+
+        ItemList.BeamSplitter.set(
+            new MTEBeamSplitter(
+                BEAM_SPLITTER.ID,
+                "multimachine.beam-splitter",
+                "Beam Splitter").getStackForm(1));
+        ItemList.BeamStabilizer.set(
+            new MTEBeamStabilizer(
+                BEAM_STABILIZER.ID,
+                "multimachine.beam-stabilizer",
+                "Beam Stabilizer").getStackForm(1));
 
         ItemList.LATEX.set(new MTELatex(LATEX.ID, "multimachine.latex", "L.A.T.E.X.").getStackForm(1));
         addItemTooltip(ItemList.LATEX.get(1), chain(() -> "Author: ", GTValues.AuthorThree));
