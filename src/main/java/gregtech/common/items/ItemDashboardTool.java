@@ -15,7 +15,17 @@ import gregtech.api.items.GTGenericItem;
 import gregtech.client.hud.CompositeWidget;
 import gregtech.client.hud.HUDGui;
 import gregtech.client.hud.HUDManager;
-import gregtech.client.hud.elements.*;
+import gregtech.client.hud.elements.ButtonElement;
+import gregtech.client.hud.elements.ChamferedRectElement;
+import gregtech.client.hud.elements.CheckboxElement;
+import gregtech.client.hud.elements.ColumnElement;
+import gregtech.client.hud.elements.DroplistElement;
+import gregtech.client.hud.elements.DynamicItemElement;
+import gregtech.client.hud.elements.GraphElement;
+import gregtech.client.hud.elements.RectElement;
+import gregtech.client.hud.elements.SliderElement;
+import gregtech.client.hud.elements.TextElement;
+import gregtech.client.hud.elements.TextInputElement;
 
 public class ItemDashboardTool extends GTGenericItem {
 
