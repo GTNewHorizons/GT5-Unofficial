@@ -5,7 +5,6 @@ import static gregtech.loaders.ExtraIcons.jetpackAugment;
 
 import java.util.Set;
 
-import gregtech.api.util.GTUtility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,6 +20,7 @@ import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 import gregtech.api.items.armor.ArmorHelper;
 import gregtech.api.items.armor.ArmorKeybinds;
 import gregtech.api.items.armor.JetpackStats;
+import gregtech.api.util.GTUtility;
 
 public class JetpackBehavior implements IArmorBehavior {
 

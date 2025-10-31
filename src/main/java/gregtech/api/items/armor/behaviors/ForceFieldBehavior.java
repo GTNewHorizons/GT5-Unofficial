@@ -7,7 +7,6 @@ import static gregtech.loaders.ExtraIcons.forceFieldAugment;
 import java.util.Collections;
 import java.util.Set;
 
-import gregtech.api.util.GTUtility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,6 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
 import gregtech.api.items.armor.ArmorHelper;
+import gregtech.api.util.GTUtility;
 
 public class ForceFieldBehavior implements IArmorBehavior {
 

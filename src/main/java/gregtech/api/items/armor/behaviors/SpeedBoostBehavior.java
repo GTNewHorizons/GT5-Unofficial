@@ -4,7 +4,6 @@ import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
 import java.util.Set;
 
-import gregtech.api.util.GTUtility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,6 +18,7 @@ import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 import bartworks.util.MathUtils;
 import gregtech.api.items.armor.ArmorHelper;
 import gregtech.api.items.armor.ArmorKeybinds;
+import gregtech.api.util.GTUtility;
 
 public class SpeedBoostBehavior implements IArmorBehavior {
 
