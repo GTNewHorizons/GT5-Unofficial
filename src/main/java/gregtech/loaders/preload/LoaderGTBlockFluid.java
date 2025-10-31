@@ -13,7 +13,6 @@ import static gregtech.api.enums.Mods.TwilightForest;
 import static gregtech.api.items.ItemAugment.CATEGORY_MOVEMENT;
 import static gregtech.api.items.ItemAugment.CATEGORY_PROTECTION;
 import static gregtech.api.items.ItemAugment.CATEGORY_UTILITY;
-import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;

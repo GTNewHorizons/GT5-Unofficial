@@ -7,6 +7,7 @@ import static gregtech.loaders.ExtraIcons.forceFieldAugment;
 import java.util.Collections;
 import java.util.Set;
 
+import gregtech.api.util.GTUtility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -18,7 +19,6 @@ import org.jetbrains.annotations.NotNull;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
 import gregtech.api.items.armor.ArmorHelper;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 public class ForceFieldBehavior implements IArmorBehavior {
 
@@ -48,11 +48,11 @@ public class ForceFieldBehavior implements IArmorBehavior {
         tag.setBoolean(ArmorHelper.FORCE_FIELD_KEY, !wasEnabled);
 
         if (wasEnabled) {
-            PlayerUtils.messagePlayer(
+            GTUtility.sendChatToPlayer(
                 player,
                 StatCollector.translateToLocalFormatted("GT5U.armor.message.disabled", getBehaviorName()));
         } else {
-            PlayerUtils.messagePlayer(
+            GTUtility.sendChatToPlayer(
                 player,
                 StatCollector.translateToLocalFormatted("GT5U.armor.message.enabled", getBehaviorName()));
         }

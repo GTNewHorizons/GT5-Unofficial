@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
 import gregtech.api.items.armor.ArmorHelper;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import gregtech.api.util.GTUtility;
 
 public class GogglesOfRevealingBehavior implements IArmorBehavior {
 
@@ -33,11 +33,11 @@ public class GogglesOfRevealingBehavior implements IArmorBehavior {
         tag.setBoolean(ArmorHelper.GOGGLES_OF_REVEALING_KEY, !wasEnabled);
 
         if (wasEnabled) {
-            PlayerUtils.messagePlayer(
+            GTUtility.sendChatToPlayer(
                 player,
                 StatCollector.translateToLocalFormatted("GT5U.armor.message.disabled", getBehaviorName()));
         } else {
-            PlayerUtils.messagePlayer(
+            GTUtility.sendChatToPlayer(
                 player,
                 StatCollector.translateToLocalFormatted("GT5U.armor.message.enabled", getBehaviorName()));
         }

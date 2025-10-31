@@ -1067,7 +1067,7 @@ public class GTProxy implements IFuelHandler {
                 tData.fluid.amount = 0;
                 break;
             }
-      }
+        }
         GTLanguageManager.writePlaceholderStrings();
     }
 
@@ -1075,7 +1075,7 @@ public class GTProxy implements IFuelHandler {
      * @deprecated use {@link gregtech.api.util.GTModHandler.RecipeBits#BITS_STD}
      */
     @Deprecated
-    public s  tatic long tBits = GTModHandler.RecipeBits.BITS_STD;
+    public static long tBits = GTModHandler.RecipeBits.BITS_STD;
 
     public void onPostInitialization(FMLPostInitializationEvent event) {
         GTLog.out.println("GTMod: Beginning PostLoad-Phase.");
