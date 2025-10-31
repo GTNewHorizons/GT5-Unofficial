@@ -7,6 +7,7 @@ import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 
 import java.util.List;
 
@@ -141,7 +142,7 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
 
     @Override
     public int calculateMaxProgressTime(int tier, boolean simulateWorking) {
-        return (int) Math.max(1, (workState == STATE_UPWARD || simulateWorking ? 240 : 80) / Math.pow(2, tier));
+        return (int) Math.max(1, (workState == STATE_UPWARD || simulateWorking ? 240 : 80) / GTUtility.powInt(2, tier));
     }
 
     @Override
@@ -208,7 +209,7 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
     }
 
     private boolean tryConsumeFluid() {
-        if (!depleteInput(Materials.Concrete.getMolten(144L))) {
+        if (!depleteInput(Materials.Concrete.getMolten(1 * INGOTS))) {
             mMaxProgresstime = 0;
             return false;
         }

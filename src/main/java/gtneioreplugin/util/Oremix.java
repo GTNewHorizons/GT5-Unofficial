@@ -1,6 +1,6 @@
 package gtneioreplugin.util;
 
-import java.util.Map;
+import java.util.Set;
 
 public class Oremix implements Comparable<Oremix> {
 
@@ -26,9 +26,9 @@ public class Oremix implements Comparable<Oremix> {
 
     private static final int sizeData = 10; // hors dims
 
-    private Map<String, Boolean> dimensions;
+    private Set<String> dimensions;
 
-    public void setDims(Map<String, Boolean> dims) {
+    public void setDims(Set<String> dims) {
         this.dimensions = dims;
     }
 
@@ -112,8 +112,7 @@ public class Oremix implements Comparable<Oremix> {
         values[8] = Integer.toString(size);
         values[9] = Integer.toString(weight);
         for (int i = 0; i < DimensionHelper.DimNameDisplayed.length; i++) {
-            values[sizeData + i] = Boolean
-                .toString(dimensions.getOrDefault(DimensionHelper.DimNameDisplayed[i], false));
+            values[sizeData + i] = Boolean.toString(dimensions.contains(DimensionHelper.DimNameDisplayed[i]));
         }
         return String.join(",", values);
     }

@@ -25,9 +25,6 @@ public class GUIFishTrap extends GuiContainer {
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(final int i, final int j) {}
-
-    @Override
     protected void drawGuiContainerBackgroundLayer(final float f, final int i, final int j) {
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         this.mc.renderEngine.bindTexture(craftingTableGuiTextures);

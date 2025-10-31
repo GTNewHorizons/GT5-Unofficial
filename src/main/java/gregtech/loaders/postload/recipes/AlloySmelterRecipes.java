@@ -5,7 +5,9 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import net.minecraft.item.ItemStack;
 
+import bartworks.common.loaders.ItemRegistry;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.objects.MaterialStack;
@@ -104,10 +106,20 @@ public class AlloySmelterRecipes implements Runnable {
         // We use rubber
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.RawRubber, 3L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.RubberRaw, 3L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Rubber, 1L))
             .duration(10 * SECONDS)
+            .eut(8)
+            .addTo(alloySmelterRecipes);
+
+        // Bartworks Glass Tube
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glass, 2L),
+                ItemList.Shape_Mold_Rod_Long.get(0L))
+            .itemOutputs(new ItemStack(ItemRegistry.PUMPPARTS, 1, 0))
+            .duration(15 * SECONDS)
             .eut(8)
             .addTo(alloySmelterRecipes);
     }

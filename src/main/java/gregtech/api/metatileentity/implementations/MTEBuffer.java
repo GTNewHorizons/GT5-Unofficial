@@ -248,11 +248,6 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
         return 2;
     }
 
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
     public abstract ITexture getOverlayIcon();
 
     @Override

@@ -50,10 +50,9 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 
 /**
- * A system that keeps track of jukebox music tracks playing in different locations.
- * Compared to vanilla jukebox handling, this allows music to resume playing after reloading the chunk the jukeboxes are
- * in.
- * It also allows the headphone item to modify the hearing range of a given disc, including other dimensions.
+ * A system that keeps track of jukebox music tracks playing in different locations. Compared to vanilla jukebox
+ * handling, this allows music to resume playing after reloading the chunk the jukeboxes are in. It also allows the
+ * headphone item to modify the hearing range of a given disc, including other dimensions.
  * <p>
  * Vector4i coordinates point to X,Y,Z,Dimension of the source
  *

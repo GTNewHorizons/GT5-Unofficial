@@ -17,7 +17,6 @@ import static gregtech.api.util.GTUtility.validMTEList;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -46,11 +45,11 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEHatchCustomFluidBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 
 public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrialVacuumFreezer>
     implements ISurvivalConstructable {
@@ -70,7 +69,7 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
         CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 10);
 
         GregTechAPI.sAfterGTLoad.add(() -> {
-            CRYO_STACK = FluidUtils.getFluidStack("cryotheum", 1);
+            CRYO_STACK = new FluidStack(TFFluids.fluidCryotheum, 1);
             CASING_NAME = GregtechItemList.Casing_AdvancedVacuum.get(1)
                 .getDisplayName();
             HATCH_NAME = GregtechItemList.Hatch_Input_Cryotheum.get(1)
@@ -97,7 +96,9 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Factory Grade Advanced Vacuum Freezer")
-            .addInfo("Speed: +100% | EU Usage: 100% | Parallel: 4")
+            .addStaticParallelInfo(8)
+            .addStaticSpeedInfo(2.2f)
+            .addStaticEuEffInfo(0.9f)
             .addInfo("Consumes 10L of " + CRYO_STACK.getLocalizedName() + "/s during operation")
             .addInfo("Constructed exactly the same as a normal Vacuum Freezer")
             .addPollutionAmount(getPollutionPerSecond(null))
@@ -129,6 +130,7 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
                     ofChain(
                         buildHatchAdder(MTEIndustrialVacuumFreezer.class)
                             .adder(MTEIndustrialVacuumFreezer::addCryotheumHatch)
+                            .shouldReject(x -> !x.mCryotheumHatches.isEmpty())
                             .hatchId(MetaTileEntityIDs.Hatch_Input_Cryotheum.ID)
                             .casingIndex(CASING_TEXTURE_ID)
                             .dot(1)
@@ -152,7 +154,7 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 1, 1, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 1, 1, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -255,39 +257,21 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
     }
 
     @Override
-    public boolean isCorrectMachinePart(final ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 2F)
+        return new ProcessingLogic().noRecipeCaching()
+            .setSpeedBonus(1F / 2.2F)
+            .setEuModifier(0.9F)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
     public int getMaxParallelRecipes() {
-        return 4;
-    }
-
-    @Override
-    public int getMaxEfficiency(final ItemStack aStack) {
-        return 10000;
+        return 8;
     }
 
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         return PollutionConfig.pollutionPerSecondMultiIndustrialVacuumFreezer;
-    }
-
-    @Override
-    public int getDamageToComponent(final ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
     }
 
     @Override
@@ -306,8 +290,7 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
                     if (!this.depleteInputFromRestrictedHatches(this.mCryotheumHatches, 10)) {
                         this.causeMaintenanceIssue();
                         this.stopMachine(
-                            ShutDownReasonRegistry
-                                .outOfFluid(Objects.requireNonNull(FluidUtils.getFluidStack("cryotheum", 10))));
+                            ShutDownReasonRegistry.outOfFluid(new FluidStack(TFFluids.fluidCryotheum, 10)));
                     }
                 }
             }

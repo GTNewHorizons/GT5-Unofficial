@@ -62,7 +62,7 @@ public class MTEIndustrialMolecularTransformer extends GTPPMultiBlockBase<MTEInd
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Changes the structure of items to produce new ones")
-            .addInfo("Maximum 1x of each bus/hatch.")
+            .addInfo("Maximum 1x of each bus/hatch")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 7, 7, false)
             .addController("Top Center")
@@ -126,14 +126,14 @@ public class MTEIndustrialMolecularTransformer extends GTPPMultiBlockBase<MTEInd
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 3, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 3, 0, elementBudget, env, false, true);
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
         boolean aDidBuild = checkPiece(STRUCTURE_PIECE_MAIN, 3, 3, 0);
-        if (this.mInputBusses.size() != 1 || this.mOutputBusses.size() != 1 || this.mEnergyHatches.size() != 1) {
+        if (this.mOutputBusses.size() != 1 || this.mEnergyHatches.size() != 1) {
             return false;
         }
         // there are 16 slot that only allow casing, so we subtract this from the grand total required
@@ -212,23 +212,8 @@ public class MTEIndustrialMolecularTransformer extends GTPPMultiBlockBase<MTEInd
     }
 
     @Override
-    public boolean isCorrectMachinePart(final ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic();
-    }
-
-    @Override
-    public int getMaxParallelRecipes() {
-        return 1;
-    }
-
-    @Override
-    public int getMaxEfficiency(final ItemStack aStack) {
-        return 10000;
+        return new ProcessingLogic().noRecipeCaching();
     }
 
     @Override
@@ -236,13 +221,4 @@ public class MTEIndustrialMolecularTransformer extends GTPPMultiBlockBase<MTEInd
         return PollutionConfig.pollutionPerSecondMultiMolecularTransformer;
     }
 
-    @Override
-    public int getDamageToComponent(final ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
-    }
 }

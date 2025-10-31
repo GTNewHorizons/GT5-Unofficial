@@ -1,5 +1,8 @@
 package gregtech.common.covers.redstone;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -17,7 +20,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverPosition;
 import io.netty.buffer.ByteBuf;
@@ -28,6 +30,7 @@ public abstract class CoverAdvancedWirelessRedstoneBase extends Cover {
 
     /**
      * If UUID is set to null, the cover frequency is public, rather than private
+     *
      **/
     protected UUID uuid;
 
@@ -215,9 +218,10 @@ public abstract class CoverAdvancedWirelessRedstoneBase extends Cover {
 
     @Override
     public String getDescription() {
-        return GTUtility.trans("081", "Frequency: ") + frequency
-            + ", Transmission: "
-            + (uuid == null ? "Public" : "Private");
+        return translateToLocalFormatted(
+            "gt.interact.desc.freq_perm",
+            frequency,
+            uuid == null ? translateToLocal("gt.interact.desc.public") : translateToLocal("gt.interact.desc.private"));
     }
 
     @Override
@@ -228,6 +232,14 @@ public abstract class CoverAdvancedWirelessRedstoneBase extends Cover {
     @Override
     public int getDefaultTickRate() {
         return 5;
+    }
+
+    public void syncPrivacyState(boolean b, UUID uuid) {
+        this.uuid = b ? uuid : null;
+    }
+
+    public boolean getPrivacyState() {
+        return this.uuid != null;
     }
 
     // GUI stuff

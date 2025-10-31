@@ -5,7 +5,7 @@ import net.minecraft.world.IBlockAccess;
 
 import com.google.common.io.ByteArrayDataInput;
 
-import gregtech.common.GTClient;
+import gregtech.GTMod;
 import io.netty.buffer.ByteBuf;
 
 public class GTPacketPollution extends GTPacket {
@@ -37,7 +37,8 @@ public class GTPacketPollution extends GTPacket {
 
     @Override
     public void process(IBlockAccess aWorld) {
-        GTClient.recieveChunkPollutionPacket(chunk, pollution);
+        GTMod.clientProxy()
+            .processChunkPollutionPacket(chunk, pollution);
     }
 
     @Override

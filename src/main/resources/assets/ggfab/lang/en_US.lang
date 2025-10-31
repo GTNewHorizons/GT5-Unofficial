@@ -30,3 +30,6 @@ ggfab.info.biome=Biome:
 ggfab.tooltip.linked_input_bus.change_freq_warn=Changing channel while this is the last one on this channel will spill all items left!
 ggfab.tooltip.linked_input_bus.private=Private channel are not shared with others.
 ggfab.tooltip.linked_input_bus.private.1=Changing channel while this is the last one on this channel will spill all items left!
+
+ggfab.gui.linked_input_bus.private=Private
+ggfab.gui.linked_input_bus.channel=Channel

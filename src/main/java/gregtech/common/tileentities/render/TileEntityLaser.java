@@ -71,11 +71,7 @@ public class TileEntityLaser extends TileEntity {
 
         float x = 0, y = 0;
         float angle = switch (direction) {
-            case DOWN -> {
-                x = 1;
-                yield -90;
-            }
-            case UP -> {
+            case DOWN, UP -> {
                 x = 1;
                 yield -90;
             }

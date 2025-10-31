@@ -57,16 +57,14 @@ public class MTEIndustrialWireMill extends GTPPMultiBlockBase<MTEIndustrialWireM
 
     @Override
     public String getMachineType() {
-        return "Wiremill";
+        return "Wiremill, IWF";
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("200% faster than using single block machines of the same voltage")
-            .addInfo("Only uses 75% of the EU/t normally required")
-            .addInfo("Processes four items per voltage tier")
+            .addBulkMachineInfo(4, 3f, 0.75f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 5, true)
             .addController("Front Center")
@@ -109,7 +107,7 @@ public class MTEIndustrialWireMill extends GTPPMultiBlockBase<MTEIndustrialWireM
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 1, 1, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 1, 1, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -120,7 +118,7 @@ public class MTEIndustrialWireMill extends GTPPMultiBlockBase<MTEIndustrialWireM
 
     @Override
     protected SoundResource getProcessStartSound() {
-        return SoundResource.IC2_MACHINES_RECYCLER_OP;
+        return SoundResource.GTCEU_LOOP_MOTOR;
     }
 
     @Override
@@ -187,18 +185,8 @@ public class MTEIndustrialWireMill extends GTPPMultiBlockBase<MTEIndustrialWireM
     }
 
     @Override
-    public int getMaxEfficiency(final ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         return PollutionConfig.pollutionPerSecondMultiIndustrialWireMill;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
     }
 
     public Block getCasingBlock() {

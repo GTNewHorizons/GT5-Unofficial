@@ -2,6 +2,7 @@ package tectech.thing.metaTileEntity.single;
 
 import static gregtech.api.enums.GTValues.VN;
 import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.function.Consumer;
 import java.util.function.IntConsumer;
@@ -12,7 +13,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
@@ -81,9 +81,7 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         LASER = !LASER;
-        GTUtility.sendChatToPlayer(
-            aPlayer,
-            String.format(StatCollector.translateToLocal("tt.chat.debug.generator"), LASER ? "ON" : "OFF"));
+        GTUtility.sendChatToPlayer(aPlayer, translateToLocalFormatted("tt.chat.debug.generator", LASER ? "ON" : "OFF"));
     }
 
     @Override
@@ -96,13 +94,13 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
-        return new ITexture[] { tectech.thing.metaTileEntity.Textures.MACHINE_CASINGS_TT[mTier][colorIndex + 1],
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1],
             side != facing
                 ? LASER
-                    ? (aActive ? tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_OUT_LASER_TT[mTier]
-                        : tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_LASER_TT[mTier])
-                    : (aActive ? tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_OUT_POWER_TT[mTier]
-                        : tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_POWER_TT[mTier])
+                    ? (aActive ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_LASER[mTier + 1]
+                        : Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_LASER[mTier + 1])
+                    : (aActive ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_64A[mTier + 1]
+                        : Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_64A[mTier + 1])
                 : GENNY };
     }
 
@@ -169,16 +167,6 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
 
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
-    public boolean isElectric() {
         return true;
     }
 
@@ -333,17 +321,35 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
                 .setPos(43, 4))
 
             .widget(
-                new TextWidget().setStringSupplier(() -> "TIER: " + VN[GTUtility.getTier(Math.abs(EUT))])
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> translateToLocalFormatted("tt.gui.text.debug.tier", VN[GTUtility.getTier(Math.abs(EUT))]))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(46, 22))
 
             .widget(
-                new TextWidget().setStringSupplier(() -> "SUM: " + numberFormat.format((long) AMP * EUT))
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> translateToLocalFormatted("tt.gui.text.debug.sum", numberFormat.format((long) AMP * EUT)))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(46, 46));
 
-        addLabelledIntegerTextField(builder, "EUT: ", 24, this::getEUT, this::setEUT, 46, 8);
-        addLabelledIntegerTextField(builder, "AMP: ", 24, this::getAMP, this::setAMP, 46, 34);
+        addLabelledIntegerTextField(
+            builder,
+            translateToLocal("tt.gui.text.debug.eut") + " ",
+            24,
+            this::getEUT,
+            this::setEUT,
+            46,
+            8);
+        addLabelledIntegerTextField(
+            builder,
+            translateToLocal("tt.gui.text.debug.amp") + " ",
+            24,
+            this::getAMP,
+            this::setAMP,
+            46,
+            34);
 
         addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_LARGE, val -> EUT -= val, 512, 64, 7, 4);
         addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_LARGE, val -> EUT /= val, 512, 64, 7, 22);

@@ -22,6 +22,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.ITexture;
@@ -33,7 +34,7 @@ import gregtech.api.render.TextureFactory;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDualInputHatch, IDataCopyable {
+public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDualInputHatchWithPattern, IDataCopyable {
 
     public static final String COPIED_DATA_IDENTIFIER = "craftingInputProxy";
     private MTEHatchCraftingInputME master; // use getMaster() to access
@@ -152,7 +153,7 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     }
 
     @Override
-    public Iterator<MTEHatchCraftingInputME.PatternSlot> inventories() {
+    public Iterator<MTEHatchCraftingInputME.PatternSlot<MTEHatchCraftingInputME>> inventories() {
         return getMaster() != null ? getMaster().inventories() : Collections.emptyIterator();
     }
 
@@ -168,7 +169,7 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
 
     @Override
     public ItemStack[] getSharedItems() {
-        return getMaster() != null ? getMaster().getSharedItems() : new ItemStack[0];
+        return getMaster() != null ? getMaster().getSharedItems() : GTValues.emptyItemStackArray;
     }
 
     @Override
@@ -180,14 +181,17 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
         var tileEntity = getBaseMetaTileEntity().getWorld()
             .getTileEntity(x, y, z);
         if (tileEntity == null) return null;
-        if (!(tileEntity instanceof IGregTechTileEntity gtTileEntity)) return null;
-        var metaTileEntity = gtTileEntity.getMetaTileEntity();
-        if (!(metaTileEntity instanceof MTEHatchCraftingInputME)) return null;
+        if (!(tileEntity instanceof IGregTechTileEntity GTTE)) return null;
+        if (!(GTTE.getMetaTileEntity() instanceof MTEHatchCraftingInputME newMaster)) return null;
+        if (master != newMaster) {
+            if (master != null) master.removeProxyHatch(this);
+            master = newMaster;
+            master.addProxyHatch(this);
+        }
         masterX = x;
         masterY = y;
         masterZ = z;
         masterSet = true;
-        master = (MTEHatchCraftingInputME) metaTileEntity;
         return master;
     }
 
@@ -244,6 +248,12 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     }
 
     @Override
+    public void onRemoval() {
+        super.onRemoval();
+        if (master != null) master.removeProxyHatch(this);
+    }
+
+    @Override
     public String getCopiedDataIdentifier(EntityPlayer player) {
         return COPIED_DATA_IDENTIFIER;
     }
@@ -253,10 +263,7 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
         if (nbt == null || !COPIED_DATA_IDENTIFIER.equals(nbt.getString("type"))) return false;
         if (nbt.hasKey("master")) {
             NBTTagCompound masterNBT = nbt.getCompoundTag("master");
-            masterX = masterNBT.getInteger("x");
-            masterY = masterNBT.getInteger("y");
-            masterZ = masterNBT.getInteger("z");
-            masterSet = true;
+            trySetMasterFromCoord(masterNBT.getInteger("x"), masterNBT.getInteger("y"), masterNBT.getInteger("z"));
         }
         return true;
     }

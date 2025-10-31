@@ -132,5 +132,10 @@ public final class ModBlocks {
         GregtechItemList.TripleCompressedGlowstone.set(new ItemStack(compressedObsidian, 1, 8));
         GregtechItemList.QuadrupleCompressedGlowstone.set(new ItemStack(compressedObsidian, 1, 9));
         GregtechItemList.QuintupleCompressedGlowstone.set(new ItemStack(compressedObsidian, 1, 10));
+
+        // Compressed Netherrack shares the block with Compressed Obsidian
+        GregtechItemList.CompressedNetherrack.set(new ItemStack(compressedObsidian, 1, 11));
+        GregtechItemList.DoubleCompressedNetherrack.set(new ItemStack(compressedObsidian, 1, 12));
+        GregtechItemList.TripleCompressedNetherrack.set(new ItemStack(compressedObsidian, 1, 13));
     }
 }

@@ -36,9 +36,9 @@ public class LMACraftingFX extends EntityFX {
     }
 
     @Override
-    public void renderParticle(Tessellator tessellator, float renderPartialTicks, float rX, float rY, float rZ,
-        float rYZ, float rXY) {
-        Tessellator.instance.draw();
+    public void renderParticle(Tessellator tess, float renderPartialTicks, float rX, float rY, float rZ, float rYZ,
+        float rXY) {
+        tess.draw();
         GL11.glPushMatrix();
 
         float ticks = Minecraft.getMinecraft().renderViewEntity.ticksExisted;
@@ -55,7 +55,7 @@ public class LMACraftingFX extends EntityFX {
         RenderManager.instance.renderEntityWithPosYaw(entityItem, 0, 0, 0, 0, 0);
 
         GL11.glPopMatrix();
-        Tessellator.instance.startDrawingQuads();
+        tess.startDrawingQuads();
     }
 
     @Override

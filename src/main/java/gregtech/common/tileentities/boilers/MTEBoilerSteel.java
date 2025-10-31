@@ -26,7 +26,7 @@ public class MTEBoilerSteel extends MTEBoilerBronze {
             aName,
             aNameRegional,
             new String[] { "Faster than the Bronze Boiler", "Produces 300L of Steam per second",
-                "Causes " + GTMod.gregtechproxy.mPollutionHighPressureCoalBoilerPerSecond + " Pollution per second" });
+                "Causes " + GTMod.proxy.mPollutionHighPressureCoalBoilerPerSecond + " Pollution per second" });
     }
 
     public MTEBoilerSteel(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -71,7 +71,7 @@ public class MTEBoilerSteel extends MTEBoilerBronze {
 
     @Override
     protected int getPollution() {
-        return GTMod.gregtechproxy.mPollutionHighPressureCoalBoilerPerSecond;
+        return GTMod.proxy.mPollutionHighPressureCoalBoilerPerSecond;
     }
 
     @Override

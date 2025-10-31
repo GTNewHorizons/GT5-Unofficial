@@ -14,7 +14,6 @@ import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class RecipeGenMetalRecipe extends RecipeGenBase {
 
@@ -37,8 +36,7 @@ public class RecipeGenMetalRecipe extends RecipeGenBase {
     private void generateRecipes(final Material material) {
 
         Logger.WARNING("Generating Metal recipes for " + material.getLocalizedName());
-        if (ItemUtils.checkForInvalidItems(material.getIngot(1))
-            && ItemUtils.checkForInvalidItems(material.getBlock(1))) {
+        if (material.getIngot(1) != null && material.getBlock(1) != null) {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(material.getIngot(9))
@@ -50,8 +48,7 @@ public class RecipeGenMetalRecipe extends RecipeGenBase {
 
         }
 
-        if (ItemUtils.checkForInvalidItems(material.getIngot(1))
-            && ItemUtils.checkForInvalidItems(material.getRod(1))) {
+        if (material.getIngot(1) != null && material.getRod(1) != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(material.getIngot(1))
                 .itemOutputs(material.getRod(1), material.getSmallDust(2))
@@ -62,7 +59,7 @@ public class RecipeGenMetalRecipe extends RecipeGenBase {
             Logger.WARNING("Lathe Rod Recipe: " + material.getLocalizedName() + " - Success");
         }
 
-        if (ItemUtils.checkForInvalidItems(material.getRod(1)) && ItemUtils.checkForInvalidItems(material.getBolt(1))) {
+        if (material.getRod(1) != null && material.getBolt(1) != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(material.getRod(1))
                 .itemOutputs(material.getBolt(4))
@@ -73,8 +70,7 @@ public class RecipeGenMetalRecipe extends RecipeGenBase {
             Logger.WARNING("Cut Bolt Recipe: " + material.getLocalizedName() + " - Success");
         }
 
-        if (ItemUtils.checkForInvalidItems(material.getRod(1))
-            && ItemUtils.checkForInvalidItems(material.getLongRod(1))) {
+        if (material.getRod(1) != null && material.getLongRod(1) != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(material.getRod(2))
                 .itemOutputs(material.getLongRod(1))
@@ -93,8 +89,7 @@ public class RecipeGenMetalRecipe extends RecipeGenBase {
 
         }
 
-        if (ItemUtils.checkForInvalidItems(material.getBolt(1))
-            && ItemUtils.checkForInvalidItems(material.getScrew(1))) {
+        if (material.getBolt(1) != null && material.getScrew(1) != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(material.getBolt(1))
                 .itemOutputs(material.getScrew(1))

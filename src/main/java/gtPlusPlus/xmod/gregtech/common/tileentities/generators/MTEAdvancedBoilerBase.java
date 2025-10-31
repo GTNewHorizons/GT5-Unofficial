@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.generators;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -205,6 +206,12 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
         int burnTime = getBurnTime(fuelStack);
         if (burnTime > 0 && this.mTemperature <= 101) {
             consumeFuel(tile, fuelStack, burnTime);
+
+            // Return fuel container, like a bucket
+            if (this.mInventory[2] == null) {
+                Item item = fuelStack.getItem();
+                this.mInventory[2] = item == null ? null : item.getContainerItem(fuelStack);
+            }
         }
     }
 
@@ -254,7 +261,7 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
         return burnTime;
     }
 
-    public void consumeFuel(IGregTechTileEntity tile, ItemStack fuel, int burnTime) {
+    private void consumeFuel(IGregTechTileEntity tile, ItemStack fuel, int burnTime) {
         this.mProcessingEnergy += burnTime / 10;
         this.mTemperature += burnTime / 500; // will add bonus temperature points if the burn time is pretty high
 
@@ -268,7 +275,7 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
                     .contains("coke")) {
                 tile.addStackToSlot(3, GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
             } else {
-                tile.addStackToSlot(3, GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1L));
+                tile.addStackToSlot(3, GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.AshDark, 1L));
             }
         }
     }

@@ -85,16 +85,17 @@ public class MTEMoltenModule extends MTEBaseModule {
             @NotNull
             @Override
             protected CheckRecipeResult onRecipeStart(@NotNull GTRecipe recipe) {
-                if (!addEUToGlobalEnergyMap(userUUID, -calculatedEut * duration)) {
-                    return CheckRecipeResultRegistry.insufficientPower(calculatedEut * duration);
+                BigInteger powerForRecipe = BigInteger.valueOf(calculatedEut)
+                    .multiply(BigInteger.valueOf(duration));
+                if (!addEUToGlobalEnergyMap(userUUID, powerForRecipe.negate())) {
+                    return CheckRecipeResultRegistry.insufficientStartupPower(powerForRecipe);
                 }
-                addToPowerTally(
-                    BigInteger.valueOf(calculatedEut)
-                        .multiply(BigInteger.valueOf(duration)));
+                addToPowerTally(powerForRecipe);
                 addToRecipeTally(calculatedParallels);
                 currentParallel = calculatedParallels;
                 EUt = calculatedEut;
                 overwriteCalculatedEut(0);
+                setCurrentRecipeHeat(recipe.mSpecialValue);
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
         };
@@ -105,6 +106,7 @@ public class MTEMoltenModule extends MTEBaseModule {
         logic.setAvailableVoltage(Long.MAX_VALUE);
         logic.setAvailableAmperage(Integer.MAX_VALUE);
         logic.setAmperageOC(false);
+        logic.setUnlimitedTierSkips();
         logic.setMaxParallel(getActualParallel());
         logic.setSpeedBonus(getSpeedBonus());
         logic.setEuModifier(getEnergyDiscount());
@@ -161,14 +163,14 @@ public class MTEMoltenModule extends MTEBaseModule {
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Blast Smelter")
-            .addInfo("This is a module of the Godforge.")
-            .addInfo("Must be part of a Godforge to function.")
-            .addInfo("Used for high temperature material liquefaction.")
+            .addInfo("This is a module of the Godforge")
+            .addInfo("Must be part of a Godforge to function")
+            .addInfo("Used for high temperature material liquefaction")
             .addSeparator(EnumChatFormatting.AQUA, 74)
             .addInfo("The second module of the Godforge, this module melts materials directly into")
             .addInfo("their liquid form. If an output material does not have a liquid form, it will be output")
-            .addInfo("as a regular solid instead.")
-            .addInfo("This module is specialized towards parallel processing.")
+            .addInfo("as a regular solid instead")
+            .addInfo("This module is specialized towards parallel processing")
             .beginStructureBlock(7, 7, 13, false)
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "20"

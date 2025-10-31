@@ -24,9 +24,9 @@ import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHasInventory;
 import gregtech.api.interfaces.tileentity.IRedstoneTileEntity;
-import gregtech.api.net.GTPacketBlockEvent;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.common.data.GTBlockEventTracker;
 import gregtech.common.pollution.Pollution;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BTF_Inventory;
@@ -132,11 +132,6 @@ public class TileEntityBase extends TileEntity
     }
 
     public boolean processRecipe() {
-        return true;
-    }
-
-    @Override
-    public boolean canUpdate() {
         return true;
     }
 
@@ -262,7 +257,7 @@ public class TileEntityBase extends TileEntity
     @Override
     public int[] getAccessibleSlotsFromSide(int ordinalSide) {
         if (canAccessData()) return mInventory.getAccessibleSlotsFromSide(ordinalSide);
-        return new int[0];
+        return GTValues.emptyIntArray;
     }
 
     /**
@@ -306,7 +301,6 @@ public class TileEntityBase extends TileEntity
     private final boolean mActive = false;
     private boolean mRedstone = false;
     private final boolean mWorkUpdate = false;
-    private final boolean mSteamConverter = false;
     private boolean mInventoryChanged = false;
     private final boolean mWorks = true;
     private final boolean mNeedsUpdate = true;
@@ -820,11 +814,7 @@ public class TileEntityBase extends TileEntity
 
     @Override
     public final void sendBlockEvent(byte aID, byte aValue) {
-        GTValues.NW.sendPacketToAllPlayersInRange(
-            this.worldObj,
-            new GTPacketBlockEvent(this.xCoord, (short) this.yCoord, this.zCoord, aID, aValue),
-            this.xCoord,
-            this.zCoord);
+        GTBlockEventTracker.enqueue(worldObj, xCoord, yCoord, zCoord, aID, aValue);
     }
 
     private boolean crossedChunkBorder(int aX, int aZ) {
@@ -1152,7 +1142,7 @@ public class TileEntityBase extends TileEntity
             this.doExplosion(
                 this.oOutput * (long) (this.getUniversalEnergyStored() >= this.getUniversalEnergyCapacity() ? 4
                     : (this.getUniversalEnergyStored() >= this.getUniversalEnergyCapacity() / 2L ? 2 : 1)));
-            GTMod arg9999 = GTMod.instance;
+            GTMod arg9999 = GTMod.GT;
             GTMod.achievements.issueAchievement(
                 this.getWorldObj()
                     .getPlayerEntityByName(this.mOwnerName),
@@ -1179,7 +1169,7 @@ public class TileEntityBase extends TileEntity
 
     @Override
     public String[] getDescription() {
-        return this.canAccessData() ? this.mMetaTileEntity.getDescription() : new String[0];
+        return this.canAccessData() ? this.mMetaTileEntity.getDescription() : GTValues.emptyStringArray;
     }
 
     @Override

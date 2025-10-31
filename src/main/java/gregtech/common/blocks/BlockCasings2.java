@@ -3,6 +3,7 @@ package gregtech.common.blocks;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -11,6 +12,7 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.render.TextureFactory;
+import gregtech.common.misc.GTStructureChannels;
 
 /**
  * The casings are split into separate files because they are registered as regular blocks, and a regular block can have
@@ -28,7 +30,7 @@ public class BlockCasings2 extends BlockCasingsAbstract {
                     .getItem()),
             0,
             ForgeDirection.UNKNOWN,
-            Dyes.MACHINE_METAL.mRGBa);
+            Dyes.MACHINE_METAL.getRGBA());
 
         register(0, ItemList.Casing_SolidSteel, "Solid Steel Machine Casing");
         register(1, ItemList.Casing_FrostProof, "Frost Proof Machine Casing");
@@ -42,10 +44,14 @@ public class BlockCasings2 extends BlockCasingsAbstract {
         register(9, ItemList.Casing_Assembler, "Assembler Machine Casing");
         register(10, ItemList.Casing_Pump, "Pump Machine Casing");
         register(11, ItemList.Casing_Motor, "Motor Machine Casing");
-        register(12, ItemList.Casing_Pipe_Bronze, "Bronze Pipe Casing", channelTooltip("pipe", 1));
-        register(13, ItemList.Casing_Pipe_Steel, "Steel Pipe Casing", channelTooltip("pipe", 2));
-        register(14, ItemList.Casing_Pipe_Titanium, "Titanium Pipe Casing", channelTooltip("pipe", 3));
-        register(15, ItemList.Casing_Pipe_TungstenSteel, "Tungstensteel Pipe Casing", channelTooltip("pipe", 4));
+        register(12, ItemList.Casing_Pipe_Bronze, "Bronze Pipe Casing");
+        register(13, ItemList.Casing_Pipe_Steel, "Steel Pipe Casing");
+        register(14, ItemList.Casing_Pipe_Titanium, "Titanium Pipe Casing");
+        register(15, ItemList.Casing_Pipe_TungstenSteel, "Tungstensteel Pipe Casing");
+
+        for (int i = 0; i < 4; i++) {
+            GTStructureChannels.PIPE_CASING.registerAsIndicator(new ItemStack(this, 1, i + 12), i + 1);
+        }
     }
 
     @Override
@@ -56,7 +62,6 @@ public class BlockCasings2 extends BlockCasingsAbstract {
     @Override
     public IIcon getIcon(int ordinalSide, int aMeta) {
         return switch (aMeta) {
-            case 0 -> Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
             case 1 -> Textures.BlockIcons.MACHINE_CASING_FROST_PROOF.getIcon();
             case 2 -> Textures.BlockIcons.MACHINE_CASING_GEARBOX_BRONZE.getIcon();
             case 3 -> Textures.BlockIcons.MACHINE_CASING_GEARBOX_STEEL.getIcon();
