@@ -53,10 +53,10 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.nodes.IRevealer;
 
 @Optional.InterfaceList(
-    value = { @Optional.Interface(iface = "forestry.api.apiculture.IArmorApiarist", modid = Mods.Names.FORESTRY),
-        @Optional.Interface(iface = "thaumcraft.api.IVisDiscountGear", modid = Mods.Names.THAUMCRAFT),
-        @Optional.Interface(iface = "thaumcraft.api.IGoggles", modid = Mods.Names.THAUMCRAFT),
-        @Optional.Interface(iface = "thaumcraft.api.nodes.IRevealer", modid = Mods.Names.THAUMCRAFT), })
+    value = { @Optional.Interface(iface = "forestry.api.apiculture.IArmorApiarist", modid = Mods.ModIDs.FORESTRY),
+        @Optional.Interface(iface = "thaumcraft.api.IVisDiscountGear", modid = Mods.ModIDs.THAUMCRAFT),
+        @Optional.Interface(iface = "thaumcraft.api.IGoggles", modid = Mods.ModIDs.THAUMCRAFT),
+        @Optional.Interface(iface = "thaumcraft.api.nodes.IRevealer", modid = Mods.ModIDs.THAUMCRAFT), })
 
 public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISpecialArmor, IElectricItem, IGoggles,
     IRevealer, IVisDiscountGear, IArmorApiarist {
@@ -132,7 +132,7 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
     }
 
     @Override
-    public void onKeyPressed(EntityPlayerMP player, SyncedKeybind keyPressed) {
+    public void onKeyPressed(EntityPlayerMP player, SyncedKeybind keyPressed, boolean isDown) {
         for (IArmorBehavior behavior : behaviors) {
             if (behavior.getListenedKeys()
                 .contains(keyPressed)) {
