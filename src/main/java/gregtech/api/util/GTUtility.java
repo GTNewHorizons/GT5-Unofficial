@@ -5423,7 +5423,7 @@ public class GTUtility {
             ret.append(" (");
             ret.append(EnumChatFormatting.GRAY);
             if (perSecond <= 1) {
-                ret.append(progressTime / amount);
+                ret.append(df.format(progressTime / amount));
                 ret.append("s/each");
             } else {
                 ret.append(formatShortenedLong((long) perSecond));
