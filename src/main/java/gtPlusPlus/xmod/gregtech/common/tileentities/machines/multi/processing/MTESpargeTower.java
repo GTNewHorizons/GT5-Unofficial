@@ -130,8 +130,8 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
             .beginStructureBlock(3, 8, 3, true)
             .addController("front_bottom_middle")
             .addCasingInfoMin("gtplusplus.blockcasings.5.4.name", 45)
-            .addEnergyHatch("GT5U.MBTT.AnyCasing", 1, 2)
-            .addMaintenanceHatch("GT5U.MBTT.AnyCasing", 1, 2, 3)
+            .addEnergyHatch("<casing>", 1, 2)
+            .addMaintenanceHatch("<casing>", 1, 2, 3)
             .addInputHatch("gt.sparge_tower.info.ihatch", 1)
             .addOutputHatch("gt.sparge_tower.info.ohatch", 2, 3)
             .toolTipFinisher();

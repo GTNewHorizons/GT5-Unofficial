@@ -3686,6 +3686,7 @@ machtype.eec=Powered Spawner, EEC
 machtype.defc=Fusion Crafter, DEFC
 machtype.mapiary=Mega Apiary, Mapiary
 machtype.nano_forge=Nanite Fabricator
+machtype.iaf=IAF
 
 # Used in addController. These are some commonly used shared ones
 # CONTEXT: Controller: (corepos)
@@ -3696,6 +3697,13 @@ gt.mb.corepos.top_center=Top center
 gt.mb.hint_block=Hint block with dot %d
 
 # Multiblock Tooltip lines
+gt.industrial_freezer.tips.1=Factory Grade Advanced Vacuum Freezer
+gt.industrial_freezer.tips.2=Consumes 10L of %s/s during operation\nConstructed exactly the same as a normal Vacuum Freezer
+
+gt.iaf.tips.1=§6Width * Voltage Tier§7 Parallels\n§68x§7 Parallels in Plasma Mode
+gt.iaf.tips.2=Right-click controller with a Screwdriver to change modes\nMax Size required to process Plasma recipes
+gt.iaf.info.1=n can be 3, 5 or 7
+
 gt.nano_forge.tips.1=Requires insane amounts of power to create nanites\nEach tier requires some structural changes\nMachine tier depends on Nanite in controller slot\nTier 4 has additional mechanics, check the controller
 gt.nano_forge.tips.2=Requires a Carbon Nanite to use tier §51\nRequires a Neutronium Nanite to use tier §12\nRequires a Transcendent Metal Nanite to use tier §b3\nRequires an Eternity Nanite to use tier §24
 gt.nano_forge.tips.3=Performs §dperfect overclocks§7 on lower-tier recipes

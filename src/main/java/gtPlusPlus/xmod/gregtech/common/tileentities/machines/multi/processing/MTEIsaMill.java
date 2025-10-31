@@ -94,12 +94,12 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
             .addCasingInfoMin("gtplusplus.blockcasings.5.0.name", 40, false)
             .addStructurePart("gtplusplus.blockcasings.5.2.name", "gt.isamill.info.1")
             .addStructurePart("gtplusplus.blockcasings.5.1.name", "gt.isamill.info.2")
-            .addStructurePart("gt.blockmachines.hatch.milling.name", "GT5U.MBTT.AnyCasing")
-            .addInputBus("GT5U.MBTT.AnyCasing", 1)
-            .addOutputBus("GT5U.MBTT.AnyCasing", 1)
-            .addEnergyHatch("GT5U.MBTT.AnyCasing", 1)
-            .addMaintenanceHatch("GT5U.MBTT.AnyCasing", 1)
-            .addMufflerHatch("GT5U.MBTT.AnyCasing", 1)
+            .addStructurePart("gt.blockmachines.hatch.milling.name", "<casing>")
+            .addInputBus("<casing>", 1)
+            .addOutputBus("<casing>", 1)
+            .addEnergyHatch("<casing>", 1)
+            .addMaintenanceHatch("<casing>", 1)
+            .addMufflerHatch("<casing>", 1)
             .toolTipFinisher();
         return tt;
     }
