@@ -123,6 +123,9 @@ import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.Contract;
+import org.joml.AxisAngle4f;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 import org.joml.Vector3i;
 
 import com.google.auto.value.AutoValue;
@@ -132,6 +135,9 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.SetMultimap;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
+import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
+import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.mojang.authlib.GameProfile;
 
 import buildcraft.api.transport.IPipeTile;
@@ -5505,5 +5511,66 @@ public class GTUtility {
         return entity instanceof EntityPlayer p && !p.getClass()
             .getName()
             .contains("Fake");
+    }
+
+    /**
+     * A helper method that does rotation calculations for renderering.
+     *
+     * @param extendedFacing - extendedFacing value of the MTE
+     * @return AxisAngle4f that can be used directly with glRotate calls
+     */
+    public static AxisAngle4f getRotationAxisAngle4f(ExtendedFacing extendedFacing) {
+        ForgeDirection direction = extendedFacing.getDirection();
+        Rotation rotation = extendedFacing.getRotation();
+        Flip flip = extendedFacing.getFlip();
+
+        float faceAngleDeg = switch (direction) {
+            case DOWN -> 90f;
+            case UP -> -90f;
+            case SOUTH -> 180f;
+            case WEST -> 90f;
+            case EAST -> -90f;
+            default -> 0f; // NORTH
+        };
+
+        Vector3f faceAxis = switch (direction) {
+            case UP, DOWN -> new Vector3f(1, 0, 0);
+            default -> new Vector3f(0, 1, 0);
+        };
+
+        Quaternionf finalQuat = new Quaternionf().fromAxisAngleRad(faceAxis, (float) Math.toRadians(faceAngleDeg));
+
+        // Local rotation
+        float localAngleDeg = switch (rotation) {
+            case CLOCKWISE -> -90f;
+            case COUNTER_CLOCKWISE -> 90f;
+            case UPSIDE_DOWN -> 180f;
+            default -> 0f; // NORMAL
+        };
+
+        float angleSign = switch (direction) {
+            case WEST, EAST, NORTH -> -1.0f;
+            default -> 1.0f; // UP, DOWN, SOUTH
+        };
+
+        if (flip == Flip.HORIZONTAL || flip == Flip.VERTICAL) {
+            angleSign *= -1.0f;
+        }
+
+        float angleOffset = (direction == ForgeDirection.DOWN) ? 180.0f : 0.0f;
+        localAngleDeg = (localAngleDeg * angleSign) + angleOffset;
+
+        // Apply the local rotation
+        Quaternionf localQuat = new Quaternionf()
+            .fromAxisAngleRad(new Vector3f(0, 0, 1), (float) Math.toRadians(localAngleDeg));
+        finalQuat.mul(localQuat);
+
+        // Extract axis-angle form
+        AxisAngle4f axisAngle = new AxisAngle4f();
+        finalQuat.get(axisAngle);
+
+        // Convert to degrees for consistency
+        axisAngle.angle = (float) Math.toDegrees(axisAngle.angle);
+        return axisAngle;
     }
 }
