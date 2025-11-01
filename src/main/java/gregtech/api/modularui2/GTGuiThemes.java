@@ -203,4 +203,20 @@ public final class GTGuiThemes {
         .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_TECTECH_LOGO_DARK)
         .themedTexture(GTWidgetThemes.BACKGROUND_TERMINAL.getFullName(), GTTextureIds.BACKGROUND_TERMINAL_TECTECH)
         .build();
+    public static final GTGuiTheme EXOFOUNDRY = GTGuiTheme.builder("exofoundry")
+        .parent(STANDARD)
+        .panel(GTTextureIds.BACKGROUND_FOUNDRY)
+        .itemSlot(GTTextureIds.SLOT_ITEM_FOUNDRY)
+        .themedTexture(GTWidgetThemes.BACKGROUND_POPUP.getFullName(), GTTextureIds.BACKGROUND_POPUP_FOUNDRY)
+        .themedTexture(GTWidgetThemes.BACKGROUND_TITLE.getFullName(), GTTextureIds.BACKGROUND_TITLE_FOUNDRY)
+        .button(GTTextureIds.BUTTON_FOUNDRY)
+        .simpleToggleButton(
+            GTTextureIds.BUTTON_FOUNDRY,
+            GTTextureIds.BUTTON_FOUNDRY_PRESSED,
+            Dyes.MACHINE_METAL.toInt()) // todo change color here
+        .color(Dyes.dyeWhite.toInt()) // todo change color here
+        .textColor(0xfafaff) // todo change color here
+        .customTextColor(GTWidgetThemes.TEXT_TITLE.getFullName(), 0xfafaff) // todo change color here
+        .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_LOGO_EXOFOUNDRY)
+        .build();
 }
