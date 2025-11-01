@@ -25,6 +25,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -41,9 +42,8 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.WorldSpawnedEventBuilder;
-import gregtech.common.blocks.BlockMachines;
+import gregtech.common.gui.modularui.multiblock.MTECokeOvenGUI;
 import gregtech.common.pollution.Pollution;
-import gregtech.common.tileentities.machines.multi.gui.MTECokeOvenGUI;
 
 public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implements ISurvivalConstructable {
 
@@ -252,7 +252,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
 
     @Override
     public byte getTileEntityBaseType() {
-        return BlockMachines.Tool.PickaxeLevel0.toTileEntityBaseType();
+        return HarvestTool.PickaxeLevel0.toTileEntityBaseType();
     }
 
     @Override
