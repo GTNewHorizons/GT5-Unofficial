@@ -29,8 +29,6 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.glodblock.github.common.item.FCBaseItemCell;
-import com.glodblock.github.common.storage.IStorageFluidCell;
-import com.glodblock.github.util.Util;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
@@ -47,6 +45,7 @@ import appeng.api.networking.security.PlayerSource;
 import appeng.api.storage.IMEInventory;
 import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.data.IAEFluidStack;
+import appeng.api.storage.data.IAEStack;
 import appeng.api.storage.data.IItemList;
 import appeng.api.util.AECableType;
 import appeng.api.util.AEColor;
@@ -193,12 +192,11 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
             return;
         }
 
-        if (upgradeItemStack != null && upgradeItemStack.getItem() instanceof IStorageFluidCell) {
+        if (upgradeItemStack != null && upgradeItemStack.getItem() instanceof FCBaseItemCell fcbc) {
             hadCell = true;
 
             if (this.mMode == 0) {
-                CellConfig cfg = (CellConfig) ((FCBaseItemCell) upgradeItemStack.getItem())
-                    .getConfigInventory(upgradeItemStack);
+                CellConfig cfg = (CellConfig) fcbc.getConfigInventory(upgradeItemStack);
 
                 if (!cfg.isEmpty()) {
                     StringBuilder builder = new StringBuilder();
@@ -209,11 +207,11 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
                     lockedFluids.clear();
 
                     for (int i = 0; i < cfg.getSizeInventory(); i++) {
-                        ItemStack stack = cfg.getStackInSlot(i);
+                        IAEStack<?> stack = cfg.getAEStackInSlot(i);
 
-                        if (stack == null) continue;
+                        if (!(stack instanceof IAEFluidStack ifs)) continue;
 
-                        FluidStack tFluid = Util.getFluidFromItem(stack);
+                        FluidStack tFluid = ifs.getFluidStack();
 
                         if (tFluid != null) {
                             hadFilters = true;
@@ -278,8 +276,8 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
     private long getCacheCapacity() {
         ItemStack upgradeItemStack = mInventory[0];
-        if (upgradeItemStack != null && upgradeItemStack.getItem() instanceof IStorageFluidCell) {
-            return ((FCBaseItemCell) upgradeItemStack.getItem()).getBytes(upgradeItemStack) * 2048;
+        if (upgradeItemStack != null && upgradeItemStack.getItem() instanceof FCBaseItemCell fcbc) {
+            return fcbc.getBytes(upgradeItemStack) * 2048;
         }
         return baseCapacity;
     }

@@ -40,6 +40,7 @@ import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.security.MachineSource;
 import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.data.IAEItemStack;
+import appeng.api.storage.data.IAEStack;
 import appeng.api.storage.data.IItemList;
 import appeng.api.util.AECableType;
 import appeng.api.util.AEColor;
@@ -461,21 +462,21 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
                     boolean isFirst = true;
 
                     for (int i = 0; i < cfg.getSizeInventory(); i++) {
-                        ItemStack stack = cfg.getStackInSlot(i);
+                        IAEStack<?> stack = cfg.getAEStackInSlot(i);
 
-                        if (stack != null) {
-                            hadFilters = true;
+                        if (!(stack instanceof IAEItemStack ais)) continue;
 
-                            lockedItems.add(GTUtility.ItemId.create(stack));
+                        hadFilters = true;
 
-                            if (isFirst) {
-                                builder.append(stack.getDisplayName());
+                        lockedItems.add(GTUtility.ItemId.create(ais.getItemStack()));
 
-                                isFirst = false;
-                            } else {
-                                builder.append(", ")
-                                    .append(stack.getDisplayName());
-                            }
+                        if (isFirst) {
+                            builder.append(stack.getDisplayName());
+
+                            isFirst = false;
+                        } else {
+                            builder.append(", ")
+                                .append(stack.getDisplayName());
                         }
                     }
 
