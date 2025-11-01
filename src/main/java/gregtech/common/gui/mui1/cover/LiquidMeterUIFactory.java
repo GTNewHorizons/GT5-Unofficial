@@ -66,7 +66,7 @@ public class LiquidMeterUIFactory extends CoverUIFactory<CoverLiquidMeter> {
                                 : translateToLocal("gt.interact.desc.normal")))
                     .setPos(startX + spaceX * 1, 4 + startY + spaceY * 0))
             .widget(
-                new TextWidget(StatCollector.translateToLocal("gt.interact.desc.Fluid_Meter.FluidTHR"))
+                new TextWidget(StatCollector.translateToLocal("gt.interact.desc.Fluid_Meter.FluidThreshold"))
                     .setPos(startX + spaceX * 5 - 10, startY + spaceY * 1 + 4));
     }
 }

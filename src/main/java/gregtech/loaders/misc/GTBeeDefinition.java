@@ -92,7 +92,6 @@ import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsKevlar;
 import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTLanguageManager;
@@ -273,7 +272,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
     FERTILIZER(GTBranchDefinition.ORGANIC, "Fertilizer", true, new Color(0x7fcef5), new Color(0x654525), beeSpecies -> {
         beeSpecies.addProduct(GTModHandler.getModItem(ExtraBees.ID, "honeyComb", 1, 9), 0.15f);
         beeSpecies.addSpecialty(GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1), 0.2f);
-        beeSpecies.addSpecialty(GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1), 0.2f);
+        beeSpecies.addSpecialty(GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.AshDark, 1), 0.2f);
         beeSpecies.addSpecialty(ItemList.FR_Fertilizer.get(1), 0.3f);
         beeSpecies.addSpecialty(ItemList.IC2_Fertilizer.get(1), 0.3f);
         beeSpecies.setHumidity(DAMP);
@@ -2424,7 +2423,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
     }),
     KEVLAR(GTBranchDefinition.IC2, "Kevlar", false, new Color(0x2d542f), new Color(0xa2baa3), beeSpecies -> {
         beeSpecies.addSpecialty(GTBees.combs.getStackForType(CombType.KEVLAR), 0.075f);
-        beeSpecies.addSpecialty(MaterialsKevlar.Kevlar.getNuggets(1), 0.01f);
+        beeSpecies.addSpecialty(Materials.Kevlar.getNuggets(1), 0.01f);
         beeSpecies.setHumidity(DAMP);
         beeSpecies.setTemperature(COLD);
         beeSpecies.setHasEffect();
