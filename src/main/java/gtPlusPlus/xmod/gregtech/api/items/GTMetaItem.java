@@ -31,6 +31,9 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.util.Utils;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 
 public abstract class GTMetaItem extends GTMetaItemBase {
 
@@ -297,23 +300,25 @@ public abstract class GTMetaItem extends GTMetaItemBase {
         return this.mFluidContainerStats.get((short) aStack.getItemDamage());
     }
 
+    private static final Object2IntMap<String> COLOR_MAP = new Object2IntOpenHashMap<>();
+
+    static {
+        COLOR_MAP.put("LuV", Utils.rgbtoHexValue(255, 255, 204));
+        COLOR_MAP.put("ZPM", Utils.rgbtoHexValue(172, 230, 0));
+        COLOR_MAP.put("UV", Utils.rgbtoHexValue(255, 255, 0));
+        COLOR_MAP.put("MAX", Utils.rgbtoHexValue(255, 0, 0));
+    }
+
     @Override
-    public int getColorFromItemStack(final ItemStack stack, int HEX_OxFFFFFF) {
-        if (stack.getDisplayName()
-            .contains("LuV")) {
-            HEX_OxFFFFFF = 0xffffcc;
-        } else if (stack.getDisplayName()
-            .contains("ZPM")) {
-                HEX_OxFFFFFF = 0xace600;
-            } else if (stack.getDisplayName()
-                .contains("UV")) {
-                    HEX_OxFFFFFF = 0xffff00;
-                } else if (stack.getDisplayName()
-                    .contains("MAX")) {
-                        HEX_OxFFFFFF = 0xff0000;
-                    } else {
-                        HEX_OxFFFFFF = 0xffffff;
-                    }
-        return HEX_OxFFFFFF;
+    public int getColorFromItemStack(final ItemStack stack, int defaultColor) {
+        final String name = stack.getDisplayName();
+
+        for (Object2IntMap.Entry<String> entry : COLOR_MAP.object2IntEntrySet()) {
+            if (name.contains(entry.getKey())) {
+                return entry.getIntValue();
+            }
+        }
+
+        return defaultColor;
     }
 }
