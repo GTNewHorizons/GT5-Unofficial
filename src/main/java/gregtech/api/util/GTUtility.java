@@ -3181,11 +3181,7 @@ public class GTUtility {
 
         String key = "gtnop.world." + name;
 
-        if (StatCollector.canTranslate(key)) {
-            return StatCollector.translateToLocal(key);
-        } else {
-            return name;
-        }
+        return tryTranslate(key, name);
     }
 
     public static boolean moveEntityToDimensionAtCoords(Entity entity, int aDimension, double aX, double aY,
@@ -3949,7 +3945,12 @@ public class GTUtility {
     }
 
     public static String translate(String key, Object... parameters) {
-        return StatCollector.translateToLocalFormatted(key, parameters);
+        return parameters.length == 0 ? StatCollector.translateToLocal(key)
+            : StatCollector.translateToLocalFormatted(key, parameters);
+    }
+
+    public static String tryTranslate(String key, String fallback, Object... parameters) {
+        return StatCollector.canTranslate(key) ? translate(key, parameters) : fallback;
     }
 
     /*
@@ -4491,6 +4492,9 @@ public class GTUtility {
 
         return isOre(new ItemStack(block, 1, meta));
     }
+
+    public static final String LOC_SEPARATOR = "\u001F";
+    public static final String YAP_SEPARATOR = "\\n";
 
     public static boolean isOre(ItemStack aStack) {
         int tItem = GTUtility.stackToInt(aStack);
@@ -5505,5 +5509,26 @@ public class GTUtility {
         return entity instanceof EntityPlayer p && !p.getClass()
             .getName()
             .contains("Fake");
+    }
+
+    /**
+     * Different from translateToLocalFormatted, it's to make sure<br>
+     * nothing gets hardcoded on startup (requires a full relaunch to see changes to lang)
+     * for a seamless translation experience
+     */
+    public static String appendParams(String locKey, Object... params) {
+        if (params == null || params.length == 0) {
+            return locKey;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(locKey);
+
+        for (Object param : params) {
+            sb.append(LOC_SEPARATOR);
+            sb.append(param != null ? param.toString() : "");
+        }
+
+        return sb.toString();
     }
 }
