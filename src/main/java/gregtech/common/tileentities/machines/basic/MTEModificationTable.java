@@ -29,8 +29,7 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.item.IItemHandler;
-import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
-import com.cleanroommc.modularui.utils.item.ItemStackHandler;
+import com.cleanroommc.modularui.utils.item.LimitingItemStackHandler;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
@@ -366,7 +365,7 @@ public class MTEModificationTable extends MetaTileEntity {
         int row = category - 1;
         Function<Frames, Integer> categorySlotCount = CATEGORY_SLOT_COUNTS.get(category);
         return new ItemSlot().slot(
-            new ModularSlot(augmentsSlotHandler, column + LARGEST_FRAME * row).slotGroup("augments")
+            new AugmentSlot(augmentsSlotHandler, column + LARGEST_FRAME * row, armorSlotHandler).slotGroup("augments")
                 .filter(isAugmentOfCategory(category).and(isValidForArmor()))
                 .changeListener(
                     (newItem, onlyAmountChanged, client, init) -> { updateAugmentSlot(newItem, category, column); }))
@@ -454,7 +453,7 @@ public class MTEModificationTable extends MetaTileEntity {
         return coresMap.get(core).item.get(1);
     }
 
-    private ItemStack getAugmentStackInCategoryAndColumn(ItemStack armorStack, int category, int column) {
+    private static ItemStack getAugmentStackInCategoryAndColumn(ItemStack armorStack, int category, int column) {
         if (armorStack == null) {
             return null;
         }
@@ -478,19 +477,37 @@ public class MTEModificationTable extends MetaTileEntity {
         return augmentsMap.get(columnTag).item.get(1);
     }
 
-    private static class LimitingItemStackHandler extends ItemStackHandler
-        implements IItemHandlerModifiable, IItemHandler {
+    private static class AugmentSlot extends ModularSlot {
 
-        private final int slotLimit;
-
-        private LimitingItemStackHandler(int slots, int slotLimit) {
-            super(slots);
-            this.slotLimit = slotLimit;
+        public AugmentSlot(IItemHandler itemHandler, int index, LimitingItemStackHandler armorSlotHandler) {
+            super(itemHandler, index);
+            this.armorSlotHandler = armorSlotHandler;
         }
 
+        LimitingItemStackHandler armorSlotHandler;
+
         @Override
-        public int getSlotLimit(int slot) {
-            return slotLimit;
+        public boolean canTakeStack(EntityPlayer playerIn) {
+            ItemStack armorStack = armorSlotHandler.getStackInSlot(0);
+            ItemStack myStack = getStack();
+            if (!(myStack.getItem() instanceof ItemAugmentAbstract myAugment)) return true;
+            if (armorStack != null) {
+                for (int i = 0; i < AUGMENT_SLOTS_COUNT; i++) {
+                    ItemStack augmentStack = getAugmentStackInCategoryAndColumn(
+                        armorStack,
+                        (i / LARGEST_FRAME) + 1,
+                        i % LARGEST_FRAME);
+                    if (augmentStack == null) continue;
+                    if (!(augmentStack.getItem() instanceof ItemAugmentAbstract augment)) continue;
+                    for (IArmorBehavior behavior : myAugment.getAttachedBehaviors()) {
+                        if (augment.getRequiredBehaviors()
+                            .contains(behavior)) {
+                            return false;
+                        }
+                    }
+                }
+            }
+            return true;
         }
     }
 
