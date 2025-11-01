@@ -156,12 +156,12 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
 
     @Override
     public boolean isValidSlot(int index) {
-        return index == INPUT_SLOT;
+        return index == INPUT_SLOT || index == OUTPUT_SLOT;
     }
 
     @Override
     protected boolean supportsSlotAutomation(int index) {
-        return index == INPUT_SLOT;
+        return index == INPUT_SLOT || index == OUTPUT_SLOT;
     }
 
     @Override

@@ -7,6 +7,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_IN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -108,6 +109,39 @@ public class MTEHatchCokeOven extends MTEHatch {
     }
 
     @Override
+    public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
+        if (baseMetaTileEntity.isClientSide()) return;
+        if (controller == null) return;
+        if (tick % 7 != 0) return;
+
+        switch (mode) {
+            case Input -> {
+                return;
+            }
+            case OutputItem -> {
+                final IInventory target = baseMetaTileEntity.getIInventoryAtSide(baseMetaTileEntity.getFrontFacing());
+                if (target == null) return;
+                GTUtility.moveMultipleItemStacks(
+                    baseMetaTileEntity,
+                    target,
+                    baseMetaTileEntity.getFrontFacing(),
+                    baseMetaTileEntity.getBackFacing(),
+                    null,
+                    false,
+                    (byte) 64,
+                    (byte) 1,
+                    (byte) 64,
+                    (byte) 1,
+                    getSizeInventory());
+            }
+            case OutputFluid -> {
+                // TODO
+                return;
+            }
+        }
+    }
+
+    @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
@@ -124,15 +158,18 @@ public class MTEHatchCokeOven extends MTEHatch {
     }
 
     @Override
-    public void setInventorySlotContents(int index, ItemStack stack) {
-        if (controller == null) return;
-        controller.setInventorySlotContents(index, stack);
+    public int[] getAccessibleSlotsFromSide(int ordinalSide) {
+        return switch (mode) {
+            case Input -> new int[] { MTECokeOven.INPUT_SLOT };
+            case OutputItem -> new int[] { MTECokeOven.OUTPUT_SLOT };
+            default -> null;
+        };
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity baseMetaTileEntity, int index, ForgeDirection side,
-        ItemStack stack) {
-        return mode == Mode.OutputItem;
+    public void setInventorySlotContents(int index, ItemStack stack) {
+        if (controller == null) return;
+        controller.setInventorySlotContents(index, stack);
     }
 
     @Override
@@ -144,6 +181,12 @@ public class MTEHatchCokeOven extends MTEHatch {
         final ForgeDirection facing = baseMetaTileEntity.getFrontFacing();
         if (facing.ordinal() != ordinalSide) return false;
         return controller.canInsertItem(index, itemStack, ForgeDirection.UNKNOWN.ordinal());
+    }
+
+    @Override
+    public boolean canExtractItem(int index, ItemStack itemStack, int ordinalSide) {
+        if (controller == null) return false;
+        return controller.canExtractItem(index, itemStack, ordinalSide);
     }
 
     @Override
