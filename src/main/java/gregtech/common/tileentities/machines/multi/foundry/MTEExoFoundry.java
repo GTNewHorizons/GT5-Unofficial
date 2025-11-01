@@ -1078,7 +1078,6 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     // -1 -> uninitialized; 0 -> inactive
     private long lastInactiveTime = -1;
 
-    // TODO: figure out why isActive doesnt send to client by default???
     @Override
     public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
         /*
