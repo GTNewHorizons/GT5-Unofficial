@@ -747,12 +747,17 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             int originalMaxParallel = 1;
             int maxParallel = originalMaxParallel;
 
+            int maxRegularOverclock = getTier(inputVoltage) - getTier(recipe.mEUt);
+
+            // Delete this one before enable overclocking under one tick.
+            int maxOverclockTo1Tick = GTUtility.log2(recipe.mDuration / recipe.mInputs.length);
+
             OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(recipe.mEUt)
                 .setDurationUnderOneTickSupplier(() -> ((double) (recipe.mDuration) / recipe.mInputs.length))
                 .setParallel(originalMaxParallel)
                 .setEUt(inputEUt / recipe.mInputs.length)
                 .setLaserOC(true)
-                .setMaxRegularOverclocks(getTier(inputVoltage) - getTier(recipe.mEUt));
+                .setMaxRegularOverclocks(Math.min(maxRegularOverclock, maxOverclockTo1Tick));
 
             // Disabled to disable overclocking under one tick.
             /*
