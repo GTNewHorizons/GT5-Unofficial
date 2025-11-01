@@ -70,7 +70,7 @@ public class MTECokeOvenHatch extends MTEHatch {
     }
 
     @Override
-    public MTECokeOvenHatch newMetaEntity(IGregTechTileEntity aTileEntity) {
+    public MTECokeOvenHatch newMetaEntity(IGregTechTileEntity tileEntity) {
         return new MTECokeOvenHatch(mName, mTier, mDescriptionArray, mTextures);
     }
 
@@ -84,6 +84,18 @@ public class MTECokeOvenHatch extends MTEHatch {
     public void loadNBTData(NBTTagCompound NBT) {
         super.loadNBTData(NBT);
         mode = Mode.loadNBTData(NBT);
+    }
+
+    @Override
+    public NBTTagCompound getDescriptionData() {
+        final NBTTagCompound data = new NBTTagCompound();
+        mode.saveNBTData(data);
+        return data;
+    }
+
+    @Override
+    public void onDescriptionPacket(NBTTagCompound data) {
+        mode = Mode.loadNBTData(data);
     }
 
     @Override
@@ -105,8 +117,12 @@ public class MTECokeOvenHatch extends MTEHatch {
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer player, float x, float y, float z,
         ItemStack tool) {
+        final IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
+        if (baseMetaTileEntity == null) return;
+        if (baseMetaTileEntity.isClientSide()) return;
         mode = mode.next();
-        // TODO: provide message to client
+        baseMetaTileEntity.issueTileUpdate();
+        GTUtility.sendChatToPlayer(player, "Mode changed to " + mode);
     }
 
     private static final ITexture TEXTURE_CASING = Textures.BlockIcons
@@ -119,15 +135,21 @@ public class MTECokeOvenHatch extends MTEHatch {
         TextureFactory.of(ITEM_IN_SIGN) };
 
     @Override
-    public ITexture[] getTexturesActive(ITexture baseTexture) {
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+        int colorIndex, boolean active, boolean redstoneLevel) {
+        if (side != facing) return new ITexture[] { TEXTURE_CASING };
+
         return switch (mode) {
             case Input -> GTMod.proxy.mRenderIndicatorsOnHatch ? TEXTURE_IN_INDICATOR : TEXTURE_IN;
             case OutputItem, OutputFluid -> GTMod.proxy.mRenderIndicatorsOnHatch ? TEXTURE_OUT_INDICATOR : TEXTURE_OUT;
         };
     }
 
-    @Override
+    public ITexture[] getTexturesActive(ITexture baseTexture) {
+        return null;
+    }
+
     public ITexture[] getTexturesInactive(ITexture baseTexture) {
-        return getTexturesActive(baseTexture);
+        return null;
     }
 }
