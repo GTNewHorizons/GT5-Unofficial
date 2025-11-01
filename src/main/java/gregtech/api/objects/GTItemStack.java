@@ -44,9 +44,11 @@ public class GTItemStack {
         public int hashCode(ItemStack o) {
             int hash = Fnv1a32.initialState();
 
-            hash = Fnv1a32.hashStep(hash, Objects.hashCode(o.getItem()));
-            hash = Fnv1a32.hashStep(hash, Items.feather.getDamage(o));
-            hash = Fnv1a32.hashStep(hash, Objects.hashCode(o.getTagCompound()));
+            if (o != null) {
+                hash = Fnv1a32.hashStep(hash, Objects.hashCode(o.getItem()));
+                hash = Fnv1a32.hashStep(hash, Items.feather.getDamage(o));
+                hash = Fnv1a32.hashStep(hash, Objects.hashCode(o.getTagCompound()));
+            }
 
             return hash;
         }
