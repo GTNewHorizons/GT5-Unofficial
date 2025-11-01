@@ -139,7 +139,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
         this(
             materials.mRGBa,
             materials.mDefaultLocalName,
-            materials.getToolTip(),
+            materials.getChemicalTooltip(),
             type == null ? materials.mElement != null ? Types.ELEMENT : Types.UNDEFINED : type,
             generationFeatures,
             mID,

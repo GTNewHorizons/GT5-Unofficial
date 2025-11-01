@@ -42,7 +42,7 @@ public class MaterialStack implements Cloneable {
     }
 
     public String toString(boolean single) {
-        String temp1 = "", temp2 = mMaterial.getToolTip(true), temp3 = "", temp4 = "";
+        String temp1 = "", temp2 = mMaterial.getChemicalTooltip(true), temp3 = "", temp4 = "";
         if (mAmount > 1) {
             temp4 = GTUtility.toSubscript(mAmount);
         }
