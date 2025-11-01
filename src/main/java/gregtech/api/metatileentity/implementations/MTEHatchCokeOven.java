@@ -11,6 +11,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.Nullable;
+
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
@@ -18,6 +20,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
+import gregtech.common.tileentities.machines.multi.MTECokeOven;
 
 public class MTEHatchCokeOven extends MTEHatch {
 
@@ -61,6 +64,7 @@ public class MTEHatchCokeOven extends MTEHatch {
     }
 
     private Mode mode = Mode.Input;
+    private MTECokeOven controller;
 
     public MTEHatchCokeOven(int ID, String name, String nameRegional) {
         super(ID, name, nameRegional, 0, 0, new String[] { "Hatch for automating the Coke Oven." });
@@ -99,20 +103,43 @@ public class MTEHatchCokeOven extends MTEHatch {
         mode = Mode.loadNBTData(data);
     }
 
+    public void setController(MTECokeOven controller) {
+        this.controller = controller;
+    }
+
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
 
     @Override
-    public boolean isValidSlot(int index) {
-        return false;
+    public int getSizeInventory() {
+        return controller != null ? 2 : 0;
+    }
+
+    @Override
+    public @Nullable ItemStack getStackInSlot(int index) {
+        if (controller == null) return null;
+        return controller.getStackInSlot(index);
+    }
+
+    @Override
+    public void setInventorySlotContents(int index, ItemStack stack) {
+        if (controller == null) return;
+        controller.setInventorySlotContents(index, stack);
     }
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity baseMetaTileEntity, int index, ForgeDirection side,
         ItemStack stack) {
         return mode == Mode.OutputItem;
+    }
+
+    @Override
+    public boolean canInsertItem(int index, ItemStack itemStack, int ordinalSide) {
+        if (mode != Mode.Input) return false;
+        if (controller == null) return false;
+        return controller.canInsertItem(index, itemStack, ordinalSide);
     }
 
     @Override

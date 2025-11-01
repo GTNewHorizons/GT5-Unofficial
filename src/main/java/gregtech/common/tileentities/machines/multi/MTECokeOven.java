@@ -55,8 +55,8 @@ import gregtech.common.pollution.Pollution;
 
 public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implements ISurvivalConstructable {
 
-    private final static int INPUT_SLOT = 0;
-    private final static int OUTPUT_SLOT = 1;
+    public final static int INPUT_SLOT = 0;
+    public final static int OUTPUT_SLOT = 1;
     private final static int FLUID_CAPACITY = 64_000;
 
     private FluidStack fluid;
@@ -155,13 +155,18 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side, ItemStack aStack) {
-        return super.allowPullStack(aBaseMetaTileEntity, aIndex, side, aStack);
+    public boolean isValidSlot(int index) {
+        return index == INPUT_SLOT;
+    }
+
+    @Override
+    protected boolean supportsSlotAutomation(int index) {
+        return index == INPUT_SLOT;
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTECokeOven(this.mName);
+        return new MTECokeOven(mName);
     }
 
     private static final ITexture[] TEXTURE_CASING = {
@@ -421,7 +426,10 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
         if (tileEntity == null) return false;
         IMetaTileEntity metaTileEntity = tileEntity.getMetaTileEntity();
         if (metaTileEntity == null) return false;
-        if (metaTileEntity instanceof MTEHatchCokeOven hatch) return hatches.add(hatch);
+        if (metaTileEntity instanceof MTEHatchCokeOven hatch) {
+            hatch.setController(this);
+            return hatches.add(hatch);
+        }
         return false;
     }
 }
