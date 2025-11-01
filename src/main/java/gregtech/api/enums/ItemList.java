@@ -2765,7 +2765,6 @@ public enum ItemList implements IItemContainer {
     Machine_EV_CableCoater,
     ChaosLocator,
 
-
     CokeOvenController,
     CokeOvenCasing,
     CokeOvenHatch,

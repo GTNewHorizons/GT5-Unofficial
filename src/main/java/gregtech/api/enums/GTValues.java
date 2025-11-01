@@ -56,8 +56,8 @@ import gregtech.api.fluid.GTFluidTank;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.internal.IGTRecipeAdder;
 import gregtech.api.net.IGT_NetworkHandler;
-import gregtech.api.util.CustomGlyphs;
 import gregtech.api.objects.XSTR;
+import gregtech.api.util.CustomGlyphs;
 import gregtech.api.util.GTChunkAssociatedData;
 
 /**
