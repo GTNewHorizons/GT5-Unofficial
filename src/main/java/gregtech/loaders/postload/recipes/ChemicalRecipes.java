@@ -673,7 +673,7 @@ public class ChemicalRecipes implements Runnable {
             .iCircuit(1)
             .fluidInputs(Materials.Hydrogen.getGas(4_000))
             .fluidOutputs(Materials.Methane.getGas(1_000))
-            .duration(10 * SECONDS)
+            .duration(100 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
 
@@ -4419,7 +4419,7 @@ public class ChemicalRecipes implements Runnable {
             .itemInputs(Materials.Carbon.getDust(1), Materials.Empty.getCells(1))
             .itemOutputs(Materials.Methane.getCells(1))
             .fluidInputs(Materials.Hydrogen.getGas(4_000))
-            .duration(10 * SECONDS)
+            .duration(100 * SECONDS)
             .eut(30)
             .addTo(chemicalReactorRecipes);
 
