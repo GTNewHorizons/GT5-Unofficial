@@ -14,23 +14,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.client.MinecraftForgeClient;
 
 import org.lwjgl.opengl.GL11;
 
-import gregtech.api.enums.ItemList;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
 import gregtech.common.items.armor.MechArmorBase;
 import gregtech.common.render.GTRenderUtil;
 
 public class MechanicalArmorRenderer implements IItemRenderer {
-
-    public MechanicalArmorRenderer() {
-        MinecraftForgeClient.registerItemRenderer(ItemList.Mechanical_Helmet.getItem(), this);
-        MinecraftForgeClient.registerItemRenderer(ItemList.Mechanical_Chestplate.getItem(), this);
-        MinecraftForgeClient.registerItemRenderer(ItemList.Mechanical_Leggings.getItem(), this);
-        MinecraftForgeClient.registerItemRenderer(ItemList.Mechanical_Boots.getItem(), this);
-    }
 
     @Override
     public boolean handleRenderType(final ItemStack item, final ItemRenderType type) {

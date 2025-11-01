@@ -69,9 +69,6 @@ public class EntityRenderer extends EntityFX {
     }
 
     @Override
-    protected void entityInit() {}
-
-    @Override
     public void onUpdate() {
         if (this.entityToRender == null) return;
         this.ticksExisted++;

@@ -119,11 +119,6 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank implements IAddGregte
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
         openGui(aPlayer);
         return true;

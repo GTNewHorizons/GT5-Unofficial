@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
 import gregtech.api.items.armor.ArmorHelper;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import gregtech.api.util.GTUtility;
 
 public class InertiaCancelingBehavior implements IArmorBehavior {
 
@@ -42,11 +42,11 @@ public class InertiaCancelingBehavior implements IArmorBehavior {
         tag.setBoolean(ArmorHelper.INERTIA_CANCELING_KEY, !wasEnabled);
 
         if (wasEnabled) {
-            PlayerUtils.messagePlayer(
+            GTUtility.sendChatToPlayer(
                 player,
                 StatCollector.translateToLocalFormatted("GT5U.armor.message.disabled", getBehaviorName()));
         } else {
-            PlayerUtils.messagePlayer(
+            GTUtility.sendChatToPlayer(
                 player,
                 StatCollector.translateToLocalFormatted("GT5U.armor.message.enabled", getBehaviorName()));
         }

@@ -30,6 +30,7 @@ import bartworks.API.ITileAddsInformation;
 import bartworks.API.ITileHasDifferentTextureSides;
 import bartworks.API.SideReference;
 import cpw.mods.fml.common.Optional;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.util.GTUtility;
@@ -39,7 +40,7 @@ import li.cil.oc.api.machine.Callback;
 import li.cil.oc.api.machine.Context;
 import li.cil.oc.api.network.SimpleComponent;
 
-@Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = Mods.Names.OPEN_COMPUTERS)
+@Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = Mods.ModIDs.OPEN_COMPUTERS)
 public class TileEntityGTDataServer extends TileEntity
     implements ISidedInventory, ITileAddsInformation, ITileHasDifferentTextureSides, SimpleComponent {
 
@@ -48,12 +49,12 @@ public class TileEntityGTDataServer extends TileEntity
     private final ItemStack[] mItems = new ItemStack[2];
     private byte TickTimer;
 
-    @Optional.Method(modid = Mods.Names.OPEN_COMPUTERS)
+    @Optional.Method(modid = Mods.ModIDs.OPEN_COMPUTERS)
     public String getComponentName() {
         return "GT-Data Server";
     }
 
-    @Optional.Method(modid = Mods.Names.OPEN_COMPUTERS)
+    @Optional.Method(modid = Mods.ModIDs.OPEN_COMPUTERS)
     @Callback
     public Object[] listData(Context context, Arguments args) {
         Set<String> ret = new HashSet<>();
@@ -68,7 +69,7 @@ public class TileEntityGTDataServer extends TileEntity
         return ret.toArray(new String[0]);
     }
 
-    @Optional.Method(modid = Mods.Names.OPEN_COMPUTERS)
+    @Optional.Method(modid = Mods.ModIDs.OPEN_COMPUTERS)
     @Callback
     public Object[] imprintOrb(Context context, Arguments args) {
         return new Object[] { false };
@@ -122,7 +123,7 @@ public class TileEntityGTDataServer extends TileEntity
 
     @Override
     public String[] getInfoData() {
-        return new String[0];
+        return GTValues.emptyStringArray;
     }
 
     @Override
@@ -130,7 +131,7 @@ public class TileEntityGTDataServer extends TileEntity
 
     @Override
     public int[] getAccessibleSlotsFromSide(int p_94128_1_) {
-        return new int[0];
+        return GTValues.emptyIntArray;
     }
 
     @Override

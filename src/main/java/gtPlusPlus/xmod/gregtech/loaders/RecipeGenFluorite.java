@@ -17,12 +17,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.ToolDictNames;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
@@ -44,7 +45,7 @@ public class RecipeGenFluorite extends RecipeGenBase {
          * Shaped Crafting
          */
         RecipeUtils.addShapedRecipe(
-            CI.craftingToolHammer_Hard,
+            ToolDictNames.craftingToolHardHammer.name(),
             null,
             null,
             material.getCrushedPurified(1),
@@ -56,7 +57,7 @@ public class RecipeGenFluorite extends RecipeGenBase {
             material.getDustPurified(1));
 
         RecipeUtils.addShapedRecipe(
-            CI.craftingToolHammer_Hard,
+            ToolDictNames.craftingToolHardHammer.name(),
             null,
             null,
             material.getCrushed(1),
@@ -68,7 +69,7 @@ public class RecipeGenFluorite extends RecipeGenBase {
             material.getDustImpure(1));
 
         RecipeUtils.addShapedRecipe(
-            CI.craftingToolHammer_Hard,
+            ToolDictNames.craftingToolHardHammer.name(),
             null,
             null,
             material.getCrushedCentrifuged(1),
@@ -141,8 +142,7 @@ public class RecipeGenFluorite extends RecipeGenBase {
          * Package
          */
         // Allow ore dusts to be packaged
-        if (ItemUtils.checkForInvalidItems(material.getSmallDust(1))
-            && ItemUtils.checkForInvalidItems(material.getTinyDust(1))) {
+        if (material.getSmallDust(1) != null && material.getTinyDust(1) != null) {
             RecipeGenDustGeneration.generatePackagerRecipes(material);
         }
 
@@ -207,7 +207,7 @@ public class RecipeGenFluorite extends RecipeGenBase {
                 MaterialsFluorides.FLUORITE.getDustImpure(2),
                 MaterialsFluorides.FLUORITE.getDustPurified(1))
             .outputChances(100_00, 50_00, 10_00)
-            .fluidInputs(FluidUtils.getFluidStack("hydrogen", 1000))
+            .fluidInputs(Materials.Hydrogen.getGas(1_000))
             .duration(15 * SECONDS)
             .eut(240)
             .addTo(chemicalBathRecipes);
@@ -262,7 +262,7 @@ public class RecipeGenFluorite extends RecipeGenBase {
                 ItemUtils.getItemStackOfAmountFromOreDict("dustTin", 1),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 2))
             .outputChances(100_00, 10_00, 10_00, 30_00, 20_00)
-            .fluidInputs(FluidUtils.getFluidStack("sulfuricacid", 8000))
+            .fluidInputs(Materials.SulfuricAcid.getFluid(8_000))
             .fluidOutputs(aGregtechHydro)
             .eut(240)
             .duration(10 * MINUTES)

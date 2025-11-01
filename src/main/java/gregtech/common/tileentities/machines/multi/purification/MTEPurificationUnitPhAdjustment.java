@@ -253,7 +253,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             STRUCTURE_X_OFFSET,
@@ -321,7 +321,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                     + EnumChatFormatting.WHITE
                     + GTUtility.formatNumbers(getWaterTier())
                     + EnumChatFormatting.RESET)
-            .addInfo("Must be linked to a Purification Plant using a data stick to work.")
+            .addInfo("Must be linked to a Purification Plant using a data stick to work")
             .addSeparator()
             .addInfo(
                 "Initial pH value every cycle varies from " + EnumChatFormatting.RED
@@ -330,18 +330,16 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                     + " - "
                     + EnumChatFormatting.RED
                     + (PH_NEUTRAL_VALUE + INITIAL_PH_DEVIATION)
-                    + " pH"
-                    + EnumChatFormatting.GRAY
-                    + ".")
+                    + " pH")
             .addInfo(
                 "If the pH value is within " + EnumChatFormatting.RED
                     + PH_MAX_DEVIATION
                     + " pH "
                     + EnumChatFormatting.GRAY
-                    + "of 7.0 pH at the end of the cycle, the recipe always succeeds.")
-            .addInfo("Otherwise, the recipe always fails.")
-            .addInfo("Use a pH Sensor Hatch to read the current pH value.")
-            .addInfo("For safety, the machine will shut down if the pH goes below 0 or exceeds 14.")
+                    + "of 7.0 pH at the end of the cycle, the recipe always succeeds")
+            .addInfo("Otherwise, the recipe always fails")
+            .addInfo("Use a pH Sensor Hatch to read the current pH value")
+            .addInfo("For safety, the machine will shut down if the pH goes below 0 or exceeds 14")
             .addSeparator()
             .addInfo(
                 "Every " + EnumChatFormatting.RED
@@ -355,7 +353,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                     + EnumChatFormatting.WHITE
                     + ACIDIC_MATERIAL.mLocalizedName
                     + EnumChatFormatting.GRAY
-                    + " in the special hatches.")
+                    + " in the special hatches")
             .addInfo(
                 EnumChatFormatting.RED + "Raises "
                     + EnumChatFormatting.GRAY
@@ -367,9 +365,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                     + "per piece of "
                     + EnumChatFormatting.WHITE
                     + ALKALINE_MATERIAL.getDust(1)
-                        .getDisplayName()
-                    + EnumChatFormatting.GRAY
-                    + ".")
+                        .getDisplayName())
             .addInfo(
                 EnumChatFormatting.RED + "Lowers "
                     + EnumChatFormatting.GRAY
@@ -385,9 +381,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                     + "of "
                     + EnumChatFormatting.WHITE
                     + ACIDIC_MATERIAL.getFluid(1L)
-                        .getLocalizedName()
-                    + EnumChatFormatting.GRAY
-                    + ".")
+                        .getLocalizedName())
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.AQUA + ""
@@ -405,7 +399,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
                     + "materials. This necessitates the use of the corresponding neutralizing agents to pH balance the water.")
-            .beginStructureBlock(7, 4, 7, false)
+            .beginStructureBlock(15, 6, 5, false)
             .addController("Front center")
             .addCasingInfoExactlyColored(
                 "Stabilized Naquadah Water Plant Casing",
@@ -540,11 +534,6 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
         } else {
             return 0.0f;
         }
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
     }
 
     @Override

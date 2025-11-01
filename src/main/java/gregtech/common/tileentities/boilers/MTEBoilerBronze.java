@@ -48,7 +48,7 @@ public class MTEBoilerBronze extends MTEBoiler {
             aName,
             aNameRegional,
             new String[] { "An early way to get Steam Power", "Produces 120L of Steam per second",
-                "Causes " + GTMod.gregtechproxy.mPollutionSmallCoalBoilerPerSecond + " Pollution per second" });
+                "Causes " + GTMod.proxy.mPollutionSmallCoalBoilerPerSecond + " Pollution per second" });
     }
 
     public MTEBoilerBronze(int aID, String aName, String aNameRegional, String[] aDescription) {
@@ -154,7 +154,7 @@ public class MTEBoilerBronze extends MTEBoiler {
 
     @Override
     protected int getPollution() {
-        return GTMod.gregtechproxy.mPollutionSmallCoalBoilerPerSecond;
+        return GTMod.proxy.mPollutionSmallCoalBoilerPerSecond;
     }
 
     @Override
@@ -199,7 +199,7 @@ public class MTEBoilerBronze extends MTEBoiler {
             .getUnlocalizedName()
             .toLowerCase();
         if (couldProduceDarkAshes(fuel, lowerCaseBlockName)) {
-            return Optional.of(Materials.DarkAsh);
+            return Optional.of(Materials.AshDark);
         }
         if (couldProduceRegularAshes(fuel, lowerCaseBlockName, burnTime)) {
             return Optional.of(Materials.Ash);
@@ -238,8 +238,7 @@ public class MTEBoilerBronze extends MTEBoiler {
     }
 
     /**
-     * The upper bound for the chance to get ash from combustion
-     * <br>
+     * The upper bound for the chance to get ash from combustion <br>
      * Ash chance scales based on burn time from 14% at 0 up to 50% at 2000
      *
      * @param burnTime number assumed to be positive

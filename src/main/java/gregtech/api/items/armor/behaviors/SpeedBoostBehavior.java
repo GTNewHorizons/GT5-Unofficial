@@ -18,7 +18,7 @@ import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 import bartworks.util.MathUtils;
 import gregtech.api.items.armor.ArmorHelper;
 import gregtech.api.items.armor.ArmorKeybinds;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import gregtech.api.util.GTUtility;
 
 public class SpeedBoostBehavior implements IArmorBehavior {
 
@@ -54,7 +54,7 @@ public class SpeedBoostBehavior implements IArmorBehavior {
         }
         current = MathUtils.clamp(current, 0, 1);
 
-        PlayerUtils.messagePlayer(player, "New speed: " + Math.round(current * 100F) + "%");
+        GTUtility.sendChatToPlayer(player, "New speed: " + Math.round(current * 100F) + "%");
         tag.setFloat(ArmorHelper.SPEED_BOOST_CURRENT_KEY, current);
     }
 

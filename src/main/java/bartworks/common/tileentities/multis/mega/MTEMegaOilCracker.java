@@ -15,7 +15,6 @@ package bartworks.common.tileentities.multis.mega;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE;
@@ -29,11 +28,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -64,6 +65,9 @@ import gregtech.api.recipe.maps.OilCrackerBackend;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.api.util.tooltip.TooltipTier;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 
@@ -93,7 +97,8 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
                         "ppppppppppppp", "ppppppppppppp", "ppppppppppppp", "ppmmmmmmmmmpp" }, }))
         .addElement(
             'c',
-            withChannel("coil", activeCoils(ofCoil(MTEMegaOilCracker::setCoilLevel, MTEMegaOilCracker::getCoilLevel))))
+            GTStructureChannels.HEATING_COIL
+                .use(activeCoils(ofCoil(MTEMegaOilCracker::setCoilLevel, MTEMegaOilCracker::getCoilLevel))))
 
         .addElement('p', ofBlock(GregTechAPI.sBlockCasings4, 1))
         .addElement(
@@ -143,18 +148,30 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Cracker, MOC")
-            .addParallelInfo(Configuration.Multiblocks.megaMachinesMax)
-            .addInfo("Thermally cracks heavy hydrocarbons into lighter fractions")
-            .addInfo("More efficient than the Chemical Reactor")
+            .addInfo(
+                TooltipHelper.coloredText(
+                    TooltipHelper.italicText("\"Thermally cracks heavy hydrocarbons into lighter fractions\""),
+                    EnumChatFormatting.DARK_GRAY))
+            .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
+            .addInfo(
+                TooltipHelper.effText("-10%") + " EU Usage per " + TooltipHelper.tierText(TooltipTier.COIL) + " Tier")
+            .addInfo("up to a maximum of " + TooltipHelper.effText("-50%") + " EU Usage")
+            .addSeparator()
             .addInfo("Gives different benefits whether it hydro or steam-cracks:")
-            .addInfo("Hydro - Consumes 20% less Hydrogen and outputs 25% more cracked fluid")
-            .addInfo("Steam - Outputs 50% more cracked fluid")
-            .addInfo("(Values compared to cracking in the Chemical Reactor)")
-            .addInfo("Place the appropriate circuit in the controller or an input bus")
-            .addGlassEnergyLimitInfo()
+            .addInfo(
+                "Hydro - Consumes " + TooltipHelper.coloredText("20%", EnumChatFormatting.DARK_AQUA)
+                    + " less Hydrogen and outputs "
+                    + TooltipHelper.coloredText("25%", EnumChatFormatting.DARK_AQUA)
+                    + " more cracked fluid")
+            .addInfo(
+                "Steam - Outputs " + TooltipHelper.coloredText("50%", EnumChatFormatting.DARK_AQUA)
+                    + " more cracked fluid")
+            .addInfo(TooltipHelper.italicText("In comparison to a chemical reactor"))
+            .addSeparator()
             .addTecTechHatchInfo()
             .addMinGlassForLaser(VoltageIndex.UV)
-            .addInfo("Gets 10% EU/t reduction per coil tier, up to a maximum of 50%")
+            .addGlassEnergyLimitInfo()
+            .addUnlimitedTierSkips()
             .beginStructureBlock(13, 7, 9, true)
             .addController("Front bottom")
             .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 197, false)
@@ -166,7 +183,7 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
             .addOutputHatch("Hint block", 2, 3)
             .addInputHatch("Steam/Hydrogen ONLY, Hint block", 4)
             .addInputBus("Optional, for programmed circuit automation. Hint block", 1)
-            .addSubChannelUsage("glass", "Glass Tier")
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }
@@ -242,7 +259,7 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
-        return this.survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 6, 6, 0, realBudget, env, false, true);
+        return this.survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 6, 6, 0, realBudget, env, false, true);
     }
     // -------------- TEC TECH COMPAT ----------------
 
@@ -351,10 +368,13 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
     }
 
     @Override
-    public ArrayList<FluidStack> getStoredFluids() {
+    public ArrayList<FluidStack> getStoredFluidsForColor(Optional<Byte> color) {
         final ArrayList<FluidStack> rList = new ArrayList<>();
         Map<Fluid, FluidStack> inputsFromME = new HashMap<>();
         for (final MTEHatchInput tHatch : validMTEList(mInputHatches)) {
+            byte hatchColor = tHatch.getBaseMetaTileEntity()
+                .getColorization();
+            if (color.isPresent() && hatchColor != -1 && hatchColor != color.get()) continue;
             tHatch.mRecipeMap = getRecipeMap();
             if (tHatch instanceof MTEHatchInputME meHatch) {
                 for (FluidStack tFluid : meHatch.getStoredFluids()) {
@@ -378,6 +398,9 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
             }
         }
         for (final MTEHatchInput tHatch : validMTEList(mMiddleInputHatches)) {
+            byte hatchColor = tHatch.getBaseMetaTileEntity()
+                .getColorization();
+            if (color.isPresent() && hatchColor != -1 && hatchColor != color.get()) continue;
             tHatch.mRecipeMap = getRecipeMap();
             if (tHatch instanceof MTEHatchInputME meHatch) {
                 for (FluidStack tFluid : meHatch.getStoredFluids()) {
@@ -440,7 +463,7 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
     }
 
     @Override
-    protected void startRecipeProcessing() {
+    public void startRecipeProcessing() {
         for (MTEHatchInput hatch : validMTEList(mMiddleInputHatches)) {
             if (hatch instanceof IRecipeProcessingAwareHatch aware) {
                 aware.startRecipeProcessing();
@@ -450,7 +473,7 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
     }
 
     @Override
-    protected void endRecipeProcessing() {
+    public void endRecipeProcessing() {
         super.endRecipeProcessing();
         for (MTEHatchInput hatch : validMTEList(mMiddleInputHatches)) {
             if (hatch instanceof IRecipeProcessingAwareHatch aware) {

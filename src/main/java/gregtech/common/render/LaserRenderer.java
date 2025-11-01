@@ -7,24 +7,12 @@ import net.minecraft.tileentity.TileEntity;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.client.registry.ClientRegistry;
 import gregtech.common.tileentities.render.TileEntityLaser;
 
 public class LaserRenderer extends TileEntitySpecialRenderer {
 
     private double zOffset = 0.0;
     private double xOffset = 0.0;
-
-    // Relative to block size
-    final private double lineRadius = 0.03;
-
-    final private float lineOpacity = 0.7F;
-
-    final private float laserSpeed = 0.8F;
-
-    public LaserRenderer() {
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLaser.class, this);
-    }
 
     private void maths(float counter) {
         float tc = (0.05F * counter);
@@ -36,7 +24,10 @@ public class LaserRenderer extends TileEntitySpecialRenderer {
         double z2) {
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
+        float lineOpacity = 0.7F;
         tessellator.setColorRGBA_F(laser.getRed(), laser.getGreen(), laser.getBlue(), lineOpacity);
+        // Relative to block size
+        double lineRadius = 0.03;
         tessellator.addVertex(x1 - lineRadius, y1, z1);
         tessellator.addVertex(x1 + lineRadius, y1, z1);
         tessellator.addVertex(x2 + lineRadius, y2, z2);
@@ -82,6 +73,7 @@ public class LaserRenderer extends TileEntitySpecialRenderer {
 
             // Movement calculations
             maths(ltile.counter);
+            float laserSpeed = 0.8F;
             ltile.counter += laserSpeed;
             if (ltile.counter >= 80) {
                 ltile.counter = 0;

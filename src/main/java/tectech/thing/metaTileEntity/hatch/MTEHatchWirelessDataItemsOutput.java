@@ -84,11 +84,6 @@ public class MTEHatchWirelessDataItemsOutput extends MTEHatch {
     }
 
     @Override
-    public boolean isInputFacing(ForgeDirection side) {
-        return false;
-    }
-
-    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         if (dataPacket != null) {

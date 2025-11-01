@@ -49,6 +49,9 @@ public class MTEHatchSuperBusInput extends MTEHatchInputBus {
 
     @Override
     public void addUIWidgets(Builder builder, UIBuildContext buildContext) {
+        buildContext.addCloseListener(() -> uiButtonCount = 0);
+        addSortStacksButton(builder);
+        addOneStackLimitButton(builder);
         final Scrollable scrollable = new Scrollable().setVerticalScroll();
         for (int row = 0; row * 4 < inventoryHandler.getSlots() - 1; row++) {
             int columnsToMake = Math.min(inventoryHandler.getSlots() - row * 4, 4);

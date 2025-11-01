@@ -12,6 +12,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_A
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.SOURCE_CHAMBER_METADATA;
 import static gtnhlanth.util.DescTextLocalization.addDotText;
 
 import java.util.ArrayList;
@@ -20,7 +21,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -39,17 +39,18 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
+import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.Particle;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
 import gtnhlanth.common.register.LanthItemList;
-import gtnhlanth.common.tileentity.recipe.beamline.BeamlineRecipeAdder2;
-import gtnhlanth.common.tileentity.recipe.beamline.RecipeSC;
+import gtnhlanth.common.tileentity.recipe.beamline.SourceChamberMetadata;
 import gtnhlanth.util.DescTextLocalization;
 
 public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber> implements ISurvivalConstructable {
@@ -121,7 +122,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
-        return survivialBuildPiece("sc", stackSize, 2, 4, 0, elementBudget, env, false, true);
+        return survivalBuildPiece("sc", stackSize, 2, 4, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -132,9 +133,31 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Particle Source")
-            .addInfo("Output energy scales with EU/t up to the point shown in the recipe")
+            .addInfo("Creates beams of Particles")
             .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
+            .addSeparator()
+            .addInfo("NEI shows the minimum " + EnumChatFormatting.AQUA + "EU/t requirement" + EnumChatFormatting.GRAY + ", Beam Focus, Beam Rate, and " + EnumChatFormatting.YELLOW + "Maximum Beam Energy")
+            .addInfo("All recipes last for one second")
+            .addInfo("This upper limit is approached asymptotically as operating power increases")
+            .addSeparator()
+            .addInfo("Each " + particleText("Particle Type") + " has a " + energyText("Maximum Particle Energy"))
+            .addInfo(particleLine("Alpha", "8000"))
+            .addInfo(particleLine("Proton", "15000"))
+            .addInfo(particleLine("Neutron", "15000"))
+            .addInfo(particleLine("Electron", "5000"))
+            .addSeparator()
+            .addInfo("Each " + sourceText("Source input") + " has an Associated " + ratioText("Energy Ratio"))
+            .addInfo(sourceLine("U-238 Dust", "999"))
+            .addInfo(sourceLine("Californium Dust", "999"))
+            .addInfo(sourceLine("Tungsten Rods", "0.1"))
+            .addInfo(sourceLine("Long LaB6 Rods", "0.3"))
+            .addSeparator()
+            .addInfo(EnumChatFormatting.WHITE + "Actual Beam Energy = min(" + energyText("Max Particle Energy") + ", " + EnumChatFormatting.GOLD + "aeV" + EnumChatFormatting.GRAY + ")")
+            .addInfo("Where " + EnumChatFormatting.GOLD + "aeV" + EnumChatFormatting.WHITE + " =  "+EnumChatFormatting.YELLOW+"Max Beam Energy"+EnumChatFormatting.WHITE+" * (1 - 1.001^(" + ratioText("Energy Ratio") + " * (" + EnumChatFormatting.AQUA + "EU/t required"+EnumChatFormatting.WHITE+" - "+EnumChatFormatting.RED+"EU/t provided"+EnumChatFormatting.WHITE+")))")
+            .addInfo("In short, the " + particleText("particle beam's") + " energy is capped to the " + energyText("Max Particle Energy"))
+            .addInfo("Any one recipe can only provide up to its own " + EnumChatFormatting.YELLOW + "Maximum Beam Energy")
             .beginStructureBlock(5, 5, 6, true)
             .addController("Front bottom")
             .addCasingInfoExactly(LanthItemList.SHIELDED_ACCELERATOR_CASING.getLocalizedName(), 56, false)
@@ -147,6 +170,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
             .addOutputBus(addDotText(2))
             .toolTipFinisher();
         return tt;
+        //spotless:on
     }
 
     private boolean addBeamLineOutputHatch(IGregTechTileEntity te, int casingIndex) {
@@ -171,12 +195,17 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
         long tVoltageMaxTier = this.getMaxInputVoltage(); // Used to keep old math the same
         long tVoltageActual = GTValues.VP[(int) this.getInputVoltageTier()];
 
-        RecipeSC tRecipe = (RecipeSC) BeamlineRecipeAdder2.instance.SourceChamberRecipes.findRecipeQuery()
+        GTRecipe tRecipe = LanthanidesRecipeMaps.sourceChamberRecipes.findRecipeQuery()
+            .caching(false)
             .items(tItems)
             .voltage(tVoltageActual)
             .find();
+        if (tRecipe == null) return CheckRecipeResultRegistry.NO_RECIPE;
 
-        if (tRecipe == null || !tRecipe.isRecipeInputEqual(true, new FluidStack[] {}, tItems)) {
+        SourceChamberMetadata metadata = tRecipe.getMetadata(SOURCE_CHAMBER_METADATA);
+        if (metadata == null) return CheckRecipeResultRegistry.NO_RECIPE;
+
+        if (!tRecipe.isRecipeInputEqual(true, GTValues.emptyFluidStackArray, tItems)) {
             return CheckRecipeResultRegistry.NO_RECIPE; // Consumes input item
         }
 
@@ -191,13 +220,13 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
         this.mEUt = (int) -tVoltageActual;
         if (this.mEUt > 0) this.mEUt = (-this.mEUt);
 
-        outputParticle = tRecipe.particleId;
+        outputParticle = metadata.particleID;
         float maxParticleEnergy = Particle.getParticleFromId(outputParticle)
             .maxSourceEnergy();
-        float maxMaterialEnergy = tRecipe.maxEnergy; // The maximum energy for the recipe processed
+        float maxMaterialEnergy = metadata.maxEnergy; // The maximum energy for the recipe processed
 
         this.outputEnergy = (float) Math.min(
-            (-maxMaterialEnergy) * Math.pow(1.001, -(tRecipe.energyRatio) * (tVoltageMaxTier - tRecipe.mEUt))
+            (-maxMaterialEnergy) * Math.pow(1.001, -(metadata.energyRatio) * (tVoltageMaxTier - tRecipe.mEUt))
                 + maxMaterialEnergy,
             maxParticleEnergy);
         if (outputEnergy <= 0) {
@@ -205,8 +234,8 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
-        this.outputFocus = tRecipe.focus;
-        this.outputRate = tRecipe.rate;
+        this.outputFocus = metadata.focus;
+        this.outputRate = metadata.rate;
         this.mOutputItems = tRecipe.mOutputs;
         this.updateSlots();
 
@@ -241,7 +270,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return BeamlineRecipeAdder2.instance.SourceChamberRecipes;
+        return LanthanidesRecipeMaps.sourceChamberRecipes;
     }
 
     @Override
@@ -340,11 +369,6 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         this.mOutputBeamline.clear(); // Necessary due to the nature of the beamline hatch adder
 
@@ -353,21 +377,6 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
             && this.mOutputBusses.size() == 1
             && this.mOutputBeamline.size() == 1
             && this.mEnergyHatches.size() == 1;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     @Override
@@ -396,5 +405,29 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
                     .build() };
         }
         return new ITexture[] { casingTexturePages[12][126] };
+    }
+
+    private String particleText(String text) {
+        return String.format("%s%s%s", EnumChatFormatting.GOLD, text, EnumChatFormatting.GRAY);
+    }
+
+    private String energyText(String text) {
+        return String.format("%s%s%s", EnumChatFormatting.GREEN, text, EnumChatFormatting.GRAY);
+    }
+
+    private String particleLine(String particle, String energy) {
+        return String.format("%s : %s", particleText(particle), energyText(energy + "keV"));
+    }
+
+    private String sourceText(String text) {
+        return String.format("%s%s%s", EnumChatFormatting.LIGHT_PURPLE, text, EnumChatFormatting.GRAY);
+    }
+
+    private String ratioText(String text) {
+        return String.format("%s%s%s", EnumChatFormatting.BLUE, text, EnumChatFormatting.GRAY);
+    }
+
+    private String sourceLine(String source, String ratio) {
+        return String.format("%s : %s", sourceText(source), ratioText(ratio));
     }
 }

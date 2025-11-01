@@ -34,11 +34,6 @@ public class MTESuperBusOutput extends MTEHatchOutputBus {
     }
 
     @Override
-    public boolean isValidSlot(int aIndex) {
-        return true;
-    }
-
-    @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTESuperBusOutput(this.mName, this.mTier, mDescriptionArray, this.mTextures);
     }

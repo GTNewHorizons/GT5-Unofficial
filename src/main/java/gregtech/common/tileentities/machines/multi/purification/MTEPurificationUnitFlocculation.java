@@ -68,8 +68,8 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
      */
     public static final long INPUT_CHEMICAL_PER_LEVEL = 100000;
     /**
-     * Amount of waste water produced for each success chance level. This matches the amount of input fluid
-     * so it can be perfectly recycled into each other.
+     * Amount of waste water produced for each success chance level. This matches the amount of input fluid so it can be
+     * perfectly recycled into each other.
      */
     private static final long WASTE_WATER_PER_LEVEL = INPUT_CHEMICAL_PER_LEVEL;
     /**
@@ -207,7 +207,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        int built = survivialBuildPiece(
+        int built = survivalBuildPiece(
             STRUCTURE_PIECE_MAIN_SURVIVAL,
             stackSize,
             STRUCTURE_X_OFFSET,
@@ -240,13 +240,13 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
         casingCount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET)) return false;
 
-        // At most two input hatches allowed
-        if (mInputHatches.size() > 2) {
+        // At most three input hatches allowed
+        if (mInputHatches.size() > 3) {
             return false;
         }
 
-        // At most two output hatches allowed
-        if (mOutputHatches.size() > 2) {
+        // At most three output hatches allowed
+        if (mOutputHatches.size() > 3) {
             return false;
         }
 
@@ -266,24 +266,24 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
                     + EnumChatFormatting.WHITE
                     + GTUtility.formatNumbers(getWaterTier())
                     + EnumChatFormatting.RESET)
-            .addInfo("Must be linked to a Purification Plant using a data stick to work.")
+            .addInfo("Must be linked to a Purification Plant using a data stick to work")
             .addSeparator()
             .addInfo(
                 "Supply with " + EnumChatFormatting.WHITE
                     + INPUT_CHEMICAL.mLocalizedName
                     + EnumChatFormatting.GRAY
-                    + " to operate.")
+                    + " to operate")
             .addInfo(
                 "Outputs " + EnumChatFormatting.WHITE
                     + OUTPUT_WASTE.mLocalizedName
                     + EnumChatFormatting.GRAY
-                    + " that can be recycled.")
+                    + " that can be recycled")
             .addSeparator()
             .addInfo(
                 "During operation, will consume ALL " + EnumChatFormatting.WHITE
                     + INPUT_CHEMICAL.mLocalizedName
                     + EnumChatFormatting.GRAY
-                    + " in the input hatch.")
+                    + " in the input hatch")
             .addInfo(
                 "At the end of the recipe, for every " + EnumChatFormatting.RED
                     + INPUT_CHEMICAL_PER_LEVEL
@@ -320,7 +320,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
                     + "of aggregating dispersed suspended particles from a solution into larger clumps for further filtration.")
-            .beginStructureBlock(7, 4, 7, false)
+            .beginStructureBlock(9, 5, 8, false)
             .addController("Front center")
             .addCasingInfoRangeColored(
                 "Slick Sterile Flocculation Casing",
@@ -361,10 +361,10 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
                 false)
             .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
             .addInputHatch(
-                EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "-" + EnumChatFormatting.GOLD + "2",
+                EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "-" + EnumChatFormatting.GOLD + "3",
                 1)
             .addOutputHatch(
-                EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "-" + EnumChatFormatting.GOLD + "2",
+                EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "-" + EnumChatFormatting.GOLD + "3",
                 1)
             .toolTipFinisher(AuthorNotAPenguin);
         return tt;
@@ -434,11 +434,6 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
         } else {
             return Math.min(100.0f, this.currentRecipeChance + boost);
         }
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
     }
 
     @Override

@@ -26,6 +26,7 @@ import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.calc
 import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.calculateProcessingVoltageForModules;
 import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.calculateSpeedBonusForModules;
 import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.calculateStartupFuelConsumption;
+import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.factorChangeDuringRecipeAntiCheese;
 import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.queryMilestoneStats;
 import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.setMiscModuleParameters;
 
@@ -92,7 +93,6 @@ import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -105,12 +105,13 @@ import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.threads.RunnableMachineUpdate;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.IGTHatchAdder;
+import gregtech.api.util.ItemEjectionHelper;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 import tectech.TecTech;
 import tectech.loader.ConfigHandler;
@@ -239,10 +240,10 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         int realBudget = elementBudget >= 1000 ? elementBudget : Math.min(1000, elementBudget * 5);
         int built = 0;
 
-        survivialBuildPiece(STRUCTURE_PIECE_SHAFT, stackSize, 63, 14, 1, realBudget, env, false, true);
+        survivalBuildPiece(STRUCTURE_PIECE_SHAFT, stackSize, 63, 14, 1, realBudget, env, false, true);
 
         if ((stackSize.stackSize > 0 && !isRenderActive)) {
-            built += survivialBuildPiece(
+            built += survivalBuildPiece(
                 STRUCTURE_PIECE_FIRST_RING,
                 stackSize,
                 63,
@@ -255,7 +256,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         }
 
         if (stackSize.stackSize > 1 && ringAmount < 2) {
-            built += survivialBuildPiece(
+            built += survivalBuildPiece(
                 STRUCTURE_PIECE_SECOND_RING,
                 stackSize,
                 55,
@@ -268,7 +269,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         }
 
         if (stackSize.stackSize > 2 && ringAmount < 3) {
-            built += survivialBuildPiece(
+            built += survivalBuildPiece(
                 STRUCTURE_PIECE_THIRD_RING,
                 stackSize,
                 47,
@@ -380,9 +381,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private final ArrayList<FluidStack> validFuelList = new ArrayList<>() {
 
         {
-            add(MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(1));
-            add(MaterialsUEVplus.RawStarMatter.getFluid(1));
-            add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(1));
+            add(Materials.DTR.getFluid(1));
+            add(Materials.RawStarMatter.getFluid(1));
+            add(Materials.MHDCSM.getMolten(1));
         }
     };
 
@@ -438,8 +439,10 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         if (isUpgradeActive(CD)) {
             if (checkPiece(STRUCTURE_PIECE_SECOND_RING, 55, 11, -67)) {
                 ringAmount = 2;
-                destroySecondRing();
-                updateRenderer();
+                if (!isRendererDisabled) {
+                    destroySecondRing();
+                    updateRenderer();
+                }
             }
             if (isRenderActive && ringAmount >= 2 && !checkPiece(STRUCTURE_PIECE_SECOND_RING_AIR, 55, 11, -67)) {
                 destroyRenderer();
@@ -450,7 +453,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             }
             if (ringAmount >= 2) {
                 ringAmount = 1;
-                updateRenderer();
+                if (!isRendererDisabled) {
+                    updateRenderer();
+                }
                 buildSecondRing();
             }
         }
@@ -458,8 +463,10 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         if (isUpgradeActive(EE)) {
             if (checkPiece(STRUCTURE_PIECE_THIRD_RING, 47, 13, -76)) {
                 ringAmount = 3;
-                destroyThirdRing();
-                updateRenderer();
+                if (!isRendererDisabled) {
+                    destroyThirdRing();
+                    updateRenderer();
+                }
             }
             if (isRenderActive && ringAmount == 3 && !checkPiece(STRUCTURE_PIECE_THIRD_RING_AIR, 47, 13, -76)) {
                 destroyRenderer();
@@ -467,7 +474,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         } else {
             if (ringAmount == 3) {
                 ringAmount = 2;
-                updateRenderer();
+                if (!isRendererDisabled) {
+                    updateRenderer();
+                }
                 buildThirdRing();
             }
         }
@@ -481,6 +490,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide()) {
+            if (aTick == 1) {
+                updateRenderer();
+            }
             ticker++;
             // Check and drain fuel
             if (ticker % (5 * SECONDS) == 0) {
@@ -497,34 +509,28 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 if (!mInputBusses.isEmpty()) {
                     if (internalBattery == 0 || isUpgradeActive(END)) {
                         MTEHatchInputBus inputBus = mInputBusses.get(0);
-                        ItemStack[] inputBusInventory = inputBus.getRealInventory();
+
                         ItemStack itemToAbsorb = STELLAR_FUEL;
                         if (isUpgradeActive(END) && internalBattery != 0) {
-                            itemToAbsorb = GTOreDictUnificator.get(OrePrefixes.gem, MaterialsUEVplus.GravitonShard, 1);
+                            itemToAbsorb = GTOreDictUnificator.get(OrePrefixes.gem, Materials.GravitonShard, 1);
                         }
-                        if (inputBusInventory != null) {
-                            for (int i = 0; i < inputBusInventory.length; i++) {
-                                ItemStack itemStack = inputBusInventory[i];
-                                if (itemStack != null && itemStack.isItemEqual(itemToAbsorb)) {
-                                    int stacksize = itemStack.stackSize;
-                                    if (inputBus instanceof MTEHatchInputBusME meBus) {
-                                        ItemStack realItem = meBus.getRealInventory()[i + 16];
-                                        if (realItem == null) {
-                                            break;
-                                        }
-                                        stacksize = realItem.stackSize;
-                                    }
-                                    inputBus.decrStackSize(i, stacksize);
-                                    if (internalBattery == 0) {
-                                        stellarFuelAmount += stacksize;
-                                    } else {
-                                        gravitonShardsAvailable += stacksize;
-                                        gravitonShardsSpent -= stacksize;
-                                    }
-                                    inputBus.updateSlots();
+
+                        int invLength = inputBus.getSizeInventory();
+                        for (int i = 0; i < invLength; i++) {
+                            ItemStack itemStack = inputBus.getStackInSlot(i);
+                            if (itemStack != null && itemStack.isItemEqual(itemToAbsorb)) {
+                                int stacksize = itemStack.stackSize;
+                                inputBus.decrStackSize(i, stacksize);
+                                if (internalBattery == 0) {
+                                    stellarFuelAmount += stacksize;
+                                } else {
+                                    gravitonShardsAvailable += stacksize;
+                                    gravitonShardsSpent -= stacksize;
                                 }
+                                inputBus.updateSlots();
                             }
                         }
+
                         if (internalBattery == 0) {
                             neededStartupFuel = calculateStartupFuelConsumption(this);
                             if (stellarFuelAmount >= neededStartupFuel) {
@@ -541,8 +547,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 }
 
                 determineCompositionMilestoneLevel();
-                checkInversionStatus();
                 determineMilestoneProgress();
+                checkInversionStatus();
                 if (!ConfigHandler.debug.DEBUG_MODE) {
                     determineGravitonShardAmount();
                 }
@@ -563,6 +569,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                             queryMilestoneStats(module, this);
                             if (!isUpgradeActive(TBF)) {
                                 calculateProcessingVoltageForModules(module, this);
+                            }
+                            if (factorChangeDuringRecipeAntiCheese(module)) {
+                                module.disconnect();
                             }
                         } else {
                             module.disconnect();
@@ -690,6 +699,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .getWorld()
             .getTileEntity(renderPos.posX, renderPos.posY, renderPos.posZ);
 
+        boolean wasStructureCheckEnabled = RunnableMachineUpdate.isEnabled();
+        RunnableMachineUpdate.setEnabled(false);
+
         switch (ringAmount) {
             case 2 -> {
                 destroyFirstRing();
@@ -702,6 +714,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             }
             default -> destroyFirstRing();
         }
+
+        RunnableMachineUpdate.setEnabled(wasStructureCheckEnabled);
 
         rendererTileEntity.setRenderRotation(getRotation(), getDirection());
         updateRenderer();
@@ -716,6 +730,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .getWorld()
             .setBlock(renderPos.posX, renderPos.posY, renderPos.posZ, Blocks.air);
 
+        boolean wasStructureCheckEnabled = RunnableMachineUpdate.isEnabled();
+        RunnableMachineUpdate.setEnabled(false);
+
         switch (ringAmount) {
             case 2 -> {
                 buildFirstRing();
@@ -728,6 +745,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             }
             default -> buildFirstRing();
         }
+
+        RunnableMachineUpdate.setEnabled(wasStructureCheckEnabled);
 
         isRenderActive = false;
         disableWorking();
@@ -1162,10 +1181,10 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .widget(
                 new MultiChildWidget().addChild(
                     new FluidNameHolderWidget(
-                        () -> MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(1)
+                        () -> Materials.DTR.getFluid(1)
                             .getUnlocalizedName()
                             .substring(6),
-                        (String) -> MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(1)
+                        (String) -> Materials.DTR.getFluid(1)
                             .getUnlocalizedName()) {
 
                         @Override
@@ -1196,10 +1215,10 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .widget(
                 new MultiChildWidget().addChild(
                     new FluidNameHolderWidget(
-                        () -> MaterialsUEVplus.RawStarMatter.getFluid(1)
+                        () -> Materials.RawStarMatter.getFluid(1)
                             .getUnlocalizedName()
                             .substring(6),
-                        (String) -> MaterialsUEVplus.RawStarMatter.getFluid(1)
+                        (String) -> Materials.RawStarMatter.getFluid(1)
                             .getUnlocalizedName()) {
 
                         @Override
@@ -1228,10 +1247,10 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .widget(
                 new MultiChildWidget().addChild(
                     new FluidNameHolderWidget(
-                        () -> MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(1)
+                        () -> Materials.MHDCSM.getMolten(1)
                             .getUnlocalizedName()
                             .substring(6),
-                        (String) -> MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(1)
+                        (String) -> Materials.MHDCSM.getMolten(1)
                             .getUnlocalizedName()) {
 
                         @Override
@@ -1630,7 +1649,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 () -> gravitonShardsAvailable,
                 () -> completeUpgrade(upgrade),
                 () -> respecUpgrade(upgrade),
-                () -> isUpgradeActive(upgrade)));
+                () -> isUpgradeActive(upgrade),
+                () -> formattingMode));
 
         if (upgrade.hasExtraCost()) {
             builder.widget(
@@ -1950,6 +1970,35 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD);
         builder.widget(spinWidget);
 
+        // Animations Textbox
+        builder.widget(
+            TextWidget.localised("fog.cosmetics.animations")
+                .setDefaultColor(EnumChatFormatting.GOLD)
+                .setTextAlignment(Alignment.CenterLeft)
+                .setPos(120, 85)
+                .setSize(60, 18));
+
+        Widget animationToggle = new ButtonWidget().setOnClick((clickData, widget) -> {
+            TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
+            if (isRendererDisabled) {
+                isRendererDisabled = false;
+                // let the renderer automatically rebuild itself as needed through normal logic
+            } else {
+                isRendererDisabled = true;
+                if (isRenderActive) destroyRenderer();
+            }
+        })
+            .setBackground(
+                () -> new UITexture[] { TecTechUITextures.BUTTON_CELESTIAL_32x32,
+                    isRendererDisabled ? TecTechUITextures.OVERLAY_BUTTON_POWER_SWITCH_DISABLED
+                        : TecTechUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON })
+            .attachSyncer(
+                new FakeSyncWidget.BooleanSyncer(() -> isRendererDisabled, val -> isRendererDisabled = val),
+                builder)
+            .setPos(174, 86)
+            .setSize(16, 16);
+        builder.widget(animationToggle);
+
         return builder.build();
     }
 
@@ -2013,7 +2062,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         parent.addChild(new DynamicTextWidget(() -> {
             if (index < starColors.size()) {
                 ForgeOfGodsStarColor color = starColors.getByIndex(index);
-                return new Text(color.getName());
+                return new Text(color.getLocalizedName());
             }
             return Text.EMPTY;
         }).setDefaultColor(ForgeOfGodsUI.GOLD_ARGB)
@@ -2766,17 +2815,17 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Stellar Forge")
-            .addInfo(EnumChatFormatting.ITALIC + "Also known as Godforge or Gorge for short.")
+            .addInfo(EnumChatFormatting.ITALIC + "Also known as Godforge or Gorge for short")
             .addSeparator(EnumChatFormatting.AQUA, 73)
             .addInfo("A massive structure harnessing the thermal, gravitational and")
-            .addInfo("kinetic energy of a stabilised neutron star for material processing.")
+            .addInfo("kinetic energy of a stabilised neutron star for material processing")
             .addInfo(
                 "This multiblock can house " + EnumChatFormatting.RED
                     + "up to 16 modules "
                     + EnumChatFormatting.GRAY
                     + "which utilize the star to energize materials")
-            .addInfo("to varying degrees, ranging from regular smelting to matter degeneration.")
-            .addInfo("EU requirements for all modules are handled via wireless energy directly.")
+            .addInfo("to varying degrees, ranging from regular smelting to matter degeneration")
+            .addInfo("EU requirements for all modules are handled via wireless energy directly")
             .addSeparator(EnumChatFormatting.AQUA, 73)
             .addInfo(
                 "This multiblock has an " + EnumChatFormatting.GOLD
@@ -2800,19 +2849,19 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     + ". "
                     + EnumChatFormatting.GRAY
                     + "These upgrades can be unlocked by reaching")
-            .addInfo("certain milestones and/or spending materials.")
+            .addInfo("certain milestones and/or spending materials")
             .addSeparator(EnumChatFormatting.AQUA, 73)
             .addInfo(
                 EnumChatFormatting.GREEN
                     + "Clicking on the logo in the controller gui opens an extensive information window"
                     + EnumChatFormatting.GRAY
                     + ",")
-            .addInfo("explaining everything there is to know about this multiblock.")
+            .addInfo("explaining everything there is to know about this multiblock")
             .beginStructureBlock(127, 29, 186, false)
             .addStructureInfo("Total blocks needed for the structure with " + getRingText("1", "2", "3") + "rings:")
             .addStructureInfo(
                 getRingText("3943", "7279", "11005") + "Transcendentally Amplified Magnetic Confinement Casing")
-            .addStructureInfo(getRingText("2819", "4831", "6567") + "Singularity Reinforced Stellar Shielding Casing")
+            .addStructureInfo(getRingText("2818", "4831", "6567") + "Singularity Reinforced Stellar Shielding Casing")
             .addStructureInfo(getRingText("272", "512", "824") + "Celestial Matter Guidance Casing")
             .addStructureInfo(getRingText("130", "144", "158") + "Boundless Gravitationally Severed Structure Casing")
             .addStructureInfo(getRingText("9", "54", "155") + "Spatially Transcendent Gravitational Lens Block")
@@ -2880,14 +2929,14 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     }
 
     private Text fuelUsage() {
-        return new Text(fuelConsumption + " L/5s");
+        return new Text(formattingMode.format(fuelConsumption) + " L/5s");
     }
 
     private Text storedFuel() {
         if (internalBattery == 0) {
-            return new Text(stellarFuelAmount + "/" + neededStartupFuel);
+            return new Text(formattingMode.format(stellarFuelAmount) + "/" + formattingMode.format(neededStartupFuel));
         }
-        return new Text(internalBattery + "/" + maxBatteryCharge);
+        return new Text(formattingMode.format(internalBattery) + "/" + formattingMode.format(maxBatteryCharge));
     }
 
     private Text storedFuelHeaderText() {
@@ -3063,15 +3112,17 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
     private void ejectGravitonShards() {
         if (mOutputBusses.size() == 1) {
-            while (gravitonShardsAvailable >= 64) {
-                addOutput(GTOreDictUnificator.get(OrePrefixes.gem, MaterialsUEVplus.GravitonShard, 64));
-                gravitonShardsAvailable -= 64;
-                gravitonShardsSpent += 64;
-            }
-            addOutput(
-                GTOreDictUnificator.get(OrePrefixes.gem, MaterialsUEVplus.GravitonShard, gravitonShardsAvailable));
-            gravitonShardsSpent += gravitonShardsAvailable;
-            gravitonShardsAvailable = 0;
+            ItemStack shard = GTOreDictUnificator.get(OrePrefixes.gem, Materials.GravitonShard, 1);
+
+            shard.stackSize = gravitonShardsAvailable;
+
+            // VP is disabled on gorges for some reason, force it on here
+            ItemEjectionHelper ejectionHelper = new ItemEjectionHelper(this.getOutputBusses(), true);
+            int ejected = ejectionHelper.ejectStack(shard);
+            ejectionHelper.commit();
+
+            gravitonShardsAvailable -= ejected;
+            gravitonShardsSpent += ejected;
         }
     }
 
@@ -3083,7 +3134,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         }
         sum = progress * (progress + 1) / 2;
         return new Text(
-            translateToLocal("gt.blockmachines.multimachine.FOG.shardgain") + ": " + EnumChatFormatting.GRAY + sum);
+            translateToLocal("gt.blockmachines.multimachine.FOG.shardgain") + ": "
+                + EnumChatFormatting.GRAY
+                + formattingMode.format(sum));
     }
 
     private Text totalMilestoneProgress(int milestoneID) {
@@ -3265,6 +3318,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         if (force || stellarFuelAmount != 0) NBT.setInteger("starFuelStored", stellarFuelAmount);
         if (force || gravitonShardEjection) NBT.setBoolean("gravitonShardEjection", gravitonShardEjection);
         if (force || secretUpgrade) NBT.setBoolean("secretUpgrade", secretUpgrade);
+        if (force || inversion) NBT.setBoolean("inversion", inversion);
 
         // Fields with non-zero defaults
         if (force || fuelConsumptionFactor != DEFAULT_FUEL_CONSUMPTION_FACTOR) {
@@ -3296,6 +3350,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         stellarFuelAmount = NBT.getInteger("starFuelStored");
         gravitonShardEjection = NBT.getBoolean("gravitonShardEjection");
         secretUpgrade = NBT.getBoolean("secretUpgrade");
+        inversion = NBT.getBoolean("inversion");
 
         // Fields with non-zero defaults
         if (NBT.hasKey("fuelConsumptionFactor")) {

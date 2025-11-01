@@ -102,11 +102,6 @@ public class MTEItemDistributor extends MTEBuffer {
     }
 
     @Override
-    public boolean isValidSlot(int aIndex) {
-        return aIndex < this.mInventory.length - 1;
-    }
-
-    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         itemsPerSide = aNBT.getByteArray("mItemsPerSide");

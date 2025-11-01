@@ -3,11 +3,12 @@ package gregtech.common.config;
 import static gregtech.api.recipe.RecipeCategorySetting.ENABLE;
 
 import com.gtnewhorizon.gtnhlib.config.Config;
+import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
 import gregtech.api.enums.Mods;
 import gregtech.api.recipe.RecipeCategorySetting;
 
-@Config(modid = Mods.Names.GREG_TECH, category = "client", configSubDirectory = "GregTech", filename = "Client")
+@Config(modid = Mods.ModIDs.GREG_TECH, category = "client", configSubDirectory = "GregTech", filename = "Client")
 @Config.LangKey("GT5U.gui.config.client")
 public class Client {
 
@@ -20,6 +21,9 @@ public class Client {
     @Config.Comment("Preference section")
     public static final Preference preference = new Preference();
 
+    @Config.Comment("GT Tool Block Overlay section")
+    public static final BlockOverlay blockoverlay = new BlockOverlay();
+
     @Config.Comment("Render section")
     public static final Render render = new Render();
 
@@ -29,14 +33,18 @@ public class Client {
     @Config.Comment("NEI section")
     public static final NEI nei = new NEI();
 
+    @Config.Comment("Chat message section")
+    public static final Chat chat = new Chat();
+
+    public static void save() {
+        ConfigurationManager.save(Client.class);
+    }
+
     @Config.LangKey("GT5U.gui.config.client.color_modulation")
     public static class ColorModulation {
 
         @Config.Comment("RGB values for the cable insulation color modulation.")
         public CableInsulation cableInsulation = new CableInsulation();
-
-        @Config.Comment("RGB values for the construction foam color modulation.")
-        public ConstructionFoam constructionFoam = new ConstructionFoam();
 
         @Config.Comment("RGB values for the machine metal color modulation (default GUI color).")
         public MachineMetal machineMetal = new MachineMetal();
@@ -45,25 +53,15 @@ public class Client {
         public static class CableInsulation {
 
             @Config.DefaultInt(64)
+            @Config.RangeInt(min = 0, max = 255)
             public int red;
 
             @Config.DefaultInt(64)
+            @Config.RangeInt(min = 0, max = 255)
             public int green;
 
             @Config.DefaultInt(64)
-            public int blue;
-        }
-
-        @Config.LangKey("GT5U.gui.config.client.color_modulation.construction_foam")
-        public static class ConstructionFoam {
-
-            @Config.DefaultInt(64)
-            public int red;
-
-            @Config.DefaultInt(64)
-            public int green;
-
-            @Config.DefaultInt(64)
+            @Config.RangeInt(min = 0, max = 255)
             public int blue;
         }
 
@@ -71,12 +69,15 @@ public class Client {
         public static class MachineMetal {
 
             @Config.DefaultInt(210)
+            @Config.RangeInt(min = 0, max = 255)
             public int red;
 
             @Config.DefaultInt(220)
+            @Config.RangeInt(min = 0, max = 255)
             public int green;
 
             @Config.DefaultInt(255)
+            @Config.RangeInt(min = 0, max = 255)
             public int blue;
         }
     }
@@ -120,6 +121,10 @@ public class Client {
         @Config.DefaultBoolean(false)
         public boolean inputBusInitialFilter;
 
+        @Config.Comment("if true, input filter will initially be on when input hatches are placed in the world.")
+        @Config.DefaultBoolean(false)
+        public boolean inputHatchInitialFilter;
+
         @Config.Comment("if true, allow multistacks on single blocks by default when they are first placed in the world.")
         @Config.DefaultBoolean(false)
         public boolean singleBlockInitialAllowMultiStack;
@@ -139,6 +144,35 @@ public class Client {
         @Config.RangeInt(min = 28, max = 2048)
         @Config.RequiresMcRestart
         public int maxNumSounds = 512;
+    }
+
+    @Config.LangKey("GT5U.gui.config.client.blockoverlay")
+    public static class BlockOverlay {
+
+        @Config.Comment("The line width of the block overlay")
+        @Config.DefaultFloat(2.5f)
+        @Config.RangeFloat(min = 0, max = 30f)
+        public float lineWidth;
+
+        @Config.Comment("The red color of the block overlay")
+        @Config.DefaultInt(0)
+        @Config.RangeInt(min = 0, max = 255)
+        public int red;
+
+        @Config.Comment("The green color of the block overlay")
+        @Config.DefaultInt(0)
+        @Config.RangeInt(min = 0, max = 255)
+        public int green;
+
+        @Config.Comment("The blue color of the block overlay")
+        @Config.DefaultInt(0)
+        @Config.RangeInt(min = 0, max = 255)
+        public int blue;
+
+        @Config.Comment("The alpha for the color of the block overlay")
+        @Config.DefaultInt(127)
+        @Config.RangeInt(min = 0, max = 255)
+        public int alpha;
     }
 
     @Config.LangKey("GT5U.gui.config.client.render")
@@ -184,6 +218,24 @@ public class Client {
         @Config.DefaultBoolean(false)
         @Config.Name("Use Old Coil Textures")
         public boolean useOldCoils;
+
+        @Config.Comment("Render lines to MagLev Pylons when tethering")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Render MagLev Tethers")
+        public boolean renderMagLevTethers;
+
+        @Config.DefaultBoolean(true)
+        @Config.Name("Render Powerfail Notifications")
+        public boolean renderPowerfailNotifications;
+
+        @Config.Comment("When >0, powerfail notifications will stop rendering after this many seconds.")
+        @Config.DefaultInt(0)
+        @Config.Name("Powerfail Notification Timeout")
+        public int powerfailNotificationTimeout;
+
+        @Config.Comment("Enables or disables Trans Metal rendering, also impacts motors, pistons etc with same rendering. Accessibility option.")
+        @Config.DefaultBoolean(true)
+        public boolean renderTransMetalFancy;
     }
 
     @Config.LangKey("GT5U.gui.config.client.waila")
@@ -262,5 +314,19 @@ public class Client {
             @Config.DefaultEnum("ENABLE")
             public RecipeCategorySetting absNonAlloyRecipes = ENABLE;
         }
+    }
+
+    @Config.LangKey("GT5U.gui.config.client.chat")
+    public static class Chat {
+
+        @Config.Comment("Displays a chat message when a powerfail occurs.")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Print Powerfail Notifications")
+        public boolean powerfailNotifications;
+
+        @Config.Comment("Prints the powerfail command help text when receiving a powerfail. The message is only printed once per game session.")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Print Powerfail Help Text")
+        public boolean printPowerfailHelpText;
     }
 }

@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import com.cleanroommc.modularui.factory.GuiManager;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -24,7 +25,7 @@ public final class GTGuis {
      *
      * @see CommonMetaTileEntity#useMui2
      */
-    public static boolean GLOBAL_SWITCH_MUI2 = false;
+    public static boolean GLOBAL_SWITCH_MUI2 = true;
 
     /**
      * Creates builder object for MetaTileEntity GUI template. Call {@link GTBaseGuiBuilder#build} to retrieve panel.
@@ -32,8 +33,8 @@ public final class GTGuis {
      * @see GTBaseGuiBuilder
      */
     public static GTBaseGuiBuilder mteTemplatePanelBuilder(IMetaTileEntity mte, PosGuiData data,
-        PanelSyncManager syncManager) {
-        return new GTBaseGuiBuilder(mte, data, syncManager);
+        PanelSyncManager syncManager, UISettings uiSettings) {
+        return new GTBaseGuiBuilder(mte, data, syncManager, uiSettings);
     }
 
     /**
@@ -54,5 +55,6 @@ public final class GTGuis {
     @ApiStatus.Internal
     public static void registerFactories() {
         GuiManager.registerFactory(MetaTileEntityGuiHandler.INSTANCE);
+        GuiManager.registerFactory(CoverUIFactory.INSTANCE);
     }
 }

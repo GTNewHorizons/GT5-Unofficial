@@ -1,5 +1,7 @@
 package gregtech.common.items;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -32,10 +34,10 @@ import shedar.mods.ic2.nuclearcontrol.api.PanelString;
     value = {
         @Optional.Interface(
             iface = "shedar.mods.ic2.nuclearcontrol.api.IRemoteSensor",
-            modid = Mods.Names.I_C2_NUCLEAR_CONTROL),
+            modid = Mods.ModIDs.I_C2_NUCLEAR_CONTROL),
         @Optional.Interface(
             iface = "shedar.mods.ic2.nuclearcontrol.api.IPanelDataSource",
-            modid = Mods.Names.I_C2_NUCLEAR_CONTROL) })
+            modid = Mods.ModIDs.I_C2_NUCLEAR_CONTROL) })
 public class ItemSensorCard extends GTGenericItem implements IRemoteSensor, IPanelDataSource {
 
     private static final UUID CARD_TYPE = new UUID(0L, 41L);
@@ -53,9 +55,9 @@ public class ItemSensorCard extends GTGenericItem implements IRemoteSensor, IPan
         if (aStack != null) {
             NBTTagCompound tNBT = aStack.getTagCompound();
             if (tNBT == null) {
-                aList.add(transItem("014", "Missing Coordinates!"));
+                aList.add(translateToLocal("gt.item.desc.miss_coord"));
             } else {
-                aList.add(transItem("015", "Device at:"));
+                aList.add(translateToLocal("gt.item.desc.device_at"));
                 aList.add(
                     String.format(
                         "x: %d, y: %d, z: %d",

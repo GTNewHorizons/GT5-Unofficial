@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 public class CubicObject<T> {
 
     public final T NORTH;
@@ -15,11 +18,11 @@ public class CubicObject<T> {
     public final T UP;
     public final T DOWN;
 
-    public CubicObject(ArrayList<T> aDataSet) {
+    public CubicObject(@NotNull ArrayList<T> aDataSet) {
         this(aDataSet.get(0), aDataSet.get(1), aDataSet.get(2), aDataSet.get(3), aDataSet.get(4), aDataSet.get(5));
     }
 
-    public CubicObject(T[] aDataSet) {
+    public CubicObject(T @NotNull [] aDataSet) {
         this(aDataSet[0], aDataSet[1], aDataSet[2], aDataSet[3], aDataSet[4], aDataSet[5]);
     }
 
@@ -36,7 +39,7 @@ public class CubicObject<T> {
         return get(ForgeDirection.getOrientation(ordinalSide));
     }
 
-    public T get(ForgeDirection side) {
+    public @Nullable T get(ForgeDirection side) {
         if (side == ForgeDirection.DOWN) {
             return DOWN;
         } else if (side == ForgeDirection.UP) {

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -294,11 +295,14 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch implements IAddGreg
                         .canInsert(false)
                         .build()
                         .setPos(115, 25));
-                builder.widget(
-                    new TextWidget("Stock").setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(25, 16))
+                builder
                     .widget(
-                        new TextWidget("Active").setDefaultColor(COLOR_TEXT_GRAY.get())
+                        new TextWidget(StatCollector.translateToLocal("gtpp.gui.text.stock"))
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(25, 16))
+                    .widget(
+                        new TextWidget(StatCollector.translateToLocal("gtpp.gui.text.active"))
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
                             .setPos(115, 16));
             }
             case 18 -> {
@@ -315,11 +319,14 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch implements IAddGreg
                         .canInsert(false)
                         .build()
                         .setPos(97, 19));
-                builder.widget(
-                    new TextWidget("Stock").setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(25, 14))
+                builder
                     .widget(
-                        new TextWidget("Active").setDefaultColor(COLOR_TEXT_GRAY.get())
+                        new TextWidget(StatCollector.translateToLocal("gtpp.gui.text.stock"))
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(25, 14))
+                    .widget(
+                        new TextWidget(StatCollector.translateToLocal("gtpp.gui.text.active"))
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
                             .setPos(15, 14));
             }
             case 32 -> {

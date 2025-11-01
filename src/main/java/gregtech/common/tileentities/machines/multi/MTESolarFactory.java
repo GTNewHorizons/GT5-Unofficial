@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -54,10 +55,13 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.recipe.metadata.SolarFactoryRecipeDataKey;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.recipe.SolarFactoryRecipeData;
+import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.common.misc.GTStructureChannels;
 
 public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFactory>
     implements IConstructable, ISurvivalConstructable {
@@ -169,8 +173,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
         // P for Precise Electronic Unit Casing ^-^
         .addElement(
             'P',
-            withChannel(
-                "unit casing",
+            GTStructureChannels.PRASS_UNIT_CASING.use(
                 ofBlocksTiered(
                     (block, meta) -> block == Loaders.preciseUnitCasing ? meta : null,
                     ImmutableList.of(
@@ -251,13 +254,13 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
     public int survivalConstruct(ItemStack holoStack, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         if (holoStack.stackSize == 1) {
-            return survivialBuildPiece(STRUCTURE_TIER_1, holoStack, 2, 4, 0, elementBudget, env, false, true);
+            return survivalBuildPiece(STRUCTURE_TIER_1, holoStack, 2, 4, 0, elementBudget, env, false, true);
         }
         if (holoStack.stackSize == 2) {
-            return survivialBuildPiece(STRUCTURE_TIER_2, holoStack, 4, 5, 0, elementBudget, env, false, true);
+            return survivalBuildPiece(STRUCTURE_TIER_2, holoStack, 4, 5, 0, elementBudget, env, false, true);
         }
         if (holoStack.stackSize >= 3) {
-            return survivialBuildPiece(STRUCTURE_TIER_3, holoStack, 4, 8, 0, elementBudget, env, false, true);
+            return survivalBuildPiece(STRUCTURE_TIER_3, holoStack, 4, 8, 0, elementBudget, env, false, true);
         }
         return 0;
     }
@@ -362,7 +365,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
     // 2^(casingTier + 3)
     protected int getMaxParallel() {
         if (mTier <= 1) return 1;
-        return (int) Math.pow(2, 1 + (casingTier + 2));
+        return (int) GTUtility.powInt(2, 1 + (casingTier + 2));
     }
 
     @Override
@@ -384,9 +387,18 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             .addInfo("  The bonus to output occurs after parallels, and cannot be greater than 100%")
             .addInfo("  The recipes shown in NEI display the minimum wafer tier required")
             .addInfo("  LV-LuV Solar Panels can be made without the previous panel, but at a higher cost")
-            .addInfo("  Parallels are based on Precise Casing Tier")
-            .addInfo("  MK-I = 8x, MK-II = 16x, MK-III = 32x, MK-IV = 64x")
-            .addInfo(WHITE + "" + BOLD + "Tier " + AQUA + BOLD + "3")
+            .addInfo(
+                "  " + EnumChatFormatting.WHITE
+                    + "Precise Casing"
+                    + EnumChatFormatting.GRAY
+                    + " Tier determines "
+                    + TooltipHelper.parallelText("Parallels"))
+            .addInfo(
+                "  " + tieredTextLine("Mk-I", "MK-II", "MK-III", "MK-IV")
+                    + "->"
+                    + tieredTextLine("8", "16", "32", "64")
+                    + " Parallels")
+            .addInfo(WHITE + "" + BOLD + "Tier " + AQUA + BOLD + "3" + WHITE + BOLD + ":")
             .addInfo(GREEN + "  Supports Laser energy hatches")
             .addInfo("  ZPM-UV Solar Panels can be made without the previous panel, but at a higher cost")
             .addInfo("  Bonus per increased wafer tier is raised to 50%")
@@ -413,6 +425,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             .addOutputBus("Any Machine Casing")
             .addEnergyHatch("Any Machine Casing")
             .addMaintenanceHatch("Any Machine Casing")
+            .addSubChannelUsage(GTStructureChannels.PRASS_UNIT_CASING)
             .toolTipFinisher(GTValues.AuthorPureBluez);
         return tt;
     }
@@ -464,27 +477,24 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
-    @Override
     public boolean supportsInputSeparation() {
         return true;
+    }
+
+    private String tieredTextLine(String mk1, String mk2, String mk3, String mk4) {
+        return GREEN + mk1
+            + EnumChatFormatting.GRAY
+            + "/"
+            + EnumChatFormatting.BLUE
+            + mk2
+            + EnumChatFormatting.GRAY
+            + "/"
+            + EnumChatFormatting.LIGHT_PURPLE
+            + mk3
+            + EnumChatFormatting.GRAY
+            + "/"
+            + EnumChatFormatting.GOLD
+            + mk4
+            + EnumChatFormatting.GRAY;
     }
 }

@@ -7,6 +7,8 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
@@ -20,23 +22,8 @@ public class ToolFile extends GTTool {
     }
 
     @Override
-    public int getToolDamagePerDropConversion() {
-        return 100;
-    }
-
-    @Override
     public int getToolDamagePerContainerCraft() {
         return 400;
-    }
-
-    @Override
-    public int getToolDamagePerEntityAttack() {
-        return 200;
-    }
-
-    @Override
-    public int getBaseQuality() {
-        return 0;
     }
 
     @Override
@@ -45,38 +32,13 @@ public class ToolFile extends GTTool {
     }
 
     @Override
-    public float getSpeedMultiplier() {
-        return 1.0F;
-    }
-
-    @Override
-    public float getMaxDurabilityMultiplier() {
-        return 1.0F;
-    }
-
-    @Override
     public String getCraftingSound() {
-        return null;
-    }
-
-    @Override
-    public String getEntityHitSound() {
-        return null;
-    }
-
-    @Override
-    public String getMiningSound() {
-        return null;
+        return SoundResource.GTCEU_OP_FILE.toString();
     }
 
     @Override
     public boolean canBlock() {
         return true;
-    }
-
-    @Override
-    public boolean isCrowbar() {
-        return false;
     }
 
     @Override
@@ -90,16 +52,9 @@ public class ToolFile extends GTTool {
     }
 
     @Override
-    public ItemStack getBrokenItem(ItemStack aStack) {
-        return null;
-    }
-
-    @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return !aIsToolHead
-            ? MetaGeneratedTool.getPrimaryMaterial(
-                aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadFile.mTextureIndex]
-            : Textures.ItemIcons.HANDLE_FILE;
+        return !aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadFile
+            .getTextureIndex()] : Textures.ItemIcons.HANDLE_FILE;
     }
 
     @Override
@@ -107,9 +62,6 @@ public class ToolFile extends GTTool {
         return !aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
             : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
     }
-
-    @Override
-    public void onStatsAddedToTool(MetaGeneratedTool aItem, int aID) {}
 
     @Override
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {

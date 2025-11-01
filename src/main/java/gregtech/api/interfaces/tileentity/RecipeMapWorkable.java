@@ -10,8 +10,8 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.recipe.RecipeMap;
 
 /**
- * Machines implementing this interface are capable of executing certain recipes provided by {@link RecipeMap}.
- * They will also be automatically registered as NEI recipe catalyst for the corresponding recipemaps.
+ * Machines implementing this interface are capable of executing certain recipes provided by {@link RecipeMap}. They
+ * will also be automatically registered as NEI recipe catalyst for the corresponding recipemaps.
  */
 public interface RecipeMapWorkable {
 

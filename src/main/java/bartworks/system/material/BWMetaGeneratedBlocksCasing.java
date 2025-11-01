@@ -60,11 +60,6 @@ public class BWMetaGeneratedBlocksCasing extends BWMetaGeneratedBlocks
     }
 
     @Override
-    protected boolean canSilkHarvest() {
-        return false;
-    }
-
-    @Override
     public void breakBlock(World aWorld, int aX, int aY, int aZ, Block aBlock, int aMetaData) {
         GregTechAPI.causeMachineUpdate(aWorld, aX, aY, aZ);
         super.breakBlock(aWorld, aX, aY, aZ, aBlock, aMetaData);
@@ -83,8 +78,8 @@ public class BWMetaGeneratedBlocksCasing extends BWMetaGeneratedBlocks
 
     @Override
     public String getUnlocalizedName() {
-        if (this._prefixes == OrePrefixes.blockCasing) return "bw.werkstoffblockscasing.01";
-        if (this._prefixes == OrePrefixes.blockCasingAdvanced) return "bw.werkstoffblockscasingadvanced.01";
+        if (this.prefix == OrePrefixes.blockCasing) return "bw.werkstoffblockscasing.01";
+        if (this.prefix == OrePrefixes.blockCasingAdvanced) return "bw.werkstoffblockscasingadvanced.01";
         return "";
     }
 

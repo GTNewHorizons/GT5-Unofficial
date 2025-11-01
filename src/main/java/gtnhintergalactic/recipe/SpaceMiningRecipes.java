@@ -49,7 +49,7 @@ public class SpaceMiningRecipes {
     static {
         for (ItemMiningDrones.DroneTiers droneTier : ItemMiningDrones.DroneTiers.values()) {
             int i = droneTier.ordinal();
-            ItemStack drone = droneTier.get(1);
+            ItemStack drone = droneTier.get(0);
             MINING_DRONES[i] = drone;
             DRONE_TIERS.put(GTUtility.ItemId.createWithoutNBT(drone), i);
         }
@@ -723,7 +723,7 @@ public class SpaceMiningRecipes {
                 new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.oreEndstone, Materials.MysteriousCrystal, 64),
                     GTOreDictUnificator.get(OrePrefixes.oreEndstone, Materials.Mytryl, 64),
                     GTOreDictUnificator.get(OrePrefixes.oreEndstone, Materials.Oriharukon, 64),
-                    GTOreDictUnificator.get(OrePrefixes.oreEndstone, Materials.HeeEndium, 64),
+                    GTOreDictUnificator.get(OrePrefixes.oreEndstone, Materials.Endium, 64),
                     GTModHandler.getModItem(HardcoreEnderExpansion.ID, "end_powder_ore", 64) },
                 30,
                 60,
@@ -941,8 +941,8 @@ public class SpaceMiningRecipes {
                 aFluidInputs,
                 aChances,
                 aItemOutputs,
-                minSize + (int) Math.pow(2, i - startDroneTier) - 1,
-                maxSize + (int) Math.pow(2, i - startDroneTier) - 1,
+                minSize + (int) GTUtility.powInt(2, i - startDroneTier) - 1,
+                maxSize + (int) GTUtility.powInt(2, i - startDroneTier) - 1,
                 minDistance,
                 maxDistance,
                 computationRequiredPerSec,
@@ -975,8 +975,8 @@ public class SpaceMiningRecipes {
                 aChances,
                 ores,
                 orePrefixes,
-                minSize + (int) Math.pow(2, i - startDroneTier) - 1,
-                maxSize + (int) Math.pow(2, i - startDroneTier) - 1,
+                minSize + (int) GTUtility.powInt(2, i - startDroneTier) - 1,
+                maxSize + (int) GTUtility.powInt(2, i - startDroneTier) - 1,
                 minDistance,
                 maxDistance,
                 computationRequiredPerSec,

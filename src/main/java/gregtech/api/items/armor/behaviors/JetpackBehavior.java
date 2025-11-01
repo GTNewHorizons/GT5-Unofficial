@@ -20,7 +20,7 @@ import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 import gregtech.api.items.armor.ArmorHelper;
 import gregtech.api.items.armor.ArmorKeybinds;
 import gregtech.api.items.armor.JetpackStats;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import gregtech.api.util.GTUtility;
 
 public class JetpackBehavior implements IArmorBehavior {
 
@@ -54,13 +54,13 @@ public class JetpackBehavior implements IArmorBehavior {
             tag.setBoolean(ArmorHelper.JETPACK_HOVER_KEY, !wasHover);
 
             if (wasHover) {
-                PlayerUtils.messagePlayer(
+                GTUtility.sendChatToPlayer(
                     player,
                     StatCollector.translateToLocalFormatted(
                         "GT5U.armor.message.disabled",
                         StatCollector.translateToLocal("GT5U.armor.behavior.jetpackhover")));
             } else {
-                PlayerUtils.messagePlayer(
+                GTUtility.sendChatToPlayer(
                     player,
                     StatCollector.translateToLocalFormatted(
                         "GT5U.armor.message.enabled",
@@ -71,11 +71,11 @@ public class JetpackBehavior implements IArmorBehavior {
             tag.setBoolean(ArmorHelper.JETPACK_KEY, !wasActive);
 
             if (wasActive) {
-                PlayerUtils.messagePlayer(
+                GTUtility.sendChatToPlayer(
                     player,
                     StatCollector.translateToLocalFormatted("GT5U.armor.message.disabled", getBehaviorName()));
             } else {
-                PlayerUtils.messagePlayer(
+                GTUtility.sendChatToPlayer(
                     player,
                     StatCollector.translateToLocalFormatted("GT5U.armor.message.enabled", getBehaviorName()));
             }

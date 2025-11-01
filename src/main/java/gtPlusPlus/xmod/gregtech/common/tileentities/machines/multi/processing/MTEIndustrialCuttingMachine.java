@@ -11,22 +11,8 @@ import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
-import javax.annotation.Nonnull;
-
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -37,7 +23,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -48,11 +33,8 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEIndustrialCuttingMachine extends GTPPMultiBlockBase<MTEIndustrialCuttingMachine>
     implements ISurvivalConstructable {
@@ -78,16 +60,14 @@ public class MTEIndustrialCuttingMachine extends GTPPMultiBlockBase<MTEIndustria
 
     @Override
     public String getMachineType() {
-        return "Cutting Machine, Slicing Machine";
+        return "Cutting Machine, ICF";
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("200% faster than using single block machines of the same voltage")
-            .addInfo("Only uses 75% of the EU/t normally required")
-            .addInfo("Processes four items per voltage tier")
+            .addBulkMachineInfo(4, 3f, 0.75f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 5, true)
             .addController("Front Center")
@@ -131,7 +111,7 @@ public class MTEIndustrialCuttingMachine extends GTPPMultiBlockBase<MTEIndustria
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 1, 1, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 1, 1, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -167,13 +147,7 @@ public class MTEIndustrialCuttingMachine extends GTPPMultiBlockBase<MTEIndustria
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return (machineMode == MACHINEMODE_CUTTER) ? RecipeMaps.cutterRecipes : RecipeMaps.slicerRecipes;
-    }
-
-    @Nonnull
-    @Override
-    public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
-        return Arrays.asList(RecipeMaps.cutterRecipes, RecipeMaps.slicerRecipes);
+        return RecipeMaps.cutterRecipes;
     }
 
     @Override
@@ -194,18 +168,8 @@ public class MTEIndustrialCuttingMachine extends GTPPMultiBlockBase<MTEIndustria
     }
 
     @Override
-    public int getMaxEfficiency(final ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         return PollutionConfig.pollutionPerSecondMultiIndustrialCuttingMachine;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
     }
 
     @Override
@@ -223,59 +187,6 @@ public class MTEIndustrialCuttingMachine extends GTPPMultiBlockBase<MTEIndustria
 
     public byte getCasingTextureIndex() {
         return (byte) TAE.GTPP_INDEX(29);
-    }
-
-    @Override
-    public boolean supportsMachineModeSwitch() {
-        return true;
-    }
-
-    @Override
-    public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        setMachineMode(nextMachineMode());
-        PlayerUtils.messagePlayer(
-            aPlayer,
-            String.format(StatCollector.translateToLocal("GT5U.MULTI_MACHINE_CHANGE"), getMachineModeName()));
-    }
-
-    @Override
-    public void setMachineModeIcons() {
-        machineModeIcons.clear();
-        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_CUTTING);
-        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_SLICING);
-    }
-
-    @Override
-    public String getMachineModeName() {
-        return StatCollector.translateToLocal("GT5U.GTPP_MULTI_CUTTING_MACHINE.mode." + machineMode);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        // Migrates old NBT tag to the new one
-        if (aNBT.hasKey("mCuttingMode")) {
-            machineMode = aNBT.getBoolean("mCuttingMode") ? MACHINEMODE_CUTTER : MACHINEMODE_SLICER;
-        }
-        super.loadNBTData(aNBT);
-    }
-
-    @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("mode", machineMode);
-    }
-
-    @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        final NBTTagCompound tag = accessor.getNBTData();
-        currentTip.add(
-            StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
-                + EnumChatFormatting.WHITE
-                + StatCollector.translateToLocal("GT5U.GTPP_MULTI_CUTTING_MACHINE.mode." + tag.getInteger("mode"))
-                + EnumChatFormatting.RESET);
     }
 
     @SideOnly(Side.CLIENT)
