@@ -6,13 +6,18 @@ import static gregtech.api.enums.Textures.BlockIcons.ITEM_OUT_SIGN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_IN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import gregtech.GTMod;
@@ -23,19 +28,23 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.multi.MTECokeOven;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEHatchCokeOven extends MTEHatch {
 
     private enum Mode {
 
-        Input((byte) 0),
-        OutputItem((byte) 1),
-        OutputFluid((byte) 2);
+        Input((byte) 0, "Input"),
+        OutputItem((byte) 1, "Output Items"),
+        OutputFluid((byte) 2, "Output Fluids");
 
         private final byte index;
+        private final String name;
 
-        Mode(byte index) {
+        Mode(byte index, String name) {
             this.index = index;
+            this.name = name;
         }
 
         private Mode next() {
@@ -63,6 +72,15 @@ public class MTEHatchCokeOven extends MTEHatch {
             final byte index = NBT.getByte("inputMode");
             return fromIndex(index);
         }
+
+        @Override
+        public @NotNull String toString() {
+            return switch (this) {
+                case Input -> StatCollector.translateToLocal("GT5U.machines.coke_oven_hatch.mode.input");
+                case OutputItem -> StatCollector.translateToLocal("GT5U.machines.coke_oven_hatch.mode.output");
+                case OutputFluid -> StatCollector.translateToLocal("GT5U.machines.coke_oven_hatch.mode.output_fluid");
+            };
+        }
     }
 
     /** Fluid transfer rate in liters per second. */
@@ -73,7 +91,16 @@ public class MTEHatchCokeOven extends MTEHatch {
     private boolean destroyed = false;
 
     public MTEHatchCokeOven(int ID, String name, String nameRegional) {
-        super(ID, name, nameRegional, 0, 0, new String[] { "Hatch for automating the Coke Oven." });
+        super(
+            ID,
+            name,
+            nameRegional,
+            0,
+            0,
+            new String[] { "Hatch for automating the Coke Oven",
+                EnumChatFormatting.STRIKETHROUGH + "------------------------------",
+                EnumChatFormatting.GREEN + "Modes" + EnumChatFormatting.GRAY + ": Input, Output, Output (Fluids)",
+                "Cycle mode with a Screwdriver", });
     }
 
     public MTEHatchCokeOven(String name, int tier, String[] description, ITexture[][][] textures) {
@@ -117,6 +144,13 @@ public class MTEHatchCokeOven extends MTEHatch {
     public void onBlockDestroyed() {
         destroyed = true;
         super.onBlockDestroyed();
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currenttip, accessor, config);
+        currenttip.add("Mode: " + mode.name);
     }
 
     @Override
@@ -211,7 +245,7 @@ public class MTEHatchCokeOven extends MTEHatch {
         if (baseMetaTileEntity.isClientSide()) return;
         mode = mode.next();
         baseMetaTileEntity.issueTileUpdate();
-        GTUtility.sendChatToPlayer(player, "Mode changed to " + mode);
+        GTUtility.sendChatToPlayer(player, mode.toString());
     }
 
     private static final ITexture TEXTURE_CASING = Textures.BlockIcons
