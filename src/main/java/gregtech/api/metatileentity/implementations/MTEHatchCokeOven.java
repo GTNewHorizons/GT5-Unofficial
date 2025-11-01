@@ -11,6 +11,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.IFluidHandler;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -64,6 +65,9 @@ public class MTEHatchCokeOven extends MTEHatch {
         }
     }
 
+    /** Fluid transfer rate in liters per second. */
+    private static final int FLUID_TRANSFER_RATE = 1_000;
+
     private Mode mode = Mode.Input;
     private MTECokeOven controller;
 
@@ -112,20 +116,21 @@ public class MTEHatchCokeOven extends MTEHatch {
     public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
         if (baseMetaTileEntity.isClientSide()) return;
         if (controller == null) return;
-        if (tick % 7 != 0) return;
+        if (tick % 20 != 0) return;
+
+        final ForgeDirection sideFront = baseMetaTileEntity.getFrontFacing();
+        final ForgeDirection sideBack = baseMetaTileEntity.getBackFacing();
 
         switch (mode) {
-            case Input -> {
-                return;
-            }
+            case Input -> {}
             case OutputItem -> {
-                final IInventory target = baseMetaTileEntity.getIInventoryAtSide(baseMetaTileEntity.getFrontFacing());
+                final IInventory target = baseMetaTileEntity.getIInventoryAtSide(sideFront);
                 if (target == null) return;
                 GTUtility.moveMultipleItemStacks(
                     baseMetaTileEntity,
                     target,
-                    baseMetaTileEntity.getFrontFacing(),
-                    baseMetaTileEntity.getBackFacing(),
+                    sideFront,
+                    sideBack,
                     null,
                     false,
                     (byte) 64,
@@ -135,8 +140,9 @@ public class MTEHatchCokeOven extends MTEHatch {
                     getSizeInventory());
             }
             case OutputFluid -> {
-                // TODO
-                return;
+                final IFluidHandler target = baseMetaTileEntity.getITankContainerAtSide(sideFront);
+                if (target == null) return;
+                GTUtility.moveFluid(controller, target, sideFront, FLUID_TRANSFER_RATE, null);
             }
         }
     }

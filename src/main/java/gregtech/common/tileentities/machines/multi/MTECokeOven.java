@@ -125,6 +125,14 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
     }
 
     @Override
+    public FluidStack drain(ForgeDirection side, int maxDrain, boolean doDrain) {
+        if (fluid.amount <= 0) return null;
+        final int toDrain = Math.min(fluid.amount, maxDrain);
+        if (doDrain) fluid.amount -= toDrain;
+        return GTUtility.copyAmount(toDrain, fluid);
+    }
+
+    @Override
     protected boolean forceUseMui2() {
         return true;
     }
