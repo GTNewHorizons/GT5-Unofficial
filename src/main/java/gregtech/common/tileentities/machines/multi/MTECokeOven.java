@@ -6,6 +6,11 @@ import static gregtech.api.enums.GTValues.AuthorJulia;
 import static gregtech.api.enums.Textures.BlockIcons.COKE_OVEN_OVERLAY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.COKE_OVEN_OVERLAY_INACTIVE;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -29,10 +34,12 @@ import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatchCokeOven;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.recipe.RecipeMap;
@@ -40,6 +47,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.gui.modularui.multiblock.MTECokeOvenGUI;
@@ -52,6 +60,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
     private final static int FLUID_CAPACITY = 64_000;
 
     private FluidStack fluid;
+    private final ArrayList<MTEHatchCokeOven> hatches = new ArrayList<>();
 
     public MTECokeOven(String name) {
         super(name);
@@ -81,7 +90,12 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
     private static final IStructureDefinition<MTECokeOven> STRUCTURE_DEFINITION = StructureDefinition
         .<MTECokeOven>builder()
         .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-        .addElement('C', ofBlock(GregTechAPI.sBlockCasings12, 0))
+        .addElement(
+            'C',
+            buildHatchAdder(MTECokeOven.class).anyOf(new HatchElement())
+                .casingIndex(1)
+                .dot(1)
+                .buildAndChain(ofBlock(GregTechAPI.sBlockCasings12, 0)))
         .build();
 
     @Override
@@ -138,6 +152,11 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
     @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.cokeOvenRecipes;
+    }
+
+    @Override
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side, ItemStack aStack) {
+        return super.allowPullStack(aBaseMetaTileEntity, aIndex, side, aStack);
     }
 
     @Override
@@ -270,7 +289,9 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
 
         // Polling updates.
         if (tick % 20 == 0) {
-            this.mMachine = checkMachine(baseMetaTileEntity, null);
+            mMachine = checkMachine(baseMetaTileEntity, null);
+
+            if (mMachine) baseMetaTileEntity.enableWorking();
 
             if (baseMetaTileEntity.isActive()) {
                 Pollution.addPollution(baseMetaTileEntity, GTMod.proxy.mPollutionCokeOvenPerSecond);
@@ -369,5 +390,38 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
     @Override
     public void setFluid(FluidStack fluid) {
         this.fluid = fluid;
+    }
+
+    private static class HatchElement implements IHatchElement<MTECokeOven> {
+
+        public HatchElement() {}
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return Collections.singletonList(MTEHatchCokeOven.class);
+        }
+
+        @Override
+        public IGTHatchAdder<? super MTECokeOven> adder() {
+            return MTECokeOven::addHatch;
+        }
+
+        @Override
+        public String name() {
+            return "Coke Oven Hatch";
+        }
+
+        @Override
+        public long count(MTECokeOven cokeOven) {
+            return cokeOven.hatches.size();
+        }
+    }
+
+    private boolean addHatch(IGregTechTileEntity tileEntity, Short baseCasingIndex) {
+        if (tileEntity == null) return false;
+        IMetaTileEntity metaTileEntity = tileEntity.getMetaTileEntity();
+        if (metaTileEntity == null) return false;
+        if (metaTileEntity instanceof MTEHatchCokeOven hatch) return hatches.add(hatch);
+        return false;
     }
 }

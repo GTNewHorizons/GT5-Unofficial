@@ -19,7 +19,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 
-public class MTECokeOvenHatch extends MTEHatch {
+public class MTEHatchCokeOven extends MTEHatch {
 
     private enum Mode {
 
@@ -62,17 +62,17 @@ public class MTECokeOvenHatch extends MTEHatch {
 
     private Mode mode = Mode.Input;
 
-    public MTECokeOvenHatch(int ID, String name, String nameRegional) {
+    public MTEHatchCokeOven(int ID, String name, String nameRegional) {
         super(ID, name, nameRegional, 0, 0, new String[] { "Hatch for automating the Coke Oven." });
     }
 
-    public MTECokeOvenHatch(String name, int tier, String[] description, ITexture[][][] textures) {
+    public MTEHatchCokeOven(String name, int tier, String[] description, ITexture[][][] textures) {
         super(name, tier, 0, description, textures);
     }
 
     @Override
-    public MTECokeOvenHatch newMetaEntity(IGregTechTileEntity tileEntity) {
-        return new MTECokeOvenHatch(mName, mTier, mDescriptionArray, mTextures);
+    public MTEHatchCokeOven newMetaEntity(IGregTechTileEntity tileEntity) {
+        return new MTEHatchCokeOven(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override
