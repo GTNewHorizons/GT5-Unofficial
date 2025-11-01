@@ -873,6 +873,8 @@ GT5U.MBTT.SuperChest=Super/Quantum Chest
 
 GT5U.MBTT.subchannel=Uses sub channel §6%s§r§7 for §6%s
 
+GT5U.MBTT.CokeOvenHatch=Coke Oven Hatch
+
 GT5U.cracker.io_side=Input/Output Hatches must be on opposite sides!
 
 GT5U.turbine.running.true=Turbine running
@@ -1341,6 +1343,10 @@ GT5U.machines.nano_forge.t4_info_text.6=Recipe Time Multiplier = 0.9999^(Maximum
 GT5U.machines.nano_forge.t4_info_text.7=Additionally, tier 1 & 2 nanites will receive unconditional perfect overclocks, while perfect OCs on tier 3 nanites require parallels to be above 1. Tier 4 nanites do not get perfect overclocks.
 GT5U.machines.antimatter_forge.enableRender=Enable Antimatter Forge Render
 GT5U.machines.antimatter_forge.disableRender=Disable Antimatter Forge Render
+GT5U.machines.coke_oven_hatch.mode.input=Hatch now inputs items
+GT5U.machines.coke_oven_hatch.mode.output=Hatch now outputs items
+GT5U.machines.coke_oven_hatch.mode.output_fluid=Hatch now outputs fluids
+
 
 GT5U.recipe_filter.empty_representation_slot.tooltip=§7Click with a machine to set filter
 GT5U.recipe_filter.representation_slot.tooltip=§7Click to clear
