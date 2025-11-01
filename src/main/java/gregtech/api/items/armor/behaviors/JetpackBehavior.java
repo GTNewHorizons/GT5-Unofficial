@@ -45,7 +45,8 @@ public class JetpackBehavior implements IArmorBehavior {
     }
 
     @Override
-    public void onKeyPressed(@NotNull ItemStack stack, @NotNull EntityPlayer player, SyncedKeybind keyPressed, boolean isDown) {
+    public void onKeyPressed(@NotNull ItemStack stack, @NotNull EntityPlayer player, SyncedKeybind keyPressed,
+        boolean isDown) {
         if (!isDown) return;
         NBTTagCompound tag = getOrCreateNbtCompound(stack);
         if (!tag.hasKey(ArmorHelper.JETPACK_KEY)) return;

@@ -18,9 +18,6 @@ import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 import java.util.ArrayList;
 import java.util.List;
 
-import gregtech.api.enums.GTValues;
-import gregtech.api.items.armor.MechArmorAugmentRegistries.Cores;
-import ic2.api.item.ElectricItem;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -49,9 +46,12 @@ import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.apiculture.IArmorApiarist;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
+import gregtech.api.items.armor.MechArmorAugmentRegistries.Cores;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.Frames;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
+import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import thaumcraft.api.IGoggles;
 import thaumcraft.api.IVisDiscountGear;
@@ -258,7 +258,8 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
     public boolean showDurabilityBar(ItemStack stack) {
         Cores core = getCore(stack);
         if (core == null) return false;
-        return (!stack.getTagCompound().hasKey(INFINITE_ENERGY_KEY));
+        return (!stack.getTagCompound()
+            .hasKey(INFINITE_ENERGY_KEY));
     }
 
     @Override

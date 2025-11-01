@@ -203,6 +203,15 @@ public class MTEModificationTable extends MetaTileEntity {
                 }
             }
         }
+
+        if (armorItem.getItem() instanceof MechArmorBase armor) {
+            double charge = armorTag.getDouble("charge");
+            double max = armor.getMaxCharge(armorItem);
+            if (charge > max) {
+                armorTag.setDouble("charge", max);
+            }
+        }
+
         updatedArmorItem.setTagCompound(armorTag);
         armorSlotHandler.setStackInSlot(0, updatedArmorItem);
     }

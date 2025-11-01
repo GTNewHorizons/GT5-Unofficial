@@ -40,7 +40,8 @@ public class NightVisionBehavior implements IArmorBehavior {
     }
 
     @Override
-    public void onKeyPressed(@NotNull ItemStack stack, @NotNull EntityPlayer player, SyncedKeybind keyPressed, boolean isDown) {
+    public void onKeyPressed(@NotNull ItemStack stack, @NotNull EntityPlayer player, SyncedKeybind keyPressed,
+        boolean isDown) {
         if (!isDown) return;
         NBTTagCompound tag = getOrCreateNbtCompound(stack);
         if (!tag.hasKey(ArmorHelper.NIGHT_VISION_KEY)) return;
