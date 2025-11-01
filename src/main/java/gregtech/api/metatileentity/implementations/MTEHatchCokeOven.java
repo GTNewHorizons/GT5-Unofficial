@@ -139,7 +139,11 @@ public class MTEHatchCokeOven extends MTEHatch {
     public boolean canInsertItem(int index, ItemStack itemStack, int ordinalSide) {
         if (mode != Mode.Input) return false;
         if (controller == null) return false;
-        return controller.canInsertItem(index, itemStack, ordinalSide);
+        final IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
+        if (baseMetaTileEntity == null) return false;
+        final ForgeDirection facing = baseMetaTileEntity.getFrontFacing();
+        if (facing.ordinal() != ordinalSide) return false;
+        return controller.canInsertItem(index, itemStack, ForgeDirection.UNKNOWN.ordinal());
     }
 
     @Override

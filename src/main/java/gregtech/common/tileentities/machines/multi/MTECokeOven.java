@@ -165,6 +165,14 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
     }
 
     @Override
+    public boolean allowPutStack(IGregTechTileEntity baseMetaTileEntity, int index, ForgeDirection side,
+        ItemStack stack) {
+        // Only allow putting stacks through hatches which set the direction to `UNKNOWN`
+        if (side != ForgeDirection.UNKNOWN) return false;
+        return super.allowPutStack(baseMetaTileEntity, index, side, stack);
+    }
+
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTECokeOven(mName);
     }
