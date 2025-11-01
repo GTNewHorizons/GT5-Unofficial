@@ -61,6 +61,7 @@ import goodgenerator.loader.Loaders;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
@@ -403,6 +404,11 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         aNBT.setInteger("module3OR", modules[2].ordinal());
         aNBT.setInteger("module4OR", modules[3].ordinal());
         aNBT.setBoolean("shouldRender", shouldRender);
+    }
+
+    @Override
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_EXOFOUNDRY;
     }
 
     @Override
