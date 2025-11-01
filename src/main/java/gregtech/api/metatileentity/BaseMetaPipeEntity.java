@@ -1223,6 +1223,23 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     }
 
     @Override
+    public boolean hasWailaAdvancedBody(ItemStack itemStack, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        if (hasValidMetaTileEntity()) {
+            return getMetaTileEntity().hasWailaAdvancedBody(itemStack, accessor, config);
+        }
+        return super.hasWailaAdvancedBody(itemStack, accessor, config);
+    }
+
+    @Override
+    public void getWailaAdvancedBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        if (hasValidMetaTileEntity()) {
+            getMetaTileEntity().getWailaAdvancedBody(itemStack, currentTip, accessor, config);
+        }
+        super.getWailaAdvancedBody(itemStack, currentTip, accessor, config);
+    }
+
+    @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
