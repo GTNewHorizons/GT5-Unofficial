@@ -6,9 +6,12 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gtnhlanth.common.register.WerkstoffMaterialPool;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class FluidHeaterRecipes implements Runnable {
@@ -76,9 +79,7 @@ public class FluidHeaterRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Sodium.getDust(1))
-            .fluidInputs(
-
-            )
+            .fluidInputs()
             .fluidOutputs(Materials.Sodium.getFluid(1_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -92,5 +93,14 @@ public class FluidHeaterRecipes implements Runnable {
             .eut(160)
             .addTo(fluidHeaterRecipes);
 
+        // Recycling Coolant Byproducts
+        GTValues.RA.stdBuilder()
+            .fluidInputs(Materials.CoolantByproducts.getFluid(500))
+            .fluidOutputs(WerkstoffMaterialPool.HotSuperCoolant.getFluidOrGas(333))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Pyrotheum, 1L))
+            .outputChances(35 * 100)
+            .duration(10 * SECONDS)
+            .eut(120)
+            .addTo(fluidHeaterRecipes);
     }
 }

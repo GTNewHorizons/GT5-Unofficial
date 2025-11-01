@@ -880,6 +880,5 @@ public class AssemblyLineRecipes implements Runnable {
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(AssemblyLine);
-
     }
 }

@@ -93,6 +93,17 @@ import static gregtech.common.items.IDMetaItem01.Black_Hole_Stabilizer;
 import static gregtech.common.items.IDMetaItem01.Book_Written_01;
 import static gregtech.common.items.IDMetaItem01.Book_Written_02;
 import static gregtech.common.items.IDMetaItem01.Book_Written_03;
+import static gregtech.common.items.IDMetaItem01.Booster_EV;
+import static gregtech.common.items.IDMetaItem01.Booster_HV;
+import static gregtech.common.items.IDMetaItem01.Booster_IV;
+import static gregtech.common.items.IDMetaItem01.Booster_LuV;
+import static gregtech.common.items.IDMetaItem01.Booster_MV;
+import static gregtech.common.items.IDMetaItem01.Booster_UEV;
+import static gregtech.common.items.IDMetaItem01.Booster_UHV;
+import static gregtech.common.items.IDMetaItem01.Booster_UIV;
+import static gregtech.common.items.IDMetaItem01.Booster_UMV;
+import static gregtech.common.items.IDMetaItem01.Booster_UV;
+import static gregtech.common.items.IDMetaItem01.Booster_ZPM;
 import static gregtech.common.items.IDMetaItem01.Circuit_Advanced;
 import static gregtech.common.items.IDMetaItem01.Circuit_Basic;
 import static gregtech.common.items.IDMetaItem01.Circuit_Board_Advanced;
@@ -3304,7 +3315,73 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "Opens a superstable black hole/n Black hole will never destabilize and will operate at maximum efficiency",
                 new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 32),
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 128)));
-
+        // Superconductor Boosters
+        ItemList.Booster_MV.set(
+            addItem(
+                Booster_MV.ID,
+                "Superconductor MV Booster",
+                "Used with the Superconductor Processor",
+                new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 10)));
+        ItemList.Booster_HV.set(
+            addItem(
+                Booster_HV.ID,
+                "Superconductor HV Booster",
+                "Used with the Superconductor Processor",
+                new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 20)));
+        ItemList.Booster_EV.set(
+            addItem(
+                Booster_EV.ID,
+                "Superconductor EV Booster",
+                "Used with the Superconductor Processor",
+                new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 30)));
+        ItemList.Booster_IV.set(
+            addItem(
+                Booster_IV.ID,
+                "Superconductor IV Booster",
+                "Used with the Superconductor Processor",
+                new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 40)));
+        ItemList.Booster_LuV.set(
+            addItem(
+                Booster_LuV.ID,
+                "Superconductor LuV Booster",
+                "Used with the Superconductor Processor",
+                new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 50)));
+        ItemList.Booster_ZPM.set(
+            addItem(
+                Booster_ZPM.ID,
+                "Superconductor ZPM Booster",
+                "Used with the Superconductor Processor",
+                new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 60)));
+        ItemList.Booster_UV.set(
+            addItem(
+                Booster_UV.ID,
+                "Superconductor UV Booster",
+                "Used with the Superconductor Processor",
+                new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 70)));
+        ItemList.Booster_UHV.set(
+            addItem(
+                Booster_UHV.ID,
+                "Superconductor UHV Booster",
+                "Used with the Superconductor Processor",
+                new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 80)));
+        ItemList.Booster_UEV.set(
+            addItem(
+                Booster_UEV.ID,
+                "Superconductor UEV Booster",
+                "Used with the Superconductor Processor",
+                new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 90)));
+        ItemList.Booster_UIV.set(
+            addItem(
+                Booster_UIV.ID,
+                "Superconductor UIV Booster",
+                "Used with the Superconductor Processor",
+                new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 100)));
+        ItemList.Booster_UMV.set(
+            addItem(
+                Booster_UMV.ID,
+                "Superconductor UMV Booster",
+                "Used with the Superconductor Processor",
+                new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 110)));
         // Empty battery hulls
         ItemList.BatteryHull_EV.set(
             addItem(
@@ -3726,6 +3803,11 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         setFluidContainerStats(32000 + Electromagnet_Neodymium.ID, 0L, 1L);
         setFluidContainerStats(32000 + Electromagnet_Samarium.ID, 0L, 1L);
         setFluidContainerStats(32000 + Electromagnet_Tengam.ID, 0L, 1L);
+        setFluidContainerStats(32000 + Booster_MV.ID, 0L, 1L);
+        setFluidContainerStats(32000 + Booster_HV.ID, 0L, 1L);
+        setFluidContainerStats(32000 + Booster_EV.ID, 0L, 1L);
+        setFluidContainerStats(32000 + Booster_IV.ID, 0L, 1L);
+
     }
 
     private void oredictBlacklistEntries() {
