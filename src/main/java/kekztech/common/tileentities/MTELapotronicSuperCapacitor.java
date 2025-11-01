@@ -1278,6 +1278,11 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     }
 
     @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
+    @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         if (canUseWireless()) {

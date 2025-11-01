@@ -1369,11 +1369,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     }
 
     @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
-
-    @Override
     public boolean supportsBatchMode() {
         return true;
     }

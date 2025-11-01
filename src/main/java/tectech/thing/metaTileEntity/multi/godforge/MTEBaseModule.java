@@ -565,11 +565,6 @@ public class MTEBaseModule extends TTMultiblockBase implements IConstructable, I
     }
 
     @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
-
-    @Override
     public boolean willExplodeInRain() {
         return false;
     }

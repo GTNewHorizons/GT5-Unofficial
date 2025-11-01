@@ -457,11 +457,6 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
         return true;
     }
 
-    @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
-
     public HeatingCoilLevel getCoilLevel() {
         return heatLevel;
     }

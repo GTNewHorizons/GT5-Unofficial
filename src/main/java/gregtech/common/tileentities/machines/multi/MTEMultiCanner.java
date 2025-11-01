@@ -262,11 +262,6 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
     }
 
     @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
-
-    @Override
     protected @NotNull MTEMultiBlockBaseGui getGui() {
         return new MTEMultiBlockBaseGui(this).withMachineModeIcons(
             GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_PACKAGER,

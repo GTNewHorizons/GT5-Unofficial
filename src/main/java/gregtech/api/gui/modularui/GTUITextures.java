@@ -471,6 +471,18 @@ public class GTUITextures {
         .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_singularity");
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_STEAM = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_dehp_steam");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_DISTILLERY = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_distillery");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_DTOWER = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_dtower");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_UUMATTER = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_uumatter");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SCRAP = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_scrap");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_ELECTRIC_ARC = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_electric_arc");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_PLASMA_ARC = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_plasma_arc");
     public static final UITexture OVERLAY_BUTTON_MUFFLE_ON = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/muffle_on");
     public static final UITexture OVERLAY_BUTTON_MUFFLE_OFF = UITexture
