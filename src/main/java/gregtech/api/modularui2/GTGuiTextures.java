@@ -377,6 +377,12 @@ public final class GTGuiTextures {
         .fullImage()
         .canApplyTheme()
         .build();
+    public static final UITexture OVERLAY_BUTTON_OVERDRIVE_OFF = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/boiler_mode_off");
+    public static final UITexture OVERLAY_BUTTON_OVERDRIVE_ON = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/boiler_mode_on");
 
     public static final UITexture TT_OVERLAY_SLOT_MESH = UITexture.builder()
         .location(MODID, "gui/overlay_slot/mesh")
