@@ -1660,6 +1660,8 @@ public enum ItemList implements IItemContainer {
     Super_Chest_EV,
     Super_Chest_IV,
 
+    Debug_Fluid_Tank,
+
     Long_Distance_Pipeline_Fluid,
     Long_Distance_Pipeline_Item,
 

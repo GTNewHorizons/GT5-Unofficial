@@ -236,6 +236,7 @@ public enum MetaTileEntityIDs {
     CANNER_HV(233),
     CANNER_EV(234),
     CANNER_IV(235),
+    DEBUG_FLUID_TANK(236),
     COMPRESSOR_LV(241),
     COMPRESSOR_MV(242),
     COMPRESSOR_HV(243),
