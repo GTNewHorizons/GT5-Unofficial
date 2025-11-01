@@ -15650,7 +15650,7 @@ public class MaterialsInit {
         return new MaterialBuilder().setName("protohalkonite")
             .setDefaultLocalName("Proto-Halkonite Steel")
             .setChemicalFormula(Materials.MoltenProtoHalkoniteBase.mChemicalFormula)
-            .setFlavorText("Structure denying interaction")
+            .setFlavorText("Forged to be indestructible, probably")
             .setIconSet(new TextureSet("protohalkonite", true))
             .addDustItems()
             .addMetalItems()
