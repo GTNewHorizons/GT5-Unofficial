@@ -180,7 +180,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     public boolean mLockedToSingleRecipe = getDefaultRecipeLockingMode();
     protected boolean inputSeparation = getDefaultInputSeparationMode();
     protected VoidingMode voidingMode = getDefaultVoidingMode();
-    protected boolean batchMode = getDefaultBatchMode();
+    protected boolean batchMode = getDefaultBatchMode() && supportsBatchMode();
     protected @Nonnull CheckRecipeResult checkRecipeResult = CheckRecipeResultRegistry.NONE;
     protected int powerPanelMaxParallel = 1;
     protected boolean alwaysMaxParallel = true;
