@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+import static gregtech.api.enums.Textures.BlockIcons.FLUID_OUT_SIGN;
 import static gregtech.api.enums.Textures.BlockIcons.ITEM_IN_SIGN;
 import static gregtech.api.enums.Textures.BlockIcons.ITEM_OUT_SIGN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_IN;
@@ -133,6 +134,9 @@ public class MTECokeOvenHatch extends MTEHatch {
     private static final ITexture[] TEXTURE_IN = { TEXTURE_CASING, TextureFactory.of(OVERLAY_PIPE_IN) };
     private static final ITexture[] TEXTURE_IN_INDICATOR = { TEXTURE_CASING, TextureFactory.of(OVERLAY_PIPE_IN),
         TextureFactory.of(ITEM_IN_SIGN) };
+    private static final ITexture[] TEXTURE_OUT_FLUID = { TEXTURE_CASING, TextureFactory.of(OVERLAY_PIPE_OUT) };
+    private static final ITexture[] TEXTURE_OUT_FLUID_INDICATOR = { TEXTURE_CASING, TextureFactory.of(OVERLAY_PIPE_OUT),
+        TextureFactory.of(FLUID_OUT_SIGN) };
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
@@ -141,7 +145,8 @@ public class MTECokeOvenHatch extends MTEHatch {
 
         return switch (mode) {
             case Input -> GTMod.proxy.mRenderIndicatorsOnHatch ? TEXTURE_IN_INDICATOR : TEXTURE_IN;
-            case OutputItem, OutputFluid -> GTMod.proxy.mRenderIndicatorsOnHatch ? TEXTURE_OUT_INDICATOR : TEXTURE_OUT;
+            case OutputItem -> GTMod.proxy.mRenderIndicatorsOnHatch ? TEXTURE_OUT_INDICATOR : TEXTURE_OUT;
+            case OutputFluid -> GTMod.proxy.mRenderIndicatorsOnHatch ? TEXTURE_OUT_FLUID_INDICATOR : TEXTURE_OUT_FLUID;
         };
     }
 
