@@ -21,6 +21,7 @@ import java.util.Objects;
 
 import javax.annotation.Nullable;
 
+import gregtech.common.tileentities.machines.multi.LHC.MTEHatchAdvancedOutputBeamline;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -561,6 +562,10 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
         IMetaTileEntity mte = te.getMetaTileEntity();
         if (mte == null) return false;
 
+        if (mte instanceof MTEHatchAdvancedOutputBeamline) {
+            return false;
+        }
+
         if (mte instanceof MTEHatchOutputBeamline) {
             return this.mOutputBeamline.add((MTEHatchOutputBeamline) mte);
         }
@@ -660,7 +665,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
         float voltageFactor = getVoltageFactor(voltage);
         this.outputEnergy = (float) calculateOutputParticleEnergy(voltage, inputEnergy, this.antennaeTier);
 
-        this.outputParticleID = 1; // Photon
+        this.outputParticleID = 0; // Photon
 
         /*
          * If input focus > machine focus, divide their sum by 2.5, else weigh the former by the latter. This punishes

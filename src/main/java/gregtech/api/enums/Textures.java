@@ -1940,6 +1940,17 @@ public class Textures {
         NANITE_SHIELDING_FRAME,
         OVERLAY_ENERGY_IN_DEBUG,
 
+        COLLIDER_CASING,
+        CMS_CASING,
+        ATLAS_CASING,
+        ALICE_CASING,
+        LHCB_CASING,
+        OVERLAY_FRONT_LHC,
+        OVERLAY_FRONT_LHC_ACCELERATOR_GLOW,
+        OVERLAY_FRONT_LHC_COLLIDER_GLOW,
+        OVERLAY_FRONT_LHC_ACCELERATOR,
+        OVERLAY_FRONT_LHC_COLLIDER,
+
         // semicolon after the comment to reduce merge conflicts
         ;
 
