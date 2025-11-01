@@ -6,11 +6,8 @@ import net.minecraft.client.renderer.Tessellator;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.client.hud.HUDGui;
 
-@SideOnly(Side.CLIENT)
 public class ChamferedRectElement extends WidgetElement<ChamferedRectElement> implements Configurable {
 
     public int cornerCut = 3;
