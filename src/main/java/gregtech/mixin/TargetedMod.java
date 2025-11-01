@@ -13,6 +13,7 @@ public enum TargetedMod implements ITargetMod {
     EFR(null, "etfuturum"),
     GALACTICRAFT_CORE("micdoodle8.mods.galacticraft.core.asm.GCLoadingPlugin", "GalacticraftCore"),
     GT6("gregtech.asm.GT_ASM", "gregapi"),
+    HEE("chylex.hee.HEECore", "HardcoreEnderExpansion"),
     IC2("ic2.core.coremod.IC2core", "IC2"),
     NATURA(null, "Natura"),
     OPTIFINE("optifine.OptiFineForgeTweaker", "Optifine"),

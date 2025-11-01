@@ -2,13 +2,38 @@ package gregtech.api.enums;
 
 import static bartworks.util.BWTooltipReference.TT;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.AQUA;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BLUE;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BOLD;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_AQUA;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_GREEN;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_PURPLE;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GOLD;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GREEN;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.LIGHT_PURPLE;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.OBFUSCATED;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.RED;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.RESET;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.UNDERLINE;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.WHITE;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.YELLOW;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.animatedText;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.chain;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.text;
+import static gregtech.api.util.CustomGlyphs.AIR;
+import static gregtech.api.util.CustomGlyphs.ALEPH;
+import static gregtech.api.util.CustomGlyphs.CHAOS;
+import static gregtech.api.util.CustomGlyphs.CIRCLE_CROSS;
+import static gregtech.api.util.CustomGlyphs.CIRCLE_STAR;
+import static gregtech.api.util.CustomGlyphs.EARTH;
+import static gregtech.api.util.CustomGlyphs.EMPTY_SET;
+import static gregtech.api.util.CustomGlyphs.HIGH_VOLTAGE;
+import static gregtech.api.util.CustomGlyphs.MAGNET;
+import static gregtech.api.util.CustomGlyphs.OMEGA;
+import static gregtech.api.util.CustomGlyphs.ORDER;
+import static gregtech.api.util.CustomGlyphs.SPARKLES;
+import static gregtech.api.util.CustomGlyphs.STAR;
+import static gregtech.api.util.CustomGlyphs.SUBSCRIPT0;
+import static gregtech.api.util.CustomGlyphs.SUPERSCRIPT0;
 
 import java.math.BigInteger;
 import java.util.Arrays;
@@ -32,6 +57,7 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.internal.IGTRecipeAdder;
 import gregtech.api.net.IGT_NetworkHandler;
 import gregtech.api.util.CustomGlyphs;
+import gregtech.api.objects.XSTR;
 import gregtech.api.util.GTChunkAssociatedData;
 
 /**
@@ -181,17 +207,17 @@ public class GTValues {
     };
 
     public static final String[] TIER_COLORS = new String[] { EnumChatFormatting.RED.toString(), // ULV, 0
-        EnumChatFormatting.GRAY.toString(), // LV, 1
+        EnumChatFormatting.BLACK.toString(), // LV, 1
         EnumChatFormatting.GOLD.toString(), // MV, 2
         EnumChatFormatting.YELLOW.toString(), // HV, 3
         EnumChatFormatting.DARK_GRAY.toString(), // EV, 4
-        EnumChatFormatting.GREEN.toString(), // IV, 5
+        EnumChatFormatting.BLUE.toString(), // IV, 5
         EnumChatFormatting.LIGHT_PURPLE.toString(), // LuV, 6
         EnumChatFormatting.AQUA.toString(), // ZPM, 7
-        EnumChatFormatting.DARK_GREEN.toString(), // UV, 8
-        EnumChatFormatting.DARK_RED.toString(), // UHV, 9
-        EnumChatFormatting.DARK_PURPLE.toString(), // UEV, 10
-        EnumChatFormatting.DARK_BLUE.toString() + EnumChatFormatting.BOLD, // UIV, 11
+        EnumChatFormatting.DARK_GREEN.toString() + EnumChatFormatting.UNDERLINE, // UV, 8
+        EnumChatFormatting.DARK_RED.toString() + EnumChatFormatting.UNDERLINE, // UHV, 9
+        EnumChatFormatting.DARK_PURPLE.toString() + EnumChatFormatting.UNDERLINE, // UEV, 10
+        EnumChatFormatting.DARK_BLUE.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.UNDERLINE, // UIV, 11
         EnumChatFormatting.RED.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.UNDERLINE, // UMV, 12
         EnumChatFormatting.DARK_RED.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.UNDERLINE, // UXV, 13
         EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.UNDERLINE, // MAX, 14
@@ -277,10 +303,6 @@ public class GTValues {
      */
     public static IGT_NetworkHandler NW;
     /**
-     * Control percentage of filled 3x3 chunks. Lower number means less oreveins spawn
-     */
-    public static int oreveinPercentage;
-    /**
      * Control number of attempts to find a valid orevein. Generally this maximum limit isn't hit, selecting a vein is
      * cheap
      */
@@ -317,6 +339,10 @@ public class GTValues {
      * Debug parameter for world generation. Tracks chunks added/removed from run queue.
      */
     public static boolean debugWorldGen = false;
+    /**
+     * Debug parameter for world generation. Measures amount of time taken to generate oreveins, stone, etc.
+     */
+    public static boolean profileWorldGen = false;
     /**
      * Debug parameter for orevein generation.
      */
@@ -519,6 +545,10 @@ public class GTValues {
         + EnumChatFormatting.BOLD
         + "0";
 
+    public static final String AuthorPxx500 = "Author: " + EnumChatFormatting.DARK_BLUE
+        + EnumChatFormatting.BOLD
+        + "Pxx500";
+
     public static final String AuthorBlueWeabo = "Author: " + EnumChatFormatting.BLUE
         + EnumChatFormatting.BOLD
         + "Blue"
@@ -628,14 +658,75 @@ public class GTValues {
         + EnumChatFormatting.DARK_BLUE
         + "ez";
 
+    // a list specifically for random selection of formatting codes.
+    private static final String[] formattingCodes = new String[] { DARK_GREEN, DARK_AQUA, DARK_PURPLE, GOLD, BLUE,
+        GREEN, AQUA, RED, LIGHT_PURPLE, YELLOW, WHITE, OBFUSCATED, UNDERLINE };
+
     public static final Supplier<String> fancyAuthorChrom = chain(
+        createChromLetter("C", ORDER, MAGNET, HIGH_VOLTAGE),
+        createChromLetter("h", EARTH, ALEPH + SUBSCRIPT0, OMEGA + SUPERSCRIPT0),
+        createChromLetter("r", CHAOS, "ṟ", SPARKLES),
+        createChromLetter("o", AIR, CIRCLE_CROSS, EMPTY_SET),
+        createChromLetter("m", STAR, CIRCLE_STAR, "⏧"));
+
+    public static final Supplier<String> AuthorThree = chain(
         animatedText(
-            "Chrom",
+            "Three",
             0,
             1000,
-            EnumChatFormatting.WHITE + BOLD,
             EnumChatFormatting.BLUE + BOLD,
-            EnumChatFormatting.GOLD + BOLD));
+            EnumChatFormatting.RED + BOLD,
+            EnumChatFormatting.YELLOW + BOLD));
+
+    private static Supplier<String> createChromLetter(String letter, String... injectedUnicode) {
+
+        XSTR random = XSTR.XSTR_INSTANCE;
+        // calculates the amount of cycles
+        int length = 4 + injectedUnicode.length * 2;
+        String[] colorList = new String[length];
+
+        int currentUnicodeIndex = 0;
+        for (int i = 0; i < colorList.length; i++) {
+            StringBuilder builder = new StringBuilder();
+            int prependedFormattingCodes = 1 + random.nextInt(2);
+            for (int codeStep = 0; codeStep < prependedFormattingCodes; codeStep++) {
+                // adds fun formatting codes
+                int randIndex = random.nextInt(formattingCodes.length);
+                builder.append(formattingCodes[randIndex]);
+            }
+            // checks if its the correct positon to insert a special unicode character, injects if so, otherwise adds
+            // the letter
+            if (currentUnicodeIndex < injectedUnicode.length && ((i + 1) % injectedUnicode.length == 0)) {
+                builder.append(injectedUnicode[currentUnicodeIndex]);
+                currentUnicodeIndex += 1;
+            } else {
+                builder.append(letter);
+            }
+            colorList[i] = builder.toString();
+        }
+        return chromAnimatedText(" ", 1, 1000, colorList);
+    }
+
+    // special version of the animated text that strips the return value of spaces, don't bother using this elsewhere
+    private static Supplier<String> chromAnimatedText(String text, int posstep, int delay, String... formattingArray) {
+        if (text == null || formattingArray == null || formattingArray.length == 0) return () -> "";
+
+        final int finalDelay = Math.max(delay, 1);
+        final int finalPosstep = Math.max(posstep, 0);
+
+        return () -> {
+            StringBuilder sb = new StringBuilder(text.length() * 3);
+            int offset = (int) ((System.currentTimeMillis() / finalDelay) % formattingArray.length);
+            for (int i = 0; i < text.length(); i++) {
+                char c = text.charAt(i);
+                int indexColorArray = (i * finalPosstep + formattingArray.length - offset) % formattingArray.length;
+                sb.append(formattingArray[indexColorArray]);
+                sb.append(c);
+            }
+            return sb.toString()
+                .replaceAll("\\s", "");
+        };
+    }
 
     private static final long[] EXPLOSION_LOOKUP_V = new long[] { V[0], V[1], V[2], V[3], V[4], V[4] * 2, V[5], V[6],
         V[7], V[8], V[8] * 2, V[9], V[10], V[11], V[12], V[12] * 2, V[13], V[14], V[15] };

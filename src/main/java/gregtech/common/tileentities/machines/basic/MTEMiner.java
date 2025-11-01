@@ -10,7 +10,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkPosition;
@@ -32,8 +31,6 @@ import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
-import gregtech.common.blocks.BlockOresAbstract;
-import gregtech.common.blocks.TileEntityOres;
 import gregtech.common.misc.DrillingLogicDelegate;
 import gregtech.common.misc.IDrillingLogicDelegateOwner;
 
@@ -280,13 +277,7 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
                 Block block = aBaseMetaTileEntity.getBlockOffset(x, pipe.getTipDepth(), z);
                 int blockMeta = aBaseMetaTileEntity.getMetaIDOffset(x, pipe.getTipDepth(), z);
 
-                // todo some weird checks. refactorings needed
-                if (block instanceof BlockOresAbstract) {
-                    TileEntity oreEntity = aBaseMetaTileEntity.getTileEntityOffset(x, pipe.getTipDepth(), z);
-                    if (oreEntity instanceof TileEntityOres && ((TileEntityOres) oreEntity).mNatural) {
-                        oreBlockPositions.add(new ChunkPosition(x, pipe.getTipDepth(), z));
-                    }
-                } else if (GTUtility.isOre(block, blockMeta)) {
+                if (GTUtility.isOre(block, blockMeta)) {
                     oreBlockPositions.add(new ChunkPosition(x, pipe.getTipDepth(), z));
                 }
             }

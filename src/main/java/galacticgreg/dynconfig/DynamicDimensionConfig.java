@@ -16,15 +16,18 @@ public class DynamicDimensionConfig {
 
     public static class AsteroidConfig {
 
+        public boolean Enabled;
         public int MinSize;
         public int MaxSize;
         public int Probability;
+        public int PositiveEllipsoids;
+        public int NegativeEllipsoids;
+        public int AsteroidMinY;
+        public int AsteroidMaxY;
+        public float OreDensityMultiplier;
         public int OreChance;
-        public int OrePrimaryOffset;
-        public int SpecialBlockChance;
         public int SmallOreChance;
-        public boolean ObeyHeightLimits;
-        public boolean HiddenOres;
+        public int SpecialBlockChance;
         public int LootChestChance;
         public int LootChestTable;
         public int NumLootItems;
@@ -34,6 +37,8 @@ public class DynamicDimensionConfig {
     private static final Map<String, AsteroidConfig> _mDynamicAsteroidMap = new HashMap<>();
 
     public static AsteroidConfig getAsteroidConfig(ModDimensionDef pDimDef) {
+        if (pDimDef == null) return null;
+
         return _mDynamicAsteroidMap.getOrDefault(pDimDef.getDimIdentifier(), null);
     }
 
@@ -80,16 +85,17 @@ public class DynamicDimensionConfig {
 
                     AsteroidConfig aConf = new AsteroidConfig();
 
+                    aConf.Enabled = AsteroidProperties.asteroidPropertyBuilder.enabled;
                     aConf.MinSize = AsteroidProperties.asteroidPropertyBuilder.sizeMin;
                     aConf.MaxSize = AsteroidProperties.asteroidPropertyBuilder.sizeMax;
                     aConf.Probability = AsteroidProperties.asteroidPropertyBuilder.probability;
+                    aConf.PositiveEllipsoids = AsteroidProperties.asteroidPropertyBuilder.positiveEllipsoids;
+                    aConf.NegativeEllipsoids = AsteroidProperties.asteroidPropertyBuilder.negativeEllipsoids;
+                    aConf.AsteroidMinY = AsteroidProperties.asteroidPropertyBuilder.asteroidMinY;
+                    aConf.AsteroidMaxY = AsteroidProperties.asteroidPropertyBuilder.asteroidMaxY;
+                    aConf.OreDensityMultiplier = AsteroidProperties.asteroidPropertyBuilder.oreDensityMultiplier;
+                    aConf.SmallOreChance = AsteroidProperties.asteroidPropertyBuilder.smallOreChance;
                     aConf.SpecialBlockChance = AsteroidProperties.asteroidPropertyBuilder.specialBlockChance;
-
-                    aConf.OreChance = AsteroidProperties.asteroidPropertyBuilder.oreSpawn.baseOreChance;
-                    aConf.OrePrimaryOffset = AsteroidProperties.asteroidPropertyBuilder.oreSpawn.primaryToRareOreOffset;
-                    aConf.SmallOreChance = AsteroidProperties.asteroidPropertyBuilder.oreSpawn.smallOreChance;
-                    aConf.ObeyHeightLimits = AsteroidProperties.asteroidPropertyBuilder.oreSpawn.obeyHeighLimits;
-                    aConf.HiddenOres = AsteroidProperties.asteroidPropertyBuilder.oreSpawn.oresOnlyInsideAsteroids;
 
                     if (GalacticGreg.GalacticConfig.LootChestsEnabled) {
                         aConf.LootChestChance = AsteroidProperties.asteroidPropertyBuilder.loot.lootChestChance;

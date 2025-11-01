@@ -78,16 +78,16 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         final boolean aNoWorking = aMaterial.contains(SubTag.NO_WORKING);
         final long aMaterialMass = aMaterial.getMass();
 
-        switch (aPrefix) {
-            case plate -> registerPlate(aMaterial, aStack, aNoSmashing);
-            case plateDouble -> registerPlateDouble(aMaterial, aStack, aNoSmashing, aMaterialMass);
-            case plateTriple -> registerPlateTriple(aMaterial, aStack, aNoSmashing, aMaterialMass);
-            case plateQuadruple -> registerPlateQuadruple(aMaterial, aStack, aNoSmashing, aMaterialMass, aNoWorking);
-            case plateQuintuple -> registerPlateQuintuple(aMaterial, aStack, aNoSmashing, aMaterialMass);
-            case plateDense -> registerPlateDense(aMaterial, aStack, aNoSmashing, aMaterialMass);
-            case plateSuperdense -> registerPlateSuperdense(aMaterial, aStack, aNoSmashing, aMaterialMass);
-            case itemCasing -> registerItemCasing(aPrefix, aMaterial, aStack, aNoSmashing);
-            case plateAlloy -> registerPlateAlloy(aOreDictName, aStack);
+        switch (aPrefix.getName()) {
+            case "plate" -> registerPlate(aMaterial, aStack, aNoSmashing);
+            case "plateDouble" -> registerPlateDouble(aMaterial, aStack, aNoSmashing, aMaterialMass);
+            case "plateTriple" -> registerPlateTriple(aMaterial, aStack, aNoSmashing, aMaterialMass);
+            case "plateQuadruple" -> registerPlateQuadruple(aMaterial, aStack, aNoSmashing, aMaterialMass, aNoWorking);
+            case "plateQuintuple" -> registerPlateQuintuple(aMaterial, aStack, aNoSmashing, aMaterialMass);
+            case "plateDense" -> registerPlateDense(aMaterial, aStack, aNoSmashing, aMaterialMass);
+            case "plateSuperdense" -> registerPlateSuperdense(aMaterial, aStack, aNoSmashing, aMaterialMass);
+            case "itemCasing" -> registerItemCasing(aPrefix, aMaterial, aStack, aNoSmashing);
+            case "plateAlloy" -> registerPlateAlloy(aOreDictName, aStack);
             default -> {}
         }
     }
@@ -135,7 +135,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 new Object[] { "XXX", 'X', new ItemStack(Items.reeds, 1, WILDCARD) });
         }
 
-        if (aMaterial.mUnificatable && aMaterial.mMaterialInto == aMaterial) {
+        if (aMaterial.mUnifiable && aMaterial.mMaterialInto == aMaterial) {
 
             if (!aNoSmashing) {
 
@@ -270,7 +270,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .itemInputs(GTUtility.copyAmount(1, aStack))
                 .itemOutputs(
                     GTOreDictUnificator.get(OrePrefixes.compressed, aMaterial, 1L),
-                    GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1L))
+                    GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.AshDark, 1L))
                 .duration(1 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .metadata(ADDITIVE_AMOUNT, 2)
@@ -412,7 +412,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .addTo(fluidSolidifierRecipes);
         }
 
-        if (aMaterial.mUnificatable && aMaterial.mMaterialInto == aMaterial && !aNoSmashing) {
+        if (aMaterial.mUnifiable && aMaterial.mMaterialInto == aMaterial && !aNoSmashing) {
 
             if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                 GTModHandler.addCraftingRecipe(

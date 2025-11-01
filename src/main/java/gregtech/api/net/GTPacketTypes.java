@@ -7,7 +7,6 @@ import bartworks.common.net.PacketBioVatRenderer;
 import bartworks.common.net.PacketEIC;
 import bartworks.common.net.PacketOreDictCache;
 import bartworks.common.net.PacketServerJoined;
-import gregtech.common.blocks.PacketOres;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
 /**
@@ -18,7 +17,6 @@ public enum GTPacketTypes {
     TILE_ENTITY(0, new GTPacketTileEntity()),
     SOUND(1, new GTPacketSound()),
     BLOCK_EVENT(2, new GTPacketBlockEvent()),
-    ORES(3, new PacketOres()),
     POLLUTION(4, new GTPacketPollution()),
     CLIENT_PREFERENCE(9, new GTPacketClientPreference()),
     SET_CONFIGURATION_CIRCUIT(12, new GTPacketSetConfigurationCircuit()),
@@ -38,7 +36,7 @@ public enum GTPacketTypes {
     CREATE_TILE_ENTITY(28, new GTPacketCreateTE()),
     NODE_INFO(29, new GTPacketNodeInfo()),
     COIL_STATUS(30, new GTCoilStatus()),
-    DEBUG_COVER(31, new PacketDebugRedstoneCover()),
+    PLAYER_TELEPORT(31, new PacketTeleportPlayer()),
     LMA_CRAFTING_FX(32, new GTPacketLMACraftingFX()),
     SEND_WIRELESS_EU(33, new GTPacketUpdatePowerGoggles()),
     OVERWRITE_POWER_GOGGLES_MEASUREMENTS(34, new GTPacketOverwritePowerGogglesMeasurements()),

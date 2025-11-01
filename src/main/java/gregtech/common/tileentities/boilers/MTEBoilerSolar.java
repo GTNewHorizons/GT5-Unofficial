@@ -266,12 +266,12 @@ public class MTEBoilerSolar extends MTEBoiler {
     }
 
     @Override
-    protected boolean doesAddFuelSlot() {
+    public boolean doesAddFuelSlot() {
         return false;
     }
 
     @Override
-    protected boolean doesAddAshSlot() {
+    public boolean doesAddAshSlot() {
         return false;
     }
 
