@@ -66,7 +66,7 @@ public class BWWorldGenRoss128b extends BWOreLayer {
     public BWWorldGenRoss128b(String aName, boolean aDefault, int aMinY, int aMaxY, int aWeight, int aDensity,
         int aSize, ISubTagContainer top, ISubTagContainer bottom, ISubTagContainer between,
         ISubTagContainer sprinkled) {
-        super(aName, aDefault, aMinY, aMaxY, aWeight, aDensity, aSize, top, bottom, between, sprinkled);
+        super(aName, aDefault, aMinY, aMaxY, aWeight, aDensity, aSize, top, bottom, between, sprinkled, "Ross128b");
     }
 
     public static void initOres() {
