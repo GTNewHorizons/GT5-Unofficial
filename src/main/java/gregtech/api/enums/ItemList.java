@@ -2750,6 +2750,7 @@ public enum ItemList implements IItemContainer {
 
     CokeOvenController,
     CokeOvenCasing,
+    CokeOvenHatch,
 
     // semicolon after the comment to reduce merge conflicts
     ;
