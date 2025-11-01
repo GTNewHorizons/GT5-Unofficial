@@ -68,7 +68,8 @@ public class RecipesRareEarthProcessing {
 
         // Chloralkali process
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(1), ItemList.Cell_Empty.get(2L))
+            .itemInputs(ItemList.Cell_Empty.get(2L))
+            .iCircuit(1)
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Chlorine, 1L),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 1L),
