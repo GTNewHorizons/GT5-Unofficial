@@ -64,7 +64,7 @@ public interface IArmorBehavior {
     /**
      * Called whenever one of this behavior's listened keys is pressed (on equipped armor)
      */
-    default void onKeyPressed(@NotNull ItemStack stack, @NotNull EntityPlayer player, SyncedKeybind keyPressed) {}
+    default void onKeyPressed(@NotNull ItemStack stack, @NotNull EntityPlayer player, SyncedKeybind keyPressed, boolean isDown) {}
 
     /**
      * Called when attaching this behavior's NBT tag to an NBTTagCompound

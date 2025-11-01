@@ -4,8 +4,6 @@ import java.util.HashMap;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.Tier;
-import gregtech.api.enums.TierEU;
 import gregtech.api.enums.VoltageIndex;
 
 public class MechArmorAugmentRegistries {

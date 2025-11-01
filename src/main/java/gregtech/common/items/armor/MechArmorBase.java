@@ -21,7 +21,6 @@ import java.util.List;
 import gregtech.api.enums.GTValues;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.Cores;
 import ic2.api.item.ElectricItem;
-import ic2.core.item.ElectricItemManager;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -143,7 +142,7 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
         for (IArmorBehavior behavior : behaviors) {
             if (behavior.getListenedKeys()
                 .contains(keyPressed)) {
-                behavior.onKeyPressed(player.getCurrentArmor(slot), player, keyPressed);
+                behavior.onKeyPressed(player.getCurrentArmor(slot), player, keyPressed, isDown);
             }
         }
     }

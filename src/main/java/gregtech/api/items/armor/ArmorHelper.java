@@ -33,8 +33,6 @@ public class ArmorHelper {
     public static final String INFINITE_ENERGY_KEY = "InfiniteEnergy";
     public static final String FORCE_FIELD_KEY = "ForceField";
     public static final String WATER_BREATHING_KEY = "WaterBreathing";
-    public static final String TELEPORTER_KEY = "Teleporter";
-    public static final String TELEPORTER_POSITIONS = "TeleporterPositions";
 
     public static final String VIS_DISCOUNT_KEY = "VisDiscount";
 

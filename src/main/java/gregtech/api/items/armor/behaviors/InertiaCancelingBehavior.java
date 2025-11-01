@@ -34,7 +34,8 @@ public class InertiaCancelingBehavior implements IArmorBehavior {
     }
 
     @Override
-    public void onKeyPressed(@NotNull ItemStack stack, @NotNull EntityPlayer player, SyncedKeybind keyPressed) {
+    public void onKeyPressed(@NotNull ItemStack stack, @NotNull EntityPlayer player, SyncedKeybind keyPressed, boolean isDown) {
+        if (!isDown) return;
         NBTTagCompound tag = getOrCreateNbtCompound(stack);
         if (!tag.hasKey(ArmorHelper.INERTIA_CANCELING_KEY)) return;
 

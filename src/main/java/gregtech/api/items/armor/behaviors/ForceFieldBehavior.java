@@ -40,7 +40,8 @@ public class ForceFieldBehavior implements IArmorBehavior {
     }
 
     @Override
-    public void onKeyPressed(@NotNull ItemStack stack, @NotNull EntityPlayer player, SyncedKeybind keyPressed) {
+    public void onKeyPressed(@NotNull ItemStack stack, @NotNull EntityPlayer player, SyncedKeybind keyPressed, boolean isDown) {
+        if (!isDown) return;
         NBTTagCompound tag = getOrCreateNbtCompound(stack);
         if (!tag.hasKey(ArmorHelper.FORCE_FIELD_KEY)) return;
 
