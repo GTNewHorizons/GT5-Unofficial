@@ -6,6 +6,7 @@ import static gregtech.api.enums.Textures.BlockIcons.ITEM_OUT_SIGN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_IN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -87,7 +88,9 @@ public class MTEHatchCokeOven extends MTEHatch {
     private static final int FLUID_TRANSFER_RATE = 1_000;
 
     private Mode mode = Mode.Input;
-    private MTECokeOven controller;
+    private int controllerIndex = 0;
+    private MTECokeOven activeController;
+    private final ArrayList<MTECokeOven> controllers = new ArrayList<>();
     private boolean destroyed = false;
 
     public MTEHatchCokeOven(int ID, String name, String nameRegional) {
@@ -136,10 +139,6 @@ public class MTEHatchCokeOven extends MTEHatch {
         mode = Mode.loadNBTData(data);
     }
 
-    public void setController(MTECokeOven controller) {
-        this.controller = controller;
-    }
-
     @Override
     public void onBlockDestroyed() {
         destroyed = true;
@@ -156,8 +155,8 @@ public class MTEHatchCokeOven extends MTEHatch {
     @Override
     public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
         if (baseMetaTileEntity.isClientSide()) return;
-        if (controller == null) return;
         if (tick % 20 != 0) return;
+        if (nextActiveController()) return;
 
         final ForgeDirection sideFront = baseMetaTileEntity.getFrontFacing();
         final ForgeDirection sideBack = baseMetaTileEntity.getBackFacing();
@@ -183,9 +182,33 @@ public class MTEHatchCokeOven extends MTEHatch {
             case OutputFluid -> {
                 final IFluidHandler target = baseMetaTileEntity.getITankContainerAtSide(sideFront);
                 if (target == null) return;
-                GTUtility.moveFluid(controller, target, sideFront, FLUID_TRANSFER_RATE, null);
+                GTUtility.moveFluid(activeController, target, sideFront, FLUID_TRANSFER_RATE, null);
             }
         }
+    }
+
+    /** Adds a controller the hatch is a part of. */
+    public void addController(MTECokeOven controller) {
+        if (controllers.contains(controller)) return;
+        controllers.add(controller);
+    }
+
+    /** Sets the next active controller. */
+    private boolean nextActiveController() {
+        if (controllerIndex >= controllers.size()) {
+            controllerIndex = 0;
+            return true;
+        }
+
+        activeController = controllers.get(controllerIndex);
+
+        if (activeController == null) {
+            controllers.remove(controllerIndex);
+            return true;
+        }
+
+        controllerIndex = (controllerIndex + 1) % controllers.size();
+        return false;
     }
 
     @Override
@@ -196,13 +219,13 @@ public class MTEHatchCokeOven extends MTEHatch {
     @Override
     public int getSizeInventory() {
         if (destroyed) return 0;
-        return controller != null ? 2 : 0;
+        return activeController != null ? 2 : 0;
     }
 
     @Override
     public @Nullable ItemStack getStackInSlot(int index) {
-        if (controller == null) return null;
-        return controller.getStackInSlot(index);
+        if (activeController == null) return null;
+        return activeController.getStackInSlot(index);
     }
 
     @Override
@@ -216,25 +239,25 @@ public class MTEHatchCokeOven extends MTEHatch {
 
     @Override
     public void setInventorySlotContents(int index, ItemStack stack) {
-        if (controller == null) return;
-        controller.setInventorySlotContents(index, stack);
+        if (activeController == null) return;
+        activeController.setInventorySlotContents(index, stack);
     }
 
     @Override
     public boolean canInsertItem(int index, ItemStack itemStack, int ordinalSide) {
         if (mode != Mode.Input) return false;
-        if (controller == null) return false;
+        if (activeController == null) return false;
         final IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
         if (baseMetaTileEntity == null) return false;
         final ForgeDirection facing = baseMetaTileEntity.getFrontFacing();
         if (facing.ordinal() != ordinalSide) return false;
-        return controller.canInsertItem(index, itemStack, ForgeDirection.UNKNOWN.ordinal());
+        return activeController.canInsertItem(index, itemStack, ForgeDirection.UNKNOWN.ordinal());
     }
 
     @Override
     public boolean canExtractItem(int index, ItemStack itemStack, int ordinalSide) {
-        if (controller == null) return false;
-        return controller.canExtractItem(index, itemStack, ordinalSide);
+        if (activeController == null) return false;
+        return activeController.canExtractItem(index, itemStack, ordinalSide);
     }
 
     @Override

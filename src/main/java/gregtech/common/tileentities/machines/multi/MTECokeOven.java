@@ -453,7 +453,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
         IMetaTileEntity metaTileEntity = tileEntity.getMetaTileEntity();
         if (metaTileEntity == null) return false;
         if (metaTileEntity instanceof MTEHatchCokeOven hatch) {
-            hatch.setController(this);
+            hatch.addController(this);
             return hatches.add(hatch);
         }
         return false;
