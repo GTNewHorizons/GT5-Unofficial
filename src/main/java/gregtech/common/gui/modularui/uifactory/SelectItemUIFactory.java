@@ -150,7 +150,6 @@ public class SelectItemUIFactory {
                     .setPos(currentSlotX + 1, currentSlotY + 1));
         builder.widget(
             new TextWidget(StatCollector.translateToLocal("GT5U.gui.select.current"))
-                .setDefaultColor(COLOR_TEXT_GRAY.get())
                 .setPos(8, 25 + (18 - getFontRenderer().FONT_HEIGHT) / 2));
 
         for (int i = 0; i < stacks.size(); i++) {

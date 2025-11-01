@@ -44,7 +44,6 @@ public class FluidLimiterUIFactory extends CoverUIFactory<CoverFluidLimiter> {
                         .setSize(spaceX * 4 - 3, 12)))
             .widget(
                 new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.fluid_limiter.threshold"))
-                    .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX, startY + spaceY * 2 - 35));
     }
 }

@@ -12,7 +12,6 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverDoesWork;
 import gregtech.common.covers.modes.DetectionMode;
 import gregtech.common.covers.modes.RedstoneMode;
@@ -59,11 +58,11 @@ public class CoverDoesWorkGui extends CoverGui<CoverDoesWork> {
                     IKey.dynamic(() -> {
                         DetectionMode mode = detectionModeSyncValue.getValue();
                         if (mode == DetectionMode.MACHINE_ENABLED) {
-                            return GTUtility.trans("271", "Machine enabled");
+                            return translateToLocal("gt.interact.desc.MachineEnabled");
                         } else if (mode == DetectionMode.MACHINE_IDLE) {
-                            return GTUtility.trans("242", "Machine idle");
+                            return translateToLocal("gt.interact.desc.MachineIdle");
                         } else {
-                            return GTUtility.trans("241", "Recipe progress");
+                            return translateToLocal("gt.interact.desc.RecipeProgress");
                         }
                     })
                         .asWidget())
