@@ -144,6 +144,10 @@ public class Client {
         @Config.RangeInt(min = 28, max = 2048)
         @Config.RequiresMcRestart
         public int maxNumSounds = 512;
+
+        @Config.Comment("Which cape to use")
+        @Config.DefaultString("cape_mc")
+        public String selectedCape;
     }
 
     @Config.LangKey("GT5U.gui.config.client.blockoverlay")
