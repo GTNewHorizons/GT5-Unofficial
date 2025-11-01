@@ -390,7 +390,7 @@ public final class GTGuiTextures {
         .location(MODID, "gui/overlay_button/tesla_tower_chart")
         .build();
     public static final UITexture OVERLAY_BUTTON_TESLA_TOWER_HEAT_MAP = UITexture.builder()
-        .location(MODID, "gui/overlay_button/tesla_tower_chart")
+        .location(MODID, "gui/overlay_button/tesla_tower_minimap")
         .build();
     // endregion slot overlay
 

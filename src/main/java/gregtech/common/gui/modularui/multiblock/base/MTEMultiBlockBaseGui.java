@@ -350,7 +350,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                 continue;
             }
             itemDisplayMap
-                .merge(new ItemDisplayKey(item.getItem(), item.getItemDamage()), (long) item.stackSize, Long::sum);
+                .merge(new ItemDisplayKey(item.getItem(), item.getItemDamage(), item.getTagCompound()), (long) item.stackSize, Long::sum);
         }
         // a and b comparison swapped for stacksize on purpose to get descending order
         List<Map.Entry<ItemDisplayKey, Long>> sortedEntries = itemDisplayMap.entrySet()
