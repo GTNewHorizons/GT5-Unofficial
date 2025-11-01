@@ -110,7 +110,7 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
             "GT5U.GTPP_MULTI_WASH_PLANT.mode.0",
             "GT5U.GTPP_MULTI_WASH_PLANT.mode.1",
             "GT5U.GTPP_MULTI_WASH_PLANT.mode.2",
-            "machtype.owp")
+            "OWP")
             .addBulkMachineInfo(4, 5f, 1f)
             .addInfo("gt.owp.tips.1")
             .addPollutionAmount(getPollutionPerSecond(null))

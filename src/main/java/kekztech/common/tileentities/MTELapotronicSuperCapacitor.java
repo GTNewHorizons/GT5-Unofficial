@@ -351,7 +351,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("machtype.energy_storage", "machtype.lsc")
+        tt.addMachineType("machtype.energy_storage", "LSC")
             .addInfo(
                 "gt.lapo_super_capacitor.tips.1",
                 GTUtility.formatNumbers(max_passive_drain_eu_per_tick_per_uhv_cap),

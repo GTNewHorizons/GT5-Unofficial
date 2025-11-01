@@ -3661,7 +3661,6 @@ machtype.wwxl=Heat Exchanger, WWXL
 machtype.reactor_processing_unit=Reactor Processing Unit
 machtype.cold_trap=Cold Trap
 machtype.energy_storage=Energy Storage
-machtype.lsc=LSC
 machtype.gas_turbine=Gas Turbine
 machtype.adv_assline=Assembly Line, AAL
 machtype.fishtrap=Fish Trap
@@ -3674,7 +3673,6 @@ machtype.solar_tower=Solar Tower
 machtype.eoh=Spacetime Manipulator, EOH
 machtype.windmill=Windmill
 machtype.adv_nt_compressor=Advanced Neutronium Compressor
-machtype.bhc=BHC
 machtype.cleanroom=Cleanroom
 machtype.ore_factory=Ore Processor, IOF
 machtype.hi_engraver=Laser Engraver, HILE
@@ -3686,8 +3684,6 @@ machtype.eec=Powered Spawner, EEC
 machtype.defc=Fusion Crafter, DEFC
 machtype.mapiary=Mega Apiary, Mapiary
 machtype.nano_forge=Nanite Fabricator
-machtype.iaf=IAF
-machtype.owp=OWP
 
 # Used in addController. These are some commonly used shared ones
 # CONTEXT: Controller: (corepos)

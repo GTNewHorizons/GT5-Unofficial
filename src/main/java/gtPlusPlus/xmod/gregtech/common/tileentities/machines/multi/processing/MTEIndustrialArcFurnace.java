@@ -82,7 +82,7 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("gt.recipe.arcfurnace", "gt.recipe.plasmaarcfurnace", "machtype.iaf")
+        tt.addMachineType("gt.recipe.arcfurnace", "gt.recipe.plasmaarcfurnace", "IAF")
             .addInfo("gt.iaf.tips.1")
             .addStaticSpeedInfo(3.5f)
             .addStaticEuEffInfo(1f)

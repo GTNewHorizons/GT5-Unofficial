@@ -351,7 +351,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("gt.recipe.compressor", "machtype.adv_nt_compressor", "machtype.bhc")
+        tt.addMachineType("gt.recipe.compressor", "machtype.adv_nt_compressor", "BHC")
             .addManyInfo("gt.bhc.tips.1", "gt.bhc.tips.2", "gt.bhc.tips.3", "gt.bhc.tips.4")
             .addBulkMachineInfo(8, 5f, 0.7f)
             .addInfo("gt.bhc.tips.5")
