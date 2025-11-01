@@ -56,6 +56,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.metatileentity.implementations.MTEBasicBatteryBuffer;
 import gregtech.api.metatileentity.implementations.MTEBasicHull;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
+import gregtech.api.metatileentity.implementations.MTECokeOvenHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchBulkCatalystHousing;
 import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
@@ -9193,6 +9194,11 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             .set(new MTEHatchVoidBus(VOID_BUS.ID, "hatch.void_bus.tier.00", "Void Bus").getStackForm(1L));
     }
 
+    private static void registerCokeOvenHatch() {
+        ItemList.CokeOvenHatch
+            .set(new MTECokeOvenHatch(COKE_OVEN_HATCH.ID, "hatch.cokeoven", "Coke Oven Hatch").getStackForm(1L));
+    }
+
     private static void registerQuantumTank() {
         ItemList.Quantum_Tank_LV
             .set(new MTEQuantumTank(QUANTUM_TANK_LV.ID, "quantum.tank.tier.06", "Quantum Tank I", 6).getStackForm(1L));
@@ -10927,6 +10933,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerInputBus();
         registerOutputBus();
         registerVoidBus();
+        registerCokeOvenHatch();
         registerMufflerHatch();
         registerBoiler();
         registerBatteryBuffer1x1();
