@@ -70,6 +70,7 @@ public class MTEHatchCokeOven extends MTEHatch {
 
     private Mode mode = Mode.Input;
     private MTECokeOven controller;
+    private boolean destroyed = false;
 
     public MTEHatchCokeOven(int ID, String name, String nameRegional) {
         super(ID, name, nameRegional, 0, 0, new String[] { "Hatch for automating the Coke Oven." });
@@ -110,6 +111,12 @@ public class MTEHatchCokeOven extends MTEHatch {
 
     public void setController(MTECokeOven controller) {
         this.controller = controller;
+    }
+
+    @Override
+    public void onBlockDestroyed() {
+        destroyed = true;
+        super.onBlockDestroyed();
     }
 
     @Override
@@ -154,6 +161,7 @@ public class MTEHatchCokeOven extends MTEHatch {
 
     @Override
     public int getSizeInventory() {
+        if (destroyed) return 0;
         return controller != null ? 2 : 0;
     }
 
