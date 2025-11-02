@@ -86,7 +86,7 @@ import gregtech.common.modularui2.sync.Predicates;
 public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
 
     protected final T multiblock;
-    private final IGregTechTileEntity baseMetaTileEntity;
+    protected final IGregTechTileEntity baseMetaTileEntity;
     protected List<UITexture> machineModeIcons = new ArrayList<>();
     protected Map<String, UITexture> customIcons = new HashMap<>();
     private final int borderRadius = 4;

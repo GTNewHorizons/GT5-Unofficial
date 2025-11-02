@@ -46,6 +46,8 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTTextBuilder;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.gui.modularui.multiblock.MTEActiveTransformerGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import tectech.thing.casing.BlockGTCasingsTT;
 import tectech.thing.casing.TTCasingsContainer;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
@@ -265,7 +267,7 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
         transferredLast1Min = aNBT.getDouble("transferredLast1Min");
     }
 
-    private int calculateHatchTier() {
+    public int calculateHatchTier() {
         long minEUt = Long.MAX_VALUE;
 
         for (MTEHatchDynamo dynamo : mDynamoHatches) {
@@ -292,7 +294,7 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
     // Same as AE
     private static final String[] AMP_UNITS = { "", "k", "M", "G", "T", "P", "E" };
 
-    private static String formatUIAmperage(double amps) {
+    public static String formatUIAmperage(double amps) {
         int unit = 0;
 
         while (amps > 1000 && unit + 1 < AMP_UNITS.length) {
@@ -303,7 +305,7 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
         return GTUtility.formatNumbers(amps) + AMP_UNITS[unit];
     }
 
-    private static String formatUIEUt(double eut) {
+    public static String formatUIEUt(double eut) {
         if (eut < 1_000_000_000) return GTUtility.formatNumbers(eut);
 
         int exp = 0;
@@ -314,6 +316,45 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
         }
 
         return GTUtility.formatNumbers(eut) + "e" + exp;
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEActiveTransformerGui(this);
+    }
+
+    public double getTransferredLast30Secs() {
+        return transferredLast30Secs;
+    }
+
+    public void setTransferredLast30Secs(double transferredLast30Secs) {
+        this.transferredLast30Secs = transferredLast30Secs;
+    }
+
+    public double getTransferredLast5Secs() {
+        return transferredLast5Secs;
+    }
+
+    public void setTransferredLast5Secs(double transferredLast5Secs) {
+        this.transferredLast5Secs = transferredLast5Secs;
+    }
+
+    public double getTransferredLast1Min() {
+        return transferredLast1Min;
+    }
+
+    public void setTransferredLast1Min(double transferredLast1Min) {
+        this.transferredLast1Min = transferredLast1Min;
+    }
+
+    @Override
+    public boolean canBeMuffled() {
+        return false;
     }
 
     @Override
