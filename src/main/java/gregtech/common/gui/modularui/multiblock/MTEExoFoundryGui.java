@@ -3,7 +3,6 @@ package gregtech.common.gui.modularui.multiblock;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
-import java.util.Map;
 import java.util.Objects;
 
 import net.minecraft.util.EnumChatFormatting;
@@ -201,8 +200,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
 
     protected IWidget createModuleSelectButton(PanelSyncManager syncManager, ModularPanel parent, int index) {
         IPanelHandler[] selectPanels = new IPanelHandler[4];
-        for (int i = 0; i < selectPanels.length; i++)
-        {
+        for (int i = 0; i < selectPanels.length; i++) {
             int finalI = i;
             selectPanels[i] = syncManager.panel(
                 "moduleSelectPanel" + i,
@@ -225,13 +223,12 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                     .overlay(GuiTextures.ADD)
                     .onMousePressed(d -> {
                         if (!selectPanel.isPanelOpen()) {
-
                             selectPanel.openPanel();
-                        } else {
-                            for(int i = 0; i < selectPanels.length;i++)
-                            {
-                                selectPanels[i].closePanel();;
+                            for (IPanelHandler panel : selectPanels) {
+                                if (panel.isPanelOpen() && !panel.equals(selectPanel)) panel.closePanel();
                             }
+                        } else {
+                            selectPanel.closePanel();
                         }
                         return true;
                     })

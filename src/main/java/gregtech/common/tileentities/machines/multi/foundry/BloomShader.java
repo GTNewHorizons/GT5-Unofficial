@@ -8,7 +8,6 @@ import java.awt.GraphicsEnvironment;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gtnewhorizon.gtnhlib.client.renderer.shader.AutoShaderUpdater;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -96,15 +95,9 @@ public class BloomShader {
         while (framebufferList.size() < 8 && width + height > 5) {
             final HDRFramebuffer framebuffer;
             if (framebufferList.isEmpty()) {
-                framebuffer = new HDRFramebuffer(
-                    Math.round(width),
-                    Math.round(height),
-                    true);
+                framebuffer = new HDRFramebuffer(Math.round(width), Math.round(height), true);
             } else {
-                framebuffer = new HDRFramebuffer(
-                    Math.round(width),
-                    Math.round(height),
-                    false);
+                framebuffer = new HDRFramebuffer(Math.round(width), Math.round(height), false);
             }
             framebufferList.add(framebuffer);
             framebuffer.setFramebufferFilter(GL11.GL_LINEAR);
