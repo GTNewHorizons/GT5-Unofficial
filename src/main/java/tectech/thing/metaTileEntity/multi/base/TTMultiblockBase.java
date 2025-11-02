@@ -1230,60 +1230,49 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     }
 
     protected void dischargeController_EM(IGregTechTileEntity aBaseMetaTileEntity) {
-        if (ePowerPass && getEUVar() > getMinimumStoredEU()) {
-            powerPass(aBaseMetaTileEntity);
-        }
-    }
-
-    protected final void powerPass(IGregTechTileEntity aBaseMetaTileEntity) {
-        long euVar;
-        for (MTEHatchDynamo tHatch : validMTEList(mDynamoHatches)) {
-            euVar = tHatch.maxEUOutput() * tHatch.maxAmperesOut();
-            if (tHatch.getBaseMetaTileEntity()
-                .getStoredEU() <= tHatch.maxEUStore() - euVar
-                && aBaseMetaTileEntity
-                    .decreaseStoredEnergyUnits(euVar + Math.max(euVar / 24576, tHatch.maxAmperesOut()), false)) {
-                tHatch.setEUVar(
-                    tHatch.getBaseMetaTileEntity()
-                        .getStoredEU() + euVar);
-            }
-        }
-        for (MTEHatchDynamoMulti tHatch : validMTEList(eDynamoMulti)) {
-            euVar = tHatch.maxEUOutput() * tHatch.maxAmperesOut();
-            if (tHatch.getBaseMetaTileEntity()
-                .getStoredEU() <= tHatch.maxEUStore() - euVar
-                && aBaseMetaTileEntity
-                    .decreaseStoredEnergyUnits(euVar + Math.max(euVar / 24576, tHatch.maxAmperesOut()), false)) {
-                tHatch.setEUVar(
-                    tHatch.getBaseMetaTileEntity()
-                        .getStoredEU() + euVar);
+        if (ePowerPass) {
+            if (getEUVar() > getMinimumStoredEU()) {
+                powerPass(aBaseMetaTileEntity);
+            } else {
+                onPostPowerPass(0);
             }
         }
     }
 
-    protected final void powerPass_EM(IGregTechTileEntity aBaseMetaTileEntity) {
-        long euVar;
-        for (MTEHatchDynamo tHatch : validMTEList(mDynamoHatches)) {
-            euVar = tHatch.maxEUOutput();
-            if (tHatch.getBaseMetaTileEntity()
-                .getStoredEU() <= tHatch.maxEUStore() - euVar
-                && aBaseMetaTileEntity.decreaseStoredEnergyUnits(euVar + Math.max(euVar / 24576, 1), false)) {
-                tHatch.setEUVar(
-                    tHatch.getBaseMetaTileEntity()
-                        .getStoredEU() + euVar);
+    protected final void powerPass(IGregTechTileEntity igte) {
+        double injectedEU = 0;
+
+        for (MTEHatchDynamo hatch : validMTEList(mDynamoHatches)) {
+            long euToInject = hatch.maxEUOutput() * hatch.maxAmperesOut();
+
+            if (hatch.getEUVar() + euToInject > hatch.maxEUStore()) continue;
+
+            long withInefficiency = euToInject + Math.max(euToInject / 24576, hatch.maxAmperesOut());
+
+            if (igte.decreaseStoredEnergyUnits(withInefficiency, false)) {
+                hatch.setEUVar(hatch.getEUVar() + euToInject);
+                injectedEU += euToInject;
             }
         }
-        for (MTEHatchDynamoMulti tHatch : validMTEList(eDynamoMulti)) {
-            euVar = tHatch.maxEUOutput() * tHatch.Amperes;
-            if (tHatch.getBaseMetaTileEntity()
-                .getStoredEU() <= tHatch.maxEUStore() - euVar
-                && aBaseMetaTileEntity
-                    .decreaseStoredEnergyUnits(euVar + Math.max(euVar / 24576, tHatch.Amperes), false)) {
-                tHatch.setEUVar(
-                    tHatch.getBaseMetaTileEntity()
-                        .getStoredEU() + euVar);
+
+        for (MTEHatchDynamoMulti hatch : validMTEList(eDynamoMulti)) {
+            long euToInject = hatch.maxEUOutput() * hatch.maxAmperesOut();
+
+            if (hatch.getEUVar() + euToInject > hatch.maxEUStore()) continue;
+
+            long withInefficiency = euToInject + Math.max(euToInject / 24576, hatch.maxAmperesOut());
+
+            if (igte.decreaseStoredEnergyUnits(withInefficiency, false)) {
+                hatch.setEUVar(hatch.getEUVar() + euToInject);
+                injectedEU += euToInject;
             }
         }
+
+        onPostPowerPass(injectedEU);
+    }
+
+    protected void onPostPowerPass(double eu) {
+
     }
 
     protected void chargeController_EM(IGregTechTileEntity aBaseMetaTileEntity) {

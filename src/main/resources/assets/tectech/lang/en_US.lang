@@ -1390,6 +1390,11 @@ GT5U.gui.text.waiting_for_inputs=§7Waiting for inputs
 GT5U.gui.text.computation_loss=§4Shut down due to computation loss.
 GT5U.gui.text.researching_item=§fResearching: §b%s
 GT5U.gui.text.research_progress=§fComputation: %d/%d (%s%%)
+GT5U.gui.text.at_eu_transferred=§8EU Transferred:
+GT5U.gui.text.at_past_5secs.header=§7Past 5 seconds:
+GT5U.gui.text.at_past_30secs.header=§7Past 30 seconds:
+GT5U.gui.text.at_past_min.header=§7Past minute:
+GT5U.gui.text.at_history.values=  %s EU/t  (%sA %s)
 
 # RecipeMaps
 gt.recipe.eyeofharmony=Eye of Harmony

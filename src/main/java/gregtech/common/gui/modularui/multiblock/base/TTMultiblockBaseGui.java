@@ -23,9 +23,9 @@ import gregtech.api.modularui2.GTGuiTextures;
 import tectech.thing.metaTileEntity.multi.base.IParametrized;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-public class TTMultiblockBaseGui extends MTEMultiBlockBaseGui<TTMultiblockBase> {
+public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlockBaseGui<T> {
 
-    public TTMultiblockBaseGui(TTMultiblockBase multiblock) {
+    public TTMultiblockBaseGui(T multiblock) {
         super(multiblock);
     }
 
