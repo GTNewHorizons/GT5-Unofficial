@@ -10,12 +10,11 @@ import net.minecraft.util.EnumChatFormatting;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.utils.Alignment;
-import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ListWidget;
+import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
 import gregtech.api.util.GTTextBuilder;
@@ -49,34 +48,30 @@ public class MTEActiveTransformerGui extends TTMultiblockBaseGui<MTEActiveTransf
         IntSyncValue hatchTierSyncer = new IntSyncValue(multiblock::calculateHatchTier);
         syncManager.syncValue("hatchTier", hatchTierSyncer);
 
-        return new ListWidget<>().widthRel(1)
-            .child(
-                IKey.lang("GT5U.multiblock.startup")
-                    .color(Color.WHITE.main)
-                    .asWidget()
-                    .alignment(Alignment.CenterLeft)
-                    .setEnabledIf(w -> startupCheckSyncer.getValue() > 0)
-                    .marginBottom(2)
-                    .widthRel(1))
-            .child(
-                IKey.lang("GT5U.gui.text.routing")
-                    .asWidget()
-                    .height(9)
-                    .marginBottom(2)
-                    .widthRel(1)
-                    .setEnabledIf(widget -> multiblock.getErrorDisplayID() == 0 && baseMetaTileEntity.isActive()))
-            .child(
-                IKey.lang("GT5U.gui.text.at_eu_transferred")
-                    .asWidget()
-                    .marginBottom(2))
-            .child(createThroughputColumn(transferredLast5Secs, hatchTierSyncer, "GT5U.gui.text.at_past_5secs.header"))
-            .child(
-                createThroughputColumn(transferredLast30Secs, hatchTierSyncer, "GT5U.gui.text.at_past_30secs.header"))
-            .child(createThroughputColumn(transferredLast1Min, hatchTierSyncer, "GT5U.gui.text.at_past_min.header"));
+        Column throughputColumn = new Column();
+        throughputColumn.coverChildrenHeight()
+            .widthRel(1);
 
+        throughputColumn.child(
+            createIndividualThroughputColumn(
+                transferredLast5Secs,
+                hatchTierSyncer,
+                "GT5U.gui.text.at_past_5secs.header"));
+        throughputColumn.child(
+            createIndividualThroughputColumn(
+                transferredLast30Secs,
+                hatchTierSyncer,
+                "GT5U.gui.text.at_past_30secs.header"));
+        throughputColumn.child(
+            createIndividualThroughputColumn(transferredLast1Min, hatchTierSyncer, "GT5U.gui.text.at_past_min.header"));
+        return super.createTerminalTextWidget(syncManager, parent).child(
+            IKey.lang("GT5U.gui.text.at_eu_transferred")
+                .asWidget()
+                .marginBottom(2))
+            .child(throughputColumn);
     }
 
-    private Flow createThroughputColumn(DoubleSyncValue transferSyncer, IntSyncValue hatchTierSyncer,
+    private Flow createIndividualThroughputColumn(DoubleSyncValue transferSyncer, IntSyncValue hatchTierSyncer,
         String headerLangKey) {
         return Flow.column()
             .height(18)

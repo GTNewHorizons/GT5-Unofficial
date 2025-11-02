@@ -225,7 +225,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                     .setEnabledIf(w -> startupCheckSyncer.getValue() > 0)
                     .marginBottom(2)
                     .widthRel(1))
-            .child(
+            .childIf(
+                multiblock.hasRunningText(),
                 new TextWidget<>(GTUtility.trans("142", "Running perfectly.")).color(Color.WHITE.main)
                     .setEnabledIf(widget -> multiblock.getErrorDisplayID() == 0 && baseMetaTileEntity.isActive())
                     .marginBottom(2)

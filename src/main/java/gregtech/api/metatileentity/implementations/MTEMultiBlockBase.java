@@ -3638,4 +3638,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     public void setPowerfailEventCreationStatus(boolean status) {
         makePowerfailEvents = status;
     }
+
+    public boolean hasRunningText() {
+        return true;
+    }
 }
