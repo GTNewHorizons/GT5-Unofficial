@@ -152,6 +152,10 @@ public class MTEHatchCokeOven extends MTEHatch {
         currenttip.add("Mode: " + mode.name);
     }
 
+    /**
+     * Executes the active controller’s action once per second and cycles to the next.
+     * Transfers items or fluids forward depending on mode.
+     */
     @Override
     public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
         if (baseMetaTileEntity.isClientSide()) return;
