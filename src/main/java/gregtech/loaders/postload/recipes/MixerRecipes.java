@@ -22,6 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -32,6 +33,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialsAlloy;
+import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
@@ -904,6 +906,16 @@ public class MixerRecipes implements Runnable {
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(mixerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .fluidInputs(
+                WerkstoffLoader.LiquidHelium.getFluidOrGas(1000),
+                Materials.SuperCoolant.getFluid(10000L),
+                new FluidStack(TFFluids.fluidCryotheum, 10000))
+            .fluidOutputs(Materials.SuperfluidStimulant.getFluid(1000L))
+            .duration(15 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(mixerNonCellRecipes);
 
         if (Thaumcraft.isModLoaded()) {
             GTValues.RA.stdBuilder()

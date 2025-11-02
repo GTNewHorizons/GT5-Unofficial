@@ -822,7 +822,7 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> vacuumFreezerRecipes = RecipeMapBuilder
         .of("gt.recipe.vacuumfreezer")
-        .maxIO(1, 1, 2, 1)
+        .maxIO(1, 1, 2, 2)
         .recipeEmitter(b -> {
             FluidStack in, out;
             if (isArrayOfLength(b.getItemInputsBasic(), 1) && isArrayOfLength(b.getItemOutputs(), 1)
@@ -1310,6 +1310,12 @@ public final class RecipeMaps {
     public static final RecipeMap<RecipeMapBackend> cableRecipes = RecipeMapBuilder
         .of("gt.recipe.cable", RecipeMapBackend::new)
         .maxIO(6, 1, 1, 0)
+        .minInputs(1, 1)
+        .progressBar(GTUITextures.PROGRESSBAR_ARROW)
+        .build();
+
+    public static final RecipeMap<RecipeMapBackend> scpRecipes = RecipeMapBuilder.of("gt.recipe.scp")
+        .maxIO(2, 1, 2, 0)
         .minInputs(1, 1)
         .progressBar(GTUITextures.PROGRESSBAR_ARROW)
         .build();

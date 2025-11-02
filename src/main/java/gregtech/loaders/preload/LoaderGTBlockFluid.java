@@ -1430,7 +1430,6 @@ public class LoaderGTBlockFluid implements Runnable {
             .registerBContainers(
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.ExcitedDTSC, 1L),
                 ItemList.Cell_Empty.get(1L));
-
         GTFluidFactory.builder(Materials.RawStarMatter.mName)
             .withLocalizedName(Materials.RawStarMatter.mLocalizedName)
             .withStateAndTemperature(LIQUID, 10_000_000)
