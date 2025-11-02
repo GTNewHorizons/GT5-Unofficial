@@ -96,7 +96,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, this.getFrameMaterial(), 1)
                     .getDisplayName(),
                 "gt.dehp.info.3")
-            .addEnergyHatch(VN[this.getMinTier()] + "gt.dehp.info.4")
+            .addStructureInfo(VN[this.getMinTier()] + translate("gt.dehp.info.4"))
             .addMaintenanceHatch("gt.dehp.info.5")
             .addInputBus("gt.dehp.info.6")
             .addInputHatch("gt.dehp.info.5")
