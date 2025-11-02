@@ -2,6 +2,7 @@ package gregtech.api.items.armor.behaviors;
 
 import static gregtech.api.items.armor.ArmorKeybinds.GOGGLES_OF_REVEALING_KEYBIND;
 import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
+import static gregtech.loaders.ExtraIcons.revealingAugment;
 
 import java.util.Collections;
 import java.util.Set;
@@ -9,6 +10,7 @@ import java.util.Set;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
@@ -23,6 +25,11 @@ public class GogglesOfRevealingBehavior implements IArmorBehavior {
     public static final GogglesOfRevealingBehavior INSTANCE = new GogglesOfRevealingBehavior();
 
     protected GogglesOfRevealingBehavior() {/**/}
+
+    @Override
+    public IIcon getModularArmorTexture() {
+        return revealingAugment;
+    }
 
     @Override
     public void onKeyPressed(@NotNull ItemStack stack, @NotNull EntityPlayer player, SyncedKeybind keyPressed,

@@ -1,8 +1,11 @@
 package gregtech.api.items.armor.behaviors;
 
+import static gregtech.loaders.ExtraIcons.rebreatherAugment;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
@@ -15,6 +18,11 @@ public class WaterBreathingBehavior implements IArmorBehavior {
     public static final WaterBreathingBehavior INSTANCE = new WaterBreathingBehavior();
 
     protected WaterBreathingBehavior() {}
+
+    @Override
+    public IIcon getModularArmorTexture() {
+        return rebreatherAugment;
+    }
 
     @Override
     public String getMainNBTTag() {
