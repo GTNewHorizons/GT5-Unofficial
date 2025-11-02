@@ -309,44 +309,6 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
 
     }
 
-    private IWidget createLegacyNodeGrid(PanelSyncManager syncManager) {
-        TeslaNodeListSyncHandler teslaNodeListSyncer = syncManager
-            .findSyncHandler("teslaNodes", TeslaNodeListSyncHandler.class);
-        List<TeslaNodeData> nodes = teslaNodeListSyncer.getValue();
-        IGregTechTileEntity base = multiblock.getBaseMetaTileEntity();
-        World world = base.getWorld();
-
-        int gridChunkRadius = 8;
-        Chunk multiblockChunk = world.getChunkFromBlockCoords(base.getXCoord(), base.getZCoord());
-        // X,Z Chunk to amps used
-        Map<Vec3Impl, Integer> chunkToAmpMap = new HashMap<>();
-
-        for (TeslaNodeData node : nodes) {
-            Vec3Impl coords = node.getCoords();
-            Chunk nodeChunk = world.getChunkFromBlockCoords(coords.get0(), coords.get2());
-            int mapOffsetX = multiblockChunk.xPosition - nodeChunk.xPosition + gridChunkRadius;
-            int mapOffsetZ = multiblockChunk.zPosition - nodeChunk.zPosition + gridChunkRadius;
-            chunkToAmpMap.merge(new Vec3Impl(mapOffsetX, 0, mapOffsetZ), node.getUsedAmps(), Integer::sum);
-        }
-        Flow column = Flow.column()
-            .sizeRel(1);
-
-        chunkToAmpMap.forEach((chunk, amps) -> {
-            column.child(
-                new Rectangle().setColor(Color.GREEN.main)
-                    .asIcon()
-                    .size(8)
-                    .asWidget()
-                    .overlay()
-                    .pos(chunk.get0() * 8, chunk.get2() * 8)
-                    .size(8)
-                    .tooltip(t -> t.addLine(amps + "A"))
-                    .tooltipAutoUpdate(true));
-        });
-
-        return column;
-    }
-
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
