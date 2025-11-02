@@ -1963,6 +1963,9 @@ public class Textures {
         OVERLAY_FRONT_EXOFOUNDRY_GLOW,
         OVERLAY_FRONT_EXOFOUNDRY_ACTIVE,
         OVERLAY_FRONT_EXOFOUNDRY_ACTIVE_GLOW,
+        COKE_OVEN_CASING,
+        COKE_OVEN_OVERLAY_INACTIVE,
+        COKE_OVEN_OVERLAY_ACTIVE,
 
         // semicolon after the comment to reduce merge conflicts
         ;
