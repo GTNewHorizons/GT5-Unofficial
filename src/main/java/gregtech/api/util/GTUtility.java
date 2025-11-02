@@ -4782,6 +4782,15 @@ public class GTUtility {
         return ((value % divisor) + divisor) % divisor;
     }
 
+    public static NBTTagCompound getOrCreateNbtCompound(ItemStack stack) {
+        NBTTagCompound compound = stack.getTagCompound();
+        if (compound == null) {
+            compound = new NBTTagCompound();
+            stack.setTagCompound(compound);
+        }
+        return compound;
+    }
+
     /**
      * Computes base raised to the power of an integer exponent. Typically faster than
      * {@link java.lang.Math#pow(double, double)} when {@code exp} is an integer.
