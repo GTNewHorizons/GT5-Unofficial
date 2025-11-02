@@ -217,7 +217,8 @@ public final class GTGuiThemes {
         .color(Dyes.dyeWhite.toInt()) // todo change color here
         .textColor(0xfafaff) // todo change color here
         .customTextColor(GTWidgetThemes.TEXT_TITLE.getFullName(), 0xfafaff) // todo change color here
-        .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_LOGO_EXOFOUNDRY).build();
+        .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_LOGO_EXOFOUNDRY)
+        .build();
 
     public static final GTGuiTheme COKE_OVEN = GTGuiTheme.builder("gregtech:primitive")
         .parent(STANDARD)
