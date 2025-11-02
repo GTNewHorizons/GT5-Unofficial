@@ -8,6 +8,7 @@ import java.awt.GraphicsEnvironment;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.gtnewhorizon.gtnhlib.client.renderer.shader.AutoShaderUpdater;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -24,7 +25,6 @@ public class BloomShader {
 
     private static BloomShader instance;
     private static final Minecraft mc = Minecraft.getMinecraft();
-    private static int ticks;
 
     private HDRFramebuffer[] framebuffers;
 
@@ -90,18 +90,24 @@ public class BloomShader {
             float heightMultiplier = height / screenHeight;
 
             float avg = (float) Math.sqrt((widthMultiplier + heightMultiplier) / 2);
-            System.out.println("avg: " + avg);
-            // multiplier *= avg;
+            multiplier *= avg;
         }
-        System.out.println("multiplier: " + multiplier);
 
         while (framebufferList.size() < 8 && width + height > 5) {
-            HDRFramebuffer framebuffer = new HDRFramebuffer(Math.round(width), Math.round(height));
+            final HDRFramebuffer framebuffer;
+            if (framebufferList.isEmpty()) {
+                framebuffer = new HDRFramebuffer(
+                    Math.round(width),
+                    Math.round(height),
+                    true);
+            } else {
+                framebuffer = new HDRFramebuffer(
+                    Math.round(width),
+                    Math.round(height),
+                    false);
+            }
             framebufferList.add(framebuffer);
             framebuffer.setFramebufferFilter(GL11.GL_LINEAR);
-            System.out.println(
-                "Creating framebuffer (" + Math
-                    .round(width) + ", " + Math.round(height) + ") " + framebufferList.size());
 
             width /= 2;
             height /= 2;
@@ -136,10 +142,6 @@ public class BloomShader {
         if (!needsRendering) return;
 
         needsRendering = false;
-        if (++ticks >= 100) {
-            // remove the comment below to view the framebuffer debug
-            // ticks = 0;
-        }
 
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
         GLStateManager.glColor4f(1, 1, 1, 1);
@@ -153,7 +155,6 @@ public class BloomShader {
         final HDRFramebuffer mainFramebuffer = framebuffers[0];
 
         mainFramebuffer.bindFramebufferTexture();
-        // framebuffers[0].copyTextureToFile("bloomshader", "framebuffer_main.png");
         downscaleProgram.use();
 
         for (int i = 1; i < framebuffers.length; i++) {
@@ -167,9 +168,6 @@ public class BloomShader {
             QuadRenderer.drawFullscreenQuad();
 
             framebuffer.bindFramebufferTexture();
-            if (ticks == 0) {
-                framebuffer.copyTextureToFile("bloomshader", "framebuffer_downsample_" + i + ".png");
-            }
         }
 
         upscaleProgram.use();
@@ -182,11 +180,6 @@ public class BloomShader {
             GL20.glUniform2f(uTexelSize_upscale, 1f / framebuffer.framebufferWidth, 1f / framebuffer.framebufferHeight);
 
             QuadRenderer.drawFullscreenQuad();
-
-            if (ticks == 0) {
-                upscaledFramebuffer
-                    .copyTextureToFile("bloomshader", "framebuffer_upsample_" + (framebuffers.length - i) + ".png");
-            }
         }
 
         mc.getFramebuffer()

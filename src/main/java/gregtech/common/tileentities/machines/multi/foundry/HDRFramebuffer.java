@@ -10,6 +10,7 @@ import java.nio.IntBuffer;
 
 import javax.imageio.ImageIO;
 
+import com.gtnewhorizon.gtnhlib.client.renderer.shader.AutoShaderUpdater;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.texture.TextureUtil;
@@ -27,30 +28,16 @@ import com.gtnewhorizons.angelica.glsm.GLStateManager;
 
 public class HDRFramebuffer extends Framebuffer {
 
-    private int settings;
-
-    public static final int FRAMEBUFFER_DEPTH_ENABLED = 0x1; // This uses a depth renderbuffer by default
-    public static final int FRAMEBUFFER_DEPTH_TEXTURE = 0x2 | 0x1;
-    public static final int FRAMEBUFFER_STENCIL_BUFFER = 0x4;
-    public static final int FRAMEBUFFER_TEXTURE_LINEAR = 0x8;
-    public static final int FRAMEBUFFER_ALPHA_CHANNEL = 0x10;
-    public static final int FRAMEBUFFER_HDR_COLORS = 0x20;
-
     private static ShaderProgram tonemapShader;
     private static int uMultiplier;
     private static float tonemapMultiplier;
 
-    public HDRFramebuffer(int width, int height) {
-        this(width, height, FRAMEBUFFER_DEPTH_ENABLED);
-    }
-
-    public HDRFramebuffer(int width, int height, int settings) {
-        super(width, height, (settings & FRAMEBUFFER_DEPTH_ENABLED) != 0);
+    public HDRFramebuffer(int width, int height, boolean depth) {
+        super(width, height, depth);
     }
 
     @Override
     public void createFramebuffer(int p_147605_1_, int p_147605_2_) {
-        this.useDepth = true; // TODO
         this.framebufferWidth = p_147605_1_;
         this.framebufferHeight = p_147605_2_;
         this.framebufferTextureWidth = p_147605_1_;
@@ -81,34 +68,16 @@ public class HDRFramebuffer extends Framebuffer {
 
         if (useDepth) {
             OpenGlHelper.func_153176_h(OpenGlHelper.field_153199_f, this.depthBuffer);
-            if (net.minecraftforge.client.MinecraftForgeClient.getStencilBits() == 0) {
-                OpenGlHelper.func_153186_a(
-                    OpenGlHelper.field_153199_f,
-                    33190,
-                    this.framebufferTextureWidth,
-                    this.framebufferTextureHeight);
-                OpenGlHelper.func_153190_b(
-                    OpenGlHelper.field_153198_e,
-                    OpenGlHelper.field_153201_h,
-                    OpenGlHelper.field_153199_f,
-                    this.depthBuffer);
-            } else {
-                OpenGlHelper.func_153186_a(
-                    OpenGlHelper.field_153199_f,
-                    org.lwjgl.opengl.EXTPackedDepthStencil.GL_DEPTH24_STENCIL8_EXT,
-                    this.framebufferTextureWidth,
-                    this.framebufferTextureHeight);
-                OpenGlHelper.func_153190_b(
-                    OpenGlHelper.field_153198_e,
-                    org.lwjgl.opengl.EXTFramebufferObject.GL_DEPTH_ATTACHMENT_EXT,
-                    OpenGlHelper.field_153199_f,
-                    this.depthBuffer);
-                OpenGlHelper.func_153190_b(
-                    OpenGlHelper.field_153198_e,
-                    org.lwjgl.opengl.EXTFramebufferObject.GL_STENCIL_ATTACHMENT_EXT,
-                    OpenGlHelper.field_153199_f,
-                    this.depthBuffer);
-            }
+            OpenGlHelper.func_153186_a(
+                OpenGlHelper.field_153199_f,
+                33190,
+                this.framebufferTextureWidth,
+                this.framebufferTextureHeight);
+            OpenGlHelper.func_153190_b(
+                OpenGlHelper.field_153198_e,
+                OpenGlHelper.field_153201_h,
+                OpenGlHelper.field_153199_f,
+                this.depthBuffer);
         }
 
         setFramebufferColor(0, 0, 0, 0);
@@ -217,16 +186,22 @@ public class HDRFramebuffer extends Framebuffer {
 
     public void clearBindFramebuffer() {
         bindFramebuffer(false);
-        GL11.glClearDepth(1.0D);
+        clearCurrentFramebuffer();
+    }
+
+    public void clearCurrentFramebuffer() {
         GL11.glClearColor(0, 0, 0, 0);
-        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+        if (this.useDepth) {
+            GL11.glClearDepth(1.0D);
+            GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+        } else {
+            GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+        }
     }
 
     public void clearBindFramebuffer(boolean viewport) {
         bindFramebuffer(viewport);
-        GL11.glClearDepth(1.0D);
-        GL11.glClearColor(0, 0, 0, 0);
-        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+        clearCurrentFramebuffer();
     }
 
     @Override
