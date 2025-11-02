@@ -183,8 +183,8 @@ public class RecipesGeneral {
                 ItemList.Casing_LV.get(1),
                 ItemList.Pump_MV.get(1),
                 MaterialsAlloy.EGLIN_STEEL.getPlate(4),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ULV, 2),
-                GTUtility.getIntegratedCircuit(16))
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ULV, 2))
+            .iCircuit(16)
             .itemOutputs(GregtechItemList.PestKiller.get(1))
             .fluidInputs(FluidUtils.getFluidStack("ic2hotwater", 500))
             .duration(1 * MINUTES)
