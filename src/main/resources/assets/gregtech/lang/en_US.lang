@@ -3094,6 +3094,17 @@ gt.time.tick.plural=ticks
 gt.time.second.singular=second
 gt.time.second.plural=seconds
 
+#Armor keybinds
+key.gt.toggle_night_vision=Toggle Night Vision
+key.gt.toggle_jetpack_hover=Toggle Jetpack Hover
+key.gt.toggle_jetpack=Toggle Jetpack Engine
+key.gt.toggle_goggles_of_revealing=Toggle Goggles of Revealing
+key.gt.toggle_inertiacanceling=Toggle Inertia Canceling
+key.gt.toggle_omnimovement=Toggle Omni Movement
+key.gt.speed_increase=Increase Speed
+key.gt.speed_decrease=Decrease Speed
+key.gt.force_field=Toggle Force Field
+
 #Tool modes
 key.gt.tool_mode_switch=Tool Mode Switch
 gt.wrench.mode.1=Line Mode
