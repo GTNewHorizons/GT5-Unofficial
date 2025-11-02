@@ -418,7 +418,6 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
         return fluid;
     }
 
-    @Override
     public void setFluid(FluidStack fluid) {
         this.fluid = fluid;
     }
