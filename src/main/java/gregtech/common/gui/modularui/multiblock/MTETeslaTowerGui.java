@@ -41,7 +41,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.gui.ItemDisplayKey;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.multiblock.base.TTMultiblockBaseGui;
 import gregtech.common.gui.modularui.synchandler.TeslaNodeData;
 import gregtech.common.gui.modularui.synchandler.TeslaNodeListSyncHandler;
@@ -70,7 +69,7 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
         return Flow.row()
             .coverChildren()
             .child(
-                IKey.lang(GTUtility.translate("gt.blockmachines.multimachine.tm.teslaCoil.outputVoltage"))
+                IKey.lang("gt.blockmachines.multimachine.tm.teslaCoil.outputVoltage")
                     .asWidget()
                     .color(Color.WHITE.main))
             .child(
