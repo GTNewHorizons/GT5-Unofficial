@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
@@ -14,8 +15,9 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.Cores;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
 import gregtech.common.items.armor.MechArmorLoader;
+import ic2.api.item.IElectricItem;
 
-public class ItemAugmentCore extends ItemAugmentAbstract {
+public class ItemAugmentCore extends ItemAugmentAbstract implements IElectricItem {
 
     public final Cores coreData;
 
@@ -31,6 +33,7 @@ public class ItemAugmentCore extends ItemAugmentAbstract {
             Collections.emptyList(),
             0);
         this.coreData = coredata;
+        this.maxStackSize = 1;
     }
 
     @Override
@@ -40,7 +43,37 @@ public class ItemAugmentCore extends ItemAugmentAbstract {
             StatCollector.translateToLocalFormatted(
                 "GT5U.armor.tooltip.chargetier",
                 GTValues.TIER_COLORS[coreData.chargeTier] + VN[coreData.chargeTier]));
-        aList.add(StatCollector.translateToLocalFormatted("GT5U.armor.tooltip.maxenergy", coreData.charge));
+        aList.add(StatCollector.translateToLocalFormatted("GT5U.armor.tooltip.maxenergy", coreData.chargeMax));
         super.addAdditionalToolTips(aList, aStack, aPlayer);
+    }
+
+    @Override
+    public boolean canProvideEnergy(ItemStack itemStack) {
+        return false;
+    }
+
+    @Override
+    public final Item getChargedItem(ItemStack itemStack) {
+        return this;
+    }
+
+    @Override
+    public final Item getEmptyItem(ItemStack itemStack) {
+        return this;
+    }
+
+    @Override
+    public double getMaxCharge(ItemStack itemStack) {
+        return coreData.chargeMax;
+    }
+
+    @Override
+    public int getTier(ItemStack aStack) {
+        return coreData.chargeTier;
+    }
+
+    @Override
+    public double getTransferLimit(ItemStack itemStack) {
+        return Math.pow(2, 2 * coreData.chargeTier + 3);
     }
 }
