@@ -133,7 +133,7 @@ public class MTEHatchEnergyDebugGui {
         voltageRow.child(IKey.dynamic(() -> {
             int clampedTier = GTUtility.clamp(voltageTierSyncer.getIntValue(), 0, TIER_COLORS.length - 1);
             String color = GTValues.TIER_COLORS[clampedTier];
-            return IKey.lang(
+            return GTUtility.translate(
                 "GT5U.gui.text.voltagetier") + " (" + color + GTValues.VN[clampedTier] + EnumChatFormatting.RESET + ")";
         })
             .asWidget()
