@@ -3,8 +3,7 @@ package tectech.thing.metaTileEntity.multi.base.parameter;
 import java.util.function.Supplier;
 
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
-import com.cleanroommc.modularui.widget.Widget;
-import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
+import com.cleanroommc.modularui.value.sync.SyncHandler;
 
 public class DoubleParameter extends NumericParameter<Double> {
 
@@ -13,12 +12,11 @@ public class DoubleParameter extends NumericParameter<Double> {
     }
 
     @Override
-    public Widget<?> createInputWidget() {
-        return new TextFieldWidget().value(new DoubleSyncValue(this::getValue, this::setValue))
-            .setNumbersDouble(this::validateValue);
+    public SyncHandler createSyncHandler() {
+        return new DoubleSyncValue(this::getValue, this::setValue);
     }
 
-    private double validateValue(double num) {
+    public double validateValue(double num) {
         return Math.max(min.get(), Math.min(num, max.get()));
     }
 }

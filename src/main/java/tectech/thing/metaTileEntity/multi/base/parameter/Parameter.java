@@ -2,7 +2,7 @@ package tectech.thing.metaTileEntity.multi.base.parameter;
 
 import java.util.function.Supplier;
 
-import com.cleanroommc.modularui.widget.Widget;
+import com.cleanroommc.modularui.value.sync.SyncHandler;
 
 public abstract class Parameter<T> {
 
@@ -45,5 +45,5 @@ public abstract class Parameter<T> {
         return max.get();
     }
 
-    public abstract Widget<?> createInputWidget();
+    public abstract SyncHandler createSyncHandler();
 }

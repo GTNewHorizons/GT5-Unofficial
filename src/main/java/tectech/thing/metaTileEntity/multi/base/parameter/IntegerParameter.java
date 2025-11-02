@@ -3,8 +3,7 @@ package tectech.thing.metaTileEntity.multi.base.parameter;
 import java.util.function.Supplier;
 
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
-import com.cleanroommc.modularui.widget.Widget;
-import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
+import com.cleanroommc.modularui.value.sync.SyncHandler;
 
 public class IntegerParameter extends Parameter<Integer> {
 
@@ -13,8 +12,7 @@ public class IntegerParameter extends Parameter<Integer> {
     }
 
     @Override
-    public Widget<?> createInputWidget() {
-        return new TextFieldWidget().value(new IntSyncValue(this::getValue, this::setValue))
-            .setNumbers(this::getMin, this::getMax);
+    public SyncHandler createSyncHandler() {
+        return new IntSyncValue(this::getValue, this::setValue);
     }
 }
