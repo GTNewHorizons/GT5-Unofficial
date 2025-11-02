@@ -1102,6 +1102,11 @@ public class MTETeslaTower extends TTMultiblockBase
     }
 
     @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new MTETeslaTowerGui(this);
     }

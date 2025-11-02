@@ -2170,7 +2170,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     @Override
     protected boolean useMui2() {
-        return true;
+        return false;
     }
 
     @Override
