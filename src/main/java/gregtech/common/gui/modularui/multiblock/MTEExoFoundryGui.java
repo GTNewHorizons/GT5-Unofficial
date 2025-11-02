@@ -3,6 +3,7 @@ package gregtech.common.gui.modularui.multiblock;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
+import java.util.Map;
 import java.util.Objects;
 
 import net.minecraft.util.EnumChatFormatting;
@@ -199,10 +200,17 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
     }
 
     protected IWidget createModuleSelectButton(PanelSyncManager syncManager, ModularPanel parent, int index) {
-        IPanelHandler selectPanel = syncManager.panel(
-            "moduleSelectPanel" + index,
-            (p_syncManager, syncHandler) -> openModuleConfigPanel(p_syncManager, parent, syncManager, index),
-            true);
+        IPanelHandler[] selectPanels = new IPanelHandler[4];
+        for (int i = 0; i < selectPanels.length; i++)
+        {
+            int finalI = i;
+            selectPanels[i] = syncManager.panel(
+                "moduleSelectPanel" + i,
+                (p_syncManager, syncHandler) -> openModuleConfigPanel(p_syncManager, parent, syncManager, finalI),
+                true);
+        }
+        IPanelHandler selectPanel = selectPanels[index];
+
         IntSyncValue moduleSync = syncManager.findSyncHandler("Module" + (index + 1), IntSyncValue.class);
         return new Row().size(30, 16)
             .marginBottom(index != 0 ? 2 : 0)
@@ -217,9 +225,13 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                     .overlay(GuiTextures.ADD)
                     .onMousePressed(d -> {
                         if (!selectPanel.isPanelOpen()) {
+
                             selectPanel.openPanel();
                         } else {
-                            selectPanel.closePanel();
+                            for(int i = 0; i < selectPanels.length;i++)
+                            {
+                                selectPanels[i].closePanel();;
+                            }
                         }
                         return true;
                     })

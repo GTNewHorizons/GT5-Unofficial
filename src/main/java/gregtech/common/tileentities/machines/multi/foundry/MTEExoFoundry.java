@@ -1121,7 +1121,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         // return;
         // }
 
-//        if (!shouldRender || !getBaseMetaTileEntity().isActive()) return;
+        if (!shouldRender || !getBaseMetaTileEntity().isActive()) return;
 
         // Do a cool startup animation
         if (lastInactiveTime <= 0) {
@@ -1139,7 +1139,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
         ringProgram.use();
         GL11.glPushMatrix();
-        ForgeDirection dir = getDirection();
+        final ForgeDirection dir = getDirection();
         // Translate by 7 in the opposite direction of the controller's facing
         GL11.glTranslatef((float) x + 0.5f - dir.offsetX * 7, (float) y + 0.5f, (float) z + 0.5f - dir.offsetZ * 7);
         BloomShader.getInstance()
