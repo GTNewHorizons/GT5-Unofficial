@@ -354,6 +354,9 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
             this::getTeslaNodes,
             this::setTeslaNodes);
         syncManager.syncValue("teslaNodes", teslaNodeSyncer);
+        syncManager.syncValue(
+            "outputCurrentMax",
+            new LongSyncValue(multiblock::getOutputCurrentMax, multiblock::setOutputCurrentMax));
     }
 
     private List<TeslaNodeData> getTeslaNodes() {

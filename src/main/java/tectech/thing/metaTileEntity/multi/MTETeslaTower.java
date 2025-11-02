@@ -124,9 +124,6 @@ public class MTETeslaTower extends TTMultiblockBase
     private int vTier = -1; // Tesla voltage tier limited by capacitors
     private long outputCurrentMax = 0; // Tesla current output limited by capacitors
 
-    // outputVoltage and current after settings
-    private long outputVoltage;
-    private long outputCurrent;
     private long outputCurrentLastTick;
     private LinkedList<Double> outputCurrentHistory = new LinkedList<>();
     private int historySize = 30;
@@ -663,6 +660,7 @@ public class MTETeslaTower extends TTMultiblockBase
         }
     }
 
+    // TODO: REMOVE AFTER 2.9
     @Override
     protected void parametersInstantiation_EM() {
         Parameters.Group hatch_0 = parametrization.getGroup(0, true);
@@ -736,7 +734,35 @@ public class MTETeslaTower extends TTMultiblockBase
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setLong("eEnergyCapacity", energyCapacity);
+    }
+
+    @Override
+    public void saveParameters(NBTTagCompound nbt) {
+        nbt.setLong("eEnergyCapacity", energyCapacity);
+        nbt.setDouble(
+            "hysteresisLow",
+            (double) parameterMap.get("hysteresisLow")
+                .getValue());
+        nbt.setDouble(
+            "hysteresisHigh",
+            (double) parameterMap.get("hysteresisHigh")
+                .getValue());
+        nbt.setInteger(
+            "transferRadius",
+            (int) parameterMap.get("transferRadius")
+                .getValue());
+        nbt.setInteger(
+            "outputVoltage",
+            (int) parameterMap.get("outputVoltage")
+                .getValue());
+        nbt.setInteger(
+            "outputCurrent",
+            (int) parameterMap.get("outputCurrent")
+                .getValue());
+        nbt.setBoolean(
+            "overdrive",
+            (boolean) parameterMap.get("overdrive")
+                .getValue());
     }
 
     @Override
@@ -744,6 +770,31 @@ public class MTETeslaTower extends TTMultiblockBase
         super.loadNBTData(aNBT);
         energyCapacity = aNBT.getLong("eEnergyCapacity");
         TeslaUtil.teslaSimpleNodeSetAdd(this);
+
+    }
+
+    @Override
+    public void loadParameters(NBTTagCompound nbt) {
+        if (!parameterMap.containsKey("hysteresisHigh")) {
+            loadLegacyParameters(nbt);
+            return;
+        }
+        ((DoubleParameter) parameterMap.get("hysteresisLow")).setValue(nbt.getDouble("hysteresisLow"));
+        ((DoubleParameter) parameterMap.get("hysteresisHigh")).setValue(nbt.getDouble("hysteresisHigh"));
+        ((IntegerParameter) parameterMap.get("transferRadius")).setValue(nbt.getInteger("transferRadius"));
+        ((IntegerParameter) parameterMap.get("outputVoltage")).setValue(nbt.getInteger("outputVoltage"));
+        ((IntegerParameter) parameterMap.get("outputCurrent")).setValue(nbt.getInteger("outputCurrent"));
+        ((BooleanParameter) parameterMap.get("overdrive")).setValue(nbt.getBoolean("overdrive"));
+    }
+
+    private void loadLegacyParameters(NBTTagCompound nbt) {
+        NBTTagCompound oldParams = nbt.getCompoundTag("eParamsInD");
+        ((DoubleParameter) parameterMap.get("hysteresisLow")).setValue(oldParams.getDouble(String.valueOf(0)));
+        ((DoubleParameter) parameterMap.get("hysteresisHigh")).setValue(oldParams.getDouble(String.valueOf(1)));
+        ((IntegerParameter) parameterMap.get("transferRadius")).setValue((int) oldParams.getDouble(String.valueOf(2)));
+        ((IntegerParameter) parameterMap.get("outputVoltage")).setValue((int) oldParams.getDouble(String.valueOf(4)));
+        ((IntegerParameter) parameterMap.get("outputCurrent")).setValue((int) oldParams.getDouble(String.valueOf(5)));
+        ((BooleanParameter) parameterMap.get("overdrive")).setValue(oldParams.getDouble(String.valueOf(8)) != 0);
     }
 
     @Override
@@ -756,9 +807,6 @@ public class MTETeslaTower extends TTMultiblockBase
 
         ePowerPass = false;
         setEUVar(0);
-        energyStoredDisplay.set(0);
-        energyFractionDisplay.set(0);
-        outputMaxDisplay.set(0);
     }
 
     @Override
@@ -766,35 +814,11 @@ public class MTETeslaTower extends TTMultiblockBase
         // Hysteresis based ePowerPass setting
         float energyFrac = (float) getEUVar() / energyCapacity;
 
-        energyCapacityDisplay.set(energyCapacity);
-        energyStoredDisplay.set(getEUVar());
-        energyFractionDisplay.set(energyFrac);
-
-        if (!ePowerPass && energyFrac > histHighSetting.get()) {
+        if (!ePowerPass && energyFrac > getParamValue("hysteresisHigh", Double.class)) {
             ePowerPass = true;
-        } else if (ePowerPass && energyFrac < histLowSetting.get()) {
+        } else if (ePowerPass && energyFrac < getParamValue("hysteresisLow", Double.class)) {
             ePowerPass = false;
         }
-
-        // Power Limit Settings
-        if (outputVoltageSetting.get() > 0) {
-            outputVoltage = min(outputVoltageMax, (long) outputVoltageSetting.get());
-        } else {
-            outputVoltage = outputVoltageMax;
-        }
-        outputVoltageDisplay.set(outputVoltage);
-
-        if (outputCurrentSetting.get() > 0) {
-            outputCurrent = min(outputCurrentMax, (long) outputCurrentSetting.get());
-        } else {
-            outputCurrent = outputCurrentMax;
-        }
-
-        // Range calculation and display
-        int transferRadiusTower = getTeslaTransmissionRange();
-        transferRadiusTowerDisplay.set(transferRadiusTower);
-        transferRadiusTransceiverDisplay.set(transferRadiusTower * 2);
-        transferRadiusCoverUltimateDisplay.set(transferRadiusTower);
 
         // Power transfer
         ampsLastTickMap = TeslaUtil.powerTeslaNodeMap(this);
@@ -803,7 +827,6 @@ public class MTETeslaTower extends TTMultiblockBase
             .reduce(Integer::sum)
             .orElse(0);
 
-        outputCurrentDisplay.set(usedAmps);
         outputCurrentLastTick = usedAmps;
 
         dataPointSum += usedAmps;
@@ -818,8 +841,6 @@ public class MTETeslaTower extends TTMultiblockBase
             dataPointSum = 0;
             dataPointTick = 0;
         }
-
-        outputMaxDisplay.set(Math.max(outputCurrentDisplay.get(), outputMaxDisplay.get()));
         // TODO Encapsulate the spark sender
         sparkCount--;
         if (sparkCount == 0 && ConfigHandler.teslaTweaks.TESLA_VISUAL_EFFECT) {
@@ -943,12 +964,12 @@ public class MTETeslaTower extends TTMultiblockBase
 
     @Override
     public int getTeslaTransmissionRange() {
-        return (int) (transferRadiusTowerSetting.get() * getRangeMulti(mTier, vTier));
+        return (int) (getParamValue("transferRadius", Integer.class) * getRangeMulti(mTier, vTier));
     }
 
     @Override
     public boolean isOverdriveEnabled() {
-        return overDriveSetting.get() > 0;
+        return getParamValue("overdrive", Boolean.class);
     }
 
     @Override
@@ -969,12 +990,20 @@ public class MTETeslaTower extends TTMultiblockBase
 
     @Override
     public long getTeslaOutputVoltage() {
-        return outputVoltage;
+        int outputVoltageParameter = getParamValue("outputVoltage", Integer.class);
+        if (outputVoltageParameter > 0) {
+            return min(outputVoltageMax, outputVoltageParameter);
+        }
+        return outputVoltageMax;
     }
 
     @Override
     public long getTeslaOutputCurrent() {
-        return outputCurrent;
+        int outputCurrentParameter = getParamValue("outputCurrent", Integer.class);
+        if (outputCurrentParameter > 0) {
+            return min(outputCurrentMax, outputCurrentParameter);
+        }
+        return outputCurrentMax;
     }
 
     public long getOutputCurrentLastTick() {
@@ -1044,6 +1073,14 @@ public class MTETeslaTower extends TTMultiblockBase
 
     public Map<ITeslaConnectableSimple, Integer> getAmpsLastTickMap() {
         return ampsLastTickMap;
+    }
+
+    public long getOutputCurrentMax() {
+        return outputCurrentMax;
+    }
+
+    public void setOutputCurrentMax(long outputCurrentMax) {
+        this.outputCurrentMax = outputCurrentMax;
     }
 
     @Override

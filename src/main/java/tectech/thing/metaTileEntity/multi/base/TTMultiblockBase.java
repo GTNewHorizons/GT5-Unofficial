@@ -690,7 +690,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
         aNBT.setInteger("eOutputStackCount", 0);
         aNBT.removeTag("outputEM");
-
+        // TODO: REMOVE AFTER NEW PARAMETER PORT COMPLETE
         NBTTagCompound paramI = new NBTTagCompound();
         for (int i = 0; i < parametrization.iParamsIn.length; i++) {
             paramI.setDouble(Integer.toString(i), parametrization.iParamsIn[i]);
@@ -714,6 +714,10 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             paramOs.setByte(Integer.toString(i), parametrization.eParamsOutStatus[i].getOrdinalByte());
         }
         aNBT.setTag("eParamsOutS", paramOs);
+
+        if (this instanceof IParametrized parametrized) {
+            parametrized.saveParameters(aNBT);
+        }
     }
 
     /**
@@ -790,6 +794,10 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         NBTTagCompound paramOs = aNBT.getCompoundTag("eParamsOutS");
         for (int i = 0; i < parametrization.eParamsOutStatus.length; i++) {
             parametrization.eParamsOutStatus[i] = LedStatus.getStatus(paramOs.getByte(Integer.toString(i)));
+        }
+
+        if (this instanceof IParametrized parametrized) {
+            parametrized.loadParameters(aNBT);
         }
     }
 
@@ -2116,6 +2124,21 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         return false;
     }
 
+    protected <T> T getParamValue(String key, Class<T> tClass) {
+        if (!parameterMap.containsKey(key)) {
+            throw new IllegalArgumentException("Tried to access nonexistent parameter " + key);
+        }
+
+        Object value = parameterMap.get(key)
+            .getValue();
+        if (value.getClass()
+            .equals(tClass)) {
+            return tClass.cast(value);
+        }
+
+        throw new IllegalArgumentException(
+            String.format("Tried to cast parameter %s to %s when its type is %s", key, tClass, value.getClass()));
+    }
     // region ModularUI
 
     @Override
