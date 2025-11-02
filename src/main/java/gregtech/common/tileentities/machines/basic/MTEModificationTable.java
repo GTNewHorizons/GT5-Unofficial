@@ -490,6 +490,7 @@ public class MTEModificationTable extends MetaTileEntity {
         public boolean canTakeStack(EntityPlayer playerIn) {
             ItemStack armorStack = armorSlotHandler.getStackInSlot(0);
             ItemStack myStack = getStack();
+            if (myStack == null) return true;
             if (!(myStack.getItem() instanceof ItemAugmentAbstract myAugment)) return true;
             if (armorStack != null) {
                 for (int i = 0; i < AUGMENT_SLOTS_COUNT; i++) {
