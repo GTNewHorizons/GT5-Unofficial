@@ -3382,8 +3382,8 @@ public class RecipesMachines {
     }
 
     private static void chiselBuses() {
-        ItemStack[] mSuperBusesInput = new ItemStack[] { GregtechItemList.Hatch_SuperBus_Input_LV.get(1),
-            GregtechItemList.Hatch_SuperBus_Input_MV.get(1), GregtechItemList.Hatch_SuperBus_Input_HV.get(1), };
+        ItemStack[] mInputBusses = new ItemStack[] { ItemList.Hatch_Input_Bus_EV.get(1),
+            ItemList.Hatch_Input_Bus_IV.get(1), ItemList.Hatch_Input_Bus_LuV.get(1), };
 
         ItemStack[] mChiselBuses = new ItemStack[] { GregtechItemList.ChiselBus_LV.get(1),
             GregtechItemList.ChiselBus_MV.get(1), GregtechItemList.ChiselBus_HV.get(1), };
@@ -3391,7 +3391,7 @@ public class RecipesMachines {
         for (int tier = 1; tier < mChiselBuses.length + 1; tier++) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    mSuperBusesInput[tier - 1],
+                    mInputBusses[tier - 1],
                     CI.getSensor(tier, 1),
                     CI.getRobotArm(tier, 2),
                     CI.getBolt(tier, 16),
@@ -3407,8 +3407,8 @@ public class RecipesMachines {
     }
 
     private static void solidifierHatches() {
-        ItemStack[] mSuperBusesInput = new ItemStack[] { ItemList.Hatch_Input_IV.get(1),
-            ItemList.Hatch_Input_LuV.get(1), ItemList.Hatch_Input_ZPM.get(1), ItemList.Hatch_Input_UV.get(1), };
+        ItemStack[] mInputBusses = new ItemStack[] { ItemList.Hatch_Input_IV.get(1), ItemList.Hatch_Input_LuV.get(1),
+            ItemList.Hatch_Input_ZPM.get(1), ItemList.Hatch_Input_UV.get(1), };
 
         ItemStack[] mSolidifierHatches = new ItemStack[] { GregtechItemList.Hatch_Solidifier_I.get(1),
             GregtechItemList.Hatch_Solidifier_II.get(1), GregtechItemList.Hatch_Solidifier_III.get(1),
@@ -3418,7 +3418,7 @@ public class RecipesMachines {
             int componentTier = i + 5;
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    mSuperBusesInput[i],
+                    mInputBusses[i],
                     CI.getSensor(componentTier, 1),
                     CI.getFluidRegulator(componentTier, 1),
                     CI.getTieredComponent(OrePrefixes.circuit, componentTier + 1, 4),
