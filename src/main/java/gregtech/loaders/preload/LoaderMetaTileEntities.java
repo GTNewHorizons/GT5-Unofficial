@@ -132,6 +132,8 @@ import gregtech.common.tileentities.machines.basic.MTETurboCharger;
 import gregtech.common.tileentities.machines.basic.MTEWorldAccelerator;
 import gregtech.common.tileentities.machines.long_distance.MTELongDistancePipelineFluid;
 import gregtech.common.tileentities.machines.long_distance.MTELongDistancePipelineItem;
+import gregtech.common.tileentities.machines.multi.LHC.MTEHatchAdvancedOutputBeamline;
+import gregtech.common.tileentities.machines.multi.LHC.MTELargeHadronCollider;
 import gregtech.common.tileentities.machines.multi.MTEAirFilter1;
 import gregtech.common.tileentities.machines.multi.MTEAirFilter2;
 import gregtech.common.tileentities.machines.multi.MTEAirFilter3;
@@ -584,6 +586,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.DecayWarehouse.set(
             new MTEDecayWarehouse(DECAY_WAREHOUSE.ID, "multimachine.decay-warehouse", "Decay Warehouse")
                 .getStackForm(1));
+
+        ItemList.LargeHadronCollider.set(
+            new MTELargeHadronCollider(
+                LARGE_HADRON_COLLIDER.ID,
+                "multimachine.large-hadron-collider",
+                "Large Hadron Collider").getStackForm(1));
 
         ItemList.LATEX.set(new MTELatex(LATEX.ID, "multimachine.latex", "L.A.T.E.X.").getStackForm(1));
         addItemTooltip(ItemList.LATEX.get(1), chain(() -> "Author: ", GTValues.AuthorThree));
@@ -11075,6 +11083,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Bulk Catalyst Housing",
                 10,
                 Integer.MAX_VALUE).getStackForm(1));
+        ItemList.AdvancedBeamlineOutputHatch.set(
+            new MTEHatchAdvancedOutputBeamline(
+                HATCH_ADVANCED_BEAMLINE_OUTPUT.ID,
+                "hatch.advancedbeamlineoutput",
+                "Filtered Beamline Output Hatch",
+                8).getStackForm(1));
 
         ItemList.LargeMolecularAssembler.set(
             new MTELargeMolecularAssembler(
