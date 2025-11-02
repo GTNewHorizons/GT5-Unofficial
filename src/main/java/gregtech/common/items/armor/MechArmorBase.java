@@ -37,6 +37,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ISpecialArmor;
 
 import org.jetbrains.annotations.NotNull;
+import org.lwjgl.input.Keyboard;
 
 import com.gtnewhorizon.gtnhlib.keybind.IKeyPressedListener;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
@@ -51,6 +52,7 @@ import gregtech.api.enums.Mods;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.Cores;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.Frames;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
+import gregtech.api.util.GTUtility;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import thaumcraft.api.IGoggles;
@@ -127,10 +129,24 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
     }
 
     public void onArmorEquip(@NotNull World world, @NotNull EntityPlayer player, @NotNull ItemStack stack) {
+        boolean initMessage = false;
         for (IArmorBehavior behavior : behaviors) {
             if (player instanceof EntityPlayerMP playerMP) {
                 for (SyncedKeybind keyBind : behavior.getListenedKeys()) {
                     keyBind.registerPlayerListener(playerMP, this);
+                    if (getOrCreateNbtCompound(stack).hasKey(behavior.getMainNBTTag())) {
+                        if (!initMessage) {
+                            GTUtility.sendChatToPlayer(player, "Armor Systems Online... Active keybindings: ");
+                            initMessage = true;
+                        }
+                        GTUtility.sendChatToPlayer(
+                            playerMP,
+                            StatCollector.translateToLocal(
+                                keyBind.getKeybinding()
+                                    .getKeyDescription())
+                                + ": "
+                                + Keyboard.getKeyName(keyBind.getKeyCode()));
+                    }
                 }
             }
             behavior.onArmorEquip(world, player, stack);
