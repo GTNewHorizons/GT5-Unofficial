@@ -88,14 +88,14 @@ public class MechArmorAugmentRegistries {
         public final String id;
         public final int tier;
         public final ItemList item;
-        public final int charge;
+        public final int chargeMax;
         public final int chargeTier;
 
-        Cores(String id, int tier, ItemList item, int charge, int chargeTier) {
+        Cores(String id, int tier, ItemList item, int chargeMax, int chargeTier) {
             this.id = id;
             this.tier = tier;
             this.item = item;
-            this.charge = charge;
+            this.chargeMax = chargeMax;
             this.chargeTier = chargeTier;
         }
 

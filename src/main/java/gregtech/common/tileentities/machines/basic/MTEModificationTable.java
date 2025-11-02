@@ -189,6 +189,12 @@ public class MTEModificationTable extends MetaTileEntity {
         if (newItem != null) {
             if (newItem.getItem() instanceof ItemAugmentCore itemAugment) {
                 armorTag.setString(MECH_CORE_KEY, itemAugment.coreData.id);
+                if (newItem.getTagCompound() != null) {
+                    armorTag.setDouble(
+                        "charge",
+                        newItem.getTagCompound()
+                            .getDouble("charge"));
+                }
                 applyAugmentToTag(armorTag, newItem);
             }
         } else {
@@ -251,6 +257,7 @@ public class MTEModificationTable extends MetaTileEntity {
                 }
             }
         }
+
         updatedArmorItem.setTagCompound(armorTag);
         armorSlotHandler.setStackInSlot(0, updatedArmorItem);
     }
@@ -450,7 +457,14 @@ public class MTEModificationTable extends MetaTileEntity {
         if (armorTag == null) return null;
         String core = armorTag.getString(MECH_CORE_KEY);
         if (core.equals("None")) return null;
-        return coresMap.get(core).item.get(1);
+
+        ItemStack coreDisplay = coresMap.get(core).item.get(1);
+        if (coreDisplay.getTagCompound() == null) {
+            coreDisplay.setTagCompound(new NBTTagCompound());
+        }
+        coreDisplay.getTagCompound()
+            .setDouble("charge", armorTag.getDouble("charge"));
+        return coreDisplay;
     }
 
     private static ItemStack getAugmentStackInCategoryAndColumn(ItemStack armorStack, int category, int column) {
