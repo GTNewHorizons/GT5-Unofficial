@@ -2951,7 +2951,18 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 2)));
         ItemList.Nutrient_Paste.set(
             addItem(Nutrient_Paste.ID, "Nutrient Paste", "Tasty!", new TCAspects.TC_AspectStack(TCAspects.CORPUS, 4)));
-
+        ItemList.Immortal_Cell.set(
+            addItem(
+                Immortal_Cell.ID,
+                "Immortal Cell",
+                "Even better than Steve",
+                new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 2)));
+        ItemList.Infinite_Evolution_Matrix.set(
+            addItem(
+                Infinite_Evolution_Matrix.ID,
+                "Infinite Evolution Matrix",
+                "It learns. It mutates. It remembers what you forget",
+                new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 16)));
         // Empty battery hulls
         ItemList.BatteryHull_EV.set(
             addItem(

@@ -5969,6 +5969,8 @@ public class MaterialsInit {
         Materials.Titaniumtetrachloride = loadTitaniumtetrachloride();
         Materials.Water = Materials.Steam = loadWater();
         Materials.Zincite = loadZincite();
+        Materials.SodiumBromide = loadSodiumBromide();
+        Materials.PotassiumIodide = loadPotassiumIodide();
     }
 
     private static Materials loadAceticAcid() {
@@ -8033,6 +8035,30 @@ public class MaterialsInit {
             .addElectrolyzerRecipe()
             .addMaterial(Materials.Sodium, 2)
             .addMaterial(Materials.Sulfur, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadSodiumBromide() {
+        return new MaterialBuilder().setName("SodiumBromide")
+            .setDefaultLocalName("Sodium Bromide")
+            .setChemicalFormula("NaBr")
+            .setMetaItemSubID(600)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeOrange)
+            .setARGB(0x00ffe680)
+            .addDustItems()
+            .constructMaterial();
+    }
+
+    private static Materials loadPotassiumIodide() {
+        return new MaterialBuilder().setName("PotassiumIodide")
+            .setDefaultLocalName("Potassium Iodide")
+            .setChemicalFormula("KI")
+            .setMetaItemSubID(601)
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyePurple)
+            .setARGB(0x00e6cfe6)
+            .addDustItems()
             .constructMaterial();
     }
 

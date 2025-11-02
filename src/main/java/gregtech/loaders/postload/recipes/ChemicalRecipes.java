@@ -18,6 +18,7 @@ import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import static gtPlusPlus.core.material.MaterialMisc.SODIUM_NITRATE;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
+import gtPlusPlus.core.material.MaterialStack;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -6082,5 +6083,25 @@ public class ChemicalRecipes implements Runnable {
             .eut(TierEU.RECIPE_EV)
             .addTo(multiblockChemicalReactorRecipes);
 
+        // Na + Br = NaBr
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.Sodium.getDust(1))
+            .itemOutputs(Materials.SodiumBromide.getDust(2))
+            .fluidInputs(new FluidStack(MaterialsElements.getInstance().BROMINE.getFluid(), 1_000))
+            .duration(2 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(UniversalChemical);
+
+        // K + I = KI
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                Materials.Potassium.getDust(1),
+                MaterialsElements.getInstance().IODINE.getDust(1))
+            .itemOutputs(Materials.PotassiumIodide.getDust(2))
+            .duration(2 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(UniversalChemical);
     }
 }

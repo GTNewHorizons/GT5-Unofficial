@@ -66,6 +66,8 @@ public enum IDMetaItem01 {
     Skin_Cell_Cluster(61),
     Neuron_Cell_Cluster(62),
     Nutrient_Paste(63),
+    Immortal_Cell(64),
+    Infinite_Evolution_Matrix(65),
     Component_Minecraft_Wheels_Iron(100),
     Component_Minecraft_Wheels_Steel(101),
     Compressed_Fireclay(110),

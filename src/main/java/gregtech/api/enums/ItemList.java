@@ -1569,6 +1569,8 @@ public enum ItemList implements IItemContainer {
     Skin_Cell_Cluster,
     Muscle_Cell_Cluster,
     Nutrient_Paste,
+    Immortal_Cell,
+    Infinite_Evolution_Matrix,
     Casing_Vat_T1,
     Casing_Vat_T2,
     Casing_Vat_T3,
