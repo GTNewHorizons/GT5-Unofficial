@@ -23,6 +23,7 @@ import org.jetbrains.annotations.Nullable;
 
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -113,6 +114,11 @@ public class MTEHatchCokeOven extends MTEHatch {
     @Override
     public MTEHatchCokeOven newMetaEntity(IGregTechTileEntity tileEntity) {
         return new MTEHatchCokeOven(mName, mTier, mDescriptionArray, mTextures);
+    }
+
+    @Override
+    public byte getTileEntityBaseType() {
+        return HarvestTool.PickaxeLevel0.toTileEntityBaseType();
     }
 
     @Override
