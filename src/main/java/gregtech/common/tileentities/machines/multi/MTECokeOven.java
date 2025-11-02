@@ -59,7 +59,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
 
     public final static int INPUT_SLOT = 0;
     public final static int OUTPUT_SLOT = 1;
-    private final static int FLUID_CAPACITY = 64_000;
+    public final static int FLUID_CAPACITY = 64_000;
 
     private FluidStack fluid;
     private final ArrayList<MTEHatchCokeOven> hatches = new ArrayList<>();

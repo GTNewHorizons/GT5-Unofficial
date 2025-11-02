@@ -227,6 +227,11 @@ public class MTEHatchCokeOven extends MTEHatch {
     }
 
     @Override
+    public int getCapacity() {
+        return mode == Mode.OutputFluid ? MTECokeOven.FLUID_CAPACITY : 0;
+    }
+
+    @Override
     public int getSizeInventory() {
         if (destroyed) return 0;
         return activeController != null ? 2 : 0;
