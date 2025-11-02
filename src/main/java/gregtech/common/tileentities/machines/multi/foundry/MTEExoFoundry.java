@@ -1121,7 +1121,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         // return;
         // }
 
-        if (!shouldRender || !getBaseMetaTileEntity().isActive()) return;
+//        if (!shouldRender || !getBaseMetaTileEntity().isActive()) return;
 
         // Do a cool startup animation
         if (lastInactiveTime <= 0) {
