@@ -356,7 +356,7 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
     @Override
     public double getMaxCharge(ItemStack itemStack) {
         Cores core = getCore(itemStack);
-        if (core != null) return getCore(itemStack).charge;
+        if (core != null) return getCore(itemStack).chargeMax;
         return 0;
     }
 
