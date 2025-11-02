@@ -504,7 +504,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             .addCasingInfoMinColored(
                 "Primary Exo-Foundry Casing",
                 EnumChatFormatting.GRAY,
-                485 - 27, // balance around having 25 recipe hatches on a foundry.
+                489 - 27, // balance around having 25 recipe hatches on a foundry.
                 EnumChatFormatting.GOLD,
                 false)
             .addCasingInfoExactlyColored(
@@ -752,10 +752,9 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         mCoolantInputHatches.clear();
         // limit hatch space to about 25 hatches without modules. T.D.S removes 20 for balance, and casters adds 36 by
         // proxy.
-        if (checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, depthOffset)
-            && casingAmount >= 458 + (tdsPresent ? 20 : 0)) {
+        if (checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, depthOffset)) {
             getBaseMetaTileEntity().issueTileUpdate(); // update for the tier variable
-            return checkModules();
+            return checkModules() && casingAmount >= 462 + (tdsPresent ? 20 : 0);
         }
         getBaseMetaTileEntity().issueTileUpdate(); // update for the tier variable
         return false;
