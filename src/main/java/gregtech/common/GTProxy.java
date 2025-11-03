@@ -565,6 +565,7 @@ public class GTProxy implements IFuelHandler {
     public int mPollutionVegetationLimit = 1000000;
     public int mPollutionSourRainLimit = 2000000;
     public int mPollutionOnExplosion = 100000;
+    public int mPollutionCokeOvenPerSecond = 10;
     public int mPollutionPrimitveBlastFurnacePerSecond = 200;
     public int mPollutionEBFPerSecond = 400;
     public int mPollutionCharcoalPitPerSecond = 100;
@@ -1546,9 +1547,9 @@ public class GTProxy implements IFuelHandler {
                 } else if (aEvent.Name.equals("copperWire")) {
                     GTOreDictUnificator.registerOre(OreDictNames.craftingWireCopper, aEvent.Ore);
                 } else if (aEvent.Name.equals("oreHeeEndrium")) {
-                    GTOreDictUnificator.registerOre(OrePrefixes.ore, Materials.HeeEndium, aEvent.Ore);
+                    GTOreDictUnificator.registerOre(OrePrefixes.ore, Materials.Endium, aEvent.Ore);
                 } else if (aEvent.Name.equals("sheetPlastic")) {
-                    GTOreDictUnificator.registerOre(OrePrefixes.plate, Materials.Plastic, aEvent.Ore);
+                    GTOreDictUnificator.registerOre(OrePrefixes.plate, Materials.Polyethylene, aEvent.Ore);
                 } else if (aEvent.Name.startsWith("shard")) {
                     switch (aEvent.Name) {
                         case "shardAir" -> {
@@ -1743,7 +1744,7 @@ public class GTProxy implements IFuelHandler {
                                         }
                                     }
                                     case "plate" -> {
-                                        if ((aMaterial == Materials.Plastic) || (aMaterial == Materials.Rubber)) {
+                                        if ((aMaterial == Materials.Polyethylene) || (aMaterial == Materials.Rubber)) {
                                             GTOreDictUnificator.registerOre(OrePrefixes.sheet, aMaterial, aEvent.Ore);
                                         } else if (aMaterial == Materials.Silicon) {
                                             GTOreDictUnificator.registerOre(OrePrefixes.item, aMaterial, aEvent.Ore);
@@ -1887,7 +1888,7 @@ public class GTProxy implements IFuelHandler {
                     }
                     case "sheet" -> {
                         if (tName.equals("Plastic")) {
-                            GTOreDictUnificator.registerOre(OrePrefixes.plate, Materials.Plastic, aEvent.Ore);
+                            GTOreDictUnificator.registerOre(OrePrefixes.plate, Materials.Polyethylene, aEvent.Ore);
                         } else if (tName.equals("Rubber")) {
                             GTOreDictUnificator.registerOre(OrePrefixes.plate, Materials.Rubber, aEvent.Ore);
                         }
