@@ -37,14 +37,14 @@ public class ItemVolumetricFlaskGui {
             .widthRel(1)
             .height(18)
             .marginBottom(2);
-
         IntSyncValue capacitySyncer = new IntSyncValue(
             () -> flaskItem.getCapacity(flask),
             value -> flaskItem.setCapacity(flask, value));
+
         IntSyncValue maxCapacitySyncer = new IntSyncValue(flaskItem::getMaxCapacity);
 
         capacityFieldRow.child(
-            new TextFieldWidget().setNumbers(0, maxCapacitySyncer.getIntValue())
+            new TextFieldWidget().setNumbers(1, maxCapacitySyncer.getIntValue())
                 .setDefaultNumber(maxCapacitySyncer.getIntValue())
                 .setFormatAsInteger(true)
                 .value(capacitySyncer)
@@ -70,7 +70,7 @@ public class ItemVolumetricFlaskGui {
     }
 
     // a slightly altered default close button implementation, this one is aligned left as opposed to positioned
-    private static ButtonWidget<?> createPanelCloseButton() {
+    private ButtonWidget<?> createPanelCloseButton() {
         ButtonWidget<?> buttonWidget = new ButtonWidget<>();
         return buttonWidget.widgetTheme(IThemeApi.CLOSE_BUTTON)
             .align(Alignment.CenterLeft)
