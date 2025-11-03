@@ -4,12 +4,13 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.Collections;
 
+import net.minecraft.util.StatCollector;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverLegacyData;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
@@ -41,31 +42,31 @@ public class PumpUIFactory extends CoverLegacyDataUIFactory {
                         0,
                         CoverDataFollowerToggleButtonWidget.ofDisableable(),
                         widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_EXPORT)
-                            .addTooltip(translateToLocal("gt.interact.desc.export"))
+                            .addTooltip(translateToLocal("gt.interact.desc.export.tooltip"))
                             .setPos(spaceX * 0, spaceY * 0))
                     .addToggleButton(
                         1,
                         CoverDataFollowerToggleButtonWidget.ofDisableable(),
                         widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_IMPORT)
-                            .addTooltip(translateToLocal("gt.interact.desc.import"))
+                            .addTooltip(translateToLocal("gt.interact.desc.import.tooltip"))
                             .setPos(spaceX * 1, spaceY * 0))
                     .addToggleButton(
                         2,
                         CoverDataFollowerToggleButtonWidget.ofDisableable(),
                         widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_CHECKMARK)
-                            .addTooltip(GTUtility.trans("224", "Always On"))
+                            .addTooltip(StatCollector.translateToLocal("gt.interact.desc.Pump.AlwaysOn"))
                             .setPos(spaceX * 0, spaceY * 1))
                     .addToggleButton(
                         3,
                         CoverDataFollowerToggleButtonWidget.ofDisableable(),
                         widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_USE_PROCESSING_STATE)
-                            .addTooltip(GTUtility.trans("343", "Use Machine " + "Processing State"))
+                            .addTooltip(StatCollector.translateToLocal("gt.interact.desc.Pump.MachProcState"))
                             .setPos(spaceX * 1, spaceY * 1))
                     .addToggleButton(
                         4,
                         CoverDataFollowerToggleButtonWidget.ofDisableable(),
                         widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_USE_INVERTED_PROCESSING_STATE)
-                            .addTooltip(GTUtility.trans("343.1", "Use " + "Inverted Machine Processing State"))
+                            .addTooltip(StatCollector.translateToLocal("gt.interact.desc.Pump.InvertedMachProcState"))
                             .setPos(spaceX * 2, spaceY * 1))
                     .addToggleButton(5, CoverDataFollowerToggleButtonWidget.ofDisableable(), widget -> {
                         mAllowWidget = widget;
@@ -78,8 +79,8 @@ public class PumpUIFactory extends CoverLegacyDataUIFactory {
                                 CoverLegacyData cover = getCover();
                                 return Collections.singletonList(
                                     cover == null || cover.getVariable() % 2 == 0
-                                        ? GTUtility.trans("314", "Allow Input")
-                                        : GTUtility.trans("312", "Allow " + "Output"));
+                                        ? StatCollector.translateToLocal("gt.interact.desc.Pump.AllowIn")
+                                        : StatCollector.translateToLocal("gt.interact.desc.Pump.AllowOut"));
                             })
                             .setPos(spaceX * 0, spaceY * 2);
                     })
@@ -93,25 +94,24 @@ public class PumpUIFactory extends CoverLegacyDataUIFactory {
                             .dynamicTooltip(
                                 () -> Collections.singletonList(
                                     coverMatches(PumpUIFactory::isExportModeSelected)
-                                        ? GTUtility.trans("313", "Block Input")
-                                        : GTUtility.trans("311", "Block " + "Output")))
+                                        ? StatCollector.translateToLocal("gt.interact.desc.Pump.BlockIn")
+                                        : StatCollector.translateToLocal("gt.interact.desc.Pump.BlockOut")))
                             .setPos(spaceX * 1, spaceY * 2);
                     })
                     .setPos(startX, startY))
             .widget(
-                new TextWidget(GTUtility.trans("229", "Export/Import")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(StatCollector.translateToLocal("gt.interact.desc.Pump.ExpImp"))
                     .setPos(3 + startX + spaceX * 3, 4 + startY + spaceY * 0))
             .widget(
-                new TextWidget(GTUtility.trans("230", "Conditional")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(StatCollector.translateToLocal("gt.interact.desc.Pump.Conditional"))
                     .setPos(3 + startX + spaceX * 3, 4 + startY + spaceY * 1))
             .widget(
                 TextWidget
                     .dynamicString(
                         () -> coverMatches(PumpUIFactory::isExportModeSelected)
-                            ? GTUtility.trans("344", "Input Blocking")
-                            : GTUtility.trans("344.1", "Output Blocking"))
+                            ? StatCollector.translateToLocal("gt.interact.desc.Pump.InputBlock")
+                            : StatCollector.translateToLocal("gt.interact.desc.Pump.OutputBlock"))
                     .setSynced(false)
-                    .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(3 + startX + spaceX * 3, 4 + startY + spaceY * 2));
     }
 
