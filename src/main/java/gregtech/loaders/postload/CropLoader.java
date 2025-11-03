@@ -524,7 +524,7 @@ public class CropLoader implements Runnable {
                 2,
                 8,
                 new String[] { "Troll", "Bad", "Scrap" },
-                GTOreDictUnificator.get(OrePrefixes.gem, Materials.FoolsRuby, 1L),
+                GTOreDictUnificator.get(OrePrefixes.gem, Materials.Spinel, 1L),
                 new ItemStack[] { ItemList.IC2_Plantball.get(1), ItemList.IC2_Scrap.get(1),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium241, 1L) },
                 "gt.crop.trollplant.name");

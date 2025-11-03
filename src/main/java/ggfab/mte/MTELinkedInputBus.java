@@ -141,6 +141,11 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
     }
 
     @Override
+    public int getCircuitSlotY() {
+        return 62;
+    }
+
+    @Override
     public ItemStack getStackInSlot(int aIndex) {
         if (aIndex == getCircuitSlot()) return super.getStackInSlot(aIndex);
         if (mState != State.Blocked && mChannel != null && mRealInventory != null) {
@@ -367,6 +372,16 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
                 aPlayer,
                 StatCollector.translateToLocal("GT5U.hatch.disableFilter." + this.disableFilter));
         }
+    }
+
+    @Override
+    public int getGUIHeight() {
+        return 166;
+    }
+
+    @Override
+    public int getGUIWidth() {
+        return 176;
     }
 
     @Override
