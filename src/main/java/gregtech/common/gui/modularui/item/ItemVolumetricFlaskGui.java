@@ -1,11 +1,9 @@
 package gregtech.common.gui.modularui.item;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.IThemeApi;
 import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.factory.GuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
@@ -59,9 +57,8 @@ public class ItemVolumetricFlaskGui {
         Flow closeRow = Flow.row()
             .widthRel(1)
             .height(18);
-        closeRow.child(
-            createPanelCloseButton().size(14)
-                .tooltip(t -> t.addLine(StatCollector.translateToLocal("GT5U.gui.text.volumetric_flask.confirm"))));
+
+        closeRow.child(createPanelCloseButton());
 
         mainColumn.child(capacityFieldRow);
         mainColumn.child(closeRow);
@@ -75,7 +72,9 @@ public class ItemVolumetricFlaskGui {
         ButtonWidget<?> buttonWidget = new ButtonWidget<>();
         return buttonWidget.widgetTheme(IThemeApi.CLOSE_BUTTON)
             .align(Alignment.CenterLeft)
-            .overlay(GuiTextures.CROSS_TINY)
+            .height(14)
+            .widthRel(0.6f)
+            .overlay(IKey.lang("GT5U.gui.text.volumetric_flask.confirm"))
             .onMousePressed(mouseButton -> {
                 if (mouseButton == 0 || mouseButton == 1) {
                     buttonWidget.getPanel()
