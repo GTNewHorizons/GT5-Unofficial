@@ -32,8 +32,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDragonEgg;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.item.EntityEnderCrystal;
@@ -148,8 +146,7 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
             aPlayer,
             StatCollector.translateToLocalFormatted(
                 "Interaction_DESCRIPTION_MagicalEnergyAbsorber_Screwdriver",
-                mMagicalEnergyBB.getRange(),
-                true));
+                mMagicalEnergyBB.getRange()));
         mMagicalEnergyBB.update();
     }
 
@@ -194,8 +191,6 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
         for (UUID tCrystalID : tCrystalIDsInRange) {
             sSubscribedCrystals.putIfAbsent(tCrystalID, this);
         }
-        FontRenderer f = Minecraft.getMinecraft().fontRenderer;
-
     }
 
     @Override

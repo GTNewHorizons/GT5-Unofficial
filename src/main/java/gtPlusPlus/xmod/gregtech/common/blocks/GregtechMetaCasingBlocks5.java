@@ -6,7 +6,9 @@ import net.minecraft.world.IBlockAccess;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
+import gregtech.api.render.TextureFactory;
 import gregtech.common.blocks.MaterialCasings;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -22,6 +24,11 @@ public class GregtechMetaCasingBlocks5 extends GregtechMetaCasingBlocksAbstract 
 
     public GregtechMetaCasingBlocks5() {
         super(GregtechMetaCasingItems.class, "gtplusplus.blockcasings.5", MaterialCasings.INSTANCE);
+        TAE.registerTexture(0, 2, TextureFactory.of(this, 0));
+        TAE.registerTexture(0, 3, TextureFactory.of(this, 3));
+        TAE.registerTexture(0, 4, TextureFactory.of(this, 4));
+        TAE.registerTexture(1, 10, TextureFactory.of(this, 5));
+        TAE.registerTexture(1, 11, TextureFactory.of(this, 6));
 
         GregtechItemList.Casing_IsaMill_Casing.set(new ItemStack(this, 1, 0));
         GregtechItemList.Casing_IsaMill_Pipe.set(new ItemStack(this, 1, 1));

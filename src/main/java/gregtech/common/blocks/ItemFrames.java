@@ -36,7 +36,7 @@ public class ItemFrames extends ItemBlock {
     public String getItemStackDisplayName(ItemStack aStack) {
         String aName = super.getItemStackDisplayName(aStack);
         if (this.block() instanceof BlockFrameBox) {
-            aName = BlockFrameBox.getDisplayName(aStack.getItemDamage());
+            aName = BlockFrameBox.getLocalizedName(aStack.getItemDamage());
         }
         return aName;
     }

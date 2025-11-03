@@ -160,7 +160,6 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
 
     @SideOnly(Side.CLIENT)
     public void registerDescription(int aDamage) {
-        if (aDamage == 201) System.out.println(1);
         if (aDamage >= GregTechAPI.METATILEENTITIES.length) return;
         if (GregTechAPI.METATILEENTITIES[aDamage] != null) {
             final IMetaTileEntity tMetaTileEntity = GregTechAPI.METATILEENTITIES[aDamage].getBaseMetaTileEntity()

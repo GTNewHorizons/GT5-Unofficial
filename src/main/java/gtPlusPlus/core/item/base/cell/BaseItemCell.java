@@ -3,10 +3,13 @@ package gtPlusPlus.core.item.base.cell;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 
+import java.util.Objects;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.ItemList;
 import gtPlusPlus.core.config.Configuration;
@@ -22,6 +25,20 @@ public class BaseItemCell extends BaseItemComponent {
     public BaseItemCell(final Material material) {
         super(material, BaseItemComponent.ComponentTypes.CELL);
         this.fluidColour = material.getRGBA();
+    }
+
+    public BaseItemCell(final String unlocalName, final String localName, final short[] RGBa) {
+        super(
+            unlocalName,
+            Objects.requireNonNull(FluidUtils.getFluidStack(unlocalName.toLowerCase(), 1))
+                .getFluid(),
+            localName,
+            RGBa);
+        this.fluidColour = RGBa;
+        FluidStack aFluid = FluidUtils.getFluidStack(unlocalName.toLowerCase(), 1000);
+        if (aFluid != null) {
+            FluidContainerRegistry.registerFluidContainer(aFluid, new ItemStack(this), ItemList.Cell_Empty.get(1));
+        }
     }
 
     public BaseItemCell(final String unlocalName, final String localName, final short[] RGBa, final Fluid cellFluid) {

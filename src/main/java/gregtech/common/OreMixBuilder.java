@@ -122,19 +122,16 @@ public class OreMixBuilder {
     }
 
     public String getLocalizedName() {
-        if (materialKeys.size() > 1) {
-            String localizedName = String.join(
-                ", ",
-                materialKeys.stream()
-                    .map(StatCollector::translateToLocal)
-                    .toArray(String[]::new));
-            int index = localizedName.lastIndexOf(", ");
-            if (index != -1) {
-                localizedName = localizedName.substring(0, index) + " & " + localizedName.substring(index + 2);
-            }
-            return localizedName;
-        } else {
-            return StatCollector.translateToLocal(materialKeys.get(0));
+        if (materialKeys.size() == 1) return StatCollector.translateToLocal(materialKeys.get(0));
+        String localizedName = String.join(
+            ", ",
+            materialKeys.stream()
+                .map(StatCollector::translateToLocal)
+                .toArray(String[]::new));
+        int index = localizedName.lastIndexOf(", ");
+        if (index != -1) {
+            localizedName = localizedName.substring(0, index) + " & " + localizedName.substring(index + 2);
         }
+        return localizedName;
     }
 }

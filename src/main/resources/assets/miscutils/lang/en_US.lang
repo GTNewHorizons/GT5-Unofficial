@@ -4006,9 +4006,7 @@ gtpp.tooltip.base_particles.type.boson=Boson
 gtpp.tooltip.base_particles.type.baryon=Baryon
 gtpp.tooltip.base_particles.type.meson=Meson
 gtpp.tooltip.base_particles.type.unknown=Unknown
-gtpp.tooltip.integrated_circuit.0=Configuration == %d
-gtpp.tooltip.integrated_circuit.1=Right click to reconfigure
-gtpp.tooltip.integrated_circuit.2=Needs a screwdriver or circuit programming tool
+gtpp.tooltip.integrated_circuit.configuration=Configuration == %d\nRight click to reconfigure\nNeeds a screwdriver or circuit programming tool
 gtpp.tooltip.scrubber_turbine.early_tier=An early tier Turbine for Atmospheric Reconditioning.
 gtpp.tooltip.scrubber_turbine.uses_left=%d/%d uses left.
 gtpp.tooltip.buffer_core.key_crafting_component=A key crafting component for %s Appliances

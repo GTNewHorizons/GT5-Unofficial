@@ -9,7 +9,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -59,10 +58,7 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
             if (tMaterial == null) continue;
             if (doesMaterialAllowGeneration(tPrefix, tMaterial)) {
                 ItemStack tStack = new ItemStack(this, 1, i);
-                int finalI = i;
-                names[i] = () -> StatCollector.translateToLocalFormatted(
-                    OrePrefixes.getOreprefixKey(getDefaultLocalizationFormat(tPrefix, tMaterial, finalI)),
-                    tMaterial.getLocalizedName());
+                names[i] = () -> tPrefix.getLocalizedNameForItem(tMaterial);
                 tooltips[i] = () -> tMaterial.getToolTip(tPrefix.getMaterialAmount() / M);
                 if (tPrefix.isUnifiable()) {
                     GTOreDictUnificator.set(tPrefix, tMaterial, tStack);
@@ -103,27 +99,6 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
     }
 
     /* ---------- OVERRIDEABLE FUNCTIONS ---------- */
-
-    /**
-     * @param aPrefix   the OreDict Prefix
-     * @param aMaterial the Material
-     * @param aMetaData a Index from [0 - 31999]
-     * @return the Localized Name when default LangFiles are used.
-     */
-    public String getDefaultLocalization(OrePrefixes aPrefix, Materials aMaterial, int aMetaData) {
-        return aPrefix.getDefaultLocalNameForItem(aMaterial);
-    }
-
-    /**
-     * @param aPrefix   the OreDict Prefix
-     * @param aMaterial the Material
-     * @param aMetaData a Index from [0 - 31999]
-     * @return the Localized Name Format when default LangFiles are used.
-     */
-    public String getDefaultLocalizationFormat(OrePrefixes aPrefix, Materials aMaterial, int aMetaData) {
-        return aPrefix.getDefaultLocalNameFormatForItem(aMaterial);
-    }
-
     /**
      * @param aMetaData a Index from [0 - 31999]
      * @param aMaterial the Material
@@ -153,8 +128,7 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
     public String getItemStackDisplayName(ItemStack aStack) {
         String aName = super.getItemStackDisplayName(aStack);
         int aDamage = aStack.getItemDamage();
-        if (names[aDamage] != null) return names[aDamage].get();
-        if (aDamage < 32000 && aDamage >= 0) return Materials.getLocalizedNameForItem(aName, aDamage % 1000);
+        if (aDamage < 32000 && names[aDamage] != null) return names[aDamage].get();
         return aName;
     }
 

@@ -67,8 +67,8 @@ public class MTEWetTransformer extends MTETransformer {
     @Override
     public String[] getDescription() {
         return GTSplit.splitLocalizedFormattedWithWarped(
-            super.getDescription()[0],
             "gt.blockmachines.transformer_advanced.desc",
+            super.getDescription()[0],
             CommonValues.TEC_MARK_GENERAL,
             16,
             64);

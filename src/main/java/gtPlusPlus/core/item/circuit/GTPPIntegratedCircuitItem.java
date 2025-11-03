@@ -4,6 +4,7 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.common.items.ItemIntegratedCircuit.findConfiguratorInInv;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -29,6 +30,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.INetworkUpdatableItem;
 import gregtech.api.net.GTPacketUpdateItem;
 import gregtech.api.objects.XSTR;
+import gregtech.api.util.GTSplit;
 import gregtech.common.gui.modularui.base.ItemSelectBaseGui;
 import gtPlusPlus.core.util.math.MathUtils;
 
@@ -64,10 +66,11 @@ public class GTPPIntegratedCircuitItem extends Item implements INetworkUpdatable
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer p_77624_2_, List<String> aList, boolean p_77624_4_) {
         try {
-            aList.add(
-                StatCollector.translateToLocalFormatted("gtpp.tooltip.integrated_circuit.0", aStack.getItemDamage()));
-            aList.add(StatCollector.translateToLocal("gtpp.tooltip.integrated_circuit.1"));
-            aList.add(StatCollector.translateToLocal("gtpp.tooltip.integrated_circuit.2"));
+            aList.addAll(
+                Arrays.asList(
+                    GTSplit.splitLocalizedFormatted(
+                        "gtpp.tooltip.integrated_circuit.configuration",
+                        aStack.getItemDamage())));
         } catch (Throwable t) {
             t.printStackTrace();
         }

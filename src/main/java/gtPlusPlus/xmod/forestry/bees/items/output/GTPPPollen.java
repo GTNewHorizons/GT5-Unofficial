@@ -87,6 +87,6 @@ public class GTPPPollen extends Item {
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
         return GTPPPollenType.get(stack.getItemDamage())
-            .getName();
+            .getLocalizedName();
     }
 }

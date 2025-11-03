@@ -99,6 +99,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
     private byte[] rgb = new byte[3];
     private final String defaultName;
     private String toolTip;
+    private boolean isFormulaNeededLocalized = false;
 
     private Werkstoff.Stats stats;
     private final Werkstoff.Types type;
@@ -114,6 +115,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
 
     public void setBridgeMaterial(Materials bridgeMaterial) {
         this.bridgeMaterial = bridgeMaterial;
+        if (isFormulaNeededLocalized) this.bridgeMaterial.setChemicalFormula(getToolTip(), true);
     }
 
     public static void init() {
@@ -322,6 +324,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
             }
         } else {
             this.toolTip = toolTip;
+            this.isFormulaNeededLocalized = true;
             GTLanguageManager.addStringLocalization(getLocalizedNameKey() + ".ChemicalFormula", this.toolTip);
         }
         // if (this.toolTip.length() > 25)

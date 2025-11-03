@@ -93,7 +93,7 @@ public class GTPPDrop extends Item {
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
         return GTPPDropType.get(stack.getItemDamage())
-            .getName();
+            .getLocalizedName();
     }
 
     private static final int[] sFluidOutputs = new int[] { 144, 136, 128, 120, 112, 104, 96, 88, 80, 72, 64, 48, 32, 16,
@@ -109,9 +109,9 @@ public class GTPPDrop extends Item {
                 new FluidStack(aDrop.mMaterial.getFluid(), sFluidOutputs[aDrop.mMaterial.vTier]),
                 aDrop.mMaterial.vTier * 20 * 30,
                 aDrop.mMaterial.vVoltageMultiplier)) {
-                Logger.BEES("Added Drop extraction recipe for: " + aDrop.getName());
+                Logger.BEES("Added Drop extraction recipe for: " + aDrop.getLocalizedName());
             } else {
-                Logger.BEES("Failed to add Drop extraction recipe for: " + aDrop.getName());
+                Logger.BEES("Failed to add Drop extraction recipe for: " + aDrop.getLocalizedName());
             }
         }
     }

@@ -49,7 +49,7 @@ public enum GTPPCombType {
         this.mShowInList = false;
     }
 
-    public String getName() {
+    public String getLocalizedName() {
         return StatCollector.translateToLocal("gtplusplus.comb." + this.mNameUnlocal);
     }
 

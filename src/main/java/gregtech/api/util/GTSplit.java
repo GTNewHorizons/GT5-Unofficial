@@ -46,20 +46,20 @@ public class GTSplit {
 
     /**
      * add a line before and after the translated text.
-     * 
+     *
      * @apiNote prefix and suffix should NOT is Hardcoded.
      */
-    public static String[] splitLocalizedWithWarped(String prefix, String key, String suffix) {
+    public static String[] splitLocalizedWithWarped(String key, String prefix, String suffix) {
         return Stream.concat(Stream.concat(Stream.of(prefix), Arrays.stream(splitLocalized(key))), Stream.of(suffix))
             .toArray(String[]::new);
     }
 
     /**
      * add a line before and after the translated and formatted text.
-     * 
+     *
      * @apiNote prefix and suffix should NOT is Hardcoded.
      */
-    public static String[] splitLocalizedFormattedWithWarped(String prefix, String key, String suffix,
+    public static String[] splitLocalizedFormattedWithWarped(String key, String prefix, String suffix,
         Object... objects) {
         return Stream
             .concat(
@@ -70,7 +70,7 @@ public class GTSplit {
 
     /**
      * add a line after the translated text.
-     * 
+     *
      * @apiNote suffix should NOT is Hardcoded.
      */
     public static String[] splitLocalizedWithSuffix(String key, String suffix) {
@@ -80,7 +80,7 @@ public class GTSplit {
 
     /**
      * add a line after the translated and formatted text.
-     * 
+     *
      * @apiNote suffix should NOT is Hardcoded.
      */
     public static String[] splitLocalizedFormattedWithSuffix(String key, String suffix, Object... objects) {
@@ -90,30 +90,30 @@ public class GTSplit {
 
     /**
      * add a line before the translated text.
-     * 
+     *
      * @apiNote prefix should NOT is Hardcoded.
      */
-    public static String[] splitLocalizedWithPrefix(String prefix, String key) {
+    public static String[] splitLocalizedWithPrefix(String key, String prefix) {
         return Stream.concat(Stream.of(prefix), Arrays.stream(splitLocalized(key)))
             .toArray(String[]::new);
     }
 
     /**
      * add a line before the translated and formatted text.
-     * 
+     *
      * @apiNote prefix should NOT is Hardcoded.
      */
-    public static String[] splitLocalizedFormattedWithPrefix(String prefix, String key, Object... objects) {
+    public static String[] splitLocalizedFormattedWithPrefix(String key, String prefix, Object... objects) {
         return Stream.concat(Stream.of(prefix), Arrays.stream(splitLocalizedFormatted(key, objects)))
             .toArray(String[]::new);
     }
 
     /**
      * add lines before and after the translated text.
-     * 
+     *
      * @apiNote prefixes and suffixes should NOT is Hardcoded.
      */
-    public static String[] splitLocalizedWithWarped(String[] prefixes, String key, String[] suffixes) {
+    public static String[] splitLocalizedWithWarped(String key, String[] prefixes, String[] suffixes) {
         return Stream
             .concat(Stream.concat(Arrays.stream(prefixes), Arrays.stream(splitLocalized(key))), Arrays.stream(suffixes))
             .toArray(String[]::new);
@@ -121,10 +121,10 @@ public class GTSplit {
 
     /**
      * add lines before and after the translated and formatted text.
-     * 
+     *
      * @apiNote prefixes and suffixes should NOT is Hardcoded.
      */
-    public static String[] splitLocalizedFormattedWithWarped(String[] prefixes, String key, String[] suffixes,
+    public static String[] splitLocalizedFormattedWithWarped(String key, String[] prefixes, String[] suffixes,
         Object... objects) {
         return Stream
             .concat(
@@ -135,7 +135,7 @@ public class GTSplit {
 
     /**
      * add lines after the translated text.
-     * 
+     *
      * @apiNote suffixes should NOT is Hardcoded.
      */
     public static String[] splitLocalizedWithSuffix(String key, String[] suffixes) {
@@ -145,7 +145,7 @@ public class GTSplit {
 
     /**
      * add lines after the translated and formatted text.
-     * 
+     *
      * @apiNote suffixes should NOT is Hardcoded.
      */
     public static String[] splitLocalizedFormattedWithSuffix(String key, String[] suffixes, Object... objects) {
@@ -155,20 +155,20 @@ public class GTSplit {
 
     /**
      * add lines before the translated text.
-     * 
+     *
      * @apiNote prefixes should NOT is Hardcoded.
      */
-    public static String[] splitLocalizedWithPrefix(String[] prefixes, String key) {
+    public static String[] splitLocalizedWithPrefix(String key, String[] prefixes) {
         return Stream.concat(Arrays.stream(prefixes), Arrays.stream(splitLocalized(key)))
             .toArray(String[]::new);
     }
 
     /**
      * add lines before the translated and formatted text.
-     * 
+     *
      * @apiNote prefixes should NOT is Hardcoded.
      */
-    public static String[] splitLocalizedFormattedWithPrefix(String[] prefixes, String key, Object... objects) {
+    public static String[] splitLocalizedFormattedWithPrefix(String key, String[] prefixes, Object... objects) {
         return Stream.concat(Arrays.stream(prefixes), Arrays.stream(splitLocalizedFormatted(key, objects)))
             .toArray(String[]::new);
     }

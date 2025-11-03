@@ -47,7 +47,7 @@ public enum GTPPPollenType {
         this.mShowInList = false;
     }
 
-    public String getName() {
+    public String getLocalizedName() {
         return StatCollector.translateToLocal("gtplusplus.pollen." + this.mNameUnlocal);
     }
 

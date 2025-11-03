@@ -6,6 +6,8 @@ import static gregtech.api.enums.Textures.BlockIcons.PIPE_RESTRICTOR;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -458,10 +460,9 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
         return mMaterialNewNameKey;
     }
 
-    public MTEItemPipe renameMaterial(String newName) {
+    public MTEItemPipe renameMaterial(@Nullable String newName) {
         if (newName == null) return this;
-        final String key = "Material." + mMaterial.mName.toLowerCase()
-            .replace(" ", "") + ".itempipe.newname";
+        final String key = mMaterial.getLocalizedNameKey() + ".itempipe.newname";
         GTLanguageManager.addStringLocalization(key, newName);
         this.mMaterialNewNameKey = key;
         return this;

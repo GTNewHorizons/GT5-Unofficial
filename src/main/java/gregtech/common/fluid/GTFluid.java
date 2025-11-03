@@ -28,7 +28,7 @@ import gregtech.api.util.GTUtility;
 
 public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runnable {
 
-    private final String defaultLocalizedName;
+    private final String localDefaultName;
     private final ResourceLocation stillIconResourceLocation;
     private final ResourceLocation flowingIconResourceLocation;
     private final short[] colorRGBA;
@@ -44,7 +44,7 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
      */
     protected GTFluid(@Nonnull final GTFluidBuilder builder) {
         super(builder.fluidName);
-        this.defaultLocalizedName = builder.localizedName;
+        this.localDefaultName = builder.localDefaultName;
         this.stillIconResourceLocation = builder.stillIconResourceLocation;
         this.flowingIconResourceLocation = builder.flowingIconResourceLocation;
         this.iconsFrom = builder.iconsFrom;
@@ -179,7 +179,7 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
      */
     @Override
     public IGTRegisteredFluid addLocalizedName() {
-        GTLanguageManager.addStringLocalization(getUnlocalizedName(), defaultLocalizedName);
+        GTLanguageManager.addStringLocalization(getUnlocalizedName(), localDefaultName);
         return this;
     }
 
@@ -204,7 +204,7 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
      *           If a pattern matches, it uses formatted localization with the appropriate oreprefix key.
      */
     public IGTRegisteredFluid addLocalizedName(String key, String materialName) {
-        if (!materialName.equals(defaultLocalizedName)) {
+        if (!materialName.equals(localDefaultName)) {
             if (addLocalizedNameHasOreprefix(
                 key,
                 materialName,
@@ -226,9 +226,9 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
 
     private boolean addLocalizedNameHasOreprefix(String key, String materialName, String oreprefixName) {
         final String oreprefixNameRemovedFormat = oreprefixName.replace("%s", "");
-        if (defaultLocalizedName.contains(oreprefixNameRemovedFormat)) {
+        if (localDefaultName.contains(oreprefixNameRemovedFormat)) {
             if (String.format(oreprefixName, materialName)
-                .equals(defaultLocalizedName)) {
+                .equals(localDefaultName)) {
                 localizedName = () -> StatCollector.translateToLocalFormatted(
                     OrePrefixes.getOreprefixKey(oreprefixName)
                         .replace("%s", "material"),

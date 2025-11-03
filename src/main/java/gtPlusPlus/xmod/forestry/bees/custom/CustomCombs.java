@@ -87,7 +87,7 @@ public enum CustomCombs {
         this.showInList = false;
     }
 
-    public String getName() {
+    public String getLocalizedName() {
         return StatCollector.translateToLocal("comb." + this.name);
     }
 

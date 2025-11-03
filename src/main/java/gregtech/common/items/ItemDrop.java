@@ -100,7 +100,7 @@ public class ItemDrop extends Item {
 
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
-        return DropType.values()[stack.getItemDamage()].getName();
+        return DropType.values()[stack.getItemDamage()].getLocalizedName();
     }
 
     public void initDropsRecipes() {

@@ -461,9 +461,8 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
 
     @Override
     public String[] getDescription() {
-        return GTSplit.splitLocalizedFormatted(
-            "gt.blockmachines.output_hatch.desc",
-            GTUtility.formatNumbers(getCapacity()) + "L");
+        return GTSplit
+            .splitLocalizedFormatted("gt.blockmachines.output_hatch.desc", GTUtility.formatNumbers(getCapacity()));
     }
 
     @Override

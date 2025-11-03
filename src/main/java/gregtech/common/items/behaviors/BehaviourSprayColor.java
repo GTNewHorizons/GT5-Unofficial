@@ -1,6 +1,7 @@
 package gregtech.common.items.behaviors;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -29,7 +30,6 @@ public class BehaviourSprayColor extends BehaviourNone {
     private final ItemStack mFull;
     private final long mUses;
     private final byte mColor;
-    protected String mTooltipKey;
 
     public BehaviourSprayColor(ItemStack aEmpty, ItemStack aUsed, ItemStack aFull, long aUses, int aColor) {
         this.mEmpty = aEmpty;
@@ -37,7 +37,6 @@ public class BehaviourSprayColor extends BehaviourNone {
         this.mFull = aFull;
         this.mUses = aUses;
         this.mColor = ((byte) aColor);
-        this.mTooltipKey = "gt.behaviour.paintspray.tooltip";
     }
 
     public BehaviourSprayColor(ItemStack aEmpty, ItemStack aUsed, ItemStack aFull, long aUses) {
@@ -46,7 +45,6 @@ public class BehaviourSprayColor extends BehaviourNone {
         this.mFull = aFull;
         this.mUses = aUses;
         this.mColor = 0;
-        mTooltipKey = "";
     }
 
     @Override
@@ -194,16 +192,16 @@ public class BehaviourSprayColor extends BehaviourNone {
         return this.mColor;
     }
 
+    protected Supplier<String> getTooltip() {
+        return () -> StatCollector.translateToLocalFormatted(
+            "gt.behaviour.paintspray.tooltip",
+            Dyes.get(this.mColor)
+                .getLocalizedDyeName());
+    }
+
     @Override
     public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
-        if (!this.mTooltipKey.isEmpty()) {
-            if (this instanceof BehaviourSprayColorRemover) aList.add(StatCollector.translateToLocal(this.mTooltipKey));
-            else aList.add(
-                StatCollector.translateToLocalFormatted(
-                    this.mTooltipKey,
-                    Dyes.get(this.mColor)
-                        .getLocalizedDyeName()));
-        }
+        if (getTooltip() != null) aList.add(StatCollector.translateToLocal(getTooltip().get()));
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.chain"));
         aList.add(
             StatCollector.translateToLocalFormatted("gt.behaviour.paintspray.chain_amount", Other.sprayCanChainRange));

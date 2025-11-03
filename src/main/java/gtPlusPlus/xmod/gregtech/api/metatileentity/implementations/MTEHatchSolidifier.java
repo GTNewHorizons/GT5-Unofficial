@@ -65,7 +65,7 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
     public String[] getDescription() {
         return GTSplit.splitLocalizedFormatted(
             "gt.blockmachines.input_hatch_solidifier.desc",
-            GTUtility.formatNumbers(getCapacity()) + "L");
+            GTUtility.formatNumbers(getCapacity()));
     }
 
     public static ItemStack findMatchingMold(ItemStack stack) {

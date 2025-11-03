@@ -125,15 +125,6 @@ public class Utils {
         return GTUtility.copy(stack);
     }
 
-    public static String getGTPPMaterialLocalizedNameKey(String materialName) {
-        return "Material." + materialName.toLowerCase()
-            .replaceAll("[^a-zA-Z0-9]", "");
-    }
-
-    public static String getGTPPMaterialLocalizedName(String materialName) {
-        return StatCollector.translateToLocal(getGTPPMaterialLocalizedNameKey(materialName));
-    }
-
     public static String[] splitLocalizedWithGTPP(String key) {
         return GTSplit.splitLocalizedWithSuffix(key, GTPPCore.GT_Tooltip.get());
     }
@@ -143,10 +134,10 @@ public class Utils {
     }
 
     public static String[] splitLocalizedWithPrefixAndGTPP(String prefix, String key) {
-        return GTSplit.splitLocalizedWithWarped(prefix, key, GTPPCore.GT_Tooltip.get());
+        return GTSplit.splitLocalizedWithWarped(key, prefix, GTPPCore.GT_Tooltip.get());
     }
 
     public static String[] splitLocalizedFormattedWithPrefixAndGTPP(String prefix, String key, Object... objects) {
-        return GTSplit.splitLocalizedFormattedWithWarped(prefix, key, GTPPCore.GT_Tooltip.get(), objects);
+        return GTSplit.splitLocalizedFormattedWithWarped(key, prefix, GTPPCore.GT_Tooltip.get(), objects);
     }
 }

@@ -38,7 +38,7 @@ public enum PropolisType {
         this.showInList = false;
     }
 
-    public String getName() {
+    public String getLocalizedName() {
         // return "gt.comb."+this.name;
         return StatCollector.translateToLocal("propolis." + this.name);
     }

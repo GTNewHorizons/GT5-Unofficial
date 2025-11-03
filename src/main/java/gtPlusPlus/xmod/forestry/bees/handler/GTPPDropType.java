@@ -48,7 +48,7 @@ public enum GTPPDropType {
         this.mShowInList = false;
     }
 
-    public String getName() {
+    public String getLocalizedName() {
         return StatCollector.translateToLocal("gtplusplus.drop." + this.mNameUnlocal);
     }
 

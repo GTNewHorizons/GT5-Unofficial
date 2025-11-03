@@ -2,6 +2,7 @@ package gregtech.common.items;
 
 import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.OrePrefixes.cellMolten;
+import static gregtech.api.enums.OrePrefixes.material;
 
 import java.util.BitSet;
 import java.util.List;
@@ -10,7 +11,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
 
 import com.google.common.collect.ImmutableList;
 
@@ -86,7 +86,7 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
     private void registerMolten(Materials tMaterial, int i) {
         ItemStack tStack = new ItemStack(this, 1, i);
         enabled.set(i);
-        names[i] = () -> StatCollector.translateToLocal("gt.oreprefix.molten_material_cell");
+        names[i] = () -> cellMolten.getLocalizedNameForItem(tMaterial);
         tooltips[i] = () -> tMaterial.getToolTip(cellMolten.getMaterialAmount() / M);
 
         if (cellMolten.isUnifiable()) {
@@ -101,8 +101,7 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
         for (OrePrefixes prefix : CRACKED_CELL_TYPES) {
             ItemStack tStack = new ItemStack(this, 1, offset + i);
             enabled.set(offset + i);
-            names[offset + i] = () -> StatCollector
-                .translateToLocal(OrePrefixes.getOreprefixKey(prefix.getDefaultLocalNameFormatForItem(tMaterial)));
+            names[offset + i] = () -> prefix.getLocalizedNameForItem(tMaterial);
             tooltips[offset + i] = () -> tMaterial.getToolTip(prefix.getMaterialAmount() / M);
 
             if (prefix.isUnifiable()) {
@@ -152,12 +151,8 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
 
     @Override
     public String getItemStackDisplayName(ItemStack aStack) {
-        String aName = super.getItemStackDisplayName(aStack);
-        Materials material = getMaterial(aStack.getItemDamage());
-        if (material != null) {
-            return String.format(names[aStack.getItemDamage()].get(), material.getLocalizedName());
-        }
-        return aName;
+        if (names[aStack.getItemDamage()] != null) return names[aStack.getItemDamage()].get();
+        return super.getItemStackDisplayName(aStack);
     }
 
     @Override

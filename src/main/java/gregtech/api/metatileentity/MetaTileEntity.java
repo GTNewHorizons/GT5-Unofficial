@@ -189,8 +189,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
 
     @Override
     public String getLocalName() {
-        return super.getLocalName();
-        // return GTLanguageManager.getTranslation("gt.blockmachines." + mName + ".name");
+        return StatCollector.translateToLocal("gt.blockmachines." + mName + ".name");
     }
 
     @Override

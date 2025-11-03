@@ -361,9 +361,6 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
                         + " DIMID: "
                         + aBaseMetaTileEntity.getWorld().provider.dimensionId);
             }
-            for () {
-                co
-            }
             if (!mGasProof && tFluid.getFluid()
                 .isGaseous(tFluid)) {
                 tFluid.amount -= 5;
@@ -1053,8 +1050,7 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
 
     public MTEFluidPipe renameMaterial(String newName) {
         if (newName == null) return this;
-        final String key = "Material." + mMaterial.mName.toLowerCase()
-            .replace(" ", "") + ".fluidpipe.newname";
+        final String key = mMaterial.getLocalizedNameKey() + ".fluidpipe.newname";
         GTLanguageManager.addStringLocalization(key, newName);
         this.mMaterialNameKey = key;
         return this;

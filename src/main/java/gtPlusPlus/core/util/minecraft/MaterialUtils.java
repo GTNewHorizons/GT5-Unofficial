@@ -28,7 +28,6 @@ import gtPlusPlus.core.item.base.wire.BaseItemFineWire;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.material.state.MaterialState;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
@@ -376,8 +375,9 @@ public class MaterialUtils {
             || aGregtechMaterial.mName.equals(Materials._NULL.mName);
     }
 
-    public static void generateMaterialLocalizedName(String defaultName, String defaultLocalName) {
-        GTLanguageManager.addStringLocalization(Utils.getGTPPMaterialLocalizedNameKey(defaultName), defaultLocalName);
+    public static void generateMaterialLocalizedName(String materialNameForKey, String materialLocalDefaultName) {
+        GTLanguageManager
+            .addStringLocalization(getMaterialLocalizedNameKey(materialNameForKey), materialLocalDefaultName);
     }
 
     public static void generateMaterialLocalizedName(String name) {
@@ -385,6 +385,11 @@ public class MaterialUtils {
     }
 
     public static String getMaterialLocalizedName(String defaultName) {
-        return StatCollector.translateToLocal(Utils.getGTPPMaterialLocalizedNameKey(defaultName));
+        return StatCollector.translateToLocal(getMaterialLocalizedNameKey(defaultName));
+    }
+
+    public static String getMaterialLocalizedNameKey(String materialName) {
+        return "Material." + materialName.toLowerCase()
+            .replaceAll("[^a-zA-Z0-9]", "");
     }
 }

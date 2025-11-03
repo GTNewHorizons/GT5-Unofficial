@@ -2835,10 +2835,14 @@ public class OrePrefixes {
         return getDefaultLocalNameForItem(Materials._NULL);
     }
 
-    public static String getOreprefixKey(String prefix) {
+    public static String getOreprefixKey(String prefix, String formatString) {
         return "gt.oreprefix." + prefix.toLowerCase()
             .replace(" ", "_")
-            .replace("%material", "material");
+            .replace(formatString, "material");
+    }
+
+    public static String getOreprefixKey(String prefix) {
+        return getOreprefixKey(prefix, "%material");
     }
 
     public String getOreprefixKey(Materials materials) {

@@ -38,11 +38,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             // This check is separated out because IntelliJ thinks Materials.Wood can be null.
             if (material == null) continue;
             if (material.hasMetalItems() || material == Materials.Wood) {
-                new MTEFrame(
-                    4096 + meta,
-                    "GT_Frame_" + material,
-                    "gt.oreprefix.material_frame_box_tileentity",
-                    material);
+                new MTEFrame(4096 + meta, "GT_Frame_" + material, material);
 
                 // Generate recipes for frame box
                 BlockFrameBox block = (BlockFrameBox) GregTechAPI.sBlockFrames;

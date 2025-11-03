@@ -92,7 +92,7 @@ public class ItemCustomComb extends Item {
 
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
-        return CustomCombs.values()[stack.getItemDamage()].getName();
+        return CustomCombs.values()[stack.getItemDamage()].getLocalizedName();
     }
 
     public void initCombsRecipes() {

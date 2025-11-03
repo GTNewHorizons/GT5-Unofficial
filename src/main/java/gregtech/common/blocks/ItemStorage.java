@@ -6,12 +6,12 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTUtility;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
@@ -38,9 +38,7 @@ public class ItemStorage extends ItemBlock implements IItemFirestoneBurning {
         if (this.field_150939_a instanceof BlockMetal blockMetal) {
             int aDamage = aStack.getItemDamage();
             if (aDamage >= 0 && aDamage < blockMetal.mMats.length) {
-                aName = StatCollector.translateToLocalFormatted(
-                    "gt.oreprefix.block_of_material",
-                    blockMetal.mMats[aDamage].getLocalizedName());
+                aName = OrePrefixes.block.getLocalizedNameForItem(blockMetal.mMats[aDamage]);
             }
         }
         return aName;

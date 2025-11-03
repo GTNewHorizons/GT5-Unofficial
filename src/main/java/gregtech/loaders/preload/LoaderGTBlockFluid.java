@@ -903,14 +903,14 @@ public class LoaderGTBlockFluid implements Runnable {
             .getFluid();
 
         GTFluidFactory.builder("Air")
-            .withLocalizedName("Air")
+            .withLocalDefaultName("Air")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
             .configureMaterials(Materials.Air)
             .addLocalizedName(Materials.Air)
             .registerContainers(ItemList.Cell_Air.get(1L), ItemList.Cell_Empty.get(1L), 2000);
         GTFluidFactory.builder("LiquidOxygen")
-            .withLocalizedName("Liquid Oxygen")
+            .withLocalDefaultName("Liquid Oxygen")
             .withStateAndTemperature(GAS, 60)
             .buildAndRegister()
             .configureMaterials(Materials.LiquidOxygen)
@@ -919,7 +919,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.LiquidOxygen, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("LiquidNitrogen")
-            .withLocalizedName("Liquid Nitrogen")
+            .withLocalDefaultName("Liquid Nitrogen")
             .withStateAndTemperature(GAS, 77)
             .buildAndRegister()
             .configureMaterials(Materials.LiquidNitrogen)
@@ -928,7 +928,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.LiquidNitrogen, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("LiquidAir")
-            .withLocalizedName("Liquid Air")
+            .withLocalDefaultName("Liquid Air")
             .withStateAndTemperature(LIQUID, 77)
             .buildAndRegister()
             .configureMaterials(Materials.LiquidAir)
@@ -937,7 +937,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.LiquidAir, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("Oxygen")
-            .withLocalizedName("Oxygen")
+            .withLocalDefaultName("Oxygen")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
             .configureMaterials(Materials.Oxygen)
@@ -946,7 +946,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("Hydrogen")
-            .withLocalizedName("Hydrogen")
+            .withLocalDefaultName("Hydrogen")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
             .configureMaterials(Materials.Hydrogen)
@@ -955,7 +955,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("Deuterium")
-            .withLocalizedName("Deuterium")
+            .withLocalDefaultName("Deuterium")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
             .configureMaterials(Materials.Deuterium)
@@ -964,7 +964,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Deuterium, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("Tritium")
-            .withLocalizedName("Tritium")
+            .withLocalDefaultName("Tritium")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
             .configureMaterials(Materials.Tritium)
@@ -973,7 +973,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Tritium, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("Helium")
-            .withLocalizedName("Helium")
+            .withLocalDefaultName("Helium")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
             .configureMaterials(Materials.Helium)
@@ -982,7 +982,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Helium, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("Argon")
-            .withLocalizedName("Argon")
+            .withLocalDefaultName("Argon")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
             .configureMaterials(Materials.Argon)
@@ -991,7 +991,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Argon, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("Radon")
-            .withLocalizedName("Radon")
+            .withLocalDefaultName("Radon")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
             .configureMaterials(Materials.Radon)
@@ -1001,7 +1001,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("Fluorine")
-            .withLocalizedName("Fluorine")
+            .withLocalDefaultName("Fluorine")
             .withStateAndTemperature(GAS, 53)
             .buildAndRegister()
             .configureMaterials(Materials.Fluorine)
@@ -1010,7 +1010,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Fluorine, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("Titaniumtetrachloride")
-            .withLocalizedName("Titaniumtetrachloride")
+            .withLocalDefaultName("Titaniumtetrachloride")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .configureMaterials(Materials.Titaniumtetrachloride)
@@ -1019,7 +1019,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Titaniumtetrachloride, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("Helium-3")
-            .withLocalizedName("Helium-3")
+            .withLocalDefaultName("Helium-3")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
             .configureMaterials(Materials.Helium3)
@@ -1028,7 +1028,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Helium3, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("Methane")
-            .withLocalizedName("Methane")
+            .withLocalDefaultName("Methane")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
             .configureMaterials(Materials.Methane)
@@ -1037,7 +1037,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Methane, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("Nitrogen")
-            .withLocalizedName("Nitrogen")
+            .withLocalDefaultName("Nitrogen")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
             .configureMaterials(Materials.Nitrogen)
@@ -1046,7 +1046,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Nitrogen, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("NitrogenDioxide")
-            .withLocalizedName("Nitrogen Dioxide")
+            .withLocalDefaultName("Nitrogen Dioxide")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
             .configureMaterials(Materials.NitrogenDioxide)
@@ -1056,7 +1056,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.NitrogenDioxide, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("Steam")
-            .withLocalizedName("Steam")
+            .withLocalDefaultName("Steam")
             .withStateAndTemperature(GAS, 375)
             .buildAndRegister()
             .configureMaterials(Materials.Water)
@@ -1076,7 +1076,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .setGaseous(true);
 
         ItemList.sOilExtraHeavy = GTFluidFactory.builder("liquid_extra_heavy_oil")
-            .withLocalizedName("Very Heavy Oil")
+            .withLocalDefaultName("Very Heavy Oil")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .configureMaterials(Materials.OilExtraHeavy)
@@ -1084,7 +1084,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .registerBContainers(Materials.OilExtraHeavy.getCells(1), Materials.Empty.getCells(1))
             .asFluid();
         ItemList.sEpichlorhydrin = GTFluidFactory.builder("liquid_epichlorhydrin")
-            .withLocalizedName("Epichlorohydrin")
+            .withLocalDefaultName("Epichlorohydrin")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .configureMaterials(Materials.Epichlorohydrin)
@@ -1093,7 +1093,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .asFluid();
         ItemList.sDrillingFluid = GTFluidFactory.of("liquid_drillingfluid", "Drilling Fluid", LIQUID, 295);
         ItemList.sToluene = GTFluidFactory.builder("liquid_toluene")
-            .withLocalizedName("Toluene")
+            .withLocalDefaultName("Toluene")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .configureMaterials(Materials.Toluene)
@@ -1101,7 +1101,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .registerBContainers(Materials.Toluene.getCells(1), Materials.Empty.getCells(1))
             .asFluid();
         ItemList.sNitrationMixture = GTFluidFactory.builder("liquid_nitrationmixture")
-            .withLocalizedName("Nitration Mixture")
+            .withLocalDefaultName("Nitration Mixture")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .configureMaterials(Materials.NitrationMixture)
@@ -1110,7 +1110,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .asFluid();
 
         GTFluidFactory.builder("liquid_heavy_oil")
-            .withLocalizedName("Heavy Oil")
+            .withLocalDefaultName("Heavy Oil")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .configureMaterials(Materials.OilHeavy)
@@ -1119,7 +1119,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.OilHeavy, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("liquid_medium_oil")
-            .withLocalizedName("Raw Oil")
+            .withLocalDefaultName("Raw Oil")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .configureMaterials(Materials.OilMedium)
@@ -1128,7 +1128,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.OilMedium, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("liquid_light_oil")
-            .withLocalizedName("Light Oil")
+            .withLocalDefaultName("Light Oil")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .configureMaterials(Materials.OilLight)
@@ -1137,7 +1137,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.OilLight, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("gas_natural_gas")
-            .withLocalizedName("Natural Gas")
+            .withLocalDefaultName("Natural Gas")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
             .configureMaterials(Materials.NaturalGas)
@@ -1146,7 +1146,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.NaturalGas, 1L),
                 ItemList.Cell_Empty.get(1L));
         ItemList.sHydricSulfur = GTFluidFactory.builder("liquid_hydricsulfur")
-            .withLocalizedName("Hydrogen Sulfide")
+            .withLocalDefaultName("Hydrogen Sulfide")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
             .configureMaterials(Materials.HydricSulfide)
@@ -1156,7 +1156,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.Cell_Empty.get(1L))
             .asFluid();
         GTFluidFactory.builder("gas_sulfuricgas")
-            .withLocalizedName("Sulfuric Gas")
+            .withLocalDefaultName("Sulfuric Gas")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
             .configureMaterials(Materials.SulfuricGas)
@@ -1165,7 +1165,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.SulfuricGas, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("gas_gas")
-            .withLocalizedName("Refinery Gas")
+            .withLocalDefaultName("Refinery Gas")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
             .configureMaterials(Materials.Gas)
@@ -1174,7 +1174,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Gas, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("liquid_sulfuricnaphtha")
-            .withLocalizedName("Sulfuric Naphtha")
+            .withLocalDefaultName("Sulfuric Naphtha")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .configureMaterials(Materials.SulfuricNaphtha)
@@ -1183,7 +1183,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.SulfuricNaphtha, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("liquid_sufluriclight_fuel")
-            .withLocalizedName("Sulfuric Light Fuel")
+            .withLocalDefaultName("Sulfuric Light Fuel")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .configureMaterials(Materials.SulfuricLightFuel)
@@ -1192,7 +1192,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.SulfuricLightFuel, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("liquid_sulfuricheavy_fuel")
-            .withLocalizedName("Sulfuric Heavy Fuel")
+            .withLocalDefaultName("Sulfuric Heavy Fuel")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .configureMaterials(Materials.SulfuricHeavyFuel)
@@ -1201,7 +1201,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.SulfuricHeavyFuel, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("liquid_naphtha")
-            .withLocalizedName("Naphtha")
+            .withLocalDefaultName("Naphtha")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .configureMaterials(Materials.Naphtha)
@@ -1210,7 +1210,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Naphtha, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("liquid_light_fuel")
-            .withLocalizedName("Light Fuel")
+            .withLocalDefaultName("Light Fuel")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .configureMaterials(Materials.LightFuel)
@@ -1219,7 +1219,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.LightFuel, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("liquid_heavy_fuel")
-            .withLocalizedName("Heavy Fuel")
+            .withLocalDefaultName("Heavy Fuel")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .configureMaterials(Materials.HeavyFuel)
@@ -1228,7 +1228,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.HeavyFuel, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("liquid_lpg")
-            .withLocalizedName("LPG")
+            .withLocalDefaultName("LPG")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .configureMaterials(Materials.LPG)
@@ -1238,7 +1238,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("charcoal_byproducts")
             .withTextureName("molten.autogenerated")
-            .withLocalizedName("Charcoal Byproducts")
+            .withLocalDefaultName("Charcoal Byproducts")
             .withColorRGBA(Materials.CharcoalByproducts.mRGBa)
             .withStateAndTemperature(GAS, 775)
             .buildAndRegister()
@@ -1249,7 +1249,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("molten.bisphenol_a")
             .withTextureName("molten.autogenerated")
-            .withLocalizedName("Molten Bisphenol A")
+            .withLocalDefaultName("Molten Bisphenol A")
             .withColorRGBA(Materials.BisphenolA.mRGBa)
             .withStateAndTemperature(LIQUID, 432)
             .buildAndRegister()
@@ -1260,7 +1260,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("UUAmplifier")
-            .withLocalizedName("UU Amplifier")
+            .withLocalDefaultName("UU Amplifier")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .configureMaterials(Materials.UUAmplifier)
@@ -1269,7 +1269,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.UUAmplifier, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("Chlorine")
-            .withLocalizedName("Chlorine")
+            .withLocalDefaultName("Chlorine")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
             .configureMaterials(Materials.Chlorine)
@@ -1278,7 +1278,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Chlorine, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("Mercury")
-            .withLocalizedName("Mercury")
+            .withLocalDefaultName("Mercury")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .configureMaterials(Materials.Mercury)
@@ -1287,7 +1287,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Mercury, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("NitroFuel")
-            .withLocalizedName("Cetane-Boosted Diesel")
+            .withLocalDefaultName("Cetane-Boosted Diesel")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .configureMaterials(Materials.NitroFuel)
@@ -1296,7 +1296,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.NitroFuel, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("SodiumPersulfate")
-            .withLocalizedName("Sodium Persulfate")
+            .withLocalDefaultName("Sodium Persulfate")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .configureMaterials(Materials.SodiumPersulfate)
@@ -1305,7 +1305,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.SodiumPersulfate, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("Glyceryl")
-            .withLocalizedName("Glyceryl Trinitrate")
+            .withLocalDefaultName("Glyceryl Trinitrate")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .configureMaterials(Materials.Glyceryl)
@@ -1315,7 +1315,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("lubricant")
-            .withLocalizedName("Lubricant")
+            .withLocalDefaultName("Lubricant")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .configureMaterials(Materials.Lubricant)
@@ -1324,7 +1324,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Lubricant, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("creosote")
-            .withLocalizedName("Creosote Oil")
+            .withLocalDefaultName("Creosote Oil")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .configureMaterials(Materials.Creosote)
@@ -1333,7 +1333,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Creosote, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("seedoil")
-            .withLocalizedName("Seed Oil")
+            .withLocalDefaultName("Seed Oil")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .configureMaterials(Materials.SeedOil)
@@ -1342,7 +1342,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.SeedOil, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("fishoil")
-            .withLocalizedName("Fish Oil")
+            .withLocalDefaultName("Fish Oil")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .configureMaterials(Materials.FishOil)
@@ -1351,7 +1351,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.FishOil, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("oil")
-            .withLocalizedName("Oil")
+            .withLocalDefaultName("Oil")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .configureMaterials(Materials.Oil)
@@ -1360,7 +1360,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Oil, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("fuel")
-            .withLocalizedName("Diesel")
+            .withLocalDefaultName("Diesel")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .configureMaterials(Materials.Diesel)
@@ -1369,7 +1369,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Diesel, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("for.honey")
-            .withLocalizedName("Honey")
+            .withLocalDefaultName("Honey")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .configureMaterials(Materials.Honey)
@@ -1378,7 +1378,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Honey, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("biomass")
-            .withLocalizedName("Biomass")
+            .withLocalDefaultName("Biomass")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .configureMaterials(Materials.Biomass)
@@ -1387,7 +1387,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Biomass, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("bioethanol")
-            .withLocalizedName("Bio Ethanol")
+            .withLocalDefaultName("Bio Ethanol")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .configureMaterials(Materials.Ethanol)
@@ -1396,7 +1396,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Ethanol, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("sulfuricacid")
-            .withLocalizedName("Sulfuric Acid")
+            .withLocalDefaultName("Sulfuric Acid")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .configureMaterials(Materials.SulfuricAcid)
@@ -1405,7 +1405,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.SulfuricAcid, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("milk")
-            .withLocalizedName("Milk")
+            .withLocalDefaultName("Milk")
             .withStateAndTemperature(LIQUID, 290)
             .buildAndRegister()
             .configureMaterials(Materials.Milk)
@@ -1414,7 +1414,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Milk, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("mcguffium")
-            .withLocalizedName("Mc Guffium 239")
+            .withLocalDefaultName("Mc Guffium 239")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .configureMaterials(Materials.McGuffium239)
@@ -1423,7 +1423,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.McGuffium239, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("refinedGlue")
-            .withLocalizedName("Refined Glue")
+            .withLocalDefaultName("Refined Glue")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .configureMaterials(Materials.Glue)
@@ -1432,7 +1432,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Glue, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("hotfryingoil")
-            .withLocalizedName("Hot Frying Oil")
+            .withLocalDefaultName("Hot Frying Oil")
             .withStateAndTemperature(LIQUID, 400)
             .buildAndRegister()
             .configureMaterials(Materials.FryingOilHot)
@@ -1442,7 +1442,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("DimensionallyTranscendentResidue")
-            .withLocalizedName("Dimensionally Transcendent Residue")
+            .withLocalDefaultName("Dimensionally Transcendent Residue")
             .withStateAndTemperature(LIQUID, 2000000000)
             .buildAndRegister()
             .configureMaterials(Materials.DTR)
@@ -1451,7 +1451,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.DTR, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("ExcitedDTCC")
-            .withLocalizedName("Excited Dimensionally Transcendent Crude Catalyst")
+            .withLocalDefaultName("Excited Dimensionally Transcendent Crude Catalyst")
             .withStateAndTemperature(LIQUID, 500000000)
             .buildAndRegister()
             .configureMaterials(Materials.ExcitedDTCC)
@@ -1460,7 +1460,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.ExcitedDTCC, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("ExcitedDTPC")
-            .withLocalizedName("Excited Dimensionally Transcendent Prosaic Catalyst")
+            .withLocalDefaultName("Excited Dimensionally Transcendent Prosaic Catalyst")
             .withStateAndTemperature(LIQUID, 500000000)
             .buildAndRegister()
             .configureMaterials(Materials.ExcitedDTPC)
@@ -1469,7 +1469,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.ExcitedDTPC, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("ExcitedDTRC")
-            .withLocalizedName("Excited Dimensionally Transcendent Resplendent Catalyst")
+            .withLocalDefaultName("Excited Dimensionally Transcendent Resplendent Catalyst")
             .withStateAndTemperature(LIQUID, 500000000)
             .buildAndRegister()
             .configureMaterials(Materials.ExcitedDTRC)
@@ -1478,7 +1478,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.ExcitedDTRC, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("ExcitedDTEC")
-            .withLocalizedName("Excited Dimensionally Transcendent Exotic Catalyst")
+            .withLocalDefaultName("Excited Dimensionally Transcendent Exotic Catalyst")
             .withStateAndTemperature(LIQUID, 500000000)
             .buildAndRegister()
             .configureMaterials(Materials.ExcitedDTEC)
@@ -1487,7 +1487,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.ExcitedDTEC, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("ExcitedDTSC")
-            .withLocalizedName("Excited Dimensionally Transcendent Stellar Catalyst")
+            .withLocalDefaultName("Excited Dimensionally Transcendent Stellar Catalyst")
             .withStateAndTemperature(LIQUID, 500000000)
             .buildAndRegister()
             .configureMaterials(Materials.ExcitedDTSC)
@@ -1497,7 +1497,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder(Materials.RawStarMatter.mName)
-            .withLocalizedName(Materials.RawStarMatter.mDefaultLocalName)
+            .withLocalDefaultName(Materials.RawStarMatter.mDefaultLocalName)
             .withStateAndTemperature(LIQUID, 10_000_000)
             .buildAndRegister()
             .configureMaterials(Materials.RawStarMatter)
@@ -1507,7 +1507,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder(Materials.Space.mName)
-            .withLocalizedName(Materials.Space.mDefaultLocalName)
+            .withLocalDefaultName(Materials.Space.mDefaultLocalName)
             .withStateAndTemperature(MOLTEN, 0)
             .buildAndRegister()
             .configureMaterials(Materials.Space)
@@ -1517,7 +1517,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder(Materials.Time.mName)
-            .withLocalizedName(Materials.Time.mDefaultLocalName)
+            .withLocalDefaultName(Materials.Time.mDefaultLocalName)
             .withStateAndTemperature(MOLTEN, 0)
             .buildAndRegister()
             .configureMaterials(Materials.Time)
@@ -1527,7 +1527,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("PrimordialMatter")
-            .withLocalizedName(Materials.PrimordialMatter.mDefaultLocalName)
+            .withLocalDefaultName(Materials.PrimordialMatter.mDefaultLocalName)
             .withStateAndTemperature(LIQUID, 2_000_000_000)
             .buildAndRegister()
             .configureMaterials(Materials.PrimordialMatter)
@@ -1537,7 +1537,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("QuarkGluonPlasma")
-            .withLocalizedName(Materials.QuarkGluonPlasma.mDefaultLocalName)
+            .withLocalDefaultName(Materials.QuarkGluonPlasma.mDefaultLocalName)
             .withStateAndTemperature(LIQUID, 2_000_000_000)
             .buildAndRegister()
             .configureMaterials(Materials.QuarkGluonPlasma)
@@ -1547,7 +1547,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("PhononMedium")
-            .withLocalizedName(Materials.PhononMedium.mDefaultLocalName)
+            .withLocalDefaultName(Materials.PhononMedium.mDefaultLocalName)
             .withStateAndTemperature(LIQUID, 500)
             .buildAndRegister()
             .configureMaterials(Materials.PhononMedium)
@@ -1557,7 +1557,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("PhononCrystalSolution")
-            .withLocalizedName(Materials.PhononCrystalSolution.mDefaultLocalName)
+            .withLocalDefaultName(Materials.PhononCrystalSolution.mDefaultLocalName)
             .withStateAndTemperature(LIQUID, 500)
             .buildAndRegister()
             .configureMaterials(Materials.PhononCrystalSolution)
@@ -1567,7 +1567,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("antimatter")
-            .withLocalizedName(Materials.Antimatter.mDefaultLocalName)
+            .withLocalDefaultName(Materials.Antimatter.mDefaultLocalName)
             .withStateAndTemperature(LIQUID, 1000000)
             .buildAndRegister()
             .configureMaterials(Materials.Antimatter)
@@ -1577,7 +1577,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("protomatter")
-            .withLocalizedName(Materials.Protomatter.mDefaultLocalName)
+            .withLocalDefaultName(Materials.Protomatter.mDefaultLocalName)
             .withStateAndTemperature(LIQUID, 1)
             .buildAndRegister()
             .configureMaterials(Materials.Protomatter)
@@ -1587,7 +1587,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("plasma.infinity")
-            .withLocalizedName("Infinity Plasma")
+            .withLocalDefaultName("Infinity Plasma")
             .withStateAndTemperature(PLASMA, 10000)
             .buildAndRegister()
             .configureMaterials(Materials.Infinity)
@@ -1597,7 +1597,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("plasma.bedrockium")
-            .withLocalizedName("Bedrockium Plasma")
+            .withLocalDefaultName("Bedrockium Plasma")
             .withStateAndTemperature(PLASMA, 10000)
             .buildAndRegister()
             .configureMaterials(Materials.Bedrockium)
@@ -1607,7 +1607,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("plasma.cosmicneutronium")
-            .withLocalizedName("Cosmic Neutronium Plasma")
+            .withLocalDefaultName("Cosmic Neutronium Plasma")
             .withStateAndTemperature(PLASMA, 10000)
             .buildAndRegister()
             .configureMaterials(Materials.CosmicNeutronium)
@@ -1617,7 +1617,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("molten.cosmicneutronium")
-            .withLocalizedName("Molten Cosmic Neutronium")
+            .withLocalDefaultName("Molten Cosmic Neutronium")
             .withStateAndTemperature(MOLTEN, 9900)
             .buildAndRegister()
             .configureMaterials(Materials.CosmicNeutronium)
@@ -1627,7 +1627,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("plasma.ichorium")
-            .withLocalizedName("Ichorium Plasma")
+            .withLocalDefaultName("Ichorium Plasma")
             .withStateAndTemperature(PLASMA, 9000)
             .buildAndRegister()
             .configureMaterials(Materials.Ichorium)
@@ -1637,7 +1637,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("molten.ichorium")
-            .withLocalizedName("Molten Ichorium")
+            .withLocalDefaultName("Molten Ichorium")
             .withStateAndTemperature(MOLTEN, 9000)
             .buildAndRegister()
             .configureMaterials(Materials.Ichorium)
@@ -1647,7 +1647,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("fieryblood")
-            .withLocalizedName("Fiery Blood")
+            .withLocalDefaultName("Fiery Blood")
             .withStateAndTemperature(LIQUID, 6400)
             .buildAndRegister()
             .configureMaterials(Materials.FierySteel)
@@ -1657,7 +1657,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("holywater")
-            .withLocalizedName("Holy Water")
+            .withLocalDefaultName("Holy Water")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .configureMaterials(Materials.HolyWater)
@@ -1713,7 +1713,7 @@ public class LoaderGTBlockFluid implements Runnable {
                     "dye.watermixed." + tDye.name()
                         .toLowerCase(Locale.ENGLISH))
                     .withTextureName("dyes")
-                    .withLocalizedName("Water Mixed " + tDye.mName + " Dye")
+                    .withLocalDefaultName("Water Mixed " + tDye.mName + " Dye")
                     .withColorRGBA(tDye.getRGBA())
                     .withStateAndTemperature(LIQUID, 295)
                     .buildAndRegister()
@@ -1724,7 +1724,7 @@ public class LoaderGTBlockFluid implements Runnable {
                     "dye.chemical." + tDye.name()
                         .toLowerCase(Locale.ENGLISH))
                     .withTextureName("dyes")
-                    .withLocalizedName("Chemical " + tDye.mName + " Dye")
+                    .withLocalDefaultName("Chemical " + tDye.mName + " Dye")
                     .withColorRGBA(tDye.getRGBA())
                     .withStateAndTemperature(LIQUID, 295)
                     .buildAndRegister()
@@ -1733,7 +1733,7 @@ public class LoaderGTBlockFluid implements Runnable {
                     .asFluid());
         }
         GTFluidFactory.builder("ice")
-            .withLocalizedName("Crushed Ice")
+            .withLocalDefaultName("Crushed Ice")
             .withStateAndTemperature(SLURRY, 270)
             .buildAndRegister()
             .configureMaterials(Materials.Ice)
@@ -1744,7 +1744,7 @@ public class LoaderGTBlockFluid implements Runnable {
         Materials.Water.mSolid = Materials.Ice.mSolid;
 
         GTFluidFactory.builder("molten.glass")
-            .withLocalizedName("Molten Glass")
+            .withLocalDefaultName("Molten Glass")
             .withStateAndTemperature(MOLTEN, 1500)
             .buildAndRegister()
             .configureMaterials(Materials.Glass)
@@ -1754,7 +1754,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.Cell_Empty.get(1L),
                 1 * INGOTS);
         GTFluidFactory.builder("molten.redstone")
-            .withLocalizedName("Molten Redstone")
+            .withLocalDefaultName("Molten Redstone")
             .withStateAndTemperature(MOLTEN, 500)
             .buildAndRegister()
             .configureMaterials(Materials.Redstone)
@@ -1764,7 +1764,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.Cell_Empty.get(1L),
                 1 * INGOTS);
         GTFluidFactory.builder("molten.blaze")
-            .withLocalizedName("Molten Blaze")
+            .withLocalDefaultName("Molten Blaze")
             .withStateAndTemperature(MOLTEN, 6400)
             .buildAndRegister()
             .configureMaterials(Materials.Blaze)
@@ -1774,7 +1774,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.Cell_Empty.get(1L),
                 1 * INGOTS);
         GTFluidFactory.builder("wet.concrete")
-            .withLocalizedName("Wet Concrete")
+            .withLocalDefaultName("Wet Concrete")
             .withStateAndTemperature(MOLTEN, 300)
             .buildAndRegister()
             .configureMaterials(Materials.Concrete)
@@ -1784,7 +1784,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.Cell_Empty.get(1L),
                 1 * INGOTS);
         GTFluidFactory.builder("molten.granitered")
-            .withLocalizedName("Molten Red Granite")
+            .withLocalDefaultName("Molten Red Granite")
             .withTextureName("molten.autogenerated")
             .withColorRGBA(Materials.GraniteRed.mRGBa)
             .withStateAndTemperature(MOLTEN, 1520)
@@ -1797,7 +1797,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 1 * INGOTS);
         GTFluidFactory.builder("molten.graniteblack")
             .withTextureName("molten.autogenerated")
-            .withLocalizedName("Molten Black Granite")
+            .withLocalDefaultName("Molten Black Granite")
             .withColorRGBA(Materials.GraniteBlack.mRGBa)
             .withStateAndTemperature(MOLTEN, 1520)
             .buildAndRegister()
@@ -1832,640 +1832,640 @@ public class LoaderGTBlockFluid implements Runnable {
         }
 
         GTFluidFactory.builder("potion.awkward")
-            .withLocalizedName("Awkward Brew")
+            .withLocalDefaultName("Awkward Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 16), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.thick")
-            .withLocalizedName("Thick Brew")
+            .withLocalDefaultName("Thick Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 32), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.mundane")
-            .withLocalizedName("Mundane Brew")
+            .withLocalDefaultName("Mundane Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 64), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.damage")
-            .withLocalizedName("Harming Brew")
+            .withLocalDefaultName("Harming Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 8204), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.damage.strong")
-            .withLocalizedName("Strong Harming Brew")
+            .withLocalDefaultName("Strong Harming Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 8236), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.damage.splash")
-            .withLocalizedName("Splash Harming Brew")
+            .withLocalDefaultName("Splash Harming Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 16396), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.damage.strong.splash")
-            .withLocalizedName("Strong Splash Harming Brew")
+            .withLocalDefaultName("Strong Splash Harming Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 16428), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.health")
-            .withLocalizedName("Healing Brew")
+            .withLocalDefaultName("Healing Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 8197), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.health.strong")
-            .withLocalizedName("Strong Healing Brew")
+            .withLocalDefaultName("Strong Healing Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 8229), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.health.splash")
-            .withLocalizedName("Splash Healing Brew")
+            .withLocalDefaultName("Splash Healing Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 16389), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.health.strong.splash")
-            .withLocalizedName("Strong Splash Healing Brew")
+            .withLocalDefaultName("Strong Splash Healing Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 16421), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.speed")
-            .withLocalizedName("Swiftness Brew")
+            .withLocalDefaultName("Swiftness Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 8194), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.speed.strong")
-            .withLocalizedName("Strong Swiftness Brew")
+            .withLocalDefaultName("Strong Swiftness Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 8226), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.speed.long")
-            .withLocalizedName("Stretched Swiftness Brew")
+            .withLocalDefaultName("Stretched Swiftness Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 8258), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.speed.splash")
-            .withLocalizedName("Splash Swiftness Brew")
+            .withLocalDefaultName("Splash Swiftness Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 16386), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.speed.strong.splash")
-            .withLocalizedName("Strong Splash Swiftness Brew")
+            .withLocalDefaultName("Strong Splash Swiftness Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 16418), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.speed.long.splash")
-            .withLocalizedName("Stretched Splash Swiftness Brew")
+            .withLocalDefaultName("Stretched Splash Swiftness Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 16450), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.strength")
-            .withLocalizedName("Strength Brew")
+            .withLocalDefaultName("Strength Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 8201), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.strength.strong")
-            .withLocalizedName("Strong Strength Brew")
+            .withLocalDefaultName("Strong Strength Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 8233), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.strength.long")
-            .withLocalizedName("Stretched Strength Brew")
+            .withLocalDefaultName("Stretched Strength Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 8265), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.strength.splash")
-            .withLocalizedName("Splash Strength Brew")
+            .withLocalDefaultName("Splash Strength Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 16393), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.strength.strong.splash")
-            .withLocalizedName("Strong Splash Strength Brew")
+            .withLocalDefaultName("Strong Splash Strength Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 16425), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.strength.long.splash")
-            .withLocalizedName("Stretched Splash Strength Brew")
+            .withLocalDefaultName("Stretched Splash Strength Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 16457), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.regen")
-            .withLocalizedName("Regenerating Brew")
+            .withLocalDefaultName("Regenerating Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 8193), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.regen.strong")
-            .withLocalizedName("Strong Regenerating Brew")
+            .withLocalDefaultName("Strong Regenerating Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 8225), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.regen.long")
-            .withLocalizedName("Stretched Regenerating Brew")
+            .withLocalDefaultName("Stretched Regenerating Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 8257), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.regen.splash")
-            .withLocalizedName("Splash Regenerating Brew")
+            .withLocalDefaultName("Splash Regenerating Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 16385), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.regen.strong.splash")
-            .withLocalizedName("Strong Splash Regenerating Brew")
+            .withLocalDefaultName("Strong Splash Regenerating Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 16417), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.regen.long.splash")
-            .withLocalizedName("Stretched Splash Regenerating Brew")
+            .withLocalDefaultName("Stretched Splash Regenerating Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 16449), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.poison")
-            .withLocalizedName("Poisonous Brew")
+            .withLocalDefaultName("Poisonous Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 8196), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.poison.strong")
-            .withLocalizedName("Strong Poisonous Brew")
+            .withLocalDefaultName("Strong Poisonous Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 8228), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.poison.long")
-            .withLocalizedName("Stretched Poisonous Brew")
+            .withLocalDefaultName("Stretched Poisonous Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 8260), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.poison.splash")
-            .withLocalizedName("Splash Poisonous Brew")
+            .withLocalDefaultName("Splash Poisonous Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 16388), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.poison.strong.splash")
-            .withLocalizedName("Strong Splash Poisonous Brew")
+            .withLocalDefaultName("Strong Splash Poisonous Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 16420), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.poison.long.splash")
-            .withLocalizedName("Stretched Splash Poisonous Brew")
+            .withLocalDefaultName("Stretched Splash Poisonous Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 16452), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.fireresistance")
-            .withLocalizedName("Fire Resistant Brew")
+            .withLocalDefaultName("Fire Resistant Brew")
             .withStateAndTemperature(LIQUID, 375)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 8195), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.fireresistance.long")
-            .withLocalizedName("Stretched Fire Resistant Brew")
+            .withLocalDefaultName("Stretched Fire Resistant Brew")
             .withStateAndTemperature(LIQUID, 375)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 8259), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.fireresistance.splash")
-            .withLocalizedName("Splash Fire Resistant Brew")
+            .withLocalDefaultName("Splash Fire Resistant Brew")
             .withStateAndTemperature(LIQUID, 375)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 16387), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.fireresistance.long.splash")
-            .withLocalizedName("Stretched Splash Fire Resistant Brew")
+            .withLocalDefaultName("Stretched Splash Fire Resistant Brew")
             .withStateAndTemperature(LIQUID, 375)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 16451), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.nightvision")
-            .withLocalizedName("Night Vision Brew")
+            .withLocalDefaultName("Night Vision Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 8198), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.nightvision.long")
-            .withLocalizedName("Stretched Night Vision Brew")
+            .withLocalDefaultName("Stretched Night Vision Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 8262), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.nightvision.splash")
-            .withLocalizedName("Splash Night Vision Brew")
+            .withLocalDefaultName("Splash Night Vision Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 16390), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.nightvision.long.splash")
-            .withLocalizedName("Stretched Splash Night Vision Brew")
+            .withLocalDefaultName("Stretched Splash Night Vision Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 16454), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.weakness")
-            .withLocalizedName("Weakening Brew")
+            .withLocalDefaultName("Weakening Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 8200), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.weakness.long")
-            .withLocalizedName("Stretched Weakening Brew")
+            .withLocalDefaultName("Stretched Weakening Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 8264), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.weakness.splash")
-            .withLocalizedName("Splash Weakening Brew")
+            .withLocalDefaultName("Splash Weakening Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 16392), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.weakness.long.splash")
-            .withLocalizedName("Stretched Splash Weakening Brew")
+            .withLocalDefaultName("Stretched Splash Weakening Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 16456), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.slowness")
-            .withLocalizedName("Lame Brew")
+            .withLocalDefaultName("Lame Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 8202), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.slowness.long")
-            .withLocalizedName("Stretched Lame Brew")
+            .withLocalDefaultName("Stretched Lame Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 8266), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.slowness.splash")
-            .withLocalizedName("Splash Lame Brew")
+            .withLocalDefaultName("Splash Lame Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 16394), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.slowness.long.splash")
-            .withLocalizedName("Stretched Splash Lame Brew")
+            .withLocalDefaultName("Stretched Splash Lame Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 16458), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.waterbreathing")
-            .withLocalizedName("Fishy Brew")
+            .withLocalDefaultName("Fishy Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 8205), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.waterbreathing.long")
-            .withLocalizedName("Stretched Fishy Brew")
+            .withLocalDefaultName("Stretched Fishy Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 8269), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.waterbreathing.splash")
-            .withLocalizedName("Splash Fishy Brew")
+            .withLocalDefaultName("Splash Fishy Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 16397), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.waterbreathing.long.splash")
-            .withLocalizedName("Stretched Splash Fishy Brew")
+            .withLocalDefaultName("Stretched Splash Fishy Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 16461), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.invisibility")
-            .withLocalizedName("Invisible Brew")
+            .withLocalDefaultName("Invisible Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 8206), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.invisibility.long")
-            .withLocalizedName("Stretched Invisible Brew")
+            .withLocalDefaultName("Stretched Invisible Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 8270), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.invisibility.splash")
-            .withLocalizedName("Splash Invisible Brew")
+            .withLocalDefaultName("Splash Invisible Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 16398), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.invisibility.long.splash")
-            .withLocalizedName("Stretched Splash Invisible Brew")
+            .withLocalDefaultName("Stretched Splash Invisible Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(new ItemStack(Items.potionitem, 1, 16462), ItemList.Bottle_Empty.get(1L));
 
         GTFluidFactory.builder("potion.purpledrink")
-            .withLocalizedName("Purple Drink")
+            .withLocalDefaultName("Purple Drink")
             .withStateAndTemperature(LIQUID, 275)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.Bottle_Purple_Drink.get(1L), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.grapejuice")
-            .withLocalizedName("Grape Juice")
+            .withLocalDefaultName("Grape Juice")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.Bottle_Grape_Juice.get(1L), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.wine")
-            .withLocalizedName("Wine")
+            .withLocalDefaultName("Wine")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.Bottle_Wine.get(1L), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.vinegar")
-            .withLocalizedName("Vinegar")
+            .withLocalDefaultName("Vinegar")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .configureMaterials(Materials.Vinegar)
             .addLocalizedName(Materials.Vinegar)
             .registerPContainers(ItemList.Bottle_Vinegar.get(1L), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.potatojuice")
-            .withLocalizedName("Potato Juice")
+            .withLocalDefaultName("Potato Juice")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.Bottle_Potato_Juice.get(1L), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.vodka")
-            .withLocalizedName("Vodka")
+            .withLocalDefaultName("Vodka")
             .withStateAndTemperature(LIQUID, 275)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.Bottle_Vodka.get(1L), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.leninade")
-            .withLocalizedName("Leninade")
+            .withLocalDefaultName("Leninade")
             .withStateAndTemperature(LIQUID, 275)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.Bottle_Leninade.get(1L), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.mineralwater")
-            .withLocalizedName("Mineral Water")
+            .withLocalDefaultName("Mineral Water")
             .withStateAndTemperature(LIQUID, 275)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.Bottle_Mineral_Water.get(1L), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.saltywater")
-            .withLocalizedName("Salty Water")
+            .withLocalDefaultName("Salty Water")
             .withStateAndTemperature(LIQUID, 275)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.Bottle_Salty_Water.get(1L), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.reedwater")
-            .withLocalizedName("Reed Water")
+            .withLocalDefaultName("Reed Water")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.Bottle_Reed_Water.get(1L), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.rum")
-            .withLocalizedName("Rum")
+            .withLocalDefaultName("Rum")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.Bottle_Rum.get(1L), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.piratebrew")
-            .withLocalizedName("Pirate Brew")
+            .withLocalDefaultName("Pirate Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.Bottle_Pirate_Brew.get(1L), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.hopsjuice")
-            .withLocalizedName("Hops Juice")
+            .withLocalDefaultName("Hops Juice")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.Bottle_Hops_Juice.get(1L), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.darkbeer")
-            .withLocalizedName("Dark Beer")
+            .withLocalDefaultName("Dark Beer")
             .withStateAndTemperature(LIQUID, 275)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.Bottle_Dark_Beer.get(1L), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.dragonblood")
-            .withLocalizedName("Dragon Blood")
+            .withLocalDefaultName("Dragon Blood")
             .withStateAndTemperature(LIQUID, 375)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.Bottle_Dragon_Blood.get(1L), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.wheatyjuice")
-            .withLocalizedName("Wheaty Juice")
+            .withLocalDefaultName("Wheaty Juice")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.Bottle_Wheaty_Juice.get(1L), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.scotch")
-            .withLocalizedName("Scotch")
+            .withLocalDefaultName("Scotch")
             .withStateAndTemperature(LIQUID, 275)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.Bottle_Scotch.get(1L), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.glenmckenner")
-            .withLocalizedName("Glen McKenner")
+            .withLocalDefaultName("Glen McKenner")
             .withStateAndTemperature(LIQUID, 275)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.Bottle_Glen_McKenner.get(1L), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.wheatyhopsjuice")
-            .withLocalizedName("Wheaty Hops Juice")
+            .withLocalDefaultName("Wheaty Hops Juice")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.Bottle_Wheaty_Hops_Juice.get(1L), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.beer")
-            .withLocalizedName("Beer")
+            .withLocalDefaultName("Beer")
             .withStateAndTemperature(LIQUID, 275)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.Bottle_Beer.get(1L), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.chillysauce")
-            .withLocalizedName("Chilly Sauce")
+            .withLocalDefaultName("Chilly Sauce")
             .withStateAndTemperature(LIQUID, 375)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.Bottle_Chilly_Sauce.get(1L), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.hotsauce")
-            .withLocalizedName("Hot Sauce")
+            .withLocalDefaultName("Hot Sauce")
             .withStateAndTemperature(LIQUID, 380)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.Bottle_Hot_Sauce.get(1L), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.diabolosauce")
-            .withLocalizedName("Diabolo Sauce")
+            .withLocalDefaultName("Diabolo Sauce")
             .withStateAndTemperature(LIQUID, 385)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.Bottle_Diabolo_Sauce.get(1L), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.diablosauce")
-            .withLocalizedName("Diablo Sauce")
+            .withLocalDefaultName("Diablo Sauce")
             .withStateAndTemperature(LIQUID, 390)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.Bottle_Diablo_Sauce.get(1L), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.diablosauce.strong")
-            .withLocalizedName("Old Man Snitches glitched Diablo Sauce")
+            .withLocalDefaultName("Old Man Snitches glitched Diablo Sauce")
             .withStateAndTemperature(LIQUID, 999)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.Bottle_Snitches_Glitch_Sauce.get(1L), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.applejuice")
-            .withLocalizedName("Apple Juice")
+            .withLocalDefaultName("Apple Juice")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.Bottle_Apple_Juice.get(1L), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.cider")
-            .withLocalizedName("Cider")
+            .withLocalDefaultName("Cider")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.Bottle_Cider.get(1L), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.goldenapplejuice")
-            .withLocalizedName("Golden Apple Juice")
+            .withLocalDefaultName("Golden Apple Juice")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.Bottle_Golden_Apple_Juice.get(1L), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.goldencider")
-            .withLocalizedName("Golden Cider")
+            .withLocalDefaultName("Golden Cider")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.Bottle_Golden_Cider.get(1L), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.idunsapplejuice")
-            .withLocalizedName("Idun's Apple Juice")
+            .withLocalDefaultName("Idun's Apple Juice")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.Bottle_Iduns_Apple_Juice.get(1L), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.notchesbrew")
-            .withLocalizedName("Notches Brew")
+            .withLocalDefaultName("Notches Brew")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.Bottle_Notches_Brew.get(1L), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.lemonjuice")
-            .withLocalizedName("Lemon Juice")
+            .withLocalDefaultName("Lemon Juice")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.Bottle_Lemon_Juice.get(1L), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.limoncello")
-            .withLocalizedName("Limoncello")
+            .withLocalDefaultName("Limoncello")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.Bottle_Limoncello.get(1L), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.lemonade")
-            .withLocalizedName("Lemonade")
+            .withLocalDefaultName("Lemonade")
             .withStateAndTemperature(LIQUID, 275)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.Bottle_Lemonade.get(1L), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.alcopops")
-            .withLocalizedName("Alcopops")
+            .withLocalDefaultName("Alcopops")
             .withStateAndTemperature(LIQUID, 275)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.Bottle_Alcopops.get(1L), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.cavejohnsonsgrenadejuice")
-            .withLocalizedName("Cave Johnsons Grenade Juice")
+            .withLocalDefaultName("Cave Johnsons Grenade Juice")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.Bottle_Cave_Johnsons_Grenade_Juice.get(1L), ItemList.Bottle_Empty.get(1L));
 
         GTFluidFactory.builder("potion.coffee")
-            .withLocalizedName("Coffee")
+            .withLocalDefaultName("Coffee")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.ThermosCan_Coffee.get(1L), ItemList.ThermosCan_Empty.get(1L));
         GTFluidFactory.builder("potion.sweetcoffee")
-            .withLocalizedName("Sweet Coffee")
+            .withLocalDefaultName("Sweet Coffee")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.ThermosCan_Sweet_Coffee.get(1L), ItemList.ThermosCan_Empty.get(1L));
         GTFluidFactory.builder("potion.Latte")
-            .withLocalizedName("Latte")
+            .withLocalDefaultName("Latte")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.ThermosCan_Latte.get(1L), ItemList.ThermosCan_Empty.get(1L));
         GTFluidFactory.builder("potion.sweetlatte")
-            .withLocalizedName("Sweet Latte")
+            .withLocalDefaultName("Sweet Latte")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.ThermosCan_Sweet_Latte.get(1L), ItemList.ThermosCan_Empty.get(1L));
         GTFluidFactory.builder("potion.sweetjesuslatte")
-            .withLocalizedName("Sweet Jesus Latte")
+            .withLocalDefaultName("Sweet Jesus Latte")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.ThermosCan_Sweet_Jesus_Latte.get(1L), ItemList.ThermosCan_Empty.get(1L));
         GTFluidFactory.builder("potion.darkchocolatemilk")
-            .withLocalizedName("Dark Chocolate Milk")
+            .withLocalDefaultName("Dark Chocolate Milk")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.ThermosCan_Dark_Chocolate_Milk.get(1L), ItemList.ThermosCan_Empty.get(1L));
         GTFluidFactory.builder("potion.chocolatemilk")
-            .withLocalizedName("Chocolate Milk")
+            .withLocalDefaultName("Chocolate Milk")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.ThermosCan_Chocolate_Milk.get(1L), ItemList.ThermosCan_Empty.get(1L));
         GTFluidFactory.builder("potion.tea")
-            .withLocalizedName("Tea")
+            .withLocalDefaultName("Tea")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.ThermosCan_Tea.get(1L), ItemList.ThermosCan_Empty.get(1L));
         GTFluidFactory.builder("potion.sweettea")
-            .withLocalizedName("Sweet Tea")
+            .withLocalDefaultName("Sweet Tea")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.ThermosCan_Sweet_Tea.get(1L), ItemList.ThermosCan_Empty.get(1L));
         GTFluidFactory.builder("potion.icetea")
-            .withLocalizedName("Ice Tea")
+            .withLocalDefaultName("Ice Tea")
             .withStateAndTemperature(LIQUID, 255)
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.ThermosCan_Ice_Tea.get(1L), ItemList.ThermosCan_Empty.get(1L));
         GTFluidFactory.builder("liquid_sodium")
-            .withLocalizedName("Liquid Sodium")
+            .withLocalDefaultName("Liquid Sodium")
             .withStateAndTemperature(LIQUID, 495)
             .buildAndRegister()
             .configureMaterials(Materials.Sodium)

@@ -28,7 +28,7 @@ public enum PollenType {
         this.showInList = false;
     }
 
-    public String getName() {
+    public String getLocalizedName() {
         return StatCollector.translateToLocal("pollen." + this.name);
     }
 

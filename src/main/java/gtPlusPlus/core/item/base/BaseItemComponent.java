@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
@@ -44,7 +45,7 @@ public class BaseItemComponent extends Item {
     public final Material componentMaterial;
     public final String materialName;
     public final String unlocalName;
-    public final String translatedMaterialName;
+    public final Supplier<String> translatedMaterialName;
     public final ComponentTypes componentType;
     public final int componentColour;
     public short[] extraData;
@@ -56,7 +57,7 @@ public class BaseItemComponent extends Item {
         this.componentMaterial = material;
         this.unlocalName = "item" + componentType.COMPONENT_NAME + material.getUnlocalizedName();
         this.materialName = material.getLocalDefaultName();
-        this.translatedMaterialName = material.getTranslatedName();
+        this.translatedMaterialName = material::getLocalizedName;
         this.componentType = componentType;
         this.setCreativeTab(AddToCreativeTab.tabMisc);
         this.setUnlocalizedName(this.unlocalName);
@@ -90,7 +91,7 @@ public class BaseItemComponent extends Item {
         this.componentMaterial = aTempMaterial;
         this.unlocalName = "itemCell" + aFormattedNameForFluids;
         this.materialName = localName;
-        this.translatedMaterialName = GTUtility.getFluidName(fluid, true);
+        this.translatedMaterialName = () -> GTUtility.getFluidName(fluid, true);
         this.componentType = ComponentTypes.CELL;
         this.setCreativeTab(AddToCreativeTab.tabMisc);
         this.setUnlocalizedName(aFormattedNameForFluids);
@@ -176,11 +177,8 @@ public class BaseItemComponent extends Item {
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
         return StatCollector.translateToLocalFormatted(
-            "gt.oreprefix." + componentType.getName()
-                .toLowerCase()
-                .replace(" ", "_")
-                .replace("@", "material"),
-            translatedMaterialName);
+            OrePrefixes.getOreprefixKey(componentType.getName(), "@"),
+            translatedMaterialName.get());
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })

@@ -45,7 +45,7 @@ public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
         return GTSplit.splitLocalizedFormattedWithSuffix(
             "gt.blockmachines.input_hatch_generator.desc",
             getCustomTooltip(),
-            GTUtility.formatNumbers(getCapacity()) + "L",
+            GTUtility.formatNumbers(getCapacity()),
             GTUtility.getColoredTierNameFromTier(mTier));
     }
 

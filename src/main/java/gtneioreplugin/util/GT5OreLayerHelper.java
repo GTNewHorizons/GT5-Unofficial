@@ -5,11 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 
 import com.google.common.collect.ImmutableMap;
 
@@ -82,16 +82,15 @@ public class GT5OreLayerHelper {
         public final IOreMaterial mSecondaryMaterial;
         public final IOreMaterial mBetweenMaterial;
         public final IOreMaterial mSporadicMaterial;
-        public final List<String> materialKeys;
+        public final Supplier<String> localizedName;
 
         public OreLayerWrapper(OreMixBuilder mix) {
             this.veinName = mix.oreMixName;
+            this.localizedName = mix::getLocalizedName;
             this.ores[0] = mix.primary;
             this.ores[1] = mix.secondary;
             this.ores[2] = mix.between;
             this.ores[3] = mix.sporadic;
-
-            this.materialKeys = mix.materialKeys;
 
             this.mPrimaryVeinMaterial = mix.primary;
             this.mSecondaryMaterial = mix.secondary;
@@ -146,20 +145,7 @@ public class GT5OreLayerHelper {
         }
 
         public String getLocalizedName() {
-            if (materialKeys.size() > 1) {
-                String localizedName = String.join(
-                    ", ",
-                    materialKeys.stream()
-                        .map(StatCollector::translateToLocal)
-                        .toArray(String[]::new));
-                int index = localizedName.lastIndexOf(", ");
-                if (index != -1) {
-                    localizedName = localizedName.substring(0, index) + " & " + localizedName.substring(index + 2);
-                }
-                return localizedName;
-            } else {
-                return StatCollector.translateToLocal(materialKeys.get(0));
-            }
+            return this.localizedName.get();
         }
     }
 

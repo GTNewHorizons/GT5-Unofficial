@@ -1917,6 +1917,15 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     }
 
     @Override
+    public String getLocalizedName() {
+        return StatCollector.translateToLocal(getLocalizedNameKey());
+    }
+
+    public String getLocalizedNameKey() {
+        return "Material." + this.mName.toLowerCase();
+    }
+
+    @Override
     public int getId() {
         return mMetaItemSubID;
     }
@@ -2114,14 +2123,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public String getChemicalFormula() {
         return isFormulaNeededLocalized ? StatCollector.translateToLocal(getLocalizedNameKey() + ".ChemicalFormula")
             : mChemicalFormula;
-    }
-
-    public String getLocalizedName() {
-        return StatCollector.translateToLocal(getLocalizedNameKey());
-    }
-
-    public String getLocalizedNameKey() {
-        return "Material." + this.mName.toLowerCase();
     }
 
     public ItemStack getCells(int amount) {

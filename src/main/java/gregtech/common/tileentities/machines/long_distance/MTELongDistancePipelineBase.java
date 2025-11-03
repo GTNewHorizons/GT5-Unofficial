@@ -42,6 +42,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -71,6 +72,7 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
     protected volatile MTELongDistancePipelineBase mSender = null;
     protected volatile ChunkCoordinates mTargetPos = null;
     protected MTELongDistancePipelineBase mTooCloseTarget = null, mTooCloseSender = null;
+    protected String tooltipKey;
 
     public MTELongDistancePipelineBase(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
@@ -82,6 +84,10 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
 
     @Override
     public String[] getDescription() {
+        if (GTUtility.isStringValid(tooltipKey)) return GTSplit.splitLocalizedFormattedWithPrefix(
+            "gt.blockmachines.long_distance_pipeline.desc",
+            StatCollector.translateToLocal(tooltipKey),
+            minimalDistancePoints);
         return GTSplit.splitLocalizedFormatted("gt.blockmachines.long_distance_pipeline.desc", minimalDistancePoints);
     }
 

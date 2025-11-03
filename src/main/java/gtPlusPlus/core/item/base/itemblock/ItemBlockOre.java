@@ -14,6 +14,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.common.WorldgenGTOreLayer;
 import gtPlusPlus.core.block.base.BlockBaseOre;
@@ -59,6 +60,12 @@ public class ItemBlockOre extends ItemBlock {
     }
 
     @Override
+    public String getItemStackDisplayName(ItemStack stack) {
+        return StatCollector
+            .translateToLocalFormatted(OrePrefixes.ore.getOreprefixKey(), this.mThisMaterial.getLocalizedName());
+    }
+
+    @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List<String> list,
         final boolean bool) {
 
@@ -80,12 +87,12 @@ public class ItemBlockOre extends ItemBlock {
             list.add(StatCollector.translateToLocal("GTPP.tooltip.ore.contains"));
             if (mThisMaterial.getComposites()
                 .isEmpty()) {
-                list.add("- " + mThisMaterial.getLocalDefaultName());
+                list.add("- " + mThisMaterial.getLocalizedName());
             } else {
                 for (MaterialStack m : mThisMaterial.getComposites()) {
                     list.add(
                         "- " + m.getStackMaterial()
-                            .getLocalDefaultName() + " x" + m.getPartsPerOneHundred());
+                            .getLocalizedName() + " x" + m.getPartsPerOneHundred());
                 }
             }
         }

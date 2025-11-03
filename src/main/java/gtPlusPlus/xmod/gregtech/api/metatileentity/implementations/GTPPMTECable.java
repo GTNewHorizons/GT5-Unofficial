@@ -145,7 +145,7 @@ public class GTPPMTECable extends MTECable implements IMetaTileEntityCable {
     @Override
     public String getLocalizedName() {
         if (getMaterial() == null)
-            return StatCollector.translateToLocalFormatted(getPrefixKey(), getGTPPMaterial().getTranslatedName());
+            return StatCollector.translateToLocalFormatted(getPrefixKey(), getGTPPMaterial().getLocalizedName());
         return super.getLocalizedName();
     }
 }

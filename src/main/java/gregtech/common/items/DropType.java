@@ -37,7 +37,7 @@ public enum DropType {
         this.showInList = false;
     }
 
-    public String getName() {
+    public String getLocalizedName() {
         return StatCollector.translateToLocal("drop." + this.name);
     }
 

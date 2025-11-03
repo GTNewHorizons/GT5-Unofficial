@@ -83,7 +83,7 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
         return new ItemStack(this, amount, meta);
     }
 
-    public String getLocalizedNameFormat(Materials aMaterial) {
+    public static String getLocalizedNameFormat(Materials aMaterial) {
         return switch (aMaterial.mName) {
             case "InfusedAir", "InfusedDull", "InfusedEarth", "InfusedEntropy", "InfusedFire", "InfusedOrder", "InfusedVis", "InfusedWater" -> "%material Infused Stone";
             case "Vermiculite", "Bentonite", "Kaolinite", "Talc", "BasalticMineralSand", "GraniticMineralSand", "GlauconiteSand", "CassiteriteSand", "GarnetSand", "QuartzSand", "Pitchblende", "FullersEarth" -> "%material";
@@ -94,6 +94,16 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
     @Override
     public String getUnlocalizedName() {
         return mUnlocalizedName;
+    }
+
+    public static String getLocalizedName(Materials materials) {
+        return StatCollector.translateToLocalFormatted(
+            OrePrefixes.getOreprefixKey(getLocalizedNameFormat(materials)),
+            materials.getLocalizedName());
+    }
+
+    public static String getLocalizedName(int meta) {
+        return getLocalizedName(getMaterial(meta));
     }
 
     private void createFrame(World worldIn, int x, int y, int z, BaseMetaPipeEntity baseMte) {
@@ -119,11 +129,6 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
     // Get the material that this frame box is made of
     public static Materials getMaterial(int meta) {
         return GregTechAPI.sGeneratedMaterials[meta];
-    }
-
-    public static String getDisplayName(int meta) {
-        return StatCollector
-            .translateToLocalFormatted("gt.oreprefix.material_frame_box", getMaterial(meta).getLocalizedName());
     }
 
     public static String getTooltip(int meta) {

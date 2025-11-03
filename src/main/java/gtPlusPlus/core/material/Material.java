@@ -367,7 +367,7 @@ public class Material implements IOreMaterial {
             blastFurnace,
             chemicalSymbol,
             radiationLevel,
-            generateCells,
+            true,
             true,
             inputs);
     }
@@ -395,7 +395,7 @@ public class Material implements IOreMaterial {
             inputs);
     }
 
-    public Material(final String materialName, final String materialDefaultLocalName, final MaterialState defaultState,
+    public Material(final String materialName, final String materialLocalDefaultName, final MaterialState defaultState,
         final TextureSet set, final long durability, short[] rgba, final int meltingPoint, final int boilingPoint,
         final long protons, final long neutrons, final boolean blastFurnace, String chemicalSymbol,
         final int radiationLevel, boolean generateCells, boolean generateFluid, final MaterialStack... inputs) {
@@ -410,7 +410,7 @@ public class Material implements IOreMaterial {
 
         try {
             this.unlocalizedName = StringUtils.sanitizeString(materialName);
-            this.localDefaultName = materialDefaultLocalName;
+            this.localDefaultName = materialLocalDefaultName;
             MaterialUtils.generateMaterialLocalizedName(unlocalizedName, localDefaultName);
             mMaterialCache.put(getLocalDefaultName().toLowerCase(), this);
             mMaterialsByName.put(unlocalizedName, this);
@@ -673,8 +673,8 @@ public class Material implements IOreMaterial {
                 }
             }
 
-            sChemicalFormula.put(materialDefaultLocalName.toLowerCase(), this.vChemicalFormula);
-            Logger.MATERIALS("Creating a Material instance for " + materialDefaultLocalName);
+            sChemicalFormula.put(materialLocalDefaultName.toLowerCase(), this.vChemicalFormula);
+            Logger.MATERIALS("Creating a Material instance for " + materialLocalDefaultName);
             Logger.MATERIALS(
                 "Formula: " + this.vChemicalFormula
                     + " Smallest Stack: "
@@ -687,7 +687,7 @@ public class Material implements IOreMaterial {
             Logger.MATERIALS("Melting Point: " + this.meltingPointC + "C.");
             Logger.MATERIALS("Boiling Point: " + this.boilingPointC + "C.");
         } catch (Throwable t) {
-            Logger.MATERIALS("Stack Trace for " + materialDefaultLocalName);
+            Logger.MATERIALS("Stack Trace for " + materialLocalDefaultName);
             t.printStackTrace();
         }
     }
@@ -842,12 +842,12 @@ public class Material implements IOreMaterial {
 
     @Override
     public String getLocalizedName() {
-        return Utils.getGTPPMaterialLocalizedName(unlocalizedName);
+        return MaterialUtils.getMaterialLocalizedName(unlocalizedName);
     }
 
     @Override
     public String getLocalizedNameKey() {
-        return Utils.getGTPPMaterialLocalizedNameKey(unlocalizedName);
+        return MaterialUtils.getMaterialLocalizedNameKey(unlocalizedName);
     }
 
     @Override
@@ -882,10 +882,6 @@ public class Material implements IOreMaterial {
             return this.unlocalizedName;
         }
         return "ERROR.BAD.UNLOCALIZED.NAME";
-    }
-
-    public final String getTranslatedName() {
-        return MaterialUtils.getMaterialLocalizedName(unlocalizedName);
     }
 
     @Override

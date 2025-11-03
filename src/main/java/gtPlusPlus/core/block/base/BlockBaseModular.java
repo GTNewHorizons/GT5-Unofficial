@@ -34,7 +34,6 @@ public class BlockBaseModular extends BasicBlock {
     protected int blockColour;
     public BlockTypes thisBlock;
     protected String thisBlockMaterial;
-    protected String thisBlockMaterialTranslatedName;
     protected final String thisBlockType;
 
     private static final HashMap<String, Block> sBlockCache = new HashMap<>();
@@ -58,7 +57,6 @@ public class BlockBaseModular extends BasicBlock {
         blockMaterial = material;
         registerComponent();
         sBlockCache.put(material.getUnlocalizedName() + "." + blockType.name(), this);
-        thisBlockMaterialTranslatedName = material.getTranslatedName();
     }
 
     protected BlockBaseModular(final String unlocalizedName, final String blockMaterialString,
@@ -174,12 +172,9 @@ public class BlockBaseModular extends BasicBlock {
 
     @Override
     public String getLocalizedName() {
-        return String.format(
-            StatCollector.translateToLocal(
-                "gt.oreprefix." + getProperName().toLowerCase()
-                    .replace(" ", "_")
-                    .replace("%s", "material")),
-            this.thisBlockMaterialTranslatedName);
+        return StatCollector.translateToLocalFormatted(
+            OrePrefixes.getOreprefixKey(getProperName(), "%s"),
+            this.blockMaterial.getLocalizedName());
     }
 
     @Override

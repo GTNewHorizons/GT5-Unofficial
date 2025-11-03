@@ -17,17 +17,16 @@ import gregtech.api.interfaces.tileentity.ILocalizedMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
+import gregtech.common.blocks.BlockFrameBox;
 
 public class MTEFrame extends MetaPipeEntity implements ITemporaryTE, ILocalizedMetaPipeEntity {
 
     public static final String LOCALIZED_DESC_FORMAT = "gt.blockmachines.gt_frame.desc.format";
     public final Materials mMaterial;
-    private String mPrefixKey;
 
-    public MTEFrame(int aID, String aName, String aPrefixKey, Materials aMaterial) {
+    public MTEFrame(int aID, String aName, Materials aMaterial) {
         super(aID, aName, 0);
         mMaterial = aMaterial;
-        mPrefixKey = aPrefixKey;
         // Hide TileEntity frame in NEI, since we have the block version now that should always be used
         codechicken.nei.api.API.hideItem(this.getStackForm(1));
     }
@@ -67,8 +66,7 @@ public class MTEFrame extends MetaPipeEntity implements ITemporaryTE, ILocalized
 
     @Override
     public String[] getDescription() {
-        return StatCollector.translateToLocal(LOCALIZED_DESC_FORMAT)
-            .split("\\R");
+        return new String[] { StatCollector.translateToLocal(LOCALIZED_DESC_FORMAT) };
     }
 
     @Override
@@ -145,6 +143,11 @@ public class MTEFrame extends MetaPipeEntity implements ITemporaryTE, ILocalized
 
     @Override
     public String getPrefixKey() {
-        return mPrefixKey;
+        return "gt.oreprefix.material_frame_box_tileentity";
+    }
+
+    @Override
+    public String getLocalizedName() {
+        return StatCollector.translateToLocalFormatted(getPrefixKey(), BlockFrameBox.getLocalizedName(getMaterial()));
     }
 }

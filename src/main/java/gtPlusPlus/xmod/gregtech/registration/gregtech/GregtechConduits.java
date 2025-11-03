@@ -27,9 +27,9 @@ import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialsElements;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GTPPMTECable;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GTPPMTEFluidPipe;
@@ -65,7 +65,7 @@ public class GregtechConduits {
         }
 
         public String getLocalizedMaterialKey() {
-            return Utils.getGTPPMaterialLocalizedNameKey(defaultLocalName);
+            return MaterialUtils.getMaterialLocalizedNameKey(defaultLocalName);
         }
     }
 
