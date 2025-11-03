@@ -1,20 +1,19 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.storage.creative;
 
-import java.util.OptionalInt;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import com.gtnewhorizon.gtnhlib.capability.item.AbstractInventorySourceIterator;
-import com.gtnewhorizon.gtnhlib.capability.item.IItemIO;
-import com.gtnewhorizon.gtnhlib.capability.item.IItemSink;
-import com.gtnewhorizon.gtnhlib.capability.item.IItemSource;
-import com.gtnewhorizon.gtnhlib.capability.item.InventorySourceIterator;
+import com.gtnewhorizon.gtnhlib.capability.item.ItemIO;
+import com.gtnewhorizon.gtnhlib.capability.item.ItemSink;
+import com.gtnewhorizon.gtnhlib.capability.item.ItemSource;
+import com.gtnewhorizon.gtnhlib.item.AbstractInventoryIterator;
+import com.gtnewhorizon.gtnhlib.item.ImmutableItemStack;
+import com.gtnewhorizon.gtnhlib.item.InventoryIterator;
 
+import gregtech.api.implementation.items.SimpleItemIO;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -101,35 +100,27 @@ public class MTEInfiniteItemHolder extends MTETieredChest {
     }
 
     @Override
-    protected IItemSink getItemSink(ForgeDirection side) {
-        return new ItemIO();
+    protected ItemSink getItemSink(ForgeDirection side) {
+        return new ItemIOImpl();
     }
 
     @Override
-    protected IItemSource getItemSource(ForgeDirection side) {
-        return new ItemIO();
+    protected ItemSource getItemSource(ForgeDirection side) {
+        return new ItemIOImpl();
     }
 
     @Override
-    protected IItemIO getItemIO(ForgeDirection side) {
-        return new ItemIO();
+    protected ItemIO getItemIO(ForgeDirection side) {
+        return new ItemIOImpl();
     }
 
-    class ItemIO implements IItemIO {
+    class ItemIOImpl extends SimpleItemIO {
+
+        private static final int[] SLOTS = { 0 };
 
         @Override
-        public ItemStack store(ItemStack stack) {
-            return null;
-        }
-
-        @Override
-        public OptionalInt getStoredAmount(@Nullable ItemStack stack) {
-            return GTUtility.areStacksEqual(stack, mItemStack) ? OptionalInt.of(Integer.MAX_VALUE) : ZERO;
-        }
-
-        @Override
-        public @NotNull InventorySourceIterator iterator() {
-            return new AbstractInventorySourceIterator(new int[] { 0 }) {
+        protected @NotNull InventoryIterator iterator(int[] allowedSlots) {
+            return new AbstractInventoryIterator(SLOTS, allowedSlots) {
 
                 @Override
                 protected ItemStack getStackInSlot(int slot) {
@@ -139,8 +130,17 @@ public class MTEInfiniteItemHolder extends MTETieredChest {
                 }
 
                 @Override
-                protected void setInventorySlotContents(int slot, ItemStack stack) {
-                    // do nothing
+                public ItemStack extract(int amount, boolean forced) {
+                    if (getCurrentSlot() != 0) return null;
+
+                    return GTUtility.copyAmountUnsafe(amount, mItemStack);
+                }
+
+                @Override
+                public int insert(ImmutableItemStack stack, boolean forced) {
+                    if (getCurrentSlot() != 0) return stack.getStackSize();
+
+                    return 0;
                 }
             };
         }

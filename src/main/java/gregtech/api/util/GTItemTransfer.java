@@ -3,7 +3,7 @@ package gregtech.api.util;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
-import com.gtnewhorizon.gtnhlib.capability.item.ItemTransfer;
+import com.gtnewhorizon.gtnhlib.item.ItemTransfer;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -25,7 +25,7 @@ public class GTItemTransfer extends ItemTransfer {
     }
 
     public void outOfMachine(IMetaTileEntity imte, ForgeDirection side) {
-        source(imte, ForgeDirection.UNKNOWN);
+        source(imte, side);
         sink(
             imte.getBaseMetaTileEntity()
                 .getTileEntityAtSide(side),

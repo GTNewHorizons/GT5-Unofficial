@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.utils.item.LimitingItemStackHandler;
 import com.google.common.io.ByteArrayDataInput;
-import com.gtnewhorizon.gtnhlib.capability.item.ItemStackPredicate;
+import com.gtnewhorizon.gtnhlib.item.ItemStackPredicate;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
 import cpw.mods.fml.common.network.ByteBufUtils;

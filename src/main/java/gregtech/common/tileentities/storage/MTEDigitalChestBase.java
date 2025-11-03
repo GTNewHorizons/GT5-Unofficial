@@ -5,7 +5,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SCHEST;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SCHEST_GLOW;
 
 import java.util.List;
-import java.util.OptionalInt;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -19,13 +18,14 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import com.gtnewhorizon.gtnhlib.capability.item.AbstractInventorySourceIterator;
-import com.gtnewhorizon.gtnhlib.capability.item.IItemIO;
-import com.gtnewhorizon.gtnhlib.capability.item.IItemSink;
-import com.gtnewhorizon.gtnhlib.capability.item.IItemSource;
-import com.gtnewhorizon.gtnhlib.capability.item.InventorySourceIterator;
+import com.gtnewhorizon.gtnhlib.capability.item.ItemIO;
+import com.gtnewhorizon.gtnhlib.capability.item.ItemSink;
+import com.gtnewhorizon.gtnhlib.capability.item.ItemSource;
+import com.gtnewhorizon.gtnhlib.item.AbstractInventoryIterator;
+import com.gtnewhorizon.gtnhlib.item.ImmutableItemStack;
+import com.gtnewhorizon.gtnhlib.item.InventoryIterator;
+import com.gtnewhorizon.gtnhlib.util.ItemUtil;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -44,6 +44,7 @@ import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
 import gregtech.api.enums.GTValues;
 import gregtech.api.gui.modularui.GTUITextures;
+import gregtech.api.implementation.items.SimpleItemIO;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -393,18 +394,18 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     }
 
     @Override
-    protected IItemSink getItemSink(ForgeDirection side) {
-        return new ItemIO();
+    protected ItemSink getItemSink(ForgeDirection side) {
+        return new ItemIOImpl();
     }
 
     @Override
-    protected IItemSource getItemSource(ForgeDirection side) {
-        return new ItemIO();
+    protected ItemSource getItemSource(ForgeDirection side) {
+        return new ItemIOImpl();
     }
 
     @Override
-    protected IItemIO getItemIO(ForgeDirection side) {
-        return new ItemIO();
+    protected ItemIO getItemIO(ForgeDirection side) {
+        return new ItemIOImpl();
     }
 
     @Override
@@ -483,42 +484,13 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     }
 
-    class ItemIO implements IItemIO {
-
-        @Override
-        public ItemStack store(ItemStack stack) {
-            ItemStack existing = getItemStack();
-
-            if (GTUtility.isStackValid(existing) && !GTUtility.areStacksEqual(existing, stack)) return stack;
-
-            int capacity = getMaxItemCount();
-            int toInsert = Math.min(capacity - getItemCount(), stack.stackSize);
-
-            stack.stackSize -= toInsert;
-
-            setItemStack(GTUtility.copyAmount(1, stack));
-            setItemCount(getItemCount() + toInsert);
-            meInventoryHandler.notifyListeners(toInsert, stack);
-
-            markDirty();
-
-            return stack.stackSize == 0 ? null : stack;
-        }
-
-        @Override
-        public OptionalInt getStoredAmount(@Nullable ItemStack stack) {
-            ItemStack existing = getItemStack();
-
-            if (!GTUtility.areStacksEqual(existing, stack)) return ZERO;
-
-            return OptionalInt.of(existing.stackSize);
-        }
+    class ItemIOImpl extends SimpleItemIO {
 
         private static final int[] SLOTS = { 0 };
 
         @Override
-        public @NotNull InventorySourceIterator iterator() {
-            return new AbstractInventorySourceIterator(SLOTS) {
+        protected @NotNull InventoryIterator iterator(int[] allowedSlots) {
+            return new AbstractInventoryIterator(SLOTS, allowedSlots) {
 
                 @Override
                 protected ItemStack getStackInSlot(int slot) {
@@ -528,29 +500,49 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                 }
 
                 @Override
-                protected void setInventorySlotContents(int slot, @Nullable ItemStack stack) {
-                    if (slot != 0) return;
+                public ItemStack extract(int amount, boolean forced) {
+                    if (getCurrentSlot() != 0) return null;
 
-                    ItemStack current = getStackInSlot(0);
+                    int toExtract = Math.min(amount, getItemCount());
 
-                    setItemStack(GTUtility.copyAmount(1, stack));
-                    setItemCount(stack == null ? 0 : stack.stackSize);
+                    if (toExtract <= 0) return null;
 
-                    if (current != null && !GTUtility.areStacksEqual(stack, current)) {
-                        meInventoryHandler.notifyListeners(-current.stackSize, current);
-                        current = null;
+                    ItemStack extracted = GTUtility.copyAmountUnsafe(toExtract, getItemStack());
+
+                    setItemCount(getItemCount() - toExtract);
+
+                    if (getItemCount() <= 0) {
+                        setItemStack(null);
                     }
 
-                    if (stack != null) {
-                        int previouslyStored = current != null ? current.stackSize : 0;
+                    meInventoryHandler.notifyListeners(-toExtract, extracted);
 
-                        meInventoryHandler.notifyListeners(stack.stackSize - previouslyStored, stack);
-                    }
+                    MTEDigitalChestBase.this.markDirty();
+
+                    return extracted;
                 }
 
                 @Override
-                protected void markDirty() {
+                public int insert(ImmutableItemStack stack, boolean forced) {
+                    if (getCurrentSlot() != 0) return stack.getStackSize();
+
+                    if (!ItemUtil.isStackEmpty(getItemStack()) && !stack.matches(getItemStack())) {
+                        return stack.getStackSize();
+                    }
+
+                    int insertable = Math.min(getItemCapacity() - getItemCount(), stack.getStackSize());
+
+                    if (ItemUtil.isStackEmpty(getItemStack())) {
+                        setItemStack(stack.toStack(0));
+                    }
+
+                    setItemCount(getItemCount() + insertable);
+
+                    meInventoryHandler.notifyListeners(insertable, getItemStack());
+
                     MTEDigitalChestBase.this.markDirty();
+
+                    return stack.getStackSize() - insertable;
                 }
             };
         }

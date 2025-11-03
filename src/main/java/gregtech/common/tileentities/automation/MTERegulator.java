@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizon.gtnhlib.capability.item.ItemStackPredicate;
+import com.gtnewhorizon.gtnhlib.item.ItemStackPredicate;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
@@ -117,7 +117,7 @@ public class MTERegulator extends MTEBuffer {
                 transfer.setMaxItemsPerTransfer(size);
                 transfer.setFilter(
                     ItemStackPredicate.matches(this.mInventory[i + 9])
-                        .and(stack -> stack.stackSize >= size));
+                        .and(stack -> stack.getStackSize() >= size));
 
                 if (transfer.transfer() > 0) {
                     this.mSuccess = 50;

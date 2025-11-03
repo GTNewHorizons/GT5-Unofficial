@@ -25,10 +25,10 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.gtnewhorizon.gtnhlib.capability.item.IItemIO;
-import com.gtnewhorizon.gtnhlib.capability.item.IItemSink;
-import com.gtnewhorizon.gtnhlib.capability.item.IItemSource;
-import com.gtnewhorizon.gtnhlib.capability.item.InventoryItemSource;
+import com.gtnewhorizon.gtnhlib.capability.item.ItemIO;
+import com.gtnewhorizon.gtnhlib.capability.item.ItemSink;
+import com.gtnewhorizon.gtnhlib.capability.item.ItemSource;
+import com.gtnewhorizon.gtnhlib.item.InventoryItemSource;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -114,28 +114,28 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     @Nullable
     @Override
     public <T> T getCapability(@NotNull Class<T> capability, @NotNull ForgeDirection side) {
-        if (capability == IItemSink.class) {
+        if (capability == ItemSink.class) {
             return capability.cast(getItemSink(side));
         }
-        if (capability == IItemSource.class) {
+        if (capability == ItemSource.class) {
             return capability.cast(getItemSource(side));
         }
-        if (capability == IItemIO.class) {
+        if (capability == ItemIO.class) {
             return capability.cast(getItemIO(side));
         }
 
         return null;
     }
 
-    protected IItemSink getItemSink(ForgeDirection side) {
+    protected ItemSink getItemSink(ForgeDirection side) {
         return getSizeInventory() == 0 ? null : new GTItemSink(this, side);
     }
 
-    protected IItemSource getItemSource(ForgeDirection side) {
+    protected ItemSource getItemSource(ForgeDirection side) {
         return getSizeInventory() == 0 ? null : new InventoryItemSource(this, side);
     }
 
-    protected IItemIO getItemIO(ForgeDirection side) {
+    protected ItemIO getItemIO(ForgeDirection side) {
         return null;
     }
 

@@ -3,7 +3,7 @@ package gregtech.api.implementation.items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizon.gtnhlib.capability.item.InventoryItemSink;
+import com.gtnewhorizon.gtnhlib.item.InventoryItemSink;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 

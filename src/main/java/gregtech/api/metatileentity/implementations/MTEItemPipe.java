@@ -14,7 +14,6 @@ import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizon.gtnhlib.capability.item.ItemTransfer;
 import com.gtnewhorizon.gtnhlib.util.ItemUtil;
 
 import gregtech.GTMod;
@@ -30,6 +29,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 
@@ -274,7 +274,7 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
             connectable = true;
         }
 
-        if (ItemUtil.getItemIO(tileEntity, side, true) != null) {
+        if (!connectable && ItemUtil.getItemIO(tileEntity, side) != null) {
             connectable = true;
         }
 
@@ -324,7 +324,7 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
 
         if (neighbour instanceof BaseMetaPipeEntity) return false;
 
-        ItemTransfer transfer = new ItemTransfer();
+        GTItemTransfer transfer = new GTItemTransfer();
 
         transfer.source(aSender, ForgeDirection.UNKNOWN);
         transfer.sink(neighbour, side.getOpposite());

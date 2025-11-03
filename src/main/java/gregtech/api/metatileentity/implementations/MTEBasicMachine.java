@@ -599,17 +599,12 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                 && (tSucceeded || mOutputBlocked % 300 == 1
                     || aBaseMetaTileEntity.hasInventoryBeenModified()
                     || aTick % 600 == 0)) {
-                TileEntity tTileEntity2 = aBaseMetaTileEntity.getTileEntityAtSide(aBaseMetaTileEntity.getFrontFacing());
-                long tStoredEnergy = aBaseMetaTileEntity.getUniversalEnergyStored();
-                int tMaxStacks = (int) (tStoredEnergy / 64L);
-                if (tMaxStacks > mOutputItems.length) tMaxStacks = mOutputItems.length;
-
                 GTItemTransfer transfer = new GTItemTransfer();
 
                 transfer.outOfMachine(this, aBaseMetaTileEntity.getFrontFacing());
                 transfer.dropItems(this);
 
-                transfer.setStacksToTransfer(tMaxStacks);
+                transfer.setStacksToTransfer(mOutputItems.length);
 
                 transfer.transfer();
             }

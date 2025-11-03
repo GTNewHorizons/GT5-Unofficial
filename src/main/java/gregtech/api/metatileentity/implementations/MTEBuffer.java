@@ -26,7 +26,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizon.gtnhlib.capability.item.IItemSink;
+import com.gtnewhorizon.gtnhlib.capability.item.ItemSink;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -353,11 +353,11 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
 
         if (mTargetStackSize > 0) {
             if (bStockingMode) {
-                IItemSink sink = transfer.getSink();
+                ItemSink sink = transfer.getSink();
 
                 if (sink == null) return;
 
-                OptionalInt stored = sink.getStoredAmount(null);
+                OptionalInt stored = sink.getStoredItemsInSink(null);
 
                 if (!stored.isPresent()) return;
 
@@ -365,7 +365,7 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
 
                 transfer.setMaxTotalTransferred(toTransfer);
             } else {
-                transfer.setFilter(stack -> stack.stackSize >= mTargetStackSize);
+                transfer.setFilter(stack -> stack.getStackSize() >= mTargetStackSize);
                 transfer.setMaxItemsPerTransfer(mTargetStackSize);
             }
         }
