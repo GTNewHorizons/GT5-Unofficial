@@ -12,23 +12,23 @@ import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
-import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.common.items.ItemVolumetricFlask;
 
 public class ItemVolumetricFlaskGui {
 
     private final ItemStack flask;
     private final ItemVolumetricFlask flaskItem;
+    private int capacity;
 
     public ItemVolumetricFlaskGui(GuiData guiData) {
 
         this.flask = guiData.getMainHandItem();
-        flaskItem = (ItemVolumetricFlask) flask.getItem();
+        this.flaskItem = (ItemVolumetricFlask) flask.getItem();
+        this.capacity = flaskItem.getCapacity(flask);
     }
 
     public ModularPanel build() {
         ModularPanel panel = ModularPanel.defaultPanel("volumetric_flask", 140, 50);
-        panel.applyTheme(GTGuiThemes.STANDARD.getMuiTheme());
 
         Flow mainColumn = Flow.column()
             .sizeRel(1)
@@ -37,15 +37,16 @@ public class ItemVolumetricFlaskGui {
             .widthRel(1)
             .height(18)
             .marginBottom(2);
+
         IntSyncValue capacitySyncer = new IntSyncValue(
-            () -> flaskItem.getCapacity(flask),
-            value -> flaskItem.setCapacity(flask, value));
+            () -> capacity,
+            value -> flaskItem.setCapacity(flask, capacity = value));
 
         IntSyncValue maxCapacitySyncer = new IntSyncValue(flaskItem::getMaxCapacity);
 
         capacityFieldRow.child(
             new TextFieldWidget().setNumbers(1, maxCapacitySyncer.getIntValue())
-                .setDefaultNumber(maxCapacitySyncer.getIntValue())
+                .setDefaultNumber(capacity)
                 .setFormatAsInteger(true)
                 .value(capacitySyncer)
                 .height(18)
