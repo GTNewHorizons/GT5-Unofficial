@@ -281,7 +281,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         z = z + opposite.offsetZ;
         if (w.getTileEntity(x, y, z) instanceof TileEntityLaser laser) {
             renderer = laser;
-            renderer.setRotationFields(getDirection(), getRotation(), getFlip());
+            renderer.setRotationFields(getExtendedFacing());
             return true;
         }
         return false;
@@ -500,8 +500,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         lensColors
             .put(getUniqueIdentifier(GTOreDictUnificator.get(OrePrefixes.lens, Materials.Firestone, 1)), Colors.Red);
         lensColors.put(getUniqueIdentifier(GTOreDictUnificator.get(OrePrefixes.lens, Materials.Jasper, 1)), Colors.Red);
-        lensColors
-            .put(getUniqueIdentifier(GTOreDictUnificator.get(OrePrefixes.lens, Materials.FoolsRuby, 1)), Colors.Red);
+        lensColors.put(getUniqueIdentifier(GTOreDictUnificator.get(OrePrefixes.lens, Materials.Spinel, 1)), Colors.Red);
         lensColors
             .put(getUniqueIdentifier(GTOreDictUnificator.get(OrePrefixes.lens, Materials.GarnetRed, 1)), Colors.Red);
         lensColors

@@ -10,6 +10,7 @@ import com.cleanroommc.modularui.drawable.UITexture;
 
 import bartworks.MainMod;
 import gregtech.common.modularui2.util.SteamTextureRegisterer;
+import kekztech.KekzCore;
 
 /**
  * Holds all the references to GUI textures used within GregTech.
@@ -88,6 +89,13 @@ public final class GTGuiTextures {
         .imageSize(195, 136)
         .adaptable(1)
         .name(GTTextureIds.BACKGROUND_REDSTONE_SNIFFER)
+        .build();
+
+    public static final UITexture BACKGROUND_CHAOS_LOCATOR = UITexture.builder()
+        .location(GregTech.ID, "gui/background/chaos_locator")
+        .imageSize(176, 166)
+        .adaptable(1)
+        .name(GTTextureIds.BACKGROUND_CHAOS_LOCATOR)
         .build();
     // endregion background
 
@@ -406,6 +414,9 @@ public final class GTGuiTextures {
         .name(GTTextureIds.PROGRESSBAR_SIEVERT)
         .build();
 
+    public static final UITexture STEAM_GAUGE_BG = UITexture.fullImage(GregTech.ID, "gui/background/steam_dial");
+    public static final UITexture STEAM_GAUGE_BG_STEEL = UITexture
+        .fullImage(GregTech.ID, "gui/background/steam_dial_steel");
     // endregion progressbar
 
     // region button
@@ -521,6 +532,18 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_GATE_NOR = fullImageGT("overlay_button/gate_nor");
     public static final UITexture OVERLAY_BUTTON_ANALOG = fullImageGT("overlay_button/analog");
 
+    public static final UITexture OVERLAY_BUTTON_WIRELESS_ON = fullImage(
+        KekzCore.MODID,
+        "gui/overlay_button/wireless_on");
+    public static final UITexture OVERLAY_BUTTON_WIRELESS_OFF = fullImage(
+        KekzCore.MODID,
+        "gui/overlay_button/wireless_off");
+    public static final UITexture OVERLAY_BUTTON_WIRELESS_DISABLED = fullImage(
+        KekzCore.MODID,
+        "gui/overlay_button/wireless_off_disabled");
+    public static final UITexture OVERLAY_BUTTON_WIRELESS_REBALANCE = fullImage(
+        KekzCore.MODID,
+        "gui/overlay_button/wireless_rebalance");
     public static final UITexture TT_OVERLAY_BUTTON_POWER_SWITCH_ON = UITexture
         .fullImage(MODID, "gui/overlay_button/power_switch_on");
     public static final UITexture TT_OVERLAY_BUTTON_POWER_SWITCH_OFF = UITexture
@@ -666,6 +689,19 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_STEAM = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_dehp_steam");
+
+    public static final UITexture OVERLAY_COKE_OVEN_FLUID_SLOT_GAUGE = fullImageColorableGT(
+        "overlay_slot/overlay_coke_oven_fluid_slot_gauge");
+    public static final UITexture BACKGROUND_COKE_OVEN_FLUID_SLOT = fullImageColorableGT(
+        "overlay_slot/background_coke_oven_fluid_slot.png");
+    public static final UITexture BACKGROUND_COKE_OVEN_COAL = fullImageColorableGT("overlay_slot/coke_oven_coal.png");
+    public static final UITexture BACKGROUND_COKE_OVEN = UITexture.builder()
+        .location(GregTech.ID, "gui/background/coke_oven")
+        .imageSize(176, 166)
+        .adaptable(4)
+        .canApplyTheme()
+        .name(GTTextureIds.BACKGROUND_COKE_OVEN)
+        .build();
 
     // endregion machine modes
     /**

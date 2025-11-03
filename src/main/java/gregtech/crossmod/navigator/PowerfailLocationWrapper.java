@@ -1,5 +1,6 @@
 package gregtech.crossmod.navigator;
 
+import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import com.gtnewhorizons.navigator.api.model.locations.IWaypointAndLocationProvider;
 import com.gtnewhorizons.navigator.api.model.waypoints.Waypoint;
 
@@ -61,5 +62,10 @@ public class PowerfailLocationWrapper implements IWaypointAndLocationProvider {
     @Override
     public double getBlockZ() {
         return powerfail.z;
+    }
+
+    @Override
+    public long toLong() {
+        return CoordinatePacker.pack(powerfail.x, powerfail.y, powerfail.z);
     }
 }

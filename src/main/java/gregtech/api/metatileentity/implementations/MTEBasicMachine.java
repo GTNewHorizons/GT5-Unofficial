@@ -82,6 +82,7 @@ import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.FakeCleanroom;
 import gregtech.api.util.GTClientPreference;
 import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTLog;
@@ -1013,6 +1014,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     public static boolean isValidForLowGravity(GTRecipe tRecipe, int dimId) {
+        if (FakeCleanroom.isLowGravBypassEnabled()) return true;
         return // TODO check or get a better solution
         DimensionManager.getProvider(dimId)
             .getClass()

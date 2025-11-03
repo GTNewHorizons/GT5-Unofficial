@@ -5,6 +5,7 @@ import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofAnyWater;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,6 +16,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -59,11 +61,13 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.BlockCasings1;
 import gregtech.common.blocks.BlockCasings2;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.gui.modularui.multiblock.base.MTESteamMultiBaseGui;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -86,7 +90,7 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
 
     @Override
     public String getMachineType() {
-        return "Washer";
+        return "Ore Washer, Simple Washer";
     }
 
     private static final String STRUCTUR_PIECE_MAIN = "main";
@@ -353,6 +357,7 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
         tt.addMachineType(getMachineType())
             .addSteamBulkMachineInfo(8, 1.25f, 0.625f)
             .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
+            .addInfo("Mode can be switched by using a screwdriver on the controller")
             .beginStructureBlock(5, 5, 5, false)
             .addSteamInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
             .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
@@ -384,11 +389,9 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
         info.add(
-            StatCollector.translateToLocalFormatted(
-                "gtpp.infodata.multi.steam.tier",
-                "" + EnumChatFormatting.YELLOW + tierMachine));
+            translateToLocalFormatted("gtpp.infodata.multi.steam.tier", "" + EnumChatFormatting.YELLOW + tierMachine));
         info.add(
-            StatCollector.translateToLocalFormatted(
+            translateToLocalFormatted(
                 "gtpp.infodata.multi.steam.parallel",
                 "" + EnumChatFormatting.YELLOW + getMaxParallelRecipes()));
         return info.toArray(new String[0]);
@@ -402,7 +405,7 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
         currenttip.add(
             StatCollector.translateToLocal("GT5U.multiblock.runningMode") + " "
                 + EnumChatFormatting.WHITE
-                + StatCollector.translateToLocal("GT5U.GTPP_MULTI_WASH_PLANT.mode." + machineMode)
+                + tag.getString("mode")
                 + EnumChatFormatting.RESET);
         currenttip.add(
             StatCollector.translateToLocal("GTPP.machines.tier") + ": "
@@ -422,7 +425,7 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("tierMachine", tierMachine);
         tag.setInteger("parallel", getTrueParallel());
-        tag.setInteger("mode", machineMode);
+        tag.setString("mode", getMachineModeName());
     }
 
     @Override
@@ -439,6 +442,13 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
         tierMachine = aNBT.getInteger("tierMachine");
         machineMode = aNBT.getInteger("mMode");
         tierMachineCasing = aNBT.getInteger("tierMachineCasing");
+    }
+
+    @Override
+    public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        setMachineMode(nextMachineMode());
+        GTUtility
+            .sendChatToPlayer(aPlayer, translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
     }
 
     @Override
@@ -554,9 +564,14 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
     }
 
     @Override
-    protected @NotNull MTEMultiBlockBaseGui getGui() {
-        return new MTEMultiBlockBaseGui(this).withMachineModeIcons(
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTESteamMultiBaseGui(this).withMachineModeIcons(
             GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_WASHPLANT,
             GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_SIMPLEWASHER);
+    }
+
+    @Override
+    public int getThemeTier() {
+        return tierMachineCasing;
     }
 }
