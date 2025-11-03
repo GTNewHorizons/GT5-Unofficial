@@ -27,7 +27,7 @@ public class ItemVolumetricFlaskGui {
     }
 
     public ModularPanel build() {
-        ModularPanel panel = ModularPanel.defaultPanel("volumetric_flask", 120, 50);
+        ModularPanel panel = ModularPanel.defaultPanel("volumetric_flask", 140, 50);
         panel.applyTheme(GTGuiThemes.STANDARD.getMuiTheme());
 
         Flow mainColumn = Flow.column()
@@ -46,8 +46,10 @@ public class ItemVolumetricFlaskGui {
         capacityFieldRow.child(
             new TextFieldWidget().setNumbers(0, maxCapacitySyncer.getIntValue())
                 .setDefaultNumber(maxCapacitySyncer.getIntValue())
+                .setFormatAsInteger(true)
                 .value(capacitySyncer)
                 .height(18)
+                .width(80)
                 .marginRight(2));
 
         capacityFieldRow.child(
@@ -73,7 +75,7 @@ public class ItemVolumetricFlaskGui {
         return buttonWidget.widgetTheme(IThemeApi.CLOSE_BUTTON)
             .align(Alignment.CenterLeft)
             .height(14)
-            .widthRel(0.6f)
+            .width(80)
             .overlay(IKey.lang("GT5U.gui.text.volumetric_flask.confirm"))
             .onMousePressed(mouseButton -> {
                 if (mouseButton == 0 || mouseButton == 1) {
