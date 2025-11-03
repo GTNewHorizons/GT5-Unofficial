@@ -60,7 +60,7 @@ public class BehaviourProspecting extends BehaviourNone {
                 aPlayer,
                 GTUtility.trans("100", "This is ") + tAssociation.mMaterial.mMaterial.mDefaultLocalName
                     + GTUtility.trans("101", " Ore."));
-            GTUtility.sendSoundToPlayers(aWorld, SoundResource.RANDOM_ANVIL_USE, 1.0F, -1.0F, aX, aY, aZ);
+            GTUtility.sendSoundToPlayers(aWorld, SoundResource.RANDOM_ANVIL_USE, 1.0F, -1.0F, hitX, hitY, hitZ);
             return true;
         }
 
@@ -74,7 +74,7 @@ public class BehaviourProspecting extends BehaviourNone {
             || aBlock == GregTechAPI.sBlockOresUb3
             || aBlock == GregTechAPI.sBlockOres1) {
             if (GTModHandler.damageOrDechargeItem(aStack, this.mVanillaCosts, this.mEUCosts, aPlayer)) {
-                GTUtility.sendSoundToPlayers(aWorld, SoundResource.RANDOM_ANVIL_USE, 1.0F, -1.0F, aX, aY, aZ);
+                GTUtility.sendSoundToPlayers(aWorld, SoundResource.RANDOM_ANVIL_USE, 1.0F, -1.0F, hitX, hitY, hitZ);
                 int tMetaID;
                 int tQuality = aItem instanceof MetaGeneratedTool ? aItem.getHarvestLevel(aStack, "") : 0;
                 int tX = aX, tY = aY, tZ = aZ;
