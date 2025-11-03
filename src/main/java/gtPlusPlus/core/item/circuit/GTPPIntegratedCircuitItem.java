@@ -29,7 +29,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.INetworkUpdatableItem;
 import gregtech.api.net.GTPacketUpdateItem;
 import gregtech.api.objects.XSTR;
-import gregtech.common.gui.modularui.uifactory.SelectItemUIFactory;
+import gregtech.common.gui.modularui.base.ItemSelectBaseGui;
 import gtPlusPlus.core.util.math.MathUtils;
 
 // TODO Remove after 2.8

@@ -25,8 +25,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTSplit;
+import gregtech.api.util.GTUtility;
 
 public class MTEHatchVoidBus extends MTEHatchOutputBus {
 

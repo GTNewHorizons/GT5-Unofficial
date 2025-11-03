@@ -35,6 +35,7 @@ public class MaterialBuilder {
     private String defaultLocalName;
     private Element element;
     private String chemicalFormula;
+    private boolean isFormulaNeededLocalized = false;
     private boolean unifiable = true;
     private TextureSet iconSet = TextureSet.SET_NONE;
     private Dyes color = Dyes._NULL;
@@ -141,6 +142,8 @@ public class MaterialBuilder {
         for (OrePrefixes prefix : orePrefixBlacklist) prefix.mNotGeneratedItems.add(material);
         for (OrePrefixes prefix : orePrefixWhitelist) prefix.mGeneratedItems.add(material);
 
+        if (isFormulaNeededLocalized) material.setChemicalFormula(chemicalFormula, true);
+
         return material;
     }
 
@@ -161,10 +164,18 @@ public class MaterialBuilder {
         return this;
     }
 
-    /** Set the chemical formula of the material. This overrides auto-generated formulas. */
-    public MaterialBuilder setChemicalFormula(String chemicalFormula) {
+    /**
+     * Set the chemical formula of the material. This overrides auto-generated formulas. A translation key will be
+     * generated if localization is required.
+     */
+    public MaterialBuilder setChemicalFormula(String chemicalFormula, boolean isNeedLocalized) {
         this.chemicalFormula = chemicalFormula;
+        this.isFormulaNeededLocalized = isNeedLocalized;
         return this;
+    }
+
+    public MaterialBuilder setChemicalFormula(String chemicalFormula) {
+        return setChemicalFormula(chemicalFormula, false);
     }
 
     public MaterialBuilder setUnifiable(boolean unifiable) {

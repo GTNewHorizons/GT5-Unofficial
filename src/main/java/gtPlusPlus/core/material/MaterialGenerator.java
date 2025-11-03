@@ -98,7 +98,7 @@ public class MaterialGenerator {
         final boolean generateBlastSmelterRecipes) {
         try {
             final String unlocalizedName = matInfo.getUnlocalizedName();
-            final String materialName = matInfo.getLocalizedName();
+            final String materialName = matInfo.getLocalDefaultName();
             final short[] C = matInfo.getRGBA();
             final int Colour = Utils.rgbtoHexValue(C[0], C[1], C[2]);
             final boolean hotIngot = matInfo.requiresBlastFurnace();
@@ -193,14 +193,14 @@ public class MaterialGenerator {
             return true;
 
         } catch (final Throwable t) {
-            Logger.MATERIALS(matInfo.getLocalizedName() + " failed to generate.");
+            Logger.MATERIALS(matInfo.getLocalDefaultName() + " failed to generate.");
             return false;
         }
     }
 
     public static void generateDusts(final Material matInfo) {
         final String unlocalizedName = matInfo.getUnlocalizedName();
-        final String materialName = matInfo.getLocalizedName();
+        final String materialName = matInfo.getLocalDefaultName();
         final short[] C = matInfo.getRGBA();
         final int Colour = Utils.rgbtoHexValue(C[0], C[1], C[2]);
         int materialTier = matInfo.vTier; // TODO
@@ -251,7 +251,7 @@ public class MaterialGenerator {
                 .addTo(chemicalDehydratorRecipes);
         } else {
             Logger.INFO(
-                "Nuclear Dehydrator: Did not generate recipe for " + matInfo.getLocalizedName()
+                "Nuclear Dehydrator: Did not generate recipe for " + matInfo.getLocalDefaultName()
                     + " | Null Fluid? "
                     + (matInfo.getFluid() == null)
                     + " | Null Dust? "
@@ -299,7 +299,7 @@ public class MaterialGenerator {
             new RecipeGenPlasma(matInfo);
 
         } catch (final Throwable t) {
-            Logger.MATERIALS(matInfo.getLocalizedName() + " failed to generate.");
+            Logger.MATERIALS(matInfo.getLocalDefaultName() + " failed to generate.");
         }
     }
 
@@ -317,7 +317,7 @@ public class MaterialGenerator {
             }
 
             final String unlocalizedName = matInfo.getUnlocalizedName();
-            final String materialName = matInfo.getLocalizedName();
+            final String materialName = matInfo.getLocalDefaultName();
 
             int sRadiation = 0;
             if (matInfo.vRadiationLevel > 0) {
@@ -350,7 +350,7 @@ public class MaterialGenerator {
             temp = new BaseItemRawOre(matInfo);
 
             Logger.MATERIALS(
-                "Generated all ore components for " + matInfo.getLocalizedName()
+                "Generated all ore components for " + matInfo.getLocalDefaultName()
                     + ", now generating processing recipes.");
 
             if (matInfo == MaterialsFluorides.FLUORITE) {
@@ -361,7 +361,8 @@ public class MaterialGenerator {
 
         } catch (final Throwable t) {
             Logger.MATERIALS(
-                "[Error] " + (matInfo != null ? matInfo.getLocalizedName() : "Null Material") + " failed to generate.");
+                "[Error] " + (matInfo != null ? matInfo.getLocalDefaultName() : "Null Material")
+                    + " failed to generate.");
             t.printStackTrace();
         }
     }
@@ -392,7 +393,7 @@ public class MaterialGenerator {
             temp = new BaseItemRawOre(matInfo);
 
             Logger.MATERIALS(
-                "Generated all ore & base components for " + matInfo.getLocalizedName()
+                "Generated all ore & base components for " + matInfo.getLocalDefaultName()
                     + ", now generating processing recipes.");
 
             new RecipeGenOre(matInfo, true);
@@ -410,7 +411,7 @@ public class MaterialGenerator {
             new RecipeGenPlasma(matInfo);
             return true;
         } catch (final Throwable t) {
-            Logger.MATERIALS(matInfo.getLocalizedName() + " failed to generate.");
+            Logger.MATERIALS(matInfo.getLocalDefaultName() + " failed to generate.");
             t.printStackTrace();
             return false;
         }

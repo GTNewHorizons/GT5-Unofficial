@@ -43,7 +43,7 @@ public class MTEHatchChiselBus extends MTEHatchInputBus implements IAddUIWidgets
 
     @Override
     public String[] getDescription() {
-        return GTSplit.splitLocalizedFormatted("gt.blockmachines.input_bus_chisel.desc", getSlots(this.mTier));
+        return GTSplit.splitLocalizedFormatted("gt.blockmachines.input_bus_chisel.desc", getSlots(this.mTier) - 1);
     }
 
     @Override

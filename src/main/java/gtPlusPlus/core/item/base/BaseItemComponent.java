@@ -55,7 +55,7 @@ public class BaseItemComponent extends Item {
     public BaseItemComponent(final Material material, final ComponentTypes componentType) {
         this.componentMaterial = material;
         this.unlocalName = "item" + componentType.COMPONENT_NAME + material.getUnlocalizedName();
-        this.materialName = material.getLocalizedName();
+        this.materialName = material.getLocalDefaultName();
         this.translatedMaterialName = material.getTranslatedName();
         this.componentType = componentType;
         this.setCreativeTab(AddToCreativeTab.tabMisc);

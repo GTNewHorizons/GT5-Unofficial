@@ -54,7 +54,7 @@ public class RecipeGenRecycling implements Runnable {
     public static void generateRecipes(final Material material) {
         if (material == null) return;
 
-        Logger.WARNING("Generating Recycling recipes for " + material.getLocalizedName());
+        Logger.WARNING("Generating Recycling recipes for " + material.getLocalDefaultName());
 
         final OrePrefixes[] mValidPrefixesAsString = { OrePrefixes.ingot, OrePrefixes.ingotHot, OrePrefixes.nugget,
             OrePrefixes.plate, OrePrefixes.plateDense, OrePrefixes.plateDouble, OrePrefixes.plateTriple,
@@ -71,7 +71,7 @@ public class RecipeGenRecycling implements Runnable {
 
         for (int r = 0; r < mValidPairs.length; r++) {
             ItemStack temp = getItemStackOfAmountFromOreDictNoBroken(
-                mValidPrefixesAsString[r].getName() + StringUtils.sanitizeString(material.getLocalizedName()),
+                mValidPrefixesAsString[r].getName() + StringUtils.sanitizeString(material.getLocalDefaultName()),
                 1);
             if (temp != null) {
                 mValidPairs[mSlotIndex++] = Pair.of(mValidPrefixesAsString[r], temp.copy());
@@ -123,7 +123,7 @@ public class RecipeGenRecycling implements Runnable {
                     .addTo(maceratorRecipes);
 
                 Logger.WARNING(
-                    "Recycle Recipe: " + material.getLocalizedName()
+                    "Recycle Recipe: " + material.getLocalDefaultName()
                         + " - Success - Recycle "
                         + tempStack.getDisplayName()
                         + " and obtain "
@@ -148,7 +148,7 @@ public class RecipeGenRecycling implements Runnable {
                 .addTo(fluidExtractionRecipes);
 
             Logger.WARNING(
-                "Fluid Recycle Recipe: " + material.getLocalizedName()
+                "Fluid Recycle Recipe: " + material.getLocalDefaultName()
                     + " - Success - Recycle "
                     + tempStack.getDisplayName()
                     + " and obtain "
@@ -238,7 +238,7 @@ public class RecipeGenRecycling implements Runnable {
     public static ItemStack get(final OrePrefixes aPrefix, final Material aMaterial, final ItemStack aReplacement,
         final long aAmount) {
         return get(
-            aPrefix.getName() + StringUtils.sanitizeString(aMaterial.getLocalizedName()),
+            aPrefix.getName() + StringUtils.sanitizeString(aMaterial.getLocalDefaultName()),
             aReplacement,
             aAmount,
             false,

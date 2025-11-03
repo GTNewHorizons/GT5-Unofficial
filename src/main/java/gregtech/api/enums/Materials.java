@@ -18,7 +18,6 @@ import java.util.stream.IntStream;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -36,7 +35,6 @@ import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.MaterialStack;
-import gregtech.api.util.CustomGlyphs;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -1117,7 +1115,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public float mGasMultiplier = 1.0F;
     public float mPlasmaMultiplier = 1.0F;
     private String mChemicalFormula = "?";
-    private boolean isFormulaNeededLocalized = false
+    private boolean isFormulaNeededLocalized = false;
     public String mName;
     public String mDefaultLocalName;
     public String mCustomID = "null";
@@ -1917,7 +1915,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public String toString() {
         return this.mName;
     }
-
 
     @Override
     public int getId() {

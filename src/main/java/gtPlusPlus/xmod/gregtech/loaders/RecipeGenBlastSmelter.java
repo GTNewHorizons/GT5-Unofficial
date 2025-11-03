@@ -108,7 +108,7 @@ public class RecipeGenBlastSmelter extends RecipeGenBase {
         inputStackCount = 1;
         fluidAmount = 144 * inputStackCount;
         Logger.WARNING(
-            "[BAS] Adding an Alloy Blast Smelter Recipe for " + M.getLocalizedName()
+            "[BAS] Adding an Alloy Blast Smelter Recipe for " + M.getLocalDefaultName()
                 + ". Gives "
                 + fluidAmount
                 + "L of molten metal.");
@@ -193,10 +193,10 @@ public class RecipeGenBlastSmelter extends RecipeGenBase {
 
             Logger.WARNING(
                 "[BAS] FOUND: " + xMaterial.getStackMaterial()
-                    .getLocalizedName());
+                    .getLocalDefaultName());
             Logger.WARNING(
                 "[BAS] ADDING: " + xMaterial.getStackMaterial()
-                    .getLocalizedName());
+                    .getLocalDefaultName());
             tempStack[ooo] = xMaterial;
             ooo++;
         }
@@ -262,7 +262,7 @@ public class RecipeGenBlastSmelter extends RecipeGenBase {
         fluidAmount = 144 * inputStackCount;
 
         Logger.WARNING(
-            "[BAS] Adding an Alloy Blast Smelter Recipe for " + M.getLocalizedName()
+            "[BAS] Adding an Alloy Blast Smelter Recipe for " + M.getLocalDefaultName()
                 + " using it's compound dusts. This material has "
                 + inputStackCount
                 + " parts. Gives "

@@ -68,7 +68,7 @@ public class RecipeGenOre extends RecipeGenBase {
         }
 
         // if (material.getMaterialComposites().length > 1){
-        Logger.MATERIALS("[Recipe Generator Debug] [" + material.getLocalizedName() + "]");
+        Logger.MATERIALS("[Recipe Generator Debug] [" + material.getLocalDefaultName() + "]");
         int tVoltageMultiplier = MaterialUtils.getVoltageForTier(material.vTier);
 
         final ItemStack dustStone = ItemUtils.getItemStackOfAmountFromOreDict("dustStone", 1);
@@ -397,7 +397,7 @@ public class RecipeGenOre extends RecipeGenBase {
                             "[Electrolyzer] Found Fluid Component, adding " + f.getKey()
                                 + " cells of "
                                 + f.getValue()
-                                    .getLocalizedName()
+                                    .getLocalDefaultName()
                                 + ".");
                         mInternalOutputs[mCounter++] = f.getValue()
                             .getCell(f.getKey());
@@ -406,14 +406,14 @@ public class RecipeGenOre extends RecipeGenBase {
                         Logger.MATERIALS(
                             "[Electrolyzer] In total, adding " + mCellCount
                                 + " cells for "
-                                + material.getLocalizedName()
+                                + material.getLocalDefaultName()
                                 + " processing.");
                     } else {
                         Logger.MATERIALS(
                             "[Electrolyzer] Found Solid Component, adding " + f.getKey()
                                 + " dusts of "
                                 + f.getValue()
-                                    .getLocalizedName()
+                                    .getLocalDefaultName()
                                 + ".");
                         mInternalOutputs[mCounter++] = f.getValue()
                             .getDust(f.getKey());
@@ -492,7 +492,7 @@ public class RecipeGenOre extends RecipeGenBase {
 
             } else if (componentMap.size() > 6 && componentMap.size() <= 9) {
                 Logger.MATERIALS(
-                    "[Issue][Electrolyzer] " + material.getLocalizedName()
+                    "[Issue][Electrolyzer] " + material.getLocalDefaultName()
                         + " is composed of over 6 materials, so an electrolyzer recipe for processing cannot be generated. Trying to create one for the Dehydrator instead.");
 
                 ItemStack[] mInternalOutputs = new ItemStack[9];
@@ -511,7 +511,7 @@ public class RecipeGenOre extends RecipeGenBase {
                             "[Dehydrator] Found Fluid Component, adding " + f.getKey()
                                 + " cells of "
                                 + f.getValue()
-                                    .getLocalizedName()
+                                    .getLocalDefaultName()
                                 + ".");
                         mInternalOutputs[mCounter++] = f.getValue()
                             .getCell(f.getKey());
@@ -520,14 +520,14 @@ public class RecipeGenOre extends RecipeGenBase {
                         Logger.MATERIALS(
                             "[Dehydrator] In total, adding " + mCellCount
                                 + " cells for "
-                                + material.getLocalizedName()
+                                + material.getLocalDefaultName()
                                 + " processing.");
                     } else {
                         Logger.MATERIALS(
                             "[Dehydrator] Found Solid Component, adding " + f.getKey()
                                 + " dusts of "
                                 + f.getValue()
-                                    .getLocalizedName()
+                                    .getLocalDefaultName()
                                 + ".");
                         mInternalOutputs[mCounter++] = f.getValue()
                             .getDust(f.getKey());
@@ -670,30 +670,30 @@ public class RecipeGenOre extends RecipeGenBase {
             tinyDust,
             tinyDust,
             matDust)) {
-            Logger.WARNING("9 Tiny dust to 1 Dust Recipe: " + material.getLocalizedName() + " - Success");
+            Logger.WARNING("9 Tiny dust to 1 Dust Recipe: " + material.getLocalDefaultName() + " - Success");
         } else {
-            Logger.WARNING("9 Tiny dust to 1 Dust Recipe: " + material.getLocalizedName() + " - Failed");
+            Logger.WARNING("9 Tiny dust to 1 Dust Recipe: " + material.getLocalDefaultName() + " - Failed");
         }
 
         if (RecipeUtils
             .addShapedRecipe(matDust, null, null, null, null, null, null, null, null, material.getTinyDust(9))) {
-            Logger.WARNING("9 Tiny dust from 1 Recipe: " + material.getLocalizedName() + " - Success");
+            Logger.WARNING("9 Tiny dust from 1 Recipe: " + material.getLocalDefaultName() + " - Success");
         } else {
-            Logger.WARNING("9 Tiny dust from 1 Recipe: " + material.getLocalizedName() + " - Failed");
+            Logger.WARNING("9 Tiny dust from 1 Recipe: " + material.getLocalDefaultName() + " - Failed");
         }
 
         if (RecipeUtils
             .addShapedRecipe(smallDust, smallDust, null, smallDust, smallDust, null, null, null, null, matDust)) {
-            Logger.WARNING("4 Small dust to 1 Dust Recipe: " + material.getLocalizedName() + " - Success");
+            Logger.WARNING("4 Small dust to 1 Dust Recipe: " + material.getLocalDefaultName() + " - Success");
         } else {
-            Logger.WARNING("4 Small dust to 1 Dust Recipe: " + material.getLocalizedName() + " - Failed");
+            Logger.WARNING("4 Small dust to 1 Dust Recipe: " + material.getLocalDefaultName() + " - Failed");
         }
 
         if (RecipeUtils
             .addShapedRecipe(null, matDust, null, null, null, null, null, null, null, material.getSmallDust(4))) {
-            Logger.WARNING("4 Small dust from 1 Dust Recipe: " + material.getLocalizedName() + " - Success");
+            Logger.WARNING("4 Small dust from 1 Dust Recipe: " + material.getLocalDefaultName() + " - Success");
         } else {
-            Logger.WARNING("4 Small dust from 1 Dust Recipe: " + material.getLocalizedName() + " - Failed");
+            Logger.WARNING("4 Small dust from 1 Dust Recipe: " + material.getLocalDefaultName() + " - Failed");
         }
 
     }

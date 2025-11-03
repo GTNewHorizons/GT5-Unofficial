@@ -370,7 +370,7 @@ public class ItemUtils {
 
     public static ItemStack getOrePrefixStack(OrePrefixes mPrefix, Material mMat, int mAmount) {
 
-        String mName = StringUtils.sanitizeString(mMat.getLocalizedName());
+        String mName = StringUtils.sanitizeString(mMat.getLocalDefaultName());
 
         String mItemName = mPrefix.getName() + mName;
         return ItemUtils.getItemStackOfAmountFromOreDictNoBroken(mItemName, mAmount);

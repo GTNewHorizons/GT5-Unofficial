@@ -50,7 +50,7 @@ public class BlockBaseModular extends BasicBlock {
     public BlockBaseModular(final Material material, final BlockTypes blockType, final int colour) {
         this(
             material.getUnlocalizedName(),
-            material.getLocalizedName(),
+            material.getLocalDefaultName(),
             net.minecraft.block.material.Material.iron,
             blockType,
             colour,

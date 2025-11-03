@@ -20,6 +20,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.FluidState;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.fluid.IGTFluid;
 import gregtech.api.interfaces.fluid.IGTRegisteredFluid;
 import gregtech.api.util.GTLanguageManager;
@@ -229,7 +230,7 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
             if (String.format(oreprefixName, materialName)
                 .equals(defaultLocalizedName)) {
                 localizedName = () -> StatCollector.translateToLocalFormatted(
-                    GTUtility.getOreprefixKey(oreprefixName)
+                    OrePrefixes.getOreprefixKey(oreprefixName)
                         .replace("%s", "material"),
                     StatCollector.translateToLocal(key));
                 return true;

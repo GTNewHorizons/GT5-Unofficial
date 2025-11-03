@@ -14,6 +14,7 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.NotNull;
@@ -2828,5 +2829,30 @@ public class OrePrefixes {
 
         // Use Standard Localization
         return materialPrefix + "%material" + materialPostfix;
+    }
+
+    public String getDefaultLocalNameFormatForItem() {
+        return getDefaultLocalNameForItem(Materials._NULL);
+    }
+
+    public static String getOreprefixKey(String prefix) {
+        return "gt.oreprefix." + prefix.toLowerCase()
+            .replace(" ", "_")
+            .replace("%material", "material");
+    }
+
+    public String getOreprefixKey(Materials materials) {
+        return "gt.oreprefix." + this.getDefaultLocalNameFormatForItem(materials)
+            .toLowerCase()
+            .replace(" ", "_")
+            .replace("%material", "material");
+    }
+
+    public String getOreprefixKey() {
+        return getOreprefixKey(Materials._NULL);
+    }
+
+    public String getLocalizedNameForItem(Materials materials) {
+        return StatCollector.translateToLocalFormatted(getOreprefixKey(materials), materials.getLocalizedName());
     }
 }

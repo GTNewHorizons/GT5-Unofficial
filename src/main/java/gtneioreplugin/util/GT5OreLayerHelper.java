@@ -70,7 +70,7 @@ public class GT5OreLayerHelper {
 
     public static class OreLayerWrapper {
 
-        public final String veinName, worldGenHeightRange, localizedName;
+        public final String veinName, worldGenHeightRange;
         public final IOreMaterial[] ores = new IOreMaterial[4];
         public final short randomWeight, size, density;
         /** {full dim name} */
@@ -144,23 +144,6 @@ public class GT5OreLayerHelper {
                 || ores[OreVeinLayer.VEIN_BETWEEN] == material
                 || ores[OreVeinLayer.VEIN_SPORADIC] == material;
         }
-    }
-
-    public static class NormalOreDimensionWrapper {
-
-        public final ArrayList<OreLayerWrapper> oreVeins = new ArrayList<>();
-        public final HashMap<OreLayerWrapper, Double> oreVeinToProbabilityInDimension = new HashMap<>();
-
-        // Calculate all weights of ore veins once dimension is initialised.
-        private void calculateWeights() {
-            int totalWeight = 0;
-            for (OreLayerWrapper oreVein : oreVeins) {
-                totalWeight += oreVein.randomWeight;
-            }
-            for (OreLayerWrapper oreVein : oreVeins) {
-                oreVeinToProbabilityInDimension.put(oreVein, ((double) oreVein.randomWeight) / ((double) totalWeight));
-            }
-        }
 
         public String getLocalizedName() {
             if (materialKeys.size() > 1) {
@@ -176,6 +159,23 @@ public class GT5OreLayerHelper {
                 return localizedName;
             } else {
                 return StatCollector.translateToLocal(materialKeys.get(0));
+            }
+        }
+    }
+
+    public static class NormalOreDimensionWrapper {
+
+        public final ArrayList<OreLayerWrapper> oreVeins = new ArrayList<>();
+        public final HashMap<OreLayerWrapper, Double> oreVeinToProbabilityInDimension = new HashMap<>();
+
+        // Calculate all weights of ore veins once dimension is initialised.
+        private void calculateWeights() {
+            int totalWeight = 0;
+            for (OreLayerWrapper oreVein : oreVeins) {
+                totalWeight += oreVein.randomWeight;
+            }
+            for (OreLayerWrapper oreVein : oreVeins) {
+                oreVeinToProbabilityInDimension.put(oreVein, ((double) oreVein.randomWeight) / ((double) totalWeight));
             }
         }
     }

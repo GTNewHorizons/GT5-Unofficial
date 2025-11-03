@@ -40,7 +40,7 @@ public class FluidGT6 extends Fluid implements Runnable {
     }
 
     private void generateLocalizedName(String aLocalName) {
-        String materialKey = Utils.getGTPPMaterialLocalizedKey(aLocalName);
+        String materialKey = Utils.getGTPPMaterialLocalizedNameKey(aLocalName);
         if (StatCollector.translateToLocal(materialKey)
             .equals(aLocalName)) {
             this.mNameKey = materialKey;
@@ -55,7 +55,7 @@ public class FluidGT6 extends Fluid implements Runnable {
         String oreprefixNameRemovedFormat = oreprefixName.replace("%s", "");
         if (aLocalName.contains(oreprefixNameRemovedFormat)) {
             String materialName = aLocalName.replace(oreprefixNameRemovedFormat, "");
-            String materialKey = Utils.getGTPPMaterialLocalizedKey(materialName);
+            String materialKey = Utils.getGTPPMaterialLocalizedNameKey(materialName);
             if (aLocalName.equals(String.format(oreprefixName, StatCollector.translateToLocal(materialKey)))) {
                 this.mNameKey = materialKey;
                 this.mFormatKey = "gt.oreprefix." + oreprefixName.toLowerCase()

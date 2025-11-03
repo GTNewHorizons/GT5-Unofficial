@@ -61,9 +61,9 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
                 ItemStack tStack = new ItemStack(this, 1, i);
                 int finalI = i;
                 names[i] = () -> StatCollector.translateToLocalFormatted(
-                    GTUtility.getOreprefixKey(getDefaultLocalizationFormat(tPrefix, tMaterial, finalI)),
+                    OrePrefixes.getOreprefixKey(getDefaultLocalizationFormat(tPrefix, tMaterial, finalI)),
                     tMaterial.getLocalizedName());
-                tooltips[i] = () -> tMaterial.getToolTip(tPrefix.mMaterialAmount / M);
+                tooltips[i] = () -> tMaterial.getToolTip(tPrefix.getMaterialAmount() / M);
                 if (tPrefix.isUnifiable()) {
                     GTOreDictUnificator.set(tPrefix, tMaterial, tStack);
                 } else {

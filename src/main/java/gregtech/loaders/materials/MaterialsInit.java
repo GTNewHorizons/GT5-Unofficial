@@ -3156,7 +3156,7 @@ public class MaterialsInit {
     private static Materials loadElectrumFlux() {
         return new MaterialBuilder().setName("ElectrumFlux")
             .setDefaultLocalName("Fluxed Electrum")
-            .setChemicalFormula("The formula is too long...")
+            .setChemicalFormula("The formula is too long...", true)
             .setIconSet(TextureSet.SET_SHINY)
             .setColor(Dyes.dyeYellow)
             .setARGB(0x00ffff78)
@@ -4222,7 +4222,7 @@ public class MaterialsInit {
     private static Materials loadUUAmplifier() {
         return new MaterialBuilder().setName("UUAmplifier")
             .setDefaultLocalName("UU-Amplifier")
-            .setChemicalFormula("Accelerates the Mass Fabricator")
+            .setChemicalFormula("Accelerates the Mass Fabricator", true)
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyePink)
             .setARGB(0x00600080)
@@ -4786,7 +4786,7 @@ public class MaterialsInit {
     private static Materials loadGlue() {
         return new MaterialBuilder().setName("Glue")
             .setDefaultLocalName("Refined Glue")
-            .setChemicalFormula("No Horses were harmed in the the making of this substance")
+            .setChemicalFormula("No Horses were harmed in the the making of this substance", true)
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeOrange)
             .setARGB(0x00c8c400)
@@ -4798,7 +4798,7 @@ public class MaterialsInit {
     private static Materials loadGlueAdvanced() {
         return new MaterialBuilder().setName("AdvancedGlue")
             .setDefaultLocalName("Advanced Glue")
-            .setChemicalFormula("A chemically approved glue!")
+            .setChemicalFormula("A chemically approved glue!", true)
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeYellow)
             .setARGB(0x00ffffb9)
@@ -11603,7 +11603,10 @@ public class MaterialsInit {
         return new MaterialBuilder().setName("Cryotheum")
             .setDefaultLocalName("Cryotheum")
             .setChemicalFormula(
-                "(KNO₃)(" + Materials.Redstone.mChemicalFormula + ")(H₂O)(" + Materials.Blizz.mChemicalFormula + ")")
+                "(KNO₃)(" + Materials.Redstone.getChemicalFormula()
+                    + ")(H₂O)("
+                    + Materials.Blizz.getChemicalFormula()
+                    + ")")
             .setIconSet(TextureSet.SET_CRYOTHEUM)
             .setColor(Dyes.dyeLightBlue)
             .setARGB(0x000094cb)
@@ -11819,7 +11822,7 @@ public class MaterialsInit {
     private static Materials loadRedAlloy() {
         return new MaterialBuilder().setName("RedAlloy")
             .setDefaultLocalName("Red Alloy")
-            .setChemicalFormula("Cu(" + Materials.Redstone.mChemicalFormula + ")₄")
+            .setChemicalFormula("Cu(" + Materials.Redstone.getChemicalFormula() + ")₄")
             .setIconSet(TextureSet.SET_DULL)
             .setColor(Dyes.dyeRed)
             .setARGB(0x00c80000)
@@ -15111,7 +15114,7 @@ public class MaterialsInit {
     private static Materials loadDTSC() {
         return new MaterialBuilder().setName("DimensionallyTranscendentStellarCatalyst")
             .setDefaultLocalName("Dimensionally Transcendent Stellar Catalyst")
-            .setChemicalFormula("Stellar")
+            .setChemicalFormula("Stellar", true)
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeOrange)
             .setARGB(0x010a1414)
@@ -15178,7 +15181,7 @@ public class MaterialsInit {
     private static Materials loadExcitedDTSC() {
         return new MaterialBuilder().setName("ExcitedDTSC")
             .setDefaultLocalName("Excited Dimensionally Transcendent Stellar Catalyst")
-            .setChemicalFormula("[-Stellar-Stellar-]")
+            .setChemicalFormula("[-Stellar-Stellar-]", true)
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeOrange)
             .setARGB(0x017e4b0b)
@@ -15206,7 +15209,7 @@ public class MaterialsInit {
     private static Materials loadSpaceTime() {
         return new MaterialBuilder().setName("SpaceTime")
             .setDefaultLocalName("SpaceTime")
-            .setChemicalFormula("Reality itself distilled into physical form")
+            .setChemicalFormula("Reality itself distilled into physical form", true)
             .setIconSet(new TextureSet("spacetime", true))
             .setARGB(0x00ffffff)
             .setTool(10_485_760, 25, 320.0f)
@@ -15357,7 +15360,7 @@ public class MaterialsInit {
     private static Materials loadUniversium() {
         return new MaterialBuilder().setName("Universium")
             .setDefaultLocalName("Universium")
-            .setChemicalFormula("A tear into the space beyond space")
+            .setChemicalFormula("A tear into the space beyond space", true)
             .setIconSet(new TextureSet("universium", true))
             .setARGB(0xff263145)
             .setTool(10_485_760, 30, 1.0f)
@@ -15506,9 +15509,9 @@ public class MaterialsInit {
         return new MaterialBuilder().setName("Mellion")
             .setDefaultLocalName("Mellion")
             .setChemicalFormula(
-                "Tn₁₁Or₈Rb₁₁(" + Materials.FierySteel.mChemicalFormula
+                "Tn₁₁Or₈Rb₁₁(" + Materials.FierySteel.getChemicalFormula()
                     + ")₇"
-                    + Materials.Firestone.mChemicalFormula
+                    + Materials.Firestone.getChemicalFormula()
                     + "₁₃?₁₃")
             .setIconSet(TextureSet.SET_SHINY)
             .setARGB(0x003c0505)
@@ -15580,12 +15583,12 @@ public class MaterialsInit {
         return new MaterialBuilder().setName("protohalkonitebase")
             .setDefaultLocalName("Molten Proto-Halkonite Steel Base")
             .setChemicalFormula(
-                "(" + Materials.TranscendentMetal.mChemicalFormula
+                "(" + Materials.TranscendentMetal.getChemicalFormula()
                     + ")₂"
                     + "(W₈Nq*₇("
-                    + Materials.Bedrockium.mChemicalFormula
+                    + Materials.Bedrockium.getChemicalFormula()
                     + ")₄C₄V₃SpPu)₂"
-                    + Materials.Tartarite.mChemicalFormula
+                    + Materials.Tartarite.getChemicalFormula()
                     + "₂"
                     + "((CW)₇Ti₃)₃"
                     + CustomGlyphs.FIRE
@@ -15606,7 +15609,7 @@ public class MaterialsInit {
     private static Materials loadHotProtoHalkonite() {
         return new MaterialBuilder().setName("hotprotohalkonite")
             .setDefaultLocalName("Hot Proto-Halkonite Steel")
-            .setChemicalFormula(Materials.MoltenProtoHalkoniteBase.mChemicalFormula)
+            .setChemicalFormula(Materials.MoltenProtoHalkoniteBase.getChemicalFormula())
             .setIconSet(new TextureSet("hotprotohalkonite", true))
             .addDustItems()
             .addMetalItems()
@@ -15640,7 +15643,7 @@ public class MaterialsInit {
     private static Materials loadProtoHalkonite() {
         return new MaterialBuilder().setName("protohalkonite")
             .setDefaultLocalName("Proto-Halkonite Steel")
-            .setChemicalFormula(Materials.MoltenProtoHalkoniteBase.mChemicalFormula)
+            .setChemicalFormula(Materials.MoltenProtoHalkoniteBase.getChemicalFormula())
             .setIconSet(new TextureSet("protohalkonite", true))
             .addDustItems()
             .addMetalItems()

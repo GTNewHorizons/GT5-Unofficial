@@ -91,12 +91,12 @@ public class ItemBlockGtBlock extends ItemBlock {
                         list.add(StatCollector.translateToLocal("GTPP.tooltip.block.contains"));
                         if (mMaterial.getComposites()
                             .isEmpty()) {
-                            list.add("- " + mMaterial.getLocalizedName());
+                            list.add("- " + mMaterial.getLocalDefaultName());
                         } else {
                             for (MaterialStack m : mMaterial.getComposites()) {
                                 list.add(
                                     "- " + m.getStackMaterial()
-                                        .getLocalizedName() + " x" + m.getPartsPerOneHundred());
+                                        .getLocalDefaultName() + " x" + m.getPartsPerOneHundred());
                             }
                         }
                     }

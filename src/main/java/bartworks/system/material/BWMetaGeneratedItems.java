@@ -31,7 +31,6 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import bartworks.API.IRadMaterial;
@@ -46,7 +45,6 @@ import gregtech.api.hazards.HazardProtection;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 import ic2.core.IC2Potion;
 
 public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMaterial {
@@ -139,8 +137,7 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
         int aMetaData = aStack.getItemDamage();
         Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) aMetaData);
         if (werkstoff == null) werkstoff = Werkstoff.default_null_Werkstoff;
-        return StatCollector
-            .translateToLocalFormatted(GTUtility.getOreprefixKey(this.orePrefixes), werkstoff.getLocalizedName());
+        return this.orePrefixes.getLocalizedNameForItem(werkstoff.getBridgeMaterial());
     }
 
     @Override

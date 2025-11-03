@@ -23,7 +23,6 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 
 public class MetaGeneratedItem99 extends MetaGeneratedItem {
 
@@ -88,7 +87,7 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
         ItemStack tStack = new ItemStack(this, 1, i);
         enabled.set(i);
         names[i] = () -> StatCollector.translateToLocal("gt.oreprefix.molten_material_cell");
-        tooltips[i] = () -> tMaterial.getToolTip(cellMolten.mMaterialAmount / M);
+        tooltips[i] = () -> tMaterial.getToolTip(cellMolten.getMaterialAmount() / M);
 
         if (cellMolten.isUnifiable()) {
             GTOreDictUnificator.set(cellMolten, tMaterial, tStack);
@@ -103,8 +102,8 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
             ItemStack tStack = new ItemStack(this, 1, offset + i);
             enabled.set(offset + i);
             names[offset + i] = () -> StatCollector
-                .translateToLocal(GTUtility.getOreprefixKey(prefix.getDefaultLocalNameFormatForItem(tMaterial)));
-            tooltips[offset + i] = () -> tMaterial.getToolTip(prefix.mMaterialAmount / M);
+                .translateToLocal(OrePrefixes.getOreprefixKey(prefix.getDefaultLocalNameFormatForItem(tMaterial)));
+            tooltips[offset + i] = () -> tMaterial.getToolTip(prefix.getMaterialAmount() / M);
 
             if (prefix.isUnifiable()) {
                 GTOreDictUnificator.set(prefix, tMaterial, tStack);

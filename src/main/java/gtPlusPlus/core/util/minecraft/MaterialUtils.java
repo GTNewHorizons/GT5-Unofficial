@@ -350,12 +350,12 @@ public class MaterialUtils {
         if (!aFormattedLangName.startsWith(" ")) {
             if (aFormattedLangName.contains("@")) {
                 String[] aSplit = aFormattedLangName.split("@");
-                aFormattedLangName = aSplit[0] + " " + aMaterial.getLocalizedName() + " " + aSplit[1];
+                aFormattedLangName = aSplit[0] + " " + aMaterial.getLocalDefaultName() + " " + aSplit[1];
             }
         }
 
         if (aFormattedLangName.equals(aType.getName())) {
-            aFormattedLangName = aMaterial.getLocalizedName() + aFormattedLangName;
+            aFormattedLangName = aMaterial.getLocalDefaultName() + aFormattedLangName;
         }
 
         Logger.MATERIALS("[Lang] " + aGC.getUnlocalizedName() + ".name=" + aFormattedLangName);
@@ -377,7 +377,7 @@ public class MaterialUtils {
     }
 
     public static void generateMaterialLocalizedName(String defaultName, String defaultLocalName) {
-        GTLanguageManager.addStringLocalization(Utils.getGTPPMaterialLocalizedKey(defaultName), defaultLocalName);
+        GTLanguageManager.addStringLocalization(Utils.getGTPPMaterialLocalizedNameKey(defaultName), defaultLocalName);
     }
 
     public static void generateMaterialLocalizedName(String name) {
@@ -385,6 +385,6 @@ public class MaterialUtils {
     }
 
     public static String getMaterialLocalizedName(String defaultName) {
-        return StatCollector.translateToLocal(Utils.getGTPPMaterialLocalizedKey(defaultName));
+        return StatCollector.translateToLocal(Utils.getGTPPMaterialLocalizedNameKey(defaultName));
     }
 }

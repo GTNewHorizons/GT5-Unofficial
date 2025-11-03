@@ -23,7 +23,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -39,7 +38,6 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 import gregtech.common.render.items.GeneratedMaterialRenderer;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 
@@ -99,8 +97,7 @@ public class BWGTMetaItems extends BWMetaGeneratedItems {
     public String getItemStackDisplayName(ItemStack aStack) {
         Materials material = this.getMaterial(aStack);
         if (material == null) material = Materials._NULL;
-        return StatCollector
-            .translateToLocalFormatted(GTUtility.getOreprefixKey(this.orePrefixes), material.getLocalizedName());
+        return this.orePrefixes.getLocalizedNameForItem(material);
     }
 
     @Override

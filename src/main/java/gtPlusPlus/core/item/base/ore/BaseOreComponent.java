@@ -46,7 +46,7 @@ public class BaseOreComponent extends Item {
     public BaseOreComponent(final Material material, final ComponentTypes componentType) {
         this.componentMaterial = material;
         this.unlocalName = componentType.COMPONENT_NAME + material.getUnlocalizedName();
-        this.materialName = material.getLocalizedName();
+        this.materialName = material.getLocalDefaultName();
         this.componentType = componentType;
         this.setCreativeTab(AddToCreativeTab.tabMisc);
         this.setUnlocalizedName(this.unlocalName);

@@ -125,9 +125,13 @@ public class Utils {
         return GTUtility.copy(stack);
     }
 
-    public static String getGTPPMaterialLocalizedKey(String materialName) {
+    public static String getGTPPMaterialLocalizedNameKey(String materialName) {
         return "Material." + materialName.toLowerCase()
             .replaceAll("[^a-zA-Z0-9]", "");
+    }
+
+    public static String getGTPPMaterialLocalizedName(String materialName) {
+        return StatCollector.translateToLocal(getGTPPMaterialLocalizedNameKey(materialName));
     }
 
     public static String[] splitLocalizedWithGTPP(String key) {

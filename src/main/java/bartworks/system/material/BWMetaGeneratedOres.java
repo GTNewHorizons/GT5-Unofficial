@@ -46,7 +46,6 @@ import gregtech.common.render.GTRendererBlock;
 public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
 
     public final String blockName;
-    public final String blockTypeLocalizedName;
     public final StoneType stoneType;
     public final boolean isSmall, isNatural;
 
@@ -74,9 +73,8 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
         if ((w.getGenerationFeatures().blacklist & 0b1000) != 0) return;
 
         ItemStack self = new ItemStack(this, 1, w.getmID());
-        OrePrefixes prefix = isSmall ? OrePrefixes.oreSmall : OrePrefixes.ore;
 
-        GTOreDictUnificator.registerOre(prefix + w.getVarName(), self);
+        GTOreDictUnificator.registerOre(getPrefix() + w.getVarName(), self);
     }
 
     @Override
@@ -159,7 +157,7 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
     public ITexture[][] getTextures(int metadata) {
         Werkstoff material = Werkstoff.werkstoffHashMap.get((short) metadata);
 
-        OrePrefixes prefix = isSmall ? OrePrefixes.oreSmall : OrePrefixes.ore;
+        OrePrefixes prefix = getPrefix();
 
         ITexture oreTexture;
 
@@ -177,5 +175,9 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
         }
 
         return out;
+    }
+
+    public OrePrefixes getPrefix() {
+        return isSmall ? OrePrefixes.oreSmall : OrePrefixes.ore;
     }
 }

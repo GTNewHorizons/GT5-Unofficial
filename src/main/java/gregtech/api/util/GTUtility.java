@@ -177,6 +177,7 @@ import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.RunnableSound;
+import gregtech.common.fluid.GTFluid;
 import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.ores.OreManager;
 import gregtech.common.pollution.Pollution;
@@ -5504,17 +5505,4 @@ public class GTUtility {
             .contains("Fake");
     }
 
-    public static String getOreprefixKey(String prefix) {
-        return "gt.oreprefix." + prefix.toLowerCase()
-            .replace(" ", "_")
-            .replace("%material", "material");
-    }
-
-    public static String getOreprefixKey(OrePrefixes orePrefixes) {
-        return "gt.oreprefix" + orePrefixes.mLocalizedMaterialPre.toLowerCase()
-            .replace(" ", "_")
-            + "material"
-            + orePrefixes.mLocalizedMaterialPost.toLowerCase()
-                .replace(" ", "_");
-    }
 }

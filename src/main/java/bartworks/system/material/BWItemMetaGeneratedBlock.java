@@ -19,7 +19,6 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import bartworks.common.items.BWItemBlocks;
@@ -41,9 +40,7 @@ public class BWItemMetaGeneratedBlock extends BWItemBlocks {
             int aMetaData = aStack.getItemDamage();
             Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) aMetaData);
             if (werkstoff == null) werkstoff = Werkstoff.default_null_Werkstoff;
-            return StatCollector.translateToLocalFormatted(
-                GTUtility.getOreprefixKey(metaBlock._prefixes),
-                werkstoff.getLocalizedName());
+            return metaBlock.prefix.getLocalizedNameForItem(werkstoff.getBridgeMaterial());
         }
         return GTLanguageManager.getTranslation(this.getUnlocalizedName(aStack) + ".name");
     }

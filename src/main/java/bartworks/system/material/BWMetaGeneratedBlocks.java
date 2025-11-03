@@ -39,7 +39,6 @@ import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.common.render.GTRendererBlock;
 
 public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer implements IBlockWithTextures {

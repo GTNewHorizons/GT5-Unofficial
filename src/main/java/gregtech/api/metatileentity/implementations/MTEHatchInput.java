@@ -37,14 +37,7 @@ public class MTEHatchInput extends MTEHatch {
     public RecipeMap<?> mRecipeMap = null;
 
     public MTEHatchInput(int aID, String aName, String aNameRegional, int aTier) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            4,
-            (String) null);
-        this(aID, aName, aNameRegional, aTier, null);
+        super(aID, aName, aNameRegional, aTier, 4, (String) null);
     }
 
     public MTEHatchInput(int aID, String aName, String aNameRegional, int aTier, String[] aDescription) {

@@ -80,12 +80,12 @@ public class ItemBlockOre extends ItemBlock {
             list.add(StatCollector.translateToLocal("GTPP.tooltip.ore.contains"));
             if (mThisMaterial.getComposites()
                 .isEmpty()) {
-                list.add("- " + mThisMaterial.getLocalizedName());
+                list.add("- " + mThisMaterial.getLocalDefaultName());
             } else {
                 for (MaterialStack m : mThisMaterial.getComposites()) {
                     list.add(
                         "- " + m.getStackMaterial()
-                            .getLocalizedName() + " x" + m.getPartsPerOneHundred());
+                            .getLocalDefaultName() + " x" + m.getPartsPerOneHundred());
                 }
             }
         }
