@@ -4,14 +4,15 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
+import gregtech.api.enums.ItemList;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -46,7 +47,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
 
     private Vec3Impl downlinkCoord;
-    private MTEDroneCentre center;
+    private MTEDroneCentre centre;
     private final Set<DroneConnection> connections = new HashSet<>();
     private final Set<MTEMultiBlockBase> machines = new HashSet<>();
 
@@ -68,7 +69,7 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
 
     @Override
     public String[] getDescription() {
-        return new String[] { "Built-in powerful navigation beacon!" };
+        return new String[]{"Built-in powerful navigation beacon!", "Link to a Drone Centre using a data stick"};
     }
 
     @Override
@@ -79,12 +80,12 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(moduleActive) };
+        return new ITexture[]{aBaseTexture, TextureFactory.of(moduleActive)};
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(moduleActive) };
+        return new ITexture[]{aBaseTexture, TextureFactory.of(moduleActive)};
     }
 
     @Override
@@ -99,7 +100,6 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
             getBaseMetaTileEntity().getYCoord(),
             getBaseMetaTileEntity().getZCoord());
 
-        tryFindDroneCenter();
     }
 
     @Override
@@ -110,12 +110,7 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
                 validateConnections();
             }
 
-            // if we don't have a connection to a center, search for one every 10s
-            if (center == null && aTick % 200 == 0) {
-                tryFindDroneCenter();
-            }
-
-            if (hasConnection() && center.getBaseMetaTileEntity()
+            if (hasConnection() && centre.getBaseMetaTileEntity()
                 .isActive()) {
                 doNormalMaintain();
             }
@@ -123,12 +118,12 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
     }
 
     private void validateConnections() {
-        if (center != null && (!center.isValid() || !center.getBaseMetaTileEntity()
+        if (centre != null && (!centre.isValid() || !centre.getBaseMetaTileEntity()
             .isActive())) {
-            center.getConnectionList()
+            centre.getConnectionList()
                 .removeAll(connections);
             connections.clear();
-            center = null;
+            centre = null;
         }
 
         for (MTEMultiBlockBase machine : new ArrayList<>(machines)) {
@@ -137,7 +132,7 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
 
                 DroneConnection connection = findConnection(machine);
                 connections.remove(connection);
-                center.getConnectionList()
+                centre.getConnectionList()
                     .remove(connection);
             }
         }
@@ -149,18 +144,76 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-        float aX, float aY, float aZ) {
+                                float aX, float aY, float aZ) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
         if (side == aBaseMetaTileEntity.getFrontFacing()) {
             if (aPlayer instanceof FakePlayer) return false;
+            ItemStack dataStick = aPlayer.inventory.getCurrentItem();
+            if (ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) {
+                if (tryLinkDataStick(aPlayer)) {
+                    return true;
+                }
+            }
+
             if (!hasConnection()) {
                 aPlayer.addChatComponentMessage(new ChatComponentTranslation("GT5U.machines.dronecentre.noconnection"));
-                return true;
+                return false;
             }
             openGui(aPlayer);
             return true;
         }
         return false;
+    }
+
+    private boolean tryLinkDataStick(EntityPlayer aPlayer) {
+        // Make sure the held item is a data stick
+        ItemStack dataStick = aPlayer.inventory.getCurrentItem();
+
+        // Make sure this data stick is a proper purification plant link data stick.
+        if (!dataStick.hasTagCompound() || !dataStick.stackTagCompound.getString("type")
+            .equals("DroneCentre")) {
+            return false;
+        }
+
+        // Now read link coordinates from the data stick.
+        NBTTagCompound nbt = dataStick.stackTagCompound;
+        int x = nbt.getInteger("x");
+        int y = nbt.getInteger("y");
+        int z = nbt.getInteger("z");
+
+        // Try to link, and report the result back to the player.
+        LinkResult result = trySetControllerFromCoord(x, y, z);
+        if (result == LinkResult.SUCCESS) {
+            aPlayer.addChatMessage(new ChatComponentText("Connection successful"));
+            for (MTEMultiBlockBase machine : machines) {
+                addConnection(machine);
+            }
+        } else if (result == LinkResult.TOO_FAR) {
+            aPlayer.addChatMessage(new ChatComponentText("Connection failed: Out of range."));
+        } else if (result == LinkResult.NO_VALID_PLANT) {
+            aPlayer.addChatMessage(new ChatComponentText("Connection failed: No Drone Centre found at that location"));
+        }
+
+        return true;
+    }
+
+    private LinkResult trySetControllerFromCoord(int x, int y, int z) {
+        // Find the block at the requested coordinated and check if it is a Drone Centre controller.
+        var tileEntity = getBaseMetaTileEntity().getWorld()
+            .getTileEntity(x, y, z);
+        if (tileEntity == null) return LinkResult.NO_VALID_PLANT;
+        if (!(tileEntity instanceof IGregTechTileEntity gtTileEntity)) return LinkResult.NO_VALID_PLANT;
+        var metaTileEntity = gtTileEntity.getMetaTileEntity();
+        if (!(metaTileEntity instanceof MTEDroneCentre)) return LinkResult.NO_VALID_PLANT;
+        MTEDroneCentre tempCentre = (MTEDroneCentre) metaTileEntity;
+
+        // check the distance to the controller, compared to its range
+        Vec3Impl pos = new Vec3Impl(x,y,z);
+        if (!pos.withinDistance(downlinkCoord, tempCentre.getRange())) return LinkResult.TOO_FAR;
+
+        // all good, save the centre and return success
+        centre = tempCentre;
+        return LinkResult.SUCCESS;
     }
 
     @Override
@@ -174,20 +227,20 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+                                  ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+                                 ItemStack aStack) {
         return false;
     }
 
     @Override
     public void onRemoval() {
-        if (center == null) return;
-        center.getConnectionList()
+        if (centre == null) return;
+        centre.getConnectionList()
             .removeAll(connections);
     }
 
@@ -196,43 +249,15 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
         return !connections.isEmpty();
     }
 
-    /**
-     * Find a drone center. This will search for all DC in the same dimension, then find one in range.
-     */
-    private void tryFindDroneCenter() {
-        if (MTEDroneCentre.getCentreMap()
-            .containsKey(getBaseMetaTileEntity().getWorld().provider.dimensionId)) {
-            List<MTEDroneCentre> target = MTEDroneCentre.getCentreMap()
-                .get(getBaseMetaTileEntity().getWorld().provider.dimensionId)
-                .stream()
-                .collect(Collectors.toList());
-            for (MTEDroneCentre centre : target) {
-                if (centre.getCoords()
-                    .withinDistance(this.downlinkCoord, centre.getRange())
-                    && centre.getBaseMetaTileEntity()
-                        .isActive()) {
-
-                    connections.clear();
-                    this.center = centre;
-
-                    for (MTEMultiBlockBase machine : machines) {
-                        addConnection(machine);
-                    }
-
-                    return;
-                }
-            }
-        }
-    }
 
     private void addConnection(MTEMultiBlockBase machine) {
-        if (center == null || findConnection(machine) != null) {
+        if (centre == null || findConnection(machine) != null) {
             return;
         }
 
-        DroneConnection connection = new DroneConnection(machine, center);
+        DroneConnection connection = new DroneConnection(machine, centre);
         connections.add(connection);
-        center.getConnectionList()
+        centre.getConnectionList()
             .add(connection);
     }
 
@@ -263,8 +288,8 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
         builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         builder.setGuiTint(getGUIColorization());
         builder.widget(
-            ButtonWidget.closeWindowButton(true)
-                .setPos(135, 3))
+                ButtonWidget.closeWindowButton(true)
+                    .setPos(135, 3))
             .widget(
                 new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.drone_custom_name"))
                     .setTextAlignment(Alignment.Center)
@@ -285,22 +310,22 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
+                                int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
 
         tag.setBoolean("connected", hasConnection());
         if (hasConnection()) {
             tag.setInteger(
                 "x",
-                center.getCoords()
+                centre.getCoords()
                     .get0());
             tag.setInteger(
                 "y",
-                center.getCoords()
+                centre.getCoords()
                     .get1());
             tag.setInteger(
                 "z",
-                center.getCoords()
+                centre.getCoords()
                     .get2());
 
             DroneConnection firstConnection = getFirstConnection();
@@ -318,7 +343,7 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
+                             IWailaConfigHandler config) {
         NBTTagCompound tag = accessor.getNBTData();
         if (tag.getBoolean("connected")) {
             currenttip.add(
@@ -336,5 +361,12 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
                 .add(EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.waila.drone_downlink.noConnection"));
         }
         super.getWailaBody(itemStack, currenttip, accessor, config);
+    }
+
+
+    public enum LinkResult {
+        SUCCESS,
+        TOO_FAR,
+        NO_VALID_PLANT
     }
 }

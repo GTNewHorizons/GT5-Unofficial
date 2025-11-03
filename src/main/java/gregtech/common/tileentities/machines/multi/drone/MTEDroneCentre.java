@@ -29,6 +29,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
@@ -193,7 +194,8 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
             .addInfo("Automatically upgrade based on the drone level in the input bus")
             .addInfo("There is a chance per second that the drone will crash")
             .addInfo("Chance is determined by drone tier: T1-1/28800, T2-1/172800, T3-0")
-            .addInfo("If machine is too far, remote control would not available")
+            .addInfo("If machine is too far, maintenance and remote control are not available")
+            .addInfo("Link to a Drone Downlink Hatch using a data stick")
             .beginStructureBlock(5, 4, 9, false)
             .addController("Front center")
             .addCasingInfoRange("Stable Titanium Machine Casing", CASINGS_MIN, 91, false)
@@ -470,8 +472,26 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     }
 
     @Override
-    protected boolean useMui2() {
-        return false;
+    public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        ItemStack dataStick = aPlayer.inventory.getCurrentItem();
+
+        // if not a data stick, do whatever super class would do.
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) {
+            super.onRightclick(aBaseMetaTileEntity, aPlayer);
+            return;
+        }
+
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("type", "DroneCentre");
+        tag.setInteger("x", aBaseMetaTileEntity.getXCoord());
+        tag.setInteger("y", aBaseMetaTileEntity.getYCoord());
+        tag.setInteger("z", aBaseMetaTileEntity.getZCoord());
+
+        dataStick.stackTagCompound = tag;
+        dataStick.setStackDisplayName(
+            "Drone Centre Connection Data Stick (" + aBaseMetaTileEntity
+                .getXCoord() + ", " + aBaseMetaTileEntity.getYCoord() + ", " + aBaseMetaTileEntity.getZCoord() + ")");
+        aPlayer.addChatMessage(new ChatComponentText("Saved Connection Data to Data Stick"));
     }
 
     @Override
