@@ -968,6 +968,7 @@ gt.recipe.chemicalreactor=Chemical Reactor
 gt.recipe.chemicalreactor.description=Letting Chemicals react with each other
 gt.recipe.circuitassembler=Circuit Assembler
 gt.recipe.circuitassembler.description=Pick-n-Place all over the place
+gt.recipe.cokeoven=Coke Oven
 gt.recipe.compressor=Compressor
 gt.recipe.compressor.description=Compress-O-Matic C77
 gt.recipe.cuttingsaw=Cutting Machine
