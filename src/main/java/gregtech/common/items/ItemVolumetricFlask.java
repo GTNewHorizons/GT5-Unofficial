@@ -32,7 +32,7 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
-import com.cleanroommc.modularui.factory.GuiData;
+import com.cleanroommc.modularui.factory.PlayerInventoryGuiData;
 import com.cleanroommc.modularui.factory.PlayerInventoryGuiFactory;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
@@ -55,7 +55,8 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.item.ItemVolumetricFlaskGui;
 import ic2.core.util.LiquidUtil;
 
-public class ItemVolumetricFlask extends GTGenericItem implements IFluidContainerItem, IGuiHolder<GuiData> {
+public class ItemVolumetricFlask extends GTGenericItem
+    implements IFluidContainerItem, IGuiHolder<PlayerInventoryGuiData> {
 
     private final int maxCapacity;
     private final String unlocalFlaskName;
@@ -314,7 +315,7 @@ public class ItemVolumetricFlask extends GTGenericItem implements IFluidContaine
     }
 
     @Override
-    public ModularPanel buildUI(GuiData data, PanelSyncManager syncManager, UISettings settings) {
+    public ModularPanel buildUI(PlayerInventoryGuiData data, PanelSyncManager syncManager, UISettings settings) {
         return new ItemVolumetricFlaskGui(data).build();
     }
 
