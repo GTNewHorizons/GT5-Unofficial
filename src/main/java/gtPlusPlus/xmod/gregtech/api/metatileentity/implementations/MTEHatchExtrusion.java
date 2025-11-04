@@ -1,17 +1,19 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
-import static gregtech.common.modularui2.util.CommonGuiComponents.gridTemplate4by4;
+import java.util.function.IntFunction;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
@@ -61,22 +63,29 @@ public class MTEHatchExtrusion extends MTEHatchInputBus {
     }
 
     public MTEHatchExtrusion(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, getSlots(aTier), aDescription, aTextures);
+        super(aName, aTier, getSlots(aTier) + 2, aDescription, aTextures);
     }
 
     public static int getSlots(int aTier) {
-        return (aTier - 3) * 16 + 2;
+        return (aTier - 4) * 18 + 9;
     }
 
-    public static int getInventorySlots(int aTier) {
-        return (aTier - 3) * 16;
+    @Override
+    public int getCircuitSlotX() {
+        return 152;
+    }
+
+    @Override
+    public int getCircuitSlotY() {
+        int rows = 4 + (mTier - 5) * 2;
+        return 65 + (rows - 4) * 18;
     }
 
     @Override
     public String[] getDescription() {
         return new String[] {
             "Input Bus with Mold for " + EnumChatFormatting.YELLOW + "Extrusion Machine" + EnumChatFormatting.RESET,
-            "Capacity: " + GTUtility.formatNumbers(getInventorySlots(mTier)) + " Slots",
+            "Capacity: " + GTUtility.formatNumbers(getSlots(mTier)) + " Slots",
             "Added by: " + EnumChatFormatting.BLUE + "VorTex" };
     }
 
@@ -184,8 +193,42 @@ public class MTEHatchExtrusion extends MTEHatchInputBus {
         return true;
     }
 
+    // TODO move this method to CommonGuiComponents.java
+    public static Grid gridTemplate(int cols, int rows, IntFunction<IWidget> widgetCreator) {
+        final int baseX = 79;
+        final int baseY = 34;
+        final int step = 18;
+
+        int posX = baseX - step * (cols - 1) / 2;
+        int posY = baseY - step * (rows - 1) / 2;
+
+        int total = cols * rows;
+        return new Grid().coverChildren()
+            .pos(posX, posY)
+            .mapTo(cols, total, i -> {
+                if (i >= total) return null;
+                return widgetCreator.apply(i);
+            });
+    }
+
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        int itemSlots = getSlots(mTier);
+        int cols = 9;
+        int rows = 4 + (mTier - 5) * 2;
+
+        int baseWidth = 176;
+        int baseHeight = 169;
+        int extraHeight = (rows - 4) * 18;
+
+        int guiHeight = baseHeight + extraHeight;
+
+        int gridX = 7;
+        int gridY = 7;
+
+        int ghostX = 133;
+        int ghostY = 64 + (rows - 4) * 18;
+
         syncManager.registerSlotGroup("item_inv", 1);
         syncManager.registerSlotGroup("shape_slot", 1);
         syncManager.registerSlotGroup("circuit_slot", 1);
@@ -203,19 +246,20 @@ public class MTEHatchExtrusion extends MTEHatchInputBus {
             }
         });
 
-        ModularPanel panel = GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings)
-            .build();
+        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings)
+            .setWidth(baseWidth)
+            .setHeight(guiHeight)
+            .build()
+            .child(gridTemplate(cols, rows, index -> {
+                int actualIndex = index;
+                if (actualIndex >= shapeSlot) actualIndex++;
+                if (actualIndex >= circuitSlot) actualIndex++;
+                if (actualIndex >= getSizeInventory()) return null;
+                return new ItemSlot().slot(new ModularSlot(inventoryHandler, actualIndex).slotGroup("item_inv"));
+            }).pos(gridX, gridY))
 
-        panel.child(gridTemplate4by4(index -> {
-            if (index >= shapeSlot) index++;
-            if (index >= circuitSlot) index++;
-            return new ItemSlot().slot(new ModularSlot(inventoryHandler, index).slotGroup("item_inv"));
-        }).pos(52, 7));
-
-        panel.child(
-            new GhostShapeSlotWidget(this).slot(new ModularSlot(inventoryHandler, shapeSlot))
-                .pos(132, 34));
-
-        return panel;
+            .child(
+                new GhostShapeSlotWidget(this).slot(new ModularSlot(inventoryHandler, shapeSlot))
+                    .pos(ghostX, ghostY));
     }
 }
