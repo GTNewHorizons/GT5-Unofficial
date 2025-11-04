@@ -188,7 +188,6 @@ import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant1;
 import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant2;
 import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant3;
 import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant4;
-import gregtech.common.tileentities.machines.multi.MTEPCBFactory;
 import gregtech.common.tileentities.machines.multi.MTEPlasmaForge;
 import gregtech.common.tileentities.machines.multi.MTEPyrolyseOven;
 import gregtech.common.tileentities.machines.multi.MTEResearchCompleter;
@@ -204,6 +203,9 @@ import gregtech.common.tileentities.machines.multi.compressor.MTEIndustrialCompr
 import gregtech.common.tileentities.machines.multi.compressor.MTENeutroniumCompressor;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
+import gregtech.common.tileentities.machines.multi.pcb.MTEPCBBioChamber;
+import gregtech.common.tileentities.machines.multi.pcb.MTEPCBCoolingTower;
+import gregtech.common.tileentities.machines.multi.pcb.MTEPCBFactory;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchDegasifierControl;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchLensHousing;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchLensIndicator;
@@ -229,6 +231,7 @@ import gregtech.common.tileentities.machines.steam.MTESteamFurnaceBronze;
 import gregtech.common.tileentities.machines.steam.MTESteamFurnaceSteel;
 import gregtech.common.tileentities.machines.steam.MTESteamMaceratorBronze;
 import gregtech.common.tileentities.machines.steam.MTESteamMaceratorSteel;
+import gregtech.common.tileentities.storage.MTEDebugTank;
 import gregtech.common.tileentities.storage.MTELocker;
 import gregtech.common.tileentities.storage.MTEQuantumChest;
 import gregtech.common.tileentities.storage.MTEQuantumTank;
@@ -496,6 +499,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .getStackForm(1));
         ItemList.PCBFactory.set(
             new MTEPCBFactory(PCB_FACTORY_CONTROLLER.ID, "multimachine.pcbfactory", "PCB Factory").getStackForm(1));
+        ItemList.PCBBioChamber.set(
+            new MTEPCBBioChamber(PCB_BIO_CHAMBER_CONTROLLER.ID, "multimachine.pcbbiochamber", "Bio Chamber")
+                .getStackForm(1));
+        ItemList.PCBCoolingTower.set(
+            new MTEPCBCoolingTower(PCB_COOLING_TOWER_CONTROLLER.ID, "multimachine.pcbcoolingtower", "Cooling Tower")
+                .getStackForm(1));
         ItemList.NanoForge
             .set(new MTENanoForge(NANO_FORGE_CONTROLLER.ID, "multimachine.nanoforge", "Nano Forge").getStackForm(1));
         ItemList.Machine_Multi_DroneCentre
@@ -9210,6 +9219,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             .set(new MTEQuantumTank(QUANTUM_TANK_EV.ID, "quantum.tank.tier.09", "Quantum Tank IV", 9).getStackForm(1L));
         ItemList.Quantum_Tank_IV
             .set(new MTEQuantumTank(QUANTUM_TANK_IV.ID, "quantum.tank.tier.10", "Quantum Tank V", 10).getStackForm(1L));
+        ItemList.Debug_Fluid_Tank
+            .set(new MTEDebugTank(DEBUG_FLUID_TANK.ID, "quantum.tank.debug", "Debug Fluid Tank", 10).getStackForm(1L));
     }
 
     private static void registerQuantumChest() {
