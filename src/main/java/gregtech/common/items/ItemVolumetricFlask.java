@@ -31,10 +31,15 @@ import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import com.cleanroommc.modularui.api.IGuiHolder;
+import com.cleanroommc.modularui.factory.PlayerInventoryGuiData;
+import com.cleanroommc.modularui.factory.PlayerInventoryGuiFactory;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
-import com.gtnewhorizons.modularui.api.screen.IItemWithModularUI;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
@@ -44,13 +49,14 @@ import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.item.ItemVolumetricFlaskGui;
 import ic2.core.util.LiquidUtil;
 
-public class ItemVolumetricFlask extends GTGenericItem implements IFluidContainerItem, IItemWithModularUI {
+public class ItemVolumetricFlask extends GTGenericItem
+    implements IFluidContainerItem, IGuiHolder<PlayerInventoryGuiData> {
 
     private final int maxCapacity;
     private final String unlocalFlaskName;
@@ -69,7 +75,7 @@ public class ItemVolumetricFlask extends GTGenericItem implements IFluidContaine
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
         if (!world.isRemote && isEmpty(stack) && getMovingObjectPositionFromPlayer(world, player, true) == null)
-            GTUIInfos.openPlayerHeldItemUI(player);
+            PlayerInventoryGuiFactory.INSTANCE.openFromMainHand(player);
         return super.onItemRightClick(stack, world, player);
     }
 
@@ -309,9 +315,8 @@ public class ItemVolumetricFlask extends GTGenericItem implements IFluidContaine
     }
 
     @Override
-    public ModularWindow createWindow(UIBuildContext buildContext, ItemStack stack) {
-        if (!(stack.getItem() instanceof ItemVolumetricFlask)) return null;
-        return new VolumetricFlaskUIFactory(buildContext, stack).createWindow();
+    public ModularPanel buildUI(PlayerInventoryGuiData data, PanelSyncManager syncManager, UISettings settings) {
+        return new ItemVolumetricFlaskGui(data).build();
     }
 
     private class VolumetricFlaskUIFactory {
