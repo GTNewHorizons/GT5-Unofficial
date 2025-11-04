@@ -208,14 +208,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         .addElement('E', Casings.IsamillGearBoxCasing.asElement()) // Isamill central casing
         .addElement('F', Casings.TurbineShaft.asElement()) // Turbine Central Casing
         .addElement('G', ofBlock(supercriticalFluidTurbineCasing, 0)) // Turbine External Casing
-        .addElement('H', CentrifugeHatchElement.ROTOR_ASSEMBLY.newAny(1538, 2))
-        // .addElement(
-        // 'H',
-        // buildHatchAdder(MTEChamberCentrifuge.class).adder(MTEChamberCentrifuge::addTurbineHatch)
-        // .hatchClass(MTEHatchTurbine.class)
-        // .casingIndex(1538)
-        // .dot(2)
-        // .build()) // Turbine Holder Hatches
+        .addElement('H', CentrifugeHatchElement.ROTOR_ASSEMBLY.newAny(1538, 2)) // turbine hatches
         .addElement('a', ofBlock(GregTechAPI.sBlockMetal4, 13)) // t1 block, Naq Alloy
         .addElement(
             'b',
