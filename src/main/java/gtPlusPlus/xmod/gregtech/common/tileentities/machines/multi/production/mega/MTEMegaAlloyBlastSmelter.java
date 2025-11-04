@@ -294,6 +294,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
             .addStructurePart("GTPP.tooltip.structure.many_bus_hatch", "<bottom casing>", 1)
             .addMufflerHatch("gt.mega_abs.info.3", 3)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher(EnumChatFormatting.AQUA + "MadMan310");
         return tt;
     }

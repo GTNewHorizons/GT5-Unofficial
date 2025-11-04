@@ -60,6 +60,7 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.internal.IGTRecipeAdder;
 import gregtech.api.net.IGT_NetworkHandler;
 import gregtech.api.objects.XSTR;
+import gregtech.api.util.CustomGlyphs;
 import gregtech.api.util.GTChunkAssociatedData;
 
 /**
@@ -546,6 +547,16 @@ public class GTValues {
 
     public static final String AuthorBlueWeabo = BLUE + BOLD + "Blue" + AQUA + BOLD + "Weabo";
 
+    public static final String Authorguid118 = "Author: " + EnumChatFormatting.WHITE
+        + EnumChatFormatting.BOLD
+        + "gu"
+        + EnumChatFormatting.AQUA
+        + EnumChatFormatting.BOLD
+        + "id"
+        + EnumChatFormatting.DARK_AQUA
+        + EnumChatFormatting.BOLD
+        + "118";
+
     public static final String Authorminecraft7771 = BLUE + LIGHT_PURPLE + "minecraft7771";
 
     public static final Supplier<String> AuthorCloud = chain(
@@ -598,6 +609,18 @@ public class GTValues {
             GOLD + BOLD,
             DARK_GREEN + BOLD,
             DARK_GREEN + OBFUSCATED + BOLD));
+
+    public static final String AuthorJulia =
+        // spotless:off
+        BOLD            +
+        GOLD            + CustomGlyphs.SPARKLES +
+        AQUA            + "J"                   +
+        LIGHT_PURPLE    + "u"                   +
+        WHITE           + "l"                   +
+        LIGHT_PURPLE    + "i"                   +
+        AQUA            + "a"                   +
+        GOLD            + CustomGlyphs.SPARKLES ;
+        // spotless:on
 
     public static final String AuthorPureBluez = WHITE + "Pure"
         + AQUA

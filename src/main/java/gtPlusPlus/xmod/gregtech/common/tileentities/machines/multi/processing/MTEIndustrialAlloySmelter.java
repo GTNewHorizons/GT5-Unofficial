@@ -44,6 +44,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.tooltip.TooltipTier;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
@@ -132,6 +133,7 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
             .addEnergyHatch("gt.industrial_alloy_smelter.info.3", 1)
             .addMaintenanceHatch("gt.industrial_alloy_smelter.info.3", 1)
             .addMufflerHatch("gt.industrial_alloy_smelter.info.3", 1)
+            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
@@ -154,8 +156,9 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 1))))
                 .addElement(
                     'H',
-                    activeCoils(
-                        ofCoil(MTEIndustrialAlloySmelter::setCoilLevel, MTEIndustrialAlloySmelter::getCoilLevel)))
+                    GTStructureChannels.HEATING_COIL.use(
+                        activeCoils(
+                            ofCoil(MTEIndustrialAlloySmelter::setCoilLevel, MTEIndustrialAlloySmelter::getCoilLevel))))
                 .addElement('V', ofBlock(ModBlocks.blockCasingsTieredGTPP, 4))
                 .build();
         }
