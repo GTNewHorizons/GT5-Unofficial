@@ -11104,6 +11104,4 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Large Molecular Assembler").getStackForm(1));
     }
 
-
-
-    }
+}

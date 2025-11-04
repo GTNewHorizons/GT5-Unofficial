@@ -21,7 +21,6 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static net.minecraft.util.EnumChatFormatting.DARK_AQUA;
 import static net.minecraft.util.EnumChatFormatting.DARK_GRAY;
 import static net.minecraft.util.EnumChatFormatting.DARK_GREEN;
-import static net.minecraft.util.EnumChatFormatting.DARK_RED;
 import static net.minecraft.util.EnumChatFormatting.GREEN;
 
 import java.util.Objects;
