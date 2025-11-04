@@ -817,7 +817,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.BorosilicateGlass, 1),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.ReinforceGlass, 6),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.ReinforcedGlass, 6),
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.NaquadahAlloy, 32),
                 ItemList.Field_Generator_HV.get(4),
                 GTUtility.getIntegratedCircuit(6))
@@ -852,7 +852,7 @@ public class RecipeLoader {
                 ItemRefer.Aluminum_Nitride_Dust.get(4),
                 WerkstoffLoader.YttriumOxide.get(OrePrefixes.dust, 5),
                 GTUtility.getIntegratedCircuit(9))
-            .fluidInputs(Materials.AdvancedGlue.getFluid(1_000))
+            .fluidInputs(Materials.GlueAdvanced.getFluid(1_000))
             .itemOutputs(ItemRefer.Special_Ceramics_Dust.get(9))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -863,7 +863,7 @@ public class RecipeLoader {
                 ItemRefer.Aluminum_Nitride_Dust.get(4),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uraninite, 5),
                 GTUtility.getIntegratedCircuit(9))
-            .fluidInputs(Materials.AdvancedGlue.getFluid(1_000))
+            .fluidInputs(Materials.GlueAdvanced.getFluid(1_000))
             .itemOutputs(ItemRefer.Special_Ceramics_Dust.get(9))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -963,7 +963,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.PolyvinylChloride, 4),
-                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Plastic, 4),
+                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Polyethylene, 4),
                 GTUtility.getIntegratedCircuit(8))
             .fluidInputs(FluidRegistry.getFluidStack("dye.chemical.dyecyan", 1 * INGOTS))
             .itemOutputs(ItemRefer.Plastic_Case.get(1))
@@ -974,7 +974,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.PolyvinylChloride, 4),
-                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Plastic, 4),
+                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Polyethylene, 4),
                 GTUtility.getIntegratedCircuit(8))
             .fluidInputs(FluidRegistry.getFluidStack("dye.watermixed.dyecyan", 1 * INGOTS))
             .itemOutputs(ItemRefer.Plastic_Case.get(1))
@@ -986,7 +986,7 @@ public class RecipeLoader {
             ItemRefer.Plastic_Case.get(1),
             new Object[] { "PCP", "CDC", "PCP", 'P',
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.PolyvinylChloride, 1), 'C',
-                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Plastic, 1), 'D', "dyeCyan" });
+                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Polyethylene, 1), 'D', "dyeCyan" });
 
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -1125,7 +1125,7 @@ public class RecipeLoader {
                 ItemRefer.Inverter.get(1),
                 ItemList.Hull_MV.get(1L),
                 GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.AnyCopper, 2),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Plastic, 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polyethylene, 1),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Beryllium, 2),
                 ItemList.Electric_Motor_MV.get(2))
             .itemOutputs(Loaders.NeutronAccelerators[2].copy())
@@ -1352,7 +1352,7 @@ public class RecipeLoader {
                 ItemRefer.Inverter.get(1),
                 ItemList.Hull_IV.get(1L),
                 GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Tungsten, 2),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Silicone, 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.RubberSilicone, 1),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.SteelMagnetic, 4),
                 GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.TungstenCarbide, 2),
                 ItemList.Electric_Motor_IV.get(2))

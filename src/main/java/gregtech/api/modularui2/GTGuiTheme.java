@@ -402,6 +402,11 @@ public class GTGuiTheme {
             return this;
         }
 
+        public Builder themedColor(String themeId, int color) {
+            theme.elementBuilder.add(b -> b.add(themeId, new JsonBuilder().add("color", color)));
+            return this;
+        }
+
         /**
          * Registers texture which can be changed depending on theme.
          *
