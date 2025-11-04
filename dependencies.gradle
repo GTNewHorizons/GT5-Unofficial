@@ -66,7 +66,6 @@ dependencies {
     compileOnlyApi("com.github.GTNewHorizons:Galacticraft:3.4.7-GTNH:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:ProjectRed:4.12.0-GTNH:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:Railcraft:9.17.4:dev") { transitive = false }
-
     // Required to use Blast Furnace and Smoker Recipe maps from EFR.
     compileOnlyApi("ganymedes01.etfuturum:Et-Futurum-Requiem:2.6.2.21-GTNH-daily") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:Backhand:1.8.0:dev") { transitive = false }
@@ -141,8 +140,12 @@ dependencies {
     // For testing
     //runtimeOnlyNonPublishable('com.github.GTNewHorizons:TCNEIAdditions:1.5.4:dev')
 
-    // For testing ctm
-    runtimeOnlyNonPublishable('com.github.GTNewHorizons:Angelica:1.0.0-beta64:dev') { transitive = false }
+    var tasks = project.gradle.startParameter.taskNames
+
+    if (tasks.contains("runClient17") || tasks.contains("runClient21")) {
+        // For testing ctm & general use
+        runtimeOnlyNonPublishable('com.github.GTNewHorizons:Angelica:1.0.0-beta64:dev') { transitive = false }
+    }
 
     // Speeds up mod identification and loading in dev
     runtimeOnlyNonPublishable(rfg.deobf("CoreTweaks:CoreTweaks:0.3.3.2"))

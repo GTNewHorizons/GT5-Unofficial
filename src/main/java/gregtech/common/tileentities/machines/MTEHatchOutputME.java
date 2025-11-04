@@ -3,6 +3,9 @@ package gregtech.common.tileentities.machines;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH_ACTIVE;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -11,7 +14,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -43,7 +45,9 @@ import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.security.MachineSource;
 import appeng.api.networking.security.PlayerSource;
 import appeng.api.storage.IMEInventory;
+import appeng.api.storage.IMEInventoryHandler;
 import appeng.api.storage.IMEMonitor;
+import appeng.api.storage.StorageChannel;
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IAEStack;
 import appeng.api.storage.data.IItemList;
@@ -54,6 +58,8 @@ import appeng.items.contents.CellConfig;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
+import appeng.me.storage.FluidCellInventory;
+import appeng.me.storage.FluidCellInventoryHandler;
 import appeng.util.ReadableNumberConverter;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -276,10 +282,28 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
     private long getCacheCapacity() {
         ItemStack upgradeItemStack = mInventory[0];
-        if (upgradeItemStack != null && upgradeItemStack.getItem() instanceof FCBaseItemCell fcbc) {
-            return fcbc.getBytes(upgradeItemStack) * 2048;
+
+        if (upgradeItemStack == null) return baseCapacity;
+        if (!(upgradeItemStack.getItem() instanceof FCBaseItemCell storageCell)) return baseCapacity;
+
+        final IMEInventoryHandler<?> inventory = AEApi.instance()
+            .registries()
+            .cell()
+            .getCellInventory(upgradeItemStack, null, StorageChannel.FLUIDS);
+
+        long capacity = storageCell.getBytes(upgradeItemStack) * 2048L;
+
+        if (inventory instanceof FluidCellInventoryHandler handler) {
+            final FluidCellInventory cellInventory = (FluidCellInventory) handler.getCellInv();
+
+            long restriction = (long) cellInventory.getRestriction().get(0);
+
+            if (restriction > 0) {
+                capacity = Math.min(capacity, restriction);
+            }
         }
-        return baseCapacity;
+
+        return capacity;
     }
 
     /**
@@ -526,11 +550,21 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
                 EnumChatFormatting.GOLD,
                 GTUtility.formatNumbers(tag.getLong("cacheCapacity")),
                 EnumChatFormatting.RESET));
+    }
 
-        if (!GuiScreen.isShiftKeyDown()) {
-            ss.add("Hold Shift for more info");
-            return;
-        }
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean hasWailaAdvancedBody(ItemStack itemStack, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        return true;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void getWailaAdvancedBody(ItemStack itemStack, List<String> ss, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaAdvancedBody(itemStack, ss, accessor, config);
+
+        NBTTagCompound tag = accessor.getNBTData();
 
         NBTTagList stacks = tag.getTagList("stacks", 10);
         int stackCount = tag.getInteger("stackCount");
