@@ -1,8 +1,6 @@
 package gtnhintergalactic.recipe;
 
-import static gregtech.api.enums.Mods.BiomesOPlenty;
 import static gregtech.api.enums.Mods.DraconicEvolution;
-import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.HardcoreEnderExpansion;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
@@ -906,33 +904,6 @@ public class SpaceMiningRecipes {
             ItemMiningDrones.DroneTiers.IV.ordinal(),
             ItemMiningDrones.DroneTiers.UV.ordinal(),
             200);
-
-        if (GalaxySpace.isModLoaded()) {
-            // Glowstones Asteroid
-            addRecipesToDrones(
-                "GlowstonesAsteroid",
-                null,
-                null,
-                new int[] { 4800, 1000, 1000, 1000, 1000, 1000, 200 },
-                new ItemStack[] { new ItemStack(Blocks.glowstone, 64),
-                    GTModHandler.getModItem(GalaxySpace.ID, "ceresglowstone", 64),
-                    GTModHandler.getModItem(GalaxySpace.ID, "plutoglowstone", 64),
-                    GTModHandler.getModItem(GalaxySpace.ID, "ioglowstone", 64),
-                    GTModHandler.getModItem(GalaxySpace.ID, "enceladusglowstone", 64),
-                    GTModHandler.getModItem(GalaxySpace.ID, "proteusglowstone", 64),
-                    GTModHandler.getModItem(BiomesOPlenty.ID, "crystal", 64) },
-                30,
-                60,
-                65,
-                180,
-                300,
-                3,
-                500,
-                (int) TierEU.RECIPE_UHV,
-                ItemMiningDrones.DroneTiers.ZPM.ordinal(),
-                ItemMiningDrones.DroneTiers.UXV.ordinal(),
-                220);
-        }
 
         // Draconic Core Ruin
         if (DraconicEvolution.isModLoaded()) {
