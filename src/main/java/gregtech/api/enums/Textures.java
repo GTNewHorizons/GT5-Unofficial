@@ -1940,6 +1940,10 @@ public class Textures {
         NANITE_SHIELDING_FRAME,
         OVERLAY_ENERGY_IN_DEBUG,
 
+        COKE_OVEN_CASING,
+        COKE_OVEN_OVERLAY_INACTIVE,
+        COKE_OVEN_OVERLAY_ACTIVE,
+
         // semicolon after the comment to reduce merge conflicts
         ;
 
