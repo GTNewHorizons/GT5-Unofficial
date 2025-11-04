@@ -1,6 +1,8 @@
 package gtnhintergalactic.recipe;
 
+import static gregtech.api.enums.Mods.BiomesOPlenty;
 import static gregtech.api.enums.Mods.DraconicEvolution;
+import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.HardcoreEnderExpansion;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
@@ -612,6 +614,27 @@ public class SpaceMiningRecipes {
             ItemMiningDrones.DroneTiers.UHV.ordinal(),
             150);
 
+        // Nether Ore Asteroid
+        addRecipesToDrones(
+            "NetherOreAsteroid",
+            null,
+            null,
+            new int[] { 3152, 3150, 2101, 1261, 336 },
+            new Materials[] { Materials.NetherQuartz, Materials.Sulfur, Materials.CertusQuartz, Materials.Quartzite,
+                Materials.Firestone },
+            OrePrefixes.oreNetherrack,
+            30,
+            110,
+            10,
+            100,
+            240,
+            1,
+            50 * SECONDS,
+            (int) TierEU.RECIPE_IV,
+            ItemMiningDrones.DroneTiers.EV.ordinal(),
+            ItemMiningDrones.DroneTiers.UHV.ordinal(),
+            150);
+
         // Europium Asteroid
         addRecipesToDrones(
             "europiumAsteroid",
@@ -883,6 +906,33 @@ public class SpaceMiningRecipes {
             ItemMiningDrones.DroneTiers.IV.ordinal(),
             ItemMiningDrones.DroneTiers.UV.ordinal(),
             200);
+
+        if (GalaxySpace.isModLoaded()) {
+            // Glowstones Asteroid
+            addRecipesToDrones(
+                "GlowstonesAsteroid",
+                null,
+                null,
+                new int[] { 4800, 1000, 1000, 1000, 1000, 1000, 200 },
+                new ItemStack[] { new ItemStack(Blocks.glowstone, 64),
+                    GTModHandler.getModItem(GalaxySpace.ID, "ceresglowstone", 64),
+                    GTModHandler.getModItem(GalaxySpace.ID, "plutoglowstone", 64),
+                    GTModHandler.getModItem(GalaxySpace.ID, "ioglowstone", 64),
+                    GTModHandler.getModItem(GalaxySpace.ID, "enceladusglowstone", 64),
+                    GTModHandler.getModItem(GalaxySpace.ID, "proteusglowstone", 64),
+                    GTModHandler.getModItem(BiomesOPlenty.ID, "crystal", 64) },
+                30,
+                60,
+                65,
+                180,
+                300,
+                3,
+                500,
+                (int) TierEU.RECIPE_UHV,
+                ItemMiningDrones.DroneTiers.ZPM.ordinal(),
+                ItemMiningDrones.DroneTiers.UXV.ordinal(),
+                220);
+        }
 
         // Draconic Core Ruin
         if (DraconicEvolution.isModLoaded()) {
