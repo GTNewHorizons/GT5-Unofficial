@@ -160,8 +160,7 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
                 return super.createParallelHelper(Objects.requireNonNull(recipeAfterAdjustments(recipe)));
             }
         }.setSpeedBonus(1F / 2F)
-            .setMaxParallelSupplier(this::getTrueParallel)
-            .setEuModifier(0.85F);
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Nullable
@@ -265,7 +264,8 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
         tt.addMachineType("Cable Coater, LATEX")
             .addInfo(
                 DARK_GRAY + "" + EnumChatFormatting.ITALIC + "AKA Laminated Application and Thermal Enclosure eXpert")
-            .addBulkMachineInfo(8, 2F, 0.85F)
+            .addVoltageParallelInfo(8)
+            .addStaticSpeedInfo(2F)
             .addInfo(
                 "Recipes have an additive " + TooltipHelper.coloredText("6.25%", DARK_GREEN)
                     + " rubber discount based on "
