@@ -240,13 +240,17 @@ public abstract class MetaBaseItem extends GTGenericItem
         final String tTooltip;
         if (tooltips[aStack.getItemDamage()] != null) {
             tTooltip = tooltips[aStack.getItemDamage()].get();
-        } else if (StatCollector.canTranslate(getUnlocalizedName() + ".tooltip")) {
-            tTooltip = StatCollector.translateToLocal(getUnlocalizedName() + ".tooltip");
+        } else if (StatCollector.canTranslate(getUnlocalizedName() + "." + aStack.getItemDamage() + ".tooltip")) {
+            tTooltip = StatCollector.translateToLocal(getUnlocalizedName() + "." + aStack.getItemDamage() + ".tooltip");
         } else {
             tTooltip = null;
         }
         if (tTooltip != null) {
-            for (String tString : GTSplit.split(tTooltip)) if (GTUtility.isStringValid(tString)) aList.add(tString);
+            for (String tString : GTSplit.split(tTooltip)) {
+                if (GTUtility.isStringValid(tString)) {
+                    aList.add(tString);
+                }
+            }
         }
         Long[] tStats = getElectricStats(aStack);
         if (tStats != null) {
