@@ -79,7 +79,8 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
         .addElement('m', Muffler.newAny(CASING_INDEX, 2))
         .addElement(
             'C',
-            activeCoils(ofCoil(MTEElectricBlastFurnace::setCoilLevel, MTEElectricBlastFurnace::getCoilLevel)))
+            GTStructureChannels.HEATING_COIL
+                .use(activeCoils(ofCoil(MTEElectricBlastFurnace::setCoilLevel, MTEElectricBlastFurnace::getCoilLevel))))
         .addElement(
             'b',
             buildHatchAdder(MTEElectricBlastFurnace.class)

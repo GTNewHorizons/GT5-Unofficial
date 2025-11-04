@@ -57,6 +57,7 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.internal.IGTRecipeAdder;
 import gregtech.api.net.IGT_NetworkHandler;
 import gregtech.api.objects.XSTR;
+import gregtech.api.util.CustomGlyphs;
 import gregtech.api.util.GTChunkAssociatedData;
 
 /**
@@ -555,6 +556,16 @@ public class GTValues {
         + EnumChatFormatting.BOLD
         + "Weabo";
 
+    public static final String Authorguid118 = "Author: " + EnumChatFormatting.WHITE
+        + EnumChatFormatting.BOLD
+        + "gu"
+        + EnumChatFormatting.AQUA
+        + EnumChatFormatting.BOLD
+        + "id"
+        + EnumChatFormatting.DARK_AQUA
+        + EnumChatFormatting.BOLD
+        + "118";
+
     public static final String Authorminecraft7771 = "Author: " + EnumChatFormatting.BLUE
         + EnumChatFormatting.LIGHT_PURPLE
         + "minecraft7771";
@@ -631,6 +642,18 @@ public class GTValues {
             EnumChatFormatting.GOLD + BOLD,
             EnumChatFormatting.DARK_GREEN + BOLD,
             EnumChatFormatting.DARK_GREEN + OBFUSCATED + BOLD));
+
+    public static final String AuthorJulia =
+        // spotless:off
+        EnumChatFormatting.BOLD.toString() +
+        EnumChatFormatting.GOLD            + CustomGlyphs.SPARKLES +
+        EnumChatFormatting.AQUA            + "J"                   +
+        EnumChatFormatting.LIGHT_PURPLE    + "u"                   +
+        EnumChatFormatting.WHITE           + "l"                   +
+        EnumChatFormatting.LIGHT_PURPLE    + "i"                   +
+        EnumChatFormatting.AQUA            + "a"                   +
+        EnumChatFormatting.GOLD            + CustomGlyphs.SPARKLES ;
+        // spotless:on
 
     public static final String TecTechHatches = "Supports " + TT + " laser and multi-amp hatches";
 

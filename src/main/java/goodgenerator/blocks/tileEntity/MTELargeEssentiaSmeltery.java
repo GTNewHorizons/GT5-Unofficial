@@ -6,6 +6,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
 
@@ -231,8 +232,9 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
 
     @Override
     public String[] getInfoData() {
-        String[] info = super.getInfoData();
-        info[8] = StatCollector.translateToLocal("gg.scanner.info.les.parallel") + " "
+        String[] origData = super.getInfoData();
+        String[] info = Arrays.copyOf(origData, origData.length + 1);
+        info[origData.length] = StatCollector.translateToLocal("gg.scanner.info.les.parallel") + " "
             + EnumChatFormatting.YELLOW
             + Math.round(this.mParallel)
             + EnumChatFormatting.RESET

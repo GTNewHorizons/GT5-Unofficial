@@ -57,6 +57,7 @@ import gregtech.api.metatileentity.implementations.MTEBasicBatteryBuffer;
 import gregtech.api.metatileentity.implementations.MTEBasicHull;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
 import gregtech.api.metatileentity.implementations.MTEHatchBulkCatalystHousing;
+import gregtech.api.metatileentity.implementations.MTEHatchCokeOven;
 import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
@@ -140,6 +141,7 @@ import gregtech.common.tileentities.machines.multi.MTEBrickedBlastFurnace;
 import gregtech.common.tileentities.machines.multi.MTEChamberCentrifuge;
 import gregtech.common.tileentities.machines.multi.MTECharcoalPit;
 import gregtech.common.tileentities.machines.multi.MTECleanroom;
+import gregtech.common.tileentities.machines.multi.MTECokeOven;
 import gregtech.common.tileentities.machines.multi.MTEConcreteBackfiller1;
 import gregtech.common.tileentities.machines.multi.MTEConcreteBackfiller2;
 import gregtech.common.tileentities.machines.multi.MTEDecayWarehouse;
@@ -186,7 +188,6 @@ import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant1;
 import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant2;
 import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant3;
 import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant4;
-import gregtech.common.tileentities.machines.multi.MTEPCBFactory;
 import gregtech.common.tileentities.machines.multi.MTEPlasmaForge;
 import gregtech.common.tileentities.machines.multi.MTEPyrolyseOven;
 import gregtech.common.tileentities.machines.multi.MTEResearchCompleter;
@@ -202,6 +203,9 @@ import gregtech.common.tileentities.machines.multi.compressor.MTEIndustrialCompr
 import gregtech.common.tileentities.machines.multi.compressor.MTENeutroniumCompressor;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
+import gregtech.common.tileentities.machines.multi.pcb.MTEPCBBioChamber;
+import gregtech.common.tileentities.machines.multi.pcb.MTEPCBCoolingTower;
+import gregtech.common.tileentities.machines.multi.pcb.MTEPCBFactory;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchDegasifierControl;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchLensHousing;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchLensIndicator;
@@ -227,6 +231,7 @@ import gregtech.common.tileentities.machines.steam.MTESteamFurnaceBronze;
 import gregtech.common.tileentities.machines.steam.MTESteamFurnaceSteel;
 import gregtech.common.tileentities.machines.steam.MTESteamMaceratorBronze;
 import gregtech.common.tileentities.machines.steam.MTESteamMaceratorSteel;
+import gregtech.common.tileentities.storage.MTEDebugTank;
 import gregtech.common.tileentities.storage.MTELocker;
 import gregtech.common.tileentities.storage.MTEQuantumChest;
 import gregtech.common.tileentities.storage.MTEQuantumTank;
@@ -266,6 +271,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         + " to use this.";
 
     private static void registerMultiblockControllers() {
+        ItemList.CokeOvenController
+            .set(new MTECokeOven(COKE_OVEN_CONTROLLER.ID, "multimachine.cokeoven", "Coke Oven").getStackForm(1L));
+
         ItemList.Machine_Bricked_BlastFurnace.set(
             new MTEBrickedBlastFurnace(
                 BRICKED_BLAST_FURNACE_CONTROLLER.ID,
@@ -491,6 +499,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .getStackForm(1));
         ItemList.PCBFactory.set(
             new MTEPCBFactory(PCB_FACTORY_CONTROLLER.ID, "multimachine.pcbfactory", "PCB Factory").getStackForm(1));
+        ItemList.PCBBioChamber.set(
+            new MTEPCBBioChamber(PCB_BIO_CHAMBER_CONTROLLER.ID, "multimachine.pcbbiochamber", "Bio Chamber")
+                .getStackForm(1));
+        ItemList.PCBCoolingTower.set(
+            new MTEPCBCoolingTower(PCB_COOLING_TOWER_CONTROLLER.ID, "multimachine.pcbcoolingtower", "Cooling Tower")
+                .getStackForm(1));
         ItemList.NanoForge
             .set(new MTENanoForge(NANO_FORGE_CONTROLLER.ID, "multimachine.nanoforge", "Nano Forge").getStackForm(1));
         ItemList.Machine_Multi_DroneCentre
@@ -6346,7 +6360,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "basicmachine.macerator.tier.03",
                 "Universal Macerator",
                 3,
-                MachineType.MACERATOR_PULVERIZER.tooltipDescription(),
+                MachineType.MACERATOR.tooltipDescription(),
                 RecipeMaps.maceratorRecipes,
                 1,
                 2,
@@ -6361,7 +6375,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "basicmachine.macerator.tier.04",
                 "Universal Pulverizer",
                 4,
-                MachineType.MACERATOR_PULVERIZER.tooltipDescription(),
+                MachineType.MACERATOR.tooltipDescription(),
                 RecipeMaps.maceratorRecipes,
                 1,
                 3,
@@ -6376,7 +6390,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "basicmachine.macerator.tier.05",
                 "Blend-O-Matic 9001",
                 5,
-                MachineType.MACERATOR_PULVERIZER.tooltipDescription(),
+                MachineType.MACERATOR.tooltipDescription(),
                 RecipeMaps.maceratorRecipes,
                 1,
                 4,
@@ -9189,6 +9203,11 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             .set(new MTEHatchVoidBus(VOID_BUS.ID, "hatch.void_bus.tier.00", "Void Bus").getStackForm(1L));
     }
 
+    private static void registerCokeOvenHatch() {
+        ItemList.CokeOvenHatch
+            .set(new MTEHatchCokeOven(COKE_OVEN_HATCH.ID, "hatch.cokeoven", "Coke Oven Hatch").getStackForm(1L));
+    }
+
     private static void registerQuantumTank() {
         ItemList.Quantum_Tank_LV
             .set(new MTEQuantumTank(QUANTUM_TANK_LV.ID, "quantum.tank.tier.06", "Quantum Tank I", 6).getStackForm(1L));
@@ -9200,6 +9219,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             .set(new MTEQuantumTank(QUANTUM_TANK_EV.ID, "quantum.tank.tier.09", "Quantum Tank IV", 9).getStackForm(1L));
         ItemList.Quantum_Tank_IV
             .set(new MTEQuantumTank(QUANTUM_TANK_IV.ID, "quantum.tank.tier.10", "Quantum Tank V", 10).getStackForm(1L));
+        ItemList.Debug_Fluid_Tank
+            .set(new MTEDebugTank(DEBUG_FLUID_TANK.ID, "quantum.tank.debug", "Debug Fluid Tank", 10).getStackForm(1L));
     }
 
     private static void registerQuantumChest() {
@@ -10923,6 +10944,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerInputBus();
         registerOutputBus();
         registerVoidBus();
+        registerCokeOvenHatch();
         registerMufflerHatch();
         registerBoiler();
         registerBatteryBuffer1x1();
