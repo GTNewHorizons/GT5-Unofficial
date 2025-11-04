@@ -281,6 +281,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
 
     private void rotateTurbines() {
         for (int i = 0; i < turbineRotorHatchList.size(); i++) {
+            if (turbineRotorHatchList.get(i) == null) continue;
             MTEHatchTurbine turbine = turbineRotorHatchList.get(i);
             ForgeDirection direction = this.getDirection();
             IGregTechTileEntity te = turbine.getBaseMetaTileEntity();
