@@ -3,9 +3,6 @@ package gregtech.common.tileentities.machines;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH_ACTIVE;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -296,7 +293,8 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         if (inventory instanceof FluidCellInventoryHandler handler) {
             final FluidCellInventory cellInventory = (FluidCellInventory) handler.getCellInv();
 
-            long restriction = (long) cellInventory.getRestriction().get(0);
+            long restriction = (long) cellInventory.getRestriction()
+                .get(0);
 
             if (restriction > 0) {
                 capacity = Math.min(capacity, restriction);
