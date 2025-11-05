@@ -45,6 +45,7 @@ import static gregtech.api.recipe.RecipeMaps.slicerRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 
+import gregtech.api.metatileentity.implementations.MTEHatchInputBusDebug;
 import net.minecraft.util.EnumChatFormatting;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -9345,6 +9346,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEHatchInputBus(INPUT_BUS_UV.ID, "hatch.input_bus.tier.08", "Input Bus (UV)", 8).getStackForm(1L));
         ItemList.Hatch_Input_Bus_MAX.set(
             new MTEHatchInputBus(INPUT_BUS_UHV.ID, "hatch.input_bus.tier.09", "Input Bus (UHV)", 9).getStackForm(1L));
+
+        ItemList.Hatch_Input_Bus_Debug.set(new MTEHatchInputBusDebug(INPUT_BUS_DEBUG.ID, "hatch.input_bus.debug","Debug Input Bus",9).getStackForm(1l));
     }
 
     private static void registerOutputBus() {
