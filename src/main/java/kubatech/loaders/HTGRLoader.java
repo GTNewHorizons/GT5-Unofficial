@@ -171,8 +171,8 @@ public class HTGRLoader {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Bedrockium, 1L))
             .metadata(
                 FUEL,
-                new Pair[] { Pair.of(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium238, 2L), 1),
-                    Pair.of(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium239, 3L), 2) })
+                new Pair[] { Pair.of(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 2L), 1),
+                    Pair.of(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium, 3L), 2) })
             .metadata(
                 SHELL,
                 new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
@@ -193,7 +193,7 @@ public class HTGRLoader {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 5L))
             .metadata(
                 FUEL,
-                new Pair[] { Pair.of(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium238, 2L), 1),
+                new Pair[] { Pair.of(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 2L), 1),
                     Pair.of(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium241, 3L), 2) })
             .metadata(
                 SHELL,
