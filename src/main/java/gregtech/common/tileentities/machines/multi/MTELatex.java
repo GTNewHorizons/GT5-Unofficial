@@ -264,8 +264,6 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
             .addInfo("gt.latex.tips.2", TooltipHelper.tierText(TooltipTier.ITEM_PIPE_CASING))
             .addSeparator()
             .addInfo("gt.latex.tips.3")
-            .addSeparator()
-            .addInfo("gt.latex.tips.4")
             .beginStructureBlock(3, 5, 3, true)
             .addController("front_center")
             .addCasingInfoMin("gt.blockcasings8.0.name", 14, false)

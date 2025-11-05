@@ -24,20 +24,10 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.animatedText;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.chain;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.text;
 import static gregtech.api.util.CustomGlyphs.AIR;
-import static gregtech.api.util.CustomGlyphs.ALEPH;
 import static gregtech.api.util.CustomGlyphs.CHAOS;
-import static gregtech.api.util.CustomGlyphs.CIRCLE_CROSS;
-import static gregtech.api.util.CustomGlyphs.CIRCLE_STAR;
 import static gregtech.api.util.CustomGlyphs.EARTH;
-import static gregtech.api.util.CustomGlyphs.EMPTY_SET;
-import static gregtech.api.util.CustomGlyphs.HIGH_VOLTAGE;
-import static gregtech.api.util.CustomGlyphs.MAGNET;
-import static gregtech.api.util.CustomGlyphs.OMEGA;
 import static gregtech.api.util.CustomGlyphs.ORDER;
-import static gregtech.api.util.CustomGlyphs.SPARKLES;
 import static gregtech.api.util.CustomGlyphs.STAR;
-import static gregtech.api.util.CustomGlyphs.SUBSCRIPT0;
-import static gregtech.api.util.CustomGlyphs.SUPERSCRIPT0;
 
 import java.math.BigInteger;
 import java.util.Arrays;
@@ -629,11 +619,11 @@ public class GTValues {
         GREEN, AQUA, RED, LIGHT_PURPLE, YELLOW, WHITE, OBFUSCATED, UNDERLINE };
 
     public static final Supplier<String> fancyAuthorChrom = chain(
-        createChromLetter("C", ORDER, MAGNET, HIGH_VOLTAGE),
-        createChromLetter("h", EARTH, ALEPH + SUBSCRIPT0, OMEGA + SUPERSCRIPT0),
-        createChromLetter("r", CHAOS, "ṟ", SPARKLES),
-        createChromLetter("o", AIR, CIRCLE_CROSS, EMPTY_SET),
-        createChromLetter("m", STAR, CIRCLE_STAR, "⏧"));
+        createChromLetter("C", ORDER),
+        createChromLetter("h", EARTH),
+        createChromLetter("r", CHAOS),
+        createChromLetter("o", AIR),
+        createChromLetter("m", STAR));
 
     public static final Supplier<String> AuthorThree = chain(
         animatedText("Three", 0, 1000, BLUE + BOLD, RED + BOLD, YELLOW + BOLD));
