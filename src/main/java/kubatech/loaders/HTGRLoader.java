@@ -160,6 +160,50 @@ public class HTGRLoader {
             .eut(1)
             .addTo(HTGRRecipes);
 
+        // diamond to bedrockium
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Diamond, 6L),
+                GTUtility.getIntegratedCircuit(1))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Diamond, 2L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Bedrockium, 1L))
+            .metadata(
+                FUEL,
+                new Pair[] { Pair.of(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium238, 2L), 1),
+                    Pair.of(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium239, 3L), 2) })
+            .metadata(
+                SHELL,
+                new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 1L) })
+            .duration(1)
+            .eut(1)
+            .addTo(HTGRRecipes);
+
+        // naquadah to enriched naquadah
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 2L),
+                GTUtility.getIntegratedCircuit(1))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 5L))
+            .metadata(
+                FUEL,
+                new Pair[] { Pair.of(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium238, 2L), 1),
+                    Pair.of(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium241, 3L), 2) })
+            .metadata(
+                SHELL,
+                new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 1L) })
+            .duration(1)
+            .eut(1)
+            .addTo(HTGRRecipes);
+
         // plutonium breeding
 
         GTValues.RA.stdBuilder()
