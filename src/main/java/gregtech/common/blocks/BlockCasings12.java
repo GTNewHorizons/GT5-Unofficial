@@ -37,6 +37,13 @@ public class BlockCasings12 extends BlockCasingsAbstract {
     }
 
     @Override
+    public int getHarvestLevel(int aMeta) {
+        // Coke Oven Bricks have Harvest Level 0.
+        if (aMeta == 0) return 0;
+        return super.getHarvestLevel(aMeta);
+    }
+
+    @Override
     public int getTextureIndex(int aMeta) {
         return (16 << 7) | (aMeta + 80);
     }

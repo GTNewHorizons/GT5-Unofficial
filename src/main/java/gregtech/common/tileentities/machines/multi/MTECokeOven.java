@@ -102,7 +102,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
         .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
         .addElement(
             'C',
-            buildHatchAdder(MTECokeOven.class).anyOf(new HatchElement())
+            buildHatchAdder(MTECokeOven.class).atLeast(new HatchElement())
                 .casingIndex(1)
                 .dot(1)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasings12, 0)))
