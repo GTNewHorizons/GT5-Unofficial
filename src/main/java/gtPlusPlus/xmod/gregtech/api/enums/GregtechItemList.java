@@ -577,7 +577,6 @@ public enum GregtechItemList implements IGregtechItemContainer {
     Pollution_Creator,
 
     // Basically is an automatic Cauldron
-    SimpleDustWasher_ULV,
     SimpleDustWasher_LV,
     SimpleDustWasher_MV,
     SimpleDustWasher_HV,

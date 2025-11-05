@@ -11045,7 +11045,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerOven();
         registerNameRemover();
         registerAirFilters();
-        registerCableCoaters();
 
         ItemList.AdvDebugStructureWriter.set(
             new MTEAdvDebugStructureWriter(
@@ -11112,84 +11111,4 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Large Molecular Assembler").getStackForm(1));
     }
 
-    private static void registerCableCoaters() {
-
-        ItemList.Machine_LV_CableCoater.set(
-            new MTEBasicMachineWithRecipe(
-                CABLECOATER_LV.ID,
-                "basicmachine.cablecoater.tier.01",
-                "Basic Cable Coater",
-                1,
-                MachineType.CABLE_COATER.tooltipDescription(),
-                RecipeMaps.cableRecipes,
-                6,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ASSEMBLER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CABLE_COATER").getStackForm(1L));
-
-        ItemList.Machine_MV_CableCoater.set(
-            new MTEBasicMachineWithRecipe(
-                CABLECOATER_MV.ID,
-                "basicmachine.cablecoater.tier.02",
-                "Advanced Cable Coater",
-                2,
-                MachineType.CABLE_COATER.tooltipDescription(),
-                RecipeMaps.cableRecipes,
-                6,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ASSEMBLER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CABLE_COATER").getStackForm(1L));
-
-        ItemList.Machine_HV_CableCoater.set(
-            new MTEBasicMachineWithRecipe(
-                CABLECOATER_HV.ID,
-                "basicmachine.cablecoater.tier.03",
-                "Advanced Cable Coater II",
-                3,
-                MachineType.CABLE_COATER.tooltipDescription(),
-                RecipeMaps.cableRecipes,
-                6,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ASSEMBLER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CABLE_COATER").getStackForm(1L));
-
-        ItemList.Machine_EV_CableCoater.set(
-            new MTEBasicMachineWithRecipe(
-                CABLECOATER_EV.ID,
-                "basicmachine.cablecoater.tier.04",
-                "Advanced Cable Coater III",
-                4,
-                MachineType.CABLE_COATER.tooltipDescription(),
-                RecipeMaps.cableRecipes,
-                6,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ASSEMBLER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CABLE_COATER").getStackForm(1L));
-
-        addItemTooltip(
-            ItemList.Machine_LV_CableCoater.get(1),
-            () -> EnumChatFormatting.DARK_RED
-                + "Cable Recipes in the Assembler TO BE REMOVED in the next major update!");
-        addItemTooltip(
-            ItemList.Machine_MV_CableCoater.get(1),
-            () -> EnumChatFormatting.DARK_RED
-                + "Cable Recipes in the Assembler TO BE REMOVED in the next major update!");
-        addItemTooltip(
-            ItemList.Machine_HV_CableCoater.get(1),
-            () -> EnumChatFormatting.DARK_RED
-                + "Cable Recipes in the Assembler TO BE REMOVED in the next major update!");
-        addItemTooltip(
-            ItemList.Machine_EV_CableCoater.get(1),
-            () -> EnumChatFormatting.DARK_RED
-                + "Cable Recipes in the Assembler TO BE REMOVED in the next major update!");
-
-    }
 }
