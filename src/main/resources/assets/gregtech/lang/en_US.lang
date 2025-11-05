@@ -3704,6 +3704,16 @@ gt.mb.corepos.top_center=Top center
 gt.mb.hint_block=Hint block with dot %d
 
 # Multiblock Tooltip lines
+gt.charcoal_pit.tips.1=Converts Logs into Brittle Charcoal blocks\nAutomatically starts when formed
+gt.charcoal_pit.info.1=Can be up to 13x7x13 in size, including the dirt; shape doesn't matter
+gt.charcoal_pit.info.2=Top layer, directly touching a wood log
+gt.charcoal_pit.info.3=Dirt/Grass
+gt.charcoal_pit.info.4=Top and middle layers, covering wood logs
+gt.charcoal_pit.info.5=Bottom layer, under all wood logs
+gt.charcoal_pit.info.6=Wood Logs
+gt.charcoal_pit.info.7=Up to 5 layers, inside the previously mentioned blocks
+gt.charcoal_pit.info.8=No air between logs allowed.\nAll logs must be within 6 x/z of the controller, so it must be dead-center for a full 11x11 square of wood.
+
 gt.fusion.tips.a=It's over 9000!!!
 gt.fusion.tips.b=A SUN DOWN ON EARTH
 gt.fusion.tips.1=§b%s§7 EU/t and §b%sM§7 EU capacity per Energy Hatch\nIf the recipe has a startup cost greater than the\nnumber of energy hatches * cap, you can't do it
