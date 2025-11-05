@@ -358,23 +358,7 @@ ig.structure.author=Added by
 ig.structure.and= and
 
 ig.dyson.structure.dynamo=Can use Single- and/or Multi-Amp Dynamo Hatches and/or Laser Source Hatches (1 - 12)
-ig.dyson.structure.optical=Optical Reception Connector
 ig.dyson.structure.additionally=§oAdditionally needed:
-ig.dyson.structure.deployment.core=Module Deployment Unit Core
-ig.dyson.structure.deployment.magnet=Module Deployment Unit Superconducting Magnet
-ig.dyson.structure.deployment.base=Module Deployment Unit Base Casing
-ig.dyson.structure.receiver.base=Energy Receiver Base Casing
-ig.dyson.structure.receiver.dish=Energy Receiver Dish Block
-ig.dyson.structure.control.base=Control Center Base Casing
-ig.dyson.structure.control.primary=Control Center Primary Windings
-ig.dyson.structure.control.secondary=Control Center Secondary Windings
-ig.dyson.structure.control.toroid=Control Center Toroid Casing
-ig.dyson.structure.base.floor=Ultra High Strength Concrete Floor
-ig.dyson.structure.base.coil=Awakened Draconium Coil Block
-ig.dyson.structure.base.hermetic=Hermetic Casing X
-ig.dyson.structure.base.frameTitanium=Titanium Frame Box
-ig.dyson.structure.base.frameHSSS=HSS-S Frame Box
-ig.dyson.structure.base.frameUHVBase=Superconductor Base UHV Frame Box
 
 # Space Projects
 ig.spaceproject.asteroidoutpost=Asteroid Outpost

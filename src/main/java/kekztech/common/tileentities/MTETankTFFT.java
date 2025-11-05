@@ -12,6 +12,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.tooltip.TooltipHelper.voltageText;
 import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.math.BigInteger;
 import java.text.MessageFormat;
@@ -348,7 +349,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
             .addCasingInfoMin("tile.kekztech_tfftstoragefield_block.0.name", MIN_CASING_AMOUNT)
             .addCasingInfoRange("tile.kekztech_tfftstoragefield_block.generic.name", 7, 117, true)
             .addStructureInfo("gt.tfft.info.1")
-            .addCasingInfoRange(translate("GT5U.MBTT.AnyGlass_Tier", voltageText(4)), 48, 208, true)
+            .addCasingInfoRange(translateToLocalFormatted("GT5U.MBTT.AnyGlass_Tier", voltageText(4)), 48, 208, true)
             .addMaintenanceHatch("gt.tfft.info.2")
             .addEnergyHatch("gt.tfft.info.2")
             .addInputHatch("gt.tfft.info.3")
@@ -534,8 +535,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         NumberFormat nf = NumberFormat.getNumberInstance();
 
         ll.add(
-            EnumChatFormatting.YELLOW
-                + StatCollector.translateToLocalFormatted("kekztech.infodata.tank.tfft.stored_fluids")
+            EnumChatFormatting.YELLOW + translateToLocalFormatted("kekztech.infodata.tank.tfft.stored_fluids")
                 + EnumChatFormatting.RESET);
         for (int i = 0; i < MAX_DISTINCT_FLUIDS; i++) {
             GTFluidTank tank = STORE[i];
@@ -558,28 +558,21 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
             }
         }
         ll.add(
-            EnumChatFormatting.YELLOW + StatCollector.translateToLocal("kekztech.infodata.operational_data")
+            EnumChatFormatting.YELLOW + translateToLocal("kekztech.infodata.operational_data")
                 + EnumChatFormatting.RESET);
+        ll.add(translateToLocalFormatted("kekztech.infodata.tank.tfft.used", nf.format(getStoredAmount())));
+        ll.add(translateToLocalFormatted("kekztech.infodata.tank.tfft.total", nf.format(capacity)));
         ll.add(
-            StatCollector.translateToLocalFormatted("kekztech.infodata.tank.tfft.used", nf.format(getStoredAmount())));
-        ll.add(StatCollector.translateToLocalFormatted("kekztech.infodata.tank.tfft.total", nf.format(capacity)));
+            translateToLocalFormatted("kekztech.infodata.tank.tfft.per_fluid_capacity", nf.format(capacityPerFluid)));
+        ll.add(translateToLocalFormatted("kekztech.infodata.tank.tfft.running_cost", getActualEnergyUsage()));
+        ll.add(translateToLocalFormatted("kekztech.infodata.tank.tfft.auto_voiding", doVoidExcess));
         ll.add(
-            StatCollector.translateToLocalFormatted(
-                "kekztech.infodata.tank.tfft.per_fluid_capacity",
-                nf.format(capacityPerFluid)));
-        ll.add(
-            StatCollector
-                .translateToLocalFormatted("kekztech.infodata.tank.tfft.running_cost", getActualEnergyUsage()));
-        ll.add(StatCollector.translateToLocalFormatted("kekztech.infodata.tank.tfft.auto_voiding", doVoidExcess));
-        ll.add(
-            StatCollector.translateToLocalFormatted(
+            translateToLocalFormatted(
                 "kekztech.infodata.multi.maintenance_status",
                 ((getRepairStatus() == getIdealStatus())
-                    ? EnumChatFormatting.GREEN
-                        + StatCollector.translateToLocal("kekztech.infodata.multi.maintenance_status.ok")
+                    ? EnumChatFormatting.GREEN + translateToLocal("kekztech.infodata.multi.maintenance_status.ok")
                         + EnumChatFormatting.RESET
-                    : EnumChatFormatting.RED
-                        + StatCollector.translateToLocal("kekztech.infodata.multi.maintenance_status.bad")
+                    : EnumChatFormatting.RED + translateToLocal("kekztech.infodata.multi.maintenance_status.bad")
                         + EnumChatFormatting.RESET)));
         ll.add(EnumChatFormatting.STRIKETHROUGH + "---------------------------------------------");
 

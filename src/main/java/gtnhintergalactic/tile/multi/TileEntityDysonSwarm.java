@@ -34,6 +34,7 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -41,6 +42,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.items.IDMetaTool01;
@@ -427,24 +429,33 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
             .addDynamoHatch("ig.dyson.structure.dynamo", 1)
             .addInputBus("1 - 11", 2)
             .addInputHatch("1 - 11", 2)
-            .addStructurePart("ig.dyson.structure.optical", "1 - 24", 4)
+            .addStructurePart("gt.blockmachines.hatch.datain.tier.07.name", "1 - 24", 4)
             .addStructureInfo("")
             .addStructureInfo("ig.dyson.structure.additionally")
-            .addCasingInfoRange("ig.dyson.structure.receiver.base", 53, 64, false)
-            .addCasingInfoExactly("ig.dyson.structure.receiver.dish", 81)
-            .addCasingInfoRange("ig.dyson.structure.deployment.base", 62, 72, false)
-            .addCasingInfoExactly("ig.dyson.structure.deployment.core", 1)
-            .addCasingInfoExactly("ig.dyson.structure.deployment.magnet", 32)
-            .addCasingInfoRange("ig.dyson.structure.control.base", 115, 138, false)
-            .addCasingInfoExactly("ig.dyson.structure.control.primary", 20)
-            .addCasingInfoExactly("ig.dyson.structure.control.secondary", 12)
-            .addCasingInfoExactly("ig.dyson.structure.control.toroid", 128)
-            .addCasingInfoExactly("ig.dyson.structure.base.floor", 256)
-            .addCasingInfoExactly("ig.dyson.structure.base.coil", 9)
-            .addCasingInfoExactly("ig.dyson.structure.base.hermetic", 1)
-            .addCasingInfoExactly("ig.dyson.structure.base.frameTitanium", 16)
-            .addCasingInfoExactly("ig.dyson.structure.base.frameHSSS", 23)
-            .addCasingInfoExactly("ig.dyson.structure.base.frameUHVBase", 64)
+            .addCasingInfoRange("tile.DysonSwarmReceiverCasing.name", 53, 64, false)
+            .addCasingInfoExactly("tile.DysonSwarmReceiverDish.name", 81)
+            .addCasingInfoRange("tile.DysonSwarmDeploymentUnitCasing.name", 62, 72, false)
+            .addCasingInfoExactly("tile.DysonSwarmDeploymentUnitCore.name", 1)
+            .addCasingInfoExactly("tile.DysonSwarmDeploymentUnitMagnet.name", 32)
+            .addCasingInfoRange("tile.DysonSwarmControlCasing.name", 115, 138, false)
+            .addCasingInfoExactly("tile.DysonSwarmControlPrimary.name", 20)
+            .addCasingInfoExactly("tile.DysonSwarmControlSecondary.name", 12)
+            .addCasingInfoExactly("tile.DysonSwarmControlToroid.name", 128)
+            .addCasingInfoExactly("tile.DysonSwarmFloor.name", 256)
+            .addCasingInfoExactly("gt.blockcasings5.8.name", 9)
+            .addCasingInfoExactly("gt.blockcasings6.10.name", 1)
+            .addCasingInfoExactly(
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Titanium, 1)
+                    .getDisplayName(),
+                16)
+            .addCasingInfoExactly(
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.HSSS, 1)
+                    .getDisplayName(),
+                23)
+            .addCasingInfoExactly(
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SuperconductorUHVBase, 1)
+                    .getDisplayName(),
+                64)
             .toolTipFinisher();
         return tt;
     }

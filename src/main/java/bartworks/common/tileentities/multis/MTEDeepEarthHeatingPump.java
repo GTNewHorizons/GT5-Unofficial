@@ -14,8 +14,6 @@
 package bartworks.common.tileentities.multis;
 
 import static gregtech.api.enums.GTValues.VN;
-import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.Arrays;
 
@@ -96,7 +94,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, this.getFrameMaterial(), 1)
                     .getDisplayName(),
                 "gt.dehp.info.3")
-            .addStructureInfo(VN[this.getMinTier()] + translate("gt.dehp.info.4"))
+            .addEnergyHatch(VN[this.getMinTier()] + GTUtility.translate("gt.dehp.info.4"))
             .addMaintenanceHatch("gt.dehp.info.5")
             .addInputBus("gt.dehp.info.6")
             .addInputHatch("gt.dehp.info.5")
@@ -138,7 +136,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
 
     @Override
     public String getMachineModeName() {
-        return translateToLocal("GT5U.DEHP.mode." + machineMode);
+        return GTUtility.translate("GT5U.DEHP.mode." + machineMode);
     }
 
     @Override
@@ -196,8 +194,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         setMachineMode(nextMachineMode());
-        GTUtility
-            .sendChatToPlayer(aPlayer, translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
+        GTUtility.sendChatToPlayer(aPlayer, GTUtility.translate("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
     }
 
     @Override

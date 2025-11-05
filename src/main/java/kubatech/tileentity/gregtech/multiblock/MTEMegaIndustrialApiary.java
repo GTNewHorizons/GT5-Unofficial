@@ -374,7 +374,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         tt.addMachineType("machtype.mapiary")
             .addManyInfo("gt.mapiary.tips.1", "gt.mapiary.tips.2", "gt.mapiary.tips.3")
             .addSeparator()
-            .addInfo("gt.mia.tips.4", voltageTooltipFormatted(6), voltageTooltipFormatted(5))
+            .addInfo("gt.mapiary.tips.4", voltageTooltipFormatted(6), voltageTooltipFormatted(5))
             .beginStructureBlock(15, 17, 15, false)
             .addController("front_bottom_middle")
             .addCasingInfoMin("gt.blockcasings.10.name", 190)
