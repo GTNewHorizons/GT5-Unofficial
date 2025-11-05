@@ -234,9 +234,12 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        if (stackSize.stackSize == 1) buildPiece(tier1, stackSize, hintsOnly, 3, 5, 0);
-        if (stackSize.stackSize == 2) {
-            buildPiece(tier2, stackSize, hintsOnly, 7, 6, 2);
+        if (stackSize.stackSize < 3) {
+            buildPiece(tier1, stackSize, hintsOnly, 3, 5, 0);
+            if (stackSize.stackSize == 2) {
+                buildPiece(tier2, stackSize, hintsOnly, 7, 6, 2);
+            }
+            return;
         }
         buildPiece(tier3, stackSize, hintsOnly, 3, 21, 0);
     }
