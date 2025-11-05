@@ -3704,6 +3704,16 @@ gt.mb.corepos.top_center=Top center
 gt.mb.hint_block=Hint block with dot %d
 
 # Multiblock Tooltip lines
+gt.fusion.tips.a=It's over 9000!!!
+gt.fusion.tips.b=A SUN DOWN ON EARTH
+gt.fusion.tips.1=§b%s§7 EU/t and §b%sM§7 EU capacity per Energy Hatch\nIf the recipe has a startup cost greater than the\nnumber of energy hatches * cap, you can't do it
+gt.fusion.info.1=See diagram when placed
+gt.fusion.info.2=Cover the coils with casing
+gt.fusion.info.3=Center part of the ring
+gt.fusion.info.4=1-16, Specified casings
+gt.fusion.info.5=2-16, Specified casings
+gt.fusion.info.6=ALL Hatches must be %s or better
+
 gt.entropic_processor.tips.1=Processes substances by increasing or decreasing their entropy
 gt.entropic_processor.tips.2=Has %s parallels by default\nUsing Advanced Alchemical Constructs increases the machine's parallels to %s
 gt.entropic_processor.tips.3=Mixes fluids or solids with a magical catalyst\nCatalyst is consumed by the recipe, then returned upon completion
