@@ -187,7 +187,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         addProcessGT(CombType.APATITE, new Materials[] { Materials.Apatite }, Voltage.LV);
         addCentrifugeToMaterial(
             CombType.ASH,
-            new Materials[] { Materials.DarkAsh, Materials.Ash },
+            new Materials[] { Materials.AshDark, Materials.Ash },
             new int[] { 50 * 100, 50 * 100 },
             GTValues.emptyIntArray,
             Voltage.ULV,
@@ -713,7 +713,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
                 GTBees.drop.getStackForType(DropType.ENDERGOO), new ItemStack(Items.spawn_egg, 1, 60) },
             new int[] { 25 * 100, 10 * 100, 20 * 100, 15 * 100 },
             Voltage.EV);
-        addProcessGT(CombType.ENDIUM, new Materials[] { Materials.HeeEndium }, Voltage.HV);
+        addProcessGT(CombType.ENDIUM, new Materials[] { Materials.Endium }, Voltage.HV);
 
         addCentrifugeToItemStack(
             CombType.RUNEI,
@@ -1157,7 +1157,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
     public void registerOreDict() {
         for (CombType comb : CombType.values()) {
             ItemStack tComb = getStackForType(comb);
-            GTOreDictUnificator.registerOre(OrePrefixes.beeComb.name(), tComb);
+            GTOreDictUnificator.registerOre(OrePrefixes.beeComb.getName(), tComb);
             OrePrefixes.beeComb.add(tComb);
             if (comb.voltage != null) GTOreDictUnificator.registerOre("comb" + comb.voltage.name(), tComb);
         }
@@ -1299,7 +1299,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
             .itemInputs(
                 GTBees.combs.getStackForType(CombType.ELVEN, 6),
                 GTOreDictUnificator.get(OrePrefixes.gemFlawless, Materials.ManaDiamond, 1))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.BotaniaDragonstone, 1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Dragonstone, 1))
             .fluidInputs(Materials.Void.getMolten(1 * EIGHTH_INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_EV)

@@ -18,18 +18,58 @@ public class GTSoundLoop extends MovingSound {
     private final boolean whileInactive;
     private final int worldID;
     private boolean fadeMe = false;
+    private final int tileX;
+    private final int tileY;
+    private final int tileZ;
 
-    public GTSoundLoop(ResourceLocation p_i45104_1_, IGregTechTileEntity base, boolean stopWhenActive,
-        boolean stopWhenInactive) {
-        super(p_i45104_1_);
+    /**
+     * Constructs a GTSoundLoop.
+     *
+     * @param soundResource    the sound file location
+     * @param tileEntity       the tile entity associated with this sound
+     * @param stopWhenActive   flag to stop the sound when the block is active
+     * @param stopWhenInactive flag to stop the sound when the block is inactive
+     * @param soundX           positional sound X coordinate
+     * @param soundY           positional sound Y coordinate
+     * @param soundZ           positional sound Z coordinate
+     */
+    public GTSoundLoop(ResourceLocation soundResource, IGregTechTileEntity tileEntity, boolean stopWhenActive,
+        boolean stopWhenInactive, float soundX, float soundY, float soundZ) {
+
+        super(soundResource);
         this.whileActive = stopWhenActive;
         this.whileInactive = stopWhenInactive;
-        xPosF = base.getXCoord();
-        yPosF = base.getYCoord();
-        zPosF = base.getZCoord();
-        worldID = base.getWorld().provider.dimensionId;
+        tileX = tileEntity.getXCoord();
+        tileY = tileEntity.getYCoord();
+        tileZ = tileEntity.getZCoord();
+        xPosF = soundX;
+        yPosF = soundY;
+        zPosF = soundZ;
+        worldID = tileEntity.getWorld().provider.dimensionId;
         repeat = true;
         volume = VOLUME_RAMP;
+    }
+
+    /**
+     * Constructs a GTSoundLoop.
+     *
+     * @param soundResource    the sound file location
+     * @param tileEntity       the tile entity associated with this sound
+     * @param stopWhenActive   flag to stop the sound when the block is active
+     * @param stopWhenInactive flag to stop the sound when the block is inactive
+     *
+     * @implNote positional sound coordinates centred on tile
+     */
+    public GTSoundLoop(ResourceLocation soundResource, IGregTechTileEntity tileEntity, boolean stopWhenActive,
+        boolean stopWhenInactive) {
+        this(
+            soundResource,
+            tileEntity,
+            stopWhenActive,
+            stopWhenInactive,
+            tileEntity.getXCoord() + .5f,
+            tileEntity.getYCoord() + .5f,
+            tileEntity.getZCoord() + .5f);
     }
 
     @Override
@@ -48,11 +88,11 @@ public class GTSoundLoop extends MovingSound {
         }
         World world = Minecraft.getMinecraft().thePlayer.worldObj;
         donePlaying = world.provider.dimensionId != worldID
-            || !world.checkChunksExist((int) xPosF, (int) yPosF, (int) zPosF, (int) xPosF, (int) yPosF, (int) zPosF);
+            || !world.checkChunksExist(tileX, tileY, tileZ, tileX, tileY, tileZ);
         if (donePlaying) return;
-        TileEntity tile = world.getTileEntity((int) xPosF, (int) yPosF, (int) zPosF);
-        if ((tile instanceof IGregTechTileEntity)) {
-            fadeMe |= ((IGregTechTileEntity) tile).isActive() ? whileActive : whileInactive;
+        TileEntity tile = world.getTileEntity(tileX, tileY, tileZ);
+        if ((tile instanceof IGregTechTileEntity iGregTechTileEntity)) {
+            fadeMe |= iGregTechTileEntity.isActive() ? whileActive : whileInactive;
             return;
         }
 

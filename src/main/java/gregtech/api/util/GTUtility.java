@@ -12,6 +12,7 @@ import static gregtech.api.enums.Mods.Translocator;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 import static gregtech.common.UndergroundOil.undergroundOilReadInformation;
+import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraftforge.common.util.ForgeDirection.DOWN;
 import static net.minecraftforge.common.util.ForgeDirection.EAST;
 import static net.minecraftforge.common.util.ForgeDirection.NORTH;
@@ -122,6 +123,9 @@ import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.Contract;
+import org.joml.AxisAngle4f;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 import org.joml.Vector3i;
 
 import com.google.auto.value.AutoValue;
@@ -131,6 +135,9 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.SetMultimap;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
+import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
+import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.mojang.authlib.GameProfile;
 
 import buildcraft.api.transport.IPipeTile;
@@ -2386,24 +2393,24 @@ public class GTUtility {
     }
 
     public static boolean sendSoundToPlayers(World aWorld, String aSoundName, float aSoundStrength,
-        float aSoundModulation, int aX, int aY, int aZ) {
+        float aSoundModulation, double aX, double aY, double aZ) {
         if (isStringInvalid(aSoundName) || aWorld == null || aWorld.isRemote) return false;
         NW.sendPacketToAllPlayersInRange(
             aWorld,
-            new GTPacketSound(aSoundName, aSoundStrength, aSoundModulation, aX, (short) aY, aZ),
-            aX,
-            aZ);
+            new GTPacketSound(aSoundName, aSoundStrength, aSoundModulation, aX, aY, aZ),
+            MathHelper.floor_double(aX),
+            MathHelper.floor_double(aZ));
         return true;
     }
 
     public static boolean sendSoundToPlayers(World aWorld, SoundResource sound, float aSoundStrength,
-        float aSoundModulation, int aX, int aY, int aZ) {
+        float aSoundModulation, double aX, double aY, double aZ) {
         if (aWorld == null || aWorld.isRemote) return false;
         NW.sendPacketToAllPlayersInRange(
             aWorld,
-            new GTPacketSound(sound.resourceLocation.toString(), aSoundStrength, aSoundModulation, aX, (short) aY, aZ),
-            aX,
-            aZ);
+            new GTPacketSound(sound.resourceLocation.toString(), aSoundStrength, aSoundModulation, aX, aY, aZ),
+            MathHelper.floor_double(aX),
+            MathHelper.floor_double(aZ));
         return true;
     }
 
@@ -3948,7 +3955,8 @@ public class GTUtility {
     }
 
     public static String translate(String key, Object... parameters) {
-        return StatCollector.translateToLocalFormatted(key, parameters);
+        return parameters.length == 0 ? StatCollector.translateToLocal(key)
+            : StatCollector.translateToLocalFormatted(key, parameters);
     }
 
     /*
@@ -5386,9 +5394,184 @@ public class GTUtility {
         }
     }
 
+    // helper function (from MultiblockBase that creates a string of timed dates
+    public static String appendRate(boolean isLiquid, Long amount, boolean isFormatShortened, int maxProgressTicks) {
+        final StringBuffer ret = new StringBuffer();
+        final DecimalFormat df = new DecimalFormat("0.00");
+        final double progressTime = (double) maxProgressTicks / 20;
+        double perTick = amount / (double) maxProgressTicks;
+        double perSecond = amount / progressTime;
+        double perMinute = perSecond * 60;
+        double perHour = perSecond * 3_600;
+        double perDay = perSecond * 86_400;
+
+        final String amountText = translateToLocal("GT5U.gui.text.amount") + " ";
+        final String perTickText = translateToLocal("GT5U.gui.text.per_tick") + " ";
+        final String perSecondText = translateToLocal("GT5U.gui.text.per_second") + " ";
+        final String perMinuteText = translateToLocal("GT5U.gui.text.per_minute") + " ";
+        final String perHourText = translateToLocal("GT5U.gui.text.per_hour") + " ";
+        final String perDayText = translateToLocal("GT5U.gui.text.per_day") + " ";
+
+        final Function<Double, Double> roundNumber = (number) -> {
+            if (Math.abs(number) < 10) {
+                return Math.round(number * 100) / 100.0;
+            } else {
+                return Math.floor(number);
+            }
+        };
+
+        if (isFormatShortened) {
+            ret.append(" (");
+            ret.append(EnumChatFormatting.GRAY);
+            if (perSecond <= 1) {
+                ret.append(df.format(progressTime / amount));
+                ret.append("s/each");
+            } else {
+                ret.append(formatShortenedLong((long) perSecond));
+                ret.append("/s");
+            }
+            ret.append(EnumChatFormatting.WHITE);
+            ret.append(")");
+        } else {
+            ret.append(EnumChatFormatting.RESET);
+            ret.append(
+                amountText + EnumChatFormatting.GOLD
+                    + formatNumbers(amount)
+                    + (isLiquid ? "L" : "")
+                    + EnumChatFormatting.RESET);
+            ret.append("\n");
+            ret.append(
+                perTickText + EnumChatFormatting.GOLD
+                    + formatNumbers(roundNumber.apply(perTick))
+                    + (isLiquid ? "L" : "")
+                    + (perSecond > 1_000_000
+                        ? EnumChatFormatting.WHITE + " ["
+                            + EnumChatFormatting.GRAY
+                            + formatShortenedLong((long) perTick)
+                            + EnumChatFormatting.WHITE
+                            + "]"
+                        : "")
+                    + EnumChatFormatting.RESET);
+            ret.append("\n");
+            ret.append(
+                perSecondText + EnumChatFormatting.GOLD
+                    + formatNumbers(roundNumber.apply(perSecond))
+                    + (isLiquid ? "L" : "")
+                    + (perSecond > 1_000_000
+                        ? EnumChatFormatting.WHITE + " ["
+                            + EnumChatFormatting.GRAY
+                            + formatShortenedLong((long) perSecond)
+                            + EnumChatFormatting.WHITE
+                            + "]"
+                        : "")
+                    + EnumChatFormatting.RESET);
+            ret.append("\n");
+            ret.append(
+                perMinuteText + EnumChatFormatting.GOLD
+                    + formatNumbers(roundNumber.apply(perMinute))
+                    + (isLiquid ? "L" : "")
+                    + (perMinute > 1_000_000
+                        ? EnumChatFormatting.WHITE + " ["
+                            + EnumChatFormatting.GRAY
+                            + formatShortenedLong((long) perMinute)
+                            + EnumChatFormatting.WHITE
+                            + "]"
+                        : "")
+                    + EnumChatFormatting.RESET);
+            ret.append("\n");
+            ret.append(
+                perHourText + EnumChatFormatting.GOLD
+                    + formatNumbers(roundNumber.apply(perHour))
+                    + (isLiquid ? "L" : "")
+                    + (perHour > 1_000_000
+                        ? EnumChatFormatting.WHITE + " ["
+                            + EnumChatFormatting.GRAY
+                            + formatShortenedLong((long) perHour)
+                            + EnumChatFormatting.WHITE
+                            + "]"
+                        : "")
+                    + EnumChatFormatting.RESET);
+            ret.append("\n");
+            ret.append(
+                perDayText + EnumChatFormatting.GOLD
+                    + formatNumbers(roundNumber.apply(perDay))
+                    + (isLiquid ? "L" : "")
+                    + (perDay > 1_000_000
+                        ? EnumChatFormatting.WHITE + " ["
+                            + EnumChatFormatting.GRAY
+                            + formatShortenedLong((long) perDay)
+                            + EnumChatFormatting.WHITE
+                            + "]"
+                        : "")
+                    + EnumChatFormatting.RESET);
+        }
+        return ret.toString();
+    }
+
     public static boolean isRealPlayer(EntityLivingBase entity) {
         return entity instanceof EntityPlayer p && !p.getClass()
             .getName()
             .contains("Fake");
+    }
+
+    /**
+     * A helper method that does rotation calculations for renderering.
+     *
+     * @param extendedFacing - extendedFacing value of the MTE
+     * @return AxisAngle4f that can be used directly with glRotate calls
+     */
+    public static AxisAngle4f getRotationAxisAngle4f(ExtendedFacing extendedFacing) {
+        ForgeDirection direction = extendedFacing.getDirection();
+        Rotation rotation = extendedFacing.getRotation();
+        Flip flip = extendedFacing.getFlip();
+
+        float faceAngleDeg = switch (direction) {
+            case DOWN -> 90f;
+            case UP -> -90f;
+            case SOUTH -> 180f;
+            case WEST -> 90f;
+            case EAST -> -90f;
+            default -> 0f; // NORTH
+        };
+
+        Vector3f faceAxis = switch (direction) {
+            case UP, DOWN -> new Vector3f(1, 0, 0);
+            default -> new Vector3f(0, 1, 0);
+        };
+
+        Quaternionf finalQuat = new Quaternionf().fromAxisAngleRad(faceAxis, (float) Math.toRadians(faceAngleDeg));
+
+        // Local rotation
+        float localAngleDeg = switch (rotation) {
+            case CLOCKWISE -> -90f;
+            case COUNTER_CLOCKWISE -> 90f;
+            case UPSIDE_DOWN -> 180f;
+            default -> 0f; // NORMAL
+        };
+
+        float angleSign = switch (direction) {
+            case WEST, EAST, NORTH -> -1.0f;
+            default -> 1.0f; // UP, DOWN, SOUTH
+        };
+
+        if (flip == Flip.HORIZONTAL || flip == Flip.VERTICAL) {
+            angleSign *= -1.0f;
+        }
+
+        float angleOffset = (direction == ForgeDirection.DOWN) ? 180.0f : 0.0f;
+        localAngleDeg = (localAngleDeg * angleSign) + angleOffset;
+
+        // Apply the local rotation
+        Quaternionf localQuat = new Quaternionf()
+            .fromAxisAngleRad(new Vector3f(0, 0, 1), (float) Math.toRadians(localAngleDeg));
+        finalQuat.mul(localQuat);
+
+        // Extract axis-angle form
+        AxisAngle4f axisAngle = new AxisAngle4f();
+        finalQuat.get(axisAngle);
+
+        // Convert to degrees for consistency
+        axisAngle.angle = (float) Math.toDegrees(axisAngle.angle);
+        return axisAngle;
     }
 }

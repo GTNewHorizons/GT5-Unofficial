@@ -183,14 +183,7 @@ public class GTPacketInfiniteSpraycan extends GTPacket {
         };
 
         private static void playSound(final EntityPlayerMP player, SoundResource sound) {
-            GTUtility.sendSoundToPlayers(
-                player.worldObj,
-                sound,
-                1.0F,
-                1,
-                (int) player.posX,
-                (int) player.posY,
-                (int) player.posZ);
+            GTUtility.sendSoundToPlayers(player.worldObj, sound, 1.0F, 1, player.posX, player.posY, player.posZ);
         }
 
         abstract boolean execute(final BehaviourSprayColorInfinite behavior, ItemStack itemStack, EntityPlayerMP player,

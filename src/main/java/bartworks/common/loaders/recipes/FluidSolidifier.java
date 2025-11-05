@@ -11,7 +11,6 @@ import bartworks.common.loaders.ItemRegistry;
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.TierEU;
 
 public class FluidSolidifier implements Runnable {
@@ -94,7 +93,7 @@ public class FluidSolidifier implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 0))
             .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[1], 1, 0))
-            .fluidInputs(MaterialsUEVplus.TranscendentMetal.getMolten(8 * INGOTS))
+            .fluidInputs(Materials.TranscendentMetal.getMolten(8 * INGOTS))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .addTo(fluidSolidifierRecipes);
