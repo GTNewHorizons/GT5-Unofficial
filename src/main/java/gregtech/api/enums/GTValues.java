@@ -1,7 +1,6 @@
 package gregtech.api.enums;
 
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.AQUA;
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BLACK;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BLUE;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BOLD;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_AQUA;
