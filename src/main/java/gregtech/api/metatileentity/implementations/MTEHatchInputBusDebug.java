@@ -4,6 +4,7 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BOLD;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GREEN;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
@@ -24,7 +25,6 @@ import gregtech.common.gui.modularui.hatch.MTEHatchInputBusDebugGui;
 public class MTEHatchInputBusDebug extends MTEHatchInputBus implements IConfigurationCircuitSupport {
 
     private static final int SLOT_COUNT = 16;
-    public ItemStack[] items = new ItemStack[SLOT_COUNT];
     public final ItemStackHandler phantomHolder = new LimitingItemStackHandler(16, 1);
 
     public MTEHatchInputBusDebug(int id, String name, String nameRegional, int tier) {
@@ -33,6 +33,22 @@ public class MTEHatchInputBusDebug extends MTEHatchInputBus implements IConfigur
 
     public MTEHatchInputBusDebug(String aName, byte aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 1, aDescription, aTextures);
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        if (phantomHolder != null) {
+            aNBT.setTag("phantomInventory", phantomHolder.serializeNBT());
+        }
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        if (phantomHolder != null) {
+            phantomHolder.deserializeNBT(aNBT.getCompoundTag("phantomInventory"));
+        }
     }
 
     @Override
