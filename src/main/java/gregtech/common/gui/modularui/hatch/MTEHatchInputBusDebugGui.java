@@ -1,7 +1,6 @@
 package gregtech.common.gui.modularui.hatch;
 
 import com.cleanroommc.modularui.api.drawable.IDrawable;
-import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -41,14 +40,15 @@ public class MTEHatchInputBusDebugGui {
                     .build()
                     .marginTop(4)
                     .align(Alignment.TopCenter))
-            .child(createInfoButton().posRel(0.05f,0.4f));
+            .child(createInfoButton().posRel(0.05f, 0.4f));
     }
 
-    private IDrawable.DrawableWidget createInfoButton()
-    {
-        return new IDrawable.DrawableWidget(GuiTextures.BUBBLE).background(GTGuiTextures.BUTTON_STANDARD).size(18).tooltip(t->{
-            t.addLine("Drag Items into the Item Slots");
-            t.addLine("Items in the slots will not be consumed");
-        });
+    private IDrawable.DrawableWidget createInfoButton() {
+        return new IDrawable.DrawableWidget(GuiTextures.BUBBLE).background(GTGuiTextures.BUTTON_STANDARD)
+            .size(18)
+            .tooltip(t -> {
+                t.addLine("Drag Items into the Item Slots");
+                t.addLine("Items in the slots will not be consumed");
+            });
     }
 }
