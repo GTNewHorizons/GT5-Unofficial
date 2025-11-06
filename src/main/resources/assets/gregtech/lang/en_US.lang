@@ -3933,22 +3933,7 @@ gt.blockgranites.11.name=Red Granite Bricks
 gt.blockgranites.12.name=Cracked Red Granite Bricks
 gt.blockgranites.13.name=Mossy Red Granite Bricks
 gt.blockgranites.14.name=Chiseled Red Granite
-gt.blockgranites.15.name=Smooth Red Granite
-
-# Block GTCasings BA0
-gt.blockcasingsBA0.0.name=Redstone Alloy Primary Tesla Windings
-gt.blockcasingsBA0.1.name=MV Superconductor Primary Tesla Windings
-gt.blockcasingsBA0.2.name=HV Superconductor Primary Tesla Windings
-gt.blockcasingsBA0.3.name=EV Superconductor Primary Tesla Windings
-gt.blockcasingsBA0.4.name=IV Superconductor Primary Tesla Windings
-gt.blockcasingsBA0.5.name=LuV Superconductor Primary Tesla Windings
-gt.blockcasingsBA0.6.name=Tesla Base Casing
-gt.blockcasingsBA0.7.name=Tesla Toroid Casing
-gt.blockcasingsBA0.8.name=Tesla Secondary Windings
-gt.blockcasingsBA0.9.name=ZPM Superconductor Primary Tesla Windings
-gt.blockcasingsBA0.10.name=Reinforced Temporal Structure Casing
-gt.blockcasingsBA0.11.name=Reinforced Spatial Structure Casing
-gt.blockcasingsBA0.12.name=Infinite Spacetime Energy Boundary Casing
+gt.blockgranites.15.name=Smooth Red Granit
 
 # Block Long Distance Pipe
 gt.block.longdistancepipe.0.name=Long Distance Fluid Pipeline Pipe

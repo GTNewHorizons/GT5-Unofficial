@@ -657,6 +657,9 @@ gt.blockcasingsBA0.7.desc.1=Faraday suits might come later
 gt.blockcasingsBA0.8.name=Tesla Secondary Windings
 gt.blockcasingsBA0.8.desc.0=Picks up power from a primary coil
 gt.blockcasingsBA0.8.desc.1=Who wouldn't want a 32k epoxy multi?
+gt.blockcasingsBA0.10.name=Reinforced Temporal Structure Casing
+gt.blockcasingsBA0.11.name=Reinforced Spatial Structure Casing
+gt.blockcasingsBA0.12.name=Infinite Spacetime Energy Boundary Casing
 
 #Multiblocks
 gt.blockmachines.multimachine.em.transformer.name=Active Transformer
