@@ -4,6 +4,7 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BOLD;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GREEN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_HATCH_IN_DEBUG;
 
+import com.cleanroommc.modularui.utils.fluid.FluidStackTank;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -25,41 +26,49 @@ import gregtech.common.gui.modularui.hatch.MTEHatchInputDebugGui;
 public class MTEHatchInputDebug extends MTEHatchInput {
 
     private static final int SLOT_COUNT = 16;
-    public final FluidTank[] fluidTankList = new FluidTank[SLOT_COUNT];
+    public final FluidStackTank[] fluidTankList = new FluidStackTank[SLOT_COUNT];
+    public final FluidStack[] fluidList = new FluidStack[SLOT_COUNT];
 
     public MTEHatchInputDebug(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, 1, aName, aNameRegional, aTier, getDescriptionArray());
-        populateSyncerList();
     }
 
     public MTEHatchInputDebug(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, 1, aTier, aDescription, aTextures);
-        populateSyncerList();
+        for (int i = 0; i < SLOT_COUNT; i++) {
+            final int index = i;
+            fluidTankList[i] = new FluidStackTank(
+                () -> fluidList[index],
+                fluid -> fluidList[index] = fluid,
+                1);
+        }
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        // for(int i = 0; i < SLOT_COUNT;i++)
-        // {
-        // fluidTankList[i].readFromNBT(aNBT);
-        // if(fluidTankList[i]!=null && fluidTankList[i].getFluid() != null )System.out.println("Fluid "+i+"
-        // :"+fluidTankList[i].getFluid().getLocalizedName());
-        // }
-        fluidTankList[0].writeToNBT(aNBT);
+        if (fluidList != null) {
+            for (int i = 0; i < fluidList.length; i++) {
+                if (aNBT.hasKey("debugFluid" + i)) {
+                    fluidList[i] = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("debugFluid" + i));
+                }
+            }
+        }
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        // for(int i = 0; i < SLOT_COUNT;i++)
-        // {
-        //
-        // if(fluidTankList[i]!=null && fluidTankList[i].getFluid() != null )System.out.println("Fluid "+i+"
-        // :"+fluidTankList[i].getFluid().getLocalizedName());
-        // fluidTankList[i].writeToNBT(aNBT);
-        // }
-        fluidTankList[0].writeToNBT(aNBT);
+        if(fluidList != null)
+        {
+            for(int i = 0; i < fluidList.length; i++)
+            {
+                if(fluidList[i] != null)
+                {
+                    aNBT.setTag("debugFluid"+i, fluidList[i].writeToNBT(new NBTTagCompound()));
+                }
+            }
+        }
     }
 
     @Override
@@ -72,11 +81,6 @@ public class MTEHatchInputDebug extends MTEHatchInput {
         return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_HATCH_IN_DEBUG) };
     }
 
-    private void populateSyncerList() {
-        for (int i = 0; i < SLOT_COUNT; i++) {
-            if (fluidTankList[i] == null) fluidTankList[i] = new FluidTank(1);
-        }
-    }
 
     @Override
     public boolean canTankBeEmptied() {
@@ -105,21 +109,29 @@ public class MTEHatchInputDebug extends MTEHatchInput {
         return false;
     }
 
+    public FluidStack[] getFluidList()
+    {
+        return fluidList;
+    }
+
     @Override
     public FluidStack getFillableStack() {
         return this.getFluid();
     }
 
     @Override
+    public FluidStack getDrainableStack() {
+        return this.getFluid();
+    }
+
+    @Override
     public FluidStack getFluid() {
-        for (FluidTank tank : fluidTankList) {
-            if (tank == null) continue;
-            FluidStack fluidStack = tank.getFluid();
-            if (fluidStack != null) {
-                FluidStack copied = fluidStack.copy();
-                copied.amount = Integer.MAX_VALUE;
-                return copied;
-            }
+        for (FluidStack fluid : fluidList) {
+            if(fluid == null) continue;
+
+            FluidStack copied = fluid.copy();
+            copied.amount = Integer.MAX_VALUE;
+            return copied;
         }
         return null;
     }
