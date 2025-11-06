@@ -63,7 +63,7 @@ public class MTEHatchInputBusDebug extends MTEHatchInputBus implements IConfigur
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEHatchInputBusDebug(mName, mTier, new String[] { "" }, mTextures);
+        return new MTEHatchInputBusDebug(mName, mTier, new String[0], mTextures);
     }
 
     @Override
