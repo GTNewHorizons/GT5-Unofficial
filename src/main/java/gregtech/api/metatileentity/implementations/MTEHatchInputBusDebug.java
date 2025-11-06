@@ -73,7 +73,7 @@ public class MTEHatchInputBusDebug extends MTEHatchInputBus implements IConfigur
 
     @Override
     public String[] getDescription() {
-        return new String[] { EnumChatFormatting.WHITE + "Stocks Items internally",
+        return new String[] { EnumChatFormatting.GRAY + "Stocks Items internally",
             EnumChatFormatting.GRAY + "Configure Items in the UI",
             EnumChatFormatting.GRAY + "Configured Items will not be consumed in processing",
             EnumChatFormatting.ITALIC + "Who knew it was this easy???", "Author: " + GREEN + BOLD + "Chrom" };
