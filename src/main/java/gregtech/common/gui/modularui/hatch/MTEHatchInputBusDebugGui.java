@@ -31,12 +31,11 @@ public class MTEHatchInputBusDebugGui {
             .child(
                 SlotGroupWidget.builder()
                     .matrix("IIII", "IIII", "IIII", "IIII")
-                    .key(
-                        'I',
-                        index -> {
-                            return new PhantomItemSlot()
-                                .slot(new ModularSlot(base.phantomHolder, index).accessibility(true, false));
-                        })
+                    .key('I', index -> {
+                        return new PhantomItemSlot().slot(
+                            new ModularSlot(base.phantomHolder, index).singletonSlotGroup(50 + index)
+                                .accessibility(true, false));
+                    })
                     .build()
                     .marginTop(4)
                     .align(Alignment.TopCenter))
