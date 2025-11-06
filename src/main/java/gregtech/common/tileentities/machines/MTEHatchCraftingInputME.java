@@ -1111,8 +1111,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
 
         if (!supportFluids) {
             for (int i = 0; i < table.getSizeInventory(); ++i) {
-                final IAEStack<?> aes = meic.getAEStackInSlot(i);
-                if (aes.isFluid()) return false;
+                if (meic.getAEStackInSlot(i) instanceof IAEFluidStack) return false;
             }
         }
         if (!patternDetailsPatternSlotMap.get(patternDetails)
