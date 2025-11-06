@@ -289,7 +289,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
             .cell()
             .getCellInventory(upgradeItemStack, null, StorageChannel.FLUIDS);
 
-        long capacity = storageCell.getBytes(upgradeItemStack) * 2048L;
+        long capacity = storageCell.getBytesLong(upgradeItemStack) * 2048L;
 
         if (inventory instanceof CellInventoryHandler<?>handler) {
             final CellInventory<?> cellInventory = (CellInventory<?>) handler.getCellInv();
