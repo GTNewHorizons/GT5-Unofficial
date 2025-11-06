@@ -6280,6 +6280,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Nickel, 1)
             .addMaterial(Materials.Oxygen, 1)
             .addOreByproduct(() -> Materials.Nickel)
+            .addSubTag(SubTag.BLASTFURNACE_CALCITE_DOUBLE)
             .setDirectSmelting(() -> Materials.Nickel)
             .constructMaterial();
     }
