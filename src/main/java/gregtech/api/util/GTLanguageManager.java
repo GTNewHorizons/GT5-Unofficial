@@ -69,6 +69,7 @@ public class GTLanguageManager {
      */
     private static final Map<String, String> stringTranslateLanguageList;
     private static final Map<String, String> stringTranslateLanguageListFallBack;
+    public static String LanguageCode = "en_US";
 
     static {
         try {
@@ -117,12 +118,7 @@ public class GTLanguageManager {
         LANGMAP.put(trimmedKey, translation);
         TEMPMAP.put(trimmedKey, translation);
         LanguageRegistry.instance()
-            .injectLanguage(
-                Minecraft.getMinecraft()
-                    .getLanguageManager()
-                    .getCurrentLanguage()
-                    .getLanguageCode(),
-                TEMPMAP);
+            .injectLanguage(LanguageCode, TEMPMAP);
         TEMPMAP.clear();
     }
 
@@ -498,6 +494,7 @@ public class GTLanguageManager {
             .getLanguageManager()
             .getCurrentLanguage()
             .getLanguageCode();
+        LanguageCode = userLang;
         if (userLang.equals("en_US")) {
             reloadLanguageWithEnglish(languageDir, languageMap);
             return;
