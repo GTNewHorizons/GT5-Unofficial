@@ -25,7 +25,7 @@ import gregtech.common.gui.modularui.hatch.MTEHatchInputBusDebugGui;
 public class MTEHatchInputBusDebug extends MTEHatchInputBus implements IConfigurationCircuitSupport {
 
     private static final int SLOT_COUNT = 16;
-    public final ItemStackHandler phantomHolder = new LimitingItemStackHandler(16, 1);
+    public final ItemStackHandler phantomHolder = new LimitingItemStackHandler(SLOT_COUNT, 1);
 
     public MTEHatchInputBusDebug(int id, String name, String nameRegional, int tier) {
         super(id, name, nameRegional, tier, 1);
