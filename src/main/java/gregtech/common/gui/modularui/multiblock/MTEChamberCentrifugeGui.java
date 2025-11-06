@@ -160,13 +160,12 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui<MTEChamberCent
                             .child(
                                 SlotGroupWidget.builder()
                                     .matrix("II", "II", "II", "II")
-                                    .key(
-                                        'I',
-                                        index -> {
-                                            return new ItemSlot().slot(
-                                                new ModularSlot(multiblock.turbineHolder, index)
-                                                    .filter(multiblock::isTurbine));
-                                        })
+                                    .key('I', index -> {
+                                        return new ItemSlot().slot(
+                                            new ModularSlot(multiblock.turbineHolder, index)
+                                                .singletonSlotGroup(50 + index)
+                                                .filter(multiblock::isTurbine));
+                                    })
                                     .build())
 
                     )
