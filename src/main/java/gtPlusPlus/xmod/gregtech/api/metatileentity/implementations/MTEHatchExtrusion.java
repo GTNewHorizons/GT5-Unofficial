@@ -10,12 +10,8 @@ import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
-import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
-import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.layout.Grid;
-import com.cleanroommc.modularui.widgets.slot.ItemSlot;
-import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -23,12 +19,11 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
-import gregtech.api.modularui2.GTGuis;
 import gregtech.api.net.GTPacketSetShape;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.hatch.MTEHatchExtrusionGui;
 import gregtech.common.items.ItemIntegratedCircuit;
-import gregtech.common.modularui2.widget.GhostShapeSlotWidget;
 
 public class MTEHatchExtrusion extends MTEHatchInputBus {
 
@@ -56,7 +51,7 @@ public class MTEHatchExtrusion extends MTEHatchInputBus {
         ItemList.Shape_Extruder_Bottle.get(1), ItemList.Shape_Extruder_Casing.get(1),
         ItemList.Shape_Extruder_Cell.get(1) };
 
-    private boolean oneStackLimit = false;
+    public boolean oneStackLimit = false;
 
     public MTEHatchExtrusion(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
@@ -213,53 +208,6 @@ public class MTEHatchExtrusion extends MTEHatchInputBus {
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        int itemSlots = getSlots(mTier);
-        int cols = 9;
-        int rows = 4 + (mTier - 5) * 2;
-
-        int baseWidth = 176;
-        int baseHeight = 169;
-        int extraHeight = (rows - 4) * 18;
-
-        int guiHeight = baseHeight + extraHeight;
-
-        int gridX = 7;
-        int gridY = 7;
-
-        int ghostX = 133;
-        int ghostY = 64 + (rows - 4) * 18;
-
-        syncManager.registerSlotGroup("item_inv", 1);
-        syncManager.registerSlotGroup("shape_slot", 1);
-        syncManager.registerSlotGroup("circuit_slot", 1);
-
-        syncManager.syncValue("oneStackLimit", new BooleanSyncValue(() -> oneStackLimit, v -> oneStackLimit = v));
-
-        IntSyncValue shapeSyncHandler = new IntSyncValue(() -> {
-            ItemStack current = inventoryHandler.getStackInSlot(shapeSlot);
-            return current != null ? findMatchingShapeIndex(current) : -1;
-        }, index -> {
-            if (index >= 0 && index < extruderShapes.length) {
-                setShape(extruderShapes[index]);
-            } else {
-                setShape(null);
-            }
-        });
-
-        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings)
-            .setWidth(baseWidth)
-            .setHeight(guiHeight)
-            .build()
-            .child(gridTemplate(cols, rows, index -> {
-                int actualIndex = index;
-                if (actualIndex >= shapeSlot) actualIndex++;
-                if (actualIndex >= circuitSlot) actualIndex++;
-                if (actualIndex >= getSizeInventory()) return null;
-                return new ItemSlot().slot(new ModularSlot(inventoryHandler, actualIndex).slotGroup("item_inv"));
-            }).pos(gridX, gridY))
-
-            .child(
-                new GhostShapeSlotWidget(this).slot(new ModularSlot(inventoryHandler, shapeSlot))
-                    .pos(ghostX, ghostY));
+        return new MTEHatchExtrusionGui(this).build(data, syncManager, uiSettings);
     }
 }
