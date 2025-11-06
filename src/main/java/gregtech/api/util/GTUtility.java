@@ -3953,7 +3953,8 @@ public class GTUtility {
     }
 
     public static String translate(String key, Object... parameters) {
-        return StatCollector.translateToLocalFormatted(key, parameters);
+        return parameters.length == 0 ? StatCollector.translateToLocal(key)
+            : StatCollector.translateToLocalFormatted(key, parameters);
     }
 
     /*
