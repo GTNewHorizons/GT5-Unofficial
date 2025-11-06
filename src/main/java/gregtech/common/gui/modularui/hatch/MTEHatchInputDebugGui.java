@@ -14,7 +14,6 @@ import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 import gregtech.api.metatileentity.implementations.MTEHatchInputDebug;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuis;
-import net.minecraftforge.fluids.FluidTank;
 
 public class MTEHatchInputDebugGui {
 

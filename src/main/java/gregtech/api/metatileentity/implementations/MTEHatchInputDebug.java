@@ -4,17 +4,16 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BOLD;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GREEN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_HATCH_IN_DEBUG;
 
-import com.cleanroommc.modularui.utils.fluid.FluidStackTank;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.utils.fluid.FluidStackTank;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.interfaces.ITexture;
@@ -37,10 +36,7 @@ public class MTEHatchInputDebug extends MTEHatchInput {
         super(aName, 1, aTier, aDescription, aTextures);
         for (int i = 0; i < SLOT_COUNT; i++) {
             final int index = i;
-            fluidTankList[i] = new FluidStackTank(
-                () -> fluidList[index],
-                fluid -> fluidList[index] = fluid,
-                1);
+            fluidTankList[i] = new FluidStackTank(() -> fluidList[index], fluid -> fluidList[index] = fluid, 1);
         }
     }
 
@@ -59,13 +55,10 @@ public class MTEHatchInputDebug extends MTEHatchInput {
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        if(fluidList != null)
-        {
-            for(int i = 0; i < fluidList.length; i++)
-            {
-                if(fluidList[i] != null)
-                {
-                    aNBT.setTag("debugFluid"+i, fluidList[i].writeToNBT(new NBTTagCompound()));
+        if (fluidList != null) {
+            for (int i = 0; i < fluidList.length; i++) {
+                if (fluidList[i] != null) {
+                    aNBT.setTag("debugFluid" + i, fluidList[i].writeToNBT(new NBTTagCompound()));
                 }
             }
         }
@@ -80,7 +73,6 @@ public class MTEHatchInputDebug extends MTEHatchInput {
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_HATCH_IN_DEBUG) };
     }
-
 
     @Override
     public boolean canTankBeEmptied() {
@@ -109,8 +101,7 @@ public class MTEHatchInputDebug extends MTEHatchInput {
         return false;
     }
 
-    public FluidStack[] getFluidList()
-    {
+    public FluidStack[] getFluidList() {
         return fluidList;
     }
 
@@ -127,7 +118,7 @@ public class MTEHatchInputDebug extends MTEHatchInput {
     @Override
     public FluidStack getFluid() {
         for (FluidStack fluid : fluidList) {
-            if(fluid == null) continue;
+            if (fluid == null) continue;
 
             FluidStack copied = fluid.copy();
             copied.amount = Integer.MAX_VALUE;
