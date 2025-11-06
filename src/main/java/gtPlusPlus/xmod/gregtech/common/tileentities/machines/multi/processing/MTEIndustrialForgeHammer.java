@@ -88,18 +88,18 @@ public class MTEIndustrialForgeHammer extends GTPPMultiBlockBase<MTEIndustrialFo
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("gt.industrial_forge_hammer.tips.1")
+            .addInfo("gt.sledgehammer.tips.1")
             .addStaticSpeedInfo(2f)
             .addStaticEuEffInfo(1f)
-            .addInfo("gt.industrial_forge_hammer.tips.2");
+            .addInfo("gt.sledgehammer.tips.2");
         if (Railcraft.isModLoaded()) {
-            tt.addInfo("gt.industrial_forge_hammer.tips.3");
+            tt.addInfo("gt.sledgehammer.tips.3");
         }
         if (EnderIO.isModLoaded()) {
-            tt.addInfo("gt.industrial_forge_hammer.tips.4");
+            tt.addInfo("gt.sledgehammer.tips.4");
         }
         if (ThaumicBases.isModLoaded()) {
-            tt.addInfo("gt.industrial_forge_hammer.tips.5");
+            tt.addInfo("gt.sledgehammer.tips.5");
         }
 
         tt.addPollutionAmount(getPollutionPerSecond(null))
@@ -113,7 +113,7 @@ public class MTEIndustrialForgeHammer extends GTPPMultiBlockBase<MTEIndustrialFo
             .addEnergyHatch("<casing>", 1)
             .addMaintenanceHatch("<casing>", 1)
             .addMufflerHatch("<casing>", 1)
-            .addStructurePart("GTPP.tooltip.structure.anvil", "gt.industrial_forge_hammer.info.1", 2)
+            .addStructurePart("GTPP.tooltip.structure.anvil", "gt.sledgehammer.info.1", 2)
             .toolTipFinisher();
         return tt;
     }

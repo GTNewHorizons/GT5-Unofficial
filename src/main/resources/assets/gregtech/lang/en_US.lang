@@ -3742,21 +3742,21 @@ gt.ece.info.9=Liquid Oxygen, optional, next to a Gear Box
 
 gt.owp.tips.1=Can be configured with a screwdriver to also do Simple Washer and process Chemical Bathing\nAlways requires an Input Hatch full of water to refill structure\nNeed to be filled with water\nWill automatically fill water from input hatch
 
-gt.industrial_alloy_smelter.tips.1=Processes §6Voltage Tier * Coil Tier§7 items
-gt.industrial_alloy_smelter.tips.2=Each 900K of heat upgrades an overclock to a perfect overclock
-gt.industrial_alloy_smelter.info.1=Middle Layer
-gt.industrial_alloy_smelter.info.2=Above and below Integral Encasements
-gt.industrial_alloy_smelter.info.3=Any Inconel Reinforced Casing
+gt.zyngen.tips.1=Processes §6Voltage Tier * Coil Tier§7 items
+gt.zyngen.tips.2=Each 900K of heat upgrades an overclock to a perfect overclock
+gt.zyngen.info.1=Middle Layer
+gt.zyngen.info.2=Above and below Integral Encasements
+gt.zyngen.info.3=Any Inconel Reinforced Casing
 
-gt.industrial_forge_hammer.tips.1=§6Voltage Tier * Anvil Tier * 8§7 Parallels
-gt.industrial_forge_hammer.tips.2=T1 - Vanilla Anvil
-gt.industrial_forge_hammer.tips.3=T2 - Steel Anvil
-gt.industrial_forge_hammer.tips.4=T3 - Dark Steel Anvil
-gt.industrial_forge_hammer.tips.5=T3 - Thaumium Anvil\nT4 - Void Metal Anvil
-gt.industrial_forge_hammer.info.1=In the center of 3x3x3 structure
+gt.sledgehammer.tips.1=§6Voltage Tier * Anvil Tier * 8§7 Parallels
+gt.sledgehammer.tips.2=T1 - Vanilla Anvil
+gt.sledgehammer.tips.3=T2 - Steel Anvil
+gt.sledgehammer.tips.4=T3 - Dark Steel Anvil
+gt.sledgehammer.tips.5=T3 - Thaumium Anvil\nT4 - Void Metal Anvil
+gt.sledgehammer.info.1=In the center of 3x3x3 structure
 
-gt.industrial_freezer.tips.1=Factory Grade Advanced Vacuum Freezer
-gt.industrial_freezer.tips.2=Consumes 10L of %s/s during operation\nConstructed exactly the same as a normal Vacuum Freezer
+gt.cryo_freezer.tips.1=Factory Grade Advanced Vacuum Freezer
+gt.cryo_freezer.tips.2=Consumes 10L of %s/s during operation\nConstructed exactly the same as a normal Vacuum Freezer
 
 gt.iaf.tips.1=§6Width * Voltage Tier§7 Parallels\n§68x§7 Parallels in Plasma Mode
 gt.iaf.tips.2=Right-click controller with a Screwdriver to change modes\nMax Size required to process Plasma recipes

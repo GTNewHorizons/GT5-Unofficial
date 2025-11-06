@@ -95,11 +95,11 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("gt.industrial_freezer.tips.1")
+            .addInfo("gt.cryo_freezer.tips.1")
             .addStaticParallelInfo(8)
             .addStaticSpeedInfo(2.2f)
             .addStaticEuEffInfo(0.9f)
-            .addInfo("gt.industrial_freezer.tips.2", CRYO_STACK.getLocalizedName())
+            .addInfo("gt.cryo_freezer.tips.2", CRYO_STACK.getLocalizedName())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
             .addController("front_center")
@@ -111,7 +111,7 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
             .addEnergyHatch("<casing>", 1)
             .addMufflerHatch("<casing>", 1)
             .addMaintenanceHatch("<casing>", 1)
-            .addOtherStructurePart(HATCH_NAME, "<casing>", 1)
+            .addStructurePart(HATCH_NAME, "<casing>", 1)
             .toolTipFinisher();
         return tt;
     }
