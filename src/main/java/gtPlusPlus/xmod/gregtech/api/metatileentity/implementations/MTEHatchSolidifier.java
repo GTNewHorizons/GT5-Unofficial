@@ -9,6 +9,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -30,6 +34,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.net.GTPacketSetMold;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.base.ItemSelectBaseGui;
+import gregtech.common.gui.modularui.hatch.MTEHatchSolidifierGui;
 
 public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationCircuitSupport {
 
@@ -198,7 +203,7 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
         setMold(selected);
     }
 
-    private int findMatchingMoldIndex(ItemStack stack) {
+    public int findMatchingMoldIndex(ItemStack stack) {
         for (int i = 0; i < solidifierMolds.length; i++) {
             if (GTUtility.areStacksEqual(solidifierMolds[i], stack, true)) return i;
         }
@@ -234,5 +239,15 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
     @Override
     public int getCircuitSlotY() {
         return 63;
+    }
+
+    @Override
+    protected boolean forceUseMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchSolidifierGui(this).build(data, syncManager, uiSettings);
     }
 }

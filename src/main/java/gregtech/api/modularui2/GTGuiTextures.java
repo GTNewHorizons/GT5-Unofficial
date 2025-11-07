@@ -7,6 +7,7 @@ import static tectech.Reference.MODID;
 
 import com.cleanroommc.modularui.drawable.ColorType;
 import com.cleanroommc.modularui.drawable.UITexture;
+import com.gtnewhorizons.modularui.api.drawable.AdaptableUITexture;
 
 import bartworks.MainMod;
 import gregtech.common.modularui2.util.SteamTextureRegisterer;
@@ -83,6 +84,10 @@ public final class GTGuiTextures {
         .adaptable(2)
         .name(GTTextureIds.BACKGROUND_TERMINAL_TECTECH)
         .build();
+
+    public static final AdaptableUITexture PICTURE_SCREEN_BLACK = AdaptableUITexture
+        .of(GregTech.ID, "gui/picture/screen_black", 16, 16, 2);
+    public static final UITexture PICTURE_GAUGE = fullImage(GregTech.ID, "gui/picture/gauge");
 
     public static final UITexture BACKGROUND_REDSTONE_SNIFFER = UITexture.builder()
         .location(GregTech.ID, "gui/background/redstone_sniffer")
@@ -382,6 +387,8 @@ public final class GTGuiTextures {
         .location(MODID, "gui/overlay_slot/mesh")
         .canApplyTheme()
         .build();
+
+    public static final UITexture OVERLAY_SLOT_MOLD = fullImage(GregTech.ID, "gui/overlay_slot/mold");
 
     // endregion slot overlay
 
