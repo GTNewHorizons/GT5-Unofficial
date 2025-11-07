@@ -53,6 +53,17 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui<MTEChamberCent
     }
 
     @Override
+    protected Flow createRightPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
+        return Flow.row()
+            .mainAxisAlignment(Alignment.MainAxis.END)
+            .align(Alignment.CenterRight)
+            .coverChildrenWidth()
+            .heightRel(1)
+            .child(createConfigButton(syncManager, parent))
+            .childIf(multiblock.supportsPowerPanel(), createPowerPanelButton(syncManager, parent));
+    }
+
+    @Override
     protected Flow createButtonColumn(ModularPanel panel, PanelSyncManager syncManager) {
         return super.createButtonColumn(panel, syncManager).child(createOverviewButton(syncManager, panel));
     }
@@ -122,7 +133,7 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui<MTEChamberCent
             .panel("turbinePanel", (p_syncManager, syncHandler) -> openTurbinePanel(p_syncManager, parent), true);
         return new ButtonWidget<>().size(18, 18)
             // power control + button size + margin, to be changed in panel gap refactor
-            .right(2 + 18 + 4)
+            // .right(2 + 18 + 4)
             .marginTop(4)
             .overlay(GuiTextures.GEAR)
             .onMousePressed(d -> {
