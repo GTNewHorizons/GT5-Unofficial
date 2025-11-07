@@ -48,7 +48,7 @@ public class MTEPCBFactoryGui extends MTEMultiBlockBaseGui<MTEPCBFactory> {
                     .width(40)
                     .align(Alignment.Center))
             // TODO: add tooltip to text field after functionality is added rather than doing this hack.
-            // its quite annoying.
+            // its quite annoying as it persist even if the widget is selected.
             .child(
                 new IDrawable.DrawableWidget(IDrawable.EMPTY).size(40, 18)
                     .align(Alignment.Center)
