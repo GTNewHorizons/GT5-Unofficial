@@ -66,7 +66,7 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
                     this.getDefaultLocalization(tPrefix, tMaterial, i));
                 GTLanguageManager.addStringLocalization(
                     this.getUnlocalizedName(tStack) + ".tooltip",
-                    tMaterial.getToolTip(tPrefix.getMaterialAmount() / GTValues.M));
+                    tMaterial.getChemicalTooltip(tPrefix.getMaterialAmount() / GTValues.M));
                 if (tPrefix.isUnifiable()) {
                     GTOreDictUnificator.set(tPrefix, tMaterial, tStack);
                 } else {
