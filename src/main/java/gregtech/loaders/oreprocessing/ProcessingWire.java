@@ -292,8 +292,6 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                             .eut(8)
                             .addTo(cableRecipes);
 
-                        // Assembler Recipes to be removed in the next Major Update
-
                         GTValues.RA.stdBuilder()
                             .itemInputs(aStack)
                             .iCircuit(24)
