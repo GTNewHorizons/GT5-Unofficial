@@ -25,8 +25,8 @@ public class Mixer implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 Items.YttriaDust.getOreDictedItemStack(1),
-                Items.ZirconiaDust.getOreDictedItemStack(5),
-                GTUtility.getIntegratedCircuit(6))
+                Items.ZirconiaDust.getOreDictedItemStack(5))
+            .iCircuit(6)
             .itemOutputs(craftingItem.getStackOfAmountFromDamage(Items.YSZCeramicDust.getMetaID(), 6))
             .duration(20 * SECONDS)
             .eut(96)
@@ -37,8 +37,8 @@ public class Mixer implements Runnable {
             .itemInputs(
                 GTOreDictUnificator
                     .get(OrePrefixes.dust, Materials.Gadolinium, new ItemStack(ErrorItem.getInstance(), 1), 1),
-                craftingItem.getStackOfAmountFromDamage(Items.CeriaDust.getMetaID(), 9),
-                GTUtility.getIntegratedCircuit(6))
+                craftingItem.getStackOfAmountFromDamage(Items.CeriaDust.getMetaID(), 9))
+            .iCircuit(6)
             .itemOutputs(craftingItem.getStackOfAmountFromDamage(Items.GDCCeramicDust.getMetaID(), 10))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_EV)
