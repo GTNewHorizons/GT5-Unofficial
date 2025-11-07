@@ -599,6 +599,18 @@ public final class GTGuiTextures {
         .fullImage()
         .name(GTTextureIds.PICTURE_TRANSPARENT)
         .build();
+    public static final UITexture INFORMATION_SYMBOL = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/information_symbol")
+        .fullImage()
+        .name(GTTextureIds.PICTURE_INFORMATION_SYMBOL)
+        .build();
+    // ripped from mui1
+    public static final UITexture INFORMATION_BUBBLE = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/information_bubble")
+        .fullImage()
+        .name(GTTextureIds.PICTURE_INFORMATION_BUBBLE)
+        .build();
+
     public static final UITexture PICTURE_SIEVERT_CONTAINER = UITexture.builder()
         .location(MainMod.MOD_ID, "GUI/picture/sievert_container")
         .fullImage()
