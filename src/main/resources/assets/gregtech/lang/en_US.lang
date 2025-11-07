@@ -3694,6 +3694,7 @@ machtype.mapiary=Mega Apiary, Mapiary
 machtype.nano_forge=Nanite Fabricator
 machtype.ece=Combustion Generator, ECE
 machtype.entropic_processor=Entropic Processor
+machtype.distillation_tower=Distillery, DT
 
 # Used in addController. These are some commonly used shared ones
 # CONTEXT: Controller: (corepos)
@@ -3704,6 +3705,14 @@ gt.mb.corepos.top_center=Top center
 gt.mb.hint_block=Hint block with dot %d
 
 # Multiblock Tooltip lines
+gt.distillation_tower.tips.1=Fluids are only put out at the correct height\nThe correct height equals the slot number in the NEI recipe
+gt.distillation_tower.info.1=7 x h - 5 (minimum)
+gt.distillation_tower.info.2=Any casing except top centre
+gt.distillation_tower.info.3=2-11x Output Hatches (At least one per layer except bottom layer)
+
+gt.mb_coke_oven.tips.1=Turns coal into coke and produces creosote oil
+gt.mb_coke_oven.info.1=Any Coke Oven Casing
+
 gt.charcoal_pit.tips.1=Converts Logs into Brittle Charcoal blocks\nAutomatically starts when formed
 gt.charcoal_pit.info.1=Can be up to 13x7x13 in size, including the dirt; shape doesn't matter
 gt.charcoal_pit.info.2=Top layer, directly touching a wood log
