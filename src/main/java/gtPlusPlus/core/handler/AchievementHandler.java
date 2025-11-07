@@ -106,13 +106,6 @@ public class AchievementHandler {
             aBaseAchievementName,
             false);
         this.registerAchievement(
-            "earlywasher",
-            -13,
-            -10,
-            GregtechItemList.SimpleDustWasher_ULV.get(1),
-            aBaseAchievementName,
-            false);
-        this.registerAchievement(
             "advancedsteam",
             -12,
             -10,
