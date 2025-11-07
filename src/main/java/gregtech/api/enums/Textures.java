@@ -1939,6 +1939,7 @@ public class Textures {
         NANITE_CORE,
         NANITE_SHIELDING_FRAME,
         OVERLAY_ENERGY_IN_DEBUG,
+        OVERLAY_BUS_IN_DEBUG,
 
         COKE_OVEN_CASING,
         COKE_OVEN_OVERLAY_INACTIVE,
