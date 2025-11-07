@@ -289,7 +289,7 @@ public final class GTBaseGuiBuilder {
             return -1;
         });
         syncManager.syncValue("selector_screen_selected", selectedSyncHandler);
-        return new GhostCircuitSlotWidget(mte, selectedSyncHandler)
+        return new GhostCircuitSlotWidget(mte, syncManager)
             .slot(new ModularSlot(new GhostCircuitItemStackHandler(mte), 0))
             .pos(ccs.getCircuitSlotX() - 1, ccs.getCircuitSlotY() - 1);
     }

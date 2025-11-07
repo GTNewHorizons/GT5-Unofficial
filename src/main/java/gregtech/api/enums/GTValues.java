@@ -10,7 +10,6 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_GREEN;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_PURPLE;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_RED;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GOLD;
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GRAY;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GREEN;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.ITALIC;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.LIGHT_PURPLE;
@@ -200,7 +199,7 @@ public class GTValues {
     };
 
     public static final String[] TIER_COLORS = new String[] { RED, // ULV, 0
-        GRAY, // LV, 1
+        DARK_GREEN, // LV, 1
         GOLD, // MV, 2
         YELLOW, // HV, 3
         DARK_GRAY, // EV, 4
