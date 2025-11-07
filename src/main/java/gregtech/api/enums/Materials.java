@@ -140,7 +140,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
 
     // Isotopes
     public static Materials Deuterium;
-    public static Materials Helium_3;
+    public static Materials Helium3;
     public static Materials Plutonium241;
     public static Materials Tritium;
     public static Materials Uranium235;
@@ -180,9 +180,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Draconium;
     public static Materials DraconiumAwakened;
     public static Materials Ender;
+    public static Materials Endium;
     public static Materials Fluix;
     public static Materials Flux;
-    public static Materials HeeEndium;
     public static Materials InfusedTeslatite;
     public static Materials IridiumSodiumOxide;
     public static Materials Mutation;
@@ -241,7 +241,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials FierySteel;
     public static Materials Firestone;
     public static Materials Fluorite;
-    public static Materials FoolsRuby;
     public static Materials Force;
     public static Materials Forcicium;
     public static Materials Forcillium;
@@ -295,6 +294,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Rubracium;
     public static Materials Sand;
     public static Materials Siltstone;
+    public static Materials Spinel;
     public static Materials Sunstone;
     public static Materials Tar;
     public static Materials Tartarite;
@@ -334,7 +334,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Piko;
 
     // Not possible to determine exact Components
-    public static Materials AdvancedGlue;
     public static Materials Antimatter;
     public static Materials Biomass;
     public static Materials CharcoalByproducts;
@@ -346,12 +345,13 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Cocoa;
     public static Materials Coffee;
     public static Materials Creosote;
+    public static Materials Diesel;
     public static Materials Ethanol;
     public static Materials FermentedBiomass;
     public static Materials FishOil;
     public static Materials FryingOilHot;
-    public static Materials Fuel;
     public static Materials Glue;
+    public static Materials GlueAdvanced;
     public static Materials Gunpowder;
     public static Materials Honey;
     public static Materials Leather;
@@ -373,7 +373,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Stone;
     public static Materials TNT;
     public static Materials Unstable;
-    public static Materials Unstableingot;
+    public static Materials UnstableIngot;
     public static Materials Vinegar;
     public static Materials WeedEX9000;
     public static Materials Wheat;
@@ -402,6 +402,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials ArsenicTrioxide;
     public static Materials Asbestos;
     public static Materials Ash;
+    public static Materials AshDark;
     public static Materials BandedIron;
     public static Materials BatteryAlloy;
     public static Materials Benzene;
@@ -427,7 +428,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Cooperite;
     public static Materials CupricOxide;
     public static Materials Cupronickel;
-    public static Materials DarkAsh;
     public static Materials DeepIron;
     public static Materials Diamond;
     public static Materials DilutedHydrochloricAcid;
@@ -469,9 +469,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Obsidian;
     public static Materials Phosphate;
     public static Materials PigIron;
-    public static Materials Plastic;
     public static Materials Polycaprolactam;
     public static Materials Polydimethylsiloxane;
+    public static Materials Polyethylene;
     public static Materials Polytetrafluoroethylene;
     public static Materials Potash;
     public static Materials Powellite;
@@ -481,9 +481,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Pyrolusite;
     public static Materials Pyrope;
     public static Materials Quicklime;
-    public static Materials RawRubber;
     public static Materials RockSalt;
     public static Materials Rubber;
+    public static Materials RubberRaw;
+    public static Materials RubberSilicone;
     public static Materials Ruby;
     public static Materials Rutile;
     public static Materials Salt;
@@ -491,7 +492,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Sapphire;
     public static Materials Scheelite;
     public static Materials SiliconDioxide;
-    public static Materials Silicone;
     public static Materials Snow;
     public static Materials SodaAsh;
     public static Materials Sodalite;
@@ -521,7 +521,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials LightFuel;
     public static Materials LPG;
     public static Materials Naphtha;
-    public static Materials NatruralGas;
+    public static Materials NaturalGas;
     public static Materials SulfuricGas;
     public static Materials SulfuricHeavyFuel;
     public static Materials SulfuricLightFuel;
@@ -530,7 +530,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     // Unclassified 03 materials
     public static Materials BioMediumRaw;
     public static Materials BioMediumSterilized;
-    public static Materials ReinforceGlass;
+    public static Materials ReinforcedGlass;
 
     // Unclassified 04 materials
     public static Materials GrowthMediumRaw;
@@ -803,8 +803,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     // Added
     public static Materials BloodInfusedIron;
     public static Materials Electrotine;
-    public static Materials EnhancedGalgadorian;
     public static Materials Galgadorian;
+    public static Materials GalgadorianEnhanced;
     public static Materials Shadow;
 
     // Galaxy Space 1.10 compat from Version 2.6
@@ -819,7 +819,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     // Unclassified 07 materials
     public static Materials AstralSilver;
     public static Materials BlueAlloy;
-    public static Materials CrudeSteel;
+    public static Materials ClayCompound;
     public static Materials Enderium;
     public static Materials Mithril;
     public static Materials ShadowIron;
@@ -835,14 +835,14 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Trinium;
 
     // Superconductor Bases
-    public static Materials Pentacadmiummagnesiumhexaoxid;
-    public static Materials Titaniumonabariumdecacoppereikosaoxid;
-    public static Materials Uraniumtriplatinid;
-    public static Materials Vanadiumtriindinid;
-    public static Materials Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid;
-    public static Materials Tetranaquadahdiindiumhexaplatiumosminid;
-    public static Materials Longasssuperconductornameforuvwire;
-    public static Materials Longasssuperconductornameforuhvwire;
+    public static Materials SuperconductorMVBase;
+    public static Materials SuperconductorHVBase;
+    public static Materials SuperconductorEVBase;
+    public static Materials SuperconductorIVBase;
+    public static Materials SuperconductorLuVBase;
+    public static Materials SuperconductorZPMBase;
+    public static Materials SuperconductorUVBase;
+    public static Materials SuperconductorUHVBase;
     public static Materials SuperconductorUEVBase;
     public static Materials SuperconductorUIVBase;
     public static Materials SuperconductorUMVBase;
@@ -869,16 +869,16 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials StableBaryonicMatter;
 
     // Radox Line
-    public static Materials DilutedXenoxene;
     public static Materials RadoxCracked;
     public static Materials RadoxGas;
     public static Materials RadoxHeavy;
     public static Materials RadoxLight;
     public static Materials RadoxPolymer;
+    public static Materials RadoxRaw;
     public static Materials RadoxSuperHeavy;
     public static Materials RadoxSuperLight;
-    public static Materials RawRadox;
     public static Materials Xenoxene;
+    public static Materials XenoxeneDiluted;
 
     // Netherite Line
     public static Materials NetherAir;
@@ -914,7 +914,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Livingwood;
     public static Materials Dreamwood;
     public static Materials ManaDiamond;
-    public static Materials BotaniaDragonstone;
+    public static Materials Dragonstone;
 
     // Kevlar Line
     public static Materials DiphenylmethaneDiisocyanate;
@@ -977,20 +977,20 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials RubyJuice;
 
     // UEV+ Materials
-    public static Materials DimensionallyTranscendentCrudeCatalyst;
-    public static Materials DimensionallyTranscendentProsaicCatalyst;
-    public static Materials DimensionallyTranscendentResplendentCatalyst;
-    public static Materials DimensionallyTranscendentExoticCatalyst;
-    public static Materials DimensionallyTranscendentStellarCatalyst;
+    public static Materials DTCC;
+    public static Materials DTPC;
+    public static Materials DTRC;
+    public static Materials DTEC;
+    public static Materials DTSC;
     public static Materials ExcitedDTCC;
     public static Materials ExcitedDTPC;
     public static Materials ExcitedDTRC;
     public static Materials ExcitedDTEC;
     public static Materials ExcitedDTSC;
-    public static Materials DimensionallyTranscendentResidue;
+    public static Materials DTR;
     public static Materials SpaceTime;
     public static Materials TranscendentMetal;
-    public static Materials MagnetohydrodynamicallyConstrainedStarMatter;
+    public static Materials MHDCSM;
     public static Materials RawStarMatter;
     public static Materials WhiteDwarfMatter;
     public static Materials BlackDwarfMatter;
@@ -1424,9 +1424,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         Bronze.mOreReRegistrations.add(AnyBronze);
         Rubber.mOreReRegistrations.add(AnyRubber);
         StyreneButadieneRubber.mOreReRegistrations.add(AnyRubber);
-        Silicone.mOreReRegistrations.add(AnyRubber);
+        RubberSilicone.mOreReRegistrations.add(AnyRubber);
         StyreneButadieneRubber.mOreReRegistrations.add(AnySyntheticRubber);
-        Silicone.mOreReRegistrations.add(AnySyntheticRubber);
+        RubberSilicone.mOreReRegistrations.add(AnySyntheticRubber);
     }
 
     private static void setToolEnchantments() {
@@ -1493,7 +1493,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         OrePrefixes.ingotHot.disableComponent(Materials.BlackSteel);
         OrePrefixes.ingotHot.disableComponent(Materials.EnergeticAlloy);
         OrePrefixes.ingotHot.disableComponent(Materials.PulsatingIron);
-        OrePrefixes.ingotHot.disableComponent(Materials.CrudeSteel);
+        OrePrefixes.ingotHot.disableComponent(Materials.ClayCompound);
         OrePrefixes.ingotHot.disableComponent(Materials.Netherite);
         OrePrefixes.ingotHot.disableComponent(Materials.HotProtoHalkonite);
         OrePrefixes.ingotHot.disableComponent(Materials.ProtoHalkonite);
@@ -1564,7 +1564,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         }
 
         if (aMaterial == Materials.MagMatter) {
-            aMaterial.mHandleMaterial = Materials.MagnetohydrodynamicallyConstrainedStarMatter;
+            aMaterial.mHandleMaterial = Materials.MHDCSM;
         }
     }
 

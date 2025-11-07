@@ -182,7 +182,7 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
 
     @Override
     public int getCircuitSlot() {
-        return getSlots(mTier);
+        return this.getSizeInventory() - 1;
     }
 
     @Override

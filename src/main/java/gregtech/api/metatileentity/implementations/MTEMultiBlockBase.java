@@ -180,7 +180,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     public boolean mLockedToSingleRecipe = getDefaultRecipeLockingMode();
     protected boolean inputSeparation = getDefaultInputSeparationMode();
     protected VoidingMode voidingMode = getDefaultVoidingMode();
-    protected boolean batchMode = getDefaultBatchMode();
+    protected boolean batchMode = getDefaultBatchMode() && supportsBatchMode();
     protected @Nonnull CheckRecipeResult checkRecipeResult = CheckRecipeResultRegistry.NONE;
     protected int powerPanelMaxParallel = 1;
     protected boolean alwaysMaxParallel = true;
@@ -1696,6 +1696,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                     if (fluidStack != null) {
                         // Prevent the same fluid from different ME hatches from being recognized
                         inputsFromME.put(fluidStack.getFluid(), fluidStack);
+                    }
+                }
+            } else if (tHatch instanceof MTEHatchInputDebug debugHatch) {
+                for (FluidStack fluid : debugHatch.getFluidList()) {
+                    if (fluid != null) {
+                        FluidStack stack = fluid.copy();
+                        stack.amount = Integer.MAX_VALUE;
+                        rList.add(stack);
                     }
                 }
             } else {
