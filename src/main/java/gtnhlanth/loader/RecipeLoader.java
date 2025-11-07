@@ -231,8 +231,9 @@ public class RecipeLoader {
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);
 
+        // Add .iCircuit(4) to this if it ever gets re-activated
         /*
-         * //Permalloy GT_Values.RA.addMixerRecipe( GT_Utility.getIntegratedCircuit(4), Materials.Nickel.getDust(4),
+         * //Permalloy GT_Values.RA.addMixerRecipe( Materials.Nickel.getDust(4),
          * Materials.Iron.getDust(1), Materials.Molybdenum.getDust(1), null, null,
          * WerkstoffMaterialPool.Permalloy.get(OrePrefixes.dust, 6), 1920, 200 );
          */
