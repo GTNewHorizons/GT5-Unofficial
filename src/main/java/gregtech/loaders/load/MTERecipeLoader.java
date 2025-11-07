@@ -30,7 +30,6 @@ import gregtech.api.util.ExternalMaterials;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 import gregtech.loaders.postload.PCBFactoryMaterialLoader;
 import ic2.core.Ic2Items;
 
@@ -3665,8 +3664,8 @@ public class MTERecipeLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.pipeSmall, Materials.TungstenSteel, 1L),
-                ItemList.Electric_Pump_EV.get(1L),
-                GTUtility.getIntegratedCircuit(5))
+                ItemList.Electric_Pump_EV.get(1L))
+            .iCircuit(5)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.pipeSmall, Materials.ZPM, 1L))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -3674,8 +3673,8 @@ public class MTERecipeLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.TungstenSteel, 1L),
-                ItemList.Electric_Pump_IV.get(1L),
-                GTUtility.getIntegratedCircuit(5))
+                ItemList.Electric_Pump_IV.get(1L))
+            .iCircuit(5)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.ZPM, 1L))
             .duration(20 * SECONDS)
             .eut(4096)
@@ -3683,8 +3682,8 @@ public class MTERecipeLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.TungstenSteel, 1L),
-                ItemList.Electric_Pump_IV.get(2L),
-                GTUtility.getIntegratedCircuit(5))
+                ItemList.Electric_Pump_IV.get(2L))
+            .iCircuit(5)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.ZPM, 1L))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_IV)
