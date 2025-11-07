@@ -17,12 +17,11 @@ import java.util.stream.Collector;
 import java.util.stream.Stream;
 
 import org.jetbrains.annotations.Nullable;
-import org.spongepowered.libraries.com.google.common.collect.Multimap;
-import org.spongepowered.libraries.com.google.common.collect.MultimapBuilder;
+
+import com.google.common.collect.Multimap;
+import com.google.common.collect.MultimapBuilder;
 
 import it.unimi.dsi.fastutil.Pair;
-import it.unimi.dsi.fastutil.ints.IntArrayList;
-import it.unimi.dsi.fastutil.ints.IntLinkedOpenHashSet;
 import it.unimi.dsi.fastutil.objects.ObjectIterators;
 
 /**
