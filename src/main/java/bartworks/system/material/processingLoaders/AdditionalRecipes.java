@@ -275,19 +275,27 @@ public class AdditionalRecipes {
             .itemOutputs(Materials.Empty.getCells(1))
             .metadata(FUEL_VALUE, 10)
             .addTo(BartWorksRecipeMaps.acidGenFuels);
-        //should probably also find a way to auto-fill these with an array but i am too lazy to do that rn
+        // should probably also find a way to auto-fill these with an array but i am too lazy to do that rn
         GTValues.RA.stdBuilder()
-            .itemInputs(FluidContainerRegistry.fillFluidContainer(new FluidStack(GTPPFluids.IndustrialStrengthHydrofluoricAcid,1000),ItemList.Cell_Empty.get(1L)))
+            .itemInputs(
+                FluidContainerRegistry.fillFluidContainer(
+                    new FluidStack(GTPPFluids.IndustrialStrengthHydrofluoricAcid, 1000),
+                    ItemList.Cell_Empty.get(1L)))
             .itemOutputs(Materials.Empty.getCells(1))
             .metadata(FUEL_VALUE, 320)
             .addTo(BartWorksRecipeMaps.acidGenFuels);
         GTValues.RA.stdBuilder()
-            .itemInputs(FluidContainerRegistry.fillFluidContainer(new FluidStack(GTPPFluids.IndustrialStrengthHydrogenChloride,1000),ItemList.Cell_Empty.get(1L)))
+            .itemInputs(
+                FluidContainerRegistry.fillFluidContainer(
+                    new FluidStack(GTPPFluids.IndustrialStrengthHydrogenChloride, 1000),
+                    ItemList.Cell_Empty.get(1L)))
             .itemOutputs(Materials.Empty.getCells(1))
             .metadata(FUEL_VALUE, 224)
             .addTo(BartWorksRecipeMaps.acidGenFuels);
         GTValues.RA.stdBuilder()
-            .itemInputs(FluidContainerRegistry.fillFluidContainer(new FluidStack(GTPPFluids.PropionicAcid,1000),ItemList.Cell_Empty.get(1L)))
+            .itemInputs(
+                FluidContainerRegistry
+                    .fillFluidContainer(new FluidStack(GTPPFluids.PropionicAcid, 1000), ItemList.Cell_Empty.get(1L)))
             .itemOutputs(Materials.Empty.getCells(1))
             .metadata(FUEL_VALUE, 150)
             .addTo(BartWorksRecipeMaps.acidGenFuels);
