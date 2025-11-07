@@ -22,7 +22,6 @@ import java.util.Collections;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -87,7 +86,7 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
     private boolean lastFail = false;
     private RadioHatchMaterial radioHatchMaterial = null;
 
-    public MTERadioHatch(int aID, String aName, String aNameRegional, int aTier, boolean isDeprecated) {
+    public MTERadioHatch(int aID, String aName, String aNameRegional, int aTier) {
         super(
             aID,
             aName,
@@ -95,10 +94,7 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
             aTier,
             1,
             new String[] { StatCollector.translateToLocal("tooltip.tile.radhatch.0.name"),
-                (isDeprecated
-                    ? EnumChatFormatting.RED
-                        + "DEPRECATED! This hatch will be removed in the next major update, use \"Radio Hatch\" instead"
-                    : StatCollector.translateToLocal("tooltip.tile.radhatch.1.name")),
+                StatCollector.translateToLocal("tooltip.tile.radhatch.1.name"),
                 BWTooltipReference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get(), });
     }
 
