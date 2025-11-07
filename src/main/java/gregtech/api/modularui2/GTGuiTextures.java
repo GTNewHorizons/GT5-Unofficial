@@ -1,13 +1,16 @@
 package gregtech.api.modularui2;
 
 import static com.cleanroommc.modularui.drawable.UITexture.fullImage;
+import static gregtech.api.enums.Mods.GTNHIntergalactic;
 import static gregtech.api.enums.Mods.GregTech;
+import static tectech.Reference.MODID;
 
 import com.cleanroommc.modularui.drawable.AdaptableUITexture;
 import com.cleanroommc.modularui.drawable.UITexture;
 
 import bartworks.MainMod;
 import gregtech.common.modularui2.util.SteamTextureRegisterer;
+import kekztech.KekzCore;
 
 /**
  * Holds all the references to GUI textures used within GregTech.
@@ -74,11 +77,25 @@ public final class GTGuiTextures {
         .name(GTTextureIds.BACKGROUND_TERMINAL_STANDARD)
         .build();
 
+    public static final UITexture TT_BACKGROUND_TEXT_FIELD = UITexture.builder()
+        .location(MODID, "gui/background/screen_blue")
+        .imageSize(90, 72)
+        .adaptable(2)
+        .name(GTTextureIds.BACKGROUND_TERMINAL_TECTECH)
+        .build();
+
     public static final UITexture BACKGROUND_REDSTONE_SNIFFER = UITexture.builder()
         .location(GregTech.ID, "gui/background/redstone_sniffer")
         .imageSize(195, 136)
         .adaptable(1)
         .name(GTTextureIds.BACKGROUND_REDSTONE_SNIFFER)
+        .build();
+
+    public static final UITexture BACKGROUND_CHAOS_LOCATOR = UITexture.builder()
+        .location(GregTech.ID, "gui/background/chaos_locator")
+        .imageSize(176, 166)
+        .adaptable(1)
+        .name(GTTextureIds.BACKGROUND_CHAOS_LOCATOR)
         .build();
     // endregion background
 
@@ -361,6 +378,11 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .build();
 
+    public static final UITexture TT_OVERLAY_SLOT_MESH = UITexture.builder()
+        .location(MODID, "gui/overlay_slot/mesh")
+        .canApplyTheme()
+        .build();
+
     // endregion slot overlay
 
     // region progressbar
@@ -392,6 +414,9 @@ public final class GTGuiTextures {
         .name(GTTextureIds.PROGRESSBAR_SIEVERT)
         .build();
 
+    public static final UITexture STEAM_GAUGE_BG = UITexture.fullImage(GregTech.ID, "gui/background/steam_dial");
+    public static final UITexture STEAM_GAUGE_BG_STEEL = UITexture
+        .fullImage(GregTech.ID, "gui/background/steam_dial_steel");
     // endregion progressbar
 
     // region button
@@ -521,6 +546,35 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_GATE_NOR = fullImageGT("overlay_button/gate_nor");
     public static final UITexture OVERLAY_BUTTON_ANALOG = fullImageGT("overlay_button/analog");
 
+    public static final UITexture OVERLAY_BUTTON_WIRELESS_ON = fullImage(
+        KekzCore.MODID,
+        "gui/overlay_button/wireless_on");
+    public static final UITexture OVERLAY_BUTTON_WIRELESS_OFF = fullImage(
+        KekzCore.MODID,
+        "gui/overlay_button/wireless_off");
+    public static final UITexture OVERLAY_BUTTON_WIRELESS_DISABLED = fullImage(
+        KekzCore.MODID,
+        "gui/overlay_button/wireless_off_disabled");
+    public static final UITexture OVERLAY_BUTTON_WIRELESS_REBALANCE = fullImage(
+        KekzCore.MODID,
+        "gui/overlay_button/wireless_rebalance");
+    public static final UITexture TT_OVERLAY_BUTTON_POWER_SWITCH_ON = UITexture
+        .fullImage(MODID, "gui/overlay_button/power_switch_on");
+    public static final UITexture TT_OVERLAY_BUTTON_POWER_SWITCH_OFF = UITexture
+        .fullImage(MODID, "gui/overlay_button/power_switch_off");
+    public static final UITexture TT_OVERLAY_BUTTON_POWER_SWITCH_DISABLED = UITexture
+        .fullImage(MODID, "gui/overlay_button/power_switch_disabled");
+    public static final UITexture OVERLAY_BUTTON_POWER_PASS_ON = UITexture
+        .fullImage(MODID, "gui/overlay_button/power_pass_on");
+    public static final UITexture OVERLAY_BUTTON_POWER_PASS_OFF = UITexture
+        .fullImage(MODID, "gui/overlay_button/power_pass_off");
+    public static final UITexture OVERLAY_BUTTON_POWER_PASS_DISABLED = UITexture
+        .fullImage(MODID, "gui/overlay_button/power_pass_disabled");
+    public static final UITexture OVERLAY_BUTTON_EDIT_PARAMETERS_ENABLED = UITexture
+        .fullImage(GTNHIntergalactic.ID, "gui/overlay_button/options");
+    public static final UITexture OVERLAY_BUTTON_EDIT_PARAMETERS_DISABLED = UITexture
+        .fullImage(GTNHIntergalactic.ID, "gui/overlay_button/options_disabled");
+
     // endregion button overlay
 
     // region picture
@@ -591,6 +645,10 @@ public final class GTGuiTextures {
         .name(GTTextureIds.PICTURE_RADIATION_SHUTTER_INSIDE)
         .build();
 
+    public static final UITexture TT_CONTROLLER_SLOT_HEAT_SINK = UITexture.builder()
+        .location(MODID, "gui/picture/heat_sink_small")
+        .canApplyTheme()
+        .build();
     // endregion picture
 
     // region machine modes
@@ -646,6 +704,19 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_STEAM = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_dehp_steam");
+
+    public static final UITexture OVERLAY_COKE_OVEN_FLUID_SLOT_GAUGE = fullImageColorableGT(
+        "overlay_slot/overlay_coke_oven_fluid_slot_gauge");
+    public static final UITexture BACKGROUND_COKE_OVEN_FLUID_SLOT = fullImageColorableGT(
+        "overlay_slot/background_coke_oven_fluid_slot.png");
+    public static final UITexture BACKGROUND_COKE_OVEN_COAL = fullImageColorableGT("overlay_slot/coke_oven_coal.png");
+    public static final UITexture BACKGROUND_COKE_OVEN = UITexture.builder()
+        .location(GregTech.ID, "gui/background/coke_oven")
+        .imageSize(176, 166)
+        .adaptable(4)
+        .canApplyTheme()
+        .name(GTTextureIds.BACKGROUND_COKE_OVEN)
+        .build();
 
     // endregion machine modes
     /**

@@ -90,7 +90,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder() // DEHP
             .itemInputs(
                 ItemList.OilDrill4.get(1),
-                GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Ultimate, 8),
+                GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.ZPM, 8),
                 GGMaterial.incoloy903.get(OrePrefixes.gearGt, 32),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Polytetrafluoroethylene, 16),
                 ItemList.Field_Generator_IV.get(1))
@@ -105,7 +105,7 @@ public class Assembler implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.AnnealedCopper, 64L),
                 GTUtility.getIntegratedCircuit(17))
             .itemOutputs(new ItemStack(ItemRegistry.BW_BLOCKS[2], 1, 1))
-            .fluidInputs(Materials.Plastic.getMolten(8 * INGOTS))
+            .fluidInputs(Materials.Polyethylene.getMolten(8 * INGOTS))
             .duration(1 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);

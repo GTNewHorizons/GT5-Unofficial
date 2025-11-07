@@ -125,7 +125,7 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
         // In case someone else wants to listen to these, go the roundabout way.
         final Set<UUID> uuids = REVERSE_LOOKUP.get(coords);
         if (uuids != null) {
-            uuids.forEach(
+            new HashSet<>(uuids).forEach(
                 uuid -> MinecraftForge.EVENT_BUS.post(
                     ForgeHooks.canHarvestBlock(event.block, event.getPlayer(), event.blockMetadata)
                         && !event.getPlayer().capabilities.isCreativeMode ? new MetricsCoverHostDeconstructedEvent(uuid)

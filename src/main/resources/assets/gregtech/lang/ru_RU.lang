@@ -245,8 +245,8 @@ gt.interact.desc.need_maint_rotor_lo=Излучать, если ротор ну�
 gt.interact.desc.need_maint_rotor_hi=Излучать, если ротору требуется техобслуживание мод высокой точности
 gt.interact.desc.issue=1 проблема
 gt.interact.desc.issues=%s проблемы(а)
-gt.interact.desc.issue_rotor_low=Ротор < 20%
-gt.interact.desc.issue_rotor_dead=Ротор ≈ 0%
+gt.interact.desc.issue_rotor_low=Ротор < 20%%
+gt.interact.desc.issue_rotor_dead=Ротор ≈ 0%%
 
 # GT++ items
 item.GTPP.air_intake_hatch.name=Воздухозаборный шлюз
@@ -953,8 +953,6 @@ gt.recipe.lathe=Токарный станок
 gt.recipe.lathe.description=Производит стержни еще эффективнее
 gt.recipe.macerator=Дробитель
 gt.recipe.macerator.description=Измельчитель ваших руд
-gt.recipe.macerator_pulverizer=Дробитель/Измельчитель
-gt.recipe.macerator_pulverizer.description=Измельчитель ваших руд
 gt.recipe.uuamplifier=Катализатор материи
 gt.recipe.uuamplifier.description=Извлечение катализатора материи
 gt.recipe.massfab=Генератор материи

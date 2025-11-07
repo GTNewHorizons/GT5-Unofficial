@@ -54,7 +54,6 @@ import forestry.api.recipes.RecipeManagers;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsBotania;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -188,7 +187,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         addProcessGT(CombType.APATITE, new Materials[] { Materials.Apatite }, Voltage.LV);
         addCentrifugeToMaterial(
             CombType.ASH,
-            new Materials[] { Materials.DarkAsh, Materials.Ash },
+            new Materials[] { Materials.AshDark, Materials.Ash },
             new int[] { 50 * 100, 50 * 100 },
             GTValues.emptyIntArray,
             Voltage.ULV,
@@ -714,7 +713,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
                 GTBees.drop.getStackForType(DropType.ENDERGOO), new ItemStack(Items.spawn_egg, 1, 60) },
             new int[] { 25 * 100, 10 * 100, 20 * 100, 15 * 100 },
             Voltage.EV);
-        addProcessGT(CombType.ENDIUM, new Materials[] { Materials.HeeEndium }, Voltage.HV);
+        addProcessGT(CombType.ENDIUM, new Materials[] { Materials.Endium }, Voltage.HV);
 
         addCentrifugeToItemStack(
             CombType.RUNEI,
@@ -1158,7 +1157,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
     public void registerOreDict() {
         for (CombType comb : CombType.values()) {
             ItemStack tComb = getStackForType(comb);
-            GTOreDictUnificator.registerOre(OrePrefixes.beeComb.name(), tComb);
+            GTOreDictUnificator.registerOre(OrePrefixes.beeComb.getName(), tComb);
             OrePrefixes.beeComb.add(tComb);
             if (comb.voltage != null) GTOreDictUnificator.registerOre("comb" + comb.voltage.name(), tComb);
         }
@@ -1280,7 +1279,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         // Manasteel -> Manasteel LCR w/Steel
         GTValues.RA.stdBuilder()
             .itemInputs(GTBees.combs.getStackForType(CombType.MANASTEEL, 4))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, MaterialsBotania.Manasteel, 1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Manasteel, 1))
             .fluidInputs(Materials.Steel.getMolten(1 * INGOTS))
             .duration(33 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -1289,7 +1288,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         // Manasteel -> Manasteel LCR w/Thaumium
         GTValues.RA.stdBuilder()
             .itemInputs(GTBees.combs.getStackForType(CombType.MANASTEEL, 4))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, MaterialsBotania.Manasteel, 4))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Manasteel, 4))
             .fluidInputs(Materials.Thaumium.getMolten(2 * INGOTS))
             .duration(33 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -1299,8 +1298,8 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTBees.combs.getStackForType(CombType.ELVEN, 6),
-                GTOreDictUnificator.get(OrePrefixes.gemFlawless, MaterialsBotania.ManaDiamond, 1))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, MaterialsBotania.BotaniaDragonstone, 1))
+                GTOreDictUnificator.get(OrePrefixes.gemFlawless, Materials.ManaDiamond, 1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Dragonstone, 1))
             .fluidInputs(Materials.Void.getMolten(1 * EIGHTH_INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -1318,8 +1317,8 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         // Elven -> Eleven Elementium LCR w/Manasteel
         GTValues.RA.stdBuilder()
             .itemInputs(GTBees.combs.getStackForType(CombType.ELVEN, 4))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, MaterialsBotania.ElvenElementium, 1))
-            .fluidInputs(MaterialsBotania.Manasteel.getMolten(2 * INGOTS))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.ElvenElementium, 1))
+            .fluidInputs(Materials.Manasteel.getMolten(2 * INGOTS))
             .duration(33 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(GTRecipeConstants.UniversalChemical);
@@ -1327,7 +1326,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         // Elven -> Eleven Elementium LCR w/Shadowmetal
         GTValues.RA.stdBuilder()
             .itemInputs(GTBees.combs.getStackForType(CombType.ELVEN, 4))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, MaterialsBotania.ElvenElementium, 4))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.ElvenElementium, 4))
             .fluidInputs(Materials.Shadow.getMolten(2 * INGOTS))
             .duration(33 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -1337,11 +1336,11 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTBees.combs.getStackForType(CombType.TERRASTEEL, 4),
-                GTOreDictUnificator.get(OrePrefixes.ingot, MaterialsBotania.Terrasteel, 1))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nugget, MaterialsBotania.Terrasteel, 1))
-            .fluidInputs(MaterialsBotania.ElvenElementium.getMolten(4 * INGOTS))
+                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Terrasteel, 1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Terrasteel, 1))
+            .fluidInputs(Materials.ElvenElementium.getMolten(4 * INGOTS))
             .outputChances(50 * 100)
-            .fluidOutputs(MaterialsBotania.Terrasteel.getMolten(1 * INGOTS))
+            .fluidOutputs(Materials.Terrasteel.getMolten(1 * INGOTS))
             .duration(33 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(GTRecipeConstants.UniversalChemical);
@@ -1353,7 +1352,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
                 new ItemStack(ModItems.manaResource, 4, 8),
                 new ItemStack(ModItems.dice, 1))
             .itemOutputs(new ItemStack(ModItems.manaResource, 4, 5))
-            .fluidInputs(MaterialsBotania.ElvenElementium.getMolten(4 * INGOTS))
+            .fluidInputs(Materials.ElvenElementium.getMolten(4 * INGOTS))
             .duration(33 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(multiblockChemicalReactorRecipes);
@@ -1365,7 +1364,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
                 new ItemStack(ModItems.manaResource, 4, 8),
                 new ItemStack(ModItems.dice, 1))
             .itemOutputs(new ItemStack(ModItems.manaResource, 6, 5))
-            .fluidInputs(MaterialsBotania.Terrasteel.getMolten(2 * INGOTS))
+            .fluidInputs(Materials.Terrasteel.getMolten(2 * INGOTS))
             .duration(33 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(multiblockChemicalReactorRecipes);
@@ -1383,13 +1382,13 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.ManaFly.get(1))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.nugget, MaterialsBotania.Manasteel, 1),
+                GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Manasteel, 1),
                 new ItemStack(ModItems.manaResource, 1, 16),
                 new ItemStack(ModItems.manaResource, 1, 23),
                 new ItemStack(ModItems.quartz, 1, 1),
                 new ItemStack(ModItems.manaResource, 1, 22),
                 new ItemStack(ModItems.manaResource, 1, 1),
-                GTOreDictUnificator.get(OrePrefixes.gem, MaterialsBotania.ManaDiamond, 1),
+                GTOreDictUnificator.get(OrePrefixes.gem, Materials.ManaDiamond, 1),
                 new ItemStack(ModItems.manaCookie, 1))
             .outputChances(35 * 100, 15 * 100, 15 * 100, 15 * 100, 15 * 100, 5 * 100, 2 * 100, 1 * 10)
             .duration(20 * SECONDS)

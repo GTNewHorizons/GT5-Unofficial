@@ -17,8 +17,8 @@ import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.util.GTUtility;
-import gregtech.common.covers.gui.CoverFluidLimiterGui;
-import gregtech.common.covers.gui.CoverGui;
+import gregtech.common.gui.modularui.cover.CoverFluidLimiterGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.gui.mui1.cover.FluidLimiterUIFactory;
 import io.netty.buffer.ByteBuf;
 
@@ -131,7 +131,7 @@ public class CoverFluidLimiter extends Cover {
         return true;
     }
 
-    protected @NotNull CoverGui<?> getCoverGui() {
+    protected @NotNull CoverBaseGui<?> getCoverGui() {
         return new CoverFluidLimiterGui(this);
     }
 

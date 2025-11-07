@@ -53,7 +53,7 @@ public class GregtechDehydrator {
                 2,
                 9,
                 true,
-                SoundResource.NONE,
+                SoundResource.GTCEU_LOOP_CHEMICAL,
                 SpecialEffects.NONE,
                 "DEHYDRATOR").setRecipeCatalystPriority(6)
                     .getStackForm(1L));
@@ -69,7 +69,7 @@ public class GregtechDehydrator {
                 2,
                 9,
                 true,
-                SoundResource.NONE,
+                SoundResource.GTCEU_LOOP_CHEMICAL,
                 SpecialEffects.NONE,
                 "DEHYDRATOR").setRecipeCatalystPriority(5)
                     .getStackForm(1L));
@@ -86,7 +86,7 @@ public class GregtechDehydrator {
                 2,
                 9,
                 true,
-                SoundResource.NONE,
+                SoundResource.GTCEU_LOOP_CHEMICAL,
                 SpecialEffects.NONE,
                 "DEHYDRATOR").setRecipeCatalystPriority(4)
                     .getStackForm(1L));
@@ -102,7 +102,7 @@ public class GregtechDehydrator {
                 2,
                 9,
                 true,
-                SoundResource.NONE,
+                SoundResource.GTCEU_LOOP_CHEMICAL,
                 SpecialEffects.NONE,
                 "DEHYDRATOR").setRecipeCatalystPriority(3)
                     .getStackForm(1L));
@@ -118,7 +118,7 @@ public class GregtechDehydrator {
                 2,
                 9,
                 true,
-                SoundResource.NONE,
+                SoundResource.GTCEU_LOOP_CHEMICAL,
                 SpecialEffects.NONE,
                 "DEHYDRATOR").setRecipeCatalystPriority(2)
                     .getStackForm(1L));
@@ -134,7 +134,7 @@ public class GregtechDehydrator {
                 2,
                 9,
                 true,
-                SoundResource.NONE,
+                SoundResource.GTCEU_LOOP_CHEMICAL,
                 SpecialEffects.NONE,
                 "DEHYDRATOR").setRecipeCatalystPriority(1)
                     .getStackForm(1L));
