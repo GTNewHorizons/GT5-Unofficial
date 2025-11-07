@@ -1939,6 +1939,7 @@ public class Textures {
         NANITE_CORE,
         NANITE_SHIELDING_FRAME,
         OVERLAY_ENERGY_IN_DEBUG,
+        OVERLAY_BUS_IN_DEBUG,
 
         OVERLAY_HATCH_IN_DEBUG,
 
