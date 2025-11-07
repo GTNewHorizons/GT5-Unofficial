@@ -56,6 +56,7 @@ import java.util.Objects;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -274,18 +275,19 @@ public class AdditionalRecipes {
             .itemOutputs(Materials.Empty.getCells(1))
             .metadata(FUEL_VALUE, 10)
             .addTo(BartWorksRecipeMaps.acidGenFuels);
+        //should probably also find a way to auto-fill these with an array but i am too lazy to do that rn
         GTValues.RA.stdBuilder()
-            .fluidInputs(new FluidStack(GTPPFluids.IndustrialStrengthHydrofluoricAcid,1000))
+            .itemInputs(FluidContainerRegistry.fillFluidContainer(new FluidStack(GTPPFluids.IndustrialStrengthHydrofluoricAcid,1000),ItemList.Cell_Empty.get(1L)))
             .itemOutputs(Materials.Empty.getCells(1))
             .metadata(FUEL_VALUE, 320)
             .addTo(BartWorksRecipeMaps.acidGenFuels);
         GTValues.RA.stdBuilder()
-            .fluidInputs(new FluidStack(GTPPFluids.IndustrialStrengthHydrogenChloride,1000))
+            .itemInputs(FluidContainerRegistry.fillFluidContainer(new FluidStack(GTPPFluids.IndustrialStrengthHydrogenChloride,1000),ItemList.Cell_Empty.get(1L)))
             .itemOutputs(Materials.Empty.getCells(1))
             .metadata(FUEL_VALUE, 224)
             .addTo(BartWorksRecipeMaps.acidGenFuels);
         GTValues.RA.stdBuilder()
-            .fluidInputs(new FluidStack(GTPPFluids.PropionicAcid,1000))
+            .itemInputs(FluidContainerRegistry.fillFluidContainer(new FluidStack(GTPPFluids.PropionicAcid,1000),ItemList.Cell_Empty.get(1L)))
             .itemOutputs(Materials.Empty.getCells(1))
             .metadata(FUEL_VALUE, 150)
             .addTo(BartWorksRecipeMaps.acidGenFuels);
