@@ -240,9 +240,9 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         int casingMeta = Math.max(casingTier - 1, 0);
         if (side == aFacing) {
             if (currentSpecies != null && currentSpecies.getFinalized()) {
-                rTexture = new ITexture[]{
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, casingMeta)),
+                rTexture = new ITexture[] {
+                    Textures.BlockIcons.getCasingTextureForId(
+                        GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, casingMeta)),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_BIOVAT)
                         .extFacing()
@@ -251,11 +251,11 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
                         .addIcon(OVERLAY_FRONT_BIOVAT_GLOW)
                         .extFacing()
                         .glow()
-                        .build()};
+                        .build() };
             } else {
-                rTexture = new ITexture[]{
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, casingMeta)),
+                rTexture = new ITexture[] {
+                    Textures.BlockIcons.getCasingTextureForId(
+                        GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, casingMeta)),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_BIOVAT_EMPTY)
                         .extFacing()
@@ -264,7 +264,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
                         .addIcon(OVERLAY_FRONT_BIOVAT_EMPTY_GLOW)
                         .extFacing()
                         .glow()
-                        .build()};
+                        .build() };
             }
         } else {
             rTexture = new ITexture[] { Textures.BlockIcons

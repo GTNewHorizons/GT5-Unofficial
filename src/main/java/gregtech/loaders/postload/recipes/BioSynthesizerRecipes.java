@@ -1,20 +1,24 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.TierEU.RECIPE_LV;
-import static gregtech.api.enums.TierEU.RECIPE_UV;
-import static gregtech.api.enums.TierEU.RECIPE_ZPM;
-import static gregtech.api.recipe.RecipeMaps.bioProgrammerRecipes;
-import static gregtech.api.recipe.RecipeMaps.bioSynthesizerRecipes;
-import static gregtech.api.recipe.RecipeMaps.brewingRecipes;
-import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.enums.TierEU.*;
+import static gregtech.api.recipe.RecipeMaps.*;
+import static gregtech.api.recipe.RecipeMaps.circuitAssemblerRecipes;
+import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
+import static gregtech.api.util.GTModHandler.getModItem;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.AO_DATA;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
+import gtPlusPlus.core.material.MaterialMisc;
+import gtPlusPlus.core.material.MaterialsAlloy;
+import gtPlusPlus.core.material.MaterialsElements;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import static gtPlusPlus.core.material.MaterialsAlloy.TITANSTEEL;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -23,6 +27,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.AORecipeData;
+import tectech.thing.CustomItemList;
 
 public class BioSynthesizerRecipes implements Runnable {
 
@@ -39,7 +44,6 @@ public class BioSynthesizerRecipes implements Runnable {
 
     @Override
     public void run() {
-
         // MIXER
 
         // Nutrient Paste
@@ -50,7 +54,7 @@ public class BioSynthesizerRecipes implements Runnable {
             .eut(RECIPE_LV)
             .addTo(mixerRecipes);
 
-        // Neural Fluid
+        // NeuralFluid
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Neuron_Cell_Cluster.get(32))
             .fluidInputs(Materials.NutrientBroth.getFluid(8000))
@@ -70,16 +74,91 @@ public class BioSynthesizerRecipes implements Runnable {
             .eut(RECIPE_LV)
             .addTo(brewingRecipes);
 
+        // Chemical Reactor
+
+        // Psycoflux Substrate: the substitue to Sterilized Bio Catalyst
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.SodiumBromide, 4),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.PotassiumIodide, 4),
+                getModItem(NewHorizonsCoreMod.ID, "item.TCetiESeaweedExtract", 4)
+            )
+            .fluidInputs(
+                Materials.GrowthMediumSterilized.getFluid(4000),
+                Materials.NeuralFluid.getFluid(4000)
+            )
+            .fluidOutputs(Materials.PsycofluxSubstrate.getFluid(8000))
+            .duration(60 * SECONDS)
+            .eut(RECIPE_UHV)
+            .addTo(multiblockChemicalReactorRecipes);
+
         // SYNTHESIZER
 
-        // Neurogel Substrate
+        // stemcell self-replication recipe
         GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Items.slime_ball, 1))
-            .fluidInputs(Materials.NeuralFluid.getFluid(1000))
-            .itemOutputs(ItemList.Neurogel_Substrate.get(1))
-            .duration(20 * SECONDS)
+            .itemInputs(
+                GTOreDictUnificator.get(ItemList.Circuit_Chip_Stemcell.get(16)),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sunnarium, 1))
+            .fluidInputs(Materials.NutrientBroth.getFluid(1000))
+            .itemOutputs(ItemList.Circuit_Chip_Stemcell.get(64))
+            .duration(10 * SECONDS)
+            .eut(RECIPE_LuV)
+            .metadata(AO_DATA, new AORecipeData(8, 50, 10))
+            .addTo(bioSynthesizerRecipes);
+
+        // Neuron Cell Cluster
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Circuit_Chip_Stemcell.get(16),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Adamantium, 4))
+            .fluidInputs(
+                Materials.GrowthMediumSterilized.getFluid(250),
+                Materials.NutrientBroth.getFluid(1000))
+            .itemOutputs(ItemList.Neuron_Cell_Cluster.get(64))
+            .duration(10 * SECONDS)
             .eut(RECIPE_ZPM)
-            .metadata(AO_DATA, new AORecipeData(4, 200, 10))
+            .metadata(AO_DATA, new AORecipeData(4, 50, 10))
+            .addTo(bioSynthesizerRecipes);
+
+        // Skin Cell Cluster
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Circuit_Chip_Stemcell.get(16),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.InfinityCatalyst, 4))
+            .fluidInputs(
+                Materials.GrowthMediumSterilized.getFluid(250),
+                Materials.NutrientBroth.getFluid(1000))
+            .itemOutputs(ItemList.Skin_Cell_Cluster.get(64))
+            .duration(10 * SECONDS)
+            .eut(RECIPE_UV)
+            .metadata(AO_DATA, new AORecipeData(10, 50, 10))
+            .addTo(bioSynthesizerRecipes);
+
+        // Muscle Cell Cluster
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Circuit_Chip_Stemcell.get(16),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.CosmicNeutronium, 4))
+            .fluidInputs(
+                Materials.GrowthMediumSterilized.getFluid(250),
+                Materials.NutrientBroth.getFluid(1000))
+            .itemOutputs(ItemList.Muscle_Cell_Cluster.get(64))
+            .duration(10 * SECONDS)
+            .eut(RECIPE_UV)
+            .metadata(AO_DATA, new AORecipeData(10, 50, 10))
+            .addTo(bioSynthesizerRecipes);
+
+        // Self Healing Conductor
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                new ItemStack(Items.slime_ball, 16),
+                getModItem(NewHorizonsCoreMod.ID, "item.Agar", 16), // placeholder! todo: find the correct entry to Agar
+                getModItem(NewHorizonsCoreMod.ID, "item.TCetiESeaweedExtract", 1))
+            .fluidInputs(Materials.NeuralFluid.getFluid(8000))
+            .itemOutputs(ItemList.Self_Healing_Conductor.get(4))
+            .duration(60 * SECONDS)
+            .eut(RECIPE_UV)
+            .metadata(AO_DATA, new AORecipeData(4, 500, 10))
             .addTo(bioSynthesizerRecipes);
 
         // Circuit Tissue
@@ -94,57 +173,161 @@ public class BioSynthesizerRecipes implements Runnable {
             .metadata(AO_DATA, new AORecipeData(2, 1000, 30))
             .addTo(bioSynthesizerRecipes);
 
-        // PROGRAMMER
-
-        // Neural Interface
+        // Immortal Cell
         GTValues.RA.stdBuilder()
             .itemInputs(
+                ItemList.Neuron_Cell_Cluster.get(64),
                 ItemList.Muscle_Cell_Cluster.get(64),
-                ItemList.Neuron_Cell_Cluster.get(16),
-                ItemList.Neurogel_Substrate.get(4),
-                ItemList.Circuit_Tissue.get(1))
-            .itemOutputs(ItemList.Neural_Interface.get(1))
-            .duration(10 * SECONDS)
-            .eut(RECIPE_UV)
-            .metadata(AO_DATA, new AORecipeData(9, 2000, 10))
-            .addTo(bioProgrammerRecipes);
+                ItemList.Skin_Cell_Cluster.get(64)
+                )
+            .fluidInputs(MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(1 * INGOTS))
+            .itemOutputs(ItemList.Immortal_Cell.get(1))
+            .duration(30 * SECONDS)
+            .eut(RECIPE_UEV)
+            .metadata(AO_DATA, new AORecipeData(4, 500, 10))
+            .addTo(bioSynthesizerRecipes);
+
+        // PROGRAMMER
 
         // Neuro CPU
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Circuit_Board_Wetware_Extreme.get(4),
                 ItemList.Neuron_Cell_Cluster.get(64),
-                ItemList.Circuit_Parts_Reinforced_Glass_Tube.get(64),
+                getModItem(NewHorizonsCoreMod.ID, "item.ReinforcedGlassPlate", 8L, 0),
                 GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Polybenzimidazole, 32),
-                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.NaquadahEnriched, 16),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.TungstenSteel, 32))
+                new Object[] { OrePrefixes.foil.get(Materials.AnySyntheticRubber), 64},
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.VanadiumGallium, 8))
             .fluidInputs(
                 Materials.GrowthMediumSterilized.getFluid(1000),
                 Materials.NutrientBroth.getFluid(8000),
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 4000))
             .itemOutputs(ItemList.Circuit_Chip_NeuroCPU.get(4))
-            .eut(RECIPE_ZPM)
-            .duration(30 * SECONDS)
+            .eut(RECIPE_UV)
+            .duration(5 * SECONDS)
             .metadata(AO_DATA, new AORecipeData(8, 100, 5))
             .addTo(bioProgrammerRecipes);
 
-        // Bio CPU
+        // Living Crystal chip
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Self_Healing_Conductor.get(1),
+                ItemList.Neuron_Cell_Cluster.get(16),
+                ItemList.Circuit_Chip_CrystalSoC2.get(4))
+            .fluidInputs(Materials.NeuralFluid.getFluid(2000))
+            .itemOutputs(ItemList.Circuit_Parts_Crystal_Chip_Wetware.get(4))
+            .eut(RECIPE_UHV)
+            .duration(30 * SECONDS)
+            .metadata(AO_DATA, new AORecipeData(11, 500, 5))
+            .addTo(bioProgrammerRecipes);
+
+        // Bio-Computing core
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Circuit_Board_Bio_Ultra.get(1),
-                ItemList.Circuit_Chip_Biocell.get(64),
-                ItemList.Circuit_Tissue.get(1),
-                ItemList.Circuit_Parts_Reinforced_Glass_Tube.get(16),
-                GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Polybenzimidazole, 16),
-                GTOreDictUnificator.get(OrePrefixes.bolt, Materials.HSSS, 32))
+                ItemList.Neuron_Cell_Cluster.get(64),
+                ItemList.Muscle_Cell_Cluster.get(16),
+                ItemList.Skin_Cell_Cluster.get(16),
+                GTOreDictUnificator.get(OrePrefixes.bolt, Materials.MysteriousCrystal, 4),
+                TITANSTEEL.getBolt(4))
             .fluidInputs(
-                Materials.BioMediumSterilized.getFluid(500L),
-                Materials.UUMatter.getFluid(500L),
-                new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000))
-            .itemOutputs(ItemList.Circuit_Chip_BioCPU.get(1))
-            .duration(30 * SECONDS)
-            .eut(TierEU.RECIPE_UHV / 2)
-            .metadata(AO_DATA, new AORecipeData(8, 100, 5))
+                Materials.NeuralFluid.getFluid(8000),
+                Materials.PsycofluxSubstrate.getFluid(4000))
+            .itemOutputs(ItemList.Bio_Computing_Core.get(1))
+            .duration(10 * SECONDS)
+            .eut(RECIPE_UHV)
+            .metadata(AO_DATA, new AORecipeData(15, 2000, 10))
             .addTo(bioProgrammerRecipes);
+
+        // Neural Electronic Interface
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Skin_Cell_Cluster.get(16),
+                ItemList.Muscle_Cell_Cluster.get(16),
+                ItemList.Self_Healing_Conductor.get(2),
+                ItemList.Circuit_Chip_CrystalSoC2.get(1),
+                GTOreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole, 32))
+            .fluidInputs(Materials.PsycofluxSubstrate.getFluid(1000))
+            .itemOutputs(ItemList.Neural_Electronic_Interface.get(1))
+            .duration(5 * SECONDS)
+            .eut(RECIPE_UHV)
+            .metadata(AO_DATA, new AORecipeData(9, 2000, 10))
+            .addTo(bioProgrammerRecipes);
+
+        // Axon Bus
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Muscle_Cell_Cluster.get(16),
+                ItemList.Neuron_Cell_Cluster.get(16),
+                ItemList.Self_Healing_Conductor.get(2),
+                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.ElectrumFlux, 32),
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Graphene, 8))
+            .fluidInputs(Materials.PsycofluxSubstrate.getFluid(1000))
+            .itemOutputs(ItemList.Axon_Bus.get(1))
+            .duration(5 * SECONDS)
+            .eut(RECIPE_UHV)
+            .metadata(AO_DATA, new AORecipeData(9, 2000, 10))
+            .addTo(bioProgrammerRecipes);
+
+        // Living Bio Chip (temporary)
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Infinite_Evolution_Matrix.get(1),
+                ItemList.Circuit_Silicon_Wafer6.get(8))
+            .fluidInputs(Materials.PsycofluxSubstrate.getFluid(4000))
+            .itemOutputs(
+                ItemList.Circuit_Parts_Chip_Bioware.get(64),
+                ItemList.Circuit_Parts_Chip_Bioware.get(64))
+            .duration(30 * SECONDS)
+            .eut(RECIPE_UEV)
+            .metadata(AO_DATA, new AORecipeData(20, 2000, 10))
+            .addTo(bioProgrammerRecipes);
+
+        // Asssembler Recipes
+
+        // Infinite Evolution Matrix
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Immortal_Cell.get(1),
+                ItemList.Tesseract.get(1),
+                ItemList.NuclearStar.get(1))
+            .fluidInputs(MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(16 * INGOTS))
+            .itemOutputs(ItemList.Infinite_Evolution_Matrix.get(1))
+            .duration(30 * SECONDS)
+            .eut(RECIPE_UEV)
+            .addTo(assemblerRecipes);
+
+        // CAL recipes temporarily written in Asssembler
+
+        // Bio processor
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Bio_Computing_Core.get(1L),
+                ItemList.Neural_Electronic_Interface.get(2L),
+                ItemList.Axon_Bus.get(2L),
+                ItemList.Circuit_Parts_CapacitorASMD.get(12L),
+                ItemList.Circuit_Parts_TransistorASMD.get(12L),
+                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.HSSE, 16))
+            .itemOutputs(ItemList.Circuit_Bioprocessor.get(1L))
+            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(2 * INGOTS))
+            .requiresCleanRoom()
+            .duration(60 * SECONDS)
+            .eut(153600)
+            .addTo(assemblerRecipes);
+
+        // Bio SoC
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Circuit_Board_Bio_Ultra.get(1L),
+                ItemList.Circuit_Parts_Chip_Bioware.get(1L),
+                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.HSSE, 16),
+                GTOreDictUnificator.get(OrePrefixes.bolt, Materials.DraconiumAwakened, 16))
+            .itemOutputs(ItemList.Circuit_Bioprocessor.get(1L))
+            .fluidInputs(MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(2 * INGOTS))
+            .requiresCleanRoom()
+            .duration(20 * SECONDS)
+            .eut(614400)
+            .addTo(assemblerRecipes);
+
     }
 }

@@ -161,6 +161,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials NutrientBroth;
     public static Materials SterilizationFluid;
     public static Materials NeuralFluid;
+    public static Materials PsycofluxSubstrate;
 
     // Random
     public static Materials AnyBronze;
@@ -536,6 +537,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Titaniumtetrachloride;
     public static Materials Water, Steam; // Steam.getGas(..) reads better than Water.getGas(..)
     public static Materials Zincite;
+    public static Materials SodiumBromide;
+    public static Materials PotassiumIodide;
 
     // Unclassified 01 materials
     public static Materials DenseSteam;
