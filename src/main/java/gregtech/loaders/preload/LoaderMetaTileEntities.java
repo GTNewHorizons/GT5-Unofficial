@@ -65,6 +65,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchEnergyDebug;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBusDebug;
+import gregtech.api.metatileentity.implementations.MTEHatchInputDebug;
 import gregtech.api.metatileentity.implementations.MTEHatchMagnet;
 import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
@@ -9080,6 +9081,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEHatchInput(INPUT_HATCH_UXV.ID, "hatch.input.tier.13", "Input Hatch (UXV)", 13).getStackForm(1L));
         ItemList.Hatch_Input_MAX.set(
             new MTEHatchInput(INPUT_HATCH_MAX.ID, "hatch.input.tier.14", "Input Hatch (MAX)", 14).getStackForm(1L));
+        ItemList.Hatch_Input_Debug.set(
+            new MTEHatchInputDebug(INPUT_HATCH_DEBUG.ID, "hatch.input.debug", "Debug Input Hatch", 14)
+                .getStackForm(1L));
     }
 
     private static void registerQuadrupleInputHatch() {
