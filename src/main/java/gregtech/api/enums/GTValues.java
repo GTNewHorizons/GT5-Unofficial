@@ -197,7 +197,7 @@ public class GTValues {
     };
 
     public static final String[] TIER_COLORS = new String[] { EnumChatFormatting.RED.toString(), // ULV, 0
-        EnumChatFormatting.BLACK.toString(), // LV, 1
+        EnumChatFormatting.GRAY.toString(), // LV, 1
         EnumChatFormatting.GOLD.toString(), // MV, 2
         EnumChatFormatting.YELLOW.toString(), // HV, 3
         EnumChatFormatting.DARK_GRAY.toString(), // EV, 4
