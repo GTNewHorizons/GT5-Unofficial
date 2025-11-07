@@ -10,7 +10,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 import kekztech.Items;
 import kekztech.common.items.ErrorItem;
 import kekztech.common.items.MetaItemCraftingComponent;
@@ -23,9 +22,7 @@ public class Mixer implements Runnable {
 
         // YSZ Ceramic Dust
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                Items.YttriaDust.getOreDictedItemStack(1),
-                Items.ZirconiaDust.getOreDictedItemStack(5))
+            .itemInputs(Items.YttriaDust.getOreDictedItemStack(1), Items.ZirconiaDust.getOreDictedItemStack(5))
             .iCircuit(6)
             .itemOutputs(craftingItem.getStackOfAmountFromDamage(Items.YSZCeramicDust.getMetaID(), 6))
             .duration(20 * SECONDS)
