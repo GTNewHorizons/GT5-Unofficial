@@ -643,11 +643,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     }
 
     @Override
-    protected boolean useMui2() {
-        return true;
-    }
-
-    @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new MTEPCBFactoryGui(this);
     }

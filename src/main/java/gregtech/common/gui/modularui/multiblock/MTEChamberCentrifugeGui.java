@@ -47,7 +47,6 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui<MTEChamberCent
         syncManager.syncValue("modeValue", new DoubleSyncValue(() -> multiblock.mode, dub -> multiblock.mode = dub));
     }
 
-
     @Override
     protected Flow createRightPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
         return Flow.row()
