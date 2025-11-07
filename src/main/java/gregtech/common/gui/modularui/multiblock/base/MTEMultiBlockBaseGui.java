@@ -523,17 +523,37 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         return fluidTextLine;
     }
 
-    // TODO: separate panel gap into 'left row' and 'right row', for easier usage
+    /**
+     * Split into two methods, one for left/right side of the panel gap
+     * {@link #createLeftPanelGapRow(com.cleanroommc.modularui.screen.ModularPanel, com.cleanroommc.modularui.value.sync.PanelSyncManager)}
+     * {@link #createRightPanelGapRow(com.cleanroommc.modularui.screen.ModularPanel, com.cleanroommc.modularui.value.sync.PanelSyncManager)}
+     *
+     */
     protected Flow createPanelGap(ModularPanel parent, PanelSyncManager syncManager) {
         return new Row().widthRel(1)
-            .paddingRight(6)
+            .paddingRight(4)
             .paddingLeft(4)
             .height(textBoxToInventoryGap)
+            .child(createLeftPanelGapRow(parent, syncManager))
+            .child(createRightPanelGapRow(parent, syncManager));
+    }
+
+    protected Flow createLeftPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
+        return new Row().coverChildrenWidth()
+            .heightRel(1)
             .child(createVoidExcessButton(syncManager))
             .child(createInputSeparationButton(syncManager))
             .child(createBatchModeButton(syncManager))
             .child(createLockToSingleRecipeButton(syncManager))
-            .childIf(!machineModeIcons.isEmpty(), createModeSwitchButton(syncManager))
+            .childIf(!machineModeIcons.isEmpty(), createModeSwitchButton(syncManager));
+    }
+
+    protected Flow createRightPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
+        return Flow.row()
+            .mainAxisAlignment(MainAxis.END)
+            .anchorRight(0)
+            .coverChildrenWidth()
+            .heightRel(1)
             .childIf(multiblock.supportsPowerPanel(), createPowerPanelButton(syncManager, parent));
     }
 
@@ -792,8 +812,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         IPanelHandler powerPanel = syncManager
             .panel("powerPanel", (p_syncManager, syncHandler) -> openPowerControlPanel(p_syncManager, parent), true);
         return new ButtonWidget<>().size(18, 18)
-            .right(2)
             .marginTop(4)
+            .marginLeft(4)
             .overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/power_panel"))
             .onMousePressed(d -> {
                 if (!powerPanel.isPanelOpen()) {

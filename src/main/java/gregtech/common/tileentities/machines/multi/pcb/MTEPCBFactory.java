@@ -91,6 +91,8 @@ import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.blocks.BlockCasings8;
+import gregtech.common.gui.modularui.multiblock.MTEPCBFactoryGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -642,7 +644,20 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
     @Override
     protected boolean useMui2() {
-        return false;
+        return true;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEPCBFactoryGui(this);
+    }
+
+    public int getTraceSize() {
+        return (int) ((1f / mRoughnessMultiplier) * 100f);
+    }
+
+    public void setTraceSize(int value) {
+        mRoughnessMultiplier = 100f / (int) value;
     }
 
     @Override
