@@ -200,8 +200,6 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
         mSize = 0;
         int tier = 0;
         while (tier < MAX_TIER && checkPiece(STRUCTURE_PIECE_FRONT + (tier + 1), (tier + 1), (tier + 1), 0)) {
-            mCasing = 0;
-            clearHatches();
             tier++;
         }
         if (tier <= 0) return false;

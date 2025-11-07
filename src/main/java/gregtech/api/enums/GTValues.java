@@ -20,20 +20,10 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.animatedText;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.chain;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.text;
 import static gregtech.api.util.CustomGlyphs.AIR;
-import static gregtech.api.util.CustomGlyphs.ALEPH;
 import static gregtech.api.util.CustomGlyphs.CHAOS;
-import static gregtech.api.util.CustomGlyphs.CIRCLE_CROSS;
-import static gregtech.api.util.CustomGlyphs.CIRCLE_STAR;
 import static gregtech.api.util.CustomGlyphs.EARTH;
-import static gregtech.api.util.CustomGlyphs.EMPTY_SET;
-import static gregtech.api.util.CustomGlyphs.HIGH_VOLTAGE;
-import static gregtech.api.util.CustomGlyphs.MAGNET;
-import static gregtech.api.util.CustomGlyphs.OMEGA;
 import static gregtech.api.util.CustomGlyphs.ORDER;
-import static gregtech.api.util.CustomGlyphs.SPARKLES;
 import static gregtech.api.util.CustomGlyphs.STAR;
-import static gregtech.api.util.CustomGlyphs.SUBSCRIPT0;
-import static gregtech.api.util.CustomGlyphs.SUPERSCRIPT0;
 
 import java.math.BigInteger;
 import java.util.Arrays;
@@ -57,6 +47,7 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.internal.IGTRecipeAdder;
 import gregtech.api.net.IGT_NetworkHandler;
 import gregtech.api.objects.XSTR;
+import gregtech.api.util.CustomGlyphs;
 import gregtech.api.util.GTChunkAssociatedData;
 
 /**
@@ -206,7 +197,7 @@ public class GTValues {
     };
 
     public static final String[] TIER_COLORS = new String[] { EnumChatFormatting.RED.toString(), // ULV, 0
-        EnumChatFormatting.BLACK.toString(), // LV, 1
+        EnumChatFormatting.GRAY.toString(), // LV, 1
         EnumChatFormatting.GOLD.toString(), // MV, 2
         EnumChatFormatting.YELLOW.toString(), // HV, 3
         EnumChatFormatting.DARK_GRAY.toString(), // EV, 4
@@ -555,6 +546,16 @@ public class GTValues {
         + EnumChatFormatting.BOLD
         + "Weabo";
 
+    public static final String Authorguid118 = "Author: " + EnumChatFormatting.WHITE
+        + EnumChatFormatting.BOLD
+        + "gu"
+        + EnumChatFormatting.AQUA
+        + EnumChatFormatting.BOLD
+        + "id"
+        + EnumChatFormatting.DARK_AQUA
+        + EnumChatFormatting.BOLD
+        + "118";
+
     public static final String Authorminecraft7771 = "Author: " + EnumChatFormatting.BLUE
         + EnumChatFormatting.LIGHT_PURPLE
         + "minecraft7771";
@@ -632,6 +633,18 @@ public class GTValues {
             EnumChatFormatting.DARK_GREEN + BOLD,
             EnumChatFormatting.DARK_GREEN + OBFUSCATED + BOLD));
 
+    public static final String AuthorJulia =
+        // spotless:off
+        EnumChatFormatting.BOLD.toString() +
+        EnumChatFormatting.GOLD            + CustomGlyphs.SPARKLES +
+        EnumChatFormatting.AQUA            + "J"                   +
+        EnumChatFormatting.LIGHT_PURPLE    + "u"                   +
+        EnumChatFormatting.WHITE           + "l"                   +
+        EnumChatFormatting.LIGHT_PURPLE    + "i"                   +
+        EnumChatFormatting.AQUA            + "a"                   +
+        EnumChatFormatting.GOLD            + CustomGlyphs.SPARKLES ;
+        // spotless:on
+
     public static final String TecTechHatches = "Supports " + TT + " laser and multi-amp hatches";
 
     public static final String AuthorPureBluez = "Author: " + EnumChatFormatting.WHITE
@@ -650,11 +663,11 @@ public class GTValues {
         GREEN, AQUA, RED, LIGHT_PURPLE, YELLOW, WHITE, OBFUSCATED, UNDERLINE };
 
     public static final Supplier<String> fancyAuthorChrom = chain(
-        createChromLetter("C", ORDER, MAGNET, HIGH_VOLTAGE),
-        createChromLetter("h", EARTH, ALEPH + SUBSCRIPT0, OMEGA + SUPERSCRIPT0),
-        createChromLetter("r", CHAOS, "ṟ", SPARKLES),
-        createChromLetter("o", AIR, CIRCLE_CROSS, EMPTY_SET),
-        createChromLetter("m", STAR, CIRCLE_STAR, "⏧"));
+        createChromLetter("C", ORDER),
+        createChromLetter("h", EARTH),
+        createChromLetter("r", CHAOS),
+        createChromLetter("o", AIR),
+        createChromLetter("m", STAR));
 
     public static final Supplier<String> AuthorThree = chain(
         animatedText(

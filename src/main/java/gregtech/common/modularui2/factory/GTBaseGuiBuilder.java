@@ -70,6 +70,8 @@ public final class GTBaseGuiBuilder {
     private boolean doesAddCoverTabs = true;
     private boolean doesAddGhostCircuitSlot;
     private boolean doesAddGregTechLogo;
+    private int gregtechLogoPosX = 152;
+    private int gregtechLogoPosY = 63;
     private boolean doesAddMufflerButton = true;
     private int mufflerPosFromTop = 0;
     private int mufflerPosFromRightOutwards = 13;
@@ -138,6 +140,15 @@ public final class GTBaseGuiBuilder {
      */
     public GTBaseGuiBuilder doesAddGregTechLogo(boolean doesAddGregTechLogo) {
         this.doesAddGregTechLogo = doesAddGregTechLogo;
+        return this;
+    }
+
+    /**
+     * Sets a new position for the Gregtech Logo
+     */
+    public GTBaseGuiBuilder moveGregtechLogoPos(int X, int Y) {
+        this.gregtechLogoPosX = X;
+        this.gregtechLogoPosY = Y;
         return this;
     }
 
@@ -278,7 +289,7 @@ public final class GTBaseGuiBuilder {
             return -1;
         });
         syncManager.syncValue("selector_screen_selected", selectedSyncHandler);
-        return new GhostCircuitSlotWidget(mte, selectedSyncHandler)
+        return new GhostCircuitSlotWidget(mte, syncManager)
             .slot(new ModularSlot(new GhostCircuitItemStackHandler(mte), 0))
             .pos(ccs.getCircuitSlotX() - 1, ccs.getCircuitSlotY() - 1);
     }
@@ -286,6 +297,6 @@ public final class GTBaseGuiBuilder {
     private IWidget createGregTechLogo() {
         return new Widget<>().widgetTheme(GTWidgetThemes.PICTURE_LOGO)
             .size(17, 17) // todo: size
-            .pos(152, 63);
+            .pos(gregtechLogoPosX, gregtechLogoPosY);
     }
 }
