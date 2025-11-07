@@ -15,6 +15,7 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.theme.WidgetThemeEntry;
 import com.cleanroommc.modularui.utils.MouseData;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.PhantomItemSlotSH;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
@@ -34,11 +35,14 @@ public class GhostShapeSlotWidget extends PhantomItemSlot {
     private final MTEHatchExtrusion hatch;
     private GhostShapeSyncHandler shapeSyncHandler;
     private IPanelHandler selectorPanelHandler;
+    private PanelSyncManager syncManager;
 
-    public GhostShapeSlotWidget(MTEHatchExtrusion hatch) {
+    public GhostShapeSlotWidget(MTEHatchExtrusion hatch, PanelSyncManager syncManager) {
         super();
         this.hatch = hatch;
         tooltipBuilder(this::getShapeSlotTooltip);
+        this.syncManager = syncManager;
+        selectorPanelHandler = buildSelectorPanel();
     }
 
     @Override
@@ -98,7 +102,8 @@ public class GhostShapeSlotWidget extends PhantomItemSlot {
     }
 
     private IPanelHandler buildSelectorPanel() {
-        return IPanelHandler.simple(getPanel(), (mainPanel, player) -> {
+
+        return syncManager.panel("shapeSlotPanel", (mainPanel, player) -> {
             ModularPanel panel = GTGuis.createPopUpPanel(GUI_ID);
             return new SelectItemGuiBuilder(panel, Arrays.asList(MTEHatchExtrusion.extruderShapes))
                 .setHeaderItem(hatch.getStackForm(1))

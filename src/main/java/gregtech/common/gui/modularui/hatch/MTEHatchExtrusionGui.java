@@ -74,7 +74,7 @@ public class MTEHatchExtrusionGui {
             }).pos(gridX, gridY))
 
             .child(
-                new GhostShapeSlotWidget(hatch)
+                new GhostShapeSlotWidget(hatch, syncManager)
                     .slot(new ModularSlot(hatch.inventoryHandler, MTEHatchExtrusion.shapeSlot))
                     .pos(ghostX, ghostY));
     }
