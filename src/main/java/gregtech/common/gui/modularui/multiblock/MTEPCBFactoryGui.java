@@ -2,9 +2,7 @@ package gregtech.common.gui.modularui.multiblock;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.layout.Flow;
@@ -28,30 +26,13 @@ public class MTEPCBFactoryGui extends MTEMultiBlockBaseGui<MTEPCBFactory> {
 
     @Override
     protected Flow createRightPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
-        return Flow.row()
-            .mainAxisAlignment(Alignment.MainAxis.END)
-            .align(Alignment.CenterRight)
-            .coverChildrenWidth()
-            .heightRel(1)
-            .child(createInterimTextFieldRow())
-            .childIf(multiblock.supportsPowerPanel(), createPowerPanelButton(syncManager, parent));
+        return super.createRightPanelGapRow(parent, syncManager).child(
+            new TextFieldWidget().setFormatAsInteger(true)
+                .setDefaultNumber(100)
+                .setNumbers(50, 200)
+                .syncHandler("traceSize")
+                .width(40)
+                .tooltip(t -> t.addLine(translateToLocal("GT5U.MBTT.PCB.Tooltip.5"))));
     }
 
-    private Flow createInterimTextFieldRow() {
-        return Flow.row()
-            .coverChildren()
-            .child(
-                new TextFieldWidget().setFormatAsInteger(true)
-                    .setDefaultNumber(100)
-                    .setNumbers(50, 200)
-                    .syncHandler("traceSize")
-                    .width(40)
-                    .align(Alignment.Center))
-            // TODO: add tooltip to text field after functionality is added rather than doing this hack.
-            // its quite annoying as it persist even if the widget is selected.
-            .child(
-                new IDrawable.DrawableWidget(IDrawable.EMPTY).size(40, 18)
-                    .align(Alignment.Center)
-                    .tooltip(t -> t.addLine(translateToLocal("GT5U.MBTT.PCB.Tooltip.5"))));
-    }
 }

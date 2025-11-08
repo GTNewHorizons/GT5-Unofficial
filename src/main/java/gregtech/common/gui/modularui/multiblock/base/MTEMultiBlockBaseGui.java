@@ -549,13 +549,10 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .childIf(!machineModeIcons.isEmpty(), createModeSwitchButton(syncManager));
     }
 
-    /**
-     * As it stands, despite widgets being displayed right to left, they need to be added left to right,
-     * meaning you can not call super on this method and instead have to rewrite. TODO: fix in mui2's side
-     */
     protected Flow createRightPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
         return Flow.row()
             .mainAxisAlignment(MainAxis.END)
+            .reverseLayout(true)
             .align(Alignment.CenterRight)
             .coverChildrenWidth()
             .heightRel(1)
