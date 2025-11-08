@@ -383,6 +383,16 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .build();
 
+    public static final UITexture TT_SAFE_VOID_OFF = UITexture.builder()
+        .location(MODID, "gui/overlay_button/safe_void_off")
+        .canApplyTheme()
+        .build();
+
+    public static final UITexture TT_SAFE_VOID_ON = UITexture.builder()
+        .location(MODID, "gui/overlay_button/safe_void_on")
+        .canApplyTheme()
+        .build();
+
     // endregion slot overlay
 
     // region progressbar
