@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui.multiblock.godforge.window;
+package gregtech.common.gui.modularui.multiblock.godforge.panel;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -17,15 +17,16 @@ import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.common.gui.modularui.multiblock.godforge.MTEForgeOfGodsGui;
 import tectech.thing.metaTileEntity.multi.godforge.MTEForgeOfGods;
 
-public class GeneralInfoWindow {
+public class GeneralInfoPanel {
 
     private static final int SIZE = 300;
     private static final int OFFSET_SIZE = 280;
 
     public static ModularPanel openPanel(MTEForgeOfGods multiblock) {
-        ModularPanel panel = new ModularPanel("fogGeneralInfoPanel").size(SIZE)
+        ModularPanel panel = new ModularPanel(MTEForgeOfGodsGui.PANEL_GENERAL_INFO).size(SIZE)
             .padding(10, 0, 10, 0)
             .background(GTGuiTextures.BACKGROUND_GLOW_WHITE)
             .disableHoverBackground();

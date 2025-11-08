@@ -1,9 +1,9 @@
-package gregtech.common.gui.modularui.multiblock.godforge.window;
+package gregtech.common.gui.modularui.multiblock.godforge.panel;
 
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
-public class UpgradeTreeWindow {
+public class StarCosmeticsPanel {
 
     public static ModularPanel openPanel() {
         return null; // todo

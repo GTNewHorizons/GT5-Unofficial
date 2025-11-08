@@ -435,6 +435,26 @@ public final class GTGuiTextures {
         .fullImage()
         .name(GTTextureIds.PROGRESSBAR_SIEVERT)
         .build();
+    public static final UITexture PROGRESSBAR_GODFORGE_PLASMA = UITexture
+        .fullImage(MODID, "gui/progressbar/godforge_plasma");
+    public static final UITexture PROGRESSBAR_GODFORGE_MILESTONE_BACKGROUND = UITexture
+        .fullImage(MODID, "gui/progressbar/godforge_progressbar_background");
+    public static final UITexture PROGRESSBAR_GODFORGE_MILESTONE_BLUE = UITexture
+        .fullImage(MODID, "gui/progressbar/godforge_progressbar_blue");
+    public static final UITexture PROGRESSBAR_GODFORGE_MILESTONE_RED = UITexture
+        .fullImage(MODID, "gui/progressbar/godforge_progressbar_red");
+    public static final UITexture PROGRESSBAR_GODFORGE_MILESTONE_PURPLE = UITexture
+        .fullImage(MODID, "gui/progressbar/godforge_progressbar_purple");
+    public static final UITexture PROGRESSBAR_GODFORGE_MILESTONE_RAINBOW = UITexture
+        .fullImage(MODID, "gui/progressbar/godforge_progressbar_rainbow");
+    public static final UITexture PROGRESSBAR_GODFORGE_MILESTONE_BLUE_INVERTED = UITexture
+        .fullImage(MODID, "gui/progressbar/godforge_progressbar_blue_inverted");
+    public static final UITexture PROGRESSBAR_GODFORGE_MILESTONE_RED_INVERTED = UITexture
+        .fullImage(MODID, "gui/progressbar/godforge_progressbar_red_inverted");
+    public static final UITexture PROGRESSBAR_GODFORGE_MILESTONE_PURPLE_INVERTED = UITexture
+        .fullImage(MODID, "gui/progressbar/godforge_progressbar_purple_inverted");
+    public static final UITexture PROGRESSBAR_GODFORGE_MILESTONE_RAINBOW_INVERTED = UITexture
+        .fullImage(MODID, "gui/progressbar/godforge_progressbar_rainbow_inverted");
 
     public static final UITexture STEAM_GAUGE_BG = UITexture.fullImage(GregTech.ID, "gui/background/steam_dial");
     public static final UITexture STEAM_GAUGE_BG_STEEL = UITexture
@@ -696,6 +716,24 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.PICTURE_RADIATION_SHUTTER_INSIDE)
         .build();
+
+    public static final UITexture PICTURE_GODFORGE_MILESTONE_CHARGE = UITexture
+        .fullImage(MODID, "gui/picture/milestone_charge");
+    public static final UITexture PICTURE_GODFORGE_MILESTONE_CONVERSION = UITexture
+        .fullImage(MODID, "gui/picture/milestone_conversion");
+    public static final UITexture PICTURE_GODFORGE_MILESTONE_CATALYST = UITexture
+        .fullImage(MODID, "gui/picture/milestone_catalyst");
+    public static final UITexture PICTURE_GODFORGE_MILESTONE_COMPOSITION = UITexture
+        .fullImage(MODID, "gui/picture/milestone_composition");
+    public static final UITexture PICTURE_GODFORGE_THANKS = UITexture.fullImage(MODID, "gui/picture/thanks");
+    public static final UITexture PICTURE_GODFORGE_MILESTONE_CHARGE_GLOW = UITexture
+        .fullImage(MODID, "gui/picture/milestone_charge_glow");
+    public static final UITexture PICTURE_GODFORGE_MILESTONE_CONVERSION_GLOW = UITexture
+        .fullImage(MODID, "gui/picture/milestone_conversion_glow");
+    public static final UITexture PICTURE_GODFORGE_MILESTONE_CATALYST_GLOW = UITexture
+        .fullImage(MODID, "gui/picture/milestone_catalyst_glow");
+    public static final UITexture PICTURE_GODFORGE_MILESTONE_COMPOSITION_GLOW = UITexture
+        .fullImage(MODID, "gui/picture/milestone_composition_glow");
 
     public static final UITexture TT_CONTROLLER_SLOT_HEAT_SINK = UITexture.builder()
         .location(MODID, "gui/picture/heat_sink_small")
