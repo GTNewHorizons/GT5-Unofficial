@@ -119,6 +119,7 @@ public class MTEPlasmaForgeGui extends MTEMultiBlockBaseGui<MTEPlasmaForge> {
         hackyRow.child(
             new TextFieldWidget().setFormatAsInteger(true)
                 .setNumbers(1, 5)
+                .setTextAlignment(Alignment.CENTER)
                 .setDefaultNumber(1)
                 .value(catalystSyncer)
                 .size(WIDTH - PADDING_SIDES * 2, 18)
