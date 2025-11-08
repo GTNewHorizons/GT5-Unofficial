@@ -742,11 +742,6 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     private static final int PARALLEL_WINDOW_ID = 10;
 
     @Override
-    protected boolean useMui2() {
-        return true;
-    }
-
-    @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new MTEPurificationUnitBaseGui(this);
     }
