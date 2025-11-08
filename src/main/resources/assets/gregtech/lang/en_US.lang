@@ -3705,6 +3705,18 @@ gt.mb.corepos.top_center=Top center
 gt.mb.hint_block=Hint block with dot %d
 
 # Multiblock Tooltip lines
+gt.mb_boiler.tips.1a=Produces %sL of Superheated Steam with 1 Coal at %sL/s\nA programmed circuit in the main block throttles the boiler (-1000L/s per config)\nOnly some solid fuels are allowed (check the NEI Large Boiler tab for details)\nIf there are any disallowed fuels in the input bus, the boiler won't run!
+gt.mb_boiler.tips.1b=Produces %sL of Steam with 1 Coal at %sL/s\nA programmed circuit in the main block throttles the boiler (-1000L/s per config)\nSolid Fuels with a burn value that is too high or too low will not work
+gt.mb_boiler.tips.2=Diesel fuels have 1/4 efficiency - Takes %s seconds to heat up
+gt.mb_boiler.info.1=Bottom layer, 3 minimum
+gt.mb_boiler.info.2=Inner 3 blocks
+gt.mb_boiler.info.3=Any firebox
+gt.mb_boiler.info.4=Solid fuel, Any firebox
+gt.mb_boiler.info.5=Liquid fuel, Any firebox
+gt.mb_boiler.info.6=You can use either, or both
+gt.mb_boiler.info.7=Water, Any firebox
+gt.mb_boiler.info.8=Steam, any casing
+
 gt.distillation_tower.tips.1=Fluids are only put out at the correct height\nThe correct height equals the slot number in the NEI recipe
 gt.distillation_tower.info.1=7 x h - 5 (minimum)
 gt.distillation_tower.info.2=Any casing except top centre
