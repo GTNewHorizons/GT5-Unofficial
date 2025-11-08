@@ -19,6 +19,7 @@ import com.cleanroommc.modularui.theme.WidgetThemeEntry;
 import com.cleanroommc.modularui.utils.MouseData;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.ItemSlotSH;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.PhantomItemSlotSH;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
@@ -41,12 +42,15 @@ public class GhostCircuitSlotWidget extends PhantomItemSlot {
     private final IMetaTileEntity mte;
     private final IntSyncValue selectedSyncHandler;
     private IPanelHandler selectorPanelHandler;
+    private PanelSyncManager syncManager;
 
-    public GhostCircuitSlotWidget(IMetaTileEntity mte, IntSyncValue selectedSyncHandler) {
+    public GhostCircuitSlotWidget(IMetaTileEntity mte, PanelSyncManager syncManager) {
         super();
         this.mte = mte;
-        this.selectedSyncHandler = selectedSyncHandler;
         tooltipBuilder(this::getCircuitSlotTooltip);
+        this.syncManager = syncManager;
+        this.selectedSyncHandler = syncManager.findSyncHandler("selector_screen_selected", IntSyncValue.class);
+        selectorPanelHandler = buildSelectorPanel(selectedSyncHandler);
     }
 
     @Override
@@ -116,13 +120,16 @@ public class GhostCircuitSlotWidget extends PhantomItemSlot {
 
     private void openSelectorPanel() {
         if (selectorPanelHandler == null) {
+
             selectorPanelHandler = buildSelectorPanel(selectedSyncHandler);
         }
         selectorPanelHandler.openPanel();
     }
 
     private IPanelHandler buildSelectorPanel(IntSyncValue selectedSyncHandler) {
-        return IPanelHandler.simple(getPanel(), (mainPanel, player) -> {
+
+        // TODO: fix crash on shift click, it does not work.
+        return syncManager.panel("ghostCircuitPanel", (mainPanel, player) -> {
             ModularPanel panel = GTGuis.createPopUpPanel(GUI_ID);
             return new SelectItemGuiBuilder(panel, GTUtility.getAllIntegratedCircuits()) //
                 .setHeaderItem(mte.getStackForm(1))
