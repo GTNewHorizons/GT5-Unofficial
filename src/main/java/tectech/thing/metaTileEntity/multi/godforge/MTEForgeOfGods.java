@@ -58,6 +58,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.math.LongMath;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
@@ -113,6 +115,8 @@ import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.ItemEjectionHelper;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.gui.modularui.multiblock.godforge.MTEForgeOfGodsGui;
 import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 import tectech.TecTech;
 import tectech.loader.ConfigHandler;
@@ -802,6 +806,36 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     }
 
     @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEForgeOfGodsGui(this);
+    }
+
+    @Override
+    public boolean supportsLogo() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsShutdownReasonHoverable() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsMaintenanceIssueHoverable() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsTerminalLeftCornerColumn() {
+        return true;
+    }
+
+    @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         buildContext.addSyncedWindow(UPGRADE_TREE_WINDOW_ID, this::createUpgradeTreeWindow);
         buildContext.addSyncedWindow(INDIVIDUAL_UPGRADE_WINDOW_ID, this::createIndividualUpgradeWindow);
@@ -858,12 +892,12 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 .setPos(174, 110)
                 .setTooltipShowUpDelay(TOOLTIP_DELAY))
             .widget(
-                TextWidget.dynamicText(this::storedFuelHeaderText)
+                TextWidget.dynamicText(this::storedFuelHeaderTextOld)
                     .setDefaultColor(EnumChatFormatting.WHITE)
                     .setPos(6, 8)
                     .setSize(185, 10))
             .widget(
-                TextWidget.dynamicText(this::storedFuel)
+                TextWidget.dynamicText(this::storedFuelOld)
                     .setDefaultColor(EnumChatFormatting.WHITE)
                     .setPos(6, 20)
                     .setSize(185, 10))
@@ -2939,18 +2973,32 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         return new Text(data.format(data.getFuelConsumption()) + " L/5s");
     }
 
-    private Text storedFuel() {
+    private Text storedFuelOld() {
         if (data.getInternalBattery() == 0) {
             return new Text(data.format(data.getStellarFuelAmount()) + "/" + data.format(data.getNeededStartupFuel()));
         }
         return new Text(data.format(data.getInternalBattery()) + "/" + data.format(data.getMaxBatteryCharge()));
     }
 
-    private Text storedFuelHeaderText() {
+    public String storedFuelText() {
+        if (internalBattery == 0) {
+            return formattingMode.format(stellarFuelAmount) + "/" + formattingMode.format(neededStartupFuel);
+        }
+        return formattingMode.format(internalBattery) + "/" + formattingMode.format(maxBatteryCharge);
+    }
+
+    private Text storedFuelHeaderTextOld() {
         if (data.getInternalBattery() == 0) {
             return new Text(translateToLocal("gt.blockmachines.multimachine.FOG.storedstartupfuel"));
         }
         return new Text(translateToLocal("gt.blockmachines.multimachine.FOG.storedfuel"));
+    }
+
+    public String storedFuelHeaderText() {
+        if (internalBattery == 0) {
+            return translateToLocal("gt.blockmachines.multimachine.FOG.storedstartupfuel");
+        }
+        return translateToLocal("gt.blockmachines.multimachine.FOG.storedfuel");
     }
 
     private void checkInversionStatus() {
@@ -3234,6 +3282,22 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             default -> throw new IllegalArgumentException("Invalid Milestone ID");
         }
         return new Text(progressText + ": " + EnumChatFormatting.GRAY + data.format(max) + " " + suffix);
+    }
+
+    public boolean getBatteryCharging() {
+        return batteryCharging;
+    }
+
+    public void setBatteryCharging(boolean val) {
+        batteryCharging = val;
+    }
+
+    public boolean getShardEjection() {
+        return gravitonShardEjection;
+    }
+
+    public void setShardEjection(boolean val) {
+        gravitonShardEjection = val;
     }
 
     private void increaseBattery(int amount) {

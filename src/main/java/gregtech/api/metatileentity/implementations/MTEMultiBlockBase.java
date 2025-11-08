@@ -3547,6 +3547,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         return true;
     }
 
+    public boolean showStructureUpdateButton() {
+        return true;
+    }
+
+    public boolean showPowerSwitchButton() {
+        return true;
+    }
+
     @TestOnly
     protected void setEnergyHatches(ArrayList<MTEHatchEnergy> EnergyHatches) {
         this.mEnergyHatches = EnergyHatches;
