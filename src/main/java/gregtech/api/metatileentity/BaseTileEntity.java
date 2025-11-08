@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
@@ -42,7 +43,6 @@ import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
-
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import gregtech.GTMod;
@@ -745,6 +745,18 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
         return true;
     }
 
+    protected Function<Integer, BaseSlot> getSlotCreator() {
+        return null;
+    }
+
+    protected Function<BaseSlot, SlotWidget> getSlotWidgetCreator() {
+        return null;
+    }
+
+    protected void modifySlotWidget(SlotWidget widget) {
+
+    }
+
     @Override
     public void add1by1Slot(ModularWindow.Builder builder, IDrawable... background) {
         final IItemHandlerModifiable inventoryHandler = getInventoryHandler();
@@ -757,6 +769,9 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
             SlotGroup.ofItemHandler(inventoryHandler, 1)
                 .startFromSlot(0)
                 .endAtSlot(0)
+                .slotCreator(this.getSlotCreator())
+                .widgetCreator(this.getSlotWidgetCreator())
+                .applyForWidget(this::modifySlotWidget)
                 .background(background)
                 .build()
                 .setPos(79, 34));

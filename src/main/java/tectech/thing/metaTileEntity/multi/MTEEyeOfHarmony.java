@@ -56,7 +56,6 @@ import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
@@ -71,12 +70,13 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTUtil;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.ItemEjectionHelper;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
-import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 import gregtech.common.tileentities.machines.MTEHatchOutputME;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtneioreplugin.plugin.block.BlockDimensionDisplay;
@@ -97,7 +97,7 @@ import tectech.util.ItemStackLong;
 @SuppressWarnings("SpellCheckingInspection")
 public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable, ISurvivalConstructable {
 
-    public static final boolean EOH_DEBUG_MODE = false;
+    public static final boolean EOH_DEBUG_MODE = true;
     private static final long MOLTEN_SPACETIME_PER_FAILURE_TIER = 14_400L;
     private static final double SPACETIME_FAILURE_BASE = 2;
 
@@ -875,26 +875,14 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
             return false;
         }
 
-        // Check if there is 1 output bus, and it is a ME output bus.
-        {
-            if (mOutputBusses.size() != 1) {
-                return false;
-            }
-
-            if (!(mOutputBusses.get(0) instanceof MTEHatchOutputBusME)) {
-                return false;
-            }
+        // Check if there are output busses
+        if (mOutputBusses.isEmpty()) {
+            return false;
         }
 
-        // Check if there is 1 output hatch, and they are ME output hatches.
-        {
-            if (mOutputHatches.size() != 1) {
-                return false;
-            }
-
-            if (!(mOutputHatches.get(0) instanceof MTEHatchOutputME)) {
-                return false;
-            }
+        // Check if there is 1 output hatch
+        if (mOutputHatches.size() != 1) {
+            return false;
         }
 
         // Check there is 1 input bus, and it is not a stocking input bus.
@@ -1166,6 +1154,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
     };
 
     private void drainFluidFromHatchesAndStoreInternally() {
+        startRecipeProcessing();
         List<FluidStack> fluidStacks = getStoredFluids();
         for (FluidStack fluidStack : fluidStacks) {
             if (validFluidMap.containsKey(fluidStack.getFluid())) {
@@ -1173,6 +1162,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                 fluidStack.amount = 0;
             }
         }
+        endRecipeProcessing();
         updateSlots();
     }
 
@@ -1546,17 +1536,15 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
     private void outputItemToAENetwork(ItemStack item, long amount) {
         if (item == null || amount <= 0) return;
 
-        while (amount >= Integer.MAX_VALUE) {
-            ItemStack tmpItem = item.copy();
-            tmpItem.stackSize = Integer.MAX_VALUE;
-            mOutputBusses.get(0)
-                .storePartial(tmpItem);
-            amount -= Integer.MAX_VALUE;
+        ItemEjectionHelper ejectionHelper = new ItemEjectionHelper(this);
+
+        for (long i = 0; i < amount; i += Integer.MAX_VALUE) {
+            int xfer = (int) Math.min(amount - i, Integer.MAX_VALUE);
+
+            ejectionHelper.ejectStack(GTUtility.copyAmountUnsafe(xfer, item));
         }
-        ItemStack tmpItem = item.copy();
-        tmpItem.stackSize = (int) amount;
-        mOutputBusses.get(0)
-            .storePartial(tmpItem);
+
+        ejectionHelper.commit();
     }
 
     private void outputFluidToAENetwork(FluidStack fluid, long amount) {

@@ -63,6 +63,28 @@ public abstract class AEInventory implements IAEInventory, IMEMonitor<IAEItemSta
     }
 
     @Override
+    public IAEItemStack getAvailableItem(@NotNull IAEItemStack request, int iteration) {
+        IAEItemStack result = request.empty();
+
+        for (IAEItemStack stack : inventory) {
+            if (stack != null && stack.isSameType(request)) {
+                result.incStackSize(stack.getStackSize());
+            }
+        }
+
+        return result;
+    }
+
+    @Override
+    public IItemList<IAEItemStack> getAvailableItems(IItemList<IAEItemStack> out, int iteration) {
+        for (IAEItemStack stack : inventory) {
+            if (stack != null) out.add(stack.copy());
+        }
+
+        return out;
+    }
+
+    @Override
     public void addListener(IMEMonitorHandlerReceiver<IAEItemStack> l, Object verificationToken) {
         listeners.put(l, verificationToken);
     }
@@ -276,7 +298,7 @@ public abstract class AEInventory implements IAEInventory, IMEMonitor<IAEItemSta
     }
 
     @Override
-    public @Nullable IAEItemStack insertAEItem(int slot, @NotNull IAEItemStack stack, boolean simulate) {
+    public @Nullable IAEItemStack insertAEItem(int slot, @NotNull IAEItemStack stack, boolean simulate, boolean forced) {
         if (slot < 0 || slot >= slotCount) return stack;
 
         IAEItemStack existing = inventory[slot];
@@ -290,7 +312,7 @@ public abstract class AEInventory implements IAEInventory, IMEMonitor<IAEItemSta
         }
 
         if (existing.isSameType(stack)) {
-            long maxStorable = getAESlotLimit(slot, existing);
+            long maxStorable = forced ? Long.MAX_VALUE : getAESlotLimit(slot, existing);
 
             long toTransfer = Math.min(maxStorable - existing.getStackSize(), stack.getStackSize());
 
@@ -310,7 +332,7 @@ public abstract class AEInventory implements IAEInventory, IMEMonitor<IAEItemSta
     }
 
     @Override
-    public @Nullable IAEItemStack extractAEItem(int slot, long amount, boolean simulate) {
+    public @Nullable IAEItemStack extractAEItem(int slot, long amount, boolean simulate, boolean forced) {
         if (slot < 0 || slot >= slotCount) return null;
 
         IAEItemStack existing = inventory[slot];
@@ -408,9 +430,9 @@ public abstract class AEInventory implements IAEInventory, IMEMonitor<IAEItemSta
         return copy;
     }
 
-    protected abstract BaseActionSource getActionSource();
+    public abstract BaseActionSource getActionSource();
 
     public AEInventoryItemIO getItemIO() {
-        return new AEInventoryItemIO(this, getActionSource());
+        return new AEInventoryItemIO(this);
     }
 }

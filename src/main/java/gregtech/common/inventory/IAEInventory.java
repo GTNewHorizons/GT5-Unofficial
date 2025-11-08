@@ -13,10 +13,10 @@ public interface IAEInventory {
     IAEItemStack getAEStackInSlot(int slot);
 
     @Nullable
-    IAEItemStack insertAEItem(int slot, @NotNull IAEItemStack stack, boolean simulate);
+    IAEItemStack insertAEItem(int slot, @NotNull IAEItemStack stack, boolean simulate, boolean forced);
 
     @Nullable
-    IAEItemStack extractAEItem(int slot, long amount, boolean simulate);
+    IAEItemStack extractAEItem(int slot, long amount, boolean simulate, boolean forced);
 
     default boolean isAEItemValid(int slot, @NotNull IAEItemStack stack) {
         return true;

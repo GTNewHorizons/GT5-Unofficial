@@ -9010,65 +9010,49 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             HATCH_OUTPUT_BUS_COMPRESSED_1.ID,
             "hatch.comp-output-bus.tier.00",
             "Compressed Output Bus (LuV)",
-            VoltageIndex.LuV,
-            16,
-            256);
+            VoltageIndex.LuV, 256);
 
         new MTEHatchOutputBusCompressed(
             HATCH_OUTPUT_BUS_COMPRESSED_2.ID,
             "hatch.comp-output-bus.tier.01",
             "Compressed Output Bus (ZPM)",
-            VoltageIndex.ZPM,
-            16,
-            2048);
+            VoltageIndex.ZPM, 2048);
 
         new MTEHatchOutputBusCompressed(
             HATCH_OUTPUT_BUS_COMPRESSED_3.ID,
             "hatch.comp-output-bus.tier.02",
             "Compressed Output Bus (UV)",
-            VoltageIndex.UV,
-            16,
-            16384);
+            VoltageIndex.UV, 16384);
 
         new MTEHatchOutputBusCompressed(
             HATCH_OUTPUT_BUS_COMPRESSED_4.ID,
             "hatch.comp-output-bus.tier.03",
             "Compressed Output Bus (UHV)",
-            VoltageIndex.UHV,
-            16,
-            131072);
+            VoltageIndex.UHV, 131072);
 
         new MTEHatchOutputBusCompressed(
             HATCH_OUTPUT_BUS_QUANTUM_1.ID,
             "hatch.quantum-output-bus.tier.00",
             "Quantum Output Bus (UEV)",
-            VoltageIndex.UEV,
-            16,
-            2097152);
+            VoltageIndex.UEV, 2097152);
 
         new MTEHatchOutputBusCompressed(
             HATCH_OUTPUT_BUS_QUANTUM_2.ID,
             "hatch.quantum-output-bus.tier.01",
             "Quantum Output Bus (UIV)",
-            VoltageIndex.UIV,
-            16,
-            Integer.MAX_VALUE / 64L);
+            VoltageIndex.UIV, Integer.MAX_VALUE / 64L);
 
         new MTEHatchOutputBusCompressed(
             HATCH_OUTPUT_BUS_QUANTUM_3.ID,
             "hatch.quantum-output-bus.tier.02",
             "Quantum Output Bus (UMV)",
-            VoltageIndex.UMV,
-            16,
-            Integer.MAX_VALUE * 64);
+            VoltageIndex.UMV, Integer.MAX_VALUE * 64);
 
         new MTEHatchOutputBusCompressed(
             HATCH_OUTPUT_BUS_QUANTUM_4.ID,
             "hatch.quantum-output-bus.tier.03",
             "Quantum Output Bus (UXV)",
-            VoltageIndex.UXV,
-            16,
-            Long.MAX_VALUE / 64L);
+            VoltageIndex.UXV, Long.MAX_VALUE / 64L);
 
         new MTEHatchInputBusCompressed(
             HATCH_INPUT_BUS_COMPRESSED_1.ID,

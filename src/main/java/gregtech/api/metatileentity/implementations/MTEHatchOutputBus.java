@@ -7,6 +7,7 @@ import static gregtech.api.util.GTUtility.isStackInvalid;
 import static gregtech.api.util.GTUtility.isStackValid;
 
 import java.util.BitSet;
+import java.util.function.Function;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -21,6 +22,7 @@ import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.forge.ItemHandlerHelper;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import gregtech.GTMod;
@@ -278,14 +280,25 @@ public class MTEHatchOutputBus extends MTEHatch
         }
     }
 
+    protected int getBusUIInvSlotCount() {
+        return getSizeInventory();
+    }
+
+    protected int getBusUICenterY() {
+        return 14 - (mTier - 1);
+    }
+
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         final int BUTTON_SIZE = 18;
-        int slotCount = getSizeInventory();
+        int slotCount = getBusUIInvSlotCount();
         final int itemColumns = Math.max(1, mTier + 1);
         final int itemRows = Math.max(1, mTier + 1);
         final int centerX = (getGUIWidth() - (itemColumns * BUTTON_SIZE)) / 2;
-        final int centerY = 14 - (mTier - 1);
+        final int centerY = getBusUICenterY();
+
+        this.getSlotCreator();
+        this.getSlotWidgetCreator();
 
         switch (slotCount) {
             case 1 -> getBaseMetaTileEntity().add1by1Slot(builder);
@@ -293,13 +306,23 @@ public class MTEHatchOutputBus extends MTEHatch
             case 9 -> getBaseMetaTileEntity().add3by3Slots(builder);
             case 16 -> getBaseMetaTileEntity().add4by4Slots(builder);
             default -> {
+                Function<Integer, BaseSlot> slotCreator = getSlotCreator();
+
+                if (slotCreator == null) slotCreator = i -> new BaseSlot(getInventoryHandler(), i);
+
+                Function<BaseSlot, SlotWidget> widgetCreator = getSlotWidgetCreator();
+
+                if (widgetCreator == null) widgetCreator = slot -> (SlotWidget) new SlotWidget(slot).setBackground(ModularUITextures.ITEM_SLOT);
+
                 for (int row = 0; row < itemRows; row++) {
                     for (int col = 0; col < itemColumns; col++) {
                         int slotIndex = row * itemColumns + col;
                         if (slotIndex < slotCount) {
-                            builder.widget(
-                                new SlotWidget(inventoryHandler, slotIndex).setBackground(ModularUITextures.ITEM_SLOT)
-                                    .setPos(centerX + col * 18, centerY + row * 18));
+                            SlotWidget widget = widgetCreator.apply(slotCreator.apply(slotIndex));
+
+                            this.modifySlotWidget(widget);
+
+                            builder.widget(widget.setPos(centerX + col * 18, centerY + row * 18));
                         }
                     }
                 }
@@ -381,6 +404,16 @@ public class MTEHatchOutputBus extends MTEHatch
     @Override
     public OutputBusType getBusType() {
         return lockedItem == null ? OutputBusType.StandardUnfiltered : OutputBusType.StandardFiltered;
+    }
+
+    /**
+     * Gets the max stack size limit for a slot and a stack.
+     *
+     * @param slot  The slot, or -1 for a general 'lowest slot' query.
+     * @param stack The stack, or null for a general 'any standard stack' query (getMaxStackSize() == 64).
+     */
+    public int getStackSizeLimit(int slot, @Nullable ItemStack stack) {
+        return Math.min(getInventoryStackLimit(), stack == null ? 64 : stack.getMaxStackSize());
     }
 
     class StandardOutputBusTransaction implements IOutputBusTransaction {

@@ -12,6 +12,8 @@ import org.jetbrains.annotations.NotNull;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.util.item.AEItemStack;
 import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
+import com.gtnewhorizon.gtnhlib.item.ImmutableItemStack;
+import com.gtnewhorizon.gtnhlib.item.InsertionItemStack;
 import gregtech.api.util.GTUtility;
 import gregtech.common.inventory.IAEInventory;
 
@@ -31,27 +33,40 @@ public interface IAEItemHandlerModifiable extends IItemHandlerModifiable, IAEInv
     }
 
     @Nullable
-    IAEItemStack insertAEItem(int slot, @NotNull IAEItemStack stack, boolean simulate);
+    IAEItemStack insertAEItem(int slot, @NotNull IAEItemStack stack, boolean simulate, boolean forced);
+
+    default int insertItem(int slot, @Nullable ImmutableItemStack stack, boolean simulate, boolean forced) {
+        if (stack == null || stack.isEmpty()) return 0;
+
+        IAEItemStack rejected = insertAEItem(slot, AEItemStack.create(stack.toStack()), simulate, forced);
+
+        return rejected == null ? 0 : (int) rejected.getStackSize();
+    }
 
     @Override
-    @Nullable
     default ItemStack insertItem(int slot, @Nullable ItemStack stack, boolean simulate) {
-        if (!GTUtility.isStackValid(stack)) return null;
+        if (stack == null) return null;
 
-        IAEItemStack rejected = insertAEItem(slot, AEItemStack.create(stack), simulate);
+        InsertionItemStack insertion = new InsertionItemStack(stack);
 
-        return rejected == null ? null : rejected.getItemStack();
+        insertion.set(insertItem(slot, insertion, simulate, false));
+
+        return insertion.isEmpty() ? null : insertion.toStack();
     }
 
     @Nullable
-    IAEItemStack extractAEItem(int slot, long amount, boolean simulate);
+    IAEItemStack extractAEItem(int slot, long amount, boolean simulate, boolean forced);
+
+    default ItemStack extractItem(int slot, int amount, boolean simulate, boolean forced) {
+        IAEItemStack stack = extractAEItem(slot, amount, simulate, forced);
+
+        return stack == null ? null : stack.getItemStack();
+    }
 
     @Override
     @Nullable
     default ItemStack extractItem(int slot, int amount, boolean simulate) {
-        IAEItemStack stack = extractAEItem(slot, amount, simulate);
-
-        return stack == null ? null : stack.getItemStack();
+        return extractItem(slot, amount, simulate, false);
     }
 
     default long getAESlotLimit(int slot) {

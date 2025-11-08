@@ -7,29 +7,37 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.IntStream;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import appeng.api.AEApi;
 import appeng.api.config.AccessRestriction;
 import appeng.api.config.Actionable;
 import appeng.api.networking.security.BaseActionSource;
 import appeng.api.networking.security.MachineSource;
+import appeng.api.storage.IExternalStorageHandler;
+import appeng.api.storage.IMEInventory;
 import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.IMEMonitorHandlerReceiver;
 import appeng.api.storage.StorageChannel;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
+import appeng.util.InventoryAdaptor;
+import appeng.util.inv.IMEAdaptor;
 import appeng.util.item.AEItemStack;
 import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
-import com.gtnewhorizon.gtnhlib.capability.item.IItemSink;
-import com.gtnewhorizon.gtnhlib.capability.item.IItemSource;
+import com.gtnewhorizon.gtnhlib.capability.item.ItemSink;
+import com.gtnewhorizon.gtnhlib.capability.item.ItemSource;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.Alignment;
@@ -39,14 +47,15 @@ import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.Widget;
+import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotGroup;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 import gregtech.api.enums.OutputBusType;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.gui.widgets.PhantomItemButton;
 import gregtech.api.interfaces.IOutputBusTransaction;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
@@ -67,8 +76,7 @@ public class MTEHatchOutputBusCompressed extends MTEHatchOutputBus implements IM
 
     private final int[] busSlots;
 
-    public MTEHatchOutputBusCompressed(int id, String name, String nameRegional, int tier, int slots,
-        long stackCapacity) {
+    public MTEHatchOutputBusCompressed(int id, String name, String nameRegional, int tier, long stackCapacity) {
         super(
             id,
             name,
@@ -76,7 +84,7 @@ public class MTEHatchOutputBusCompressed extends MTEHatchOutputBus implements IM
             tier,
             ArrayExt.of(
                 "Item Output for Multiblocks",
-                "Capacity: " + slots + " slots, " + GTUtility.formatNumbers(stackCapacity) + " stacks each",
+                "Capacity: " + getSlots(tier) + " slots, " + GTUtility.formatNumbers(stackCapacity) + " stacks each",
                 "Left click with data stick to save bus config",
                 "Right click with data stick to load bus config",
                 "Stores more than 1 stack per slot",
@@ -84,7 +92,7 @@ public class MTEHatchOutputBusCompressed extends MTEHatchOutputBus implements IM
                 "Can only be automated by GT and AE, low throughput solutions like Ender IO do not work!"),
             0);
 
-        this.slotCount = slots;
+        this.slotCount = getSlots(tier);
         this.stackCapacity = stackCapacity;
         this.inventory = null;
         this.busSlots = IntStream.range(0, slotCount).toArray();
@@ -153,6 +161,20 @@ public class MTEHatchOutputBusCompressed extends MTEHatchOutputBus implements IM
     @Override
     public IItemList<IAEItemStack> getStorageList() {
         return inventory.getStorageList();
+    }
+
+    @Override
+    public IItemList<IAEItemStack> getAvailableItems(final IItemList<IAEItemStack> out, int iteration) {
+        return inventory.getAvailableItems(out, iteration);
+    }
+
+    @Override
+    public <T> @Nullable T getCapability(@NotNull Class<T> capability, @NotNull ForgeDirection side) {
+        if (capability == InventoryAdaptor.class && side == getBaseMetaTileEntity().getFrontFacing()) {
+            return capability.cast(new IMEAdaptor(inventory, inventory.getActionSource()));
+        }
+
+        return super.getCapability(capability, side);
     }
 
     @Override
@@ -252,49 +274,62 @@ public class MTEHatchOutputBusCompressed extends MTEHatchOutputBus implements IM
     }
 
     @Override
+    public Function<Integer, BaseSlot> getSlotCreator() {
+        return index -> new AEBaseSlot(inventory, index) {
+
+            @Override
+            public void putStack(ItemStack stack) {
+                // no-op to disable MC's slot syncing, which truncates the >int max size, if present
+            }
+        };
+    }
+
+    @Override
+    public Function<BaseSlot, SlotWidget> getSlotWidgetCreator() {
+        return slot -> new AESlotWidget(slot) {
+
+            @Override
+            protected String getAmountTooltip() {
+                return GTUtility.translate(
+                    "GT5U.gui.text.amount_out_of",
+                    getAEStack().getStackSize(),
+                    inventory.getAESlotLimit(slot.getSlotIndex()));
+            }
+        };
+    }
+
+    @Override
+    public void modifySlotWidget(SlotWidget widget) {
+        widget.setAccess(false, false);
+    }
+
+    @Override
+    public int getOffsetX() {
+        return Math.max(0, mTier - VoltageIndex.UV) * 18;
+    }
+
+    @Override
+    public int getOffsetY() {
+        return Math.max(0, mTier - 4) * 18 + 40;
+    }
+
+    @Override
+    protected int getBusUICenterY() {
+        return 6;
+    }
+
+    @Override
+    protected int getBusUIInvSlotCount() {
+        return inventory.slotCount;
+    }
+
+    @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        List<AEBaseSlot> slots = new ArrayList<>();
-
-        SlotGroup slotGroup = SlotGroup.ofItemHandler(inventory, 4)
-            .startFromSlot(0)
-            .endAtSlot(slotCount - 1)
-            .slotCreator(index -> {
-                AEBaseSlot slot = new AEBaseSlot(inventory, index) {
-
-                    @Override
-                    public void putStack(ItemStack stack) {
-                        // no-op to disable MC's slot syncing, which truncates the >int max size, if present
-                    }
-                };
-                slots.add(slot);
-                return slot;
-            })
-            .widgetCreator(slot -> new AESlotWidget(slot) {
-
-                @Override
-                protected String getAmountTooltip() {
-                    return GTUtility.translate(
-                        "GT5U.gui.text.amount_out_of",
-                        getAEStack().getStackSize(),
-                        inventory.getAESlotLimit(slot.getSlotIndex()));
-                }
-            })
-            .background(getGUITextureSet().getItemSlot())
-            .canInsert(false)
-            .canTake(false)
-            .build();
-
-        builder.widget(slotGroup.setPos(52, 7));
+        super.addUIWidgets(builder, buildContext);
 
         builder.widget(new FakeSyncWidget<>(
-            () -> {
-                slots.forEach(AEBaseSlot::onSlotChanged);
-                return inventory.writeToNBT(new NBTTagCompound());
-            },
-            tag -> {
-                inventory.readFromNBT(tag);
-                slots.forEach(AEBaseSlot::onSlotChanged);
-            },
+            () -> inventory.writeToNBT(new NBTTagCompound()),
+            inventory::readFromNBT,
             (buffer, tag) -> {
                 try {
                     buffer.writeNBTTagCompoundToBuffer(tag);
@@ -310,12 +345,6 @@ public class MTEHatchOutputBusCompressed extends MTEHatchOutputBus implements IM
                 }
             }
         ));
-
-        if (acceptsItemLock()) {
-            builder.widget(
-                new PhantomItemButton(this).setPos(getGUIWidth() - 25, 40)
-                    .setBackground(PhantomItemButton.FILTER_BACKGROUND));
-        }
 
         builder.widget(createSettingsButton());
         buildContext.addSyncedWindow(SETTINGS_PANEL_WINDOW_ID, this::createSettingsPanel);
@@ -339,7 +368,7 @@ public class MTEHatchOutputBusCompressed extends MTEHatchOutputBus implements IM
             })
             .addTooltip(translateToLocal("GT5U.gui.button.compressed_bus_settings"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(new Pos2d(151, 6))
+            .setPos(new Pos2d(6 + 20, 60 + getOffsetY()))
             .setSize(18, 18);
         return (ButtonWidget) button;
     }
@@ -398,12 +427,12 @@ public class MTEHatchOutputBusCompressed extends MTEHatchOutputBus implements IM
     }
 
     @Override
-    protected IItemSource getItemSource(ForgeDirection side) {
+    protected ItemSource getItemSource(ForgeDirection side) {
         return side == getBaseMetaTileEntity().getFrontFacing() ? inventory.getItemIO() : null;
     }
 
     @Override
-    protected IItemSink getItemSink(ForgeDirection side) {
+    protected ItemSink getItemSink(ForgeDirection side) {
         return null;
     }
 
@@ -426,7 +455,7 @@ public class MTEHatchOutputBusCompressed extends MTEHatchOutputBus implements IM
         }
 
         @Override
-        protected BaseActionSource getActionSource() {
+        public BaseActionSource getActionSource() {
             return new MachineSource((BaseMetaTileEntity) getBaseMetaTileEntity());
         }
     }
@@ -478,4 +507,32 @@ public class MTEHatchOutputBusCompressed extends MTEHatchOutputBus implements IM
             active = false;
         }
     }
+
+    public static void registerAEIntegration() {
+        AEApi.instance()
+            .registries()
+            .externalStorage()
+            .addExternalStorageInterface(new StorageHandler());
+    }
+
+    private static class StorageHandler implements IExternalStorageHandler {
+
+        @Override
+
+        public boolean canHandle(TileEntity te, ForgeDirection d, StorageChannel channel, BaseActionSource mySrc) {
+            return channel == StorageChannel.ITEMS && te instanceof BaseMetaTileEntity
+                && ((BaseMetaTileEntity) te).getMetaTileEntity() instanceof MTEHatchOutputBusCompressed;
+        }
+
+        @Override
+
+        public IMEInventory<IAEItemStack> getInventory(TileEntity te, ForgeDirection d, StorageChannel channel,
+            BaseActionSource src) {
+            if (channel == StorageChannel.ITEMS) {
+                return ((MTEHatchOutputBusCompressed) (((BaseMetaTileEntity) te).getMetaTileEntity()));
+            }
+            return null;
+        }
+    }
+
 }

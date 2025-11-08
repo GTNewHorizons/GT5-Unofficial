@@ -29,8 +29,8 @@ import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
 import appeng.util.item.AEItemStack;
 import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
-import com.gtnewhorizon.gtnhlib.capability.item.IItemSink;
-import com.gtnewhorizon.gtnhlib.capability.item.IItemSource;
+import com.gtnewhorizon.gtnhlib.capability.item.ItemSink;
+import com.gtnewhorizon.gtnhlib.capability.item.ItemSource;
 import com.gtnewhorizon.gtnhlib.util.ItemUtil;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
@@ -586,12 +586,12 @@ public class MTEHatchInputBusCompressed extends MTEHatchInputBus implements IMEM
     }
 
     @Override
-    protected IItemSource getItemSource(ForgeDirection side) {
+    protected ItemSource getItemSource(ForgeDirection side) {
         return side == getBaseMetaTileEntity().getFrontFacing() ? inventory.getItemIO() : null;
     }
 
     @Override
-    protected IItemSink getItemSink(ForgeDirection side) {
+    protected ItemSink getItemSink(ForgeDirection side) {
         return side == getBaseMetaTileEntity().getFrontFacing() ? inventory.getItemIO() : null;
     }
 
@@ -626,7 +626,7 @@ public class MTEHatchInputBusCompressed extends MTEHatchInputBus implements IMEM
         }
 
         @Override
-        protected BaseActionSource getActionSource() {
+        public BaseActionSource getActionSource() {
             return new MachineSource((BaseMetaTileEntity) getBaseMetaTileEntity());
         }
     }
