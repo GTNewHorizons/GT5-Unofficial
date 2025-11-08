@@ -2943,7 +2943,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     // For MUI2 corner column toggling
 
-    public boolean supportsTerminalCornerColumn() {
+    public boolean supportsTerminalRightCornerColumn() {
         return true;
     }
 
@@ -3388,25 +3388,26 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> (getErrorDisplayID() & 256) != 0));
 
-        screenElements
-            .widget(
+        if (showMachineStatusInGUI()) {
+            screenElements.widget(
                 new TextWidget(translateToLocal("gt.interact.desc.mb.idle.1")).setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()))
-            .widget(new FakeSyncWidget.IntegerSyncer(this::getErrorDisplayID, this::setErrorDisplayID))
-            .widget(
-                new FakeSyncWidget.BooleanSyncer(
-                    () -> getBaseMetaTileEntity().isActive(),
-                    val -> getBaseMetaTileEntity().setActive(val)));
-        screenElements.widget(
-            new TextWidget(translateToLocal("gt.interact.desc.mb.idle.2")).setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
-        screenElements.widget(
-            new TextWidget(translateToLocal("gt.interact.desc.mb.idle.3")).setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
+                .widget(new FakeSyncWidget.IntegerSyncer(this::getErrorDisplayID, this::setErrorDisplayID))
+                .widget(
+                    new FakeSyncWidget.BooleanSyncer(
+                        () -> getBaseMetaTileEntity().isActive(),
+                        val -> getBaseMetaTileEntity().setActive(val)));
+            screenElements.widget(
+                new TextWidget(translateToLocal("gt.interact.desc.mb.idle.2")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
+            screenElements.widget(
+                new TextWidget(translateToLocal("gt.interact.desc.mb.idle.3")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
 
-        screenElements.widget(
-            new TextWidget(translateToLocal("gt.interact.desc.mb.running")).setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setEnabled(widget -> getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive()));
+            screenElements.widget(
+                new TextWidget(translateToLocal("gt.interact.desc.mb.running")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive()));
+        }
 
         screenElements.widget(TextWidget.dynamicString(() -> {
             Duration time = Duration.ofSeconds((mTotalRunTime - mLastWorkingTick) / 20);
@@ -3525,6 +3526,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         return true;
     }
 
+    public boolean showMachineStatusInGUI() {
+        return true;
+    }
+
     @TestOnly
     protected void setEnergyHatches(ArrayList<MTEHatchEnergy> EnergyHatches) {
         this.mEnergyHatches = EnergyHatches;
@@ -3640,5 +3645,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     public void setPowerfailEventCreationStatus(boolean status) {
         makePowerfailEvents = status;
+    }
+
+    public boolean hasRunningText() {
+        return true;
     }
 }
