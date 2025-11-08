@@ -41,18 +41,20 @@ import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 
 public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
 
-    public static final String PANEL_MILESTONE = "fogMilestonePanel";
-    public static final String PANEL_FUEL_CONFIG = "fogFuelConfigPanel";
-    public static final String PANEL_BATTERY = "fogBatteryPanel";
-    public static final String PANEL_STAR_COSMETICS = "fogCosmeticsPanel";
-    public static final String PANEL_UPGRADE_TREE = "fogUpgradeTreePanel";
-    public static final String PANEL_STATISTICS = "fogStatisticsPanel";
-    public static final String PANEL_GENERAL_INFO = "fogGeneralInfoPanel";
-    public static final String PANEL_SPECIAL_THANKS = "fogSpecialThanksPanel";
+    public static final String PANEL_MILESTONE = "fog.panel.milestone";
+    public static final String PANEL_INDIVIDUAL_MILESTONE = "fog.panel.milestone_individual";
+    public static final String PANEL_FUEL_CONFIG = "fog.panel.fuel_config";
+    public static final String PANEL_BATTERY_CONFIG = "fog.panel.battery_config";
+    public static final String PANEL_STAR_COSMETICS = "fog.panel.star_cosmetics";
+    public static final String PANEL_UPGRADE_TREE = "fog.panel.upgrade_tree";
+    public static final String PANEL_STATISTICS = "fog.panel.statistics";
+    public static final String PANEL_GENERAL_INFO = "fog.panel.general_info";
+    public static final String PANEL_SPECIAL_THANKS = "fog.panel.special_thanks";
 
-    public static final String SYNC_BATTERY_CHARGING = "fog_batteryCharging";
-    public static final String SYNC_SHARD_EJECTION = "fog_shardEjection";
-    public static final String SYNC_STRUCTURE_UPDATE = "structureUpdateButton";
+    public static final String SYNC_BATTERY_CHARGING = "fog.sync.battery_charging";
+    public static final String SYNC_SHARD_EJECTION = "fog.sync.shard_ejection";
+    public static final String SYNC_MILESTONE_CLICKED = "fog.sync.milestone_clicked";
+    public static final String SYNC_STRUCTURE_UPDATE = "structureUpdateButton"; // From MTEMultiBlockBase
 
     public MTEForgeOfGodsGui(MTEForgeOfGods multiblock) {
         super(multiblock);
@@ -71,7 +73,6 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
         GeneralInfoPanel.registerSyncValues(syncManager);
         IndividualMilestonePanel.registerSyncValues(syncManager);
         IndividualUpgradePanel.registerSyncValues(syncManager);
-        MilestonePanel.registerSyncValues(syncManager);
         SpecialThanksPanel.registerSyncValues(syncManager);
         StarCosmeticsPanel.registerSyncValues(syncManager);
         StatisticsPanel.registerSyncValues(syncManager);
@@ -151,7 +152,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
 
     protected IWidget createMilestoneWindowButton(PanelSyncManager syncManager) {
         IPanelHandler milestonePanel = syncManager
-            .panel(PANEL_MILESTONE, (p_syncManager, syncHandler) -> MilestonePanel.openPanel(p_syncManager), true);
+            .panel(PANEL_MILESTONE, (p_syncManager, syncHandler) -> MilestonePanel.openPanel(p_syncManager, multiblock), true);
         return new ButtonWidget<>().size(16)
             .marginBottom(3)
             .overlay(GTGuiTextures.TT_OVERLAY_BUTTON_FLAG)
@@ -193,7 +194,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
 
     protected IWidget createBatteryConfigWindowButton(PanelSyncManager syncManager) {
         IPanelHandler batteryConfigPanel = syncManager
-            .panel(PANEL_BATTERY, (p_syncManager, syncHandler) -> BatteryConfigPanel.openPanel(), true);
+            .panel(PANEL_BATTERY_CONFIG, (p_syncManager, syncHandler) -> BatteryConfigPanel.openPanel(), true);
         BooleanSyncValue batteryConfigSyncer = syncManager
             .findSyncHandler(SYNC_BATTERY_CHARGING, BooleanSyncValue.class);
         return new ButtonWidget<>().size(16)

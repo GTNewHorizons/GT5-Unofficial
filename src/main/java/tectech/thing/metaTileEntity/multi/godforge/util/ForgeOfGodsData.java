@@ -473,16 +473,16 @@ public class ForgeOfGodsData {
         if (force || inversion) NBT.setBoolean("inversion", inversion);
 
         // Fields with non-zero defaults
-        if (force || fuelConsumptionFactor != ForgeOfGodsData.DEFAULT_FUEL_CONSUMPTION_FACTOR) {
+        if (force || fuelConsumptionFactor != DEFAULT_FUEL_CONSUMPTION_FACTOR) {
             NBT.setInteger("fuelConsumptionFactor", fuelConsumptionFactor);
         }
-        if (force || maxBatteryCharge != ForgeOfGodsData.DEFAULT_MAX_BATTERY_CHARGE) {
+        if (force || maxBatteryCharge != DEFAULT_MAX_BATTERY_CHARGE) {
             NBT.setInteger("batterySize", maxBatteryCharge);
         }
-        if (force || !ForgeOfGodsData.DEFAULT_TOTAL_POWER.equals(totalPowerConsumed)) {
+        if (force || !DEFAULT_TOTAL_POWER.equals(totalPowerConsumed)) {
             NBT.setByteArray("totalPowerConsumed", totalPowerConsumed.toByteArray());
         }
-        if (force || formattingMode != ForgeOfGodsData.DEFAULT_FORMATTING_MODE) {
+        if (force || formattingMode != DEFAULT_FORMATTING_MODE) {
             NBT.setInteger("formattingMode", formattingMode.ordinal());
         }
 
