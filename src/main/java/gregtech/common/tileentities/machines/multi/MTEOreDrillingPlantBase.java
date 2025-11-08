@@ -155,13 +155,13 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
             GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.machines.workarea_fail"));
         } else {
             adjustChunkRadius(!aPlayer.isSneaking());
-            final String side = GTUtility.formatNumbers((long) chunkRadiusConfig << 4);
+            final String sideLength = GTUtility.formatNumbers((long) chunkRadiusConfig << 4);
             GTUtility.sendChatToPlayer(
                 aPlayer,
                 StatCollector.translateToLocal("GT5U.machines.workareaset") + " "
-                    + side
+                    + sideLength
                     + "x"
-                    + side
+                    + sideLength
                     + " "
                     + StatCollector.translateToLocal("GT5U.machines.blocks"));
         }
