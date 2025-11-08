@@ -2114,7 +2114,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         builder.widget(blueField.setPos(8, 59));
 
         Widget gammaField = ForgeOfGodsUI
-            .createStarColorRGBMGroup(StarColorRGBM.GAMMA, val -> data.setStarGamma((int) val), data::getStarGamma);
+            .createStarColorRGBMGroup(StarColorRGBM.GAMMA, val -> data.setStarGamma((float) val), data::getStarGamma);
         builder.widget(gammaField.setPos(8, 78));
 
         // Color preview box
