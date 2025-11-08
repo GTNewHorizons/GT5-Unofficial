@@ -127,7 +127,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
     }
 
     @Override
-    protected Flow createTerminalCornerColumn(ModularPanel panel, PanelSyncManager syncManager) {
+    protected Flow createTerminalRightCornerColumn(ModularPanel panel, PanelSyncManager syncManager) {
         return new Column().coverChildren()
             .rightRel(0, 6, 0)
             .bottomRel(0, 6, 0)
