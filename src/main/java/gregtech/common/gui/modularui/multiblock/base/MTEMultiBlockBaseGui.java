@@ -200,7 +200,10 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                             .collapseDisabledChild())
                     .childIf(
                         multiblock.supportsTerminalRightCornerColumn(),
-                        createTerminalRightCornerColumn(panel, syncManager)));
+                        createTerminalRightCornerColumn(panel, syncManager))
+                    .childIf(
+                        multiblock.supportsTerminalLeftCornerColumn(),
+                        createTerminalLeftCornerColumn(panel, syncManager)));
     }
 
     protected Flow createTerminalRightCornerColumn(ModularPanel panel, PanelSyncManager syncManager) {
@@ -214,6 +217,10 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                 new Widget<>().size(18, 18)
                     .marginTop(4)
                     .widgetTheme(GTWidgetThemes.PICTURE_LOGO));
+    }
+
+    protected Flow createTerminalLeftCornerColumn(ModularPanel panel, PanelSyncManager syncManager) {
+        return new Column();
     }
 
     protected int getTerminalRowWidth() {

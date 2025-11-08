@@ -97,6 +97,18 @@ public final class GTGuiTextures {
         .adaptable(1)
         .name(GTTextureIds.BACKGROUND_CHAOS_LOCATOR)
         .build();
+
+    public static final UITexture BACKGROUND_STAR = UITexture.fullImage(MODID, "gui/background/star");
+    public static final UITexture BACKGROUND_GLOW_ORANGE = UITexture.fullImage(MODID, "gui/background/orange_glow");
+    public static final UITexture BACKGROUND_GLOW_PURPLE = UITexture.fullImage(MODID, "gui/background/purple_glow");
+    public static final UITexture BACKGROUND_GLOW_BLUE = UITexture.fullImage(MODID, "gui/background/blue_glow");
+    public static final UITexture BACKGROUND_GLOW_GREEN = UITexture.fullImage(MODID, "gui/background/green_glow");
+    public static final UITexture BACKGROUND_GLOW_RED = UITexture.fullImage(MODID, "gui/background/red_glow");
+    public static final UITexture BACKGROUND_GLOW_WHITE = UITexture.fullImage(MODID, "gui/background/white_glow");
+    public static final UITexture BACKGROUND_GLOW_WHITE_HALF = UITexture
+        .fullImage(MODID, "gui/background/white_glow_half");
+    public static final UITexture BACKGROUND_GLOW_RAINBOW = UITexture.fullImage(MODID, "gui/background/rainbow_glow");
+    public static final UITexture BACKGROUND_SPACE = UITexture.fullImage(MODID, "gui/background/space");
     // endregion background
 
     // region overlay
@@ -560,6 +572,26 @@ public final class GTGuiTextures {
         .fullImage(MODID, "gui/overlay_button/power_switch_off");
     public static final UITexture TT_OVERLAY_BUTTON_POWER_SWITCH_DISABLED = UITexture
         .fullImage(MODID, "gui/overlay_button/power_switch_disabled");
+    public static final UITexture TT_OVERLAY_BUTTON_ARROW_BLUE_UP = UITexture
+        .fullImage(MODID, "gui/overlay_button/arrow_blue_up");
+    public static final UITexture TT_OVERLAY_BUTTON_BATTERY_ON = UITexture
+        .fullImage(MODID, "gui/overlay_button/battery_on");
+    public static final UITexture TT_OVERLAY_BUTTON_BATTERY_OFF = UITexture
+        .fullImage(MODID, "gui/overlay_button/battery_off");
+    public static final UITexture TT_OVERLAY_BUTTON_FLAG = UITexture.fullImage(MODID, "gui/overlay_button/flag");
+    public static final UITexture TT_OVERLAY_BUTTON_HEART = UITexture.fullImage(MODID, "gui/overlay_button/heart");
+    public static final UITexture TT_OVERLAY_BUTTON_RAINBOW_SPIRAL = UITexture
+        .fullImage(MODID, "gui/overlay_button/rainbow_spiral");
+    public static final UITexture TT_OVERLAY_BUTTON_STATISTICS = UITexture
+        .fullImage(MODID, "gui/overlay_button/statistics");
+    public static final UITexture TT_OVERLAY_BUTTON_HEAT_ON = UITexture.fullImage(MODID, "gui/overlay_button/heat_on");
+    public static final UITexture TT_OVERLAY_CYCLIC_BLUE = UITexture.fullImage(MODID, "gui/overlay_button/cyclic_blue");
+    public static final UITexture TT_OVERLAY_EJECTION_LOCKED = UITexture
+        .fullImage(MODID, "gui/overlay_button/eject_disabled");
+    public static final UITexture TT_OVERLAY_EJECTION_ON = UITexture.fullImage(MODID, "gui/overlay_button/eject");
+
+    public static final UITexture TT_BUTTON_CELESTIAL_32x32 = UITexture.fullImage(MODID, "gui/button/celestial");
+
     public static final UITexture OVERLAY_BUTTON_POWER_PASS_ON = UITexture
         .fullImage(MODID, "gui/overlay_button/power_pass_on");
     public static final UITexture OVERLAY_BUTTON_POWER_PASS_OFF = UITexture
@@ -610,6 +642,7 @@ public final class GTGuiTextures {
         .fullImage()
         .name(GTTextureIds.PICTURE_TECTECH_LOGO_DARK)
         .build();
+    public static final UITexture PICTURE_GODFORGE_LOGO = UITexture.fullImage(MODID, "gui/picture/gorge_logo");
     public static final UITexture PICTURE_BARTWORKS_LOGO_STANDARD = UITexture.builder()
         .location(MainMod.MOD_ID, "GUI/picture/bw_logo_47x21")
         .fullImage()

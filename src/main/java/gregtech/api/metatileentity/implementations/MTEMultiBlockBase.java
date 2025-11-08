@@ -2956,6 +2956,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         return true;
     }
 
+    public boolean supportsTerminalLeftCornerColumn() {
+        return false;
+    }
+
     public boolean supportsLogo() {
         return true;
     }
@@ -3540,6 +3544,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     }
 
     public boolean showMachineStatusInGUI() {
+        return true;
+    }
+
+    public boolean showStructureUpdateButton() {
+        return true;
+    }
+
+    public boolean showPowerSwitchButton() {
         return true;
     }
 
