@@ -10,10 +10,7 @@ import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.slot.ItemSlot;
-import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
@@ -35,18 +32,7 @@ public class MTETranscendentPlasmaMixerGui extends MTEMultiBlockBaseGui<MTETrans
 
     @Override
     protected Flow createButtonColumn(ModularPanel panel, PanelSyncManager syncManager) {
-        // todo: when mui2 gets reversed child insertion order, change this to be super+child
-        return new Column().width(18)
-            .leftRel(1, -2, 1)
-            .mainAxisAlignment(Alignment.MainAxis.END)
-            .child(createParallelButton(syncManager, panel))
-            .child(createStructureUpdateButton(syncManager))
-            .child(createPowerSwitchButton())
-            .childIf(
-                multiblock.doesBindPlayerInventory(),
-                new ItemSlot().slot(
-                    new ModularSlot(multiblock.inventoryHandler, multiblock.getControllerSlotIndex())
-                        .slotGroup("item_inv")));
+        return super.createButtonColumn(panel, syncManager).child(createParallelButton(syncManager, panel));
     }
 
     protected IWidget createParallelButton(PanelSyncManager syncManager, ModularPanel parent) {
@@ -56,7 +42,6 @@ public class MTETranscendentPlasmaMixerGui extends MTEMultiBlockBaseGui<MTETrans
             true);
 
         return new ButtonWidget<>().size(18)
-            .marginBottom(2)
             .overlay(GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_ON)
             .tooltip(t -> t.addLine(translateToLocal("GT5U.tpm.parallelwindow")))
             .onMousePressed(mouseButton -> {

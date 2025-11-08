@@ -69,7 +69,6 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui<MTEChamberCent
             (p_syncManager, syncHandler) -> openInfoPanel(p_syncManager, parent, syncManager),
             true);
         return new ButtonWidget<>().size(18, 18)
-            .topRel(0)
             .overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/cyclic"))
             .onMousePressed(d -> {
                 if (!statsPanel.isPanelOpen()) {
