@@ -2981,10 +2981,10 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     }
 
     public String storedFuelText() {
-        if (internalBattery == 0) {
-            return formattingMode.format(stellarFuelAmount) + "/" + formattingMode.format(neededStartupFuel);
+        if (data.getInternalBattery() == 0) {
+            return data.format(data.getStellarFuelAmount()) + "/" + data.format(data.getNeededStartupFuel());
         }
-        return formattingMode.format(internalBattery) + "/" + formattingMode.format(maxBatteryCharge);
+        return data.format(data.getInternalBattery()) + "/" + data.format(data.getMaxBatteryCharge());
     }
 
     private Text storedFuelHeaderTextOld() {
@@ -2995,7 +2995,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     }
 
     public String storedFuelHeaderText() {
-        if (internalBattery == 0) {
+        if (data.getInternalBattery() == 0) {
             return translateToLocal("gt.blockmachines.multimachine.FOG.storedstartupfuel");
         }
         return translateToLocal("gt.blockmachines.multimachine.FOG.storedfuel");
@@ -3282,22 +3282,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             default -> throw new IllegalArgumentException("Invalid Milestone ID");
         }
         return new Text(progressText + ": " + EnumChatFormatting.GRAY + data.format(max) + " " + suffix);
-    }
-
-    public boolean getBatteryCharging() {
-        return batteryCharging;
-    }
-
-    public void setBatteryCharging(boolean val) {
-        batteryCharging = val;
-    }
-
-    public boolean getShardEjection() {
-        return gravitonShardEjection;
-    }
-
-    public void setShardEjection(boolean val) {
-        gravitonShardEjection = val;
     }
 
     private void increaseBattery(int amount) {

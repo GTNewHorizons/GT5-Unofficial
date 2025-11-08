@@ -37,6 +37,7 @@ import gregtech.common.gui.modularui.multiblock.godforge.panel.StatisticsPanel;
 import gregtech.common.gui.modularui.multiblock.godforge.panel.UpgradeTreePanel;
 import tectech.TecTech;
 import tectech.thing.metaTileEntity.multi.godforge.MTEForgeOfGods;
+import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 
 public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
 
@@ -61,6 +62,8 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
 
+        ForgeOfGodsData data = multiblock.getData();
+
         // todo try to reduce this, registering these when the panel is opened
         // todo rather than all the time like right now
         BatteryConfigPanel.registerSyncValues(syncManager);
@@ -74,12 +77,11 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
         StatisticsPanel.registerSyncValues(syncManager);
         UpgradeTreePanel.registerSyncValues(syncManager);
 
-        syncManager.syncValue(
-            SYNC_BATTERY_CHARGING,
-            new BooleanSyncValue(multiblock::getBatteryCharging, multiblock::setBatteryCharging));
+        syncManager
+            .syncValue(SYNC_BATTERY_CHARGING, new BooleanSyncValue(data::isBatteryCharging, data::setBatteryCharging));
         syncManager.syncValue(
             SYNC_SHARD_EJECTION,
-            new BooleanSyncValue(multiblock::getShardEjection, multiblock::setShardEjection));
+            new BooleanSyncValue(data::isGravitonShardEjection, data::setGravitonShardEjection));
     }
 
     // todo fix column being shifted up 1 pixel
@@ -104,7 +106,10 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
             .height(textBoxToInventoryGap)
             .child(createModuleRefreshButton(syncManager))
             .child(createStatisticsWindowButton(syncManager))
-            .childIf(() -> multiblock.isUpgradeActive(END), createEjectionButton(syncManager));
+            .childIf(
+                () -> multiblock.getData()
+                    .isUpgradeActive(END),
+                createEjectionButton(syncManager));
     }
 
     @Override
@@ -204,14 +209,16 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
             .disableHoverBackground()
             .onMousePressed(d -> {
                 if (d == 0) {
-                    batteryConfigSyncer.setBoolValue(!multiblock.getBatteryCharging());
-                } else if (d == 1 && multiblock.isUpgradeActive(REC)) {
-                    if (!batteryConfigPanel.isPanelOpen()) {
-                        batteryConfigPanel.openPanel();
-                    } else {
-                        batteryConfigPanel.closePanel();
+                    ForgeOfGodsData data = multiblock.getData();
+                    batteryConfigSyncer.setBoolValue(!data.isBatteryCharging());
+                } else if (d == 1 && multiblock.getData()
+                    .isUpgradeActive(REC)) {
+                        if (!batteryConfigPanel.isPanelOpen()) {
+                            batteryConfigPanel.openPanel();
+                        } else {
+                            batteryConfigPanel.closePanel();
+                        }
                     }
-                }
                 return true;
             })
             .clickSound(() -> TecTech.proxy.playSound(multiblock.getBaseMetaTileEntity(), "fx_click"))
@@ -315,7 +322,8 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
             .background(GTGuiTextures.TT_BUTTON_CELESTIAL_32x32)
             .disableHoverBackground()
             .onMousePressed(d -> {
-                shardEjectionSyncer.setBoolValue(!multiblock.getShardEjection());
+                ForgeOfGodsData data = multiblock.getData();
+                shardEjectionSyncer.setBoolValue(!data.isGravitonShardEjection());
                 return true;
             })
             .clickSound(() -> TecTech.proxy.playSound(multiblock.getBaseMetaTileEntity(), "fx_click"))
@@ -324,8 +332,10 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
     }
 
     protected IWidget createGeneralInfoWindowButton(PanelSyncManager syncManager) {
-        IPanelHandler generalInfoPanel = syncManager
-            .panel(PANEL_GENERAL_INFO, (p_syncManager, syncHandler) -> GeneralInfoPanel.openPanel(multiblock), true);
+        IPanelHandler generalInfoPanel = syncManager.panel(
+            PANEL_GENERAL_INFO,
+            (p_syncManager, syncHandler) -> GeneralInfoPanel.openPanel(multiblock.getData()),
+            true);
         return new ButtonWidget<>().size(18)
             .overlay(IDrawable.EMPTY)
             .background(GTGuiTextures.PICTURE_GODFORGE_LOGO)
