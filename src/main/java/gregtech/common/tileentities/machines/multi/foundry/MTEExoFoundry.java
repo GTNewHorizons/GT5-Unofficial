@@ -10,6 +10,7 @@ import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXOFOUNDRY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXOFOUNDRY_ACTIVE;
@@ -56,6 +57,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.system.material.WerkstoffLoader;
+import fox.spiteful.avaritia.render.CosmicRenderShenanigans;
 import goodgenerator.items.GGMaterial;
 import goodgenerator.loader.Loaders;
 import gregtech.GTMod;
@@ -1072,6 +1074,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     private boolean shouldRender = true;
     private boolean renderInitialized;
     private static IModelCustomExt ring;
+    private static IModelCustomExt uniRing;
     private static ShaderProgram ringProgram;
     private int uGlowColor;
     // -1 -> uninitialized; 0 -> inactive
@@ -1176,6 +1179,12 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                 i++;
                 continue;
             }
+            if (module == FoundryModules.ACTIVE_TIME_DILATION_SYSTEM) {
+                BloomShader.unbind();
+                renderUniversiumRing(i);
+                BloomShader.getInstance()
+                    .bind();
+            }
             if (gammaCorrected) {
                 // renderRing(
                 // i,
@@ -1191,6 +1200,8 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         }
     }
 
+    private static final float cosmicOpacity = 2.5f;
+
     private void initializeRender() {
         // spotless:off
         ring = (IModelCustomExt) AdvancedModelLoader.loadModel(
@@ -1200,6 +1211,15 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             )
         );
         ring.setVertexFormat(DefaultVertexFormat.POSITION);
+        //todo: fix all of this lol
+        uniRing = (IModelCustomExt) AdvancedModelLoader.loadModel(
+            new ResourceLocation(
+                GregTech.resourceDomain,
+                "textures/model/foundry_ringbaby2.obj"
+            )
+        );
+        uniRing.setVertexFormat(DefaultVertexFormat.POSITION);
+
 
         try {
             ringProgram = new ShaderProgram(
@@ -1208,15 +1228,6 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                 "shaders/foundry.frag.glsl"
             );
             uGlowColor = ringProgram.getUniformLocation("u_Color");
-       //    AutoShaderUpdater.getInstance().registerShaderReload(
-       //        ringProgram,
-       //        GregTech.resourceDomain,
-       //        "shaders/foundry.vert.glsl",
-       //        "shaders/foundry.frag.glsl",
-       //        (shader, vertexPath, fragmentPath) -> {
-       //            uGlowColor = shader.getUniformLocation("u_Color");
-       //        }
-       //    );
         } catch (Exception e) {
             GTMod.GT_FML_LOGGER.error(e.getMessage());
             return;
@@ -1232,6 +1243,23 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         GL20.glUniform3f(uGlowColor, red, green, blue);
         ring.renderAllVBO();
         GL11.glPopMatrix();
+    }
+
+    private void renderUniversiumRing(int index) {
+        // todo: stars on this render, not showing up for some reason
+        if (Avaritia.isModLoaded()) {
+            CosmicRenderShenanigans.cosmicOpacity = 1f;
+            CosmicRenderShenanigans.setLightLevel(10);
+            CosmicRenderShenanigans.useShader();
+            GL11.glPushMatrix();
+            GL11.glTranslated(0, 9 + index * 8 + (index > 1 ? 10 : 0), 0);
+            GL11.glScalef(1, 1.2f, 1);
+            GL20.glUniform3f(uGlowColor, 1, 1, 1);
+            uniRing.renderAllVBO();
+            GL11.glPopMatrix();
+            CosmicRenderShenanigans.releaseShader();
+
+        }
     }
 
     @Override
