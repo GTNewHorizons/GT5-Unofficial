@@ -54,6 +54,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
 
     public static final String SYNC_BATTERY_CHARGING = "fog.sync.battery_charging";
     public static final String SYNC_SHARD_EJECTION = "fog.sync.shard_ejection";
+    public static final String SYNC_INVERSION = "fog.sync.inversion";
 
     public static final String SYNC_MILESTONE_CLICKED = "fog.sync.milestone_clicked";
     public static final String SYNC_MILESTONE_CHARGE_PROGRESS = "fog.sync.milestone_charge_progress";
@@ -83,10 +84,8 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
         // todo rather than all the time like right now
         BatteryConfigPanel.registerSyncValues(syncManager);
         FuelConfigPanel.registerSyncValues(syncManager);
-        GeneralInfoPanel.registerSyncValues(syncManager);
         IndividualMilestonePanel.registerSyncValues(syncManager);
         IndividualUpgradePanel.registerSyncValues(syncManager);
-        SpecialThanksPanel.registerSyncValues(syncManager);
         StarCosmeticsPanel.registerSyncValues(syncManager);
         StatisticsPanel.registerSyncValues(syncManager);
         UpgradeTreePanel.registerSyncValues(syncManager);
@@ -352,8 +351,10 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
     }
 
     protected IWidget createGeneralInfoWindowButton(PanelSyncManager syncManager) {
-        IPanelHandler generalInfoPanel = syncManager
-            .panel(PANEL_GENERAL_INFO, (p_syncManager, syncHandler) -> GeneralInfoPanel.openPanel(data), true);
+        IPanelHandler generalInfoPanel = syncManager.panel(
+            PANEL_GENERAL_INFO,
+            (p_syncManager, syncHandler) -> GeneralInfoPanel.openPanel(p_syncManager, data),
+            true);
         return new ButtonWidget<>().size(18)
             .overlay(IDrawable.EMPTY)
             .background(GTGuiTextures.PICTURE_GODFORGE_LOGO)

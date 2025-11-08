@@ -727,7 +727,10 @@ public final class GTGuiTextures {
         .fullImage(MODID, "gui/picture/milestone_catalyst");
     public static final UITexture PICTURE_GODFORGE_MILESTONE_COMPOSITION = UITexture
         .fullImage(MODID, "gui/picture/milestone_composition");
-    public static final UITexture PICTURE_GODFORGE_THANKS = UITexture.fullImage(MODID, "gui/picture/thanks");
+    public static final UITexture PICTURE_GODFORGE_THANKS = UITexture.builder()
+        .location(MODID, "gui/picture/thanks")
+        .nonOpaque()
+        .build();
     public static final UITexture PICTURE_GODFORGE_MILESTONE_CHARGE_GLOW = UITexture.builder()
         .location(MODID, "gui/picture/milestone_charge_glow")
         .nonOpaque()
