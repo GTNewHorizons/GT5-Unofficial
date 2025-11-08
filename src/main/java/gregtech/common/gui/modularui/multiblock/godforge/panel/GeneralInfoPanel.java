@@ -18,14 +18,14 @@ import com.cleanroommc.modularui.widgets.TextWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.godforge.MTEForgeOfGodsGui;
-import tectech.thing.metaTileEntity.multi.godforge.MTEForgeOfGods;
+import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 
 public class GeneralInfoPanel {
 
     private static final int SIZE = 300;
     private static final int OFFSET_SIZE = 280;
 
-    public static ModularPanel openPanel(MTEForgeOfGods multiblock) {
+    public static ModularPanel openPanel(ForgeOfGodsData data) {
         ModularPanel panel = new ModularPanel(MTEForgeOfGodsGui.PANEL_GENERAL_INFO).size(SIZE)
             .padding(10, 0, 10, 0)
             .background(GTGuiTextures.BACKGROUND_GLOW_WHITE)
@@ -66,7 +66,7 @@ public class GeneralInfoPanel {
         textList.child(moduleToC);
         textList.child(upgradeToC);
         textList.child(milestoneToC);
-        textList.childIf(multiblock::isInversionAvailable, inversionToC);
+        textList.childIf(data::isInversion, inversionToC);
 
         textList.child(fuelHeader);
         textList.child(fuelText);
@@ -76,8 +76,8 @@ public class GeneralInfoPanel {
         textList.child(upgradeText);
         textList.child(milestoneHeader);
         textList.child(milestoneText);
-        textList.childIf(multiblock::isInversionAvailable, inversionHeader);
-        textList.childIf(multiblock::isInversionAvailable, inversionText);
+        textList.childIf(data::isInversion, inversionHeader);
+        textList.childIf(data::isInversion, inversionText);
 
         panel.child(textList);
         panel.child(ButtonWidget.panelCloseButton());
