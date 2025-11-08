@@ -10,10 +10,7 @@ import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.slot.ItemSlot;
-import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
@@ -35,18 +32,7 @@ public class MTEPurificationUnitBaseGui extends MTEMultiBlockBaseGui<MTEPurifica
 
     @Override
     protected Flow createButtonColumn(ModularPanel panel, PanelSyncManager syncManager) {
-        // todo: when mui2 gets reversed child insertion order, change this to be super+child
-        return new Column().width(18)
-            .leftRel(1, -2, 1)
-            .mainAxisAlignment(Alignment.MainAxis.END)
-            .child(createParallelButton(syncManager, panel))
-            .child(createStructureUpdateButton(syncManager))
-            .child(createPowerSwitchButton())
-            .childIf(
-                multiblock.doesBindPlayerInventory(),
-                new ItemSlot().slot(
-                    new ModularSlot(multiblock.inventoryHandler, multiblock.getControllerSlotIndex())
-                        .slotGroup("item_inv")));
+        return super.createButtonColumn(panel, syncManager).child(createParallelButton(syncManager, panel));
     }
 
     protected IWidget createParallelButton(PanelSyncManager syncManager, ModularPanel parent) {
@@ -56,7 +42,6 @@ public class MTEPurificationUnitBaseGui extends MTEMultiBlockBaseGui<MTEPurifica
             true);
 
         return new ButtonWidget<>().size(18)
-            .marginBottom(2)
             .overlay(GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_ON)
             .tooltip(t -> t.addLine(translateToLocal("GT5U.tpm.parallelwindow")))
             .onMousePressed(mouseButton -> {
@@ -89,7 +74,7 @@ public class MTEPurificationUnitBaseGui extends MTEMultiBlockBaseGui<MTEPurifica
                 .marginBottom(2));
         holdingColumn.child(
             new TextFieldWidget().setFormatAsInteger(true)
-                .setNumbers(1, 2_000_000_000)
+                .setNumbers(1, Integer.MAX_VALUE)
                 .setTextAlignment(Alignment.CENTER)
                 .setDefaultNumber(1)
                 .value(parallelSyncer)
