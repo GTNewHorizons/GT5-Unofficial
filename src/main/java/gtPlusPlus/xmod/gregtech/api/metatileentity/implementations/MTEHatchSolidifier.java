@@ -1,31 +1,22 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
-import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
+import com.gtnewhorizons.modularui.common.fluid.FluidStackTank;
 import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import ggfab.GGItemList;
-import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -33,13 +24,17 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.net.GTPacketSetMold;
 import gregtech.api.util.GTUtility;
-import gregtech.common.gui.modularui.base.ItemSelectBaseGui;
 import gregtech.common.gui.modularui.hatch.MTEHatchSolidifierGui;
 
 public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationCircuitSupport {
 
     public static final int moldSlot = 2;
     public static final int circuitSlot = 3;
+
+    public final FluidStackTank fluidTank = new FluidStackTank(
+        () -> mFluid,
+        fluidStack -> mFluid = fluidStack,
+        this::getRealCapacity);
 
     public static final ItemStack[] solidifierMolds = { ItemList.Shape_Mold_Bottle.get(1),
         ItemList.Shape_Mold_Plate.get(1), ItemList.Shape_Mold_Ingot.get(1), ItemList.Shape_Mold_Casing.get(1),
@@ -125,82 +120,6 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
         } catch (Throwable ignored) {}
         markDirty();
         GTValues.NW.sendToServer(new GTPacketSetMold(this, selected));
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
-        final AtomicBoolean dialogOpened = new AtomicBoolean(false);
-        builder.widget(new SlotWidget(new MoldContainer(inventoryHandler, moldSlot)) {
-
-            @Override
-            protected void phantomClick(ClickData clickData, ItemStack cursorStack) {
-                final ItemStack current = inventoryHandler.getStackInSlot(moldSlot);
-                final int currentIndex = current != null ? findMatchingMoldIndex(current) : -1;
-                ItemStack newMold = current;
-                if (clickData.shift && clickData.mouseButton == 0) {
-                    if (NetworkUtils.isClient() && !dialogOpened.get()) {
-                        openSelectMoldDialog(getContext(), dialogOpened);
-                    }
-                    return;
-                } else {
-                    int newIndex = currentIndex;
-                    if (clickData.mouseButton == 0) newIndex++;
-                    else if (clickData.mouseButton == 1) newIndex--;
-                    newIndex = Math.floorMod(newIndex, solidifierMolds.length);
-                    newMold = solidifierMolds[newIndex];
-                }
-                setMold(newMold);
-            }
-
-            @Override
-            protected void phantomScroll(int direction) {
-                if (GTMod.proxy.invertCircuitScrollDirection) {
-                    phantomClick(new ClickData(direction > 0 ? 0 : 1, false, false, false));
-                } else {
-                    phantomClick(new ClickData(direction > 0 ? 1 : 0, false, false, false));
-                }
-            }
-
-            @Override
-            public List<String> getExtraTooltip() {
-                return Arrays.asList(
-                    EnumChatFormatting.DARK_GRAY + EnumChatFormatting.getTextWithoutFormattingCodes(
-                        StatCollector.translateToLocal("GT5U.machines.select_mold.tooltip.1")),
-                    EnumChatFormatting.DARK_GRAY + EnumChatFormatting.getTextWithoutFormattingCodes(
-                        StatCollector.translateToLocal("GT5U.machines.select_mold.tooltip.2")));
-            }
-        }.setOverwriteItemStackTooltip(list -> {
-            list.removeIf(
-                line -> line.contains(GTUtility.translate("gt.integrated_circuit.tooltip.0"))
-                    || line.contains(GTUtility.translate("gt.integrated_circuit.tooltip.1")));
-            return list;
-        })
-            .disableShiftInsert()
-            .setHandlePhantomActionClient(true)
-            .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_MOLD)
-            .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.select_mold.tooltip"))
-            .setTooltipShowUpDelay(10)
-            .setPos(124, 34));
-    }
-
-    protected void openSelectMoldDialog(ModularUIContext uiContext, AtomicBoolean dialogOpened) {
-        final IItemHandlerModifiable inv = getInventoryHandler();
-        if (inv == null) return;
-        uiContext.openClientWindow(
-            player -> new ItemSelectBaseGui(
-                GTUtility.translate("GT5U.machines.select_mold"),
-                getStackForm(0),
-                this::onMoldSelected,
-                Arrays.asList(solidifierMolds),
-                findMatchingMoldIndex(inv.getStackInSlot(moldSlot))).setAnotherWindow(true, dialogOpened)
-                    .setGuiTint(getGUIColorization())
-                    .setCurrentGetter(() -> inv.getStackInSlot(moldSlot))
-                    .createWindow(new UIBuildContext(player)));
-    }
-
-    protected void onMoldSelected(ItemStack selected) {
-        setMold(selected);
     }
 
     public int findMatchingMoldIndex(ItemStack stack) {

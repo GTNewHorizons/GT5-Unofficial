@@ -7,7 +7,6 @@ import static tectech.Reference.MODID;
 
 import com.cleanroommc.modularui.drawable.ColorType;
 import com.cleanroommc.modularui.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.drawable.AdaptableUITexture;
 
 import bartworks.MainMod;
 import gregtech.common.modularui2.util.SteamTextureRegisterer;
@@ -85,8 +84,13 @@ public final class GTGuiTextures {
         .name(GTTextureIds.BACKGROUND_TERMINAL_TECTECH)
         .build();
 
-    public static final AdaptableUITexture PICTURE_SCREEN_BLACK = AdaptableUITexture
-        .of(GregTech.ID, "gui/picture/screen_black", 16, 16, 2);
+    public static final UITexture PICTURE_SCREEN_BLACK = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/screen_black")
+        .imageSize(16, 16)
+        .adaptable(2)
+        .name(GTTextureIds.PICTURE_SCREEN_BLACK)
+        .build();
+
     public static final UITexture PICTURE_GAUGE = fullImage(GregTech.ID, "gui/picture/gauge");
 
     public static final UITexture BACKGROUND_REDSTONE_SNIFFER = UITexture.builder()
@@ -128,6 +132,9 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_UNPOWERED = UITexture.fullImage(GregTech.ID, "gui/icons/unpowered");
 
     public static final UITexture OVERLAY_NO_MAINTENANCE_ISSUES = UITexture.fullImage(GregTech.ID, "gui/icons/noMaint");
+    public static final UITexture OVERLAY_SLOT_IN = fullImage(GregTech.ID, "gui/overlay_slot/in");
+    public static final UITexture OVERLAY_SLOT_OUT = fullImage(GregTech.ID, "gui/overlay_slot/out");
+
     // endregion overlay
     // region slot
 

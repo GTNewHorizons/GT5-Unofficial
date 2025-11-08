@@ -105,6 +105,7 @@ public final class GTTextureIds {
     public static final String PICTURE_GT_LOGO_STEEL = "gregtech:picture_gt_logo_steel";
     public static final String PICTURE_GT_LOGO_PRIMITIVE = "gregtech:picture_gt_logo_primitive";
     public static final String PICTURE_TECTECH_LOGO_DARK = "tectech:picture_tt_logo_dark";
+    public static final String PICTURE_SCREEN_BLACK = "gregtech:picture_screen_black";
 
     public static final String PICTURE_TRANSPARENT = "gregtech:picture_transparent";
     public static final String PICTURE_BW_LOGO_STANDARD = "bartworks:picture_bw_logo";

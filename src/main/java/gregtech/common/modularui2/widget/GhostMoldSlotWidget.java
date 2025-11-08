@@ -1,6 +1,9 @@
 package gregtech.common.modularui2.widget;
 
+import java.util.Arrays;
+
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -15,8 +18,6 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.theme.WidgetThemeEntry;
 import com.cleanroommc.modularui.utils.MouseData;
-import com.cleanroommc.modularui.value.sync.IntSyncValue;
-import com.cleanroommc.modularui.value.sync.ItemSlotSH;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.PhantomItemSlotSH;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
@@ -24,7 +25,6 @@ import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuis;
-import gregtech.api.util.GTUtility;
 import gregtech.common.modularui2.factory.SelectItemGuiBuilder;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
 
@@ -36,7 +36,7 @@ public class GhostMoldSlotWidget extends PhantomItemSlot {
     private static final String GUI_ID = "mold_selector";
 
     private final MTEHatchSolidifier hatch;
-    private final IntSyncValue selectedSyncHandler;
+    private GhostMoldSyncHandler moldSyncHandler;
     private IPanelHandler selectorPanelHandler;
     private PanelSyncManager syncManager;
 
@@ -45,8 +45,12 @@ public class GhostMoldSlotWidget extends PhantomItemSlot {
         this.hatch = hatch;
         this.syncManager = syncManager;
         tooltipBuilder(this::getMoldSlotTooltip);
-        this.selectedSyncHandler = syncManager.findSyncHandler("selector_screen_selected", IntSyncValue.class);
-        this.selectorPanelHandler = buildSelectorPanel(selectedSyncHandler);
+
+        this.moldSyncHandler = new GhostMoldSyncHandler(
+            new ModularSlot(hatch.inventoryHandler, MTEHatchSolidifier.moldSlot),
+            hatch);
+        setSyncHandler(moldSyncHandler);
+        selectorPanelHandler = buildSelectorPanel();
     }
 
     @Override
@@ -62,7 +66,8 @@ public class GhostMoldSlotWidget extends PhantomItemSlot {
                 openSelectorPanel();
             } else {
                 MouseData mouseData = MouseData.create(mouseButton);
-                getSyncHandler().syncToServer(PhantomItemSlotSH.SYNC_CLICK, mouseData::writeToPacket);
+                PhantomItemSlotSH handler = getSyncHandler();
+                handler.syncToServer(PhantomItemSlotSH.SYNC_CLICK, mouseData::writeToPacket);
             }
         }
         return Result.SUCCESS;
@@ -71,32 +76,27 @@ public class GhostMoldSlotWidget extends PhantomItemSlot {
     @Override
     public boolean onMouseScroll(UpOrDown scrollDirection, int amount) {
         if (isSelectorPanelOpen()) return true;
-        MouseData mouseData = MouseData.create(scrollDirection.modifier);
-        getSyncHandler().syncToServer(PhantomItemSlotSH.SYNC_SCROLL, mouseData::writeToPacket);
+        if (getSyncHandler() != null) {
+            MouseData mouseData = MouseData.create(scrollDirection.modifier);
+            getSyncHandler().syncToServer(PhantomItemSlotSH.SYNC_SCROLL, mouseData::writeToPacket);
+        }
         return true;
-    }
-
-    @Override
-    public PhantomItemSlot slot(ModularSlot slot) {
-        ItemSlotSH sh = new PhantomItemSlotSH(slot);
-        isValidSyncHandler(sh);
-        setSyncHandler(sh);
-        return this;
     }
 
     private void getMoldSlotTooltip(RichTooltip tooltip) {
         ItemStack current = hatch.inventoryHandler.getStackInSlot(MTEHatchSolidifier.moldSlot);
-        String moldName = current != null ? GTUtility.translate(current.getDisplayName()) : "None";
+        String moldName = StatCollector
+            .translateToLocal(current != null ? current.getDisplayName() : "GT5U.machines.select_mold.tooltip");
         tooltip.clearText()
-            .addLine(IKey.lang("GT5U.machines.select_mold.tooltip"))
-            .spaceLine(2)
-            .addLine(IKey.lang("GT5U.machines.select_mold.tooltip.current", moldName));
+            .addLine(moldName)
+            .addLine(IKey.lang("GT5U.machines.select_mold.tooltip.1"))
+            .addLine(IKey.lang("GT5U.machines.select_mold.tooltip.2"));
     }
 
     @NotNull
     @Override
     public PhantomItemSlotSH getSyncHandler() {
-        return super.getSyncHandler();
+        return moldSyncHandler;
     }
 
     private boolean isSelectorPanelOpen() {
@@ -106,18 +106,18 @@ public class GhostMoldSlotWidget extends PhantomItemSlot {
 
     private void openSelectorPanel() {
         if (selectorPanelHandler == null) {
-            selectorPanelHandler = buildSelectorPanel(selectedSyncHandler);
+            selectorPanelHandler = buildSelectorPanel();
         }
         selectorPanelHandler.openPanel();
     }
 
-    private IPanelHandler buildSelectorPanel(IntSyncValue selectedSyncHandler) {
-        return syncManager.panel(GUI_ID, (mainPanel, player) -> {
+    private IPanelHandler buildSelectorPanel() {
+        return syncManager.panel("moldSlotPanel", (mainPanel, player) -> {
             ModularPanel panel = GTGuis.createPopUpPanel(GUI_ID);
-            return new SelectItemGuiBuilder(panel, java.util.Arrays.asList(MTEHatchSolidifier.solidifierMolds))
+            return new SelectItemGuiBuilder(panel, Arrays.asList(MTEHatchSolidifier.solidifierMolds))
                 .setHeaderItem(hatch.getStackForm(0))
                 .setTitle(IKey.lang("GT5U.machines.select_mold"))
-                .setSelectedSyncHandler(selectedSyncHandler)
+                .setSelectedSyncHandler(moldSyncHandler.getIndexSync())
                 .setOnSelectedClientAction((selected, mouseData) -> {
                     hatch.setMold(MTEHatchSolidifier.solidifierMolds[selected]);
                     if (mouseData.shift) {
