@@ -69,14 +69,15 @@ public class MTENanoForgeGui extends MTEMultiBlockBaseGui<MTENanoForge> {
     private static final int WIDTH = 250;
     private static final int HEIGHT = 250;
     private static final int PADDING_SIDE = 4;
+    private static final int ADJUSTED_WIDTH = WIDTH - 2 * PADDING_SIDE;
+    private static final int ADJUSTED_HEIGHT = HEIGHT - 2 * PADDING_SIDE;
 
     private ModularPanel openInfoPanel() {
 
         ModularPanel returnPanel = new ModularPanel("nanoForgeInfoPanel").size(WIDTH, HEIGHT)
             .padding(PADDING_SIDE, 0, PADDING_SIDE, 0)
             .overlay(GTGuiTextures.TT_BACKGROUND_TEXT_FIELD);
-        ListWidget<IWidget, ?> textList = new ListWidget<>().width(WIDTH - PADDING_SIDE * 2)
-            .size(WIDTH - 2 * PADDING_SIDE, HEIGHT - 2 * PADDING_SIDE);
+        ListWidget<IWidget, ?> textList = new ListWidget<>().size(ADJUSTED_WIDTH, ADJUSTED_HEIGHT);
         textList.child(createHeader());
         textList.child(createTextEntry(EnumChatFormatting.GOLD, "GT5U.machines.nano_forge.t4_info_text.1"));
         textList.child(createTextEntry(EnumChatFormatting.GOLD, "GT5U.machines.nano_forge.t4_info_text.2"));
@@ -94,7 +95,7 @@ public class MTENanoForgeGui extends MTEMultiBlockBaseGui<MTENanoForge> {
         return IKey.str(textColor + GTUtility.translate(langKey))
             .alignment(Alignment.CenterLeft)
             .asWidget()
-            .width(WIDTH - 10 - 2 * PADDING_SIDE)
+            .width(ADJUSTED_WIDTH - 10)
             .marginBottom(8);
     }
 
