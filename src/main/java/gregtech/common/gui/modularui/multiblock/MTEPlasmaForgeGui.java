@@ -3,9 +3,9 @@ package gregtech.common.gui.modularui.multiblock;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
-import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
@@ -15,10 +15,7 @@ import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.slot.ItemSlot;
-import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.enums.ItemList;
@@ -47,18 +44,8 @@ public class MTEPlasmaForgeGui extends MTEMultiBlockBaseGui<MTEPlasmaForge> {
 
     @Override
     protected Flow createButtonColumn(ModularPanel panel, PanelSyncManager syncManager) {
-        // todo: when mui2 gets reversed child insertion order, change this to be super+child
-        return new Column().width(18)
-            .leftRel(1, -2, 1)
-            .mainAxisAlignment(Alignment.MainAxis.END)
-            .child(createConvergenceButton(syncManager, panel))
-            .child(createStructureUpdateButton(syncManager))
-            .child(createPowerSwitchButton())
-            .childIf(
-                multiblock.doesBindPlayerInventory(),
-                new ItemSlot().slot(
-                    new ModularSlot(multiblock.inventoryHandler, multiblock.getControllerSlotIndex())
-                        .slotGroup("item_inv")));
+        return super.createButtonColumn(panel, syncManager).child(createConvergenceButton(syncManager, panel));
+
     }
 
     protected IWidget createConvergenceButton(PanelSyncManager syncManager, ModularPanel parent) {
@@ -68,6 +55,10 @@ public class MTEPlasmaForgeGui extends MTEMultiBlockBaseGui<MTEPlasmaForge> {
         BooleanSyncValue convergenceSyncer = syncManager.findSyncHandler("convergence", BooleanSyncValue.class);
         return new ButtonWidget<>().size(18)
             .marginBottom(2)
+            .tooltip(
+                t -> t.addLine(translateToLocal("GT5U.DTPF.convergencebutton"))
+                    .addLine(EnumChatFormatting.GRAY + translateToLocal("GT5U.DTPF.convergencebuttontooltip.0"))
+                    .addLine(EnumChatFormatting.GRAY + translateToLocal("GT5U.DTPF.convergencebuttontooltip.1")))
             .overlay(new DynamicDrawable(() -> {
                 boolean convergenceActive = convergenceSyncer.getBoolValue();
                 if (convergenceActive) {
@@ -111,26 +102,14 @@ public class MTEPlasmaForgeGui extends MTEMultiBlockBaseGui<MTEPlasmaForge> {
             IKey.lang("GT5U.DTPF.catalysttier")
                 .asWidget()
                 .marginBottom(2));
-
-        // todo: change this to not use a row, after textfieldwidget gets custom tooltip support
-        Flow hackyRow = Flow.row()
-            .width(WIDTH)
-            .height(20);
-        hackyRow.child(
+        holdingColumn.child(
             new TextFieldWidget().setFormatAsInteger(true)
                 .setNumbers(1, 5)
                 .setTextAlignment(Alignment.CENTER)
                 .setDefaultNumber(1)
                 .value(catalystSyncer)
                 .size(WIDTH - PADDING_SIDES * 2, 18)
-                .align(Alignment.Center)
                 .setFocusOnGuiOpen(true));
-        hackyRow.child(
-            new IDrawable.DrawableWidget(IDrawable.EMPTY).size(WIDTH - PADDING_SIDES * 2, 18)
-                .align(Alignment.Center)
-                .tooltip(t -> t.addLine(translateToLocal("GT5U.DTPF.catalystinfotooltip"))));
-
-        holdingColumn.child(hackyRow);
 
         returnPanel.child(holdingColumn);
 
