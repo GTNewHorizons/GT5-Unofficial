@@ -53,6 +53,12 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
         ItemStack aStack) {
         switch (aPrefix.getName()) {
             case "dust" -> {
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTUtility.copyAmount(1, aStack), ItemList.Schematic_Dust_Small.get(0L))
+                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 4L))
+                    .duration(1 * SECONDS)
+                    .eut(4)
+                    .addTo(packagerRecipes);
                 if (aMaterial.mFuelPower > 0) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, aStack))
