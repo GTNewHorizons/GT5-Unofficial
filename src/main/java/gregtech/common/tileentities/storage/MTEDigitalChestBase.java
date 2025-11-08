@@ -117,12 +117,12 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     }
 
     @Override
-    public void addListener(IMEMonitorHandlerReceiver<IAEItemStack> imeMonitorHandlerReceiver, Object o) {
+    public void addListener(IMEMonitorHandlerReceiver imeMonitorHandlerReceiver, Object o) {
         meInventoryHandler.addListener(imeMonitorHandlerReceiver, o);
     }
 
     @Override
-    public void removeListener(IMEMonitorHandlerReceiver<IAEItemStack> imeMonitorHandlerReceiver) {
+    public void removeListener(IMEMonitorHandlerReceiver imeMonitorHandlerReceiver) {
         meInventoryHandler.removeListener(imeMonitorHandlerReceiver);
     }
 
