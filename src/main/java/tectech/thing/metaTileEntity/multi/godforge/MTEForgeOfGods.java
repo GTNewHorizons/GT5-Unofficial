@@ -2980,25 +2980,11 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         return new Text(data.format(data.getInternalBattery()) + "/" + data.format(data.getMaxBatteryCharge()));
     }
 
-    public String storedFuelText() {
-        if (data.getInternalBattery() == 0) {
-            return data.format(data.getStellarFuelAmount()) + "/" + data.format(data.getNeededStartupFuel());
-        }
-        return data.format(data.getInternalBattery()) + "/" + data.format(data.getMaxBatteryCharge());
-    }
-
     private Text storedFuelHeaderTextOld() {
         if (data.getInternalBattery() == 0) {
             return new Text(translateToLocal("gt.blockmachines.multimachine.FOG.storedstartupfuel"));
         }
         return new Text(translateToLocal("gt.blockmachines.multimachine.FOG.storedfuel"));
-    }
-
-    public String storedFuelHeaderText() {
-        if (data.getInternalBattery() == 0) {
-            return translateToLocal("gt.blockmachines.multimachine.FOG.storedstartupfuel");
-        }
-        return translateToLocal("gt.blockmachines.multimachine.FOG.storedfuel");
     }
 
     private void checkInversionStatus() {

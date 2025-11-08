@@ -41,6 +41,7 @@ import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 
 public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
 
+    // spotless:off
     public static final String PANEL_MILESTONE = "fog.panel.milestone";
     public static final String PANEL_INDIVIDUAL_MILESTONE = "fog.panel.milestone_individual";
     public static final String PANEL_FUEL_CONFIG = "fog.panel.fuel_config";
@@ -53,18 +54,30 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
 
     public static final String SYNC_BATTERY_CHARGING = "fog.sync.battery_charging";
     public static final String SYNC_SHARD_EJECTION = "fog.sync.shard_ejection";
+
     public static final String SYNC_MILESTONE_CLICKED = "fog.sync.milestone_clicked";
+    public static final String SYNC_MILESTONE_CHARGE_PROGRESS = "fog.sync.milestone_charge_progress";
+    public static final String SYNC_MILESTONE_CHARGE_PROGRESS_INVERTED = "fog.sync.milestone_charge_progress_inverted";
+    public static final String SYNC_MILESTONE_CONVERSION_PROGRESS = "fog.sync.milestone_conversion_progress";
+    public static final String SYNC_MILESTONE_CONVERSION_PROGRESS_INVERTED = "fog.sync.milestone_conversion_progress_inverted";
+    public static final String SYNC_MILESTONE_CATALYST_PROGRESS = "fog.sync.milestone_catalyst_progress";
+    public static final String SYNC_MILESTONE_CATALYST_PROGRESS_INVERTED = "fog.sync.milestone_catalyst_progress_inverted";
+    public static final String SYNC_MILESTONE_COMPOSITION_PROGRESS = "fog.sync.milestone_composition_progress";
+    public static final String SYNC_MILESTONE_COMPOSITION_PROGRESS_INVERTED = "fog.sync.milestone_composition_progress_inverted";
+
     public static final String SYNC_STRUCTURE_UPDATE = "structureUpdateButton"; // From MTEMultiBlockBase
+    // spotless:on
+
+    private final ForgeOfGodsData data;
 
     public MTEForgeOfGodsGui(MTEForgeOfGods multiblock) {
         super(multiblock);
+        this.data = multiblock.getData();
     }
 
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-
-        ForgeOfGodsData data = multiblock.getData();
 
         // todo try to reduce this, registering these when the panel is opened
         // todo rather than all the time like right now
@@ -130,29 +143,38 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
     }
 
     // todo these probably need to be synced still
-    // todo move the text methods into this class from the multi
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
         return new ListWidget<>().coverChildren()
             .align(Alignment.TopCenter)
-            .child(
-                IKey.dynamic(multiblock::storedFuelHeaderText)
-                    .color(Color.WHITE.main)
-                    .alignment(Alignment.CENTER)
-                    .asWidget()
-                    .marginTop(1))
-            .child(
-                IKey.dynamic(multiblock::storedFuelText)
-                    .color(Color.WHITE.main)
-                    .alignment(Alignment.CENTER)
-                    .asWidget()
-                    .marginTop(2)
-                    .alignX(0.5f));
+            .child(IKey.dynamic(() -> {
+                if (data.getInternalBattery() == 0) {
+                    return translateToLocal("gt.blockmachines.multimachine.FOG.storedstartupfuel");
+                }
+                return translateToLocal("gt.blockmachines.multimachine.FOG.storedfuel");
+            })
+                .color(Color.WHITE.main)
+                .alignment(Alignment.CENTER)
+                .asWidget()
+                .marginTop(1))
+            .child(IKey.dynamic(() -> {
+                if (data.getInternalBattery() == 0) {
+                    return data.format(data.getStellarFuelAmount()) + "/" + data.format(data.getNeededStartupFuel());
+                }
+                return data.format(data.getInternalBattery()) + "/" + data.format(data.getMaxBatteryCharge());
+            })
+                .color(Color.WHITE.main)
+                .alignment(Alignment.CENTER)
+                .asWidget()
+                .marginTop(2)
+                .alignX(0.5f));
     }
 
     protected IWidget createMilestoneWindowButton(PanelSyncManager syncManager) {
-        IPanelHandler milestonePanel = syncManager
-            .panel(PANEL_MILESTONE, (p_syncManager, syncHandler) -> MilestonePanel.openPanel(p_syncManager, multiblock), true);
+        IPanelHandler milestonePanel = syncManager.panel(
+            PANEL_MILESTONE,
+            (p_syncManager, syncHandler) -> MilestonePanel.openPanel(p_syncManager, data),
+            true);
         return new ButtonWidget<>().size(16)
             .marginBottom(3)
             .overlay(GTGuiTextures.TT_OVERLAY_BUTTON_FLAG)
@@ -210,16 +232,14 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
             .disableHoverBackground()
             .onMousePressed(d -> {
                 if (d == 0) {
-                    ForgeOfGodsData data = multiblock.getData();
                     batteryConfigSyncer.setBoolValue(!data.isBatteryCharging());
-                } else if (d == 1 && multiblock.getData()
-                    .isUpgradeActive(REC)) {
-                        if (!batteryConfigPanel.isPanelOpen()) {
-                            batteryConfigPanel.openPanel();
-                        } else {
-                            batteryConfigPanel.closePanel();
-                        }
+                } else if (d == 1 && data.isUpgradeActive(REC)) {
+                    if (!batteryConfigPanel.isPanelOpen()) {
+                        batteryConfigPanel.openPanel();
+                    } else {
+                        batteryConfigPanel.closePanel();
                     }
+                }
                 return true;
             })
             .clickSound(() -> TecTech.proxy.playSound(multiblock.getBaseMetaTileEntity(), "fx_click"))
@@ -323,7 +343,6 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
             .background(GTGuiTextures.TT_BUTTON_CELESTIAL_32x32)
             .disableHoverBackground()
             .onMousePressed(d -> {
-                ForgeOfGodsData data = multiblock.getData();
                 shardEjectionSyncer.setBoolValue(!data.isGravitonShardEjection());
                 return true;
             })
@@ -333,10 +352,8 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
     }
 
     protected IWidget createGeneralInfoWindowButton(PanelSyncManager syncManager) {
-        IPanelHandler generalInfoPanel = syncManager.panel(
-            PANEL_GENERAL_INFO,
-            (p_syncManager, syncHandler) -> GeneralInfoPanel.openPanel(multiblock.getData()),
-            true);
+        IPanelHandler generalInfoPanel = syncManager
+            .panel(PANEL_GENERAL_INFO, (p_syncManager, syncHandler) -> GeneralInfoPanel.openPanel(data), true);
         return new ButtonWidget<>().size(18)
             .overlay(IDrawable.EMPTY)
             .background(GTGuiTextures.PICTURE_GODFORGE_LOGO)

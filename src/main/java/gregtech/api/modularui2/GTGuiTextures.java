@@ -19,6 +19,8 @@ public final class GTGuiTextures {
 
     public static void init() {}
 
+    public static final UITexture TRANSPARENT = UITexture.fullImage(GregTech.ID, "gui/picture/transparent");
+
     // region background
 
     public static final UITexture BACKGROUND_STANDARD = UITexture.builder()
@@ -726,14 +728,22 @@ public final class GTGuiTextures {
     public static final UITexture PICTURE_GODFORGE_MILESTONE_COMPOSITION = UITexture
         .fullImage(MODID, "gui/picture/milestone_composition");
     public static final UITexture PICTURE_GODFORGE_THANKS = UITexture.fullImage(MODID, "gui/picture/thanks");
-    public static final UITexture PICTURE_GODFORGE_MILESTONE_CHARGE_GLOW = UITexture
-        .fullImage(MODID, "gui/picture/milestone_charge_glow");
-    public static final UITexture PICTURE_GODFORGE_MILESTONE_CONVERSION_GLOW = UITexture
-        .fullImage(MODID, "gui/picture/milestone_conversion_glow");
-    public static final UITexture PICTURE_GODFORGE_MILESTONE_CATALYST_GLOW = UITexture
-        .fullImage(MODID, "gui/picture/milestone_catalyst_glow");
-    public static final UITexture PICTURE_GODFORGE_MILESTONE_COMPOSITION_GLOW = UITexture
-        .fullImage(MODID, "gui/picture/milestone_composition_glow");
+    public static final UITexture PICTURE_GODFORGE_MILESTONE_CHARGE_GLOW = UITexture.builder()
+        .location(MODID, "gui/picture/milestone_charge_glow")
+        .nonOpaque()
+        .build();
+    public static final UITexture PICTURE_GODFORGE_MILESTONE_CONVERSION_GLOW = UITexture.builder()
+        .location(MODID, "gui/picture/milestone_conversion_glow")
+        .nonOpaque()
+        .build();
+    public static final UITexture PICTURE_GODFORGE_MILESTONE_CATALYST_GLOW = UITexture.builder()
+        .location(MODID, "gui/picture/milestone_catalyst_glow")
+        .nonOpaque()
+        .build();
+    public static final UITexture PICTURE_GODFORGE_MILESTONE_COMPOSITION_GLOW = UITexture.builder()
+        .location(MODID, "gui/picture/milestone_composition_glow")
+        .nonOpaque()
+        .build();
 
     public static final UITexture TT_CONTROLLER_SLOT_HEAT_SINK = UITexture.builder()
         .location(MODID, "gui/picture/heat_sink_small")
