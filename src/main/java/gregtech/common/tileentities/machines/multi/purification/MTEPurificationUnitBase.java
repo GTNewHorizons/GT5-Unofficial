@@ -54,6 +54,8 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.BlockCasingsAbstract;
+import gregtech.common.gui.modularui.multiblock.MTEPurificationUnitBaseGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -741,7 +743,20 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
 
     @Override
     protected boolean useMui2() {
-        return false;
+        return true;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEPurificationUnitBaseGui(this);
+    }
+
+    public int getMaxParallel() {
+        return maxParallel;
+    }
+
+    public void setMaxParallel(int value) {
+        maxParallel = value;
     }
 
     @Override
