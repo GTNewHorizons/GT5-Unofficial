@@ -80,11 +80,25 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
         try {
             updateEntityProfiled();
         } catch (Throwable e) {
-            GT_FML_LOGGER.error("Error ticking meta tile entity {} at ({}, {}, {}) in world {}", getMetaTileID(), xCoord, yCoord, zCoord, worldObj.provider.dimensionId, e);
+            GT_FML_LOGGER.error(
+                "Error ticking meta tile entity {} at ({}, {}, {}) in world {}",
+                getMetaTileID(),
+                xCoord,
+                yCoord,
+                zCoord,
+                worldObj.provider.dimensionId,
+                e);
             try {
                 onTickFail();
             } catch (Throwable ex) {
-                GT_FML_LOGGER.error("Error calling tick fail on meta tile entity {} at ({}, {}, {}) in world {}", getMetaTileID(), xCoord, yCoord, zCoord, worldObj.provider.dimensionId, e);
+                GT_FML_LOGGER.error(
+                    "Error calling tick fail on meta tile entity {} at ({}, {}, {}) in world {}",
+                    getMetaTileID(),
+                    xCoord,
+                    yCoord,
+                    zCoord,
+                    worldObj.provider.dimensionId,
+                    e);
             }
         }
 
