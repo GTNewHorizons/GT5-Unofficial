@@ -177,8 +177,8 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     public void loadNBTData(NBTTagCompound aNBT) {
         casingTier = aNBT.getInteger("casingTier");
         machineTier = aNBT.getInteger("machineTier");
-        if (aNBT.hasKey("runningMode")) {
-            machineMode = aNBT.getInteger("runningMode");
+        if (aNBT.hasKey("RunningMode")) {
+            machineMode = aNBT.getInteger("RunningMode");
         }
         super.loadNBTData(aNBT);
     }
