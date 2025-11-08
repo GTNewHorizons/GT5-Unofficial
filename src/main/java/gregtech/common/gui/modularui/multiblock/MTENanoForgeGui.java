@@ -14,10 +14,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.slot.ItemSlot;
-import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTUtility;
@@ -32,18 +29,7 @@ public class MTENanoForgeGui extends MTEMultiBlockBaseGui<MTENanoForge> {
 
     @Override
     protected Flow createButtonColumn(ModularPanel panel, PanelSyncManager syncManager) {
-        // todo: when mui2 gets reversed child insertion order, change this to be super+child
-        return new Column().width(18)
-            .leftRel(1, -2, 1)
-            .mainAxisAlignment(Alignment.MainAxis.END)
-            .child(createInfoButton(syncManager))
-            .child(createStructureUpdateButton(syncManager))
-            .child(createPowerSwitchButton())
-            .childIf(
-                multiblock.doesBindPlayerInventory(),
-                new ItemSlot().slot(
-                    new ModularSlot(multiblock.inventoryHandler, multiblock.getControllerSlotIndex())
-                        .slotGroup("item_inv")));
+        return super.createButtonColumn(panel, syncManager).child(createInfoButton(syncManager));
     }
 
     protected IWidget createInfoButton(PanelSyncManager syncManager) {
