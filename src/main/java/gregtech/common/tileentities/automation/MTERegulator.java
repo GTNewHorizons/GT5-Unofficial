@@ -104,8 +104,7 @@ public class MTERegulator extends MTEBuffer {
     public void moveItems(IGregTechTileEntity igte, long aTimer) {
         GTItemTransfer transfer = new GTItemTransfer();
 
-        transfer.source(igte, ForgeDirection.UNKNOWN);
-        transfer.sink(igte.getTileEntityAtSide(igte.getBackFacing()), igte.getFrontFacing());
+        transfer.push(igte, igte.getBackFacing());
 
         for (int i = 0; i < 9; i++) {
             if (this.mInventory[i + 9] != null) {
