@@ -1,5 +1,7 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
@@ -18,9 +20,9 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitBase;
 
-public class MTEPurificationUnitBaseGui extends MTEMultiBlockBaseGui<MTEPurificationUnitBase> {
+public class MTEPurificationUnitBaseGui extends MTEMultiBlockBaseGui<MTEPurificationUnitBase<?>> {
 
-    public MTEPurificationUnitBaseGui(MTEPurificationUnitBase multiblock) {
+    public MTEPurificationUnitBaseGui(MTEPurificationUnitBase<?> multiblock) {
         super(multiblock);
     }
 
@@ -33,6 +35,7 @@ public class MTEPurificationUnitBaseGui extends MTEMultiBlockBaseGui<MTEPurifica
 
     @Override
     protected Flow createButtonColumn(ModularPanel panel, PanelSyncManager syncManager) {
+        // todo: when mui2 gets reversed child insertion order, change this to be super+child
         return new Column().width(18)
             .leftRel(1, -2, 1)
             .mainAxisAlignment(Alignment.MainAxis.END)
@@ -55,6 +58,7 @@ public class MTEPurificationUnitBaseGui extends MTEMultiBlockBaseGui<MTEPurifica
         return new ButtonWidget<>().size(18)
             .marginBottom(2)
             .overlay(GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_ON)
+            .tooltip(t -> t.addLine(translateToLocal("GT5U.tpm.parallelwindow")))
             .onMousePressed(mouseButton -> {
                 if (!parallelSelectPanel.isPanelOpen()) {
                     parallelSelectPanel.openPanel();
