@@ -231,4 +231,15 @@ public class StringUtils {
         }
         return new String(chars, 0, i);
     }
+
+    public static String formatList(String... strings) {
+        if (strings == null || strings.length == 0) return "";
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < strings.length; i++) {
+            if (strings[i] != null) sb.append(strings[i]);
+            if (i < strings.length - 2) sb.append(", ");
+            else if (i == strings.length - 2) sb.append(" & ");
+        }
+        return sb.toString();
+    }
 }

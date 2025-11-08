@@ -3,6 +3,7 @@ package gregtech.api.enums;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.*;
 import static gregtech.api.util.CustomGlyphs.*;
 
+import java.util.Arrays;
 import java.util.function.Supplier;
 
 import net.minecraft.util.EnumChatFormatting;
@@ -10,6 +11,7 @@ import net.minecraft.util.StatCollector;
 
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.CustomGlyphs;
+import gregtech.api.util.StringUtils;
 
 /**
  * Pretty formatting for author names.
@@ -241,26 +243,16 @@ public class GTAuthors {
         };
     }
 
-    public static String buildAuthors(String... authors) {
-        if (authors == null || authors.length == 0) return "";
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < authors.length; i++) {
-            sb.append(authors[i]);
-            if (i == authors.length - 1) {
-                break;
-            }
-            sb.append(EnumChatFormatting.RESET);
-            sb.append(EnumChatFormatting.GRAY);
-            if (i == authors.length - 2) sb.append(" & ");
-            else sb.append(", ");
-            sb.append(EnumChatFormatting.GREEN);
-        }
-        return sb.toString();
+    public static String formatAuthors(String... authors) {
+        return StringUtils.formatList(
+            Arrays.stream(authors)
+                .map(author -> EnumChatFormatting.GREEN + author + EnumChatFormatting.RESET + EnumChatFormatting.GRAY)
+                .toArray(String[]::new));
     }
 
-    public static String buildAuthorsWithI18NFormat(String... authors) {
+    public static String buildAuthorsWithFormat(String... authors) {
         if (authors == null || authors.length == 0) return "";
         return StatCollector
-            .translateToLocalFormatted("gt.author" + (authors.length == 1 ? "" : "s"), buildAuthors(authors));
+            .translateToLocalFormatted("gt.author" + (authors.length == 1 ? "" : "s"), formatAuthors(authors));
     }
 }

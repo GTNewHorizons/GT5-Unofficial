@@ -1155,7 +1155,7 @@ public class MultiblockTooltipBuilder {
                 + " "
                 + TT_todisplay);
         if (authors != null && authors.length > 0) {
-            String sb = TT_addedBy + COLON + GTAuthors.buildAuthors(authors);
+            String sb = TT_addedBy + COLON + GTAuthors.formatAuthors(authors);
             iLines.add(sb);
         }
         hLines.add(TT_structurehint);

@@ -37,7 +37,7 @@ public class MTEWirelessEnergy extends MTEHatchEnergy {
     public String[] getDescription() {
         return GTSplit.splitLocalizedWithSuffix(
             "gt.blockmachines.energy_hatch_wireless.desc",
-            GTAuthors.buildAuthorsWithI18NFormat(GTAuthors.AuthorColen));
+            GTAuthors.buildAuthorsWithFormat(GTAuthors.AuthorColen));
     }
 
     @Override

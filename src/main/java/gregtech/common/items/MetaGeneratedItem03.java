@@ -1336,7 +1336,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                     "Creates a GregTech Advanced Sensor Card when attached",
                     "Works across dimensions or if machine is dismantled",
                     "Removing this cover will destroy the linked card",
-                    GTAuthors.buildAuthorsWithI18NFormat(GTAuthors.AuthorQuerns))));
+                    GTAuthors.buildAuthorsWithFormat(GTAuthors.AuthorQuerns))));
 
         ItemList.ActivatedCarbonFilterMesh.set(
             addItem(

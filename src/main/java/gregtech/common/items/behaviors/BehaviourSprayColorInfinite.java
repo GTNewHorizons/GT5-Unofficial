@@ -146,7 +146,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
                 "gt.behaviour.paintspray.infinite.tooltip.prevent_shake",
                 GameSettings.getKeyDisplayString(GTMod.clientProxy().shakeLockKey.getKeyCode())));
         aList.add(" ");
-        aList.add(GTAuthors.buildAuthorsWithI18NFormat(AuthorQuerns));
+        aList.add(GTAuthors.buildAuthorsWithFormat(AuthorQuerns));
 
         return Optional.of(aList);
     }

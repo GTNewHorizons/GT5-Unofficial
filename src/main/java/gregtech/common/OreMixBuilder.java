@@ -13,6 +13,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.StoneCategory;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneCategory;
+import gregtech.api.util.StringUtils;
 
 public class OreMixBuilder {
 
@@ -122,16 +123,9 @@ public class OreMixBuilder {
     }
 
     public String getLocalizedName() {
-        if (materialKeys.size() == 1) return StatCollector.translateToLocal(materialKeys.get(0));
-        String localizedName = String.join(
-            ", ",
+        return StringUtils.formatList(
             materialKeys.stream()
                 .map(StatCollector::translateToLocal)
                 .toArray(String[]::new));
-        int index = localizedName.lastIndexOf(", ");
-        if (index != -1) {
-            localizedName = localizedName.substring(0, index) + " & " + localizedName.substring(index + 2);
-        }
-        return localizedName;
     }
 }

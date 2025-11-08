@@ -176,7 +176,7 @@ public class MTEBetterJukebox extends MTEBasicMachine implements IAddUIWidgets, 
                 .format("Headphones work anywhere, in %sany dimension", EnumChatFormatting.WHITE);
         });
         strings.add(String.format("Cost: %s%d EU/t", EnumChatFormatting.WHITE, BalanceMath.eutUsage(aTier)));
-        strings.add(GTAuthors.buildAuthorsWithI18NFormat(GTAuthors.AuthorEigenRaven));
+        strings.add(GTAuthors.buildAuthorsWithFormat(GTAuthors.AuthorEigenRaven));
         return strings.toArray(new String[0]);
     }
 

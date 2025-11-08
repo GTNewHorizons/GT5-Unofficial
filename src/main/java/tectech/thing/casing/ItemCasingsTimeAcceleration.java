@@ -35,6 +35,6 @@ public class ItemCasingsTimeAcceleration extends ItemCasings {
             default:
                 tooltip.add(StatCollector.translateToLocal("tt.eoh.time_dilation.error.tooltip"));
         }
-        tooltip.add(GTAuthors.buildAuthorsWithI18NFormat(AuthorColen));
+        tooltip.add(GTAuthors.buildAuthorsWithFormat(AuthorColen));
     }
 }
