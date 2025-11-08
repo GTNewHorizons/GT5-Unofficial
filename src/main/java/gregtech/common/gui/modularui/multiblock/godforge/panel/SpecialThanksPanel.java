@@ -1,15 +1,140 @@
 package gregtech.common.gui.modularui.multiblock.godforge.panel;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
+import java.util.Arrays;
+
+import net.minecraft.util.EnumChatFormatting;
+
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.widget.Widget;
+import com.cleanroommc.modularui.widgets.ButtonWidget;
+import com.cleanroommc.modularui.widgets.ListWidget;
+import com.cleanroommc.modularui.widgets.TextWidget;
+import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.layout.Row;
+
+import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.common.gui.modularui.multiblock.godforge.MTEForgeOfGodsGui;
 
 public class SpecialThanksPanel {
 
+    private static final int SIZE = 200;
+    private static final int BACKGROUND_SIZE = 100;
+    private static final int LIST_OFFSET = 30;
+
     public static ModularPanel openPanel() {
-        return null; // todo
+        ModularPanel panel = new ModularPanel(MTEForgeOfGodsGui.PANEL_SPECIAL_THANKS).size(SIZE)
+            .background(GTGuiTextures.BACKGROUND_GLOW_RAINBOW)
+            .disableHoverBackground()
+            .child(ButtonWidget.panelCloseButton());
+
+        // Background symbol
+        panel.child(
+            GTGuiTextures.PICTURE_GODFORGE_THANKS.asWidget()
+                .size(BACKGROUND_SIZE)
+                .align(Alignment.CENTER));
+
+        // Title
+        panel.child(
+            IKey.str(EnumChatFormatting.GOLD + translateToLocal("gt.blockmachines.multimachine.FOG.contributors"))
+                .asWidget()
+                .marginTop(7)
+                .align(Alignment.TopCenter));
+
+        // Credits sections
+        ListWidget<IWidget, ?> creditsList = new ListWidget<>().size(SIZE - LIST_OFFSET)
+            .marginTop(LIST_OFFSET);
+        creditsList.child(
+            createCreditsSection(
+                "gt.blockmachines.multimachine.FOG.lead",
+                createCreditsEntry(
+                    EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.multimachine.FOG.cloud"))));
+        creditsList.child(
+            createCreditsSection(
+                "gt.blockmachines.multimachine.FOG.programming",
+                createCreditsEntry(translateToLocal("gt.blockmachines.multimachine.FOG.serenibyss")),
+                createCreditsEntry(
+                    EnumChatFormatting.DARK_AQUA + translateToLocal("gt.blockmachines.multimachine.FOG.teg"))));
+        creditsList.child(
+            createCreditsSection(
+                "gt.blockmachines.multimachine.FOG.textures",
+                createCreditsEntry(
+                    EnumChatFormatting.GREEN + translateToLocal("gt.blockmachines.multimachine.FOG.ant"))));
+        creditsList.child(
+            createCreditsSection(
+                "gt.blockmachines.multimachine.FOG.rendering",
+                createCreditsEntry(
+                    EnumChatFormatting.WHITE + translateToLocal("gt.blockmachines.multimachine.FOG.bucket"))));
+        creditsList.child(createCreditsSection("gt.blockmachines.multimachine.FOG.lore", createDelenoName()));
+        creditsList.child(
+            createCreditsSection(
+                "gt.blockmachines.multimachine.FOG.playtesting",
+                createCreditsEntry(translateToLocal("gt.blockmachines.multimachine.FOG.misi"), 0xFFC26F)));
+        panel.child(creditsList);
+
+        // Corner message
+        panel.child(
+            IKey.str(EnumChatFormatting.ITALIC + translateToLocal("gt.blockmachines.multimachine.FOG.thanks"))
+                .alignment(Alignment.CENTER)
+                .color(0xBBBDBD)
+                .scale(0.8f)
+                .asWidget()
+                .size(100, 60) // special size to make it look exactly right, please don't kill me mui2 overlords
+                .marginRight(10)
+                .align(Alignment.BottomRight));
+
+        return panel;
     }
 
-    public static void registerSyncValues(PanelSyncManager syncManager) {
+    private static ListWidget<IWidget, ?> createCreditsSection(String titleKey, Widget<?>... entries) {
+        return new ListWidget<>().coverChildren()
+            .alignX(Alignment.CenterLeft)
+            .marginBottom(5)
+            .marginLeft(7)
+            .child(
+                IKey.str(EnumChatFormatting.GOLD + "" + EnumChatFormatting.UNDERLINE + translateToLocal(titleKey))
+                    .alignment(Alignment.CenterLeft)
+                    .scale(0.8f)
+                    .asWidget()
+                    .marginBottom(2)
+                    .marginLeft(7))
+            .children(Arrays.asList(entries));
+    }
 
+    private static TextWidget<?> createCreditsEntry(String name) {
+        return createCreditsEntry(name, -1);
+    }
+
+    private static TextWidget<?> createCreditsEntry(String name, int customColor) {
+        IKey key = IKey.str(name)
+            .alignment(Alignment.CenterLeft)
+            .scale(0.8f);
+        if (customColor != -1) {
+            key.color(customColor);
+        }
+        return key.asWidget()
+            .marginLeft(7);
+    }
+
+    // todo this is not aligned correctly
+    private static Flow createDelenoName() {
+        Flow flow = new Row().align(Alignment.CenterLeft)
+            .marginLeft(7);
+
+        String name = translateToLocal("gt.blockmachines.multimachine.FOG.deleno");
+        int[] colors = new int[] { 0xffffff, 0xf6fff5, 0xecffec, 0xe3ffe2, 0xd9ffd9, 0xd0ffcf };
+        for (int i = 0; i < name.length(); i++) {
+            flow.child(
+                IKey.str(Character.toString(name.charAt(i)))
+                    .color(colors[i])
+                    .scale(0.8f)
+                    .alignment(Alignment.CenterLeft)
+                    .asWidget());
+        }
+        return flow;
     }
 }
