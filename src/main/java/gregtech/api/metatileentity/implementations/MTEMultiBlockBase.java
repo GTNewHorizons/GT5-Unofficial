@@ -1698,6 +1698,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                         inputsFromME.put(fluidStack.getFluid(), fluidStack);
                     }
                 }
+            } else if (tHatch instanceof MTEHatchInputDebug debugHatch) {
+                for (FluidStack fluid : debugHatch.getFluidList()) {
+                    if (fluid != null) {
+                        FluidStack stack = fluid.copy();
+                        stack.amount = Integer.MAX_VALUE;
+                        rList.add(stack);
+                    }
+                }
             } else {
                 FluidStack fillableStack = tHatch.getFillableStack();
                 if (fillableStack != null) {

@@ -6280,6 +6280,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Nickel, 1)
             .addMaterial(Materials.Oxygen, 1)
             .addOreByproduct(() -> Materials.Nickel)
+            .addSubTag(SubTag.BLASTFURNACE_CALCITE_DOUBLE)
             .setDirectSmelting(() -> Materials.Nickel)
             .constructMaterial();
     }
@@ -10302,7 +10303,6 @@ public class MaterialsInit {
             .addMetalItems()
             .addToolHeadItems()
             .addGearItems()
-            .setDensity(51, 50)
             .addElectrolyzerRecipe()
             .addMaterial(Materials.Iron, 1)
             .setSmeltingInto(() -> Materials.Iron)
@@ -10644,7 +10644,6 @@ public class MaterialsInit {
             .setMeltingPoint(1_297)
             .setBlastFurnaceTemp(1_297)
             .setBlastFurnaceRequired(true)
-            .setDensity(51, 50)
             .addElectrolyzerRecipe()
             .addMaterial(Materials.Neodymium, 1)
             .setSmeltingInto(() -> Materials.Neodymium)
@@ -11082,7 +11081,6 @@ public class MaterialsInit {
             .setMeltingPoint(1_000)
             .setBlastFurnaceTemp(1_000)
             .setBlastFurnaceRequired(true)
-            .setDensity(51, 50)
             .addElectrolyzerRecipe()
             .addMaterial(Materials.Steel, 1)
             .setSmeltingInto(() -> Materials.Steel)

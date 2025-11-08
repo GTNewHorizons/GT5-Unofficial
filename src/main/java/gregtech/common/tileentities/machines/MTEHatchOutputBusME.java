@@ -3,6 +3,9 @@ package gregtech.common.tileentities.machines;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_HATCH_ACTIVE;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -38,7 +41,9 @@ import appeng.api.networking.GridFlags;
 import appeng.api.networking.security.BaseActionSource;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.security.MachineSource;
+import appeng.api.storage.IMEInventoryHandler;
 import appeng.api.storage.IMEMonitor;
+import appeng.api.storage.StorageChannel;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
 import appeng.api.util.AECableType;
@@ -48,6 +53,8 @@ import appeng.items.storage.ItemBasicStorageCell;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
+import appeng.me.storage.CellInventory;
+import appeng.me.storage.CellInventoryHandler;
 import appeng.util.Platform;
 import appeng.util.ReadableNumberConverter;
 import appeng.util.item.AEItemStack;
@@ -171,12 +178,51 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         return itemAmount;
     }
 
+    private static final MethodHandle GET_RESTRICTION_LONG;
+
+    static {
+        try {
+            Field field = CellInventory.class.getDeclaredField("restrictionLong");
+            field.setAccessible(true);
+            GET_RESTRICTION_LONG = MethodHandles.lookup()
+                .unreflectGetter(field);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException("Could not unreflect getter for CellInventory.restrictionLong", e);
+        }
+    }
+
+    private static long getRestrictionLong(CellInventory cellInventory) {
+        try {
+            return (long) GET_RESTRICTION_LONG.invokeExact(cellInventory);
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     protected long getCacheCapacity() {
         ItemStack upgradeItemStack = mInventory[0];
-        if (upgradeItemStack != null && upgradeItemStack.getItem() instanceof ItemBasicStorageCell) {
-            return ((ItemBasicStorageCell) upgradeItemStack.getItem()).getBytesLong(upgradeItemStack) * 8;
+
+        if (upgradeItemStack == null) return baseCapacity;
+        if (!(upgradeItemStack.getItem() instanceof ItemBasicStorageCell storageCell)) return baseCapacity;
+
+        final IMEInventoryHandler<?> inventory = AEApi.instance()
+            .registries()
+            .cell()
+            .getCellInventory(upgradeItemStack, null, StorageChannel.ITEMS);
+
+        long capacity = storageCell.getBytesLong(upgradeItemStack) * 8;
+
+        if (inventory instanceof CellInventoryHandler handler) {
+            final CellInventory cellInventory = (CellInventory) handler.getCellInv();
+
+            long restriction = getRestrictionLong(cellInventory);
+
+            if (restriction > 0) {
+                capacity = Math.min(capacity, restriction);
+            }
         }
-        return baseCapacity;
+
+        return capacity;
     }
 
     /**

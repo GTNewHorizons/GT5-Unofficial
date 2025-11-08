@@ -901,33 +901,44 @@ public class MTEIndustrialApiary extends MTEBasicMachine
     private int flowerBlockMeta;
 
     private boolean checkFlower(IBee bee) {
+        final World world = getWorld();
         final String flowerType = bee.getGenome()
             .getFlowerProvider()
             .getFlowerType();
-        if (!this.flowerType.equals(flowerType)
-            || !getWorld().blockExists(flowercoords.posX, flowercoords.posY, flowercoords.posZ)) {
-            flowercoords = null;
-        }
+
         if (flowercoords != null) {
-            if (getWorld().getBlock(flowercoords.posX, flowercoords.posY, flowercoords.posZ) != flowerBlock
-                || getWorld().getBlockMetadata(flowercoords.posX, flowercoords.posY, flowercoords.posZ)
-                    != flowerBlockMeta)
-                if (!FlowerManager.flowerRegistry
-                    .isAcceptedFlower(flowerType, getWorld(), flowercoords.posX, flowercoords.posY, flowercoords.posZ))
-                    flowercoords = null;
-                else {
-                    flowerBlock = getWorld().getBlock(flowercoords.posX, flowercoords.posY, flowercoords.posZ);
-                    flowerBlockMeta = getWorld()
-                        .getBlockMetadata(flowercoords.posX, flowercoords.posY, flowercoords.posZ);
-                }
-        }
-        if (flowercoords == null) {
-            flowercoords = FlowerManager.flowerRegistry.getAcceptedFlowerCoordinates(this, bee, flowerType);
-            if (flowercoords != null) {
-                flowerBlock = getWorld().getBlock(flowercoords.posX, flowercoords.posY, flowercoords.posZ);
-                flowerBlockMeta = getWorld().getBlockMetadata(flowercoords.posX, flowercoords.posY, flowercoords.posZ);
-                this.flowerType = flowerType;
+            int x = flowercoords.posX;
+            int y = flowercoords.posY;
+            int z = flowercoords.posZ;
+
+            if (!this.flowerType.equals(flowerType) || !world.blockExists(x, y, z)) {
+                return findFlower(bee, flowerType);
             }
+
+            if (world.getBlock(x, y, z) != flowerBlock || world.getBlockMetadata(x, y, z) != flowerBlockMeta) {
+                if (!FlowerManager.flowerRegistry.isAcceptedFlower(flowerType, world, x, y, z)) {
+                    return findFlower(bee, flowerType);
+                }
+
+                flowerBlock = world.getBlock(x, y, z);
+                flowerBlockMeta = world.getBlockMetadata(x, y, z);
+            }
+        }
+
+        if (flowercoords == null) {
+            return findFlower(bee, flowerType);
+        }
+
+        return true;
+    }
+
+    /** @return true if a flower was found, false otherwise */
+    private boolean findFlower(IBee bee, String flowerType) {
+        flowercoords = FlowerManager.flowerRegistry.getAcceptedFlowerCoordinates(this, bee, flowerType);
+        if (flowercoords != null) {
+            flowerBlock = getWorld().getBlock(flowercoords.posX, flowercoords.posY, flowercoords.posZ);
+            flowerBlockMeta = getWorld().getBlockMetadata(flowercoords.posX, flowercoords.posY, flowercoords.posZ);
+            this.flowerType = flowerType;
         }
         return flowercoords != null;
     }
