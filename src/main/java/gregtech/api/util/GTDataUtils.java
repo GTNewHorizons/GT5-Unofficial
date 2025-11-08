@@ -18,6 +18,12 @@ import java.util.stream.Stream;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.google.common.collect.Multimap;
+import com.google.common.collect.MultimapBuilder;
+
+import it.unimi.dsi.fastutil.Pair;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntLinkedOpenHashSet;
 import it.unimi.dsi.fastutil.objects.ObjectIterators;
 
 /**
@@ -150,7 +156,9 @@ public class GTDataUtils {
         return set;
     }
 
-    /** A simple, low allocation Iterable that contains one value. */
+    /**
+     * A simple, low allocation Iterable that contains one value.
+     */
     public static <T> Iterable<T> singletonIterable(T object) {
         return () -> ObjectIterators.singleton(object);
     }
