@@ -84,7 +84,7 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
 
     @Override
     public String[] getDescription() {
-        if (GTUtility.isStringValid(tooltipKey)) return GTSplit.splitLocalizedFormattedWithPrefix(
+        if (tooltipKey != null) return GTSplit.splitLocalizedFormattedWithPrefix(
             "gt.blockmachines.long_distance_pipeline.desc",
             StatCollector.translateToLocal(tooltipKey),
             minimalDistancePoints);

@@ -113,7 +113,7 @@ public class OreMixBuilder {
      * @param materials The materials to be used for localization. The first material in the array will be used to
      *                  represent to ore mix in GUI's. If none are provided the {@link #primary} will be used.
      */
-    public OreMixBuilder setLocalizeName(Materials... materials) {
+    public OreMixBuilder setLocalizedName(Materials... materials) {
         if (materials.length == 1) this.representative = materials[0];
         for (Materials m : materials) {
             materialKeys.add(m.getLocalizedNameKey());

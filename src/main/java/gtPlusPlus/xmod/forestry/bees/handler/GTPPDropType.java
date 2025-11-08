@@ -52,6 +52,10 @@ public enum GTPPDropType {
         return StatCollector.translateToLocal("gtplusplus.drop." + this.mNameUnlocal);
     }
 
+    public String getName() {
+        return this.mName + " Drop";
+    }
+
     public int[] getColours() {
         return mColour;
     }

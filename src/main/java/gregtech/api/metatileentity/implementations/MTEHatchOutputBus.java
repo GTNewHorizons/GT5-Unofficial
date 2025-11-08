@@ -487,7 +487,7 @@ public class MTEHatchOutputBus extends MTEHatch
 
     @Override
     public String[] getDescription() {
-        final String suffix = getSlots(mTier) >= 2 ? ".singular.desc" : ".desc";
+        final String suffix = getSlots(mTier) >= 2 ? ".desc" : ".singular.desc";
         return GTSplit.splitLocalizedFormatted("gt.blockmachines.output_bus" + suffix, getSlots(mTier));
     }
 

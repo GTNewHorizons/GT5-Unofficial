@@ -87,9 +87,9 @@ public class GTPPPropolis extends Item {
                 Math.min(Math.max(10000 - (aProp.mMaterial.vTier * 625), 100), 10000),
                 aProp.mMaterial.vTier * 20 * 15,
                 aProp.mMaterial.vVoltageMultiplier)) {
-                Logger.BEES("Added Propolis extraction recipe for: " + aProp.getLocalizedName());
+                Logger.BEES("Added Propolis extraction recipe for: " + aProp.getName());
             } else {
-                Logger.BEES("Failed to add Propolis extraction recipe for: " + aProp.getLocalizedName());
+                Logger.BEES("Failed to add Propolis extraction recipe for: " + aProp.getName());
             }
         }
     }

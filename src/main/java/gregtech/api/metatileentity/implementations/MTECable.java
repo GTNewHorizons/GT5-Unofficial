@@ -64,14 +64,14 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
     public final Materials mMaterial;
     public final long mCableLossPerMeter, mAmperage, mVoltage;
     public final boolean mInsulated, mCanShock;
-    private String mPrefixKey;
+    private String prefixKey;
 
     public int mTransferredAmperage = 0;
 
     public MTECable(int aID, String aName, String aPrefixKey, float aThickNess, Materials aMaterial,
         long aCableLossPerMeter, long aAmperage, long aVoltage, boolean aInsulated, boolean aCanShock) {
         super(aID, aName, 0);
-        mPrefixKey = aPrefixKey;
+        prefixKey = aPrefixKey;
         mThickNess = aThickNess;
         mMaterial = aMaterial;
         mAmperage = aAmperage;
@@ -677,6 +677,6 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
 
     @Override
     public String getPrefixKey() {
-        return mPrefixKey;
+        return prefixKey;
     }
 }

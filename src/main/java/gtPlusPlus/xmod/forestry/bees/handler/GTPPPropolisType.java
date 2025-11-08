@@ -52,6 +52,10 @@ public enum GTPPPropolisType {
         return StatCollector.translateToLocal("gtplusplus.propolis." + this.mNameUnlocal);
     }
 
+    public String getName() {
+        return this.mName + " Propolis";
+    }
+
     public int getColours() {
         return mColour;
     }

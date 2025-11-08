@@ -109,9 +109,9 @@ public class GTPPDrop extends Item {
                 new FluidStack(aDrop.mMaterial.getFluid(), sFluidOutputs[aDrop.mMaterial.vTier]),
                 aDrop.mMaterial.vTier * 20 * 30,
                 aDrop.mMaterial.vVoltageMultiplier)) {
-                Logger.BEES("Added Drop extraction recipe for: " + aDrop.getLocalizedName());
+                Logger.BEES("Added Drop extraction recipe for: " + aDrop.getName());
             } else {
-                Logger.BEES("Failed to add Drop extraction recipe for: " + aDrop.getLocalizedName());
+                Logger.BEES("Failed to add Drop extraction recipe for: " + aDrop.getName());
             }
         }
     }

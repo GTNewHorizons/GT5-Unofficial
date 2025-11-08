@@ -110,7 +110,6 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
                 }
                 werkstoffBridgeMaterial.mName = werkstoff.getVarName();
                 werkstoffBridgeMaterial.mDefaultLocalName = werkstoff.getDefaultName();
-                werkstoffBridgeMaterial.setChemicalFormula(werkstoff.getLocalizedToolTip());
                 // only reload from lang file if not localized already
                 if (!StatCollector.canTranslate(werkstoffBridgeMaterial.getLocalizedNameKey())) {
                     GTLanguageManager.addStringLocalization(

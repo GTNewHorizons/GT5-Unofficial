@@ -100,6 +100,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
     private final String defaultName;
     private String toolTip;
     private boolean isFormulaNeededLocalized = false;
+    boolean isFormulaNeededLocalized = false;
 
     private Werkstoff.Stats stats;
     private final Werkstoff.Types type;
@@ -532,8 +533,10 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
     }
 
     public String getLocalizedToolTip() {
-        final String key = getLocalizedNameKey() + ".ChemicalFormula";
-        return StatCollector.canTranslate(key) ? StatCollector.translateToLocal(key) : this.toolTip;
+        if (isFormulaNeededLocalized) {
+            return StatCollector.translateToLocal(getLocalizedNameKey() + ".ChemicalFormula");
+        }
+        return this.toolTip;
     }
 
     public Werkstoff.Stats getStats() {

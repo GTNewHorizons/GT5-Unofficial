@@ -27,13 +27,13 @@ import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_ULV;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicHull;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 
 public class MTEDiode extends MTEBasicHull {
@@ -120,6 +120,6 @@ public class MTEDiode extends MTEBasicHull {
 
     @Override
     public String[] getDescription() {
-        return new String[] { StatCollector.translateToLocal("tooltip.tile.diode.0.name") };
+        return GTSplit.splitLocalized("tooltip.tile.diode.0.name");
     }
 }
