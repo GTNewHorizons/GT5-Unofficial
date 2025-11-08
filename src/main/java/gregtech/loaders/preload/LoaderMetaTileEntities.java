@@ -49,7 +49,7 @@ import net.minecraft.util.EnumChatFormatting;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import gregtech.api.enums.GTValues;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MachineType;
 import gregtech.api.enums.SoundResource;
@@ -579,9 +579,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             ItemList.Machine_Multi_ChamberCentrifuge.get(1),
             chain(
                 () -> "Authors: ",
-                GTValues.fancyAuthorChrom,
+                GTAuthors.fancyAuthorChrom,
                 () -> EnumChatFormatting.GRAY + " & ",
-                GTValues.AuthorNoc));
+                GTAuthors.AuthorNoc));
 
         ItemList.Machine_Multi_Autoclave.set(
             new MTEMultiAutoclave(MULTI_AUTOCLAVE_CONTROLLER.ID, "multimachine.autoclave", "Industrial Autoclave")
@@ -600,7 +600,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .getStackForm(1));
 
         ItemList.LATEX.set(new MTELatex(LATEX.ID, "multimachine.latex", "L.A.T.E.X.").getStackForm(1));
-        addItemTooltip(ItemList.LATEX.get(1), chain(() -> "Author: ", GTValues.AuthorThree));
+        addItemTooltip(ItemList.LATEX.get(1), chain(() -> "Author: ", GTAuthors.AuthorThree));
 
         if (Thaumcraft.isModLoaded()) {
             ItemList.ResearchCompleter.set(

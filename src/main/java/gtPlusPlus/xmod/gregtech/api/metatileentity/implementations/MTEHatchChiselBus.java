@@ -5,12 +5,13 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
-import gregtech.api.util.GTSplit;
+import gtPlusPlus.core.util.Utils;
 
 public class MTEHatchChiselBus extends MTEHatchInputBus implements IAddUIWidgets {
 
@@ -43,7 +44,10 @@ public class MTEHatchChiselBus extends MTEHatchInputBus implements IAddUIWidgets
 
     @Override
     public String[] getDescription() {
-        return GTSplit.splitLocalizedFormatted("gt.blockmachines.input_bus_chisel.desc", getSlots(this.mTier) - 1);
+        return Utils.splitLocalizedFormattedWithAuthor(
+            "gt.blockmachines.input_bus_chisel.desc",
+            GTAuthors.AuthorQuetz4l,
+            getSlots(this.mTier) - 1);
     }
 
     @Override

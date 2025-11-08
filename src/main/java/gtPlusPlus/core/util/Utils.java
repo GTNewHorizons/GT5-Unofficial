@@ -125,19 +125,31 @@ public class Utils {
         return GTUtility.copy(stack);
     }
 
-    public static String[] splitLocalizedWithGTPP(String key) {
+    public static String[] splitLocalizedWithAuthor(String key, String authorName) {
+        return GTSplit
+            .splitLocalizedWithSuffix(key, StatCollector.translateToLocalFormatted("GTPP.core.GT_Tooltip", authorName));
+    }
+
+    public static String[] splitLocalizedWithAlkalus(String key) {
         return GTSplit.splitLocalizedWithSuffix(key, GTPPCore.GT_Tooltip.get());
     }
 
-    public static String[] splitLocalizedFormattedWithGTPP(String key, Object... objects) {
+    public static String[] splitLocalizedFormattedWithAuthor(String key, String authorName, Object... objects) {
+        return GTSplit.splitLocalizedFormattedWithSuffix(
+            key,
+            StatCollector.translateToLocalFormatted("GTPP.core.GT_Tooltip", authorName),
+            objects);
+    }
+
+    public static String[] splitLocalizedFormattedWithAlkalus(String key, Object... objects) {
         return GTSplit.splitLocalizedFormattedWithSuffix(key, GTPPCore.GT_Tooltip.get(), objects);
     }
 
-    public static String[] splitLocalizedWithPrefixAndGTPP(String prefix, String key) {
+    public static String[] splitLocalizedWithPrefixAndAlkalus(String prefix, String key) {
         return GTSplit.splitLocalizedWithWarped(key, prefix, GTPPCore.GT_Tooltip.get());
     }
 
-    public static String[] splitLocalizedFormattedWithPrefixAndGTPP(String prefix, String key, Object... objects) {
+    public static String[] splitLocalizedFormattedWithPrefixAndAlkalus(String prefix, String key, Object... objects) {
         return GTSplit.splitLocalizedFormattedWithWarped(key, prefix, GTPPCore.GT_Tooltip.get(), objects);
     }
 }

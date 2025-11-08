@@ -35,7 +35,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTValues;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -232,7 +232,7 @@ public class MTEIndustrialElectromagneticSeparator
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher(GTValues.authorBaps);
+            .toolTipFinisher(GTAuthors.authorBaps);
         return tt;
     }
 

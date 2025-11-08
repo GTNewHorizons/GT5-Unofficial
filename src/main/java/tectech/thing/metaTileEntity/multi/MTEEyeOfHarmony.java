@@ -59,7 +59,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.GTValues;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -1126,7 +1126,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
             .addSubChannelUsage(GTStructureChannels.EOH_STABILISATION)
             .addSubChannelUsage(GTStructureChannels.EOH_DILATION)
             .addSubChannelUsage(GTStructureChannels.EOH_COMPRESSION)
-            .toolTipFinisher(EnumChatFormatting.GOLD, 87, GTValues.AuthorColen);
+            .toolTipFinisher(EnumChatFormatting.GOLD, 87, GTAuthors.AuthorColen);
         return tt;
     }
 

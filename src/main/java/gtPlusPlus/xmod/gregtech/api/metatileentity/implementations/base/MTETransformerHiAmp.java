@@ -86,7 +86,7 @@ public class MTETransformerHiAmp extends MTETransformer {
 
     @Override
     public String[] getDescription() {
-        return Utils.splitLocalizedFormattedWithPrefixAndGTPP(
+        return Utils.splitLocalizedFormattedWithPrefixAndAlkalus(
             super.getDescription()[0],
             "gt.blockmachines.transformer_advanced.desc",
             4,

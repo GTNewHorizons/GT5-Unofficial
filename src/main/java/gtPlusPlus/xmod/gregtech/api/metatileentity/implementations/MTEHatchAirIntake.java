@@ -31,7 +31,7 @@ public class MTEHatchAirIntake extends MTEHatchFluidGenerator {
 
     @Override
     public String[] getCustomTooltip() {
-        return Utils.splitLocalizedFormattedWithGTPP(
+        return Utils.splitLocalizedFormattedWithAlkalus(
             "gt.blockmachines.input_hatch_generator.airintake.desc",
             getAmountOfFluidToGenerate(),
             getMaxTickTime());

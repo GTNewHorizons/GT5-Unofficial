@@ -10,6 +10,7 @@ import java.util.UUID;
 
 import net.minecraftforge.common.util.ForgeDirection;
 
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -64,7 +65,9 @@ public class MTEWirelessDynamo extends MTEHatchDynamo {
 
     @Override
     public String[] getDescription() {
-        return GTSplit.splitLocalized("gt.blockmachines.dynamo_hatch_wireless.desc");
+        return GTSplit.splitLocalizedWithSuffix(
+            "gt.blockmachines.dynamo_hatch_wireless.desc",
+            GTAuthors.buildAuthorsWithI18NFormat(GTAuthors.AuthorColen));
     }
 
     @Override

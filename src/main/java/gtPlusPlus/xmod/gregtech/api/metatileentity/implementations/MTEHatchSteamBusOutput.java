@@ -201,6 +201,6 @@ public class MTEHatchSteamBusOutput extends MTEHatchOutputBus {
 
     @Override
     public String[] getDescription() {
-        return Utils.splitLocalizedWithGTPP("gt.blockmachines.output_bus_steam.desc");
+        return Utils.splitLocalizedWithAlkalus("gt.blockmachines.output_bus_steam.desc");
     }
 }

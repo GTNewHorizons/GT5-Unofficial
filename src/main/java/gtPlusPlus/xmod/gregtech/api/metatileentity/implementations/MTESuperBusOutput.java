@@ -76,7 +76,7 @@ public class MTESuperBusOutput extends MTEHatchOutputBus {
 
     @Override
     public String[] getDescription() {
-        return Utils.splitLocalizedFormattedWithGTPP("gt.blockmachines.output_bus_super.desc", getSlots(this.mTier));
+        return Utils.splitLocalizedFormattedWithAlkalus("gt.blockmachines.output_bus_super.desc", getSlots(this.mTier));
     }
 
     @Override

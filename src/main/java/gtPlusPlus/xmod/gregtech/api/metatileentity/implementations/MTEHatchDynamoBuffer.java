@@ -46,7 +46,7 @@ public class MTEHatchDynamoBuffer extends MTEHatchDynamo {
 
     @Override
     public String[] getDescription() {
-        return Utils.splitLocalizedFormattedWithGTPP(
+        return Utils.splitLocalizedFormattedWithAlkalus(
             "gt.blockmachines.dynamo_hatch_buffer.desc",
             this.maxEUOutput() * this.maxAmperesIn());
     }

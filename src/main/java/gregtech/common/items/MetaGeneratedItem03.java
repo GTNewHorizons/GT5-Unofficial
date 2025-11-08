@@ -273,6 +273,7 @@ import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.covers.CoverPlacer;
 import gregtech.api.covers.CoverRegistry;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -1335,7 +1336,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                     "Creates a GregTech Advanced Sensor Card when attached",
                     "Works across dimensions or if machine is dismantled",
                     "Removing this cover will destroy the linked card",
-                    GTValues.AuthorQuerns)));
+                    GTAuthors.buildAuthorsWithI18NFormat(GTAuthors.AuthorQuerns))));
 
         ItemList.ActivatedCarbonFilterMesh.set(
             addItem(
@@ -1655,7 +1656,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
     }
 
     private void registerAllAnimatedTooltips() {
-        addItemTooltip(ItemList.Transdimensional_Alignment_Matrix.get(1), GTValues.AuthorCloud);
+        addItemTooltip(ItemList.Transdimensional_Alignment_Matrix.get(1), GTAuthors.AuthorCloudSupplier);
     }
 
     private void initOreDictUnificatorEntries() {

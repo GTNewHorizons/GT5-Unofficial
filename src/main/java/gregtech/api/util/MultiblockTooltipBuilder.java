@@ -21,6 +21,7 @@ import com.google.common.collect.SetMultimap;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 
 import gregtech.GTMod;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.structure.IStructureChannels;
 import gregtech.api.util.tooltip.TooltipHelper;
@@ -1154,27 +1155,8 @@ public class MultiblockTooltipBuilder {
                 + " "
                 + TT_todisplay);
         if (authors != null && authors.length > 0) {
-            final String authorTag = "Author: ";
-            final StringBuilder sb = new StringBuilder();
-            sb.append(TT_addedBy);
-            sb.append(COLON);
-            for (int i = 0; i < authors.length; i++) {
-                String author = authors[i];
-                if (author.startsWith(authorTag)) {
-                    // to support all the values in GTValues
-                    // that already have Author at the start
-                    sb.append(author.substring(authorTag.length()));
-                } else {
-                    sb.append(author);
-                }
-                if (i != authors.length - 1) {
-                    sb.append(EnumChatFormatting.RESET);
-                    sb.append(EnumChatFormatting.GRAY);
-                    sb.append(" & ");
-                    sb.append(EnumChatFormatting.GREEN);
-                }
-            }
-            iLines.add(sb.toString());
+            String sb = TT_addedBy + COLON + GTAuthors.buildAuthors(authors);
+            iLines.add(sb);
         }
         hLines.add(TT_structurehint);
         this.addStructureInfoSeparator(EnumChatFormatting.GRAY, 30, true);

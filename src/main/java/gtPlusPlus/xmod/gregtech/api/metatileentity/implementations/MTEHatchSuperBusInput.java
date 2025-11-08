@@ -38,7 +38,7 @@ public class MTEHatchSuperBusInput extends MTEHatchInputBus {
 
     @Override
     public String[] getDescription() {
-        return Utils.splitLocalizedFormattedWithGTPP("gt.blockmachines.input_bus_super.desc", getSlots(this.mTier));
+        return Utils.splitLocalizedFormattedWithAlkalus("gt.blockmachines.input_bus_super.desc", getSlots(this.mTier));
     }
 
     @Override

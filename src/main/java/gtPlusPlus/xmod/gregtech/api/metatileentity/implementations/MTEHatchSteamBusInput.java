@@ -28,7 +28,7 @@ public class MTEHatchSteamBusInput extends MTEHatchInputBus {
 
     @Override
     public String[] getDescription() {
-        return Utils.splitLocalizedWithGTPP("gt.blockmachines.input_bus_steam.desc");
+        return Utils.splitLocalizedWithAlkalus("gt.blockmachines.input_bus_steam.desc");
     }
 
     @Override
