@@ -4,6 +4,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 
 import net.minecraft.util.EnumChatFormatting;
 
+import com.cleanroommc.modularui.api.GuiAxis;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
@@ -33,27 +34,52 @@ public class GeneralInfoWindow {
         textList.child(createHeader("gt.blockmachines.multimachine.FOG.introduction"));
         textList.child(createTextEntry("gt.blockmachines.multimachine.FOG.introductioninfotext"));
 
-        textList.child(createTableOfContentsHeader());
-        textList.child(createTableOfContentsEntry(textList, "gt.blockmachines.multimachine.FOG.fuel", 150));
-        textList.child(createTableOfContentsEntry(textList, "gt.blockmachines.multimachine.FOG.modules", 400));
-        textList.child(createTableOfContentsEntry(textList, "gt.blockmachines.multimachine.FOG.upgrades", 965));
-        textList.child(createTableOfContentsEntry(textList, "gt.blockmachines.multimachine.FOG.milestones", 1260));
-        textList.childIf(multiblock::isInversionAvailable, createTableOfContentsEntryInversion(textList));
+        TextWidget<?> fuelHeader = createHeader("gt.blockmachines.multimachine.FOG.fuel");
+        TextWidget<?> fuelText = createTextEntry("gt.blockmachines.multimachine.FOG.fuelinfotext");
+        ParentWidget<?> fuelToC = createToCEntry(textList, "gt.blockmachines.multimachine.FOG.fuel", fuelHeader);
 
-        textList.child(createHeader("gt.blockmachines.multimachine.FOG.fuel"));
-        textList.child(createTextEntry("gt.blockmachines.multimachine.FOG.fuelinfotext"));
-        textList.child(createHeader("gt.blockmachines.multimachine.FOG.modules"));
-        textList.child(createTextEntry("gt.blockmachines.multimachine.FOG.moduleinfotext"));
-        textList.child(createHeader("gt.blockmachines.multimachine.FOG.upgrades"));
-        textList.child(createTextEntry("gt.blockmachines.multimachine.FOG.upgradeinfotext"));
-        textList.child(createHeader("gt.blockmachines.multimachine.FOG.milestones"));
-        textList.child(createTextEntry("gt.blockmachines.multimachine.FOG.milestoneinfotext"));
-        textList.childIf(multiblock::isInversionAvailable, createHeaderInversion());
-        textList.childIf(
-            multiblock::isInversionAvailable,
-            createTextEntry("gt.blockmachines.multimachine.FOG.inversioninfotext"));
+        TextWidget<?> moduleHeader = createHeader("gt.blockmachines.multimachine.FOG.modules");
+        TextWidget<?> moduleText = createTextEntry("gt.blockmachines.multimachine.FOG.moduleinfotext");
+        ParentWidget<?> moduleToC = createToCEntry(textList, "gt.blockmachines.multimachine.FOG.modules", moduleHeader);
+
+        TextWidget<?> upgradeHeader = createHeader("gt.blockmachines.multimachine.FOG.upgrades");
+        TextWidget<?> upgradeText = createTextEntry("gt.blockmachines.multimachine.FOG.upgradeinfotext");
+        ParentWidget<?> upgradeToC = createToCEntry(
+            textList,
+            "gt.blockmachines.multimachine.FOG.upgrades",
+            upgradeHeader);
+
+        TextWidget<?> milestoneHeader = createHeader("gt.blockmachines.multimachine.FOG.milestones");
+        TextWidget<?> milestoneText = createTextEntry("gt.blockmachines.multimachine.FOG.milestoneinfotext");
+        ParentWidget<?> milestoneToC = createToCEntry(
+            textList,
+            "gt.blockmachines.multimachine.FOG.milestones",
+            milestoneHeader);
+
+        TextWidget<?> inversionHeader = createHeaderInversion();
+        TextWidget<?> inversionText = createTextEntry("gt.blockmachines.multimachine.FOG.inversioninfotext");
+        ParentWidget<?> inversionToC = createToCEntryInversion(textList, inversionHeader);
+
+        textList.child(createTableOfContentsHeader());
+        textList.child(fuelToC);
+        textList.child(moduleToC);
+        textList.child(upgradeToC);
+        textList.child(milestoneToC);
+        textList.childIf(multiblock::isInversionAvailable, inversionToC);
+
+        textList.child(fuelHeader);
+        textList.child(fuelText);
+        textList.child(moduleHeader);
+        textList.child(moduleText);
+        textList.child(upgradeHeader);
+        textList.child(upgradeText);
+        textList.child(milestoneHeader);
+        textList.child(milestoneText);
+        textList.childIf(multiblock::isInversionAvailable, inversionHeader);
+        textList.childIf(multiblock::isInversionAvailable, inversionText);
 
         panel.child(textList);
+        panel.child(ButtonWidget.panelCloseButton());
         return panel;
     }
 
@@ -93,8 +119,8 @@ public class GeneralInfoWindow {
             .marginBottom(8);
     }
 
-    private static ParentWidget<?> createTableOfContentsEntry(ListWidget<IWidget, ?> textList, String langKey,
-        int jumpPoint) {
+    private static ParentWidget<?> createToCEntry(ListWidget<IWidget, ?> textList, String langKey,
+        TextWidget<?> jumpPoint) {
         return new ParentWidget<>().coverChildren()
             .child(
                 IKey.str(EnumChatFormatting.AQUA + "" + EnumChatFormatting.BOLD + translateToLocal(langKey))
@@ -107,13 +133,16 @@ public class GeneralInfoWindow {
                     .disableHoverBackground()
                     .onMousePressed(d -> {
                         textList.getScrollData()
-                            .animateTo(textList.getScrollArea(), jumpPoint);
+                            .animateTo(
+                                textList.getScrollArea(),
+                                jumpPoint.getArea()
+                                    .getRelativePoint(GuiAxis.Y));
                         return true;
                     }));
     }
 
     // todo check on inversion, make sure it works right
-    private static ParentWidget<?> createTableOfContentsEntryInversion(ListWidget<IWidget, ?> textList) {
+    private static ParentWidget<?> createToCEntryInversion(ListWidget<IWidget, ?> textList, TextWidget<?> jumpPoint) {
         return new ParentWidget<>().coverChildren()
             .align(Alignment.CenterLeft)
             .child(
@@ -127,7 +156,10 @@ public class GeneralInfoWindow {
                     .disableHoverBackground()
                     .onMousePressed(d -> {
                         textList.getScrollData()
-                            .animateTo(textList.getScrollArea(), 1766);
+                            .animateTo(
+                                textList.getScrollArea(),
+                                jumpPoint.getArea()
+                                    .getRelativePoint(GuiAxis.Y));
                         return true;
                     }));
     }
