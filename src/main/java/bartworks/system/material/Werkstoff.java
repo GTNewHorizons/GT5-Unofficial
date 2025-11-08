@@ -100,7 +100,6 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
     private final String defaultName;
     private String toolTip;
     private boolean isFormulaNeededLocalized = false;
-    boolean isFormulaNeededLocalized = false;
 
     private Werkstoff.Stats stats;
     private final Werkstoff.Types type;
@@ -116,7 +115,6 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
 
     public void setBridgeMaterial(Materials bridgeMaterial) {
         this.bridgeMaterial = bridgeMaterial;
-        if (isFormulaNeededLocalized) this.bridgeMaterial.setChemicalFormula(getToolTip(), true);
     }
 
     public static void init() {
@@ -704,6 +702,10 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
             return null;
         }
         return GREEN + modName;
+    }
+
+    public boolean isFormulaNeededLocalized() {
+        return isFormulaNeededLocalized;
     }
 
     public enum Types {
