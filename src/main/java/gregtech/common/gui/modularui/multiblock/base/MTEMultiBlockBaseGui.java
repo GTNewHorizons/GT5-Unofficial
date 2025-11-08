@@ -179,11 +179,11 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                             .size(getTerminalWidgetWidth() - 4, getTerminalWidgetHeight() - 8)
                             .collapseDisabledChild())
                     .childIf(
-                        multiblock.supportsTerminalCornerColumn(),
-                        createTerminalCornerColumn(panel, syncManager)));
+                        multiblock.supportsTerminalRightCornerColumn(),
+                        createTerminalRightCornerColumn(panel, syncManager)));
     }
 
-    protected Flow createTerminalCornerColumn(ModularPanel panel, PanelSyncManager syncManager) {
+    protected Flow createTerminalRightCornerColumn(ModularPanel panel, PanelSyncManager syncManager) {
         return new Column().coverChildren()
             .rightRel(0, 6, 0)
             .bottomRel(0, 6, 0)
