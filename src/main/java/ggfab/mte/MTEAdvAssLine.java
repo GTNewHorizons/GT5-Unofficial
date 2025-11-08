@@ -818,9 +818,10 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                 batchMultiplierMax = Math
                     .min(batchMultiplierMax, (double) currentParallel / maxParallelBeforeBatchMode);
             }
-            currentRecipeParallel = (int) (currentParallelBeforeBatchMode * batchMultiplierMax);
+            int batchMultiplierMaxInt = (int) batchMultiplierMax;
+            currentRecipeParallel = (int) (currentParallelBeforeBatchMode * batchMultiplierMaxInt);
             lEUt = calculator.getConsumption();
-            mMaxProgresstime = (int) (calculator.getDuration() * batchMultiplierMax) * recipe.mInputs.length;
+            mMaxProgresstime = (int) (calculator.getDuration() * batchMultiplierMaxInt) * recipe.mInputs.length;
             setCurrentRecipe(recipe);
             result = CheckRecipeResultRegistry.SUCCESSFUL;
             break;
