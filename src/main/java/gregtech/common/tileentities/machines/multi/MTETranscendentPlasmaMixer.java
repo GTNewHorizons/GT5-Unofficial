@@ -71,6 +71,8 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.common.gui.modularui.multiblock.MTETranscendentPlasmaMixerGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
 public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETranscendentPlasmaMixer>
     implements ISurvivalConstructable {
@@ -170,7 +172,15 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
         return new ITexture[] { casingTexturePages[0][DIM_TRANS_CASING] };
     }
 
-    int multiplier = 1;
+    public int getMultiplier() {
+        return multiplier;
+    }
+
+    public void setMultiplier(int multiplier) {
+        this.multiplier = multiplier;
+    }
+
+    private int multiplier = 1;
     BigInteger finalConsumption = BigInteger.ZERO;
 
     @Override
@@ -291,8 +301,8 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
     private static final int PARALLEL_WINDOW_ID = 10;
 
     @Override
-    protected boolean useMui2() {
-        return false;
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTETranscendentPlasmaMixerGui(this);
     }
 
     @Override

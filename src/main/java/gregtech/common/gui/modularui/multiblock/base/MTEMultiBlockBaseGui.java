@@ -86,7 +86,7 @@ import gregtech.common.modularui2.sync.Predicates;
 public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
 
     protected final T multiblock;
-    private final IGregTechTileEntity baseMetaTileEntity;
+    protected final IGregTechTileEntity baseMetaTileEntity;
     protected List<UITexture> machineModeIcons = new ArrayList<>();
     protected Map<String, UITexture> customIcons = new HashMap<>();
     private final int borderRadius = 4;
@@ -179,11 +179,11 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                             .size(getTerminalWidgetWidth() - 4, getTerminalWidgetHeight() - 8)
                             .collapseDisabledChild())
                     .childIf(
-                        multiblock.supportsTerminalCornerColumn(),
-                        createTerminalCornerColumn(panel, syncManager)));
+                        multiblock.supportsTerminalRightCornerColumn(),
+                        createTerminalRightCornerColumn(panel, syncManager)));
     }
 
-    protected Flow createTerminalCornerColumn(ModularPanel panel, PanelSyncManager syncManager) {
+    protected Flow createTerminalRightCornerColumn(ModularPanel panel, PanelSyncManager syncManager) {
         return new Column().coverChildren()
             .rightRel(0, 6, 0)
             .bottomRel(0, 6, 0)
@@ -225,7 +225,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                     .setEnabledIf(w -> startupCheckSyncer.getValue() > 0)
                     .marginBottom(2)
                     .widthRel(1))
-            .child(
+            .childIf(
+                multiblock.hasRunningText(),
                 new TextWidget<>(GTUtility.trans("142", "Running perfectly.")).color(Color.WHITE.main)
                     .setEnabledIf(widget -> multiblock.getErrorDisplayID() == 0 && baseMetaTileEntity.isActive())
                     .marginBottom(2)

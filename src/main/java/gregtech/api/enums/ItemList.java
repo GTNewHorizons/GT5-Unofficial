@@ -1084,6 +1084,7 @@ public enum ItemList implements IItemContainer {
     Hatch_Input_Bus_ZPM,
     Hatch_Input_Bus_UV,
     Hatch_Input_Bus_MAX,
+    Hatch_Input_Bus_Debug,
 
     Hatch_Output_ULV,
     Hatch_Output_LV,
@@ -2235,6 +2236,7 @@ public enum ItemList implements IItemContainer {
     Hatch_Input_UMV,
     Hatch_Input_UXV,
     Hatch_Input_MAX,
+    Hatch_Input_Debug,
     Hatch_Output_UEV,
     Hatch_Output_UIV,
     Hatch_Output_UMV,
