@@ -3696,6 +3696,7 @@ machtype.ece=Combustion Generator, ECE
 machtype.entropic_processor=Entropic Processor
 machtype.distillation_tower=Distillery, DT
 machtype.assline=Assembly Line, Assline, AL
+machtype.mb_air_filter=Air Filter
 
 # Used in addController. These are some commonly used shared ones
 # CONTEXT: Controller: (corepos)
@@ -3706,6 +3707,13 @@ gt.mb.corepos.top_center=Top center
 gt.mb.hint_block=Hint block with dot %d
 
 # Multiblock Tooltip lines
+gt.mb_air_filter.tips.1=Needs a Turbine in the controller\nCan process %1$sx%1$s chunks\nEach muffler hatch reduces pollution in one chunk of the working area by:
+gt.mb_air_filter.tips.2=  §f%s * multiTierBonus * turbineEff * FLOOR(%s^mufflerTier)\nevery second\n- multiTierBonus for this controller is %s\n- turbineEff is the efficiency of the Turbine in controller slot\n- Effective muffler tier is limited by energy input tier\n- Uses %s EU/t while working
+gt.mb_air_filter.tips.3=Insert Absorption Filter in an input bus\n  to double pollution cleaning amount (30 uses per item)\nEach maintenance issue reduces cleaning amount by 10%
+gt.mb_air_filter.info.1=Top and bottom layers
+gt.mb_air_filter.info.2=Corners of the middle two layers
+gt.mb_air_filter.info.3=Sides of the middle two layers
+
 gt.mb_boiler.tips.1a=Produces %sL of Superheated Steam with 1 Coal at %sL/s\nA programmed circuit in the main block throttles the boiler (-1000L/s per config)\nOnly some solid fuels are allowed (check the NEI Large Boiler tab for details)\nIf there are any disallowed fuels in the input bus, the boiler won't run!
 gt.mb_boiler.tips.1b=Produces %sL of Steam with 1 Coal at %sL/s\nA programmed circuit in the main block throttles the boiler (-1000L/s per config)\nSolid Fuels with a burn value that is too high or too low will not work
 gt.mb_boiler.tips.2=Diesel fuels have 1/4 efficiency - Takes %s seconds to heat up

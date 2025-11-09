@@ -168,53 +168,39 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
 
     public String getCasingString() {
         return switch (getCasingMeta()) {
-            case 0 -> "Air Filter Turbine Casing";
-            case 3 -> "Advanced Air Filter Turbine Casing";
-            case 5 -> "Super Air Filter Turbine Casing";
-            default -> "fill a ticket on github if you read this";
+            case 0 -> "gt.blockcasingsNH.0.name";
+            case 3 -> "gt.blockcasingsNH.3.name";
+            case 5 -> "gt.blockcasingsNH.5.name";
+            default -> "gt.generic_error";
         };
     }
 
     public String getPipeString() {
         return switch (getPipeMeta()) {
-            case 1 -> "Air Filter Vent Casing";
-            case 4 -> "Advanced Air Filter Vent Casing";
-            case 6 -> "Super Air Filter Vent Casing";
-            default -> "fill a ticket on github if you read this";
+            case 1 -> "gt.blockcasingsNH.1.name";
+            case 4 -> "gt.blockcasingsNH.4.name";
+            case 6 -> "gt.blockcasingsNH.6.name";
+            default -> "gt.generic_error";
         };
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Air Filter")
-            .addInfo("Needs a Turbine in the controller")
-            .addInfo("Can process " + (2 * multiTier + 1) + "x" + (2 * multiTier + 1) + " chunks")
-            .addInfo("Each muffler hatch reduces pollution in one chunk of the working area by:")
-            .addInfo(
-                "  " + EnumChatFormatting.WHITE
-                    + GLOBAL_MULTIPLIER
-                    + " * multiTierBonus * turbineEff * FLOOR("
-                    + SCALING_FACTOR
-                    + "^mufflerTier)")
-            .addInfo("every second")
-            .addInfo("- multiTierBonus for this controller is " + getBonusByTier())
-            .addInfo("- turbineEff is the efficiency of the Turbine in controller slot")
-            .addInfo("- Effective muffler tier is limited by energy input tier")
-            .addInfo("- Uses " + getEUt() + " EU/t while working")
+        tt.addMachineType("machtype.mb_air_filter")
+            .addInfo("gt.mb_air_filter.tips.1", 2 * multiTier + 1)
+            .addInfo("gt.mb_air_filter.tips.2", GLOBAL_MULTIPLIER, SCALING_FACTOR, getBonusByTier(), getEUt())
             .addSeparator()
-            .addInfo("Insert Absorption Filter in an input bus")
-            .addInfo("  to double pollution cleaning amount (30 uses per item)")
-            .addInfo("Each maintenance issue reduces cleaning amount by 10%")
+            .addInfo("gt.mb_air_filter.tips.3")
             .beginStructureBlock(3, 4, 3, true)
-            .addController("Front bottom")
-            .addOtherStructurePart(getCasingString(), "Top and bottom layers")
-            .addOtherStructurePart(getPipeString(), "Corners of the middle two layers")
-            .addOtherStructurePart("Muffler Hatch", "Sides of the middle two layers")
-            .addEnergyHatch("Any bottom layer casing", 1)
-            .addMaintenanceHatch("Any bottom layer casing", 1)
-            .addInputBus("Any bottom layer casing", 1)
-            .addOutputBus("Any bottom layer casing", 1)
+            .addController("front_bottom_middle")
+            .addStructurePart(getCasingString(), "gt.mb_air_filter.info.1")
+            .addStructurePart(getPipeString(), "gt.mb_air_filter.info.2")
+            .addMufflerHatch("gt.mb_air_filter.info.3")
+            .addEnergyHatch("<bottom casing>", 1)
+            .addMaintenanceHatch("<bottom casing>", 1)
+            .addInputBus("<bottom casing>", 1)
+            .addOutputBus("<bottom casing>", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -625,12 +611,12 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
                     + EnumChatFormatting.RESET,
                 EnumChatFormatting.YELLOW + Float.toString(mEfficiency / 100.0F) + EnumChatFormatting.RESET + " %"),
             StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.air_filter.pollution_reduction",
+                "GT5U.infodata.mb_air_filter.pollution_reduction",
                 EnumChatFormatting.GREEN
                     + Integer.toString(getPollutionCleaningRatePerTick(baseEff, mEfficiency / 10000f, isFilterLoaded))
                     + EnumChatFormatting.RESET),
-            StatCollector.translateToLocalFormatted("GT5U.infodata.air_filter.has_filter", isFilterLoaded),
+            StatCollector.translateToLocalFormatted("GT5U.infodata.mb_air_filter.has_filter", isFilterLoaded),
             StatCollector
-                .translateToLocalFormatted("GT5U.infodata.air_filter.remaining_cycles", filterUsageRemaining) };
+                .translateToLocalFormatted("GT5U.infodata.mb_air_filter.remaining_cycles", filterUsageRemaining) };
     }
 }
