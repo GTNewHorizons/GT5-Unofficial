@@ -800,8 +800,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
             + "/"
             + EnumChatFormatting.DARK_AQUA
             + tierThree
-            + EnumChatFormatting.GRAY
-            + " ";
+            + EnumChatFormatting.GRAY;
     }
 
     @Override

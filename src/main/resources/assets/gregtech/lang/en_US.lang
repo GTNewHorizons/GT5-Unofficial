@@ -3695,6 +3695,7 @@ machtype.nano_forge=Nanite Fabricator
 machtype.ece=Combustion Generator, ECE
 machtype.entropic_processor=Entropic Processor
 machtype.distillation_tower=Distillery, DT
+machtype.assline=Assembly Line, Assline, AL
 
 # Used in addController. These are some commonly used shared ones
 # CONTEXT: Controller: (corepos)
@@ -3716,6 +3717,25 @@ gt.mb_boiler.info.5=Liquid fuel, Any firebox
 gt.mb_boiler.info.6=You can use either, or both
 gt.mb_boiler.info.7=Water, Any firebox
 gt.mb_boiler.info.8=Steam, any casing
+
+gt.spinmatron.tips.1=3 Modes: §dLight§7 | §6Standard§7 | §aHeavy\nOverclocks limited to §fHatch Tier + 1
+gt.spinmatron.tips.2=Gains §f2§7 Turbine Slots per Structure Tier
+gt.spinmatron.tips.3=Non-Huge Turbines have reduced effectiveness...
+gt.spinmatron.tips.4=Requires Recipe Tier * §910L/s§7 of §5Kerosene§7 to operate by default\nSupply §5Biocatalyzed Propulsion Fluid§7 instead for a §f1.25x§7 Parallel multiplier
+gt.spinmatron.tips.5=§dLight Mode§7: +§d100%§7 Speed Bonus, Maximum Recipe Tier is §dVoltage Tier - 3\n§6Standard Mode§7: No Changes\n§aHeavy Mode§7: Divides Parallels by §a32§7, Requires T3 Structure and §5Biocatalyzed Propulsion Fluid\nSome recipes §c§lrequire§a Heavy Mode
+gt.spinmatron.tips.6=§o§4Maahes guides the way...
+gt.spinmatron.info.1=Central Frame Blocks
+gt.spinmatron.info.2=Central Rotor Blocks
+gt.spinmatron.info.3=Any Vibration-Safe Casing
+
+gt.assline.tips.1=Used to craft complex machine parts (LuV+)\nItems & Fluids are inserted in NEI order, one per slice\nDoes not run Assembler recipes
+gt.assline.info.1=From Bottom to Top, Left to Right\nLayer 1 - Solid Steel Machine Casing, Input Bus, Solid Steel Machine Casing\nLayer 2 - Glass, Assembly Line Casing, Glass\nLayer 3 - Grate Machine Casing, Assembler Machine Casing, Grate Machine Casing\nLayer 4 - Empty, Solid Steel Machine Casing, Empty\nUp to 16 repeating slices, each one allows for 1 more item in recipes
+gt.assline.info.2=Either Grate Machine Casing on the first slice
+gt.assline.info.3=Any layer 4 casing
+gt.assline.info.4=Any layer 1 casing
+gt.assline.info.5=As specified on layer 1
+gt.assline.info.6=Replaces Input Bus or Solid Steel Machine casing on layer 1 of last slice
+gt.assline.info.7=Any Grate Machine Casing NOT on the first slice
 
 gt.distillation_tower.tips.1=Fluids are only put out at the correct height\nThe correct height equals the slot number in the NEI recipe
 gt.distillation_tower.info.1=7 x h - 5 (minimum)
@@ -3786,7 +3806,7 @@ gt.iaf.info.1=n can be 3, 5 or 7
 gt.nano_forge.tips.1=Requires insane amounts of power to create nanites\nEach tier requires some structural changes\nMachine tier depends on Nanite in controller slot\nTier 4 has additional mechanics, check the controller
 gt.nano_forge.tips.2=Requires a Carbon Nanite to use tier §51\nRequires a Neutronium Nanite to use tier §12\nRequires a Transcendent Metal Nanite to use tier §b3\nRequires an Eternity Nanite to use tier §24
 gt.nano_forge.tips.3=Performs §dperfect overclocks§7 on lower-tier recipes
-gt.nano_forge.info.1=Total blocks needed for the structure at tier %s\n%sRadiant Naquadah Alloy Casing\n%sStellar Alloy Frame Box\n%sAssembly Line Casing
+gt.nano_forge.info.1=Total blocks needed for the structure at tier %s\n%s Radiant Naquadah Alloy Casing\n%s Stellar Alloy Frame Box\n%s Assembly Line Casing
 gt.nano_forge.info.2=Tier §24 §7requires a whole new set of blocks\nCheck the NEI preview for specifics\nMaintenance hatch is not required for tier §24
 gt.nano_forge.info.3=Requires §61§7-§62§7 energy hatches or §61§7 TT energy hatch\nRequires §61§7 maintenance hatch\nRequires §61§7+ input hatches\nRequires §60§7+ output hatches\nRequires §61§7+ input buses\nRequires §61§7+ output buses
 
@@ -4139,5 +4159,6 @@ tc.aspect.help.custom4=the univerese
 tc.aspect.help.custom5=glory
 
 # Misc strings
+gt.generic_error=ERROR! Fill a ticket on github if you read this
 gt.string.colon=:
 gt.string.separator=,
