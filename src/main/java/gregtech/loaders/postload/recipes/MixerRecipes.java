@@ -1513,7 +1513,7 @@ public class MixerRecipes implements Runnable {
                     EnumCube.COKE_BLOCK.getItem(4),
                     ItemList.SFMixture.get(8),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Diamond, 1),
-                    GTUtility.getIntegratedCircuit(1))
+                    GTUtility.getIntegratedCircuit(2))
                 .itemOutputs(ItemList.Block_SSFUEL.get(4))
                 .fluidInputs(Materials.GasolinePremium.getFluid(480))
                 .duration(10 * SECONDS)
