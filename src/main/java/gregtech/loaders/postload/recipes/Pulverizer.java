@@ -730,18 +730,6 @@ public class Pulverizer implements Runnable {
             .recipeCategory(RecipeCategories.maceratorRecycling)
             .addTo(maceratorRecipes);
 
-        if (HardcoreEnderExpansion.isModLoaded()) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(getModItem(HardcoreEnderExpansion.ID, "endium_ore", 1))
-                .itemOutputs(
-                    GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Endium, 2),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Endstone, 1))
-                .outputChances(10000, 5000)
-                .duration(20 * SECONDS)
-                .eut(2)
-                .addTo(maceratorRecipes);
-        }
-
         if (BiomesOPlenty.isModLoaded()) {
             GTValues.RA.stdBuilder()
                 .itemInputs(getModItem(BiomesOPlenty.ID, "gemOre", 1, 5))
