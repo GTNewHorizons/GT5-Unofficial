@@ -26,6 +26,7 @@ import com.cleanroommc.modularui.widgets.layout.Row;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.base.TTMultiblockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
+import gregtech.common.gui.modularui.multiblock.godforge.data.Syncers;
 import gregtech.common.gui.modularui.multiblock.godforge.panel.BatteryConfigPanel;
 import gregtech.common.gui.modularui.multiblock.godforge.panel.IndividualMilestonePanel;
 import gregtech.common.gui.modularui.multiblock.godforge.panel.IndividualUpgradePanel;
@@ -39,10 +40,6 @@ import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
 
     // spotless:off
-    public static final String SYNC_BATTERY_CHARGING = "fog.sync.battery_charging";
-    public static final String SYNC_SHARD_EJECTION = "fog.sync.shard_ejection";
-    public static final String SYNC_INVERSION = "fog.sync.inversion";
-
     public static final String SYNC_MILESTONE_CLICKED = "fog.sync.milestone_clicked";
     public static final String SYNC_MILESTONE_CHARGE_PROGRESS = "fog.sync.milestone_charge_progress";
     public static final String SYNC_MILESTONE_CHARGE_PROGRESS_INVERTED = "fog.sync.milestone_charge_progress_inverted";
@@ -52,8 +49,6 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
     public static final String SYNC_MILESTONE_CATALYST_PROGRESS_INVERTED = "fog.sync.milestone_catalyst_progress_inverted";
     public static final String SYNC_MILESTONE_COMPOSITION_PROGRESS = "fog.sync.milestone_composition_progress";
     public static final String SYNC_MILESTONE_COMPOSITION_PROGRESS_INVERTED = "fog.sync.milestone_composition_progress_inverted";
-
-    public static final String SYNC_STRUCTURE_UPDATE = "structureUpdateButton"; // From MTEMultiBlockBase
     // spotless:on
 
     private final ForgeOfGodsData data;
@@ -76,11 +71,8 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
         StatisticsPanel.registerSyncValues(syncManager);
         UpgradeTreePanel.registerSyncValues(syncManager);
 
-        syncManager
-            .syncValue(SYNC_BATTERY_CHARGING, new BooleanSyncValue(data::isBatteryCharging, data::setBatteryCharging));
-        syncManager.syncValue(
-            SYNC_SHARD_EJECTION,
-            new BooleanSyncValue(data::isGravitonShardEjection, data::setGravitonShardEjection));
+        Syncers.BATTERY_CHARGING.register(syncManager, data, Panels.MAIN);
+        Syncers.SHARD_EJECTION.register(syncManager, data, Panels.MAIN);
     }
 
     // todo fix column being shifted up 1 pixel
@@ -195,12 +187,12 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
 
     protected IWidget createBatteryConfigWindowButton(ModularPanel panel, PanelSyncManager syncManager) {
         IPanelHandler batteryConfigPanel = Panels.BATTERY_CONFIG.get(panel, syncManager, data);
-        BooleanSyncValue batteryConfigSyncer = syncManager
-            .findSyncHandler(SYNC_BATTERY_CHARGING, BooleanSyncValue.class);
+        BooleanSyncValue batteryChargingSyncer = Syncers.BATTERY_CHARGING.get(syncManager, Panels.MAIN);
+
         return new ButtonWidget<>().size(16)
             .marginBottom(3)
             .overlay(new DynamicDrawable(() -> {
-                boolean batteryActive = batteryConfigSyncer.getBoolValue();
+                boolean batteryActive = batteryChargingSyncer.getBoolValue();
                 if (batteryActive) {
                     return GTGuiTextures.TT_OVERLAY_BUTTON_BATTERY_ON;
                 }
@@ -210,7 +202,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
             .disableHoverBackground()
             .onMousePressed(d -> {
                 if (d == 0) {
-                    batteryConfigSyncer.setBoolValue(!data.isBatteryCharging());
+                    batteryChargingSyncer.setBoolValue(!data.isBatteryCharging());
                 } else if (d == 1 && data.isUpgradeActive(REC)) {
                     if (!batteryConfigPanel.isPanelOpen()) {
                         batteryConfigPanel.openPanel();
@@ -269,7 +261,9 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
     }
 
     protected IWidget createModuleRefreshButton(PanelSyncManager syncManager) {
-        BooleanSyncValue refreshSyncer = syncManager.findSyncHandler(SYNC_STRUCTURE_UPDATE, BooleanSyncValue.class);
+        // From MTEMultiBlockBase
+        BooleanSyncValue refreshSyncer = syncManager.findSyncHandler("structureUpdateButton", BooleanSyncValue.class);
+
         return new ButtonWidget<>().size(16)
             .marginRight(3)
             .overlay(GTGuiTextures.TT_OVERLAY_CYCLIC_BLUE)
@@ -305,7 +299,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
     }
 
     protected IWidget createEjectionButton(PanelSyncManager syncManager) {
-        BooleanSyncValue shardEjectionSyncer = syncManager.findSyncHandler(SYNC_SHARD_EJECTION, BooleanSyncValue.class);
+        BooleanSyncValue shardEjectionSyncer = Syncers.SHARD_EJECTION.get(syncManager, Panels.MAIN);
         return new ButtonWidget<>().size(16)
             .marginRight(3)
             .setEnabledIf($ -> data.isUpgradeActive(END))
