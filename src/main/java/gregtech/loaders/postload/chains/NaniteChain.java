@@ -168,7 +168,7 @@ public class NaniteChain {
             .itemOutputs(Materials.SixPhasedCopper.getNanite(8))
             .fluidInputs(
                 Materials.UUMatter.getFluid(500_000),
-                Materials.DimensionallyTranscendentResidue.getFluid(50_000),
+                Materials.DTR.getFluid(50_000),
                 Materials.Creon.getMolten(8 * STACKS))
             .metadata(NANO_FORGE_TIER, 3)
             .duration(100 * SECONDS)

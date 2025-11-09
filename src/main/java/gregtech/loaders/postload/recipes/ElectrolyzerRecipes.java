@@ -62,26 +62,11 @@ public class ElectrolyzerRecipes implements Runnable {
             .addTo(electrolyzerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getIC2Item("electrolyzedWaterCell", 1L), ItemList.Cell_Empty.get(2L))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Water, 1L), ItemList.Cell_Empty.get(2L))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 2L),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 1L))
-            .duration(1 * SECONDS + 10 * TICKS)
-            .eut(30)
-            .addTo(electrolyzerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getIC2Item("electrolyzedWaterCell", 1L), GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 1L))
-            .fluidOutputs(Materials.Hydrogen.getGas(2_000))
-            .duration(1 * SECONDS + 10 * TICKS)
-            .eut(30)
-            .addTo(electrolyzerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Water, 1L))
-            .itemOutputs(GTModHandler.getIC2Item("electrolyzedWaterCell", 1L))
-            .duration(1 * MINUTES + 13 * SECONDS + 10 * TICKS)
+            .duration(1 * MINUTES + 40 * SECONDS)
             .eut(30)
             .addTo(electrolyzerRecipes);
 

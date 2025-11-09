@@ -47,6 +47,7 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.IToolStats;
@@ -64,6 +65,7 @@ import gregtech.api.recipe.metadata.CentrifugeRecipeKey;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -101,19 +103,17 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     private static final String STRUCTURE_TIER_2 = "t2";
     private static final String STRUCTURE_TIER_3 = "t3";
     private static final String STRUCTURE_TIER_4 = "t4";
-    private static final String STRUCTURE_MAIN = "main";
     private static final IIconContainer TEXTURE_CONTROLLER = new Textures.BlockIcons.CustomIcon("iconsets/TFFT");
     private static final IIconContainer TEXTURE_CONTROLLER_ACTIVE = new Textures.BlockIcons.CustomIcon(
         "iconsets/TFFT_ACTIVE");
     private static final IIconContainer TEXTURE_CONTROLLER_ACTIVE_GLOW = new Textures.BlockIcons.CustomIcon(
         "iconsets/TFFT_ACTIVE_GLOW");
-    public ArrayList<MTEHatchTurbine> mTurbineRotorHatches = new ArrayList<>();
+    public ArrayList<MTEHatchTurbine> turbineRotorHatchList = new ArrayList<>();
 
     private boolean mStaticAnimations = false;
     // spotless:off
 
-    private static final IStructureDefinition<MTEChamberCentrifuge> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTEChamberCentrifuge>builder()
+    private static final IStructureDefinition<MTEChamberCentrifuge> STRUCTURE_DEFINITION = StructureDefinition.<MTEChamberCentrifuge>builder()
         .addShape(
             STRUCTURE_TIER_1,
             transpose(
@@ -214,13 +214,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         .addElement('E', Casings.IsamillGearBoxCasing.asElement()) // Isamill central casing
         .addElement('F', Casings.TurbineShaft.asElement()) // Turbine Central Casing
         .addElement('G', ofBlock(supercriticalFluidTurbineCasing, 0)) // Turbine External Casing
-        .addElement(
-            'H',
-            buildHatchAdder(MTEChamberCentrifuge.class).adder(MTEChamberCentrifuge::addTurbineHatch)
-                .hatchClass(MTEHatchTurbine.class)
-                .casingIndex(1538)
-                .dot(2)
-                .build()) // Turbine Holder Hatches
+        .addElement('H', CentrifugeHatchElement.ROTOR_ASSEMBLY.newAny(1538, 2)) // turbine hatches
         .addElement('a', ofBlock(GregTechAPI.sBlockMetal4, 13)) // t1 block, Naq Alloy
         .addElement(
             'b',
@@ -274,7 +268,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             }
         }
         this.setTurbineInactive();
-        this.mTurbineRotorHatches.clear();
+        this.turbineRotorHatchList.clear();
         super.onBlockDestroyed();
     }
 
@@ -283,12 +277,39 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             return false;
         }
         final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity instanceof MTEHatchTurbine) {
-            mTurbineRotorHatches.add((MTEHatchTurbine) aMetaTileEntity);
-
+        if (aMetaTileEntity instanceof MTEHatchTurbine turbine) {
+            turbine.updateTexture(aBaseCasingIndex);
+            turbineRotorHatchList.add(turbine);
             return true;
         }
         return false;
+    }
+
+    private void rotateTurbines() {
+        for (int i = 0; i < turbineRotorHatchList.size(); i++) {
+            if (turbineRotorHatchList.get(i) == null) continue;
+            MTEHatchTurbine turbine = turbineRotorHatchList.get(i);
+            ForgeDirection direction = this.getDirection();
+            IGregTechTileEntity te = turbine.getBaseMetaTileEntity();
+            // 0, 1 = front top, front bottom
+            // 2, 4 = left top, left bottom
+            // 3, 5 = right top, right bottom
+            // 6, 7 = back top, back bottom (all in theory)
+            switch (i) {
+                case 0, 1 -> {
+                    te.setFrontFacing(direction);
+                }
+                case 2, 4 -> {
+                    te.setFrontFacing(direction.getRotation(ForgeDirection.EAST));
+                }
+                case 3, 5 -> {
+                    te.setFrontFacing(direction.getRotation(ForgeDirection.WEST));
+                }
+                case 6, 7 -> {
+                    te.setFrontFacing(direction.getOpposite());
+                }
+            }
+        }
     }
 
     @Override
@@ -548,6 +569,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             if (checkPiece(piece.structurePiece, horizontalOffset, verticalOffset, depthOffset)) {
                 tier = piece.machineTier;
                 lastCheckedTierIndex = i;
+                rotateTurbines();
                 return casingAmount >= 550;
             }
         }
@@ -558,6 +580,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     private void resetParameters() {
         clearHatches();
         casingAmount = 0;
+        turbineRotorHatchList.clear();
     }
 
     @Override
@@ -656,7 +679,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     }
 
     private boolean checkFluid(int amount) // checks if 5 seconds worth of fluid is found in ANY of the machines input
-                                           // hatches
+    // hatches
     {
         // checks for fluid in hatch, does not drain it.
         FluidStack tFluid = tier2Fluid ? Materials.BiocatalyzedPropulsionFluid.getFluid(amount)
@@ -672,14 +695,14 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     public void setTurbineActive() {
         if (mStaticAnimations) return;
 
-        for (MTEHatchTurbine h : validMTEList(this.mTurbineRotorHatches)) {
+        for (MTEHatchTurbine h : validMTEList(this.turbineRotorHatchList)) {
             h.setActive(true);
             h.onTextureUpdate();
         }
     }
 
     public void setTurbineInactive() {
-        for (MTEHatchTurbine h : validMTEList(this.mTurbineRotorHatches)) {
+        for (MTEHatchTurbine h : validMTEList(this.turbineRotorHatchList)) {
             h.setActive(false);
             h.onTextureUpdate();
         }
@@ -689,7 +712,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aTick % 100 == 0) {
-            if (!getBaseMetaTileEntity().isActive() && !this.mTurbineRotorHatches.isEmpty()) {
+            if (!getBaseMetaTileEntity().isActive() && !this.turbineRotorHatchList.isEmpty()) {
                 setTurbineInactive();
             }
         }
@@ -780,7 +803,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         mStaticAnimations = !mStaticAnimations;
         GTUtility
             .sendChatToPlayer(aPlayer, "Using " + (mStaticAnimations ? "Static" : "Animated") + " Turbine Texture.");
-        for (MTEHatchTurbine h : validMTEList(this.mTurbineRotorHatches)) {
+        for (MTEHatchTurbine h : validMTEList(this.turbineRotorHatchList)) {
             h.mUsingAnimation = mStaticAnimations;
         }
     }
@@ -818,6 +841,36 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     @Override
     public boolean supportsSingleRecipeLocking() {
         return true;
+    }
+
+    private enum CentrifugeHatchElement implements IHatchElement<MTEChamberCentrifuge> {
+
+        ROTOR_ASSEMBLY(MTEChamberCentrifuge::addTurbineHatch, MTEHatchTurbine.class) {
+
+            @Override
+            public long count(MTEChamberCentrifuge mteChamberCentrifuge) {
+                return mteChamberCentrifuge.turbineRotorHatchList.size();
+            }
+        };
+
+        private final List<Class<? extends IMetaTileEntity>> mteClasses;
+        private final IGTHatchAdder<MTEChamberCentrifuge> adder;
+
+        @SafeVarargs
+        CentrifugeHatchElement(IGTHatchAdder<MTEChamberCentrifuge> adder,
+            Class<? extends IMetaTileEntity>... mteClasses) {
+            this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
+            this.adder = adder;
+        }
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return mteClasses;
+        }
+
+        public IGTHatchAdder<? super MTEChamberCentrifuge> adder() {
+            return adder;
+        }
     }
 }
 
