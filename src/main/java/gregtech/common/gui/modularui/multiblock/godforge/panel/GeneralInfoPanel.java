@@ -18,7 +18,8 @@ import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.common.gui.modularui.multiblock.godforge.MTEForgeOfGodsGui;
+import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
+import gregtech.common.gui.modularui.multiblock.godforge.data.Syncers;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 
 public class GeneralInfoPanel {
@@ -28,8 +29,7 @@ public class GeneralInfoPanel {
 
     public static ModularPanel openPanel(PanelSyncManager syncManager, ForgeOfGodsData data, ModularPanel panel,
         ModularPanel parent) {
-        BooleanSyncValue inversionSyncer = new BooleanSyncValue(data::isInversion, data::setInversion);
-        syncManager.syncValue(MTEForgeOfGodsGui.SYNC_INVERSION, inversionSyncer);
+        BooleanSyncValue inversionSyncer = Syncers.INVERSION.register(syncManager, data, Panels.GENERAL_INFO);
 
         panel.size(SIZE)
             .padding(10, 0, 10, 0)

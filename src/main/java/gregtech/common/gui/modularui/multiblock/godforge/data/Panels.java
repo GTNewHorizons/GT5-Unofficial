@@ -17,6 +17,7 @@ import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 
 public enum Panels {
 
+    MAIN(null),
     MILESTONE(MilestonePanel::openPanel),
     INDIVIDUAL_MILESTONE(IndividualMilestonePanel::openPanel),
     FUEL_CONFIG(FuelConfigPanel::openPanel),
@@ -41,6 +42,9 @@ public enum Panels {
     }
 
     public IPanelHandler get(ModularPanel parent, PanelSyncManager syncManager, ForgeOfGodsData data) {
+        if (this == MAIN) {
+            throw new IllegalStateException("Cannot get panel handler of main panel!");
+        }
         return syncManager.panel(getPanelId(), (p_syncManager, syncHandler) -> {
             ModularPanel panel = new ModularPanel(getPanelId());
             return panelSupplier.openPanel(p_syncManager, data, panel, parent);
