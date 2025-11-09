@@ -13934,7 +13934,7 @@ public class MaterialsInit {
         return new MaterialBuilder().setName("prismaticnaquadah")
             .setDefaultLocalName("Prismatic Naquadah")
             .setChemicalFormula(Materials.Naquadah.mChemicalFormula + "\u0394")
-            .setFlavorText("Radiation Blindspot")
+            .setFlavorText("Absorbs all the radiation")
             .setIconSet(TextureSet.SET_METALLIC)
             .setARGB(0x00373737)
             .addDustItems()
