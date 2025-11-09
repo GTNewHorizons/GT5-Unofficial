@@ -560,7 +560,10 @@ public final class GTGuiTextures {
         .fullImage(GTNHIntergalactic.ID, "gui/overlay_button/options");
     public static final UITexture OVERLAY_BUTTON_EDIT_PARAMETERS_DISABLED = UITexture
         .fullImage(GTNHIntergalactic.ID, "gui/overlay_button/options_disabled");
-
+    public static final UITexture OVERLAY_BUTTON_ASSEMBLER_MODE = UITexture
+        .fullImage("goodgenerator", "gui/overlay_button/assembler_mode");
+    public static final UITexture OVERLAY_BUTTON_PRECISE_MODE = UITexture
+        .fullImage("goodgenerator", "gui/overlay_button/precise_mode");
     // endregion button overlay
 
     // region picture
