@@ -39,18 +39,6 @@ import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 
 public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
 
-    // spotless:off
-    public static final String SYNC_MILESTONE_CLICKED = "fog.sync.milestone_clicked";
-    public static final String SYNC_MILESTONE_CHARGE_PROGRESS = "fog.sync.milestone_charge_progress";
-    public static final String SYNC_MILESTONE_CHARGE_PROGRESS_INVERTED = "fog.sync.milestone_charge_progress_inverted";
-    public static final String SYNC_MILESTONE_CONVERSION_PROGRESS = "fog.sync.milestone_conversion_progress";
-    public static final String SYNC_MILESTONE_CONVERSION_PROGRESS_INVERTED = "fog.sync.milestone_conversion_progress_inverted";
-    public static final String SYNC_MILESTONE_CATALYST_PROGRESS = "fog.sync.milestone_catalyst_progress";
-    public static final String SYNC_MILESTONE_CATALYST_PROGRESS_INVERTED = "fog.sync.milestone_catalyst_progress_inverted";
-    public static final String SYNC_MILESTONE_COMPOSITION_PROGRESS = "fog.sync.milestone_composition_progress";
-    public static final String SYNC_MILESTONE_COMPOSITION_PROGRESS_INVERTED = "fog.sync.milestone_composition_progress_inverted";
-    // spotless:on
-
     private final ForgeOfGodsData data;
 
     public MTEForgeOfGodsGui(MTEForgeOfGods multiblock) {
@@ -187,7 +175,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
 
     protected IWidget createBatteryConfigWindowButton(ModularPanel panel, PanelSyncManager syncManager) {
         IPanelHandler batteryConfigPanel = Panels.BATTERY_CONFIG.get(panel, syncManager, data);
-        BooleanSyncValue batteryChargingSyncer = Syncers.BATTERY_CHARGING.get(syncManager, Panels.MAIN);
+        BooleanSyncValue batteryChargingSyncer = Syncers.BATTERY_CHARGING.lookup(syncManager, Panels.MAIN);
 
         return new ButtonWidget<>().size(16)
             .marginBottom(3)
@@ -299,7 +287,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
     }
 
     protected IWidget createEjectionButton(PanelSyncManager syncManager) {
-        BooleanSyncValue shardEjectionSyncer = Syncers.SHARD_EJECTION.get(syncManager, Panels.MAIN);
+        BooleanSyncValue shardEjectionSyncer = Syncers.SHARD_EJECTION.lookup(syncManager, Panels.MAIN);
         return new ButtonWidget<>().size(16)
             .marginRight(3)
             .setEnabledIf($ -> data.isUpgradeActive(END))
