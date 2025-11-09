@@ -64,6 +64,8 @@ import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergyDebug;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBusDebug;
+import gregtech.api.metatileentity.implementations.MTEHatchInputDebug;
 import gregtech.api.metatileentity.implementations.MTEHatchMagnet;
 import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
@@ -188,7 +190,6 @@ import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant1;
 import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant2;
 import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant3;
 import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant4;
-import gregtech.common.tileentities.machines.multi.MTEPCBFactory;
 import gregtech.common.tileentities.machines.multi.MTEPlasmaForge;
 import gregtech.common.tileentities.machines.multi.MTEPyrolyseOven;
 import gregtech.common.tileentities.machines.multi.MTEResearchCompleter;
@@ -204,6 +205,9 @@ import gregtech.common.tileentities.machines.multi.compressor.MTEIndustrialCompr
 import gregtech.common.tileentities.machines.multi.compressor.MTENeutroniumCompressor;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
+import gregtech.common.tileentities.machines.multi.pcb.MTEPCBBioChamber;
+import gregtech.common.tileentities.machines.multi.pcb.MTEPCBCoolingTower;
+import gregtech.common.tileentities.machines.multi.pcb.MTEPCBFactory;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchDegasifierControl;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchLensHousing;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchLensIndicator;
@@ -497,6 +501,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .getStackForm(1));
         ItemList.PCBFactory.set(
             new MTEPCBFactory(PCB_FACTORY_CONTROLLER.ID, "multimachine.pcbfactory", "PCB Factory").getStackForm(1));
+        ItemList.PCBBioChamber.set(
+            new MTEPCBBioChamber(PCB_BIO_CHAMBER_CONTROLLER.ID, "multimachine.pcbbiochamber", "Bio Chamber")
+                .getStackForm(1));
+        ItemList.PCBCoolingTower.set(
+            new MTEPCBCoolingTower(PCB_COOLING_TOWER_CONTROLLER.ID, "multimachine.pcbcoolingtower", "Cooling Tower")
+                .getStackForm(1));
         ItemList.NanoForge
             .set(new MTENanoForge(NANO_FORGE_CONTROLLER.ID, "multimachine.nanoforge", "Nano Forge").getStackForm(1));
         ItemList.Machine_Multi_DroneCentre
@@ -9071,6 +9081,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEHatchInput(INPUT_HATCH_UXV.ID, "hatch.input.tier.13", "Input Hatch (UXV)", 13).getStackForm(1L));
         ItemList.Hatch_Input_MAX.set(
             new MTEHatchInput(INPUT_HATCH_MAX.ID, "hatch.input.tier.14", "Input Hatch (MAX)", 14).getStackForm(1L));
+        ItemList.Hatch_Input_Debug.set(
+            new MTEHatchInputDebug(INPUT_HATCH_DEBUG.ID, "hatch.input.debug", "Debug Input Hatch", 14)
+                .getStackForm(1L));
     }
 
     private static void registerQuadrupleInputHatch() {
@@ -9337,6 +9350,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEHatchInputBus(INPUT_BUS_UV.ID, "hatch.input_bus.tier.08", "Input Bus (UV)", 8).getStackForm(1L));
         ItemList.Hatch_Input_Bus_MAX.set(
             new MTEHatchInputBus(INPUT_BUS_UHV.ID, "hatch.input_bus.tier.09", "Input Bus (UHV)", 9).getStackForm(1L));
+
+        ItemList.Hatch_Input_Bus_Debug.set(
+            new MTEHatchInputBusDebug(INPUT_BUS_DEBUG.ID, "hatch.input_bus.debug", "Debug Input Bus", 9)
+                .getStackForm(1l));
     }
 
     private static void registerOutputBus() {
@@ -11030,7 +11047,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerOven();
         registerNameRemover();
         registerAirFilters();
-        registerCableCoaters();
 
         ItemList.AdvDebugStructureWriter.set(
             new MTEAdvDebugStructureWriter(
@@ -11097,84 +11113,4 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Large Molecular Assembler").getStackForm(1));
     }
 
-    private static void registerCableCoaters() {
-
-        ItemList.Machine_LV_CableCoater.set(
-            new MTEBasicMachineWithRecipe(
-                CABLECOATER_LV.ID,
-                "basicmachine.cablecoater.tier.01",
-                "Basic Cable Coater",
-                1,
-                MachineType.CABLE_COATER.tooltipDescription(),
-                RecipeMaps.cableRecipes,
-                6,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ASSEMBLER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CABLE_COATER").getStackForm(1L));
-
-        ItemList.Machine_MV_CableCoater.set(
-            new MTEBasicMachineWithRecipe(
-                CABLECOATER_MV.ID,
-                "basicmachine.cablecoater.tier.02",
-                "Advanced Cable Coater",
-                2,
-                MachineType.CABLE_COATER.tooltipDescription(),
-                RecipeMaps.cableRecipes,
-                6,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ASSEMBLER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CABLE_COATER").getStackForm(1L));
-
-        ItemList.Machine_HV_CableCoater.set(
-            new MTEBasicMachineWithRecipe(
-                CABLECOATER_HV.ID,
-                "basicmachine.cablecoater.tier.03",
-                "Advanced Cable Coater II",
-                3,
-                MachineType.CABLE_COATER.tooltipDescription(),
-                RecipeMaps.cableRecipes,
-                6,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ASSEMBLER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CABLE_COATER").getStackForm(1L));
-
-        ItemList.Machine_EV_CableCoater.set(
-            new MTEBasicMachineWithRecipe(
-                CABLECOATER_EV.ID,
-                "basicmachine.cablecoater.tier.04",
-                "Advanced Cable Coater III",
-                4,
-                MachineType.CABLE_COATER.tooltipDescription(),
-                RecipeMaps.cableRecipes,
-                6,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_ASSEMBLER,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "CABLE_COATER").getStackForm(1L));
-
-        addItemTooltip(
-            ItemList.Machine_LV_CableCoater.get(1),
-            () -> EnumChatFormatting.DARK_RED
-                + "Cable Recipes in the Assembler TO BE REMOVED in the next major update!");
-        addItemTooltip(
-            ItemList.Machine_MV_CableCoater.get(1),
-            () -> EnumChatFormatting.DARK_RED
-                + "Cable Recipes in the Assembler TO BE REMOVED in the next major update!");
-        addItemTooltip(
-            ItemList.Machine_HV_CableCoater.get(1),
-            () -> EnumChatFormatting.DARK_RED
-                + "Cable Recipes in the Assembler TO BE REMOVED in the next major update!");
-        addItemTooltip(
-            ItemList.Machine_EV_CableCoater.get(1),
-            () -> EnumChatFormatting.DARK_RED
-                + "Cable Recipes in the Assembler TO BE REMOVED in the next major update!");
-
-    }
 }

@@ -13,12 +13,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.BioLab_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.BioVat;
 import static gregtech.api.enums.MetaTileEntityIDs.LESU;
 import static gregtech.api.enums.MetaTileEntityIDs.ManualTrafo;
-import static gregtech.api.enums.MetaTileEntityIDs.RadioHatch_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.RadioHatch_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.RadioHatch_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.RadioHatch_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.RadioHatch_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.RadioHatch_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.Windmill;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 
@@ -509,49 +504,13 @@ public class CraftingRecipes implements Runnable {
                 RadioHatch_HV.ID,
                 "bw.radiohatchHV",
                 StatCollector.translateToLocal("tile.radiohatch.name"),
-                3,
-                false).getStackForm(1L),
+                3).getStackForm(1L),
             RecipeLoader.BITSD,
             new Object[] { "DPD", "DCD", "DKD", 'D',
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Lead, 1L), 'C',
                 ItemList.MACHINE_HULLS[3].get(1L), 'K',
                 GTOreDictUnificator.get(OrePrefixes.cableGt08, Materials.Gold, 1L), 'P',
                 ItemList.Electric_Piston_HV.get(1) });
-
-        new MTERadioHatch(
-            RadioHatch_EV.ID,
-            "bw.radiohatchEV",
-            "EV " + StatCollector.translateToLocal("tile.radiohatch.name"),
-            4,
-            true);
-
-        new MTERadioHatch(
-            RadioHatch_IV.ID,
-            "bw.radiohatchIV",
-            "IV " + StatCollector.translateToLocal("tile.radiohatch.name"),
-            5,
-            true);
-
-        new MTERadioHatch(
-            RadioHatch_LuV.ID,
-            "bw.radiohatchLuV",
-            "LuV " + StatCollector.translateToLocal("tile.radiohatch.name"),
-            6,
-            true);
-
-        new MTERadioHatch(
-            RadioHatch_ZPM.ID,
-            "bw.radiohatchZPM",
-            "ZPM " + StatCollector.translateToLocal("tile.radiohatch.name"),
-            7,
-            true);
-
-        new MTERadioHatch(
-            RadioHatch_UV.ID,
-            "bw.radiohatchUV",
-            "UV " + StatCollector.translateToLocal("tile.radiohatch.name"),
-            8,
-            true);
 
         GTModHandler.addCraftingRecipe(
             ItemList.Item_Power_Goggles.get(1),
