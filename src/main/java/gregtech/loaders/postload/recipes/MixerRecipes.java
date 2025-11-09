@@ -838,7 +838,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.block, Materials.Lignite, 4),
                 ItemList.MSFMixture.get(24),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Diamond, 1),
-                GTUtility.getIntegratedCircuit(1))
+                GTUtility.getIntegratedCircuit(2))
             .itemOutputs(ItemList.Block_MSSFUEL.get(4))
             .fluidInputs(Materials.NitroFuel.getFluid(4_000))
             .duration(20 * SECONDS)
@@ -850,7 +850,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.block, Materials.Charcoal, 4),
                 ItemList.MSFMixture.get(16),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Diamond, 1),
-                GTUtility.getIntegratedCircuit(1))
+                GTUtility.getIntegratedCircuit(2))
             .itemOutputs(ItemList.Block_MSSFUEL.get(4))
             .fluidInputs(Materials.NitroFuel.getFluid(3_000))
             .duration(15 * SECONDS)
@@ -862,7 +862,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.block, Materials.Coal, 4),
                 ItemList.MSFMixture.get(8),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Diamond, 1),
-                GTUtility.getIntegratedCircuit(1))
+                GTUtility.getIntegratedCircuit(2))
             .itemOutputs(ItemList.Block_MSSFUEL.get(4))
             .fluidInputs(Materials.NitroFuel.getFluid(2_000))
             .duration(10 * SECONDS)
@@ -874,7 +874,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.block, Materials.Lignite, 4),
                 ItemList.MSFMixture.get(24),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Diamond, 1),
-                GTUtility.getIntegratedCircuit(1))
+                GTUtility.getIntegratedCircuit(2))
             .itemOutputs(ItemList.Block_MSSFUEL.get(4))
             .fluidInputs(Materials.GasolinePremium.getFluid(1_600))
             .duration(20 * SECONDS)
@@ -886,7 +886,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.block, Materials.Charcoal, 4),
                 ItemList.MSFMixture.get(16),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Diamond, 1),
-                GTUtility.getIntegratedCircuit(1))
+                GTUtility.getIntegratedCircuit(2))
             .itemOutputs(ItemList.Block_MSSFUEL.get(4))
             .fluidInputs(Materials.GasolinePremium.getFluid(1_200))
             .duration(15 * SECONDS)
@@ -898,7 +898,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.block, Materials.Coal, 4),
                 ItemList.MSFMixture.get(8),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Diamond, 1),
-                GTUtility.getIntegratedCircuit(1))
+                GTUtility.getIntegratedCircuit(2))
             .itemOutputs(ItemList.Block_MSSFUEL.get(4))
             .fluidInputs(Materials.GasolinePremium.getFluid(800))
             .duration(10 * SECONDS)
