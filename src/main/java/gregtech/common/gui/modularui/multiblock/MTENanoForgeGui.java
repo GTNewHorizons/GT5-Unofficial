@@ -5,7 +5,6 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import net.minecraft.util.EnumChatFormatting;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
-import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -37,9 +36,8 @@ public class MTENanoForgeGui extends MTEMultiBlockBaseGui<MTENanoForge> {
             .panel("nanoForgeInfoPanel", (p_syncManager, syncHandler) -> openInfoPanel(), true);
         return new ButtonWidget<>().size(16)
             .marginBottom(2)
-            .overlay(GTGuiTextures.INFORMATION_BUBBLE)
-            .background(IDrawable.EMPTY)
-            .hoverBackground(IDrawable.EMPTY)
+            .background(GTGuiTextures.INFORMATION_BUBBLE)
+            .disableHoverBackground()
             .onMousePressed(d -> {
                 if (!infoPanel.isPanelOpen()) {
                     infoPanel.openPanel();
