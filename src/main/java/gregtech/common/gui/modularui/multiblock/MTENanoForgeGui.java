@@ -5,6 +5,7 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import net.minecraft.util.EnumChatFormatting;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
+import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -36,7 +37,8 @@ public class MTENanoForgeGui extends MTEMultiBlockBaseGui<MTENanoForge> {
             .panel("nanoForgeInfoPanel", (p_syncManager, syncHandler) -> openInfoPanel(), true);
         return new ButtonWidget<>().size(16)
             .marginBottom(2)
-            .background(GTGuiTextures.INFORMATION_BUBBLE)
+            .overlay(GTGuiTextures.INFORMATION_BUBBLE)
+            .background(IDrawable.EMPTY)
             .disableHoverBackground()
             .onMousePressed(d -> {
                 if (!infoPanel.isPanelOpen()) {
@@ -60,7 +62,8 @@ public class MTENanoForgeGui extends MTEMultiBlockBaseGui<MTENanoForge> {
 
         ModularPanel returnPanel = new ModularPanel("nanoForgeInfoPanel").size(WIDTH, HEIGHT)
             .padding(PADDING_SIDE, 0, PADDING_SIDE, 0)
-            .overlay(GTGuiTextures.TT_BACKGROUND_TEXT_FIELD);
+            .background(GTGuiTextures.TT_BACKGROUND_TEXT_FIELD)
+            .disableHoverBackground();
         ListWidget<IWidget, ?> textList = new ListWidget<>().size(ADJUSTED_WIDTH, ADJUSTED_HEIGHT);
         textList.child(createHeader());
         textList.child(createTextEntry(EnumChatFormatting.GOLD, "GT5U.machines.nano_forge.t4_info_text.1"));
