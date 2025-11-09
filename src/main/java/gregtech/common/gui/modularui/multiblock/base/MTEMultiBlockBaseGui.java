@@ -16,7 +16,6 @@ import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumChatFormatting;
@@ -87,7 +86,7 @@ import gregtech.common.modularui2.sync.Predicates;
 public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
 
     protected final T multiblock;
-    private final IGregTechTileEntity baseMetaTileEntity;
+    protected final IGregTechTileEntity baseMetaTileEntity;
     protected List<UITexture> machineModeIcons = new ArrayList<>();
     protected Map<String, UITexture> customIcons = new HashMap<>();
     private final int borderRadius = 4;
@@ -180,11 +179,11 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                             .size(getTerminalWidgetWidth() - 4, getTerminalWidgetHeight() - 8)
                             .collapseDisabledChild())
                     .childIf(
-                        multiblock.supportsTerminalCornerColumn(),
-                        createTerminalCornerColumn(panel, syncManager)));
+                        multiblock.supportsTerminalRightCornerColumn(),
+                        createTerminalRightCornerColumn(panel, syncManager)));
     }
 
-    protected Flow createTerminalCornerColumn(ModularPanel panel, PanelSyncManager syncManager) {
+    protected Flow createTerminalRightCornerColumn(ModularPanel panel, PanelSyncManager syncManager) {
         return new Column().coverChildren()
             .rightRel(0, 6, 0)
             .bottomRel(0, 6, 0)
@@ -226,7 +225,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                     .setEnabledIf(w -> startupCheckSyncer.getValue() > 0)
                     .marginBottom(2)
                     .widthRel(1))
-            .child(
+            .childIf(
+                multiblock.hasRunningText(),
                 new TextWidget<>(GTUtility.trans("142", "Running perfectly.")).color(Color.WHITE.main)
                     .setEnabledIf(widget -> multiblock.getErrorDisplayID() == 0 && baseMetaTileEntity.isActive())
                     .marginBottom(2)
@@ -349,8 +349,10 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             if (item == null) {
                 continue;
             }
-            itemDisplayMap
-                .merge(new ItemDisplayKey(item.getItem(), item.getItemDamage()), (long) item.stackSize, Long::sum);
+            itemDisplayMap.merge(
+                new ItemDisplayKey(item.getItem(), item.getItemDamage(), item.getTagCompound()),
+                (long) item.stackSize,
+                Long::sum);
         }
         // a and b comparison swapped for stacksize on purpose to get descending order
         List<Map.Entry<ItemDisplayKey, Long>> sortedEntries = itemDisplayMap.entrySet()
@@ -374,17 +376,14 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
 
         // create row for each entry
         for (Map.Entry<ItemDisplayKey, Long> entry : sortedEntries) {
-            Item item = entry.getKey()
-                .item();
-            int damage = entry.getKey()
-                .damage();
+            ItemDisplayKey key = entry.getKey();
             long amount = entry.getValue();
             column.child(
                 Flow.row()
                     .widthRel(1)
                     .height(DISPLAY_ROW_HEIGHT)
-                    .child(createItemDrawable(item, damage))
-                    .child(createHoverableTextForItem(item, damage, amount, syncManager)));
+                    .child(createItemDrawable(key))
+                    .child(createHoverableTextForItem(key, amount, syncManager)));
         }
 
         return column;
@@ -445,19 +444,23 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                     || Predicates.isNonEmptyList(syncManager.getSyncHandlerFromMapKey("fluidOutput:0")));
     }
 
-    private ResizableItemDisplayWidget createItemDrawable(Item item, int damage) {
+    private ResizableItemDisplayWidget createItemDrawable(ItemDisplayKey key) {
+        // Second argument is stacksize, don't care about it
+        ItemStack itemStack = new ItemStack(key.item(), 1, key.damage());
+        itemStack.setTagCompound(key.nbt());
+
         return new ResizableItemDisplayWidget().background(IDrawable.EMPTY)
             .displayAmount(false)
             .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
-            // Second argument is stacksize, don't care about it
-            .item(new ItemStack(item, 1, damage))
+            .item(itemStack)
             .size(DISPLAY_ROW_HEIGHT - 1)
             .marginRight(1);
     }
 
-    private TextWidget<?> createHoverableTextForItem(Item item, int damage, long amount, PanelSyncManager syncManager) {
+    private TextWidget<?> createHoverableTextForItem(ItemDisplayKey key, long amount, PanelSyncManager syncManager) {
         // Second argument is stacksize, don't care about it
-        ItemStack itemStack = new ItemStack(item, 1, damage);
+        ItemStack itemStack = new ItemStack(key.item(), 1, key.damage());
+        itemStack.setTagCompound(key.nbt());
         IntSyncValue maxProgressTimeSyncer = (IntSyncValue) syncManager.getSyncHandlerFromMapKey("maxProgressTime:0");
         String itemName = EnumChatFormatting.AQUA + itemStack.getDisplayName() + EnumChatFormatting.RESET;
 
@@ -991,17 +994,22 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .child(createButtonColumn(panel, syncManager));
     }
 
+    // children are added bottom to top
     protected Flow createButtonColumn(ModularPanel panel, PanelSyncManager syncManager) {
         return new Column().width(18)
             .leftRel(1, -2, 1)
             .mainAxisAlignment(MainAxis.END)
-            .child(createStructureUpdateButton(syncManager))
-            .child(createPowerSwitchButton())
+            .reverseLayout(true)
             .childIf(
                 multiblock.doesBindPlayerInventory(),
-                new ItemSlot().slot(
-                    new ModularSlot(multiblock.inventoryHandler, multiblock.getControllerSlotIndex())
-                        .slotGroup("item_inv")));
+                new ItemSlot()
+                    .slot(
+                        new ModularSlot(multiblock.inventoryHandler, multiblock.getControllerSlotIndex())
+                            .slotGroup("item_inv"))
+                    .marginTop(4))
+            .child(createPowerSwitchButton())
+            .child(createStructureUpdateButton(syncManager));
+
     }
 
     protected IWidget createStructureUpdateButton(PanelSyncManager syncManager) {
@@ -1015,7 +1023,6 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         return new ToggleButton().syncHandler("powerSwitch")
             .tooltip(tooltip -> tooltip.add("Power Switch"))
             .size(18, 18)
-            .marginBottom(4)
             .overlay(
                 new DynamicDrawable(
                     () -> isPowerSwitchDisabled() ? this.customIcons.get("power_switch_disabled")
