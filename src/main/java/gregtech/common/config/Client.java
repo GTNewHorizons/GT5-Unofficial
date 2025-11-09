@@ -219,6 +219,10 @@ public class Client {
         @Config.Name("Use Old Coil Textures")
         public boolean useOldCoils;
 
+        @Config.Comment("if true, render item hologram inside super or quantum chest")
+        @Config.DefaultBoolean(true)
+        public boolean renderDigitalChestItem;
+
         @Config.Comment("Render lines to MagLev Pylons when tethering")
         @Config.DefaultBoolean(true)
         @Config.Name("Render MagLev Tethers")

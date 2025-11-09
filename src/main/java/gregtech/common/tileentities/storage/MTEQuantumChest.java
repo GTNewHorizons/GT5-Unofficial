@@ -52,10 +52,7 @@ public class MTEQuantumChest extends MTEDigitalChestBase {
                 hasInvData = true;
             }
         }
-        if (mItemStack != null) aNBT.setTag("mItemStack", getItemStack().writeToNBT(new NBTTagCompound()));
         if (hasInvData) aNBT.setTag("Inventory", mInvData);
-        if (getItemCount() > 0) aNBT.setInteger("mItemCount", getItemCount());
-        if (mVoidOverflow) aNBT.setBoolean("mVoidOverflow", true);
 
         super.setItemNBT(aNBT);
     }
