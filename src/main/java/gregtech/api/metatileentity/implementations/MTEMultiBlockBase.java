@@ -2943,7 +2943,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     // For MUI2 corner column toggling
 
-    public boolean supportsTerminalCornerColumn() {
+    public boolean supportsTerminalRightCornerColumn() {
         return true;
     }
 
