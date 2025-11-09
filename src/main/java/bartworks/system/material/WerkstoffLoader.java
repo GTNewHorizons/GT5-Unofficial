@@ -19,7 +19,6 @@ import static gregtech.api.enums.Mods.BetterLoadingScreen;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.OrePrefixes.block;
 import static gregtech.api.enums.OrePrefixes.bolt;
-import static gregtech.api.enums.OrePrefixes.bottle;
 import static gregtech.api.enums.OrePrefixes.capsule;
 import static gregtech.api.enums.OrePrefixes.cell;
 import static gregtech.api.enums.OrePrefixes.cellPlasma;
@@ -63,7 +62,6 @@ import static gregtech.api.enums.OrePrefixes.toolHeadHammer;
 import static gregtech.api.enums.OrePrefixes.toolHeadSaw;
 import static gregtech.api.enums.OrePrefixes.toolHeadWrench;
 import static gregtech.api.enums.OrePrefixes.turbineBlade;
-import static gregtech.api.enums.OrePrefixes.values;
 import static gregtech.api.enums.OrePrefixes.wireFine;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
@@ -155,14 +153,9 @@ public class WerkstoffLoader {
     public static final SubTag NO_BLAST = SubTag.getNewSubTag("NoBlast");
 
     public static void setUp() {
-
-        OrePrefixes.cellMolten.mMaterialGenerationBits = 0b1000000;
-        OrePrefixes.capsuleMolten.mMaterialGenerationBits = 0b1000000;
-
         // add tiberium
         EnumUtils.createNewElement("Tr", 123L, 203L, 0L, -1L, null, "Tiberium", false);
 
-        bottle.mDefaultStackSize = 1;
         Werkstoff.GenerationFeatures.initPrefixLogic();
         BWGTMaterialReference.init();
     }
@@ -1918,9 +1911,9 @@ public class WerkstoffLoader {
                     WerkstoffLoader.molten.put(werkstoff, FluidRegistry.getFluid(werkstoff.getDefaultName()));
                 }
             }
-            for (OrePrefixes p : values()) if (Materials.get(werkstoff.getDefaultName()) != null
+            for (OrePrefixes p : OrePrefixes.VALUES) if (Materials.get(werkstoff.getDefaultName()) != null
                 && Materials.get(werkstoff.getDefaultName()).mMetaItemSubID != -1
-                && (werkstoff.getGenerationFeatures().toGenerate & p.mMaterialGenerationBits) != 0
+                && (werkstoff.getGenerationFeatures().toGenerate & p.getMaterialGenerationBits()) != 0
                 && OreDictHandler.getItemStack(werkstoff.getDefaultName(), p, 1) != null) {
                     DebugLog.log(
                         "Found: " + p

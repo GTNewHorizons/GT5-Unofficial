@@ -191,24 +191,24 @@ public class MTEFluidPipe extends MetaPipeEntity {
 
     protected static ITexture getBaseTexture(float aThickNess, int aPipeAmount, TextureSet textureSet, short[] rgba,
         boolean connected, int colorIndex) {
-        IIconContainer texture = textureSet.mTextures[OrePrefixes.pipeHuge.mTextureIndex];
+        IIconContainer texture = textureSet.mTextures[OrePrefixes.pipeHuge.getTextureIndex()];
 
         if (!connected) {
-            texture = textureSet.mTextures[OrePrefixes.pipe.mTextureIndex];
+            texture = textureSet.mTextures[OrePrefixes.pipe.getTextureIndex()];
         } else if (aPipeAmount >= 9) {
-            texture = textureSet.mTextures[OrePrefixes.pipeNonuple.mTextureIndex];
+            texture = textureSet.mTextures[OrePrefixes.pipeNonuple.getTextureIndex()];
         } else if (aPipeAmount >= 4) {
-            texture = textureSet.mTextures[OrePrefixes.pipeQuadruple.mTextureIndex];
+            texture = textureSet.mTextures[OrePrefixes.pipeQuadruple.getTextureIndex()];
         } else if (aThickNess < 0.124F) {
-            texture = textureSet.mTextures[OrePrefixes.pipe.mTextureIndex];
+            texture = textureSet.mTextures[OrePrefixes.pipe.getTextureIndex()];
         } else if (aThickNess < 0.374F) {
-            texture = textureSet.mTextures[OrePrefixes.pipeTiny.mTextureIndex];
+            texture = textureSet.mTextures[OrePrefixes.pipeTiny.getTextureIndex()];
         } else if (aThickNess < 0.499F) {
-            texture = textureSet.mTextures[OrePrefixes.pipeSmall.mTextureIndex];
+            texture = textureSet.mTextures[OrePrefixes.pipeSmall.getTextureIndex()];
         } else if (aThickNess < 0.749F) {
-            texture = textureSet.mTextures[OrePrefixes.pipeMedium.mTextureIndex];
+            texture = textureSet.mTextures[OrePrefixes.pipeMedium.getTextureIndex()];
         } else if (aThickNess < 0.874F) {
-            texture = textureSet.mTextures[OrePrefixes.pipeLarge.mTextureIndex];
+            texture = textureSet.mTextures[OrePrefixes.pipeLarge.getTextureIndex()];
         }
 
         rgba = Dyes.getModulation(colorIndex, rgba);

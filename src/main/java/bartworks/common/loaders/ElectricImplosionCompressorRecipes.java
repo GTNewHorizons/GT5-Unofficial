@@ -58,7 +58,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
             .itemInputs(WerkstoffMaterialPool.LanthanumHexaboride.get(OrePrefixes.dust, 4))
             .itemOutputs(
                 WerkstoffMaterialPool.LanthanumHexaboride.get(OrePrefixes.gem, 3),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 12L))
+                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.AshDark, 12L))
             .duration(1 * TICKS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(electricImplosionCompressorRecipes);
@@ -94,7 +94,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Universium, 1L),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.BlackDwarfMatter, 1L))
             .fluidInputs(Materials.RawStarMatter.getFluid(1 * STACKS))
-            .fluidOutputs(Materials.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(16 * INGOTS))
+            .fluidOutputs(Materials.MHDCSM.getMolten(16 * INGOTS))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_UXV)
             .addTo(electricImplosionCompressorRecipes);
@@ -111,7 +111,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Eternity.getNanite(1), Materials.Universium.getNanite(1))
             .fluidInputs(Materials.RawStarMatter.getFluid(2 * STACKS))
-            .fluidOutputs(Materials.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(32 * INGOTS))
+            .fluidOutputs(Materials.MHDCSM.getMolten(32 * INGOTS))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_MAX)
             .addTo(electricImplosionCompressorRecipes);
@@ -146,7 +146,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
     private void addWhiteDwarfMagnetoEICRecipe(final OrePrefixes part, final int multiplier,
         final int circuitMultiplier) {
 
-        final int partFraction = (int) (part.mMaterialAmount * INGOTS / M);
+        final int partFraction = (int) (part.getMaterialAmount() * INGOTS / M);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -154,10 +154,8 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                 getModItem(SuperSolarPanels.ID, "solarsplitter", 1, 0),
                 getModItem(OpenComputers.ID, "hologram2", circuitMultiplier, 0),
                 GTOreDictUnificator.get(part, Materials.Eternity, multiplier))
-            .itemOutputs(
-                GTOreDictUnificator.get(part, Materials.MagnetohydrodynamicallyConstrainedStarMatter, multiplier))
-            .fluidInputs(
-                Materials.MagnetohydrodynamicallyConstrainedStarMatter.getMolten((long) partFraction * multiplier))
+            .itemOutputs(GTOreDictUnificator.get(part, Materials.MHDCSM, multiplier))
+            .fluidInputs(Materials.MHDCSM.getMolten((long) partFraction * multiplier))
             .duration((int) (multiplier * (20 * partFraction / (float) INGOTS)))
             .eut(TierEU.RECIPE_UXV)
             .addTo(electricImplosionCompressorRecipes);

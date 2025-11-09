@@ -132,7 +132,7 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
                 Materials.RawStarMatter.getFluid(1_000),
                 Materials.SpaceTime.getMolten(1_000),
                 Materials.Space.getMolten(1_000),
-                Materials.DimensionallyTranscendentResidue.getFluid(1_000))
+                Materials.DTR.getFluid(1_000))
             .fluidOutputs(Materials.PrimordialMatter.getFluid(1_000))
             .duration(100)
             .eut(PRIMORDIAL_MATTER)
@@ -145,7 +145,7 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
                 Materials.Thorium.getPlasma(1_000),
                 new FluidStack(MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma(), 1_000),
                 Materials.Calcium.getPlasma(1_000),
-                Materials.DimensionallyTranscendentResidue.getFluid(1_000))
+                Materials.DTR.getFluid(1_000))
             .fluidOutputs(Materials.Creon.getPlasma(5_000))
             .duration(100)
             .eut(TierEU.RECIPE_UMV)

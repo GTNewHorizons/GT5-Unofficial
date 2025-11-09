@@ -206,7 +206,6 @@ public class LoaderGTOreDictionary implements Runnable {
         GTOreDictUnificator.registerOre(OreDictNames.craftingChest, new ItemStack(Blocks.trapped_chest, 1, 32767));
 
         GTOreDictUnificator.registerOre(OreDictNames.craftingFurnace, new ItemStack(Blocks.furnace, 1, 32767));
-        GTOreDictUnificator.registerOre(OreDictNames.craftingFurnace, new ItemStack(Blocks.lit_furnace, 1, 32767));
 
         GTOreDictUnificator.registerOre(OreDictNames.craftingPump, GTModHandler.getIC2Item("pump", 1L));
         GTOreDictUnificator.registerOre(OreDictNames.craftingElectromagnet, GTModHandler.getIC2Item("magnetizer", 1L));
@@ -404,11 +403,11 @@ public class LoaderGTOreDictionary implements Runnable {
             GTModHandler.getModItem(Botania.ID, "storage", 1L, 3));
         GTOreDictUnificator.registerOre(
             OrePrefixes.gem,
-            Materials.BotaniaDragonstone,
+            Materials.Dragonstone,
             GTModHandler.getModItem(Botania.ID, "manaResource", 1L, 9));
         GTOreDictUnificator.registerOre(
             OrePrefixes.block,
-            Materials.BotaniaDragonstone,
+            Materials.Dragonstone,
             GTModHandler.getModItem(Botania.ID, "storage", 1L, 4));
 
         GTOreDictUnificator.registerOre(

@@ -63,7 +63,6 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui<MTEChamberCent
             (p_syncManager, syncHandler) -> openInfoPanel(p_syncManager, parent, syncManager),
             true);
         return new ButtonWidget<>().size(18, 18)
-            .topRel(0)
             .overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/cyclic"))
             .onMousePressed(d -> {
                 if (!statsPanel.isPanelOpen()) {
@@ -160,13 +159,12 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui<MTEChamberCent
                             .child(
                                 SlotGroupWidget.builder()
                                     .matrix("II", "II", "II", "II")
-                                    .key(
-                                        'I',
-                                        index -> {
-                                            return new ItemSlot().slot(
-                                                new ModularSlot(multiblock.turbineHolder, index)
-                                                    .filter(multiblock::isTurbine));
-                                        })
+                                    .key('I', index -> {
+                                        return new ItemSlot().slot(
+                                            new ModularSlot(multiblock.turbineHolder, index)
+                                                .singletonSlotGroup(50 + index)
+                                                .filter(multiblock::isTurbine));
+                                    })
                                     .build())
 
                     )
