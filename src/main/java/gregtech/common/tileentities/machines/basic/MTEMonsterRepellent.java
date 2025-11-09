@@ -29,7 +29,7 @@ public class MTEMonsterRepellent extends MTETieredMachineBlock {
             aNameRegional,
             aTier,
             0,
-            "Repels nasty Creatures. Range: " + (4 + (12 * aTier))
+            "Repels nasty Creatures. Radius: " + (4 + (12 * aTier))
                 + " unpowered / "
                 + (16 + (48 * aTier))
                 + " powered. Costs "
