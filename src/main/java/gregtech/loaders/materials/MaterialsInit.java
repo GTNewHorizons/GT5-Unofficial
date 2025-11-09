@@ -11671,7 +11671,6 @@ public class MaterialsInit {
             .addDustItems()
             .addGemItems()
             .setDensity(2, 1)
-            .addCentrifugeRecipe()
             .addMaterial(Materials.EnderPearl, 1)
             .addMaterial(Materials.Blaze, 1)
             .addAspect(TCAspects.SENSUS, 4)
