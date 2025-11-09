@@ -95,13 +95,13 @@ public class SpecialThanksPanel {
             .alignX(Alignment.CenterLeft)
             .marginBottom(5)
             .marginLeft(7)
+            .width(SIZE - 14)
             .child(
                 IKey.str(EnumChatFormatting.GOLD + "" + EnumChatFormatting.UNDERLINE + translateToLocal(titleKey))
                     .alignment(Alignment.CenterLeft)
                     .scale(0.8f)
                     .asWidget()
-                    .marginBottom(2)
-                    .marginLeft(7))
+                    .marginBottom(2))
             .children(Arrays.asList(entries));
     }
 
@@ -116,23 +116,21 @@ public class SpecialThanksPanel {
         if (customColor != -1) {
             key.color(customColor);
         }
-        return key.asWidget()
-            .marginLeft(7);
+        return key.asWidget();
     }
 
-    // todo this is not aligned correctly
     private static Flow createDelenoName() {
-        Flow flow = new Row().align(Alignment.CenterLeft)
-            .marginLeft(7);
+        Flow flow = new Row().coverChildren()
+            .alignX(0);
 
         String name = translateToLocal("gt.blockmachines.multimachine.FOG.deleno");
-        int[] colors = new int[] { 0xffffff, 0xf6fff5, 0xecffec, 0xe3ffe2, 0xd9ffd9, 0xd0ffcf };
+        int[] colors = new int[] { 0xFFFFFF, 0xF6FFF5, 0xECFFEC, 0xE3FFE2, 0xD9FFD9, 0xD0FFCF };
         for (int i = 0; i < name.length(); i++) {
             flow.child(
                 IKey.str(Character.toString(name.charAt(i)))
+                    .alignment(Alignment.CenterLeft)
                     .color(colors[i])
                     .scale(0.8f)
-                    .alignment(Alignment.CenterLeft)
                     .asWidget());
         }
         return flow;
