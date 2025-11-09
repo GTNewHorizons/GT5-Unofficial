@@ -7,13 +7,12 @@ import java.util.Arrays;
 import net.minecraft.util.EnumChatFormatting;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
-import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
+import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
 
@@ -46,7 +45,9 @@ public class SpecialThanksPanel {
                 .align(Alignment.TopCenter));
 
         // Credits sections
-        ListWidget<IWidget, ?> creditsList = new ListWidget<>().size(SIZE - LIST_OFFSET)
+        Flow creditsList = new Column().size(SIZE - LIST_OFFSET)
+            .coverChildren()
+            .leftRelOffset(0, 7)
             .marginTop(LIST_OFFSET);
         creditsList.child(
             createCreditsSection(
@@ -90,18 +91,17 @@ public class SpecialThanksPanel {
         return panel;
     }
 
-    private static ListWidget<IWidget, ?> createCreditsSection(String titleKey, Widget<?>... entries) {
-        return new ListWidget<>().coverChildren()
-            .alignX(Alignment.CenterLeft)
+    private static Flow createCreditsSection(String titleKey, Widget<?>... entries) {
+        return new Column().coverChildren()
             .marginBottom(5)
-            .marginLeft(7)
-            .width(SIZE - 14)
+            .alignX(0)
             .child(
                 IKey.str(EnumChatFormatting.GOLD + "" + EnumChatFormatting.UNDERLINE + translateToLocal(titleKey))
                     .alignment(Alignment.CenterLeft)
                     .scale(0.8f)
                     .asWidget()
-                    .marginBottom(2))
+                    .marginBottom(2)
+                    .alignX(0))
             .children(Arrays.asList(entries));
     }
 
@@ -116,7 +116,8 @@ public class SpecialThanksPanel {
         if (customColor != -1) {
             key.color(customColor);
         }
-        return key.asWidget();
+        return key.asWidget()
+            .alignX(0);
     }
 
     private static Flow createDelenoName() {
