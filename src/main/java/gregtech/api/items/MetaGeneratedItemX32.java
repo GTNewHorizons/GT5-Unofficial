@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -59,7 +60,7 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
             if (doesMaterialAllowGeneration(tPrefix, tMaterial)) {
                 ItemStack tStack = new ItemStack(this, 1, i);
                 names[i] = () -> tPrefix.getLocalizedNameForItem(tMaterial);
-                tooltips[i] = () -> tMaterial.getToolTip(tPrefix.getMaterialAmount() / M);
+                tooltips[i] = () -> tMaterial.getChemicalTooltip(tPrefix.getMaterialAmount() / M);
                 if (tPrefix.isUnifiable()) {
                     GTOreDictUnificator.set(tPrefix, tMaterial, tStack);
                 } else {
@@ -198,5 +199,16 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
         if (prefix == null) return stackSize;
 
         return Math.min(stackSize, prefix.getDefaultStackSize());
+    }
+
+    @Override
+    protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
+        Materials material = GregTechAPI.sGeneratedMaterials[getDamage(aStack) % 1000];
+        if (material == null) return;
+        String flavorText = material.getFlavorText();
+        if (flavorText == null) return;
+        if (!flavorText.isEmpty()) {
+            aList.add("§8§o" + flavorText);
+        }
     }
 }

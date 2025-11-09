@@ -34,6 +34,7 @@ public class MaterialBuilder {
     private String name;
     private String defaultLocalName;
     private Element element;
+    private String flavorText;
     private String chemicalFormula;
     private boolean isFormulaNeededLocalized = false;
     private boolean unifiable = true;
@@ -96,6 +97,7 @@ public class MaterialBuilder {
             defaultLocalName,
             element,
             chemicalFormula,
+            flavorText,
             unifiable,
             iconSet,
             color,
@@ -176,6 +178,11 @@ public class MaterialBuilder {
 
     public MaterialBuilder setChemicalFormula(String chemicalFormula) {
         return setChemicalFormula(chemicalFormula, false);
+    }
+
+    public MaterialBuilder setFlavorText(String flavorText) {
+        this.flavorText = flavorText;
+        return this;
     }
 
     public MaterialBuilder setUnifiable(boolean unifiable) {

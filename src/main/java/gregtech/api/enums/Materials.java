@@ -1116,6 +1116,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public float mPlasmaMultiplier = 1.0F;
     private String mChemicalFormula = "?";
     private boolean isFormulaNeededLocalized = false;
+    public String flavorText;
     public String mName;
     public String mDefaultLocalName;
     public String mCustomID = "null";
@@ -1154,6 +1155,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         String defaultLocalName,
         @Nullable Element element,
         @Nullable String chemicalFormula,
+        String flavorText,
         boolean unifiable,
         TextureSet iconSet,
         Dyes color,
@@ -1221,6 +1223,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
                 .collect(Collectors.joining())
                 .replaceAll("_", "-");
         }
+
+        this.flavorText = flavorText;
 
         // Set texture and colors
         mIconSet = iconSet;
@@ -1748,19 +1752,19 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         return mDensity;
     }
 
-    public String getToolTip() {
-        return getToolTip(1, false);
+    public String getChemicalTooltip() {
+        return getChemicalTooltip(1, false);
     }
 
-    public String getToolTip(boolean aShowQuestionMarks) {
-        return getToolTip(1, aShowQuestionMarks);
+    public String getChemicalTooltip(boolean aShowQuestionMarks) {
+        return getChemicalTooltip(1, aShowQuestionMarks);
     }
 
-    public String getToolTip(long aMultiplier) {
-        return getToolTip(aMultiplier, false);
+    public String getChemicalTooltip(long aMultiplier) {
+        return getChemicalTooltip(aMultiplier, false);
     }
 
-    public String getToolTip(long aMultiplier, boolean aShowQuestionMarks) {
+    public String getChemicalTooltip(long aMultiplier, boolean aShowQuestionMarks) {
         final String aChemicalFormula = getChemicalFormula();
         if (!aShowQuestionMarks && aChemicalFormula.equals("?")) return "";
         if (aMultiplier >= M * 2 && !mMaterialList.isEmpty()) {
@@ -1769,6 +1773,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
                 : "(" + aChemicalFormula + ")") + aMultiplier;
         }
         return aChemicalFormula;
+    }
+
+    public String getFlavorText() {
+        return flavorText;
     }
 
     /**
