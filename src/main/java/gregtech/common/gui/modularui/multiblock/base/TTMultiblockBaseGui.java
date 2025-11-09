@@ -37,8 +37,8 @@ import tectech.thing.metaTileEntity.multi.base.parameter.IntegerParameter;
 import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
 
 public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlockBaseGui<T> {
-    protected Map<String, SyncHandler> parameterSyncers = new HashMap<>();
 
+    protected Map<String, SyncHandler> parameterSyncers = new HashMap<>();
 
     public TTMultiblockBaseGui(T multiblock) {
         super(multiblock);
