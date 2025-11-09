@@ -9,6 +9,7 @@ import net.minecraft.util.EnumChatFormatting;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
@@ -17,7 +18,7 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.common.gui.modularui.multiblock.godforge.MTEForgeOfGodsGui;
+import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 
 public class SpecialThanksPanel {
 
@@ -25,8 +26,9 @@ public class SpecialThanksPanel {
     private static final int BACKGROUND_SIZE = 100;
     private static final int LIST_OFFSET = 30;
 
-    public static ModularPanel openPanel() {
-        ModularPanel panel = new ModularPanel(MTEForgeOfGodsGui.PANEL_SPECIAL_THANKS).size(SIZE)
+    public static ModularPanel openPanel(PanelSyncManager syncManager, ForgeOfGodsData data, ModularPanel panel,
+        ModularPanel parent) {
+        panel.size(SIZE)
             .background(GTGuiTextures.BACKGROUND_GLOW_RAINBOW)
             .disableHoverBackground()
             .child(ButtonWidget.panelCloseButton());
