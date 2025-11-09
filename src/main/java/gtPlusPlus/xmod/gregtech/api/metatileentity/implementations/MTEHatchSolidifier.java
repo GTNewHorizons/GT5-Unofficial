@@ -10,9 +10,7 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.common.fluid.FluidStackTank;
-import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 
 import ggfab.GGItemList;
 import gregtech.api.enums.GTValues;
@@ -80,18 +78,6 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
         return null;
     }
 
-    private class MoldContainer extends BaseSlot {
-
-        public MoldContainer(IItemHandlerModifiable inventory, int index) {
-            super(inventory, index, true);
-        }
-
-        @Override
-        public boolean isItemValidPhantom(ItemStack stack) {
-            return super.isItemValidPhantom(stack) && getBaseMetaTileEntity().isItemValidForSlot(getSlotIndex(), stack);
-        }
-    }
-
     @Override
     public boolean isItemValidForSlot(int aIndex, ItemStack aStack) {
         if (aIndex == moldSlot) return findMatchingMold(aStack) != null;
@@ -152,7 +138,7 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
 
     @Override
     public int getCircuitSlotX() {
-        return 153;
+        return 152;
     }
 
     @Override
