@@ -10881,7 +10881,6 @@ public class MaterialsInit {
             .addOreItems()
             .addToolHeadItems()
             .addGearItems()
-            .addCentrifugeRecipe()
             .addMaterial(Materials.Arsenic, 4)
             .addMaterial(Materials.Sulfur, 4)
             .addSubTag(SubTag.METAL)
