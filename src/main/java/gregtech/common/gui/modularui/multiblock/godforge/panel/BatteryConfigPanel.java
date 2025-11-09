@@ -3,9 +3,12 @@ package gregtech.common.gui.modularui.multiblock.godforge.panel;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
+import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
+
 public class BatteryConfigPanel {
 
-    public static ModularPanel openPanel() {
+    public static ModularPanel openPanel(PanelSyncManager syncManager, ForgeOfGodsData data, ModularPanel panel,
+        ModularPanel parent) {
         return null; // todo
     }
 

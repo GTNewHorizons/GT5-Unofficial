@@ -1024,7 +1024,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .setEnabled($ -> data.isUpgradeActive(END))
             .attachSyncer(
                 data.getUpgrades()
-                    .getSyncer(END),
+                    .getSyncerMUI1(END),
                 builder);
         return (ButtonWidget) button;
     }
@@ -1131,15 +1131,15 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         // Syncers for max fuel factor
         builder.widget(
             data.getUpgrades()
-                .getSyncer(CFCE)
+                .getSyncerMUI1(CFCE)
                 .setOnClientUpdate($ -> fuelFactor.setMaxValue(calculateMaxFuelFactor(data))));
         builder.widget(
             data.getUpgrades()
-                .getSyncer(GEM)
+                .getSyncerMUI1(GEM)
                 .setOnClientUpdate($ -> fuelFactor.setMaxValue(calculateMaxFuelFactor(data))));
         builder.widget(
             data.getUpgrades()
-                .getSyncer(TSE)
+                .getSyncerMUI1(TSE)
                 .setOnClientUpdate($ -> fuelFactor.setMaxValue(calculateMaxFuelFactor(data))));
 
         builder.widget(
@@ -1636,7 +1636,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             new FakeSyncWidget.IntegerSyncer(data::getGravitonShardsAvailable, data::setGravitonShardsAvailable));
         builder.widget(
             data.getUpgrades()
-                .getSyncer(upgrade));
+                .getSyncerMUI1(upgrade));
 
         builder.widget(
             ForgeOfGodsUI.getIndividualUpgradeGroup(
@@ -1732,7 +1732,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .setPos(upgrade.getTreePos())
             .attachSyncer(
                 data.getUpgrades()
-                    .getSyncer(upgrade),
+                    .getSyncerMUI1(upgrade),
                 builder);
     }
 
@@ -1773,7 +1773,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 .add(0, 4));
         builder.widget(
             data.getUpgrades()
-                .getSyncer(upgrade));
+                .getSyncerMUI1(upgrade));
         builder.widget(
             SlotGroup.ofItemHandler(inputSlotHandler, 4)
                 .startFromSlot(0)
@@ -2726,7 +2726,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         builder.widget(new FakeSyncWidget.IntegerSyncer(() -> previewFactor, val -> previewFactor = val));
         builder.widget(
             data.getUpgrades()
-                .getFullSyncer());
+                .getFullSyncerMUI1());
 
         for (int i = 0; i < 28; i++) {
             calculateRelevantStatInfo(i, smelting, molten, plasma, exotic, data.getFuelConsumptionFactor());

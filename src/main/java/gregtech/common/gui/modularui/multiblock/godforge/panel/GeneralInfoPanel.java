@@ -26,15 +26,18 @@ public class GeneralInfoPanel {
     private static final int SIZE = 300;
     private static final int OFFSET_SIZE = 280;
 
-    public static ModularPanel openPanel(PanelSyncManager syncManager, ForgeOfGodsData data) {
-        registerSyncValues(syncManager, data);
+    public static ModularPanel openPanel(PanelSyncManager syncManager, ForgeOfGodsData data, ModularPanel panel,
+        ModularPanel parent) {
+        BooleanSyncValue inversionSyncer = new BooleanSyncValue(data::isInversion, data::setInversion);
+        syncManager.syncValue(MTEForgeOfGodsGui.SYNC_INVERSION, inversionSyncer);
 
-        ModularPanel panel = new ModularPanel(MTEForgeOfGodsGui.PANEL_GENERAL_INFO).size(SIZE)
+        panel.size(SIZE)
             .padding(10, 0, 10, 0)
             .background(GTGuiTextures.BACKGROUND_GLOW_WHITE)
             .disableHoverBackground();
 
-        ListWidget<IWidget, ?> textList = new ListWidget<>().size(OFFSET_SIZE);
+        ListWidget<IWidget, ?> textList = new ListWidget<>().size(OFFSET_SIZE)
+            .collapseDisabledChild();
         textList.child(createHeader("gt.blockmachines.multimachine.FOG.introduction"));
         textList.child(createTextEntry("gt.blockmachines.multimachine.FOG.introductioninfotext"));
 
@@ -64,15 +67,12 @@ public class GeneralInfoPanel {
         TextWidget<?> inversionText = createTextEntry("gt.blockmachines.multimachine.FOG.inversioninfotext");
         ParentWidget<?> inversionToC = createToCEntryInversion(textList, inversionHeader);
 
-        BooleanSyncValue inversionSyncer = syncManager
-            .findSyncHandler(MTEForgeOfGodsGui.SYNC_INVERSION, BooleanSyncValue.class);
-
         textList.child(createTableOfContentsHeader());
         textList.child(fuelToC);
         textList.child(moduleToC);
         textList.child(upgradeToC);
         textList.child(milestoneToC);
-        textList.childIf(inversionSyncer::getBoolValue, inversionToC);
+        textList.child(inversionToC.setEnabledIf($ -> inversionSyncer.getBoolValue()));
 
         textList.child(fuelHeader);
         textList.child(fuelText);
@@ -82,17 +82,12 @@ public class GeneralInfoPanel {
         textList.child(upgradeText);
         textList.child(milestoneHeader);
         textList.child(milestoneText);
-        textList.childIf(inversionSyncer::getBoolValue, inversionHeader);
-        textList.childIf(inversionSyncer::getBoolValue, inversionText);
+        textList.child(inversionHeader.setEnabledIf($ -> inversionSyncer.getBoolValue()));
+        textList.child(inversionText.setEnabledIf($ -> inversionSyncer.getBoolValue()));
 
         panel.child(textList);
         panel.child(ButtonWidget.panelCloseButton());
         return panel;
-    }
-
-    private static void registerSyncValues(PanelSyncManager syncManager, ForgeOfGodsData data) {
-        syncManager
-            .syncValue(MTEForgeOfGodsGui.SYNC_INVERSION, new BooleanSyncValue(data::isInversion, data::setInversion));
     }
 
     private static TextWidget<?> createHeader(String langKey) {

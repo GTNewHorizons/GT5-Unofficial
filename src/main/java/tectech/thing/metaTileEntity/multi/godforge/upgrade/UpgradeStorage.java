@@ -10,6 +10,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 
+import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
+import com.cleanroommc.modularui.value.sync.GenericSyncValue;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 
@@ -221,7 +223,7 @@ public class UpgradeStorage {
     }
 
     /** Sync widget to sync a single upgrade. */
-    public FakeSyncWidget<?> getSyncer(ForgeOfGodsUpgrade upgrade) {
+    public FakeSyncWidget<?> getSyncerMUI1(ForgeOfGodsUpgrade upgrade) {
         return new FakeSyncWidget<>(
             () -> unlockedUpgrades.get(upgrade),
             val -> unlockedUpgrades.put(upgrade, val),
@@ -229,13 +231,36 @@ public class UpgradeStorage {
             UpgradeData::readFromBuffer);
     }
 
+    /** Sync a single upgrade. */
+    public GenericSyncValue<?> getSyncer(ForgeOfGodsUpgrade upgrade) {
+        return new GenericSyncValue<>(
+            () -> unlockedUpgrades.get(upgrade),
+            val -> unlockedUpgrades.put(upgrade, val),
+            UpgradeData::readFromBuffer,
+            UpgradeData::writeToBuffer);
+    }
+
     /** Sync widget to sync the full upgrade tree. */
-    public FakeSyncWidget<?> getFullSyncer() {
+    public FakeSyncWidget<?> getFullSyncerMUI1() {
         return new FakeSyncWidget.ListSyncer<>(() -> new ArrayList<>(unlockedUpgrades.values()), val -> {
             for (int i = 0; i < val.size(); i++) {
                 unlockedUpgrades.put(ForgeOfGodsUpgrade.VALUES[i], val.get(i));
             }
         }, UpgradeData::writeToBuffer, UpgradeData::readFromBuffer);
+    }
+
+    /** Sync the full upgrade tree. */
+    public GenericListSyncHandler<?> getFullSyncer() {
+        return GenericListSyncHandler.<UpgradeData>builder()
+            .getter(() -> new ArrayList<>(unlockedUpgrades.values()))
+            .setter(val -> {
+                for (int i = 0; i < val.size(); i++) {
+                    unlockedUpgrades.put(ForgeOfGodsUpgrade.VALUES[i], val.get(i));
+                }
+            })
+            .deserializer(UpgradeData::readFromBuffer)
+            .serializer(UpgradeData::writeToBuffer)
+            .build();
     }
 
     private static class UpgradeData {

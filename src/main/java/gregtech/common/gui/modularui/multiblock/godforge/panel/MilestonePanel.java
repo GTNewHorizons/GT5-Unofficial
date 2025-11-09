@@ -21,6 +21,7 @@ import com.cleanroommc.modularui.widgets.ProgressWidget.Direction;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.godforge.MTEForgeOfGodsGui;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Milestones;
+import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 
 public class MilestonePanel {
@@ -36,17 +37,18 @@ public class MilestonePanel {
 
     private static final int MILESTONE_PROGRESS_BAR_H = 7;
 
-    public static ModularPanel openPanel(PanelSyncManager syncManager, ForgeOfGodsData data) {
+    public static ModularPanel openPanel(PanelSyncManager syncManager, ForgeOfGodsData data, ModularPanel panel,
+        ModularPanel parent) {
         registerSyncValues(syncManager, data);
 
-        ModularPanel panel = new ModularPanel("").size(WIDTH, HEIGHT)
+        panel.size(WIDTH, HEIGHT)
             .background(GTGuiTextures.BACKGROUND_SPACE)
             .disableHoverBackground();
 
-        panel.child(createMilestone(syncManager, Milestones.CHARGE));
-        panel.child(createMilestone(syncManager, Milestones.CONVERSION));
-        panel.child(createMilestone(syncManager, Milestones.CATALYST));
-        panel.child(createMilestone(syncManager, Milestones.COMPOSITION));
+        panel.child(createMilestone(Milestones.CHARGE, syncManager, panel, data));
+        panel.child(createMilestone(Milestones.CONVERSION, syncManager, panel, data));
+        panel.child(createMilestone(Milestones.CATALYST, syncManager, panel, data));
+        panel.child(createMilestone(Milestones.COMPOSITION, syncManager, panel, data));
 
         return panel;
     }
@@ -102,7 +104,8 @@ public class MilestonePanel {
                 val -> data.setInvertedStructureMilestonePercentage((float) val)));
     }
 
-    private static ParentWidget<?> createMilestone(PanelSyncManager syncManager, Milestones milestone) {
+    private static ParentWidget<?> createMilestone(Milestones milestone, PanelSyncManager syncManager,
+        ModularPanel panel, ForgeOfGodsData data) {
         ParentWidget<?> parent = new ParentWidget<>().size(MILESTONE_BUTTON_SIZE_W, MILESTONE_BUTTON_SIZE_H)
             .align(milestone.getPosition())
             .margin(MILESTONE_BUTTON_MARGIN_X, MILESTONE_BUTTON_MARGIN_Y);
@@ -118,7 +121,19 @@ public class MilestonePanel {
                 .size(milestone.getWidth(), milestone.getHeight())
                 .background(milestone.getMainBackground())
                 .disableHoverBackground()
-                .onMousePressed($ -> onMilestoneClick(syncManager, milestone))
+                .onMousePressed($ -> {
+                    IPanelHandler individualPanel = Panels.INDIVIDUAL_MILESTONE.get(panel, syncManager, data);
+
+                    if (individualPanel.isPanelOpen()) {
+                        individualPanel.closePanel();
+                    }
+
+                    IntSyncValue individualMilestoneSyncer = syncManager
+                        .findSyncHandler(MTEForgeOfGodsGui.SYNC_MILESTONE_CLICKED, IntSyncValue.class);
+                    individualMilestoneSyncer.setIntValue(milestone.ordinal());
+                    individualPanel.openPanel();
+                    return true;
+                })
                 .tooltip(t -> t.addLine(translateToLocal("gt.blockmachines.multimachine.FOG.milestoneinfo"))));
 
         // Milestone progress bar
@@ -148,22 +163,5 @@ public class MilestonePanel {
                 .alignX(Alignment.CENTER));
 
         return parent;
-    }
-
-    private static boolean onMilestoneClick(PanelSyncManager syncManager, Milestones milestone) {
-        IPanelHandler individualPanel = syncManager.panel(
-            MTEForgeOfGodsGui.PANEL_INDIVIDUAL_MILESTONE,
-            (p_syncManager, syncHandler) -> IndividualMilestonePanel.openPanel(),
-            true);
-
-        if (individualPanel.isPanelOpen()) {
-            individualPanel.closePanel();
-        }
-
-        IntSyncValue individualMilestoneSyncer = syncManager
-            .findSyncHandler(MTEForgeOfGodsGui.SYNC_MILESTONE_CLICKED, IntSyncValue.class);
-        individualMilestoneSyncer.setIntValue(milestone.ordinal());
-        individualPanel.openPanel();
-        return true;
     }
 }
