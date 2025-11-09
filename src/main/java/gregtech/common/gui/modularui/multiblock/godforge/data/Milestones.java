@@ -2,9 +2,9 @@ package gregtech.common.gui.modularui.multiblock.godforge.data;
 
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.common.gui.modularui.multiblock.godforge.MTEForgeOfGodsGui;
 
 public enum Milestones {
 
@@ -16,8 +16,8 @@ public enum Milestones {
         Alignment.TopLeft,
         "gt.blockmachines.multimachine.FOG.powermilestone",
         80, 100,
-        MTEForgeOfGodsGui.SYNC_MILESTONE_CHARGE_PROGRESS,
-        MTEForgeOfGodsGui.SYNC_MILESTONE_CHARGE_PROGRESS_INVERTED),
+        Syncers.MILESTONE_CHARGE_PROGRESS,
+        Syncers.MILESTONE_CHARGE_PROGRESS_INVERTED),
     CONVERSION(
         GTGuiTextures.PICTURE_GODFORGE_MILESTONE_CONVERSION_GLOW,
         GTGuiTextures.PROGRESSBAR_GODFORGE_MILESTONE_PURPLE,
@@ -25,8 +25,8 @@ public enum Milestones {
         Alignment.TopRight,
         "gt.blockmachines.multimachine.FOG.recipemilestone",
         70, 98,
-        MTEForgeOfGodsGui.SYNC_MILESTONE_CONVERSION_PROGRESS,
-        MTEForgeOfGodsGui.SYNC_MILESTONE_CONVERSION_PROGRESS_INVERTED),
+        Syncers.MILESTONE_CONVERSION_PROGRESS,
+        Syncers.MILESTONE_CONVERSION_PROGRESS_INVERTED),
     CATALYST(
         GTGuiTextures.PICTURE_GODFORGE_MILESTONE_CATALYST_GLOW,
         GTGuiTextures.PROGRESSBAR_GODFORGE_MILESTONE_BLUE,
@@ -34,8 +34,8 @@ public enum Milestones {
         Alignment.BottomLeft,
         "gt.blockmachines.multimachine.FOG.fuelmilestone",
         100, 100,
-        MTEForgeOfGodsGui.SYNC_MILESTONE_CATALYST_PROGRESS,
-        MTEForgeOfGodsGui.SYNC_MILESTONE_CATALYST_PROGRESS_INVERTED),
+        Syncers.MILESTONE_CATALYST_PROGRESS,
+        Syncers.MILESTONE_CATALYST_PROGRESS_INVERTED),
     COMPOSITION(
         GTGuiTextures.PICTURE_GODFORGE_MILESTONE_COMPOSITION_GLOW,
         GTGuiTextures.PROGRESSBAR_GODFORGE_MILESTONE_RAINBOW,
@@ -43,8 +43,8 @@ public enum Milestones {
         Alignment.BottomRight,
         "gt.blockmachines.multimachine.FOG.purchasablemilestone",
         100, 100,
-        MTEForgeOfGodsGui.SYNC_MILESTONE_COMPOSITION_PROGRESS,
-        MTEForgeOfGodsGui.SYNC_MILESTONE_COMPOSITION_PROGRESS_INVERTED),
+        Syncers.MILESTONE_COMPOSITION_PROGRESS,
+        Syncers.MILESTONE_COMPOSITION_PROGRESS_INVERTED),
 
     ;
     // spotless:on
@@ -60,12 +60,12 @@ public enum Milestones {
     private final int width;
     private final int height;
 
-    private final String progressSyncKey;
-    private final String progressInvertedSyncKey;
+    private final Syncers<DoubleSyncValue> progressSyncer;
+    private final Syncers<DoubleSyncValue> progressInvertedSyncer;
 
     Milestones(UITexture mainBackground, UITexture progressBarMainOverlay, UITexture progressBarInvertedOverlay,
-        Alignment position, String titleLangKey, int width, int height, String progressSyncKey,
-        String progressInvertedSyncKey) {
+        Alignment position, String titleLangKey, int width, int height, Syncers<DoubleSyncValue> progressSyncer,
+        Syncers<DoubleSyncValue> progressInvertedSyncer) {
         this.mainBackground = mainBackground;
         this.progressBarMainOverlay = progressBarMainOverlay;
         this.progressBarInvertedOverlay = progressBarInvertedOverlay;
@@ -73,8 +73,8 @@ public enum Milestones {
         this.titleLangKey = titleLangKey;
         this.width = width;
         this.height = height;
-        this.progressSyncKey = progressSyncKey;
-        this.progressInvertedSyncKey = progressInvertedSyncKey;
+        this.progressSyncer = progressSyncer;
+        this.progressInvertedSyncer = progressInvertedSyncer;
     }
 
     public UITexture getMainBackground() {
@@ -105,11 +105,11 @@ public enum Milestones {
         return height;
     }
 
-    public String getProgressSyncKey() {
-        return progressSyncKey;
+    public Syncers<DoubleSyncValue> getProgressSyncer() {
+        return progressSyncer;
     }
 
-    public String getProgressInvertedSyncKey() {
-        return progressInvertedSyncKey;
+    public Syncers<DoubleSyncValue> getProgressInvertedSyncer() {
+        return progressInvertedSyncer;
     }
 }

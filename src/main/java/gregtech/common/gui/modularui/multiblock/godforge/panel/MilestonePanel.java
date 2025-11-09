@@ -2,8 +2,6 @@ package gregtech.common.gui.modularui.multiblock.godforge.panel;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 import net.minecraft.util.EnumChatFormatting;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
@@ -19,9 +17,9 @@ import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.cleanroommc.modularui.widgets.ProgressWidget.Direction;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.common.gui.modularui.multiblock.godforge.MTEForgeOfGodsGui;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Milestones;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
+import gregtech.common.gui.modularui.multiblock.godforge.data.Syncers;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 
 public class MilestonePanel {
@@ -54,54 +52,15 @@ public class MilestonePanel {
     }
 
     private static void registerSyncValues(PanelSyncManager syncManager, ForgeOfGodsData data) {
-        AtomicInteger i = new AtomicInteger();
-        syncManager.syncValue(MTEForgeOfGodsGui.SYNC_MILESTONE_CLICKED, new IntSyncValue(i::intValue, i::set));
-
-        // Charge
-        syncManager.syncValue(
-            MTEForgeOfGodsGui.SYNC_MILESTONE_CHARGE_PROGRESS,
-            new DoubleSyncValue(
-                data::getPowerMilestonePercentage,
-                val -> data.setPowerMilestonePercentage((float) val)));
-        syncManager.syncValue(
-            MTEForgeOfGodsGui.SYNC_MILESTONE_CHARGE_PROGRESS_INVERTED,
-            new DoubleSyncValue(
-                data::getInvertedPowerMilestonePercentage,
-                val -> data.setInvertedPowerMilestonePercentage((float) val)));
-
-        // Conversion
-        syncManager.syncValue(
-            MTEForgeOfGodsGui.SYNC_MILESTONE_CONVERSION_PROGRESS,
-            new DoubleSyncValue(
-                data::getRecipeMilestonePercentage,
-                val -> data.setRecipeMilestonePercentage((float) val)));
-        syncManager.syncValue(
-            MTEForgeOfGodsGui.SYNC_MILESTONE_CONVERSION_PROGRESS_INVERTED,
-            new DoubleSyncValue(
-                data::getInvertedRecipeMilestonePercentage,
-                val -> data.setInvertedRecipeMilestonePercentage((float) val)));
-
-        // Catalyst
-        syncManager.syncValue(
-            MTEForgeOfGodsGui.SYNC_MILESTONE_CATALYST_PROGRESS,
-            new DoubleSyncValue(data::getFuelMilestonePercentage, val -> data.setFuelMilestonePercentage((float) val)));
-        syncManager.syncValue(
-            MTEForgeOfGodsGui.SYNC_MILESTONE_CATALYST_PROGRESS_INVERTED,
-            new DoubleSyncValue(
-                data::getInvertedFuelMilestonePercentage,
-                val -> data.setInvertedFuelMilestonePercentage((float) val)));
-
-        // Composition
-        syncManager.syncValue(
-            MTEForgeOfGodsGui.SYNC_MILESTONE_COMPOSITION_PROGRESS,
-            new DoubleSyncValue(
-                data::getStructureMilestonePercentage,
-                val -> data.setStructureMilestonePercentage((float) val)));
-        syncManager.syncValue(
-            MTEForgeOfGodsGui.SYNC_MILESTONE_COMPOSITION_PROGRESS_INVERTED,
-            new DoubleSyncValue(
-                data::getInvertedStructureMilestonePercentage,
-                val -> data.setInvertedStructureMilestonePercentage((float) val)));
+        Syncers.MILESTONE_CLICKED.register(syncManager, data, Panels.MILESTONE);
+        Syncers.MILESTONE_CHARGE_PROGRESS.register(syncManager, data, Panels.MILESTONE);
+        Syncers.MILESTONE_CHARGE_PROGRESS_INVERTED.register(syncManager, data, Panels.MILESTONE);
+        Syncers.MILESTONE_CONVERSION_PROGRESS.register(syncManager, data, Panels.MILESTONE);
+        Syncers.MILESTONE_CONVERSION_PROGRESS_INVERTED.register(syncManager, data, Panels.MILESTONE);
+        Syncers.MILESTONE_CATALYST_PROGRESS.register(syncManager, data, Panels.MILESTONE);
+        Syncers.MILESTONE_CATALYST_PROGRESS_INVERTED.register(syncManager, data, Panels.MILESTONE);
+        Syncers.MILESTONE_COMPOSITION_PROGRESS.register(syncManager, data, Panels.MILESTONE);
+        Syncers.MILESTONE_COMPOSITION_PROGRESS_INVERTED.register(syncManager, data, Panels.MILESTONE);
     }
 
     private static ParentWidget<?> createMilestone(Milestones milestone, PanelSyncManager syncManager,
@@ -110,10 +69,10 @@ public class MilestonePanel {
             .align(milestone.getPosition())
             .margin(MILESTONE_BUTTON_MARGIN_X, MILESTONE_BUTTON_MARGIN_Y);
 
-        DoubleSyncValue progressSyncer = syncManager
-            .findSyncHandler(milestone.getProgressSyncKey(), DoubleSyncValue.class);
-        DoubleSyncValue invertedProgressSyncer = syncManager
-            .findSyncHandler(milestone.getProgressInvertedSyncKey(), DoubleSyncValue.class);
+        DoubleSyncValue progressSyncer = milestone.getProgressSyncer()
+            .lookup(syncManager, Panels.MILESTONE);
+        DoubleSyncValue invertedProgressSyncer = milestone.getProgressInvertedSyncer()
+            .lookup(syncManager, Panels.MILESTONE);
 
         // Background image and individual milestone button
         parent.child(
@@ -128,8 +87,8 @@ public class MilestonePanel {
                         individualPanel.closePanel();
                     }
 
-                    IntSyncValue individualMilestoneSyncer = syncManager
-                        .findSyncHandler(MTEForgeOfGodsGui.SYNC_MILESTONE_CLICKED, IntSyncValue.class);
+                    IntSyncValue individualMilestoneSyncer = Syncers.MILESTONE_CLICKED
+                        .lookup(syncManager, Panels.MILESTONE);
                     individualMilestoneSyncer.setIntValue(milestone.ordinal());
                     individualPanel.openPanel();
                     return true;
