@@ -16,7 +16,6 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.metatileentity.BaseTileEntity.UNUSED_SLOT_TOOLTIP;
 import static gregtech.api.util.GTRecipeConstants.EXPLODE;
 import static gregtech.api.util.GTRecipeConstants.ON_FIRE;
-import static gregtech.api.util.GTUtility.moveMultipleItemStacks;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import static net.minecraftforge.common.util.ForgeDirection.DOWN;
@@ -85,6 +84,7 @@ import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.FakeCleanroom;
 import gregtech.api.util.GTClientPreference;
+import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
@@ -600,23 +600,14 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                 && (tSucceeded || mOutputBlocked % 300 == 1
                     || aBaseMetaTileEntity.hasInventoryBeenModified()
                     || aTick % 600 == 0)) {
-                TileEntity tTileEntity2 = aBaseMetaTileEntity.getTileEntityAtSide(aBaseMetaTileEntity.getFrontFacing());
-                long tStoredEnergy = aBaseMetaTileEntity.getUniversalEnergyStored();
-                int tMaxStacks = (int) (tStoredEnergy / 64L);
-                if (tMaxStacks > mOutputItems.length) tMaxStacks = mOutputItems.length;
+                GTItemTransfer transfer = new GTItemTransfer();
 
-                moveMultipleItemStacks(
-                    aBaseMetaTileEntity,
-                    tTileEntity2,
-                    aBaseMetaTileEntity.getFrontFacing(),
-                    aBaseMetaTileEntity.getBackFacing(),
-                    null,
-                    false,
-                    (byte) 64,
-                    (byte) 1,
-                    (byte) 64,
-                    (byte) 1,
-                    tMaxStacks);
+                transfer.outOfMachine(this, aBaseMetaTileEntity.getFrontFacing());
+                transfer.dropItems(this);
+
+                transfer.setStacksToTransfer(mOutputItems.length);
+
+                transfer.transfer();
             }
 
             if (mOutputBlocked != 0) if (isOutputEmpty()) mOutputBlocked = 0;
@@ -957,12 +948,17 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        if (side == mMainFacing || aIndex < getInputSlot()
-            || aIndex >= getInputSlot() + mInputSlotCount
-            || (!mAllowInputFromOutputSide && side == aBaseMetaTileEntity.getFrontFacing())) return false;
-        for (int i = getInputSlot(), j = i + mInputSlotCount; i < j; i++)
-            if (GTUtility.areStacksEqual(GTOreDictUnificator.get(aStack), mInventory[i]) && mDisableMultiStack)
+        if (side == mMainFacing) return false;
+        if (aIndex < getInputSlot()) return false;
+        if (aIndex >= getInputSlot() + mInputSlotCount) return false;
+        if (!mAllowInputFromOutputSide && side == aBaseMetaTileEntity.getFrontFacing()) return false;
+
+        for (int i = getInputSlot(), j = i + mInputSlotCount; i < j; i++) {
+            if (GTUtility.areStacksEqual(GTOreDictUnificator.get(aStack), mInventory[i]) && mDisableMultiStack) {
                 return i == aIndex;
+            }
+        }
+
         return mDisableFilter || allowPutStackValidated(aBaseMetaTileEntity, aIndex, side, aStack);
     }
 

@@ -91,6 +91,8 @@ import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.blocks.BlockCasings8;
+import gregtech.common.gui.modularui.multiblock.MTEPCBFactoryGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -641,8 +643,16 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     }
 
     @Override
-    protected boolean useMui2() {
-        return false;
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEPCBFactoryGui(this);
+    }
+
+    public int getTraceSize() {
+        return (int) ((1f / mRoughnessMultiplier) * 100f);
+    }
+
+    public void setTraceSize(int value) {
+        mRoughnessMultiplier = 100f / (int) value;
     }
 
     @Override
@@ -746,13 +756,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Circuit Board Fabricator")
-            .addInfo(
-                EnumChatFormatting.GOLD.toString() + EnumChatFormatting.BOLD
-                    + "IMPORTANT!"
-                    + " Check the configuration menu before building!")
             .addInfo("Tier of the machine determines the available recipes")
-            .addInfo("Machine tier (1-3) is set in the controller GUI")
-            .addInfo("The configuration menu can be used to add upgrades")
             .addInfo("Each tier and upgrade requires additional structures")
             .addInfo("Power consumption is multiplied by Sqrt(structures)")
             .addInfo("Tier 2 and 3 allow parallel by using extra nanites")
@@ -783,6 +787,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     + EnumChatFormatting.LIGHT_PURPLE
                     + "perfect overclocks")
             .addInfo("Trace size can be changed to modify the material usage and machine speed")
+            .addInfo("Configure Trace Size in UI")
             .addTecTechHatchInfo()
             .beginStructureBlock(30, 38, 13, false)
             .addMaintenanceHatch(EnumChatFormatting.GOLD + "1", 1)

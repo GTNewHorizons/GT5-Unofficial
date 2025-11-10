@@ -85,6 +85,8 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
+import gregtech.common.gui.modularui.multiblock.MTEPlasmaForgeGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import tectech.thing.gui.TecTechUITextures;
 
@@ -1126,7 +1128,28 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
 
     @Override
     protected boolean useMui2() {
-        return false;
+        return true;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEPlasmaForgeGui(this);
+    }
+
+    public boolean getConvergenceStatus() {
+        return this.convergence;
+    }
+
+    public void setConvergenceStatus(boolean value) {
+        this.convergence = value;
+    }
+
+    public int getCatalystTypeForRecipesWithoutCatalyst() {
+        return this.catalystTypeForRecipesWithoutCatalyst;
+    }
+
+    public void setCatalystTypeForRecipesWithoutCatalyst(int value) {
+        this.catalystTypeForRecipesWithoutCatalyst = value;
     }
 
     @Override
