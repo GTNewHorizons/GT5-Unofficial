@@ -61,6 +61,7 @@ public class FuelConfigPanel {
             .setTextAlignment(Alignment.CENTER)
             .value(new IntSyncValue(data::getFuelConsumptionFactor, data::setFuelConsumptionFactor))
             .setTooltipOverride(true)
+            .setScrollValues(1, 4, 64)
             .size(70, 18)
             .marginLeft(4)
             .marginTop(3);
@@ -165,6 +166,7 @@ public class FuelConfigPanel {
                     .disableHoverBackground()
                     .disableHoverOverlay()
                     .size(18)
+                    .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
                     .tooltip(t -> ForgeOfGodsGuiUtil.addFluidNameInfo(t, option.getFluid()))
                     .tooltipShowUpTimer(TOOLTIP_DELAY));
     }

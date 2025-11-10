@@ -33,7 +33,7 @@ import gregtech.common.gui.modularui.multiblock.godforge.panel.IndividualUpgrade
 import gregtech.common.gui.modularui.multiblock.godforge.panel.StarCosmeticsPanel;
 import gregtech.common.gui.modularui.multiblock.godforge.panel.StatisticsPanel;
 import gregtech.common.gui.modularui.multiblock.godforge.panel.UpgradeTreePanel;
-import tectech.TecTech;
+import gregtech.common.gui.modularui.multiblock.godforge.util.ForgeOfGodsGuiUtil;
 import tectech.thing.metaTileEntity.multi.godforge.MTEForgeOfGods;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 
@@ -148,7 +148,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
                 }
                 return true;
             })
-            .clickSound(() -> TecTech.proxy.playSound(multiblock.getBaseMetaTileEntity(), "fx_click"))
+            .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
             .tooltip(t -> t.addLine(translateToLocal("fog.button.milestones.tooltip")))
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
@@ -168,7 +168,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
                 }
                 return true;
             })
-            .clickSound(() -> TecTech.proxy.playSound(multiblock.getBaseMetaTileEntity(), "fx_click"))
+            .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
             .tooltip(t -> t.addLine(translateToLocal("fog.button.fuelconfig.tooltip")))
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
@@ -200,7 +200,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
                 }
                 return true;
             })
-            .clickSound(() -> TecTech.proxy.playSound(multiblock.getBaseMetaTileEntity(), "fx_click"))
+            .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
             .tooltip(t -> {
                 t.addLine(translateToLocal("fog.button.battery.tooltip.01"));
                 t.addLine(EnumChatFormatting.GRAY + translateToLocal("fog.button.battery.tooltip.02"));
@@ -223,7 +223,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
                 }
                 return true;
             })
-            .clickSound(() -> TecTech.proxy.playSound(multiblock.getBaseMetaTileEntity(), "fx_click"))
+            .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
             .tooltip(t -> t.addLine(translateToLocal("fog.button.color.tooltip")))
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
@@ -243,7 +243,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
                 }
                 return true;
             })
-            .clickSound(() -> TecTech.proxy.playSound(multiblock.getBaseMetaTileEntity(), "fx_click"))
+            .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
             .tooltip(t -> t.addLine(translateToLocal("fog.button.upgradetree.tooltip")))
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
@@ -261,7 +261,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
                 refreshSyncer.setBoolValue(!refreshSyncer.getBoolValue());
                 return true;
             })
-            .clickSound(() -> TecTech.proxy.playSound(multiblock.getBaseMetaTileEntity(), "fx_click"))
+            .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
             .tooltip(t -> t.addLine(translateToLocal("fog.button.structurecheck.tooltip")))
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
@@ -281,7 +281,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
                 }
                 return true;
             })
-            .clickSound(() -> TecTech.proxy.playSound(multiblock.getBaseMetaTileEntity(), "fx_click"))
+            .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
             .tooltip(t -> t.addLine(translateToLocal("fog.button.statistics.tooltip")))
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
@@ -304,7 +304,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
                 shardEjectionSyncer.setBoolValue(!data.isGravitonShardEjection());
                 return true;
             })
-            .clickSound(() -> TecTech.proxy.playSound(multiblock.getBaseMetaTileEntity(), "fx_click"))
+            .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
             .tooltip(t -> t.addLine(translateToLocal("fog.button.ejection.tooltip")))
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
@@ -323,7 +323,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
                 }
                 return true;
             })
-            .clickSound(() -> TecTech.proxy.playSound(multiblock.getBaseMetaTileEntity(), "fx_click"))
+            .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
             .tooltip(t -> t.addLine(translateToLocal("gt.blockmachines.multimachine.FOG.clickhere")))
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
@@ -342,7 +342,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
                 }
                 return true;
             })
-            .clickSound(() -> TecTech.proxy.playSound(multiblock.getBaseMetaTileEntity(), "fx_click"))
+            .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
             .tooltip(t -> t.addLine(translateToLocal("fog.button.thanks.tooltip")))
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }

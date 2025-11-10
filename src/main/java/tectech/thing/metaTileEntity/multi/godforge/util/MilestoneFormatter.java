@@ -5,6 +5,7 @@ import static tectech.util.TTUtility.toExponentForm;
 
 import java.math.BigInteger;
 
+// todo rename, move to mui2 data folder
 public enum MilestoneFormatter {
 
     NONE,
