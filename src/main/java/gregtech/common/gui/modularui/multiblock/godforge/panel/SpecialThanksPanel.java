@@ -9,16 +9,16 @@ import net.minecraft.util.EnumChatFormatting;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.Widget;
-import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
+import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
+import gregtech.common.gui.modularui.multiblock.godforge.util.ForgeOfGodsGuiUtil;
+import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
 
 public class SpecialThanksPanel {
 
@@ -26,12 +26,13 @@ public class SpecialThanksPanel {
     private static final int BACKGROUND_SIZE = 100;
     private static final int LIST_OFFSET = 30;
 
-    public static ModularPanel openPanel(PanelSyncManager syncManager, ForgeOfGodsData data, ModularPanel panel,
-        ModularPanel parent) {
+    public static ModularPanel openPanel(SyncHypervisor hypervisor) {
+        ModularPanel panel = hypervisor.getModularPanel(Panels.SPECIAL_THANKS);
+
         panel.size(SIZE)
             .background(GTGuiTextures.BACKGROUND_GLOW_RAINBOW)
             .disableHoverBackground()
-            .child(ButtonWidget.panelCloseButton());
+            .child(ForgeOfGodsGuiUtil.panelCloseButton());
 
         // Background symbol
         panel.child(

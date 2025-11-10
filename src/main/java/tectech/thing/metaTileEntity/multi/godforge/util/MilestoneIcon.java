@@ -7,6 +7,7 @@ import com.gtnewhorizons.modularui.api.math.Size;
 
 import tectech.thing.gui.TecTechUITextures;
 
+// todo remove
 public enum MilestoneIcon {
 
     CHARGE(TecTechUITextures.PICTURE_GODFORGE_MILESTONE_CHARGE, 60, 75, "power"),

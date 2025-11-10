@@ -9,6 +9,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.screen.RichTooltip;
+import com.cleanroommc.modularui.widgets.ButtonWidget;
 
 import gregtech.api.enums.Mods;
 import gregtech.common.items.ItemFluidDisplay;
@@ -29,5 +30,10 @@ public class ForgeOfGodsGuiUtil {
         return () -> Minecraft.getMinecraft()
             .getSoundHandler()
             .playSound(PositionedSoundRecord.func_147673_a(PRESS_SOUND));
+    }
+
+    public static ButtonWidget<?> panelCloseButton() {
+        return ButtonWidget.panelCloseButton()
+            .clickSound(getButtonSound());
     }
 }

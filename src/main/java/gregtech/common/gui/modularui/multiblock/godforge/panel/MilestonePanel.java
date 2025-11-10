@@ -9,8 +9,7 @@ import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
-import com.cleanroommc.modularui.value.sync.IntSyncValue;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
@@ -20,7 +19,8 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Milestones;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Syncers;
-import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
+import gregtech.common.gui.modularui.multiblock.godforge.util.ForgeOfGodsGuiUtil;
+import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
 
 public class MilestonePanel {
 
@@ -35,61 +35,62 @@ public class MilestonePanel {
 
     private static final int MILESTONE_PROGRESS_BAR_H = 7;
 
-    public static ModularPanel openPanel(PanelSyncManager syncManager, ForgeOfGodsData data, ModularPanel panel,
-        ModularPanel parent) {
-        registerSyncValues(syncManager, data);
+    public static ModularPanel openPanel(SyncHypervisor hypervisor) {
+        ModularPanel panel = hypervisor.getModularPanel(Panels.MILESTONE);
+
+        registerSyncValues(hypervisor);
 
         panel.size(WIDTH, HEIGHT)
             .background(GTGuiTextures.BACKGROUND_SPACE)
             .disableHoverBackground();
 
-        panel.child(createMilestone(Milestones.CHARGE, syncManager, panel, data));
-        panel.child(createMilestone(Milestones.CONVERSION, syncManager, panel, data));
-        panel.child(createMilestone(Milestones.CATALYST, syncManager, panel, data));
-        panel.child(createMilestone(Milestones.COMPOSITION, syncManager, panel, data));
+        panel.child(createMilestone(Milestones.CHARGE, hypervisor));
+        panel.child(createMilestone(Milestones.CONVERSION, hypervisor));
+        panel.child(createMilestone(Milestones.CATALYST, hypervisor));
+        panel.child(createMilestone(Milestones.COMPOSITION, hypervisor));
 
+        panel.child(ForgeOfGodsGuiUtil.panelCloseButton()); // todo check position
         return panel;
     }
 
-    private static void registerSyncValues(PanelSyncManager syncManager, ForgeOfGodsData data) {
-        Syncers.MILESTONE_CLICKED.register(syncManager, data, Panels.MILESTONE);
-        Syncers.MILESTONE_CHARGE_PROGRESS.register(syncManager, data, Panels.MILESTONE);
-        Syncers.MILESTONE_CHARGE_PROGRESS_INVERTED.register(syncManager, data, Panels.MILESTONE);
-        Syncers.MILESTONE_CONVERSION_PROGRESS.register(syncManager, data, Panels.MILESTONE);
-        Syncers.MILESTONE_CONVERSION_PROGRESS_INVERTED.register(syncManager, data, Panels.MILESTONE);
-        Syncers.MILESTONE_CATALYST_PROGRESS.register(syncManager, data, Panels.MILESTONE);
-        Syncers.MILESTONE_CATALYST_PROGRESS_INVERTED.register(syncManager, data, Panels.MILESTONE);
-        Syncers.MILESTONE_COMPOSITION_PROGRESS.register(syncManager, data, Panels.MILESTONE);
-        Syncers.MILESTONE_COMPOSITION_PROGRESS_INVERTED.register(syncManager, data, Panels.MILESTONE);
+    private static void registerSyncValues(SyncHypervisor hypervisor) {
+        Syncers.MILESTONE_CLICKED.registerFor(Panels.MILESTONE, hypervisor);
+        Syncers.MILESTONE_CHARGE_PROGRESS.registerFor(Panels.MILESTONE, hypervisor);
+        Syncers.MILESTONE_CHARGE_PROGRESS_INVERTED.registerFor(Panels.MILESTONE, hypervisor);
+        Syncers.MILESTONE_CONVERSION_PROGRESS.registerFor(Panels.MILESTONE, hypervisor);
+        Syncers.MILESTONE_CONVERSION_PROGRESS_INVERTED.registerFor(Panels.MILESTONE, hypervisor);
+        Syncers.MILESTONE_CATALYST_PROGRESS.registerFor(Panels.MILESTONE, hypervisor);
+        Syncers.MILESTONE_CATALYST_PROGRESS_INVERTED.registerFor(Panels.MILESTONE, hypervisor);
+        Syncers.MILESTONE_COMPOSITION_PROGRESS.registerFor(Panels.MILESTONE, hypervisor);
+        Syncers.MILESTONE_COMPOSITION_PROGRESS_INVERTED.registerFor(Panels.MILESTONE, hypervisor);
     }
 
-    private static ParentWidget<?> createMilestone(Milestones milestone, PanelSyncManager syncManager,
-        ModularPanel panel, ForgeOfGodsData data) {
+    private static ParentWidget<?> createMilestone(Milestones milestone, SyncHypervisor hypervisor) {
         ParentWidget<?> parent = new ParentWidget<>().size(MILESTONE_BUTTON_SIZE_W, MILESTONE_BUTTON_SIZE_H)
             .align(milestone.getPosition())
             .margin(MILESTONE_BUTTON_MARGIN_X, MILESTONE_BUTTON_MARGIN_Y);
 
         DoubleSyncValue progressSyncer = milestone.getProgressSyncer()
-            .lookup(syncManager, Panels.MILESTONE);
+            .lookupFrom(Panels.MILESTONE, hypervisor);
         DoubleSyncValue invertedProgressSyncer = milestone.getProgressInvertedSyncer()
-            .lookup(syncManager, Panels.MILESTONE);
+            .lookupFrom(Panels.MILESTONE, hypervisor);
 
         // Background image and individual milestone button
         parent.child(
             new ButtonWidget<>().alignX(Alignment.CENTER)
-                .size(milestone.getWidth(), milestone.getHeight())
+                .size(milestone.getMainWidth(), milestone.getMainHeight())
                 .background(milestone.getMainBackground())
                 .disableHoverBackground()
                 .onMousePressed($ -> {
-                    IPanelHandler individualPanel = Panels.INDIVIDUAL_MILESTONE.get(panel, syncManager, data);
+                    IPanelHandler individualPanel = Panels.INDIVIDUAL_MILESTONE.getFrom(Panels.MILESTONE, hypervisor);
 
                     if (individualPanel.isPanelOpen()) {
                         individualPanel.closePanel();
                     }
 
-                    IntSyncValue individualMilestoneSyncer = Syncers.MILESTONE_CLICKED
-                        .lookup(syncManager, Panels.MILESTONE);
-                    individualMilestoneSyncer.setIntValue(milestone.ordinal());
+                    EnumSyncValue<Milestones> syncer = Syncers.MILESTONE_CLICKED
+                        .lookupFrom(Panels.MILESTONE, hypervisor);
+                    syncer.setValue(milestone);
                     individualPanel.openPanel();
                     return true;
                 })
