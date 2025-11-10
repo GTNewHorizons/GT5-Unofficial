@@ -29,12 +29,6 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.base.TTMultiblockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Syncers;
-import gregtech.common.gui.modularui.multiblock.godforge.panel.BatteryConfigPanel;
-import gregtech.common.gui.modularui.multiblock.godforge.panel.IndividualMilestonePanel;
-import gregtech.common.gui.modularui.multiblock.godforge.panel.IndividualUpgradePanel;
-import gregtech.common.gui.modularui.multiblock.godforge.panel.StarCosmeticsPanel;
-import gregtech.common.gui.modularui.multiblock.godforge.panel.StatisticsPanel;
-import gregtech.common.gui.modularui.multiblock.godforge.panel.UpgradeTreePanel;
 import gregtech.common.gui.modularui.multiblock.godforge.util.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
 import tectech.thing.metaTileEntity.multi.godforge.MTEForgeOfGods;
@@ -62,15 +56,6 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
         hypervisor.setSyncManager(Panels.MAIN, syncManager);
-
-        // todo try to reduce this, registering these when the panel is opened
-        // todo rather than all the time like right now
-        BatteryConfigPanel.registerSyncValues(syncManager);
-        IndividualMilestonePanel.registerSyncValues(syncManager);
-        IndividualUpgradePanel.registerSyncValues(syncManager);
-        StarCosmeticsPanel.registerSyncValues(syncManager);
-        StatisticsPanel.registerSyncValues(syncManager);
-        UpgradeTreePanel.registerSyncValues(syncManager);
 
         Syncers.BATTERY_CHARGING.registerFor(Panels.MAIN, hypervisor);
         Syncers.SHARD_EJECTION.registerFor(Panels.MAIN, hypervisor);

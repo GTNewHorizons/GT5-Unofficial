@@ -39,7 +39,7 @@ public final class SyncHypervisor {
         return syncManagers.get(panel);
     }
 
-    public void onPanelClose(Panels panel) {
+    public void onPanelDispose(Panels panel) {
         panels.remove(panel);
         syncManagers.remove(panel);
     }
