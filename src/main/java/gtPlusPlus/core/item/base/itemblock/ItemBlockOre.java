@@ -18,7 +18,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.common.WorldgenGTOreLayer;
 import gtPlusPlus.core.block.base.BlockBaseOre;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.util.minecraft.EntityUtils;

@@ -15,7 +15,6 @@ import gregtech.api.util.GTLog;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.block.base.BlockBaseOre;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
@@ -64,7 +63,8 @@ public class ItemBlockGtBlock extends ItemBlock {
     }
 
     @Override
-    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List<String> list, final boolean bool) {
+    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List<String> list,
+        final boolean bool) {
 
         if (this.mMaterial == null) {
             try {
@@ -75,8 +75,7 @@ public class ItemBlockGtBlock extends ItemBlock {
             }
             // list.add("Material is Null.");
         }
-        if (this.mMaterial != null)
-            this.mMaterial.addTooltip(list);
+        if (this.mMaterial != null) this.mMaterial.addTooltip(list);
 
         if (this.isOre) {
             if (KeyboardUtils.isCtrlKeyDown()) {

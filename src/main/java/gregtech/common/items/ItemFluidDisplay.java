@@ -6,9 +6,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-import gregtech.common.fluid.GTFluid;
-import gtPlusPlus.api.objects.minecraft.FluidGT6;
-import gtPlusPlus.core.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -32,6 +29,9 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.util.GTUtility;
+import gregtech.common.fluid.GTFluid;
+import gtPlusPlus.api.objects.minecraft.FluidGT6;
+import gtPlusPlus.core.material.Material;
 
 public class ItemFluidDisplay extends GTGenericItem {
 
@@ -120,21 +120,20 @@ public class ItemFluidDisplay extends GTGenericItem {
 
     @SideOnly(Side.CLIENT)
     public static void addTooltipForFluid(Fluid fluid, List<String> list) {
-        final Werkstoff w = WerkstoffLoader.fluids.inverse().get(fluid);
+        final Werkstoff w = WerkstoffLoader.fluids.inverse()
+            .get(fluid);
         if (w != null) {
             w.addTooltip(list);
             return;
         }
         if (fluid instanceof FluidGT6 gtppFluid) {
             final Material material = gtppFluid.getMaterial();
-            if (material != null)
-                material.addTooltip(list);
+            if (material != null) material.addTooltip(list);
             return;
         }
         if (fluid instanceof GTFluid gtFluid) {
             Materials material = Materials.FLUID_MAP.get(gtFluid);
-            if (material != null)
-                material.addTooltips(list);
+            if (material != null) material.addTooltips(list);
         }
     }
 

@@ -4,15 +4,14 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 
 import java.util.function.Supplier;
 
-import gtPlusPlus.core.material.Material;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 
 import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTLanguageManager;
+import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 
 public class FluidGT6 extends Fluid implements Runnable {
@@ -74,7 +73,8 @@ public class FluidGT6 extends Fluid implements Runnable {
     public String getLocalizedName() {
         if (materialName != null) {
             final String materialLocalizedName = MaterialUtils.getMaterialLocalizedName(materialName);
-            return oreprefixKey == null ? materialLocalizedName : StatCollector.translateToLocalFormatted(oreprefixKey, materialLocalizedName);
+            return oreprefixKey == null ? materialLocalizedName
+                : StatCollector.translateToLocalFormatted(oreprefixKey, materialLocalizedName);
         }
         return super.getLocalizedName();
     }
