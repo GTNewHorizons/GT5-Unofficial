@@ -787,63 +787,6 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         return this.guiAntimatterChange;
     }
 
-    protected long antimatterAmountCache;
-    protected long passiveCostCache;
-    protected long activeCostCache;
-    protected long antimatterChangeCache;
-    protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
-
-    @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        super.drawTexts(screenElements, inventorySlot);
-
-        screenElements
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector.translateToLocal("gui.AntimatterForge.0") + ": "
-                            + EnumChatFormatting.BLUE
-                            + numberFormat.format(antimatterAmountCache)
-                            + EnumChatFormatting.WHITE
-                            + " L")
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get()))
-            .widget(new FakeSyncWidget.LongSyncer(this::getAntimatterAmount, val -> antimatterAmountCache = val))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector.translateToLocal("gui.AntimatterForge.1") + ": "
-                            + EnumChatFormatting.RED
-                            + GTUtility.scientificFormat(passiveCostCache)
-                            + EnumChatFormatting.WHITE
-                            + " EU/t")
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get()))
-            .widget(new FakeSyncWidget.LongSyncer(this::getPassiveConsumption, val -> passiveCostCache = val))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector.translateToLocal("gui.AntimatterForge.2") + ": "
-                            + EnumChatFormatting.LIGHT_PURPLE
-                            + GTUtility.scientificFormat(activeCostCache)
-                            + EnumChatFormatting.WHITE
-                            + " EU/t")
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get()))
-            .widget(new FakeSyncWidget.LongSyncer(this::getActiveConsumption, val -> activeCostCache = val))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector.translateToLocal("gui.AntimatterForge.3") + ": "
-                            + EnumChatFormatting.AQUA
-                            + numberFormat.format(antimatterChangeCache)
-                            + EnumChatFormatting.WHITE
-                            + " L")
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get()))
-            .widget(new FakeSyncWidget.LongSyncer(this::getAntimatterChange, val -> antimatterChangeCache = val));
-    }
-
     @Override
     public boolean supportsLogo() {
         return false;
