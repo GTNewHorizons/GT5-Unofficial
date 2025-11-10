@@ -656,22 +656,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-
-        builder.widget(
-            new NumericWidget().setGetter(() -> (int) ((1f / mRoughnessMultiplier) * 100f))
-                .setSetter(val -> mRoughnessMultiplier = 100f / (int) val)
-                .setBounds(50, 200)
-                .setTextColor(Color.WHITE.normal)
-                .setTextAlignment(Alignment.Center)
-                .addTooltip(translateToLocal("GT5U.MBTT.PCB.Tooltip.5"))
-                .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
-                .setSize(74, 16)
-                .setPos(98, 91));
-        super.addUIWidgets(builder, buildContext);
-    }
-
-    @Override
     public String[] getInfoData() {
         long storedEnergy = 0;
         long maxEnergy = 0;
