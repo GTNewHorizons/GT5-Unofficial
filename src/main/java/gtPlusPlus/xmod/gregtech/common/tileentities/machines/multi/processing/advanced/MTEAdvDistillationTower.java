@@ -57,7 +57,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
-import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -437,40 +436,34 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
 
     @Override
     protected @NotNull MTEMultiBlockBaseGui getGui() {
-        return new MTEAdvDistillationTowerGUI(this).withMachineModeIcons(
+        return new MTEMultiBlockBaseGui(this) {
+
+            @Override
+            protected IWidget createModeSwitchButton(PanelSyncManager syncManager) {
+                IntSyncValue machineModeSyncer = (IntSyncValue) syncManager.getSyncHandlerFromMapKey("machineMode:0");
+                IntSyncValue heightSyncer = new IntSyncValue(() -> mHeight);
+                syncManager.syncValue("dangoteHeight", heightSyncer);
+                return new CycleButtonWidget() {
+
+                    @NotNull
+                    @Override
+                    public Result onMousePressed(int mouseButton) {
+                        if (heightSyncer.getIntValue() < 11) return Result.IGNORE;
+                        return super.onMousePressed(mouseButton);
+                    }
+                }.size(18, 18)
+                    .syncHandler("machineMode")
+                    .length(machineModeIcons.size())
+                    .overlay(new DynamicDrawable(() -> {
+                        UITexture mode = getMachineModeIcon(machineModeSyncer.getValue());
+                        return heightSyncer.getIntValue() < 11
+                            ? new DrawableStack(mode, GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN)
+                            : mode;
+                    }))
+                    .tooltipBuilder(this::createModeSwitchTooltip);
+            }
+        }.withMachineModeIcons(
             GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_DISTILLATION_TOWER,
             GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_DISTILLING);
-    }
-
-    private class MTEAdvDistillationTowerGUI extends MTEMultiBlockBaseGui {
-
-        public MTEAdvDistillationTowerGUI(MTEMultiBlockBase multiblock) {
-            super(multiblock);
-        }
-
-        @Override
-        protected IWidget createModeSwitchButton(PanelSyncManager syncManager) {
-            IntSyncValue machineModeSyncer = (IntSyncValue) syncManager.getSyncHandlerFromMapKey("machineMode:0");
-            IntSyncValue heightSyncer = new IntSyncValue(() -> mHeight);
-            syncManager.syncValue("dangoteHeight", heightSyncer);
-            return new CycleButtonWidget() {
-
-                @NotNull
-                @Override
-                public Result onMousePressed(int mouseButton) {
-                    if (heightSyncer.getIntValue() < 11) return Result.IGNORE;
-                    return super.onMousePressed(mouseButton);
-                }
-            }.size(18, 18)
-                .syncHandler("machineMode")
-                .length(machineModeIcons.size())
-                .overlay(new DynamicDrawable(() -> {
-                    UITexture mode = getMachineModeIcon(machineModeSyncer.getValue());
-                    return heightSyncer.getIntValue() < 11
-                        ? new DrawableStack(mode, GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN)
-                        : mode;
-                }))
-                .tooltipBuilder(this::createModeSwitchTooltip);
-        }
     }
 }
