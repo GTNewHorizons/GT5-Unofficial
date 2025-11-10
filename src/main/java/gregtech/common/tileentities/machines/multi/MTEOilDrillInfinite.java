@@ -2,6 +2,10 @@ package gregtech.common.tileentities.machines.multi;
 
 import static gregtech.api.enums.GTValues.VN;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.ItemList;
@@ -31,6 +35,7 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
             .addInfo("Works on " + getRangeInChunks() + "x" + getRangeInChunks() + " chunks")
             .addInfo("Minimum energy hatch tier: " + GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
             .addInfo("Base cycle time: 1 tick")
+            .addInfo("You can enable batch mode with wire cutters." + EnumChatFormatting.BLUE + " 16x Time 16x Output")
             .beginStructureBlock(3, 7, 3, false)
             .addController("Front bottom")
             .addOtherStructurePart(casings, "form the 3x1x3 Base")
@@ -44,6 +49,31 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
         return tt;
     }
 
+    // @Override
+    // public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int
+    // y,
+    // int z) {
+    // super.getWailaNBTData(player, tile, tag, world, x, y, z);
+    // // smol hack to properly apply the output batchMultiplier
+    // if (mOutputFluids != null) {
+    // int index = 0;
+    // for (FluidStack stack : mOutputFluids) {
+    // if (stack == null) continue;
+    // int batchedAmount = stack.amount * batchMultiplier;
+    // tag.setInteger("outputFluidCount" + index, batchedAmount);
+    // index++;
+    // }
+    // }
+    // }
+
+    @Override
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ, ItemStack aTool) {
+        this.batchMode = !this.batchMode;
+        GTUtility.sendChatToPlayer(aPlayer, "Batch Mode: " + (this.batchMode ? "Enabled" : "Disabled"));
+        return true;
+    }
+
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEOilDrillInfinite(mName);
@@ -53,6 +83,11 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
     protected FluidStack pumpOil(float speed, boolean simulate) {
         // always simulate to not deplete vein
         return super.pumpOil(speed, true);
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
     }
 
     @Override

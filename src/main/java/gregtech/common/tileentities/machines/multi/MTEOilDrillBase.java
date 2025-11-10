@@ -180,13 +180,17 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
         return ImmutableList.of(InputBus, OutputHatch, Maintenance, Energy);
     }
 
+    int batchMultiplier = 1;
+
     @Override
     protected void setElectricityStats() {
+        // for a 6.4 second beautiful batch
+        batchMultiplier = batchMode ? 128 : 1;
         this.mEfficiency = getCurrentEfficiency(null);
         this.mEfficiencyIncrease = 10000;
         int tier = Math.max(0, GTUtility.getTier(getMaxInputVoltage()));
         this.mEUt = -7 << (tier << 1); // (1/4) A of current tier when at bottom (7/8) A of current tier while mining
-        this.mMaxProgresstime = calculateMaxProgressTime(tier);
+        this.mMaxProgresstime = calculateMaxProgressTime(tier) * batchMultiplier;
     }
 
     @Override
@@ -324,7 +328,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
         }
 
         FluidStack pumpedOil = pumpOil(speed, false);
-        mOilFlow = pumpedOil.amount;
+        mOilFlow = pumpedOil.amount * batchMultiplier;
         return ValidationResult.of(ValidationType.VALID, pumpedOil.amount == 0 ? null : pumpedOil);
     }
 
@@ -491,6 +495,10 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
     @Override
     public boolean supportsVoidProtection() {
         return true;
+    }
+
+    public int getmOilFlow() {
+        return mOilFlow;
     }
 
     @SideOnly(Side.CLIENT)
