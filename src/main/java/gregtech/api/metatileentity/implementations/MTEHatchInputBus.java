@@ -34,6 +34,7 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -47,6 +48,7 @@ import gregtech.api.util.GTUtility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitSupport, IAddUIWidgets {
 
     private static final String SORTING_MODE_TOOLTIP = "GT5U.machines.sorting_mode.tooltip";
@@ -563,10 +565,5 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
     public String[] getDescription() {
         final String suffix = getSlots(mTier) >= 2 ? ".desc" : ".singular.desc";
         return GTSplit.splitLocalizedFormatted("gt.blockmachines.input_bus" + suffix, getSlots(mTier));
-    }
-
-    @Override
-    public boolean isSkipGenerateDescription() {
-        return true;
     }
 }

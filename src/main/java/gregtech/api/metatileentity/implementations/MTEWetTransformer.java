@@ -15,6 +15,7 @@ import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import tectech.util.CommonValues;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEWetTransformer extends MTETransformer {
 
     private boolean mHalfMode = false;

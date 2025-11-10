@@ -20,12 +20,14 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTSplit;
 import gregtech.common.gui.modularui.widget.FluidLockWidget;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchVoid extends MTEHatchOutput {
 
     public MTEHatchVoid(int aID, String aName, String aNameRegional) {

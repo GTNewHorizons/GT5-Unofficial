@@ -29,11 +29,13 @@ import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti {
 
     public final long precisionMultiplier = LongMath.pow(10, 15);

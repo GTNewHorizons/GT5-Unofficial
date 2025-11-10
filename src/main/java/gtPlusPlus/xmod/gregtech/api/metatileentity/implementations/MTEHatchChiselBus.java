@@ -7,12 +7,14 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gtPlusPlus.core.util.Utils;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchChiselBus extends MTEHatchInputBus implements IAddUIWidgets {
 
     public MTEHatchChiselBus(int id, String name, String nameRegional, int tier) {

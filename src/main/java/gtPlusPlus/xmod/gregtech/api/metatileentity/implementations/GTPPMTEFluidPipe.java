@@ -11,6 +11,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits.PipeStats;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class GTPPMTEFluidPipe extends MTEFluidPipe {
 
     public final PipeStats pipeStats;

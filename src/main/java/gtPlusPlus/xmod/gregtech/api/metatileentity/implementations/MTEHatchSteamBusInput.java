@@ -4,12 +4,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
 import gtPlusPlus.core.util.Utils;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchSteamBusInput extends MTEHatchInputBus {
 
     public RecipeMap<?> mRecipeMap = null;

@@ -13,6 +13,7 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import gregtech.GTMod;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
@@ -20,6 +21,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.util.Utils;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchSteamBusOutput extends MTEHatchOutputBus {
 
     public MTEHatchSteamBusOutput(int aID, String aName, String aNameRegional, int aTier) {

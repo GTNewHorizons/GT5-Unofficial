@@ -24,6 +24,7 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.MTELargerTurbineBase;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchTurbineProvider extends MTEHatchInputBus {
 
     public MTEHatchTurbineProvider(int aID, String aName, String aNameRegional, int aTier) {

@@ -12,6 +12,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
@@ -20,6 +21,7 @@ import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.pollution.Pollution;
 
 @SuppressWarnings("unused") // Unused API is expected within scope
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchMuffler extends MTEHatch {
 
     public MTEHatchMuffler(int aID, String aName, String aNameRegional, int aTier) {
@@ -44,11 +46,6 @@ public class MTEHatchMuffler extends MTEHatch {
     public String[] getDescription() {
         return GTSplit
             .splitLocalizedFormatted("gt.blockmachines.muffler.desc", String.valueOf(calculatePollutionReduction(100)));
-    }
-
-    @Override
-    public boolean isSkipGenerateDescription() {
-        return true;
     }
 
     @Override

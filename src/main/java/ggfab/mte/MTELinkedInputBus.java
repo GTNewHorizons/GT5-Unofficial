@@ -37,6 +37,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
@@ -48,6 +49,7 @@ import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProcessingAwareHatch, IDataCopyable {
 
     public static final int SIZE_INVENTORY = 18;

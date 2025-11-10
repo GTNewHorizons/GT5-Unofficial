@@ -20,6 +20,7 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipe.RecipeMap;
@@ -30,6 +31,7 @@ import gregtech.api.util.GTUtility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchInput extends MTEHatch {
 
     // hatch filter is disabled by default, meaning any fluid can be inserted when in structure.
@@ -209,10 +211,5 @@ public class MTEHatchInput extends MTEHatch {
             "gt.blockmachines.input_hatch_multislot.desc",
             GTUtility.formatNumbers(getCapacityPerTank(mTier, slots)),
             slots);
-    }
-
-    @Override
-    public boolean isSkipGenerateDescription() {
-        return true;
     }
 }

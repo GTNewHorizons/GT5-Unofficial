@@ -83,7 +83,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 final String tSuffix = (tMetaTileEntity instanceof ISecondaryDescribable
                     && ((ISecondaryDescribable) tMetaTileEntity).isDisplaySecondaryDescription()) ? "_secondary" : "";
                 final String key = "gt.blockmachines." + tMetaTileEntity.getMetaName() + ".tooltip" + tSuffix;
-                addDescription(aList, tTileEntity.getDescription(), key, tMetaTileEntity.isSkipGenerateDescription());
+                addDescription(aList, tTileEntity.getDescription(), key, isSkipGenerateDescription(tMetaTileEntity));
                 tMetaTileEntity.addAdditionalTooltipInformation(aStack, aList);
                 if (tTileEntity.getEUCapacity() > 0L) {
                     if (tTileEntity.getInputVoltage() > 0L) {
@@ -167,7 +167,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
         if (GregTechAPI.METATILEENTITIES[aDamage] != null) {
             final IMetaTileEntity tMetaTileEntity = GregTechAPI.METATILEENTITIES[aDamage].getBaseMetaTileEntity()
                 .getMetaTileEntity();
-            if (tMetaTileEntity.isSkipGenerateDescription()) return;
+            if (isSkipGenerateDescription(tMetaTileEntity)) return;
             String key = "gt.blockmachines." + tMetaTileEntity.getMetaName() + ".tooltip";
             if (tMetaTileEntity instanceof ISecondaryDescribable) {
                 final String[] tSecondaryDescription = ((ISecondaryDescribable) tMetaTileEntity)
@@ -404,5 +404,10 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
             }
         }
         return null;
+    }
+
+    private static boolean isSkipGenerateDescription(IMetaTileEntity metaTE) {
+        return metaTE.getClass()
+            .getAnnotation(IMetaTileEntity.SkipGenerateDescription.class) != null;
     }
 }

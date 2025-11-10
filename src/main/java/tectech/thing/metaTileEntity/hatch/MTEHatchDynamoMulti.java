@@ -15,6 +15,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
@@ -26,6 +27,7 @@ import tectech.util.CommonValues;
 /**
  * Created by danie_000 on 16.12.2016.
  */
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchDynamoMulti extends MTEHatch {
 
     public final int maxAmperes;
@@ -175,10 +177,5 @@ public class MTEHatchDynamoMulti extends MTEHatch {
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return false;
-    }
-
-    @Override
-    public boolean isSkipGenerateDescription() {
-        return true;
     }
 }

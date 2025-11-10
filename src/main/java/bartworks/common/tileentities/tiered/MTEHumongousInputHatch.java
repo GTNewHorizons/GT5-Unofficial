@@ -14,10 +14,12 @@
 package bartworks.common.tileentities.tiered;
 
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHumongousInputHatch extends MTEHatchInput {
 
     final int CAPACITY = 2_000_000_000;

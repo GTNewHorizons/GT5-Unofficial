@@ -38,6 +38,7 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPipe, ILocalizedMetaPipeEntity {
 
     public final float mThickNess;
@@ -423,11 +424,6 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
             StatCollector
                 .translateToLocalFormatted("gt.blockmachines.itempipe.capacity.tick", getMaxPipeCapacity(), mTickTime),
             StatCollector.translateToLocalFormatted("gt.blockmachines.itempipe.rounting_value", mStepSize) };
-    }
-
-    @Override
-    public boolean isSkipGenerateDescription() {
-        return true;
     }
 
     private boolean isInventoryEmpty() {

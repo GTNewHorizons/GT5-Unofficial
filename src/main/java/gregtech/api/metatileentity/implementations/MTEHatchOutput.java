@@ -31,6 +31,7 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IFluidLockable;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -40,6 +41,7 @@ import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.widget.FluidLockWidget;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLockable, IAddUIWidgets {
 
     protected String lockedFluidName = null;
@@ -463,10 +465,5 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
     public String[] getDescription() {
         return GTSplit
             .splitLocalizedFormatted("gt.blockmachines.output_hatch.desc", GTUtility.formatNumbers(getCapacity()));
-    }
-
-    @Override
-    public boolean isSkipGenerateDescription() {
-        return true;
     }
 }

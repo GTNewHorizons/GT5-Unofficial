@@ -72,6 +72,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IMEConnectable;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
@@ -81,6 +82,7 @@ import gregtech.api.util.GTUtility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelState, IMEConnectable, IDataCopyable {
 
     private static final long DEFAULT_CAPACITY = 128_000;
@@ -102,16 +104,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     boolean hadCell = false;
 
     public MTEHatchOutputME(int aID, String aName, String aNameRegional) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            3,
-            new String[] { "Fluid Output for Multiblocks", "Stores directly into ME",
-                "Can cache up to 128kL of fluids by default", "Change cache size by inserting a fluid storage cell",
-                "Change ME connection behavior by right-clicking with wire cutter",
-                "Partition the inserted Storage Cell to filter accepted outputs" },
-            1);
+        super(aID, aName, aNameRegional, 3, null, 1);
     }
 
     public MTEHatchOutputME(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

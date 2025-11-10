@@ -14,10 +14,12 @@
 package bartworks.common.tileentities.tiered;
 
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEGiantOutputHatch extends MTEHatchOutput {
 
     public MTEGiantOutputHatch(int aID, String aName, String aNameRegional) {

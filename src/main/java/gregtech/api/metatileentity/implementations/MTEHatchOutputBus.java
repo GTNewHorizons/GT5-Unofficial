@@ -33,6 +33,7 @@ import gregtech.api.interfaces.IOutputBus;
 import gregtech.api.interfaces.IOutputBusTransaction;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IItemLockable;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -43,6 +44,7 @@ import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchOutputBus extends MTEHatch
     implements IAddUIWidgets, IItemLockable, IDataCopyable, IAddGregtechLogo, IOutputBus {
 
@@ -485,10 +487,5 @@ public class MTEHatchOutputBus extends MTEHatch
     public String[] getDescription() {
         final String suffix = getSlots(mTier) >= 2 ? ".desc" : ".singular.desc";
         return GTSplit.splitLocalizedFormatted("gt.blockmachines.output_bus" + suffix, getSlots(mTier));
-    }
-
-    @Override
-    public boolean isSkipGenerateDescription() {
-        return true;
     }
 }

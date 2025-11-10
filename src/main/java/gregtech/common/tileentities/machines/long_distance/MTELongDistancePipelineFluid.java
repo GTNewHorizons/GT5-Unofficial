@@ -37,6 +37,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELongDistancePipelineFluid extends MTELongDistancePipelineBase {
 
     static final FluidTankInfo[] emptyTank = { new FluidTankInfo(null, Integer.MAX_VALUE) };

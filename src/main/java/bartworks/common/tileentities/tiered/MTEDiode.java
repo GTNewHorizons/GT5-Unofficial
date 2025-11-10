@@ -36,6 +36,7 @@ import gregtech.api.metatileentity.implementations.MTEBasicHull;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEDiode extends MTEBasicHull {
 
     private long maxAmps;

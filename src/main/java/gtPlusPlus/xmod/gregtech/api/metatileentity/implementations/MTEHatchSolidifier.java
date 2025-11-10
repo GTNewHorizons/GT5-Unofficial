@@ -25,6 +25,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
@@ -33,6 +34,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.base.ItemSelectBaseGui;
 import gtPlusPlus.core.util.Utils;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationCircuitSupport {
 
     public static final int moldSlot = 2;

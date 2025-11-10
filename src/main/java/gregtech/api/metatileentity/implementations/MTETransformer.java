@@ -40,6 +40,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  * This is the main construct for my Basic Machines such as the Automatic Extractor Extend this class to make a simple
  * Machine
  */
+@IMetaTileEntity.SkipGenerateDescription
 public class MTETransformer extends MTETieredMachineBlock {
 
     public MTETransformer(int aID, String aName, String aNameRegional, int aTier) {
@@ -316,10 +317,5 @@ public class MTETransformer extends MTETieredMachineBlock {
             "gt.blockmachines.transformer.desc",
             GTUtility.getColoredTierNameFromVoltage(maxEUInput()) + EnumChatFormatting.GRAY,
             GTUtility.getColoredTierNameFromVoltage(maxEUOutput()) + EnumChatFormatting.GRAY) };
-    }
-
-    @Override
-    public boolean isSkipGenerateDescription() {
-        return true;
     }
 }

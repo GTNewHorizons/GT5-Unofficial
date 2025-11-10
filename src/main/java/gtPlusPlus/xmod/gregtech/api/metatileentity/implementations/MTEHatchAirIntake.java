@@ -8,11 +8,13 @@ import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.Utils;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchAirIntake extends MTEHatchFluidGenerator {
 
     public MTEHatchAirIntake(final int aID, final String aName, final String aNameRegional, final int aTier) {

@@ -72,6 +72,7 @@ import gregtech.common.covers.CoverFluidRegulator;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEntity {
 
     protected static final EnumMap<ForgeDirection, EnumMap<Border, ForgeDirection>> FACE_BORDER_MAP = new EnumMap<>(
@@ -945,11 +946,6 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
                 StatCollector.translateToLocalFormatted("gt.blockmachines.fluidpipe.pipe_amount.desc", mPipeAmount));
         }
         return descriptions.toArray(new String[0]);
-    }
-
-    @Override
-    public boolean isSkipGenerateDescription() {
-        return true;
     }
 
     @Override

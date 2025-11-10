@@ -1,7 +1,5 @@
 package gregtech.common.tileentities.machines;
 
-import net.minecraft.util.StatCollector;
-
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -9,7 +7,9 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicHullNonElectric;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEBasicHullBronze extends MTEBasicHullNonElectric {
 
     public MTEBasicHullBronze(int aID, String aName, String aNameRegional, int aTier) {
@@ -41,6 +41,6 @@ public class MTEBasicHullBronze extends MTEBasicHullNonElectric {
 
     @Override
     public String[] getDescription() {
-        return new String[] { StatCollector.translateToLocal("gt.blockmachines.bronze_hull.desc") };
+        return GTSplit.splitLocalized("gt.blockmachines.bronze_hull.desc");
     }
 }

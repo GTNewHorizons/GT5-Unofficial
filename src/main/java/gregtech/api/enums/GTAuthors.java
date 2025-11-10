@@ -183,6 +183,7 @@ public class GTAuthors {
         createChromLetter("r", CHAOS),
         createChromLetter("o", AIR),
         createChromLetter("m", STAR));
+    public static final String AuthorChrom = "" + EnumChatFormatting.GREEN + EnumChatFormatting.BOLD + "Chrom";
     public static final Supplier<String> AuthorThree = chain(
         animatedText(
             "Three",

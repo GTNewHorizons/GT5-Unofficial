@@ -16,9 +16,11 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ILocalizedMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.BlockFrameBox;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEFrame extends MetaPipeEntity implements ITemporaryTE, ILocalizedMetaPipeEntity {
 
     public static final String LOCALIZED_DESC_FORMAT = "gt.blockmachines.gt_frame.desc.format";
@@ -66,12 +68,7 @@ public class MTEFrame extends MetaPipeEntity implements ITemporaryTE, ILocalized
 
     @Override
     public String[] getDescription() {
-        return new String[] { StatCollector.translateToLocal(LOCALIZED_DESC_FORMAT) };
-    }
-
-    @Override
-    public boolean isSkipGenerateDescription() {
-        return true;
+        return GTSplit.splitLocalized(LOCALIZED_DESC_FORMAT);
     }
 
     @Override

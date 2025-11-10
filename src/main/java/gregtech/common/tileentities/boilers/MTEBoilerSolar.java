@@ -22,6 +22,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.modularui2.GTGuiTheme;
@@ -33,6 +34,7 @@ import gregtech.common.config.MachineStats;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEBoilerSolar extends MTEBoiler {
 
     public static final String LPS_FMT = "%s L/s";
@@ -62,11 +64,6 @@ public class MTEBoilerSolar extends MTEBoiler {
             "gt.blockmachines.boiler.solar.desc",
             GTUtility.formatNumbers(getMaxOutputPerSecond()),
             GTUtility.formatNumbers(getMinOutputPerSecond()));
-    }
-
-    @Override
-    public boolean isSkipGenerateDescription() {
-        return true;
     }
 
     public int getMinOutputPerSecond() {

@@ -14,6 +14,7 @@ import gregtech.api.metatileentity.implementations.MTETransformer;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.util.Utils;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTETransformerHiAmp extends MTETransformer {
 
     private boolean mHalfMode = false;

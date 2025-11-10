@@ -58,6 +58,7 @@ import ic2.api.reactor.IReactorChamber;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, ILocalizedMetaPipeEntity {
 
     public final float mThickNess;
@@ -520,11 +521,6 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
                 + EnumChatFormatting.GRAY,
             EnumChatFormatting.YELLOW + GTUtility.formatNumbers(mAmperage) + EnumChatFormatting.GRAY,
             EnumChatFormatting.RED + GTUtility.formatNumbers(mCableLossPerMeter) + EnumChatFormatting.GRAY);
-    }
-
-    @Override
-    public boolean isSkipGenerateDescription() {
-        return true;
     }
 
     @Override

@@ -7,10 +7,12 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTSplit;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchEnergy extends MTEHatch {
 
     public MTEHatchEnergy(int aID, String aName, String aNameRegional, int aTier) {
@@ -96,10 +98,5 @@ public class MTEHatchEnergy extends MTEHatch {
     @Override
     public String[] getDescription() {
         return GTSplit.splitLocalized("gt.blockmachines.energy_hatch.desc");
-    }
-
-    @Override
-    public boolean isSkipGenerateDescription() {
-        return true;
     }
 }

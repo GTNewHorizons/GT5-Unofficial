@@ -1,5 +1,9 @@
 package gregtech.api.interfaces.metatileentity;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -337,16 +341,16 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     /**
      * Get the description for the TileEntity.
      * <p>
-     * The behavior of this method depends on the value returned by {@link #isSkipGenerateDescription()}:
+     * The behavior of this method depends on whether the class is annotated with {@link SkipGenerateDescription}:
      * </p>
      * <ul>
-     * <li>When {@link #isSkipGenerateDescription()} returns <code>true</code>, the returned value is displayed directly
-     * in the game.</li>
-     * <li>When {@link #isSkipGenerateDescription()} returns <code>false</code>, the returned value is automatically
+     * <li>When the class is annotated with {@link SkipGenerateDescription}, the returned value is displayed directly in
+     * the game.</li>
+     * <li>When the class is not annotated with {@link SkipGenerateDescription}, the returned value is automatically
      * added to <code>GregTech.lang</code>, and display the value from <code>GregTech.lang</code> in the game</li>
      * </ul>
      * <p>
-     * Additional notes when {@link #isSkipGenerateDescription()} returns <code>false</code>:
+     * Additional notes when the class is not annotated with {@link SkipGenerateDescription}:
      * </p>
      * <ul>
      * <li>To use the %s format specifier, you can use the {@link #addFormattedString(String)}</li>
@@ -355,7 +359,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * </ul>
      *
      * @return the description, will display in the tooltips
-     * @see #isSkipGenerateDescription()
+     * @see SkipGenerateDescription
      * @see #addFormattedString(String)
      */
     String[] getDescription();
@@ -364,10 +368,10 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * Add a formatting marker for automatic parameter substitution.
      * <p>
      * This can also be used to display raw text.
-     * 
+     *
      * @param formattedStr the String to be formatted with parameter substitution markers.
      * @return the special formatting markers for automatic parsing.
-     * @apiNote this method should NOT be used when {@link #isSkipGenerateDescription()} returns <code>true</code>,
+     * @apiNote this method should NOT be used when the class is annotated with {@link SkipGenerateDescription},
      *          otherwise the game will display the format used for marking.
      * @see #getDescription()
      */
@@ -376,19 +380,28 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     }
 
     /**
-     * Decide whether to skip generating the tooltips.
+     * Annotation to mark classes that should skip generating tooltips through the GregTech.lang system.
      * <p>
-     * 
-     * @return <code>true</code> to skip the generating the tooltips, and display the raw texts of
-     *         {@link #getDescription()};
-     *         <code>false</code> to display the texts by <code>GregTech.lang</code> system.
-     * @apiNote please ensure the return of {@link #getDescription()} is not Hardcoded if this returns
-     *          <code>true</code>.
+     *
+     * When a class is annotated with {@link SkipGenerateDescription}:
+     * </p>
+     * <ul>
+     * <li>The returned value of {@link #getDescription()} is displayed directly in the game</li>
+     * <li>Automatic addition to <code>GregTech.lang</code> is skipped</li>
+     * </ul>
+     * <p>
+     * When a class is not annotated with {@link SkipGenerateDescription}:
+     * </p>
+     * <ul>
+     * <li>The returned value of {@link #getDescription()} is automatically added to <code>GregTech.lang</code></li>
+     *
+     * @apiNote please ensure the return of {@link #getDescription()} is not Hardcoded if this annotation is present.
+     *          This annotation is only effective when annotated to subclasses of {@link IMetaTileEntity}.
      * @see #getDescription()
      */
-    default boolean isSkipGenerateDescription() {
-        return false;
-    }
+    @Target(ElementType.TYPE)
+    @Retention(RetentionPolicy.RUNTIME)
+    @interface SkipGenerateDescription {}
 
     /**
      * In case the Output Voltage varies.

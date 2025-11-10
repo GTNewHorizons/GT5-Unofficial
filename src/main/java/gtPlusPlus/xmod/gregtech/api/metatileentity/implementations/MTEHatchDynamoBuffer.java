@@ -3,11 +3,13 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gtPlusPlus.core.util.Utils;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchDynamoBuffer extends MTEHatchDynamo {
 
     public MTEHatchDynamoBuffer(final int aID, final String aName, final String aNameRegional, final int aTier) {

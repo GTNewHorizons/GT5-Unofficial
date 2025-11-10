@@ -37,6 +37,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELongDistancePipelineItem extends MTELongDistancePipelineBase {
 
     public MTELongDistancePipelineItem(int aID, String aName, String aNameRegional, int aTier) {

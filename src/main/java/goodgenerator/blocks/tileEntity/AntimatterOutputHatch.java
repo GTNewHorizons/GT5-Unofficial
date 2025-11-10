@@ -9,12 +9,14 @@ import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class AntimatterOutputHatch extends MTEHatchOutput {
 
     private static final FluidStack ANTIMATTER = Materials.Antimatter.getFluid(1);

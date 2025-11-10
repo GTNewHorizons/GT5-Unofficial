@@ -13,6 +13,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTSplit;
@@ -21,6 +22,7 @@ import gregtech.api.util.GTSplit;
 /*
  * To be removed in the next major update, to be replaced with a stronger, consolidated wireless dynamo.
  */
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEWirelessDynamo extends MTEHatchDynamo {
 
     private UUID owner_uuid;
