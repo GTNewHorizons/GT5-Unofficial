@@ -2219,7 +2219,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 addItem(
                     Conveyor_Module_UIV.ID,
                     "Conveyor Module (UIV)",
-                    PartNotCoverText,
+                    "64 stacks every 1/20 sec (as Cover)",
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.ITER, 512L)))
@@ -2228,7 +2228,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Conveyor_Module_UMV.ID,
                 "Conveyor Module (UMV)",
-                PartNotCoverText,
+                "128 stacks every 1/20 sec (as Cover)",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 512L)));
@@ -2236,7 +2236,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Conveyor_Module_UXV.ID,
                 "Conveyor Module (UXV)",
-                PartNotCoverText,
+                "256 stacks every 1/20 sec (as Cover)",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 512L)));
@@ -2244,7 +2244,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Conveyor_Module_MAX.ID,
                 "Conveyor Module (MAX)",
-                PartNotCoverText,
+                "512 stacks every 1/20 sec (as Cover)",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 512L)));
@@ -3936,6 +3936,22 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             ItemList.Conveyor_Module_UEV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[10][0], TextureFactory.of(OVERLAY_CONVEYOR)),
             context -> new CoverConveyor(context, 1, 32, TextureFactory.of(OVERLAY_CONVEYOR)));
+        CoverRegistry.registerCover(
+            ItemList.Conveyor_Module_UIV.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[11][0], TextureFactory.of(OVERLAY_CONVEYOR)),
+            context -> new CoverConveyor(context, 1, 64, TextureFactory.of(OVERLAY_CONVEYOR)));
+        CoverRegistry.registerCover(
+            ItemList.Conveyor_Module_UMV.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[12][0], TextureFactory.of(OVERLAY_CONVEYOR)),
+            context -> new CoverConveyor(context, 1, 128, TextureFactory.of(OVERLAY_CONVEYOR)));
+        CoverRegistry.registerCover(
+            ItemList.Conveyor_Module_UXV.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[13][0], TextureFactory.of(OVERLAY_CONVEYOR)),
+            context -> new CoverConveyor(context, 1, 256, TextureFactory.of(OVERLAY_CONVEYOR)));
+        CoverRegistry.registerCover(
+            ItemList.Conveyor_Module_MAX.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[14][0], TextureFactory.of(OVERLAY_CONVEYOR)),
+            context -> new CoverConveyor(context, 1, 512, TextureFactory.of(OVERLAY_CONVEYOR)));
 
         CoverRegistry.registerCover(
             ItemList.Robot_Arm_LV.get(1L),
