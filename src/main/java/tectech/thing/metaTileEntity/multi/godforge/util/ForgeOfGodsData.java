@@ -8,6 +8,7 @@ import net.minecraft.util.MathHelper;
 
 import com.google.common.math.LongMath;
 
+import gregtech.common.gui.modularui.multiblock.godforge.data.Formatters;
 import tectech.thing.metaTileEntity.multi.godforge.color.ForgeOfGodsStarColor;
 import tectech.thing.metaTileEntity.multi.godforge.color.StarColorStorage;
 import tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade;
@@ -22,7 +23,9 @@ public class ForgeOfGodsData {
     public static final int DEFAULT_ROTATION_SPEED = 5;
     public static final int DEFAULT_STAR_SIZE = 20;
     public static final String DEFAULT_STAR_COLOR = ForgeOfGodsStarColor.DEFAULT.getName();
+    @Deprecated
     public static final MilestoneFormatter DEFAULT_FORMATTING_MODE = MilestoneFormatter.COMMA;
+    public static final Formatters DEFAULT_FORMATTER = Formatters.COMMA;
     public static final BigInteger DEFAULT_TOTAL_POWER = BigInteger.ZERO;
 
     public static final long POWER_MILESTONE_CONSTANT = LongMath.pow(10, 15);
@@ -61,7 +64,9 @@ public class ForgeOfGodsData {
     private boolean batteryCharging;
     private boolean inversion;
     private boolean gravitonShardEjection;
+    @Deprecated
     private MilestoneFormatter formattingMode = DEFAULT_FORMATTING_MODE;
+    private Formatters formatter = DEFAULT_FORMATTER;
     private boolean isRenderActive;
     private boolean secretUpgrade;
     private boolean isRendererDisabled;
@@ -295,8 +300,16 @@ public class ForgeOfGodsData {
         return formattingMode;
     }
 
+    public Formatters getFormatter() {
+        return formatter;
+    }
+
     public void setFormattingMode(MilestoneFormatter formattingMode) {
         this.formattingMode = formattingMode;
+    }
+
+    public void setFormatter(Formatters formatter) {
+        this.formatter = formatter;
     }
 
     public void cycleFormattingMode() {
@@ -485,6 +498,9 @@ public class ForgeOfGodsData {
         if (force || formattingMode != DEFAULT_FORMATTING_MODE) {
             NBT.setInteger("formattingMode", formattingMode.ordinal());
         }
+        if (force || formatter != DEFAULT_FORMATTER) {
+            NBT.setInteger("formatter", formatter.ordinal());
+        }
 
         upgrades.serializeToNBT(NBT, force);
         starColors.serializeToNBT(NBT);
@@ -522,9 +538,14 @@ public class ForgeOfGodsData {
         if (NBT.hasKey("totalPowerConsumed")) {
             totalPowerConsumed = new BigInteger(NBT.getByteArray("totalPowerConsumed"));
         }
+        // todo legacy nbt handle this
         if (NBT.hasKey("formattingMode")) {
             int index = MathHelper.clamp_int(NBT.getInteger("formattingMode"), 0, MilestoneFormatter.VALUES.length);
             formattingMode = MilestoneFormatter.VALUES[index];
+        }
+        if (NBT.hasKey("formatter")) {
+            int index = MathHelper.clamp_int(NBT.getInteger("formatter"), 0, Formatters.VALUES.length);
+            formatter = Formatters.VALUES[index];
         }
 
         // Renderer information

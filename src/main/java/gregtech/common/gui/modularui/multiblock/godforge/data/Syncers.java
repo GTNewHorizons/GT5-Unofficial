@@ -13,7 +13,6 @@ import com.cleanroommc.modularui.value.sync.SyncHandler;
 
 import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
-import tectech.thing.metaTileEntity.multi.godforge.util.MilestoneFormatter;
 
 /**
  * Sync handler helper primarily written to solve the issue of multiple panels needing
@@ -24,9 +23,9 @@ public class Syncers<T extends SyncHandler> {
 
     // spotless:off
 
-    public static final Syncers<EnumSyncValue<MilestoneFormatter>> FORMATTING_MODE = new Syncers<>(
-        "fog.sync.formatting_mode",
-        data -> new EnumSyncValue<>(MilestoneFormatter.class, data::getFormattingMode, data::setFormattingMode));
+    public static final Syncers<EnumSyncValue<Formatters>> FORMATTER = new Syncers<>(
+        "fog.sync.formatter",
+        data -> new EnumSyncValue<>(Formatters.class, data::getFormatter, data::setFormatter));
 
     public static final Syncers<BooleanSyncValue> BATTERY_CHARGING = new Syncers<>(
         "fog.sync.battery_charging",
