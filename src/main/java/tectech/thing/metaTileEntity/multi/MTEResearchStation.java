@@ -47,11 +47,6 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -611,37 +606,6 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     @Override
     public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
         return Arrays.asList(scannerFakeRecipes, TecTechRecipeMaps.researchStationFakeRecipes);
-    }
-
-    @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        super.drawTexts(screenElements, inventorySlot);
-        screenElements
-            .widget(
-                new TextWidget().setStringSupplier(
-                    () -> StatCollector.translateToLocalFormatted("GT5U.gui.text.researching_item", clientOutputName))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setEnabled(
-                        widget -> computationRequired > 0 && clientOutputName != null && !clientOutputName.isEmpty()))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector.translateToLocalFormatted(
-                            "GT5U.gui.text.research_progress",
-                            getComputationConsumed(),
-                            getComputationRequired(),
-                            GTUtility.formatNumbers(getComputationProgress())))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setEnabled(
-                        widget -> computationRequired > 0 && clientOutputName != null && !clientOutputName.isEmpty()))
-            .widget(new FakeSyncWidget.LongSyncer(() -> computationRequired, aLong -> computationRequired = aLong))
-            .widget(new FakeSyncWidget.LongSyncer(() -> computationRemaining, aLong -> computationRemaining = aLong))
-            .widget(new FakeSyncWidget.StringSyncer(() -> {
-                if (tRecipe != null && tRecipe.mOutput != null) {
-                    return tRecipe.mOutput.getDisplayName();
-                }
-                return "";
-            }, aString -> clientOutputName = aString));
     }
 
     @Override
