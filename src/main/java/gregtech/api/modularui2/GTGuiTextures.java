@@ -210,6 +210,8 @@ public final class GTGuiTextures {
         .name(GTTextureIds.SLOT_EMPTY)
         .build();
 
+    public static final UITexture SLOT_OUTLINE_GREEN = UITexture.fullImage(MODID, "gui/picture/green_selector");
+
     // endregion slot
 
     // region slot overlay
@@ -747,6 +749,8 @@ public final class GTGuiTextures {
         .location(MODID, "gui/picture/milestone_composition_glow")
         .nonOpaque()
         .build();
+
+    public static final UITexture PICTURE_INFO = fullImage(GregTech.ID, "gui/picture/information_round");
 
     public static final UITexture TT_CONTROLLER_SLOT_HEAT_SINK = UITexture.builder()
         .location(MODID, "gui/picture/heat_sink_small")
