@@ -2068,8 +2068,8 @@ EOH.Recipe.BaseRecipeChance=Base Recipe Chance: %s%%
 EOH.Recipe.RecipeEnergyEfficiency=Recipe Energy Efficiency: %s%%
 EOH.Recipe.Warning=§4§lWarning§r: Not all items displayed.
 
-gt.blockmachines.dynamo_hatch.wireless=§7Stores energy globally in a network, up to 2^(2^31) EU.\n§7Does not connect to wires. This block accepts EU into the network.\nAuthor: §4§l§o§nC§6§l§o§no§a§l§o§nl§3§l§o§ne§5§l§o§nn§7§l & §a§lChrom
-gt.blockmachines.energy_hatch.wireless=§7Stores energy globally in a network, up to 2^(2^31) EU.\n§7Does not connect to wires. This block withdraws EU from the network.\n%s\nAuthor: §4§l§o§nC§6§l§o§no§a§l§o§nl§3§l§o§ne§5§l§o§nn§7§l & §9§lCloud
+gt.blockmachines.dynamo_hatch.wireless=§7Stores energy globally in a network, up to 2^(2^31) EU.\n§7Does not connect to wires. This block accepts EU into the network.
+gt.blockmachines.energy_hatch.wireless=§7Stores energy globally in a network, up to 2^(2^31) EU.\n§7Does not connect to wires. This block withdraws EU from the network.
 
 gt.godforgecasing.0.name=Singularity Reinforced Stellar Shielding Casing
 gt.godforgecasing.1.name=Celestial Matter Guidance Casing

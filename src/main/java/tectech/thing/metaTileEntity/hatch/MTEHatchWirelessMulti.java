@@ -26,6 +26,7 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -229,11 +230,12 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti {
     public String[] getDescription() {
         return GTSplit.splitLocalizedFormattedWithSuffix(
             "gt.blockmachines.energy_hatch.wireless",
-            translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
-                + YELLOW
-                + GTUtility.formatNumbers(maxAmperes * V[mTier])
-                + GRAY
-                + " EU/t",
-            translateToLocal("gt.blockmachines.hatch.screwdrivertooltip"));
+            new String[] { GTAuthors.buildAuthorsWithFormat(GTAuthors.AuthorColen, GTAuthors.AuthorCloud.get()),
+                translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
+                    + YELLOW
+                    + GTUtility.formatNumbers(maxAmperes * V[mTier])
+                    + GRAY
+                    + " EU/t",
+                translateToLocal("gt.blockmachines.hatch.screwdrivertooltip") });
     }
 }

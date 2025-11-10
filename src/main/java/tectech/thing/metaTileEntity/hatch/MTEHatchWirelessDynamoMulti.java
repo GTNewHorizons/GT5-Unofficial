@@ -13,6 +13,7 @@ import java.util.UUID;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -123,10 +124,11 @@ public class MTEHatchWirelessDynamoMulti extends MTEHatchDynamoMulti {
     public String[] getDescription() {
         return GTSplit.splitLocalizedWithSuffix(
             "gt.blockmachines.dynamo_hatch.wireless",
-            translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
-                + YELLOW
-                + GTUtility.formatNumbers(maxAmperes * V[mTier])
-                + GRAY
-                + " EU/t");
+            new String[] { GTAuthors.buildAuthorsWithFormat(GTAuthors.AuthorColen, GTAuthors.AuthorChrom),
+                translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
+                    + YELLOW
+                    + GTUtility.formatNumbers(maxAmperes * V[mTier])
+                    + GRAY
+                    + " EU/t" });
     }
 }
