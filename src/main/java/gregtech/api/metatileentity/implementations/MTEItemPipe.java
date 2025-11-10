@@ -50,7 +50,7 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
     public boolean mIsRestrictive = false;
     private int[] cacheSides;
     private String mPrefixKey;
-    private String mMaterialNewNameKey;
+    private String materialKeyOverride;
 
     public MTEItemPipe(int aID, String aName, String aPrefixKey, float aThickNess, Materials aMaterial,
         int aInvSlotCount, int aStepSize, boolean aIsRestrictive, int aTickTime) {
@@ -451,15 +451,15 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
     }
 
     @Override
-    public String getMaterialNewNameKey() {
-        return mMaterialNewNameKey;
+    public String getMaterialKeyOverride() {
+        return materialKeyOverride;
     }
 
     public MTEItemPipe renameMaterial(@Nullable String newName) {
         if (newName == null) return this;
         final String key = mMaterial.getLocalizedNameKey() + ".itempipe.newname";
         GTLanguageManager.addStringLocalization(key, newName);
-        this.mMaterialNewNameKey = key;
+        this.materialKeyOverride = key;
         return this;
     }
 }

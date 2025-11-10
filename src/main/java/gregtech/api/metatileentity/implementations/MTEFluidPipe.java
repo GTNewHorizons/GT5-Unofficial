@@ -117,8 +117,8 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
      */
     public byte mDisableInput = 0;
     private String mPrefixKey;
-    private String mMaterialNameKey;
-    private boolean isNotAddMaterialTooltip = false;
+    private String materialKeyOverride;
+    private boolean shouldSkipMaterialTooltip = false;
 
     public MTEFluidPipe(int aID, String aName, String aPrefixKey, float aThickNess, Materials aMaterial, int aCapacity,
         int aHeatResistance, boolean aGasProof) {
@@ -1045,25 +1045,25 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
     }
 
     @Override
-    public String getMaterialNewNameKey() {
-        return mMaterialNameKey;
+    public String getMaterialKeyOverride() {
+        return materialKeyOverride;
     }
 
     @Override
-    public boolean isNotAddMaterialTooltip() {
-        return isNotAddMaterialTooltip;
+    public boolean shouldSkipMaterialTooltip() {
+        return shouldSkipMaterialTooltip;
     }
 
     public MTEFluidPipe renameMaterial(String newName) {
         if (newName == null) return this;
         final String key = mMaterial.getLocalizedNameKey() + ".fluidpipe.newname";
         GTLanguageManager.addStringLocalization(key, newName);
-        this.mMaterialNameKey = key;
+        this.materialKeyOverride = key;
         return this;
     }
 
-    public MTEFluidPipe setNotAddMaterialTooltip(boolean notAddMaterialTooltip) {
-        isNotAddMaterialTooltip = notAddMaterialTooltip;
+    public MTEFluidPipe setShouldSkipMaterialTooltip(boolean shouldSkipMaterialTooltip) {
+        this.shouldSkipMaterialTooltip = shouldSkipMaterialTooltip;
         return this;
     }
 

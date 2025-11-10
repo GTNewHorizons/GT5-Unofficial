@@ -14,7 +14,6 @@
 package bartworks.common.tileentities.multis;
 
 import static gregtech.api.enums.GTValues.VN;
-import static net.minecraft.util.EnumChatFormatting.GREEN;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -127,7 +126,12 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
             .addInputBus("Mining Pipes, optional, any base casing")
             .addInputHatch("Any base casing")
             .addOutputHatch("Any base casing")
-            .toolTipFinisher(GREEN + "bartimaeusnek" + "§7 via §2BartWorks");
+            .toolTipFinisher(
+                EnumChatFormatting.GREEN + "bartimaeusnek"
+                    + EnumChatFormatting.GRAY
+                    + " via "
+                    + EnumChatFormatting.DARK_GREEN
+                    + "BartWorks");
         return tt;
     }
 

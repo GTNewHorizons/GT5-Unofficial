@@ -12,23 +12,26 @@ import gregtech.api.enums.Materials;
 public interface ILocalizedMetaPipeEntity {
 
     /**
-     * the material of GT.
+     * Get the GT material of the pipe.
      *
-     * @apiNote if this returns <code>null</code>, you need rewrite the <code>getLocalizedName()</code>.
+     * @apiNote if this returns <code>null</code>, you need to rewrite {@link #getLocalizedName()}.
      */
     Materials getMaterial();
 
     /**
-     * the key of the format, it should contain "%s".
+     * Get the language key of the unformatted name.
+     * The translation should contain one "%s", which will get formatted with the name of the pipe material.
      *
-     * @apiNote if this returns <code>null</code>, you need rewrite the <code>getLocalizedName()</code>.
+     * @apiNote if this returns <code>null</code>, you need to rewrite {@link #getLocalizedName()}.
      */
     String getPrefixKey();
 
     /**
-     * if you want to use a different name instead of material's localized name, e.g. Polybenzimidazole - PBI.
+     * Returns the overridden language key if the pipe uses a different name than material's localized name, e.g. PBI
+     * instead of Polybenzimidazole,
+     * Otherwise, returns null.
      */
-    default String getMaterialNewNameKey() {
+    default String getMaterialKeyOverride() {
         return null;
     }
 
@@ -37,11 +40,11 @@ public interface ILocalizedMetaPipeEntity {
      */
     default String getLocalizedName() {
         if (getPrefixKey() != null && getMaterial() != null) {
-            if (getMaterialNewNameKey() == null) {
+            if (getMaterialKeyOverride() == null) {
                 return StatCollector.translateToLocalFormatted(getPrefixKey(), getMaterial().getLocalizedName());
             }
-            return StatCollector
-                .translateToLocalFormatted(getPrefixKey(), StatCollector.translateToLocal(getMaterialNewNameKey()));
+            if (getMaterial() != null) return StatCollector
+                .translateToLocalFormatted(getPrefixKey(), StatCollector.translateToLocal(getMaterialKeyOverride()));
         }
         return "Unnamed with ILocalizedMetaPipeEntity";
     }
@@ -49,17 +52,17 @@ public interface ILocalizedMetaPipeEntity {
     /**
      * Do not add the Material Tooltip when this returns <code>true</code>.
      */
-    default boolean isNotAddMaterialTooltip() {
+    default boolean shouldSkipMaterialTooltip() {
         return false;
     }
 
     /**
-     * Add material tooltip when {@link #isNotAddMaterialTooltip()} returns <code>false</false>.
-     * 
+     * Add material tooltip when {@link #shouldSkipMaterialTooltip()} returns <code>false</false>.
+     *
      * @param desc The list of tooltip (addInformation).
      */
     default void addMaterialTooltip(List<String> desc) {
-        if (isNotAddMaterialTooltip()) return;
+        if (shouldSkipMaterialTooltip()) return;
         if (getMaterial() == null) return;
         getMaterial().addTooltips(desc);
     }
