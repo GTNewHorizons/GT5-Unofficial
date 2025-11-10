@@ -9,6 +9,7 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
 
@@ -32,31 +33,40 @@ public class IndividualMilestonePanel {
 
         // registered on the Milestone panel, look up from there
         EnumSyncValue<Milestones> milestoneSyncer = Syncers.MILESTONE_CLICKED.lookupFrom(Panels.MILESTONE, hypervisor);
-        Milestones milestone = milestoneSyncer.getValue();
 
         // Background symbol
-        panel.child(
-            milestone.getSymbolBackground()
-                .asWidget()
-                .size(milestone.getSymbolWidth(), milestone.getSymbolHeight())
-                .align(Alignment.CENTER));
+        for (Milestones milestone : Milestones.VALUES) {
+            panel.child(getBackgroundImage(milestone, milestoneSyncer));
+        }
 
         Flow row = new Row().coverChildren()
             .alignX(0.5f)
             .marginTop(10); // todo check
 
         // Header
-        row.child(
-            IKey.str(EnumChatFormatting.GOLD + translateToLocal(milestone.getTitleLangKey()))
-                .alignment(Alignment.CENTER)
-                .asWidget()
-                .alignX(0.5f));
+        row.child(IKey.dynamic(() -> {
+            Milestones milestone = milestoneSyncer.getValue();
+            return EnumChatFormatting.GOLD + translateToLocal(milestone.getTitleLangKey());
+        })
+            .alignment(Alignment.CENTER)
+            .asWidget()
+            .alignX(0.5f));
 
+        panel.child(row);
         panel.child(ForgeOfGodsGuiUtil.panelCloseButton());
         return panel;
     }
 
     public static void registerSyncValues(PanelSyncManager syncManager) {
 
+    }
+
+    private static Widget<?> getBackgroundImage(Milestones milestone, EnumSyncValue<Milestones> syncer) {
+        // Cannot simply be DynamicDrawable as the widget width/height also needs to change
+        return milestone.getSymbolBackground()
+            .asWidget()
+            .size(milestone.getSymbolWidth(), milestone.getSymbolHeight())
+            .align(Alignment.CENTER)
+            .setEnabledIf($ -> syncer.getValue() == milestone);
     }
 }

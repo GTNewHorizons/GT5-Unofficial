@@ -70,6 +70,7 @@ public class MilestonePanel {
             .align(milestone.getPosition())
             .margin(MILESTONE_BUTTON_MARGIN_X, MILESTONE_BUTTON_MARGIN_Y);
 
+        IPanelHandler individualPanel = Panels.INDIVIDUAL_MILESTONE.getFrom(Panels.MILESTONE, hypervisor);
         DoubleSyncValue progressSyncer = milestone.getProgressSyncer()
             .lookupFrom(Panels.MILESTONE, hypervisor);
         DoubleSyncValue invertedProgressSyncer = milestone.getProgressInvertedSyncer()
@@ -82,16 +83,12 @@ public class MilestonePanel {
                 .background(milestone.getMainBackground())
                 .disableHoverBackground()
                 .onMousePressed($ -> {
-                    IPanelHandler individualPanel = Panels.INDIVIDUAL_MILESTONE.getFrom(Panels.MILESTONE, hypervisor);
-
-                    if (individualPanel.isPanelOpen()) {
-                        individualPanel.closePanel();
-                    }
-
                     EnumSyncValue<Milestones> syncer = Syncers.MILESTONE_CLICKED
                         .lookupFrom(Panels.MILESTONE, hypervisor);
                     syncer.setValue(milestone);
-                    individualPanel.openPanel();
+                    if (!individualPanel.isPanelOpen()) {
+                        individualPanel.openPanel();
+                    }
                     return true;
                 })
                 .tooltip(t -> t.addLine(translateToLocal("gt.blockmachines.multimachine.FOG.milestoneinfo"))));
