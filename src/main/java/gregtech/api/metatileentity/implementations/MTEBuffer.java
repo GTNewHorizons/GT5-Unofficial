@@ -13,10 +13,8 @@ import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.OptionalInt;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
@@ -28,6 +26,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.gtnewhorizon.gtnhlib.capability.item.ItemSink;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -40,6 +39,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtility;
 
@@ -334,7 +334,6 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
                 || aTimer % 200 == 0
                 || mSuccess > 0)) {
             mSuccess--;
-            updateSlots();
             moveItems(aBaseMetaTileEntity, aTimer);
             handleRedstoneOutput(aBaseMetaTileEntity);
         }
@@ -344,35 +343,40 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
         moveItems(aBaseMetaTileEntity, aTimer, 1);
     }
 
-    protected void moveItems(IGregTechTileEntity aBaseMetaTileEntity, long ignoredTimer, int stacks) {
-        int tCost;
-        if (bStockingMode) tCost = GTUtility.moveMultipleItemStacks(
-            aBaseMetaTileEntity,
-            aBaseMetaTileEntity.getTileEntityAtSide(aBaseMetaTileEntity.getBackFacing()),
-            aBaseMetaTileEntity.getBackFacing(),
-            aBaseMetaTileEntity.getFrontFacing(),
-            null,
-            false,
-            mTargetStackSize == 0 ? 64 : (byte) mTargetStackSize,
-            mTargetStackSize == 0 ? 1 : (byte) mTargetStackSize,
-            (byte) 64,
-            (byte) 1,
-            stacks);
-        else tCost = GTUtility.moveMultipleItemStacks(
-            aBaseMetaTileEntity,
-            aBaseMetaTileEntity.getTileEntityAtSide(aBaseMetaTileEntity.getBackFacing()),
-            aBaseMetaTileEntity.getBackFacing(),
-            aBaseMetaTileEntity.getFrontFacing(),
-            null,
-            false,
-            (byte) 64,
-            (byte) 1,
-            mTargetStackSize == 0 ? 64 : (byte) mTargetStackSize,
-            mTargetStackSize == 0 ? 1 : (byte) mTargetStackSize,
-            stacks);
+    protected void moveItems(IGregTechTileEntity igte, long ignoredTimer, int stacks) {
+        GTItemTransfer transfer = new GTItemTransfer();
 
-        if (tCost > 0 || aBaseMetaTileEntity.hasInventoryBeenModified()) {
+        transfer.source(igte, ForgeDirection.UNKNOWN);
+        transfer.sink(igte.getTileEntityAtSide(igte.getBackFacing()), igte.getFrontFacing());
+
+        transfer.setStacksToTransfer(stacks);
+
+        if (mTargetStackSize > 0) {
+            if (bStockingMode) {
+                ItemSink sink = transfer.getSink();
+
+                if (sink == null) return;
+
+                OptionalInt stored = sink.getStoredItemsInSink(null);
+
+                if (!stored.isPresent()) return;
+
+                int toTransfer = mTargetStackSize - stored.getAsInt();
+
+                transfer.setMaxTotalTransferred(toTransfer);
+            } else {
+                transfer.setFilter(stack -> stack.getStackSize() >= mTargetStackSize);
+                transfer.setMaxItemsPerTransfer(mTargetStackSize);
+            }
+        }
+
+        if (transfer.transfer() > 0 || igte.hasInventoryBeenModified()) {
             mSuccess = 50;
+
+            GTUtility.cleanInventory(this);
+            if (bSortStacks) {
+                GTUtility.compactInventory(this);
+            }
         }
     }
 
@@ -391,42 +395,6 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
     @Override
     public boolean allowGeneralRedstoneOutput() {
         return true;
-    }
-
-    public void updateSlots() {
-        for (int i = 0; i < mInventory.length; i++)
-            if (mInventory[i] != null && mInventory[i].stackSize <= 0) mInventory[i] = null;
-        if (bSortStacks) fillStacksIntoFirstSlots();
-    }
-
-    protected void fillStacksIntoFirstSlots() {
-        HashMap<GTUtility.ItemId, Integer> slots = new HashMap<>(mInventory.length);
-        HashMap<GTUtility.ItemId, ItemStack> stacks = new HashMap<>(mInventory.length);
-        List<GTUtility.ItemId> order = new ArrayList<>(mInventory.length);
-        List<Integer> validSlots = new ArrayList<>(mInventory.length);
-        for (int i = 0; i < mInventory.length - 1; i++) {
-            if (!isValidSlot(i)) continue;
-            validSlots.add(i);
-            ItemStack s = mInventory[i];
-            if (s == null) continue;
-            GTUtility.ItemId sID = GTUtility.ItemId.createNoCopy(s);
-            slots.merge(sID, s.stackSize, Integer::sum);
-            if (!stacks.containsKey(sID)) stacks.put(sID, s);
-            order.add(sID);
-            mInventory[i] = null;
-        }
-        int slotindex = 0;
-        for (GTUtility.ItemId sID : order) {
-            int toSet = slots.get(sID);
-            if (toSet == 0) continue;
-            int slot = validSlots.get(slotindex);
-            slotindex++;
-            mInventory[slot] = stacks.get(sID)
-                .copy();
-            toSet = Math.min(toSet, mInventory[slot].getMaxStackSize());
-            mInventory[slot].stackSize = toSet;
-            slots.merge(sID, toSet, (a, b) -> a - b);
-        }
     }
 
     @Override
