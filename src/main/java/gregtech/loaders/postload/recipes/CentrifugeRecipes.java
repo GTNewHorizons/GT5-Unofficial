@@ -21,6 +21,7 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
@@ -393,38 +394,40 @@ public class CentrifugeRecipes implements Runnable {
             .eut(5)
             .addTo(centrifugeRecipes);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 1),
-                GTUtility.getIntegratedCircuit(10))
-            .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium235, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium, 1))
-            .outputChances(1000, 500)
-            .duration(1 * MINUTES + 40 * SECONDS)
-            .eut((int) TierEU.RECIPE_HV)
-            .addTo(centrifugeRecipes);
+        if (!Mods.NuclearHorizons.isModLoaded()) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 1),
+                    GTUtility.getIntegratedCircuit(10))
+                .itemOutputs(
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium235, 1),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium, 1))
+                .outputChances(1000, 500)
+                .duration(1 * MINUTES + 40 * SECONDS)
+                .eut((int) TierEU.RECIPE_HV)
+                .addTo(centrifugeRecipes);
 
-        // Uranium Enrichment in Centrifuge by adding Fluorine (Uranium Hexafluoride)
+            // Uranium Enrichment in Centrifuge by adding Fluorine (Uranium Hexafluoride)
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 1))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium235, 1))
-            .outputChances(10000)
-            .fluidInputs(Materials.Fluorine.getGas(4_000))
-            .duration(3 * MINUTES + 20 * SECONDS)
-            .eut((int) TierEU.RECIPE_EV)
-            .addTo(centrifugeRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 1))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium235, 1))
+                .outputChances(10000)
+                .fluidInputs(Materials.Fluorine.getGas(4_000))
+                .duration(3 * MINUTES + 20 * SECONDS)
+                .eut((int) TierEU.RECIPE_EV)
+                .addTo(centrifugeRecipes);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium, 1))
-            .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plutonium241, 1),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Uranium, 1))
-            .outputChances(2000, 3000)
-            .duration(1 * MINUTES + 20 * SECONDS)
-            .eut(320)
-            .addTo(centrifugeRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium, 1))
+                .itemOutputs(
+                    GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plutonium241, 1),
+                    GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Uranium, 1))
+                .outputChances(2000, 3000)
+                .duration(1 * MINUTES + 20 * SECONDS)
+                .eut(320)
+                .addTo(centrifugeRecipes);
+        }
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 9))
