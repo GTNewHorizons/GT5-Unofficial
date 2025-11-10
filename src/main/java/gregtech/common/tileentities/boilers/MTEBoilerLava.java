@@ -465,11 +465,6 @@ public class MTEBoilerLava extends MTEBoiler {
             GTUITextures.OVERLAY_SLOT_BLOCK_STEAM.get(getSteamVariant()) };
     }
 
-    @Override
-    protected Widget createFuelSlotMui1() {
-        return new FluidSlotWidget(lavaTank).setBackground(getGUITextureSet().getFluidSlot(), getOverlaySlotIn())
-            .setPos(115, 61);
-    }
 
     static class LavaTank extends FluidTank {
 

@@ -276,11 +276,6 @@ public class MTEBoilerSolar extends MTEBoiler {
     }
 
     @Override
-    protected Widget createFuelSlotMui1() {
-        return null;
-    }
-
-    @Override
     protected SlotWidget createAshSlotMui1() {
         return null;
     }
