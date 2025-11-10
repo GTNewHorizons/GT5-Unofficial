@@ -33,7 +33,6 @@ import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -56,7 +55,7 @@ public class BaseItemComponent extends Item {
     public BaseItemComponent(final Material material, final ComponentTypes componentType) {
         this.componentMaterial = material;
         this.unlocalName = "item" + componentType.COMPONENT_NAME + material.getUnlocalizedName();
-        this.materialName = material.getLocalDefaultName();
+        this.materialName = material.getDefaultLocalName();
         this.translatedMaterialName = material::getLocalizedName;
         this.componentType = componentType;
         this.setCreativeTab(AddToCreativeTab.tabMisc);
