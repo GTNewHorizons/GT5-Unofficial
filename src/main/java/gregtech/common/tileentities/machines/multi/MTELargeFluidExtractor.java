@@ -331,42 +331,6 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
         return new MTELargeFluidExtractorGui(this);
     }
 
-    @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        super.drawTexts(screenElements, inventorySlot);
-
-        screenElements.widgets(TextWidget.dynamicString(() -> {
-            if (structureBadCasingCount) {
-                return EnumChatFormatting.DARK_RED
-                    + StatCollector
-                        .translateToLocalFormatted(
-                            "GT5U.gui.text.large_fluid_extractor.not_enough_casings",
-                            BASE_CASING_COUNT - MAX_HATCHES_ALLOWED,
-                            casingAmount)
-                        .replace("\\n", "\n")
-                    + EnumChatFormatting.RESET;
-            }
-
-            if (structureBadGlassTier) {
-                int hatchTier = 0;
-
-                for (var hatch : mEnergyHatches) {
-                    if (hatch.mTier > hatchTier) hatchTier = hatch.mTier;
-                }
-
-                return String.format(
-                    "%sEnergy hatch tier (%s) is too high\nfor the glass tier (%s).%s",
-                    EnumChatFormatting.DARK_RED,
-                    VN[hatchTier],
-                    VN[glassTier],
-                    RESET);
-            }
-
-            return "";
-        })
-            .setTextAlignment(Alignment.CenterLeft));
-    }
-
     public int getHatchTier() {
         int hatchTier = 0;
 
