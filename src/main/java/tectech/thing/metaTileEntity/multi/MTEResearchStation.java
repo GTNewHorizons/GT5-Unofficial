@@ -57,7 +57,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
-import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
@@ -678,7 +677,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
 
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
-        return new MTEMultiBlockBaseGui<MTEMultiBlockBase>(this) {
+        return new MTEMultiBlockBaseGui<MTEResearchStation>(this) {
 
             @Override
             protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager,
@@ -698,10 +697,10 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                     IKey.dynamic(
                         () -> StatCollector
                             .translateToLocalFormatted("GT5U.gui.text.researching_item", outputSyncer.getStringValue()))
-                        .asWidget())
-                    .setEnabledIf(
-                        ignored -> !outputSyncer.getStringValue()
-                            .isEmpty())
+                        .asWidget()
+                        .setEnabledIf(
+                            ignored -> !outputSyncer.getStringValue()
+                                .isEmpty()))
                     .child(IKey.dynamic(() -> {
                         long computationRemaining = computationRemSyncer.getLongValue();
                         long computationRequired = computationReqSyncer.getLongValue();
@@ -714,11 +713,10 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                                 100d * ((double) (computationRequired - computationRemaining)
                                     / (double) computationRequired)));
                     })
-                        .asWidget())
-                    .setEnabledIf(
-                        ignored -> !outputSyncer.getStringValue()
-                            .isEmpty());
-
+                        .asWidget()
+                        .setEnabledIf(
+                            ignored -> !outputSyncer.getStringValue()
+                                .isEmpty()));
                 return terminal;
             }
         }.withMachineModeIcons(
