@@ -58,6 +58,8 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
+import gregtech.common.gui.modularui.multiblock.MTELargeFluidExtractorGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -128,11 +130,29 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
 
     private int glassTier = -1;
     @Nullable
-    private HeatingCoilLevel mCoilLevel = null;
+    private HeatingCoilLevel coilLevel = null;
     @Nullable
-    private Byte mSolenoidLevel = null;
-    private int mCasingAmount;
-    private boolean mStructureBadGlassTier = false, mStructureBadCasingCount = false;
+    private Byte solenoidLevel = null;
+    private int casingAmount;
+    private boolean structureBadGlassTier = false;
+
+    public boolean getStructureBadCasingCount() {
+        return structureBadCasingCount;
+    }
+
+    public boolean getStructureBadGlassTier() {
+        return structureBadGlassTier;
+    }
+
+    public int getGlassTier() {
+        return glassTier;
+    }
+
+    public int getCasingAmount() {
+        return casingAmount;
+    }
+
+    private boolean structureBadCasingCount = false;
 
     public MTELargeFluidExtractor(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -151,12 +171,12 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
     public void clearHatches() {
         super.clearHatches();
 
-        mCasingAmount = 0;
-        mStructureBadGlassTier = false;
-        mStructureBadCasingCount = false;
+        casingAmount = 0;
+        structureBadGlassTier = false;
+        structureBadCasingCount = false;
         glassTier = -1;
-        mCoilLevel = null;
-        mSolenoidLevel = null;
+        coilLevel = null;
+        solenoidLevel = null;
     }
 
     @Override
@@ -165,8 +185,8 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
             return false;
         }
 
-        if (mCasingAmount < (BASE_CASING_COUNT - MAX_HATCHES_ALLOWED)) {
-            mStructureBadCasingCount = true;
+        if (casingAmount < (BASE_CASING_COUNT - MAX_HATCHES_ALLOWED)) {
+            structureBadCasingCount = true;
         }
 
         for (var energyHatch : mEnergyHatches) {
@@ -175,12 +195,12 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
             }
 
             if (glassTier < VoltageIndex.UEV && energyHatch.getTierForStructure() > glassTier) {
-                mStructureBadGlassTier = true;
+                structureBadGlassTier = true;
                 break;
             }
         }
 
-        return !mStructureBadGlassTier && !mStructureBadCasingCount;
+        return !structureBadGlassTier && !structureBadCasingCount;
     }
 
     @Override
@@ -215,23 +235,23 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
     }
 
     private void onCasingAdded() {
-        mCasingAmount++;
+        casingAmount++;
     }
 
     private HeatingCoilLevel getCoilLevel() {
-        return mCoilLevel;
+        return coilLevel;
     }
 
     private void setCoilLevel(HeatingCoilLevel level) {
-        mCoilLevel = level;
+        coilLevel = level;
     }
 
     private Byte getSolenoidLevel() {
-        return mSolenoidLevel;
+        return solenoidLevel;
     }
 
     private void setSolenoidLevel(byte level) {
-        mSolenoidLevel = level;
+        solenoidLevel = level;
     }
 
     @Override
@@ -307,8 +327,8 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
     }
 
     @Override
-    protected boolean useMui2() {
-        return false;
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTELargeFluidExtractorGui(this);
     }
 
     @Override
@@ -316,18 +336,18 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
         super.drawTexts(screenElements, inventorySlot);
 
         screenElements.widgets(TextWidget.dynamicString(() -> {
-            if (mStructureBadCasingCount) {
+            if (structureBadCasingCount) {
                 return EnumChatFormatting.DARK_RED
                     + StatCollector
                         .translateToLocalFormatted(
                             "GT5U.gui.text.large_fluid_extractor.not_enough_casings",
                             BASE_CASING_COUNT - MAX_HATCHES_ALLOWED,
-                            mCasingAmount)
+                            casingAmount)
                         .replace("\\n", "\n")
                     + EnumChatFormatting.RESET;
             }
 
-            if (mStructureBadGlassTier) {
+            if (structureBadGlassTier) {
                 int hatchTier = 0;
 
                 for (var hatch : mEnergyHatches) {
@@ -345,6 +365,15 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
             return "";
         })
             .setTextAlignment(Alignment.CenterLeft));
+    }
+
+    public int getHatchTier() {
+        int hatchTier = 0;
+
+        for (var hatch : mEnergyHatches) {
+            if (hatch.mTier > hatchTier) hatchTier = hatch.mTier;
+        }
+        return hatchTier;
     }
 
     @Override
@@ -398,11 +427,11 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
 
     @Override
     public int getMaxParallelRecipes() {
-        return Math.max(1, mSolenoidLevel == null ? 0 : (PARALLELS_PER_SOLENOID * mSolenoidLevel));
+        return Math.max(1, solenoidLevel == null ? 0 : (PARALLELS_PER_SOLENOID * solenoidLevel));
     }
 
     public float getCoilSpeedBonus() {
-        return (float) ((mCoilLevel == null ? 0 : SPEED_PER_COIL * mCoilLevel.getTier()));
+        return (float) ((coilLevel == null ? 0 : SPEED_PER_COIL * coilLevel.getTier()));
     }
 
     public float getSpeedBonus() {
@@ -410,8 +439,8 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
     }
 
     public float getEUMultiplier() {
-        double heatingBonus = (mCoilLevel == null ? 0
-            : GTUtility.powInt(HEATING_COIL_EU_MULTIPLIER, mCoilLevel.getTier()));
+        double heatingBonus = (coilLevel == null ? 0
+            : GTUtility.powInt(HEATING_COIL_EU_MULTIPLIER, coilLevel.getTier()));
 
         return (float) (BASE_EU_MULTIPLIER * heatingBonus);
     }
