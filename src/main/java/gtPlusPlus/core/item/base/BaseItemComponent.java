@@ -189,15 +189,7 @@ public class BaseItemComponent extends Item {
         try {
             if (this.materialName != null && !this.materialName.isEmpty() && (this.componentMaterial != null)) {
 
-                if (this.componentMaterial.vChemicalFormula.contains("?")) {
-                    list.add(StringUtils.sanitizeStringKeepBracketsQuestion(this.componentMaterial.vChemicalFormula));
-                } else {
-                    list.add(StringUtils.sanitizeStringKeepBrackets(this.componentMaterial.vChemicalFormula));
-                }
-
-                if (this.componentMaterial.isRadioactive) {
-                    list.add(GTPPCore.GT_Tooltip_Radioactive.get());
-                }
+                this.componentMaterial.addTooltip(list);
 
                 if (this.componentType == ComponentTypes.INGOT || this.componentType == ComponentTypes.HOTINGOT) {
                     if (this.unlocalName.toLowerCase()

@@ -405,5 +405,4 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
     public final Long[] getFluidContainerStats(ItemStack aStack) {
         return mFluidContainerStats.get((short) aStack.getItemDamage());
     }
-
 }

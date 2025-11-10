@@ -11,10 +11,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import gtPlusPlus.core.lib.GTPPCore;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -1784,5 +1786,17 @@ public class Material implements IOreMaterial {
 
     public void setWerkstoffID(short werkstoffID) {
         this.werkstoffID = werkstoffID;
+    }
+
+    public void addTooltip(List<String> list) {
+        if (this.vChemicalFormula.contains("?")) {
+            list.add(StringUtils.sanitizeStringKeepBracketsQuestion(this.vChemicalFormula));
+        } else {
+            list.add(StringUtils.sanitizeStringKeepBrackets(this.vChemicalFormula));
+        }
+
+        if (this.isRadioactive) {
+            list.add(StatCollector.translateToLocalFormatted("GTPP.core.GT_Tooltip_Radioactive", this.vRadiationLevel));
+        }
     }
 }

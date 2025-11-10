@@ -64,7 +64,7 @@ GTPP.machines.chisel_slot.tooltip=Target Slot
 GTPP.machines.chisel_slot.tooltip.1=§7Put chiseled item to specify output
 GTPP.core.GT_Tooltip=Added by: %s §7- §c[GT++]
 GTPP.core.GT_Tooltip_Builder=%s §7- §c[GT++]
-GTPP.core.GT_Tooltip_Radioactive=§7Warning: §aRadioactive! §6 Avoid direct handling without hazmat protection.
+GTPP.core.GT_Tooltip_Radioactive=§7Warning: §aRadioactive! §6 Avoid direct handling without hazmat protection. | Level: %s
 
 # RecipeMaps
 gtpp.recipe.cokeoven=Coke Oven

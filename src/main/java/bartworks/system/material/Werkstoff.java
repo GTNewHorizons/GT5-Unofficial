@@ -32,6 +32,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
+import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
@@ -526,15 +527,20 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
         return this.defaultName.replace(" ", "");
     }
 
-    public String getToolTip() {
+    public String getFormulaTooltip() {
         return this.toolTip;
     }
 
-    public String getLocalizedToolTip() {
+    public String getLocalizedFormulaTooltip() {
         if (isFormulaNeededLocalized) {
             return StatCollector.translateToLocal(getLocalizedNameKey() + ".ChemicalFormula");
         }
         return this.toolTip;
+    }
+
+    public void addTooltip(List<String> list) {
+        final String formula = getLocalizedFormulaTooltip();
+        if (GTUtility.isStringValid(formula)) list.add(formula);
     }
 
     public Werkstoff.Stats getStats() {

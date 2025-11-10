@@ -4,6 +4,7 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 
 import java.util.function.Supplier;
 
+import gtPlusPlus.core.material.Material;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 
@@ -18,6 +19,8 @@ public class FluidGT6 extends Fluid implements Runnable {
 
     private final short[] mRGBa;
     public final String mTextureName;
+    private String materialName;
+    private String oreprefixKey;
     private Supplier<String> localizedName;
 
     public FluidGT6(final @NotNull String aName, final String aTextureName, final short[] aRGBa, String aLocalName) {
@@ -45,7 +48,7 @@ public class FluidGT6 extends Fluid implements Runnable {
         String materialKey = MaterialUtils.getMaterialLocalizedNameKey(aLocalName);
         if (StatCollector.translateToFallback(materialKey)
             .equals(aLocalName)) {
-            this.localizedName = () -> StatCollector.translateToLocal(materialKey);
+            materialName = aLocalName;
             return;
         }
         if (generateLocalizedNameHasOreprefix(aLocalName, "Molten %s")) return;
@@ -59,8 +62,8 @@ public class FluidGT6 extends Fluid implements Runnable {
             String materialName = aLocalName.replace(oreprefixFormatRemoved, "");
             String materialKey = MaterialUtils.getMaterialLocalizedNameKey(materialName);
             if (aLocalName.equals(String.format(oreprefixFormat, StatCollector.translateToFallback(materialKey)))) {
-                this.localizedName = () -> StatCollector
-                    .translateToLocalFormatted(OrePrefixes.getOreprefixKey(oreprefixFormat, "%s"), materialKey);
+                this.materialName = materialName;
+                this.oreprefixKey = materialKey;
                 return true;
             }
         }
@@ -69,7 +72,15 @@ public class FluidGT6 extends Fluid implements Runnable {
 
     @Override
     public String getLocalizedName() {
-        if (this.localizedName != null) return this.localizedName.get();
+        if (materialName != null) {
+            final String materialLocalizedName = MaterialUtils.getMaterialLocalizedName(materialName);
+            return oreprefixKey == null ? materialLocalizedName : StatCollector.translateToLocalFormatted(oreprefixKey, materialLocalizedName);
+        }
         return super.getLocalizedName();
+    }
+
+    public Material getMaterial() {
+        if (materialName == null) return null;
+        return Material.mMaterialCache.get(materialName.toLowerCase());
     }
 }

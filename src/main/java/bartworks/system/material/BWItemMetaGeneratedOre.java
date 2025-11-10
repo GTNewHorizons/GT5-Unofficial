@@ -62,10 +62,7 @@ public class BWItemMetaGeneratedOre extends ItemBlock {
         Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) meta);
 
         if (werkstoff != null) {
-            String tooltip = werkstoff.getLocalizedToolTip();
-            if (!tooltip.isEmpty()) {
-                desc.add(tooltip);
-            }
+            werkstoff.addTooltip(desc);
         }
     }
 }

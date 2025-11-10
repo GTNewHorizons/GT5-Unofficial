@@ -103,7 +103,7 @@ public class MaterialUtils {
             boolean mGenerateCell = false;
             boolean mGenerateFluid = true;
             MaterialState materialState;
-            String chemicalFormula = StringUtils.subscript(StringUtils.sanitizeString(material.getToolTip()));
+            String chemicalFormula = StringUtils.subscript(StringUtils.sanitizeString(material.getChemicalTooltip()));
             final Element element = material.mElement;
 
             // Weird Blacklist of Bad Chemical Strings

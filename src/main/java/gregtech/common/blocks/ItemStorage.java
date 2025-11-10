@@ -12,7 +12,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GTUtility;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
 @Optional.Interface(
@@ -54,8 +53,7 @@ public class ItemStorage extends ItemBlock implements IItemFirestoneBurning {
         if (this.field_150939_a instanceof BlockMetal blockMetal) {
             int aDamage = aStack.getItemDamage();
             if (aDamage >= 0 && aDamage < blockMetal.mMats.length) {
-                final String tooltip = blockMetal.mMats[aDamage].getToolTip();
-                if (!GTUtility.isStringValid(tooltip)) aList.add(tooltip);
+                blockMetal.mMats[aDamage].addTooltips(aList);
             }
         }
         super.addInformation(aStack, aPlayer, aList, aF3_H);

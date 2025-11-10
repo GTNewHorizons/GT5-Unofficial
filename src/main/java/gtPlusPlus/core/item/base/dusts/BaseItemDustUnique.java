@@ -24,6 +24,7 @@ import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
+import net.minecraft.util.StatCollector;
 
 public class BaseItemDustUnique extends Item {
 
@@ -131,7 +132,7 @@ public class BaseItemDustUnique extends Item {
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
         if (this.sRadiation > 0) {
-            list.add(GTPPCore.GT_Tooltip_Radioactive.get());
+            list.add(StatCollector.translateToLocalFormatted("GTPP.core.GT_Tooltip_Radioactive", this.sRadiation));
         }
         if (!this.chemicalNotation.isEmpty() && !chemicalNotation.equals("NullFormula")) {
             list.add(this.chemicalNotation);

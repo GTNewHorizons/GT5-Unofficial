@@ -188,6 +188,9 @@ gt.oreprefix.huge_restrictive_material_item_pipe=Huge Restrictive %s Item Pipe
 
 gt.oreprefix.material_frame_box_tileentity=%s (TileEntity)
 
+# Tooltip for Material
+gt.metaitem.01.8150.tooltip=§b§lCrystallized shards stabilized by a maximized Godforge
+
 gt.block.any_sub_block=Any Sub Block of this one
 
 gt.author=Author: %s

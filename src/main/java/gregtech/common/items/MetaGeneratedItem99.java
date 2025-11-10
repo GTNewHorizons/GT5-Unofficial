@@ -87,8 +87,6 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
     private void registerMolten(Materials tMaterial, int i) {
         ItemStack tStack = new ItemStack(this, 1, i);
         enabled.set(i);
-        names[i] = () -> cellMolten.getLocalizedNameForItem(tMaterial);
-        tooltips[i] = () -> tMaterial.getChemicalTooltip(cellMolten.getMaterialAmount() / M);
 
         if (cellMolten.isUnifiable()) {
             GTOreDictUnificator.set(cellMolten, tMaterial, tStack);
@@ -102,8 +100,6 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
         for (OrePrefixes prefix : CRACKED_CELL_TYPES) {
             ItemStack tStack = new ItemStack(this, 1, offset + i);
             enabled.set(offset + i);
-            names[offset + i] = () -> prefix.getLocalizedNameForItem(tMaterial);
-            tooltips[offset + i] = () -> tMaterial.getChemicalTooltip(prefix.getMaterialAmount() / M);
 
             if (prefix.isUnifiable()) {
                 GTOreDictUnificator.set(prefix, tMaterial, tStack);
@@ -152,7 +148,10 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
 
     @Override
     public String getItemStackDisplayName(ItemStack aStack) {
-        if (names[aStack.getItemDamage()] != null) return names[aStack.getItemDamage()].get();
+        final int damage = aStack.getItemDamage();
+        final OrePrefixes prefix = getOrePrefix(damage);
+        final Materials material = getMaterial(damage);
+        if (prefix != null && material != null) return prefix.getLocalizedNameForItem(material);
         return super.getItemStackDisplayName(aStack);
     }
 
@@ -204,11 +203,10 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
 
     @Override
     protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
-        Materials material = getMaterial(aStack.getItemDamage());
-        if (material == null) return;
-        String flavorText = material.getFlavorText();
-        if (flavorText != null && !flavorText.isEmpty()) {
-            aList.add("§8§o" + flavorText);
-        }
+        final int damage = aStack.getItemDamage();
+        final Materials material = getMaterial(damage);
+        final OrePrefixes prefix = getOrePrefix(damage);
+        if (material == null || prefix == null) return;
+        material.addTooltips(aList, prefix.getMaterialAmount() / M);
     }
 }

@@ -1116,7 +1116,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public float mPlasmaMultiplier = 1.0F;
     private String mChemicalFormula = "?";
     private boolean isFormulaNeededLocalized = false;
-    public String flavorText;
     public String mName;
     public String mDefaultLocalName;
     public String mCustomID = "null";
@@ -1155,7 +1154,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         String defaultLocalName,
         @Nullable Element element,
         @Nullable String chemicalFormula,
-        String flavorText,
         boolean unifiable,
         TextureSet iconSet,
         Dyes color,
@@ -1223,8 +1221,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
                 .collect(Collectors.joining())
                 .replaceAll("_", "-");
         }
-
-        this.flavorText = flavorText;
 
         // Set texture and colors
         mIconSet = iconSet;
@@ -1752,6 +1748,23 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         return mDensity;
     }
 
+    public void setChemicalFormula(String aChemicalFormula, boolean isNeededLocalization) {
+        this.mChemicalFormula = aChemicalFormula;
+        if (isNeededLocalization) {
+            this.isFormulaNeededLocalized = true;
+            GTLanguageManager.addStringLocalization(getLocalizedNameKey() + ".ChemicalFormula", aChemicalFormula);
+        }
+    }
+
+    public void setChemicalFormula(String aChemicalFormula) {
+        setChemicalFormula(aChemicalFormula, false);
+    }
+
+    public String getChemicalFormula() {
+        return isFormulaNeededLocalized ? StatCollector.translateToLocal(getLocalizedNameKey() + ".ChemicalFormula")
+            : mChemicalFormula;
+    }
+
     public String getChemicalTooltip() {
         return getChemicalTooltip(1, false);
     }
@@ -1775,8 +1788,21 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         return aChemicalFormula;
     }
 
+    @Nullable
     public String getFlavorText() {
-        return flavorText;
+        final String key = getLocalizedNameKey() + ".flavorText";
+        return StatCollector.canTranslate(key) ? StatCollector.translateToLocal(key) : null;
+    }
+
+    public void addTooltips(List<String> list, long aMultiplier) {
+        final String chemicalTooltip = getChemicalTooltip(aMultiplier);
+        final String flavorTooltip = getFlavorText() != null ? "§8§o" + getFlavorText() : null;
+        if (GTUtility.isStringValid(chemicalTooltip)) list.add(chemicalTooltip);
+        if (flavorTooltip != null) list.add(flavorTooltip);
+    }
+
+    public void addTooltips(List<String> list) {
+        addTooltips(list, 1);
     }
 
     /**
@@ -2114,23 +2140,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public boolean isProperSolderingFluid() {
         return mStandardMoltenFluid != null && contains(SubTag.SOLDERING_MATERIAL)
             && !(GregTechAPI.mUseOnlyGoodSolderingMaterials && !contains(SubTag.SOLDERING_MATERIAL_GOOD));
-    }
-
-    public void setChemicalFormula(String aChemicalFormula, boolean isNeededLocalization) {
-        this.mChemicalFormula = aChemicalFormula;
-        if (isNeededLocalization) {
-            this.isFormulaNeededLocalized = true;
-            GTLanguageManager.addStringLocalization(getLocalizedNameKey() + ".ChemicalFormula", aChemicalFormula);
-        }
-    }
-
-    public void setChemicalFormula(String aChemicalFormula) {
-        setChemicalFormula(aChemicalFormula, false);
-    }
-
-    public String getChemicalFormula() {
-        return isFormulaNeededLocalized ? StatCollector.translateToLocal(getLocalizedNameKey() + ".ChemicalFormula")
-            : mChemicalFormula;
     }
 
     public ItemStack getCells(int amount) {

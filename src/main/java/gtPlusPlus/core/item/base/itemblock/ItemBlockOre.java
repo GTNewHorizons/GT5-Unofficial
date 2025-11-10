@@ -75,15 +75,7 @@ public class ItemBlockOre extends ItemBlock {
         }
 
         if (this.mThisMaterial != null) {
-            list.add(this.mThisMaterial.vChemicalFormula);
-        }
-
-        // Radioactive?
-        if (this.mThisRadiation > 0) {
-            list.add(GTPPCore.GT_Tooltip_Radioactive.get());
-        }
-
-        if (this.mThisMaterial != null) {
+            mThisMaterial.addTooltip(list);
             list.add(StatCollector.translateToLocal("GTPP.tooltip.ore.contains"));
             if (mThisMaterial.getComposites()
                 .isEmpty()) {

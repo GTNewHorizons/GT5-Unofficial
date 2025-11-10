@@ -131,10 +131,6 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
         return GregTechAPI.sGeneratedMaterials[meta];
     }
 
-    public static String getTooltip(int meta) {
-        return getMaterial(meta).getToolTip();
-    }
-
     @Override
     public boolean onBlockActivated(World worldIn, int x, int y, int z, EntityPlayer player, int side, float subX,
         float subY, float subZ) {

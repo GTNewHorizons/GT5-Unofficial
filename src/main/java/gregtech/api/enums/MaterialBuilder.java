@@ -8,6 +8,7 @@ import java.util.function.Supplier;
 import net.minecraft.enchantment.Enchantment;
 
 import gregtech.api.objects.MaterialStack;
+import gregtech.api.util.GTLanguageManager;
 
 public class MaterialBuilder {
 
@@ -34,7 +35,6 @@ public class MaterialBuilder {
     private String name;
     private String defaultLocalName;
     private Element element;
-    private String flavorText;
     private String chemicalFormula;
     private boolean isFormulaNeededLocalized = false;
     private boolean unifiable = true;
@@ -97,7 +97,6 @@ public class MaterialBuilder {
             defaultLocalName,
             element,
             chemicalFormula,
-            flavorText,
             unifiable,
             iconSet,
             color,
@@ -181,7 +180,7 @@ public class MaterialBuilder {
     }
 
     public MaterialBuilder setFlavorText(String flavorText) {
-        this.flavorText = flavorText;
+        GTLanguageManager.addStringLocalization("Material." + name.toLowerCase() + ".flavorText", flavorText);
         return this;
     }
 

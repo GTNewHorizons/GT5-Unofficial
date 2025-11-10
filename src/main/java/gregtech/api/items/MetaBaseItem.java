@@ -7,11 +7,12 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.entity.Entity;
@@ -49,10 +50,6 @@ public abstract class MetaBaseItem extends GTGenericItem
 
     /* ---------- CONSTRUCTOR AND MEMBER VARIABLES ---------- */
     private final ConcurrentHashMap<Short, ArrayList<IItemBehaviour<MetaBaseItem>>> mItemBehaviors = new ConcurrentHashMap<>();
-    @SuppressWarnings("unchecked")
-    protected final Supplier<String>[] names = (Supplier<String>[]) new Supplier[32767];
-    @SuppressWarnings("unchecked")
-    protected final Supplier<String>[] tooltips = (Supplier<String>[]) new Supplier[32767];
 
     /**
      * Creates the Item using these Parameters.
@@ -237,21 +234,12 @@ public abstract class MetaBaseItem extends GTGenericItem
 
     @Override
     public final void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
-        final String tTooltip;
-        if (tooltips[aStack.getItemDamage()] != null) {
-            tTooltip = tooltips[aStack.getItemDamage()].get();
-        } else if (StatCollector.canTranslate(getUnlocalizedName() + "." + aStack.getItemDamage() + ".tooltip")) {
-            tTooltip = StatCollector.translateToLocal(getUnlocalizedName() + "." + aStack.getItemDamage() + ".tooltip");
-        } else {
-            tTooltip = null;
-        }
-        if (tTooltip != null) {
-            for (String tString : GTSplit.split(tTooltip)) {
-                if (GTUtility.isStringValid(tString)) {
-                    aList.add(tString);
-                }
-            }
-        }
+        final String key = getUnlocalizedName() + "." + aStack.getItemDamage() + ".tooltip";
+        if (StatCollector.canTranslate(key)) Collections.addAll(
+            aList,
+            Arrays.stream(GTSplit.splitLocalized(key))
+                .filter(GTUtility::isStringValid)
+                .toArray(String[]::new));
         Long[] tStats = getElectricStats(aStack);
         if (tStats != null) {
             if (tStats[3] > 0) {

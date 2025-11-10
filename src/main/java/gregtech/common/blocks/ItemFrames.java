@@ -52,7 +52,8 @@ public class ItemFrames extends ItemBlock {
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         if (this.block() instanceof BlockFrameBox) {
-            aList.add(BlockFrameBox.getTooltip(aStack.getItemDamage()));
+            BlockFrameBox.getMaterial(aStack.getItemDamage())
+                .addTooltips(aList);
         }
         aList.add(StatCollector.translateToLocal(MTEFrame.LOCALIZED_DESC_FORMAT));
     }
