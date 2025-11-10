@@ -15,18 +15,18 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
-import gregtech.common.tileentities.machines.multi.MTETranscendentPlasmaMixer;
+import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitBase;
 
-public class MTETranscendentPlasmaMixerGui extends MTEMultiBlockBaseGui<MTETranscendentPlasmaMixer> {
+public class MTEPurificationUnitBaseGui extends MTEMultiBlockBaseGui<MTEPurificationUnitBase<?>> {
 
-    public MTETranscendentPlasmaMixerGui(MTETranscendentPlasmaMixer multiblock) {
+    public MTEPurificationUnitBaseGui(MTEPurificationUnitBase<?> multiblock) {
         super(multiblock);
     }
 
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        IntSyncValue parallelSyncer = new IntSyncValue(multiblock::getMultiplier, multiblock::setMultiplier);
+        IntSyncValue parallelSyncer = new IntSyncValue(multiblock::getMaxParallel, multiblock::setMaxParallel);
         syncManager.syncValue("maximumParallels", parallelSyncer);
     }
 
