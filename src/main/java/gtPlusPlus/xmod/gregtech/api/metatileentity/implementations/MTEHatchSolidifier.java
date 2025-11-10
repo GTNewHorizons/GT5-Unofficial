@@ -147,7 +147,7 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
     }
 
     @Override
-    protected boolean forceUseMui2() {
+    protected boolean useMui2() {
         return true;
     }
 
