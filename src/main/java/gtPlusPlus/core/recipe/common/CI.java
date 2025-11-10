@@ -113,7 +113,7 @@ public class CI {
             if (material instanceof Materials) {
                 materialName = ((Materials) material).mDefaultLocalName;
             } else {
-                materialName = (StringUtils.sanitizeString(((Material) material).getLocalDefaultName()));
+                materialName = (StringUtils.sanitizeString(((Material) material).getDefaultLocalName()));
             }
             Logger.INFO("Searching for a component named " + type.getName() + materialName);
             return (type.getName() + materialName);

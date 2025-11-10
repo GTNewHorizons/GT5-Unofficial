@@ -349,12 +349,12 @@ public class MaterialUtils {
         if (!aFormattedLangName.startsWith(" ")) {
             if (aFormattedLangName.contains("@")) {
                 String[] aSplit = aFormattedLangName.split("@");
-                aFormattedLangName = aSplit[0] + " " + aMaterial.getLocalDefaultName() + " " + aSplit[1];
+                aFormattedLangName = aSplit[0] + " " + aMaterial.getDefaultLocalName() + " " + aSplit[1];
             }
         }
 
         if (aFormattedLangName.equals(aType.getName())) {
-            aFormattedLangName = aMaterial.getLocalDefaultName() + aFormattedLangName;
+            aFormattedLangName = aMaterial.getDefaultLocalName() + aFormattedLangName;
         }
 
         Logger.MATERIALS("[Lang] " + aGC.getUnlocalizedName() + ".name=" + aFormattedLangName);
@@ -375,9 +375,9 @@ public class MaterialUtils {
             || aGregtechMaterial.mName.equals(Materials._NULL.mName);
     }
 
-    public static void generateMaterialLocalizedName(String materialNameForKey, String materialLocalDefaultName) {
+    public static void generateMaterialLocalizedName(String materialNameForKey, String materialDefaultLocalName) {
         GTLanguageManager
-            .addStringLocalization(getMaterialLocalizedNameKey(materialNameForKey), materialLocalDefaultName);
+            .addStringLocalization(getMaterialLocalizedNameKey(materialNameForKey), materialDefaultLocalName);
     }
 
     public static void generateMaterialLocalizedName(String name) {

@@ -14,7 +14,7 @@ public class BaseItemIngot extends BaseItemComponent {
 
     public BaseItemIngot(final Material material, final ComponentTypes type) {
         super(material, type);
-        this.materialName = material.getLocalDefaultName();
+        this.materialName = material.getDefaultLocalName();
         this.unlocalName = material.getUnlocalizedName();
     }
 }

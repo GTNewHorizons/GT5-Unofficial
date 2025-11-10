@@ -1878,7 +1878,7 @@ public class WerkstoffLoader {
                 if (!FluidRegistry.isFluidRegistered(werkstoff.getDefaultName())) {
                     DebugLog.log("Adding new Fluid: " + werkstoff.getDefaultName());
                     Fluid fluid = GTFluidFactory.builder(werkstoff.getDefaultName())
-                        .withLocalDefaultName(werkstoff.getDefaultName())
+                        .withDefaultLocalName(werkstoff.getDefaultName())
                         .withStateAndTemperature(
                             werkstoff.getStats()
                                 .getFluidState(),
@@ -1897,7 +1897,7 @@ public class WerkstoffLoader {
                 if (!FluidRegistry.isFluidRegistered("molten." + werkstoff.getDefaultName())) {
                     DebugLog.log("Adding new Molten: " + werkstoff.getDefaultName());
                     Fluid fluid = GTFluidFactory.builder("molten." + werkstoff.getDefaultName())
-                        .withLocalDefaultName("Molten " + werkstoff.getDefaultName())
+                        .withDefaultLocalName("Molten " + werkstoff.getDefaultName())
                         .withStateAndTemperature(
                             FluidState.MOLTEN,
                             werkstoff.getStats()

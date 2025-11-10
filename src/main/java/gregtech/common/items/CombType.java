@@ -244,8 +244,8 @@ public enum CombType {
     private final String name;
     private final int[] color;
 
-    CombType(int id, String pLocalDefaultName, boolean show, Materials material, int chance, int color1, int color2) {
-        this(id, pLocalDefaultName, show, material, chance, color1, color2, null);
+    CombType(int id, String pName, boolean show, Materials material, int chance, int color1, int color2) {
+        this(id, pName, show, material, chance, color1, color2, null);
     }
 
     CombType(int id, String pName, boolean show, Materials material, int chance, int color1, int color2,

@@ -95,30 +95,30 @@ public class RecipeGenFluorite extends RecipeGenBase {
             tinyDust,
             tinyDust,
             normalDust)) {
-            Logger.WARNING("9 Tiny dust to 1 Dust Recipe: " + material.getLocalDefaultName() + " - Success");
+            Logger.WARNING("9 Tiny dust to 1 Dust Recipe: " + material.getDefaultLocalName() + " - Success");
         } else {
-            Logger.WARNING("9 Tiny dust to 1 Dust Recipe: " + material.getLocalDefaultName() + " - Failed");
+            Logger.WARNING("9 Tiny dust to 1 Dust Recipe: " + material.getDefaultLocalName() + " - Failed");
         }
 
         if (RecipeUtils
             .addShapedRecipe(normalDust, null, null, null, null, null, null, null, null, material.getTinyDust(9))) {
-            Logger.WARNING("9 Tiny dust from 1 Recipe: " + material.getLocalDefaultName() + " - Success");
+            Logger.WARNING("9 Tiny dust from 1 Recipe: " + material.getDefaultLocalName() + " - Success");
         } else {
-            Logger.WARNING("9 Tiny dust from 1 Recipe: " + material.getLocalDefaultName() + " - Failed");
+            Logger.WARNING("9 Tiny dust from 1 Recipe: " + material.getDefaultLocalName() + " - Failed");
         }
 
         if (RecipeUtils
             .addShapedRecipe(smallDust, smallDust, null, smallDust, smallDust, null, null, null, null, normalDust)) {
-            Logger.WARNING("4 Small dust to 1 Dust Recipe: " + material.getLocalDefaultName() + " - Success");
+            Logger.WARNING("4 Small dust to 1 Dust Recipe: " + material.getDefaultLocalName() + " - Success");
         } else {
-            Logger.WARNING("4 Small dust to 1 Dust Recipe: " + material.getLocalDefaultName() + " - Failed");
+            Logger.WARNING("4 Small dust to 1 Dust Recipe: " + material.getDefaultLocalName() + " - Failed");
         }
 
         if (RecipeUtils
             .addShapedRecipe(null, normalDust, null, null, null, null, null, null, null, material.getSmallDust(4))) {
-            Logger.WARNING("4 Small dust from 1 Dust Recipe: " + material.getLocalDefaultName() + " - Success");
+            Logger.WARNING("4 Small dust from 1 Dust Recipe: " + material.getDefaultLocalName() + " - Success");
         } else {
-            Logger.WARNING("4 Small dust from 1 Dust Recipe: " + material.getLocalDefaultName() + " - Failed");
+            Logger.WARNING("4 Small dust from 1 Dust Recipe: " + material.getDefaultLocalName() + " - Failed");
         }
     }
 
