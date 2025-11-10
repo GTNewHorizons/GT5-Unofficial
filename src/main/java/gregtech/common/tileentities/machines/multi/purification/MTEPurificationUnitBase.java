@@ -765,65 +765,6 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        buildContext.addSyncedWindow(PARALLEL_WINDOW_ID, this::createParallelWindow);
-        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-            if (!widget.isClient()) {
-                widget.getContext()
-                    .openSyncedWindow(PARALLEL_WINDOW_ID);
-            }
-        })
-            .setPlayClickSound(true)
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                ret.add(GTUITextures.BUTTON_STANDARD);
-                ret.add(GTUITextures.OVERLAY_BUTTON_BATCH_MODE_ON);
-                return ret.toArray(new IDrawable[0]);
-            })
-            .addTooltip(translateToLocal("GT5U.tpm.parallelwindow"))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(174, 112)
-            .setSize(16, 16));
-        super.addUIWidgets(builder, buildContext);
-    }
-
-    protected ModularWindow createParallelWindow(final EntityPlayer player) {
-        final int WIDTH = 158;
-        final int HEIGHT = 52;
-        final int PARENT_WIDTH = getGUIWidth();
-        final int PARENT_HEIGHT = getGUIHeight();
-        ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
-        builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
-        builder.setGuiTint(getGUIColorization());
-        builder.setDraggable(true);
-        builder.setPos(
-            (size, window) -> Alignment.Center.getAlignedPos(size, new Size(PARENT_WIDTH, PARENT_HEIGHT))
-                .add(
-                    Alignment.BottomRight.getAlignedPos(new Size(PARENT_WIDTH, PARENT_HEIGHT), new Size(WIDTH, HEIGHT))
-                        .add(WIDTH - 3, 0)
-                        .subtract(0, 10)));
-        builder.widget(
-            TextWidget.localised("GTPP.CC.parallel")
-                .setPos(3, 4)
-                .setSize(150, 20))
-            .widget(
-                new NumericWidget().setSetter(val -> maxParallel = (int) val)
-                    .setGetter(() -> maxParallel)
-                    .setBounds(1, Integer.MAX_VALUE)
-                    .setDefaultValue(1)
-                    .setScrollValues(1, 4, 64)
-                    .setTextAlignment(Alignment.Center)
-                    .setTextColor(Color.WHITE.normal)
-                    .setSize(150, 18)
-                    .setPos(4, 25)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
-                    .attachSyncer(
-                        new FakeSyncWidget.IntegerSyncer(() -> maxParallel, (val) -> maxParallel = val),
-                        builder));
-        return builder.build();
-    }
-
-    @Override
     public Set<VoidingMode> getAllowedVoidingModes() {
         return EnumSet.of(VoidingMode.VOID_NONE);
     }
