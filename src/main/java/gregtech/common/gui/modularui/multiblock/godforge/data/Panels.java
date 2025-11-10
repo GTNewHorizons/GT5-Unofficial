@@ -16,7 +16,6 @@ import gregtech.common.gui.modularui.multiblock.godforge.panel.StarCosmeticsPane
 import gregtech.common.gui.modularui.multiblock.godforge.panel.StatisticsPanel;
 import gregtech.common.gui.modularui.multiblock.godforge.panel.UpgradeTreePanel;
 import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
-import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 
 public enum Panels {
 
@@ -55,21 +54,14 @@ public enum Panels {
             ModularPanel panel = new ModularPanel(getPanelId()) {
 
                 @Override
-                public void onClose() {
-                    hypervisor.onPanelClose(Panels.this);
-                    super.onClose();
+                public void dispose() {
+                    hypervisor.onPanelDispose(Panels.this);
+                    super.dispose();
                 }
             };
             hypervisor.setModularPanel(this, panel);
             hypervisor.setSyncManager(this, p_syncManager);
             return panelSupplier.apply(hypervisor);
         }, true);
-    }
-
-    @FunctionalInterface
-    private interface IForgeOfGodsPanel {
-
-        ModularPanel openPanel(PanelSyncManager syncManager, ForgeOfGodsData data, ModularPanel panel,
-            ModularPanel parent);
     }
 }
