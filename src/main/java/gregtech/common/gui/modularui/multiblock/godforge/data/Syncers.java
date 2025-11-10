@@ -6,11 +6,11 @@ import java.util.function.Function;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
-import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.SyncHandler;
 
+import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 import tectech.thing.metaTileEntity.multi.godforge.util.MilestoneFormatter;
 
@@ -51,11 +51,14 @@ public class Syncers<T extends SyncHandler> {
     // Milestones //
     // ---------- //
 
-    public static final Syncers<IntSyncValue> MILESTONE_CLICKED = new Syncers<>(
+    public static final Syncers<EnumSyncValue<Milestones>> MILESTONE_CLICKED = new Syncers<>(
         "fog.sync.milestone_clicked",
         data -> {
             AtomicInteger i = new AtomicInteger();
-            return new IntSyncValue(i::intValue, i::set);
+            return new EnumSyncValue<>(
+                Milestones.class,
+                () -> Milestones.VALUES[i.intValue()],
+                val -> i.set(val.ordinal()));
         });
 
     public static final Syncers<DoubleSyncValue> MILESTONE_CHARGE_PROGRESS = new Syncers<>(
@@ -112,18 +115,20 @@ public class Syncers<T extends SyncHandler> {
         this.syncId = syncId;
     }
 
-    public T register(PanelSyncManager syncManager, ForgeOfGodsData data, Panels fromPanel) {
-        T syncValue = create(data);
-        syncManager.syncValue(getSyncId(fromPanel), syncValue);
+    public T registerFor(Panels forPanel, SyncHypervisor hypervisor) {
+        T syncValue = create(hypervisor);
+        PanelSyncManager syncManager = hypervisor.getSyncManager(forPanel);
+        syncManager.syncValue(getSyncId(forPanel), syncValue);
         return syncValue;
     }
 
-    public T create(ForgeOfGodsData data) {
-        return syncValueSupplier.apply(data);
+    public T create(SyncHypervisor hypervisor) {
+        return syncValueSupplier.apply(hypervisor.getData());
     }
 
     @SuppressWarnings("unchecked")
-    public T lookup(PanelSyncManager syncManager, Panels fromPanel) {
+    public T lookupFrom(Panels fromPanel, SyncHypervisor hypervisor) {
+        PanelSyncManager syncManager = hypervisor.getSyncManager(fromPanel);
         return (T) syncManager.findSyncHandler(getSyncId(fromPanel));
     }
 

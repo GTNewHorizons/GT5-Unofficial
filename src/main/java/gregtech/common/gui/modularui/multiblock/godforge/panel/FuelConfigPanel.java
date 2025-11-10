@@ -8,9 +8,7 @@ import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
-import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
@@ -23,6 +21,7 @@ import gregtech.common.gui.modularui.multiblock.godforge.data.Fuels;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Syncers;
 import gregtech.common.gui.modularui.multiblock.godforge.util.ForgeOfGodsGuiUtil;
+import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
 import gregtech.common.gui.modularui.widget.ResizableItemDisplayWidget;
 import gregtech.common.modularui2.sync.LinkedBoolValue;
 import gregtech.common.modularui2.widget.SelectButton;
@@ -35,11 +34,13 @@ public class FuelConfigPanel {
     private static final int WIDTH = 78;
     private static final int HEIGHT = 130;
 
-    public static ModularPanel openPanel(PanelSyncManager syncManager, ForgeOfGodsData data, ModularPanel panel,
-        ModularPanel parent) {
-        registerSyncHandlers(syncManager, data);
+    public static ModularPanel openPanel(SyncHypervisor hypervisor) {
+        ModularPanel panel = hypervisor.getModularPanel(Panels.FUEL_CONFIG);
+        ForgeOfGodsData data = hypervisor.getData();
 
-        panel.relative(parent)
+        registerSyncHandlers(hypervisor);
+
+        panel.relative(hypervisor.getModularPanel(Panels.MAIN))
             .size(WIDTH, HEIGHT)
             .topRel(0)
             .leftRelOffset(1, -3);
@@ -59,7 +60,7 @@ public class FuelConfigPanel {
         TextFieldWidget textBox = new TextFieldWidget().setFormatAsInteger(true)
             .setNumbers(() -> 1, () -> GodforgeMath.calculateMaxFuelFactor(data))
             .setTextAlignment(Alignment.CENTER)
-            .value(new IntSyncValue(data::getFuelConsumptionFactor, data::setFuelConsumptionFactor))
+            .value(Syncers.FUEL_CONSUMPTION.create(hypervisor))
             .setTooltipOverride(true)
             .setScrollValues(1, 4, 64)
             .size(70, 18)
@@ -111,7 +112,7 @@ public class FuelConfigPanel {
                 .marginTop(5));
 
         // Fuel selector
-        EnumSyncValue<Fuels> selectionSyncer = Syncers.SELECTED_FUEL.lookup(syncManager, Panels.FUEL_CONFIG);
+        EnumSyncValue<Fuels> selectionSyncer = Syncers.SELECTED_FUEL.lookupFrom(Panels.FUEL_CONFIG, hypervisor);
         Flow fuelRow = new Row().coverChildren()
             .alignX(0.5f)
             .marginTop(5)
@@ -121,9 +122,9 @@ public class FuelConfigPanel {
         column.child(fuelRow);
 
         // Fuel usage text
-        LongSyncValue fuelUsageSyncer = Syncers.FUEL_CONSUMPTION.lookup(syncManager, Panels.FUEL_CONFIG);
+        LongSyncValue fuelUsageSyncer = Syncers.FUEL_CONSUMPTION.lookupFrom(Panels.FUEL_CONFIG, hypervisor);
         EnumSyncValue<MilestoneFormatter> formatSyncer = Syncers.FORMATTING_MODE
-            .lookup(syncManager, Panels.FUEL_CONFIG);
+            .lookupFrom(Panels.FUEL_CONFIG, hypervisor);
         column.child(
             IKey.lang("gt.blockmachines.multimachine.FOG.fuelusage")
                 .alignment(Alignment.CENTER)
@@ -144,10 +145,10 @@ public class FuelConfigPanel {
         return panel.child(column);
     }
 
-    private static void registerSyncHandlers(PanelSyncManager syncManager, ForgeOfGodsData data) {
-        Syncers.SELECTED_FUEL.register(syncManager, data, Panels.FUEL_CONFIG);
-        Syncers.FUEL_CONSUMPTION.register(syncManager, data, Panels.FUEL_CONFIG);
-        Syncers.FORMATTING_MODE.register(syncManager, data, Panels.FUEL_CONFIG);
+    private static void registerSyncHandlers(SyncHypervisor hypervisor) {
+        Syncers.SELECTED_FUEL.registerFor(Panels.FUEL_CONFIG, hypervisor);
+        Syncers.FUEL_CONSUMPTION.registerFor(Panels.FUEL_CONFIG, hypervisor);
+        Syncers.FORMATTING_MODE.registerFor(Panels.FUEL_CONFIG, hypervisor);
     }
 
     private static ParentWidget<?> createFuelSelection(EnumSyncValue<Fuels> syncer, Fuels option) {

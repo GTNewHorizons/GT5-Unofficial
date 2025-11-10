@@ -1,5 +1,7 @@
 package gregtech.common.gui.modularui.multiblock.godforge.data;
 
+import java.util.function.Function;
+
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -13,6 +15,7 @@ import gregtech.common.gui.modularui.multiblock.godforge.panel.SpecialThanksPane
 import gregtech.common.gui.modularui.multiblock.godforge.panel.StarCosmeticsPanel;
 import gregtech.common.gui.modularui.multiblock.godforge.panel.StatisticsPanel;
 import gregtech.common.gui.modularui.multiblock.godforge.panel.UpgradeTreePanel;
+import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 
 public enum Panels {
@@ -31,9 +34,9 @@ public enum Panels {
     ;
 
     private final String panelId = "fog.panel." + name().toLowerCase();
-    private final IForgeOfGodsPanel panelSupplier;
+    private final Function<SyncHypervisor, ModularPanel> panelSupplier;
 
-    Panels(IForgeOfGodsPanel panelSupplier) {
+    Panels(Function<SyncHypervisor, ModularPanel> panelSupplier) {
         this.panelSupplier = panelSupplier;
     }
 
@@ -41,13 +44,25 @@ public enum Panels {
         return panelId;
     }
 
-    public IPanelHandler get(ModularPanel parent, PanelSyncManager syncManager, ForgeOfGodsData data) {
+    public IPanelHandler getFrom(Panels fromPanel, SyncHypervisor hypervisor) {
         if (this == MAIN) {
             throw new IllegalStateException("Cannot get panel handler of main panel!");
         }
+
+        PanelSyncManager syncManager = hypervisor.getSyncManager(fromPanel);
+
         return syncManager.panel(getPanelId(), (p_syncManager, syncHandler) -> {
-            ModularPanel panel = new ModularPanel(getPanelId());
-            return panelSupplier.openPanel(p_syncManager, data, panel, parent);
+            ModularPanel panel = new ModularPanel(getPanelId()) {
+
+                @Override
+                public void onClose() {
+                    hypervisor.onPanelClose(Panels.this);
+                    super.onClose();
+                }
+            };
+            hypervisor.setModularPanel(this, panel);
+            hypervisor.setSyncManager(this, p_syncManager);
+            return panelSupplier.apply(hypervisor);
         }, true);
     }
 

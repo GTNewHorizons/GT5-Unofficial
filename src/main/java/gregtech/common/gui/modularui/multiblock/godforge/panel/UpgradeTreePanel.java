@@ -3,12 +3,11 @@ package gregtech.common.gui.modularui.multiblock.godforge.panel;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
-import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
+import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
 
 public class UpgradeTreePanel {
 
-    public static ModularPanel openPanel(PanelSyncManager syncManager, ForgeOfGodsData data, ModularPanel panel,
-        ModularPanel parent) {
+    public static ModularPanel openPanel(SyncHypervisor hypervisor) {
         return null; // todo
     }
 

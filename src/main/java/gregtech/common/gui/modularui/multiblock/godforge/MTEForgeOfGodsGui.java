@@ -11,7 +11,9 @@ import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
+import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Alignment.MainAxis;
 import com.cleanroommc.modularui.utils.Color;
@@ -34,21 +36,32 @@ import gregtech.common.gui.modularui.multiblock.godforge.panel.StarCosmeticsPane
 import gregtech.common.gui.modularui.multiblock.godforge.panel.StatisticsPanel;
 import gregtech.common.gui.modularui.multiblock.godforge.panel.UpgradeTreePanel;
 import gregtech.common.gui.modularui.multiblock.godforge.util.ForgeOfGodsGuiUtil;
+import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
 import tectech.thing.metaTileEntity.multi.godforge.MTEForgeOfGods;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 
 public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
 
     private final ForgeOfGodsData data;
+    private final SyncHypervisor hypervisor;
 
     public MTEForgeOfGodsGui(MTEForgeOfGods multiblock) {
         super(multiblock);
         this.data = multiblock.getData();
+        this.hypervisor = new SyncHypervisor(data);
+    }
+
+    @Override
+    protected ModularPanel getBasePanel(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        ModularPanel panel = super.getBasePanel(guiData, syncManager, uiSettings);
+        hypervisor.setModularPanel(Panels.MAIN, panel);
+        return panel;
     }
 
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
+        hypervisor.setSyncManager(Panels.MAIN, syncManager);
 
         // todo try to reduce this, registering these when the panel is opened
         // todo rather than all the time like right now
@@ -59,8 +72,8 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
         StatisticsPanel.registerSyncValues(syncManager);
         UpgradeTreePanel.registerSyncValues(syncManager);
 
-        Syncers.BATTERY_CHARGING.register(syncManager, data, Panels.MAIN);
-        Syncers.SHARD_EJECTION.register(syncManager, data, Panels.MAIN);
+        Syncers.BATTERY_CHARGING.registerFor(Panels.MAIN, hypervisor);
+        Syncers.SHARD_EJECTION.registerFor(Panels.MAIN, hypervisor);
     }
 
     // todo fix column being shifted up 1 pixel
@@ -69,11 +82,11 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
         return new Column().width(18)
             .leftRel(1, -2, 1)
             .mainAxisAlignment(MainAxis.END)
-            .child(createMilestoneWindowButton(panel, syncManager))
-            .child(createFuelConfigWindowButton(panel, syncManager))
-            .child(createBatteryConfigWindowButton(panel, syncManager))
-            .child(createStarCosmeticsWindowButton(panel, syncManager))
-            .child(createUpgradeTreeWindowButton(panel, syncManager));
+            .child(createMilestoneWindowButton())
+            .child(createFuelConfigWindowButton())
+            .child(createBatteryConfigWindowButton())
+            .child(createStarCosmeticsWindowButton())
+            .child(createUpgradeTreeWindowButton());
     }
 
     // todo fix gap being too tall
@@ -85,8 +98,8 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
             .paddingLeft(4)
             .height(textBoxToInventoryGap)
             .child(createModuleRefreshButton(syncManager))
-            .child(createStatisticsWindowButton(panel, syncManager))
-            .child(createEjectionButton(syncManager));
+            .child(createStatisticsWindowButton())
+            .child(createEjectionButton());
     }
 
     @Override
@@ -94,7 +107,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
         return new Column().coverChildren()
             .rightRel(0, 6, 0)
             .bottomRel(0, 6, 0)
-            .child(createGeneralInfoWindowButton(panel, syncManager));
+            .child(createGeneralInfoWindowButton());
     }
 
     @Override
@@ -102,7 +115,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
         return new Column().coverChildren()
             .leftRel(0, 6, 0)
             .bottomRel(0, 6, 0)
-            .child(createSpecialThanksWindowButton(panel, syncManager));
+            .child(createSpecialThanksWindowButton());
     }
 
     // todo these probably need to be synced still
@@ -133,8 +146,8 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
                 .alignX(0.5f));
     }
 
-    protected IWidget createMilestoneWindowButton(ModularPanel panel, PanelSyncManager syncManager) {
-        IPanelHandler milestonePanel = Panels.MILESTONE.get(panel, syncManager, data);
+    protected IWidget createMilestoneWindowButton() {
+        IPanelHandler milestonePanel = Panels.MILESTONE.getFrom(Panels.MAIN, hypervisor);
         return new ButtonWidget<>().size(16)
             .marginBottom(3)
             .overlay(GTGuiTextures.TT_OVERLAY_BUTTON_FLAG)
@@ -153,8 +166,8 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
-    protected IWidget createFuelConfigWindowButton(ModularPanel panel, PanelSyncManager syncManager) {
-        IPanelHandler fuelConfigPanel = Panels.FUEL_CONFIG.get(panel, syncManager, data);
+    protected IWidget createFuelConfigWindowButton() {
+        IPanelHandler fuelConfigPanel = Panels.FUEL_CONFIG.getFrom(Panels.MAIN, hypervisor);
         return new ButtonWidget<>().size(16)
             .marginBottom(3)
             .overlay(GTGuiTextures.TT_OVERLAY_BUTTON_HEAT_ON)
@@ -173,9 +186,9 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
-    protected IWidget createBatteryConfigWindowButton(ModularPanel panel, PanelSyncManager syncManager) {
-        IPanelHandler batteryConfigPanel = Panels.BATTERY_CONFIG.get(panel, syncManager, data);
-        BooleanSyncValue batteryChargingSyncer = Syncers.BATTERY_CHARGING.lookup(syncManager, Panels.MAIN);
+    protected IWidget createBatteryConfigWindowButton() {
+        IPanelHandler batteryConfigPanel = Panels.BATTERY_CONFIG.getFrom(Panels.MAIN, hypervisor);
+        BooleanSyncValue batteryChargingSyncer = Syncers.BATTERY_CHARGING.lookupFrom(Panels.MAIN, hypervisor);
 
         return new ButtonWidget<>().size(16)
             .marginBottom(3)
@@ -208,8 +221,8 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
-    protected IWidget createStarCosmeticsWindowButton(ModularPanel panel, PanelSyncManager syncManager) {
-        IPanelHandler starCosmeticsPanel = Panels.STAR_COSMETICS.get(panel, syncManager, data);
+    protected IWidget createStarCosmeticsWindowButton() {
+        IPanelHandler starCosmeticsPanel = Panels.STAR_COSMETICS.getFrom(Panels.MAIN, hypervisor);
         return new ButtonWidget<>().size(16)
             .marginBottom(3)
             .overlay(GTGuiTextures.TT_OVERLAY_BUTTON_RAINBOW_SPIRAL)
@@ -228,8 +241,8 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
-    protected IWidget createUpgradeTreeWindowButton(ModularPanel panel, PanelSyncManager syncManager) {
-        IPanelHandler upgradeTreePanel = Panels.UPGRADE_TREE.get(panel, syncManager, data);
+    protected IWidget createUpgradeTreeWindowButton() {
+        IPanelHandler upgradeTreePanel = Panels.UPGRADE_TREE.getFrom(Panels.MAIN, hypervisor);
         return new ButtonWidget<>().size(16)
             .marginBottom(3)
             .overlay(GTGuiTextures.TT_OVERLAY_BUTTON_ARROW_BLUE_UP)
@@ -266,8 +279,8 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
-    protected IWidget createStatisticsWindowButton(ModularPanel panel, PanelSyncManager syncManager) {
-        IPanelHandler statisticsPanel = Panels.STATISTICS.get(panel, syncManager, data);
+    protected IWidget createStatisticsWindowButton() {
+        IPanelHandler statisticsPanel = Panels.STATISTICS.getFrom(Panels.MAIN, hypervisor);
         return new ButtonWidget<>().size(16)
             .marginRight(3)
             .overlay(GTGuiTextures.TT_OVERLAY_BUTTON_STATISTICS)
@@ -286,8 +299,8 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
-    protected IWidget createEjectionButton(PanelSyncManager syncManager) {
-        BooleanSyncValue shardEjectionSyncer = Syncers.SHARD_EJECTION.lookup(syncManager, Panels.MAIN);
+    protected IWidget createEjectionButton() {
+        BooleanSyncValue shardEjectionSyncer = Syncers.SHARD_EJECTION.lookupFrom(Panels.MAIN, hypervisor);
         return new ButtonWidget<>().size(16)
             .marginRight(3)
             .setEnabledIf($ -> data.isUpgradeActive(END))
@@ -309,8 +322,8 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
-    protected IWidget createGeneralInfoWindowButton(ModularPanel panel, PanelSyncManager syncManager) {
-        IPanelHandler generalInfoPanel = Panels.GENERAL_INFO.get(panel, syncManager, data);
+    protected IWidget createGeneralInfoWindowButton() {
+        IPanelHandler generalInfoPanel = Panels.GENERAL_INFO.getFrom(Panels.MAIN, hypervisor);
         return new ButtonWidget<>().size(18)
             .overlay(IDrawable.EMPTY)
             .background(GTGuiTextures.PICTURE_GODFORGE_LOGO)
@@ -328,8 +341,8 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
-    protected IWidget createSpecialThanksWindowButton(ModularPanel panel, PanelSyncManager syncManager) {
-        IPanelHandler specialThanksPanel = Panels.SPECIAL_THANKS.get(panel, syncManager, data);
+    protected IWidget createSpecialThanksWindowButton() {
+        IPanelHandler specialThanksPanel = Panels.SPECIAL_THANKS.getFrom(Panels.MAIN, hypervisor);
         return new ButtonWidget<>().size(16)
             .overlay(IDrawable.EMPTY)
             .background(GTGuiTextures.TT_OVERLAY_BUTTON_HEART)
