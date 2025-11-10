@@ -173,39 +173,4 @@ public class MTEHatchPHSensor extends MTEHatch {
         return new MTEHatchPHSensorGui(this).build(data, syncManager, uiSettings);
     }
 
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            new CoverCycleButtonWidget().setToggle(() -> inverted, (val) -> inverted = val)
-                .setTextureGetter(
-                    (state) -> state == 1 ? GTUITextures.OVERLAY_BUTTON_REDSTONE_ON
-                        : GTUITextures.OVERLAY_BUTTON_REDSTONE_OFF)
-                .addTooltip(0, translateToLocal("gt.interact.desc.normal.tooltip"))
-                .addTooltip(1, translateToLocal("gt.interact.desc.inverted.tooltip"))
-                .setPos(10, 8))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> inverted ? translateToLocal("gt.interact.desc.inverted")
-                            : translateToLocal("gt.interact.desc.normal"))
-                    .setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(28, 12))
-            .widget(
-                new NumericWidget().setBounds(0, 14.0)
-                    .setIntegerOnly(false)
-                    .setGetter(() -> threshold)
-                    .setSetter((value) -> threshold = Math.round(value * 100.0) / 100.0f)
-                    .setScrollValues(0.1, 0.01, 1.0)
-                    .setMaximumFractionDigits(2)
-                    .setTextColor(Color.WHITE.dark(1))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setFocusOnGuiOpen(true)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
-                    .setPos(10, 28)
-                    .setSize(77, 12))
-            .widget(
-                new TextWidget(translateToLocal("GT5U.gui.text.ph_sensor")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(90, 30));
-    }
 }
