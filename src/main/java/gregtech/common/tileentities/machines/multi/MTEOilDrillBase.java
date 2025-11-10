@@ -497,10 +497,6 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
         return true;
     }
 
-    public int getmOilFlow() {
-        return mOilFlow;
-    }
-
     @SideOnly(Side.CLIENT)
     @Override
     protected SoundResource getActivitySoundLoop() {
