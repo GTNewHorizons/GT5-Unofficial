@@ -3,8 +3,12 @@ package gregtech.common.tileentities.machines.multi;
 import static gregtech.api.enums.GTValues.VN;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -49,22 +53,21 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
         return tt;
     }
 
-    // @Override
-    // public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int
-    // y,
-    // int z) {
-    // super.getWailaNBTData(player, tile, tag, world, x, y, z);
-    // // smol hack to properly apply the output batchMultiplier
-    // if (mOutputFluids != null) {
-    // int index = 0;
-    // for (FluidStack stack : mOutputFluids) {
-    // if (stack == null) continue;
-    // int batchedAmount = stack.amount * batchMultiplier;
-    // tag.setInteger("outputFluidCount" + index, batchedAmount);
-    // index++;
-    // }
-    // }
-    // }
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        // smol hack to properly apply the output batchMultiplier
+        if (mOutputFluids != null) {
+            int index = 0;
+            for (FluidStack stack : mOutputFluids) {
+                if (stack == null) continue;
+                int batchedAmount = stack.amount * batchMultiplier;
+                tag.setInteger("outputFluidCount" + index, batchedAmount);
+                index++;
+            }
+        }
+    }
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
