@@ -617,7 +617,7 @@ public class SpaceMiningRecipes {
             "NetherOreAsteroid",
             null,
             null,
-            new int[] { 3152, 3150, 2101, 1261, 336 },
+            new int[] { 3000, 3000, 2000, 1500, 500 },
             new Materials[] { Materials.NetherQuartz, Materials.Sulfur, Materials.CertusQuartz, Materials.Quartzite,
                 Materials.Firestone },
             OrePrefixes.oreNetherrack,
