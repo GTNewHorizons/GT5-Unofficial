@@ -77,7 +77,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment, ISurvivalConstructable,
-    RecipeMapWorkable, IAddUIWidgets, IGetTitleColor, ISecondaryDescribable {
+    RecipeMapWorkable, IGetTitleColor, ISecondaryDescribable {
 
     public static final int INPUT_SLOTS = 3, OUTPUT_SLOTS = 3;
     private static final IStructureDefinition<MTEBrickedBlastFurnace> STRUCTURE_DEFINITION = IStructureDefinition
@@ -596,55 +596,6 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
     @Override
     public SteamVariant getSteamVariant() {
         return SteamVariant.PRIMITIVE;
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder
-            .widget(
-                new SlotWidget(inventoryHandler, 0)
-                    .setBackground(
-                        getGUITextureSet().getItemSlot(),
-                        GTUITextures.OVERLAY_SLOT_INGOT_STEAM.get(getSteamVariant()))
-                    .setPos(33, 15))
-            .widget(
-                new SlotWidget(inventoryHandler, 1)
-                    .setBackground(
-                        getGUITextureSet().getItemSlot(),
-                        GTUITextures.OVERLAY_SLOT_DUST_STEAM.get(getSteamVariant()))
-                    .setPos(33, 33))
-            .widget(
-                new SlotWidget(inventoryHandler, 2)
-                    .setBackground(
-                        getGUITextureSet().getItemSlot(),
-                        GTUITextures.OVERLAY_SLOT_FURNACE_STEAM.get(getSteamVariant()))
-                    .setPos(33, 51))
-            .widget(
-                new SlotWidget(inventoryHandler, 3).setAccess(true, false)
-                    .setBackground(
-                        getGUITextureSet().getItemSlot(),
-                        GTUITextures.OVERLAY_SLOT_INGOT_STEAM.get(getSteamVariant()))
-                    .setPos(85, 24))
-            .widget(
-                new SlotWidget(inventoryHandler, 4).setAccess(true, false)
-                    .setBackground(
-                        getGUITextureSet().getItemSlot(),
-                        GTUITextures.OVERLAY_SLOT_DUST_STEAM.get(getSteamVariant()))
-                    .setPos(103, 24))
-            .widget(
-                new SlotWidget(inventoryHandler, 5).setAccess(true, false)
-                    .setBackground(
-                        getGUITextureSet().getItemSlot(),
-                        GTUITextures.OVERLAY_SLOT_DUST_STEAM.get(getSteamVariant()))
-                    .setPos(121, 24))
-            .widget(
-                new ProgressBar().setTexture(GTUITextures.PROGRESSBAR_ARROW_2_STEAM.get(getSteamVariant()), 20)
-                    .setProgress(() -> (float) mProgresstime / mMaxProgresstime)
-                    .setNEITransferRect(
-                        getRecipeMap().getFrontend()
-                            .getUIProperties().neiTransferRectId)
-                    .setPos(58, 24)
-                    .setSize(20, 18));
     }
 
     @Override
