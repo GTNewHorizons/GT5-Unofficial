@@ -630,7 +630,7 @@ public class SpaceMiningRecipes {
             50 * SECONDS,
             (int) TierEU.RECIPE_IV,
             ItemMiningDrones.DroneTiers.EV.ordinal(),
-            ItemMiningDrones.DroneTiers.UHV.ordinal(),
+            ItemMiningDrones.DroneTiers.ZPM.ordinal(),
             150);
 
         // Europium Asteroid
