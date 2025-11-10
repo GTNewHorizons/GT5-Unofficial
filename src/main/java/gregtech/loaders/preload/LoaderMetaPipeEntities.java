@@ -665,6 +665,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
                 4800,
                 1500,
                 true).renameMaterial("High Pressure")
+                    .setAddMaterialTooltip(true)
                     .getStackForm(1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeMedium.get(Materials.ZPM),
@@ -677,6 +678,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
                 7200,
                 1500,
                 true).renameMaterial("High Pressure")
+                    .setAddMaterialTooltip(true)
                     .getStackForm(1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeLarge.get(Materials.ZPM),
@@ -689,6 +691,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
                 9600,
                 1500,
                 true).renameMaterial("High Pressure")
+                    .setAddMaterialTooltip(true)
                     .getStackForm(1L));
 
         FluidPipeBuilder.builder()

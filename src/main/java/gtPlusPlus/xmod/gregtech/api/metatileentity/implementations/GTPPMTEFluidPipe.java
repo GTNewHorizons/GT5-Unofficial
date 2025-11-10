@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
+import java.util.List;
+
 import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.HarvestTool;
@@ -65,5 +67,13 @@ public class GTPPMTEFluidPipe extends MTEFluidPipe {
         return StatCollector.translateToLocalFormatted(
             getPrefixKey(),
             StatCollector.translateToLocal(pipeStats.getLocalizedMaterialKey()));
+    }
+
+    @Override
+    public void addMaterialTooltip(List<String> desc) {
+        if (isAddMaterialTooltip()) return;
+        if (pipeStats.getMaterial() == null) return;
+        pipeStats.getMaterial()
+            .addTooltip(desc);
     }
 }

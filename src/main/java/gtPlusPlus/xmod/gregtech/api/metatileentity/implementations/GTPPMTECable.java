@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
+import java.util.List;
+
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -147,5 +149,12 @@ public class GTPPMTECable extends MTECable implements IMetaTileEntityCable {
         if (getMaterial() == null)
             return StatCollector.translateToLocalFormatted(getPrefixKey(), getGTPPMaterial().getLocalizedName());
         return super.getLocalizedName();
+    }
+
+    @Override
+    public void addMaterialTooltip(List<String> desc) {
+        if (isAddMaterialTooltip()) return;
+        if (getGTPPMaterial() == null) return;
+        getGTPPMaterial().addTooltip(desc);
     }
 }

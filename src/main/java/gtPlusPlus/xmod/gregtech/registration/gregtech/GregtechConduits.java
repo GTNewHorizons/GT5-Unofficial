@@ -67,6 +67,10 @@ public class GregtechConduits {
         public String getLocalizedMaterialKey() {
             return MaterialUtils.getMaterialLocalizedNameKey(defaultLocalName);
         }
+
+        public Material getMaterial() {
+            return Material.mMaterialCache.get(defaultLocalName.toLowerCase());
+        }
     }
 
     // 30000-30999

@@ -284,8 +284,3 @@ BW.gui.text.lesu.amp_io=AMP/t IN/OUT: %s
 # Tooltip for Material
 gt.bwMetaGenerateddust.4.tooltip=§3Check Flawed Crystal recipe in EBF
 gt.bwMetaGeneratedgem.4.tooltip=§3Check Flawed Crystal recipe in EBF
-
-gt.bwMetaGenerateddust.10023.tooltip=§3Check Plate recipe in Forming Press
-gt.bwMetaGeneratedgem.10023.tooltip=§3Check Plate recipe in Forming Press
-gt.bwMetaGeneratedrawOre.10023.tooltip=§3Check Plate recipe in Forming Press
-gt.bwMetaGeneratedcrushed.10023.tooltip=§3Check Plate recipe in Forming Press

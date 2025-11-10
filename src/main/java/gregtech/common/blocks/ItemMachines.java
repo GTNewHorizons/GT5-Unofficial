@@ -77,6 +77,9 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
             if (GregTechAPI.METATILEENTITIES[tDamage] != null) {
                 final IGregTechTileEntity tTileEntity = GregTechAPI.METATILEENTITIES[tDamage].getBaseMetaTileEntity();
                 final IMetaTileEntity tMetaTileEntity = tTileEntity.getMetaTileEntity();
+                if (tMetaTileEntity instanceof ILocalizedMetaPipeEntity localizedMetaPipeEntity) {
+                    localizedMetaPipeEntity.addMaterialTooltip(aList);
+                }
                 final String tSuffix = (tMetaTileEntity instanceof ISecondaryDescribable
                     && ((ISecondaryDescribable) tMetaTileEntity).isDisplaySecondaryDescription()) ? "_secondary" : "";
                 final String key = "gt.blockmachines." + tMetaTileEntity.getMetaName() + ".tooltip" + tSuffix;

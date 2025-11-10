@@ -1,5 +1,7 @@
 package gregtech.api.interfaces.tileentity;
 
+import java.util.List;
+
 import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.Materials;
@@ -11,14 +13,14 @@ public interface ILocalizedMetaPipeEntity {
 
     /**
      * the material of GT.
-     * 
+     *
      * @apiNote if this returns <code>null</code>, you need rewrite the <code>getLocalizedName()</code>.
      */
     Materials getMaterial();
 
     /**
      * the key of the format, it should contain "%s".
-     * 
+     *
      * @apiNote if this returns <code>null</code>, you need rewrite the <code>getLocalizedName()</code>.
      */
     String getPrefixKey();
@@ -42,5 +44,15 @@ public interface ILocalizedMetaPipeEntity {
                 .translateToLocalFormatted(getPrefixKey(), StatCollector.translateToLocal(getMaterialNewNameKey()));
         }
         return "Unnamed with ILocalizedMetaPipeEntity";
+    }
+
+    default boolean isAddMaterialTooltip() {
+        return false;
+    }
+
+    default void addMaterialTooltip(List<String> desc) {
+        if (isAddMaterialTooltip()) return;
+        if (getMaterial() == null) return;
+        getMaterial().addTooltips(desc);
     }
 }
