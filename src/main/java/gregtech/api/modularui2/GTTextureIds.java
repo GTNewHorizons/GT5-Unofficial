@@ -108,6 +108,8 @@ public final class GTTextureIds {
     public static final String PICTURE_SCREEN_BLACK = "gregtech:picture_screen_black";
 
     public static final String PICTURE_TRANSPARENT = "gregtech:picture_transparent";
+    public static final String PICTURE_INFORMATION_SYMBOL = "gregtech:picture_information_symbol";
+    public static final String PICTURE_INFORMATION_BUBBLE = "gregtech:picture_information_bubble";
     public static final String PICTURE_BW_LOGO_STANDARD = "bartworks:picture_bw_logo";
     public static final String PICTURE_SIEVERT_CONTAINER = "bartworks:picture_bw_sievert_container";
     public static final String PICTURE_DECAY_TIME_CONTAINER = "bartworks:picture_bw_decay_time_container";

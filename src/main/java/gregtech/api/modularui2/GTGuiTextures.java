@@ -396,6 +396,15 @@ public final class GTGuiTextures {
         .build();
 
     public static final UITexture OVERLAY_SLOT_MOLD = fullImage(GregTech.ID, "gui/overlay_slot/mold");
+    public static final UITexture TT_SAFE_VOID_OFF = UITexture.builder()
+        .location(MODID, "gui/overlay_button/safe_void_off")
+        .canApplyTheme()
+        .build();
+
+    public static final UITexture TT_SAFE_VOID_ON = UITexture.builder()
+        .location(MODID, "gui/overlay_button/safe_void_on")
+        .canApplyTheme()
+        .build();
 
     // endregion slot overlay
 
@@ -616,6 +625,18 @@ public final class GTGuiTextures {
         .fullImage()
         .name(GTTextureIds.PICTURE_TRANSPARENT)
         .build();
+    public static final UITexture INFORMATION_SYMBOL = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/information_symbol")
+        .fullImage()
+        .name(GTTextureIds.PICTURE_INFORMATION_SYMBOL)
+        .build();
+    // ripped from mui1
+    public static final UITexture INFORMATION_BUBBLE = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/information_bubble")
+        .fullImage()
+        .name(GTTextureIds.PICTURE_INFORMATION_BUBBLE)
+        .build();
+
     public static final UITexture PICTURE_SIEVERT_CONTAINER = UITexture.builder()
         .location(MainMod.MOD_ID, "GUI/picture/sievert_container")
         .fullImage()
