@@ -358,56 +358,6 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
     }
 
     @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        super.drawTexts(screenElements, inventorySlot);
-
-        MutableInt hatchTier = new MutableInt();
-
-        screenElements
-            .widget(new FakeSyncWidget.DoubleSyncer(() -> transferredLast5Secs, value -> transferredLast5Secs = value));
-        screenElements.widget(
-            new FakeSyncWidget.DoubleSyncer(() -> transferredLast30Secs, value -> transferredLast30Secs = value));
-        screenElements
-            .widget(new FakeSyncWidget.DoubleSyncer(() -> transferredLast1Min, value -> transferredLast1Min = value));
-        screenElements.widget(new FakeSyncWidget.IntegerSyncer(this::calculateHatchTier, hatchTier::setValue));
-
-        screenElements.widget(TextWidget.localised("GT5U.gui.text.at_eu_transferred"));
-
-        screenElements.widget(TextWidget.localised("GT5U.gui.text.at_past_5secs.header"));
-
-        screenElements.widget(TextWidget.dynamicString(() -> {
-            return new GTTextBuilder("GT5U.gui.text.at_history.values").setBase(EnumChatFormatting.GRAY)
-                .addNumber(formatUIEUt(transferredLast5Secs))
-                .addNumber(formatUIAmperage(transferredLast5Secs / V[hatchTier.getValue()]))
-                .add(TIER_COLORS[hatchTier.getValue()], VN[hatchTier.getValue()])
-                .toString();
-        })
-            .setSynced(false));
-
-        screenElements.widget(TextWidget.localised("GT5U.gui.text.at_past_30secs.header"));
-
-        screenElements.widget(TextWidget.dynamicString(() -> {
-            return new GTTextBuilder("GT5U.gui.text.at_history.values").setBase(EnumChatFormatting.GRAY)
-                .addNumber(formatUIEUt(transferredLast30Secs))
-                .addNumber(formatUIAmperage(transferredLast30Secs / V[hatchTier.getValue()]))
-                .add(TIER_COLORS[hatchTier.getValue()], VN[hatchTier.getValue()])
-                .toString();
-        })
-            .setSynced(false));
-
-        screenElements.widget(TextWidget.localised("GT5U.gui.text.at_past_min.header"));
-
-        screenElements.widget(TextWidget.dynamicString(() -> {
-            return new GTTextBuilder("GT5U.gui.text.at_history.values").setBase(EnumChatFormatting.GRAY)
-                .addNumber(formatUIEUt(transferredLast1Min))
-                .addNumber(formatUIAmperage(transferredLast1Min / V[hatchTier.getValue()]))
-                .add(TIER_COLORS[hatchTier.getValue()], VN[hatchTier.getValue()])
-                .toString();
-        })
-            .setSynced(false));
-    }
-
-    @Override
     public String[] getInfoData() {
         ArrayList<String> lines = new ArrayList<>(Arrays.asList(super.getInfoData()));
 
