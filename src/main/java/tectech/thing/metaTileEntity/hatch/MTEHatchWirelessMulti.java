@@ -228,7 +228,7 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti {
 
     @Override
     public String[] getDescription() {
-        return GTSplit.splitLocalizedFormattedWithSuffix(
+        return GTSplit.splitLocalizedWithSuffix(
             "gt.blockmachines.energy_hatch.wireless",
             new String[] { GTAuthors.buildAuthorsWithFormat(GTAuthors.AuthorColen, GTAuthors.AuthorCloud.get()),
                 translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
