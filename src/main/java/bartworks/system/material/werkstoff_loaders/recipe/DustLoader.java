@@ -341,7 +341,7 @@ public class DustLoader implements IWerkstoffRunnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(dust, 1), ItemList.Schematic_Dust_Small.get(0L))
-                .itemOutputs(werkstoff.get(dust, 4))
+                .itemOutputs(werkstoff.get(dustSmall, 4))
                 .duration(5 * SECONDS)
                 .eut(4)
                 .addTo(packagerRecipes);
