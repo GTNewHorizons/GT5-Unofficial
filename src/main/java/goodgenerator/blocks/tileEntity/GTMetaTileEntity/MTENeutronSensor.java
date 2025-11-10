@@ -246,38 +246,4 @@ public class MTENeutronSensor extends MTEHatch {
         this.inverted = inverted;
     }
 
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            new CoverCycleButtonWidget().setToggle(() -> inverted, (val) -> inverted = val)
-                .setTextureGetter(
-                    (state) -> state == 1 ? GTUITextures.OVERLAY_BUTTON_REDSTONE_ON
-                        : GTUITextures.OVERLAY_BUTTON_REDSTONE_OFF)
-                .addTooltip(0, translateToLocal("gt.interact.desc.normal.tooltip"))
-                .addTooltip(1, translateToLocal("gt.interact.desc.inverted.tooltip"))
-                .setPos(10, 8))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> inverted ? translateToLocal("gt.interact.desc.inverted")
-                            : translateToLocal("gt.interact.desc.normal"))
-                    .setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(28, 12))
-            .widget(
-                new NumericWidget().setBounds(0, 1200000000)
-                    .setGetter(() -> threshold)
-                    .setSetter((value) -> threshold = (int) value)
-                    .setScrollValues(1000, 1, 1_000_000)
-                    .setTextColor(Color.WHITE.dark(1))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setFocusOnGuiOpen(true)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
-                    .setPos(10, 28)
-                    .setSize(77, 12))
-            .widget(
-                new TextWidget(translateToLocal("gui.NeutronSensor.4")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(90, 30));
-    }
 }
