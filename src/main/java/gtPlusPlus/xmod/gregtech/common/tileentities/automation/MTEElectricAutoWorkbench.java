@@ -26,6 +26,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -600,19 +601,11 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank implements IAddGregte
             }
 
             if (mThroughPut < 2) {
-                getBaseMetaTileEntity().decreaseStoredEnergyUnits(
-                    GTUtility.moveOneItemStack(
-                        getBaseMetaTileEntity(),
-                        getBaseMetaTileEntity().getIInventoryAtSide(getBaseMetaTileEntity().getBackFacing()),
-                        getBaseMetaTileEntity().getBackFacing(),
-                        getBaseMetaTileEntity().getFrontFacing(),
-                        null,
-                        false,
-                        (byte) 64,
-                        (byte) 1,
-                        (byte) 64,
-                        (byte) 1) * 10,
-                    true);
+                GTItemTransfer transfer = new GTItemTransfer();
+
+                transfer.outOfMachine(this, aBaseMetaTileEntity.getBackFacing());
+
+                getBaseMetaTileEntity().decreaseStoredEnergyUnits(transfer.transfer() * 10L, true);
             }
         }
     }

@@ -154,6 +154,7 @@ public enum Mods implements IMod {
     NotEnoughIDs(ModIDs.NOT_ENOUGH_I_DS),
     NotEnoughItems(ModIDs.NOT_ENOUGH_ITEMS),
     IC2NuclearControl(ModIDs.I_C2_NUCLEAR_CONTROL),
+    NuclearHorizons(ModIDs.NUCLEAR_HORIZONS),
     Nutrition(ModIDs.NUTRITION),
     OpenGlasses(ModIDs.OPEN_GLASSES),
     OpenBlocks(ModIDs.OPEN_BLOCKS),
@@ -494,6 +495,7 @@ public enum Mods implements IMod {
         public static final String NOT_ENOUGH_I_DS = "neid";
         public static final String NOT_ENOUGH_ITEMS = "NotEnoughItems";
         public static final String I_C2_NUCLEAR_CONTROL = "IC2NuclearControl"; // "Nuclear-Control"
+        public static final String NUCLEAR_HORIZONS = "nuclear_horizons";
         public static final String NUTRITION = "nutrition";
         public static final String OPEN_GLASSES = "openglasses"; // "OCGlasses"
         public static final String OPEN_BLOCKS = "OpenBlocks";
