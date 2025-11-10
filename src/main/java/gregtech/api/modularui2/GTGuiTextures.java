@@ -711,6 +711,12 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SCANNER = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_scanner");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_ARC = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_arc");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_PLASMA_ARC = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_plasma_arc");
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_RESEARCH = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_research");
