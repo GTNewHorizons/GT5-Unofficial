@@ -709,7 +709,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         return machineModeIcons.get(index);
     }
 
-    private void createModeSwitchTooltip(RichTooltip t) {
+    protected void createModeSwitchTooltip(RichTooltip t) {
         t.addLine(IKey.dynamic(() -> StatCollector.translateToLocal("GT5U.gui.button.mode_switch")))
             .addLine(IKey.dynamic(multiblock::getMachineModeName));
     }
