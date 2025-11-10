@@ -120,6 +120,8 @@ public final class GTGuiTextures {
         .fullImage(GregTech.ID, "gui/icons/structureIncomplete");
     public static final UITexture OVERLAY_MANUAL_SHUTDOWN = UITexture
         .fullImage(GregTech.ID, "gui/icons/manualShutdown");
+    public static final UITexture OVERLAY_COMPUTATION_LOSS = UITexture
+        .fullImage(GregTech.ID, "gui/icons/stalled_computation");
     public static final UITexture OVERLAY_UNPOWERED = UITexture.fullImage(GregTech.ID, "gui/icons/unpowered");
 
     public static final UITexture OVERLAY_NO_MAINTENANCE_ISSUES = UITexture.fullImage(GregTech.ID, "gui/icons/noMaint");

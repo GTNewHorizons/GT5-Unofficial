@@ -119,6 +119,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         this.shutdownReasonTextureMap.put(ShutDownReasonRegistry.POWER_LOSS.getKey(), GTGuiTextures.OVERLAY_POWER_LOSS);
         this.shutdownReasonTextureMap.put(ShutDownReasonRegistry.NO_REPAIR.getKey(), GTGuiTextures.OVERLAY_TOO_DAMAGED);
         this.shutdownReasonTextureMap.put(ShutDownReasonRegistry.NONE.getKey(), GTGuiTextures.OVERLAY_MANUAL_SHUTDOWN);
+        this.shutdownReasonTextureMap.put("computation_loss", GTGuiTextures.OVERLAY_COMPUTATION_LOSS);
         this.shutdownReasonTooltipMap.put(
             ShutDownReasonRegistry.STRUCTURE_INCOMPLETE.getKey(),
             EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("GT5U.gui.hoverable.incomplete"));
@@ -131,7 +132,9 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         this.shutdownReasonTooltipMap.put(
             ShutDownReasonRegistry.NONE.getKey(),
             EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("GT5U.gui.hoverable.manualshutdown"));
-
+        this.shutdownReasonTooltipMap.put(
+            "computation_loss",
+            EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("GT5U.gui.text.computation_loss"));
     }
 
     public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
