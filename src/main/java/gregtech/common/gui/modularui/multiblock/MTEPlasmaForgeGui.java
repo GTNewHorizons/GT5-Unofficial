@@ -85,21 +85,22 @@ public class MTEPlasmaForgeGui extends MTEMultiBlockBaseGui<MTEPlasmaForge> {
             });
     }
 
-    private static final int WIDTH = 58;
-    private static final int HEIGHT = 60;
+    private static final int WIDTH = 60;
+    private static final int HEIGHT = 52;
     private static final int PADDING_SIDES = 4;
 
     private ModularPanel openCatalystPanel(PanelSyncManager syncManager, ModularPanel parent) {
         ModularPanel returnPanel = new ModularPanel("catalystPanel").size(WIDTH, HEIGHT)
-            .padding(4)
             .relative(parent)
             .leftRel(1)
-            .topRel(0.8f);
+            .topRel(0.9f);
         IntSyncValue catalystSyncer = syncManager.findSyncHandler("catalystType", IntSyncValue.class);
         Flow holdingColumn = Flow.column()
-            .sizeRel(1);
+            .sizeRel(1)
+            .paddingTop(4);
         holdingColumn.child(
             IKey.lang("GT5U.DTPF.catalysttier")
+                .alignment(Alignment.Center)
                 .asWidget()
                 .marginBottom(2));
         holdingColumn.child(
@@ -108,8 +109,7 @@ public class MTEPlasmaForgeGui extends MTEMultiBlockBaseGui<MTEPlasmaForge> {
                 .setTextAlignment(Alignment.CENTER)
                 .setDefaultNumber(1)
                 .value(catalystSyncer)
-                .size(WIDTH - PADDING_SIDES * 2, 18)
-                .setFocusOnGuiOpen(true));
+                .size(WIDTH - PADDING_SIDES * 2, 18));
 
         returnPanel.child(holdingColumn);
 
