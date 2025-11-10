@@ -5,11 +5,14 @@ import java.util.function.Function;
 
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
+import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
+import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.SyncHandler;
 
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
+import tectech.thing.metaTileEntity.multi.godforge.util.MilestoneFormatter;
 
 /**
  * Sync handler helper primarily written to solve the issue of multiple panels needing
@@ -20,20 +23,29 @@ public class Syncers<T extends SyncHandler> {
 
     // spotless:off
 
+    public static final Syncers<EnumSyncValue<MilestoneFormatter>> FORMATTING_MODE = new Syncers<>(
+        "fog.sync.formatting_mode",
+        data -> new EnumSyncValue<>(MilestoneFormatter.class, data::getFormattingMode, data::setFormattingMode));
+
     public static final Syncers<BooleanSyncValue> BATTERY_CHARGING = new Syncers<>(
         "fog.sync.battery_charging",
-        BooleanSyncValue.class,
         data -> new BooleanSyncValue(data::isBatteryCharging, data::setBatteryCharging));
 
     public static final Syncers<BooleanSyncValue> SHARD_EJECTION = new Syncers<>(
         "fog.sync.shard_ejection",
-        BooleanSyncValue.class,
         data -> new BooleanSyncValue(data::isGravitonShardEjection, data::setGravitonShardEjection));
 
     public static final Syncers<BooleanSyncValue> INVERSION = new Syncers<>(
         "fog.sync.inversion",
-        BooleanSyncValue.class,
         data -> new BooleanSyncValue(data::isInversion, data::setInversion));
+
+    public static final Syncers<EnumSyncValue<Fuels>> SELECTED_FUEL = new Syncers<>(
+        "fog.sync.selected_fuel",
+        data -> new EnumSyncValue<>(Fuels.class, () -> Fuels.getFromData(data), fuel -> fuel.select(data)));
+
+    public static final Syncers<LongSyncValue> FUEL_CONSUMPTION = new Syncers<>(
+        "fog.sync.fuel_consumption",
+        data -> new LongSyncValue(data::getFuelConsumption, data::setFuelConsumption));
 
     // ---------- //
     // Milestones //
@@ -41,7 +53,6 @@ public class Syncers<T extends SyncHandler> {
 
     public static final Syncers<IntSyncValue> MILESTONE_CLICKED = new Syncers<>(
         "fog.sync.milestone_clicked",
-        IntSyncValue.class,
         data -> {
             AtomicInteger i = new AtomicInteger();
             return new IntSyncValue(i::intValue, i::set);
@@ -49,52 +60,44 @@ public class Syncers<T extends SyncHandler> {
 
     public static final Syncers<DoubleSyncValue> MILESTONE_CHARGE_PROGRESS = new Syncers<>(
         "fog.sync.milestone_charge_progress",
-        DoubleSyncValue.class,
         data -> new DoubleSyncValue(
             data::getPowerMilestonePercentage, val ->
             data.setPowerMilestonePercentage((float) val)));
     public static final Syncers<DoubleSyncValue> MILESTONE_CHARGE_PROGRESS_INVERTED = new Syncers<>(
         "fog.sync.milestone_charge_progress_inverted",
-        DoubleSyncValue.class,
         data -> new DoubleSyncValue(
             data::getInvertedPowerMilestonePercentage,
             val -> data.setInvertedPowerMilestonePercentage((float) val)));
 
     public static final Syncers<DoubleSyncValue> MILESTONE_CONVERSION_PROGRESS = new Syncers<>(
         "fog.sync.milestone_conversion_progress",
-        DoubleSyncValue.class,
         data -> new DoubleSyncValue(
             data::getRecipeMilestonePercentage, val ->
             data.setRecipeMilestonePercentage((float) val)));
     public static final Syncers<DoubleSyncValue> MILESTONE_CONVERSION_PROGRESS_INVERTED = new Syncers<>(
         "fog.sync.milestone_conversion_progress_inverted",
-        DoubleSyncValue.class,
         data -> new DoubleSyncValue(
             data::getInvertedRecipeMilestonePercentage,
             val -> data.setInvertedRecipeMilestonePercentage((float) val)));
 
     public static final Syncers<DoubleSyncValue> MILESTONE_CATALYST_PROGRESS = new Syncers<>(
         "fog.sync.milestone_catalyst_progress",
-        DoubleSyncValue.class,
         data -> new DoubleSyncValue(
             data::getFuelMilestonePercentage, val ->
             data.setFuelMilestonePercentage((float) val)));
     public static final Syncers<DoubleSyncValue> MILESTONE_CATALYST_PROGRESS_INVERTED = new Syncers<>(
         "fog.sync.milestone_catalyst_progress_inverted",
-        DoubleSyncValue.class,
         data -> new DoubleSyncValue(
             data::getInvertedFuelMilestonePercentage,
             val -> data.setInvertedFuelMilestonePercentage((float) val)));
 
     public static final Syncers<DoubleSyncValue> MILESTONE_COMPOSITION_PROGRESS = new Syncers<>(
         "fog.sync.milestone_composition_progress",
-        DoubleSyncValue.class,
         data -> new DoubleSyncValue(
             data::getStructureMilestonePercentage, val ->
             data.setStructureMilestonePercentage((float) val)));
     public static final Syncers<DoubleSyncValue> MILESTONE_COMPOSITION_PROGRESS_INVERTED = new Syncers<>(
         "fog.sync.milestone_composition_progress_inverted",
-        DoubleSyncValue.class,
         data -> new DoubleSyncValue(
             data::getInvertedStructureMilestonePercentage,
             val -> data.setInvertedStructureMilestonePercentage((float) val)));
@@ -102,12 +105,10 @@ public class Syncers<T extends SyncHandler> {
     // spotless:on
 
     private final String syncId;
-    private final Class<T> clazz;
     private final Function<ForgeOfGodsData, T> syncValueSupplier;
 
-    private Syncers(String syncId, Class<T> clazz, Function<ForgeOfGodsData, T> syncValueSupplier) {
+    private Syncers(String syncId, Function<ForgeOfGodsData, T> syncValueSupplier) {
         this.syncValueSupplier = syncValueSupplier;
-        this.clazz = clazz;
         this.syncId = syncId;
     }
 
@@ -121,8 +122,9 @@ public class Syncers<T extends SyncHandler> {
         return syncValueSupplier.apply(data);
     }
 
+    @SuppressWarnings("unchecked")
     public T lookup(PanelSyncManager syncManager, Panels fromPanel) {
-        return syncManager.findSyncHandler(getSyncId(fromPanel), clazz);
+        return (T) syncManager.findSyncHandler(getSyncId(fromPanel));
     }
 
     public String getSyncId(Panels fromPanel) {
