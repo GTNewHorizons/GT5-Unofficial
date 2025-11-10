@@ -6,6 +6,7 @@ import java.util.function.Function;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.SyncHandler;
@@ -46,6 +47,10 @@ public class Syncers<T extends SyncHandler> {
     public static final Syncers<LongSyncValue> FUEL_CONSUMPTION = new Syncers<>(
         "fog.sync.fuel_consumption",
         data -> new LongSyncValue(data::getFuelConsumption, data::setFuelConsumption));
+
+    public static final Syncers<IntSyncValue> FUEL_FACTOR = new Syncers<>(
+        "fog.sync.fuel_factor",
+        data -> new IntSyncValue(data::getFuelConsumptionFactor, data::setFuelConsumptionFactor));
 
     // ---------- //
     // Milestones //

@@ -60,7 +60,7 @@ public class FuelConfigPanel {
         TextFieldWidget textBox = new TextFieldWidget().setFormatAsInteger(true)
             .setNumbers(() -> 1, () -> GodforgeMath.calculateMaxFuelFactor(data))
             .setTextAlignment(Alignment.CENTER)
-            .value(Syncers.FUEL_CONSUMPTION.create(hypervisor))
+            .value(Syncers.FUEL_FACTOR.create(hypervisor))
             .setTooltipOverride(true)
             .setScrollValues(1, 4, 64)
             .size(70, 18)
