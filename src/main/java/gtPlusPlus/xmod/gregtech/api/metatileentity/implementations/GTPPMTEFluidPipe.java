@@ -71,7 +71,7 @@ public class GTPPMTEFluidPipe extends MTEFluidPipe {
 
     @Override
     public void addMaterialTooltip(List<String> desc) {
-        if (isAddMaterialTooltip()) return;
+        if (isNotAddMaterialTooltip()) return;
         if (pipeStats.getMaterial() == null) return;
         pipeStats.getMaterial()
             .addTooltip(desc);

@@ -46,12 +46,20 @@ public interface ILocalizedMetaPipeEntity {
         return "Unnamed with ILocalizedMetaPipeEntity";
     }
 
-    default boolean isAddMaterialTooltip() {
+    /**
+     * Do not add the Material Tooltip when this returns <code>true</code>.
+     */
+    default boolean isNotAddMaterialTooltip() {
         return false;
     }
 
+    /**
+     * Add material tooltip when {@link #isNotAddMaterialTooltip()} returns <code>false</false>.
+     * 
+     * @param desc The list of tooltip (addInformation).
+     */
     default void addMaterialTooltip(List<String> desc) {
-        if (isAddMaterialTooltip()) return;
+        if (isNotAddMaterialTooltip()) return;
         if (getMaterial() == null) return;
         getMaterial().addTooltips(desc);
     }

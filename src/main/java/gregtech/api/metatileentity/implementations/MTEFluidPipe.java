@@ -118,7 +118,7 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
     public byte mDisableInput = 0;
     private String mPrefixKey;
     private String mMaterialNameKey;
-    private boolean isAddMaterialTooltip = false;
+    private boolean isNotAddMaterialTooltip = false;
 
     public MTEFluidPipe(int aID, String aName, String aPrefixKey, float aThickNess, Materials aMaterial, int aCapacity,
         int aHeatResistance, boolean aGasProof) {
@@ -1050,8 +1050,8 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
     }
 
     @Override
-    public boolean isAddMaterialTooltip() {
-        return isAddMaterialTooltip;
+    public boolean isNotAddMaterialTooltip() {
+        return isNotAddMaterialTooltip;
     }
 
     public MTEFluidPipe renameMaterial(String newName) {
@@ -1062,8 +1062,8 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
         return this;
     }
 
-    public MTEFluidPipe setAddMaterialTooltip(boolean addMaterialTooltip) {
-        isAddMaterialTooltip = addMaterialTooltip;
+    public MTEFluidPipe setNotAddMaterialTooltip(boolean notAddMaterialTooltip) {
+        isNotAddMaterialTooltip = notAddMaterialTooltip;
         return this;
     }
 

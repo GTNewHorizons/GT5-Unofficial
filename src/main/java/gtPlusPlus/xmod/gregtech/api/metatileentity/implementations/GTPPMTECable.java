@@ -153,7 +153,7 @@ public class GTPPMTECable extends MTECable implements IMetaTileEntityCable {
 
     @Override
     public void addMaterialTooltip(List<String> desc) {
-        if (isAddMaterialTooltip()) return;
+        if (isNotAddMaterialTooltip()) return;
         if (getGTPPMaterial() == null) return;
         getGTPPMaterial().addTooltip(desc);
     }
