@@ -1033,10 +1033,13 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .reverseLayout(true)
             .childIf(
                 multiblock.doesBindPlayerInventory(),
-                new ItemSlot()
-                    .slot(
-                        new ModularSlot(multiblock.inventoryHandler, multiblock.getControllerSlotIndex())
-                            .slotGroup("item_inv"))
+                new ItemSlot().slot(new ModularSlot(multiblock.inventoryHandler, multiblock.getControllerSlotIndex()) {
+
+                    @Override
+                    public int getSlotStackLimit() {
+                        return multiblock.getInventoryStackLimit();
+                    }
+                }.slotGroup("item_inv"))
                     .marginTop(4))
             .child(createPowerSwitchButton())
             .child(createStructureUpdateButton(syncManager));

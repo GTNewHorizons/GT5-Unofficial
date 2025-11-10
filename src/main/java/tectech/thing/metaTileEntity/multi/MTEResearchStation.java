@@ -40,10 +40,6 @@ import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widgets.ListWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
-import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.slot.ItemSlot;
-import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -725,28 +721,6 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
 
                 return terminal;
             }
-
-            protected Flow createButtonColumn(ModularPanel panel, PanelSyncManager syncManager) {
-                return new Column().width(18)
-                    .leftRel(1, -2, 1)
-                    .mainAxisAlignment(com.cleanroommc.modularui.utils.Alignment.MainAxis.END)
-                    .reverseLayout(true)
-                    .childIf(
-                        multiblock.doesBindPlayerInventory(),
-                        new ItemSlot()
-                            .slot(new ModularSlot(multiblock.inventoryHandler, multiblock.getControllerSlotIndex()) {
-
-                                @Override
-                                public int getSlotStackLimit() {
-                                    return 1;
-                                }
-                            }.slotGroup("item_inv"))
-                            .marginTop(4))
-                    .child(createPowerSwitchButton())
-                    .child(createStructureUpdateButton(syncManager));
-
-            }
-
         }.withMachineModeIcons(
             GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_RESEARCH,
             GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_SCANNER);
