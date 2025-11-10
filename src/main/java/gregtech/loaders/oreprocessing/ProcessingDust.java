@@ -54,8 +54,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
         ItemStack aStack) {
         switch (aPrefix.getName()) {
             case "dust" -> {
-                if(!Objects.equals(aOreDictName, "dustFluix"))
-                {
+                if (!Objects.equals(aOreDictName, "dustFluix")) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, aStack), ItemList.Schematic_Dust_Small.get(0L))
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 4L))
