@@ -539,46 +539,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
     @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        super.drawTexts(screenElements, inventorySlot);
-
-        screenElements
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector.translateToLocal("gui.AntimatterGenerator.0") + ": "
-                            + EnumChatFormatting.BLUE
-                            + GTUtility.scientificFormat(energyProducedCache)
-                            + EnumChatFormatting.WHITE
-                            + " EU")
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get()))
-            .widget(new FakeSyncWidget.LongSyncer(this::getEnergyProduced, val -> energyProducedCache = val))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector.translateToLocal("gui.AntimatterGenerator.1") + ": "
-                            + EnumChatFormatting.RED
-                            + numberFormat.format(Math.ceil(efficiencyCache * 100))
-                            + EnumChatFormatting.WHITE
-                            + " %")
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get()))
-            .widget(new FakeSyncWidget.FloatSyncer(this::getEfficiency, val -> efficiencyCache = val))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector.translateToLocal("gui.AntimatterGenerator.1") + ": ⟨ "
-                            + EnumChatFormatting.RED
-                            + numberFormat.format(Math.ceil(avgEffCache * 100))
-                            + EnumChatFormatting.WHITE
-                            + " % ⟩₁₀")
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get()))
-            .widget(new FakeSyncWidget.FloatSyncer(this::getAvgEfficiency, val -> avgEffCache = val));
-    }
-
-    @Override
     public IStructureDefinition<AntimatterGenerator> getStructureDefinition() {
         return STRUCTURE_DEFINITION.get(getClass());
     }
