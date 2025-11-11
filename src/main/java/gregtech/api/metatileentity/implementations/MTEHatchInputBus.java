@@ -11,6 +11,11 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import gregtech.common.gui.modularui.hatch.MTEHatchInputBusGui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -354,6 +359,16 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
             .setPos(6 + (uiButtonCount++ * BUTTON_SIZE), 60 + getOffsetY())
             .setSize(BUTTON_SIZE, BUTTON_SIZE)
             .setGTTooltip(tooltipDataSupplier);
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchInputBusGui(this).build(data,syncManager,uiSettings);
     }
 
     @Override
