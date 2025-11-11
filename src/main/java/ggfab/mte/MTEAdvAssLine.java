@@ -305,21 +305,19 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.adv_assline")
-            .addInfo("gt.adv_assline.tips.1")
-            .addSeparator(EnumChatFormatting.GOLD)
-            .addInfo("gt.adv_assline.tips.2")
+            .addInfo("gt.adv_assline.tips")
             .addTecTechHatchInfo()
             .beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false)
-            .addStructureInfo("gt.adv_assline.info.1")
-            .addController("gt.adv_assline.info.2")
-            .addEnergyHatch("gt.adv_assline.info.3", 1)
-            .addMaintenanceHatch("gt.adv_assline.info.4", 3)
-            .addInputBus("gt.adv_assline.info.5", 4)
-            .addInputHatch("gt.adv_assline.info.4", 3)
-            .addOutputBus("gt.adv_assline.info.6", 3)
-            .addStructurePart("gt.blockmachines.hatch.dataaccess.name", "gt.adv_assline.info.7", 2)
+            .addStructureInfo("gt.adv_assline.info")
+            .addController("gt.adv_assline.controller")
+            .addEnergyHatch("gt.adv_assline.energy", 1)
+            .addMaintenanceHatch("gt.adv_assline.i_hatch", 3)
+            .addInputBus("gt.adv_assline.i_bus", 4)
+            .addInputHatch("gt.adv_assline.info.i_hatch", 3)
+            .addOutputBus("gt.adv_assline.o_bus", 3)
+            .addStructurePart("gt.blockmachines.hatch.dataaccess.name", "gt.adv_assline.dataaccess", 2)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher();
+            .toolTipFinisher(EnumChatFormatting.GOLD);
         return tt;
     }
 

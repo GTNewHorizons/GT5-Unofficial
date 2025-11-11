@@ -3986,15 +3986,14 @@ gt.lcr.info.1=Center
 gt.lcr.info.2=Adjacent to the PTFE Pipe Machine Casing
 gt.lcr.info.3=You can have multiple hatches/buses
 
-gt.adv_assline.tips.1=Assembly Line with item pipelining\nAll fluids are consumed at the start of the recipe\nRecipe tier is limited by the lowest Energy Hatch tier
-gt.adv_assline.tips.2=Runs imperfect overclocks until Energy Hatch tier\nAdditional overclocks are increasingly more expensive\n§bMultiplier = 4^(Regular Overclocks) × 4.3 × 4.6 × … × (4 + 0.3 × Extra Overclocks)\n§bPower usage = Multiplier × (Active Slices) × (Recipe EU/t)\nOverclocking assumes all recipe slices are active\n§lDoes not overclock beyond 1 tick\nConstructed identically to the Assembly Line
-gt.adv_assline.info.1=From Bottom to Top, Left to Right\nLayer 1 - Solid Steel Machine Casing, Input Bus, Solid Steel Machine Casing\nLayer 2 - Glass, Assembly Line Casing, Glass\nLayer 3 - Grate Machine Casing, Assembler Machine Casing, Grate Machine Casing\nLayer 4 - Empty, Solid Steel Machine Casing, Empty\nUp to 16 repeating slices, each one allows for 1 more item in recipes
-gt.adv_assline.info.2=Either Grate on layer 3 of the first slice
-gt.adv_assline.info.3=Any layer 4 casing
-gt.adv_assline.info.4=Any layer 1 casing
-gt.adv_assline.info.5=As specified on layer 1
-gt.adv_assline.info.6=Replaces Input Bus or Solid Steel Machine casing on layer 1 of last slice
-gt.adv_assline.info.7=Any Grate Machine Casing NOT on the first slice
+gt.adv_assline.tips=Assembly Line with item pipelining\nAll fluids are consumed at the start of the recipe\nRecipe tier is limited by the lowest Energy Hatch tier\n§6<SEPARATOR>\nRuns imperfect overclocks until Energy Hatch tier\nAdditional overclocks are increasingly more expensive\n§bMultiplier = 4^(Regular Overclocks) × 4.3 × 4.6 × … × (4 + 0.3 × Extra Overclocks)\n§bPower usage = Multiplier × (Active Slices) × (Recipe EU/t)\nOverclocking assumes all recipe slices are active\n§lDoes not overclock beyond 1 tick\nConstructed identically to the Assembly Line
+gt.adv_assline.info=From Bottom to Top, Left to Right\nLayer 1 - Solid Steel Machine Casing, Input Bus, Solid Steel Machine Casing\nLayer 2 - Glass, Assembly Line Casing, Glass\nLayer 3 - Grate Machine Casing, Assembler Machine Casing, Grate Machine Casing\nLayer 4 - Empty, Solid Steel Machine Casing, Empty\nUp to 16 repeating slices, each one allows for 1 more item in recipes
+gt.adv_assline.controller=Either Grate on layer 3 of the first slice
+gt.adv_assline.energy=Any layer 4 casing
+gt.adv_assline.i_hatch=Any layer 1 casing
+gt.adv_assline.i_bus=As specified on layer 1
+gt.adv_assline.o_bus=Replaces Input Bus or Solid Steel Machine casing on layer 1 of last slice
+gt.adv_assline.dataaccess=Any Grate Machine Casing NOT on the first slice
 
 gt.ebf.tips.1=You can use some fluids to reduce recipe time. Place the circuit in the Input Bus\nIncreases Heat by §c100K §7for every §fVoltage §7tier past §bMV\nReduces §bEU Usage §7by §f5% §7every §c900K §7above the recipe requirement\nEvery §c1800K §7over the recipe requirement grants 1 §dPerfect Overclock\nThat means the EBF will reduce recipe time by a factor 4 instead of 2 (giving 100% efficiency)
 gt.ebf.info.1=Any bottom layer casing
