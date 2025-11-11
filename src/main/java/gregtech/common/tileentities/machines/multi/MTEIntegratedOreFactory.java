@@ -213,7 +213,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             .addController("gt.ore_factory.info.1")
             .addCasingInfoExactly("gt.blockcasings8.7.name", 128, false)
             .addCasingInfoExactly("gt.blockcasings4.1.name", 105, false)
-            .addCasingInfoExactly("Material.reinforcedglass", 48, false)
+            .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 48, true)
             .addCasingInfoExactly("gt.blockcasings2.15.name", 30, false)
             .addCasingInfoExactly(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1)

@@ -53,6 +53,8 @@ import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.CycleButtonWidget;
 import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
+import com.cleanroommc.modularui.widgets.FluidDisplayWidget;
+import com.cleanroommc.modularui.widgets.ItemDisplayWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
@@ -79,7 +81,6 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.adapter.CheckRecipeResultAdapter;
 import gregtech.common.gui.modularui.adapter.ShutdownReasonAdapter;
 import gregtech.common.gui.modularui.adapter.StructureErrorAdapter;
-import gregtech.common.gui.modularui.widget.ResizableItemDisplayWidget;
 import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
 import gregtech.common.modularui2.sync.Predicates;
 
@@ -444,12 +445,12 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                     || Predicates.isNonEmptyList(syncManager.getSyncHandlerFromMapKey("fluidOutput:0")));
     }
 
-    private ResizableItemDisplayWidget createItemDrawable(ItemDisplayKey key) {
+    private ItemDisplayWidget createItemDrawable(ItemDisplayKey key) {
         // Second argument is stacksize, don't care about it
         ItemStack itemStack = new ItemStack(key.item(), 1, key.damage());
         itemStack.setTagCompound(key.nbt());
 
-        return new ResizableItemDisplayWidget().background(IDrawable.EMPTY)
+        return new ItemDisplayWidget().background(IDrawable.EMPTY)
             .displayAmount(false)
             .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
             .item(itemStack)
@@ -486,13 +487,11 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         return itemTextLine;
     }
 
-    private ResizableItemDisplayWidget createFluidDrawable(FluidStack fluidStack) {
-        // uses an itemstack representation of the fluid as there is no FluidDisplayWidget (yet)
-        ItemStack fluidDisplayStack = GTUtility.getFluidDisplayStack(fluidStack, false, false);
-        return new ResizableItemDisplayWidget().background(IDrawable.EMPTY)
+    private FluidDisplayWidget createFluidDrawable(FluidStack fluidStack) {
+        return new FluidDisplayWidget().background(IDrawable.EMPTY)
             .displayAmount(false)
             .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
-            .item(fluidDisplayStack)
+            .fluid(fluidStack)
             .size(DISPLAY_ROW_HEIGHT - 1)
             .marginRight(1);
     }
@@ -524,17 +523,38 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         return fluidTextLine;
     }
 
-    // TODO: separate panel gap into 'left row' and 'right row', for easier usage
+    /**
+     * Split into two methods, one for left/right side of the panel gap
+     * {@link #createLeftPanelGapRow(com.cleanroommc.modularui.screen.ModularPanel, com.cleanroommc.modularui.value.sync.PanelSyncManager)}
+     * {@link #createRightPanelGapRow(com.cleanroommc.modularui.screen.ModularPanel, com.cleanroommc.modularui.value.sync.PanelSyncManager)}
+     *
+     */
     protected Flow createPanelGap(ModularPanel parent, PanelSyncManager syncManager) {
         return new Row().widthRel(1)
-            .paddingRight(6)
+            .paddingRight(2)
             .paddingLeft(4)
             .height(textBoxToInventoryGap)
+            .child(createLeftPanelGapRow(parent, syncManager))
+            .child(createRightPanelGapRow(parent, syncManager));
+    }
+
+    protected Flow createLeftPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
+        return new Row().coverChildrenWidth()
+            .heightRel(1)
             .child(createVoidExcessButton(syncManager))
             .child(createInputSeparationButton(syncManager))
             .child(createBatchModeButton(syncManager))
             .child(createLockToSingleRecipeButton(syncManager))
-            .childIf(!machineModeIcons.isEmpty(), createModeSwitchButton(syncManager))
+            .childIf(!machineModeIcons.isEmpty(), createModeSwitchButton(syncManager));
+    }
+
+    protected Flow createRightPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
+        return Flow.row()
+            .mainAxisAlignment(MainAxis.END)
+            .reverseLayout(true)
+            .align(Alignment.CenterRight)
+            .coverChildrenWidth()
+            .heightRel(1)
             .childIf(multiblock.supportsPowerPanel(), createPowerPanelButton(syncManager, parent));
     }
 
@@ -793,8 +813,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         IPanelHandler powerPanel = syncManager
             .panel("powerPanel", (p_syncManager, syncHandler) -> openPowerControlPanel(p_syncManager, parent), true);
         return new ButtonWidget<>().size(18, 18)
-            .right(2)
             .marginTop(4)
+            .marginLeft(4)
             .overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/power_panel"))
             .onMousePressed(d -> {
                 if (!powerPanel.isPanelOpen()) {

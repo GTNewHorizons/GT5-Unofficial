@@ -5,13 +5,11 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 import static gregtech.api.util.GTUtility.areStacksEqual;
 import static gregtech.api.util.GTUtility.isStackInvalid;
 import static gregtech.api.util.GTUtility.isStackValid;
-import static gregtech.api.util.GTUtility.moveMultipleItemStacks;
 
 import java.util.BitSet;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
@@ -41,6 +39,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTDataUtils;
+import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.extensions.ArrayExt;
 
@@ -240,29 +239,26 @@ public class MTEHatchOutputBus extends MTEHatch
         return false;
     }
 
+    protected int getStackTransferAmount() {
+        return mInventory.length;
+    }
+
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork()
             && (aTick & 0x7) == 0
             && pushOutputInventory()) {
-            final IInventory tTileEntity = aBaseMetaTileEntity
-                .getIInventoryAtSide(aBaseMetaTileEntity.getFrontFacing());
-            if (tTileEntity != null) {
-                moveMultipleItemStacks(
-                    aBaseMetaTileEntity,
-                    tTileEntity,
-                    aBaseMetaTileEntity.getFrontFacing(),
-                    aBaseMetaTileEntity.getBackFacing(),
-                    null,
-                    false,
-                    (byte) 64,
-                    (byte) 1,
-                    (byte) 64,
-                    (byte) 1,
-                    mInventory.length);
-                for (int i = 0; i < mInventory.length; i++)
-                    if (mInventory[i] != null && mInventory[i].stackSize <= 0) mInventory[i] = null;
+
+            GTItemTransfer transfer = new GTItemTransfer();
+
+            transfer.push(aBaseMetaTileEntity, aBaseMetaTileEntity.getFrontFacing());
+
+            transfer.setStacksToTransfer(getStackTransferAmount());
+            transfer.setMaxItemsPerTransfer(getStackSizeLimit(-1, null));
+
+            if (transfer.transfer() > 0) {
+                GTUtility.cleanInventory(this);
             }
         }
     }
