@@ -3,9 +3,7 @@ package gregtech.common.gui.modularui.hatch;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -16,7 +14,6 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTENeutronSensor;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.modularui2.GTGuis;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 
 public class MTENeutronSensorGui extends MTEHatchBaseGui<MTENeutronSensor> {
@@ -24,6 +21,7 @@ public class MTENeutronSensorGui extends MTEHatchBaseGui<MTENeutronSensor> {
     public MTENeutronSensorGui(MTENeutronSensor sensor) {
         super(sensor);
     }
+
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         Flow col = Flow.column()
