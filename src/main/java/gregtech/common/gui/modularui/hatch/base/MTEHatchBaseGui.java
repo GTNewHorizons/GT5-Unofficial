@@ -51,6 +51,7 @@ public class MTEHatchBaseGui<T extends MTEHatch> {
                 .child(createInventoryRow(panel, syncManager)));
     }
 
+    // override for cross-panel syncing
     public void registerSyncValues(PanelSyncManager syncManager) {
 
     }
