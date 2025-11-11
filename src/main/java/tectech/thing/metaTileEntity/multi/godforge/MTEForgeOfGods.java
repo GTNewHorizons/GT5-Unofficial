@@ -10,9 +10,6 @@ import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static gregtech.api.util.GTUtility.formatNumbers;
-import static java.lang.Math.floor;
-import static java.lang.Math.log;
-import static java.lang.Math.max;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static tectech.thing.casing.TTCasingsContainer.GodforgeCasings;
 import static tectech.thing.casing.TTCasingsContainer.forgeOfGodsRenderBlock;
@@ -27,6 +24,10 @@ import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.calc
 import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.calculateProcessingVoltageForModules;
 import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.calculateSpeedBonusForModules;
 import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.calculateStartupFuelConsumption;
+import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.determineCatalystMilestone;
+import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.determineChargeMilestone;
+import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.determineCompositionMilestone;
+import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.determineConversionMilestone;
 import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.factorChangeDuringRecipeAntiCheese;
 import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.queryMilestoneStats;
 import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.setMiscModuleParameters;
@@ -1271,8 +1272,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
         return builder.build();
     }
-
-    private final int[] milestoneProgress = new int[] { 0, 0, 0, 0 };
 
     protected ModularWindow createMilestoneWindow(final EntityPlayer player) {
         final int WIDTH = 400;
@@ -2989,7 +2988,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
     private void checkInversionStatus() {
         int inversionChecker = 0;
-        for (int progress : milestoneProgress) {
+        for (int progress : data.getAllMilestoneProgress()) {
             if (progress < 7) {
                 break;
             }
@@ -3053,100 +3052,19 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 + (exoticMagmatter - 1) * 5) / 5f;
             data.setTotalExtensionsBuilt(data.getTotalExtensionsBuilt() + toAdd);
         }
-        milestoneProgress[3] = (int) Math.floor(data.getTotalExtensionsBuilt());
+        data.setMilestoneProgress(3, (int) Math.floor(data.getTotalExtensionsBuilt()));
     }
 
     private void determineMilestoneProgress() {
-        int closestRelevantSeven;
-        float rawProgress;
-        float actualProgress;
-        if (milestoneProgress[0] < 7) {
-            data.setPowerMilestonePercentage(
-                (float) max(
-                    (log(
-                        (data.getTotalPowerConsumed()
-                            .divide(BigInteger.valueOf(POWER_MILESTONE_CONSTANT))).longValue())
-                        / POWER_LOG_CONSTANT + 1),
-                    0) / 7);
-            milestoneProgress[0] = (int) floor(data.getPowerMilestonePercentage() * 7);
-        }
-        if (data.isInversion()) {
-            rawProgress = (data.getTotalPowerConsumed()
-                .divide(POWER_MILESTONE_T7_CONSTANT)
-                .floatValue() - 1) / 7;
-            closestRelevantSeven = (int) floor(rawProgress);
-            actualProgress = rawProgress - closestRelevantSeven;
-            milestoneProgress[0] = 7 + (int) floor(rawProgress * 7);
-            if (closestRelevantSeven % 2 == 0) {
-                data.setInvertedPowerMilestonePercentage(actualProgress);
-                data.setPowerMilestonePercentage(1 - actualProgress);
-            } else {
-                data.setPowerMilestonePercentage(actualProgress);
-                data.setInvertedPowerMilestonePercentage(1 - actualProgress);
-            }
-        }
-
-        if (milestoneProgress[1] < 7) {
-            data.setRecipeMilestonePercentage(
-                (float) max(
-                    (log(data.getTotalRecipesProcessed() * 1f / RECIPE_MILESTONE_CONSTANT) / RECIPE_LOG_CONSTANT + 1),
-                    0) / 7);
-            milestoneProgress[1] = (int) floor(data.getRecipeMilestonePercentage() * 7);
-        }
-        if (data.isInversion()) {
-            rawProgress = (((float) data.getTotalRecipesProcessed() / RECIPE_MILESTONE_T7_CONSTANT) - 1) / 7;
-            closestRelevantSeven = (int) floor(rawProgress);
-            actualProgress = rawProgress - closestRelevantSeven;
-            milestoneProgress[1] = 7 + (int) floor(rawProgress * 7);
-            if (closestRelevantSeven % 2 == 0) {
-                data.setInvertedRecipeMilestonePercentage(actualProgress);
-                data.setRecipeMilestonePercentage(1 - actualProgress);
-            } else {
-                data.setRecipeMilestonePercentage(actualProgress);
-                data.setInvertedRecipeMilestonePercentage(1 - actualProgress);
-            }
-        }
-        if (milestoneProgress[2] < 7) {
-            data.setFuelMilestonePercentage(
-                (float) max(
-                    (log(data.getTotalFuelConsumed() * 1f / FUEL_MILESTONE_CONSTANT) / FUEL_LOG_CONSTANT + 1),
-                    0) / 7);
-            milestoneProgress[2] = (int) floor(data.getFuelMilestonePercentage() * 7);
-        }
-        if (data.isInversion()) {
-            rawProgress = (((float) data.getTotalFuelConsumed() / FUEL_MILESTONE_T7_CONSTANT) - 1) / 7;
-            closestRelevantSeven = (int) floor(rawProgress);
-            actualProgress = rawProgress - closestRelevantSeven;
-            milestoneProgress[2] = 7 + (int) floor(rawProgress * 7);
-            if ((closestRelevantSeven % 2) == 0) {
-                data.setInvertedFuelMilestonePercentage(actualProgress);
-                data.setFuelMilestonePercentage(1 - actualProgress);
-            } else {
-                data.setFuelMilestonePercentage(actualProgress);
-                data.setInvertedFuelMilestonePercentage(1 - actualProgress);
-            }
-        }
-
-        if (milestoneProgress[3] <= 7) {
-            data.setStructureMilestonePercentage(data.getTotalExtensionsBuilt() / 7.0f);
-        }
-        if (data.isInversion()) {
-            rawProgress = (data.getTotalExtensionsBuilt() - 7) / 7f;
-            closestRelevantSeven = (int) floor(rawProgress);
-            actualProgress = rawProgress - closestRelevantSeven;
-            if ((closestRelevantSeven % 2) == 0) {
-                data.setInvertedStructureMilestonePercentage(actualProgress);
-                data.setStructureMilestonePercentage(1 - actualProgress);
-            } else {
-                data.setStructureMilestonePercentage(actualProgress);
-                data.setInvertedStructureMilestonePercentage(1 - actualProgress);
-            }
-        }
+        determineChargeMilestone(data);
+        determineConversionMilestone(data);
+        determineCatalystMilestone(data);
+        determineCompositionMilestone(data);
     }
 
     private void determineGravitonShardAmount() {
         int sum = 0;
-        for (int progress : milestoneProgress) {
+        for (int progress : data.getAllMilestoneProgress()) {
             if (!data.isInversion()) {
                 progress = Math.min(progress, 7);
             }
@@ -3173,7 +3091,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
     private Text gravitonShardAmountText(int milestoneID) {
         int sum;
-        int progress = milestoneProgress[milestoneID];
+        int progress = data.getMilestoneProgress(milestoneID);
         if (!data.isInversion()) {
             progress = Math.min(progress, 7);
         }
@@ -3202,7 +3120,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             }
             case 3 -> {
                 suffix = translateToLocal("gt.blockmachines.multimachine.FOG.extensions");
-                progress = milestoneProgress[3];
+                progress = data.getMilestoneProgress(3);
             }
             default -> throw new IllegalArgumentException("Invalid Milestone ID");
         }
@@ -3215,8 +3133,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     }
 
     private Text currentMilestoneLevel(int milestoneID) {
-        int milestoneLevel = data.isInversion() ? milestoneProgress[milestoneID]
-            : Math.min(milestoneProgress[milestoneID], 7);
+        int milestoneLevel = data.isInversion() ? data.getMilestoneProgress(milestoneID)
+            : Math.min(data.getMilestoneProgress(milestoneID), 7);
         return new Text(
             translateToLocal("gt.blockmachines.multimachine.FOG.milestoneprogress") + ": "
                 + EnumChatFormatting.GRAY
@@ -3231,7 +3149,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             translateToLocal("gt.blockmachines.multimachine.FOG.milestonecomplete")
                 + (data.getFormattingMode() != DEFAULT_FORMATTING_MODE ? EnumChatFormatting.DARK_RED + "?" : ""));
 
-        if (milestoneProgress[milestoneID] >= 7 && !data.isInversion()) {
+        if (data.getMilestoneProgress(milestoneID) >= 7 && !data.isInversion()) {
             return done;
         }
 
@@ -3239,31 +3157,31 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             case 0 -> {
                 suffix = translateToLocal("gt.blockmachines.multimachine.FOG.power");
                 if (data.isInversion()) {
-                    max = POWER_MILESTONE_T7_CONSTANT.multiply(BigInteger.valueOf(milestoneProgress[0] - 5));
+                    max = POWER_MILESTONE_T7_CONSTANT.multiply(BigInteger.valueOf(data.getMilestoneProgress(0) - 5));
                 } else {
-                    max = BigInteger.valueOf(LongMath.pow(9, milestoneProgress[0]))
+                    max = BigInteger.valueOf(LongMath.pow(9, data.getMilestoneProgress(0)))
                         .multiply(BigInteger.valueOf(LongMath.pow(10, 15)));
                 }
             }
             case 1 -> {
                 suffix = translateToLocal("gt.blockmachines.multimachine.FOG.recipes");
                 if (data.isInversion()) {
-                    max = RECIPE_MILESTONE_T7_CONSTANT * (milestoneProgress[1] - 5);
+                    max = RECIPE_MILESTONE_T7_CONSTANT * (data.getMilestoneProgress(1) - 5);
                 } else {
-                    max = LongMath.pow(4, milestoneProgress[1]) * LongMath.pow(10, 7);
+                    max = LongMath.pow(4, data.getMilestoneProgress(1)) * LongMath.pow(10, 7);
                 }
             }
             case 2 -> {
                 suffix = translateToLocal("gt.blockmachines.multimachine.FOG.fuelconsumed");
                 if (data.isInversion()) {
-                    max = FUEL_MILESTONE_T7_CONSTANT * (milestoneProgress[2] - 5);
+                    max = FUEL_MILESTONE_T7_CONSTANT * (data.getMilestoneProgress(2) - 5);
                 } else {
-                    max = LongMath.pow(3, milestoneProgress[2]) * LongMath.pow(10, 4);
+                    max = LongMath.pow(3, data.getMilestoneProgress(2)) * LongMath.pow(10, 4);
                 }
             }
             case 3 -> {
                 suffix = translateToLocal("gt.blockmachines.multimachine.FOG.extensions");
-                max = milestoneProgress[3] + 1;
+                max = data.getMilestoneProgress(3) + 1;
             }
             default -> throw new IllegalArgumentException("Invalid Milestone ID");
         }

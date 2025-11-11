@@ -115,8 +115,9 @@ public class FuelConfigPanel {
         Flow fuelRow = new Row().coverChildren()
             .alignX(0.5f)
             .marginTop(5)
-            .child(createFuelSelection(selectionSyncer, Fuels.RESIDUE).marginRight(7))
-            .child(createFuelSelection(selectionSyncer, Fuels.STELLAR).marginRight(7))
+            .childPadding(7)
+            .child(createFuelSelection(selectionSyncer, Fuels.RESIDUE))
+            .child(createFuelSelection(selectionSyncer, Fuels.STELLAR))
             .child(createFuelSelection(selectionSyncer, Fuels.MHDCSM));
         column.child(fuelRow);
 

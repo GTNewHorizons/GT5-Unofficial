@@ -3,6 +3,8 @@ package gregtech.common.gui.modularui.multiblock.godforge.data;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
+import com.cleanroommc.modularui.value.sync.ValueSyncHandler;
 
 import gregtech.api.modularui2.GTGuiTextures;
 
@@ -18,6 +20,9 @@ public enum Milestones {
         GTGuiTextures.PROGRESSBAR_GODFORGE_MILESTONE_RED_INVERTED,
         Alignment.TopLeft,
         "gt.blockmachines.multimachine.FOG.powermilestone",
+        "gt.blockmachines.multimachine.FOG.power",
+        Syncers.TOTAL_POWER_CONSUMED,
+        Syncers.MILESTONE_CHARGE_LEVEL,
         Syncers.MILESTONE_CHARGE_PROGRESS,
         Syncers.MILESTONE_CHARGE_PROGRESS_INVERTED),
     CONVERSION(
@@ -29,6 +34,9 @@ public enum Milestones {
         GTGuiTextures.PROGRESSBAR_GODFORGE_MILESTONE_PURPLE_INVERTED,
         Alignment.TopRight,
         "gt.blockmachines.multimachine.FOG.recipemilestone",
+        "gt.blockmachines.multimachine.FOG.recipes",
+        Syncers.TOTAL_RECIPES_PROCESSED,
+        Syncers.MILESTONE_CONVERSION_LEVEL,
         Syncers.MILESTONE_CONVERSION_PROGRESS,
         Syncers.MILESTONE_CONVERSION_PROGRESS_INVERTED),
     CATALYST(
@@ -40,6 +48,9 @@ public enum Milestones {
         GTGuiTextures.PROGRESSBAR_GODFORGE_MILESTONE_BLUE_INVERTED,
         Alignment.BottomLeft,
         "gt.blockmachines.multimachine.FOG.fuelmilestone",
+        "gt.blockmachines.multimachine.FOG.fuelconsumed",
+        Syncers.TOTAL_FUEL_CONSUMED,
+        Syncers.MILESTONE_CATALYST_LEVEL,
         Syncers.MILESTONE_CATALYST_PROGRESS,
         Syncers.MILESTONE_CATALYST_PROGRESS_INVERTED),
     COMPOSITION(
@@ -51,6 +62,9 @@ public enum Milestones {
         GTGuiTextures.PROGRESSBAR_GODFORGE_MILESTONE_RAINBOW_INVERTED,
         Alignment.BottomRight,
         "gt.blockmachines.multimachine.FOG.purchasablemilestone",
+        "gt.blockmachines.multimachine.FOG.extensions",
+        Syncers.MILESTONE_COMPOSITION_LEVEL,
+        Syncers.MILESTONE_COMPOSITION_LEVEL,
         Syncers.MILESTONE_COMPOSITION_PROGRESS,
         Syncers.MILESTONE_COMPOSITION_PROGRESS_INVERTED),
 
@@ -70,14 +84,20 @@ public enum Milestones {
     private final UITexture progressBarMainOverlay;
     private final UITexture progressBarInvertedOverlay;
     private final Alignment position;
-    private final String titleLangKey;
 
+    private final String titleLangKey;
+    private final String progressLangKey;
+
+    private final Syncers<? extends ValueSyncHandler<? extends Number>> totalSyncer;
+    private final Syncers<IntSyncValue> levelSyncer;
     private final Syncers<DoubleSyncValue> progressSyncer;
     private final Syncers<DoubleSyncValue> progressInvertedSyncer;
 
     Milestones(UITexture mainBackground, int mainWidth, int mainHeight, UITexture symbolBackground, int symbolWidth,
         int symbolHeight, UITexture progressBarMainOverlay, UITexture progressBarInvertedOverlay, Alignment position,
-        String titleLangKey, Syncers<DoubleSyncValue> progressSyncer, Syncers<DoubleSyncValue> progressInvertedSyncer) {
+        String titleLangKey, String progressLangKey, Syncers<? extends ValueSyncHandler<? extends Number>> totalSyncer,
+        Syncers<IntSyncValue> levelSyncer, Syncers<DoubleSyncValue> progressSyncer,
+        Syncers<DoubleSyncValue> progressInvertedSyncer) {
         this.mainBackground = mainBackground;
         this.mainWidth = mainWidth;
         this.mainHeight = mainHeight;
@@ -88,6 +108,9 @@ public enum Milestones {
         this.progressBarInvertedOverlay = progressBarInvertedOverlay;
         this.position = position;
         this.titleLangKey = titleLangKey;
+        this.progressLangKey = progressLangKey;
+        this.totalSyncer = totalSyncer;
+        this.levelSyncer = levelSyncer;
         this.progressSyncer = progressSyncer;
         this.progressInvertedSyncer = progressInvertedSyncer;
     }
@@ -130,6 +153,18 @@ public enum Milestones {
 
     public String getTitleLangKey() {
         return titleLangKey;
+    }
+
+    public String getProgressLangKey() {
+        return progressLangKey;
+    }
+
+    public Syncers<? extends ValueSyncHandler<? extends Number>> getTotalSyncer() {
+        return totalSyncer;
+    }
+
+    public Syncers<IntSyncValue> getLevelSyncer() {
+        return levelSyncer;
     }
 
     public Syncers<DoubleSyncValue> getProgressSyncer() {

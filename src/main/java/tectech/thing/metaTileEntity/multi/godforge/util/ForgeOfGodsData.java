@@ -52,6 +52,8 @@ public class ForgeOfGodsData {
     private long totalRecipesProcessed;
     private long totalFuelConsumed;
     private float totalExtensionsBuilt;
+
+    // todo remove these
     private float powerMilestonePercentage;
     private float recipeMilestonePercentage;
     private float fuelMilestonePercentage;
@@ -60,6 +62,9 @@ public class ForgeOfGodsData {
     private float invertedRecipeMilestonePercentage;
     private float invertedFuelMilestonePercentage;
     private float invertedStructureMilestonePercentage;
+
+    private final int[] milestoneProgress = new int[4];
+
     private BigInteger totalPowerConsumed = DEFAULT_TOTAL_POWER;
     private boolean batteryCharging;
     private boolean inversion;
@@ -254,6 +259,18 @@ public class ForgeOfGodsData {
 
     public void setInvertedStructureMilestonePercentage(float invertedStructureMilestonePercentage) {
         this.invertedStructureMilestonePercentage = invertedStructureMilestonePercentage;
+    }
+
+    public int getMilestoneProgress(int index) {
+        return milestoneProgress[index];
+    }
+
+    public void setMilestoneProgress(int index, int progress) {
+        milestoneProgress[index] = progress;
+    }
+
+    public int[] getAllMilestoneProgress() {
+        return milestoneProgress;
     }
 
     public BigInteger getTotalPowerConsumed() {
