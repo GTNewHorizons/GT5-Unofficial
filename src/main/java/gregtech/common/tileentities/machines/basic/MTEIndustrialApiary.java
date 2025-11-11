@@ -20,7 +20,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_INDUSTRIAL_APIA
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_INDUSTRIAL_APIARY_GLOW;
 import static gregtech.api.metatileentity.BaseTileEntity.STALLED_STUTTERING_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static gregtech.api.util.GTUtility.moveMultipleItemStacks;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -111,6 +110,7 @@ import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTApiaryModifier;
 import gregtech.api.util.GTApiaryUpgrade;
+import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTUtility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -639,24 +639,12 @@ public class MTEIndustrialApiary extends MTEBasicMachine
                     aBaseMetaTileEntity.setActive(false);
 
                     if (doesAutoOutput() && !isOutputEmpty() && aBaseMetaTileEntity.getFrontFacing() != mMainFacing) {
-                        final TileEntity tTileEntity2 = aBaseMetaTileEntity
-                            .getTileEntityAtSide(aBaseMetaTileEntity.getFrontFacing());
-                        final long tStoredEnergy = aBaseMetaTileEntity.getUniversalEnergyStored();
-                        int tMaxStacks = (int) (tStoredEnergy / 64L);
-                        if (tMaxStacks > mOutputItems.length) tMaxStacks = mOutputItems.length;
+                        GTItemTransfer transfer = new GTItemTransfer();
 
-                        moveMultipleItemStacks(
-                            aBaseMetaTileEntity,
-                            tTileEntity2,
-                            aBaseMetaTileEntity.getFrontFacing(),
-                            aBaseMetaTileEntity.getBackFacing(),
-                            null,
-                            false,
-                            (byte) 64,
-                            (byte) 1,
-                            (byte) 64,
-                            (byte) 1,
-                            tMaxStacks);
+                        transfer.outOfMachine(this, aBaseMetaTileEntity.getFrontFacing());
+                        transfer.setStacksToTransfer(mOutputItems.length);
+
+                        transfer.transfer();
                     }
 
                     if (aBaseMetaTileEntity.isAllowedToWork() && checkRecipe() == FOUND_AND_SUCCESSFULLY_USED_RECIPE)
@@ -901,33 +889,44 @@ public class MTEIndustrialApiary extends MTEBasicMachine
     private int flowerBlockMeta;
 
     private boolean checkFlower(IBee bee) {
+        final World world = getWorld();
         final String flowerType = bee.getGenome()
             .getFlowerProvider()
             .getFlowerType();
-        if (!this.flowerType.equals(flowerType)
-            || !getWorld().blockExists(flowercoords.posX, flowercoords.posY, flowercoords.posZ)) {
-            flowercoords = null;
-        }
+
         if (flowercoords != null) {
-            if (getWorld().getBlock(flowercoords.posX, flowercoords.posY, flowercoords.posZ) != flowerBlock
-                || getWorld().getBlockMetadata(flowercoords.posX, flowercoords.posY, flowercoords.posZ)
-                    != flowerBlockMeta)
-                if (!FlowerManager.flowerRegistry
-                    .isAcceptedFlower(flowerType, getWorld(), flowercoords.posX, flowercoords.posY, flowercoords.posZ))
-                    flowercoords = null;
-                else {
-                    flowerBlock = getWorld().getBlock(flowercoords.posX, flowercoords.posY, flowercoords.posZ);
-                    flowerBlockMeta = getWorld()
-                        .getBlockMetadata(flowercoords.posX, flowercoords.posY, flowercoords.posZ);
-                }
-        }
-        if (flowercoords == null) {
-            flowercoords = FlowerManager.flowerRegistry.getAcceptedFlowerCoordinates(this, bee, flowerType);
-            if (flowercoords != null) {
-                flowerBlock = getWorld().getBlock(flowercoords.posX, flowercoords.posY, flowercoords.posZ);
-                flowerBlockMeta = getWorld().getBlockMetadata(flowercoords.posX, flowercoords.posY, flowercoords.posZ);
-                this.flowerType = flowerType;
+            int x = flowercoords.posX;
+            int y = flowercoords.posY;
+            int z = flowercoords.posZ;
+
+            if (!this.flowerType.equals(flowerType) || !world.blockExists(x, y, z)) {
+                return findFlower(bee, flowerType);
             }
+
+            if (world.getBlock(x, y, z) != flowerBlock || world.getBlockMetadata(x, y, z) != flowerBlockMeta) {
+                if (!FlowerManager.flowerRegistry.isAcceptedFlower(flowerType, world, x, y, z)) {
+                    return findFlower(bee, flowerType);
+                }
+
+                flowerBlock = world.getBlock(x, y, z);
+                flowerBlockMeta = world.getBlockMetadata(x, y, z);
+            }
+        }
+
+        if (flowercoords == null) {
+            return findFlower(bee, flowerType);
+        }
+
+        return true;
+    }
+
+    /** @return true if a flower was found, false otherwise */
+    private boolean findFlower(IBee bee, String flowerType) {
+        flowercoords = FlowerManager.flowerRegistry.getAcceptedFlowerCoordinates(this, bee, flowerType);
+        if (flowercoords != null) {
+            flowerBlock = getWorld().getBlock(flowercoords.posX, flowercoords.posY, flowercoords.posZ);
+            flowerBlockMeta = getWorld().getBlockMetadata(flowercoords.posX, flowercoords.posY, flowercoords.posZ);
+            this.flowerType = flowerType;
         }
         return flowercoords != null;
     }

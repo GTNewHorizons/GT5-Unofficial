@@ -873,6 +873,8 @@ GT5U.MBTT.SuperChest=Super/Quantum Chest
 
 GT5U.MBTT.subchannel=Uses sub channel §6%s§r§7 for §6%s
 
+GT5U.MBTT.CokeOvenHatch=Coke Oven Hatch
+
 GT5U.cracker.io_side=Input/Output Hatches must be on opposite sides!
 
 GT5U.turbine.running.true=Turbine running
@@ -966,6 +968,7 @@ gt.recipe.chemicalreactor=Chemical Reactor
 gt.recipe.chemicalreactor.description=Letting Chemicals react with each other
 gt.recipe.circuitassembler=Circuit Assembler
 gt.recipe.circuitassembler.description=Pick-n-Place all over the place
+gt.recipe.cokeoven=Coke Oven
 gt.recipe.compressor=Compressor
 gt.recipe.compressor.description=Compress-O-Matic C77
 gt.recipe.cuttingsaw=Cutting Machine
@@ -1002,8 +1005,6 @@ gt.recipe.lathe=Lathe
 gt.recipe.lathe.description=Produces Rods more efficiently
 gt.recipe.macerator=Macerator
 gt.recipe.macerator.description=Schreddering your Ores
-gt.recipe.macerator_pulverizer=Macerator/Pulverizer
-gt.recipe.macerator_pulverizer.description=Schreddering your Ores
 gt.recipe.uuamplifier=Matter Amplifier
 gt.recipe.uuamplifier.description=Extracting UU Amplifier
 gt.recipe.massfab=Mass Fabrication
@@ -1128,6 +1129,7 @@ GT5U.machines.digitalchest.inputfilter.enabled=Input Filter §aOn§r
 GT5U.machines.digitalchest.inputfilter.disabled=Input Filter §cOff§r
 GT5U.machines.digitaltank.tooltip=Stores %sL of fluid
 GT5U.machines.digitaltank.tooltip1=Will keep its contents when harvested
+GT5U.machines.digitaltank.debugtooltip=Refills itself infinitely
 GT5U.machines.digitaltank.autooutput.tooltip=Fluid Auto-Output
 GT5U.machines.digitaltank.fluid.amount=Fluid Amount
 GT5U.machines.digitaltank.lockfluid.label=Locked Fluid
@@ -1343,6 +1345,10 @@ GT5U.machines.nano_forge.t4_info_text.6=Recipe Time Multiplier = 0.9999^(Maximum
 GT5U.machines.nano_forge.t4_info_text.7=Additionally, tier 1 & 2 nanites will receive unconditional perfect overclocks, while perfect OCs on tier 3 nanites require parallels to be above 1. Tier 4 nanites do not get perfect overclocks.
 GT5U.machines.antimatter_forge.enableRender=Enable Antimatter Forge Render
 GT5U.machines.antimatter_forge.disableRender=Disable Antimatter Forge Render
+GT5U.machines.coke_oven_hatch.mode.input=Hatch now inputs items
+GT5U.machines.coke_oven_hatch.mode.output=Hatch now outputs items
+GT5U.machines.coke_oven_hatch.mode.output_fluid=Hatch now outputs fluids
+
 
 GT5U.recipe_filter.empty_representation_slot.tooltip=§7Click with a machine to set filter
 GT5U.recipe_filter.representation_slot.tooltip=§7Click to clear
@@ -1541,7 +1547,7 @@ GT5U.gui.text.content-entry=§7%s:§9 %s§r
 GT5U.gui.text.decay-rate=§7Decay Rate:§9 %s§7%s
 GT5U.gui.text.nothing=§7Nothing§r
 GT5U.gui.text.half-life=Half-life: %s %s
-GT5U.gui.text.isotope-prod-per-s=Prod/Stack/Second: %.2e
+GT5U.gui.text.isotope-prod-per-s=Prod/Stack/Second: %s
 GT5U.gui.text.decay-type=Decay Type: %s
 GT5U.gui.text.unknown=Unknown
 GT5U.gui.text.alpha=Alpha Decay
@@ -3670,3 +3676,32 @@ entity.gregtech.PowderBarrelPrimed.name=Lit Powder Barrel
 
 #mui1
 mui.button.close=x
+
+# Thaumcraft Aspects
+tc.aspect.custom1.name=Aequalitas
+tc.aspect.custom2.name=Vesania
+tc.aspect.custom3.name=Primordium
+tc.aspect.custom4.name=Astrum
+tc.aspect.custom5.name=Gloria
+
+tc.aspect.strontio=Stupidness, Incompetence
+tc.aspect.nebrisum=Cheatyness, Raiding
+tc.aspect.electrum=Electricity, Lightning
+tc.aspect.magneto=Magnetism, Attraction
+tc.aspect.radio=Radiation
+tc.aspect.custom1=Equality, Balance, Uniformity
+tc.aspect.custom2=Insanity, Madness, Craziness
+tc.aspect.custom3=Beginning, Origin, Source
+tc.aspect.custom4=Star, Constellation, Heaven
+tc.aspect.custom5=Glory, Honor, Fame
+
+tc.aspect.help.strontio=blunders and mistakes
+tc.aspect.help.nebrisum=stolen rewards
+tc.aspect.help.electrum=the power of lightning
+tc.aspect.help.magneto=forces of attraction
+tc.aspect.help.radio=invisible corruptive energies
+tc.aspect.help.custom1=balanced things
+tc.aspect.help.custom2=a warped mind
+tc.aspect.help.custom3=a beginning of something new
+tc.aspect.help.custom4=the univerese
+tc.aspect.help.custom5=glory

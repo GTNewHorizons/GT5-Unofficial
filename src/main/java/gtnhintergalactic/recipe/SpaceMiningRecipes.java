@@ -612,6 +612,27 @@ public class SpaceMiningRecipes {
             ItemMiningDrones.DroneTiers.UHV.ordinal(),
             150);
 
+        // Nether Ore Asteroid
+        addRecipesToDrones(
+            "NetherOreAsteroid",
+            null,
+            null,
+            new int[] { 3000, 3000, 2000, 1500, 500 },
+            new Materials[] { Materials.NetherQuartz, Materials.Sulfur, Materials.CertusQuartz, Materials.Quartzite,
+                Materials.Firestone },
+            OrePrefixes.oreNetherrack,
+            30,
+            110,
+            10,
+            100,
+            240,
+            1,
+            50 * SECONDS,
+            (int) TierEU.RECIPE_IV,
+            ItemMiningDrones.DroneTiers.EV.ordinal(),
+            ItemMiningDrones.DroneTiers.ZPM.ordinal(),
+            150);
+
         // Europium Asteroid
         addRecipesToDrones(
             "europiumAsteroid",
