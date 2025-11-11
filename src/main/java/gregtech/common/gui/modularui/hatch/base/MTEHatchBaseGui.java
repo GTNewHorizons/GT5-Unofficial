@@ -82,7 +82,6 @@ public class MTEHatchBaseGui<T extends MTEHatch> {
 
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         return new ParentWidget<>().sizeRel(1)
-            .padding(4)
             .childIf(this.supportsLeftCornerFlow(), createLeftCornerFlow(panel, syncManager))
             .childIf(this.supportsRightCornerFlow(), createRightCornerFlow(panel, syncManager));
     }
@@ -112,7 +111,9 @@ public class MTEHatchBaseGui<T extends MTEHatch> {
         Flow cornerFlow = Flow.row()
             .coverChildren()
             .reverseLayout(true)
-            .align(Alignment.BottomRight);
+            .align(Alignment.BottomRight)
+            .paddingBottom(4)
+            .paddingRight(4);
         cornerFlow.childIf(this.doesAddGregTechLogo(), createLogo())
             .childIf(this.doesAddCircuitSlot(), createCircuitSlot(syncManager));
         return cornerFlow;
@@ -131,7 +132,8 @@ public class MTEHatchBaseGui<T extends MTEHatch> {
     }
 
     protected IDrawable.DrawableWidget createLogo() {
-        return new IDrawable.DrawableWidget(getLogoTexture()).size(18).marginLeft(2);
+        return new IDrawable.DrawableWidget(getLogoTexture()).size(18)
+            .marginLeft(2);
     }
 
     protected boolean doesAddCircuitSlot() {
@@ -139,6 +141,8 @@ public class MTEHatchBaseGui<T extends MTEHatch> {
     }
 
     protected IWidget createCircuitSlot(PanelSyncManager syncManager) {
+        if (!(hatch instanceof IConfigurationCircuitSupport)) return IDrawable.EMPTY.asWidget()
+            .size(18);
 
         IntSyncValue selectedSyncHandler = new IntSyncValue(() -> {
             ItemStack selectedItem = hatch.getStackInSlot(hatch.getCircuitSlot());
