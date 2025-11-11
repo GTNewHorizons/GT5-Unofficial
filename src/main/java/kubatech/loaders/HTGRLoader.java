@@ -32,7 +32,6 @@ import gregtech.api.recipe.metadata.SimpleRecipeMetadataKey;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
-import gregtech.api.util.GTUtility;
 import kubatech.api.gui.HighTemperatureGasCooledReactorRecipeMapFrontend;
 import kubatech.api.utils.ModUtils;
 import kubatech.client.renderer.HTGRItemRenderer;
@@ -141,9 +140,8 @@ public class HTGRLoader {
         // silver to indium
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silver, 2L),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silver, 2L))
+            .iCircuit(1)
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silver, 1L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Indium, 1L))
@@ -163,9 +161,8 @@ public class HTGRLoader {
         // plutonium breeding
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium235, 1L),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium235, 1L))
+            .iCircuit(1)
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium, 1L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium235, 1L),
@@ -185,9 +182,8 @@ public class HTGRLoader {
         // plutonium 241 breeding
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium, 2L),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium, 2L))
+            .iCircuit(1)
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium241, 1L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lead, 4L))
@@ -204,9 +200,8 @@ public class HTGRLoader {
         // thorium to lutetium
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 5L),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 5L))
+            .iCircuit(1)
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 4L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 1L),
@@ -226,9 +221,8 @@ public class HTGRLoader {
         // tungsten to osmium
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tungsten, 5L),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tungsten, 5L))
+            .iCircuit(1)
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Osmium, 1L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tungsten, 4L),
@@ -249,9 +243,8 @@ public class HTGRLoader {
         // praseodymium to promethium
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Praseodymium, 2L),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Praseodymium, 2L))
+            .iCircuit(1)
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Promethium, 2L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lead, 3L))
@@ -270,9 +263,8 @@ public class HTGRLoader {
         // lanthanum to praseodymium
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lanthanum, 3L),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lanthanum, 3L))
+            .iCircuit(1)
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Praseodymium, 2L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cerium, 1L),
@@ -292,9 +284,8 @@ public class HTGRLoader {
         // caesium to lanthanum
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Caesium, 3L),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Caesium, 3L))
+            .iCircuit(1)
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lanthanum, 2L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Caesium, 1L),
@@ -314,9 +305,8 @@ public class HTGRLoader {
         // glowstone to sunnarium
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 5L),
-                GTUtility.getIntegratedCircuit(2))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 5L))
+            .iCircuit(2)
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sunnarium, 1L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 4L),
