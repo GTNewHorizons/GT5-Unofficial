@@ -303,11 +303,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addSeparator(EnumChatFormatting color) {
-        switch (GTMod.proxy.separatorStyle) {
-            case 0 -> addInfo(" ");
-            case 1 -> addInfo(color + SEPARATOR_MARK);
-            default -> addInfo("" + color + EnumChatFormatting.STRIKETHROUGH + SEPARATOR_MARK);
-        }
+        addInfo(color + SEPARATOR_MARK);
         return this;
     }
 
@@ -1011,13 +1007,7 @@ public class MultiblockTooltipBuilder {
 
     public MultiblockTooltipBuilder toolTipFinisher(EnumChatFormatting separatorColor, String... authors) {
 
-        switch (GTMod.proxy.tooltipFinisherStyle) {
-            case 0 -> {}
-            case 1 -> addInfo(" ");
-            case 2 -> addInfo(separatorColor + SEPARATOR_MARK);
-            default -> addInfo("" + separatorColor + EnumChatFormatting.STRIKETHROUGH + SEPARATOR_MARK);
-        }
-
+        addInfo(separatorColor + "<FINISHER>");
         addInfo("GT5U.MBTT.HoldDisplay");
         if (authors.length > 0) {
             if (authors.length == 1 && StatCollector.canTranslate(authors[0])) {

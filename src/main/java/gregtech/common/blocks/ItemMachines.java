@@ -1,5 +1,6 @@
 package gregtech.common.blocks;
 
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.STRIKETHROUGH;
 import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.util.GTUtility.YAP_SEPARATOR;
 import static gregtech.api.util.GTUtility.translate;
@@ -38,6 +39,7 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
@@ -428,18 +430,34 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
         int dashWidth = fontRenderer.getStringWidth("-");
         int dashCount = tooltipWidth / dashWidth;
 
-        String separatorLine = StringUtils.getRepetitionOf('-', dashCount);
+        String separatorLine = switch (GTMod.proxy.separatorStyle) {
+            case 0 -> " ";
+            case 1 -> StringUtils.getRepetitionOf('-', dashCount);
+            default -> STRIKETHROUGH + StringUtils.getRepetitionOf('-', dashCount);
+        };
+
+        String finisherLine = switch (GTMod.proxy.tooltipFinisherStyle) {
+            case 0 -> "";
+            case 1 -> " ";
+            case 2 -> StringUtils.getRepetitionOf('-', dashCount);
+            default -> STRIKETHROUGH + StringUtils.getRepetitionOf('-', dashCount);
+        };
 
         for (int i = 0; i < tooltips.size(); i++) {
             String line = tooltips.get(i);
             if (line.contains(SEPARATOR_MARK)) {
                 tooltips.set(i, line.replace(SEPARATOR_MARK, separatorLine));
             }
+            if (line.contains("<FINISHER>")) {
+                tooltips.set(i, line.replace("<FINISHER>", finisherLine));
+            }
         }
     }
 
     public static void splitLineByMark(List<String> list, String mark) {
         if (list == null) return;
+
+        // Split by mark
         for (int i = 0; i < list.size();) {
             String str = list.get(i);
             if (str.contains(mark)) {
@@ -448,6 +466,51 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 list.addAll(i, Arrays.asList(parts));
             } else {
                 i++;
+            }
+        }
+
+        // Extract SEPARATOR_MARK and possible color code (recursively handles multiple separators)
+        for (int i = 0; i < list.size();) {
+            String str = list.get(i);
+            int sepIndex = str.indexOf(SEPARATOR_MARK);
+
+            if (sepIndex == -1) {
+                i++;  // No SEPARATOR_MARK, move to next element
+                continue;
+            }
+
+            // Check if there's a color code (§X) before SEPARATOR_MARK
+            int checkIndex = sepIndex - 2;
+            boolean hasColorCode = checkIndex >= 0 && str.charAt(checkIndex) == '§';
+
+            List<String> parts = new ArrayList<>();
+
+            if (hasColorCode) {
+                // With color code: abc§a<SEPARATOR>def → ["abc", "§a<SEPARATOR>", "def"]
+                if (checkIndex > 0) {
+                    parts.add(str.substring(0, checkIndex));
+                }
+                parts.add(str.substring(checkIndex, sepIndex + SEPARATOR_MARK.length()));
+                if (sepIndex + SEPARATOR_MARK.length() < str.length()) {
+                    parts.add(str.substring(sepIndex + SEPARATOR_MARK.length()));
+                }
+            } else {
+                // No color code: abc<SEPARATOR>def → ["abc", "<SEPARATOR>", "def"]
+                if (sepIndex > 0) {
+                    parts.add(str.substring(0, sepIndex));
+                }
+                parts.add(SEPARATOR_MARK);
+                if (sepIndex + SEPARATOR_MARK.length() < str.length()) {
+                    parts.add(str.substring(sepIndex + SEPARATOR_MARK.length()));
+                }
+            }
+
+            list.remove(i);
+            list.addAll(i, parts);
+            // Don't increment i if we added more than 1 element (need to check new elements)
+            // But increment if we only replaced with the same single element (avoid infinite loop)
+            if (parts.size() <= 1) {
+                i++;  // Prevent infinite loop when only SEPARATOR_MARK itself
             }
         }
     }
