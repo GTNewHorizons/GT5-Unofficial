@@ -22,16 +22,19 @@ import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 
 public class MTEHatchInputBusGui extends MTEHatchBaseGui<MTEHatchInputBus> {
 
-    private final int dimension;
-
     public MTEHatchInputBusGui(MTEHatchInputBus hatch) {
         super(hatch);
-        this.dimension = Math.max(1, hatch.mTier + 1);
     }
 
     @Override
     protected boolean supportsLeftCornerFlow() {
         return true;
+    }
+
+    // just in case any subclasses want to override this
+    // value corresponds to the size of any side of the slot group grid
+    protected int getDimension() {
+        return Math.max(1, hatch.mTier + 1);
     }
 
     @Override
@@ -58,14 +61,21 @@ public class MTEHatchInputBusGui extends MTEHatchBaseGui<MTEHatchInputBus> {
         return super.createRightCornerFlow(panel, syncManager);
     }
 
+    private final int BUTTON_SIZE = 18;
+
     @Override
     protected int getBasePanelHeight() {
-        return super.getBasePanelHeight() + Math.max(0, 18 * (dimension - 4));
+        // we subtract 4 from the dimension before adding this value as a 4x4 slot grid is the maximum that fits on the
+        // default panel
+        return super.getBasePanelHeight() + Math.max(0, BUTTON_SIZE * (this.getDimension() - 4));
     }
 
     @Override
     protected int getBasePanelWidth() {
-        return super.getBasePanelWidth() + Math.max(0, 18 * (dimension - 4));
+        // we subtract 4 from the dimension before adding this value as a 4x4 slot grid is the maximum that fits on the
+        // default panel
+        // 18 is the
+        return super.getBasePanelWidth() + Math.max(0, BUTTON_SIZE * (this.getDimension() - 4));
     }
 
     @Override
@@ -76,7 +86,7 @@ public class MTEHatchInputBusGui extends MTEHatchBaseGui<MTEHatchInputBus> {
 
     protected SlotGroupWidget createSlots(PanelSyncManager syncManager) {
 
-        final int dimension = Math.max(1, hatch.mTier + 1);
+        final int dimension = this.getDimension();
         syncManager.registerSlotGroup("item_inv", dimension);
 
         String[] matrix = new String[dimension];
