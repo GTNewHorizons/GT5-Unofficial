@@ -16,6 +16,8 @@ import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import com.cleanroommc.modularui.widgets.FluidDisplayWidget;
+import com.cleanroommc.modularui.widgets.ItemDisplayWidget;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumChatFormatting;
@@ -79,7 +81,6 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.adapter.CheckRecipeResultAdapter;
 import gregtech.common.gui.modularui.adapter.ShutdownReasonAdapter;
 import gregtech.common.gui.modularui.adapter.StructureErrorAdapter;
-import gregtech.common.gui.modularui.widget.ResizableItemDisplayWidget;
 import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
 import gregtech.common.modularui2.sync.Predicates;
 
@@ -444,12 +445,12 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                     || Predicates.isNonEmptyList(syncManager.getSyncHandlerFromMapKey("fluidOutput:0")));
     }
 
-    private ResizableItemDisplayWidget createItemDrawable(ItemDisplayKey key) {
+    private ItemDisplayWidget createItemDrawable(ItemDisplayKey key) {
         // Second argument is stacksize, don't care about it
         ItemStack itemStack = new ItemStack(key.item(), 1, key.damage());
         itemStack.setTagCompound(key.nbt());
 
-        return new ResizableItemDisplayWidget().background(IDrawable.EMPTY)
+        return new ItemDisplayWidget().background(IDrawable.EMPTY)
             .displayAmount(false)
             .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
             .item(itemStack)
@@ -486,13 +487,11 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         return itemTextLine;
     }
 
-    private ResizableItemDisplayWidget createFluidDrawable(FluidStack fluidStack) {
-        // uses an itemstack representation of the fluid as there is no FluidDisplayWidget (yet)
-        ItemStack fluidDisplayStack = GTUtility.getFluidDisplayStack(fluidStack, false, false);
-        return new ResizableItemDisplayWidget().background(IDrawable.EMPTY)
+    private FluidDisplayWidget createFluidDrawable(FluidStack fluidStack) {
+        return new FluidDisplayWidget().background(IDrawable.EMPTY)
             .displayAmount(false)
             .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
-            .item(fluidDisplayStack)
+            .fluid(fluidStack)
             .size(DISPLAY_ROW_HEIGHT - 1)
             .marginRight(1);
     }
