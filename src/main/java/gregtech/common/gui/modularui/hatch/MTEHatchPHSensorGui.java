@@ -4,6 +4,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -28,7 +29,7 @@ public class MTEHatchPHSensorGui extends MTEHatchBaseGui<MTEHatchPHSensor> {
             .child(createInvertButtonRow())
             .child(createThresholdFieldRow())
             .coverChildren()
-            .crossAxisAlignment(com.cleanroommc.modularui.utils.Alignment.CrossAxis.START)
+            .crossAxisAlignment(Alignment.CrossAxis.START)
             .childPadding(2)
             .paddingTop(4)
             .paddingLeft(4);
