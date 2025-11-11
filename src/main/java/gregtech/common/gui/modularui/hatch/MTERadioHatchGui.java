@@ -5,7 +5,6 @@ import static gregtech.common.modularui2.util.CommonGuiComponents.gridTemplate1b
 
 import java.util.function.Supplier;
 
-import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
@@ -29,9 +28,9 @@ import bartworks.common.tileentities.tiered.MTERadioHatch;
 import bartworks.util.MathUtils;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuis;
+import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 
 public class MTERadioHatchGui extends MTEHatchBaseGui<MTERadioHatch> {
-
 
     public MTERadioHatchGui(MTERadioHatch base) {
         super(base);
@@ -53,12 +52,9 @@ public class MTERadioHatchGui extends MTEHatchBaseGui<MTERadioHatch> {
         IntSyncValue color3Syncer = new IntSyncValue(
             () -> hatch.getColorForGuiAtIndex(2),
             c -> hatch.setColorForGuiAtIndex((short) c, 2));
-        IntSyncValue coverageSyncer = new IntSyncValue(
-            hatch::getCoverage,
-            value -> hatch.setCoverage((short) value));
+        IntSyncValue coverageSyncer = new IntSyncValue(hatch::getCoverage, value -> hatch.setCoverage((short) value));
         LongSyncValue timeSyncHandler = new LongSyncValue(hatch::getTimer, hatch::setTimer);
-        LongSyncValue decayTimeSyncHandler = new LongSyncValue(
-            hatch::getDecayTime, hatch::setDecayTime);
+        LongSyncValue decayTimeSyncHandler = new LongSyncValue(hatch::getDecayTime, hatch::setDecayTime);
 
         syncManager.syncValue("decayTime", decayTimeSyncHandler);
         syncManager.syncValue("timer", timeSyncHandler);
