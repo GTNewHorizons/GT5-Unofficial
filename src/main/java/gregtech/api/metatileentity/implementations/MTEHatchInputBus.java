@@ -299,68 +299,6 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
         return getSlots(mTier);
     }
 
-    protected void addSortStacksButton(ModularWindow.Builder builder) {
-        builder.widget(
-            createToggleButton(
-                () -> !disableSort,
-                val -> disableSort = !val,
-                GTUITextures.OVERLAY_BUTTON_SORTING_MODE,
-                () -> mTooltipCache.getData(SORTING_MODE_TOOLTIP)));
-    }
-
-    protected void addOneStackLimitButton(ModularWindow.Builder builder) {
-        builder.widget(createToggleButton(() -> !disableLimited, val -> {
-            disableLimited = !val;
-            updateSlots();
-        }, GTUITextures.OVERLAY_BUTTON_ONE_STACK_LIMIT, () -> mTooltipCache.getData(ONE_STACK_LIMIT_TOOLTIP)));
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        buildContext.addCloseListener(() -> uiButtonCount = 0);
-        addSortStacksButton(builder);
-        addOneStackLimitButton(builder);
-        int slotCount = getSizeInventory();
-        if (allowSelectCircuit()) {
-            slotCount = slotCount - 1;
-        }
-
-        final int itemColumns = Math.max(1, mTier + 1);
-        final int itemRows = Math.max(1, mTier + 1);
-        final int centerX = (getGUIWidth() - (itemColumns * BUTTON_SIZE)) / 2;
-        final int centerY = 14 - (mTier - 1);
-
-        switch (slotCount) {
-            case 1 -> getBaseMetaTileEntity().add1by1Slot(builder);
-            case 4 -> getBaseMetaTileEntity().add2by2Slots(builder);
-            case 9 -> getBaseMetaTileEntity().add3by3Slots(builder);
-            case 16 -> getBaseMetaTileEntity().add4by4Slots(builder);
-            default -> {
-                for (int row = 0; row < itemRows; row++) {
-                    for (int col = 0; col < itemColumns; col++) {
-                        int slotIndex = row * itemColumns + col;
-                        if (slotIndex < slotCount) {
-                            builder.widget(
-                                new SlotWidget(inventoryHandler, slotIndex).setBackground(ModularUITextures.ITEM_SLOT)
-                                    .setPos(centerX + col * 18, centerY + row * 18));
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private Widget createToggleButton(Supplier<Boolean> getter, Consumer<Boolean> setter, UITexture picture,
-        Supplier<GTTooltipDataCache.TooltipData> tooltipDataSupplier) {
-        return new CycleButtonWidget().setToggle(getter, setter)
-            .setStaticTexture(picture)
-            .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(6 + (uiButtonCount++ * BUTTON_SIZE), 60 + getOffsetY())
-            .setSize(BUTTON_SIZE, BUTTON_SIZE)
-            .setGTTooltip(tooltipDataSupplier);
-    }
-
     @Override
     protected boolean useMui2() {
         return true;
