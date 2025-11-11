@@ -10,20 +10,19 @@ import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
+import com.cleanroommc.modularui.widgets.FluidDisplayWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Formatters;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Fuels;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Syncers;
 import gregtech.common.gui.modularui.multiblock.godforge.util.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
-import gregtech.common.gui.modularui.widget.ResizableItemDisplayWidget;
 import gregtech.common.modularui2.sync.LinkedBoolValue;
 import gregtech.common.modularui2.widget.SelectButton;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
@@ -151,14 +150,16 @@ public class FuelConfigPanel {
     }
 
     private static ParentWidget<?> createFuelSelection(EnumSyncValue<Fuels> syncer, Fuels option) {
-        return new ParentWidget<>().coverChildren()
+        return new ParentWidget<>().coverChildrenWidth()
+            .size(18)
             .child(
-                new ResizableItemDisplayWidget().background(IDrawable.EMPTY)
+                new FluidDisplayWidget().background(IDrawable.EMPTY)
                     .displayAmount(false)
-                    .item(GTUtility.getFluidDisplayStack(option.getFluid(), false, false))
-                    .size(18))
+                    .fluid(option.getFluid())
+                    .displayAmount(false)
+                    .align(Alignment.CENTER)
+                    .size(16))
             .child(
-                // todo click sound
                 new SelectButton().value(LinkedBoolValue.of(syncer, option))
                     .background(IDrawable.EMPTY)
                     .overlay(IDrawable.EMPTY)
