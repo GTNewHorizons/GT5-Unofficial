@@ -145,7 +145,7 @@ public class EnderLineRecipes {
                 .fluidInputs(
                     Materials.EnderAirUnstable.getFluid(10_000),
                     Materials.Galgadorian.getMolten(144),
-                    Materials.ReinforceGlass.getMolten(1_000))
+                    Materials.ReinforcedGlass.getMolten(1_000))
                 .fluidOutputs(Materials.EnderAirFortified.getFluid(10_000))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_LuV)
@@ -180,7 +180,7 @@ public class EnderLineRecipes {
             GTValues.RA.stdBuilder()
                 .fluidInputs(Materials.EnderAirPyrostable.getFluid(20_000))
                 .itemOutputs(
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 10L),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.AshDark, 10L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Pyrotheum, 5L),
                     getModItem(HardcoreEnderExpansion.ID, "stardust", 5L, 0),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.EnderPearl, 2L),
@@ -221,7 +221,7 @@ public class EnderLineRecipes {
                     ItemList.Resonant_Stable_Seed.get(8),
                     getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 8, 6, missing),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.EnderPearl, 4L),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.HeeEndium, 2L))
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Endium, 2L))
                 .outputChances(10000, 9000, 5000, 2500)
                 .fluidOutputs(Materials.NetherAir.getFluid(100))
                 .duration(100 * SECONDS)
@@ -256,7 +256,7 @@ public class EnderLineRecipes {
             // Unstable Amalgam
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.HeeEndium, 2L))
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Endium, 2L))
                 .fluidInputs(
                     Materials.TeleportatiumUnstableVolatile.getFluid(4_020),
                     Materials.TeleportatiumUnstableUnbalanced.getFluid(4_020),
