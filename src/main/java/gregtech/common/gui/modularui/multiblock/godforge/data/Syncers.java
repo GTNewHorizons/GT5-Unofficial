@@ -11,6 +11,7 @@ import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.SyncHandler;
 
+import gregtech.common.gui.modularui.multiblock.godforge.util.BigIntSyncValue;
 import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 
@@ -65,6 +66,21 @@ public class Syncers<T extends SyncHandler> {
                 val -> i.set(val.ordinal()));
         });
 
+    public static final Syncers<BigIntSyncValue> TOTAL_POWER_CONSUMED = new Syncers<>(
+        "fog.sync.total_power_consumed",
+        data -> new BigIntSyncValue(data::getTotalPowerConsumed, data::setTotalPowerConsumed));
+
+    public static final Syncers<LongSyncValue> TOTAL_RECIPES_PROCESSED = new Syncers<>(
+        "fog.sync.total_recipes_processed",
+        data -> new LongSyncValue(data::getTotalRecipesProcessed, data::setTotalRecipesProcessed));
+
+    public static final Syncers<LongSyncValue> TOTAL_FUEL_CONSUMED = new Syncers<>(
+        "fog.sync.total_fuel_consumed",
+        data -> new LongSyncValue(data::getTotalFuelConsumed, data::setTotalFuelConsumed));
+
+    public static final Syncers<IntSyncValue> MILESTONE_CHARGE_LEVEL = new Syncers<>(
+        "fog.sync.milestone_charge_level",
+        data -> new IntSyncValue(() -> data.getMilestoneProgress(0), val -> data.setMilestoneProgress(0, val)));
     public static final Syncers<DoubleSyncValue> MILESTONE_CHARGE_PROGRESS = new Syncers<>(
         "fog.sync.milestone_charge_progress",
         data -> new DoubleSyncValue(
@@ -76,6 +92,9 @@ public class Syncers<T extends SyncHandler> {
             data::getInvertedPowerMilestonePercentage,
             val -> data.setInvertedPowerMilestonePercentage((float) val)));
 
+    public static final Syncers<IntSyncValue> MILESTONE_CONVERSION_LEVEL = new Syncers<>(
+        "fog.sync.milestone_conversion_level",
+        data -> new IntSyncValue(() -> data.getMilestoneProgress(1), val -> data.setMilestoneProgress(1, val)));
     public static final Syncers<DoubleSyncValue> MILESTONE_CONVERSION_PROGRESS = new Syncers<>(
         "fog.sync.milestone_conversion_progress",
         data -> new DoubleSyncValue(
@@ -87,6 +106,9 @@ public class Syncers<T extends SyncHandler> {
             data::getInvertedRecipeMilestonePercentage,
             val -> data.setInvertedRecipeMilestonePercentage((float) val)));
 
+    public static final Syncers<IntSyncValue> MILESTONE_CATALYST_LEVEL = new Syncers<>(
+            "fog.sync.milestone_catalyst_level",
+            data -> new IntSyncValue(() -> data.getMilestoneProgress(2), val -> data.setMilestoneProgress(2, val)));
     public static final Syncers<DoubleSyncValue> MILESTONE_CATALYST_PROGRESS = new Syncers<>(
         "fog.sync.milestone_catalyst_progress",
         data -> new DoubleSyncValue(
@@ -98,6 +120,9 @@ public class Syncers<T extends SyncHandler> {
             data::getInvertedFuelMilestonePercentage,
             val -> data.setInvertedFuelMilestonePercentage((float) val)));
 
+    public static final Syncers<IntSyncValue> MILESTONE_COMPOSITION_LEVEL = new Syncers<>(
+            "fog.sync.milestone_composition_level",
+            data -> new IntSyncValue(() -> data.getMilestoneProgress(3), val -> data.setMilestoneProgress(3, val)));
     public static final Syncers<DoubleSyncValue> MILESTONE_COMPOSITION_PROGRESS = new Syncers<>(
         "fog.sync.milestone_composition_progress",
         data -> new DoubleSyncValue(

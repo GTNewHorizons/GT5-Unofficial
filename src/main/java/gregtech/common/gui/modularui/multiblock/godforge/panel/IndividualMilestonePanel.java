@@ -2,17 +2,25 @@ package gregtech.common.gui.modularui.multiblock.godforge.panel;
 
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static net.minecraft.util.StatCollector.translateToLocal;
+import static tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData.DEFAULT_FORMATTER;
+import static tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData.FUEL_MILESTONE_T7_CONSTANT;
+import static tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData.POWER_MILESTONE_T7_CONSTANT;
+import static tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData.RECIPE_MILESTONE_T7_CONSTANT;
+
+import java.math.BigInteger;
 
 import net.minecraft.util.EnumChatFormatting;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
+import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
+import com.google.common.math.LongMath;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Formatters;
@@ -61,26 +69,98 @@ public class IndividualMilestonePanel {
                 .tooltip(t -> t.addLine(translateToLocal("fog.button.formatting.tooltip")))
                 .tooltipShowUpTimer(TOOLTIP_DELAY));
 
-        Flow row = new Row().coverChildren()
+        Flow column = new Column().coverChildren()
             .alignX(0.5f)
-            .marginTop(10); // todo check
+            .marginTop(12);
 
         // Header
-        row.child(IKey.dynamic(() -> {
+        column.child(IKey.dynamic(() -> {
             Milestones milestone = milestoneSyncer.getValue();
             return EnumChatFormatting.GOLD + translateToLocal(milestone.getTitleLangKey());
         })
             .alignment(Alignment.CENTER)
             .asWidget()
-            .alignX(0.5f));
+            .alignX(0.5f)
+            .marginBottom(20));
 
-        panel.child(row);
+        // Total progress
+        column.child(
+            IKey.dynamic(() -> getTotalProgress(milestoneSyncer.getValue(), formatSyncer.getValue(), hypervisor))
+                .alignment(Alignment.CENTER)
+                .scale(0.7f)
+                .asWidget()
+                .width(140)
+                .alignX(0.5f));
+
+        // Current level
+        BooleanSyncValue inversionSyncer = Syncers.INVERSION.lookupFrom(Panels.INDIVIDUAL_MILESTONE, hypervisor);
+        column.child(
+            IKey.dynamic(() -> getLevel(milestoneSyncer.getValue(), inversionSyncer.getBoolValue(), hypervisor))
+                .alignment(Alignment.CENTER)
+                .scale(0.7f)
+                .asWidget()
+                .width(140)
+                .alignX(0.5f)
+                .marginTop(12));
+
+        // Next level progress
+        column.child(
+            IKey.dynamic(
+                () -> getLevelProgress(
+                    milestoneSyncer.getValue(),
+                    formatSyncer.getValue(),
+                    inversionSyncer.getBoolValue(),
+                    hypervisor))
+                .alignment(Alignment.CENTER)
+                .scale(0.7f)
+                .asWidget()
+                .width(140)
+                .alignX(0.5f)
+                .marginTop(12));
+
+        // Shards gained
+        column.child(
+            IKey.dynamic(
+                () -> getShardsGained(
+                    milestoneSyncer.getValue(),
+                    formatSyncer.getValue(),
+                    inversionSyncer.getBoolValue(),
+                    hypervisor))
+                .alignment(Alignment.CENTER)
+                .scale(0.7f)
+                .asWidget()
+                .width(140)
+                .alignX(0.5f)
+                .marginTop(12));
+
+        // Inversion status
+        column.child(
+            IKey.str(EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.FOG.inversionactive"))
+                .alignment(Alignment.CENTER)
+                .scale(0.8f)
+                .asWidget()
+                .width(150)
+                .alignX(0.5f)
+                .marginTop(12)
+                .setEnabledIf($ -> inversionSyncer.getBoolValue()));
+
+        panel.child(column);
         panel.child(ForgeOfGodsGuiUtil.panelCloseButton());
         return panel;
     }
 
     public static void registerSyncValues(SyncHypervisor hypervisor) {
         Syncers.FORMATTER.registerFor(Panels.INDIVIDUAL_MILESTONE, hypervisor);
+        Syncers.INVERSION.registerFor(Panels.INDIVIDUAL_MILESTONE, hypervisor);
+
+        Syncers.TOTAL_RECIPES_PROCESSED.registerFor(Panels.INDIVIDUAL_MILESTONE, hypervisor);
+        Syncers.TOTAL_POWER_CONSUMED.registerFor(Panels.INDIVIDUAL_MILESTONE, hypervisor);
+        Syncers.TOTAL_FUEL_CONSUMED.registerFor(Panels.INDIVIDUAL_MILESTONE, hypervisor);
+
+        Syncers.MILESTONE_CHARGE_LEVEL.registerFor(Panels.INDIVIDUAL_MILESTONE, hypervisor);
+        Syncers.MILESTONE_CONVERSION_LEVEL.registerFor(Panels.INDIVIDUAL_MILESTONE, hypervisor);
+        Syncers.MILESTONE_CATALYST_LEVEL.registerFor(Panels.INDIVIDUAL_MILESTONE, hypervisor);
+        Syncers.MILESTONE_COMPOSITION_LEVEL.registerFor(Panels.INDIVIDUAL_MILESTONE, hypervisor);
     }
 
     private static Widget<?> getBackgroundImage(Milestones milestone, EnumSyncValue<Milestones> syncer) {
@@ -90,5 +170,86 @@ public class IndividualMilestonePanel {
             .size(milestone.getSymbolWidth(), milestone.getSymbolHeight())
             .align(Alignment.CENTER)
             .setEnabledIf($ -> syncer.getValue() == milestone);
+    }
+
+    private static String getTotalProgress(Milestones milestone, Formatters formatter, SyncHypervisor hypervisor) {
+        Number progress = milestone.getTotalSyncer()
+            .lookupFrom(Panels.INDIVIDUAL_MILESTONE, hypervisor)
+            .getValue();
+
+        return EnumChatFormatting.WHITE + translateToLocal("gt.blockmachines.multimachine.FOG.totalprogress")
+            + ": "
+            + EnumChatFormatting.GRAY
+            + formatter.format(progress)
+            + " "
+            + translateToLocal(milestone.getProgressLangKey());
+    }
+
+    private static String getLevel(Milestones milestone, boolean inversion, SyncHypervisor hypervisor) {
+        int rawLevel = milestone.getLevelSyncer()
+            .lookupFrom(Panels.INDIVIDUAL_MILESTONE, hypervisor)
+            .getValue();
+        int level = inversion ? rawLevel : Math.min(rawLevel, 7);
+
+        return EnumChatFormatting.WHITE + translateToLocal("gt.blockmachines.multimachine.FOG.milestoneprogress")
+            + ": "
+            + EnumChatFormatting.GRAY
+            + level;
+    }
+
+    private static String getLevelProgress(Milestones milestone, Formatters formatter, boolean inversion,
+        SyncHypervisor hypervisor) {
+        int level = milestone.getLevelSyncer()
+            .lookupFrom(Panels.INDIVIDUAL_MILESTONE, hypervisor)
+            .getValue();
+
+        if (level >= 7 && !inversion) {
+            return EnumChatFormatting.WHITE + translateToLocal("gt.blockmachines.multimachine.FOG.milestonecomplete")
+                + (formatter != DEFAULT_FORMATTER ? EnumChatFormatting.DARK_RED + "?" : "");
+        }
+
+        Number max = switch (milestone) {
+            case CHARGE -> {
+                if (inversion) {
+                    yield POWER_MILESTONE_T7_CONSTANT.multiply(BigInteger.valueOf(level - 5));
+                }
+                yield BigInteger.valueOf(LongMath.pow(9, level))
+                    .multiply(BigInteger.valueOf(LongMath.pow(10, 15)));
+            }
+            case CONVERSION -> {
+                if (inversion) {
+                    yield RECIPE_MILESTONE_T7_CONSTANT * (level - 5);
+                }
+                yield LongMath.pow(4, level) * LongMath.pow(10, 7);
+            }
+            case CATALYST -> {
+                if (inversion) {
+                    yield FUEL_MILESTONE_T7_CONSTANT * (level - 5);
+                }
+                yield LongMath.pow(3, level) * LongMath.pow(10, 4);
+            }
+            case COMPOSITION -> level + 1;
+        };
+
+        return EnumChatFormatting.WHITE + translateToLocal("gt.blockmachines.multimachine.FOG.progress")
+            + ": "
+            + EnumChatFormatting.GRAY
+            + formatter.format(max)
+            + " "
+            + translateToLocal(milestone.getProgressLangKey());
+    }
+
+    public static String getShardsGained(Milestones milestone, Formatters formatter, boolean inversion,
+        SyncHypervisor hypervisor) {
+        int rawLevel = milestone.getLevelSyncer()
+            .lookupFrom(Panels.INDIVIDUAL_MILESTONE, hypervisor)
+            .getValue();
+        int level = inversion ? rawLevel : Math.min(rawLevel, 7);
+        int sum = level * (level + 1) / 2;
+
+        return EnumChatFormatting.WHITE + translateToLocal("gt.blockmachines.multimachine.FOG.shardgain")
+            + ": "
+            + EnumChatFormatting.GRAY
+            + formatter.format(sum);
     }
 }
