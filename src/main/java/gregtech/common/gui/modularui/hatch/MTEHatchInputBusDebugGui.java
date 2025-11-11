@@ -7,39 +7,46 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
+import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 
 import gregtech.api.metatileentity.implementations.MTEHatchInputBusDebug;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuis;
+import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 
-public class MTEHatchInputBusDebugGui {
-
-    MTEHatchInputBusDebug base;
+public class MTEHatchInputBusDebugGui extends MTEHatchBaseGui<MTEHatchInputBusDebug> {
 
     public MTEHatchInputBusDebugGui(MTEHatchInputBusDebug base) {
-        this.base = base;
+        super(base);
     }
 
-    public ModularPanel build(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+    @Override
+    protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
+        return super.createContentSection(panel, syncManager).child(
+            SlotGroupWidget.builder()
+                .matrix("IIII", "IIII", "IIII", "IIII")
+                .key('I', index -> {
+                    return new PhantomItemSlot().slot(
+                        new ModularSlot(hatch.phantomHolder, index).singletonSlotGroup(50 + index)
+                            .accessibility(true, false));
+                })
+                .build()
+                .marginTop(4)
+                .align(Alignment.TopCenter));
+    }
 
-        return GTGuis.mteTemplatePanelBuilder(base, data, syncManager, uiSettings)
-            .doesAddGregTechLogo(false)
-            .build()
-            .child(
-                SlotGroupWidget.builder()
-                    .matrix("IIII", "IIII", "IIII", "IIII")
-                    .key('I', index -> {
-                        return new PhantomItemSlot().slot(
-                            new ModularSlot(base.phantomHolder, index).singletonSlotGroup(50 + index)
-                                .accessibility(true, false));
-                    })
-                    .build()
-                    .marginTop(4)
-                    .align(Alignment.TopCenter))
-            .child(createInfoButton().posRel(0.05f, 0.4f));
+    @Override
+    protected boolean supportsLeftCornerFlow() {
+        return true;
+    }
+
+    @Override
+    protected Flow createLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
+        return super.createLeftCornerFlow(panel, syncManager).child(createInfoButton());
     }
 
     private IDrawable.DrawableWidget createInfoButton() {
