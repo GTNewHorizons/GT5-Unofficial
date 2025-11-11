@@ -46,19 +46,13 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures.BlockIcons;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
@@ -91,6 +85,8 @@ import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.blocks.BlockCasings8;
+import gregtech.common.gui.modularui.multiblock.MTEPCBFactoryGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -641,24 +637,16 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     }
 
     @Override
-    protected boolean useMui2() {
-        return false;
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEPCBFactoryGui(this);
     }
 
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    public int getTraceSize() {
+        return (int) ((1f / mRoughnessMultiplier) * 100f);
+    }
 
-        builder.widget(
-            new NumericWidget().setGetter(() -> (int) ((1f / mRoughnessMultiplier) * 100f))
-                .setSetter(val -> mRoughnessMultiplier = 100f / (int) val)
-                .setBounds(50, 200)
-                .setTextColor(Color.WHITE.normal)
-                .setTextAlignment(Alignment.Center)
-                .addTooltip(translateToLocal("GT5U.MBTT.PCB.Tooltip.5"))
-                .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
-                .setSize(74, 16)
-                .setPos(98, 91));
-        super.addUIWidgets(builder, buildContext);
+    public void setTraceSize(int value) {
+        mRoughnessMultiplier = 100f / (int) value;
     }
 
     @Override
@@ -746,13 +734,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Circuit Board Fabricator")
-            .addInfo(
-                EnumChatFormatting.GOLD.toString() + EnumChatFormatting.BOLD
-                    + "IMPORTANT!"
-                    + " Check the configuration menu before building!")
             .addInfo("Tier of the machine determines the available recipes")
-            .addInfo("Machine tier (1-3) is set in the controller GUI")
-            .addInfo("The configuration menu can be used to add upgrades")
             .addInfo("Each tier and upgrade requires additional structures")
             .addInfo("Power consumption is multiplied by Sqrt(structures)")
             .addInfo("Tier 2 and 3 allow parallel by using extra nanites")
@@ -783,6 +765,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     + EnumChatFormatting.LIGHT_PURPLE
                     + "perfect overclocks")
             .addInfo("Trace size can be changed to modify the material usage and machine speed")
+            .addInfo("Configure Trace Size in UI")
             .addTecTechHatchInfo()
             .beginStructureBlock(30, 38, 13, false)
             .addMaintenanceHatch(EnumChatFormatting.GOLD + "1", 1)

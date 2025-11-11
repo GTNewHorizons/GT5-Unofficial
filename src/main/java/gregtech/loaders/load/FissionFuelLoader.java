@@ -22,6 +22,7 @@ import goodgenerator.util.ItemRefer;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
@@ -74,324 +75,338 @@ public class FissionFuelLoader implements Runnable {
             .eut(TierEU.RECIPE_LV)
             .addTo(thermalCentrifugeRecipes);
 
-        // Thorium
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.IC2_Fuel_Rod_Empty.get(1), Materials.Thorium.getDust(3))
-            .itemOutputs(ItemList.RodThorium.get(1L))
-            .duration(1 * SECONDS + 10 * TICKS)
-            .eut(16)
-            .addTo(cannerRecipes);
+        if (!Mods.NuclearHorizons.isModLoaded()) {
+            // Thorium
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.IC2_Fuel_Rod_Empty.get(1), Materials.Thorium.getDust(3))
+                .itemOutputs(ItemList.RodThorium.get(1L))
+                .duration(1 * SECONDS + 10 * TICKS)
+                .eut(16)
+                .addTo(cannerRecipes);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.RodThorium.get(2),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 4),
-                GTUtility.getIntegratedCircuit(2))
-            .itemOutputs(ItemList.RodThorium2.get(1))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.RodThorium.get(4),
-                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Steel, 6),
-                GTUtility.getIntegratedCircuit(4))
-            .itemOutputs(ItemList.RodThorium4.get(1))
-            .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.RodThorium2.get(2),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 4),
-                GTUtility.getIntegratedCircuit(5))
-            .itemOutputs(ItemList.RodThorium4.get(1))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.RodThorium.get(2),
+                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 4),
+                    GTUtility.getIntegratedCircuit(2))
+                .itemOutputs(ItemList.RodThorium2.get(1))
+                .duration(10 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.RodThorium.get(4),
+                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Steel, 6),
+                    GTUtility.getIntegratedCircuit(4))
+                .itemOutputs(ItemList.RodThorium4.get(1))
+                .duration(15 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.RodThorium2.get(2),
+                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 4),
+                    GTUtility.getIntegratedCircuit(5))
+                .itemOutputs(ItemList.RodThorium4.get(1))
+                .duration(10 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.DepletedRodThorium.get(1))
-            .itemOutputs(Materials.Lutetium.getDustSmall(2), Materials.Thorium.getDust(1), Materials.Iron.getDust(1))
-            .duration(25 * SECONDS)
-            .eut(48)
-            .addTo(thermalCentrifugeRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.DepletedRodThorium2.get(1))
-            .itemOutputs(Materials.Lutetium.getDust(1), Materials.Thorium.getDust(2), Materials.Iron.getDust(3))
-            .duration(25 * SECONDS)
-            .eut(48)
-            .addTo(thermalCentrifugeRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.DepletedRodThorium4.get(1))
-            .itemOutputs(Materials.Lutetium.getDust(2), Materials.Thorium.getDust(4), Materials.Iron.getDust(6))
-            .duration(25 * SECONDS)
-            .eut(48)
-            .addTo(thermalCentrifugeRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.DepletedRodThorium.get(1))
+                .itemOutputs(
+                    Materials.Lutetium.getDustSmall(2),
+                    Materials.Thorium.getDust(1),
+                    Materials.Iron.getDust(1))
+                .duration(25 * SECONDS)
+                .eut(48)
+                .addTo(thermalCentrifugeRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.DepletedRodThorium2.get(1))
+                .itemOutputs(Materials.Lutetium.getDust(1), Materials.Thorium.getDust(2), Materials.Iron.getDust(3))
+                .duration(25 * SECONDS)
+                .eut(48)
+                .addTo(thermalCentrifugeRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.DepletedRodThorium4.get(1))
+                .itemOutputs(Materials.Lutetium.getDust(2), Materials.Thorium.getDust(4), Materials.Iron.getDust(6))
+                .duration(25 * SECONDS)
+                .eut(48)
+                .addTo(thermalCentrifugeRecipes);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.DepletedRodThorium.get(8))
-            .itemOutputs(
-                ItemList.IC2_Fuel_Rod_Empty.get(8),
-                Materials.Thorium.getDust(2),
-                MaterialsElements.getInstance().THORIUM232.getDust(1),
-                Materials.Lutetium.getDustSmall(1),
-                MaterialsElements.getInstance().POLONIUM.getSmallDust(1),
-                MaterialsElements.getInstance().THALLIUM.getTinyDust(1))
-            .outputChances(100_00, 100_00, 50_00, 50_00, 50_00, 25_00)
-            .fluidOutputs(WerkstoffLoader.Krypton.getFluidOrGas(30))
-            .duration(2 * MINUTES + 5 * SECONDS)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(centrifugeRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.DepletedRodThorium2.get(4))
-            .itemOutputs(
-                ItemList.IC2_Fuel_Rod_Empty.get(8),
-                Materials.Thorium.getDust(2),
-                MaterialsElements.getInstance().THORIUM232.getDust(1),
-                Materials.Lutetium.getDustSmall(1),
-                MaterialsElements.getInstance().POLONIUM.getSmallDust(1),
-                MaterialsElements.getInstance().THALLIUM.getTinyDust(1))
-            .outputChances(100_00, 100_00, 50_00, 50_00, 50_00, 25_00)
-            .fluidOutputs(WerkstoffLoader.Krypton.getFluidOrGas(30))
-            .duration(2 * MINUTES + 5 * SECONDS)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(centrifugeRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.DepletedRodThorium4.get(2))
-            .itemOutputs(
-                ItemList.IC2_Fuel_Rod_Empty.get(8),
-                Materials.Thorium.getDust(2),
-                MaterialsElements.getInstance().THORIUM232.getDust(1),
-                Materials.Lutetium.getDustSmall(1),
-                MaterialsElements.getInstance().POLONIUM.getSmallDust(1),
-                MaterialsElements.getInstance().THALLIUM.getTinyDust(1))
-            .outputChances(100_00, 100_00, 50_00, 50_00, 50_00, 25_00)
-            .fluidOutputs(WerkstoffLoader.Krypton.getFluidOrGas(30))
-            .duration(2 * MINUTES + 5 * SECONDS)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(centrifugeRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.DepletedRodThorium.get(8))
+                .itemOutputs(
+                    ItemList.IC2_Fuel_Rod_Empty.get(8),
+                    Materials.Thorium.getDust(2),
+                    MaterialsElements.getInstance().THORIUM232.getDust(1),
+                    Materials.Lutetium.getDustSmall(1),
+                    MaterialsElements.getInstance().POLONIUM.getSmallDust(1),
+                    MaterialsElements.getInstance().THALLIUM.getTinyDust(1))
+                .outputChances(100_00, 100_00, 50_00, 50_00, 50_00, 25_00)
+                .fluidOutputs(WerkstoffLoader.Krypton.getFluidOrGas(30))
+                .duration(2 * MINUTES + 5 * SECONDS)
+                .eut(TierEU.RECIPE_IV)
+                .addTo(centrifugeRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.DepletedRodThorium2.get(4))
+                .itemOutputs(
+                    ItemList.IC2_Fuel_Rod_Empty.get(8),
+                    Materials.Thorium.getDust(2),
+                    MaterialsElements.getInstance().THORIUM232.getDust(1),
+                    Materials.Lutetium.getDustSmall(1),
+                    MaterialsElements.getInstance().POLONIUM.getSmallDust(1),
+                    MaterialsElements.getInstance().THALLIUM.getTinyDust(1))
+                .outputChances(100_00, 100_00, 50_00, 50_00, 50_00, 25_00)
+                .fluidOutputs(WerkstoffLoader.Krypton.getFluidOrGas(30))
+                .duration(2 * MINUTES + 5 * SECONDS)
+                .eut(TierEU.RECIPE_IV)
+                .addTo(centrifugeRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.DepletedRodThorium4.get(2))
+                .itemOutputs(
+                    ItemList.IC2_Fuel_Rod_Empty.get(8),
+                    Materials.Thorium.getDust(2),
+                    MaterialsElements.getInstance().THORIUM232.getDust(1),
+                    Materials.Lutetium.getDustSmall(1),
+                    MaterialsElements.getInstance().POLONIUM.getSmallDust(1),
+                    MaterialsElements.getInstance().THALLIUM.getTinyDust(1))
+                .outputChances(100_00, 100_00, 50_00, 50_00, 50_00, 25_00)
+                .fluidOutputs(WerkstoffLoader.Krypton.getFluidOrGas(30))
+                .duration(2 * MINUTES + 5 * SECONDS)
+                .eut(TierEU.RECIPE_IV)
+                .addTo(centrifugeRecipes);
 
-        // Uranium
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.IC2_Uranium_238.get(6), ItemList.IC2_Uranium_235_Small.get(3))
-            .itemOutputs(ItemList.IC2_Uranium_Fuel.get(1))
-            .fluidInputs(GTModHandler.getIC2Coolant(1_000))
-            .duration(20 * SECONDS)
-            .eut(120)
-            .addTo(assemblerRecipes);
+            // Uranium
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.IC2_Uranium_238.get(6), ItemList.IC2_Uranium_235_Small.get(3))
+                .itemOutputs(ItemList.IC2_Uranium_Fuel.get(1))
+                .fluidInputs(GTModHandler.getIC2Coolant(1_000))
+                .duration(20 * SECONDS)
+                .eut(120)
+                .addTo(assemblerRecipes);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.IC2_Fuel_Rod_Empty.get(1), ItemList.IC2_Uranium_Fuel.get(1))
-            .itemOutputs(ItemList.RodUranium.get(1))
-            .duration(1 * SECONDS + 10 * TICKS)
-            .eut(16)
-            .addTo(cannerRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.IC2_Fuel_Rod_Empty.get(1), ItemList.IC2_Uranium_Fuel.get(1))
+                .itemOutputs(ItemList.RodUranium.get(1))
+                .duration(1 * SECONDS + 10 * TICKS)
+                .eut(16)
+                .addTo(cannerRecipes);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.RodUranium.get(2),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 4),
-                GTUtility.getIntegratedCircuit(2))
-            .itemOutputs(ItemList.RodUranium2.get(1))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.RodUranium.get(4),
-                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Steel, 6),
-                GTUtility.getIntegratedCircuit(4))
-            .itemOutputs(ItemList.RodUranium4.get(1))
-            .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.RodUranium2.get(2),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 4),
-                GTUtility.getIntegratedCircuit(5))
-            .itemOutputs(ItemList.RodUranium4.get(1))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.RodUranium.get(2),
+                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 4),
+                    GTUtility.getIntegratedCircuit(2))
+                .itemOutputs(ItemList.RodUranium2.get(1))
+                .duration(10 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.RodUranium.get(4),
+                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Steel, 6),
+                    GTUtility.getIntegratedCircuit(4))
+                .itemOutputs(ItemList.RodUranium4.get(1))
+                .duration(15 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.RodUranium2.get(2),
+                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 4),
+                    GTUtility.getIntegratedCircuit(5))
+                .itemOutputs(ItemList.RodUranium4.get(1))
+                .duration(10 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.DepletedRodUranium.get(1))
-            .itemOutputs(
-                ItemList.IC2_Plutonium_Small.get(1),
-                ItemList.IC2_Uranium_238.get(4),
-                Materials.Iron.getDust(1))
-            .duration(25 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(thermalCentrifugeRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.DepletedRodUranium2.get(1))
-            .itemOutputs(
-                ItemList.IC2_Plutonium_Small.get(2),
-                ItemList.IC2_Uranium_238.get(8),
-                Materials.Iron.getDust(3))
-            .duration(25 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(thermalCentrifugeRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.DepletedRodUranium4.get(1))
-            .itemOutputs(
-                ItemList.IC2_Plutonium_Small.get(4),
-                ItemList.IC2_Uranium_238.get(16),
-                Materials.Iron.getDust(6))
-            .duration(25 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(thermalCentrifugeRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.DepletedRodUranium.get(1))
+                .itemOutputs(
+                    ItemList.IC2_Plutonium_Small.get(1),
+                    ItemList.IC2_Uranium_238.get(4),
+                    Materials.Iron.getDust(1))
+                .duration(25 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(thermalCentrifugeRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.DepletedRodUranium2.get(1))
+                .itemOutputs(
+                    ItemList.IC2_Plutonium_Small.get(2),
+                    ItemList.IC2_Uranium_238.get(8),
+                    Materials.Iron.getDust(3))
+                .duration(25 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(thermalCentrifugeRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.DepletedRodUranium4.get(1))
+                .itemOutputs(
+                    ItemList.IC2_Plutonium_Small.get(4),
+                    ItemList.IC2_Uranium_238.get(16),
+                    Materials.Iron.getDust(6))
+                .duration(25 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(thermalCentrifugeRecipes);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.DepletedRodUranium.get(8))
-            .itemOutputs(
-                ItemList.IC2_Fuel_Rod_Empty.get(8),
-                Materials.Uranium.getDust(2),
-                MaterialsElements.getInstance().URANIUM232.getSmallDust(1),
-                MaterialsElements.getInstance().URANIUM233.getSmallDust(1),
-                Materials.Uranium235.getDustSmall(1),
-                Materials.Plutonium.getDustTiny(1))
-            .outputChances(100_00, 100_00, 10_00, 10_00, 10_00, 5_00)
-            .fluidOutputs(WerkstoffLoader.Krypton.getFluidOrGas(60))
-            .duration(4 * MINUTES + 10 * SECONDS)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(centrifugeRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.DepletedRodUranium2.get(4))
-            .itemOutputs(
-                ItemList.IC2_Fuel_Rod_Empty.get(8),
-                Materials.Uranium.getDust(2),
-                MaterialsElements.getInstance().URANIUM232.getSmallDust(1),
-                MaterialsElements.getInstance().URANIUM233.getSmallDust(1),
-                Materials.Uranium235.getDustSmall(1),
-                Materials.Plutonium.getDustTiny(1))
-            .outputChances(100_00, 100_00, 10_00, 10_00, 10_00, 5_00)
-            .fluidOutputs(WerkstoffLoader.Krypton.getFluidOrGas(60))
-            .duration(4 * MINUTES + 10 * SECONDS)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(centrifugeRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.DepletedRodUranium4.get(2))
-            .itemOutputs(
-                ItemList.IC2_Fuel_Rod_Empty.get(8),
-                Materials.Uranium.getDust(2),
-                MaterialsElements.getInstance().URANIUM232.getSmallDust(1),
-                MaterialsElements.getInstance().URANIUM233.getSmallDust(1),
-                Materials.Uranium235.getDustSmall(1),
-                Materials.Plutonium.getDustTiny(1))
-            .outputChances(100_00, 100_00, 10_00, 10_00, 10_00, 5_00)
-            .fluidOutputs(WerkstoffLoader.Krypton.getFluidOrGas(60))
-            .duration(4 * MINUTES + 10 * SECONDS)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(centrifugeRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.DepletedRodUranium.get(8))
+                .itemOutputs(
+                    ItemList.IC2_Fuel_Rod_Empty.get(8),
+                    Materials.Uranium.getDust(2),
+                    MaterialsElements.getInstance().URANIUM232.getSmallDust(1),
+                    MaterialsElements.getInstance().URANIUM233.getSmallDust(1),
+                    Materials.Uranium235.getDustSmall(1),
+                    Materials.Plutonium.getDustTiny(1))
+                .outputChances(100_00, 100_00, 10_00, 10_00, 10_00, 5_00)
+                .fluidOutputs(WerkstoffLoader.Krypton.getFluidOrGas(60))
+                .duration(4 * MINUTES + 10 * SECONDS)
+                .eut(TierEU.RECIPE_IV)
+                .addTo(centrifugeRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.DepletedRodUranium2.get(4))
+                .itemOutputs(
+                    ItemList.IC2_Fuel_Rod_Empty.get(8),
+                    Materials.Uranium.getDust(2),
+                    MaterialsElements.getInstance().URANIUM232.getSmallDust(1),
+                    MaterialsElements.getInstance().URANIUM233.getSmallDust(1),
+                    Materials.Uranium235.getDustSmall(1),
+                    Materials.Plutonium.getDustTiny(1))
+                .outputChances(100_00, 100_00, 10_00, 10_00, 10_00, 5_00)
+                .fluidOutputs(WerkstoffLoader.Krypton.getFluidOrGas(60))
+                .duration(4 * MINUTES + 10 * SECONDS)
+                .eut(TierEU.RECIPE_IV)
+                .addTo(centrifugeRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.DepletedRodUranium4.get(2))
+                .itemOutputs(
+                    ItemList.IC2_Fuel_Rod_Empty.get(8),
+                    Materials.Uranium.getDust(2),
+                    MaterialsElements.getInstance().URANIUM232.getSmallDust(1),
+                    MaterialsElements.getInstance().URANIUM233.getSmallDust(1),
+                    Materials.Uranium235.getDustSmall(1),
+                    Materials.Plutonium.getDustTiny(1))
+                .outputChances(100_00, 100_00, 10_00, 10_00, 10_00, 5_00)
+                .fluidOutputs(WerkstoffLoader.Krypton.getFluidOrGas(60))
+                .duration(4 * MINUTES + 10 * SECONDS)
+                .eut(TierEU.RECIPE_IV)
+                .addTo(centrifugeRecipes);
 
-        // MOX
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.IC2_Uranium_238.get(6), ItemList.IC2_Plutonium.get(3))
-            .itemOutputs(ItemList.IC2_MOX_Fuel.get(1))
-            .fluidInputs(GTModHandler.getIC2Coolant(1_000))
-            .duration(20 * SECONDS)
-            .eut(256)
-            .addTo(assemblerRecipes);
+            // MOX
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.IC2_Uranium_238.get(6), ItemList.IC2_Plutonium.get(3))
+                .itemOutputs(ItemList.IC2_MOX_Fuel.get(1))
+                .fluidInputs(GTModHandler.getIC2Coolant(1_000))
+                .duration(20 * SECONDS)
+                .eut(256)
+                .addTo(assemblerRecipes);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.IC2_Fuel_Rod_Empty.get(1), ItemList.IC2_MOX_Fuel.get(1))
-            .itemOutputs(ItemList.RodMOX.get(1))
-            .duration(1 * SECONDS + 10 * TICKS)
-            .eut(16)
-            .addTo(cannerRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.IC2_Fuel_Rod_Empty.get(1), ItemList.IC2_MOX_Fuel.get(1))
+                .itemOutputs(ItemList.RodMOX.get(1))
+                .duration(1 * SECONDS + 10 * TICKS)
+                .eut(16)
+                .addTo(cannerRecipes);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.RodMOX.get(2),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 4),
-                GTUtility.getIntegratedCircuit(2))
-            .itemOutputs(ItemList.RodMOX2.get(1))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.RodMOX.get(4),
-                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Steel, 6),
-                GTUtility.getIntegratedCircuit(4))
-            .itemOutputs(ItemList.RodMOX4.get(1))
-            .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.RodMOX2.get(2),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 4),
-                GTUtility.getIntegratedCircuit(5))
-            .itemOutputs(ItemList.RodMOX4.get(1))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.RodMOX.get(2),
+                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 4),
+                    GTUtility.getIntegratedCircuit(2))
+                .itemOutputs(ItemList.RodMOX2.get(1))
+                .duration(10 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.RodMOX.get(4),
+                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Steel, 6),
+                    GTUtility.getIntegratedCircuit(4))
+                .itemOutputs(ItemList.RodMOX4.get(1))
+                .duration(15 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.RodMOX2.get(2),
+                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 4),
+                    GTUtility.getIntegratedCircuit(5))
+                .itemOutputs(ItemList.RodMOX4.get(1))
+                .duration(10 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.DepletedRodMOX.get(1))
-            .itemOutputs(ItemList.IC2_Plutonium_Small.get(1), ItemList.IC2_Plutonium.get(3), Materials.Iron.getDust(1))
-            .duration(25 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(thermalCentrifugeRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.DepletedRodMOX2.get(1))
-            .itemOutputs(ItemList.IC2_Plutonium_Small.get(2), ItemList.IC2_Plutonium.get(6), Materials.Iron.getDust(3))
-            .duration(25 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(thermalCentrifugeRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.DepletedRodMOX4.get(1))
-            .itemOutputs(ItemList.IC2_Plutonium_Small.get(4), ItemList.IC2_Plutonium.get(12), Materials.Iron.getDust(6))
-            .duration(25 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(thermalCentrifugeRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.DepletedRodMOX.get(1))
+                .itemOutputs(
+                    ItemList.IC2_Plutonium_Small.get(1),
+                    ItemList.IC2_Plutonium.get(3),
+                    Materials.Iron.getDust(1))
+                .duration(25 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(thermalCentrifugeRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.DepletedRodMOX2.get(1))
+                .itemOutputs(
+                    ItemList.IC2_Plutonium_Small.get(2),
+                    ItemList.IC2_Plutonium.get(6),
+                    Materials.Iron.getDust(3))
+                .duration(25 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(thermalCentrifugeRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.DepletedRodMOX4.get(1))
+                .itemOutputs(
+                    ItemList.IC2_Plutonium_Small.get(4),
+                    ItemList.IC2_Plutonium.get(12),
+                    Materials.Iron.getDust(6))
+                .duration(25 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(thermalCentrifugeRecipes);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.DepletedRodMOX.get(8))
-            .itemOutputs(
-                ItemList.IC2_Fuel_Rod_Empty.get(8),
-                Materials.Plutonium.getDust(2),
-                Materials.Plutonium241.getDustTiny(1),
-                Materials.Plutonium.getDustTiny(1),
-                MaterialsElements.getInstance().PLUTONIUM238.getTinyDust(1),
-                Materials.Plutonium.getDustTiny(1))
-            .outputChances(100_00, 100_00, 5_00, 5_00, 5_00, 5_00)
-            .fluidOutputs(WerkstoffLoader.Krypton.getFluidOrGas(90))
-            .duration(6 * MINUTES + 15 * SECONDS)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(centrifugeRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.DepletedRodMOX2.get(4))
-            .itemOutputs(
-                ItemList.IC2_Fuel_Rod_Empty.get(8),
-                Materials.Plutonium.getDust(2),
-                Materials.Plutonium241.getDustTiny(1),
-                Materials.Plutonium.getDustTiny(1),
-                MaterialsElements.getInstance().PLUTONIUM238.getTinyDust(1),
-                Materials.Plutonium.getDustTiny(1))
-            .outputChances(100_00, 100_00, 5_00, 5_00, 5_00, 5_00)
-            .fluidOutputs(WerkstoffLoader.Krypton.getFluidOrGas(90))
-            .duration(6 * MINUTES + 15 * SECONDS)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(centrifugeRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.DepletedRodMOX4.get(2))
-            .itemOutputs(
-                ItemList.IC2_Fuel_Rod_Empty.get(8),
-                Materials.Plutonium.getDust(2),
-                Materials.Plutonium241.getDustTiny(1),
-                Materials.Plutonium.getDustTiny(1),
-                MaterialsElements.getInstance().PLUTONIUM238.getTinyDust(1),
-                Materials.Plutonium.getDustTiny(1))
-            .outputChances(100_00, 100_00, 5_00, 5_00, 5_00, 5_00)
-            .fluidOutputs(WerkstoffLoader.Krypton.getFluidOrGas(90))
-            .duration(6 * MINUTES + 15 * SECONDS)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(centrifugeRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.DepletedRodMOX.get(8))
+                .itemOutputs(
+                    ItemList.IC2_Fuel_Rod_Empty.get(8),
+                    Materials.Plutonium.getDust(2),
+                    Materials.Plutonium241.getDustTiny(1),
+                    Materials.Plutonium.getDustTiny(1),
+                    MaterialsElements.getInstance().PLUTONIUM238.getTinyDust(1),
+                    Materials.Plutonium.getDustTiny(1))
+                .outputChances(100_00, 100_00, 5_00, 5_00, 5_00, 5_00)
+                .fluidOutputs(WerkstoffLoader.Krypton.getFluidOrGas(90))
+                .duration(6 * MINUTES + 15 * SECONDS)
+                .eut(TierEU.RECIPE_IV)
+                .addTo(centrifugeRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.DepletedRodMOX2.get(4))
+                .itemOutputs(
+                    ItemList.IC2_Fuel_Rod_Empty.get(8),
+                    Materials.Plutonium.getDust(2),
+                    Materials.Plutonium241.getDustTiny(1),
+                    Materials.Plutonium.getDustTiny(1),
+                    MaterialsElements.getInstance().PLUTONIUM238.getTinyDust(1),
+                    Materials.Plutonium.getDustTiny(1))
+                .outputChances(100_00, 100_00, 5_00, 5_00, 5_00, 5_00)
+                .fluidOutputs(WerkstoffLoader.Krypton.getFluidOrGas(90))
+                .duration(6 * MINUTES + 15 * SECONDS)
+                .eut(TierEU.RECIPE_IV)
+                .addTo(centrifugeRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.DepletedRodMOX4.get(2))
+                .itemOutputs(
+                    ItemList.IC2_Fuel_Rod_Empty.get(8),
+                    Materials.Plutonium.getDust(2),
+                    Materials.Plutonium241.getDustTiny(1),
+                    Materials.Plutonium.getDustTiny(1),
+                    MaterialsElements.getInstance().PLUTONIUM238.getTinyDust(1),
+                    Materials.Plutonium.getDustTiny(1))
+                .outputChances(100_00, 100_00, 5_00, 5_00, 5_00, 5_00)
+                .fluidOutputs(WerkstoffLoader.Krypton.getFluidOrGas(90))
+                .duration(6 * MINUTES + 15 * SECONDS)
+                .eut(TierEU.RECIPE_IV)
+                .addTo(centrifugeRecipes);
+        }
 
         // High Density Uranium
         GTValues.RA.stdBuilder()
