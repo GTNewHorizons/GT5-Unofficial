@@ -15,16 +15,12 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DTPF_ON;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION1_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_RAINBOWSCREEN_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTUtility.validMTEList;
-import static net.minecraft.util.StatCollector.translateToLocal;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
@@ -46,17 +42,6 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.math.Color;
-import com.gtnewhorizons.modularui.api.math.Size;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -65,7 +50,6 @@ import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -88,7 +72,6 @@ import gregtech.api.util.ParallelHelper;
 import gregtech.common.gui.modularui.multiblock.MTEPlasmaForgeGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
-import tectech.thing.gui.TecTechUITextures;
 
 public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForge> implements ISurvivalConstructable {
 
@@ -1150,82 +1133,6 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
 
     public void setCatalystTypeForRecipesWithoutCatalyst(int value) {
         this.catalystTypeForRecipesWithoutCatalyst = value;
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        buildContext.addSyncedWindow(CATALYST_WINDOW_ID, this::createCatalystWindow);
-        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-            ItemStack controllerStack = this.getControllerSlot();
-            if (clickData.mouseButton == 0) {
-                if (controllerStack != null
-                    && controllerStack.isItemEqual(ItemList.Transdimensional_Alignment_Matrix.get(1))) {
-                    convergence = !convergence;
-                }
-            } else if (clickData.mouseButton == 1 && !widget.isClient()) {
-                widget.getContext()
-                    .openSyncedWindow(CATALYST_WINDOW_ID);
-            }
-        })
-            .setPlayClickSound(true)
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                if (convergence) {
-                    ret.add(GTUITextures.BUTTON_STANDARD_PRESSED);
-                    ret.add(TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_ON);
-                } else {
-                    ret.add(GTUITextures.BUTTON_STANDARD);
-                    ret.add(TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_OFF);
-                }
-                return ret.toArray(new IDrawable[0]);
-            })
-            .addTooltip(translateToLocal("GT5U.DTPF.convergencebutton"))
-            .addTooltip(EnumChatFormatting.GRAY + translateToLocal("GT5U.DTPF.convergencebuttontooltip.0"))
-            .addTooltip(EnumChatFormatting.GRAY + translateToLocal("GT5U.DTPF.convergencebuttontooltip.1"))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(174, 112)
-            .setSize(16, 16)
-            .attachSyncer(new FakeSyncWidget.BooleanSyncer(() -> convergence, (val) -> convergence = val), builder));
-        super.addUIWidgets(builder, buildContext);
-    }
-
-    protected ModularWindow createCatalystWindow(final EntityPlayer player) {
-        final int WIDTH = 58;
-        final int HEIGHT = 52;
-        final int PARENT_WIDTH = getGUIWidth();
-        final int PARENT_HEIGHT = getGUIHeight();
-        ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
-        builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
-        builder.setGuiTint(getGUIColorization());
-        builder.setDraggable(true);
-        builder.setPos(
-            (size, window) -> Alignment.Center.getAlignedPos(size, new Size(PARENT_WIDTH, PARENT_HEIGHT))
-                .add(
-                    Alignment.BottomRight.getAlignedPos(new Size(PARENT_WIDTH, PARENT_HEIGHT), new Size(WIDTH, HEIGHT))
-                        .add(WIDTH - 3, 0)
-                        .subtract(0, 10)));
-        builder.widget(
-            TextWidget.localised("GT5U.DTPF.catalysttier")
-                .setPos(3, 4)
-                .setSize(50, 20))
-            .widget(
-                new NumericWidget().setSetter(val -> catalystTypeForRecipesWithoutCatalyst = (int) val)
-                    .setGetter(() -> catalystTypeForRecipesWithoutCatalyst)
-                    .setBounds(1, 5)
-                    .setDefaultValue(1)
-                    .setScrollValues(1, 4, 64)
-                    .setTextAlignment(Alignment.Center)
-                    .setTextColor(Color.WHITE.normal)
-                    .setSize(50, 18)
-                    .setPos(4, 25)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
-                    .addTooltip(translateToLocal("GT5U.DTPF.catalystinfotooltip"))
-                    .attachSyncer(
-                        new FakeSyncWidget.IntegerSyncer(
-                            () -> catalystTypeForRecipesWithoutCatalyst,
-                            (val) -> catalystTypeForRecipesWithoutCatalyst = val),
-                        builder));
-        return builder.build();
     }
 
     @Override

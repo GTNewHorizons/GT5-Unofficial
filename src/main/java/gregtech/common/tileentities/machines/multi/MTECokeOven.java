@@ -143,11 +143,6 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
     }
 
     @Override
-    protected boolean forceUseMui2() {
-        return true;
-    }
-
-    @Override
     protected GTGuiTheme getGuiTheme() {
         return GTGuiThemes.COKE_OVEN;
     }
