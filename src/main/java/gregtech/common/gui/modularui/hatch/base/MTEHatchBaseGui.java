@@ -26,6 +26,15 @@ import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
 import gregtech.common.modularui2.widget.GhostCircuitSlotWidget;
 
+/**
+ * A base class for common hatch implementations. Has configurable corner panels and makes building ui's easier.
+ * The main overriding is done in
+ * {@link #createContentSection(com.cleanroommc.modularui.screen.ModularPanel, com.cleanroommc.modularui.value.sync.PanelSyncManager)}
+ *
+ * For heavily custom UI's, override
+ * {@link #build(com.cleanroommc.modularui.factory.PosGuiData, com.cleanroommc.modularui.value.sync.PanelSyncManager, com.cleanroommc.modularui.screen.UISettings)}
+ * instead.
+ */
 public class MTEHatchBaseGui<T extends MTEHatch> {
 
     protected final T hatch;
@@ -99,7 +108,9 @@ public class MTEHatchBaseGui<T extends MTEHatch> {
     protected Flow createLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
         Flow cornerFlow = Flow.row()
             .coverChildren()
-            .align(Alignment.BottomLeft).paddingBottom(4).paddingLeft(3);
+            .align(Alignment.BottomLeft)
+            .paddingBottom(4)
+            .paddingLeft(3);
         return cornerFlow;
     }
 
