@@ -110,8 +110,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import kubatech.loaders.HTGRLoader;
-import kubatech.loaders.item.htgritem.HTGRItem;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
@@ -1176,7 +1174,7 @@ public class PlatinumSludgeOverHaul {
             .getItem()) {
             return true;
         }
-        if (stack.getItem() == HTGR_ITEM ){
+        if (stack.getItem() == HTGR_ITEM) {
             return true;
         }
         if (stack.getItem() == WHITE_METAL.getDust(1)
