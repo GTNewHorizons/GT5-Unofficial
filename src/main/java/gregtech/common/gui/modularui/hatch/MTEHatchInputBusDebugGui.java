@@ -2,9 +2,7 @@ package gregtech.common.gui.modularui.hatch;
 
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.drawable.GuiTextures;
-import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
@@ -15,7 +13,6 @@ import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 
 import gregtech.api.metatileentity.implementations.MTEHatchInputBusDebug;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.modularui2.GTGuis;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 
 public class MTEHatchInputBusDebugGui extends MTEHatchBaseGui<MTEHatchInputBusDebug> {

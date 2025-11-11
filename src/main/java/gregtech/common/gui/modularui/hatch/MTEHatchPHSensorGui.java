@@ -3,9 +3,7 @@ package gregtech.common.gui.modularui.hatch;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -15,12 +13,10 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.modularui2.GTGuis;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchPHSensor;
 
 public class MTEHatchPHSensorGui extends MTEHatchBaseGui<MTEHatchPHSensor> {
-
 
     public MTEHatchPHSensorGui(MTEHatchPHSensor sensor) {
         super(sensor);
@@ -33,7 +29,9 @@ public class MTEHatchPHSensorGui extends MTEHatchBaseGui<MTEHatchPHSensor> {
             .child(createThresholdFieldRow())
             .coverChildren()
             .crossAxisAlignment(com.cleanroommc.modularui.utils.Alignment.CrossAxis.START)
-            .childPadding(2).paddingTop(4).paddingLeft(4);
+            .childPadding(2)
+            .paddingTop(4)
+            .paddingLeft(4);
         return super.createContentSection(panel, syncManager).child(col);
     }
 
