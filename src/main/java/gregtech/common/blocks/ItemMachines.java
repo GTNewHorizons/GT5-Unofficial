@@ -7,6 +7,7 @@ import static gregtech.api.util.GTUtility.translate;
 import static gregtech.api.util.MultiblockTooltipBuilder.INDENT;
 import static gregtech.api.util.MultiblockTooltipBuilder.INDENT_MARK;
 import static gregtech.api.util.MultiblockTooltipBuilder.SEPARATOR_MARK;
+import static gregtech.api.util.MultiblockTooltipBuilder.STRUCTURE_SEPARATOR_MARK;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import static org.apache.commons.lang3.StringUtils.removeStart;
@@ -443,10 +444,21 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
             default -> STRIKETHROUGH + StringUtils.getRepetitionOf('-', dashCount);
         };
 
+        int lengthRef = translateToLocal("GT5U.MBTT.Structure.SeeStructure").replaceAll("§[0-9a-fk-or]", "")
+            .length() * 7 / 10;
+        String structureSeparatorLine = switch (GTMod.proxy.separatorStyle) {
+            case 0 -> " ";
+            case 1 -> INDENT + StringUtils.getRepetitionOf('-', lengthRef);
+            default -> INDENT + STRIKETHROUGH + StringUtils.getRepetitionOf('-', lengthRef);
+        };
+
         for (int i = 0; i < tooltips.size(); i++) {
             String line = tooltips.get(i);
             if (line.contains(SEPARATOR_MARK)) {
                 tooltips.set(i, line.replace(SEPARATOR_MARK, separatorLine));
+            }
+            if (line.contains(STRUCTURE_SEPARATOR_MARK)) {
+                tooltips.set(i, line.replace(STRUCTURE_SEPARATOR_MARK, structureSeparatorLine));
             }
             if (line.contains("<FINISHER>")) {
                 tooltips.set(i, line.replace("<FINISHER>", finisherLine));
@@ -469,48 +481,54 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
             }
         }
 
-        // Extract SEPARATOR_MARK and possible color code (recursively handles multiple separators)
+        // Extract separators
+        extractSeparatorMark(list, SEPARATOR_MARK);
+        extractSeparatorMark(list, STRUCTURE_SEPARATOR_MARK);
+    }
+
+    private static void extractSeparatorMark(List<String> list, String separatorMark) {
         for (int i = 0; i < list.size();) {
             String str = list.get(i);
-            int sepIndex = str.indexOf(SEPARATOR_MARK);
+            int sepIndex = str.indexOf(separatorMark);
 
             if (sepIndex == -1) {
-                i++;  // No SEPARATOR_MARK, move to next element
+                i++;
                 continue;
             }
 
-            // Check if there's a color code (§X) before SEPARATOR_MARK
+            // Detect indent at the beginning of the string
+            String indent = "";
+            for (int j = 0; j < str.length() && str.charAt(j) == ' '; j++) {
+                indent += " ";
+            }
+
             int checkIndex = sepIndex - 2;
             boolean hasColorCode = checkIndex >= 0 && str.charAt(checkIndex) == '§';
 
             List<String> parts = new ArrayList<>();
 
             if (hasColorCode) {
-                // With color code: abc§a<SEPARATOR>def → ["abc", "§a<SEPARATOR>", "def"]
                 if (checkIndex > 0) {
                     parts.add(str.substring(0, checkIndex));
                 }
-                parts.add(str.substring(checkIndex, sepIndex + SEPARATOR_MARK.length()));
-                if (sepIndex + SEPARATOR_MARK.length() < str.length()) {
-                    parts.add(str.substring(sepIndex + SEPARATOR_MARK.length()));
+                parts.add(str.substring(checkIndex, sepIndex + separatorMark.length()));
+                if (sepIndex + separatorMark.length() < str.length()) {
+                    parts.add(indent + str.substring(sepIndex + separatorMark.length()));
                 }
             } else {
-                // No color code: abc<SEPARATOR>def → ["abc", "<SEPARATOR>", "def"]
                 if (sepIndex > 0) {
                     parts.add(str.substring(0, sepIndex));
                 }
-                parts.add(SEPARATOR_MARK);
-                if (sepIndex + SEPARATOR_MARK.length() < str.length()) {
-                    parts.add(str.substring(sepIndex + SEPARATOR_MARK.length()));
+                parts.add(separatorMark);
+                if (sepIndex + separatorMark.length() < str.length()) {
+                    parts.add(indent + str.substring(sepIndex + separatorMark.length()));
                 }
             }
 
             list.remove(i);
             list.addAll(i, parts);
-            // Don't increment i if we added more than 1 element (need to check new elements)
-            // But increment if we only replaced with the same single element (avoid infinite loop)
             if (parts.size() <= 1) {
-                i++;  // Prevent infinite loop when only SEPARATOR_MARK itself
+                i++;
             }
         }
     }

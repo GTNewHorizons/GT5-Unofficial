@@ -65,6 +65,7 @@ public class MultiblockTooltipBuilder {
     public static final String INDENT = "   ";
     public static final String INDENT_MARK = "<INDENT>";
     public static final String SEPARATOR_MARK = "<SEPARATOR>";
+    public static final String STRUCTURE_SEPARATOR_MARK = "<S_SEPARATOR>";
     private static final String COLON = translateToLocal("gt.string.colon").equals(":") ? ": "
         : translateToLocal("gt.string.colon");
     private static final String SEPARATOR = translateToLocal("gt.string.separator").equals(",") ? ", "
@@ -873,23 +874,12 @@ public class MultiblockTooltipBuilder {
      *
      * @return Instance this method was called on.
      */
-    public MultiblockTooltipBuilder addStructureInfoSeparator(EnumChatFormatting color, int length,
-        boolean useFinisherConfig) {
-        if (useFinisherConfig) {
-            switch (GTMod.proxy.tooltipFinisherStyle) {
-                case 0 -> {}
-                case 1 -> addStructureInfo(" ");
-                case 2 -> addStructureInfo(color + StringUtils.getRepetitionOf('-', length));
-                default -> addStructureInfo(
-                    color.toString() + EnumChatFormatting.STRIKETHROUGH + StringUtils.getRepetitionOf('-', length));
-            }
-        } else {
-            switch (GTMod.proxy.separatorStyle) {
-                case 0 -> addStructureInfo(" ");
-                case 1 -> addStructureInfo(color + StringUtils.getRepetitionOf('-', length));
-                default -> addStructureInfo(
-                    "" + color + EnumChatFormatting.STRIKETHROUGH + StringUtils.getRepetitionOf('-', length));
-            }
+    public MultiblockTooltipBuilder addStructureInfoSeparator(EnumChatFormatting color, int length) {
+        switch (GTMod.proxy.separatorStyle) {
+            case 0 -> addStructureInfo(" ");
+            case 1 -> addStructureInfo(color + StringUtils.getRepetitionOf('-', length));
+            default -> addStructureInfo(
+                "" + color + EnumChatFormatting.STRIKETHROUGH + StringUtils.getRepetitionOf('-', length));
         }
         return this;
     }
@@ -899,12 +889,11 @@ public class MultiblockTooltipBuilder {
      *
      * @return Instance this method was called on.
      */
-    public MultiblockTooltipBuilder addStructureInfoSeparator(boolean... useFinisherConfig) {
+    public MultiblockTooltipBuilder addStructureInfoSeparator() {
         return addStructureInfoSeparator(
             EnumChatFormatting.GRAY,
-            (int) (translateToLocal("GT5U.MBTT.Structure.SeeStructure").replaceAll("§[0-9a-fk-or]", "")
-                .length() * 0.7),
-            useFinisherConfig.length != 0 && useFinisherConfig[0]);
+            translateToLocal("GT5U.MBTT.Structure.SeeStructure").replaceAll("§[0-9a-fk-or]", "")
+                .length() * 7 / 10);
     }
 
     /**
@@ -1018,7 +1007,19 @@ public class MultiblockTooltipBuilder {
                     String.join(EnumChatFormatting.GRAY + " & " + EnumChatFormatting.GREEN, authors));
             }
         }
-        this.addStructureInfoSeparator(true);
+
+        int lengthRef = translateToLocal("GT5U.MBTT.Structure.SeeStructure").replaceAll("§[0-9a-fk-or]", "")
+            .length() * 7 / 10;
+        switch (GTMod.proxy.tooltipFinisherStyle) {
+            case 0 -> {}
+            case 1 -> addStructureInfo(" ");
+            case 2 -> addStructureInfo(EnumChatFormatting.GRAY + StringUtils.getRepetitionOf('-', lengthRef));
+            default -> addStructureInfo(
+                "" + EnumChatFormatting.GRAY
+                    + EnumChatFormatting.STRIKETHROUGH
+                    + StringUtils.getRepetitionOf('-', lengthRef));
+        }
+
         addShiftInfo("GT5U.MBTT.Structure.SeeStructure");
         hLines.add(TT_structurehint);
         hArray = Stream.concat(

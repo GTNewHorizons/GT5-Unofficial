@@ -771,20 +771,16 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.nano_forge")
-            .addManyInfo("gt.nano_forge.tips.1", "gt.nano_forge.tips.2", "gt.nano_forge.tips.3")
+            .addInfo("gt.nano_forge.tips")
             .addTecTechHatchInfo()
             .addUnlimitedTierSkips()
             .beginStructureBlock(30, 38, 13, false)
             .addStructureInfo(
-                "gt.nano_forge.info.1",
+                "gt.nano_forge.info",
                 getTieredText("1", "2", "3"),
                 getTieredText("522", "670", "898"),
                 getTieredText("170", "170", "254"),
                 getTieredText("0", "16", "32"))
-            .addStructureInfoSeparator()
-            .addStructureInfo("gt.nano_forge.info.2")
-            .addStructureInfoSeparator()
-            .addStructureInfo("gt.nano_forge.info.3")
             .toolTipFinisher(AuthorBlueWeabo);
         return tt;
     }
