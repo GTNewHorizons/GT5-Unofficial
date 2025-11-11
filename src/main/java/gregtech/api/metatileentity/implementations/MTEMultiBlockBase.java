@@ -738,28 +738,33 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 if (!polluteEnvironment(getPollutionPerTick(mInventory[1]))) {
                     stopMachine(ShutDownReasonRegistry.POLLUTION_FAIL);
                 }
-                if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) {
-                    if (mOutputItems != null) {
-                        addItemOutputs(mOutputItems);
+                if (mMaxProgresstime > 0) {
+                    incrementProgressTime();
+
+                    if (mProgresstime >= mMaxProgresstime) {
+                        if (mOutputItems != null) {
+                            addItemOutputs(mOutputItems);
+                            mOutputItems = null;
+                        }
+                        if (mOutputFluids != null) {
+                            addFluidOutputs(mOutputFluids);
+                            mOutputFluids = null;
+                        }
+                        outputAfterRecipe();
+                        mEfficiency = Math.max(
+                            0,
+                            Math.min(
+                                mEfficiency + mEfficiencyIncrease,
+                                getMaxEfficiency(getControllerSlot())
+                                    - ((getIdealStatus() - getRepairStatus()) * 1000)));
                         mOutputItems = null;
-                    }
-                    if (mOutputFluids != null) {
-                        addFluidOutputs(mOutputFluids);
-                        mOutputFluids = null;
-                    }
-                    outputAfterRecipe();
-                    mEfficiency = Math.max(
-                        0,
-                        Math.min(
-                            mEfficiency + mEfficiencyIncrease,
-                            getMaxEfficiency(getControllerSlot()) - ((getIdealStatus() - getRepairStatus()) * 1000)));
-                    mOutputItems = null;
-                    mProgresstime = 0;
-                    mMaxProgresstime = 0;
-                    mEfficiencyIncrease = 0;
-                    mLastWorkingTick = mTotalRunTime;
-                    if (aBaseMetaTileEntity.isAllowedToWork()) {
-                        checkRecipe();
+                        mProgresstime = 0;
+                        mMaxProgresstime = 0;
+                        mEfficiencyIncrease = 0;
+                        mLastWorkingTick = mTotalRunTime;
+                        if (aBaseMetaTileEntity.isAllowedToWork()) {
+                            checkRecipe();
+                        }
                     }
                 }
             }
@@ -780,6 +785,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     protected void outputAfterRecipe() {
 
+    }
+
+    protected void incrementProgressTime() {
+        mProgresstime++;
     }
 
     public boolean polluteEnvironment(int aPollutionLevel) {
@@ -1696,6 +1705,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                     if (fluidStack != null) {
                         // Prevent the same fluid from different ME hatches from being recognized
                         inputsFromME.put(fluidStack.getFluid(), fluidStack);
+                    }
+                }
+            } else if (tHatch instanceof MTEHatchInputDebug debugHatch) {
+                for (FluidStack fluid : debugHatch.getFluidList()) {
+                    if (fluid != null) {
+                        FluidStack stack = fluid.copy();
+                        stack.amount = Integer.MAX_VALUE;
+                        rList.add(stack);
                     }
                 }
             } else {
@@ -2935,7 +2952,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     // For MUI2 corner column toggling
 
-    public boolean supportsTerminalCornerColumn() {
+    public boolean supportsTerminalRightCornerColumn() {
         return true;
     }
 
@@ -3380,25 +3397,26 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> (getErrorDisplayID() & 256) != 0));
 
-        screenElements
-            .widget(
+        if (showMachineStatusInGUI()) {
+            screenElements.widget(
                 new TextWidget(translateToLocal("gt.interact.desc.mb.idle.1")).setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()))
-            .widget(new FakeSyncWidget.IntegerSyncer(this::getErrorDisplayID, this::setErrorDisplayID))
-            .widget(
-                new FakeSyncWidget.BooleanSyncer(
-                    () -> getBaseMetaTileEntity().isActive(),
-                    val -> getBaseMetaTileEntity().setActive(val)));
-        screenElements.widget(
-            new TextWidget(translateToLocal("gt.interact.desc.mb.idle.2")).setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
-        screenElements.widget(
-            new TextWidget(translateToLocal("gt.interact.desc.mb.idle.3")).setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
+                .widget(new FakeSyncWidget.IntegerSyncer(this::getErrorDisplayID, this::setErrorDisplayID))
+                .widget(
+                    new FakeSyncWidget.BooleanSyncer(
+                        () -> getBaseMetaTileEntity().isActive(),
+                        val -> getBaseMetaTileEntity().setActive(val)));
+            screenElements.widget(
+                new TextWidget(translateToLocal("gt.interact.desc.mb.idle.2")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
+            screenElements.widget(
+                new TextWidget(translateToLocal("gt.interact.desc.mb.idle.3")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
 
-        screenElements.widget(
-            new TextWidget(translateToLocal("gt.interact.desc.mb.running")).setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setEnabled(widget -> getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive()));
+            screenElements.widget(
+                new TextWidget(translateToLocal("gt.interact.desc.mb.running")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive()));
+        }
 
         screenElements.widget(TextWidget.dynamicString(() -> {
             Duration time = Duration.ofSeconds((mTotalRunTime - mLastWorkingTick) / 20);
@@ -3517,6 +3535,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         return true;
     }
 
+    public boolean showMachineStatusInGUI() {
+        return true;
+    }
+
     @TestOnly
     protected void setEnergyHatches(ArrayList<MTEHatchEnergy> EnergyHatches) {
         this.mEnergyHatches = EnergyHatches;
@@ -3632,5 +3654,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     public void setPowerfailEventCreationStatus(boolean status) {
         makePowerfailEvents = status;
+    }
+
+    public boolean hasRunningText() {
+        return true;
     }
 }

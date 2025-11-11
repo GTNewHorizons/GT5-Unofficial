@@ -480,7 +480,7 @@ public class MTECropHarvestor extends MTEBasicTank {
             "Consumes " + powerUsage() + "eu per harvest",
             "Consumes " + powerUsageSecondary() + "eu per secondary operation",
             "Can harvest 2 block levels above and below itself",
-            "Radius: " + aSide + " blocks each side (" + aRadius + "x5x" + aRadius + ")",
+            "Range: " + aRadius + "x5x" + aRadius + " blocks",
             "Has " + (this.mTier * 5) + "% chance for extra drops",
             "Holds " + this.getCapacity() + "L of Water",
             GTPPCore.GT_Tooltip.get());
