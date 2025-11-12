@@ -49,7 +49,7 @@ public class MilestonePanel {
         panel.child(createMilestone(Milestones.CATALYST, hypervisor));
         panel.child(createMilestone(Milestones.COMPOSITION, hypervisor));
 
-        panel.child(ForgeOfGodsGuiUtil.panelCloseButton()); // todo check position
+        panel.child(ForgeOfGodsGuiUtil.panelCloseButton());
         return panel;
     }
 
