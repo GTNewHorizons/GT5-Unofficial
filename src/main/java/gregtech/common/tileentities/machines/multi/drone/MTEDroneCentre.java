@@ -20,6 +20,7 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import appeng.client.render.highlighter.BlockPosHighlighter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -63,7 +64,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
 import appeng.api.util.DimensionalCoord;
-import appeng.client.render.BlockPosHighlighter;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.SoundResource;
@@ -250,11 +250,6 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     }
 
     @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public void stopMachine(@NotNull ShutDownReason reason) {
         destroyRenderBlock();
         super.stopMachine(reason);
@@ -265,8 +260,8 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         if (aBaseMetaTileEntity.isServerSide()) {
             if (aTick % 20 == 0) {
                 if (switch (droneLevel) {
-                    case 1 -> getBaseMetaTileEntity().getRandomNumber(28800);
-                    case 2 -> getBaseMetaTileEntity().getRandomNumber(172800);
+                    case 1 -> aBaseMetaTileEntity.getRandomNumber(28800);
+                    case 2 -> aBaseMetaTileEntity.getRandomNumber(172800);
                     default -> 1;
                 } == 0) {
                     droneLevel = 0;
@@ -349,10 +344,10 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         if (aBaseMetaTileEntity.isServerSide()) {
             if (droneMap.containsValue(this)) return;
             centreCoord = new Vec3Impl(
-                getBaseMetaTileEntity().getXCoord(),
-                getBaseMetaTileEntity().getYCoord(),
-                getBaseMetaTileEntity().getZCoord());
-            droneMap.put(getBaseMetaTileEntity().getWorld().provider.dimensionId, this);
+                aBaseMetaTileEntity.getXCoord(),
+                aBaseMetaTileEntity.getYCoord(),
+                aBaseMetaTileEntity.getZCoord());
+            droneMap.put(aBaseMetaTileEntity.getWorld().provider.dimensionId, this);
         }
     }
 
