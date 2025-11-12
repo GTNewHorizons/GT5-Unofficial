@@ -199,6 +199,11 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     private int emptyticksnodiff = 0;
     private int coolanttaking = 0;
     private int watertaking = 0;
+    private double energymultiplier = 0;
+    private double timemultiplier = 0;
+    private double fuelmultiplier = 0;
+    private double fuelexponent = 0;
+    private double fuelbase = 0;
 
     private MTEHatchInput heliumInputHatch;
     private MTEHatchInput coolantInputHatch;
@@ -651,11 +656,29 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             this.mOutputItems = toOutput.toArray(new ItemStack[0]);
         }
 
-        this.coolanttaking = (int) ((COOLANT_PER_PELLET * this.fuelsupply * this.heliumSupply / HELIUM_NEEDED)
-            * (1 - (this.getIdealStatus() - this.getRepairStatus()) / 5d));
+        /*  TODO
+             each fuel ball has 3 values:
+             fuelbase responsible for base generation, averaged from all balls in the reactor
+             fuelmultiplier - multiplying base generation, additive - each ball adds or subtracts multiplier, not averaged
+             fuelexponent - calculated same as multiplier but is an exponent of the multiplier and divides recipe time by exponent^2
+             fuel balls are supposed to have minimal value changes from 1 (for base) and from 0 (for multiplier and exponent)
+             example:   uranium (1,0,0)    plutonium (2,0.00002,0.00001) tungsten (0.5,-0.00001,-0.00005)
+             please remember that the reactor has maximum of 10k balls inside so the multiplier and exponent can go to extreme values if not taken into account
+             (maybe cap them? but that would potentially remove some fun breaking points :p)
 
-        this.watertaking = (int) ((WATER_PER_PELLET * this.fuelsupply * this.heliumSupply / HELIUM_NEEDED)
-            * (1 - (this.getIdealStatus() - this.getRepairStatus()) / 5d));
+             exponent affects the strength of multiplier at the cost of reactor recipe time (overclocking basically, but depending on multiplier can be a hindrance or a boost)
+         */
+
+
+
+        this.energymultiplier = fuelbase * Math.pow(fuelmultiplier,fuelexponent);
+        this.timemultiplier = 1/Math.pow(fuelexponent,2);
+
+        this.coolanttaking = (int) (energymultiplier * ((COOLANT_PER_PELLET * this.fuelsupply * this.heliumSupply / HELIUM_NEEDED)
+            * (1 - (this.getIdealStatus() - this.getRepairStatus()) / 5d)));
+
+        this.watertaking = (int) (energymultiplier * ((WATER_PER_PELLET * this.fuelsupply * this.heliumSupply / HELIUM_NEEDED)
+            * (1 - (this.getIdealStatus() - this.getRepairStatus()) / 5d)));
 
         this.mEfficiency = (int) (eff * 10000D);
         this.mEfficiencyIncrease = 0;
@@ -667,7 +690,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
 
         this.updateSlots();
 
-        this.mMaxProgresstime = (int) BASE_PROCESSING_TIME + (int) (SCALING_PROCESSING_TIME * eff);
+        this.mMaxProgresstime = (int) ( timemultiplier * (BASE_PROCESSING_TIME + (SCALING_PROCESSING_TIME * eff)));
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
