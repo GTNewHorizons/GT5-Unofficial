@@ -8,7 +8,6 @@ import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
-import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.FluidDisplayWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
@@ -67,25 +66,6 @@ public class FuelConfigPanel {
             .marginTop(3);
         column.child(textBox);
 
-        // todo actually these are probably not needed
-        /*
-         * data.onUpgradeSyncClient(
-         * syncManager,
-         * MTEForgeOfGodsGui.SYNC_UPGRADE_CFCE,
-         * CFCE,
-         * () -> textBox.setNumbers(1, GodforgeMath.calculateMaxFuelFactor(data)));
-         * data.onUpgradeSyncClient(
-         * syncManager,
-         * MTEForgeOfGodsGui.SYNC_UPGRADE_GEM,
-         * GEM,
-         * () -> textBox.setNumbers(1, GodforgeMath.calculateMaxFuelFactor(data)));
-         * data.onUpgradeSyncClient(
-         * syncManager,
-         * MTEForgeOfGodsGui.SYNC_UPGRADE_TSE,
-         * TSE,
-         * () -> textBox.setNumbers(1, GodforgeMath.calculateMaxFuelFactor(data)));
-         */
-
         // Info widget
         panel.child(
             GTGuiTextures.PICTURE_INFO.asWidget()
@@ -122,8 +102,6 @@ public class FuelConfigPanel {
         column.child(fuelRow);
 
         // Fuel usage text
-        LongSyncValue fuelUsageSyncer = Syncers.FUEL_CONSUMPTION.lookupFrom(Panels.FUEL_CONFIG, hypervisor);
-        EnumSyncValue<Formatters> formatSyncer = Syncers.FORMATTER.lookupFrom(Panels.MAIN, hypervisor);
         column.child(
             IKey.lang("gt.blockmachines.multimachine.FOG.fuelusage")
                 .alignment(Alignment.CENTER)
@@ -132,8 +110,8 @@ public class FuelConfigPanel {
                 .alignX(0.5f)
                 .marginTop(5));
         column.child(IKey.dynamic(() -> {
-            Formatters formatter = formatSyncer.getValue();
-            return formatter.format(fuelUsageSyncer.getLongValue()) + " L/5s";
+            Formatters formatter = data.getFormatter();
+            return formatter.format(data.getFuelConsumption()) + " L/5s";
         })
             .alignment(Alignment.CENTER)
             .asWidget()

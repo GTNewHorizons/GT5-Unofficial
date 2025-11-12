@@ -40,12 +40,11 @@ public class UpgradeTreePanel {
     }
 
     public static void registerSyncValues(SyncHypervisor hypervisor) {
-        Syncers.UPGRADES_LIST.registerFor(Panels.UPGRADE_TREE, hypervisor);
         // Syncers.AVAILABLE_GRAVITON_SHARDS.registerFor(Panels.UPGRADE_TREE, hypervisor);
     }
 
     private static Flow getDebugWidgets(SyncHypervisor hypervisor) {
-        GenericListSyncHandler<?> upgradeSyncer = Syncers.UPGRADES_LIST.lookupFrom(Panels.UPGRADE_TREE, hypervisor);
+        GenericListSyncHandler<?> upgradeSyncer = Syncers.UPGRADES_LIST.lookupFrom(Panels.MAIN, hypervisor);
 
         Flow row = new Column().coverChildren()
             .align(Alignment.TopLeft)

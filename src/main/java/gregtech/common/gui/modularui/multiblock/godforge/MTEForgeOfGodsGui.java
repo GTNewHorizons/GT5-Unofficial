@@ -18,8 +18,6 @@ import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Alignment.MainAxis;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
-import com.cleanroommc.modularui.value.sync.EnumSyncValue;
-import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
@@ -67,6 +65,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
         Syncers.FUEL_AMOUNT.registerFor(Panels.MAIN, hypervisor);
         Syncers.SHARD_EJECTION.registerFor(Panels.MAIN, hypervisor);
         Syncers.FORMATTER.registerFor(Panels.MAIN, hypervisor);
+        Syncers.UPGRADES_LIST.registerFor(Panels.MAIN, hypervisor);
     }
 
     // todo fix column being shifted up 1 pixel
@@ -113,16 +112,10 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
 
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-        IntSyncValue internalBattery = Syncers.INTERNAL_BATTERY.lookupFrom(Panels.MAIN, hypervisor);
-        IntSyncValue fuelAmount = Syncers.FUEL_AMOUNT.lookupFrom(Panels.MAIN, hypervisor);
-        IntSyncValue startupFuel = Syncers.NEEDED_STARTUP_FUEL.lookupFrom(Panels.MAIN, hypervisor);
-        IntSyncValue maxCharge = Syncers.MAX_BATTERY_CHARGE.lookupFrom(Panels.MAIN, hypervisor);
-        EnumSyncValue<Formatters> formatterSyncer = Syncers.FORMATTER.lookupFrom(Panels.MAIN, hypervisor);
-
         return new ListWidget<>().coverChildren()
             .align(Alignment.TopCenter)
             .child(IKey.dynamic(() -> {
-                if (internalBattery.getIntValue() == 0) {
+                if (data.getInternalBattery() == 0) {
                     return translateToLocal("gt.blockmachines.multimachine.FOG.storedstartupfuel");
                 }
                 return translateToLocal("gt.blockmachines.multimachine.FOG.storedfuel");
@@ -132,13 +125,12 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
                 .asWidget()
                 .marginTop(1))
             .child(IKey.dynamic(() -> {
-                Formatters formatter = formatterSyncer.getValue();
-                if (internalBattery.getIntValue() == 0) {
-                    return formatter.format(fuelAmount.getIntValue()) + "/"
-                        + formatter.format(startupFuel.getIntValue());
+                Formatters formatter = data.getFormatter();
+                if (data.getInternalBattery() == 0) {
+                    return formatter.format(data.getStellarFuelAmount()) + "/"
+                        + formatter.format(data.getNeededStartupFuel());
                 }
-                return formatter.format(internalBattery.getIntValue()) + "/"
-                    + formatter.format(maxCharge.getIntValue());
+                return formatter.format(data.getInternalBattery()) + "/" + formatter.format(data.getMaxBatteryCharge());
             })
                 .color(Color.WHITE.main)
                 .alignment(Alignment.CENTER)
