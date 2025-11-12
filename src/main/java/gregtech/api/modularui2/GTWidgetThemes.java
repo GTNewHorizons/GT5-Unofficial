@@ -38,7 +38,7 @@ public final class GTWidgetThemes {
     public static WidgetThemeKey<WidgetTheme> TEXT_TITLE = themeApi
         .widgetThemeKeyBuilder("textTitle", WidgetTheme.class)
         .defaultTheme(new WidgetTheme(0, 0, null, Color.WHITE.main, 0x404040, false, 0))
-        .defaultHoverTheme(null)
+        .defaultHoverTheme(new WidgetTheme(0, 0, null, Color.WHITE.main, 0x404040, false, 0))
         .register();
 
     public static WidgetThemeKey<WidgetTheme> BACKGROUND_POPUP = registerThemedTexture("backgroundPopup");
@@ -46,21 +46,21 @@ public final class GTWidgetThemes {
     public static WidgetThemeKey<WidgetTheme> BACKGROUND_TERMINAL = themeApi
         .widgetThemeKeyBuilder("backgroundTerminal", WidgetTheme.class)
         .defaultTheme(new WidgetTheme(0, 0, GTGuiTextures.BACKGROUND_TEXT_FIELD, Color.WHITE.main, 0xFAFAFA, false, 0))
-        .defaultHoverTheme(null)
+        .defaultHoverTheme(new WidgetTheme(0, 0, IDrawable.NONE, Color.WHITE.main, 0xFAFAFA, false, 0))
         .register();
 
     public static WidgetThemeKey<WidgetTheme> BACKGROUND_REDSTONE_SNIFFER = themeApi
         .widgetThemeKeyBuilder("backgroundRedstoneSniffer", WidgetTheme.class)
         .defaultTheme(
             new WidgetTheme(0, 0, GTGuiTextures.BACKGROUND_REDSTONE_SNIFFER, Color.WHITE.main, 0xFAFAFA, false, 0))
-        .defaultHoverTheme(null)
+        .defaultHoverTheme(new WidgetTheme(0, 0, IDrawable.NONE, Color.WHITE.main, 0xFAFAFA, false, 0))
         .register();
 
     public static WidgetThemeKey<WidgetTheme> BACKGROUND_CHAOS_LOCATOR = themeApi
         .widgetThemeKeyBuilder("backgroundChaosLocator", WidgetTheme.class)
         .defaultTheme(
             new WidgetTheme(0, 0, GTGuiTextures.BACKGROUND_CHAOS_LOCATOR, Color.WHITE.main, 0xFAFAFA, false, 0))
-        .defaultHoverTheme(null)
+        .defaultHoverTheme(new WidgetTheme(0, 0, IDrawable.NONE, Color.WHITE.main, 0xFAFAFA, false, 0))
         .register();
 
     public static WidgetThemeKey<SlotTheme> OVERLAY_ITEM_SLOT_DUST = registerThemedItemSlot("overlayItemSlotDust");
@@ -78,17 +78,18 @@ public final class GTWidgetThemes {
         .widgetThemeKeyBuilder("progressbarBoilerHeat", WidgetTheme.class)
         .defaultTheme(
             new ProgressbarWidgetTheme(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.PROGRESSBAR_BOILER_HEAT, 54))
-        .defaultHoverTheme(null)
+        .defaultHoverTheme(
+            new ProgressbarWidgetTheme(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.PROGRESSBAR_BOILER_HEAT, 54))
         .register();
     public static WidgetThemeKey<WidgetTheme> PROGRESSBAR_FUEL = themeApi
         .widgetThemeKeyBuilder("progressbarFuel", WidgetTheme.class)
         .defaultTheme(new ProgressbarWidgetTheme(GTGuiTextures.PROGRESSBAR_FUEL_STANDARD, 14))
-        .defaultHoverTheme(null)
+        .defaultHoverTheme(new ProgressbarWidgetTheme(GTGuiTextures.PROGRESSBAR_FUEL_STANDARD, 14))
         .register();
     public static WidgetThemeKey<WidgetTheme> STEAM_GAUGE_NEEDLE = themeApi
         .widgetThemeKeyBuilder("steamGaugeNeedle", WidgetTheme.class)
         .defaultTheme(new WidgetTheme(0, 0, null, Color.BROWN.main, 0xFF404040, false, 0))
-        .defaultHoverTheme(null)
+        .defaultHoverTheme(new WidgetTheme(0, 0, null, Color.BROWN.main, 0xFF404040, false, 0))
         .parser(createSteamGaugeNeedleParser())
         .register();
 
@@ -99,37 +100,41 @@ public final class GTWidgetThemes {
     public static WidgetThemeKey<WidgetTheme> BUTTON_BLACK = themeApi
         .widgetThemeKeyBuilder("buttonBlack", WidgetTheme.class)
         .defaultTheme(new WidgetTheme(0, 0, GuiTextures.MC_BUTTON, 0x333333, 0xFAFAFA, false, 0))
-        .defaultHoverTheme(null)
+        .defaultHoverTheme(new WidgetTheme(0, 0, IDrawable.NONE, 0x333333, 0xFAFAFA, false, 0))
         .register();
 
     public static WidgetThemeKey<WidgetTheme> PICTURE_CANISTER = registerThemedTexture("pictureCanister");
     public static WidgetThemeKey<WidgetTheme> PICTURE_LOGO = registerThemedTexture("pictureLogo");
 
     private static WidgetThemeKey<WidgetTheme> registerThemedTexture(String textureThemeId) {
+        WidgetTheme theme = new WidgetTheme(0, 0, null, Color.WHITE.main, 0xFF404040, false, 0);
         return themeApi.widgetThemeKeyBuilder(textureThemeId, WidgetTheme.class)
-            .defaultTheme(new WidgetTheme(0, 0, null, Color.WHITE.main, 0xFF404040, false, 0))
-            .defaultHoverTheme(null)
+            .defaultTheme(theme)
+            .defaultHoverTheme(theme.withNoHoverBackground())
             .register();
     }
 
     private static WidgetThemeKey<SlotTheme> registerThemedItemSlot(String textureThemeId) {
+        SlotTheme theme = new SlotTheme(GuiTextures.SLOT_ITEM, Color.withAlpha(Color.WHITE.main, 0x60));
         return themeApi.widgetThemeKeyBuilder(textureThemeId, SlotTheme.class)
-            .defaultTheme(new SlotTheme(GuiTextures.SLOT_ITEM, Color.withAlpha(Color.WHITE.main, 0x60)))
-            .defaultHoverTheme(null)
+            .defaultTheme(theme)
+            .defaultHoverTheme(theme.withNoHoverBackground())
             .register();
     }
 
     private static WidgetThemeKey<SlotTheme> registerThemedFluidSlot(String textureThemeId) {
+        SlotTheme theme = new SlotTheme(GuiTextures.SLOT_FLUID, Color.withAlpha(Color.WHITE.main, 0x60));
         return themeApi.widgetThemeKeyBuilder(textureThemeId, SlotTheme.class)
-            .defaultTheme(new SlotTheme(GuiTextures.SLOT_FLUID, Color.withAlpha(Color.WHITE.main, 0x60)))
-            .defaultHoverTheme(null)
+            .defaultTheme(theme)
+            .defaultHoverTheme(theme.withNoHoverBackground())
             .register();
     }
 
     private static WidgetThemeKey<WidgetTheme> registerThemedButton(String textureThemeId) {
+        WidgetTheme theme = new WidgetTheme(0, 0, null, Color.WHITE.main, 0xFF404040, false, 0);
         return themeApi.widgetThemeKeyBuilder(textureThemeId, WidgetTheme.class)
-            .defaultTheme(new WidgetTheme(0, 0, null, Color.WHITE.main, 0xFF404040, false, 0))
-            .defaultHoverTheme(null)
+            .defaultTheme(theme)
+            .defaultHoverTheme(theme.withNoHoverBackground())
             .register();
     }
 
