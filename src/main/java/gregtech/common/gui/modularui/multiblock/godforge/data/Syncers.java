@@ -24,9 +24,45 @@ public class Syncers<T extends SyncHandler> {
 
     // spotless:off
 
+    // --------------- //
+    // General Syncers //
+    // --------------- //
+
     public static final Syncers<EnumSyncValue<Formatters>> FORMATTER = new Syncers<>(
         "fog.sync.formatter",
         data -> new EnumSyncValue<>(Formatters.class, data::getFormatter, data::setFormatter));
+
+    public static final Syncers<BooleanSyncValue> INVERSION = new Syncers<>(
+            "fog.sync.inversion",
+            data -> new BooleanSyncValue(data::isInversion, data::setInversion));
+
+    // ---- //
+    // Fuel //
+    // ---- //
+
+    public static final Syncers<EnumSyncValue<Fuels>> SELECTED_FUEL = new Syncers<>(
+            "fog.sync.selected_fuel",
+            data -> new EnumSyncValue<>(Fuels.class, () -> Fuels.getFromData(data), fuel -> fuel.select(data)));
+
+    public static final Syncers<LongSyncValue> FUEL_CONSUMPTION = new Syncers<>(
+            "fog.sync.fuel_consumption",
+            data -> new LongSyncValue(data::getFuelConsumption, data::setFuelConsumption));
+
+    public static final Syncers<IntSyncValue> FUEL_FACTOR = new Syncers<>(
+            "fog.sync.fuel_factor",
+            data -> new IntSyncValue(data::getFuelConsumptionFactor, data::setFuelConsumptionFactor));
+
+    public static final Syncers<IntSyncValue> NEEDED_STARTUP_FUEL = new Syncers<>(
+            "fog.sync.needed_startup_fuel",
+            data -> new IntSyncValue(data::getNeededStartupFuel, data::setNeededStartupFuel));
+
+    public static final Syncers<IntSyncValue> FUEL_AMOUNT = new Syncers<>(
+            "fog.sync.fuel_amount",
+            data -> new IntSyncValue(data::getStellarFuelAmount, data::setStellarFuelAmount));
+
+    // ------- //
+    // Battery //
+    // ------  //
 
     public static final Syncers<BooleanSyncValue> BATTERY_CHARGING = new Syncers<>(
         "fog.sync.battery_charging",
@@ -40,33 +76,17 @@ public class Syncers<T extends SyncHandler> {
         "fog.sync.max_battery_charge",
         data -> new IntSyncValue(data::getMaxBatteryCharge, data::setMaxBatteryCharge));
 
+    // --------------- //
+    // Graviton Shards //
+    // --------------- //
+
     public static final Syncers<BooleanSyncValue> SHARD_EJECTION = new Syncers<>(
         "fog.sync.shard_ejection",
         data -> new BooleanSyncValue(data::isGravitonShardEjection, data::setGravitonShardEjection));
 
-    public static final Syncers<BooleanSyncValue> INVERSION = new Syncers<>(
-        "fog.sync.inversion",
-        data -> new BooleanSyncValue(data::isInversion, data::setInversion));
-
-    public static final Syncers<EnumSyncValue<Fuels>> SELECTED_FUEL = new Syncers<>(
-        "fog.sync.selected_fuel",
-        data -> new EnumSyncValue<>(Fuels.class, () -> Fuels.getFromData(data), fuel -> fuel.select(data)));
-
-    public static final Syncers<LongSyncValue> FUEL_CONSUMPTION = new Syncers<>(
-        "fog.sync.fuel_consumption",
-        data -> new LongSyncValue(data::getFuelConsumption, data::setFuelConsumption));
-
-    public static final Syncers<IntSyncValue> FUEL_FACTOR = new Syncers<>(
-        "fog.sync.fuel_factor",
-        data -> new IntSyncValue(data::getFuelConsumptionFactor, data::setFuelConsumptionFactor));
-
-    public static final Syncers<IntSyncValue> NEEDED_STARTUP_FUEL = new Syncers<>(
-        "fog.sync.needed_startup_fuel",
-        data -> new IntSyncValue(data::getNeededStartupFuel, data::setNeededStartupFuel));
-
-    public static final Syncers<IntSyncValue> FUEL_AMOUNT = new Syncers<>(
-        "fog.sync.fuel_amount",
-        data -> new IntSyncValue(data::getStellarFuelAmount, data::setStellarFuelAmount));
+    public static final Syncers<IntSyncValue> AVAILABLE_GRAVITON_SHARDS = new Syncers<>(
+        "fog.sync.available_graviton_shards",
+        data -> new IntSyncValue(data::getGravitonShardsAvailable, data::setGravitonShardsAvailable));
 
     // ---------- //
     // Milestones //
