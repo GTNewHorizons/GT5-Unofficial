@@ -174,6 +174,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                     .paddingBottom(4)
                     .paddingLeft(4)
                     .paddingRight(0)
+
                     .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
                     .child(
                         createTerminalTextWidget(syncManager, panel)
@@ -218,6 +219,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         syncManager.syncValue("startupCheck", startupCheckSyncer);
 
         return new ListWidget<>().widthRel(1)
+            .crossAxisAlignment(Alignment.CrossAxis.START)
             .child(
                 IKey.lang("GT5U.multiblock.startup")
                     .color(Color.WHITE.main)
