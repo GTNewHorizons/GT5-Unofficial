@@ -3,6 +3,7 @@ package gregtech.common.gui.modularui.multiblock.godforge.data;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
+import com.cleanroommc.modularui.value.sync.BigIntSyncValue;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
@@ -11,7 +12,6 @@ import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.SyncHandler;
 
-import gregtech.common.gui.modularui.multiblock.godforge.util.BigIntSyncValue;
 import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 
