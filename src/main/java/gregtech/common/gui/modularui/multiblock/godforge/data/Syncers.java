@@ -32,6 +32,14 @@ public class Syncers<T extends SyncHandler> {
         "fog.sync.battery_charging",
         data -> new BooleanSyncValue(data::isBatteryCharging, data::setBatteryCharging));
 
+    public static final Syncers<IntSyncValue> INTERNAL_BATTERY = new Syncers<>(
+        "fog.sync.internal_battery",
+        data -> new IntSyncValue(data::getInternalBattery, data::setInternalBattery));
+
+    public static final Syncers<IntSyncValue> MAX_BATTERY_CHARGE = new Syncers<>(
+        "fog.sync.max_battery_charge",
+        data -> new IntSyncValue(data::getMaxBatteryCharge, data::setMaxBatteryCharge));
+
     public static final Syncers<BooleanSyncValue> SHARD_EJECTION = new Syncers<>(
         "fog.sync.shard_ejection",
         data -> new BooleanSyncValue(data::isGravitonShardEjection, data::setGravitonShardEjection));
@@ -51,6 +59,14 @@ public class Syncers<T extends SyncHandler> {
     public static final Syncers<IntSyncValue> FUEL_FACTOR = new Syncers<>(
         "fog.sync.fuel_factor",
         data -> new IntSyncValue(data::getFuelConsumptionFactor, data::setFuelConsumptionFactor));
+
+    public static final Syncers<IntSyncValue> NEEDED_STARTUP_FUEL = new Syncers<>(
+        "fog.sync.needed_startup_fuel",
+        data -> new IntSyncValue(data::getNeededStartupFuel, data::setNeededStartupFuel));
+
+    public static final Syncers<IntSyncValue> FUEL_AMOUNT = new Syncers<>(
+        "fog.sync.fuel_amount",
+        data -> new IntSyncValue(data::getStellarFuelAmount, data::setStellarFuelAmount));
 
     // ---------- //
     // Milestones //
