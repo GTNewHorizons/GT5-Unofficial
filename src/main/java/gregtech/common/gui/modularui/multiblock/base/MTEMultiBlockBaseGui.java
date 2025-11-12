@@ -223,7 +223,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         syncManager.syncValue("startupCheck", startupCheckSyncer);
         syncManager.syncValue("machineModeName", machineModeSyncer);
 
-        return new ListWidget<>().widthRel(1).crossAxisAlignment(Alignment.CrossAxis.START)
+        return new ListWidget<>().widthRel(1)
+            .crossAxisAlignment(Alignment.CrossAxis.START)
             .childIf(
                 multiblock.supportsMachineModeSwitch(),
                 IKey.dynamic(
