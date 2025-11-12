@@ -1,6 +1,7 @@
 package gregtech.client;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
@@ -12,14 +13,22 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.network.FMLNetworkEvent.ClientDisconnectionFromServerEvent;
+import cpw.mods.fml.relauncher.Side;
 import gregtech.common.config.Client;
 import gregtech.mixin.interfaces.accessors.AbstractClientPlayerAccessor;
 
+@EventBusSubscriber(side = Side.CLIENT)
 @ParametersAreNonnullByDefault
 public class GTCapesClientHandler {
+
+    private static final Map<UUID, ResourceLocation> CAPE_CACHE = new HashMap<>();
 
     // spotless:off
     // GT + addons
@@ -70,18 +79,36 @@ public class GTCapesClientHandler {
     private static final ResourceLocation CAPE_YELLOW_GS     = new ResourceLocation("galaxyspace:textures/capes/capeYellow.png");
     // spotless:on
 
+    @SubscribeEvent
+    public static void onDisconnect(ClientDisconnectionFromServerEvent event) {
+        CAPE_CACHE.clear();
+    }
+
+    @SubscribeEvent
+    public static void onEntityJoinWorld(EntityJoinWorldEvent event) {
+        if (event.entity instanceof AbstractClientPlayerAccessor accessor) {
+            accessor.gt5u$setCape(CAPE_CACHE.get(event.entity.getUniqueID()));
+        }
+    }
+
     public static void setCapes(Map<UUID, String> capes) {
         Minecraft mc = Minecraft.getMinecraft();
         for (Entry<UUID, String> p : capes.entrySet()) {
-            EntityPlayer player = mc.theWorld.func_152378_a(p.getKey());
+            UUID uuid = p.getKey();
+            String capeName = p.getValue();
+            ResourceLocation cape = capeFromString(capeName);
+            EntityPlayer player = mc.theWorld.func_152378_a(uuid);
             if (player instanceof AbstractClientPlayerAccessor accessor) {
-                accessor.gt5u$setCape(capeFromString(p.getValue()));
+                // if the player exists in the current world, set the cape directly
+                accessor.gt5u$setCape(cape);
             }
             if (player == mc.thePlayer) {
                 // the server acknowledged the selected cape
-                Client.preference.selectedCape = p.getValue();
+                Client.preference.selectedCape = capeName;
                 ConfigurationManager.save(Client.class);
             }
+            // cache the ResourceLocation
+            CAPE_CACHE.put(uuid, cape);
         }
     }
 
