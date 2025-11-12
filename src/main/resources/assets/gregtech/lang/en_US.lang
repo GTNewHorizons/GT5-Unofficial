@@ -4041,8 +4041,8 @@ gt.purification_plant.info.1=Requires water to be placed in the tank
 
 gt.isamill.tips.1=§aG.O.G, Grinds Ores Good
 gt.isamill.tips.2=§aIt'sa mill!
-gt.isamill.info.1=5x, Inner Blocks
-gt.isamill.info.2=8x, ring around controller
+gt.isamill.info.gearbox=5x, Inner Blocks
+gt.isamill.info.piping=8x, ring around controller
 
 gt.sparge_tower.tips.1=Runs gases through depleted molten salts to extract precious fluids\nWorks the same way as the Distillation Tower, but with a fixed height of 8\nFluids are only put out at the correct height\nThe correct height equals the slot number in the NEI recipe
 gt.sparge_tower.info.ihatch=2x, Any bottom layer casing
