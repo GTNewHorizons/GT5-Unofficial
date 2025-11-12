@@ -28,6 +28,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import gregtech.common.gui.modularui.multiblock.MTELapotronicSuperCapacitorgui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -241,7 +243,6 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
      * Count the amount of capacitors of each tier in each slot. Index = meta - 1
      */
     private final int[] capacitors = new int[10];
-
     private BigInteger capacity = BigInteger.ZERO;
     private BigInteger stored = BigInteger.ZERO;
     private long passiveDischargeAmount = 0;
@@ -840,7 +841,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             : numberFormat.format(stored);
     }
 
-    private String getUsedPercentCache() {
+    public String getUsedPercentCache() {
         return toPercentageFrom(stored, capacity);
     }
 
@@ -851,6 +852,15 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     private boolean isActiveCache() {
         return getBaseMetaTileEntity().isActive();
     }
+
+    public boolean isWireless_mode() {
+        return wireless_mode;
+    }
+
+    public void setWireless_mode(boolean wireless_mode) {
+        this.wireless_mode = wireless_mode;
+    }
+
 
     private String getPassiveDischargeAmountCache() {
         return passiveDischargeAmount > 100_000_000_000L ? GTUtility.scientificFormat(passiveDischargeAmount)
@@ -1207,6 +1217,9 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         super.saveNBTData(nbt);
     }
 
+
+
+
     @Override
     public void loadNBTData(NBTTagCompound nbt) {
         nbt = (nbt == null) ? new NBTTagCompound() : nbt;
@@ -1296,7 +1309,12 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
     @Override
     protected boolean useMui2() {
-        return false;
+        return true;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTELapotronicSuperCapacitorgui(this);
     }
 
     @Override
