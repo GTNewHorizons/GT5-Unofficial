@@ -261,6 +261,11 @@ gt.blockmachines.itempipe.rounting_value=Routing Value: %s
 
 Interaction_DESCRIPTION_MagicalEnergyAbsorber_Screwdriver=Absorption range: %s blocks
 
+gt.hatch_element_or= or 
+gt.hatch_element_of_type=of type 
+gt.hatch_element_of_class=of class 
+gt.hatch_element_of_id=of id 
+
 #Behavious
 gt.behaviour.wrench=Rotates Blocks on right-click
 gt.behaviour.paintspray.uses=Remaining Uses: %s
@@ -1058,6 +1063,12 @@ GT5U.MBTT.SpeedTiered=%s faster than single block machines of the same voltage, 
 GT5U.MBTT.EuDiscountBase=Uses %s of the EU normally required
 GT5U.MBTT.EuDiscountTiered=Uses %s less EU per %s Tier
 GT5U.MBTT.Parallel_Multiplicative=%s Parallels per %s Tier
+GT5U.MBTT.pHSensorHatch=pH Sensor Hatch
+GT5U.MBTT.ControlHatch=Control Hatch
+GT5U.MBTT.LensHousing=Lens Housing
+GT5U.MBTT.LensIndicator=Lens Indicator
+GT5U.MBTT.InputBus.WithFormat=Input Bus (%s)
+GT5U.MBTT.InputHatch.WithFormat=Input Hatch (%s)
 
 GT5U.MBTT.Parallel.Base=%s Parallels
 GT5U.MBTT.Parallel.Additional=%s Parallels per %s Tier

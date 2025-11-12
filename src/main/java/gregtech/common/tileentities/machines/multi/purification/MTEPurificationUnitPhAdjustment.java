@@ -165,7 +165,6 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                     t -> GTStructureUtility.<MTEPurificationUnitPhAdjustment>buildHatchAdder()
                         .atLeast(SpecialHatchElement.PhSensor)
                         .dot(2)
-                        .cacheHint(() -> "pH Sensor Hatch")
                         .casingIndex(CASING_INDEX_MIDDLE)
                         .build()),
                 // Naquadah Reinforced Water Plant Casing
@@ -178,7 +177,10 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                     .atLeast(InputBus)
                     .dot(3)
                     .adder(MTEPurificationUnitPhAdjustment::addAlkalineBusToMachineList)
-                    .cacheHint(() -> "Input Bus (" + ALKALINE_MATERIAL.getLocalizedName() + ")")
+                    .cacheHint(
+                        () -> StatCollector.translateToLocalFormatted(
+                            "GT5U.MBTT.InputBus.WithFormat",
+                            ALKALINE_MATERIAL.getLocalizedName()))
                     .casingIndex(CASING_INDEX_TOWER)
                     .allowOnly(ForgeDirection.UP)
                     .build()))
@@ -189,7 +191,10 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                     .atLeast(InputHatch)
                     .dot(4)
                     .adder(MTEPurificationUnitPhAdjustment::addAcidHatchToMachineList)
-                    .cacheHint(() -> "Input Hatch (" + ACIDIC_MATERIAL.getLocalizedName() + ")")
+                    .cacheHint(
+                        () -> StatCollector.translateToLocalFormatted(
+                            "GT5U.MBTT.InputHatch.WithFormat",
+                            ACIDIC_MATERIAL.getLocalizedName()))
                     .casingIndex(CASING_INDEX_TOWER)
                     .allowOnly(ForgeDirection.UP)
                     .build()))
@@ -587,6 +592,11 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
             @Override
             public long count(MTEPurificationUnitPhAdjustment gtMetaTileEntityPurificationUnitPhAdjustment) {
                 return gtMetaTileEntityPurificationUnitPhAdjustment.sensorHatches.size();
+            }
+
+            @Override
+            public String getDisplayName() {
+                return StatCollector.translateToLocal("GT5U.MBTT.pHSensorHatch");
             }
         };
 
