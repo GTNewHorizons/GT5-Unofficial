@@ -37,19 +37,10 @@ import com.cleanroommc.modularui.factory.PlayerInventoryGuiFactory;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.gtnewhorizons.modularui.api.ModularUITextures;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.math.Color;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.gtnewhorizons.modularui.common.widget.VanillaButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.item.ItemVolumetricFlaskGui;
@@ -319,56 +310,4 @@ public class ItemVolumetricFlask extends GTGenericItem
         return new ItemVolumetricFlaskGui(data).build();
     }
 
-    private class VolumetricFlaskUIFactory {
-
-        private final UIBuildContext buildContext;
-        private int capacity;
-        private final int maxCapacity;
-
-        public VolumetricFlaskUIFactory(UIBuildContext buildContext, ItemStack flask) {
-            this.buildContext = buildContext;
-            ItemVolumetricFlask flaskItem = (ItemVolumetricFlask) flask.getItem();
-            this.capacity = flaskItem.getCapacity(flask);
-            this.maxCapacity = flaskItem.getMaxCapacity();
-        }
-
-        public ModularWindow createWindow() {
-            ModularWindow.Builder builder = ModularWindow.builder(150, 54);
-            builder.setBackground(ModularUITextures.VANILLA_BACKGROUND);
-
-            NumericWidget capacityWidget = new NumericWidget();
-            builder.widget(
-                capacityWidget.setGetter(() -> capacity)
-                    .setSetter(value -> setCapacity(getCurrentItem(), capacity = (int) value))
-                    .setBounds(1, maxCapacity)
-                    .setScrollValues(1, 144, 1000)
-                    .setDefaultValue(capacity)
-                    .setTextColor(Color.WHITE.dark(1))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setFocusOnGuiOpen(true)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
-                    .setPos(8, 8)
-                    .setSize(77, 12))
-                .widget(
-                    new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.volumetric_flask.capacity"))
-                        .setPos(88, 10))
-                .widget(
-                    new VanillaButtonWidget()
-                        .setDisplayString(StatCollector.translateToLocal("GT5U.gui.text.volumetric_flask.confirm"))
-                        .setOnClick((clickData, widget) -> {
-                            capacityWidget.onRemoveFocus();
-                            widget.getWindow()
-                                .tryClose();
-                        })
-                        .setSynced(false, false)
-                        .setPos(8, 26)
-                        .setSize(48, 20));
-
-            return builder.build();
-        }
-
-        private ItemStack getCurrentItem() {
-            return buildContext.getPlayer().inventory.getCurrentItem();
-        }
-    }
 }
