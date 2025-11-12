@@ -21,6 +21,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import appeng.client.render.highlighter.BlockPosHighlighter;
+import gregtech.common.config.Gregtech;
+import gregtech.common.gui.modularui.multiblock.MTEDroneCentreGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -466,9 +469,12 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
 
     @Override
     protected boolean useMui2() {
-        return false;
+        return Gregtech.debug.D0;
     }
-
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEDroneCentreGui(this);
+    }
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
