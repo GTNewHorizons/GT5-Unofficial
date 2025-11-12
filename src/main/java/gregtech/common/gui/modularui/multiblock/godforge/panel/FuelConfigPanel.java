@@ -123,7 +123,7 @@ public class FuelConfigPanel {
 
         // Fuel usage text
         LongSyncValue fuelUsageSyncer = Syncers.FUEL_CONSUMPTION.lookupFrom(Panels.FUEL_CONFIG, hypervisor);
-        EnumSyncValue<Formatters> formatSyncer = Syncers.FORMATTER.lookupFrom(Panels.FUEL_CONFIG, hypervisor);
+        EnumSyncValue<Formatters> formatSyncer = Syncers.FORMATTER.lookupFrom(Panels.MAIN, hypervisor);
         column.child(
             IKey.lang("gt.blockmachines.multimachine.FOG.fuelusage")
                 .alignment(Alignment.CENTER)
@@ -147,7 +147,6 @@ public class FuelConfigPanel {
     private static void registerSyncHandlers(SyncHypervisor hypervisor) {
         Syncers.SELECTED_FUEL.registerFor(Panels.FUEL_CONFIG, hypervisor);
         Syncers.FUEL_CONSUMPTION.registerFor(Panels.FUEL_CONFIG, hypervisor);
-        Syncers.FORMATTER.registerFor(Panels.FUEL_CONFIG, hypervisor);
     }
 
     private static ParentWidget<?> createFuelSelection(EnumSyncValue<Fuels> syncer, Fuels option) {

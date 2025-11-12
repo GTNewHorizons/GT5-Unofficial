@@ -52,7 +52,7 @@ public class IndividualMilestonePanel {
         }
 
         // Formatting mode button
-        EnumSyncValue<Formatters> formatSyncer = Syncers.FORMATTER.lookupFrom(Panels.INDIVIDUAL_MILESTONE, hypervisor);
+        EnumSyncValue<Formatters> formatSyncer = Syncers.FORMATTER.lookupFrom(Panels.MAIN, hypervisor);
         panel.child(
             new ButtonWidget<>().background(GTGuiTextures.TT_OVERLAY_CYCLIC_BLUE)
                 .disableHoverBackground()
@@ -150,7 +150,6 @@ public class IndividualMilestonePanel {
     }
 
     public static void registerSyncValues(SyncHypervisor hypervisor) {
-        Syncers.FORMATTER.registerFor(Panels.INDIVIDUAL_MILESTONE, hypervisor);
         Syncers.INVERSION.registerFor(Panels.INDIVIDUAL_MILESTONE, hypervisor);
 
         Syncers.TOTAL_RECIPES_PROCESSED.registerFor(Panels.INDIVIDUAL_MILESTONE, hypervisor);
