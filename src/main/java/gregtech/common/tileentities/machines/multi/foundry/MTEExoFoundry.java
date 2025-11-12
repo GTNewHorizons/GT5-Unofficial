@@ -28,7 +28,12 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.I3DGeometryRenderer;
+import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.PostProcessingManager;
+import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.shaders.BloomShader;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -96,7 +101,7 @@ import tectech.thing.block.BlockGodforgeGlass;
 import tectech.thing.casing.TTCasingsContainer;
 
 public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
-    implements ISurvivalConstructable, IMTERenderer {
+    implements ISurvivalConstructable, IMTERenderer, I3DGeometryRenderer {
 
     private static final List<CoolingFluid> COOLING_FLUIDS = ImmutableList.of(
         new CoolingFluid(Materials.SuperCoolant, 1, 100),
@@ -1123,7 +1128,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         // return;
         // }
 
-        if (!shouldRender || !getBaseMetaTileEntity().isActive()) return;
+//        if (!shouldRender || !getBaseMetaTileEntity().isActive()) return;
 
         // Do a cool startup animation
         if (lastInactiveTime <= 0) {
@@ -1138,29 +1143,23 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             initializeRender();
             if (!renderInitialized) return;
         }
+        ForgeDirection dir = getDirection();
+        PostProcessingManager.getInstance().addDelayedRenderer(
+            this, x + 0.5f - dir.offsetX * 7, y + 0.5f, z + 0.5f - dir.offsetZ * 7);
+    }
+
+    @Override
+    public void render(Object none) {
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
         ringProgram.use();
-        GL11.glPushMatrix();
-        final ForgeDirection dir = getDirection();
-        // Translate by 7 in the opposite direction of the controller's facing
-        GL11.glTranslatef((float) x + 0.5f - dir.offsetX * 7, (float) y + 0.5f, (float) z + 0.5f - dir.offsetZ * 7);
-        BloomShader.getInstance()
-            .bind();
 
         renderRingsDebug(false);
 
-        // renderRingOne(modules[0].rgbArr);
-        // renderRingTwo(modules[1].rgbArr);
-        // renderRingThree(modules[2].rgbArr);
-        // renderRingFour(modules[3].rgbArr);
-        BloomShader.unbind();
+        BloomShader.getInstance().bindFramebuffer();
 
-        // renderRingOne(modules[0].rgbArr);
-        // renderRingTwo(modules[1].rgbArr);
-        // renderRingThree(modules[2].rgbArr);
-        // renderRingFour(modules[3].rgbArr);
         renderRingsDebug(true);
-        GL11.glPopMatrix();
+
+        BloomShader.unbind();
         ShaderProgram.clear();
     }
 
@@ -1169,10 +1168,11 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         return AxisAlignedBB.getBoundingBox(x - 10, y - 10, z - 10, x + 10, y + 40, z + 10);
     }
 
-    private void renderRingsDebug(boolean gammaCorrected) {
+    private void renderRingsDebug(boolean bloom) {
         int i = 0;
         float time = (System.currentTimeMillis() - lastInactiveTime) / 2000f;
-        float multiplier = 1 - (1 / (time + 1));
+        //float multiplier = 1 - (1 / (time + 1));
+        float multiplier = 1;
         for (FoundryModules module : modules) {// FoundryModules.values()) {
             // if (i == tier + 1) return;
             if (module == FoundryModules.UNSET) {
@@ -1180,12 +1180,15 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                 continue;
             }
             if (module == FoundryModules.ACTIVE_TIME_DILATION_SYSTEM) {
-                BloomShader.unbind();
-                renderUniversiumRing(i);
-                BloomShader.getInstance()
-                    .bind();
+                if (!bloom) {
+                    renderUniversiumRing(i);
+                    ringProgram.use();
+                }
+                i++;
+                continue;
             }
-            if (gammaCorrected) {
+
+            if (!bloom) {
                 // renderRing(
                 // i,
                 // FoundryModules.tonemap(module.red), // TODO does this even do anything bor
@@ -1210,7 +1213,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                 "textures/model/foundry_ring.obj"
             )
         );
-        ring.setVertexFormat(DefaultVertexFormat.POSITION);
+        //ring.setVertexFormat(DefaultVertexFormat.POSITION);
         //todo: fix all of this lol
         uniRing = (IModelCustomExt) AdvancedModelLoader.loadModel(
             new ResourceLocation(
@@ -1247,17 +1250,30 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
 
     private void renderUniversiumRing(int index) {
         // todo: stars on this render, not showing up for some reason
-        if (Avaritia.isModLoaded()) {
+        if (true) {
             CosmicRenderShenanigans.cosmicOpacity = 1f;
             CosmicRenderShenanigans.setLightLevel(10);
             CosmicRenderShenanigans.useShader();
+
+            GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
+
+            Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.locationItemsTexture);
+
+            GL11.glColor4f(1, 1, 1, 1);
+            GL11.glEnable(GL11.GL_TEXTURE_2D);
             GL11.glPushMatrix();
             GL11.glTranslated(0, 9 + index * 8 + (index > 1 ? 10 : 0), 0);
             GL11.glScalef(1, 1.2f, 1);
-            GL20.glUniform3f(uGlowColor, 1, 1, 1);
-            uniRing.renderAllVBO();
+            GL11.glEnable(GL11.GL_BLEND);
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            GL11.glDisable(GL11.GL_ALPHA_TEST);
+
+            ring.renderAllVBO();
             GL11.glPopMatrix();
             CosmicRenderShenanigans.releaseShader();
+            GL20.glUseProgram(0);
+
+            GL11.glPopAttrib();
 
         }
     }
