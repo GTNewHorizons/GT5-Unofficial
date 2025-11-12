@@ -982,27 +982,17 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.eoh")
-            .addInfo("gt.eoh.tips.1")
-            .addSeparator(GOLD)
             .addInfo(
-                "gt.eoh.tips.2",
+                "gt.eoh.tips",
                 formatNumbers(SPACETIME_CASING_DIFFERENCE_DISCOUNT_PERCENTAGE * 100),
                 formatNumbers(TIME_ACCEL_DECREASE_CHANCE_PER_TIER * 100),
                 formatNumbers(STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER * 100),
                 formatNumbers(
                     STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER * TOTAL_CASING_TIERS_WITH_POWER_PENALTY
-                        * 100))
-            .addSeparator(GOLD)
-            .addManyInfo(GOLD, "gt.eoh.tips.3", "gt.eoh.tips.4", "gt.eoh.tips.5", "gt.eoh.tips.6")
-            .addSeparator(GOLD)
-            .addInfo(
-                "gt.eoh.tips.7",
+                        * 100),
                 formatNumbers(MOLTEN_SPACETIME_PER_FAILURE_TIER),
                 SPACETIME_FAILURE_BASE,
-                Materials.SpaceTime.getLocalizedName())
-            .addSeparator(GOLD)
-            .addInfo(
-                "gt.eoh.tips.8",
+                Materials.SpaceTime.getLocalizedName(),
                 formatNumbers(ASTRAL_ARRAY_LIMIT),
                 formatNumbers(PARALLEL_FOR_FIRST_ASTRAL_ARRAY),
                 formatNumbers(CONSTANT_FOR_LOG),
@@ -1010,8 +1000,6 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                 formatNumbers(POWER_DIVISION_CONSTANT),
                 formatNumbers(POWER_INCREASE_CONSTANT),
                 Materials.RawStarMatter.getLocalizedName())
-            .addSeparator(GOLD)
-            .addInfo("gt.eoh.tips.9")
             .beginStructureBlock(33, 33, 33, false)
             .addCasingInfoExactly("gt.blockcasingsBA0.11.name", 896)
             .addCasingInfoExactly("gt.blockcasingsBA0.10.name", 534)
@@ -1020,7 +1008,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
             .addCasingInfoExactly("GT5U.tooltip.structure.eoh_sfg", 48)
             .addCasingInfoExactly("GT5U.tooltip.structure.eoh_scfg", 138)
             .addStructureInfoSeparator()
-            .addStructureInfo("gt.eoh.info.1")
+            .addStructureInfo("gt.eoh.info")
             .addSubChannelUsage(GTStructureChannels.EOH_STABILISATION)
             .addSubChannelUsage(GTStructureChannels.EOH_DILATION)
             .addSubChannelUsage(GTStructureChannels.EOH_COMPRESSION)

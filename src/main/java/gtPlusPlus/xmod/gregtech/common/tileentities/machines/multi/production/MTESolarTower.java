@@ -81,7 +81,7 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo(
-                "gt.solar_tower.tips.1",
+                "gt.solar_tower.tips",
                 MaterialMisc.SOLAR_SALT_COLD.getTranslatedName(),
                 MaterialMisc.SOLAR_SALT_HOT.getTranslatedName())
             .beginVariableStructureBlock(15, 31, 28, 28, 15, 31, false)
@@ -90,8 +90,8 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
             .addCasingInfoMin("gtplusplus.blockspecialcasings.1.8.name", 60)
             .addCasingInfoMin("gtplusplus.blockspecialcasings.1.7.name", 66)
             .addCasingInfoMin("gtplusplus.blockcasings.2.11.name", 60)
-            .addStructurePart("GT5U.MBTT.InputHatch", "<hint>", "gt.solar_tower.info.1", 2)
-            .addStructurePart("GT5U.MBTT.OutputHatch", "<hint>", "gt.solar_tower.info.1", 2)
+            .addStructurePart("GT5U.MBTT.InputHatch", "<hint>", "gt.solar_tower.info.hatch", 2)
+            .addStructurePart("GT5U.MBTT.OutputHatch", "<hint>", "gt.solar_tower.info.hatch", 2)
             .addMaintenanceHatch("<hint>", 2)
             .toolTipFinisher();
         return tt;

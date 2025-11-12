@@ -352,11 +352,11 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("gt.recipe.compressor", "machtype.adv_nt_compressor", "BHC")
-            .addManyInfo("gt.bhc.tips.1", "gt.bhc.tips.2", "gt.bhc.tips.3", "gt.bhc.tips.4")
+            .addInfo("gt.bhc.tips.1")
             .addBulkMachineInfo(8, 5f, 0.7f)
-            .addInfo("gt.bhc.tips.5")
+            .addInfo("gt.bhc.tips.2")
             .addTecTechHatchInfo()
-            .addInfo("gt.bhc.tips.6")
+            .addInfo("gt.bhc.tips.3")
             .beginStructureBlock(35, 33, 35, false)
             .addCasingInfoMin("gt.blockcasings10.12.name", 950)
             .addCasingInfoExactly("gt.blockcasings10.11.name", 3667)
@@ -365,11 +365,11 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.NaquadahAlloy, 1)
                     .getDisplayName(),
                 144)
-            .addInputHatch("gt.bhc.info.1", 2)
-            .addInputBus("gt.bhc.info.2", 1)
-            .addOutputBus("gt.bhc.info.2", 1)
-            .addInputHatch("gt.bhc.info.2", 1)
-            .addEnergyHatch("gt.bhc.info.2", 1)
+            .addInputHatch("gt.bhc.info.i_hatch", 2)
+            .addInputBus("gt.bhc.info.i_bus", 1)
+            .addOutputBus("gt.bhc.info.i_bus", 1)
+            .addInputHatch("gt.bhc.info.i_bus", 1)
+            .addEnergyHatch("gt.bhc.info.i_bus", 1)
             .toolTipFinisher(Ollie, "BucketBrigade");
         return tt;
     }

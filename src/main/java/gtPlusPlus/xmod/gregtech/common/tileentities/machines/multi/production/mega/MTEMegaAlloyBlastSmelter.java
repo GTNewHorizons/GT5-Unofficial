@@ -273,26 +273,21 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
             .addInfo(
                 "gt.mega_abs.tips.2",
                 TooltipHelper.tierText(TooltipTier.COIL),
-                TooltipHelper.tierText(TooltipTier.GLASS))
-            .addSeparator()
-            .addInfo(
-                "gt.mega_abs.tips.3",
                 TooltipHelper.tierText(TooltipTier.GLASS),
                 TooltipHelper.voltageText(VoltageIndex.UMV))
-            .addSeparator()
             .addTecTechHatchInfo()
             .addMinGlassForLaser(VoltageIndex.UV)
             .addGlassEnergyLimitInfo(VoltageIndex.UMV)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(11, 20, 11, false)
-            .addController("gt.mega_abs.info.1")
+            .addController("gt.mega_abs.info.controller")
             .addCasingInfoExactly("miscutils.blockcasings.15.name", 218, false)
             .addCasingInfoExactly("miscutils.blockcasings.14.name", 56, false)
             .addCasingInfoExactly("GT5U.tooltip.structure.heating_coil", 360, true)
             .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 339, true)
-            .addMaintenanceHatch("gt.mega_abs.info.2", 2)
+            .addMaintenanceHatch("gt.mega_abs.info.maintenance", 2)
             .addStructurePart("GTPP.tooltip.structure.many_bus_hatch", "<bottom casing>", 1)
-            .addMufflerHatch("gt.mega_abs.info.3", 3)
+            .addMufflerHatch("gt.mega_abs.info.muffler", 3)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher(EnumChatFormatting.AQUA + "MadMan310");
