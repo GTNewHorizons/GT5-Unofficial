@@ -8,8 +8,8 @@ import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
-import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
+import com.cleanroommc.modularui.value.sync.FloatSyncValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
@@ -71,9 +71,9 @@ public class MilestonePanel {
             .margin(MILESTONE_BUTTON_MARGIN_X, MILESTONE_BUTTON_MARGIN_Y);
 
         IPanelHandler individualPanel = Panels.INDIVIDUAL_MILESTONE.getFrom(Panels.MILESTONE, hypervisor);
-        DoubleSyncValue progressSyncer = milestone.getProgressSyncer()
+        FloatSyncValue progressSyncer = milestone.getProgressSyncer()
             .lookupFrom(Panels.MILESTONE, hypervisor);
-        DoubleSyncValue invertedProgressSyncer = milestone.getProgressInvertedSyncer()
+        FloatSyncValue invertedProgressSyncer = milestone.getProgressInvertedSyncer()
             .lookupFrom(Panels.MILESTONE, hypervisor);
 
         // Background image and individual milestone button

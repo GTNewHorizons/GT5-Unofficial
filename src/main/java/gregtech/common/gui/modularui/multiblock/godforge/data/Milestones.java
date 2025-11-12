@@ -2,7 +2,7 @@ package gregtech.common.gui.modularui.multiblock.godforge.data;
 
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.utils.Alignment;
-import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
+import com.cleanroommc.modularui.value.sync.FloatSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.ValueSyncHandler;
 
@@ -90,14 +90,14 @@ public enum Milestones {
 
     private final Syncers<? extends ValueSyncHandler<? extends Number>> totalSyncer;
     private final Syncers<IntSyncValue> levelSyncer;
-    private final Syncers<DoubleSyncValue> progressSyncer;
-    private final Syncers<DoubleSyncValue> progressInvertedSyncer;
+    private final Syncers<FloatSyncValue> progressSyncer;
+    private final Syncers<FloatSyncValue> progressInvertedSyncer;
 
     Milestones(UITexture mainBackground, int mainWidth, int mainHeight, UITexture symbolBackground, int symbolWidth,
         int symbolHeight, UITexture progressBarMainOverlay, UITexture progressBarInvertedOverlay, Alignment position,
         String titleLangKey, String progressLangKey, Syncers<? extends ValueSyncHandler<? extends Number>> totalSyncer,
-        Syncers<IntSyncValue> levelSyncer, Syncers<DoubleSyncValue> progressSyncer,
-        Syncers<DoubleSyncValue> progressInvertedSyncer) {
+        Syncers<IntSyncValue> levelSyncer, Syncers<FloatSyncValue> progressSyncer,
+        Syncers<FloatSyncValue> progressInvertedSyncer) {
         this.mainBackground = mainBackground;
         this.mainWidth = mainWidth;
         this.mainHeight = mainHeight;
@@ -167,11 +167,11 @@ public enum Milestones {
         return levelSyncer;
     }
 
-    public Syncers<DoubleSyncValue> getProgressSyncer() {
+    public Syncers<FloatSyncValue> getProgressSyncer() {
         return progressSyncer;
     }
 
-    public Syncers<DoubleSyncValue> getProgressInvertedSyncer() {
+    public Syncers<FloatSyncValue> getProgressInvertedSyncer() {
         return progressInvertedSyncer;
     }
 }
