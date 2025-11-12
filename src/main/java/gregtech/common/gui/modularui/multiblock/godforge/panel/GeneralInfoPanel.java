@@ -10,7 +10,6 @@ import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
-import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
@@ -21,6 +20,7 @@ import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Syncers;
 import gregtech.common.gui.modularui.multiblock.godforge.util.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
+import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 
 public class GeneralInfoPanel {
 
@@ -29,8 +29,9 @@ public class GeneralInfoPanel {
 
     public static ModularPanel openPanel(SyncHypervisor hypervisor) {
         ModularPanel panel = hypervisor.getModularPanel(Panels.GENERAL_INFO);
+        ForgeOfGodsData data = hypervisor.getData();
 
-        BooleanSyncValue inversionSyncer = Syncers.INVERSION.registerFor(Panels.GENERAL_INFO, hypervisor);
+        registerSyncValues(hypervisor);
 
         panel.size(SIZE)
             .padding(10, 0, 10, 0)
@@ -73,7 +74,7 @@ public class GeneralInfoPanel {
         textList.child(moduleToC);
         textList.child(upgradeToC);
         textList.child(milestoneToC);
-        textList.child(inversionToC.setEnabledIf($ -> inversionSyncer.getBoolValue()));
+        textList.child(inversionToC.setEnabledIf($ -> data.isInversion()));
 
         textList.child(fuelHeader);
         textList.child(fuelText);
@@ -83,12 +84,16 @@ public class GeneralInfoPanel {
         textList.child(upgradeText);
         textList.child(milestoneHeader);
         textList.child(milestoneText);
-        textList.child(inversionHeader.setEnabledIf($ -> inversionSyncer.getBoolValue()));
-        textList.child(inversionText.setEnabledIf($ -> inversionSyncer.getBoolValue()));
+        textList.child(inversionHeader.setEnabledIf($ -> data.isInversion()));
+        textList.child(inversionText.setEnabledIf($ -> data.isInversion()));
 
         panel.child(textList);
         panel.child(ForgeOfGodsGuiUtil.panelCloseButton());
         return panel;
+    }
+
+    private static void registerSyncValues(SyncHypervisor hypervisor) {
+        Syncers.INVERSION.registerFor(Panels.GENERAL_INFO, hypervisor);
     }
 
     private static TextWidget<?> createHeader(String langKey) {
