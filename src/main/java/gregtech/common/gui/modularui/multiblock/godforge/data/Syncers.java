@@ -7,6 +7,7 @@ import com.cleanroommc.modularui.value.sync.BigIntSyncValue;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
+import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -87,6 +88,14 @@ public class Syncers<T extends SyncHandler> {
     public static final Syncers<IntSyncValue> AVAILABLE_GRAVITON_SHARDS = new Syncers<>(
         "fog.sync.available_graviton_shards",
         data -> new IntSyncValue(data::getGravitonShardsAvailable, data::setGravitonShardsAvailable));
+
+    // -------- //
+    // Upgrades //
+    // -------- //
+
+    public static final Syncers<GenericListSyncHandler<?>> UPGRADES_LIST = new Syncers<>(
+        "fog.sync.upgrades_list",
+        data -> data.getUpgrades().getFullSyncer());
 
     // ---------- //
     // Milestones //
