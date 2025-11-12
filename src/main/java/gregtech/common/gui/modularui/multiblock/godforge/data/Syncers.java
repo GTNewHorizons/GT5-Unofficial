@@ -5,8 +5,8 @@ import java.util.function.Function;
 
 import com.cleanroommc.modularui.value.sync.BigIntSyncValue;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
-import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
+import com.cleanroommc.modularui.value.sync.FloatSyncValue;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
@@ -34,32 +34,32 @@ public class Syncers<T extends SyncHandler> {
         data -> new EnumSyncValue<>(Formatters.class, data::getFormatter, data::setFormatter));
 
     public static final Syncers<BooleanSyncValue> INVERSION = new Syncers<>(
-            "fog.sync.inversion",
-            data -> new BooleanSyncValue(data::isInversion, data::setInversion));
+        "fog.sync.inversion",
+        data -> new BooleanSyncValue(data::isInversion, data::setInversion));
 
     // ---- //
     // Fuel //
     // ---- //
 
     public static final Syncers<EnumSyncValue<Fuels>> SELECTED_FUEL = new Syncers<>(
-            "fog.sync.selected_fuel",
-            data -> new EnumSyncValue<>(Fuels.class, () -> Fuels.getFromData(data), fuel -> fuel.select(data)));
+        "fog.sync.selected_fuel",
+        data -> new EnumSyncValue<>(Fuels.class, () -> Fuels.getFromData(data), fuel -> fuel.select(data)));
 
     public static final Syncers<LongSyncValue> FUEL_CONSUMPTION = new Syncers<>(
-            "fog.sync.fuel_consumption",
-            data -> new LongSyncValue(data::getFuelConsumption, data::setFuelConsumption));
+        "fog.sync.fuel_consumption",
+        data -> new LongSyncValue(data::getFuelConsumption, data::setFuelConsumption));
 
     public static final Syncers<IntSyncValue> FUEL_FACTOR = new Syncers<>(
-            "fog.sync.fuel_factor",
-            data -> new IntSyncValue(data::getFuelConsumptionFactor, data::setFuelConsumptionFactor));
+        "fog.sync.fuel_factor",
+        data -> new IntSyncValue(data::getFuelConsumptionFactor, data::setFuelConsumptionFactor));
 
     public static final Syncers<IntSyncValue> NEEDED_STARTUP_FUEL = new Syncers<>(
-            "fog.sync.needed_startup_fuel",
-            data -> new IntSyncValue(data::getNeededStartupFuel, data::setNeededStartupFuel));
+        "fog.sync.needed_startup_fuel",
+        data -> new IntSyncValue(data::getNeededStartupFuel, data::setNeededStartupFuel));
 
     public static final Syncers<IntSyncValue> FUEL_AMOUNT = new Syncers<>(
-            "fog.sync.fuel_amount",
-            data -> new IntSyncValue(data::getStellarFuelAmount, data::setStellarFuelAmount));
+        "fog.sync.fuel_amount",
+        data -> new IntSyncValue(data::getStellarFuelAmount, data::setStellarFuelAmount));
 
     // ------- //
     // Battery //
@@ -126,58 +126,42 @@ public class Syncers<T extends SyncHandler> {
     public static final Syncers<IntSyncValue> MILESTONE_CHARGE_LEVEL = new Syncers<>(
         "fog.sync.milestone_charge_level",
         data -> new IntSyncValue(() -> data.getMilestoneProgress(0), val -> data.setMilestoneProgress(0, val)));
-    public static final Syncers<DoubleSyncValue> MILESTONE_CHARGE_PROGRESS = new Syncers<>(
+    public static final Syncers<FloatSyncValue> MILESTONE_CHARGE_PROGRESS = new Syncers<>(
         "fog.sync.milestone_charge_progress",
-        data -> new DoubleSyncValue(
-            data::getPowerMilestonePercentage, val ->
-            data.setPowerMilestonePercentage((float) val)));
-    public static final Syncers<DoubleSyncValue> MILESTONE_CHARGE_PROGRESS_INVERTED = new Syncers<>(
+        data -> new FloatSyncValue(data::getPowerMilestonePercentage, data::setPowerMilestonePercentage));
+    public static final Syncers<FloatSyncValue> MILESTONE_CHARGE_PROGRESS_INVERTED = new Syncers<>(
         "fog.sync.milestone_charge_progress_inverted",
-        data -> new DoubleSyncValue(
-            data::getInvertedPowerMilestonePercentage,
-            val -> data.setInvertedPowerMilestonePercentage((float) val)));
+        data -> new FloatSyncValue(data::getInvertedPowerMilestonePercentage, data::setInvertedPowerMilestonePercentage));
 
     public static final Syncers<IntSyncValue> MILESTONE_CONVERSION_LEVEL = new Syncers<>(
         "fog.sync.milestone_conversion_level",
         data -> new IntSyncValue(() -> data.getMilestoneProgress(1), val -> data.setMilestoneProgress(1, val)));
-    public static final Syncers<DoubleSyncValue> MILESTONE_CONVERSION_PROGRESS = new Syncers<>(
+    public static final Syncers<FloatSyncValue> MILESTONE_CONVERSION_PROGRESS = new Syncers<>(
         "fog.sync.milestone_conversion_progress",
-        data -> new DoubleSyncValue(
-            data::getRecipeMilestonePercentage, val ->
-            data.setRecipeMilestonePercentage((float) val)));
-    public static final Syncers<DoubleSyncValue> MILESTONE_CONVERSION_PROGRESS_INVERTED = new Syncers<>(
+        data -> new FloatSyncValue(data::getRecipeMilestonePercentage, data::setRecipeMilestonePercentage));
+    public static final Syncers<FloatSyncValue> MILESTONE_CONVERSION_PROGRESS_INVERTED = new Syncers<>(
         "fog.sync.milestone_conversion_progress_inverted",
-        data -> new DoubleSyncValue(
-            data::getInvertedRecipeMilestonePercentage,
-            val -> data.setInvertedRecipeMilestonePercentage((float) val)));
+        data -> new FloatSyncValue(data::getInvertedRecipeMilestonePercentage, data::setInvertedRecipeMilestonePercentage));
 
     public static final Syncers<IntSyncValue> MILESTONE_CATALYST_LEVEL = new Syncers<>(
-            "fog.sync.milestone_catalyst_level",
-            data -> new IntSyncValue(() -> data.getMilestoneProgress(2), val -> data.setMilestoneProgress(2, val)));
-    public static final Syncers<DoubleSyncValue> MILESTONE_CATALYST_PROGRESS = new Syncers<>(
+        "fog.sync.milestone_catalyst_level",
+        data -> new IntSyncValue(() -> data.getMilestoneProgress(2), val -> data.setMilestoneProgress(2, val)));
+    public static final Syncers<FloatSyncValue> MILESTONE_CATALYST_PROGRESS = new Syncers<>(
         "fog.sync.milestone_catalyst_progress",
-        data -> new DoubleSyncValue(
-            data::getFuelMilestonePercentage, val ->
-            data.setFuelMilestonePercentage((float) val)));
-    public static final Syncers<DoubleSyncValue> MILESTONE_CATALYST_PROGRESS_INVERTED = new Syncers<>(
+        data -> new FloatSyncValue(data::getFuelMilestonePercentage, data::setFuelMilestonePercentage));
+    public static final Syncers<FloatSyncValue> MILESTONE_CATALYST_PROGRESS_INVERTED = new Syncers<>(
         "fog.sync.milestone_catalyst_progress_inverted",
-        data -> new DoubleSyncValue(
-            data::getInvertedFuelMilestonePercentage,
-            val -> data.setInvertedFuelMilestonePercentage((float) val)));
+        data -> new FloatSyncValue(data::getInvertedFuelMilestonePercentage, data::setInvertedFuelMilestonePercentage));
 
     public static final Syncers<IntSyncValue> MILESTONE_COMPOSITION_LEVEL = new Syncers<>(
-            "fog.sync.milestone_composition_level",
-            data -> new IntSyncValue(() -> data.getMilestoneProgress(3), val -> data.setMilestoneProgress(3, val)));
-    public static final Syncers<DoubleSyncValue> MILESTONE_COMPOSITION_PROGRESS = new Syncers<>(
+        "fog.sync.milestone_composition_level",
+        data -> new IntSyncValue(() -> data.getMilestoneProgress(3), val -> data.setMilestoneProgress(3, val)));
+    public static final Syncers<FloatSyncValue> MILESTONE_COMPOSITION_PROGRESS = new Syncers<>(
         "fog.sync.milestone_composition_progress",
-        data -> new DoubleSyncValue(
-            data::getStructureMilestonePercentage, val ->
-            data.setStructureMilestonePercentage((float) val)));
-    public static final Syncers<DoubleSyncValue> MILESTONE_COMPOSITION_PROGRESS_INVERTED = new Syncers<>(
+        data -> new FloatSyncValue(data::getStructureMilestonePercentage, data::setStructureMilestonePercentage));
+    public static final Syncers<FloatSyncValue> MILESTONE_COMPOSITION_PROGRESS_INVERTED = new Syncers<>(
         "fog.sync.milestone_composition_progress_inverted",
-        data -> new DoubleSyncValue(
-            data::getInvertedStructureMilestonePercentage,
-            val -> data.setInvertedStructureMilestonePercentage((float) val)));
+        data -> new FloatSyncValue(data::getInvertedStructureMilestonePercentage, data::setInvertedStructureMilestonePercentage));
 
     // spotless:on
 

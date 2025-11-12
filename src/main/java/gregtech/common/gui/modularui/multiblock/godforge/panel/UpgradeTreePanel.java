@@ -56,7 +56,7 @@ public class UpgradeTreePanel {
         row.child(new ButtonWidget<>().onMousePressed(d -> {
             hypervisor.getData()
                 .resetAllUpgrades();
-            // todo sync
+            upgradeSyncer.notifyUpdate();
             return true;
         })
             .overlay(
@@ -83,7 +83,7 @@ public class UpgradeTreePanel {
         row.child(new ButtonWidget<>().onMousePressed(d -> {
             hypervisor.getData()
                 .unlockAllUpgrades();
-            // todo sync
+            upgradeSyncer.notifyUpdate();
             return true;
         })
             .overlay(
