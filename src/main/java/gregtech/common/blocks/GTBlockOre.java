@@ -26,7 +26,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.gtnewhorizon.gtnhlib.api.BlockWithCustomSound;
+import com.gtnewhorizon.gtnhlib.api.IBlockWithCustomSound;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -52,7 +52,7 @@ import gregtech.common.ores.OreInfo;
 import gregtech.common.render.GTRendererBlock;
 import gregtech.nei.NEIGTConfig;
 
-public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, BlockWithCustomSound {
+public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IBlockWithCustomSound {
 
     public final List<StoneType> stoneTypes;
 
