@@ -98,8 +98,7 @@ public class MTELapotronicSuperCapacitorgui extends MTEMultiBlockBaseGui<MTELapo
                         .doubleValue(),
                     storedEu.getValue()
                         .doubleValue());
-                return EnumChatFormatting.WHITE + StatCollector
-                    .translateToLocalFormatted("kekztech.infodata.lapotronic_super_capacitor.time_to.full", TTF);
+                return EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(TTF);
             })
                 .asWidget())
             .child(IKey.dynamic(() -> {
