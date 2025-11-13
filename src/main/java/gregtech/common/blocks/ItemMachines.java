@@ -3,7 +3,6 @@ package gregtech.common.blocks;
 import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.util.GTUtility.translate;
 import static gregtech.api.util.tooltip.TooltipMarkupProcessor.INDENT_MARK;
-import static gregtech.api.util.tooltip.TooltipMarkupProcessor.LINE_BREAK;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import static org.apache.commons.lang3.StringUtils.removeStart;
@@ -143,8 +142,8 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
         for (String tDescLine : aDescription) {
             if (!GTUtility.isStringValid(tDescLine)) continue;
 
-            if (tDescLine.contains(LINE_BREAK)) {
-                final String[] tSplitStrings = tDescLine.split(LINE_BREAK);
+            if (tDescLine.contains(TooltipMarkupProcessor.LOC_SEPARATOR)) {
+                final String[] tSplitStrings = tDescLine.split(TooltipMarkupProcessor.LOC_SEPARATOR);
                 final String tKey = tSplitStrings[0];
 
                 List<Object> tParamsLoc = new ArrayList<>();

@@ -23,6 +23,7 @@ public class TooltipMarkupProcessor {
     public static final String STRUCTURE_SEPARATOR_MARK = "<S_SEPARATOR>";
     public static final String FINISHER_MARK = "<FINISHER>";
     public static final String LINE_BREAK = "\\n";
+    public static final String LOC_SEPARATOR = "\u001F";
 
     @SideOnly(Side.CLIENT)
     public static void processTooltips(List<String> tooltips) {

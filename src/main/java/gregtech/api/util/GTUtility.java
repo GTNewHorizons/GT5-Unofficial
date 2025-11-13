@@ -11,7 +11,6 @@ import static gregtech.api.enums.Materials.FLUID_MAP;
 import static gregtech.api.enums.Mods.Translocator;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
-import static gregtech.api.util.tooltip.TooltipMarkupProcessor.LINE_BREAK;
 import static gregtech.common.UndergroundOil.undergroundOilReadInformation;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraftforge.common.util.ForgeDirection.DOWN;
@@ -185,6 +184,7 @@ import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.RunnableSound;
+import gregtech.api.util.tooltip.TooltipMarkupProcessor;
 import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.ores.OreManager;
 import gregtech.common.pollution.Pollution;
@@ -4648,8 +4648,10 @@ public class GTUtility {
     }
 
     /**
+     * ONLY used in MTE tooltips<br>
+     *
      * Different from translateToLocalFormatted, it's to make sure<br>
-     * nothing gets hardcoded on startup (requires a full relaunch to see changes to lang)
+     * nothing gets hardcoded on startup<br>
      * for a seamless translation experience
      */
     public static String appendParams(String locKey, Object... params) {
@@ -4661,7 +4663,7 @@ public class GTUtility {
         sb.append(locKey);
 
         for (Object param : params) {
-            sb.append(LINE_BREAK);
+            sb.append(TooltipMarkupProcessor.LOC_SEPARATOR);
             sb.append(param != null ? param.toString() : "");
         }
 
