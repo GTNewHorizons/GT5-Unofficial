@@ -2,6 +2,7 @@ package gregtech.common.gui.modularui.multiblock.godforge.panel;
 
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static net.minecraft.util.StatCollector.translateToLocal;
+import static tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade.*;
 
 import net.minecraft.util.EnumChatFormatting;
 
@@ -12,7 +13,6 @@ import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
-import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
@@ -44,6 +44,8 @@ public class UpgradeTreePanel {
 
         // Debug widgets
         panel.child(getDebugWidgets(hypervisor));
+
+        panel.child(createUpgradeButton(START, hypervisor).pos(100, 100));
 
         return panel;
     }
@@ -108,8 +110,6 @@ public class UpgradeTreePanel {
     }
 
     private static Flow getDebugWidgets(SyncHypervisor hypervisor) {
-        GenericListSyncHandler<?> upgradeSyncer = SyncValues.UPGRADES_LIST.lookupFrom(Panels.MAIN, hypervisor);
-
         Flow row = new Column().coverChildren()
             .align(Alignment.TopLeft)
             .marginLeft(4)
@@ -120,7 +120,7 @@ public class UpgradeTreePanel {
         row.child(new ButtonWidget<>().onMousePressed(d -> {
             hypervisor.getData()
                 .resetAllUpgrades();
-            upgradeSyncer.notifyUpdate();
+            SyncValues.UPGRADES_LIST.notifyUpdateFrom(Panels.MAIN, hypervisor);
             return true;
         })
             .overlay(
@@ -147,7 +147,7 @@ public class UpgradeTreePanel {
         row.child(new ButtonWidget<>().onMousePressed(d -> {
             hypervisor.getData()
                 .unlockAllUpgrades();
-            upgradeSyncer.notifyUpdate();
+            SyncValues.UPGRADES_LIST.notifyUpdateFrom(Panels.MAIN, hypervisor);
             return true;
         })
             .overlay(

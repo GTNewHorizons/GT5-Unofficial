@@ -1,6 +1,6 @@
 package gregtech.common.gui.modularui.multiblock.godforge.data;
 
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
 import com.cleanroommc.modularui.value.sync.BigIntSyncValue;
@@ -11,7 +11,7 @@ import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.value.sync.SyncHandler;
+import com.cleanroommc.modularui.value.sync.ValueSyncHandler;
 
 import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
 import tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade;
@@ -22,7 +22,7 @@ import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
  * sync handlers for the same data, resulting in issues with sync value ID collisions.
  * Also just a lot cleaner to use.
  */
-public class SyncValues<T extends SyncHandler> {
+public class SyncValues<T extends ValueSyncHandler<?>> {
 
     // spotless:off
 
@@ -97,8 +97,12 @@ public class SyncValues<T extends SyncHandler> {
     public static final SyncValues<EnumSyncValue<ForgeOfGodsUpgrade>> UPGRADE_CLICKED = new SyncValues<>(
         "fog.sync.upgrade_clicked",
         data -> {
-            AtomicReference<ForgeOfGodsUpgrade> upgrade = new AtomicReference<>();
-            return new EnumSyncValue<>(ForgeOfGodsUpgrade.class, upgrade::get, upgrade::set);
+            // Integer for 0 value instead of null value at init. Sync values crash if you try to sync a null
+            AtomicInteger i = new AtomicInteger();
+            return new EnumSyncValue<>(
+                ForgeOfGodsUpgrade.class,
+                () -> ForgeOfGodsUpgrade.VALUES[i.intValue()],
+                val -> i.set(val.ordinal()));
         });
 
     public static final SyncValues<GenericListSyncHandler<?>> UPGRADES_LIST = new SyncValues<>(
@@ -112,8 +116,12 @@ public class SyncValues<T extends SyncHandler> {
     public static final SyncValues<EnumSyncValue<Milestones>> MILESTONE_CLICKED = new SyncValues<>(
         "fog.sync.milestone_clicked",
         data -> {
-            AtomicReference<Milestones> milestone = new AtomicReference<>();
-            return new EnumSyncValue<>(Milestones.class, milestone::get, milestone::set);
+            // Integer for 0 value instead of null value at init. Sync values crash if you try to sync a null
+            AtomicInteger i = new AtomicInteger();
+            return new EnumSyncValue<>(
+                Milestones.class,
+                () -> Milestones.VALUES[i.intValue()],
+                val -> i.set(val.ordinal()));
         });
 
     public static final SyncValues<BigIntSyncValue> TOTAL_POWER_CONSUMED = new SyncValues<>(
@@ -193,6 +201,11 @@ public class SyncValues<T extends SyncHandler> {
     public T lookupFrom(Panels fromPanel, SyncHypervisor hypervisor) {
         PanelSyncManager syncManager = hypervisor.getSyncManager(fromPanel);
         return (T) syncManager.findSyncHandler(getSyncId(fromPanel));
+    }
+
+    public void notifyUpdateFrom(Panels fromPanel, SyncHypervisor hypervisor) {
+        T syncer = lookupFrom(fromPanel, hypervisor);
+        syncer.notifyUpdate();
     }
 
     public String getSyncId(Panels fromPanel) {

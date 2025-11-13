@@ -1664,32 +1664,11 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
     // todo ringAmount is not client synced, causing a UI desync when unlocking split upgrades
     private void completeUpgrade(ForgeOfGodsUpgrade upgrade) {
-        if (data.isUpgradeActive(upgrade)) return;
-        if (!data.getUpgrades()
-            .checkPrerequisites(upgrade)) return;
-        if (!data.getUpgrades()
-            .checkSplit(upgrade, data.getRingAmount())) return;
-        if (!data.getUpgrades()
-            .checkCost(upgrade, data.getGravitonShardsAvailable())) return;
-
         data.unlockUpgrade(upgrade);
-        data.setGravitonShardsAvailable(data.getGravitonShardsAvailable() - upgrade.getShardCost());
-        data.setGravitonShardsSpent(data.getGravitonShardsSpent() + upgrade.getShardCost());
     }
 
     private void respecUpgrade(ForgeOfGodsUpgrade upgrade) {
-        if (!data.isUpgradeActive(upgrade)) return;
-        if (!data.getUpgrades()
-            .checkDependents(upgrade)) return;
-
-        data.getUpgrades()
-            .respecUpgrade(upgrade);
-        data.setGravitonShardsAvailable(data.getGravitonShardsAvailable() + upgrade.getShardCost());
-        data.setGravitonShardsSpent(data.getGravitonShardsSpent() - upgrade.getShardCost());
-
-        if (upgrade == END) {
-            data.setGravitonShardEjection(false);
-        }
+        data.respecUpgrade(upgrade);
     }
 
     private Widget createUpgradeBox(ForgeOfGodsUpgrade upgrade, IWidgetBuilder<?> builder) {
