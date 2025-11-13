@@ -10,6 +10,8 @@ import gregtech.common.gui.modularui.multiblock.godforge.panel.BatteryConfigPane
 import gregtech.common.gui.modularui.multiblock.godforge.panel.FuelConfigPanel;
 import gregtech.common.gui.modularui.multiblock.godforge.panel.GeneralInfoPanel;
 import gregtech.common.gui.modularui.multiblock.godforge.panel.IndividualMilestonePanel;
+import gregtech.common.gui.modularui.multiblock.godforge.panel.IndividualUpgradePanel;
+import gregtech.common.gui.modularui.multiblock.godforge.panel.ManualInsertionPanel;
 import gregtech.common.gui.modularui.multiblock.godforge.panel.MilestonePanel;
 import gregtech.common.gui.modularui.multiblock.godforge.panel.SpecialThanksPanel;
 import gregtech.common.gui.modularui.multiblock.godforge.panel.StarCosmeticsPanel;
@@ -26,6 +28,8 @@ public enum Panels {
     BATTERY_CONFIG(BatteryConfigPanel::openPanel),
     STAR_COSMETICS(StarCosmeticsPanel::openPanel),
     UPGRADE_TREE(UpgradeTreePanel::openPanel),
+    INDIVIDUAL_UPGRADE(IndividualUpgradePanel::openPanel),
+    MANUAL_INSERTION(ManualInsertionPanel::openPanel),
     STATISTICS(StatisticsPanel::openPanel),
     GENERAL_INFO(GeneralInfoPanel::openPanel),
     SPECIAL_THANKS(SpecialThanksPanel::openPanel),

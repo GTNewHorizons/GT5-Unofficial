@@ -1,6 +1,6 @@
 package gregtech.common.gui.modularui.multiblock.godforge.data;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 import com.cleanroommc.modularui.value.sync.BigIntSyncValue;
@@ -14,6 +14,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.SyncHandler;
 
 import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
+import tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 
 /**
@@ -93,6 +94,13 @@ public class SyncValues<T extends SyncHandler> {
     // Upgrades //
     // -------- //
 
+    public static final SyncValues<EnumSyncValue<ForgeOfGodsUpgrade>> UPGRADE_CLICKED = new SyncValues<>(
+        "fog.sync.upgrade_clicked",
+        data -> {
+            AtomicReference<ForgeOfGodsUpgrade> upgrade = new AtomicReference<>();
+            return new EnumSyncValue<>(ForgeOfGodsUpgrade.class, upgrade::get, upgrade::set);
+        });
+
     public static final SyncValues<GenericListSyncHandler<?>> UPGRADES_LIST = new SyncValues<>(
         "fog.sync.upgrades_list",
         data -> data.getUpgrades().getFullSyncer());
@@ -104,11 +112,8 @@ public class SyncValues<T extends SyncHandler> {
     public static final SyncValues<EnumSyncValue<Milestones>> MILESTONE_CLICKED = new SyncValues<>(
         "fog.sync.milestone_clicked",
         data -> {
-            AtomicInteger i = new AtomicInteger();
-            return new EnumSyncValue<>(
-                Milestones.class,
-                () -> Milestones.VALUES[i.intValue()],
-                val -> i.set(val.ordinal()));
+            AtomicReference<Milestones> milestone = new AtomicReference<>();
+            return new EnumSyncValue<>(Milestones.class, milestone::get, milestone::set);
         });
 
     public static final SyncValues<BigIntSyncValue> TOTAL_POWER_CONSUMED = new SyncValues<>(
