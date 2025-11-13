@@ -17,19 +17,15 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
@@ -46,6 +42,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.blocks.BlockCasings3;
+import gregtech.common.gui.modularui.multiblock.LockalityLockingLatticeGui;
 import gregtech.common.misc.GTStructureChannels;
 
 public class MTELocalityLockingLattice extends MTEExtendedPowerMultiBlockBase<MTELocalityLockingLattice>
@@ -384,24 +381,23 @@ public class MTELocalityLockingLattice extends MTEExtendedPowerMultiBlockBase<MT
     }
 
     @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        super.drawTexts(screenElements, inventorySlot);
-
-        screenElements
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> "Unstable Ender" + ": "
-                            + EnumChatFormatting.BLUE
-                            + numberFormat.format(UnstableEnder)
-                            + EnumChatFormatting.WHITE
-                            + " L")
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get()))
-            .widget(new FakeSyncWidget.LongSyncer(this::getUnstableAmount, val -> UnstableEnder = val));
+    protected boolean forceUseMui2() {
+        return true;
     }
 
-    private long getUnstableAmount() {
+    @Override
+    protected @NotNull LockalityLockingLatticeGui getGui() {
+        return new LockalityLockingLatticeGui(this);
+    }
+
+    @Override
+    public boolean doesBindPlayerInventory() {
+        return false;
+    }
+
+    // getters
+
+    public long getUnstableAmount() {
         return UnstableEnder;
     }
 
