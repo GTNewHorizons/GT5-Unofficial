@@ -62,7 +62,7 @@ public class MTELapotronicSuperCapacitorgui extends MTEMultiBlockBaseGui<MTELapo
             })
                 .asWidget())
             .child(IKey.dynamic(() -> {
-                String percent = EnumChatFormatting.RED
+                String percent = EnumChatFormatting.BLUE
                     + Util.toPercentageFrom(storedEu.getValue(), capacity.getValue());
                 return EnumChatFormatting.WHITE + StatCollector
                     .translateToLocalFormatted("kekztech.infodata.lapotronic_super_capacitor.used_capacity", percent);
@@ -200,17 +200,17 @@ public class MTELapotronicSuperCapacitorgui extends MTEMultiBlockBaseGui<MTELapo
             // Calculate time to full if charging
             if (avgIn - passLoss > 0) {
                 double timeToFull = (cap - sto) / (avgIn - (passLoss + avgOut)) / 20;
-                return translateToLocalFormatted(
+                return EnumChatFormatting.WHITE + translateToLocalFormatted(
                     "kekztech.infodata.lapotronic_super_capacitor.time_to.full",
-                    formatTime(timeToFull, true));
+                    EnumChatFormatting.AQUA + formatTime(timeToFull, true));
             }
             return translateToLocal("kekztech.infodata.lapotronic_super_capacitor.time_to.sth");
         } else {
             // Calculate time to empty if discharging
             double timeToEmpty = sto / ((avgOut + passLoss) - avgIn) / 20;
-            return translateToLocalFormatted(
+            return EnumChatFormatting.WHITE + translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.time_to.empty",
-                formatTime(timeToEmpty, false));
+                EnumChatFormatting.AQUA + formatTime(timeToEmpty, false));
         }
     }
 
@@ -227,7 +227,7 @@ public class MTELapotronicSuperCapacitorgui extends MTEMultiBlockBaseGui<MTELapo
             return String.format("%.2f days", time / 86400);
         } else {
             double y = time / 31536000;
-            return y < 9_000 ? String.format("%.2f years", y) : "Over9000 years";
+            return y < 9_000 ? String.format("%.2f years", y) : "Over 9000 years";
         }
     }
 
