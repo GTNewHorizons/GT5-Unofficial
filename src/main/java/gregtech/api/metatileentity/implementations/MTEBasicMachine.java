@@ -1296,7 +1296,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
 
     @Override
     protected boolean useMui2() {
-        return true;
+        return false;
     }
 
     @Override
