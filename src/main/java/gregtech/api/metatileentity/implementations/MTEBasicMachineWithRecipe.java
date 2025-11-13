@@ -12,17 +12,16 @@ import static net.minecraftforge.common.util.ForgeDirection.UP;
 
 import java.util.Locale;
 
-import com.cleanroommc.modularui.factory.PosGuiData;
-import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.screen.UISettings;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineWithRecipeBaseGui;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 
@@ -41,6 +40,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
+import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineWithRecipeBaseGui;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -485,12 +485,12 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
 
     @Override
     protected boolean useMui2() {
-        return false;
+        return true;
     }
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new MTEBasicMachineWithRecipeBaseGui(this, this.getUIProperties()).build(data,syncManager,uiSettings);
+        return new MTEBasicMachineWithRecipeBaseGui(this, this.getUIProperties()).build(data, syncManager, uiSettings);
     }
 
     @Override
@@ -510,7 +510,6 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
             .progressBarTexture(progressBarTexture)
             .build();
     }
-
 
     public enum X {
         PUMP,

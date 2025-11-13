@@ -20,7 +20,6 @@ import com.cleanroommc.modularui.widgets.layout.Row;
 import gregtech.api.gui.widgets.CommonWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
-import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
 
@@ -91,7 +90,8 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> {
 
     protected Flow createContentHolderRow(ModularPanel panel, PanelSyncManager syncManager) {
         Flow contentFlow = Flow.row()
-            .size(getContentRowWidth(), getContentRowHeight());
+            .size(getContentRowWidth(), getContentRowHeight())
+            .paddingBottom(4);
         contentFlow.child(createContentSection(panel, syncManager));
         return contentFlow;
     }
@@ -119,7 +119,6 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> {
         Flow cornerFlow = Flow.row()
             .coverChildren()
             .align(Alignment.BottomLeft)
-            .paddingBottom(4)
             .paddingLeft(4);
         return cornerFlow;
     }
@@ -135,7 +134,6 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> {
             .reverseLayout(true)
             .coverChildren()
             .align(Alignment.BottomRight)
-            .paddingBottom(4)
             .paddingRight(4);
 
         cornerFlow.childIf(this.doesAddGregTechLogo(), this.createLogo());

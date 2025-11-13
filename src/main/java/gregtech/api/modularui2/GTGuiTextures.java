@@ -423,6 +423,9 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .build();
 
+    public static final UITexture OVERLAY_SLOT_CHARGER = fullImage(GregTech.ID, "gui/overlay_slot/charger");
+    public static final UITexture OVERLAY_SLOT_CHARGER_FLUID = fullImage(GregTech.ID, "gui/overlay_slot/charger_fluid");
+
     // endregion slot overlay
 
     // region progressbar
@@ -692,8 +695,10 @@ public final class GTGuiTextures {
         .fullImage("goodgenerator", "gui/overlay_button/assembler_mode");
     public static final UITexture OVERLAY_BUTTON_PRECISE_MODE = UITexture
         .fullImage("goodgenerator", "gui/overlay_button/precise_mode");
-    public static final UITexture OVERLAY_BUTTON_AUTOOUTPUT_ITEM = UITexture.fullImage(GregTech.ID, "gui/overlay_button/autooutput_item");
-    public static final UITexture OVERLAY_BUTTON_AUTOOUTPUT_FLUID = UITexture.fullImage(GregTech.ID, "gui/overlay_button/autooutput_fluid");
+    public static final UITexture OVERLAY_BUTTON_AUTOOUTPUT_ITEM = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/autooutput_item");
+    public static final UITexture OVERLAY_BUTTON_AUTOOUTPUT_FLUID = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/autooutput_fluid");
 
     public static final UITexture OVERLAY_BUTTON_SORTING_MODE = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/sorting_mode");
