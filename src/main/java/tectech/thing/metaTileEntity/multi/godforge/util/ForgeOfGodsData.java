@@ -77,6 +77,7 @@ public class ForgeOfGodsData {
     private boolean isRendererDisabled;
 
     private final UpgradeStorage upgrades = new UpgradeStorage();
+    // todo remove
     private ForgeOfGodsUpgrade currentUpgradeWindow;
 
     // Star cosmetics fields
