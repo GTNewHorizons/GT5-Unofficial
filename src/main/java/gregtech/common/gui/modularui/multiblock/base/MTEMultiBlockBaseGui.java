@@ -69,6 +69,7 @@ import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import gregtech.api.enums.StructureError;
 import gregtech.api.enums.VoidingMode;
+import gregtech.api.gui.widgets.CommonWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.metatileentity.implementations.gui.ItemDisplayKey;
@@ -90,7 +91,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     protected final IGregTechTileEntity baseMetaTileEntity;
     protected List<UITexture> machineModeIcons = new ArrayList<>();
     protected Map<String, UITexture> customIcons = new HashMap<>();
-    private final int borderRadius = 4;
+    private static final int borderRadius = 4;
     protected final int textBoxToInventoryGap = 26;
     protected final Map<String, IPanelHandler> panelMap = new HashMap<>();
     protected Map<String, UITexture> shutdownReasonTextureMap = new HashMap<>();
@@ -143,9 +144,10 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         return panel.child(
             Flow.column()
                 .padding(borderRadius)
+                .childIf(multiblock.canBeMuffled(), this.createMuffleButton())
                 .child(createTerminalRow(panel, syncManager))
                 .child(createPanelGap(panel, syncManager))
-                .child(createInventoryRow(panel, syncManager)));
+                .childIf(multiblock.supportsInventoryRow(), createInventoryRow(panel, syncManager)));
     }
 
     protected ModularPanel getBasePanel(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
@@ -154,8 +156,21 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .doesAddGregTechLogo(false)
             // Has to be replaced with inventory row to fit buttons
             .doesBindPlayerInventory(false)
-            .doesAddMufflerButton(multiblock.canBeMuffled())
             .build();
+    }
+
+    protected ToggleButton createMuffleButton() {
+        return CommonWidgets.createMuffleButton("mufflerSyncer")
+            .top(getMufflerPosFromTop())
+            .right(-getMufflerPosFromRightOutwards());
+    }
+
+    protected int getMufflerPosFromTop() {
+        return 0;
+    }
+
+    protected int getMufflerPosFromRightOutwards() {
+        return 13;
     }
 
     protected int getBasePanelWidth() {
@@ -1041,15 +1056,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .tooltipBuilder(t -> { t.addLine(IKey.lang("GT5U.gui.button.structure_update")); });
     }
 
-    protected IWidget createPowerSwitchButton() {
-        return new ToggleButton().syncHandler("powerSwitch")
-            .tooltip(tooltip -> tooltip.add("Power Switch"))
-            .size(18, 18)
-            .overlay(
-                new DynamicDrawable(
-                    () -> isPowerSwitchDisabled() ? this.customIcons.get("power_switch_disabled")
-                        : baseMetaTileEntity.isAllowedToWork() ? this.customIcons.get("power_switch_on")
-                            : this.customIcons.get("power_switch_off")));
+    protected ToggleButton createPowerSwitchButton() {
+        return CommonWidgets.createPowerSwitchButton("powerSwitch", isPowerSwitchDisabled(), baseMetaTileEntity);
     }
 
     protected boolean isPowerSwitchDisabled() {
