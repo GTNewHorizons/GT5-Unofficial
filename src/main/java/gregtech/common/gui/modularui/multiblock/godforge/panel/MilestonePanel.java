@@ -18,7 +18,7 @@ import com.cleanroommc.modularui.widgets.ProgressWidget.Direction;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Milestones;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
-import gregtech.common.gui.modularui.multiblock.godforge.data.Syncers;
+import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValues;
 import gregtech.common.gui.modularui.multiblock.godforge.util.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
 
@@ -54,15 +54,15 @@ public class MilestonePanel {
     }
 
     private static void registerSyncValues(SyncHypervisor hypervisor) {
-        Syncers.MILESTONE_CLICKED.registerFor(Panels.MILESTONE, hypervisor);
-        Syncers.MILESTONE_CHARGE_PROGRESS.registerFor(Panels.MILESTONE, hypervisor);
-        Syncers.MILESTONE_CHARGE_PROGRESS_INVERTED.registerFor(Panels.MILESTONE, hypervisor);
-        Syncers.MILESTONE_CONVERSION_PROGRESS.registerFor(Panels.MILESTONE, hypervisor);
-        Syncers.MILESTONE_CONVERSION_PROGRESS_INVERTED.registerFor(Panels.MILESTONE, hypervisor);
-        Syncers.MILESTONE_CATALYST_PROGRESS.registerFor(Panels.MILESTONE, hypervisor);
-        Syncers.MILESTONE_CATALYST_PROGRESS_INVERTED.registerFor(Panels.MILESTONE, hypervisor);
-        Syncers.MILESTONE_COMPOSITION_PROGRESS.registerFor(Panels.MILESTONE, hypervisor);
-        Syncers.MILESTONE_COMPOSITION_PROGRESS_INVERTED.registerFor(Panels.MILESTONE, hypervisor);
+        SyncValues.MILESTONE_CLICKED.registerFor(Panels.MILESTONE, hypervisor);
+        SyncValues.MILESTONE_CHARGE_PROGRESS.registerFor(Panels.MILESTONE, hypervisor);
+        SyncValues.MILESTONE_CHARGE_PROGRESS_INVERTED.registerFor(Panels.MILESTONE, hypervisor);
+        SyncValues.MILESTONE_CONVERSION_PROGRESS.registerFor(Panels.MILESTONE, hypervisor);
+        SyncValues.MILESTONE_CONVERSION_PROGRESS_INVERTED.registerFor(Panels.MILESTONE, hypervisor);
+        SyncValues.MILESTONE_CATALYST_PROGRESS.registerFor(Panels.MILESTONE, hypervisor);
+        SyncValues.MILESTONE_CATALYST_PROGRESS_INVERTED.registerFor(Panels.MILESTONE, hypervisor);
+        SyncValues.MILESTONE_COMPOSITION_PROGRESS.registerFor(Panels.MILESTONE, hypervisor);
+        SyncValues.MILESTONE_COMPOSITION_PROGRESS_INVERTED.registerFor(Panels.MILESTONE, hypervisor);
     }
 
     private static ParentWidget<?> createMilestone(Milestones milestone, SyncHypervisor hypervisor) {
@@ -83,7 +83,7 @@ public class MilestonePanel {
                 .background(milestone.getMainBackground())
                 .disableHoverBackground()
                 .onMousePressed($ -> {
-                    EnumSyncValue<Milestones> syncer = Syncers.MILESTONE_CLICKED
+                    EnumSyncValue<Milestones> syncer = SyncValues.MILESTONE_CLICKED
                         .lookupFrom(Panels.MILESTONE, hypervisor);
                     syncer.setValue(milestone);
                     if (!individualPanel.isPanelOpen()) {

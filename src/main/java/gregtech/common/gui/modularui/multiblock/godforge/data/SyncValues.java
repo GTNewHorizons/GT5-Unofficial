@@ -21,7 +21,7 @@ import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
  * sync handlers for the same data, resulting in issues with sync value ID collisions.
  * Also just a lot cleaner to use.
  */
-public class Syncers<T extends SyncHandler> {
+public class SyncValues<T extends SyncHandler> {
 
     // spotless:off
 
@@ -29,11 +29,11 @@ public class Syncers<T extends SyncHandler> {
     // General Syncers //
     // --------------- //
 
-    public static final Syncers<EnumSyncValue<Formatters>> FORMATTER = new Syncers<>(
+    public static final SyncValues<EnumSyncValue<Formatters>> FORMATTER = new SyncValues<>(
         "fog.sync.formatter",
         data -> new EnumSyncValue<>(Formatters.class, data::getFormatter, data::setFormatter));
 
-    public static final Syncers<BooleanSyncValue> INVERSION = new Syncers<>(
+    public static final SyncValues<BooleanSyncValue> INVERSION = new SyncValues<>(
         "fog.sync.inversion",
         data -> new BooleanSyncValue(data::isInversion, data::setInversion));
 
@@ -41,23 +41,23 @@ public class Syncers<T extends SyncHandler> {
     // Fuel //
     // ---- //
 
-    public static final Syncers<EnumSyncValue<Fuels>> SELECTED_FUEL = new Syncers<>(
+    public static final SyncValues<EnumSyncValue<Fuels>> SELECTED_FUEL = new SyncValues<>(
         "fog.sync.selected_fuel",
         data -> new EnumSyncValue<>(Fuels.class, () -> Fuels.getFromData(data), fuel -> fuel.select(data)));
 
-    public static final Syncers<LongSyncValue> FUEL_CONSUMPTION = new Syncers<>(
+    public static final SyncValues<LongSyncValue> FUEL_CONSUMPTION = new SyncValues<>(
         "fog.sync.fuel_consumption",
         data -> new LongSyncValue(data::getFuelConsumption, data::setFuelConsumption));
 
-    public static final Syncers<IntSyncValue> FUEL_FACTOR = new Syncers<>(
+    public static final SyncValues<IntSyncValue> FUEL_FACTOR = new SyncValues<>(
         "fog.sync.fuel_factor",
         data -> new IntSyncValue(data::getFuelConsumptionFactor, data::setFuelConsumptionFactor));
 
-    public static final Syncers<IntSyncValue> NEEDED_STARTUP_FUEL = new Syncers<>(
+    public static final SyncValues<IntSyncValue> NEEDED_STARTUP_FUEL = new SyncValues<>(
         "fog.sync.needed_startup_fuel",
         data -> new IntSyncValue(data::getNeededStartupFuel, data::setNeededStartupFuel));
 
-    public static final Syncers<IntSyncValue> FUEL_AMOUNT = new Syncers<>(
+    public static final SyncValues<IntSyncValue> FUEL_AMOUNT = new SyncValues<>(
         "fog.sync.fuel_amount",
         data -> new IntSyncValue(data::getStellarFuelAmount, data::setStellarFuelAmount));
 
@@ -65,15 +65,15 @@ public class Syncers<T extends SyncHandler> {
     // Battery //
     // ------  //
 
-    public static final Syncers<BooleanSyncValue> BATTERY_CHARGING = new Syncers<>(
+    public static final SyncValues<BooleanSyncValue> BATTERY_CHARGING = new SyncValues<>(
         "fog.sync.battery_charging",
         data -> new BooleanSyncValue(data::isBatteryCharging, data::setBatteryCharging));
 
-    public static final Syncers<IntSyncValue> INTERNAL_BATTERY = new Syncers<>(
+    public static final SyncValues<IntSyncValue> INTERNAL_BATTERY = new SyncValues<>(
         "fog.sync.internal_battery",
         data -> new IntSyncValue(data::getInternalBattery, data::setInternalBattery));
 
-    public static final Syncers<IntSyncValue> MAX_BATTERY_CHARGE = new Syncers<>(
+    public static final SyncValues<IntSyncValue> MAX_BATTERY_CHARGE = new SyncValues<>(
         "fog.sync.max_battery_charge",
         data -> new IntSyncValue(data::getMaxBatteryCharge, data::setMaxBatteryCharge));
 
@@ -81,11 +81,11 @@ public class Syncers<T extends SyncHandler> {
     // Graviton Shards //
     // --------------- //
 
-    public static final Syncers<BooleanSyncValue> SHARD_EJECTION = new Syncers<>(
+    public static final SyncValues<BooleanSyncValue> SHARD_EJECTION = new SyncValues<>(
         "fog.sync.shard_ejection",
         data -> new BooleanSyncValue(data::isGravitonShardEjection, data::setGravitonShardEjection));
 
-    public static final Syncers<IntSyncValue> AVAILABLE_GRAVITON_SHARDS = new Syncers<>(
+    public static final SyncValues<IntSyncValue> AVAILABLE_GRAVITON_SHARDS = new SyncValues<>(
         "fog.sync.available_graviton_shards",
         data -> new IntSyncValue(data::getGravitonShardsAvailable, data::setGravitonShardsAvailable));
 
@@ -93,7 +93,7 @@ public class Syncers<T extends SyncHandler> {
     // Upgrades //
     // -------- //
 
-    public static final Syncers<GenericListSyncHandler<?>> UPGRADES_LIST = new Syncers<>(
+    public static final SyncValues<GenericListSyncHandler<?>> UPGRADES_LIST = new SyncValues<>(
         "fog.sync.upgrades_list",
         data -> data.getUpgrades().getFullSyncer());
 
@@ -101,7 +101,7 @@ public class Syncers<T extends SyncHandler> {
     // Milestones //
     // ---------- //
 
-    public static final Syncers<EnumSyncValue<Milestones>> MILESTONE_CLICKED = new Syncers<>(
+    public static final SyncValues<EnumSyncValue<Milestones>> MILESTONE_CLICKED = new SyncValues<>(
         "fog.sync.milestone_clicked",
         data -> {
             AtomicInteger i = new AtomicInteger();
@@ -111,55 +111,55 @@ public class Syncers<T extends SyncHandler> {
                 val -> i.set(val.ordinal()));
         });
 
-    public static final Syncers<BigIntSyncValue> TOTAL_POWER_CONSUMED = new Syncers<>(
+    public static final SyncValues<BigIntSyncValue> TOTAL_POWER_CONSUMED = new SyncValues<>(
         "fog.sync.total_power_consumed",
         data -> new BigIntSyncValue(data::getTotalPowerConsumed, data::setTotalPowerConsumed));
 
-    public static final Syncers<LongSyncValue> TOTAL_RECIPES_PROCESSED = new Syncers<>(
+    public static final SyncValues<LongSyncValue> TOTAL_RECIPES_PROCESSED = new SyncValues<>(
         "fog.sync.total_recipes_processed",
         data -> new LongSyncValue(data::getTotalRecipesProcessed, data::setTotalRecipesProcessed));
 
-    public static final Syncers<LongSyncValue> TOTAL_FUEL_CONSUMED = new Syncers<>(
+    public static final SyncValues<LongSyncValue> TOTAL_FUEL_CONSUMED = new SyncValues<>(
         "fog.sync.total_fuel_consumed",
         data -> new LongSyncValue(data::getTotalFuelConsumed, data::setTotalFuelConsumed));
 
-    public static final Syncers<IntSyncValue> MILESTONE_CHARGE_LEVEL = new Syncers<>(
+    public static final SyncValues<IntSyncValue> MILESTONE_CHARGE_LEVEL = new SyncValues<>(
         "fog.sync.milestone_charge_level",
         data -> new IntSyncValue(() -> data.getMilestoneProgress(0), val -> data.setMilestoneProgress(0, val)));
-    public static final Syncers<FloatSyncValue> MILESTONE_CHARGE_PROGRESS = new Syncers<>(
+    public static final SyncValues<FloatSyncValue> MILESTONE_CHARGE_PROGRESS = new SyncValues<>(
         "fog.sync.milestone_charge_progress",
         data -> new FloatSyncValue(data::getPowerMilestonePercentage, data::setPowerMilestonePercentage));
-    public static final Syncers<FloatSyncValue> MILESTONE_CHARGE_PROGRESS_INVERTED = new Syncers<>(
+    public static final SyncValues<FloatSyncValue> MILESTONE_CHARGE_PROGRESS_INVERTED = new SyncValues<>(
         "fog.sync.milestone_charge_progress_inverted",
         data -> new FloatSyncValue(data::getInvertedPowerMilestonePercentage, data::setInvertedPowerMilestonePercentage));
 
-    public static final Syncers<IntSyncValue> MILESTONE_CONVERSION_LEVEL = new Syncers<>(
+    public static final SyncValues<IntSyncValue> MILESTONE_CONVERSION_LEVEL = new SyncValues<>(
         "fog.sync.milestone_conversion_level",
         data -> new IntSyncValue(() -> data.getMilestoneProgress(1), val -> data.setMilestoneProgress(1, val)));
-    public static final Syncers<FloatSyncValue> MILESTONE_CONVERSION_PROGRESS = new Syncers<>(
+    public static final SyncValues<FloatSyncValue> MILESTONE_CONVERSION_PROGRESS = new SyncValues<>(
         "fog.sync.milestone_conversion_progress",
         data -> new FloatSyncValue(data::getRecipeMilestonePercentage, data::setRecipeMilestonePercentage));
-    public static final Syncers<FloatSyncValue> MILESTONE_CONVERSION_PROGRESS_INVERTED = new Syncers<>(
+    public static final SyncValues<FloatSyncValue> MILESTONE_CONVERSION_PROGRESS_INVERTED = new SyncValues<>(
         "fog.sync.milestone_conversion_progress_inverted",
         data -> new FloatSyncValue(data::getInvertedRecipeMilestonePercentage, data::setInvertedRecipeMilestonePercentage));
 
-    public static final Syncers<IntSyncValue> MILESTONE_CATALYST_LEVEL = new Syncers<>(
+    public static final SyncValues<IntSyncValue> MILESTONE_CATALYST_LEVEL = new SyncValues<>(
         "fog.sync.milestone_catalyst_level",
         data -> new IntSyncValue(() -> data.getMilestoneProgress(2), val -> data.setMilestoneProgress(2, val)));
-    public static final Syncers<FloatSyncValue> MILESTONE_CATALYST_PROGRESS = new Syncers<>(
+    public static final SyncValues<FloatSyncValue> MILESTONE_CATALYST_PROGRESS = new SyncValues<>(
         "fog.sync.milestone_catalyst_progress",
         data -> new FloatSyncValue(data::getFuelMilestonePercentage, data::setFuelMilestonePercentage));
-    public static final Syncers<FloatSyncValue> MILESTONE_CATALYST_PROGRESS_INVERTED = new Syncers<>(
+    public static final SyncValues<FloatSyncValue> MILESTONE_CATALYST_PROGRESS_INVERTED = new SyncValues<>(
         "fog.sync.milestone_catalyst_progress_inverted",
         data -> new FloatSyncValue(data::getInvertedFuelMilestonePercentage, data::setInvertedFuelMilestonePercentage));
 
-    public static final Syncers<IntSyncValue> MILESTONE_COMPOSITION_LEVEL = new Syncers<>(
+    public static final SyncValues<IntSyncValue> MILESTONE_COMPOSITION_LEVEL = new SyncValues<>(
         "fog.sync.milestone_composition_level",
         data -> new IntSyncValue(() -> data.getMilestoneProgress(3), val -> data.setMilestoneProgress(3, val)));
-    public static final Syncers<FloatSyncValue> MILESTONE_COMPOSITION_PROGRESS = new Syncers<>(
+    public static final SyncValues<FloatSyncValue> MILESTONE_COMPOSITION_PROGRESS = new SyncValues<>(
         "fog.sync.milestone_composition_progress",
         data -> new FloatSyncValue(data::getStructureMilestonePercentage, data::setStructureMilestonePercentage));
-    public static final Syncers<FloatSyncValue> MILESTONE_COMPOSITION_PROGRESS_INVERTED = new Syncers<>(
+    public static final SyncValues<FloatSyncValue> MILESTONE_COMPOSITION_PROGRESS_INVERTED = new SyncValues<>(
         "fog.sync.milestone_composition_progress_inverted",
         data -> new FloatSyncValue(data::getInvertedStructureMilestonePercentage, data::setInvertedStructureMilestonePercentage));
 
@@ -168,7 +168,7 @@ public class Syncers<T extends SyncHandler> {
     private final String syncId;
     private final Function<ForgeOfGodsData, T> syncValueSupplier;
 
-    private Syncers(String syncId, Function<ForgeOfGodsData, T> syncValueSupplier) {
+    private SyncValues(String syncId, Function<ForgeOfGodsData, T> syncValueSupplier) {
         this.syncValueSupplier = syncValueSupplier;
         this.syncId = syncId;
     }
