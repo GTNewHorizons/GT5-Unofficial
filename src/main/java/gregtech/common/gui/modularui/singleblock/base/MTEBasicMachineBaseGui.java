@@ -11,6 +11,7 @@ import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
+import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
@@ -41,6 +42,7 @@ public class MTEBasicMachineBaseGui {
 
         return panel.child(
             Flow.column()
+                .child(createMufflerButton())
                 .sizeRel(1)
                 .padding(borderRadius)
                 .child(createContentHolderRow(panel, syncManager))
@@ -56,6 +58,11 @@ public class MTEBasicMachineBaseGui {
             }
         });
         syncManager.syncValue("powerSwitch", powerSwitchSyncer);
+
+        BooleanSyncValue mufflerSyncer = new BooleanSyncValue(
+            baseMetaTileEntity::isMuffled,
+            baseMetaTileEntity::setMuffler);
+        syncManager.syncValue("mufflerSyncer", mufflerSyncer);
 
     }
 
@@ -149,15 +156,6 @@ public class MTEBasicMachineBaseGui {
     protected IWidget createPowerSwitchButton() {
         return CommonWidgets.createPowerSwitchButton("powerSwitch", isPowerSwitchDisabled(), baseMetaTileEntity)
             .marginTop(4);
-        // new ToggleButton().syncHandler("powerSwitch")
-        // .tooltip(tooltip -> tooltip.add("Power Switch"))
-        // .size(18, 18)
-        // .marginTop(4)
-        // .overlay(
-        // new DynamicDrawable(
-        // () -> isPowerSwitchDisabled() ? GTGuiTextures.OVERLAY_BUTTON_POWER_SWITCH_DISABLED
-        // : baseMetaTileEntity.isAllowedToWork() ? GTGuiTextures.OVERLAY_BUTTON_POWER_SWITCH_ON
-        // : GTGuiTextures.OVERLAY_BUTTON_POWER_SWITCH_OFF));
     }
 
     protected IDrawable.DrawableWidget createLogo() {
@@ -170,4 +168,17 @@ public class MTEBasicMachineBaseGui {
         return machine.allowSelectCircuit();
     }
 
+    protected ToggleButton createMufflerButton() {
+        return CommonWidgets.createMuffleButton("mufflerSyncer")
+            .top(getMufflerPosFromTop())
+            .right(-getMufflerPosFromRightOutwards());
+    }
+
+    protected int getMufflerPosFromTop() {
+        return 0;
+    }
+
+    protected int getMufflerPosFromRightOutwards() {
+        return 0;
+    }
 }
