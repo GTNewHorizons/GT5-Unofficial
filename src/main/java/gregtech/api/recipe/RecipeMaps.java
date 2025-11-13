@@ -46,6 +46,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.gui.modularui.GTUITextures;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.maps.AssemblerBackend;
 import gregtech.api.recipe.maps.AssemblyLineFrontend;
@@ -372,7 +373,10 @@ public final class RecipeMaps {
         .minInputs(1, 0)
         .slotOverlays((index, isFluid, isOutput, isSpecial) -> !isFluid ? GTUITextures.OVERLAY_SLOT_DUST : null)
         .progressBar(GTUITextures.PROGRESSBAR_MIXER, ProgressBar.Direction.CIRCULAR_CW)
+        .slotOverlaysMUI2(
+            (index, isFluid, isOutput, isSpecial) -> !isFluid ? GTGuiTextures.OVERLAY_SLOT_DUST_STANDARD : null)
         .build();
+
     public static final RecipeMap<RecipeMapBackend> autoclaveRecipes = RecipeMapBuilder.of("gt.recipe.autoclave")
         .maxIO(2, 4, 1, 1)
         .minInputs(1, 1)

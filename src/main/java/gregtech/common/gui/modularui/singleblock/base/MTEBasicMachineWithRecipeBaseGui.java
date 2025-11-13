@@ -137,7 +137,7 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
         String key = properties.useSpecialSlot ? SPECIAL_SLOT_TOOLTIP : UNUSED_SLOT_TOOLTIP;
         return new ItemSlot().marginTop(4)
             .slot(new ModularSlot(machine.inventoryHandler, machine.getSpecialSlotIndex()).slotGroup("item_inv"))
-            .overlay(slotOverlayFunction.apply(0, false, false, true))
+            .overlay(properties.useSpecialSlot ? slotOverlayFunction.apply(0, false, false, true) : null)
             .tooltip(t -> t.addLine(GTUtility.translate(key)));
     }
 

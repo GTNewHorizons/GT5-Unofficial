@@ -68,7 +68,8 @@ public final class BasicUIProperties {
             .specialItemPositionGetter(specialItemPositionGetter)
             .fluidInputPositionsGetter(fluidInputPositionsGetter)
             .fluidOutputPositionsGetter(fluidOutputPositionsGetter)
-            .amperage(amperage);
+            .amperage(amperage)
+            .slotOverlaysMUI2(slotOverlaysMUI2);
     }
 
     /**
