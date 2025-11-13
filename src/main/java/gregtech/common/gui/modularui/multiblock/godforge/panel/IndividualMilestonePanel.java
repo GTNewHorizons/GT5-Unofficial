@@ -26,7 +26,7 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Formatters;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Milestones;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
-import gregtech.common.gui.modularui.multiblock.godforge.data.Syncers;
+import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValues;
 import gregtech.common.gui.modularui.multiblock.godforge.util.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
 
@@ -44,7 +44,8 @@ public class IndividualMilestonePanel {
             .disableHoverBackground();
 
         // registered on the Milestone panel, look up from there
-        EnumSyncValue<Milestones> milestoneSyncer = Syncers.MILESTONE_CLICKED.lookupFrom(Panels.MILESTONE, hypervisor);
+        EnumSyncValue<Milestones> milestoneSyncer = SyncValues.MILESTONE_CLICKED
+            .lookupFrom(Panels.MILESTONE, hypervisor);
 
         // Background symbol
         for (Milestones milestone : Milestones.VALUES) {
@@ -52,7 +53,7 @@ public class IndividualMilestonePanel {
         }
 
         // Formatting mode button
-        EnumSyncValue<Formatters> formatSyncer = Syncers.FORMATTER.lookupFrom(Panels.MAIN, hypervisor);
+        EnumSyncValue<Formatters> formatSyncer = SyncValues.FORMATTER.lookupFrom(Panels.MAIN, hypervisor);
         panel.child(
             new ButtonWidget<>().background(GTGuiTextures.TT_OVERLAY_CYCLIC_BLUE)
                 .disableHoverBackground()
@@ -93,7 +94,7 @@ public class IndividualMilestonePanel {
                 .alignX(0.5f));
 
         // Current level
-        BooleanSyncValue inversionSyncer = Syncers.INVERSION.lookupFrom(Panels.INDIVIDUAL_MILESTONE, hypervisor);
+        BooleanSyncValue inversionSyncer = SyncValues.INVERSION.lookupFrom(Panels.INDIVIDUAL_MILESTONE, hypervisor);
         column.child(
             IKey.dynamic(() -> getLevel(milestoneSyncer.getValue(), inversionSyncer.getBoolValue(), hypervisor))
                 .alignment(Alignment.CENTER)
@@ -150,16 +151,16 @@ public class IndividualMilestonePanel {
     }
 
     public static void registerSyncValues(SyncHypervisor hypervisor) {
-        Syncers.INVERSION.registerFor(Panels.INDIVIDUAL_MILESTONE, hypervisor);
+        SyncValues.INVERSION.registerFor(Panels.INDIVIDUAL_MILESTONE, hypervisor);
 
-        Syncers.TOTAL_RECIPES_PROCESSED.registerFor(Panels.INDIVIDUAL_MILESTONE, hypervisor);
-        Syncers.TOTAL_POWER_CONSUMED.registerFor(Panels.INDIVIDUAL_MILESTONE, hypervisor);
-        Syncers.TOTAL_FUEL_CONSUMED.registerFor(Panels.INDIVIDUAL_MILESTONE, hypervisor);
+        SyncValues.TOTAL_RECIPES_PROCESSED.registerFor(Panels.INDIVIDUAL_MILESTONE, hypervisor);
+        SyncValues.TOTAL_POWER_CONSUMED.registerFor(Panels.INDIVIDUAL_MILESTONE, hypervisor);
+        SyncValues.TOTAL_FUEL_CONSUMED.registerFor(Panels.INDIVIDUAL_MILESTONE, hypervisor);
 
-        Syncers.MILESTONE_CHARGE_LEVEL.registerFor(Panels.INDIVIDUAL_MILESTONE, hypervisor);
-        Syncers.MILESTONE_CONVERSION_LEVEL.registerFor(Panels.INDIVIDUAL_MILESTONE, hypervisor);
-        Syncers.MILESTONE_CATALYST_LEVEL.registerFor(Panels.INDIVIDUAL_MILESTONE, hypervisor);
-        Syncers.MILESTONE_COMPOSITION_LEVEL.registerFor(Panels.INDIVIDUAL_MILESTONE, hypervisor);
+        SyncValues.MILESTONE_CHARGE_LEVEL.registerFor(Panels.INDIVIDUAL_MILESTONE, hypervisor);
+        SyncValues.MILESTONE_CONVERSION_LEVEL.registerFor(Panels.INDIVIDUAL_MILESTONE, hypervisor);
+        SyncValues.MILESTONE_CATALYST_LEVEL.registerFor(Panels.INDIVIDUAL_MILESTONE, hypervisor);
+        SyncValues.MILESTONE_COMPOSITION_LEVEL.registerFor(Panels.INDIVIDUAL_MILESTONE, hypervisor);
     }
 
     private static Widget<?> getBackgroundImage(Milestones milestone, EnumSyncValue<Milestones> syncer) {

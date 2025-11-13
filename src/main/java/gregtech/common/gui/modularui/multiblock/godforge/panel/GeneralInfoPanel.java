@@ -17,7 +17,7 @@ import com.cleanroommc.modularui.widgets.TextWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
-import gregtech.common.gui.modularui.multiblock.godforge.data.Syncers;
+import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValues;
 import gregtech.common.gui.modularui.multiblock.godforge.util.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
@@ -93,7 +93,7 @@ public class GeneralInfoPanel {
     }
 
     private static void registerSyncValues(SyncHypervisor hypervisor) {
-        Syncers.INVERSION.registerFor(Panels.GENERAL_INFO, hypervisor);
+        SyncValues.INVERSION.registerFor(Panels.GENERAL_INFO, hypervisor);
     }
 
     private static TextWidget<?> createHeader(String langKey) {

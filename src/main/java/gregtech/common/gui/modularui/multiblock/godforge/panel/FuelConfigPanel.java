@@ -19,7 +19,7 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Formatters;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Fuels;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
-import gregtech.common.gui.modularui.multiblock.godforge.data.Syncers;
+import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValues;
 import gregtech.common.gui.modularui.multiblock.godforge.util.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
 import gregtech.common.modularui2.sync.LinkedBoolValue;
@@ -58,7 +58,7 @@ public class FuelConfigPanel {
         TextFieldWidget textBox = new TextFieldWidget().setFormatAsInteger(true)
             .setNumbers(() -> 1, () -> GodforgeMath.calculateMaxFuelFactor(data))
             .setTextAlignment(Alignment.CENTER)
-            .value(Syncers.FUEL_FACTOR.create(hypervisor))
+            .value(SyncValues.FUEL_FACTOR.create(hypervisor))
             .setTooltipOverride(true)
             .setScrollValues(1, 4, 64)
             .size(70, 18)
@@ -91,7 +91,7 @@ public class FuelConfigPanel {
                 .marginTop(5));
 
         // Fuel selector
-        EnumSyncValue<Fuels> selectionSyncer = Syncers.SELECTED_FUEL.lookupFrom(Panels.FUEL_CONFIG, hypervisor);
+        EnumSyncValue<Fuels> selectionSyncer = SyncValues.SELECTED_FUEL.lookupFrom(Panels.FUEL_CONFIG, hypervisor);
         Flow fuelRow = new Row().coverChildren()
             .alignX(0.5f)
             .marginTop(5)
@@ -123,8 +123,8 @@ public class FuelConfigPanel {
     }
 
     private static void registerSyncHandlers(SyncHypervisor hypervisor) {
-        Syncers.SELECTED_FUEL.registerFor(Panels.FUEL_CONFIG, hypervisor);
-        Syncers.FUEL_CONSUMPTION.registerFor(Panels.FUEL_CONFIG, hypervisor);
+        SyncValues.SELECTED_FUEL.registerFor(Panels.FUEL_CONFIG, hypervisor);
+        SyncValues.FUEL_CONSUMPTION.registerFor(Panels.FUEL_CONFIG, hypervisor);
     }
 
     private static ParentWidget<?> createFuelSelection(EnumSyncValue<Fuels> syncer, Fuels option) {

@@ -29,7 +29,7 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.base.TTMultiblockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Formatters;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
-import gregtech.common.gui.modularui.multiblock.godforge.data.Syncers;
+import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValues;
 import gregtech.common.gui.modularui.multiblock.godforge.util.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
 import tectech.thing.metaTileEntity.multi.godforge.MTEForgeOfGods;
@@ -58,14 +58,14 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
         super.registerSyncValues(syncManager);
         hypervisor.setSyncManager(Panels.MAIN, syncManager);
 
-        Syncers.BATTERY_CHARGING.registerFor(Panels.MAIN, hypervisor);
-        Syncers.INTERNAL_BATTERY.registerFor(Panels.MAIN, hypervisor);
-        Syncers.MAX_BATTERY_CHARGE.registerFor(Panels.MAIN, hypervisor);
-        Syncers.NEEDED_STARTUP_FUEL.registerFor(Panels.MAIN, hypervisor);
-        Syncers.FUEL_AMOUNT.registerFor(Panels.MAIN, hypervisor);
-        Syncers.SHARD_EJECTION.registerFor(Panels.MAIN, hypervisor);
-        Syncers.FORMATTER.registerFor(Panels.MAIN, hypervisor);
-        Syncers.UPGRADES_LIST.registerFor(Panels.MAIN, hypervisor);
+        SyncValues.BATTERY_CHARGING.registerFor(Panels.MAIN, hypervisor);
+        SyncValues.INTERNAL_BATTERY.registerFor(Panels.MAIN, hypervisor);
+        SyncValues.MAX_BATTERY_CHARGE.registerFor(Panels.MAIN, hypervisor);
+        SyncValues.NEEDED_STARTUP_FUEL.registerFor(Panels.MAIN, hypervisor);
+        SyncValues.FUEL_AMOUNT.registerFor(Panels.MAIN, hypervisor);
+        SyncValues.SHARD_EJECTION.registerFor(Panels.MAIN, hypervisor);
+        SyncValues.FORMATTER.registerFor(Panels.MAIN, hypervisor);
+        SyncValues.UPGRADES_LIST.registerFor(Panels.MAIN, hypervisor);
     }
 
     // todo fix column being shifted up 1 pixel
@@ -181,7 +181,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
 
     protected IWidget createBatteryConfigWindowButton() {
         IPanelHandler batteryConfigPanel = Panels.BATTERY_CONFIG.getFrom(Panels.MAIN, hypervisor);
-        BooleanSyncValue batteryChargingSyncer = Syncers.BATTERY_CHARGING.lookupFrom(Panels.MAIN, hypervisor);
+        BooleanSyncValue batteryChargingSyncer = SyncValues.BATTERY_CHARGING.lookupFrom(Panels.MAIN, hypervisor);
 
         return new ButtonWidget<>().size(16)
             .marginBottom(3)
@@ -293,7 +293,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
     }
 
     protected IWidget createEjectionButton() {
-        BooleanSyncValue shardEjectionSyncer = Syncers.SHARD_EJECTION.lookupFrom(Panels.MAIN, hypervisor);
+        BooleanSyncValue shardEjectionSyncer = SyncValues.SHARD_EJECTION.lookupFrom(Panels.MAIN, hypervisor);
         return new ButtonWidget<>().size(16)
             .marginRight(3)
             .setEnabledIf($ -> data.isUpgradeActive(END))

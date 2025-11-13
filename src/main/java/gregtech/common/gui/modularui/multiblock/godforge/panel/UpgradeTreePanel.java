@@ -14,7 +14,7 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
-import gregtech.common.gui.modularui.multiblock.godforge.data.Syncers;
+import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValues;
 import gregtech.common.gui.modularui.multiblock.godforge.util.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
 import tectech.loader.ConfigHandler;
@@ -44,7 +44,7 @@ public class UpgradeTreePanel {
     }
 
     private static Flow getDebugWidgets(SyncHypervisor hypervisor) {
-        GenericListSyncHandler<?> upgradeSyncer = Syncers.UPGRADES_LIST.lookupFrom(Panels.MAIN, hypervisor);
+        GenericListSyncHandler<?> upgradeSyncer = SyncValues.UPGRADES_LIST.lookupFrom(Panels.MAIN, hypervisor);
 
         Flow row = new Column().coverChildren()
             .align(Alignment.TopLeft)
@@ -72,7 +72,7 @@ public class UpgradeTreePanel {
             new TextFieldWidget().setFormatAsInteger(true)
                 .setNumbers(0, 112)
                 .setTextAlignment(Alignment.CENTER)
-                .value(Syncers.AVAILABLE_GRAVITON_SHARDS.create(hypervisor))
+                .value(SyncValues.AVAILABLE_GRAVITON_SHARDS.create(hypervisor))
                 .setScrollValues(1, 4, 64)
                 .setTooltipOverride(true)
                 .size(25, 18)
