@@ -10,6 +10,12 @@ import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
 import tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 
+/**
+ * Sync actions that require significant amounts of server-side data that otherwise
+ * do not need to be on the client. Also allows for direct control over syncing
+ * direction and timing rather than being automated. Ideal for things like button
+ * presses that trigger complex checks.
+ */
 public final class SyncActions<T> {
 
     // spotless:off

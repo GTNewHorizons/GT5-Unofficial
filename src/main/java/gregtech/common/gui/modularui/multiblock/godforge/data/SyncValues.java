@@ -20,7 +20,7 @@ import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 /**
  * Sync handler helper primarily written to solve the issue of multiple panels needing
  * sync handlers for the same data, resulting in issues with sync value ID collisions.
- * Also just a lot cleaner to use.
+ * Also is just a lot cleaner to use, especially when many are used in multiple panels.
  */
 public class SyncValues<T extends ValueSyncHandler<?>> {
 

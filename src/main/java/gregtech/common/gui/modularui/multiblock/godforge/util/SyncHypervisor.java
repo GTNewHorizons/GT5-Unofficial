@@ -9,6 +9,12 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 
+/**
+ * Solution to re-use sync handlers across multiple panels. If 10 panels are open, and
+ * a lower-down panel requires a sync value that a higher-up panel needs, why should
+ * this be re-synced? The hypervisor allows for accessing sync values and actions between
+ * panels, as well as allowing access for any panel's ModularPanel.
+ */
 public final class SyncHypervisor {
 
     private final ForgeOfGodsData data;
