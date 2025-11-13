@@ -117,7 +117,7 @@ public class MTELapotronicSuperCapacitorgui extends MTEMultiBlockBaseGui<MTELapo
         BooleanSyncValue showWarning = syncManager.findSyncHandler("warning", BooleanSyncValue.class);
         BooleanSyncValue canRebalance = syncManager.findSyncHandler("canRebalance", BooleanSyncValue.class);
         BooleanSyncValue rebalanced = syncManager.findSyncHandler("rebalanced", BooleanSyncValue.class);
-        BooleanSyncValue wireless = syncManager.findSyncHandler("wireless", BooleanSyncValue.class);
+        BooleanSyncValue wireless = syncManager.findSyncHandler("wirelessMode", BooleanSyncValue.class);
         IPanelHandler warningPanel = syncManager.panel("warning panel", ((a, b) -> warningPanel()), true);
 
         return super.createLeftPanelGapRow(parent, syncManager)
@@ -136,19 +136,27 @@ public class MTELapotronicSuperCapacitorgui extends MTEMultiBlockBaseGui<MTELapo
                         warningPanel.openPanel();
                         showWarning.setValue(false);
                         return true;
-                    } else if (!showWarning.getValue() && !wireless.getValue()) {
-                        wireless.setBoolValue(true);
-                        if (!rebalanced.getBoolValue()) {
-                            showWarning.setValue(false);
-                        }
+                    }
 
+                    if (!wireless.getValue() && !rebalanced.getValue()) {
+                        wireless.setBoolValue(true);
+                        canRebalance.setBoolValue(true);
+                        showWarning.setValue(false);
                         return true;
-                    } else if (wireless.getValue()) {
+                    }
+                    if (!showWarning.getValue() && !wireless.getValue()) {
+                        wireless.setBoolValue(true);
+                        return true;
+                    }
+                    if (wireless.getValue()) {
                         wireless.setBoolValue(false);
                         return true;
                     }
+
                     return false;
-                }))
+                })
+
+            )
             .child(
                 new ButtonWidget<>().overlay(GTGuiTextures.OVERLAY_BUTTON_WIRELESS_REBALANCE)
                     .tooltip(
@@ -160,7 +168,7 @@ public class MTELapotronicSuperCapacitorgui extends MTEMultiBlockBaseGui<MTELapo
                         rebalanced.setBoolValue(true);
                         return true;
                     })
-                    .setEnabledIf((a) -> canRebalance.getBoolValue() && !rebalanced.getBoolValue()));
+                    .setEnabledIf((w) -> canRebalance.getBoolValue()));
     }
 
     private ModularPanel warningPanel() {
@@ -259,7 +267,6 @@ public class MTELapotronicSuperCapacitorgui extends MTEMultiBlockBaseGui<MTELapo
                 .isActive());
         BigIntSyncValue capacity = new BigIntSyncValue(multiblock::getEnergyCapacity, multiblock::setCapacity);
         BigIntSyncValue stored = new BigIntSyncValue(multiblock::getStored, multiblock::setStored);
-        BooleanSyncValue wirelessSync = new BooleanSyncValue(multiblock::isWireless_mode, multiblock::setWireless_mode);
         LongSyncValue passiveDischargeSync = new LongSyncValue(multiblock::getPassiveDischargeAmount);
         LongSyncValue avgEuIn = new LongSyncValue(
             () -> multiblock.getEnergyInputValues5m()
@@ -276,7 +283,6 @@ public class MTELapotronicSuperCapacitorgui extends MTEMultiBlockBaseGui<MTELapo
             multiblock::setWirelessValue);
         syncManager.syncValue("rebalanced", hasRebalanced);
         syncManager.syncValue("loss", passiveDischargeSync);
-        syncManager.syncValue("wireless", wirelessSync);
         syncManager.syncValue("active", isActive);
         syncManager.syncValue("capacity", capacity);
         syncManager.syncValue("stored", stored);
