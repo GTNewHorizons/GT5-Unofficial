@@ -49,18 +49,11 @@ public class MTELapotronicSuperCapacitorgui extends MTEMultiBlockBaseGui<MTELapo
         LongSyncValue loss = (LongSyncValue) syncManager.getSyncHandlerFromMapKey("loss:0");
 
         return super.createTerminalTextWidget(syncManager, parent).child(IKey.dynamic(() -> {
-
-            String storedString = EnumChatFormatting.GREEN + formatNumber(storedEu.getValue());
+            String cap = EnumChatFormatting.BLUE + formatNumber(capacity.getValue());
             return EnumChatFormatting.WHITE + StatCollector
-                .translateToLocalFormatted("kekztech.gui.lapotronic_super_capacitor.text.stored", storedString);
+                .translateToLocalFormatted("kekztech.infodata.lapotronic_super_capacitor.total_capacity", cap);
         })
             .asWidget())
-            .child(IKey.dynamic(() -> {
-                String cap = EnumChatFormatting.BLUE + formatNumber(capacity.getValue());
-                return EnumChatFormatting.WHITE + StatCollector
-                    .translateToLocalFormatted("kekztech.infodata.lapotronic_super_capacitor.total_capacity", cap);
-            })
-                .asWidget())
 
             .child(IKey.dynamic(() -> {
                 String percent = EnumChatFormatting.BLUE
@@ -70,12 +63,12 @@ public class MTELapotronicSuperCapacitorgui extends MTEMultiBlockBaseGui<MTELapo
             })
                 .asWidget())
             .child(IKey.dynamic(() -> {
-                String lost = EnumChatFormatting.RED + GTUtility.formatNumbers(loss.getValue())
-                    .toString();
+                String storedString = EnumChatFormatting.GREEN + formatNumber(storedEu.getValue());
                 return EnumChatFormatting.WHITE + StatCollector
-                    .translateToLocalFormatted("kekztech.infodata.lapotronic_super_capacitor.passive_loss", lost);
+                    .translateToLocalFormatted("kekztech.gui.lapotronic_super_capacitor.text.stored", storedString);
             })
                 .asWidget())
+
             .child(IKey.dynamic(() -> {
                 String avgString = EnumChatFormatting.GREEN + GTUtility.formatNumbers(avgIn.getValue())
                     .toString() + EnumChatFormatting.WHITE;
@@ -100,6 +93,13 @@ public class MTELapotronicSuperCapacitorgui extends MTEMultiBlockBaseGui<MTELapo
                     storedEu.getValue()
                         .doubleValue());
                 return EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(TTF);
+            })
+                .asWidget())
+            .child(IKey.dynamic(() -> {
+                String lost = EnumChatFormatting.RED + GTUtility.formatNumbers(loss.getValue())
+                    .toString();
+                return EnumChatFormatting.WHITE + StatCollector
+                    .translateToLocalFormatted("kekztech.infodata.lapotronic_super_capacitor.passive_loss", lost);
             })
                 .asWidget())
             .child(IKey.dynamic(() -> {
@@ -131,7 +131,7 @@ public class MTELapotronicSuperCapacitorgui extends MTEMultiBlockBaseGui<MTELapo
                 .tooltip(
                     new RichTooltip().add(StatCollector.translateToLocal("gui.kekztech_lapotronicenergyunit.wireless")))
                 .onMousePressed((a) -> {
-                    if (showWarning.getValue() && !wireless.getBoolValue()) {
+                    if (showWarning.getBoolValue() && !wireless.getBoolValue()) {
                         multiblock.setWireless_mode(false);
                         warningPanel.openPanel();
                         showWarning.setValue(false);
@@ -139,7 +139,7 @@ public class MTELapotronicSuperCapacitorgui extends MTEMultiBlockBaseGui<MTELapo
                     } else if (!showWarning.getValue() && !wireless.getValue()) {
                         wireless.setBoolValue(true);
                         if (!rebalanced.getBoolValue()) {
-                            canRebalance.setValue(true);
+                            showWarning.setValue(false);
                         }
 
                         return true;
