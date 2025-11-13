@@ -33,10 +33,12 @@ import gregtech.common.modularui2.widget.GTProgressWidget;
 public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTEBasicMachineWithRecipe> {
 
     BasicUIProperties properties;
+    BasicUIProperties.SlotOverlayGetter<IDrawable> slotOverlayFunction;
 
     public MTEBasicMachineWithRecipeBaseGui(MTEBasicMachineWithRecipe machine, BasicUIProperties properties) {
         super(machine);
         this.properties = properties;
+        this.slotOverlayFunction = properties.slotOverlaysMUI2;
     }
 
     @Override
@@ -135,6 +137,7 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
         String key = properties.useSpecialSlot ? SPECIAL_SLOT_TOOLTIP : UNUSED_SLOT_TOOLTIP;
         return new ItemSlot().marginTop(4)
             .slot(new ModularSlot(machine.inventoryHandler, machine.getSpecialSlotIndex()).slotGroup("item_inv"))
+            .overlay(slotOverlayFunction.apply(0, false, false, true))
             .tooltip(t -> t.addLine(GTUtility.translate(key)));
     }
 
@@ -152,8 +155,10 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
             .key('a', i -> new IDrawable.DrawableWidget(IDrawable.EMPTY).size(18))
             .key(
                 'c',
-                i -> new ItemSlot().slot(
-                    new ModularSlot(machine.inventoryHandler, machine.getInputSlot() + i).singletonSlotGroup(50 + i)))
+                i -> new ItemSlot().overlay(slotOverlayFunction.apply(i, false, false, false))
+                    .slot(
+                        new ModularSlot(machine.inventoryHandler, machine.getInputSlot() + i)
+                            .singletonSlotGroup(50 + i)))
             .build();
     }
 
@@ -253,7 +258,8 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
     }
 
     protected FluidSlot createFluidInputSlot() {
-        return new FluidSlot().syncHandler(machine.getFluidTank());
+        return new FluidSlot().overlay(slotOverlayFunction.apply(0, true, false, false))
+            .syncHandler(machine.getFluidTank());
     }
 
     protected ProgressWidget createProgressBar() {
@@ -269,12 +275,15 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
             .key('a', i -> new IDrawable.DrawableWidget(IDrawable.EMPTY).size(18))
             .key(
                 'c',
-                i -> new ItemSlot().slot(
-                    new ModularSlot(machine.inventoryHandler, machine.getOutputSlot() + i).accessibility(false, true)))
+                i -> new ItemSlot().overlay(slotOverlayFunction.apply(i, false, true, false))
+                    .slot(
+                        new ModularSlot(machine.inventoryHandler, machine.getOutputSlot() + i)
+                            .accessibility(false, true)))
             .build();
     }
 
     protected FluidSlot createFluidOutputSlot() {
-        return new FluidSlot().syncHandler(new FluidSlotSyncHandler(machine.getFluidOutputTank()).canFillSlot(false));
+        return new FluidSlot().overlay(slotOverlayFunction.apply(0, true, true, false))
+            .syncHandler(new FluidSlotSyncHandler(machine.getFluidOutputTank()).canFillSlot(false));
     }
 }

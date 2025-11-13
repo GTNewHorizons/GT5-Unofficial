@@ -71,6 +71,9 @@ public final class BasicUIPropertiesBuilder {
 
     private int amperage = 1;
 
+    private BasicUIProperties.SlotOverlayGetter<com.cleanroommc.modularui.api.drawable.IDrawable> slotOverlaysMUI2 = (
+        index, isFluid, isOutput, isSpecial) -> null;
+
     BasicUIPropertiesBuilder() {}
 
     public BasicUIProperties build() {
@@ -112,7 +115,8 @@ public final class BasicUIPropertiesBuilder {
             specialItemPositionGetter,
             fluidInputPositionsGetter,
             fluidOutputPositionsGetter,
-            amperage);
+            amperage,
+            slotOverlaysMUI2);
     }
 
     public BasicUIPropertiesBuilder maxItemInputs(int maxItemInputs) {
@@ -259,6 +263,12 @@ public final class BasicUIPropertiesBuilder {
 
     public BasicUIPropertiesBuilder amperage(int amperage) {
         this.amperage = amperage;
+        return this;
+    }
+
+    public BasicUIPropertiesBuilder slotOverlaysMUI2(
+        BasicUIProperties.SlotOverlayGetter<com.cleanroommc.modularui.api.drawable.IDrawable> slotOverlaysMUI2) {
+        this.slotOverlaysMUI2 = slotOverlaysMUI2;
         return this;
     }
 }

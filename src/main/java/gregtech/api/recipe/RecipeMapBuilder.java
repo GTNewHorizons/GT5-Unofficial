@@ -206,6 +206,12 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
         return this;
     }
 
+    public RecipeMapBuilder<B> slotOverlaysMUI2(
+        BasicUIProperties.SlotOverlayGetter<com.cleanroommc.modularui.api.drawable.IDrawable> slotOverlaysMUI2) {
+        uiPropertiesBuilder.slotOverlaysMUI2(slotOverlaysMUI2);
+        return this;
+    }
+
     /**
      * Sets texture and animation direction of the progressbar.
      * <p>

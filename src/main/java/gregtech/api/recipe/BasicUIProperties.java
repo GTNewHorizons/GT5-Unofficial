@@ -170,6 +170,8 @@ public final class BasicUIProperties {
     public final IntFunction<List<Pos2d>> fluidInputPositionsGetter;
     public final IntFunction<List<Pos2d>> fluidOutputPositionsGetter;
 
+    public final SlotOverlayGetter<com.cleanroommc.modularui.api.drawable.IDrawable> slotOverlaysMUI2;
+
     /**
      * Amperage for the recipemap. Even though this is placed at frontend because backend logic doesn't need it, some
      * machine logic also use this variable.
@@ -185,7 +187,8 @@ public final class BasicUIProperties {
         List<Pair<SteamTexture, Pair<Size, Pos2d>>> specialTexturesSteam, IDrawable logo, Size logoSize, Pos2d logoPos,
         IntFunction<List<Pos2d>> itemInputPositionsGetter, IntFunction<List<Pos2d>> itemOutputPositionsGetter,
         Supplier<Pos2d> specialItemPositionGetter, IntFunction<List<Pos2d>> fluidInputPositionsGetter,
-        IntFunction<List<Pos2d>> fluidOutputPositionsGetter, int amperage) {
+        IntFunction<List<Pos2d>> fluidOutputPositionsGetter, int amperage,
+        SlotOverlayGetter<com.cleanroommc.modularui.api.drawable.IDrawable> slotOverlaysMUI2) {
         if (maxItemInputs < 0 || maxItemOutputs < 0 || maxFluidInputs < 0 || maxFluidOutputs < 0) {
             throw new IllegalArgumentException(
                 "maxItemInputs, maxItemOutputs, maxFluidInputs and maxFluidOutputs cannot be negative");
@@ -219,6 +222,7 @@ public final class BasicUIProperties {
         this.fluidInputPositionsGetter = fluidInputPositionsGetter;
         this.fluidOutputPositionsGetter = fluidOutputPositionsGetter;
         this.amperage = amperage;
+        this.slotOverlaysMUI2 = slotOverlaysMUI2;
 
         this.progressBarImageSize = switch (progressBarDirection) {
             case UP, DOWN -> progressBarSize.height;
