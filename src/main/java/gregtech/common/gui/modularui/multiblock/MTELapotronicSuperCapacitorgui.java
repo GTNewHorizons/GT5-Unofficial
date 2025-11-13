@@ -41,12 +41,12 @@ public class MTELapotronicSuperCapacitorgui extends MTEMultiBlockBaseGui<MTELapo
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
 
         // weary amoutn of syncers
-        LongSyncValue avgOut = (LongSyncValue) syncManager.findSyncHandler("avgEuOut");
-        LongSyncValue avgIn = (LongSyncValue) syncManager.findSyncHandler("avgin");
-        BigIntSyncValue capacity = (BigIntSyncValue) syncManager.getSyncHandlerFromMapKey("capacity:0");
-        BigIntSyncValue storedEu = (BigIntSyncValue) syncManager.getSyncHandlerFromMapKey("stored:0");
-        BigIntSyncValue wireless = (BigIntSyncValue) syncManager.getSyncHandlerFromMapKey("wireless value:0");
-        LongSyncValue loss = (LongSyncValue) syncManager.getSyncHandlerFromMapKey("loss:0");
+        LongSyncValue avgOut = syncManager.findSyncHandler("avgEuOut", LongSyncValue.class);
+        LongSyncValue avgIn = syncManager.findSyncHandler("avgin", LongSyncValue.class);
+        BigIntSyncValue capacity = syncManager.findSyncHandler("capacity", BigIntSyncValue.class);
+        BigIntSyncValue storedEu = syncManager.findSyncHandler("stored", BigIntSyncValue.class);
+        BigIntSyncValue wireless = syncManager.findSyncHandler("wireless value", BigIntSyncValue.class);
+        LongSyncValue loss = syncManager.findSyncHandler("loss", LongSyncValue.class);
 
         return super.createTerminalTextWidget(syncManager, parent).child(IKey.dynamic(() -> {
             String cap = EnumChatFormatting.BLUE + formatNumber(capacity.getValue());
@@ -114,10 +114,10 @@ public class MTELapotronicSuperCapacitorgui extends MTEMultiBlockBaseGui<MTELapo
 
     @Override
     protected Flow createLeftPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
-        BooleanSyncValue showWarning = (BooleanSyncValue) syncManager.getSyncHandlerFromMapKey("warning:0");
-        BooleanSyncValue canRebalance = (BooleanSyncValue) syncManager.getSyncHandlerFromMapKey("canRebalance:0");
-        BooleanSyncValue rebalanced = (BooleanSyncValue) syncManager.getSyncHandlerFromMapKey("rebalanced:0");
-        BooleanSyncValue wireless = (BooleanSyncValue) syncManager.getSyncHandlerFromMapKey("wireless:0");
+        BooleanSyncValue showWarning = syncManager.findSyncHandler("warning", BooleanSyncValue.class);
+        BooleanSyncValue canRebalance = syncManager.findSyncHandler("canRebalance", BooleanSyncValue.class);
+        BooleanSyncValue rebalanced = syncManager.findSyncHandler("rebalanced", BooleanSyncValue.class);
+        BooleanSyncValue wireless = syncManager.findSyncHandler("wireless", BooleanSyncValue.class);
         IPanelHandler warningPanel = syncManager.panel("warning panel", ((a, b) -> warningPanel()), true);
 
         return super.createLeftPanelGapRow(parent, syncManager)
@@ -291,7 +291,7 @@ public class MTELapotronicSuperCapacitorgui extends MTEMultiBlockBaseGui<MTELapo
 
     private ModularPanel createEnergyPopup(PanelSyncManager syncManager) {
 
-        BigIntSyncValue stored = (BigIntSyncValue) syncManager.getSyncHandlerFromMapKey("stored:0");
+        BigIntSyncValue stored = syncManager.findSyncHandler("stored", BigIntSyncValue.class);
         return new ModularPanel("energy").background(GTGuiTextures.BACKGROUND_STANDARD)
             .coverChildren()
             .child(
@@ -304,7 +304,8 @@ public class MTELapotronicSuperCapacitorgui extends MTEMultiBlockBaseGui<MTELapo
                     .child(
                         new TextFieldWidget().value(stored)
                             .setNumbersLong(() -> 0L, () -> Long.MAX_VALUE)
-                            .margin(4, 0)
+                            .marginLeft(4)
+                            .marginRight(4)
                             .marginBottom(4)
                             .width(80)));
 
