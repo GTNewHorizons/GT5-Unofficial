@@ -291,7 +291,8 @@ public enum ForgeOfGodsUpgrade {
     private UpgradeColor color;
     private MilestoneIcon icon;
     private BGWindowSize windowSize;
-    private Pos2d treePos;
+    private int treeX;
+    private int treeY;
 
     // Pre-generated data
     private ForgeOfGodsUpgrade[] dependents = new ForgeOfGodsUpgrade[0];
@@ -317,7 +318,8 @@ public enum ForgeOfGodsUpgrade {
         this.color = b.color;
         this.icon = b.icon;
         this.windowSize = b.windowSize;
-        this.treePos = b.treePos;
+        this.treeX = b.treeX;
+        this.treeY = b.treeY;
     }
 
     public void addExtraCost(ItemStack... cost) {
@@ -375,8 +377,17 @@ public enum ForgeOfGodsUpgrade {
         return windowSize.getLoreY();
     }
 
+    // todo remove
     public Pos2d getTreePos() {
-        return treePos;
+        return new Pos2d(treeX, treeY);
+    }
+
+    public int getTreeX() {
+        return treeX;
+    }
+
+    public int getTreeY() {
+        return treeY;
     }
 
     public String getNameText() {
@@ -408,7 +419,8 @@ public enum ForgeOfGodsUpgrade {
         private UpgradeColor color = BLUE;
         private MilestoneIcon icon = CHARGE;
         private BGWindowSize windowSize = STANDARD;
-        private Pos2d treePos = new Pos2d(0, 0);
+        private int treeX;
+        private int treeY;
 
         private Builder() {}
 
@@ -444,7 +456,8 @@ public enum ForgeOfGodsUpgrade {
         }
 
         public Builder treePos(int x, int y) {
-            this.treePos = new Pos2d(x, y);
+            this.treeX = x;
+            this.treeY = y;
             return this;
         }
     }

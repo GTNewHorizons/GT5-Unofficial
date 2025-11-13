@@ -759,6 +759,42 @@ public final class GTGuiTextures {
 
     public static final UITexture PICTURE_INFO = fullImage(GregTech.ID, "gui/picture/information_round");
 
+    public static final UITexture PICTURE_OVERLAY_BLUE = UITexture.fullImage(MODID, "gui/picture/overlay_blue");
+    public static final UITexture PICTURE_OVERLAY_ORANGE = UITexture.fullImage(MODID, "gui/picture/overlay_orange");
+    public static final UITexture PICTURE_OVERLAY_GREEN = UITexture.fullImage(MODID, "gui/picture/overlay_green");
+    public static final UITexture PICTURE_OVERLAY_PURPLE = UITexture.fullImage(MODID, "gui/picture/overlay_purple");
+    public static final UITexture PICTURE_OVERLAY_RED = UITexture.fullImage(MODID, "gui/picture/overlay_red");
+    public static final UITexture PICTURE_UPGRADE_CONNECTOR_PURPLE = UITexture.builder()
+        .location(MODID, "gui/picture/connector_purple")
+        .nonOpaque()
+        .build();
+    public static final UITexture PICTURE_UPGRADE_CONNECTOR_GREEN = UITexture.builder()
+        .location(MODID, "gui/picture/connector_green")
+        .nonOpaque()
+        .build();
+    public static final UITexture PICTURE_UPGRADE_CONNECTOR_ORANGE = UITexture.builder()
+        .location(MODID, "gui/picture/connector_orange")
+        .nonOpaque()
+        .build();
+    public static final UITexture PICTURE_UPGRADE_CONNECTOR_BLUE = UITexture.builder()
+        .location(MODID, "gui/picture/connector_blue")
+        .nonOpaque()
+        .build();
+    public static final UITexture PICTURE_UPGRADE_CONNECTOR_RED = UITexture.builder()
+        .location(MODID, "gui/picture/connector_red")
+        .nonOpaque()
+        .build();
+    public static final UITexture PICTURE_UPGRADE_CONNECTOR_PURPLE_OPAQUE = UITexture
+        .fullImage(MODID, "gui/picture/connector_purple_opaque");
+    public static final UITexture PICTURE_UPGRADE_CONNECTOR_GREEN_OPAQUE = UITexture
+        .fullImage(MODID, "gui/picture/connector_green_opaque");
+    public static final UITexture PICTURE_UPGRADE_CONNECTOR_ORANGE_OPAQUE = UITexture
+        .fullImage(MODID, "gui/picture/connector_orange_opaque");
+    public static final UITexture PICTURE_UPGRADE_CONNECTOR_BLUE_OPAQUE = UITexture
+        .fullImage(MODID, "gui/picture/connector_blue_opaque");
+    public static final UITexture PICTURE_UPGRADE_CONNECTOR_RED_OPAQUE = UITexture
+        .fullImage(MODID, "gui/picture/connector_red_opaque");
+
     public static final UITexture TT_CONTROLLER_SLOT_HEAT_SINK = UITexture.builder()
         .location(MODID, "gui/picture/heat_sink_small")
         .canApplyTheme()
