@@ -4,15 +4,22 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade.*;
 
+import java.util.Arrays;
+
 import net.minecraft.util.EnumChatFormatting;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
+import com.cleanroommc.modularui.api.drawable.IDrawable.DrawableWidget;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.Interactable;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
+import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
+import com.cleanroommc.modularui.widget.ScrollWidget;
+import com.cleanroommc.modularui.widget.Widget;
+import com.cleanroommc.modularui.widget.scroll.VerticalScrollData;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
@@ -22,8 +29,10 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
 import gregtech.common.gui.modularui.multiblock.godforge.data.SyncActions;
 import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValues;
+import gregtech.common.gui.modularui.multiblock.godforge.data.UpgradeColor;
 import gregtech.common.gui.modularui.multiblock.godforge.util.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
+import gregtech.common.gui.modularui.widget.RotatedDrawable;
 import tectech.loader.ConfigHandler;
 import tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
@@ -31,6 +40,11 @@ import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 public class UpgradeTreePanel {
 
     private static final int SIZE = 300;
+    private static final int OFFSET_SIZE = 292;
+    private static final int SCROLL_SIZE = 957;
+
+    private static final int BUTTON_W = 40;
+    private static final int BUTTON_H = 15;
 
     public static ModularPanel openPanel(SyncHypervisor hypervisor) {
         ModularPanel panel = hypervisor.getModularPanel(Panels.UPGRADE_TREE);
@@ -38,6 +52,7 @@ public class UpgradeTreePanel {
         registerSyncValues(hypervisor);
 
         panel.size(SIZE)
+            .padding(4, 0, 4, 0)
             .background(GTGuiTextures.BACKGROUND_STAR)
             .disableHoverBackground()
             .child(ForgeOfGodsGuiUtil.panelCloseButton());
@@ -45,14 +60,61 @@ public class UpgradeTreePanel {
         // Debug widgets
         panel.child(getDebugWidgets(hypervisor));
 
-        panel.child(createUpgradeButton(START, hypervisor).pos(100, 100));
+        // ListWidget doesn't work here due to how the tree is built
+        VerticalScrollData scrollData = new VerticalScrollData();
+        scrollData.setScrollSize(SCROLL_SIZE);
+        ScrollWidget<?> treeList = new ScrollWidget<>(scrollData).size(OFFSET_SIZE);
 
+        // Connector lines
+        treeList.child(createConnectorLine(UpgradeColor.BLUE, START, IGCC, hypervisor))
+            .child(createConnectorLine(UpgradeColor.BLUE, IGCC, STEM, hypervisor))
+            .child(createConnectorLine(UpgradeColor.BLUE, IGCC, CFCE, hypervisor))
+            .child(createConnectorLine(UpgradeColor.BLUE, STEM, GISS, hypervisor))
+            .child(createConnectorLine(UpgradeColor.BLUE, STEM, FDIM, hypervisor))
+            .child(createConnectorLine(UpgradeColor.BLUE, CFCE, FDIM, hypervisor))
+            .child(createConnectorLine(UpgradeColor.BLUE, CFCE, SA, hypervisor))
+            .child(createConnectorLine(UpgradeColor.BLUE, FDIM, GPCI, hypervisor))
+            .child(createConnectorLine(UpgradeColor.BLUE, GPCI, GEM, hypervisor))
+            .child(createConnectorLine(UpgradeColor.RED, GISS, REC, hypervisor))
+            .child(createConnectorLine(UpgradeColor.RED, GPCI, REC, hypervisor))
+            .child(createConnectorLine(UpgradeColor.RED, SA, CTCDD, hypervisor))
+            .child(createConnectorLine(UpgradeColor.RED, GPCI, CTCDD, hypervisor))
+            .child(createConnectorLine(UpgradeColor.BLUE, REC, QGPIU, hypervisor))
+            .child(createConnectorLine(UpgradeColor.BLUE, CTCDD, QGPIU, hypervisor))
+            .child(createConnectorLine(UpgradeColor.ORANGE, QGPIU, TCT, hypervisor))
+            .child(createConnectorLine(UpgradeColor.ORANGE, TCT, EPEC, hypervisor))
+            .child(createConnectorLine(UpgradeColor.ORANGE, EPEC, POS, hypervisor))
+            .child(createConnectorLine(UpgradeColor.ORANGE, POS, NGMS, hypervisor))
+            .child(createConnectorLine(UpgradeColor.PURPLE, QGPIU, SEFCP, hypervisor))
+            .child(createConnectorLine(UpgradeColor.PURPLE, SEFCP, CNTI, hypervisor))
+            .child(createConnectorLine(UpgradeColor.PURPLE, CNTI, NDPE, hypervisor))
+            .child(createConnectorLine(UpgradeColor.PURPLE, NDPE, NGMS, hypervisor))
+            .child(createConnectorLine(UpgradeColor.PURPLE, CNTI, DOP, hypervisor))
+            .child(createConnectorLine(UpgradeColor.GREEN, QGPIU, GGEBE, hypervisor))
+            .child(createConnectorLine(UpgradeColor.GREEN, GGEBE, IMKG, hypervisor))
+            .child(createConnectorLine(UpgradeColor.GREEN, IMKG, DOR, hypervisor))
+            .child(createConnectorLine(UpgradeColor.GREEN, DOR, NGMS, hypervisor))
+            .child(createConnectorLine(UpgradeColor.GREEN, GGEBE, TPTP, hypervisor))
+            .child(createConnectorLine(UpgradeColor.BLUE, NGMS, SEDS, hypervisor))
+            .child(createConnectorLine(UpgradeColor.BLUE, SEDS, PA, hypervisor))
+            .child(createConnectorLine(UpgradeColor.BLUE, PA, CD, hypervisor))
+            .child(createConnectorLine(UpgradeColor.BLUE, CD, TSE, hypervisor))
+            .child(createConnectorLine(UpgradeColor.BLUE, TSE, TBF, hypervisor))
+            .child(createConnectorLine(UpgradeColor.BLUE, TBF, EE, hypervisor))
+            .child(createConnectorLine(UpgradeColor.BLUE, EE, END, hypervisor));
+
+        // Upgrade buttons
+        Arrays.stream(ForgeOfGodsUpgrade.VALUES)
+            .sequential()
+            .map(upgrade -> createUpgradeButton(upgrade, hypervisor))
+            .forEach(treeList::child);
+
+        panel.child(treeList);
         return panel;
     }
 
     private static void registerSyncValues(SyncHypervisor hypervisor) {
         SyncValues.UPGRADE_CLICKED.registerFor(Panels.UPGRADE_TREE, hypervisor);
-        // SyncValues.AVAILABLE_GRAVITON_SHARDS.registerFor(Panels.UPGRADE_TREE, hypervisor);
 
         SyncActions.RESPEC_UPGRADE.registerFor(Panels.UPGRADE_TREE, hypervisor);
         SyncActions.COMPLETE_UPGRADE.registerFor(Panels.UPGRADE_TREE, hypervisor);
@@ -63,7 +125,8 @@ public class UpgradeTreePanel {
         IPanelHandler manualInsertionPanel = Panels.MANUAL_INSERTION.getFrom(Panels.UPGRADE_TREE, hypervisor);
 
         ButtonWidget<?> widget = new ButtonWidget<>();
-        return widget.size(40, 15)
+        return widget.size(BUTTON_W, BUTTON_H)
+            .pos(upgrade.getTreeX(), upgrade.getTreeY())
             .background(new DynamicDrawable(() -> {
                 ForgeOfGodsData data = hypervisor.getData();
                 if (data.isUpgradeActive(upgrade)) {
@@ -109,11 +172,43 @@ public class UpgradeTreePanel {
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
+    private static Widget<?> createConnectorLine(UpgradeColor color, ForgeOfGodsUpgrade fromUpgrade,
+        ForgeOfGodsUpgrade toUpgrade, SyncHypervisor hypervisor) {
+        // Calculate the two widget center points
+        int fromCenterX = fromUpgrade.getTreeX() + (BUTTON_W / 2);
+        int fromCenterY = fromUpgrade.getTreeY() + (BUTTON_H / 2);
+        int toCenterX = toUpgrade.getTreeX() + (BUTTON_W / 2);
+        int toCenterY = toUpgrade.getTreeY() + (BUTTON_H / 2);
+
+        // Distance formula to determine the height of the line widget
+        int width = 6;
+        int height = (int) Math.sqrt(Math.pow(toCenterX - fromCenterX, 2) + Math.pow(toCenterY - fromCenterY, 2));
+
+        // Find the angle of the line between the two points
+        float rotation = (float) (Math.atan2(toCenterY - fromCenterY, toCenterX - fromCenterX) - (Math.PI / 2));
+
+        // Midpoint formula to find the center point between the two points
+        int x = (fromCenterX + toCenterX) / 2;
+        int y = (fromCenterY + toCenterY) / 2;
+
+        // Offset to be at the top-left of the widget instead of the center
+        x -= width / 2;
+        y -= height / 2;
+
+        return new DrawableWidget(new DynamicDrawable(() -> {
+            ForgeOfGodsData data = hypervisor.getData();
+            UITexture texture = color.getConnector();
+            if (data.isUpgradeActive(fromUpgrade) && data.isUpgradeActive(toUpgrade)) {
+                texture = color.getOpaqueConnector();
+            }
+            return new RotatedDrawable(texture).rotationRadian(rotation);
+        })).pos(x, y)
+            .size(width, height);
+    }
+
     private static Flow getDebugWidgets(SyncHypervisor hypervisor) {
         Flow row = new Column().coverChildren()
             .align(Alignment.TopLeft)
-            .marginLeft(4)
-            .marginTop(4)
             .setEnabledIf($ -> ConfigHandler.debug.DEBUG_MODE);
 
         // Reset upgrades
