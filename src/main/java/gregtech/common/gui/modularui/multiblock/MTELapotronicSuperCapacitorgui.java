@@ -49,18 +49,19 @@ public class MTELapotronicSuperCapacitorgui extends MTEMultiBlockBaseGui<MTELapo
         LongSyncValue loss = (LongSyncValue) syncManager.getSyncHandlerFromMapKey("loss:0");
 
         return super.createTerminalTextWidget(syncManager, parent).child(IKey.dynamic(() -> {
-            String cap = EnumChatFormatting.BLUE + formatNumber(capacity.getValue());
+
+            String storedString = EnumChatFormatting.GREEN + formatNumber(storedEu.getValue());
             return EnumChatFormatting.WHITE + StatCollector
-                .translateToLocalFormatted("kekztech.infodata.lapotronic_super_capacitor.total_capacity", cap);
+                .translateToLocalFormatted("kekztech.gui.lapotronic_super_capacitor.text.stored", storedString);
         })
             .asWidget())
             .child(IKey.dynamic(() -> {
-
-                String storedString = EnumChatFormatting.GREEN + formatNumber(storedEu.getValue());
+                String cap = EnumChatFormatting.BLUE + formatNumber(capacity.getValue());
                 return EnumChatFormatting.WHITE + StatCollector
-                    .translateToLocalFormatted("kekztech.gui.lapotronic_super_capacitor.text.stored", storedString);
+                    .translateToLocalFormatted("kekztech.infodata.lapotronic_super_capacitor.total_capacity", cap);
             })
                 .asWidget())
+
             .child(IKey.dynamic(() -> {
                 String percent = EnumChatFormatting.BLUE
                     + Util.toPercentageFrom(storedEu.getValue(), capacity.getValue());
