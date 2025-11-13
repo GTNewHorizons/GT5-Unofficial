@@ -112,9 +112,13 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
             .tooltip(t -> t.addLine(GTUtility.translate(tooltipKey)));
     }
 
+    private boolean shouldIncreaseGuiHeight() {
+        return properties.maxItemInputs > 6 || properties.maxItemOutputs > 6;
+    }
+
     @Override
     protected int getBasePanelHeight() {
-        return super.getBasePanelHeight() + (18 * (properties.maxItemInputs >= 6 ? 1 : 0));
+        return super.getBasePanelHeight() + (18 * (this.shouldIncreaseGuiHeight() ? 1 : 0));
     }
 
     @Override
@@ -133,31 +137,75 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
     }
 
     protected SlotGroupWidget createItemInputSlots() {
-        int maxInputSlots = this.properties.maxItemInputs;
-        String[] matrix = mapSlotsToMatrix(maxInputSlots);// new String[1 + ((maxInputSlots-1)/3)];
-        // for(int i = 0; i < maxInputSlots; i++)
-        // {
-        // int row = i/3;
-        // matrix[row] = matrix[row] == null ? "c" : matrix[row]+"c";
-        // }
+        String[] matrix = mapInSlotsToMatrix();
+
         return SlotGroupWidget.builder()
             .matrix(matrix)
             .key('a', i -> new IDrawable.DrawableWidget(IDrawable.EMPTY).size(18))
-            .key('c', i -> new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, machine.getInputSlot() + i)))
+            .key(
+                'c',
+                i -> new ItemSlot().slot(
+                    new ModularSlot(machine.inventoryHandler, machine.getInputSlot() + i).singletonSlotGroup(50 + i)))
             .build();
     }
 
-    protected static String[] mapSlotsToMatrix(int slots) {
+    protected String[] mapInSlotsToMatrix() {
+        int slots = properties.maxItemInputs;
         String[] matrix = new String[] { "aaa", "aaa", "aaa" };
         switch (slots) {
             case 1 -> {
-                matrix[0] = "caa";
+                matrix[1] = "aac";
             }
             case 2 -> {
-                matrix[0] = "cca";
+                matrix[1] = "acc";
             }
             case 3 -> {
+                matrix[1] = "ccc";
+            }
+            case 4 -> {
+                matrix[0] = "acc";
+                matrix[1] = "acc";
+            }
+            case 5 -> {
+                matrix[0] = "acc";
+                matrix[1] = "ccc";
+            }
+            case 6 -> {
                 matrix[0] = "ccc";
+                matrix[1] = "ccc";
+            }
+            case 7 -> {
+                matrix[0] = "ccc";
+                matrix[1] = "ccc";
+                matrix[2] = "aac";
+            }
+            case 8 -> {
+                matrix[0] = "ccc";
+                matrix[1] = "ccc";
+                matrix[2] = "acc";
+            }
+            case 9 -> {
+                matrix[0] = "ccc";
+                matrix[1] = "ccc";
+                matrix[2] = "ccc";
+            }
+        }
+        return matrix;
+
+    }
+
+    protected String[] mapOutSlotsToMatrix() {
+        int slots = properties.maxItemOutputs;
+        String[] matrix = new String[] { "aaa", "aaa", "aaa" };
+        switch (slots) {
+            case 1 -> {
+                matrix[1] = "caa";
+            }
+            case 2 -> {
+                matrix[1] = "cca";
+            }
+            case 3 -> {
+                matrix[1] = "ccc";
             }
             case 4 -> {
                 matrix[0] = "cca";
@@ -202,17 +250,14 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
     }
 
     protected SlotGroupWidget createItemOutputSlots() {
-        int maxOutputSlots = this.properties.maxItemOutputs;
-        String[] matrix = mapSlotsToMatrix(maxOutputSlots);// new String[1 + ((maxInputSlots-1)/3)];
-        // for(int i = 0; i < maxInputSlots; i++)
-        // {
-        // int row = i/3;
-        // matrix[row] = matrix[row] == null ? "c" : matrix[row]+"c";
-        // }
+        String[] matrix = mapOutSlotsToMatrix();
         return SlotGroupWidget.builder()
             .matrix(matrix)
             .key('a', i -> new IDrawable.DrawableWidget(IDrawable.EMPTY).size(18))
-            .key('c', i -> new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, machine.getOutputSlot() + i)))
+            .key(
+                'c',
+                i -> new ItemSlot().slot(
+                    new ModularSlot(machine.inventoryHandler, machine.getOutputSlot() + i).accessibility(false, true)))
             .build();
     }
 
