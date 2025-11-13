@@ -10,6 +10,7 @@ import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
+import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Column;
@@ -50,6 +51,9 @@ public class MTEBasicMachineBaseGui {
     }
 
     protected void registerSyncValues(PanelSyncManager syncManager) {
+
+        syncManager.registerSlotGroup("item_inv", 1);
+
         BooleanSyncValue powerSwitchSyncer = new BooleanSyncValue(baseMetaTileEntity::isAllowedToWork, bool -> {
             if (isPowerSwitchDisabled()) return;
             if (bool) baseMetaTileEntity.enableWorking();
@@ -93,7 +97,8 @@ public class MTEBasicMachineBaseGui {
 
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         return new ParentWidget<>().sizeRel(1)
-            .childIf(this.supportsLeftCornerFlow(), createLeftCornerFlow(panel, syncManager));
+            .childIf(this.supportsLeftCornerFlow(), createLeftCornerFlow(panel, syncManager))
+            .childIf(this.supportsRightCornerFlow(), createRightCornerFlow(panel, syncManager));
     }
 
     protected int getContentRowWidth() {
@@ -102,6 +107,10 @@ public class MTEBasicMachineBaseGui {
 
     protected int getContentRowHeight() {
         return (getBasePanelHeight() - borderRadius * 2) - (machine.doesBindPlayerInventory() ? 80 : 0);
+    }
+
+    protected boolean supportsLeftCornerFlow() {
+        return true;
     }
 
     // Row by default, going left to right
@@ -114,8 +123,23 @@ public class MTEBasicMachineBaseGui {
         return cornerFlow;
     }
 
-    protected boolean supportsLeftCornerFlow() {
+    protected boolean supportsRightCornerFlow() {
         return true;
+    }
+
+    // Row by default, going left to right
+    protected Flow createRightCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
+        Flow cornerFlow = Flow.row()
+            .mainAxisAlignment(Alignment.MainAxis.END)
+            .reverseLayout(true)
+            .coverChildren()
+            .align(Alignment.BottomRight)
+            .paddingBottom(4)
+            .paddingRight(4);
+
+        cornerFlow.childIf(this.doesAddGregTechLogo(), this.createLogo());
+
+        return cornerFlow;
     }
 
     protected boolean doesAddGregTechLogo() {
@@ -144,23 +168,35 @@ public class MTEBasicMachineBaseGui {
             .anchorBottom(0)
             .mainAxisAlignment(Alignment.MainAxis.END)
             .reverseLayout(true)
-            .child(createPowerSwitchButton())
-            .childIf(this.doesAddCircuitSlot(), CommonWidgets.createCircuitSlot(syncManager, machine))
-            .childIf(this.doesAddGregTechLogo(), this.createLogo());
+            .childIf(this.doesAddSpecialSlot(), this.createSpecialSlot())
+            .child(this.createPowerSwitchButton())
+            .childIf(this.doesAddCircuitSlot(), this.createCircuitSlot(syncManager));
+    }
+
+    protected boolean doesAddSpecialSlot() {
+        return true;
+    }
+
+    // by default, adds an empty widget, things can override this to add anything in the bottom right corner
+    // typically, this is used for the 'special slot' on singleblocks
+    protected Widget<? extends Widget<?>> createSpecialSlot() {
+        return IDrawable.EMPTY.asWidget()
+            .size(18)
+            .marginTop(4);
     }
 
     protected boolean isPowerSwitchDisabled() {
         return false;
     }
 
-    protected IWidget createPowerSwitchButton() {
+    protected ToggleButton createPowerSwitchButton() {
         return CommonWidgets.createPowerSwitchButton("powerSwitch", isPowerSwitchDisabled(), baseMetaTileEntity)
-            .marginTop(4);
+            .marginTop(this.doesAddSpecialSlot() ? 0 : 4);
     }
 
     protected IDrawable.DrawableWidget createLogo() {
         return new IDrawable.DrawableWidget(getLogoTexture()).size(18)
-            .marginTop(2);
+            .marginLeft(2);
     }
 
     // the base class is an instance of ICircuitConfiguration
@@ -168,17 +204,15 @@ public class MTEBasicMachineBaseGui {
         return machine.allowSelectCircuit();
     }
 
+    protected Widget<? extends Widget<?>> createCircuitSlot(PanelSyncManager syncManager) {
+        return CommonWidgets.createCircuitSlot(syncManager, machine);
+    }
+
     protected ToggleButton createMufflerButton() {
         return CommonWidgets.createMuffleButton("mufflerSyncer")
-            .top(getMufflerPosFromTop())
-            .right(-getMufflerPosFromRightOutwards());
+            .align(Alignment.TopRight)
+            .background(IDrawable.EMPTY)
+            .selectedBackground(IDrawable.EMPTY);
     }
 
-    protected int getMufflerPosFromTop() {
-        return 0;
-    }
-
-    protected int getMufflerPosFromRightOutwards() {
-        return 0;
-    }
 }
