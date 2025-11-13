@@ -14,7 +14,6 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
 import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
@@ -87,8 +86,7 @@ public class CoverControlsWork extends CoverLegacyData {
         if (coverable != null && hasCoverGUI() && aPlayer instanceof EntityPlayerMP) {
             lastPlayer = new WeakReference<>(aPlayer);
             mPlayerNotified = false;
-            GTUIInfos.openCoverUI(coverable, aPlayer, coverSide);
-            return true;
+            return super.onCoverShiftRightClick(aPlayer);
         }
         return false;
     }
@@ -224,7 +222,7 @@ public class CoverControlsWork extends CoverLegacyData {
 
     @Override
     protected @NotNull CoverGui<?> getCoverGui() {
-        return new CoverControlsWorkGui();
+        return new CoverControlsWorkGui(this);
     }
 
     @Override

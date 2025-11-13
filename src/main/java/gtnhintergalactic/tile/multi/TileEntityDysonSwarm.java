@@ -540,4 +540,9 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
         aNBT.setInteger("moduleCount", moduleCount);
         aNBT.setLong("euPerTick", euPerTick);
     }
+
+    @Override
+    public boolean showRecipeTextInGUI() {
+        return false;
+    }
 }

@@ -35,27 +35,11 @@ public class Client {
         @Config.Comment("RGB values for the cable insulation color modulation.")
         public CableInsulation cableInsulation = new CableInsulation();
 
-        @Config.Comment("RGB values for the construction foam color modulation.")
-        public ConstructionFoam constructionFoam = new ConstructionFoam();
-
         @Config.Comment("RGB values for the machine metal color modulation (default GUI color).")
         public MachineMetal machineMetal = new MachineMetal();
 
         @Config.LangKey("GT5U.gui.config.client.color_modulation.cable_insulation")
         public static class CableInsulation {
-
-            @Config.DefaultInt(64)
-            public int red;
-
-            @Config.DefaultInt(64)
-            public int green;
-
-            @Config.DefaultInt(64)
-            public int blue;
-        }
-
-        @Config.LangKey("GT5U.gui.config.client.color_modulation.construction_foam")
-        public static class ConstructionFoam {
 
             @Config.DefaultInt(64)
             public int red;

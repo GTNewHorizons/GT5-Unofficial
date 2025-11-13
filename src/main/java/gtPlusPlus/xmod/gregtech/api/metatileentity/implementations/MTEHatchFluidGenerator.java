@@ -216,12 +216,7 @@ public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
     }
 
     @Override
-    public int fill(ForgeDirection arg0, FluidStack arg1, boolean arg2) {
-        return 0;
-    }
-
-    @Override
-    public int fill_default(ForgeDirection aSide, FluidStack aFluid, boolean doFill) {
+    public int fill(ForgeDirection side, FluidStack aFluid, boolean doFill) {
         return 0;
     }
 

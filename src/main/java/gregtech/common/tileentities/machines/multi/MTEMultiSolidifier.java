@@ -16,7 +16,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -431,14 +430,11 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     protected CheckRecipeResult checkRecipeForCustomHatches(CheckRecipeResult lastResult) {
         for (MTEHatchInput solidifierHatch : mInputHatches) {
             if (solidifierHatch instanceof MTEHatchSolidifier hatch) {
-                ItemStack mold = hatch.getMold();
+                List<ItemStack> items = hatch.getNonConsumableItems();
                 FluidStack fluid = solidifierHatch.getFluid();
 
-                if (mold != null && fluid != null) {
-                    List<ItemStack> inputItems = new ArrayList<>();
-                    inputItems.add(mold);
-
-                    processingLogic.setInputItems(inputItems);
+                if (items != null && fluid != null) {
+                    processingLogic.setInputItems(items);
                     processingLogic.setInputFluids(fluid);
 
                     CheckRecipeResult foundResult = processingLogic.process();

@@ -341,4 +341,9 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
         return 0;
     }
 
+    @Override
+    public boolean showRecipeTextInGUI() {
+        return false;
+    }
+
 }

@@ -8,17 +8,19 @@ import com.cleanroommc.modularui.widgets.CycleButtonWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
 
-import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverNeedMaintainance;
 import gregtech.common.covers.conditions.MaintenanceAlertCondition;
 import gregtech.common.covers.modes.RedstoneMode;
 import gregtech.common.modularui2.sync.LinkedBoolValue;
-import gregtech.common.modularui2.util.FlowActions;
 import gregtech.common.modularui2.widget.SelectButton;
 
 public class CoverNeedMaintenanceGui extends CoverGui<CoverNeedMaintainance> {
+
+    public CoverNeedMaintenanceGui(CoverNeedMaintainance cover) {
+        super(cover);
+    }
 
     @Override
     protected String getGuiId() {
@@ -26,8 +28,7 @@ public class CoverNeedMaintenanceGui extends CoverGui<CoverNeedMaintainance> {
     }
 
     @Override
-    public void addUIWidgets(CoverGuiData guiData, PanelSyncManager syncManager, Flow column) {
-        CoverNeedMaintainance cover = getCover(guiData);
+    public void addUIWidgets(PanelSyncManager syncManager, Flow column) {
         EnumSyncValue<MaintenanceAlertCondition> thresholdSyncValue = new EnumSyncValue<>(
             MaintenanceAlertCondition.class,
             cover::getMaintenanceAlertCondition,
@@ -36,10 +37,7 @@ public class CoverNeedMaintenanceGui extends CoverGui<CoverNeedMaintainance> {
         EnumSyncValue<RedstoneMode> redstoneModeSyncValue = new EnumSyncValue<>(
             RedstoneMode.class,
             cover::getRedstoneMode,
-            mode -> {
-                cover.setRedstoneMode(mode);
-                FlowActions.resize(column);
-            });
+            cover::setRedstoneMode);
 
         column.child(
             Flow.row()

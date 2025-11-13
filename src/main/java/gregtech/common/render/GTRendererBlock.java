@@ -12,8 +12,6 @@ import static gregtech.api.interfaces.metatileentity.IConnectable.CONNECTED_NORT
 import static gregtech.api.interfaces.metatileentity.IConnectable.CONNECTED_SOUTH;
 import static gregtech.api.interfaces.metatileentity.IConnectable.CONNECTED_UP;
 import static gregtech.api.interfaces.metatileentity.IConnectable.CONNECTED_WEST;
-import static gregtech.api.interfaces.metatileentity.IConnectable.HAS_FRESHFOAM;
-import static gregtech.api.interfaces.metatileentity.IConnectable.HAS_HARDENEDFOAM;
 import static gregtech.api.interfaces.metatileentity.IConnectable.NO_CONNECTION;
 import static net.minecraftforge.common.util.ForgeDirection.DOWN;
 import static net.minecraftforge.common.util.ForgeDirection.EAST;
@@ -171,9 +169,6 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
     public boolean renderPipeBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock,
         IPipeRenderedTileEntity aTileEntity, RenderBlocks aRenderer) {
         final byte aConnections = aTileEntity.getConnections();
-        if ((aConnections & (HAS_FRESHFOAM | HAS_HARDENEDFOAM)) != 0) {
-            return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer);
-        }
         final float thickness = aTileEntity.getThickNess();
         if (thickness >= 0.99F) {
             return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer);

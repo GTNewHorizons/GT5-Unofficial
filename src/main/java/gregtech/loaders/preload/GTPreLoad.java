@@ -538,11 +538,6 @@ public class GTPreLoad {
                         dye.mRGBa[1] = (short) sanitizeConfigInt(Client.colorModulation.cableInsulation.green);
                         dye.mRGBa[2] = (short) sanitizeConfigInt(Client.colorModulation.cableInsulation.blue);
                     }
-                    case "construction_foam" -> {
-                        dye.mRGBa[0] = (short) sanitizeConfigInt(Client.colorModulation.constructionFoam.red);
-                        dye.mRGBa[1] = (short) sanitizeConfigInt(Client.colorModulation.constructionFoam.green);
-                        dye.mRGBa[2] = (short) sanitizeConfigInt(Client.colorModulation.constructionFoam.blue);
-                    }
                     case "machine_metal" -> {
                         dye.mRGBa[0] = (short) sanitizeConfigInt(Client.colorModulation.machineMetal.red);
                         dye.mRGBa[1] = (short) sanitizeConfigInt(Client.colorModulation.machineMetal.green);

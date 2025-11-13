@@ -215,4 +215,9 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
     }
+
+    @Override
+    public boolean showRecipeTextInGUI() {
+        return false;
+    }
 }

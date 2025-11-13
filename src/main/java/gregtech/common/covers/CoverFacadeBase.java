@@ -333,7 +333,7 @@ public abstract class CoverFacadeBase extends Cover {
 
     @Override
     protected @NotNull CoverGui<?> getCoverGui() {
-        return new CoverFacadeBaseGui();
+        return new CoverFacadeBaseGui(this);
     }
 
     @Override

@@ -98,8 +98,8 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
             .setPlayClickSound(supportsVoidProtection())
             .setBackground(() -> {
                 List<UITexture> ret = new ArrayList<>();
-                ret.add(getVoidingMode().buttonTexture);
-                ret.add(getVoidingMode().buttonOverlay);
+                ret.add(getVoidingMode().buttonTextureLegacy);
+                ret.add(getVoidingMode().buttonOverlayLegacy);
                 if (!supportsVoidProtection()) {
                     ret.add(GTUITextures.OVERLAY_BUTTON_FORBIDDEN);
                 }
