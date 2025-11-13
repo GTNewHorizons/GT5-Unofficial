@@ -57,6 +57,7 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IHeatingCoil;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.ITurnable;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
@@ -892,8 +893,16 @@ public class GTStructureUtility {
 
                 if (!(stack.getItem() instanceof ItemMachines itemMachines)) return false;
 
-                return itemMachines
+                boolean success = itemMachines
                     .placeBlockAt(stack, null, world, x, y, z, ForgeDirection.UP.ordinal(), 0.5f, 0.5f, 0.5f, 0);
+
+                if (!success) return false;
+
+                if (world.getTileEntity(x, y, z) instanceof ITurnable turnable) {
+                    turnable.setFrontFacing(ForgeDirection.SOUTH);
+                }
+
+                return true;
             }
 
             @Override
@@ -915,12 +924,13 @@ public class GTStructureUtility {
 
                 if (actual == wanted) return PlaceResult.SKIP;
 
-                if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, env.getActor()))
+                if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, env.getActor())) {
                     return PlaceResult.REJECT;
+                }
 
                 ItemStack stack = wanted.getStackForm(1);
 
-                return StructureUtility.survivalPlaceBlock(
+                PlaceResult result = StructureUtility.survivalPlaceBlock(
                     stack,
                     EXACT,
                     null,
@@ -932,6 +942,14 @@ public class GTStructureUtility {
                     env.getSource(),
                     env.getActor(),
                     env.getChatter());
+
+                if (result != ACCEPT) return result;
+
+                if (world.getTileEntity(x, y, z) instanceof ITurnable turnable) {
+                    turnable.setFrontFacing(ForgeDirection.SOUTH);
+                }
+
+                return result;
             }
         };
     }

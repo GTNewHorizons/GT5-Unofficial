@@ -52,6 +52,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
@@ -112,6 +113,7 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
             .addMufflerHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
             .addOtherStructurePart(mHatchName, "Any Casing", 1)
+            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
@@ -149,7 +151,10 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
                             .dot(1)
                             .build(),
                         onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 11))))
-                .addElement('H', activeCoils(ofCoil(MTEAdvEBF::setCoilLevel, MTEAdvEBF::getCoilLevel)))
+                .addElement(
+                    'H',
+                    GTStructureChannels.HEATING_COIL
+                        .use(activeCoils(ofCoil(MTEAdvEBF::setCoilLevel, MTEAdvEBF::getCoilLevel))))
                 .build();
         }
         return STRUCTURE_DEFINITION;
