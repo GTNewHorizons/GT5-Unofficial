@@ -138,7 +138,7 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
             inputInfo.getParticle()
                 .ordinal());
 
-        else return null;
+        else return Particle.ELECTRON;
     }
 
     public boolean addParticleSensorToMachineList(IGregTechTileEntity te, int aBaseCasingIndex) {

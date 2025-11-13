@@ -60,6 +60,13 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements IConnec
     }
 
     @Override
+    public String[] getDescription() {
+        return new String[] { "Can be installed in the NAC Multiblock.", "Item Input/Output Into NAC Modules",
+            EnumChatFormatting.RED + "Every item processed from a colored VCI will get",
+            EnumChatFormatting.RED + "output in a VCO of the corresponding color", };
+    }
+
+    @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture, TextureFactory
             .of(EM_D_ACTIVE, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
