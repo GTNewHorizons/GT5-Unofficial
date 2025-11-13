@@ -115,12 +115,12 @@ public class MTEHatchBaseGui<T extends MTEHatch> {
 
     // Column by defualt, going bottom to up (reversed child order)
     protected Flow createRightCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
-        Flow cornerFlow = Flow.column()
+        Flow cornerFlow = Flow.row()
             .coverChildren()
             .reverseLayout(true)
             .align(Alignment.BottomRight)
             .paddingBottom(2)
-            .paddingRight(5);
+            .paddingRight(3);
         cornerFlow.childIf(this.doesAddGregTechLogo(), createLogo())
             .childIf(this.doesAddCircuitSlot(), createCircuitSlot(syncManager));
         return cornerFlow;
@@ -140,7 +140,8 @@ public class MTEHatchBaseGui<T extends MTEHatch> {
 
     protected IDrawable.DrawableWidget createLogo() {
         return new IDrawable.DrawableWidget(getLogoTexture()).size(18)
-            .marginTop(2);
+            .marginTop(2)
+            .marginLeft(2);
     }
 
     protected boolean doesAddCircuitSlot() {
