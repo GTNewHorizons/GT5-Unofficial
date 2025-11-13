@@ -3,6 +3,8 @@ package gregtech.common.gui.modularui.singleblock.base;
 import static gregtech.api.metatileentity.BaseTileEntity.SPECIAL_SLOT_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.UNUSED_SLOT_TOOLTIP;
 
+import java.util.Arrays;
+
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -65,9 +67,15 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
 
         Flow itemRow = Flow.row()
             .coverChildren();
-        itemRow.child(createItemInputSlots().marginRight(6))
+
+        ParentWidget<?> inputSection = new ParentWidget<>().size(18 * 3);
+        inputSection.child(createItemInputSlots().align(Alignment.CenterRight))
+            .marginRight(6);
+        ParentWidget<?> outputSection = new ParentWidget<>().size(18 * 3);
+        outputSection.child(createItemOutputSlots().align(Alignment.CenterLeft));
+        itemRow.child(inputSection)
             .child(createProgressBar().marginRight(6))
-            .child(createItemOutputSlots());
+            .child(outputSection);
 
         return itemRow;
     }
@@ -151,16 +159,18 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
 
     protected String[] mapInSlotsToMatrix() {
         int slots = properties.maxItemInputs;
-        String[] matrix = new String[] { "aaa", "aaa", "aaa" };
+        String[] matrix = new String[1 + ((slots - 1) / 3)];
+
+        Arrays.fill(matrix, "aaa");
         switch (slots) {
             case 1 -> {
-                matrix[1] = "aac";
+                matrix[0] = "aac";
             }
             case 2 -> {
-                matrix[1] = "acc";
+                matrix[0] = "acc";
             }
             case 3 -> {
-                matrix[1] = "ccc";
+                matrix[0] = "ccc";
             }
             case 4 -> {
                 matrix[0] = "acc";
@@ -196,16 +206,19 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
 
     protected String[] mapOutSlotsToMatrix() {
         int slots = properties.maxItemOutputs;
-        String[] matrix = new String[] { "aaa", "aaa", "aaa" };
+
+        String[] matrix = new String[1 + ((slots - 1) / 3)];
+
+        Arrays.fill(matrix, "aaa");
         switch (slots) {
             case 1 -> {
-                matrix[1] = "caa";
+                matrix[0] = "caa";
             }
             case 2 -> {
-                matrix[1] = "cca";
+                matrix[0] = "cca";
             }
             case 3 -> {
-                matrix[1] = "ccc";
+                matrix[0] = "ccc";
             }
             case 4 -> {
                 matrix[0] = "cca";
