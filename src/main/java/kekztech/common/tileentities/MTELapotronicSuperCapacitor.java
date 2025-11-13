@@ -121,6 +121,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     private final LongData energyInputValues = energyInputValues1h.view(DURATION_AVERAGE_TICKS);
     private final LongData energyOutputValues = energyOutputValues1h.view(DURATION_AVERAGE_TICKS);
 
+
     private final LongData energyInputValues5m = energyInputValues1h.view(5 * 60 * 20);
     private final LongData energyOutputValues5m = energyOutputValues1h.view(5 * 60 * 20);
 
@@ -273,6 +274,55 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     @Override
     public IStructureDefinition<MTELapotronicSuperCapacitor> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
+    }
+
+
+    Boolean showWarning = true;
+    Boolean canRebalance = false;
+
+    public Boolean getShowWarning() {
+        return showWarning;
+    }
+
+    public void setShowWarning(Boolean showWarning) {
+        this.showWarning = showWarning;
+    }
+
+    public Boolean getCanRebalance() {
+        return canRebalance;
+    }
+
+    public void setCanRebalance(Boolean canRebalance) {
+        this.canRebalance = canRebalance;
+    }
+
+    public BigInteger getStored() {
+        return stored;
+    }
+
+    public LongData getEnergyInputValues5m() {
+        return energyInputValues5m;
+    }
+
+    public LongData getEnergyOutputValues5m() {
+        return energyOutputValues5m;
+    }
+
+
+    public void setStored(BigInteger stored) {
+        this.stored = stored;
+    }
+
+    public long getPassiveDischargeAmount() {
+        return passiveDischargeAmount;
+    }
+
+    public BigInteger getEnergyCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(BigInteger capacity) {
+        this.capacity = capacity;
     }
 
     private void processInputHatch(MTEHatch aHatch, int aBaseCasingIndex) {
@@ -710,7 +760,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         return true;
     }
 
-    private int rebalance() {
+    public int rebalance() {
 
         balanced = true;
 
@@ -841,7 +891,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             : numberFormat.format(stored);
     }
 
-    public String getUsedPercentCache() {
+    private String getUsedPercentCache() {
         return toPercentageFrom(stored, capacity);
     }
 
@@ -1313,8 +1363,32 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     }
 
     @Override
+    public boolean hasRunningText() {
+        return false;
+    }
+
+    @Override
+    public boolean shouldDisplayCheckRecipeResult() {
+        return false;
+    }
+
+    @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new MTELapotronicSuperCapacitorgui(this);
+    }
+
+    @Override
+    public boolean showMachineStatusInGUI() {
+        return false;
+    }
+
+    @Override
+    public boolean showRecipeTextInGUI() {
+        return false;
+    }
+
+    public void setCounter(int counter) {
+        this.counter = counter;
     }
 
     @Override
