@@ -188,15 +188,18 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.mb_air_filter")
-            .addInfo("gt.mb_air_filter.tips.1", 2 * multiTier + 1)
-            .addInfo("gt.mb_air_filter.tips.2", GLOBAL_MULTIPLIER, SCALING_FACTOR, getBonusByTier(), getEUt())
-            .addSeparator()
-            .addInfo("gt.mb_air_filter.tips.3")
+            .addInfo(
+                "gt.mb_air_filter.tips",
+                2 * multiTier + 1,
+                GLOBAL_MULTIPLIER,
+                SCALING_FACTOR,
+                getBonusByTier(),
+                getEUt())
             .beginStructureBlock(3, 4, 3, true)
             .addController("front_bottom_middle")
-            .addStructurePart(getCasingString(), "gt.mb_air_filter.info.1")
-            .addStructurePart(getPipeString(), "gt.mb_air_filter.info.2")
-            .addMufflerHatch("gt.mb_air_filter.info.3")
+            .addStructurePart(getCasingString(), "gt.mb_air_filter.info.casing")
+            .addStructurePart(getPipeString(), "gt.mb_air_filter.info.pipe")
+            .addMufflerHatch("gt.mb_air_filter.info.muffler")
             .addEnergyHatch("<bottom casing>", 1)
             .addMaintenanceHatch("<bottom casing>", 1)
             .addInputBus("<bottom casing>", 1)
