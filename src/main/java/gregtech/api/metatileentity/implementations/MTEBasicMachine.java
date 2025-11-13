@@ -111,21 +111,6 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapWorkable, IConfigurationCircuitSupport,
     IOverclockDescriptionProvider, IAddGregtechLogo, IAddUIWidgets {
 
-    @Override
-    protected boolean useMui2() {
-        return true;
-    }
-
-    @Override
-    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new MTEBasicMachineBaseGui(this).build(data, syncManager, uiSettings);
-    }
-
-    // disable the entire inventory row (including corner column)
-    public boolean supportsInventoryRow() {
-        return this.doesBindPlayerInventory();
-    }
-
     /**
      * return values for checkRecipe()
      */
@@ -1307,6 +1292,21 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                     .setSize(17, 17)
                     .setPos(152, 63));
         }
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEBasicMachineBaseGui(this).build(data, syncManager, uiSettings);
+    }
+
+    // disable the entire inventory row (including corner column)
+    public boolean supportsInventoryRow() {
+        return this.doesBindPlayerInventory();
     }
 
     @Override
