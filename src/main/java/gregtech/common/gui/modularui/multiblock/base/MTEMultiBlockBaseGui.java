@@ -91,7 +91,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     protected final IGregTechTileEntity baseMetaTileEntity;
     protected List<UITexture> machineModeIcons = new ArrayList<>();
     protected Map<String, UITexture> customIcons = new HashMap<>();
-    private final int borderRadius = 4;
+    private static final int borderRadius = 4;
     protected final int textBoxToInventoryGap = 26;
     protected final Map<String, IPanelHandler> panelMap = new HashMap<>();
     protected Map<String, UITexture> shutdownReasonTextureMap = new HashMap<>();
@@ -147,7 +147,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                 .childIf(multiblock.canBeMuffled(), this.createMuffleButton())
                 .child(createTerminalRow(panel, syncManager))
                 .child(createPanelGap(panel, syncManager))
-                .child(createInventoryRow(panel, syncManager)));
+                .childIf(multiblock.supportsInventoryRow(), createInventoryRow(panel, syncManager)));
     }
 
     protected ModularPanel getBasePanel(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
