@@ -1,7 +1,5 @@
 package gregtech.common.gui.modularui.multiblock.godforge.data;
 
-import static tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade.END;
-
 import java.util.function.BiConsumer;
 
 import net.minecraft.network.PacketBuffer;
@@ -21,17 +19,7 @@ public final class SyncActions<T> {
         (buf, upgrade) -> buf.writeByte(upgrade.ordinal()),
         (buf, data) -> {
             ForgeOfGodsUpgrade upgrade = ForgeOfGodsUpgrade.VALUES[buf.readByte()];
-
-            if (!data.isUpgradeActive(upgrade)) return;
-            if (!data.getUpgrades().checkDependents(upgrade)) return;
-
-            data.getUpgrades().respecUpgrade(upgrade);
-            data.setGravitonShardsAvailable(data.getGravitonShardsAvailable() + upgrade.getShardCost());
-            data.setGravitonShardsSpent(data.getGravitonShardsSpent() - upgrade.getShardCost());
-
-            if (upgrade == END) {
-                data.setGravitonShardEjection(false);
-            }
+            data.respecUpgrade(upgrade);
         },
         Side.SERVER);
 
@@ -40,15 +28,7 @@ public final class SyncActions<T> {
         (buf, upgrade) -> buf.writeByte(upgrade.ordinal()),
         (buf, data) -> {
             ForgeOfGodsUpgrade upgrade = ForgeOfGodsUpgrade.VALUES[buf.readByte()];
-
-            if (data.isUpgradeActive(upgrade)) return;
-            if (!data.getUpgrades().checkPrerequisites(upgrade)) return;
-            if (!data.getUpgrades().checkSplit(upgrade, data.getRingAmount())) return;
-            if (!data.getUpgrades().checkCost(upgrade, data.getGravitonShardsAvailable())) return;
-
             data.unlockUpgrade(upgrade);
-            data.setGravitonShardsAvailable(data.getGravitonShardsAvailable() - upgrade.getShardCost());
-            data.setGravitonShardsSpent(data.getGravitonShardsSpent() + upgrade.getShardCost());
         },
         Side.SERVER);
 

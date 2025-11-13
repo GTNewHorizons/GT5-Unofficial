@@ -1,5 +1,7 @@
 package tectech.thing.metaTileEntity.multi.godforge.util;
 
+import static tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade.END;
+
 import java.math.BigInteger;
 import java.util.Collection;
 
@@ -383,7 +385,27 @@ public class ForgeOfGodsData {
     }
 
     public void unlockUpgrade(ForgeOfGodsUpgrade upgrade) {
+        if (isUpgradeActive(upgrade)) return;
+        if (!upgrades.checkPrerequisites(upgrade)) return;
+        if (!upgrades.checkSplit(upgrade, ringAmount)) return;
+        if (!upgrades.checkCost(upgrade, gravitonShardsAvailable)) return;
+
         upgrades.unlockUpgrade(upgrade);
+        gravitonShardsAvailable -= upgrade.getShardCost();
+        gravitonShardsSpent += upgrade.getShardCost();
+    }
+
+    public void respecUpgrade(ForgeOfGodsUpgrade upgrade) {
+        if (!isUpgradeActive(upgrade)) return;
+        if (!upgrades.checkDependents(upgrade)) return;
+
+        upgrades.respecUpgrade(upgrade);
+        gravitonShardsAvailable += upgrade.getShardCost();
+        gravitonShardsSpent -= upgrade.getShardCost();
+
+        if (upgrade == END) {
+            gravitonShardEjection = false;
+        }
     }
 
     public boolean isUpgradeActive(ForgeOfGodsUpgrade upgrade) {
