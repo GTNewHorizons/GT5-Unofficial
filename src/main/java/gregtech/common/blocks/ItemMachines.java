@@ -1,28 +1,20 @@
 package gregtech.common.blocks;
 
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.STRIKETHROUGH;
 import static gregtech.GTMod.GT_FML_LOGGER;
-import static gregtech.api.util.GTUtility.YAP_SEPARATOR;
 import static gregtech.api.util.GTUtility.translate;
-import static gregtech.api.util.MultiblockTooltipBuilder.INDENT;
-import static gregtech.api.util.MultiblockTooltipBuilder.INDENT_MARK;
-import static gregtech.api.util.MultiblockTooltipBuilder.SEPARATOR_MARK;
-import static gregtech.api.util.MultiblockTooltipBuilder.STRUCTURE_SEPARATOR_MARK;
+import static gregtech.api.util.tooltip.TooltipMarkupProcessor.INDENT_MARK;
+import static gregtech.api.util.tooltip.TooltipMarkupProcessor.LINE_BREAK;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import static org.apache.commons.lang3.StringUtils.removeStart;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -38,9 +30,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
@@ -54,7 +43,7 @@ import gregtech.api.metatileentity.implementations.MTEFrame;
 import gregtech.api.metatileentity.implementations.MTEItemPipe;
 import gregtech.api.util.GTItsNotMyFaultException;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.StringUtils;
+import gregtech.api.util.tooltip.TooltipMarkupProcessor;
 import gregtech.common.tileentities.storage.MTEDigitalTankBase;
 import gregtech.common.tileentities.storage.MTESuperChest;
 import gregtech.common.tileentities.storage.MTESuperTank;
@@ -154,8 +143,8 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
         for (String tDescLine : aDescription) {
             if (!GTUtility.isStringValid(tDescLine)) continue;
 
-            if (tDescLine.contains(GTUtility.LOC_SEPARATOR)) {
-                final String[] tSplitStrings = tDescLine.split(GTUtility.LOC_SEPARATOR);
+            if (tDescLine.contains(LINE_BREAK)) {
+                final String[] tSplitStrings = tDescLine.split(LINE_BREAK);
                 final String tKey = tSplitStrings[0];
 
                 List<Object> tParamsLoc = new ArrayList<>();
@@ -165,19 +154,16 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                     tParamsLoc.add(translated.equals(param) ? param : translated);
                 }
 
-                final String tTranslated = formatTranslatedLine(
-                    tKey,
-                    translate(removeStart(tKey, INDENT_MARK), tParamsLoc.toArray()));
+                final String tTranslated = TooltipMarkupProcessor
+                    .formatTranslatedLine(tKey, translate(removeStart(tKey, INDENT_MARK), tParamsLoc.toArray()));
                 if (aList != null) aList.add(tTranslated);
             } else {
-                final String tTranslated = formatTranslatedLine(
-                    tDescLine,
-                    translate(removeStart(tDescLine, INDENT_MARK)));
+                final String tTranslated = TooltipMarkupProcessor
+                    .formatTranslatedLine(tDescLine, translate(removeStart(tDescLine, INDENT_MARK)));
                 if (aList != null) aList.add(tTranslated.isEmpty() ? tDescLine : tTranslated);
             }
         }
-        splitLineByMark(aList, YAP_SEPARATOR);
-        applySeparatorLine(aList);
+        TooltipMarkupProcessor.processTooltips(aList);
     }
 
     @Override
@@ -406,135 +392,5 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
             }
         }
         return null;
-    }
-
-    @SideOnly(Side.CLIENT)
-    public static int getTooltipWidth(List<String> lines) {
-        FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-        int maxWidth = 0;
-        for (String line : lines) {
-            int lineWidth = fontRenderer.getStringWidth(line);
-            if (lineWidth > maxWidth) {
-                maxWidth = lineWidth;
-            }
-        }
-        return maxWidth;
-    }
-
-    @SideOnly(Side.CLIENT)
-    public static void applySeparatorLine(List<String> tooltips) {
-        if (tooltips == null || tooltips.isEmpty()) return;
-
-        int tooltipWidth = getTooltipWidth(tooltips);
-
-        FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-        int dashWidth = fontRenderer.getStringWidth("-");
-        int dashCount = tooltipWidth / dashWidth;
-
-        String separatorLine = switch (GTMod.proxy.separatorStyle) {
-            case 0 -> " ";
-            case 1 -> StringUtils.getRepetitionOf('-', dashCount);
-            default -> STRIKETHROUGH + StringUtils.getRepetitionOf('-', dashCount);
-        };
-
-        String finisherLine = switch (GTMod.proxy.tooltipFinisherStyle) {
-            case 0 -> "";
-            case 1 -> " ";
-            case 2 -> StringUtils.getRepetitionOf('-', dashCount);
-            default -> STRIKETHROUGH + StringUtils.getRepetitionOf('-', dashCount);
-        };
-
-        int lengthRef = translateToLocal("GT5U.MBTT.Structure.SeeStructure").replaceAll("§[0-9a-fk-or]", "")
-            .length() * 7 / 10;
-        String structureSeparatorLine = switch (GTMod.proxy.separatorStyle) {
-            case 0 -> " ";
-            case 1 -> INDENT + StringUtils.getRepetitionOf('-', lengthRef);
-            default -> INDENT + STRIKETHROUGH + StringUtils.getRepetitionOf('-', lengthRef);
-        };
-
-        for (int i = 0; i < tooltips.size(); i++) {
-            String line = tooltips.get(i);
-            if (line.contains(SEPARATOR_MARK)) {
-                tooltips.set(i, line.replace(SEPARATOR_MARK, separatorLine));
-            }
-            if (line.contains(STRUCTURE_SEPARATOR_MARK)) {
-                tooltips.set(i, line.replace(STRUCTURE_SEPARATOR_MARK, structureSeparatorLine));
-            }
-            if (line.contains("<FINISHER>")) {
-                tooltips.set(i, line.replace("<FINISHER>", finisherLine));
-            }
-        }
-    }
-
-    public static void splitLineByMark(List<String> list, String mark) {
-        if (list == null) return;
-
-        // Split by mark
-        for (int i = 0; i < list.size();) {
-            String str = list.get(i);
-            if (str.contains(mark)) {
-                String[] parts = str.split(Pattern.quote(mark));
-                list.remove(i);
-                list.addAll(i, Arrays.asList(parts));
-            } else {
-                i++;
-            }
-        }
-
-        // Extract separators
-        extractSeparatorMark(list, SEPARATOR_MARK);
-        extractSeparatorMark(list, STRUCTURE_SEPARATOR_MARK);
-    }
-
-    private static void extractSeparatorMark(List<String> list, String separatorMark) {
-        for (int i = 0; i < list.size();) {
-            String str = list.get(i);
-            int sepIndex = str.indexOf(separatorMark);
-
-            if (sepIndex == -1) {
-                i++;
-                continue;
-            }
-
-            // Detect indent at the beginning of the string
-            String indent = "";
-            for (int j = 0; j < str.length() && str.charAt(j) == ' '; j++) {
-                indent += " ";
-            }
-
-            int checkIndex = sepIndex - 2;
-            boolean hasColorCode = checkIndex >= 0 && str.charAt(checkIndex) == '§';
-
-            List<String> parts = new ArrayList<>();
-
-            if (hasColorCode) {
-                if (checkIndex > 0) {
-                    parts.add(str.substring(0, checkIndex));
-                }
-                parts.add(str.substring(checkIndex, sepIndex + separatorMark.length()));
-                if (sepIndex + separatorMark.length() < str.length()) {
-                    parts.add(indent + str.substring(sepIndex + separatorMark.length()));
-                }
-            } else {
-                if (sepIndex > 0) {
-                    parts.add(str.substring(0, sepIndex));
-                }
-                parts.add(separatorMark);
-                if (sepIndex + separatorMark.length() < str.length()) {
-                    parts.add(indent + str.substring(sepIndex + separatorMark.length()));
-                }
-            }
-
-            list.remove(i);
-            list.addAll(i, parts);
-            if (parts.size() <= 1) {
-                i++;
-            }
-        }
-    }
-
-    private String formatTranslatedLine(String original, String translated) {
-        return (original.startsWith(INDENT_MARK) ? INDENT : "") + translated
-            .replace(YAP_SEPARATOR, original.startsWith(INDENT_MARK) ? YAP_SEPARATOR + INDENT : YAP_SEPARATOR);
     }
 }

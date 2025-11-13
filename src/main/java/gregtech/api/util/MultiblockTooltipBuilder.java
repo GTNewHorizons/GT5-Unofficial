@@ -4,6 +4,10 @@ import static gregtech.api.util.GTUtility.appendParams;
 import static gregtech.api.util.GTUtility.translate;
 import static gregtech.api.util.GTUtility.tryTranslate;
 import static gregtech.api.util.tooltip.TooltipHelper.percentageFormat;
+import static gregtech.api.util.tooltip.TooltipMarkupProcessor.FINISHER_MARK;
+import static gregtech.api.util.tooltip.TooltipMarkupProcessor.INDENT_MARK;
+import static gregtech.api.util.tooltip.TooltipMarkupProcessor.SEPARATOR_MARK;
+import static gregtech.api.util.tooltip.TooltipMarkupProcessor.STRUCTURE_SEPARATOR_MARK;
 import static net.minecraft.util.StatCollector.canTranslate;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static org.apache.commons.lang3.StringUtils.removeEnd;
@@ -30,7 +34,6 @@ import com.google.common.collect.SetMultimap;
 import com.google.common.primitives.Ints;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 
-import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.structure.IStructureChannels;
 import gregtech.api.util.tooltip.TooltipHelper;
@@ -62,10 +65,6 @@ import gregtech.api.util.tooltip.TooltipTier;
  */
 public class MultiblockTooltipBuilder {
 
-    public static final String INDENT = "   ";
-    public static final String INDENT_MARK = "<INDENT>";
-    public static final String SEPARATOR_MARK = "<SEPARATOR>";
-    public static final String STRUCTURE_SEPARATOR_MARK = "<S_SEPARATOR>";
     private static final String COLON = translateToLocal("gt.string.colon").equals(":") ? ": "
         : translateToLocal("gt.string.colon");
     private static final String SEPARATOR = translateToLocal("gt.string.separator").equals(",") ? ", "
@@ -870,30 +869,13 @@ public class MultiblockTooltipBuilder {
     }
 
     /**
-     * Add a colored separator line with specified length to structure info.<br>
-     *
-     * @return Instance this method was called on.
-     */
-    public MultiblockTooltipBuilder addStructureInfoSeparator(EnumChatFormatting color, int length) {
-        switch (GTMod.proxy.separatorStyle) {
-            case 0 -> addStructureInfo(" ");
-            case 1 -> addStructureInfo(color + StringUtils.getRepetitionOf('-', length));
-            default -> addStructureInfo(
-                "" + color + EnumChatFormatting.STRIKETHROUGH + StringUtils.getRepetitionOf('-', length));
-        }
-        return this;
-    }
-
-    /**
      * Add a separator line to structure info.<br>
      *
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addStructureInfoSeparator() {
-        return addStructureInfoSeparator(
-            EnumChatFormatting.GRAY,
-            translateToLocal("GT5U.MBTT.Structure.SeeStructure").replaceAll("§[0-9a-fk-or]", "")
-                .length() * 7 / 10);
+        addStructureInfo(EnumChatFormatting.GRAY + STRUCTURE_SEPARATOR_MARK);
+        return this;
     }
 
     /**
@@ -996,7 +978,7 @@ public class MultiblockTooltipBuilder {
 
     public MultiblockTooltipBuilder toolTipFinisher(EnumChatFormatting separatorColor, String... authors) {
 
-        addInfo(separatorColor + "<FINISHER>");
+        addInfo(separatorColor + FINISHER_MARK);
         addInfo("GT5U.MBTT.HoldDisplay");
         if (authors.length > 0) {
             if (authors.length == 1 && StatCollector.canTranslate(authors[0])) {
@@ -1008,17 +990,7 @@ public class MultiblockTooltipBuilder {
             }
         }
 
-        int lengthRef = translateToLocal("GT5U.MBTT.Structure.SeeStructure").replaceAll("§[0-9a-fk-or]", "")
-            .length() * 7 / 10;
-        switch (GTMod.proxy.tooltipFinisherStyle) {
-            case 0 -> {}
-            case 1 -> addStructureInfo(" ");
-            case 2 -> addStructureInfo(EnumChatFormatting.GRAY + StringUtils.getRepetitionOf('-', lengthRef));
-            default -> addStructureInfo(
-                "" + EnumChatFormatting.GRAY
-                    + EnumChatFormatting.STRIKETHROUGH
-                    + StringUtils.getRepetitionOf('-', lengthRef));
-        }
+        addStructureInfo(EnumChatFormatting.GRAY + STRUCTURE_SEPARATOR_MARK);
 
         addShiftInfo("GT5U.MBTT.Structure.SeeStructure");
         hLines.add(TT_structurehint);

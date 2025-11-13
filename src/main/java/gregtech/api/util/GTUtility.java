@@ -11,6 +11,7 @@ import static gregtech.api.enums.Materials.FLUID_MAP;
 import static gregtech.api.enums.Mods.Translocator;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
+import static gregtech.api.util.tooltip.TooltipMarkupProcessor.LINE_BREAK;
 import static gregtech.common.UndergroundOil.undergroundOilReadInformation;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraftforge.common.util.ForgeDirection.DOWN;
@@ -3595,9 +3596,6 @@ public class GTUtility {
         return isOre(new ItemStack(block, 1, meta));
     }
 
-    public static final String LOC_SEPARATOR = "\u001F";
-    public static final String YAP_SEPARATOR = "\\n";
-
     public static boolean isOre(ItemStack aStack) {
         int tItem = GTUtility.stackToInt(aStack);
         if (sOreTable.containsKey(tItem)) {
@@ -4663,7 +4661,7 @@ public class GTUtility {
         sb.append(locKey);
 
         for (Object param : params) {
-            sb.append(LOC_SEPARATOR);
+            sb.append(LINE_BREAK);
             sb.append(param != null ? param.toString() : "");
         }
 
