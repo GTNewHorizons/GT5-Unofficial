@@ -1056,7 +1056,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .tooltipBuilder(t -> { t.addLine(IKey.lang("GT5U.gui.button.structure_update")); });
     }
 
-    protected IWidget createPowerSwitchButton() {
+    protected ToggleButton createPowerSwitchButton() {
         return CommonWidgets.createPowerSwitchButton("powerSwitch", isPowerSwitchDisabled(), baseMetaTileEntity);
     }
 
