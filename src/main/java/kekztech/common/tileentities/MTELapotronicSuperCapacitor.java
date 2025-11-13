@@ -28,8 +28,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import gregtech.common.gui.modularui.multiblock.MTELapotronicSuperCapacitorgui;
-import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -87,6 +85,8 @@ import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.LongData;
 import gregtech.api.util.LongRunningAverage;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.gui.modularui.multiblock.MTELapotronicSuperCapacitorgui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.misc.WirelessNetworkManager;
@@ -120,7 +120,6 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
     private final LongData energyInputValues = energyInputValues1h.view(DURATION_AVERAGE_TICKS);
     private final LongData energyOutputValues = energyOutputValues1h.view(DURATION_AVERAGE_TICKS);
-
 
     private final LongData energyInputValues5m = energyInputValues1h.view(5 * 60 * 20);
     private final LongData energyOutputValues5m = energyOutputValues1h.view(5 * 60 * 20);
@@ -276,8 +275,8 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         return STRUCTURE_DEFINITION;
     }
 
-
     Boolean showWarning = true;
+    Boolean hasRebalanced = false;
     Boolean canRebalance = false;
 
     public Boolean getShowWarning() {
@@ -300,6 +299,14 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         return stored;
     }
 
+    public Boolean getHasRebalanced() {
+        return hasRebalanced;
+    }
+
+    public void setHasRebalanced(Boolean hasRebalanced) {
+        this.hasRebalanced = hasRebalanced;
+    }
+
     public LongData getEnergyInputValues5m() {
         return energyInputValues5m;
     }
@@ -307,7 +314,6 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     public LongData getEnergyOutputValues5m() {
         return energyOutputValues5m;
     }
-
 
     public void setStored(BigInteger stored) {
         this.stored = stored;
@@ -857,7 +863,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         return min(hatchWatts, remStoredLimited.longValue());
     }
 
-    private String getTimeTo() {
+    public String getTimeTo() {
         double avgIn = energyInputValues.avgLong();
         double avgOut = energyOutputValues.avgLong();
         double passLoss = passiveDischargeAmount;
@@ -899,6 +905,14 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         return GTUtility.scientificFormat(WirelessNetworkManager.getUserEU(global_energy_user_uuid));
     }
 
+    public BigInteger getWirelessValue() {
+        return WirelessNetworkManager.getUserEU(global_energy_user_uuid);
+    }
+
+    public void setWirelessValue(BigInteger value) {
+        WirelessNetworkManager.setUserEU(global_energy_user_uuid, value);
+    }
+
     private boolean isActiveCache() {
         return getBaseMetaTileEntity().isActive();
     }
@@ -910,7 +924,6 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     public void setWireless_mode(boolean wireless_mode) {
         this.wireless_mode = wireless_mode;
     }
-
 
     private String getPassiveDischargeAmountCache() {
         return passiveDischargeAmount > 100_000_000_000L ? GTUtility.scientificFormat(passiveDischargeAmount)
@@ -1266,9 +1279,6 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
         super.saveNBTData(nbt);
     }
-
-
-
 
     @Override
     public void loadNBTData(NBTTagCompound nbt) {
