@@ -1,6 +1,5 @@
 package gregtech.loaders.postload.chains;
 
-import static goodgenerator.loader.Loaders.huiCircuit;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.nanoForgeRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
@@ -184,8 +183,7 @@ public class NaniteChain {
                                                             // naming
                 Materials.WhiteDwarfMatter.getBlocks(8),
                 getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 32),
-                new ItemStack(huiCircuit, 1, 4) // Paradox circuit
-            )
+                ItemList.Circuit_Parts_Crystal_Chip_Wetware.get(64))
             .itemOutputs(Materials.WhiteDwarfMatter.getNanite(4))
             .fluidInputs(
                 Materials.UUMatter.getFluid(500_000),
@@ -205,8 +203,7 @@ public class NaniteChain {
                                                             // naming
                 Materials.BlackDwarfMatter.getBlocks(8),
                 getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 32),
-                new ItemStack(huiCircuit, 1, 4) // Paradox circuit
-            )
+                ItemList.Circuit_Parts_Crystal_Chip_Wetware.get(64))
             .itemOutputs(Materials.BlackDwarfMatter.getNanite(4))
             .fluidInputs(
                 Materials.UUMatter.getFluid(500_000),
@@ -221,13 +218,12 @@ public class NaniteChain {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 aUMVTierLens,
+                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.lens), 0, 36), // Magneto lens
                 // Quantum Anomaly, couldn't find any better naming.
                 GregtechItemList.Laser_Lens_Special.get(0),
                 Materials.Universium.getBlocks(8),
-                ItemList.Optically_Perfected_CPU.get(16),
-                ItemList.Optically_Compatible_Memory.get(16),
-                new ItemStack(huiCircuit, 1, 4) // Paradox circuit
-            )
+                getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 32),
+                ItemList.Circuit_Parts_Chip_Bioware.get(64))
             .itemOutputs(Materials.Universium.getNanite(2))
             .fluidInputs(
                 Materials.SpaceTime.getMolten(1 * INGOTS),
