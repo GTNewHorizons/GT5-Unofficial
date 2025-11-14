@@ -16,7 +16,7 @@ import tconstruct.tools.logic.FurnaceLogic;
 @Mixin(value = FurnaceLogic.class, remap = false)
 public abstract class MixinFurnaceLogicPollution extends TileEntity {
 
-    @Shadow
+    @Shadow(remap = false)
     public abstract boolean isBurning();
 
     @Inject(method = "updateEntity", at = @At("TAIL"))

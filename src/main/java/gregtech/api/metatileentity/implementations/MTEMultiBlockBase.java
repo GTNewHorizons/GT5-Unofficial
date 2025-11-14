@@ -3100,6 +3100,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         return true;
     }
 
+    public boolean supportsInventoryRow() {
+        return this.doesBindPlayerInventory();
+    }
+
     public boolean shouldDisplayShutDownReason() {
         return true;
     }
