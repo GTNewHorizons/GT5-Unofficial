@@ -10,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -75,28 +76,8 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
     }
 
     @Override
-    public boolean isElectric() {
-        return true;
-    }
-
-    @Override
-    public boolean isPneumatic() {
-        return false;
-    }
-
-    @Override
-    public boolean isSteampowered() {
-        return false;
-    }
-
-    @Override
     public boolean isOutputFacing(ForgeDirection side) {
         return side == this.getOutputFacing();
-    }
-
-    @Override
-    public long getMinimumStoredEU() {
-        return 512;
     }
 
     @Override
@@ -112,11 +93,6 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
     @Override
     public long maxAmperesIn() {
         return 2;
-    }
-
-    @Override
-    public long maxAmperesOut() {
-        return 1;
     }
 
     @Override
@@ -152,7 +128,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
         try {
             Set<Integer> tKeys = GregTechAPI.sCircuitryBehaviors.keySet();
             ArrayList<Integer> tList = new ArrayList<>(tKeys);
-            if (tList.size() <= 0) return;
+            if (tList.size() == 0) return;
             Collections.sort(tList);
             if (!GregTechAPI.sCircuitryBehaviors.containsKey(mGate)) mGate = tList.get(0);
             int tIndex = Collections.binarySearch(tList, mGate);
@@ -169,7 +145,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
         try {
             Set<Integer> tKeys = GregTechAPI.sCircuitryBehaviors.keySet();
             ArrayList<Integer> tList = new ArrayList<>(tKeys);
-            if (tList.size() <= 0) return;
+            if (tList.size() == 0) return;
             Collections.sort(tList);
             if (!GregTechAPI.sCircuitryBehaviors.containsKey(mGate)) mGate = tList.get(0);
             int tIndex = Collections.binarySearch(tList, mGate);
@@ -330,18 +306,6 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
      * : 59; if (side == ForgeDirection.UP) return aRedstone ? 58 : 57; return aRedstone ? 62 : 61; }
      */
 
-    @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
-    }
-
     public byte getOutputRedstone(ForgeDirection side) {
         return getBaseMetaTileEntity().getOutputRedstoneSignal(side);
     }
@@ -478,7 +442,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
             new CycleButtonWidget().setToggle(() -> bOutput, val -> bOutput = val)
                 .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
                 .setStaticTexture(GTUITextures.OVERLAY_BUTTON_EMIT_ENERGY)
-                .addTooltip("Toggle EU Output")
+                .addTooltip(StatCollector.translateToLocal("GT5U.gui.tooltip.redstone_circuit.toggle_output"))
                 .setPos(151, 5)
                 .setSize(18, 18))
             .widget(
@@ -486,7 +450,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
                     .setToggle(() -> getBaseMetaTileEntity().isActive(), val -> getBaseMetaTileEntity().setActive(val))
                     .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
                     .setStaticTexture(GTPPUITextures.OVERLAY_BUTTON_ACTIVE_STATE)
-                    .addTooltip("Toggle Active State")
+                    .addTooltip(StatCollector.translateToLocal("GT5U.gui.tooltip.redstone_circuit.toggle_active"))
                     .setPos(151, 23)
                     .setSize(18, 18))
             .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
@@ -494,7 +458,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
                 else switchGateBackward(clickData.shift);
             })
                 .setBackground(GTUITextures.BUTTON_STANDARD, GTPPUITextures.OVERLAY_BUTTON_CHANGE_MODE)
-                .addTooltip("Change Redstone Circuit")
+                .addTooltip(StatCollector.translateToLocal("GT5U.gui.tooltip.redstone_circuit.change"))
                 .setPos(151, 41)
                 .setSize(18, 18));
 

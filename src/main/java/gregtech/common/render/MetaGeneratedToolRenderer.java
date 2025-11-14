@@ -4,7 +4,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.client.MinecraftForgeClient;
 
 import org.lwjgl.opengl.GL11;
 
@@ -16,14 +15,6 @@ import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.MetaGeneratedTool;
 
 public class MetaGeneratedToolRenderer implements IItemRenderer {
-
-    public MetaGeneratedToolRenderer() {
-        for (MetaGeneratedTool tItem : MetaGeneratedTool.sInstances.values()) {
-            if (tItem != null) {
-                MinecraftForgeClient.registerItemRenderer(tItem, this);
-            }
-        }
-    }
 
     @Override
     public boolean handleRenderType(ItemStack stack, ItemRenderType type) {
@@ -52,7 +43,7 @@ public class MetaGeneratedToolRenderer implements IItemRenderer {
 
             if ((type == ItemRenderType.INVENTORY)
                 && (MetaGeneratedTool.getPrimaryMaterial(stack) != Materials._NULL)) {
-                if (GTMod.gregtechproxy.mRenderItemDurabilityBar) {
+                if (GTMod.proxy.mRenderItemDurabilityBar) {
                     IIconContainer iconContainer;
                     long damage = MetaGeneratedTool.getToolDamage(stack);
                     long maxDamage = MetaGeneratedTool.getToolMaxDamage(stack);
@@ -67,7 +58,7 @@ public class MetaGeneratedToolRenderer implements IItemRenderer {
                     renderIcon(iconContainer);
                 }
 
-                if (GTMod.gregtechproxy.mRenderItemChargeBar) {
+                if (GTMod.proxy.mRenderItemChargeBar) {
                     IIconContainer iconContainer;
                     Long[] stats = item.getElectricStats(stack);
                     if ((stats != null) && (stats[3] < 0L)) {

@@ -29,7 +29,14 @@ public class FormingPressBackend extends RecipeMapBackend {
     @Override
     protected GTRecipe modifyFoundRecipe(GTRecipe recipe, ItemStack[] items, FluidStack[] fluids,
         @Nullable ItemStack specialSlot) {
-        for (ItemStack mold : items) {
+        boolean isCreditRecipe = false;
+        for (ItemStack mold : recipe.mInputs) {
+            if (ItemList.Shape_Mold_Credit.isStackEqual(mold, false, true)) {
+                isCreditRecipe = true;
+                break;
+            }
+        }
+        if (isCreditRecipe) for (ItemStack mold : items) {
             if (ItemList.Shape_Mold_Credit.isStackEqual(mold, false, true)) {
                 NBTTagCompound nbt = mold.getTagCompound();
                 if (nbt == null) nbt = new NBTTagCompound();

@@ -39,8 +39,7 @@ public interface IRedstoneEmitter extends IHasWorldObjectAndCoords {
     void setStrongOutputRedstoneSignal(ForgeDirection side, byte aStrength);
 
     /**
-     * Sets the strength of the redstone signal on the given side to strong or weak.
-     * Does not change the actual signal.
+     * Sets the strength of the redstone signal on the given side to strong or weak. Does not change the actual signal.
      * 
      * @param side     Must not be UNKNOWN
      * @param isStrong True = strong, false = weak

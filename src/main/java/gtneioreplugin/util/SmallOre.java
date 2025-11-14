@@ -2,20 +2,20 @@ package gtneioreplugin.util;
 
 import static gtneioreplugin.util.DimensionHelper.DimNameDisplayed;
 
-import java.util.Map;
+import java.util.Set;
 
 @SuppressWarnings("unused")
 public class SmallOre implements Comparable<SmallOre> {
 
     private String oreName;
-    private int oreMeta;
+    private String oreMaterial;
     private int amount;
     private String height = "";
     private static final int sizeData = 4; // hors dims
 
-    private Map<String, Boolean> dimensions;
+    private Set<String> dimensions;
 
-    public void setDims(Map<String, Boolean> dims) {
+    public void setDims(Set<String> dims) {
         this.dimensions = dims;
     }
 
@@ -27,12 +27,12 @@ public class SmallOre implements Comparable<SmallOre> {
         this.oreName = s;
     }
 
-    public int getOreMeta() {
-        return this.oreMeta;
+    public String getOreMaterial() {
+        return this.oreMaterial;
     }
 
-    public void setOreMeta(int meta) {
-        this.oreMeta = meta;
+    public void setOreMaterial(String mat) {
+        this.oreMaterial = mat;
     }
 
     public String getHeight() {
@@ -66,11 +66,11 @@ public class SmallOre implements Comparable<SmallOre> {
     public String getCsvEntry() {
         String[] values = new String[sizeData + DimNameDisplayed.length];
         values[0] = oreName;
-        values[1] = Integer.toString(oreMeta);
+        values[1] = oreMaterial;
         values[2] = getHeight();
         values[3] = Integer.toString(amount);
         for (int i = 0; i < DimNameDisplayed.length; i++) {
-            values[sizeData + i] = Boolean.toString(dimensions.getOrDefault(DimNameDisplayed[i], false));
+            values[sizeData + i] = Boolean.toString(dimensions.contains(DimNameDisplayed[i]));
         }
         return String.join(",", values);
     }

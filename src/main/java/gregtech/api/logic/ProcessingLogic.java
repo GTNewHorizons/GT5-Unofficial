@@ -1,6 +1,7 @@
 package gregtech.api.logic;
 
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -14,6 +15,7 @@ import javax.annotation.Nullable;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.interfaces.tileentity.IVoidable;
 import gregtech.api.objects.GTDualInputPattern;
@@ -47,11 +49,13 @@ public class ProcessingLogic {
     protected double speedBoost = 1.0;
     protected long availableVoltage;
     protected long availableAmperage;
+    protected int maxTierSkips = 1;
     protected boolean protectItems;
     protected boolean protectFluids;
     protected double overClockTimeReduction = 2.0;
     protected double overClockPowerIncrease = 4.0;
     protected boolean amperageOC = true;
+    protected boolean recipeCaching = true;
 
     // Calculated results
     protected ItemStack[] outputItems;
@@ -135,8 +139,8 @@ public class ProcessingLogic {
      * If the inventory can be cached, and any possible recipe is found, {@link #activeDualInv the active inv} will be
      * set to the given inventory.
      *
-     * @return {@code true} if the inv shouldn't be cached, or there is already a cached recipe sets, or the recipes
-     *         are cached successfully. {@code false} if there is no recipe found.
+     * @return {@code true} if the inv shouldn't be cached, or there is already a cached recipe sets, or the recipes are
+     *         cached successfully. {@code false} if there is no recipe found.
      */
     public boolean tryCachePossibleRecipesFromPattern(IDualInputInventoryWithPattern inv) {
         if (!inv.shouldBeCached()) {
@@ -153,7 +157,8 @@ public class ProcessingLogic {
         GTDualInputPattern inputs = inv.getPatternInputs();
         setInputItems(inputs.inputItems);
         setInputFluids(inputs.inputFluid);
-        Set<GTRecipe> recipes = findRecipeMatches(getCurrentRecipeMap()).collect(Collectors.toSet());
+        Set<GTRecipe> recipes = findRecipeMatches(getCurrentRecipeMap())
+            .collect(Collectors.toCollection(LinkedHashSet::new));
 
         // reset the status
         setInputItems();
@@ -216,9 +221,9 @@ public class ProcessingLogic {
     }
 
     /**
-     * Sets voltage of the machine. It doesn't need to be actual voltage (excluding amperage) of the machine;
-     * For example, most of the multiblock machines set maximum possible input power (including amperage) as voltage
-     * and 1 as amperage. That way recipemap search will be executed with overclocked voltage.
+     * Sets voltage of the machine. It doesn't need to be actual voltage (excluding amperage) of the machine; For
+     * example, most of the multiblock machines set maximum possible input power (including amperage) as voltage and 1
+     * as amperage. That way recipemap search will be executed with overclocked voltage.
      */
     public ProcessingLogic setAvailableVoltage(long voltage) {
         this.availableVoltage = voltage;
@@ -226,11 +231,25 @@ public class ProcessingLogic {
     }
 
     /**
-     * Sets amperage of the machine. This amperage doesn't involve in EU/t when searching recipemap.
-     * Useful for preventing tier skip but still considering amperage for parallel.
+     * Sets amperage of the machine. This amperage doesn't involve in EU/t when searching recipemap. Useful for
+     * preventing tier skip but still considering amperage for parallel.
      */
     public ProcessingLogic setAvailableAmperage(long amperage) {
         this.availableAmperage = amperage;
+        return this;
+    }
+
+    /**
+     * Sets the max amount of tier skips, which is how many voltage tiers above the input voltage a recipe is valid. For
+     * unlimited tier skips, use {@link #setUnlimitedTierSkips()}
+     */
+    public ProcessingLogic setMaxTierSkips(int tierSkips) {
+        this.maxTierSkips = tierSkips;
+        return this;
+    }
+
+    public ProcessingLogic setUnlimitedTierSkips() {
+        this.maxTierSkips = Integer.MAX_VALUE;
         return this;
     }
 
@@ -258,6 +277,14 @@ public class ProcessingLogic {
      */
     public ProcessingLogic setAmperageOC(boolean amperageOC) {
         this.amperageOC = amperageOC;
+        return this;
+    }
+
+    /**
+     * Disable caching of matched recipes.
+     */
+    public ProcessingLogic noRecipeCaching() {
+        this.recipeCaching = false;
         return this;
     }
 
@@ -351,10 +378,10 @@ public class ProcessingLogic {
         }
 
         if (inputItems == null) {
-            inputItems = new ItemStack[0];
+            inputItems = GTValues.emptyItemStackArray;
         }
         if (inputFluids == null) {
-            inputFluids = new FluidStack[0];
+            inputFluids = GTValues.emptyFluidStackArray;
         }
 
         if (activeDualInv != null) {
@@ -426,8 +453,8 @@ public class ProcessingLogic {
     }
 
     /**
-     * Check has been succeeded, so it applies the recipe and calculated parameters.
-     * At this point, inputs have been already consumed.
+     * Check has been succeeded, so it applies the recipe and calculated parameters. At this point, inputs have been
+     * already consumed.
      */
     @Nonnull
     protected CheckRecipeResult applyRecipe(@Nonnull GTRecipe recipe, @Nonnull ParallelHelper helper,
@@ -486,6 +513,7 @@ public class ProcessingLogic {
             return Stream.empty();
         }
         return map.findRecipeQuery()
+            .caching(recipeCaching)
             .items(inputItems)
             .fluids(inputFluids)
             .specialSlot(specialSlotItem)
@@ -527,6 +555,7 @@ public class ProcessingLogic {
         return new OverclockCalculator().setRecipeEUt(recipe.mEUt)
             .setAmperage(availableAmperage)
             .setEUt(availableVoltage)
+            .setMaxTierSkips(maxTierSkips)
             .setDuration(recipe.mDuration)
             .setDurationModifier(speedBoost)
             .setEUtDiscount(euModifier)
@@ -538,10 +567,8 @@ public class ProcessingLogic {
     /**
      * Override to perform additional logic when recipe starts.
      * <p>
-     * This is called when the recipe processing logic has finished all
-     * checks, consumed all inputs, but has not yet set the outputs to
-     * be produced. Returning a result other than SUCCESSFUL will void
-     * all inputs!
+     * This is called when the recipe processing logic has finished all checks, consumed all inputs, but has not yet set
+     * the outputs to be produced. Returning a result other than SUCCESSFUL will void all inputs!
      */
     @Nonnull
     protected CheckRecipeResult onRecipeStart(@Nonnull GTRecipe recipe) {
@@ -576,8 +603,8 @@ public class ProcessingLogic {
 
     /**
      * Represents the status of check recipe calculation. {@link #successfullyConsumedInputs} does not necessarily mean
-     * {@link #checkRecipeResult} being successful, when duration or power is overflowed. Being failure means
-     * recipe cannot meet requirements and recipe search should be continued if possible.
+     * {@link #checkRecipeResult} being successful, when duration or power is overflowed. Being failure means recipe
+     * cannot meet requirements and recipe search should be continued if possible.
      */
     protected final static class CalculationResult {
 

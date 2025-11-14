@@ -31,14 +31,15 @@ import gregtech.GTMod;
     modid = "kubatech-tests",
     name = "KubaTech Dev Tests",
     version = "1.0",
-    dependencies = "required-after:kubatech;required-after:gregtech;after:berriespp;")
+    dependencies = "required-after:kubatech;required-after:gregtech;after:berriespp;",
+    acceptableRemoteVersions = "*")
 public class kubatechTestMod {
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent ev) {
         // Disable GT5u messing with vanilla recipes for unit tests
-        GTMod.gregtechproxy.mNerfedWoodPlank = false;
-        GTMod.gregtechproxy.mChangeWoodenVanillaTools = false;
+        GTMod.proxy.mNerfedWoodPlank = false;
+        GTMod.proxy.mChangeWoodenVanillaTools = false;
     }
 
     @EventHandler

@@ -45,8 +45,8 @@ public class MTEGasTurbine extends MTEBasicGenerator {
             aTier,
             new String[] { "Requires flammable Gasses",
                 "Causes "
-                    + (int) (GTMod.gregtechproxy.mPollutionBaseGasTurbinePerSecond
-                        * GTMod.gregtechproxy.mPollutionGasTurbineReleasedByTier[aTier])
+                    + (int) (GTMod.proxy.mPollutionBaseGasTurbinePerSecond
+                        * GTMod.proxy.mPollutionGasTurbineReleasedByTier[aTier])
                     + " Pollution per second" });
         this.efficiency = efficiency;
     }
@@ -72,11 +72,6 @@ public class MTEGasTurbine extends MTEBasicGenerator {
     }
 
     @Override
-    public int getCapacity() {
-        return 16000;
-    }
-
-    @Override
     public int getEfficiency() {
         return this.efficiency;
     }
@@ -90,7 +85,7 @@ public class MTEGasTurbine extends MTEBasicGenerator {
                     .addIcon(GAS_TURBINE_FRONT_GLOW)
                     .glow()
                     .build()),
-            OVERLAYS_ENERGY_OUT[this.mTier] };
+            OVERLAYS_ENERGY_OUT[this.mTier + 1] };
     }
 
     @Override
@@ -146,7 +141,7 @@ public class MTEGasTurbine extends MTEBasicGenerator {
                     .addIcon(GAS_TURBINE_FRONT_ACTIVE_GLOW)
                     .glow()
                     .build()),
-            OVERLAYS_ENERGY_OUT[this.mTier] };
+            OVERLAYS_ENERGY_OUT[this.mTier + 1] };
     }
 
     @Override
@@ -195,7 +190,7 @@ public class MTEGasTurbine extends MTEBasicGenerator {
 
     @Override
     public int getPollution() {
-        return (int) (GTMod.gregtechproxy.mPollutionBaseGasTurbinePerSecond
-            * GTMod.gregtechproxy.mPollutionGasTurbineReleasedByTier[mTier]);
+        return (int) (GTMod.proxy.mPollutionBaseGasTurbinePerSecond
+            * GTMod.proxy.mPollutionGasTurbineReleasedByTier[mTier]);
     }
 }

@@ -20,14 +20,28 @@ public class GTShapelessRecipe extends ShapelessOreRecipe implements IGTCrafting
     private final Enchantment[] mEnchantmentsAdded;
     private final int[] mEnchantmentLevelsAdded;
 
+    @Deprecated
     public GTShapelessRecipe(ItemStack aResult, boolean aDismantleable, boolean aRemovableByGT, boolean aKeepingNBT,
         boolean overwriteNBT, Enchantment[] aEnchantmentsAdded, int[] aEnchantmentLevelsAdded, Object... aRecipe) {
+        this(aResult, aRemovableByGT, aKeepingNBT, overwriteNBT, aEnchantmentsAdded, aEnchantmentLevelsAdded, aRecipe);
+    }
+
+    public GTShapelessRecipe(ItemStack aResult, boolean aRemovableByGT, boolean aKeepingNBT, boolean overwriteNBT,
+        Enchantment[] enchants, int[] enchantLevels, Object... aRecipe) {
         super(aResult, aRecipe);
-        mEnchantmentsAdded = aEnchantmentsAdded;
-        mEnchantmentLevelsAdded = aEnchantmentLevelsAdded;
+        final boolean hasEnchants = enchants != null && enchants.length > 0
+            && enchantLevels != null
+            && enchantLevels.length > 0;
+        if (hasEnchants) {
+            this.mEnchantmentsAdded = enchants;
+            this.mEnchantmentLevelsAdded = enchantLevels;
+        } else {
+            this.mEnchantmentsAdded = null;
+            this.mEnchantmentLevelsAdded = null;
+        }
         this.overwriteNBT = overwriteNBT;
-        mRemovableByGT = aRemovableByGT;
-        mKeepingNBT = aKeepingNBT;
+        this.mRemovableByGT = aRemovableByGT;
+        this.mKeepingNBT = aKeepingNBT;
     }
 
     @Override
@@ -106,11 +120,15 @@ public class GTShapelessRecipe extends ShapelessOreRecipe implements IGTCrafting
             }
 
             // Add Enchantments
-            for (int i = 0; i < mEnchantmentsAdded.length; i++) GTUtility.ItemNBT.addEnchantment(
-                rStack,
-                mEnchantmentsAdded[i],
-                EnchantmentHelper.getEnchantmentLevel(mEnchantmentsAdded[i].effectId, rStack)
-                    + mEnchantmentLevelsAdded[i]);
+            if (mEnchantmentsAdded != null) {
+                for (int i = 0; i < mEnchantmentsAdded.length; i++) {
+                    GTUtility.ItemNBT.addEnchantment(
+                        rStack,
+                        mEnchantmentsAdded[i],
+                        EnchantmentHelper.getEnchantmentLevel(mEnchantmentsAdded[i].effectId, rStack)
+                            + mEnchantmentLevelsAdded[i]);
+                }
+            }
 
             // Update the Stack again
             GTUtility.updateItemStack(rStack);

@@ -8,7 +8,6 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
@@ -25,8 +24,8 @@ public class Unpackager implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(new ItemStack(Blocks.tfftStorageField, 1, 1))
                 .itemOutputs(
-                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.CrudeSteel, 1),
-                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.CrudeSteel, 6))
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.ClayCompound, 1),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.ClayCompound, 6))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(unpackagerRecipes);
@@ -98,7 +97,7 @@ public class Unpackager implements Runnable {
                 .itemInputs(new ItemStack(Blocks.tfftStorageField, 1, 9))
                 .itemOutputs(
                     ItemList.Quantum_Tank_IV.get(4),
-                    GTOreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.TranscendentMetal, 12))
+                    GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.TranscendentMetal, 12))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(unpackagerRecipes);
@@ -107,7 +106,7 @@ public class Unpackager implements Runnable {
                 .itemInputs(new ItemStack(Blocks.tfftStorageField, 1, 10))
                 .itemOutputs(
                     ItemList.Quantum_Tank_IV.get(16),
-                    GTOreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.SpaceTime, 12))
+                    GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.SpaceTime, 12))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(unpackagerRecipes);
@@ -180,16 +179,14 @@ public class Unpackager implements Runnable {
                 .itemInputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 9))
                 .itemOutputs(
                     ItemList.ZPM5.get(1L),
-                    GTOreDictUnificator.get(OrePrefixes.screw, MaterialsUEVplus.TranscendentMetal, 24))
+                    GTOreDictUnificator.get(OrePrefixes.screw, Materials.TranscendentMetal, 24))
                 .duration(60 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(unpackagerRecipes);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 10))
-                .itemOutputs(
-                    ItemList.ZPM6.get(1L),
-                    GTOreDictUnificator.get(OrePrefixes.screw, MaterialsUEVplus.SpaceTime, 24))
+                .itemOutputs(ItemList.ZPM6.get(1L), GTOreDictUnificator.get(OrePrefixes.screw, Materials.SpaceTime, 24))
                 .duration(60 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(unpackagerRecipes);

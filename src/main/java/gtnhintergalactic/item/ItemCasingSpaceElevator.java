@@ -7,8 +7,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
+import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.ItemCasings;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
 /**
  * Items of the space elevator casings
@@ -38,9 +38,9 @@ public class ItemCasingSpaceElevator extends ItemCasings {
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, @SuppressWarnings("rawtypes") List tooltip,
         boolean f3_h) {
-        tooltip.add(GCCoreUtil.translate("gt.blockcasings.ig." + stack.getItemDamage() + ".desc0"));
+        tooltip.add(GTUtility.translate("gt.blockcasings.ig." + stack.getItemDamage() + ".desc0"));
         tooltip.add(
             EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                + GCCoreUtil.translate("gt.blockcasings.ig." + stack.getItemDamage() + ".desc1"));
+                + GTUtility.translate("gt.blockcasings.ig." + stack.getItemDamage() + ".desc1"));
     }
 }

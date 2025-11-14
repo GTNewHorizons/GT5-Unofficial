@@ -14,12 +14,12 @@ import com.kuba6000.mobsinfo.api.MobRecipe;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.enums.Mods;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.ReflectionUtil;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
-@Optional.Interface(iface = "com.kuba6000.mobsinfo.api.IMobExtraInfoProvider", modid = Mods.Names.MOBS_INFO)
+@Optional.Interface(iface = "com.kuba6000.mobsinfo.api.IMobExtraInfoProvider", modid = Mods.ModIDs.MOBS_INFO)
 public class EnderDragonDeathHandler implements IMobExtraInfoProvider {
 
     private static final Class<?> mHardcoreDragonClass = ReflectionUtil
@@ -56,12 +56,12 @@ public class EnderDragonDeathHandler implements IMobExtraInfoProvider {
             }
         }
         if (aCountTotal > 0) {
-            PlayerUtils
-                .messageAllPlayers(aCountTotal + " Shards of Dragons Blood have crystallized into a metallic form.");
+            GTUtility
+                .sendServerMessage(aCountTotal + " Shards of Dragons Blood have crystallized into a metallic form.");
         }
     }
 
-    @Optional.Method(modid = Mods.Names.MOBS_INFO)
+    @Optional.Method(modid = Mods.ModIDs.MOBS_INFO)
     @Override
     public void provideExtraDropsInformation(@NotNull String entityString, @NotNull ArrayList<MobDrop> drops,
         @NotNull MobRecipe recipe) {

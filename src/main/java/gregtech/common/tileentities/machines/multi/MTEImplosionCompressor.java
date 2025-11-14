@@ -63,7 +63,7 @@ public class MTEImplosionCompressor extends MTECubicMultiBlockBase<MTEImplosionC
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")
             .addCasingInfoRange("Solid Steel Machine Casing", 16, 24, false)
-            .addStructureInfo("Casings can be replaced with Explosion Warning Signs")
+            .addStructureInfo("Casings can be replaced with Explosion Hazard Signs")
             .addEnergyHatch("Any casing", 1)
             .addMaintenanceHatch("Any casing", 1)
             .addMufflerHatch("Any casing", 1)
@@ -147,7 +147,7 @@ public class MTEImplosionCompressor extends MTECubicMultiBlockBase<MTEImplosionC
 
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
-        return GTMod.gregtechproxy.mPollutionImplosionCompressorPerSecond;
+        return GTMod.proxy.mPollutionImplosionCompressorPerSecond;
     }
 
     @Override
@@ -163,12 +163,15 @@ public class MTEImplosionCompressor extends MTECubicMultiBlockBase<MTEImplosionC
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
-        batchMode = !batchMode;
-        if (batchMode) {
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
-        } else {
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+        if (aPlayer.isSneaking()) {
+            batchMode = !batchMode;
+            if (batchMode) {
+                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+            } else {
+                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+            }
+            return true;
         }
-        return true;
+        return false;
     }
 }

@@ -10,7 +10,6 @@ import net.minecraft.item.ItemStack;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.food.BaseItemMetaFood;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 
 public class ItemsFoods {
@@ -29,7 +28,7 @@ public class ItemsFoods {
     }
 
     private static ItemStack getMetaFoodStack(int aID) {
-        return ItemUtils.simpleMetaStack(ModItems.itemMetaFood, aID, 1);
+        return new ItemStack(ModItems.itemMetaFood, 1, aID);
     }
 
     private static void addCookingRecipes() {

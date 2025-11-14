@@ -280,11 +280,6 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
     }
 
     @Override
-    public int getPollutionPerSecond(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
     public String[] getExtraInfoData() {
         int powerRequired = 0;
         if (this.mLastRecipe != null) {
