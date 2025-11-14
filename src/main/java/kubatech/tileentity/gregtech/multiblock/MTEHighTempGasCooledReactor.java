@@ -696,7 +696,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                             toOutput -= outputNow;
                             didOutput += outputNow;
                             if (toOutput <= 0) break;
-                            fuelStack.stackSize = Math.min(toOutput, 64);
+                            outputNow = fuelStack.stackSize = Math.min(toOutput, 64);
                         }
                         entry.setValue(entry.getValue() - didOutput);
                         this.fuelsupply -= didOutput;
