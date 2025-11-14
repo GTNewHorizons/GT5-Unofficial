@@ -85,7 +85,9 @@ public class TooltipMarkupProcessor {
             parts.add(colorCode + mark);
 
             if (markIdx + mark.length() < str.length()) {
-                parts.add(str.substring(markIdx + mark.length()));
+                String after = str.substring(markIdx + mark.length());
+                String indent = str.startsWith(INDENT) ? INDENT : "";
+                parts.add(indent + after);
             }
 
             list.remove(i);
