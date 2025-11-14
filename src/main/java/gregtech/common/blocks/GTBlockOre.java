@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.creativetab.CreativeTabs;
@@ -13,6 +14,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -21,6 +23,10 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.jetbrains.annotations.Nullable;
+
+import com.gtnewhorizon.gtnhlib.api.IBlockWithCustomSound;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -37,6 +43,7 @@ import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.items.GTGenericBlock;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -45,7 +52,7 @@ import gregtech.common.ores.OreInfo;
 import gregtech.common.render.GTRendererBlock;
 import gregtech.nei.NEIGTConfig;
 
-public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
+public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IBlockWithCustomSound {
 
     public final List<StoneType> stoneTypes;
 
@@ -70,23 +77,6 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
             }
         }
 
-        for (int matId = 0; matId < 1000; matId++) {
-            Materials mat = getMaterial(matId);
-
-            if (mat == null) continue;
-
-            GTLanguageManager
-                .addStringLocalization(mUnlocalizedName + "." + (matId) + ".name", getLocalizedNameFormat(mat));
-            GTLanguageManager.addStringLocalization(
-                mUnlocalizedName + "." + (matId + GTOreAdapter.SMALL_ORE_META_OFFSET) + ".name",
-                "Small " + getLocalizedNameFormat(mat));
-
-            GTLanguageManager.addStringLocalization(mUnlocalizedName + "." + (matId) + ".tooltip", mat.getToolTip());
-            GTLanguageManager.addStringLocalization(
-                mUnlocalizedName + "." + (matId + GTOreAdapter.SMALL_ORE_META_OFFSET) + ".tooltip",
-                mat.getToolTip());
-        }
-
         OreInfo<Materials> info = new OreInfo<>();
 
         for (int matId = 0; matId < 1000; matId++) {
@@ -100,7 +90,8 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
 
                 info.stoneType = stoneType;
 
-                if (stoneType.getPrefix().mIsUnificatable) {
+                if (stoneType.getPrefix()
+                    .isUnifiable()) {
                     GTOreDictUnificator
                         .set(stoneType.getPrefix(), info.material, GTOreAdapter.INSTANCE.getStack(info, 1));
                 } else {
@@ -215,7 +206,8 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
         if (mat != null) {
             ITexture iTexture = TextureFactory.builder()
                 .addIcon(
-                    mat.mIconSet.mTextures[small ? OrePrefixes.oreSmall.mTextureIndex : OrePrefixes.ore.mTextureIndex])
+                    mat.mIconSet.mTextures[small ? OrePrefixes.oreSmall.getTextureIndex()
+                        : OrePrefixes.ore.getTextureIndex()])
                 .setRGBA(mat.mRGBa)
                 .stdOrient()
                 .build();
@@ -223,7 +215,7 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
             textures = new ITexture[] { stoneType.getTexture(0), iTexture };
         } else {
             textures = new ITexture[] { stoneType.getTexture(0), TextureFactory.builder()
-                .addIcon(TextureSet.SET_NONE.mTextures[OrePrefixes.ore.mTextureIndex])
+                .addIcon(TextureSet.SET_NONE.mTextures[OrePrefixes.ore.getTextureIndex()])
                 .stdOrient()
                 .build() };
         }
@@ -350,6 +342,16 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
     }
 
     @Override
+    public Block.SoundType getSound(World world, int x, int y, int z) {
+        try (OreInfo<?> info = GTOreAdapter.INSTANCE.getOreInfo(world, x, y, z)) {
+            if (info == null) return Blocks.stone.stepSound;
+
+            return info.stoneType.getStone()
+                .getBlock().stepSound;
+        }
+    }
+
+    @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float subX,
         float subY, float subZ) {
         if (!world.isRemote) {
@@ -378,6 +380,14 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
     }
 
     @Override
+    public void onBlockHarvested(World world, int x, int y, int z, int meta, EntityPlayer player) {
+        super.onBlockHarvested(world, x, y, z, meta, player);
+
+        MinecraftForge.EVENT_BUS
+            .post(new OreInteractEvent(world, x, y, z, this, world.getBlockMetadata(x, y, z), player));
+    }
+
+    @Override
     protected boolean canSilkHarvest() {
         return false;
     }
@@ -390,10 +400,14 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
     public static final int SMALL_ORE_META_OFFSET = 16000, NATURAL_ORE_META_OFFSET = 8000;
 
     public int getMaterialIndex(int meta) {
+        if (meta < 0) return 0;
+
         return meta % 1000;
     }
 
     public int getStoneIndex(int meta) {
+        if (meta < 0) return 0;
+
         meta %= SMALL_ORE_META_OFFSET;
         meta %= NATURAL_ORE_META_OFFSET;
 
@@ -408,15 +422,13 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
         return (meta % SMALL_ORE_META_OFFSET) >= NATURAL_ORE_META_OFFSET;
     }
 
+    @Nullable
     public Materials getMaterial(int meta) {
-        return GregTechAPI.sGeneratedMaterials[getMaterialIndex(meta)];
+        return GTDataUtils.getIndexSafe(GregTechAPI.sGeneratedMaterials, getMaterialIndex(meta));
     }
 
+    @Nullable
     public StoneType getStoneType(int meta) {
-        int stoneType = getStoneIndex(meta);
-
-        if (stoneType < 0 || stoneType >= stoneTypes.size()) return null;
-
-        return stoneTypes.get(stoneType);
+        return GTDataUtils.getIndexSafe(stoneTypes, getStoneIndex(meta));
     }
 }

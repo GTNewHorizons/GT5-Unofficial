@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.function.LongConsumer;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
@@ -109,7 +108,6 @@ import gregtech.api.interfaces.modularui.IControllerWithOptionalFeatures;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -130,6 +128,7 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.client.GTSoundLoop;
 import gregtech.common.config.MachineStats;
 import gregtech.common.data.GTCoilTracker;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.widget.CheckRecipeResultSyncer;
 import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
 import gregtech.common.items.MetaGeneratedTool01;
@@ -181,7 +180,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     public boolean mLockedToSingleRecipe = getDefaultRecipeLockingMode();
     protected boolean inputSeparation = getDefaultInputSeparationMode();
     protected VoidingMode voidingMode = getDefaultVoidingMode();
-    protected boolean batchMode = getDefaultBatchMode();
+    protected boolean batchMode = getDefaultBatchMode() && supportsBatchMode();
     protected @Nonnull CheckRecipeResult checkRecipeResult = CheckRecipeResultRegistry.NONE;
     protected int powerPanelMaxParallel = 1;
     protected boolean alwaysMaxParallel = true;
@@ -190,6 +189,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     // for the wireless maintenance detector cover gui, to display / not display the turbine row.
     protected boolean usesTurbine = false;
     protected boolean canBeMuffled = true;
+    protected boolean debugEnergyPresent = false;
 
     protected static final String INPUT_SEPARATION_NBT_KEY = "inputSeparation";
     protected static final String VOID_EXCESS_NBT_KEY = "voidExcess";
@@ -502,6 +502,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
         mCoils.clear();
         deactivateCoilLease();
+        debugEnergyPresent = false;
     }
 
     public boolean checkStructure(boolean aForceReset) {
@@ -737,28 +738,33 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 if (!polluteEnvironment(getPollutionPerTick(mInventory[1]))) {
                     stopMachine(ShutDownReasonRegistry.POLLUTION_FAIL);
                 }
-                if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) {
-                    if (mOutputItems != null) {
-                        addItemOutputs(mOutputItems);
+                if (mMaxProgresstime > 0) {
+                    incrementProgressTime();
+
+                    if (mProgresstime >= mMaxProgresstime) {
+                        if (mOutputItems != null) {
+                            addItemOutputs(mOutputItems);
+                            mOutputItems = null;
+                        }
+                        if (mOutputFluids != null) {
+                            addFluidOutputs(mOutputFluids);
+                            mOutputFluids = null;
+                        }
+                        outputAfterRecipe();
+                        mEfficiency = Math.max(
+                            0,
+                            Math.min(
+                                mEfficiency + mEfficiencyIncrease,
+                                getMaxEfficiency(getControllerSlot())
+                                    - ((getIdealStatus() - getRepairStatus()) * 1000)));
                         mOutputItems = null;
-                    }
-                    if (mOutputFluids != null) {
-                        addFluidOutputs(mOutputFluids);
-                        mOutputFluids = null;
-                    }
-                    outputAfterRecipe();
-                    mEfficiency = Math.max(
-                        0,
-                        Math.min(
-                            mEfficiency + mEfficiencyIncrease,
-                            getMaxEfficiency(getControllerSlot()) - ((getIdealStatus() - getRepairStatus()) * 1000)));
-                    mOutputItems = null;
-                    mProgresstime = 0;
-                    mMaxProgresstime = 0;
-                    mEfficiencyIncrease = 0;
-                    mLastWorkingTick = mTotalRunTime;
-                    if (aBaseMetaTileEntity.isAllowedToWork()) {
-                        checkRecipe();
+                        mProgresstime = 0;
+                        mMaxProgresstime = 0;
+                        mEfficiencyIncrease = 0;
+                        mLastWorkingTick = mTotalRunTime;
+                        if (aBaseMetaTileEntity.isAllowedToWork()) {
+                            checkRecipe();
+                        }
                     }
                 }
             }
@@ -779,6 +785,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     protected void outputAfterRecipe() {
 
+    }
+
+    protected void incrementProgressTime() {
+        mProgresstime++;
     }
 
     public boolean polluteEnvironment(int aPollutionLevel) {
@@ -1020,7 +1030,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
      * {@link #createProcessingLogic}, this method is called every time checking for recipes.
      */
     protected void setProcessingLogicPower(ProcessingLogic logic) {
-        boolean useSingleAmp = mEnergyHatches.size() == 1 && mExoticEnergyHatches.isEmpty();
+        boolean useSingleAmp = !debugEnergyPresent && mEnergyHatches.size() == 1 && mExoticEnergyHatches.isEmpty();
         logic.setAvailableVoltage(getAverageInputVoltage());
         logic.setAvailableAmperage(useSingleAmp ? 1 : getMaxInputAmps());
         logic.setAmperageOC(true);
@@ -1697,6 +1707,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                         inputsFromME.put(fluidStack.getFluid(), fluidStack);
                     }
                 }
+            } else if (tHatch instanceof MTEHatchInputDebug debugHatch) {
+                for (FluidStack fluid : debugHatch.getFluidList()) {
+                    if (fluid != null) {
+                        FluidStack stack = fluid.copy();
+                        stack.amount = Integer.MAX_VALUE;
+                        rList.add(stack);
+                    }
+                }
             } else {
                 FluidStack fillableStack = tHatch.getFillableStack();
                 if (fillableStack != null) {
@@ -1984,6 +2002,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchEnergy hatch) {
+            if (aMetaTileEntity instanceof MTEHatchEnergyDebug) {
+                debugEnergyPresent = true;
+            }
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
             return mEnergyHatches.add(hatch);
@@ -2745,6 +2766,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             alwaysMaxParallel ? getMaxParallelRecipes() : Math.min(getMaxParallelRecipes(), powerPanelMaxParallel));
     }
 
+    public int getmStartUpCheck() {
+        return mStartUpCheck;
+    }
+
     @Override
     public Pos2d getVoidingModeButtonPos() {
         return new Pos2d(8, 91);
@@ -2927,7 +2952,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     // For MUI2 corner column toggling
 
-    public boolean supportsTerminalCornerColumn() {
+    public boolean supportsTerminalRightCornerColumn() {
         return true;
     }
 
@@ -3042,6 +3067,15 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         return true;
     }
 
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    public boolean supportsInventoryRow() {
+        return this.doesBindPlayerInventory();
+    }
+
     public boolean shouldDisplayShutDownReason() {
         return true;
     }
@@ -3061,72 +3095,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         numberFormat.setMinimumFractionDigits(1);
         numberFormat.setMaximumFractionDigits(1);
         numberFormat.format((double) mProgresstime / mMaxProgresstime * 100, ret);
-        ret.append("%)\n");
+        ret.append("%)");
         numberFormat.setMinimumFractionDigits(0);
         numberFormat.setMaximumFractionDigits(2);
 
-        LongConsumer appendRate = (amount) -> {
-            double processPerTick = (double) amount / mMaxProgresstime * 20;
-            ret.append(" (");
-            if (processPerTick > 1) {
-                numberFormat.format(Math.round(processPerTick * 10) / 10.0, ret);
-                ret.append("/s)");
-            } else {
-                numberFormat.format(Math.round(1 / processPerTick * 10) / 10.0, ret);
-                ret.append("s/ea)");
-            }
-        };
-
-        int lines = 0;
-        int MAX_LINES = 10;
-
-        if (mOutputItems != null) {
-            HashMap<String, Long> nameToAmount = new HashMap<>();
-            for (var item : mOutputItems) {
-                if (item == null || item.stackSize <= 0) continue;
-                nameToAmount.merge(item.getDisplayName(), (long) item.stackSize, Long::sum);
-            }
-            for (Map.Entry<String, Long> entry : nameToAmount.entrySet()) {
-                if (lines >= MAX_LINES) {
-                    ret.append("...");
-                    return ret.toString();
-                }
-                lines++;
-                ret.append(EnumChatFormatting.AQUA)
-                    .append(entry.getKey())
-                    .append(EnumChatFormatting.WHITE)
-                    .append(" x ")
-                    .append(EnumChatFormatting.GOLD);
-                numberFormat.format(entry.getValue(), ret);
-                ret.append(EnumChatFormatting.WHITE);
-                appendRate.accept(entry.getValue());
-                ret.append('\n');
-            }
-        }
-        if (mOutputFluids != null) {
-            HashMap<String, Long> nameToAmount = new HashMap<>();
-            for (var fluid : mOutputFluids) {
-                if (fluid == null || fluid.amount <= 0) continue;
-                nameToAmount.merge(fluid.getLocalizedName(), (long) fluid.amount, Long::sum);
-            }
-            for (Map.Entry<String, Long> entry : nameToAmount.entrySet()) {
-                if (lines >= MAX_LINES) {
-                    ret.append("...");
-                    return ret.toString();
-                }
-                lines++;
-                ret.append(EnumChatFormatting.AQUA)
-                    .append(entry.getKey())
-                    .append(EnumChatFormatting.WHITE)
-                    .append(" x ")
-                    .append(EnumChatFormatting.GOLD);
-                numberFormat.format(entry.getValue(), ret);
-                ret.append("L")
-                    .append(EnumChatFormatting.WHITE);
-                appendRate.accept(entry.getValue());
-                ret.append('\n');
-            }
-        }
         return ret.toString();
     }
 
@@ -3429,25 +3401,26 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> (getErrorDisplayID() & 256) != 0));
 
-        screenElements
-            .widget(
+        if (showMachineStatusInGUI()) {
+            screenElements.widget(
                 new TextWidget(translateToLocal("gt.interact.desc.mb.idle.1")).setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()))
-            .widget(new FakeSyncWidget.IntegerSyncer(this::getErrorDisplayID, this::setErrorDisplayID))
-            .widget(
-                new FakeSyncWidget.BooleanSyncer(
-                    () -> getBaseMetaTileEntity().isActive(),
-                    val -> getBaseMetaTileEntity().setActive(val)));
-        screenElements.widget(
-            new TextWidget(translateToLocal("gt.interact.desc.mb.idle.2")).setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
-        screenElements.widget(
-            new TextWidget(translateToLocal("gt.interact.desc.mb.idle.3")).setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
+                .widget(new FakeSyncWidget.IntegerSyncer(this::getErrorDisplayID, this::setErrorDisplayID))
+                .widget(
+                    new FakeSyncWidget.BooleanSyncer(
+                        () -> getBaseMetaTileEntity().isActive(),
+                        val -> getBaseMetaTileEntity().setActive(val)));
+            screenElements.widget(
+                new TextWidget(translateToLocal("gt.interact.desc.mb.idle.2")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
+            screenElements.widget(
+                new TextWidget(translateToLocal("gt.interact.desc.mb.idle.3")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
 
-        screenElements.widget(
-            new TextWidget(translateToLocal("gt.interact.desc.mb.running")).setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setEnabled(widget -> getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive()));
+            screenElements.widget(
+                new TextWidget(translateToLocal("gt.interact.desc.mb.running")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive()));
+        }
 
         screenElements.widget(TextWidget.dynamicString(() -> {
             Duration time = Duration.ofSeconds((mTotalRunTime - mLastWorkingTick) / 20);
@@ -3566,6 +3539,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         return true;
     }
 
+    public boolean showMachineStatusInGUI() {
+        return true;
+    }
+
     @TestOnly
     protected void setEnergyHatches(ArrayList<MTEHatchEnergy> EnergyHatches) {
         this.mEnergyHatches = EnergyHatches;
@@ -3590,8 +3567,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         return getGui().build(guiData, syncManager, uiSettings);
     }
 
-    protected @NotNull MTEMultiBlockBaseGui getGui() {
-        return new MTEMultiBlockBaseGui(this);
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEMultiBlockBaseGui<>(this);
     }
 
     public boolean getDefaultHasMaintenanceChecks() {
@@ -3681,5 +3658,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     public void setPowerfailEventCreationStatus(boolean status) {
         makePowerfailEvents = status;
+    }
+
+    public boolean hasRunningText() {
+        return true;
     }
 }

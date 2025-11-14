@@ -47,6 +47,7 @@ import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
 
 import cofh.asmhooks.block.BlockTickingWater;
 import cofh.asmhooks.block.BlockWater;
+import cpw.mods.fml.relauncher.FMLLaunchHandler;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
@@ -56,6 +57,7 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IHeatingCoil;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.ITurnable;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
@@ -153,9 +155,12 @@ public class GTStructureUtility {
 
             @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                if (mIcons == null) {
+                if (mIcons == null && FMLLaunchHandler.side()
+                    .isClient()) {
                     mIcons = new IIcon[6];
-                    Arrays.fill(mIcons, aFrameMaterial.mIconSet.mTextures[OrePrefixes.frameGt.mTextureIndex].getIcon());
+                    Arrays.fill(
+                        mIcons,
+                        aFrameMaterial.mIconSet.mTextures[OrePrefixes.frameGt.getTextureIndex()].getIcon());
                 }
                 StructureLibAPI.hintParticleTinted(world, x, y, z, mIcons, aFrameMaterial.mRGBa);
                 return true;
@@ -732,7 +737,7 @@ public class GTStructureUtility {
 
     /**
      * like {@link #filterByMTEClass(java.util.List)}, but adds a blacklist check to the predicate
-     * 
+     *
      * @param list
      * @param blacklist
      * @return predicate of all multis of same type as hatchelement, with blacklist omitted
@@ -888,8 +893,16 @@ public class GTStructureUtility {
 
                 if (!(stack.getItem() instanceof ItemMachines itemMachines)) return false;
 
-                return itemMachines
+                boolean success = itemMachines
                     .placeBlockAt(stack, null, world, x, y, z, ForgeDirection.UP.ordinal(), 0.5f, 0.5f, 0.5f, 0);
+
+                if (!success) return false;
+
+                if (world.getTileEntity(x, y, z) instanceof ITurnable turnable) {
+                    turnable.setFrontFacing(ForgeDirection.SOUTH);
+                }
+
+                return true;
             }
 
             @Override
@@ -911,12 +924,13 @@ public class GTStructureUtility {
 
                 if (actual == wanted) return PlaceResult.SKIP;
 
-                if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, env.getActor()))
+                if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, env.getActor())) {
                     return PlaceResult.REJECT;
+                }
 
                 ItemStack stack = wanted.getStackForm(1);
 
-                return StructureUtility.survivalPlaceBlock(
+                PlaceResult result = StructureUtility.survivalPlaceBlock(
                     stack,
                     EXACT,
                     null,
@@ -928,6 +942,14 @@ public class GTStructureUtility {
                     env.getSource(),
                     env.getActor(),
                     env.getChatter());
+
+                if (result != ACCEPT) return result;
+
+                if (world.getTileEntity(x, y, z) instanceof ITurnable turnable) {
+                    turnable.setFrontFacing(ForgeDirection.SOUTH);
+                }
+
+                return result;
             }
         };
     }

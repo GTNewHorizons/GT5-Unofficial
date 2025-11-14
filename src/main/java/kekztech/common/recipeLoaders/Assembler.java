@@ -12,7 +12,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
@@ -50,7 +49,7 @@ public class Assembler implements Runnable {
                 ItemList.Field_Generator_LV.get(4),
                 GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Polytetrafluoroethylene, 25))
             .itemOutputs(TileEntities.tfftHatch.getStackForm(1))
-            .fluidInputs(Materials.Plastic.getMolten(3 * INGOTS))
+            .fluidInputs(Materials.Polyethylene.getMolten(3 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -59,8 +58,8 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(6),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.CrudeSteel, 1),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.CrudeSteel, 6),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.ClayCompound, 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.ClayCompound, 6),
                 GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Steel, 3),
                 ItemList.FluidRegulator_LV.get(1))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 1))
@@ -75,10 +74,10 @@ public class Assembler implements Runnable {
                 GTUtility.getIntegratedCircuit(6),
                 ItemList.Casing_Tank_1.get(1),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.EnergeticSilver, 6),
-                GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Plastic, 3),
+                GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Polyethylene, 3),
                 ItemList.FluidRegulator_MV.get(1))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 2))
-            .fluidInputs(Materials.Plastic.getMolten(2 * INGOTS))
+            .fluidInputs(Materials.Polyethylene.getMolten(2 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -93,7 +92,7 @@ public class Assembler implements Runnable {
                 ItemList.Field_Generator_LV.get(1),
                 ItemList.FluidRegulator_HV.get(1))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 3))
-            .fluidInputs(Materials.Plastic.getMolten(3 * INGOTS))
+            .fluidInputs(Materials.Polyethylene.getMolten(3 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -226,8 +225,8 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.ZPM5.get(1),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.TranscendentMetal, 4),
-                GTOreDictUnificator.get(OrePrefixes.screw, MaterialsUEVplus.TranscendentMetal, 24),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TranscendentMetal, 4),
+                GTOreDictUnificator.get(OrePrefixes.screw, Materials.TranscendentMetal, 24),
                 GTUtility.getIntegratedCircuit(6))
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 9))
             .duration(10 * MINUTES + 40 * SECONDS)
@@ -238,8 +237,8 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.ZPM6.get(1),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SpaceTime, 4),
-                GTOreDictUnificator.get(OrePrefixes.screw, MaterialsUEVplus.SpaceTime, 24),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 4),
+                GTOreDictUnificator.get(OrePrefixes.screw, Materials.SpaceTime, 24),
                 GTUtility.getIntegratedCircuit(6))
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 10))
             .duration(10 * MINUTES + 40 * SECONDS)

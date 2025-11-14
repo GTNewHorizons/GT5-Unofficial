@@ -34,8 +34,8 @@ public class MaterialBuilder {
     private String name;
     private String defaultLocalName;
     private Element element;
+    private String flavorText;
     private String chemicalFormula;
-    private int metaItemSubID = -1;
     private boolean unifiable = true;
     private TextureSet iconSet = TextureSet.SET_NONE;
     private Dyes color = Dyes._NULL;
@@ -96,7 +96,7 @@ public class MaterialBuilder {
             defaultLocalName,
             element,
             chemicalFormula,
-            metaItemSubID,
+            flavorText,
             unifiable,
             iconSet,
             color,
@@ -169,8 +169,8 @@ public class MaterialBuilder {
         return this;
     }
 
-    public MaterialBuilder setMetaItemSubID(int metaItemSubID) {
-        this.metaItemSubID = metaItemSubID;
+    public MaterialBuilder setFlavorText(String flavorText) {
+        this.flavorText = flavorText;
         return this;
     }
 
@@ -304,6 +304,7 @@ public class MaterialBuilder {
      * <li>{@link OrePrefixes#bolt}</li>
      * <li>{@link OrePrefixes#comb}</li>
      * <li>{@link OrePrefixes#screw}</li>
+     * <li>{@link OrePrefixes#lens}</li>
      * <li>{@link OrePrefixes#crystal}</li>
      * <li>{@link OrePrefixes#handleMallet}</li>
      * </ul>
