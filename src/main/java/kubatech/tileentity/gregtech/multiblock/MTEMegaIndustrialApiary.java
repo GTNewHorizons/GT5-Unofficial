@@ -1227,7 +1227,6 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
 
         static final Map<ItemId, ItemStack> dropstacks = new HashMap<>();
 
-        // Old one
         public List<ItemStack> getDrops(final MTEMegaIndustrialApiary MTE, final double timePassed) {
             drops.forEach(d -> {
                 MTE.dropProgress.merge(d.id, d.getAmount(count * timePassed / 550d), Double::sum);
@@ -1401,11 +1400,8 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
 
         public List<ItemStack> run(MTEMegaIndustrialApiary mte, int mMaxSlots, double timePassed) {
             List<ItemStack> stacks = new ArrayList<>();
-            int remainSlot = mMaxSlots;
             for (BeeSimulator bs : this) {
                 stacks.addAll(bs.getDrops(mte, timePassed));
-                remainSlot -= bs.count;
-                if (remainSlot <= 0) break;
             }
             return stacks;
         }

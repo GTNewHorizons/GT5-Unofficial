@@ -5,6 +5,7 @@ import static kubatech.api.utils.ItemUtils.writeItemStackToNBT;
 
 import java.util.LinkedList;
 
+import kubatech.modularui2.InventoryBucket;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -16,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 import gregtech.api.util.GTUtility;
 import kubatech.tileentity.gregtech.multiblock.MTEExtremeIndustrialGreenhouse;
 
-public abstract class EIGBucket {
+public abstract class EIGBucket implements InventoryBucket<MTEExtremeIndustrialGreenhouse> {
 
     protected @Nullable ItemStack seed;
     protected int seedCount;
@@ -54,6 +55,7 @@ public abstract class EIGBucket {
      *
      * @return The nbt data for this bucket.
      */
+    @Override
     public NBTTagCompound save() {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setString("type", this.getNBTIdentifier());
@@ -94,6 +96,7 @@ public abstract class EIGBucket {
      *
      * @return The display name of the seed.
      */
+    @Override
     public String getDisplayName() {
         return this.seed.getDisplayName();
     }
@@ -122,6 +125,7 @@ public abstract class EIGBucket {
      * @return number of seeds consumed, 0 for wrong item, -1 if it missed the support items, -2 if you tried to consume
      *         0 or less items;
      */
+    @Override
     public int tryAddSeed(@NotNull MTEExtremeIndustrialGreenhouse greenhouse, @Nullable ItemStack input, int maxConsume,
         boolean simulate) {
         // Abort is input if empty
@@ -173,6 +177,7 @@ public abstract class EIGBucket {
      * @param toRemove The maximum amount of items to remove.
      * @return The items that were removed from the bucket. Null if the bucket is empty.
      */
+    @Override
     public ItemStack @Nullable [] tryRemoveSeed(int toRemove, boolean simulate) {
         // validate inputs
         toRemove = Math.min(this.seedCount, toRemove);
@@ -195,30 +200,11 @@ public abstract class EIGBucket {
     }
 
     /**
-     * Sets the seed count to 0 and returns item stacks representing every item in this bucket.
-     *
-     * @return The contents of the bucket
-     */
-    public ItemStack @Nullable [] emptyBucket() {
-        if (this.seedCount <= 0) return null;
-        ItemStack[] ret = new ItemStack[1 + (this.supportItems == null ? 0 : this.supportItems.length)];
-        ret[0] = this.seed.copy();
-        ret[0].stackSize = this.seedCount;
-        if (this.supportItems != null) {
-            for (int i = 0; i < this.supportItems.length; i++) {
-                ret[i + 1] = this.supportItems[i].copy();
-                ret[i + 1].stackSize = this.seedCount;
-            }
-        }
-        this.seedCount = 0;
-        return ret;
-    }
-
-    /**
      * Returns true if the bucket can output items.
      *
      * @return true if the bucket is valid.
      */
+    @Override
     public boolean isValid() {
         return this.seed != null && this.seedCount > 0;
     }
