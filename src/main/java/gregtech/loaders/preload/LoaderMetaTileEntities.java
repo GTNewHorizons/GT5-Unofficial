@@ -645,7 +645,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.PRECISION_LASER_ENGRAVER_UIV;
 import static gregtech.api.enums.MetaTileEntityIDs.PRECISION_LASER_ENGRAVER_UMV;
 import static gregtech.api.enums.MetaTileEntityIDs.PRECISION_LASER_ENGRAVER_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.PRECISION_LASER_ENGRAVER_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.PROCESSING_ARRAY_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.PUMP_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.PUMP_LV;
 import static gregtech.api.enums.MetaTileEntityIDs.PUMP_MV;
@@ -1094,9 +1093,6 @@ import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchPart
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorOutput;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.*;
-import gregtech.common.tileentities.machines.multi.pcb.MTEPCBBioChamber;
-import gregtech.common.tileentities.machines.multi.pcb.MTEPCBCoolingTower;
-import gregtech.common.tileentities.machines.multi.pcb.MTEPCBFactory;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.AssemblyMatrix;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.BoardProcessor;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.CuttingChamber;
@@ -1107,6 +1103,9 @@ import gregtech.common.tileentities.machines.multi.nanochip.modules.SheetSupervi
 import gregtech.common.tileentities.machines.multi.nanochip.modules.Splitter;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.SuperconductorSplitter;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.WireTracer;
+import gregtech.common.tileentities.machines.multi.pcb.MTEPCBBioChamber;
+import gregtech.common.tileentities.machines.multi.pcb.MTEPCBCoolingTower;
+import gregtech.common.tileentities.machines.multi.pcb.MTEPCBFactory;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchDegasifierControl;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchLensHousing;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchLensIndicator;
@@ -1534,6 +1533,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Superconductive Strand Splitter").getStackForm(1));
         ItemList.NanoChipModule_Splitter.set(
             new Splitter(NANOCHIP_MODULE_SPLITTER.ID, "multimachine.nanochipmodule.splitter", "Nanopart Splitter")
+                .getStackForm(1));
         ItemList.EntropicProcessor.set(
             new MTEEntropicProcessor(ENTROPIC_PROCESSOR.ID, "multimachine.entropic-processor", "Entropic Processor")
                 .getStackForm(1));

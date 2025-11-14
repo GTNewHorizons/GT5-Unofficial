@@ -65,7 +65,7 @@ public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamli
                 }
             }
         } else if (aBaseMetaTileEntity.isClientSide() && GTMod.clientProxy()
-            .changeDetected() == 4) {
+            .getChangeDetected() == 4) {
                 aBaseMetaTileEntity.issueTextureUpdate();
             }
     }

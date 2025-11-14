@@ -83,6 +83,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
+import gregtech.api.util.GTRecipeMapUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.AssemblyMatrix;
@@ -691,7 +692,6 @@ public final class RecipeMaps {
                 coalChances[2] = 10000;
             }
 
-            GTRecipeTemplate coll = asTemplate(rr.get());
             GTRecipeMapUtil.GTRecipeTemplate coll = asTemplate(rr.get());
             for (Materials coal : new Materials[] { Materials.Coal, Materials.Charcoal }) {
                 coll.derive()

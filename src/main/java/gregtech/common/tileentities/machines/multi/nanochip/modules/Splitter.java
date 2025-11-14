@@ -27,11 +27,11 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.gui.nanochip.SplitterGui;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
@@ -85,7 +85,7 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
     @Override
     public int survivalConstruct(ItemStack trigger, int elementBudget, ISurvivalBuildEnvironment env) {
         // Should only construct the main structure, since the base structure is built by the nanochip assembly complex.
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             trigger,
             SPLITTER_OFFSET_X,
@@ -323,7 +323,7 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
     }
 
     @Override
-    protected @NotNull MTEMultiBlockBaseGui getGui() {
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new SplitterGui(this);
     }
 

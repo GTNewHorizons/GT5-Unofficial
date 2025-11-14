@@ -81,12 +81,6 @@ public final class GTGuiTextures {
             GTTextureIds.BACKGROUND_POPUP_STEEL,
             GTTextureIds.BACKGROUND_POPUP_PRIMITIVE)
         .build();
-    public static final UITexture BACKGROUND_TEXT_FIELD = UITexture.builder()
-        .location(GregTech.ID, "gui/background/text_field")
-        .imageSize(142, 28)
-        .adaptable(1)
-        .name(GTTextureIds.BACKGROUND_TERMINAL_STANDARD)
-        .build();
 
     public static final UITexture TT_BACKGROUND_TEXT_FIELD = UITexture.builder()
         .location(MODID, "gui/background/screen_blue")
@@ -134,6 +128,18 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_UNPOWERED = UITexture.fullImage(GregTech.ID, "gui/icons/unpowered");
 
     public static final UITexture OVERLAY_NO_MAINTENANCE_ISSUES = UITexture.fullImage(GregTech.ID, "gui/icons/noMaint");
+
+    public static final UITexture PICTURE_BRAIN = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/brain")
+        .fullImage()
+        .name(GTTextureIds.PICTURE_BRAIN)
+        .build();
+    public static final UITexture PICTURE_ELECRICITY = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/electricity")
+        .fullImage()
+        .name(GTTextureIds.PICTURE_ELECRICITY)
+        .build();
+
     // endregion overlay
     // region slot
 
@@ -438,11 +444,6 @@ public final class GTGuiTextures {
     public static final UITexture STEAM_GAUGE_BG = UITexture.fullImage(GregTech.ID, "gui/background/steam_dial");
     public static final UITexture STEAM_GAUGE_BG_STEEL = UITexture
         .fullImage(GregTech.ID, "gui/background/steam_dial_steel");
-    public static final UITexture PROGRESSBAR_SIEVERT = UITexture.builder()
-        .location(MainMod.MOD_ID, "GUI/progressbar/sievert")
-        .fullImage()
-        .name(GTTextureIds.PROGRESSBAR_SIEVERT)
-        .build();
     public static final UITexture PROGRESSBAR_METER_MINT = UITexture.builder()
         .location(GregTech.ID, "gui/progressbar/meter_mint")
         .fullImage()
@@ -540,6 +541,42 @@ public final class GTGuiTextures {
             GTTextureIds.BUTTON_COVER_TAB_DISABLED_PRIMITIVE)
         .build();
 
+    public static final UITexture PICTURE_TRANSPARENT = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/transparent")
+        .fullImage()
+        .name(GTTextureIds.PICTURE_TRANSPARENT)
+        .build();
+    public static final UITexture PICTURE_SIEVERT_CONTAINER = UITexture.builder()
+        .location(MainMod.MOD_ID, "GUI/picture/sievert_container")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.PICTURE_SIEVERT_CONTAINER)
+        .build();
+    public static final UITexture PICTURE_DECAY_TIME_CONTAINER = UITexture.builder()
+        .location(MainMod.MOD_ID, "GUI/picture/decay_time_container")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.PICTURE_DECAY_TIME_CONTAINER)
+        .build();
+    public static final UITexture PICTURE_DECAY_TIME_INSIDE = UITexture.builder()
+        .location(MainMod.MOD_ID, "GUI/picture/decay_time_inside")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.PICTURE_DECAY_TIME_INSIDE)
+        .build();
+    public static final UITexture PICTURE_RADIATION_SHUTTER_FRAME = UITexture.builder()
+        .location(MainMod.MOD_ID, "GUI/picture/radiation_shutter_frame")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.PICTURE_RADIATION_SHUTTER_FRAME)
+        .build();
+    public static final UITexture PICTURE_RADIATION_SHUTTER_INSIDE = UITexture.builder()
+        .location(MainMod.MOD_ID, "GUI/picture/radiation_shutter_inside")
+        .adaptable(1, 1, 1, 1)
+        .canApplyTheme()
+        .name(GTTextureIds.PICTURE_RADIATION_SHUTTER_INSIDE)
+        .build();
+
     // endregion button
 
     // region button overlay
@@ -631,6 +668,23 @@ public final class GTGuiTextures {
             GTTextureIds.PICTURE_GT_LOGO_BRONZE,
             GTTextureIds.PICTURE_GT_LOGO_STEEL,
             GTTextureIds.PICTURE_GT_LOGO_PRIMITIVE)
+        .build();
+    public static final UITexture PICTURE_BARTWORKS_LOGO_STANDARD = UITexture.builder()
+        .location(MainMod.MOD_ID, "GUI/picture/bw_logo_47x21")
+        .fullImage()
+        .name(GTTextureIds.PICTURE_BW_LOGO_STANDARD)
+        .build();
+
+    public static final UITexture INFORMATION_SYMBOL = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/information_symbol")
+        .fullImage()
+        .name(GTTextureIds.PICTURE_INFORMATION_SYMBOL)
+        .build();
+    // ripped from mui1
+    public static final UITexture INFORMATION_BUBBLE = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/information_bubble")
+        .fullImage()
+        .name(GTTextureIds.PICTURE_INFORMATION_BUBBLE)
         .build();
 
     public static final UITexture TT_CONTROLLER_SLOT_HEAT_SINK = UITexture.builder()

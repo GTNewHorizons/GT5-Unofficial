@@ -170,7 +170,7 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
                 }
             }
         } else if (aBaseMetaTileEntity.isClientSide() && GTMod.clientProxy()
-            .changeDetected() == 4) {
+            .getChangeDetected() == 4) {
                 aBaseMetaTileEntity.issueTextureUpdate();
             }
     }

@@ -650,7 +650,7 @@ public class GTClient extends GTProxy {
      */
     private int changeDetected = 0;
 
-    public int changeDetected() {
+    public int getChangeDetected() {
         return changeDetected;
     }
 

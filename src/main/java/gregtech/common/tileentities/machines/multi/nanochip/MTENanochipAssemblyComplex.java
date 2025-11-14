@@ -48,7 +48,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
-import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -59,6 +58,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.multi.gui.nanochip.MTENanochipAssemblyComplexGui;
@@ -439,7 +439,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                             ItemStack toOutput = GTUtility
                                 .copyAmountUnsafe((int) Math.min(Integer.MAX_VALUE, amount), component.realCircuit);
                             // Add output and deplete from hatch
-                            addOutput(toOutput);
+                            addOutputPartial(toOutput);
                             contents.remove(component);
                         }
                     }
@@ -559,7 +559,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    protected @NotNull MTEMultiBlockBaseGui getGui() {
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new MTENanochipAssemblyComplexGui(this);
     }
 

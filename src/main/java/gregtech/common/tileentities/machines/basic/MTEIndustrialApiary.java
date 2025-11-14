@@ -536,7 +536,7 @@ public class MTEIndustrialApiary extends MTEBasicMachine
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isClientSide()) {
             if (GTMod.clientProxy()
-                .changeDetected() == 4) {
+                .getChangeDetected() == 4) {
                 /*
                  * Client tick counter that is set to 5 on hiding pipes and covers. It triggers a texture update next
                  * client tick when reaching 4, with provision for 3 more update tasks, spreading client change

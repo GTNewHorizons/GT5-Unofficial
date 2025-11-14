@@ -165,7 +165,7 @@ public abstract class MTEBaseFactoryPipe extends MetaPipeEntity implements IActi
             }
         } else {
             if (GTMod.clientProxy()
-                .changeDetected() == 4) {
+                .getChangeDetected() == 4) {
                 base.issueTextureUpdate();
             }
         }

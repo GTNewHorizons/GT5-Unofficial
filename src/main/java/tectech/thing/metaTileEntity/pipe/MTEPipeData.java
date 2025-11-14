@@ -214,7 +214,7 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe, 
                 }
             }
         } else if (aBaseMetaTileEntity.isClientSide() && GTMod.clientProxy()
-            .changeDetected() == 4) {
+            .getChangeDetected() == 4) {
                 aBaseMetaTileEntity.issueTextureUpdate();
             }
     }

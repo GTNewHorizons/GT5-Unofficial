@@ -122,7 +122,7 @@ public class MTEPipeLaserMirror extends MTEPipeLaser {
             }
 
         } else if (aBaseMetaTileEntity.isClientSide() && GTMod.clientProxy()
-            .changeDetected() == 4) {
+            .getChangeDetected() == 4) {
                 aBaseMetaTileEntity.issueTextureUpdate();
             }
     }

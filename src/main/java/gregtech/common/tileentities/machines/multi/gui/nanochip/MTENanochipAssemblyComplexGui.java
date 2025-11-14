@@ -31,13 +31,13 @@ import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
-import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.modularui2.widget.TerminalWidget;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
 import gtPlusPlus.core.util.math.MathUtils;
 
-public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
+public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanochipAssemblyComplex> {
 
     private final MTENanochipAssemblyComplex base;
 
@@ -151,7 +151,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
                 .pos(25 + xOffset, 20)
                 .size(16, 48))
             .child(
-                new TextWidget(name).alignment(Alignment.Center)
+                new TextWidget<>(name).alignment(Alignment.Center)
                     .pos(1 + xOffset, 5)
                     .size(64, 8))
             // For debug
