@@ -94,6 +94,8 @@ public class SyncValues<T extends ValueSyncHandler<?>> {
     // Upgrades //
     // -------- //
 
+    // todo this "clicked" syncer concept does not work right since actually syncing it means that
+    // todo different clients clicking around would update every client
     public static final SyncValues<EnumSyncValue<ForgeOfGodsUpgrade>> UPGRADE_CLICKED = new SyncValues<>(
         "fog.sync.upgrade_clicked",
         data -> {

@@ -5,6 +5,9 @@ import com.cleanroommc.modularui.screen.viewport.GuiContext;
 import com.cleanroommc.modularui.theme.WidgetTheme;
 import com.cleanroommc.modularui.utils.GlStateManager;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 public class RotatedDrawable implements IDrawable {
 
     private final IDrawable drawable;
@@ -29,6 +32,7 @@ public class RotatedDrawable implements IDrawable {
         return rotationDegree(180.0f / (float) Math.PI * rad);
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void draw(GuiContext context, int x, int y, int width, int height, WidgetTheme widgetTheme) {
         GlStateManager.pushMatrix();

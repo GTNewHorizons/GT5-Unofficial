@@ -290,7 +290,8 @@ public enum ForgeOfGodsUpgrade {
     // UI
     private UpgradeColor color;
     private MilestoneIcon icon;
-    private BGWindowSize windowSize;
+    private boolean largePanel;
+    public BGWindowSize windowSize; // todo remove
     private int treeX;
     private int treeY;
 
@@ -317,6 +318,7 @@ public enum ForgeOfGodsUpgrade {
         this.shardCost = b.shardCost;
         this.color = b.color;
         this.icon = b.icon;
+        this.largePanel = b.largePanel;
         this.windowSize = b.windowSize;
         this.treeX = b.treeX;
         this.treeY = b.treeY;
@@ -369,8 +371,13 @@ public enum ForgeOfGodsUpgrade {
         return icon.getWidthRatio();
     }
 
+    // todo remove
     public Size getWindowSize() {
         return windowSize.getWindowSize();
+    }
+
+    public boolean isLargePanel() {
+        return windowSize == LARGE; // todo
     }
 
     public int getLoreYPos() {
@@ -418,6 +425,7 @@ public enum ForgeOfGodsUpgrade {
         // UI
         private UpgradeColor color = BLUE;
         private MilestoneIcon icon = CHARGE;
+        private boolean largePanel = false;
         private BGWindowSize windowSize = STANDARD;
         private int treeX;
         private int treeY;
@@ -450,6 +458,11 @@ public enum ForgeOfGodsUpgrade {
             return this;
         }
 
+        public Builder largePanel() {
+            this.largePanel = true;
+            return this;
+        }
+
         public Builder windowSize(BGWindowSize windowSize) {
             this.windowSize = windowSize;
             return this;
@@ -462,7 +475,7 @@ public enum ForgeOfGodsUpgrade {
         }
     }
 
-    enum BGWindowSize {
+    public enum BGWindowSize {
 
         STANDARD(250, 250, 110),
         LARGE(300, 300, 85),
