@@ -17,7 +17,7 @@ import thaumcraft.common.tiles.TileAlchemyFurnace;
 @Mixin(value = TileAlchemyFurnace.class, remap = false)
 public abstract class MixinThaumcraftAlchemyFurnacePollution extends TileEntity {
 
-    @Shadow
+    @Shadow(remap = false)
     public abstract boolean isBurning();
 
     @Inject(method = "updateEntity", at = @At("TAIL"))

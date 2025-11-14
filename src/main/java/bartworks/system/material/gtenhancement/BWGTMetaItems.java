@@ -104,7 +104,7 @@ public class BWGTMetaItems extends BWMetaGeneratedItems {
     protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         Materials material = this.getMaterial(aStack);
         if (material != null) {
-            String tooltip = material.getToolTip();
+            String tooltip = material.getChemicalTooltip();
             if (tooltip != null && !tooltip.isEmpty()) {
                 aList.add(tooltip);
             }
