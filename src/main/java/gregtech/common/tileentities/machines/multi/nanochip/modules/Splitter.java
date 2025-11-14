@@ -32,7 +32,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
-import gregtech.common.tileentities.machines.multi.gui.nanochip.SplitterGui;
+import gregtech.common.gui.modularui.multiblock.SplitterGui;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorOutput;

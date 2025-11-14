@@ -61,7 +61,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
-import gregtech.common.tileentities.machines.multi.gui.nanochip.MTENanochipAssemblyComplexGui;
+import gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyComplexGui;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyor;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorOutput;
@@ -156,7 +156,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
 
     @Override
     public int survivalConstruct(ItemStack trigger, int elementBudget, ISurvivalBuildEnvironment env) {
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             trigger,
             MAIN_OFFSET_X,
@@ -554,11 +554,6 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         gregosMood = aNBT.getDouble("mood");
         efficiency = aNBT.getDouble("efficiency");
         moduleSpeed = aNBT.getDouble("moduleSpeed");
-    }
-
-    @Override
-    protected boolean useMui2() {
-        return true;
     }
 
     @Override

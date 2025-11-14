@@ -1,4 +1,4 @@
-package gregtech.common.tileentities.machines.multi.gui.nanochip;
+package gregtech.common.gui.modularui.multiblock;
 
 import java.util.List;
 
