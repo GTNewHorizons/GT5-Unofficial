@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.creativetab.CreativeTabs;
@@ -13,6 +14,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -23,6 +25,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.Nullable;
+
+import com.gtnewhorizon.gtnhlib.api.IBlockWithCustomSound;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -48,7 +52,7 @@ import gregtech.common.ores.OreInfo;
 import gregtech.common.render.GTRendererBlock;
 import gregtech.nei.NEIGTConfig;
 
-public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
+public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IBlockWithCustomSound {
 
     public final List<StoneType> stoneTypes;
 
@@ -86,7 +90,8 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
 
                 info.stoneType = stoneType;
 
-                if (stoneType.getPrefix().mIsUnificatable) {
+                if (stoneType.getPrefix()
+                    .isUnifiable()) {
                     GTOreDictUnificator
                         .set(stoneType.getPrefix(), info.material, GTOreAdapter.INSTANCE.getStack(info, 1));
                 } else {
@@ -201,7 +206,8 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
         if (mat != null) {
             ITexture iTexture = TextureFactory.builder()
                 .addIcon(
-                    mat.mIconSet.mTextures[small ? OrePrefixes.oreSmall.mTextureIndex : OrePrefixes.ore.mTextureIndex])
+                    mat.mIconSet.mTextures[small ? OrePrefixes.oreSmall.getTextureIndex()
+                        : OrePrefixes.ore.getTextureIndex()])
                 .setRGBA(mat.mRGBa)
                 .stdOrient()
                 .build();
@@ -209,7 +215,7 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
             textures = new ITexture[] { stoneType.getTexture(0), iTexture };
         } else {
             textures = new ITexture[] { stoneType.getTexture(0), TextureFactory.builder()
-                .addIcon(TextureSet.SET_NONE.mTextures[OrePrefixes.ore.mTextureIndex])
+                .addIcon(TextureSet.SET_NONE.mTextures[OrePrefixes.ore.getTextureIndex()])
                 .stdOrient()
                 .build() };
         }
@@ -332,6 +338,16 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
             return info.stoneType.getStone()
                 .getBlock()
                 .getExplosionResistance(entity);
+        }
+    }
+
+    @Override
+    public Block.SoundType getSound(World world, int x, int y, int z) {
+        try (OreInfo<?> info = GTOreAdapter.INSTANCE.getOreInfo(world, x, y, z)) {
+            if (info == null) return Blocks.stone.stepSound;
+
+            return info.stoneType.getStone()
+                .getBlock().stepSound;
         }
     }
 

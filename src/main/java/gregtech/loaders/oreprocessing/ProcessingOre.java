@@ -9,6 +9,7 @@ import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 
 import java.util.ArrayList;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 import gregtech.GTMod;
@@ -17,22 +18,27 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
+import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.ores.OreInfo;
 import gregtech.common.ores.OreManager;
 
-public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingOre implements IOreRecipeRegistrator {
 
     private final ArrayList<Materials> mAlreadyListedOres = new ArrayList<>(1000);
 
     public ProcessingOre() {
-        for (OrePrefixes tPrefix : OrePrefixes.values()) if ((tPrefix.name()
-            .startsWith("ore")) && (tPrefix != OrePrefixes.orePoor)
-            && (tPrefix != OrePrefixes.oreSmall)
-            && (tPrefix != OrePrefixes.oreRich)
-            && (tPrefix != OrePrefixes.oreNormal)) tPrefix.add(this);
+        for (OrePrefixes prefix : OrePrefixes.VALUES) {
+            final String name = prefix.getName();
+            if (!name.startsWith("ore")) continue;
+            if (prefix == OrePrefixes.orePoor) continue;
+            if (prefix == OrePrefixes.oreSmall) continue;
+            if (prefix == OrePrefixes.oreRich) continue;
+            if (prefix == OrePrefixes.oreNormal) continue;
+            prefix.add(this);
+        }
     }
 
     @Override
@@ -62,7 +68,7 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
         if (aMaterial == Materials.Oilsands) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(1, aStack))
-                .itemOutputs(new ItemStack(net.minecraft.init.Blocks.sand, 1, 0))
+                .itemOutputs(new ItemStack(Blocks.sand, 1, 0))
                 .outputChances(tIsRich ? 2000 : 4000)
                 .fluidOutputs(Materials.OilHeavy.getFluid(tIsRich ? 4000L : 2000L))
                 .duration(tIsRich ? 30 * SECONDS : 15 * SECONDS)
@@ -151,7 +157,7 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
                             GTOreDictUnificator.get(OrePrefixes.dust, Materials.Calcite, aMultiplier))
                         .itemOutputs(
                             GTUtility.mul(aMultiplier * 3 * aMaterial.mSmeltingMultiplier, tSmeltInto),
-                            GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1L))
+                            GTOreDictUnificator.get(OrePrefixes.dust, Materials.AshDark, 1L))
                         .outputChances(10000, 2500)
                         .duration(tSmeltInto.stackSize * 25 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
@@ -163,7 +169,7 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
                             GTOreDictUnificator.get(OrePrefixes.dust, Materials.Quicklime, aMultiplier))
                         .itemOutputs(
                             GTUtility.mul(aMultiplier * 3 * aMaterial.mSmeltingMultiplier, tSmeltInto),
-                            GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1L))
+                            GTOreDictUnificator.get(OrePrefixes.dust, Materials.AshDark, 1L))
                         .outputChances(10000, 2500)
                         .duration(tSmeltInto.stackSize * 25 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
@@ -178,7 +184,7 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
                             GTOreDictUnificator.get(OrePrefixes.dust, Materials.Calcite, aMultiplier))
                         .itemOutputs(
                             GTUtility.mul(aMultiplier * 2 * aMaterial.mSmeltingMultiplier, tSmeltInto),
-                            GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1L))
+                            GTOreDictUnificator.get(OrePrefixes.dust, Materials.AshDark, 1L))
                         .outputChances(10000, 2500)
                         .duration(tSmeltInto.stackSize * 25 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
@@ -190,7 +196,7 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
                             GTOreDictUnificator.get(OrePrefixes.dust, Materials.Quicklime, aMultiplier))
                         .itemOutputs(
                             GTUtility.mul(aMultiplier * 2 * aMaterial.mSmeltingMultiplier, tSmeltInto),
-                            GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1L))
+                            GTOreDictUnificator.get(OrePrefixes.dust, Materials.AshDark, 1L))
                         .outputChances(10000, 2500)
                         .duration(tSmeltInto.stackSize * 25 * SECONDS)
                         .eut(TierEU.RECIPE_MV)

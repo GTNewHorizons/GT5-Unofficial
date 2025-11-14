@@ -139,7 +139,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
         this(
             materials.mRGBa,
             materials.mDefaultLocalName,
-            materials.getToolTip(),
+            materials.getChemicalTooltip(),
             type == null ? materials.mElement != null ? Types.ELEMENT : Types.UNDEFINED : type,
             generationFeatures,
             mID,
@@ -733,7 +733,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
         public GenerationFeatures() {}
 
         public static void initPrefixLogic() {
-            Arrays.stream(OrePrefixes.values())
+            Arrays.stream(OrePrefixes.VALUES)
                 .forEach(e -> prefixLogic.put(e, 0));
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.dust, 0b1);
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.dustTiny, 0b1);

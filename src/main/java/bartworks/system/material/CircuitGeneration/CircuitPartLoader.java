@@ -182,7 +182,7 @@ public class CircuitPartLoader implements Runnable {
                 .itemOutputs(
                     BWMetaItems.getCircuitParts()
                         .getStack(CircuitImprintLoader.reverseIDs))
-                .fluidInputs(Materials.Plastic.getMolten(1 * HALF_INGOTS))
+                .fluidInputs(Materials.Polyethylene.getMolten(1 * HALF_INGOTS))
                 .duration(30 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(assemblerRecipes);

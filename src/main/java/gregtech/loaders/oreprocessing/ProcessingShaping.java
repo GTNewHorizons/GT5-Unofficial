@@ -44,15 +44,15 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
         if (((aMaterial == Materials.Glass) || (GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L) != null))
             && (!aMaterial.contains(SubTag.NO_SMELTING))) {
             long aMaterialMass = aMaterial.getMass();
-            int tAmount = (int) (aPrefix.mMaterialAmount / 3628800L);
-            if ((tAmount > 0) && (tAmount <= 64) && (aPrefix.mMaterialAmount % 3628800L == 0L)) {
+            int tAmount = (int) (aPrefix.getMaterialAmount() / 3628800L);
+            if ((tAmount > 0) && (tAmount <= 64) && (aPrefix.getMaterialAmount() % 3628800L == 0L)) {
                 int tVoltageMultiplier = aMaterial.mBlastFurnaceTemp >= 2800 ? 60 : 15;
                 int tTrueVoltage = aMaterial.getProcessingMaterialTierEU();
 
                 if (aMaterial.contains(SubTag.NO_SMASHING)) {
                     tVoltageMultiplier /= 4;
-                } else if (aPrefix.name()
-                    .startsWith(OrePrefixes.dust.name())) {
+                } else if (aPrefix.getName()
+                    .startsWith(OrePrefixes.dust.getName())) {
                         return;
                     }
 
@@ -365,7 +365,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         .addTo(extruderRecipes);
                 }
 
-                if (!(aMaterial == Materials.StyreneButadieneRubber || aMaterial == Materials.Silicone)) {
+                if (!(aMaterial == Materials.StyreneButadieneRubber || aMaterial == Materials.RubberSilicone)) {
                     if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                         if (GTOreDictUnificator.get(OrePrefixes.plate, aMaterial.mSmeltInto, 1L) != null) {
                             GTValues.RA.stdBuilder()

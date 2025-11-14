@@ -405,6 +405,7 @@ ig.asteroid.copperAsteroid=Copper
 ig.asteroid.tinAsteroid=Tin
 ig.asteroid.aluminiumAsteroid=Aluminium
 ig.asteroid.nickelAsteroid=Nickel
+ig.asteroid.NetherOreAsteroid=Nether ore
 ig.asteroid.chromeAsteroid=Chrome
 ig.asteroid.platlineOreAsteroid=Platline Ore
 ig.asteroid.gemAsteroid=Gem

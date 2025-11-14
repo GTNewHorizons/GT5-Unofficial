@@ -149,11 +149,13 @@ public class GlassTier {
             // --- HV ---
             addCustomGlass(ItemRegistry.bw_realglas, 0, 3, 0);
             if (EnderIO.isModLoaded()) {
-                addCustomGlass(EnderIO.ID, "blockFusedQuartz", 1, 3, 1);
+                for (int i = 0; i < 6; i++) {
+                    addCustomGlass(EnderIO.ID, "blockFusedQuartz", i, 3, 1 + i);
+                }
             }
             if (Thaumcraft.isModLoaded()) {
                 // Warded glass
-                addCustomGlass(Thaumcraft.ID, "blockCosmeticOpaque", 2, 3, 2);
+                addCustomGlass(Thaumcraft.ID, "blockCosmeticOpaque", 2, 3, 7);
             }
 
             // --- EV ---

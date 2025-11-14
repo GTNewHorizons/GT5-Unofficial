@@ -40,6 +40,11 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
     }
 
     @Override
+    protected boolean useMui2() {
+        return false;
+    }
+
+    @Override
     public String[] getDescription() {
         return new String[] { "An automation port for Large Turbines",
             "Will attempt once per 1200 ticks to fill the turbine slot of it's parent turbine",

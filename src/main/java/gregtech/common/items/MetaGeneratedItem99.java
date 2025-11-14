@@ -7,6 +7,7 @@ import java.util.BitSet;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -92,9 +93,9 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
             cellMolten.getDefaultLocalNameFormatForItem(tMaterial));
         GTLanguageManager.addStringLocalization(
             getUnlocalizedName(tStack) + ".tooltip",
-            tMaterial.getToolTip(cellMolten.mMaterialAmount / M));
+            tMaterial.getChemicalTooltip(cellMolten.getMaterialAmount() / M));
 
-        if (cellMolten.mIsUnificatable) {
+        if (cellMolten.isUnifiable()) {
             GTOreDictUnificator.set(cellMolten, tMaterial, tStack);
         } else {
             GTOreDictUnificator.registerOre(cellMolten.get(tMaterial), tStack);
@@ -112,9 +113,9 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
                 prefix.getDefaultLocalNameFormatForItem(tMaterial));
             GTLanguageManager.addStringLocalization(
                 getUnlocalizedName(tStack) + ".tooltip",
-                tMaterial.getToolTip(prefix.mMaterialAmount / M));
+                tMaterial.getChemicalTooltip(prefix.getMaterialAmount() / M));
 
-            if (prefix.mIsUnificatable) {
+            if (prefix.isUnifiable()) {
                 GTOreDictUnificator.set(prefix, tMaterial, tStack);
             } else {
                 GTOreDictUnificator.registerOre(prefix.get(tMaterial), tStack);
@@ -200,7 +201,7 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
         Materials material = getMaterial(aMetaData);
         OrePrefixes prefix = getOrePrefix(aMetaData);
         if (material != null && prefix != null) {
-            return material.mIconSet.mTextures[prefix.mTextureIndex];
+            return material.mIconSet.mTextures[prefix.getTextureIndex()];
         }
         return null;
     }
@@ -209,9 +210,19 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
     public int getItemStackLimit(ItemStack aStack) {
         OrePrefixes prefix = getOrePrefix(aStack.getItemDamage());
         if (prefix != null) {
-            return prefix.mDefaultStackSize;
+            return prefix.getDefaultStackSize();
         } else {
             return 64;
+        }
+    }
+
+    @Override
+    protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
+        Materials material = getMaterial(aStack.getItemDamage());
+        if (material == null) return;
+        String flavorText = material.getFlavorText();
+        if (flavorText != null && !flavorText.isEmpty()) {
+            aList.add("§8§o" + flavorText);
         }
     }
 }

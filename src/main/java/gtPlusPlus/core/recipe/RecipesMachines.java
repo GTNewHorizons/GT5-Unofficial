@@ -192,7 +192,7 @@ public class RecipesMachines {
         industrialVacuumFurnace();
         fakeMachineCasingCovers();
         overflowValveCovers();
-        superBuses();
+        // superBuses();
         distillus();
         algaeFarm();
         chemPlant();
@@ -797,7 +797,7 @@ public class RecipesMachines {
                 CI.getTieredGTPPMachineCasing(2, 4),
                 CI.getTieredComponentOfMaterial(Materials.Aluminium, OrePrefixes.gearGt, 4),
                 CI.getTieredComponentOfMaterial(Materials.AnnealedCopper, OrePrefixes.plate, 16),
-                CI.getTieredComponentOfMaterial(Materials.Plastic, OrePrefixes.pipeLarge, 4),
+                CI.getTieredComponentOfMaterial(Materials.Polyethylene, OrePrefixes.pipeLarge, 4),
                 CI.getTieredComponent(OrePrefixes.frameGt, 2, 4))
             .itemOutputs(GregtechItemList.ChemicalPlant_Controller.get(1))
             .fluidInputs(MaterialsAlloy.STEEL_BLACK.getFluidStack(8 * INGOTS))
@@ -1598,7 +1598,7 @@ public class RecipesMachines {
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 1L),
                 CI.getGear(1, 2))
             .itemOutputs(GregtechItemList.Generator_SemiFluid_LV.get(1))
-            .fluidInputs(Materials.Plastic.getMolten(1 * INGOTS))
+            .fluidInputs(Materials.Polyethylene.getMolten(1 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
@@ -1613,7 +1613,7 @@ public class RecipesMachines {
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 1L),
                 CI.getGear(2, 2))
             .itemOutputs(GregtechItemList.Generator_SemiFluid_MV.get(1))
-            .fluidInputs(Materials.Plastic.getMolten(1 * INGOTS))
+            .fluidInputs(Materials.Polyethylene.getMolten(1 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -1628,7 +1628,7 @@ public class RecipesMachines {
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 1L),
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Chrome, 2))
             .itemOutputs(GregtechItemList.Generator_SemiFluid_HV.get(1))
-            .fluidInputs(Materials.Plastic.getMolten(1 * INGOTS))
+            .fluidInputs(Materials.Polyethylene.getMolten(1 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -1643,7 +1643,7 @@ public class RecipesMachines {
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L),
                 CI.getGear(4, 2))
             .itemOutputs(GregtechItemList.Generator_SemiFluid_EV.get(1))
-            .fluidInputs(Materials.Plastic.getMolten(1 * INGOTS))
+            .fluidInputs(Materials.Polyethylene.getMolten(1 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -3400,8 +3400,8 @@ public class RecipesMachines {
     }
 
     private static void chiselBuses() {
-        ItemStack[] mSuperBusesInput = new ItemStack[] { GregtechItemList.Hatch_SuperBus_Input_LV.get(1),
-            GregtechItemList.Hatch_SuperBus_Input_MV.get(1), GregtechItemList.Hatch_SuperBus_Input_HV.get(1), };
+        ItemStack[] mInputBusses = new ItemStack[] { ItemList.Hatch_Input_Bus_EV.get(1),
+            ItemList.Hatch_Input_Bus_IV.get(1), ItemList.Hatch_Input_Bus_LuV.get(1), };
 
         ItemStack[] mChiselBuses = new ItemStack[] { GregtechItemList.ChiselBus_LV.get(1),
             GregtechItemList.ChiselBus_MV.get(1), GregtechItemList.ChiselBus_HV.get(1), };
@@ -3410,7 +3410,7 @@ public class RecipesMachines {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.getIntegratedCircuit(17),
-                    mSuperBusesInput[tier - 1],
+                    mInputBusses[tier - 1],
                     CI.getSensor(tier, 1),
                     CI.getRobotArm(tier, 2),
                     CI.getBolt(tier, 16),
@@ -3425,8 +3425,8 @@ public class RecipesMachines {
     }
 
     private static void solidifierHatches() {
-        ItemStack[] mSuperBusesInput = new ItemStack[] { ItemList.Hatch_Input_IV.get(1),
-            ItemList.Hatch_Input_LuV.get(1), ItemList.Hatch_Input_ZPM.get(1), ItemList.Hatch_Input_UV.get(1), };
+        ItemStack[] mInputBusses = new ItemStack[] { ItemList.Hatch_Input_IV.get(1), ItemList.Hatch_Input_LuV.get(1),
+            ItemList.Hatch_Input_ZPM.get(1), ItemList.Hatch_Input_UV.get(1), };
 
         ItemStack[] mSolidifierHatches = new ItemStack[] { GregtechItemList.Hatch_Solidifier_I.get(1),
             GregtechItemList.Hatch_Solidifier_II.get(1), GregtechItemList.Hatch_Solidifier_III.get(1),
@@ -3437,7 +3437,7 @@ public class RecipesMachines {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.getIntegratedCircuit(17),
-                    mSuperBusesInput[i],
+                    mInputBusses[i],
                     CI.getSensor(componentTier, 1),
                     CI.getFluidRegulator(componentTier, 1),
                     CI.getTieredComponent(OrePrefixes.circuit, componentTier + 1, 4),

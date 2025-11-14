@@ -22,6 +22,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -30,14 +32,10 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import bartworks.common.loaders.ItemRegistry;
 import goodgenerator.blocks.structures.AntimatterStructures;
@@ -57,6 +55,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.gui.modularui.multiblock.AntimatterGeneratorGui;
 import kekztech.client.gui.KTUITextures;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -408,7 +407,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
         return tt;
     }
 
-    protected boolean canUseWireless() {
+    public boolean canUseWireless() {
         return true;
     }
 
@@ -500,11 +499,11 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                 + " % ⟩₁₀" };
     }
 
-    private long getEnergyProduced() {
+    public long getEnergyProduced() {
         return this.euLastCycle;
     }
 
-    private float getEfficiency() {
+    public float getEfficiency() {
         return this.annihilationEfficiency;
     }
 
@@ -526,7 +525,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
         this.avgEffCache = b == 0 ? 0 : b / this.avgEff.size();
     }
 
-    private float getAvgEfficiency() {
+    public float getAvgEfficiency() {
         return this.avgEffCache;
     }
 
@@ -534,51 +533,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     protected float efficiencyCache;
     protected float avgEffCache;
     protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
-
-    @Override
-    protected boolean useMui2() {
-        return false;
-    }
-
-    @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        super.drawTexts(screenElements, inventorySlot);
-
-        screenElements
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector.translateToLocal("gui.AntimatterGenerator.0") + ": "
-                            + EnumChatFormatting.BLUE
-                            + GTUtility.scientificFormat(energyProducedCache)
-                            + EnumChatFormatting.WHITE
-                            + " EU")
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get()))
-            .widget(new FakeSyncWidget.LongSyncer(this::getEnergyProduced, val -> energyProducedCache = val))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector.translateToLocal("gui.AntimatterGenerator.1") + ": "
-                            + EnumChatFormatting.RED
-                            + numberFormat.format(Math.ceil(efficiencyCache * 100))
-                            + EnumChatFormatting.WHITE
-                            + " %")
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get()))
-            .widget(new FakeSyncWidget.FloatSyncer(this::getEfficiency, val -> efficiencyCache = val))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector.translateToLocal("gui.AntimatterGenerator.1") + ": ⟨ "
-                            + EnumChatFormatting.RED
-                            + numberFormat.format(Math.ceil(avgEffCache * 100))
-                            + EnumChatFormatting.WHITE
-                            + " % ⟩₁₀")
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get()))
-            .widget(new FakeSyncWidget.FloatSyncer(this::getAvgEfficiency, val -> avgEffCache = val));
-    }
 
     @Override
     public IStructureDefinition<AntimatterGenerator> getStructureDefinition() {
@@ -681,6 +635,24 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             return (12 << 7) + 10;
         }
         return (12 << 7) + 9;
+    }
+
+    @Override
+    protected @NotNull AntimatterGeneratorGui getGui() {
+        return new AntimatterGeneratorGui(this);
+    }
+
+    @Override
+    public boolean canBeMuffled() {
+        return false;
+    }
+
+    public boolean getWirelessMode() {
+        return this.wirelessEnabled;
+    }
+
+    public void setWirelessEnabled(boolean b) {
+        wirelessEnabled = b;
     }
 
     @Override
