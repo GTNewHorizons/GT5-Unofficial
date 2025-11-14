@@ -36,14 +36,14 @@
 dependencies {
     api("com.github.GTNewHorizons:StructureLib:1.4.24:dev")
     api("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
-    api("com.github.GTNewHorizons:NotEnoughItems:2.8.35-GTNH:dev")
+    api("com.github.GTNewHorizons:NotEnoughItems:2.8.37-GTNH:dev")
     api("com.github.GTNewHorizons:NotEnoughIds:2.1.10:dev")
     api("com.github.GTNewHorizons:GTNHLib:0.8.6:dev")
     api("com.github.GTNewHorizons:ModularUI:1.3.0:dev")
     api("com.github.GTNewHorizons:ModularUI2:2.3.13-1.7.10:dev")
-    api("com.github.GTNewHorizons:waila:1.9.7:dev")
-    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-739-GTNH:dev")
-    api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.5.19-gtnh:dev")
+    api("com.github.GTNewHorizons:waila:1.9.9:dev")
+    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-742-GTNH:dev")
+    api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.5.22-gtnh:dev")
     api('com.github.GTNewHorizons:Yamcl:0.7.1:dev')
     api("com.github.GTNewHorizons:Postea:1.1.3:dev")
 
@@ -78,14 +78,14 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:Galaxy-Space-GTNH:1.1.122-GTNH:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Hardcore-Ender-Expansion:1.13.0-GTNH:dev") { transitive = false }
 
-    implementation("com.github.GTNewHorizons:TinkersConstruct:1.14.6-GTNH:dev")
+    implementation("com.github.GTNewHorizons:TinkersConstruct:1.14.10-GTNH:dev")
 
     compileOnly("com.github.GTNewHorizons:Chisel:2.17.5-GTNH:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Translocators:1.4.0:dev") { transitive = false }
     compileOnly rfg.deobf("curse.maven:cofh-core-69162:2388751")
     compileOnly("com.github.GTNewHorizons:Nuclear-Control:2.7.0:dev") { transitive = false }
     compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") { transitive = false }
-    implementation("com.github.GTNewHorizons:Hodgepodge:2.7.11:dev")
+    implementation("com.github.GTNewHorizons:Hodgepodge:2.7.13:dev")
     compileOnly('com.github.GTNewHorizons:Botania:1.13.4-GTNH:dev') { transitive = false }
     compileOnly("com.github.GTNewHorizons:Natura:2.8.9:dev") { transitive = false }
     compileOnly('com.github.GTNewHorizons:HoloInventory:2.5.5-GTNH:dev') { transitive = false }

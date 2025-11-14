@@ -414,7 +414,7 @@ public final class GTGuiTextures {
         .location(MODID, "gui/overlay_button/tesla_tower_minimap")
         .build();
 
- public static final UITexture OVERLAY_SLOT_MOLD = fullImage(GregTech.ID, "gui/overlay_slot/mold");
+    public static final UITexture OVERLAY_SLOT_MOLD = fullImage(GregTech.ID, "gui/overlay_slot/mold");
 
     public static final UITexture TT_SAFE_VOID_OFF = UITexture.builder()
         .location(MODID, "gui/overlay_button/safe_void_off")
