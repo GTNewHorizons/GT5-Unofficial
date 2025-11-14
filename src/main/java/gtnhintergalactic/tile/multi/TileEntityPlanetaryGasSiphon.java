@@ -57,7 +57,6 @@ import gtnhintergalactic.client.IGTextures;
 import gtnhintergalactic.client.TooltipUtil;
 import gtnhintergalactic.recipe.GasSiphonRecipes;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
 /**
  * Gas Siphon, used to extract gas from gas planets, when placed on a space station in their orbit
@@ -163,28 +162,28 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.siphon.type"));
+        tt.addMachineType(GTUtility.translate("gt.blockmachines.multimachine.ig.siphon.type"));
         if (TooltipUtil.siphonLoreText != null) tt.addInfo(ITALIC + TooltipUtil.siphonLoreText);
-        tt.addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.siphon.desc1"))
-            .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.siphon.desc2"))
-            .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.siphon.desc3"))
-            .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.siphon.desc4"))
-            .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.siphon.desc5"))
+        tt.addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.siphon.desc1"))
+            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.siphon.desc2"))
+            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.siphon.desc3"))
+            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.siphon.desc4"))
+            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.siphon.desc5"))
             .beginStructureBlock(3, 7, 3, false)
-            .addController(GCCoreUtil.translate("ig.siphon.structure.ControllerPos"))
+            .addController(GTUtility.translate("ig.siphon.structure.ControllerPos"))
             .addOtherStructurePart(
-                GCCoreUtil.translate("ig.siphon.structure.SiphonCasing"),
-                GCCoreUtil.translate("ig.siphon.structure.Base"))
+                GTUtility.translate("ig.siphon.structure.SiphonCasing"),
+                GTUtility.translate("ig.siphon.structure.Base"))
             .addOtherStructurePart(
-                GCCoreUtil.translate("ig.siphon.structure.ReboltedRhodiumPalladiumCasing"),
-                GCCoreUtil.translate("ig.siphon.structure.PillarMiddle"))
+                GTUtility.translate("ig.siphon.structure.ReboltedRhodiumPalladiumCasing"),
+                GTUtility.translate("ig.siphon.structure.PillarMiddle"))
             .addOtherStructurePart(
-                GCCoreUtil.translate("ig.siphon.structure.FrameTungstensteel"),
-                GCCoreUtil.translate("ig.siphon.structure.Sides"))
-            .addEnergyHatch(GCCoreUtil.translate("ig.siphon.structure.AnySiphonCasing"), 1)
-            .addMaintenanceHatch(GCCoreUtil.translate("ig.siphon.structure.AnySiphonCasing"), 1)
-            .addInputBus(GCCoreUtil.translate("ig.siphon.structure.AnySiphonCasing"), 1)
-            .addOutputHatch(GCCoreUtil.translate("ig.siphon.structure.AnySiphonCasing"), 1)
+                GTUtility.translate("ig.siphon.structure.FrameTungstensteel"),
+                GTUtility.translate("ig.siphon.structure.Sides"))
+            .addEnergyHatch(GTUtility.translate("ig.siphon.structure.AnySiphonCasing"), 1)
+            .addMaintenanceHatch(GTUtility.translate("ig.siphon.structure.AnySiphonCasing"), 1)
+            .addInputBus(GTUtility.translate("ig.siphon.structure.AnySiphonCasing"), 1)
+            .addOutputHatch(GTUtility.translate("ig.siphon.structure.AnySiphonCasing"), 1)
             .toolTipFinisher();
         return tt;
     }

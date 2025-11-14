@@ -1,6 +1,6 @@
 package ggfab;
 
-import static gregtech.api.enums.GTValues.W;
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -27,7 +27,7 @@ public enum GGItemList implements IItemContainer {
     SingleUseCrowbar,
     SingleUseWireCutter,
     SingleUseHardHammer,
-    SingleUseSoftHammer,
+    SingleUseSoftMallet,
     SingleUseScrewdriver,
     SingleUseSaw,
 
@@ -36,7 +36,7 @@ public enum GGItemList implements IItemContainer {
     SingleUseCrowbarMold,
     SingleUseWireCutterMold,
     SingleUseHardHammerMold,
-    SingleUseSoftHammerMold,
+    SingleUseSoftMalletMold,
     SingleUseScrewdriverMold,
     SingleUseSawMold,
     // ordered section ends
@@ -127,7 +127,7 @@ public enum GGItemList implements IItemContainer {
         if (GTUtility.isStackInvalid(mStack)) {
             return GTUtility.copyAmount(aAmount, aReplacements);
         }
-        return GTUtility.copyAmountAndMetaData(aAmount, W, GTOreDictUnificator.get(mStack));
+        return GTUtility.copyAmountAndMetaData(aAmount, WILDCARD, GTOreDictUnificator.get(mStack));
     }
 
     @Override

@@ -204,7 +204,7 @@ public class RecipeHandlers {
         // Foil
         addConversionRecipe(
             CircuitComponent.FoilSiliconeRubber,
-            GTOreDictUnificator.get(OrePrefixes.foil, Materials.Silicone, 1));
+            GTOreDictUnificator.get(OrePrefixes.foil, Materials.RubberSilicone, 1));
         addConversionRecipe(
             CircuitComponent.FoilPolybenzimidazole,
             GTOreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole, 1));

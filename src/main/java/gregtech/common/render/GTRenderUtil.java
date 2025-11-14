@@ -49,25 +49,26 @@ public class GTRenderUtil {
         if (icon == null) {
             return;
         }
-        Tessellator.instance.startDrawingQuads();
-        Tessellator.instance.setNormal(nx, ny, nz);
+        final Tessellator tess = Tessellator.instance;
+        tess.startDrawingQuads();
+        tess.setNormal(nx, ny, nz);
         if (nz > 0.0F) {
-            Tessellator.instance.addVertexWithUV(xStart, yStart, z, icon.getMinU(), icon.getMinV());
-            Tessellator.instance.addVertexWithUV(xEnd, yStart, z, icon.getMaxU(), icon.getMinV());
-            Tessellator.instance.addVertexWithUV(xEnd, yEnd, z, icon.getMaxU(), icon.getMaxV());
-            Tessellator.instance.addVertexWithUV(xStart, yEnd, z, icon.getMinU(), icon.getMaxV());
+            tess.addVertexWithUV(xStart, yStart, z, icon.getMinU(), icon.getMinV());
+            tess.addVertexWithUV(xEnd, yStart, z, icon.getMaxU(), icon.getMinV());
+            tess.addVertexWithUV(xEnd, yEnd, z, icon.getMaxU(), icon.getMaxV());
+            tess.addVertexWithUV(xStart, yEnd, z, icon.getMinU(), icon.getMaxV());
         } else {
-            Tessellator.instance.addVertexWithUV(xStart, yEnd, z, icon.getMinU(), icon.getMaxV());
-            Tessellator.instance.addVertexWithUV(xEnd, yEnd, z, icon.getMaxU(), icon.getMaxV());
-            Tessellator.instance.addVertexWithUV(xEnd, yStart, z, icon.getMaxU(), icon.getMinV());
-            Tessellator.instance.addVertexWithUV(xStart, yStart, z, icon.getMinU(), icon.getMinV());
+            tess.addVertexWithUV(xStart, yEnd, z, icon.getMinU(), icon.getMaxV());
+            tess.addVertexWithUV(xEnd, yEnd, z, icon.getMaxU(), icon.getMaxV());
+            tess.addVertexWithUV(xEnd, yStart, z, icon.getMaxU(), icon.getMinV());
+            tess.addVertexWithUV(xStart, yStart, z, icon.getMinU(), icon.getMinV());
         }
-        Tessellator.instance.draw();
+        tess.draw();
     }
 
     @SuppressWarnings("RedundantLabeledSwitchRuleCodeBlock")
     public static void renderItem(IItemRenderer.ItemRenderType type, IIcon icon) {
-        Tessellator tessellator = Tessellator.instance;
+        Tessellator tess = Tessellator.instance;
         float maxU = icon.getMaxU();
         float minV = icon.getMinV();
         float minU = icon.getMinU();
@@ -77,7 +78,7 @@ public class GTRenderUtil {
             case ENTITY -> {
                 if (Minecraft.getMinecraft().gameSettings.fancyGraphics) {
                     ItemRenderer.renderItemIn2D(
-                        tessellator,
+                        tess,
                         maxU,
                         minV,
                         minU,
@@ -92,27 +93,20 @@ public class GTRenderUtil {
                         GL11.glRotatef(180.0F - RenderManager.instance.playerViewY, 0.0F, 1.0F, 0.0F);
                     }
 
-                    tessellator.startDrawingQuads();
-                    tessellator.setNormal(0.0F, 1.0F, 0.0F);
-                    tessellator.addVertexWithUV(0.0F - 0.5F, 0.0F - 0.25F, 0.0D, minU, maxV);
-                    tessellator.addVertexWithUV(1.0F - 0.5F, 0.0F - 0.25F, 0.0D, maxU, maxV);
-                    tessellator.addVertexWithUV(1.0F - 0.5F, 1.0F - 0.25F, 0.0D, maxU, minV);
-                    tessellator.addVertexWithUV(0.0F - 0.5F, 1.0F - 0.25F, 0.0D, minU, minV);
-                    tessellator.draw();
+                    tess.startDrawingQuads();
+                    tess.setNormal(0.0F, 1.0F, 0.0F);
+                    tess.addVertexWithUV(0.0F - 0.5F, 0.0F - 0.25F, 0.0D, minU, maxV);
+                    tess.addVertexWithUV(1.0F - 0.5F, 0.0F - 0.25F, 0.0D, maxU, maxV);
+                    tess.addVertexWithUV(1.0F - 0.5F, 1.0F - 0.25F, 0.0D, maxU, minV);
+                    tess.addVertexWithUV(0.0F - 0.5F, 1.0F - 0.25F, 0.0D, minU, minV);
+                    tess.draw();
 
                     GL11.glPopMatrix();
                 }
             }
             case EQUIPPED, EQUIPPED_FIRST_PERSON -> {
-                ItemRenderer.renderItemIn2D(
-                    tessellator,
-                    maxU,
-                    minV,
-                    minU,
-                    maxV,
-                    icon.getIconWidth(),
-                    icon.getIconHeight(),
-                    0.0625F);
+                ItemRenderer
+                    .renderItemIn2D(tess, maxU, minV, minU, maxV, icon.getIconWidth(), icon.getIconHeight(), 0.0625F);
             }
             case INVENTORY -> {
                 renderItemIcon(icon, 16.0D, 0.001, 0.0F, 0.0F, -1.0F);
@@ -137,5 +131,22 @@ public class GTRenderUtil {
                 GL11.glTranslatef(-0.5F, -0.25F, 0.0421875F);
             }
         }
+    }
+
+    public static void undoStandardItemTransform(IItemRenderer.ItemRenderType type) {
+        if (type == IItemRenderer.ItemRenderType.ENTITY) {
+            if (Minecraft.getMinecraft().gameSettings.fancyGraphics) {
+                GL11.glTranslatef(0.5F, 0.25F, -0.0421875F); // negative of pre-transform
+                // if RenderItem.renderInFrame: rotate -180 (undo the frame rotation)
+                if (RenderItem.renderInFrame) {
+                    GL11.glRotatef(-180.0F, 0.0F, 1.0F, 0.0F);
+                }
+            }
+            if (RenderItem.renderInFrame) {
+                GL11.glTranslatef(0.0F, 0.05F, 0.0F);
+                GL11.glScalef(1F / 1.025641F, 1F / 1.025641F, 1F / 1.025641F);
+            }
+        }
+        // You can add more undo logic for other types if needed (EQUIPPED, etc)
     }
 }

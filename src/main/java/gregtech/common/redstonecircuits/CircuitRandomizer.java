@@ -1,5 +1,7 @@
 package gregtech.common.redstonecircuits;
 
+import net.minecraft.util.StatCollector;
+
 import gregtech.api.interfaces.IRedstoneCircuitBlock;
 import gregtech.api.util.CircuitryBehavior;
 
@@ -53,20 +55,22 @@ public class CircuitRandomizer extends CircuitryBehavior {
 
     @Override
     public String getName() {
-        return "Randomizer";
+        return StatCollector.translateToLocal("GT5U.gui.circuit.randomizer.name");
     }
 
     @Override
     public String getDescription() {
-        return "Randomizes Redstone";
+        return StatCollector.translateToLocal("GT5U.gui.circuit.randomizer.description");
     }
 
     @Override
     public String getDataDescription(int[] aCircuitData, int aCircuitDataIndex) {
         return switch (aCircuitDataIndex) {
-            case 0 -> "Delay";
-            case 3 -> aCircuitData[aCircuitDataIndex] == 1 ? "RS => ON" : "RS => OFF";
-            case 4 -> "Status";
+            case 0 -> StatCollector.translateToLocal("GT5U.gui.circuit.data_description.delay");
+            case 3 -> aCircuitData[aCircuitDataIndex] == 1
+                ? StatCollector.translateToLocal("GT5U.gui.circuit.data_description.rs_on")
+                : StatCollector.translateToLocal("GT5U.gui.circuit.data_description.rs_off");
+            case 4 -> StatCollector.translateToLocal("GT5U.gui.circuit.randomizer.data_description.status");
             default -> "";
         };
     }

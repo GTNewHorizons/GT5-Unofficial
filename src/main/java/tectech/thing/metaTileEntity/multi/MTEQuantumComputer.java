@@ -362,7 +362,8 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
                                                                                            // the Quantum Computer
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.computer.desc.1")) // Used to generate
                                                                                            // computation (and heat)
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.computer.desc.2")) // Use screwdriver to toggle
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.computer.desc.2")) // Use screwdriver to
+                                                                                           // toggle
                                                                                            // wireless mode
             .addTecTechHatchInfo()
             .beginVariableStructureBlock(2, 2, 4, 4, 5, 16, false)

@@ -1,6 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.BuildCraftTransport;
+import static gregtech.api.enums.Mods.EtFuturumRequiem;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.TinkerConstruct;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
@@ -20,10 +21,40 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class CuttingRecipes implements Runnable {
 
     @Override
     public void run() {
+
+        recipeWithClassicFluids(
+            new ItemStack[] { ItemList.Food_Dough_Chocolate.get(1), ItemList.Shape_Slicer_Flat.get(0) },
+            new ItemStack[] { ItemList.Food_Raw_Cookie.get(4) },
+            6 * SECONDS + 8 * TICKS,
+            4,
+            false);
+
+        recipeWithClassicFluids(
+            new ItemStack[] { ItemList.Food_Baked_Bun.get(1), ItemList.Shape_Slicer_Flat.get(0) },
+            new ItemStack[] { ItemList.Food_Sliced_Bun.get(2) },
+            6 * SECONDS + 8 * TICKS,
+            4,
+            false);
+
+        recipeWithClassicFluids(
+            new ItemStack[] { ItemList.Food_Baked_Bread.get(1), ItemList.Shape_Slicer_Flat.get(0) },
+            new ItemStack[] { ItemList.Food_Sliced_Bread.get(2) },
+            6 * SECONDS + 8 * TICKS,
+            4,
+            false);
+
+        recipeWithClassicFluids(
+            new ItemStack[] { ItemList.Food_Baked_Baguette.get(1), ItemList.Shape_Slicer_Flat.get(0) },
+            new ItemStack[] { ItemList.Food_Sliced_Baguette.get(2) },
+            6 * SECONDS + 8 * TICKS,
+            4,
+            false);
+
         // silicon wafer recipes
         {
             recipeWithClassicFluids(
@@ -114,12 +145,14 @@ public class CuttingRecipes implements Runnable {
 
         // stone slab recipes
         {
-            recipeWithClassicFluids(
-                new ItemStack[] { new ItemStack(Blocks.stone, 1, 0) },
-                new ItemStack[] { new ItemStack(Blocks.stone_slab, 2, 0) },
-                1 * SECONDS + 5 * TICKS,
-                8,
-                false);
+            if (EtFuturumRequiem.isModLoaded()) {
+                recipeWithClassicFluids(
+                    new ItemStack[] { getModItem(EtFuturumRequiem.ID, "smooth_stone", 1L, 0) },
+                    new ItemStack[] { new ItemStack(Blocks.stone_slab, 2, 0) },
+                    1 * SECONDS + 5 * TICKS,
+                    8,
+                    false);
+            }
 
             recipeWithClassicFluids(
                 new ItemStack[] { new ItemStack(Blocks.sandstone, 1, 0) },
@@ -193,6 +226,15 @@ public class CuttingRecipes implements Runnable {
                     8,
                     false);
             }
+        }
+
+        if (EtFuturumRequiem.isModLoaded()) {
+            recipeWithClassicFluids(
+                new ItemStack[] { getModItem(EtFuturumRequiem.ID, "wood_slab", 1L, 3) },
+                new ItemStack[] { ItemList.Plank_Cherry_EFR.get(2) },
+                2 * SECONDS + 10 * TICKS,
+                8,
+                false);
         }
 
         if (Forestry.isModLoaded()) {

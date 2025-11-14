@@ -12,7 +12,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.lwjgl.opengl.GL11;
 
 import com.gtnewhorizons.modularui.api.GlStateManager;
@@ -50,9 +53,13 @@ public class EIGDynamicInventory<T> {
     private int usedSeedCount = 0;
     List<T> inventory;
     TInventoryGetter<T> inventoryGetter;
+    @Nullable
     TInventoryInjector inventoryInjector = null;
+    @Nullable
     TInventoryExtractor<T> inventoryExtractor = null;
+    @Nullable
     TInventoryReplacerOrMerger inventoryReplacer = null;
+    @Nullable
     Supplier<Boolean> isEnabledGetter = null;
     boolean isEnabled = true;
 
@@ -69,32 +76,32 @@ public class EIGDynamicInventory<T> {
         this.inventoryGetter = inventoryGetter;
     }
 
-    public EIGDynamicInventory<T> allowInventoryInjection(TInventoryInjector inventoryInjector) {
+    public @NotNull EIGDynamicInventory<T> allowInventoryInjection(TInventoryInjector inventoryInjector) {
         this.inventoryInjector = inventoryInjector;
         return this;
     }
 
-    public EIGDynamicInventory<T> allowInventoryExtraction(TInventoryExtractor<T> inventoryExtractor) {
+    public @NotNull EIGDynamicInventory<T> allowInventoryExtraction(TInventoryExtractor<T> inventoryExtractor) {
         this.inventoryExtractor = inventoryExtractor;
         return this;
     }
 
-    public EIGDynamicInventory<T> allowInventoryReplace(TInventoryReplacerOrMerger inventoryReplacer) {
+    public @NotNull EIGDynamicInventory<T> allowInventoryReplace(TInventoryReplacerOrMerger inventoryReplacer) {
         this.inventoryReplacer = inventoryReplacer;
         return this;
     }
 
-    public EIGDynamicInventory<T> setEnabled(Supplier<Boolean> isEnabled) {
+    public @NotNull EIGDynamicInventory<T> setEnabled(Supplier<Boolean> isEnabled) {
         this.isEnabledGetter = isEnabled;
         return this;
     }
 
-    public UITexture getItemSlot() {
+    public @NotNull UITexture getItemSlot() {
         return ModularUITextures.ITEM_SLOT;
     }
 
     @SuppressWarnings("UnstableApiUsage")
-    public Widget asWidget(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    public @NotNull Widget asWidget(ModularWindow.Builder builder, @NotNull UIBuildContext buildContext) {
         ChangeableWidget container = new ChangeableWidget(() -> createWidget(buildContext.getPlayer()));
         // TODO: Only reset the widget when there are more slot stacks, otherwise just refresh them somehow
 
@@ -195,9 +202,10 @@ public class EIGDynamicInventory<T> {
         return container;
     }
 
+    @NotNull
     List<GTHelper.StackableItemSlot> drawables = new ArrayList<>();
 
-    private Widget createWidget(EntityPlayer player) {
+    private @NotNull Widget createWidget(EntityPlayer player) {
         Scrollable dynamicInventoryWidget = new Scrollable().setVerticalScroll();
 
         ArrayList<Widget> buttons = new ArrayList<>();
@@ -257,7 +265,6 @@ public class EIGDynamicInventory<T> {
                             player.inventory.setItemStack(stack);
                             ((EntityPlayerMP) player).isChangingQuantityOnly = false;
                             ((EntityPlayerMP) player).updateHeldItem();
-                            return;
                         }
                     } else if (clickData.shift) {
                         if (inventoryExtractor == null) return;
@@ -269,7 +276,6 @@ public class EIGDynamicInventory<T> {
                             if (player.inventory.addItemStackToInventory(removed))
                                 player.inventoryContainer.detectAndSendChanges();
                             else player.entityDropItem(removed, 0.f);
-                            return;
                         }
                     } else {
                         ItemStack input = player.inventory.getItemStack();
@@ -306,7 +312,6 @@ public class EIGDynamicInventory<T> {
                                 player.inventory.setItemStack(removed);
                                 ((EntityPlayerMP) player).isChangingQuantityOnly = false;
                                 ((EntityPlayerMP) player).updateHeldItem();
-                                return;
                             }
                         }
                     }
@@ -392,7 +397,6 @@ public class EIGDynamicInventory<T> {
                         } else player.inventory.setItemStack(null);
                         ((EntityPlayerMP) player).isChangingQuantityOnly = false;
                         ((EntityPlayerMP) player).updateHeldItem();
-                        return;
                     }
                 })
                 .setBackground(() -> {
@@ -407,14 +411,15 @@ public class EIGDynamicInventory<T> {
                     return new IDrawable[] { itemSlot, stackSizeText };
                 })
                 .dynamicTooltip(() -> {
-                    // TODO: all l10n for insertion slot tooltip.
                     List<String> tip = new ArrayList<>();
                     tip.add(
-                        EnumChatFormatting.DARK_PURPLE + "Remaining seed types: "
-                            + (this.maxSeedTypes - this.usedSeedTypes));
+                        EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocalFormatted(
+                            "kubatech.gui.tooltip.dynamic_inventory.eig.remaining_seed_types",
+                            (this.maxSeedTypes - this.usedSeedTypes)));
                     tip.add(
-                        EnumChatFormatting.DARK_GREEN + "Remaining seed capacity: "
-                            + (this.maxSeedCount - this.usedSeedCount));
+                        EnumChatFormatting.DARK_GREEN + StatCollector.translateToLocalFormatted(
+                            "kubatech.gui.tooltip.dynamic_inventory.eig.remaining_seed_capacity",
+                            (this.maxSeedCount - this.usedSeedCount)));
                     return tip;
                 })
                 .setSize(18, 18));

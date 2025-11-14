@@ -6,8 +6,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.chemplant.MTEChemicalPlant;
 
 public class MTEHatchBulkCatalystHousing extends MTEHatchNonConsumableBase {
 
@@ -36,7 +36,7 @@ public class MTEHatchBulkCatalystHousing extends MTEHatchNonConsumableBase {
 
     @Override
     public boolean isValidItem(ItemStack item) {
-        return ItemUtils.isCatalyst(item);
+        return MTEChemicalPlant.isCatalyst(item);
     }
 
     @Override

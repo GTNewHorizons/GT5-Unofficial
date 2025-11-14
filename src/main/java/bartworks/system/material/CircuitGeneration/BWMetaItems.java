@@ -14,6 +14,7 @@
 package bartworks.system.material.CircuitGeneration;
 
 import static gregtech.api.recipe.RecipeMaps.formingPressRecipes;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
@@ -61,9 +62,11 @@ public class BWMetaItems {
         return BWMetaItems.NEW_CIRCUIT_PARTS;
     }
 
-    private static final BWMetaItems.BW_GT_MetaGenCircuits NEW_CIRCUIT_PARTS = new BWMetaItems.BW_GT_MetaGenCircuits();
+    private static BWMetaItems.BW_GT_MetaGenCircuits NEW_CIRCUIT_PARTS;
 
-    static {
+    public static void init() {
+        NEW_CIRCUIT_PARTS = new BWMetaItems.BW_GT_MetaGenCircuits();
+
         BWMetaItems.NEW_CIRCUIT_PARTS.addItem(0, "Circuit Imprint", "", SubTag.NO_UNIFICATION, SubTag.NO_RECYCLING);
         BWMetaItems.NEW_CIRCUIT_PARTS.addItem(1, "Sliced Circuit", "", SubTag.NO_UNIFICATION, SubTag.NO_RECYCLING);
         BWMetaItems.NEW_CIRCUIT_PARTS
@@ -86,7 +89,7 @@ public class BWMetaItems {
                 new ItemStack[] { BWMetaItems.NEW_CIRCUIT_PARTS.getStack(3) },
                 null,
                 new int[] { 7500 },
-                new FluidStack[] { Materials.SolderingAlloy.getMolten(576) },
+                new FluidStack[] { Materials.SolderingAlloy.getMolten(4 * INGOTS) },
                 null,
                 300,
                 (int) TierEU.RECIPE_EV,

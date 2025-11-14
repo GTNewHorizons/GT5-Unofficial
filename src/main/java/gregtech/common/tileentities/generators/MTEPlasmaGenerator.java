@@ -28,7 +28,7 @@ public class MTEPlasmaGenerator extends MTEBasicGenerator {
     @Override
     public ITexture[] getFront(byte aColor) {
         return new ITexture[] { super.getFront(aColor)[0], TextureFactory.of(MACHINE_CASING_FUSION_GLASS),
-            OVERLAYS_ENERGY_OUT[mTier] };
+            OVERLAYS_ENERGY_OUT[mTier + 1] };
     }
 
     @Override
@@ -58,7 +58,7 @@ public class MTEPlasmaGenerator extends MTEBasicGenerator {
                 .addIcon(MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW)
                 .glow()
                 .build(),
-            OVERLAYS_ENERGY_OUT[mTier] };
+            OVERLAYS_ENERGY_OUT[mTier + 1] };
     }
 
     @Override
@@ -110,11 +110,6 @@ public class MTEPlasmaGenerator extends MTEBasicGenerator {
     @Override
     public int getEfficiency() {
         return Math.max(10, 10 + Math.min(90, this.mTier * 10));
-    }
-
-    @Override
-    public int getCapacity() {
-        return 16000;
     }
 
     @Override

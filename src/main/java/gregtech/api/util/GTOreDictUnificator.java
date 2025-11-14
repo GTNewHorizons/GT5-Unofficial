@@ -2,7 +2,7 @@ package gregtech.api.util;
 
 import static gregtech.api.enums.GTValues.E;
 import static gregtech.api.enums.GTValues.M;
-import static gregtech.api.enums.GTValues.W;
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,6 +20,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
@@ -80,7 +81,7 @@ public class GTOreDictUnificator {
         boolean aAlreadyRegistered) {
         if (aMaterial == null || aPrefix == null
             || GTUtility.isStackInvalid(aStack)
-            || Items.feather.getDamage(aStack) == W) return;
+            || Items.feather.getDamage(aStack) == WILDCARD) return;
         isAddingOre++;
         aStack = GTUtility.copyAmount(1, aStack);
         if (!aAlreadyRegistered) registerOre(aPrefix.get(aMaterial), aStack);
@@ -313,7 +314,7 @@ public class GTOreDictUnificator {
                 }
             }
         }
-        ItemStack[] aStacks = {};
+        ItemStack[] aStacks = GTValues.emptyItemStackArray;
         if (obj instanceof ItemStack) aStacks = new ItemStack[] { (ItemStack) obj };
         else if (obj instanceof ItemStack[]) aStacks = (ItemStack[]) obj;
         else if (obj instanceof List) aStacks = ((List<?>) obj).toArray(new ItemStack[0]);
@@ -345,7 +346,7 @@ public class GTOreDictUnificator {
             } else if (inputs[i] instanceof ItemData) {
                 tData[i] = (ItemData) inputs[i];
             } else {
-                throw new IllegalArgumentException();
+                throw new IllegalArgumentException("Illegal item data: " + inputs[i]);
             }
         }
         if (GTUtility.arrayContainsNonNull(tData)) {
@@ -377,13 +378,13 @@ public class GTOreDictUnificator {
                 if (GregTechAPI.sLoadStarted) {
                     mRunThroughTheList = false;
                     for (Entry<ItemStack, ItemData> tEntry : sItemStack2DataMap.entrySet()) if (!tEntry.getValue()
-                        .hasValidPrefixData() || tEntry.getValue().mPrefix.mAllowNormalRecycling)
+                        .hasValidPrefixData() || tEntry.getValue().mPrefix.isRecyclable())
                         GTRecipeRegistrator.registerMaterialRecycling(
                             GTItemStack.internalCopyStack(tEntry.getKey()),
                             tEntry.getValue());
                 }
             } else {
-                if (!aData.hasValidPrefixData() || aData.mPrefix.mAllowNormalRecycling)
+                if (!aData.hasValidPrefixData() || aData.mPrefix.isRecyclable())
                     GTRecipeRegistrator.registerMaterialRecycling(aStack, aData);
             }
         } else {
@@ -402,7 +403,7 @@ public class GTOreDictUnificator {
     public static void addAssociation(OrePrefixes aPrefix, Materials aMaterial, ItemStack aStack,
         boolean aBlackListed) {
         if (aPrefix == null || aMaterial == null || GTUtility.isStackInvalid(aStack)) return;
-        if (Items.feather.getDamage(aStack) == W) for (byte i = 0; i < 16; i++)
+        if (Items.feather.getDamage(aStack) == WILDCARD) for (byte i = 0; i < 16; i++)
             setItemData(GTUtility.copyAmountAndMetaData(1, i, aStack), new ItemData(aPrefix, aMaterial, aBlackListed));
         setItemData(aStack, new ItemData(aPrefix, aMaterial, aBlackListed));
     }
@@ -475,7 +476,7 @@ public class GTOreDictUnificator {
     }
 
     public static ItemStack getGem(Materials aMaterial, OrePrefixes aPrefix) {
-        return aMaterial == null ? null : getGem(aMaterial, aPrefix.mMaterialAmount);
+        return aMaterial == null ? null : getGem(aMaterial, aPrefix.getMaterialAmount());
     }
 
     public static ItemStack getGem(Materials aMaterial, long aMaterialAmount) {
@@ -495,7 +496,7 @@ public class GTOreDictUnificator {
     }
 
     public static ItemStack getDust(Materials aMaterial, OrePrefixes aPrefix) {
-        return aMaterial == null ? null : getDust(aMaterial, aPrefix.mMaterialAmount);
+        return aMaterial == null ? null : getDust(aMaterial, aPrefix.getMaterialAmount());
     }
 
     public static ItemStack getDust(Materials aMaterial, long aMaterialAmount) {
@@ -515,7 +516,7 @@ public class GTOreDictUnificator {
     }
 
     public static ItemStack getIngot(Materials aMaterial, OrePrefixes aPrefix) {
-        return aMaterial == null ? null : getIngot(aMaterial, aPrefix.mMaterialAmount);
+        return aMaterial == null ? null : getIngot(aMaterial, aPrefix.getMaterialAmount());
     }
 
     public static ItemStack getIngot(Materials aMaterial, long aMaterialAmount) {

@@ -116,6 +116,10 @@ gui.kekztech_lapotronicenergyunit.wireless_rebalance=Rebalance Wireless (One Tim
 gui.kekztech_lapotronicenergyunit.warning.header=Warning!
 gui.kekztech_lapotronicenergyunit.warning.text=Make sure to carefully read and understand the tooltip before activating wireless mode, it can potentially brick your base. This warning won't appear again.
 
+kekztech.gui.lapotronic_super_capacitor.text.stored=Stored: %s EU
+kekztech.gui.lapotronic_super_capacitor.text.avg_eu_in=Avg EU IN: %s last 5s
+kekztech.gui.lapotronic_super_capacitor.text.avg_eu_out=Avg EU OUT: %s last 5s
+
 # -------- Tooltips
 tooltip.kekztech.crafting_component=Crafting component for KekzTech things
 tooltip.kekztech.lapotronic_energy_unit.capacity=Capacity: §c%s§7 EU

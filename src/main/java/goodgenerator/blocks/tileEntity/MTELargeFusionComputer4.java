@@ -42,7 +42,7 @@ public class MTELargeFusionComputer4 extends MTELargeFusionComputerPP {
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fusion Reactor")
-            .addInfo("Galaxy Collapse.")
+            .addInfo("Power Overwhelming!!!")
             .addInfo(
                 EnumChatFormatting.AQUA + GTUtility.formatNumbers(getSingleHatchPower())
                     + EnumChatFormatting.GRAY
@@ -58,11 +58,8 @@ public class MTELargeFusionComputer4 extends MTELargeFusionComputerPP {
                 "If the recipe requires a voltage tier over " + GTUtility.getColoredTierNameFromTier((byte) tier())
                     + EnumChatFormatting.GRAY
                     + " , you can't do it either")
-            .addInfo("Performs 4/4 overclock.")
-            .addInfo("Startup < 160,000,000 EU: 256x Parallel")
-            .addInfo("Startup < 320,000,000 EU: 192x Parallel")
-            .addInfo("Startup < 640,000,000 EU: 128x Parallel")
-            .addInfo("Startup >= 640,000,000 EU: 64x Parallel")
+            .addInfo("Performs 4/4 overclock")
+            .addInfo(createParallelText())
             .addTecTechHatchInfo()
             .addCasingInfoMin("Fusion Machine Casing MK III", 1664, false)
             .addCasingInfoMin("Compact Fusion Coil MK-II Prototype", 560, false)

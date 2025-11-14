@@ -12,11 +12,11 @@ import net.minecraftforge.fluids.FluidStack;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.core.block.machine.BlockPestKiller;
 import gtPlusPlus.core.inventories.InventoryPestKiller;
 import gtPlusPlus.core.slots.SlotGeneric;
 import gtPlusPlus.core.slots.SlotNoInput;
 import gtPlusPlus.core.tileentities.machines.TileEntityPestKiller;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class ContainerPestKiller extends Container {
 
@@ -99,7 +99,7 @@ public class ContainerPestKiller extends Container {
 
     @Override
     public boolean canInteractWith(final EntityPlayer par1EntityPlayer) {
-        if (this.worldObj.getBlock(this.posX, this.posY, this.posZ) != GregtechItemList.PestKiller.getBlock()) {
+        if (!(this.worldObj.getBlock(this.posX, this.posY, this.posZ) instanceof BlockPestKiller)) {
             return false;
         }
         return par1EntityPlayer.getDistanceSq(this.posX + 0.5D, this.posY + 0.5D, this.posZ + 0.5D) <= 64D;

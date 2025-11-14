@@ -83,8 +83,8 @@ public class GregtechRocketFuelGenerator {
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_IV, 'P', ItemList.Electric_Piston_IV, 'E',
                 ItemList.Electric_Motor_IV, 'C', OrePrefixes.circuit.get(Materials.LuV), 'W',
                 OrePrefixes.cableGt02.get(Materials.Platinum), 'G', MaterialsAlloy.STELLITE.getGear(1) });
-        final ItemStack INGREDIENT_1 = CI.electricPiston_LuV;
-        final ItemStack INGREDIENT_2 = CI.electricMotor_LuV;
+        final ItemStack INGREDIENT_1 = ItemList.Electric_Piston_LuV.get(1);
+        final ItemStack INGREDIENT_2 = ItemList.Electric_Motor_LuV.get(1);
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Rocket_Engine_LuV.get(1L),
             GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.NOT_REMOVABLE

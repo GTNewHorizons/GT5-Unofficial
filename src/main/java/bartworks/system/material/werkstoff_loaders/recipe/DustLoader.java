@@ -27,6 +27,7 @@ import static gregtech.api.recipe.RecipeMaps.primitiveBlastRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
+import static gregtech.api.util.GTRecipeConstants.BlastFurnaceWithGas;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 
 import java.util.ArrayList;
@@ -344,30 +345,19 @@ public class DustLoader implements IWerkstoffRunnable {
             } else if (werkstoff.hasItemType(ingot) && werkstoffStats.isBlastFurnace()
                 && werkstoffStats.getMeltingPoint() != 0
                 && werkstoffStats.autoGenerateBlastFurnaceRecipes()) {
-                    if (werkstoff.contains(WerkstoffLoader.ANAEROBE_SMELTING)) {
+                    // Just adds all types of gasses
+                    if (werkstoff.contains(WerkstoffLoader.ANAEROBE_SMELTING)
+                        || werkstoff.contains(WerkstoffLoader.NOBLE_GAS_SMELTING)) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(werkstoff.get(dust), GTUtility.getIntegratedCircuit(11))
                             .itemOutputs(
                                 werkstoffStats.getMeltingPoint() < 1750 ? werkstoff.get(ingot)
                                     : werkstoff.get(ingotHot))
-                            .fluidInputs(Materials.Nitrogen.getGas(1000))
                             .duration(Math.max(werkstoffStats.getMass() / 40L, 1L) * werkstoffStats.getMeltingPoint())
                             .eut(werkstoffStats.getMeltingVoltage())
                             .metadata(COIL_HEAT, werkstoffStats.getMeltingPoint())
-                            .addTo(blastFurnaceRecipes);
-
-                    } else if (werkstoff.contains(WerkstoffLoader.NOBLE_GAS_SMELTING)) {
-                        GTValues.RA.stdBuilder()
-                            .itemInputs(werkstoff.get(dust), GTUtility.getIntegratedCircuit(11))
-                            .itemOutputs(
-                                werkstoffStats.getMeltingPoint() < 1750 ? werkstoff.get(ingot)
-                                    : werkstoff.get(ingotHot))
-                            .fluidInputs(Materials.Argon.getGas(1000))
-                            .duration(Math.max(werkstoffStats.getMass() / 40L, 1L) * werkstoffStats.getMeltingPoint())
-                            .eut(werkstoffStats.getMeltingVoltage())
-                            .metadata(COIL_HEAT, werkstoffStats.getMeltingPoint())
-                            .addTo(blastFurnaceRecipes);
-
+                            .metadata(ADDITIVE_AMOUNT, 1000)
+                            .addTo(BlastFurnaceWithGas);
                     } else {
                         GTValues.RA.stdBuilder()
                             .itemInputs(werkstoff.get(dust), GTUtility.getIntegratedCircuit(1))

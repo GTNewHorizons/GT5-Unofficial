@@ -16,6 +16,7 @@ import net.minecraft.util.IChatComponent;
 import net.minecraftforge.event.world.BlockEvent;
 
 import gregtech.GTMod;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
@@ -55,16 +56,6 @@ public class ToolHardHammer extends GTTool {
     }
 
     @Override
-    public int getToolDamagePerEntityAttack() {
-        return 200;
-    }
-
-    @Override
-    public int getBaseQuality() {
-        return 0;
-    }
-
-    @Override
     public float getBaseDamage() {
         return 3.0F;
     }
@@ -80,18 +71,8 @@ public class ToolHardHammer extends GTTool {
     }
 
     @Override
-    public float getMaxDurabilityMultiplier() {
-        return 1.0F;
-    }
-
-    @Override
     public String getCraftingSound() {
-        return SoundResource.RANDOM_ANVIL_USE.toString();
-    }
-
-    @Override
-    public String getEntityHitSound() {
-        return null;
+        return SoundResource.GTCEU_LOOP_FORGE_HAMMER.toString();
     }
 
     @Override
@@ -100,18 +81,8 @@ public class ToolHardHammer extends GTTool {
     }
 
     @Override
-    public String getMiningSound() {
-        return null;
-    }
-
-    @Override
     public boolean canBlock() {
         return true;
-    }
-
-    @Override
-    public boolean isCrowbar() {
-        return false;
     }
 
     @Override
@@ -160,17 +131,11 @@ public class ToolHardHammer extends GTTool {
     }
 
     @Override
-    public ItemStack getBrokenItem(ItemStack aStack) {
-        return null;
-    }
-
-    @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead
-            ? MetaGeneratedTool.getPrimaryMaterial(
-                aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadHammer.mTextureIndex]
-            : MetaGeneratedTool
-                .getSecondaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.stick.mTextureIndex];
+            ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadHammer
+                .getTextureIndex()]
+            : MetaGeneratedTool.getSecondaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.stick.getTextureIndex()];
     }
 
     @Override

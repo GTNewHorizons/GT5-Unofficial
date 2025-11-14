@@ -39,6 +39,7 @@ import bartworks.MainMod;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
+import gregtech.api.util.GTUtility;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 
@@ -58,7 +59,7 @@ public class ItemRockCutter extends ItemTool implements IElectricItem {
     public ItemRockCutter(int aTier) {
         super(2 * aTier, Item.ToolMaterial.EMERALD, ItemRockCutter.mineableBlocks);
         this.mTier = aTier;
-        this.multi = (int) Math.pow(10, this.mTier - 1);
+        this.multi = (int) GTUtility.powInt(10, this.mTier - 1);
         ItemRockCutter.mineableBlocks = new HashSet<>();
         this.maxStackSize = 1;
         this.mCharge = 10000 * this.multi;

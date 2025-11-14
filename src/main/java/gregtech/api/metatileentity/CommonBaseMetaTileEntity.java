@@ -18,6 +18,7 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.modularui.GUITextureSet;
@@ -79,13 +80,25 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
         try {
             updateEntityProfiled();
         } catch (Throwable e) {
-            e.printStackTrace();
-            e.printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error(
+                "Error ticking meta tile entity {} at ({}, {}, {}) in world {}",
+                getMetaTileID(),
+                xCoord,
+                yCoord,
+                zCoord,
+                worldObj.provider.dimensionId,
+                e);
             try {
                 onTickFail();
             } catch (Throwable ex) {
-                ex.printStackTrace();
-                ex.printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error(
+                    "Error calling tick fail on meta tile entity {} at ({}, {}, {}) in world {}",
+                    getMetaTileID(),
+                    xCoord,
+                    yCoord,
+                    zCoord,
+                    worldObj.provider.dimensionId,
+                    e);
             }
         }
 
@@ -171,7 +184,8 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
     }
 
     protected void sendSoundToPlayers(SoundResource sound, float soundStrength, int soundModulation) {
-        GTUtility.sendSoundToPlayers(worldObj, sound, soundStrength, soundModulation, xCoord, yCoord, zCoord);
+        GTUtility
+            .sendSoundToPlayers(worldObj, sound, soundStrength, soundModulation, xCoord + .5, yCoord + .5, zCoord + .5);
     }
 
     /**
@@ -315,7 +329,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
     @Override
     public String[] getDescription() {
         if (canAccessData()) return getMetaTileEntity().getDescription();
-        return new String[0];
+        return GTValues.emptyStringArray;
     }
 
     @Override
