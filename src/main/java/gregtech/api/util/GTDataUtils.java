@@ -189,6 +189,21 @@ public class GTDataUtils {
         return out;
     }
 
+    public static int[] intersect(int[] a, int[] b) {
+        IntLinkedOpenHashSet a2 = new IntLinkedOpenHashSet(a);
+        IntLinkedOpenHashSet b2 = new IntLinkedOpenHashSet(b);
+
+        IntArrayList out = new IntArrayList();
+
+        a2.forEach((int i) -> {
+            if (b2.contains(i)) {
+                out.add(i);
+            }
+        });
+
+        return out.toIntArray();
+    }
+
     public static <K, V, P extends Pair<K, V>> Collector<? super P, ?, Multimap<K, V>> toMultiMap(
         MultimapBuilder<K, V> map) {
         return toMultiMap(map::build);
@@ -228,18 +243,5 @@ public class GTDataUtils {
             }
         };
 
-    public static int[] intersect(int[] a, int[] b) {
-        IntLinkedOpenHashSet a2 = new IntLinkedOpenHashSet(a);
-        IntLinkedOpenHashSet b2 = new IntLinkedOpenHashSet(b);
-
-        IntArrayList out = new IntArrayList();
-
-        a2.forEach((int i) -> {
-            if (b2.contains(i)) {
-                out.add(i);
-            }
-        });
-
-        return out.toIntArray();
     }
 }
