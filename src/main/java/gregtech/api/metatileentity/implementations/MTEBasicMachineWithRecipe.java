@@ -12,6 +12,11 @@ import static net.minecraftforge.common.util.ForgeDirection.UP;
 
 import java.util.Locale;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineWithRecipeBaseGui;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -479,6 +484,16 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
     }
 
     @Override
+    protected boolean useMui2() {
+        return false;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEBasicMachineWithRecipeBaseGui(this, this.getUIProperties()).build(data,syncManager,uiSettings);
+    }
+
+    @Override
     public int getCapacity() {
         return this.mTankCapacity;
     }
@@ -495,6 +510,7 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
             .progressBarTexture(progressBarTexture)
             .build();
     }
+
 
     public enum X {
         PUMP,

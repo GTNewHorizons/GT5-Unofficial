@@ -20,15 +20,16 @@ import com.cleanroommc.modularui.widgets.layout.Row;
 import gregtech.api.gui.widgets.CommonWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
+import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
 
-public class MTEBasicMachineBaseGui {
+public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> {
 
-    protected final MTEBasicMachine machine;
+    protected final T machine;
     protected final IGregTechTileEntity baseMetaTileEntity;
 
-    public MTEBasicMachineBaseGui(MTEBasicMachine machine) {
+    public MTEBasicMachineBaseGui(T machine) {
         this.machine = machine;
         this.baseMetaTileEntity = machine.getBaseMetaTileEntity();
     }
@@ -119,7 +120,7 @@ public class MTEBasicMachineBaseGui {
             .coverChildren()
             .align(Alignment.BottomLeft)
             .paddingBottom(4)
-            .paddingLeft(3);
+            .paddingLeft(4);
         return cornerFlow;
     }
 
