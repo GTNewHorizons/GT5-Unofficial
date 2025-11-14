@@ -691,10 +691,10 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                         ItemStack fuelStack = HTGRLoader.HTGR_ITEM.createTRISOFuel(entry.getKey());
                         int toOutput = (int) Math.floor(entry.getValue());
                         int didOutput = 0;
-                        fuelStack.stackSize = Math.min(toOutput, 64);
+                        int outputNow = fuelStack.stackSize = Math.min(toOutput, 64);
                         while (this.addOutputAtomic(fuelStack)) {
-                            toOutput -= fuelStack.stackSize;
-                            didOutput += fuelStack.stackSize;
+                            toOutput -= outputNow;
+                            didOutput += outputNow;
                             if (toOutput <= 0) break;
                             fuelStack.stackSize = Math.min(toOutput, 64);
                         }
