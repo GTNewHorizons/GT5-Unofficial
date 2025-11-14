@@ -121,6 +121,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         this.shutdownReasonTextureMap.put(ShutDownReasonRegistry.POWER_LOSS.getKey(), GTGuiTextures.OVERLAY_POWER_LOSS);
         this.shutdownReasonTextureMap.put(ShutDownReasonRegistry.NO_REPAIR.getKey(), GTGuiTextures.OVERLAY_TOO_DAMAGED);
         this.shutdownReasonTextureMap.put(ShutDownReasonRegistry.NONE.getKey(), GTGuiTextures.OVERLAY_MANUAL_SHUTDOWN);
+        this.shutdownReasonTextureMap.put("computation_loss", GTGuiTextures.OVERLAY_COMPUTATION_LOSS);
         this.shutdownReasonTooltipMap.put(
             ShutDownReasonRegistry.STRUCTURE_INCOMPLETE.getKey(),
             EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("GT5U.gui.hoverable.incomplete"));
@@ -133,7 +134,9 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         this.shutdownReasonTooltipMap.put(
             ShutDownReasonRegistry.NONE.getKey(),
             EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("GT5U.gui.hoverable.manualshutdown"));
-
+        this.shutdownReasonTooltipMap.put(
+            "computation_loss",
+            EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("GT5U.gui.text.computation_loss"));
     }
 
     public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
@@ -231,10 +234,21 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
 
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
         IntSyncValue startupCheckSyncer = new IntSyncValue(multiblock::getmStartUpCheck);
+        StringSyncValue machineModeSyncer = new StringSyncValue(multiblock::getMachineModeName);
         syncManager.syncValue("startupCheck", startupCheckSyncer);
+        syncManager.syncValue("machineModeName", machineModeSyncer);
 
         return new ListWidget<>().widthRel(1)
             .crossAxisAlignment(Alignment.CrossAxis.START)
+            .childIf(
+                multiblock.supportsMachineModeSwitch(),
+                IKey.dynamic(
+                    () -> StatCollector
+                        .translateToLocalFormatted("gt.interact.desc.mb.mode", machineModeSyncer.getStringValue()))
+                    .asWidget()
+                    .marginBottom(2)
+                    .widthRel(1))
+
             .child(
                 IKey.lang("GT5U.multiblock.startup")
                     .color(Color.WHITE.main)
@@ -725,7 +739,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         return machineModeIcons.get(index);
     }
 
-    private void createModeSwitchTooltip(RichTooltip t) {
+    protected void createModeSwitchTooltip(RichTooltip t) {
         t.addLine(IKey.dynamic(() -> StatCollector.translateToLocal("GT5U.gui.button.mode_switch")))
             .addLine(IKey.dynamic(multiblock::getMachineModeName));
     }
@@ -1039,10 +1053,13 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .reverseLayout(true)
             .childIf(
                 multiblock.doesBindPlayerInventory(),
-                new ItemSlot()
-                    .slot(
-                        new ModularSlot(multiblock.inventoryHandler, multiblock.getControllerSlotIndex())
-                            .slotGroup("item_inv"))
+                new ItemSlot().slot(new ModularSlot(multiblock.inventoryHandler, multiblock.getControllerSlotIndex()) {
+
+                    @Override
+                    public int getSlotStackLimit() {
+                        return multiblock.getInventoryStackLimit();
+                    }
+                }.slotGroup("item_inv"))
                     .marginTop(4))
             .child(createPowerSwitchButton())
             .child(createStructureUpdateButton(syncManager));

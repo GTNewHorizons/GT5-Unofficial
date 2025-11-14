@@ -12,6 +12,7 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -44,6 +45,7 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -54,6 +56,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.config.MachineStats;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
@@ -69,8 +72,6 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
     public static String mCasingName1 = "Matter Fabricator Casing";
     public static String mCasingName2 = "Containment Casing";
     public static String mCasingName3 = "Matter Generation Coil";
-
-    private int mMode = 0;
 
     private static final int MODE_SCRAP = 1;
     private static final int MODE_UU = 0;
@@ -233,7 +234,7 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
      */
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return this.mMode == MODE_SCRAP ? RecipeMaps.recyclerRecipes : GTPPRecipeMaps.multiblockMassFabricatorRecipes;
+        return machineMode == MODE_SCRAP ? RecipeMaps.recyclerRecipes : GTPPRecipeMaps.multiblockMassFabricatorRecipes;
     }
 
     @Nonnull
@@ -256,7 +257,7 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                if (mMode == MODE_SCRAP) {
+                if (machineMode == MODE_SCRAP) {
                     if (recipe.mOutputs == null) {
                         return SimpleCheckRecipeResult.ofSuccess("no_scrap");
                     }
@@ -267,7 +268,7 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
             @Nonnull
             @Override
             protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
-                if (mMode == MODE_SCRAP) {
+                if (machineMode == MODE_SCRAP) {
                     if (inputItems != null) {
                         for (ItemStack item : inputItems) {
                             if (item == null || item.stackSize == 0) continue;
@@ -303,34 +304,22 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
 
     @Override
     public int getMaxParallelRecipes() {
-        return this.mMode == MODE_SCRAP ? 64 : 8 * (Math.max(1, GTUtility.getTier(getMaxInputVoltage())));
+        return machineMode == MODE_SCRAP ? 64 : 8 * (Math.max(1, GTUtility.getTier(getMaxInputVoltage())));
     }
 
     @Override
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        int aMode = this.mMode + 1;
-        if (aMode > 1) {
-            this.mMode = MODE_UU;
-            GTUtility.sendChatToPlayer(aPlayer, "Mode [" + this.mMode + "]: Matter/AmpliFabricator");
-        } else if (aMode == 1) {
-            this.mMode = MODE_SCRAP;
-            GTUtility.sendChatToPlayer(aPlayer, "Mode [" + this.mMode + "]: Recycler");
-        } else {
-            this.mMode = MODE_SCRAP;
-            GTUtility.sendChatToPlayer(aPlayer, "Mode [" + this.mMode + "]: Recycler");
-        }
-        mLastRecipe = null;
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setInteger("mMode", mMode);
-        super.saveNBTData(aNBT);
+        setMachineMode(nextMachineMode());
+        GTUtility
+            .sendChatToPlayer(aPlayer, translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        mMode = aNBT.getInteger("mMode");
+        if (aNBT.hasKey("mMode")) {
+            machineMode = aNBT.getInteger("mMode");
+            aNBT.removeTag("mMode");
+        }
         super.loadNBTData(aNBT);
     }
 
@@ -343,6 +332,18 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
 
     @Override
     public String getMachineModeName() {
-        return translateToLocal("GT5U.GTPP_MULTI_MASS_FABRICATOR.mode." + mMode);
+        return translateToLocal("GT5U.GTPP_MULTI_MASS_FABRICATOR.mode." + machineMode);
+    }
+
+    @Override
+    public boolean supportsMachineModeSwitch() {
+        return true;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui getGui() {
+        return new MTEMultiBlockBaseGui(this).withMachineModeIcons(
+            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_MASS_FABRICATING,
+            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_RECYCLING);
     }
 }
