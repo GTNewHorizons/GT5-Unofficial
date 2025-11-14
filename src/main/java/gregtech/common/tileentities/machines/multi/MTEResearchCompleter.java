@@ -345,17 +345,16 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Research Completer")
-            .addInfo("Completes Thaumcraft research notes using EU and Thaumcraft nodes")
-            .addInfo("Place nodes in the center row")
+        tt.addMachineType("machtype.completer")
+            .addInfo("gt.completer.tips")
             .beginVariableStructureBlock(3, 3, 3, 3, 3, MAX_LENGTH, true)
-            .addController("Front center")
-            .addOtherStructurePart("Magical machine casing", "Top and bottom layers outside. 3 x L minimum")
-            .addOtherStructurePart("Warded glass", "Middle layer outside")
-            .addEnergyHatch("Any casing")
-            .addMaintenanceHatch("Any casing")
-            .addInputBus("Any casing")
-            .addOutputBus("Any casing")
+            .addController("front_center")
+            .addStructurePart("gt.blockcasings8.8.name", "gt.completer.info.casing")
+            .addStructurePart("tile.blockCosmeticOpaque.2.name", "gt.completer.info.glass")
+            .addEnergyHatch("<casing>")
+            .addMaintenanceHatch("<casing>")
+            .addInputBus("<casing>")
+            .addOutputBus("<casing>")
             .toolTipFinisher();
         return tt;
     }

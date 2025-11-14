@@ -85,20 +85,20 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
             .get(0)
             .getDisplayName();
         tt.addMachineType("machtype.dehp")
-            .addInfo("gt.dehp.tips.1", (long) (25600 * 20), (long) (192 * 20), TierEU.RECIPE_HV)
+            .addInfo("gt.dehp.tips", (long) (25600 * 20), (long) (192 * 20), TierEU.RECIPE_HV)
             .beginStructureBlock(3, 7, 3, false)
             .addController("front_bottom_middle")
-            .addStructurePart(casings, "gt.dehp.info.1")
-            .addStructurePart(casings, "gt.dehp.info.2")
+            .addStructurePart(casings, "gt.driller_shaped_mb.info.casing.1")
+            .addStructurePart(casings, "gt.driller_shaped_mb.info.casing.2")
             .addStructurePart(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, this.getFrameMaterial(), 1)
                     .getDisplayName(),
-                "gt.dehp.info.3")
-            .addEnergyHatch(VN[this.getMinTier()] + GTUtility.translate("gt.dehp.info.4"))
-            .addMaintenanceHatch("gt.dehp.info.5")
-            .addInputBus("gt.dehp.info.6")
-            .addInputHatch("gt.dehp.info.5")
-            .addOutputHatch("gt.dehp.info.5")
+                "gt.driller_shaped_mb.info.frame")
+            .addEnergyHatch(GTUtility.translate("gt.dehp.info.energy", VN[this.getMinTier()]))
+            .addMaintenanceHatch("gt.dehp.info.i_hatch")
+            .addInputBus("gt.dehp.info.i_bus")
+            .addInputHatch("gt.dehp.info.i_hatch")
+            .addOutputHatch("gt.dehp.info.i_hatch")
             .toolTipFinisher("tooltip.bw.author_bart_via_bw.name");
         return tt;
     }

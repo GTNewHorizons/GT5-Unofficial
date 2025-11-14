@@ -123,16 +123,19 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.cleanroom")
-            .addManyInfo("gt.cleanroom.tips.1", "gt.cleanroom.tips.2")
+            .addInfo("gt.cleanroom.tips")
             .beginVariableStructureBlock(3, MAX_WIDTH, 4, MAX_HEIGHT, 3, MAX_WIDTH, true)
             .addController("top_center")
-            .addStructureInfo("gt.cleanroom.info.1")
-            .addStructurePart("gt.blockcasings3.11.name", "gt.cleanroom.info.2")
-            .addStructureInfo("gt.cleanroom.info.3", "gt.blockreinforced.2.name", MachineStats.cleanroom.minCasingCount)
-            .addEnergyHatch("gt.cleanroom.info.4")
-            .addMaintenanceHatch("gt.cleanroom.info.4")
+            .addStructureInfo("gt.cleanroom.info.controller")
+            .addStructurePart("gt.blockcasings3.11.name", "gt.cleanroom.info.filter")
+            .addStructureInfo(
+                "gt.cleanroom.info.plascrete",
+                "gt.blockreinforced.2.name",
+                MachineStats.cleanroom.minCasingCount)
+            .addEnergyHatch("gt.cleanroom.info.energy")
+            .addMaintenanceHatch("gt.cleanroom.info.energy")
             .addStructureInfo("")
-            .addStructureInfo("gt.cleanroom.info.5", MachineStats.cleanroom.maxReplacementPercentage)
+            .addStructureInfo("gt.cleanroom.info.replacements", MachineStats.cleanroom.maxReplacementPercentage)
             .toolTipFinisher();
         return tt;
     }

@@ -106,19 +106,19 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.ebf")
-            .addInfo("gt.ebf.tips.1")
+            .addInfo("gt.ebf.tips")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 4, 3, true)
             .addController("front_bottom_middle")
             .addCasingInfoRange("gt.blockcasings.11.name", 0, 15, false)
             .addCasingInfoExactly("GT5U.tooltip.structure.heating_coil", 16, true)
-            .addEnergyHatch("gt.ebf.info.1", 1)
-            .addMaintenanceHatch("gt.ebf.info.1", 1)
-            .addMufflerHatch("gt.ebf.info.2", 2)
-            .addInputBus("gt.ebf.info.1", 1)
-            .addInputHatch("gt.ebf.info.1", 1)
-            .addOutputBus("gt.ebf.info.1", 1)
-            .addOutputHatch("gt.ebf.info.3", 3)
+            .addEnergyHatch("gt.ebf.info.hatches", 1)
+            .addMaintenanceHatch("gt.ebf.info.hatches", 1)
+            .addMufflerHatch("gt.ebf.info.muffler", 2)
+            .addInputBus("gt.ebf.info.hatches", 1)
+            .addInputHatch("gt.ebf.info.hatches", 1)
+            .addOutputBus("gt.ebf.info.hatches", 1)
+            .addOutputHatch("gt.ebf.info.o_hatch", 3)
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;

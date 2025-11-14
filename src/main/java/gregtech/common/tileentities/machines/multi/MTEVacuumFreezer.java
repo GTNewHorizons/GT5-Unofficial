@@ -54,7 +54,7 @@ public class MTEVacuumFreezer extends MTECubicMultiBlockBase<MTEVacuumFreezer> {
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.vf")
-            .addInfo("gt.vf.tips.1")
+            .addInfo("gt.vf.tips")
             .beginStructureBlock(3, 3, 3, true)
             .addController("front_center")
             .addCasingInfoRange("gt.blockcasings2.1.name", 16, 24, false)

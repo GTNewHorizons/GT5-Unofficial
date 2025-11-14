@@ -3697,6 +3697,7 @@ machtype.entropic_processor=Entropic Processor
 machtype.distillation_tower=Distillery, DT
 machtype.assline=Assembly Line, Assline, AL
 machtype.mb_air_filter=Air Filter
+machtype.completer=Research Completer
 
 # Used in addController. These are some commonly used shared ones
 # CONTEXT: Controller: (corepos)
@@ -3707,15 +3708,25 @@ gt.mb.corepos.top_center=Top center
 gt.mb.hint_block=Hint block with dot %d
 
 # Multiblock Tooltip lines
+gt.completer.tips=Completes Thaumcraft research notes using EU and Thaumcraft nodes\nPlace nodes in the center row
+gt.completer.info.casing=Top and bottom layers outside. 3 x L minimum
+gt.completer.info.glass=Middle layer outside
+
+gt.driller_shaped_mb.info.casing.1=form the 3x1x3 Base
+gt.driller_shaped_mb.info.casing.2=1x3x1 pillar above the center of the base (2 minimum total)
+gt.driller_shaped_mb.info.frame=Each pillar's side and 1x3x1 on top
+
 gt.backfiller.tips=Will fill in areas below it with light concrete. This goes through walls\nUse it to remove any spawning locations beneath your base to reduce lag\nWill pull back the pipes after it finishes that layer\nRange is %1$sx%1$s blocks horizontally\nMinimum energy hatch tier: %2$s\nBase cycle time: %3$s%4$s
-gt.backfiller.info.casing.1=form the 3x1x3 Base
-gt.backfiller.info.casing.2=1x3x1 pillar above the center of the base (2 minimum total)
-gt.backfiller.info.frame=Each pillar's side and 1x3x1 on top
 gt.backfiller.info.energy=1x %s+, Any base casing
 gt.backfiller.info.maintenance=Any base casing
 gt.backfiller.info.i_bus=Mining Pipes, optional, any base casing
 gt.backfiller.info.i_hatch=GT Concrete, any base casing
 gt.backfiller.info.o_bus=Mining Pipes, optional, any base casing
+
+gt.dehp.tips=Consumes %sEU/t\nHas 2 Modes, use the Screwdriver to change them:\nDirect Steam and Coolant Heating\nDirect Steam Mode: Consumes §9Distilled Water§7 to produce §f%s§7L/s of §fSuperheated Steam\nCoolant Heating Mode: Converts %sL/s §bCoolant§7 to §cHot Coolant\nEach maintenance issue lowers output efficiency by §a10%%\nExplodes when it runs out of Distilled Water/Coolant\nBase cycle time: 1 tick
+gt.dehp.info.energy=%s+, Any base casing
+gt.dehp.info.i_hatch=Any base casing
+gt.dehp.info.i_bus=Mining Pipes, optional, any base casing
 
 gt.mb_air_filter.tips=Needs a Turbine in the controller\nCan process %1$sx%1$s chunks\nEach muffler hatch reduces pollution in one chunk of the working area by:\n  §f%s * multiTierBonus * turbineEff * FLOOR(%s^mufflerTier)\nevery second\n- multiTierBonus for this controller is %s\n- turbineEff is the efficiency of the Turbine in controller slot\n- Effective muffler tier is limited by energy input tier\n- Uses %s EU/t while working<SEPARATOR>Insert Absorption Filter in an input bus\n  to double pollution cleaning amount (30 uses per item)\nEach maintenance issue reduces cleaning amount by 10%
 gt.mb_air_filter.info.casing=Top and bottom layers
@@ -3725,14 +3736,14 @@ gt.mb_air_filter.info.muffler=Sides of the middle two layers
 gt.mb_boiler.tips.1a=Produces %sL of Superheated Steam with 1 Coal at %sL/s\nA programmed circuit in the main block throttles the boiler (-1000L/s per config)\nOnly some solid fuels are allowed (check the NEI Large Boiler tab for details)\nIf there are any disallowed fuels in the input bus, the boiler won't run!
 gt.mb_boiler.tips.1b=Produces %sL of Steam with 1 Coal at %sL/s\nA programmed circuit in the main block throttles the boiler (-1000L/s per config)\nSolid Fuels with a burn value that is too high or too low will not work
 gt.mb_boiler.tips.2=Diesel fuels have 1/4 efficiency - Takes %s seconds to heat up
-gt.mb_boiler.info.1=Bottom layer, 3 minimum
-gt.mb_boiler.info.2=Inner 3 blocks
-gt.mb_boiler.info.3=Any firebox
-gt.mb_boiler.info.4=Solid fuel, Any firebox
-gt.mb_boiler.info.5=Liquid fuel, Any firebox
-gt.mb_boiler.info.6=You can use either, or both
-gt.mb_boiler.info.7=Water, Any firebox
-gt.mb_boiler.info.8=Steam, any casing
+gt.mb_boiler.info.firebox=Bottom layer, 3 minimum
+gt.mb_boiler.info.pipe=Inner 3 blocks
+gt.mb_boiler.info.maintenance=Any firebox
+gt.mb_boiler.info.muffler=Solid fuel, Any firebox
+gt.mb_boiler.info.i_bus=Liquid fuel, Any firebox
+gt.mb_boiler.info.i_hatch.1=You can use either, or both
+gt.mb_boiler.info.i_hatch.2=Water, Any firebox
+gt.mb_boiler.info.o_hatch=Steam, any casing
 
 gt.spinmatron.tips.1=3 Modes: §dLight§7 | §6Standard§7 | §aHeavy\nOverclocks limited to §fHatch Tier + 1
 gt.spinmatron.tips.2=Gains §f2§7 Turbine Slots per Structure Tier
@@ -3858,14 +3869,6 @@ gt.htgr.info.5=Top of the first Coolant Tower
 gt.htgr.info.6=Top of the second Coolant Tower
 gt.htgr.info.7=Bottom of the second Coolant Tower
 
-gt.dehp.tips.1=Consumes %sEU/t\nHas 2 Modes, use the Screwdriver to change them:\nDirect Steam and Coolant Heating\nDirect Steam Mode: Consumes §9Distilled Water§7 to produce §f%s§7L/s of §fSuperheated Steam\nCoolant Heating Mode: Converts %sL/s §bCoolant§7 to §cHot Coolant\nEach maintenance issue lowers output efficiency by §a10%%\nExplodes when it runs out of Distilled Water/Coolant\nBase cycle time: 1 tick
-gt.dehp.info.1=form the 3x1x3 Base
-gt.dehp.info.2=1x3x1 pillar above the center of the base (2 minimum total)
-gt.dehp.info.3=Each pillar's side and 1x3x1 on top
-gt.dehp.info.4=+, Any base casing
-gt.dehp.info.5=Any base casing
-gt.dehp.info.6=Mining Pipes, optional, any base casing
-
 gt.eic.tips.1=Explosions are fun!\nUses electricity instead of Explosives\n§6Parallels§7 are determined by §fContainment Block§7 Tier\n§fNeutronium§7 : §61§7 Parallel\n§cInfinity§7 : §64§7 Parallels\n§8Transcendent Metal§7 : §616§7 Parallels\n§dSpacetime§7 : §664§7 Parallels\n§3Universium§7 : §6256§7 Parallels
 gt.eic.info.1=Front 3rd layer center
 gt.eic.info.2=Casings can be replaced with Explosion Hazard Signs
@@ -3903,21 +3906,19 @@ gt.mvf.info.1=Any Frost Proof Machine Casing
 gt.mvf.info.2=§9Base Multi (Tier §51§9):
 gt.mvf.info.3=§9Tier §52§9 (Upgrades from Tier §51§9):
 
-gt.tfft.tips.1=High-Tech fluid tank that can hold up to 25 different fluids!\nHas 1/25th of the total capacity as capacity for each fluid\nRight clicking the controller with a screwdriver will turn on excess voiding\nFluid storage amount and running cost depends on the storage field blocks used
-gt.tfft.tips.2=Note on hatch locking:\nUse an Integrated Circuit in the GUI slot to limit which fluid is output\nThe index of a stored fluid can be obtained through the Tricorder
-gt.tfft.info.1=Energy hatch is not required when running cost is 0
-gt.tfft.info.2=Any top or bottom casing
-gt.tfft.info.3=Instead of any casing or glass, has to touch storage field block
-gt.tfft.info.4=You can have a bunch of hatches
-gt.tfft.info.5=Use MIOH with conduits or fluid storage buses to see all fluids at once.
+gt.tfft.tips=High-Tech fluid tank that can hold up to 25 different fluids!\nHas 1/25th of the total capacity as capacity for each fluid\nRight clicking the controller with a screwdriver will turn on excess voiding\nFluid storage amount and running cost depends on the storage field blocks used<SEPARATOR>Note on hatch locking:\nUse an Integrated Circuit in the GUI slot to limit which fluid is output\nThe index of a stored fluid can be obtained through the Tricorder
+gt.tfft.info.energy_tip=Energy hatch is not required when running cost is 0
+gt.tfft.info.maintenance=Any top or bottom casing
+gt.tfft.info.i_hatch=Instead of any casing or glass, has to touch storage field block
+gt.tfft.info.hatch_tip=You can have a bunch of hatches
+gt.tfft.info.fluid_tip=Use MIOH with conduits or fluid storage buses to see all fluids at once.
 
-gt.cleanroom.tips.1=Consumes 40 EU/t when first turned on, and 4 EU/t once at 100% efficiency\nCan accept 2A from an LV energy hatch\nWill overclock and gain efficiency faster starting from HV
-gt.cleanroom.tips.2=§cWarning:\nBelow 100% efficiency machines inside have a chance to void outputs!\nEach maintenance issue reduces maximum efficiency by 10%\nGenerating any pollution inside causes the cleanroom to shut down
-gt.cleanroom.info.1=  If width or length is even, it can be in either of the two middle positions
-gt.cleanroom.info.2=Top layer, except for edges
-gt.cleanroom.info.3=§f%s: §7Edges of top layer, all walls and floor. Minimum §6%s§7
-gt.cleanroom.info.4=Any Plascrete Block. Exactly one
-gt.cleanroom.info.5=Up to §6%s%%§7 of plascrete blocks can be replaced by other valid blocks\nTry some of the following:\n- Any §8EV+§7 tier glass\n- Machine hulls or diodes for item and power transfer\n- Reinforced Doors (§oIC2§r§7). Keep closed, no gaps allowed or efficiency will drop!\n- Elevators (§oOpenBlocks§r§7) or Travel Anchors (§oEnderIO§r§7)\See §8config/GregTech/MachineStats.cfg§7 for more valid blocks\n§eAll non-plascrete blocks now share the same limit. Feel free to mix and match!
+gt.cleanroom.tips=Consumes 40 EU/t when first turned on, and 4 EU/t once at 100% efficiency\nCan accept 2A from an LV energy hatch\nWill overclock and gain efficiency faster starting from HV<SEPARATOR>§cWarning:\nBelow 100% efficiency machines inside have a chance to void outputs!\nEach maintenance issue reduces maximum efficiency by 10%\nGenerating any pollution inside causes the cleanroom to shut down
+gt.cleanroom.info.controller=  If width or length is even, it can be in either of the two middle positions
+gt.cleanroom.info.filter=Top layer, except for edges
+gt.cleanroom.info.plascrete=§f%s: §7Edges of top layer, all walls and floor. Minimum §6%s§7
+gt.cleanroom.info.energy=Any Plascrete Block. Exactly one
+gt.cleanroom.info.replacements=Up to §6%s%%§7 of plascrete blocks can be replaced by other valid blocks\nTry some of the following:\n- Any §8EV+§7 tier glass\n- Machine hulls or diodes for item and power transfer\n- Reinforced Doors (§oIC2§r§7). Keep closed, no gaps allowed or efficiency will drop!\n- Elevators (§oOpenBlocks§r§7) or Travel Anchors (§oEnderIO§r§7)\See §8config/GregTech/MachineStats.cfg§7 for more valid blocks\n§eAll non-plascrete blocks now share the same limit. Feel free to mix and match!
 
 gt.bbf.tips.1=Usable for Steel and general Pyrometallurgy\nHas a useful interface, unlike other gregtech multis
 gt.bbf.info.1=Everything except the controller
@@ -3954,10 +3955,10 @@ gt.mega_abs.info.controller=Mid of the fourth layer
 gt.mega_abs.info.maintenance=Around the controller
 gt.mega_abs.info.muffler=1 in the center of the top layer
 
-gt.multi_furnace.info.1=Middle layer
-gt.multi_furnace.info.2=Top Middle
+gt.multi_furnace.info.coil=Middle layer
+gt.multi_furnace.info.muffler=Top Middle
 
-gt.vf.tips.1=Cools hot ingots and cells
+gt.vf.tips=Cools hot ingots and cells
 
 gt.exxonmobil.tips.1=Heavy Industry, now right at your doorstep!\nPlant tier is determined by casing tier\nHatch tiers can't be higher than machine casing tier, UHV casing unlocks all tiers
 gt.exxonmobil.tips.2=+20%% chance of not damaging catalyst per %s Tier
@@ -3982,10 +3983,10 @@ gt.adv_assline.info.i_bus=As specified on layer 1
 gt.adv_assline.info.o_bus=Replaces Input Bus or Solid Steel Machine casing on layer 1 of last slice
 gt.adv_assline.info.dataaccess=Any Grate Machine Casing NOT on the first slice
 
-gt.ebf.tips.1=You can use some fluids to reduce recipe time. Place the circuit in the Input Bus\nIncreases Heat by §c100K §7for every §fVoltage §7tier past §bMV\nReduces §bEU Usage §7by §f5% §7every §c900K §7above the recipe requirement\nEvery §c1800K §7over the recipe requirement grants 1 §dPerfect Overclock\nThat means the EBF will reduce recipe time by a factor 4 instead of 2 (giving 100% efficiency)
-gt.ebf.info.1=Any bottom layer casing
-gt.ebf.info.2=Top middle
-gt.ebf.info.3=Any Heat Proof Machine Casing
+gt.ebf.tips=You can use some fluids to reduce recipe time. Place the circuit in the Input Bus\nIncreases Heat by §c100K §7for every §fVoltage §7tier past §bMV\nReduces §bEU Usage §7by §f5% §7every §c900K §7above the recipe requirement\nEvery §c1800K §7over the recipe requirement grants 1 §dPerfect Overclock\nThat means the EBF will reduce recipe time by a factor 4 instead of 2 (giving 100% efficiency)
+gt.ebf.info.hatches=Any bottom layer casing
+gt.ebf.info.muffler=Top middle
+gt.ebf.info.o_hatch=Any Heat Proof Machine Casing
 
 gt.mfe.tips.1=Use screwdriver to switch mode\nInsert an electromagnet into the electromagnet housing to use\nBetter electromagnets give further bonuses\nWith Tengam electromagnet, multi-amp (NOT laser) hatches are allowed
 gt.mfe.info.1=1 Block Above/Behind Controller

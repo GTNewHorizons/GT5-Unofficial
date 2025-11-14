@@ -107,13 +107,13 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
                 baseCycleTime < 20 ? "gt.time.tick.plural" : "gt.time.second.plural")
             .beginStructureBlock(3, 7, 3, false)
             .addController("front_bottom_middle")
-            .addStructurePart(casings, "gt.backfiller.info.casing.1")
-            .addStructurePart(casings, "gt.backfiller.info.casing.2")
+            .addStructurePart(casings, "gt.driller_shaped_mb.info.casing.1")
+            .addStructurePart(casings, "gt.driller_shaped_mb.info.casing.2")
             .addStructurePart(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, getFrameMaterial(), 1)
                     .getDisplayName(),
-                "gt.backfiller.info.frame")
-            .addEnergyHatch(translate("gt.backfiller.info.energy", VN[getMinTier()]), 1)
+                "gt.driller_shaped_mb.info.generic.frame")
+            .addEnergyHatch(GTUtility.translate("gt.backfiller.info.energy", VN[getMinTier()]), 1)
             .addMaintenanceHatch("gt.backfiller.info.maintenance", 1)
             .addInputBus("gt.backfiller.info.i_bus", 1)
             .addInputHatch("gt.backfiller.info.i_hatch", 1)

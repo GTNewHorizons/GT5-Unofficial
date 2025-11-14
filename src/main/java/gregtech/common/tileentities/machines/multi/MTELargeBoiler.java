@@ -144,15 +144,17 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
             .addCasingInfoRange(new ItemStack(getCasingBlock(), 1, getCasingMeta()).getDisplayName(), 24, 31, false)
             .addStructurePart(
                 new ItemStack(getFireboxBlock(), 1, getFireboxMeta()).getDisplayName(),
-                "gt.mb_boiler.info.1")
-            .addStructurePart(new ItemStack(getPipeBlock(), 1, getPipeMeta()).getDisplayName(), "gt.mb_boiler.info.2")
-            .addMaintenanceHatch("gt.mb_boiler.info.3", 1)
-            .addMufflerHatch("gt.mb_boiler.info.3", 1)
-            .addInputBus("gt.mb_boiler.info.4", 1)
-            .addInputHatch("gt.mb_boiler.info.5", 1)
-            .addStructureInfo("gt.mb_boiler.info.6")
-            .addInputHatch("gt.mb_boiler.info.7", 1)
-            .addOutputHatch("gt.mb_boiler.info.8", 2)
+                "gt.mb_boiler.info.firebox")
+            .addStructurePart(
+                new ItemStack(getPipeBlock(), 1, getPipeMeta()).getDisplayName(),
+                "gt.mb_boiler.info.pipe")
+            .addMaintenanceHatch("gt.mb_boiler.info.maintenance", 1)
+            .addMufflerHatch("gt.mb_boiler.info.muffler", 1)
+            .addInputBus("gt.mb_boiler.info.i_bus", 1)
+            .addInputHatch("gt.mb_boiler.info.i_hatch.1", 1)
+            .addStructureInfo("gt.mb_boiler.info.i_hatch.1.tip")
+            .addInputHatch("gt.mb_boiler.info.i_hatch.2", 1)
+            .addOutputHatch("gt.mb_boiler.info.o_hatch", 2)
             .toolTipFinisher();
 
         return tt;
