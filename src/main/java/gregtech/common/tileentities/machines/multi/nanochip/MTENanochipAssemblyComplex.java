@@ -78,7 +78,8 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     public static final int CASING_INDEX_BASE = GregTechAPI.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 10);
     public static final int CASING_INDEX_WHITE = GregTechAPI.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 5);
 
-    public List<String> gregosConversation = new ArrayList<>();
+    // For usage in the GUI
+    public boolean isTalkModeActive = false;
     // Will range from 1.0 -> 1.25 depending on Stuff (read the doc). Not properly implemented yet
     public double efficiency = 1D;
     // Will range from 0.0 -> 1.0 depending on something? just for decoration i think. Not properly implemented yet
@@ -536,6 +537,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
+        aNBT.setBoolean("talkMode", this.isTalkModeActive);
         aNBT.setDouble("mood", this.gregosMood);
         aNBT.setDouble("efficiency", this.efficiency);
         aNBT.setDouble("moduleSpeed", this.moduleSpeed);
@@ -544,6 +546,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
+        isTalkModeActive = aNBT.getBoolean("talkMode");
         gregosMood = aNBT.getDouble("mood");
         efficiency = aNBT.getDouble("efficiency");
         moduleSpeed = aNBT.getDouble("moduleSpeed");
