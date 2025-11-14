@@ -2,9 +2,12 @@ package gregtech.common.gui.modularui.multiblock.godforge.util;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widget.WidgetTree;
+import com.cleanroommc.modularui.widgets.Expandable;
 
 import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
@@ -35,6 +38,16 @@ public final class SyncHypervisor {
 
     public ModularPanel getModularPanel(Panels panel) {
         return panels.get(panel);
+    }
+
+    public void setPanelExpandable(Panels panel, Supplier<Boolean> value) {
+        ModularPanel modularPanel = getModularPanel(panel);
+        if (modularPanel == null) return;
+        Expandable expandable = WidgetTree
+            .findFirstWithNameNullable(modularPanel, panel.getExpandableId(), Expandable.class);
+        if (expandable != null) {
+            expandable.expanded(value.get());
+        }
     }
 
     public void setSyncManager(Panels panel, PanelSyncManager syncManager) {

@@ -160,7 +160,9 @@ public class UpgradeTreePanel {
                             .lookupFrom(Panels.UPGRADE_TREE, hypervisor);
                         syncer.setValue(upgrade);
                         if (!individualPanel.isPanelOpen()) {
-                            individualPanel.openPanel();
+                            individualPanel.openPanel(); // todo initial size is not always correct
+                        } else {
+                            hypervisor.setPanelExpandable(Panels.INDIVIDUAL_UPGRADE, upgrade::isLargePanel);
                         }
                     }
                 } else if (d == 1) {

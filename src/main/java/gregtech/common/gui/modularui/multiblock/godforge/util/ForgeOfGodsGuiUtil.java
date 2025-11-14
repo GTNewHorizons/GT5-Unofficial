@@ -6,6 +6,8 @@ import net.minecraft.util.ResourceLocation;
 
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Mods;
 
 public class ForgeOfGodsGuiUtil {
@@ -13,7 +15,16 @@ public class ForgeOfGodsGuiUtil {
     private static final ResourceLocation PRESS_SOUND = new ResourceLocation(Mods.TecTech.ID, "fx_click");
 
     public static Runnable getButtonSound() {
-        return () -> Minecraft.getMinecraft()
+        return ForgeOfGodsGuiUtil::playButtonSound;
+    }
+
+    private static void playButtonSound() {
+        playButtonSoundClient();
+    }
+
+    @SideOnly(Side.CLIENT)
+    private static void playButtonSoundClient() {
+        Minecraft.getMinecraft()
             .getSoundHandler()
             .playSound(PositionedSoundRecord.func_147673_a(PRESS_SOUND));
     }

@@ -47,6 +47,10 @@ public enum Panels {
         return panelId;
     }
 
+    public String getExpandableId() {
+        return getPanelId() + ".expandable";
+    }
+
     public IPanelHandler getFrom(Panels fromPanel, SyncHypervisor hypervisor) {
         if (this == MAIN) {
             throw new IllegalStateException("Cannot get panel handler of main panel!");
