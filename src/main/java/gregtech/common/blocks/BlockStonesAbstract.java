@@ -40,12 +40,12 @@ public class BlockStonesAbstract extends GTGenericBlock implements IOreRecipeReg
         OrePrefixes.crafting.add(this);
         setStepSound(soundTypeStone);
         setCreativeTab(GregTechAPI.TAB_GREGTECH_MATERIALS);
+        setHardness(4.5f);
 
         this.registerSmeltingRecipes();
         this.registerAssemblerRecipes();
         this.registerCraftingRecipes();
         this.registerForgeHammerRecipes();
-
     }
 
     private void registerSmeltingRecipes() {
