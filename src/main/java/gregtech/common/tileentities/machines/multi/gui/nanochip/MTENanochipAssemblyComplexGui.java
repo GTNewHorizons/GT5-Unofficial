@@ -31,8 +31,8 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
-import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
 import gtPlusPlus.core.util.math.MathUtils;
 
@@ -80,7 +80,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
     }
 
     @Override
-    protected IWidget createPanelGap(ModularPanel panel, PanelSyncManager syncManager) {
+    protected Flow createPanelGap(ModularPanel panel, PanelSyncManager syncManager) {
         return new Row().widthRel(1)
             .paddingRight(6)
             .paddingLeft(4)
@@ -158,7 +158,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
         boolean isPercentage = (min == 0D && max == 1D);
         char end = isPercentage ? '%' : 'x';
         return new ParentWidget<>().child(
-            new TextWidget(name).leftRel(0.5F)
+            new TextWidget<>(name).leftRel(0.5F)
                 .top(5))
             .child(
                 new ProgressWidget().progress(() -> (syncer.getValue() - min) / (max - min))
@@ -305,7 +305,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
         }
 
         public TextWidget createPlayerTextWidget(String text) {
-            return new TextWidget(text).alignX(1F)
+            return new TextWidget<>(text).alignX(1F)
                 .color(list.playerTextColor);
         }
 
@@ -329,7 +329,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
         public void onInit() {
             super.onInit();
             this.child(
-                new TextWidget("Ask GREGOS a question").alignX(0.5F)
+                new TextWidget<>("Ask GREGOS a question").alignX(0.5F)
                     .color(genericTextColor));
         }
 

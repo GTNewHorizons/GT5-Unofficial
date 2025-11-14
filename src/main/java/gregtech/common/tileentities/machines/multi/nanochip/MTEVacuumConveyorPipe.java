@@ -21,7 +21,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.common.GTClient;
 import gregtech.common.tileentities.machines.multi.nanochip.util.IConnectsToVacuumConveyor;
 import tectech.TecTech;
 import tectech.loader.NetworkDispatcher;
@@ -159,9 +158,10 @@ public class MTEVacuumConveyorPipe extends MetaPipeEntity implements IConnectsTo
                     }
                 }
             }
-        } else if (aBaseMetaTileEntity.isClientSide() && GTClient.changeDetected == 4) {
-            aBaseMetaTileEntity.issueTextureUpdate();
-        }
+        } else if (aBaseMetaTileEntity.isClientSide() && GTMod.clientProxy()
+            .changeDetected() == 4) {
+                aBaseMetaTileEntity.issueTextureUpdate();
+            }
     }
 
     @Override
@@ -266,7 +266,10 @@ public class MTEVacuumConveyorPipe extends MetaPipeEntity implements IConnectsTo
 
     @Override
     public float getCollisionThickness() {
-        if (GTMod.instance.isClientSide() && GTClient.shouldHideThings()) {
+        if (GTMod.clientProxy()
+            .isClientSide()
+            && GTMod.clientProxy()
+                .shouldHideThings()) {
             return 0.0625F;
         }
         return 0.375f;
