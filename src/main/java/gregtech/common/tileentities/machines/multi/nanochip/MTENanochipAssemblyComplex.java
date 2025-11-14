@@ -16,7 +16,6 @@ import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_X;
 import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_Y;
 import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_Z;
-import static gtnhlanth.util.DescTextLocalization.addDotText;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -49,7 +49,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
-import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -113,20 +112,13 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                 .dot(1)
                 // Base casing or assembly module
                 .buildAndChain(GregTechAPI.sBlockCasings8, 5))
-        // Energy Hatch
-        .addElement(
-            'G',
-            HatchElementBuilder.<MTENanochipAssemblyComplex>builder()
-                .atLeast(Energy, ExoticEnergy)
-                .casingIndex(CASING_INDEX_BASE)
-                .dot(1)
-                .build())
 
-        // Vacuum conveyor hatches that the main controller cares about go in specific slots
+        // Vacuum conveyor hatches that the main controller cares about go in specific slots & Energy Hatches
         .addElement(
             'H',
             HatchElementBuilder.<MTENanochipAssemblyComplex>builder()
-                .atLeastList(Arrays.asList(AssemblyHatchElement.VacuumConveyorHatch, InputBus, OutputBus))
+                .atLeastList(
+                    Arrays.asList(AssemblyHatchElement.VacuumConveyorHatch, InputBus, OutputBus, Energy, ExoticEnergy))
                 .casingIndex(CASING_INDEX_WHITE)
                 .dot(2)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasings8, 5)))
@@ -220,7 +212,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             .addStructureInfo("Any control room base casing - Input bus")
             .addStructureInfo("Any control room base casing - Vacuum Conveyor Output")
             .addStructureInfo("Any control room base casing - Output bus")
-            .addOtherStructurePart("Energy Hatch Above Controller, Center of 3x3", addDotText(1))
+            .addStructureInfo("Any control room base casing - Energy Hatch")
             .toolTipFinisher("GregTech");
     }
 
@@ -448,7 +440,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                             ItemStack toOutput = GTUtility
                                 .copyAmountUnsafe((int) Math.min(Integer.MAX_VALUE, amount), component.realCircuit);
                             // Add output and deplete from hatch
-                            addOutput(toOutput);
+                            addOutputPartial(toOutput);
                             contents.remove(component);
                         }
                     }
@@ -570,7 +562,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    protected @NotNull MTEMultiBlockBaseGui getGui() {
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new MTENanochipAssemblyComplexGui(this);
     }
 

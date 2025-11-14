@@ -115,7 +115,7 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
         Logger.MACHINE_INFO("| " + b.getUnlocalizedName() + " | " + a1 + "/" + a2);
 
         if (!a1 && !a2) {
-            ItemStack replacement = ItemUtils.getSimpleStack(b.getDecayResult());
+            ItemStack replacement = b.getDecayResult();
             replacement.stackSize = 1;
             // iStack = replacement.copy();
             for (int fff = 0; fff < this.inventoryContents.getSizeInventory(); fff++) {
@@ -406,7 +406,7 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
         final ModularPanel panel = ModularPanel.defaultPanel("decayablesChest");
         panel.bindPlayerInventory();
         panel.child(
-            new TextWidget(IKey.lang("tile.blockDecayablesChest.name")).top(5)
+            new TextWidget<>(IKey.lang("tile.blockDecayablesChest.name")).top(7)
                 .left(5));
         panel.child(
             SlotGroupWidget.builder()
@@ -419,8 +419,9 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
                 .build()
                 .flex(
                     flex -> flex.anchor(Alignment.TopCenter)
-                        .marginTop(15)
-                        .leftRelAnchor(0.5f, 0.5f)));
+                        .leftRelAnchor(0.5f, 0.5f)
+                        .topRelAnchor(0.125f, 0f)));
+
         return panel;
     }
 

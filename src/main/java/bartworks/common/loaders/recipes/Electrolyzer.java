@@ -23,7 +23,7 @@ public class Electrolyzer implements Runnable {
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Magnesium, 2L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 1L))
-            .fluidOutputs(Materials.Oxygen.getGas(2000L))
+            .fluidOutputs(Materials.Oxygen.getGas(2_000))
             .duration(10 * SECONDS)
             .eut(90)
             .addTo(electrolyzerRecipes);
@@ -33,7 +33,7 @@ public class Electrolyzer implements Runnable {
             .itemOutputs(
                 WerkstoffLoader.Zirconium.get(OrePrefixes.dust, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 1L))
-            .fluidOutputs(Materials.Oxygen.getGas(2000L))
+            .fluidOutputs(Materials.Oxygen.getGas(2_000))
             .duration(12 * SECONDS + 10 * TICKS)
             .eut(90)
             .addTo(electrolyzerRecipes);
@@ -43,7 +43,7 @@ public class Electrolyzer implements Runnable {
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 2L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 1L))
-            .fluidOutputs(Materials.Oxygen.getGas(2000L))
+            .fluidOutputs(Materials.Oxygen.getGas(2_000))
             .duration(16 * SECONDS)
             .eut(90)
             .addTo(electrolyzerRecipes);
@@ -63,7 +63,7 @@ public class Electrolyzer implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Calcium, 1L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 2L))
-            .fluidOutputs(Materials.Oxygen.getGas(2000L))
+            .fluidOutputs(Materials.Oxygen.getGas(2_000))
             .duration(15 * SECONDS)
             .eut(90)
             .addTo(electrolyzerRecipes);
@@ -75,7 +75,7 @@ public class Electrolyzer implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Aluminiumoxide, 3L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3L),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 2))
-            .fluidOutputs(Materials.Oxygen.getGas(2000L))
+            .fluidOutputs(Materials.Oxygen.getGas(2_000))
             .duration(19 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(electrolyzerRecipes);
@@ -87,7 +87,7 @@ public class Electrolyzer implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Chrome, 3L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3L),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 2))
-            .fluidOutputs(Materials.Oxygen.getGas(2000L))
+            .fluidOutputs(Materials.Oxygen.getGas(2_000))
             .duration(23 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(electrolyzerRecipes);
@@ -101,7 +101,7 @@ public class Electrolyzer implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 6),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Boron, 3),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 3))
-            .fluidOutputs(Materials.Oxygen.getGas(19000L))
+            .fluidOutputs(Materials.Oxygen.getGas(19_000))
             .duration(35 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(electrolyzerRecipes);
@@ -115,7 +115,7 @@ public class Electrolyzer implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 6),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Boron, 3),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 3))
-            .fluidOutputs(Materials.Oxygen.getGas(19000L))
+            .fluidOutputs(Materials.Oxygen.getGas(19_000))
             .duration(36 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(electrolyzerRecipes);
@@ -129,7 +129,7 @@ public class Electrolyzer implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 6),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Boron, 3),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Fluorine, 3))
-            .fluidOutputs(Materials.Oxygen.getGas(6000L))
+            .fluidOutputs(Materials.Oxygen.getGas(6_000))
             .duration(36 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(electrolyzerRecipes);
@@ -142,7 +142,7 @@ public class Electrolyzer implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 6L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Boron, 3),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 1))
-            .fluidOutputs(Materials.Oxygen.getGas(1000L))
+            .fluidOutputs(Materials.Oxygen.getGas(1_000))
             .duration(39 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(electrolyzerRecipes);

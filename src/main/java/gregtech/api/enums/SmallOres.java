@@ -7,6 +7,10 @@ import static galacticgreg.api.enums.DimensionDef.BarnardF;
 import static galacticgreg.api.enums.DimensionDef.Callisto;
 import static galacticgreg.api.enums.DimensionDef.Ceres;
 import static galacticgreg.api.enums.DimensionDef.Deimos;
+import static galacticgreg.api.enums.DimensionDef.DimNames.NETHER;
+import static galacticgreg.api.enums.DimensionDef.DimNames.OW;
+import static galacticgreg.api.enums.DimensionDef.DimNames.THE_END;
+import static galacticgreg.api.enums.DimensionDef.DimNames.TWILIGHT_FOREST;
 import static galacticgreg.api.enums.DimensionDef.Enceladus;
 import static galacticgreg.api.enums.DimensionDef.EndAsteroids;
 import static galacticgreg.api.enums.DimensionDef.Ganymede;
@@ -30,12 +34,7 @@ import static galacticgreg.api.enums.DimensionDef.Titan;
 import static galacticgreg.api.enums.DimensionDef.Triton;
 import static galacticgreg.api.enums.DimensionDef.VegaB;
 import static galacticgreg.api.enums.DimensionDef.Venus;
-import static gregtech.common.SmallOreBuilder.NETHER;
-import static gregtech.common.SmallOreBuilder.OW;
-import static gregtech.common.SmallOreBuilder.THE_END;
-import static gregtech.common.SmallOreBuilder.TWILIGHT_FOREST;
 
-import galacticgreg.WorldgenOreSmallSpace;
 import gregtech.common.SmallOreBuilder;
 import gregtech.common.WorldgenGTOreSmallPieces;
 
@@ -263,7 +262,7 @@ public enum SmallOres {
     Foolsruby(new SmallOreBuilder().name("ore.small.foolsruby")
         .heightRange(5, 35)
         .amount(2)
-        .ore(Materials.FoolsRuby)
+        .ore(Materials.Spinel)
         .enableInDim(Horus)
         .enableInDim(TWILIGHT_FOREST)),
 
@@ -526,17 +525,11 @@ public enum SmallOres {
         .ore(Materials.DeepIron)
         .enableInDim(Mercury)),
 
-    Redgarnet(new SmallOreBuilder().name("ore.small.redgarnet")
-        .heightRange(5, 35)
-        .amount(2)
-        .ore(Materials.GarnetRed)
-        .enableInDim(Horus)),
-
     Chargedcertus(new SmallOreBuilder().name("ore.small.chargedcertus")
         .heightRange(5, 115)
         .amount(4)
         .ore(Materials.CertusQuartzCharged)
-        .enableInDim(Horus)),;
+        .enableInDim(Horus));
     // spotless : on
 
     public final SmallOreBuilder smallOreBuilder;
@@ -547,9 +540,5 @@ public enum SmallOres {
 
     public WorldgenGTOreSmallPieces addGTSmallOre() {
         return new WorldgenGTOreSmallPieces(this.smallOreBuilder);
-    }
-
-    public WorldgenOreSmallSpace addGaGregSmallOre() {
-        return new WorldgenOreSmallSpace(this.smallOreBuilder);
     }
 }

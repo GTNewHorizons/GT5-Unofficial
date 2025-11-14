@@ -50,7 +50,7 @@ public class LoaderGTItemData implements Runnable {
             new ItemData(
                 Materials.Diamond,
                 14515200L,
-                new MaterialStack(Materials.Wood, OrePrefixes.stick.mMaterialAmount * 2L)));
+                new MaterialStack(Materials.Wood, OrePrefixes.stick.getMaterialAmount() * 2L)));
         GTOreDictUnificator.addItemData(
             GTModHandler.getModItem(TwilightForest.ID, "item.armorShards", 1L, 0),
             new ItemData(Materials.Knightmetal, 403200L));
@@ -91,13 +91,13 @@ public class LoaderGTItemData implements Runnable {
             new ItemData(
                 Materials.Glowstone,
                 14515200L,
-                new MaterialStack(Materials.Redstone, OrePrefixes.dust.mMaterialAmount * 4L)));
+                new MaterialStack(Materials.Redstone, OrePrefixes.dust.getMaterialAmount() * 4L)));
         GTOreDictUnificator.addItemData(
             new ItemStack(Blocks.lit_redstone_lamp, 1, 32767),
             new ItemData(
                 Materials.Glowstone,
                 14515200L,
-                new MaterialStack(Materials.Redstone, OrePrefixes.dust.mMaterialAmount * 4L)));
+                new MaterialStack(Materials.Redstone, OrePrefixes.dust.getMaterialAmount() * 4L)));
         GTOreDictUnificator.addItemData(
             GTModHandler.getModItem(Forestry.ID, "craftingMaterial", 1L, 5),
             new ItemData(Materials.Ice, 3628800L));
@@ -114,16 +114,13 @@ public class LoaderGTItemData implements Runnable {
             .addItemData(new ItemStack(Blocks.stained_hardened_clay, 1, 32767), new ItemData(Materials.Clay, 3628800L));
         GTOreDictUnificator
             .addItemData(new ItemStack(Blocks.brick_block, 1, 32767), new ItemData(Materials.Brick, 3628800L));
+        GTOreDictUnificator.addItemData(ItemList.IC2_Uranium_238.get(1), new ItemData(Materials.Uranium, 3628800L));
+        GTOreDictUnificator.addItemData(ItemList.IC2_Uranium_235.get(1), new ItemData(Materials.Uranium235, 3628800L));
+        GTOreDictUnificator.addItemData(ItemList.IC2_Plutonium.get(1), new ItemData(Materials.Plutonium, 3628800L));
         GTOreDictUnificator
-            .addItemData(GTModHandler.getIC2Item("Uran238", 1L), new ItemData(Materials.Uranium, 3628800L));
+            .addItemData(ItemList.IC2_Uranium_235_Small.get(1), new ItemData(Materials.Uranium235, 403200L));
         GTOreDictUnificator
-            .addItemData(GTModHandler.getIC2Item("Uran235", 1L), new ItemData(Materials.Uranium235, 3628800L));
-        GTOreDictUnificator
-            .addItemData(GTModHandler.getIC2Item("Plutonium", 1L), new ItemData(Materials.Plutonium, 3628800L));
-        GTOreDictUnificator
-            .addItemData(GTModHandler.getIC2Item("smallUran235", 1L), new ItemData(Materials.Uranium235, 403200L));
-        GTOreDictUnificator
-            .addItemData(GTModHandler.getIC2Item("smallPlutonium", 1L), new ItemData(Materials.Plutonium, 403200L));
+            .addItemData(ItemList.IC2_Plutonium_Small.get(1), new ItemData(Materials.Plutonium, 403200L));
         GTOreDictUnificator.addItemData(ItemList.IC2_Item_Casing_Iron.get(1L), new ItemData(Materials.Iron, 1814400L));
         GTOreDictUnificator.addItemData(ItemList.IC2_Item_Casing_Gold.get(1L), new ItemData(Materials.Gold, 1814400L));
         GTOreDictUnificator
@@ -143,16 +140,16 @@ public class LoaderGTItemData implements Runnable {
             .addItemData(new ItemStack(Items.enchanted_book, 1, 32767), new ItemData(Materials.Paper, 10886400L));
         GTOreDictUnificator.addItemData(
             new ItemStack(Items.golden_apple, 1, 1),
-            new ItemData(Materials.Gold, OrePrefixes.block.mMaterialAmount * 8L));
+            new ItemData(Materials.Gold, OrePrefixes.block.getMaterialAmount() * 8L));
         GTOreDictUnificator.addItemData(
             new ItemStack(Items.golden_apple, 1, 0),
-            new ItemData(Materials.Gold, OrePrefixes.ingot.mMaterialAmount * 8L));
+            new ItemData(Materials.Gold, OrePrefixes.ingot.getMaterialAmount() * 8L));
         GTOreDictUnificator.addItemData(
             new ItemStack(Items.golden_carrot, 1, 0),
-            new ItemData(Materials.Gold, OrePrefixes.nugget.mMaterialAmount * 8L));
+            new ItemData(Materials.Gold, OrePrefixes.nugget.getMaterialAmount() * 8L));
         GTOreDictUnificator.addItemData(
             new ItemStack(Items.speckled_melon, 1, 0),
-            new ItemData(Materials.Gold, OrePrefixes.nugget.mMaterialAmount * 8L));
+            new ItemData(Materials.Gold, OrePrefixes.nugget.getMaterialAmount() * 8L));
         GTOreDictUnificator.addItemData(new ItemStack(Items.minecart, 1), new ItemData(Materials.Iron, 18144000L));
         GTOreDictUnificator.addItemData(new ItemStack(Items.iron_door, 1), new ItemData(Materials.Iron, 21772800L));
         GTOreDictUnificator.addItemData(new ItemStack(Items.cauldron, 1), new ItemData(Materials.Iron, 25401600L));
@@ -221,7 +218,7 @@ public class LoaderGTItemData implements Runnable {
             new ItemStack(Blocks.tripwire_hook, 1, 32767),
             new ItemData(
                 Materials.Iron,
-                OrePrefixes.ring.mMaterialAmount * 2L,
+                OrePrefixes.ring.getMaterialAmount() * 2L,
                 new MaterialStack(Materials.Wood, 3628800L)));
         GTOreDictUnificator.addItemData(ItemList.Bottle_Empty.get(1L), new ItemData(Materials.Glass, 3628800L));
         GTOreDictUnificator

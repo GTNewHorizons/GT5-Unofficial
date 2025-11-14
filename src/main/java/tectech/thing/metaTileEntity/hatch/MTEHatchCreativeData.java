@@ -70,11 +70,6 @@ public class MTEHatchCreativeData extends MTEHatchDataConnector<QuantumDataPacke
     }
 
     @Override
-    public boolean isInputFacing(ForgeDirection side) {
-        return false;
-    }
-
-    @Override
     public boolean isDataInputFacing(ForgeDirection side) {
         return isInputFacing(side);
     }
