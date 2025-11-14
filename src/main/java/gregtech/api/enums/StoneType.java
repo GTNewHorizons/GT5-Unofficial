@@ -136,7 +136,8 @@ public enum StoneType implements IStoneType {
     PackedIce(new StoneBuilder()
         .setStoneNoCobble(() -> Blocks.packed_ice, 0)
         .setDust(Materials.Ice)
-        .setCategory(StoneCategory.Ice)),
+        .setCategory(StoneCategory.Ice)
+        .addAllowedDimensions(DimNames.ASTEROIDS, DimNames.KUIPERBELT, DimNames.MEHENBELT)),
     SethIce(new StoneBuilder()
         .setStoneNoCobble(() -> Blocks.packed_ice, 0)
         .addOtherStone(Mods.Minecraft, () -> Blocks.ice, 0)
@@ -167,7 +168,7 @@ public enum StoneType implements IStoneType {
         .setStoneNoCobble(Mods.EtFuturumRequiem, "blue_ice", 0)
         .setDust(Materials.Ice)
         .setCategory(StoneCategory.Ice)
-        .addAllowedDimensions(DimNames.KUIPERBELT)),
+        .addAllowedDimensions(DimNames.ASTEROIDS, DimNames.KUIPERBELT, DimNames.MEHENBELT)),
 
     ;
     // spotless:on

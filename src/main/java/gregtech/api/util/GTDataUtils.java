@@ -22,6 +22,8 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
 
 import it.unimi.dsi.fastutil.Pair;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntLinkedOpenHashSet;
 import it.unimi.dsi.fastutil.objects.ObjectIterators;
 
 /**
@@ -225,5 +227,19 @@ public class GTDataUtils {
                 return new HashSet<>(Arrays.asList(Characteristics.IDENTITY_FINISH, Characteristics.UNORDERED));
             }
         };
+
+    public static int[] intersect(int[] a, int[] b) {
+        IntLinkedOpenHashSet a2 = new IntLinkedOpenHashSet(a);
+        IntLinkedOpenHashSet b2 = new IntLinkedOpenHashSet(b);
+
+        IntArrayList out = new IntArrayList();
+
+        a2.forEach((int i) -> {
+            if (b2.contains(i)) {
+                out.add(i);
+            }
+        });
+
+        return out.toIntArray();
     }
 }
