@@ -92,7 +92,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     protected List<UITexture> machineModeIcons = new ArrayList<>();
     protected Map<String, UITexture> customIcons = new HashMap<>();
     private static final int borderRadius = 4;
-    protected final int textBoxToInventoryGap = 26;
+    protected final int textBoxToInventoryGap = 22;
     protected final Map<String, IPanelHandler> panelMap = new HashMap<>();
     protected Map<String, UITexture> shutdownReasonTextureMap = new HashMap<>();
     protected Map<String, String> shutdownReasonTooltipMap = new HashMap<>();
