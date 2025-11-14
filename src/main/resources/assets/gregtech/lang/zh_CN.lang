@@ -1303,3 +1303,22 @@ achievement.gt.blockmachines.gtpp.multimachine.flotationcell=工业浮选机
 achievement.gt.blockmachines.gtpp.multimachine.flotationcell.desc=[AL]捡起此物品以在NEI内解锁该合成表
 achievement.gt.blockmachines.gtpp.multimachine.isamill=艾萨研磨机
 achievement.gt.blockmachines.gtpp.multimachine.isamill.desc=[AL]捡起此物品以在NEI内解锁该合成表
+
+# Thaumcraft Aspects
+tc.aspect.custom1=平等,平衡,均衡
+tc.aspect.custom2=疯癫,癫狂,狂热
+tc.aspect.custom3=起始,起源,源头
+tc.aspect.custom4=星辰,星座,天国
+tc.aspect.custom5=荣耀,荣誉,声誉
+
+tc.aspect.custom1.name=平衡
+tc.aspect.custom2.name=癫狂
+tc.aspect.custom3.name=起源
+tc.aspect.custom4.name=星辰
+tc.aspect.custom5.name=荣耀
+
+tc.aspect.help.custom1=平衡的事物
+tc.aspect.help.custom2=扭曲的思想
+tc.aspect.help.custom3=新事物的起始
+tc.aspect.help.custom4=宇宙
+tc.aspect.help.custom5=荣耀

@@ -215,7 +215,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             .addController("The third layer")
             .addCasingInfoExactly("Advanced Iridium Plated Machine Casing", 128, false)
             .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 105, false)
-            .addCasingInfoExactly("Reinforced Glass", 48, false)
+            .addCasingInfoExactly("Any Tiered Glass", 48, false)
             .addCasingInfoExactly("Tungstensteel Pipe Casing", 30, false)
             .addCasingInfoExactly("Tungstensteel Frame Box", 16, false)
             .addCasingInfoExactly("Steel Gear Box Casing", 16, false)
