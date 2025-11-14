@@ -10,6 +10,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.ItemList;
 import gtnhintergalactic.GTNHIntergalactic;
@@ -28,7 +29,7 @@ public class BlockSpaceElevatorCable extends Block implements ITileEntityProvide
     /** Texture for the motor glow */
     public static IIcon motorGlow;
     /** Render ID of this block type */
-    private static int renderID;
+    public static final int renderID = RenderingRegistry.getNextAvailableRenderId();
     /** Number of steps which the cable light has */
     public static final int LIGHT_STEPS = 80;
 
@@ -73,22 +74,6 @@ public class BlockSpaceElevatorCable extends Block implements ITileEntityProvide
     @Override
     public IIcon getIcon(int side, int meta) {
         return textures[0];
-    }
-
-    /**
-     * Set the render ID of this block type
-     *
-     * @param id New ID
-     */
-    public static void setRenderID(int id) {
-        renderID = id;
-    }
-
-    /**
-     * @return render ID of this block type
-     */
-    public static int getRenderID() {
-        return renderID;
     }
 
     /**

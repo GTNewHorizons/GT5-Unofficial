@@ -1,7 +1,5 @@
 package tectech.rendering.EOH;
 
-import static java.lang.Math.pow;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
@@ -9,6 +7,7 @@ import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import gregtech.api.util.GTUtility;
 
 public class EOHItemRenderer implements IItemRenderer {
 
@@ -67,7 +66,7 @@ public class EOHItemRenderer implements IItemRenderer {
         float scale = 0.01f;
 
         // Put each subsequent layer further out.
-        scale *= pow(1.04f, layer);
+        scale *= GTUtility.powInt(1.04f, layer);
 
         // Scale the star up in the x, y and z directions.
         GL11.glScalef(scale, scale, scale);

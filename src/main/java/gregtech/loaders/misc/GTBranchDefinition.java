@@ -22,6 +22,7 @@ import static forestry.core.genetics.alleles.EnumAllele.Tolerance;
 import static gregtech.loaders.misc.GTBeeDefinition.getEffect;
 import static gregtech.loaders.misc.GTBeeDefinition.getFlowers;
 import static gregtech.loaders.misc.GTBeeDefinitionReference.EXTRABEES;
+import static gregtech.loaders.misc.GTBeeDefinitionReference.MAGICBEES;
 
 import java.util.Arrays;
 import java.util.function.Consumer;
@@ -148,6 +149,15 @@ public enum GTBranchDefinition {
         AlleleHelper.instance.set(alleles, LIFESPAN, Lifespan.SHORTEST);
         AlleleHelper.instance.set(alleles, SPEED, Speed.FASTEST);
         AlleleHelper.instance.set(alleles, TERRITORY, Territory.LARGEST);
+    }),
+    BOTANIC("Botanus", alleles -> {
+        AlleleHelper.instance.set(alleles, TEMPERATURE_TOLERANCE, Tolerance.BOTH_1);
+        AlleleHelper.instance.set(alleles, TOLERANT_FLYER, true);
+        AlleleHelper.instance.set(alleles, FLOWER_PROVIDER, getFlowers(MAGICBEES, "Botania"));
+        AlleleHelper.instance.set(alleles, FLOWERING, Flowering.SLOWEST);
+        AlleleHelper.instance.set(alleles, LIFESPAN, Lifespan.SHORTEST);
+        AlleleHelper.instance.set(alleles, SPEED, Speed.FAST);
+        AlleleHelper.instance.set(alleles, TERRITORY, Territory.AVERAGE);
     }),
     ENDGAME("ENDUS GAMUS", alleles -> {
         AlleleHelper.instance.set(alleles, TEMPERATURE_TOLERANCE, Tolerance.BOTH_5);

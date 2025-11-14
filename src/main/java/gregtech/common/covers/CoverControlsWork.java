@@ -1,5 +1,7 @@
 package gregtech.common.covers;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import java.lang.ref.WeakReference;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,14 +16,13 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
 import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.conditions.RedstoneCondition;
-import gregtech.common.covers.gui.CoverControlsWorkGui;
-import gregtech.common.covers.gui.CoverGui;
+import gregtech.common.gui.modularui.cover.CoverControlsWorkGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.gui.mui1.cover.ControlsWorkUIFactory;
 
 public class CoverControlsWork extends CoverLegacyData {
@@ -45,7 +46,6 @@ public class CoverControlsWork extends CoverLegacyData {
 
     private boolean handledShutdown = false;
     protected WeakReference<EntityPlayer> lastPlayer = null;
-    private boolean mPlayerNotified = false;
 
     public CoverControlsWork(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
@@ -86,9 +86,7 @@ public class CoverControlsWork extends CoverLegacyData {
         ICoverable coverable = coveredTile.get();
         if (coverable != null && hasCoverGUI() && aPlayer instanceof EntityPlayerMP) {
             lastPlayer = new WeakReference<>(aPlayer);
-            mPlayerNotified = false;
-            GTUIInfos.openCoverUI(coverable, aPlayer, coverSide);
-            return true;
+            return super.onCoverShiftRightClick(aPlayer);
         }
         return false;
     }
@@ -115,22 +113,6 @@ public class CoverControlsWork extends CoverLegacyData {
                 case ENABLE_WITH_SIGNAL_SAFE, DISABLE_WITH_SIGNAL_SAFE -> {
                     if (machine.wasShutdown() && machine.getLastShutDownReason()
                         .wasCritical() && !handledShutdown) {
-                        if (!mPlayerNotified) {
-                            EntityPlayer player = lastPlayer == null ? null : lastPlayer.get();
-                            if (player != null) {
-                                lastPlayer = null;
-                                mPlayerNotified = true;
-                                GTUtility.sendChatToPlayer(
-                                    player,
-                                    coverable.getInventoryName() + "at "
-                                        + String.format(
-                                            "(%d,%d,%d)",
-                                            coverable.getXCoord(),
-                                            coverable.getYCoord(),
-                                            coverable.getZCoord())
-                                        + " shut down.");
-                            }
-                        }
                         handledShutdown = true;
                         coverData = State.DISABLED.ordinal();
                     } else {
@@ -197,19 +179,19 @@ public class CoverControlsWork extends CoverLegacyData {
             newCoverData = 2;
         }
         if (newCoverData == 0) {
-            GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("003", "Enable with Signal"));
+            GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.signal_on"));
         }
         if (newCoverData == 1) {
-            GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("004", "Disable with Signal"));
+            GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.signal_inverted"));
         }
         if (newCoverData == 2) {
-            GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("005", "Disabled"));
+            GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.signal_off"));
         }
         if (newCoverData == 3) {
-            GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("505", "Enable with Signal (Safe)"));
+            GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.signal_on_safe"));
         }
         if (newCoverData == 4) {
-            GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("506", "Disable with Signal (Safe)"));
+            GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.signal_inverted_safe"));
         }
         // TODO: Set lastPlayer
         coverData = newCoverData;
@@ -223,8 +205,8 @@ public class CoverControlsWork extends CoverLegacyData {
     // GUI stuff
 
     @Override
-    protected @NotNull CoverGui<?> getCoverGui() {
-        return new CoverControlsWorkGui();
+    protected @NotNull CoverBaseGui<?> getCoverGui() {
+        return new CoverControlsWorkGui(this);
     }
 
     @Override

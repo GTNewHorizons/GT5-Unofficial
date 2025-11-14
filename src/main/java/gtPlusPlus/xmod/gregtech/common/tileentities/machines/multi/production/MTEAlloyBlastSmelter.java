@@ -86,7 +86,7 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 4, 3, true)
             .addController("Bottom Center")
-            .addCasingInfoMin("Blast Smelter Casings", 4, false)
+            .addCasingInfoMin("Blast Smelter Casings", 3, false)
             .addCasingInfoMin("Blast Smelter Heat Containment Coils", 16, false)
             .addInputBus("Any Casing", 1)
             .addInputHatch("Any Casing", 1)
@@ -128,13 +128,13 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 1, 3, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 1, 3, 0, elementBudget, env, false, true);
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
-        return checkPiece(mName, 1, 3, 0) && mCasing >= 4 && checkHatch();
+        return checkPiece(mName, 1, 3, 0) && mCasing >= 3 && checkHatch();
     }
 
     @Override
@@ -213,11 +213,6 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
         GTUtility.sendChatToPlayer(
             aPlayer,
             StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + inputSeparation);
-    }
-
-    @Override
-    public int getMaxEfficiency(final ItemStack aStack) {
-        return 10000;
     }
 
     @Override

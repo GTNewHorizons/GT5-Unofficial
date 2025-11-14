@@ -81,7 +81,7 @@ import gregtech.common.tools.ToolSaw;
 import gregtech.common.tools.ToolScoop;
 import gregtech.common.tools.ToolScrewdriver;
 import gregtech.common.tools.ToolScrewdriverLV;
-import gregtech.common.tools.ToolSoftHammer;
+import gregtech.common.tools.ToolSoftMallet;
 import gregtech.common.tools.ToolSolderingIron;
 import gregtech.common.tools.ToolTrowel;
 import gregtech.common.tools.ToolTurbineHuge;
@@ -134,11 +134,11 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
                 SOFTMALLET.ID,
                 "Soft Mallet",
                 "",
-                new ToolSoftHammer(),
-                ToolDictNames.craftingToolSoftHammer,
+                new ToolSoftMallet(),
+                ToolDictNames.craftingToolSoftMallet,
                 new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.LIMUS, 4L)),
-            GregTechAPI.sSoftHammerList);
+            GregTechAPI.sSoftMalletList);
         GregTechAPI.registerTool(
             addTool(
                 WRENCH.ID,
@@ -607,10 +607,10 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             new Object[] { "  S", " I ", "S f", 'I', OrePrefixes.plank.get(Materials.Wood), 'S',
                 OrePrefixes.stick.get(Materials.Wood) });
         GTModHandler.addCraftingRecipe(
-            INSTANCE.getToolWithStats(ROLLING_PIN.ID, 1, Materials.Plastic, Materials.Plastic, null),
+            INSTANCE.getToolWithStats(ROLLING_PIN.ID, 1, Materials.Polyethylene, Materials.Polyethylene, null),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { "  S", " I ", "S f", 'I', OrePrefixes.ingot.get(Materials.Plastic), 'S',
-                OrePrefixes.stick.get(Materials.Plastic) });
+            new Object[] { "  S", " I ", "S f", 'I', OrePrefixes.ingot.get(Materials.Polyethylene), 'S',
+                OrePrefixes.stick.get(Materials.Polyethylene) });
         GTModHandler.addCraftingRecipe(
             INSTANCE.getToolWithStats(ROLLING_PIN.ID, 1, Materials.Aluminium, Materials.Aluminium, null),
             GTModHandler.RecipeBits.NOT_REMOVABLE,

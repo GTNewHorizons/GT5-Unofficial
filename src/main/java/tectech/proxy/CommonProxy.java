@@ -51,11 +51,12 @@ public class CommonProxy implements IGuiHandler {
 
     public String getUUID(String name) {
         for (WorldServer worldServer : MinecraftServer.getServer().worldServers) {
-            for (Object o : worldServer.playerEntities) {
-                if (o instanceof EntityPlayer && ((EntityPlayer) o).getGameProfile()
+            for (EntityPlayer player : worldServer.playerEntities) {
+                if (player == null) continue;
+                if (player.getGameProfile()
                     .getName()
                     .equals(name)) {
-                    return ((EntityPlayer) o).getGameProfile()
+                    return player.getGameProfile()
                         .getId()
                         .toString();
                 }
@@ -66,8 +67,9 @@ public class CommonProxy implements IGuiHandler {
 
     public boolean isOnlineName(String name) {
         for (WorldServer worldServer : MinecraftServer.getServer().worldServers) {
-            for (Object o : worldServer.playerEntities) {
-                if (o instanceof EntityPlayer && ((EntityPlayer) o).getGameProfile()
+            for (EntityPlayer player : worldServer.playerEntities) {
+                if (player == null) continue;
+                if (player.getGameProfile()
                     .getName()
                     .equals(name)) {
                     return true;
@@ -79,8 +81,9 @@ public class CommonProxy implements IGuiHandler {
 
     public boolean isOnlineUUID(String uuid) {
         for (WorldServer worldServer : MinecraftServer.getServer().worldServers) {
-            for (Object o : worldServer.playerEntities) {
-                if (o instanceof EntityPlayer && ((EntityPlayer) o).getGameProfile()
+            for (EntityPlayer player : worldServer.playerEntities) {
+                if (player == null) continue;
+                if (player.getGameProfile()
                     .getId()
                     .toString()
                     .equals(uuid)) {

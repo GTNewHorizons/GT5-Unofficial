@@ -1,13 +1,14 @@
 package gregtech.api.enums;
 
 import static gregtech.api.enums.GTValues.NI;
-import static gregtech.api.enums.GTValues.W;
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import java.util.Locale;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.fluids.Fluid;
 
 import gregtech.api.interfaces.IItemContainer;
@@ -16,6 +17,7 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.common.render.items.MetaGeneratedItemRenderer;
 
 /**
  * Class containing all non-OreDict Items of GregTech.
@@ -87,6 +89,13 @@ public enum ItemList implements IItemContainer {
     IC2_Compressed_Coal_Ball,
     IC2_Compressed_Coal_Chunk,
     IC2_Fuel_Rod_Empty,
+    IC2_Uranium_238,
+    IC2_Uranium_235,
+    IC2_Uranium_235_Small,
+    IC2_Plutonium,
+    IC2_Plutonium_Small,
+    IC2_Uranium_Fuel,
+    IC2_MOX_Fuel,
     IC2_Food_Can_Empty,
     IC2_Food_Can_Filled,
     IC2_Food_Can_Spoiled,
@@ -571,7 +580,6 @@ public enum ItemList implements IItemContainer {
     Fuel_Can_Plastic_Filled,
     Upgrade_Battery,
     Upgrade_Overclocker,
-    Upgrade_Muffler,
     Upgrade_SteamEngine,
     Upgrade_Lock,
     Item_Redstone_Sniffer,
@@ -633,6 +641,7 @@ public enum ItemList implements IItemContainer {
     Plank_Plum,
     Plank_Maple,
     Plank_Citrus,
+    Plank_Cherry_EFR,
     Dye_Indigo,
     Dye_SquidInk,
     Dye_Bonemeal,
@@ -1074,6 +1083,7 @@ public enum ItemList implements IItemContainer {
     Hatch_Input_Bus_ZPM,
     Hatch_Input_Bus_UV,
     Hatch_Input_Bus_MAX,
+    Hatch_Input_Bus_Debug,
 
     Hatch_Output_ULV,
     Hatch_Output_LV,
@@ -1096,6 +1106,9 @@ public enum ItemList implements IItemContainer {
     Hatch_Output_Bus_ZPM,
     Hatch_Output_Bus_UV,
     Hatch_Output_Bus_MAX,
+
+    Hatch_Void,
+    Hatch_Void_Bus,
 
     Hatch_Muffler_LV,
     Hatch_Muffler_MV,
@@ -1527,6 +1540,10 @@ public enum ItemList implements IItemContainer {
 
     Machine_Multi_IndustrialBrewery,
 
+    Machine_Multi_ChamberCentrifuge,
+    Chamber_Casing,
+    Chamber_Grate,
+
     Machine_Multi_IndustrialLaserEngraver,
     Laser_Plate,
     Casing_Laser,
@@ -1549,6 +1566,7 @@ public enum ItemList implements IItemContainer {
     NanoChipModule_Splitter,
     NanoChipModule_SuperconductorSplitter,
     NanoChipModule_OpticalOrganizer,
+    NanoChipModule_SheetSupervisor,
 
     Machine_LV_Miner,
     Machine_MV_Miner,
@@ -1598,13 +1616,6 @@ public enum ItemList implements IItemContainer {
     Reactor_Coolant_NaK_6,
     neutroniumHeatCapacitor,
 
-    GlowstoneCell,
-    SunnariumCell,
-
-    ThoriumCell_1,
-    ThoriumCell_2,
-    ThoriumCell_4,
-
     Reactor_Coolant_Sp_1,
     Reactor_Coolant_Sp_2,
     Reactor_Coolant_Sp_3,
@@ -1631,11 +1642,6 @@ public enum ItemList implements IItemContainer {
     MagicEnergyAbsorber_HV,
     MagicEnergyAbsorber_EV,
 
-    Depleted_Thorium_1,
-    Depleted_Thorium_2,
-    Depleted_Thorium_4,
-
-    Processing_Array,
     Distillation_Tower,
     Energy_LapotronicOrb2,
     Ore_Processor,
@@ -1669,6 +1675,8 @@ public enum ItemList implements IItemContainer {
     Super_Chest_EV,
     Super_Chest_IV,
 
+    Debug_Fluid_Tank,
+
     Long_Distance_Pipeline_Fluid,
     Long_Distance_Pipeline_Item,
 
@@ -1697,7 +1705,6 @@ public enum ItemList implements IItemContainer {
     LargeSteamTurbine,
     LargeGasTurbine,
     LargeHPSteamTurbine,
-    LargeAdvancedGasTurbine,
     LargePlasmaTurbine,
 
     Ingot_Heavy1,
@@ -1716,7 +1723,6 @@ public enum ItemList implements IItemContainer {
     Casing_Turbine3,
     Casing_EngineIntake,
     Casing_ExtremeEngineIntake,
-    Casing_TurbineGasAdvanced,
 
     Casing_Coil_Cupronickel,
     Casing_Coil_Kanthal,
@@ -1760,6 +1766,12 @@ public enum ItemList implements IItemContainer {
     Casing_Item_Pipe_Fluxed_Electrum,
     Casing_Item_Pipe_Black_Plutonium,
 
+    Casing_Cable,
+    Casing_Graphite_Moderator,
+    Casing_Insulated_Fluid_Pipe,
+    Casing_Beryllium_Integrated_Reactor,
+    Casing_Refined_Graphite,
+
     MobRep_LV,
     MobRep_MV,
     MobRep_HV,
@@ -1770,6 +1782,10 @@ public enum ItemList implements IItemContainer {
     MobRep_UV,
     Cover_PlayerDetector,
     Machine_Multi_HeatExchanger,
+
+    MagLevPython_MV,
+    MagLevPython_HV,
+    MagLevPython_EV,
 
     Block_BronzePlate,
     Block_SteelPlate,
@@ -1841,12 +1857,6 @@ public enum ItemList implements IItemContainer {
     Crop_Drop_Osmium,
     Crop_Drop_Naquadah,
     Crop_Drop_Mica,
-    Uraniumcell_1,
-    Uraniumcell_2,
-    Uraniumcell_4,
-    Moxcell_1,
-    Moxcell_2,
-    Moxcell_4,
 
     Block_Powderbarrel,
     GelledToluene,
@@ -1867,18 +1877,73 @@ public enum ItemList implements IItemContainer {
     SFMixture,
     MSFMixture,
 
-    Depleted_Naquadah_1,
-    Depleted_Naquadah_2,
-    Depleted_Naquadah_4,
-    NaquadahCell_1,
-    NaquadahCell_2,
-    NaquadahCell_4,
-    Depleted_MNq_1,
-    Depleted_MNq_2,
-    Depleted_MNq_4,
-    MNqCell_1,
-    MNqCell_2,
-    MNqCell_4,
+    RodLithium,
+    RodGlowstone,
+    RodThorium,
+    RodThorium2,
+    RodThorium4,
+    RodUranium,
+    RodUranium2,
+    RodUranium4,
+    RodMOX,
+    RodMOX2,
+    RodMOX4,
+    RodHighDensityUranium,
+    RodHighDensityUranium2,
+    RodHighDensityUranium4,
+    RodHighDensityPlutonium,
+    RodHighDensityPlutonium2,
+    RodHighDensityPlutonium4,
+    RodExcitedUranium,
+    RodExcitedUranium2,
+    RodExcitedUranium4,
+    RodExcitedPlutonium,
+    RodExcitedPlutonium2,
+    RodExcitedPlutonium4,
+    RodNaquadah,
+    RodNaquadah2,
+    RodNaquadah4,
+    RodNaquadah32, // the core
+    RodNaquadria,
+    RodNaquadria2,
+    RodNaquadria4,
+    RodTiberium,
+    RodTiberium2,
+    RodTiberium4,
+
+    DepletedRodLithium, // tritium
+    DepletedRodGlowstone, // sunnarium
+    DepletedRodThorium,
+    DepletedRodThorium2,
+    DepletedRodThorium4,
+    DepletedRodUranium,
+    DepletedRodUranium2,
+    DepletedRodUranium4,
+    DepletedRodMOX,
+    DepletedRodMOX2,
+    DepletedRodMOX4,
+    DepletedRodHighDensityUranium,
+    DepletedRodHighDensityUranium2,
+    DepletedRodHighDensityUranium4,
+    DepletedRodHighDensityPlutonium,
+    DepletedRodHighDensityPlutonium2,
+    DepletedRodHighDensityPlutonium4,
+    DepletedRodExcitedUranium,
+    DepletedRodExcitedUranium2,
+    DepletedRodExcitedUranium4,
+    DepletedRodExcitedPlutonium,
+    DepletedRodExcitedPlutonium2,
+    DepletedRodExcitedPlutonium4,
+    DepletedRodNaquadah,
+    DepletedRodNaquadah2,
+    DepletedRodNaquadah4,
+    DepletedRodNaquadah32, // the core
+    DepletedRodNaquadria,
+    DepletedRodNaquadria2,
+    DepletedRodNaquadria4,
+    DepletedRodTiberium,
+    DepletedRodTiberium2,
+    DepletedRodTiberium4,
 
     Hatch_AutoMaintenance,
     Machine_Multi_Cleanroom,
@@ -2106,6 +2171,8 @@ public enum ItemList implements IItemContainer {
     Superconducting_Magnet_Solenoid_UMV,
     RadiantNaquadahAlloyCasing,
     PCBFactory,
+    PCBBioChamber,
+    PCBCoolingTower,
     BasicPhotolithographicFrameworkCasing,
     ReinforcedPhotolithographicFrameworkCasing,
     RadiationProofPhotolithographicFrameworkCasing,
@@ -2155,6 +2222,12 @@ public enum ItemList implements IItemContainer {
     BlockQuarkReleaseChamber,
     BlockQuarkContainmentCasing,
     LargeFluidExtractor,
+    CasingThaumium,
+    CasingVoid,
+    CasingIchorium,
+    EntropicProcessor,
+    DecayWarehouse,
+    LATEX,
     AcceleratorLV,
     AcceleratorMV,
     AcceleratorHV,
@@ -2176,6 +2249,7 @@ public enum ItemList implements IItemContainer {
     Hatch_Input_UMV,
     Hatch_Input_UXV,
     Hatch_Input_MAX,
+    Hatch_Input_Debug,
     Hatch_Output_UEV,
     Hatch_Output_UIV,
     Hatch_Output_UMV,
@@ -2617,6 +2691,7 @@ public enum ItemList implements IItemContainer {
     NameRemover,
     Hatch_Nanite,
     Hatch_Catalyst_Bulk,
+    Hatch_Particle_Sensor,
     Machine_Multi_AirFilterT1,
     Machine_Multi_AirFilterT2,
     Machine_Multi_AirFilterT3,
@@ -2627,6 +2702,13 @@ public enum ItemList implements IItemContainer {
     Intensely_Bonded_Netherite_Nanoparticles,
     Hot_Netherite_Scrap,
     LargeMolecularAssembler,
+    Beryllium_Shielding_Plate,
+    Alumina_Support_Ring,
+    Alumina_Support_Ring_Raw,
+    Prismarine_Precipitate,
+    Prismatic_Crystal,
+    Radiation_Proof_Prismatic_Naquadah_Composite_Sheet,
+    Naquarite_Universal_Insulator_Foil,
 
     SpaceElevatorController,
     SpaceElevatorModuleAssemblerT1,
@@ -2683,8 +2765,26 @@ public enum ItemList implements IItemContainer {
     TaHfNanoparticles,
     NtNanoparticles,
 
+    PrecisionFieldSyncCasing,
+    MagneticAnchorCasing,
+    FieldEnergyAbsorberCasing,
+    LoadbearingDistributionCasing,
+    NaniteFramework,
+    NaniteShieldingGlass,
+
     PlanetaryGasSiphonController,
     PlanetaryGasSiphonCasing,
+
+    MagLevHarness,
+
+    ManaFly,
+    DebugEnergyHatch,
+
+    ChaosLocator,
+
+    CokeOvenController,
+    CokeOvenCasing,
+    CokeOvenHatch,
 
     // semicolon after the comment to reduce merge conflicts
     ;
@@ -2817,7 +2917,7 @@ public enum ItemList implements IItemContainer {
     public ItemStack getWildcard(long aAmount, Object... aReplacements) {
         sanityCheck();
         if (GTUtility.isStackInvalid(mStack)) return GTUtility.copyAmount(aAmount, aReplacements);
-        return GTUtility.copyAmountAndMetaData(aAmount, W, GTOreDictUnificator.get(mStack));
+        return GTUtility.copyAmountAndMetaData(aAmount, WILDCARD, GTOreDictUnificator.get(mStack));
     }
 
     @Override
@@ -2897,6 +2997,12 @@ public enum ItemList implements IItemContainer {
      */
     public ItemStack getInternalStack_unsafe() {
         return mStack;
+    }
+
+    @Override
+    public IItemContainer setRender(IItemRenderer aRenderer) {
+        MetaGeneratedItemRenderer.registerSpecialRenderer(this, aRenderer);
+        return this;
     }
 
     private void sanityCheck() {

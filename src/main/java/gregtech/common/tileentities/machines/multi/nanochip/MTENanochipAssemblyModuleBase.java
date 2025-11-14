@@ -9,7 +9,12 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -457,8 +462,10 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         return false;
     }
 
+
+
     @Override
-    public boolean addOutput(ItemStack aStack) {
+    public boolean addOutputAtomic(ItemStack aStack) {
         // We need to override this because outputs are produced in vacuum conveyor outputs, not as real items
         if (GTUtility.isStackInvalid(aStack)) return false;
         MTEHatchVacuumConveyorOutput hatch = findOutputHatch(this.outputColor);

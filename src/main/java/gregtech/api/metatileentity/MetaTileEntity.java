@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -43,7 +44,6 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTTooltipDataCache;
-import gregtech.api.util.GTUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.common.capability.CleanroomReference;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
@@ -58,8 +58,8 @@ import tectech.thing.metaTileEntity.pipe.MTEPipeLaser;
  * Extend this Class to add a new MetaMachine Call the Constructor with the desired ID at the load-phase (not preload
  * and also not postload!) Implement the newMetaEntity-Method to return a new ready instance of your MetaTileEntity
  * <p/>
- * Call the Constructor like the following example inside the Load Phase, to register it. "new
- * MTEFurnace(54, "GT_E_Furnace", "Automatic E-Furnace");"
+ * Call the Constructor like the following example inside the Load Phase, to register it. "new MTEFurnace(54,
+ * "GT_E_Furnace", "Automatic E-Furnace");"
  */
 @SuppressWarnings("unused")
 public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICraftingIconProvider {
@@ -91,11 +91,10 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     private String playerLang;
 
     /**
-     * This registers your Machine at the List. Use only ID's larger than 2048 - the ones lower are reserved by GT.
-     * See also the list in the API package - it has a description that contains all the reservations.
+     * This registers your Machine at the List. Use only ID's larger than 2048 - the ones lower are reserved by GT. See
+     * also the list in the API package - it has a description that contains all the reservations.
      * <p>
-     * The constructor can be overloaded as follows:
-     * <blockquote>
+     * The constructor can be overloaded as follows: <blockquote>
      *
      * <pre>
      *
@@ -137,8 +136,10 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
         colorOverride = GUIColorOverride.get(getGUITextureSet().getMainBackground().location);
     }
 
+    @Nullable
     @Override
-    public IGregTechTileEntity getBaseMetaTileEntity() {
+    // making this method final allows it to be inlined by the JIT compiler
+    public final IGregTechTileEntity getBaseMetaTileEntity() {
         return mBaseMetaTileEntity;
     }
 
@@ -551,14 +552,19 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     }
 
     /**
-     * Called when a slot is changed.
-     * Note: {@link #setInventorySlotContents} is not called when the player interacts with a
-     * {@link gregtech.api.interfaces.modularui.IAddInventorySlots} slot.
+     * Called when a slot is changed. Note: {@link #setInventorySlotContents} is not called when the player interacts
+     * with a {@link gregtech.api.interfaces.modularui.IAddInventorySlots} slot.
      */
     protected void onContentsChanged(int slot) {
 
     }
 
+    /**
+     * Implement {@link #fill(ForgeDirection, FluidStack, boolean)} instead.
+     */
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     public int fill_default(ForgeDirection side, FluidStack aFluid, boolean doFill) {
         int filled = fill(aFluid, doFill);
         if (filled > 0) {
@@ -569,7 +575,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
 
     @Override
     public int fill(ForgeDirection side, FluidStack aFluid, boolean doFill) {
-        if (getBaseMetaTileEntity().hasSteamEngineUpgrade() && GTModHandler.isSteam(aFluid) && aFluid.amount > 1) {
+        if (getBaseMetaTileEntity().isSteampowered() && GTModHandler.isSteam(aFluid) && aFluid.amount > 1) {
             int tSteam = (int) Math.min(
                 Integer.MAX_VALUE,
                 Math.min(
@@ -649,7 +655,14 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
         final int tY = getBaseMetaTileEntity().getYCoord();
         final int tZ = getBaseMetaTileEntity().getZCoord();
         final World tWorld = getBaseMetaTileEntity().getWorld();
-        GTUtility.sendSoundToPlayers(tWorld, SoundResource.IC2_MACHINES_MACHINE_OVERLOAD, 1.0F, -1, tX, tY, tZ);
+        GTUtility.sendSoundToPlayers(
+            tWorld,
+            SoundResource.IC2_MACHINES_MACHINE_OVERLOAD,
+            1.0F,
+            -1,
+            tX + .5,
+            tY + .5,
+            tZ + .5);
         tWorld.setBlock(tX, tY, tZ, Blocks.air);
         if (GregTechAPI.sMachineExplosions) tWorld.createExplosion(null, tX + 0.5, tY + 0.5, tZ + 0.5, tStrength, true);
     }
@@ -762,17 +775,17 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
         Dyes dye = Dyes.dyeWhite;
         if (this.colorOverride.sLoaded()) {
             if (this.colorOverride.sGuiTintingEnabled() && getBaseMetaTileEntity() != null) {
-                dye = Dyes.getDyeFromIndex(getBaseMetaTileEntity().getColorization());
-                return this.colorOverride.getGuiTintOrDefault(dye.mName, GTUtil.getRGBInt(dye.getRGBA()));
+                dye = Dyes.getOrDefault(getBaseMetaTileEntity().getColorization(), Dyes.MACHINE_METAL);
+                return this.colorOverride.getGuiTintOrDefault(dye.mName, dye.toInt());
             }
         } else if (GregTechAPI.sColoredGUI) {
             if (GregTechAPI.sMachineMetalGUI) {
                 dye = Dyes.MACHINE_METAL;
             } else if (getBaseMetaTileEntity() != null) {
-                dye = Dyes.getDyeFromIndex(getBaseMetaTileEntity().getColorization());
+                dye = Dyes.getOrDefault(getBaseMetaTileEntity().getColorization(), Dyes.MACHINE_METAL);
             }
         }
-        return GTUtil.getRGBInt(dye.getRGBA());
+        return dye.toInt();
     }
 
     @Override

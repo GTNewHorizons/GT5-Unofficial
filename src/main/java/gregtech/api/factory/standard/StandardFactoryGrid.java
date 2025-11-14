@@ -18,8 +18,8 @@ import gregtech.api.factory.IFactoryGrid;
 import gregtech.api.factory.IFactoryNetwork;
 
 /**
- * This handles all network topology updates, and should be compatible with most pipe systems.
- * A factory element should always register itself with this grid, even when it's not connected to anything.
+ * This handles all network topology updates, and should be compatible with most pipe systems. A factory element should
+ * always register itself with this grid, even when it's not connected to anything.
  */
 public abstract class StandardFactoryGrid<TSelf extends StandardFactoryGrid<TSelf, TElement, TNetwork>, TElement extends IFactoryElement<TElement, TNetwork, TSelf>, TNetwork extends IFactoryNetwork<TNetwork, TElement, TSelf>>
     implements IFactoryGrid<TSelf, TElement, TNetwork> {

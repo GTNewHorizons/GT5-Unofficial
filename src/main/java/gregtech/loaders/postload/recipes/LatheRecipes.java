@@ -5,6 +5,7 @@ import static gregtech.api.recipe.RecipeMaps.latheRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -21,7 +22,7 @@ public class LatheRecipes implements Runnable {
     @Override
     public void run() {
         GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Blocks.wooden_slab, 1, GTValues.W))
+            .itemInputs(new ItemStack(Blocks.wooden_slab, 1, WILDCARD))
             .itemOutputs(
                 new ItemStack(Items.bowl, 1),
                 GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 1))
@@ -30,7 +31,7 @@ public class LatheRecipes implements Runnable {
             .addTo(latheRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(getModItem(Forestry.ID, "slabs", 1L, GTValues.W))
+            .itemInputs(getModItem(Forestry.ID, "slabs", 1L, WILDCARD))
             .itemOutputs(
                 new ItemStack(Items.bowl, 1),
                 GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 1))

@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.Utils;
 
@@ -24,14 +25,14 @@ public class BlockWitherProof extends Block {
 
     public BlockWitherProof() {
         super(Material.redstoneLight);
-        this.setBlockName(Utils.sanitizeString("blockBlackGate"));
+        this.setBlockName(StringUtils.sanitizeString("blockBlackGate"));
         this.setBlockTextureName(GTPlusPlus.ID + ":" + "blockFrameGt");
         this.setCreativeTab(AddToCreativeTab.tabBlock);
         this.setHardness(-1F);
         this.setResistance(5000.0F);
         this.setHarvestLevel("pickaxe", 3);
         this.setStepSound(soundTypeMetal);
-        GameRegistry.registerBlock(this, Utils.sanitizeString("blockBlackGate"));
+        GameRegistry.registerBlock(this, StringUtils.sanitizeString("blockBlackGate"));
     }
 
     @Override
@@ -55,10 +56,6 @@ public class BlockWitherProof extends Block {
     public void onBlockExploded(final World world, final int x, final int y, final int z, final Explosion explosion) {
         // prevent from being destroyed by wither and nukes.
     }
-
-    @Override
-    public void onBlockDestroyedByExplosion(final World p_149723_1_, final int p_149723_2_, final int p_149723_3_,
-        final int p_149723_4_, final Explosion p_149723_5_) {}
 
     @Override
     public boolean canDropFromExplosion(final Explosion p_149659_1_) {

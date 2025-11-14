@@ -16,7 +16,6 @@ import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_X;
 import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_Y;
 import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_Z;
-import static gtnhlanth.util.DescTextLocalization.addDotText;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -49,13 +49,16 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
-import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.*;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.HatchElementBuilder;
+import gregtech.api.util.IGTHatchAdder;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.multi.gui.nanochip.MTENanochipAssemblyComplexGui;
@@ -79,7 +82,8 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     public static final int CASING_INDEX_BASE = GregTechAPI.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 10);
     public static final int CASING_INDEX_WHITE = GregTechAPI.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 5);
 
-    public List<String> gregosConversation = new ArrayList<>();
+    // For usage in the GUI
+    public boolean isTalkModeActive = false;
     // Will range from 1.0 -> 1.25 depending on Stuff (read the doc). Not properly implemented yet
     public double efficiency = 1D;
     // Will range from 0.0 -> 1.0 depending on something? just for decoration i think. Not properly implemented yet
@@ -108,20 +112,13 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                 .dot(1)
                 // Base casing or assembly module
                 .buildAndChain(GregTechAPI.sBlockCasings8, 5))
-        // Energy Hatch
-        .addElement(
-            'G',
-            HatchElementBuilder.<MTENanochipAssemblyComplex>builder()
-                .atLeast(Energy, ExoticEnergy)
-                .casingIndex(CASING_INDEX_BASE)
-                .dot(1)
-                .build())
 
-        // Vacuum conveyor hatches that the main controller cares about go in specific slots
+        // Vacuum conveyor hatches that the main controller cares about go in specific slots & Energy Hatches
         .addElement(
             'H',
             HatchElementBuilder.<MTENanochipAssemblyComplex>builder()
-                .atLeastList(Arrays.asList(AssemblyHatchElement.VacuumConveyorHatch, InputBus, OutputBus))
+                .atLeastList(
+                    Arrays.asList(AssemblyHatchElement.VacuumConveyorHatch, InputBus, OutputBus, Energy, ExoticEnergy))
                 .casingIndex(CASING_INDEX_WHITE)
                 .dot(2)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasings8, 5)))
@@ -215,7 +212,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             .addStructureInfo("Any control room base casing - Input bus")
             .addStructureInfo("Any control room base casing - Vacuum Conveyor Output")
             .addStructureInfo("Any control room base casing - Output bus")
-            .addOtherStructurePart("Energy Hatch Above Controller, Center of 3x3", addDotText(1))
+            .addStructureInfo("Any control room base casing - Energy Hatch")
             .toolTipFinisher("GregTech");
     }
 
@@ -443,7 +440,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                             ItemStack toOutput = GTUtility
                                 .copyAmountUnsafe((int) Math.min(Integer.MAX_VALUE, amount), component.realCircuit);
                             // Add output and deplete from hatch
-                            addOutput(toOutput);
+                            addOutputPartial(toOutput);
                             contents.remove(component);
                         }
                     }
@@ -544,6 +541,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
+        aNBT.setBoolean("talkMode", this.isTalkModeActive);
         aNBT.setDouble("mood", this.gregosMood);
         aNBT.setDouble("efficiency", this.efficiency);
         aNBT.setDouble("moduleSpeed", this.moduleSpeed);
@@ -552,6 +550,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
+        isTalkModeActive = aNBT.getBoolean("talkMode");
         gregosMood = aNBT.getDouble("mood");
         efficiency = aNBT.getDouble("efficiency");
         moduleSpeed = aNBT.getDouble("moduleSpeed");
@@ -563,7 +562,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    protected @NotNull MTEMultiBlockBaseGui getGui() {
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new MTENanochipAssemblyComplexGui(this);
     }
 

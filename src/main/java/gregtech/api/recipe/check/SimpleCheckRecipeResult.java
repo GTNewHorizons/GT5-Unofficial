@@ -93,8 +93,8 @@ public class SimpleCheckRecipeResult implements CheckRecipeResult {
     }
 
     /**
-     * Creates new result with successful state. Add your localized description with `GT5U.gui.text.{key}`.
-     * This is already registered to registry.
+     * Creates new result with successful state. Add your localized description with `GT5U.gui.text.{key}`. This is
+     * already registered to registry.
      */
     @Nonnull
     public static CheckRecipeResult ofSuccess(String key) {
@@ -102,8 +102,8 @@ public class SimpleCheckRecipeResult implements CheckRecipeResult {
     }
 
     /**
-     * Creates new result with failed state. Add your localized description with `GT5U.gui.text.{key}`.
-     * This is already registered to registry.
+     * Creates new result with failed state. Add your localized description with `GT5U.gui.text.{key}`. This is already
+     * registered to registry.
      */
     @Nonnull
     public static CheckRecipeResult ofFailure(String key) {

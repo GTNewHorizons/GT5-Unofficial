@@ -183,5 +183,6 @@ public final class CheckRecipeResultRegistry {
         register(new ResultInsufficientStartupPower(0));
         register(new ResultInsufficientStartupPowerBigInt(BigInteger.ZERO));
         register(new ResultMissingItem());
+        register(new ResultMissingApiaryFlowers());
     }
 }

@@ -21,13 +21,11 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import gregtech.common.handlers.PowerGogglesHudHandler;
-import gregtech.common.handlers.PowerGogglesKeybindHandler;
-import gregtech.common.items.gui.PowerGogglesGuiOverlay;
+import gregtech.common.powergoggles.gui.PowerGogglesGuiOverlay;
+import gregtech.common.powergoggles.handlers.PowerGogglesHudHandler;
+import gregtech.common.powergoggles.handlers.PowerGogglesKeybindHandler;
 import gtPlusPlus.GTplusplus;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.client.renderer.CustomItemBlockRenderer;
-import gtPlusPlus.core.client.renderer.CustomOreBlockRenderer;
 import gtPlusPlus.core.client.renderer.RenderDecayChest;
 import gtPlusPlus.core.client.renderer.RenderMiningExplosivesPrimed;
 import gtPlusPlus.core.client.renderer.RenderSickBlaze;
@@ -41,7 +39,6 @@ import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
 import gtPlusPlus.core.entity.projectile.EntityLightningAttack;
 import gtPlusPlus.core.entity.projectile.EntityToxinballSmall;
 import gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest;
-import gtPlusPlus.nei.NEIGTPPConfig;
 import gtPlusPlus.xmod.gregtech.common.render.FlaskRenderer;
 import gtPlusPlus.xmod.gregtech.common.render.MachineBlockRenderer;
 import ic2.core.item.ItemFluidCell;
@@ -58,12 +55,10 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void init(final FMLInitializationEvent e) {
-        new CustomOreBlockRenderer();
         new CustomItemBlockRenderer();
-        new MachineBlockRenderer();
+        RenderingRegistry.registerBlockHandler(new MachineBlockRenderer());
         new FlaskRenderer();
-        MinecraftForge.EVENT_BUS.register(new NEIGTPPConfig());
-        MinecraftForge.EVENT_BUS.register(new PowerGogglesHudHandler());
+        MinecraftForge.EVENT_BUS.register(PowerGogglesHudHandler.getInstance());
         PowerGogglesKeybindHandler.init();
         super.init(e);
     }
@@ -83,8 +78,6 @@ public class ClientProxy extends CommonProxy {
             .registerEntityRenderingHandler(EntityStaballoyConstruct.class, new RenderStaballoyConstruct());
         RenderingRegistry.registerEntityRenderingHandler(EntityToxinballSmall.class, new RenderToxinball(1F));
         RenderingRegistry.registerEntityRenderingHandler(EntityLightningAttack.class, new RenderFireball(1F));
-        // Tiles
-        Logger.INFO("Registering Custom Renderer for the Lead Lined Chest.");
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDecayablesChest.class, new RenderDecayChest());
     }
 

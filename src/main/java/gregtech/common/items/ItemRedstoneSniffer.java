@@ -15,12 +15,12 @@ import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.factory.GuiData;
 import com.cleanroommc.modularui.factory.GuiFactories;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.utils.serialization.IByteBufAdapter;
+import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.items.GTGenericItem;
 import gregtech.common.covers.CoverPosition;
-import gregtech.common.gui.modularui.uifactory.RedstoneSnifferGuiBuilder;
+import gregtech.common.gui.modularui.item.RedstoneSnifferGui;
 
 public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
 
@@ -46,8 +46,8 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
     }
 
     @Override
-    public ModularPanel buildUI(GuiData guiData, PanelSyncManager guiSyncManager) {
-        return new RedstoneSnifferGuiBuilder(guiData, guiSyncManager).build();
+    public ModularPanel buildUI(GuiData guiData, PanelSyncManager guiSyncManager, UISettings uiSettings) {
+        return new RedstoneSnifferGui(guiData, guiSyncManager).build();
     }
 
     public static class SnifferEntry {
@@ -70,11 +70,8 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
             this.isPrivate = isPrivate;
             this.coverPosition = null;
         }
-    }
 
-    public static class SnifferEntryAdapter implements IByteBufAdapter<SnifferEntry> {
-
-        public SnifferEntry deserialize(PacketBuffer buffer) throws IOException {
+        public static SnifferEntry deserialize(PacketBuffer buffer) throws IOException {
             String owner = buffer.readStringFromBuffer(buffer.readInt());
             String freq = buffer.readStringFromBuffer(buffer.readInt());
             boolean isPrivate = buffer.readBoolean();
@@ -95,8 +92,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
 
         }
 
-        @Override
-        public void serialize(PacketBuffer buffer, SnifferEntry value) throws IOException {
+        public static void serialize(PacketBuffer buffer, SnifferEntry value) throws IOException {
             buffer.writeInt(value.owner.length());
             buffer.writeStringToBuffer(value.owner);
 
@@ -115,11 +111,9 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                 buffer.writeInt(value.coverPosition.dimName.length());
                 buffer.writeStringToBuffer(value.coverPosition.dimName);
             }
-
         }
 
-        @Override
-        public boolean areEqual(@NotNull SnifferEntry t1, @NotNull SnifferEntry t2) {
+        public static boolean areEqual(@NotNull SnifferEntry t1, @NotNull SnifferEntry t2) {
             if (t1.coverPosition == null && t2.coverPosition != null // ensure both entries are of the same type
                 || t1.coverPosition != null && t2.coverPosition == null) return false;
             if (t1.coverPosition == null) return t1.freq.equals(t2.freq) && t1.isPrivate == t2.isPrivate;

@@ -4,6 +4,7 @@ import static gregtech.api.recipe.RecipeMaps.benderRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
@@ -24,7 +25,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTUtility;
-import gregtech.common.GTProxy;
 
 public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -43,11 +43,11 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
         boolean aStretchy = aMaterial.contains(SubTag.STRETCHY);
         boolean aNoSmelting = aMaterial.contains(SubTag.NO_SMELTING);
         long aMaterialMass = aMaterial.getMass();
-        boolean aSpecialRecipeReq = aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)
+        boolean aSpecialRecipeReq = aMaterial.mUnifiable && (aMaterial.mMaterialInto == aMaterial)
             && !aMaterial.contains(SubTag.NO_SMASHING);
 
-        switch (aPrefix) {
-            case ingot -> {
+        switch (aPrefix.getName()) {
+            case "ingot" -> {
                 // Fuel recipe
                 if (aMaterial.mFuelPower > 0) {
                     GTValues.RA.stdBuilder()
@@ -63,7 +63,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                     GTValues.RA.stdBuilder()
                         .itemInputs(ItemList.Shape_Mold_Ingot.get(0L))
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L))
-                        .fluidInputs(aMaterial.getMolten(144L))
+                        .fluidInputs(aMaterial.getMolten(1 * INGOTS))
                         .duration(1 * SECONDS + 12 * TICKS)
                         .eut(calculateRecipeEU(aMaterial, 8))
                         .addTo(fluidSolidifierRecipes);
@@ -71,11 +71,11 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                 // Reverse recipes
                 {
                     GTRecipeRegistrator
-                        .registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null, false);
+                        .registerReverseFluidSmelting(aStack, aMaterial, aPrefix.getMaterialAmount(), null, false);
                     GTRecipeRegistrator.registerReverseMacerating(
                         aStack,
                         aMaterial,
-                        aPrefix.mMaterialAmount,
+                        aPrefix.getMaterialAmount(),
                         null,
                         null,
                         null,
@@ -85,7 +85,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                         GTRecipeRegistrator.registerReverseArcSmelting(
                             GTUtility.copyAmount(1, aStack),
                             aMaterial,
-                            aPrefix.mMaterialAmount,
+                            aPrefix.getMaterialAmount(),
                             null,
                             null,
                             null);
@@ -95,13 +95,13 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                 if ((tStack != null) && ((aMaterial.mBlastFurnaceRequired) || aNoSmelting)) {
                     GTModHandler.removeFurnaceSmelting(tStack);
                 }
-                if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)
+                if (aMaterial.mUnifiable && (aMaterial.mMaterialInto == aMaterial)
                     && !aMaterial.contains(SubTag.NO_WORKING)
                     && !aMaterial.contains(SubTag.SMELTING_TO_GEM)
                     && aMaterial.contains(SubTag.MORTAR_GRINDABLE)) {
                     GTModHandler.addShapelessCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L),
-                        GTProxy.tBits,
+                        GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { ToolDictNames.craftingToolMortar, OrePrefixes.ingot.get(aMaterial) });
                 }
                 if (!aNoSmashing) {
@@ -185,7 +185,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                     }
                 }
             }
-            case ingotHot -> {
+            case "ingotHot" -> {
                 if (aMaterial.mAutoGenerateVacuumFreezerRecipes
                     && GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L) != null) {
                     // Vacuum freezer recipes

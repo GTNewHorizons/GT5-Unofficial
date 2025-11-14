@@ -120,6 +120,15 @@ public class RecipeHandlers {
         // Note: To correctly generate localized names, currently all conversion recipes need to be registered
         // before processing recipes. I'll admit this is a bit messy, so I may try to find a solution for this
         // in the future (TODO)
+        registerConversionRecipes();
+        registerWireRecipes();
+        registerBoardRecipes();
+        registerCuttingRecipes();
+        registerEtchingRecipes();
+        registerOpticalRecipes();
+        registerSuperconductorRecipes();
+        registerFrameBoxRecipes();
+    }
 
         populateOtherConversionRecipes();
         populateWireTracerRecipes();
@@ -155,7 +164,7 @@ public class RecipeHandlers {
         // Foil
         addConversionRecipe(
             CircuitComponent.FoilSiliconeRubber,
-            GTOreDictUnificator.get(OrePrefixes.foil, Materials.Silicone, 1));
+            GTOreDictUnificator.get(OrePrefixes.foil, Materials.RubberSilicone, 1));
         addConversionRecipe(
             CircuitComponent.FoilPolybenzimidazole,
             GTOreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole, 1));
@@ -536,7 +545,7 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDDiode, 16),
                 new CircuitComponentStack(CircuitComponent.ProcessedChipRAM, 48),
                 new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorZPM, 64),
-                new CircuitComponentStack(CircuitComponent.FoilSiliconeRubber, 64)),
+                new CircuitComponentStack(CircuitComponent.ProcessedFoilSiliconeRubber, 64)),
             Arrays.asList(
                 FluidRegistry.getFluidStack("molten.indalloy140", 2880),
                 FluidRegistry.getFluidStack("ic2coolant", 10000),
@@ -579,7 +588,7 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedChipNOR, 32),
                 new CircuitComponentStack(CircuitComponent.ProcessedChipRAM, 64),
                 new CircuitComponentStack(CircuitComponent.ProcessedWireNiobiumTitanium, 32),
-                new CircuitComponentStack(CircuitComponent.FoilSiliconeRubber, 64)),
+                new CircuitComponentStack(CircuitComponent.ProcessedFoilSiliconeRubber, 64)),
             Arrays.asList(
                 MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(1440),
                 Materials.BioMediumSterilized.getFluid(1440),
@@ -598,8 +607,8 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDDiode, 24),
                 new CircuitComponentStack(CircuitComponent.ProcessedChipRAM, 64),
                 new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorUHV, 64),
-                new CircuitComponentStack(CircuitComponent.FoilSiliconeRubber, 64),
-                new CircuitComponentStack(CircuitComponent.FoilSiliconeRubber, 64)),
+                new CircuitComponentStack(CircuitComponent.ProcessedFoilSiliconeRubber, 64),
+                new CircuitComponentStack(CircuitComponent.ProcessedFoilSiliconeRubber, 64)),
             Arrays.asList(
                 MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(2880),
                 Materials.BioMediumSterilized.getFluid(2880),
@@ -629,7 +638,7 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedChipNOR, 32),
                 new CircuitComponentStack(CircuitComponent.ProcessedChipRAM, 64),
                 new CircuitComponentStack(CircuitComponent.ProcessedWireLumiium, 24),
-                new CircuitComponentStack(CircuitComponent.FoilSiliconeRubber, 64)),
+                new CircuitComponentStack(CircuitComponent.ProcessedFoilSiliconeRubber, 64)),
             Arrays.asList(
                 MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(1440),
                 Materials.Radon.getGas(1440),
@@ -649,8 +658,8 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedChipNOR, 64),
                 new CircuitComponentStack(CircuitComponent.ProcessedChipASOC, 32),
                 new CircuitComponentStack(CircuitComponent.ProcessedWireLumiium, 32),
-                new CircuitComponentStack(CircuitComponent.FoilSiliconeRubber, 64),
-                new CircuitComponentStack(CircuitComponent.FoilPolybenzimidazole, 64)),
+                new CircuitComponentStack(CircuitComponent.ProcessedFoilSiliconeRubber, 64),
+                new CircuitComponentStack(CircuitComponent.ProcessedFoilPolybenzimidazole, 64)),
             Arrays.asList(
                 MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(2880),
                 Materials.Radon.getGas(2880),
@@ -670,10 +679,10 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDDiode, 32),
                 new CircuitComponentStack(CircuitComponent.ProcessedChipASOC, 64),
                 new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorUEV, 64),
-                new CircuitComponentStack(CircuitComponent.FoilSiliconeRubber, 64),
-                new CircuitComponentStack(CircuitComponent.FoilSiliconeRubber, 64),
-                new CircuitComponentStack(CircuitComponent.FoilPolybenzimidazole, 64),
-                new CircuitComponentStack(CircuitComponent.FoilPolybenzimidazole, 64)),
+                new CircuitComponentStack(CircuitComponent.ProcessedFoilSiliconeRubber, 64),
+                new CircuitComponentStack(CircuitComponent.ProcessedFoilSiliconeRubber, 64),
+                new CircuitComponentStack(CircuitComponent.ProcessedFoilPolybenzimidazole, 64),
+                new CircuitComponentStack(CircuitComponent.ProcessedFoilPolybenzimidazole, 64)),
             Arrays.asList(
                 MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(5760),
                 Materials.Radon.getGas(5760),

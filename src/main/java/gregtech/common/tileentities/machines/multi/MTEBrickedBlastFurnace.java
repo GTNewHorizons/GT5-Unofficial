@@ -12,6 +12,7 @@ import static gregtech.api.util.GTWaila.getMachineProgressString;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -25,11 +26,8 @@ import org.lwjgl.input.Keyboard;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
+import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widgets.ItemSlot;
-import com.cleanroommc.modularui.widgets.SlotGroupWidget;
-import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
@@ -38,33 +36,26 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.ProgressBar;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverRegistry;
+import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.ParticleFX;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
-import gregtech.api.modularui2.GTGuis;
-import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
@@ -73,13 +64,14 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
-import gregtech.common.modularui2.widget.GTProgressWidget;
+import gregtech.client.GTSoundLoop;
+import gregtech.common.gui.modularui.multiblock.MTEBrickedBlastFurnaceGui;
 import gregtech.common.pollution.Pollution;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment, ISurvivalConstructable,
-    RecipeMapWorkable, IAddUIWidgets, IGetTitleColor, ISecondaryDescribable {
+public class MTEBrickedBlastFurnace extends MetaTileEntity
+    implements IAlignment, ISurvivalConstructable, RecipeMapWorkable, IGetTitleColor, ISecondaryDescribable {
 
     public static final int INPUT_SLOTS = 3, OUTPUT_SLOTS = 3;
     private static final IStructureDefinition<MTEBrickedBlastFurnace> STRUCTURE_DEFINITION = IStructureDefinition
@@ -108,6 +100,9 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
     public int mUpdate = 5;
     public int mProgresstime = 0;
     public boolean mMachine = false;
+
+    @SideOnly(Side.CLIENT)
+    protected GTSoundLoop activitySoundLoop;
 
     public ItemStack[] mOutputItems = new ItemStack[OUTPUT_SLOTS];
 
@@ -145,7 +140,7 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
             tooltipBuilder.addMachineType("Blast Furnace, BBF")
                 .addInfo("Usable for Steel and general Pyrometallurgy")
                 .addInfo("Has a useful interface, unlike other gregtech multis")
-                .addPollutionAmount(GTMod.gregtechproxy.mPollutionPrimitveBlastFurnacePerSecond)
+                .addPollutionAmount(GTMod.proxy.mPollutionPrimitveBlastFurnacePerSecond)
                 .beginStructureBlock(3, 4, 3, true)
                 .addController("Front center")
                 .addOtherStructurePart("Firebricks", "Everything except the controller")
@@ -280,16 +275,23 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         final int lavaX = aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1);
         final int lavaZ = aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1);
-        if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())) {
+        if (aBaseMetaTileEntity.isClientSide()) {
+            if (aBaseMetaTileEntity.isActive() && activitySoundLoop == null) {
+                updateSound(aBaseMetaTileEntity);
+            } else if (!aBaseMetaTileEntity.isActive() && activitySoundLoop != null) {
+                activitySoundLoop = null;
+            }
 
-            new WorldSpawnedEventBuilder.ParticleEventBuilder().setMotion(0D, 0.3D, 0D)
-                .setIdentifier(ParticleFX.LARGE_SMOKE)
-                .setPosition(
-                    lavaX + XSTR_INSTANCE.nextFloat(),
-                    aBaseMetaTileEntity.getOffsetY(aBaseMetaTileEntity.getBackFacing(), 1),
-                    lavaZ + XSTR_INSTANCE.nextFloat())
-                .setWorld(getBaseMetaTileEntity().getWorld())
-                .run();
+            if (aBaseMetaTileEntity.isActive()) {
+                new WorldSpawnedEventBuilder.ParticleEventBuilder().setMotion(0D, 0.3D, 0D)
+                    .setIdentifier(ParticleFX.LARGE_SMOKE)
+                    .setPosition(
+                        lavaX + XSTR_INSTANCE.nextFloat(),
+                        aBaseMetaTileEntity.getOffsetY(aBaseMetaTileEntity.getBackFacing(), 1),
+                        lavaZ + XSTR_INSTANCE.nextFloat())
+                    .setWorld(getBaseMetaTileEntity().getWorld())
+                    .run();
+            }
         }
         if (aBaseMetaTileEntity.isServerSide()) {
             if (mUpdated) {
@@ -317,9 +319,8 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
                 }
             }
             if (this.mMaxProgresstime > 0 && (aTimer % 20L == 0L)) {
-                Pollution.addPollution(
-                    this.getBaseMetaTileEntity(),
-                    GTMod.gregtechproxy.mPollutionPrimitveBlastFurnacePerSecond);
+                Pollution
+                    .addPollution(this.getBaseMetaTileEntity(), GTMod.proxy.mPollutionPrimitveBlastFurnacePerSecond);
             }
 
             aBaseMetaTileEntity.setActive((this.mMaxProgresstime > 0) && (this.mMachine));
@@ -350,6 +351,18 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
                 }
             }
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    private void updateSound(IGregTechTileEntity aBaseMetaTileEntity) {
+        activitySoundLoop = new GTSoundLoop(
+            SoundResource.GTCEU_LOOP_FIRE.resourceLocation,
+            aBaseMetaTileEntity,
+            false,
+            true);
+        Minecraft.getMinecraft()
+            .getSoundHandler()
+            .playSound(activitySoundLoop);
     }
 
     @Override
@@ -487,7 +500,7 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
 
     @Override
     public byte getTileEntityBaseType() {
-        return 0;
+        return HarvestTool.PickaxeLevel2.toTileEntityBaseType();
     }
 
     @Override
@@ -570,102 +583,13 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
     }
 
     @Override
-    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager) {
-        syncManager.registerSlotGroup("item_inv", 0);
-        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager)
-            .build()
-            .child(
-                SlotGroupWidget.builder()
-                    .matrix("I", "I", "I")
-                    .key('I', index -> {
-                        String textureThemeId = switch (index) {
-                            case 0 -> GTWidgetThemes.OVERLAY_ITEM_SLOT_INGOT;
-                            case 1 -> GTWidgetThemes.OVERLAY_ITEM_SLOT_DUST;
-                            case 2 -> GTWidgetThemes.OVERLAY_ITEM_SLOT_FURNACE;
-                            default -> throw new IllegalStateException("Unexpected value: " + index);
-                        };
-                        return new ItemSlot().slot(new ModularSlot(inventoryHandler, index).slotGroup("item_inv"))
-                            .widgetTheme(textureThemeId);
-                    })
-                    .build()
-                    .pos(33, 15))
-            .child(
-                SlotGroupWidget.builder()
-                    .matrix("III")
-                    .key('I', index -> {
-                        String textureThemeId = switch (index) {
-                            case 0 -> GTWidgetThemes.OVERLAY_ITEM_SLOT_INGOT;
-                            case 1, 2 -> GTWidgetThemes.OVERLAY_ITEM_SLOT_DUST;
-                            default -> throw new IllegalStateException("Unexpected value: " + index);
-                        };
-                        return new ItemSlot()
-                            .slot(
-                                new ModularSlot(inventoryHandler, index + 3).accessibility(false, true)
-                                    .slotGroup("item_inv"))
-                            .widgetTheme(textureThemeId);
-                    })
-                    .build()
-                    .pos(85, 24))
-            .child(
-                new GTProgressWidget().neiTransferRect(getRecipeMap())
-                    .value(new DoubleSyncValue(() -> (double) mProgresstime / mMaxProgresstime))
-                    .texture(GTGuiTextures.PROGRESSBAR_ARROW_BBF, 20)
-                    .pos(58, 24)
-                    .size(20, 18));
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEBrickedBlastFurnaceGui(this).build(data, syncManager, uiSettings);
     }
 
     @Override
     public SteamVariant getSteamVariant() {
         return SteamVariant.PRIMITIVE;
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder
-            .widget(
-                new SlotWidget(inventoryHandler, 0)
-                    .setBackground(
-                        getGUITextureSet().getItemSlot(),
-                        GTUITextures.OVERLAY_SLOT_INGOT_STEAM.get(getSteamVariant()))
-                    .setPos(33, 15))
-            .widget(
-                new SlotWidget(inventoryHandler, 1)
-                    .setBackground(
-                        getGUITextureSet().getItemSlot(),
-                        GTUITextures.OVERLAY_SLOT_DUST_STEAM.get(getSteamVariant()))
-                    .setPos(33, 33))
-            .widget(
-                new SlotWidget(inventoryHandler, 2)
-                    .setBackground(
-                        getGUITextureSet().getItemSlot(),
-                        GTUITextures.OVERLAY_SLOT_FURNACE_STEAM.get(getSteamVariant()))
-                    .setPos(33, 51))
-            .widget(
-                new SlotWidget(inventoryHandler, 3).setAccess(true, false)
-                    .setBackground(
-                        getGUITextureSet().getItemSlot(),
-                        GTUITextures.OVERLAY_SLOT_INGOT_STEAM.get(getSteamVariant()))
-                    .setPos(85, 24))
-            .widget(
-                new SlotWidget(inventoryHandler, 4).setAccess(true, false)
-                    .setBackground(
-                        getGUITextureSet().getItemSlot(),
-                        GTUITextures.OVERLAY_SLOT_DUST_STEAM.get(getSteamVariant()))
-                    .setPos(103, 24))
-            .widget(
-                new SlotWidget(inventoryHandler, 5).setAccess(true, false)
-                    .setBackground(
-                        getGUITextureSet().getItemSlot(),
-                        GTUITextures.OVERLAY_SLOT_DUST_STEAM.get(getSteamVariant()))
-                    .setPos(121, 24))
-            .widget(
-                new ProgressBar().setTexture(GTUITextures.PROGRESSBAR_ARROW_2_STEAM.get(getSteamVariant()), 20)
-                    .setProgress(() -> (float) mProgresstime / mMaxProgresstime)
-                    .setNEITransferRect(
-                        getRecipeMap().getFrontend()
-                            .getUIProperties().neiTransferRectId)
-                    .setPos(58, 24)
-                    .setSize(20, 18));
     }
 
     @Override
