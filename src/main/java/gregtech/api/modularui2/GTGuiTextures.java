@@ -84,6 +84,15 @@ public final class GTGuiTextures {
         .name(GTTextureIds.BACKGROUND_TERMINAL_TECTECH)
         .build();
 
+    public static final UITexture PICTURE_SCREEN_BLACK = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/screen_black")
+        .imageSize(16, 16)
+        .adaptable(2)
+        .name(GTTextureIds.PICTURE_SCREEN_BLACK)
+        .build();
+
+    public static final UITexture PICTURE_GAUGE = fullImage(GregTech.ID, "gui/picture/gauge");
+
     public static final UITexture BACKGROUND_REDSTONE_SNIFFER = UITexture.builder()
         .location(GregTech.ID, "gui/background/redstone_sniffer")
         .imageSize(195, 136)
@@ -127,6 +136,9 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_UNPOWERED = UITexture.fullImage(GregTech.ID, "gui/icons/unpowered");
 
     public static final UITexture OVERLAY_NO_MAINTENANCE_ISSUES = UITexture.fullImage(GregTech.ID, "gui/icons/noMaint");
+    public static final UITexture OVERLAY_SLOT_IN = fullImage(GregTech.ID, "gui/overlay_slot/in");
+    public static final UITexture OVERLAY_SLOT_OUT = fullImage(GregTech.ID, "gui/overlay_slot/out");
+
     // endregion overlay
     // region slot
 
@@ -399,6 +411,9 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_TESLA_TOWER_HEAT_MAP = UITexture.builder()
         .location(MODID, "gui/overlay_button/tesla_tower_minimap")
         .build();
+
+ public static final UITexture OVERLAY_SLOT_MOLD = fullImage(GregTech.ID, "gui/overlay_slot/mold");
+
     public static final UITexture TT_SAFE_VOID_OFF = UITexture.builder()
         .location(MODID, "gui/overlay_button/safe_void_off")
         .canApplyTheme()
