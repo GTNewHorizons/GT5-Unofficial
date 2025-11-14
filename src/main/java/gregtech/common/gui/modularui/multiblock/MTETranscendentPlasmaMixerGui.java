@@ -54,24 +54,24 @@ public class MTETranscendentPlasmaMixerGui extends MTEMultiBlockBaseGui<MTETrans
             });
     }
 
-    private static final int WIDTH = 158;
-    private static final int HEIGHT = 60;
+    private static final int WIDTH = 120;
+    private static final int HEIGHT = 50;
     private static final int PADDING_SIDES = 4;
 
     private ModularPanel openParallelSelectPanel(PanelSyncManager syncManager, ModularPanel parent) {
         ModularPanel returnPanel = new ModularPanel("parallelSelectPanel").size(WIDTH, HEIGHT)
-            .padding(4)
             .relative(parent)
             .leftRel(1)
             .topRel(0.8f);
 
         IntSyncValue parallelSyncer = syncManager.findSyncHandler("maximumParallels", IntSyncValue.class);
         Flow holdingColumn = Flow.column()
-            .sizeRel(1);
+            .sizeRel(1)
+            .paddingTop(12);
         holdingColumn.child(
             IKey.lang("GTPP.CC.parallel")
                 .asWidget()
-                .marginBottom(2));
+                .marginBottom(4));
         holdingColumn.child(
             new TextFieldWidget().setFormatAsInteger(true)
                 .setNumbers(1, Integer.MAX_VALUE)
@@ -79,8 +79,7 @@ public class MTETranscendentPlasmaMixerGui extends MTEMultiBlockBaseGui<MTETrans
                 .setDefaultNumber(1)
                 .value(parallelSyncer)
                 .size(WIDTH - PADDING_SIDES * 2, 18)
-                .align(Alignment.Center)
-                .setFocusOnGuiOpen(true));
+                .align(Alignment.Center));
 
         returnPanel.child(holdingColumn);
 

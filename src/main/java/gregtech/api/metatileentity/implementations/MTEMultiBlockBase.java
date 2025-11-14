@@ -738,28 +738,33 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 if (!polluteEnvironment(getPollutionPerTick(mInventory[1]))) {
                     stopMachine(ShutDownReasonRegistry.POLLUTION_FAIL);
                 }
-                if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) {
-                    if (mOutputItems != null) {
-                        addItemOutputs(mOutputItems);
+                if (mMaxProgresstime > 0) {
+                    incrementProgressTime();
+
+                    if (mProgresstime >= mMaxProgresstime) {
+                        if (mOutputItems != null) {
+                            addItemOutputs(mOutputItems);
+                            mOutputItems = null;
+                        }
+                        if (mOutputFluids != null) {
+                            addFluidOutputs(mOutputFluids);
+                            mOutputFluids = null;
+                        }
+                        outputAfterRecipe();
+                        mEfficiency = Math.max(
+                            0,
+                            Math.min(
+                                mEfficiency + mEfficiencyIncrease,
+                                getMaxEfficiency(getControllerSlot())
+                                    - ((getIdealStatus() - getRepairStatus()) * 1000)));
                         mOutputItems = null;
-                    }
-                    if (mOutputFluids != null) {
-                        addFluidOutputs(mOutputFluids);
-                        mOutputFluids = null;
-                    }
-                    outputAfterRecipe();
-                    mEfficiency = Math.max(
-                        0,
-                        Math.min(
-                            mEfficiency + mEfficiencyIncrease,
-                            getMaxEfficiency(getControllerSlot()) - ((getIdealStatus() - getRepairStatus()) * 1000)));
-                    mOutputItems = null;
-                    mProgresstime = 0;
-                    mMaxProgresstime = 0;
-                    mEfficiencyIncrease = 0;
-                    mLastWorkingTick = mTotalRunTime;
-                    if (aBaseMetaTileEntity.isAllowedToWork()) {
-                        checkRecipe();
+                        mProgresstime = 0;
+                        mMaxProgresstime = 0;
+                        mEfficiencyIncrease = 0;
+                        mLastWorkingTick = mTotalRunTime;
+                        if (aBaseMetaTileEntity.isAllowedToWork()) {
+                            checkRecipe();
+                        }
                     }
                 }
             }
@@ -780,6 +785,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     protected void outputAfterRecipe() {
 
+    }
+
+    protected void incrementProgressTime() {
+        mProgresstime++;
     }
 
     public boolean polluteEnvironment(int aPollutionLevel) {
@@ -3061,6 +3070,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     @Override
     protected boolean useMui2() {
         return true;
+    }
+
+    public boolean supportsInventoryRow() {
+        return this.doesBindPlayerInventory();
     }
 
     public boolean shouldDisplayShutDownReason() {

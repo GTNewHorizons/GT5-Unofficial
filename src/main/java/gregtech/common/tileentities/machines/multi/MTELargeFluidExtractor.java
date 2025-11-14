@@ -3,7 +3,6 @@ package gregtech.common.tileentities.machines.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
@@ -36,10 +35,6 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
@@ -329,42 +324,6 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new MTELargeFluidExtractorGui(this);
-    }
-
-    @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        super.drawTexts(screenElements, inventorySlot);
-
-        screenElements.widgets(TextWidget.dynamicString(() -> {
-            if (structureBadCasingCount) {
-                return EnumChatFormatting.DARK_RED
-                    + StatCollector
-                        .translateToLocalFormatted(
-                            "GT5U.gui.text.large_fluid_extractor.not_enough_casings",
-                            BASE_CASING_COUNT - MAX_HATCHES_ALLOWED,
-                            casingAmount)
-                        .replace("\\n", "\n")
-                    + EnumChatFormatting.RESET;
-            }
-
-            if (structureBadGlassTier) {
-                int hatchTier = 0;
-
-                for (var hatch : mEnergyHatches) {
-                    if (hatch.mTier > hatchTier) hatchTier = hatch.mTier;
-                }
-
-                return String.format(
-                    "%sEnergy hatch tier (%s) is too high\nfor the glass tier (%s).%s",
-                    EnumChatFormatting.DARK_RED,
-                    VN[hatchTier],
-                    VN[glassTier],
-                    RESET);
-            }
-
-            return "";
-        })
-            .setTextAlignment(Alignment.CenterLeft));
     }
 
     public int getHatchTier() {
