@@ -18,6 +18,7 @@ import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import java.util.Locale;
 
+import gregtech.common.ores.GTOreAdapter;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -742,6 +743,8 @@ public class LoaderGTBlockFluid implements Runnable {
         GregTechAPI.sWormholeRender = new BlockWormholeRender();
         GregTechAPI.sBlackholeRender = new BlockBlackholeRenderer();
         GregTechAPI.nanoForgeRender = new BlockNanoForgeRenderer();
+
+        GTOreAdapter.INSTANCE.init();
 
         // meta ID order, DO NOT CHANGE ORDER
 
