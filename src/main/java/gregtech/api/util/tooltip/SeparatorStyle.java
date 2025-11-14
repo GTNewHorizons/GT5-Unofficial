@@ -13,21 +13,21 @@ public enum SeparatorStyle {
             return "";
         }
     },
-    BLANK {
+    EMPTY {
 
         @Override
         public String generate(EnumChatFormatting color, int length, String indent) {
             return indent.isEmpty() ? " " : indent + " ";
         }
     },
-    PLAIN {
+    DASHED {
 
         @Override
         public String generate(EnumChatFormatting color, int length, String indent) {
             return indent + color + StringUtils.getRepetitionOf('-', length);
         }
     },
-    STRIKETHROUGH {
+    CONTINUOUS {
 
         @Override
         public String generate(EnumChatFormatting color, int length, String indent) {
@@ -39,18 +39,18 @@ public enum SeparatorStyle {
 
     public static SeparatorStyle forSeparator(int style) {
         return switch (style) {
-            case 0 -> BLANK;
-            case 1 -> PLAIN;
-            default -> STRIKETHROUGH;
+            case 0 -> EMPTY;
+            case 1 -> DASHED;
+            default -> CONTINUOUS;
         };
     }
 
     public static SeparatorStyle forFinisher(int style) {
         return switch (style) {
             case 0 -> NONE;
-            case 1 -> BLANK;
-            case 2 -> PLAIN;
-            default -> STRIKETHROUGH;
+            case 1 -> EMPTY;
+            case 2 -> DASHED;
+            default -> CONTINUOUS;
         };
     }
 }
