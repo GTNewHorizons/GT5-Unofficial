@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import net.minecraft.network.PacketBuffer;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
@@ -30,6 +29,7 @@ import com.google.common.collect.ImmutableList;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.modularui2.widget.ColorGridWidget;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.Splitter;
 
