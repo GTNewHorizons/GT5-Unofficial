@@ -132,11 +132,6 @@ public class MTEHatchInputBusDebug extends MTEHatchInputBus implements IConfigur
     }
 
     @Override
-    protected boolean useMui2() {
-        return true;
-    }
-
-    @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEHatchInputBusDebugGui(this).build(data, syncManager, uiSettings);
     }
