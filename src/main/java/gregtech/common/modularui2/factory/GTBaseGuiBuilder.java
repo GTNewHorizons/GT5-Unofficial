@@ -18,16 +18,13 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.SingleChildWidget;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
-import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.modularui2.CoverGuiData;
-import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.util.item.GhostCircuitItemStackHandler;
@@ -72,9 +69,6 @@ public final class GTBaseGuiBuilder {
     private boolean doesAddGregTechLogo;
     private int gregtechLogoPosX = 152;
     private int gregtechLogoPosY = 63;
-    private boolean doesAddMufflerButton = true;
-    private int mufflerPosFromTop = 0;
-    private int mufflerPosFromRightOutwards = 13;
 
     public GTBaseGuiBuilder(IMetaTileEntity mte, PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         this.mte = mte;
@@ -152,25 +146,6 @@ public final class GTBaseGuiBuilder {
         return this;
     }
 
-    public GTBaseGuiBuilder doesAddMufflerButton(boolean doesAddMufflerButton) {
-        this.doesAddMufflerButton = doesAddMufflerButton;
-        return this;
-    }
-
-    public GTBaseGuiBuilder setMufflerPosFromTop(int mufflerPosFromTop) {
-        this.mufflerPosFromTop = mufflerPosFromTop;
-        return this;
-    }
-
-    public GTBaseGuiBuilder setMufflerPosFromRightOutwards(int mufflerPosFromRightOutwards) {
-        this.mufflerPosFromRightOutwards = mufflerPosFromRightOutwards;
-        return this;
-    }
-
-    public GTBaseGuiBuilder setMufflerPos(int mufflerPosFromTop, int mufflerPosFromRightOutwards) {
-        return setMufflerPosFromTop(mufflerPosFromTop).setMufflerPosFromRightOutwards(mufflerPosFromRightOutwards);
-    }
-
     /**
      * Builds the resulting panel. Call after calling all the necessary feature switch methods.
      */
@@ -191,22 +166,8 @@ public final class GTBaseGuiBuilder {
         if (doesAddGregTechLogo) {
             panel.child(createGregTechLogo());
         }
-        if (doesAddMufflerButton && mte instanceof MTEMultiBlockBase) {
-            panel.child(createMufflerButton());
-        }
         syncManager.addCloseListener($ -> mte.markDirty());
         return panel;
-    }
-
-    private IWidget createMufflerButton() {
-        return new ToggleButton().syncHandler("mufflerSyncer")
-            .tooltip(tooltip -> tooltip.add(IKey.lang("GT5U.machines.muffled")))
-            .overlay(true, GTGuiTextures.OVERLAY_BUTTON_MUFFLE_ON)
-            .overlay(false, GTGuiTextures.OVERLAY_BUTTON_MUFFLE_OFF)
-            .size(12, 12)
-            .top(mufflerPosFromTop)
-            .right(-mufflerPosFromRightOutwards)
-            .excludeAreaInRecipeViewer(true);
     }
 
     private IWidget createTitle() {
@@ -247,7 +208,7 @@ public final class GTBaseGuiBuilder {
             column.child(getCoverTabButton(mte.getBaseMetaTileEntity(), ForgeDirection.getOrientation(i)));
         }
         uiSettings.getRecipeViewerSettings()
-            .addRecipeViewerExclusionArea(column);
+            .addExclusionArea(column);
         return column;
     }
 
