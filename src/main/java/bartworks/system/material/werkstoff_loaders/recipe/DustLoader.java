@@ -339,6 +339,13 @@ public class DustLoader implements IWerkstoffRunnable {
                 .eut(4)
                 .addTo(packagerRecipes);
 
+            GTValues.RA.stdBuilder()
+                .itemInputs(werkstoff.get(dust, 1), ItemList.Schematic_Dust_Small.get(0L))
+                .itemOutputs(werkstoff.get(dustSmall, 4))
+                .duration(5 * SECONDS)
+                .eut(4)
+                .addTo(packagerRecipes);
+
             if (werkstoff.hasItemType(ingot) && !werkstoffStats.isBlastFurnace()) {
                 GTModHandler.addSmeltingRecipe(werkstoff.get(dust), werkstoff.get(ingot));
                 GTModHandler.addSmeltingRecipe(werkstoff.get(dustTiny), werkstoff.get(nugget));
