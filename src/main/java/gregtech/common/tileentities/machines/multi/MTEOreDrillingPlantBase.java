@@ -155,12 +155,15 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
             GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.machines.workarea_fail"));
         } else {
             adjustChunkRadius(!aPlayer.isSneaking());
+            final String sideLength = GTUtility.formatNumbers((long) chunkRadiusConfig << 4);
             GTUtility.sendChatToPlayer(
                 aPlayer,
                 StatCollector.translateToLocal("GT5U.machines.workareaset") + " "
-                    + GTUtility.formatNumbers((long) chunkRadiusConfig << 4)
+                    + sideLength
+                    + "x"
+                    + sideLength
                     + " "
-                    + StatCollector.translateToLocal("GT5U.machines.radius"));
+                    + StatCollector.translateToLocal("GT5U.machines.blocks"));
         }
     }
 
@@ -625,9 +628,10 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
 
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         final int baseCycleTime = calculateMaxProgressTime(getMinTier(), true);
+        final String side = GTUtility.formatNumbers((long) getRadiusInChunks() << 4);
         tt.addMachineType("Miner, MBM")
-            .addInfo("Use a Screwdriver to configure block radius")
-            .addInfo("Maximum radius is " + GTUtility.formatNumbers((long) getRadiusInChunks() << 4) + " blocks")
+            .addInfo("Use a Screwdriver to configure working area")
+            .addInfo("Maximum area is " + side + "x" + side + " blocks")
             .addInfo("Use Soldering iron to turn off chunk mode")
             .addInfo("Use Wire Cutter to toggle replacing mined blocks with cobblestone")
             .addInfo("In chunk mode, working area center is the chunk corner nearest to the drill")
