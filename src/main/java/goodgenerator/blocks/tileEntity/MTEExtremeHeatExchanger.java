@@ -218,7 +218,7 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
             .addInfo(EnumChatFormatting.RED + "Explodes if it runs out of water")
             .addController("Front bottom")
             .addCasingInfoRange("Robust Tungstensteel Machine Casings", 25, 120, false)
-            .addCasingInfoExactly("EV+ Glass", 72, false)
+            .addCasingInfoExactly("Any Tiered Glass", 72, false)
             .addCasingInfoExactly("Pressure Resistant Wall", 48, false)
             .addCasingInfoExactly("Tungstensteel Pipe Casing", 60, false)
             .addOtherStructurePart(
