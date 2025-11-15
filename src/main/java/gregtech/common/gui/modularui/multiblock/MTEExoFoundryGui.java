@@ -28,6 +28,7 @@ import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widget.sizer.Area;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
+import com.cleanroommc.modularui.widgets.Dialog;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
@@ -199,15 +200,10 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
     }
 
     protected IWidget createModuleSelectButton(PanelSyncManager syncManager, ModularPanel parent, int index) {
-        IPanelHandler[] selectPanels = new IPanelHandler[4];
-        for (int i = 0; i < selectPanels.length; i++) {
-            int finalI = i;
-            selectPanels[i] = syncManager.panel(
-                "moduleSelectPanel" + i,
-                (p_syncManager, syncHandler) -> openModuleConfigPanel(p_syncManager, parent, syncManager, finalI),
-                true);
-        }
-        IPanelHandler selectPanel = selectPanels[index];
+        IPanelHandler selectPanel = syncManager.panel(
+            "moduleSelectPanel" + index,
+            (p_syncManager, syncHandler) -> openModuleConfigPanel(p_syncManager, parent, syncManager, index),
+            true);
 
         IntSyncValue moduleSync = syncManager.findSyncHandler("Module" + (index + 1), IntSyncValue.class);
         return new Row().size(30, 16)
@@ -224,9 +220,6 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                     .onMousePressed(d -> {
                         if (!selectPanel.isPanelOpen()) {
                             selectPanel.openPanel();
-                            for (IPanelHandler panel : selectPanels) {
-                                if (panel.isPanelOpen() && !panel.equals(selectPanel)) panel.closePanel();
-                            }
                         } else {
                             selectPanel.closePanel();
                         }
@@ -242,13 +235,15 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
 
     }
 
-    private ModularPanel openModuleConfigPanel(PanelSyncManager p_syncManager, ModularPanel parent,
+    private Dialog<?> openModuleConfigPanel(PanelSyncManager p_syncManager, ModularPanel parent,
         PanelSyncManager syncManager, int index) {
         Area area = parent.getArea();
         int x = area.x + area.width;
         int y = area.y;
         IntSyncValue moduleSync = syncManager.findSyncHandler("Module" + (index + 1), IntSyncValue.class);
-        return new ModularPanel("moduleSelectPanel" + index).pos(x, y)
+        return (Dialog<?>) new Dialog<>("moduleSelectPanel" + index).setCloseOnOutOfBoundsClick(true)
+            .setDisablePanelsBelow(true)
+            .pos(x, y)
             .size(140, 130)
             .widgetTheme("backgroundPopup")
             .child(
