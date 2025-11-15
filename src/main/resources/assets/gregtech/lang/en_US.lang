@@ -3739,9 +3739,9 @@ gt.mb_boiler.tips.2=Diesel fuels have 1/4 efficiency - Takes %s seconds to heat 
 gt.mb_boiler.info.firebox=Bottom layer, 3 minimum
 gt.mb_boiler.info.pipe=Inner 3 blocks
 gt.mb_boiler.info.maintenance=Any firebox
-gt.mb_boiler.info.muffler=Solid fuel, Any firebox
-gt.mb_boiler.info.i_bus=Liquid fuel, Any firebox
-gt.mb_boiler.info.i_hatch.1=You can use either, or both
+gt.mb_boiler.info.i_bus=Solid fuel, Any firebox
+gt.mb_boiler.info.i_hatch.1=Liquid fuel, Any firebox
+gt.mb_boiler.info.i_hatch.1.tip=You can use either, or both
 gt.mb_boiler.info.i_hatch.2=Water, Any firebox
 gt.mb_boiler.info.o_hatch=Steam, any casing
 

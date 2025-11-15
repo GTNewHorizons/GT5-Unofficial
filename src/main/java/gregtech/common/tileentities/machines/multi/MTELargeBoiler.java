@@ -149,7 +149,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                 new ItemStack(getPipeBlock(), 1, getPipeMeta()).getDisplayName(),
                 "gt.mb_boiler.info.pipe")
             .addMaintenanceHatch("gt.mb_boiler.info.maintenance", 1)
-            .addMufflerHatch("gt.mb_boiler.info.muffler", 1)
+            .addMufflerHatch("gt.mb_boiler.info.maintenance", 1)
             .addInputBus("gt.mb_boiler.info.i_bus", 1)
             .addInputHatch("gt.mb_boiler.info.i_hatch.1", 1)
             .addStructureInfo("gt.mb_boiler.info.i_hatch.1.tip")
