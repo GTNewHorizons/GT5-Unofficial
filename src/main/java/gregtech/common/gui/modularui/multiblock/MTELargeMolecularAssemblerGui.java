@@ -1,7 +1,10 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import net.minecraft.util.StatCollector;
+
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
@@ -36,6 +39,8 @@ public class MTELargeMolecularAssemblerGui extends MTEMultiBlockBaseGui<MTELarge
                 .onMousePressed((a) -> {
                     showCraftingEffect.setValue(!showCraftingEffect.getValue());
                     return true;
-                }));
+                })
+                .tooltip(
+                    new RichTooltip().add(StatCollector.translateToLocalFormatted("GT5U.gui.text.lma_craftingfx"))));
     }
 }
