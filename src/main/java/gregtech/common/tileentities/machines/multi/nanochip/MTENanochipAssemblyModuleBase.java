@@ -348,7 +348,8 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             .build();
         CheckRecipeResult result = parallelHelper.getResult();
         if (result.wasSuccessful()) {
-            // Set item outputs and parallel count. Note that while these outputs are fake, we override the method to not output to normal busses
+            // Set item outputs and parallel count. Note that while these outputs are fake, we override the method to
+            // not output to normal busses
             // Then use addVCOutput to convert these back into CCs in the right hatch
             this.currentParallel = parallelHelper.getCurrentParallel();
             this.mOutputItems = parallelHelper.getItemOutputs();
