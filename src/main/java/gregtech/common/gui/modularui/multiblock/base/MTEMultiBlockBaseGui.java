@@ -49,7 +49,6 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.EmptyWidget;
 import com.cleanroommc.modularui.widget.ParentWidget;
-import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.CycleButtonWidget;
 import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
@@ -186,8 +185,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .child(createTerminalParentWidget(panel, syncManager));
     }
 
-    protected ParentWidget<?> createTerminalParentWidget(ModularPanel panel, PanelSyncManager syncManager){
-        return  new ParentWidget<>().size(getTerminalWidgetWidth(), getTerminalWidgetHeight())
+    protected ParentWidget<?> createTerminalParentWidget(ModularPanel panel, PanelSyncManager syncManager) {
+        return new ParentWidget<>().size(getTerminalWidgetWidth(), getTerminalWidgetHeight())
             .paddingTop(4)
             .paddingBottom(4)
             .paddingLeft(4)
@@ -209,9 +208,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .bottomRel(0, 6, 0)
             .childIf(multiblock.supportsShutdownReasonHoverable(), createShutdownReasonHoverableTerminal(syncManager))
             .childIf(multiblock.supportsMaintenanceIssueHoverable(), createMaintIssueHoverableTerminal(syncManager))
-            .childIf(
-                multiblock.supportsLogo(),
-                makeLogoWidget());
+            .childIf(multiblock.supportsLogo(), makeLogoWidget());
     }
 
     protected IDrawable.DrawableWidget makeLogoWidget() {

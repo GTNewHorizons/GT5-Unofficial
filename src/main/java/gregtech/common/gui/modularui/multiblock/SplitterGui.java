@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.cleanroommc.modularui.widgets.layout.Flow;
 import net.minecraft.network.PacketBuffer;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
@@ -15,10 +14,8 @@ import com.cleanroommc.modularui.api.drawable.IIcon;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.GuiTextures;
-import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
-import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.serialization.IByteBufAdapter;
 import com.cleanroommc.modularui.value.sync.GenericSyncValue;
@@ -26,6 +23,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
+import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.google.common.collect.ImmutableList;
 
 import gregtech.api.enums.Dyes;
@@ -54,19 +52,19 @@ public class SplitterGui extends MTEMultiBlockBaseGui<Splitter> {
 
     @Override
     protected Flow createRightPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
-        return super.createRightPanelGapRow(parent, syncManager).child(createRulesButton(parent,syncManager));
+        return super.createRightPanelGapRow(parent, syncManager).child(createRulesButton(parent, syncManager));
     }
 
-    protected ButtonWidget<?> createRulesButton(ModularPanel panel, PanelSyncManager syncManager){
+    protected ButtonWidget<?> createRulesButton(ModularPanel panel, PanelSyncManager syncManager) {
         IPanelHandler popupPanel = syncManager.panel("popup", (m, h) -> createRuleManagerPanel(syncManager), true);
         return new ButtonWidget<>().onMousePressed(mouseButton -> {
-                if (!popupPanel.isPanelOpen()) {
-                    popupPanel.openPanel();
-                } else {
-                    popupPanel.closePanel();
-                }
-                return true;
-            })
+            if (!popupPanel.isPanelOpen()) {
+                popupPanel.openPanel();
+            } else {
+                popupPanel.closePanel();
+            }
+            return true;
+        })
             .background(GTGuiTextures.BUTTON_STANDARD, GuiTextures.GEAR)
             .disableHoverBackground()
             .tooltip(tooltip -> tooltip.add("Open Rules manager"))

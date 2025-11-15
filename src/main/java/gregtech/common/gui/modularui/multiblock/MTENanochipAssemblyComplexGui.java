@@ -1,8 +1,5 @@
 package gregtech.common.gui.modularui.multiblock;
 
-import java.util.List;
-
-import com.cleanroommc.modularui.widgets.ToggleButton;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
@@ -20,13 +17,13 @@ import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
-import com.cleanroommc.modularui.widget.SingleChildWidget;
 import com.cleanroommc.modularui.widget.scroll.ScrollData;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.PageButton;
 import com.cleanroommc.modularui.widgets.PagedWidget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
+import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
@@ -62,7 +59,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             .childSeparator(
                 IDrawable.EMPTY.asIcon()
                     .height(2))
-            .size(getTerminalWidgetWidth(), getTerminalWidgetHeight()-8);
+            .size(getTerminalWidgetWidth(), getTerminalWidgetHeight() - 8);
         return super.createTerminalParentWidget(panel, syncManager).child(textList);
     }
 
@@ -122,7 +119,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
 
     @Override
     protected ToggleButton createMuffleButton() {
-        return super.createMuffleButton().background(IDrawable.EMPTY).disableHoverBackground();
+        return super.createMuffleButton().background(IDrawable.EMPTY)
+            .disableHoverBackground();
     }
 
     @Override
@@ -137,9 +135,9 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
 
     public IWidget createGREGOSMeterPages(ModularPanel panel, PanelSyncManager syncManager) {
 
-        DoubleSyncValue moodSyncer = syncManager.findSyncHandler("mood",DoubleSyncValue.class);
-        DoubleSyncValue effSyncer =  syncManager.findSyncHandler("eff", DoubleSyncValue.class);
-        DoubleSyncValue speedSyncer =syncManager.findSyncHandler("speed", DoubleSyncValue.class);
+        DoubleSyncValue moodSyncer = syncManager.findSyncHandler("mood", DoubleSyncValue.class);
+        DoubleSyncValue effSyncer = syncManager.findSyncHandler("eff", DoubleSyncValue.class);
+        DoubleSyncValue speedSyncer = syncManager.findSyncHandler("speed", DoubleSyncValue.class);
 
         PagedWidget.Controller tabController = new PagedWidget.Controller();
         PagedWidget<?> pagedWidget = new PagedWidget<>().controller(tabController);
@@ -302,6 +300,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                 return Result.SUCCESS;
             } else return super.onKeyPressed(character, keyCode);
         }
+
         public boolean checkForKeywords(String text) {
             BooleanSyncValue talkSyncer = syncManager.findSyncHandler("talk", BooleanSyncValue.class);
             return switch (text.toLowerCase()) {
@@ -318,7 +317,9 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         }
 
         public TextWidget<?> createResponseTextWidget(String text) {
-            return new TextWidget<>(text).color(list.responseTextColor).anchorLeft(0).width(getTerminalWidgetWidth()-6);
+            return new TextWidget<>(text).color(list.responseTextColor)
+                .anchorLeft(0)
+                .width(getTerminalWidgetWidth() - 6);
         }
 
         public TextWidget<?> createPlayerTextWidget(String text) {
