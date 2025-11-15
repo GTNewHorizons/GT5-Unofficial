@@ -145,11 +145,12 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
     public ArrayList<MTEBaseModule> moduleHatches = new ArrayList<>();
 
+    // todo remove
     protected ItemStackHandler inputSlotHandler = new ItemStackHandler(16);
-    private final ItemStack[] storedUpgradeWindowItems = new ItemStack[16];
 
     private final ForgeOfGodsData data = new ForgeOfGodsData();
 
+    // todo remove these
     private static final int FUEL_CONFIG_WINDOW_ID = 9;
     private static final int UPGRADE_TREE_WINDOW_ID = 10;
     private static final int INDIVIDUAL_UPGRADE_WINDOW_ID = 11;
@@ -163,6 +164,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private static final int STAR_CUSTOM_COLOR_WINDOW_ID = 19;
     private static final int STAR_CUSTOM_COLOR_IMPORT_WINDOW_ID = 20;
     private static final int STATISTICS_WINDOW_ID = 21;
+
     private static final int TEXTURE_INDEX = 960;
     private static final long SOUND_LOOP_LENGTH = 440;
     protected static final String STRUCTURE_PIECE_MAIN = "main";
@@ -1735,6 +1737,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         final int PARENT_WIDTH = getGUIWidth();
         final int PARENT_HEIGHT = getGUIHeight();
 
+        ItemStack[] storedUpgradeWindowItems = data.getStoredUpgradeWindowItems();
         for (int i = 0; i < 16; i++) {
             inputSlotHandler.insertItem(i, storedUpgradeWindowItems[i], false);
             storedUpgradeWindowItems[i] = null;
@@ -3209,40 +3212,13 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     @Override
     public void saveNBTData(NBTTagCompound NBT) {
         data.serializeNBT(NBT, true);
-
-        // Upgrade window stored items
-        NBTTagCompound upgradeWindowStorageNBTTag = new NBTTagCompound();
-        int storageIndex = 0;
-        for (ItemStack itemStack : inputSlotHandler.getStacks()) {
-            if (itemStack != null) {
-                upgradeWindowStorageNBTTag
-                    .setInteger(storageIndex + "stacksizeOfStoredUpgradeItems", itemStack.stackSize);
-                NBT.setTag(storageIndex + "storedUpgradeItem", itemStack.writeToNBT(new NBTTagCompound()));
-            }
-            storageIndex++;
-        }
-        NBT.setTag("upgradeWindowStorage", upgradeWindowStorageNBTTag);
-
-        // Renderer information
         data.serializeRenderNBT(NBT);
-
         super.saveNBTData(NBT);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound NBT) {
         data.deserializeNBT(NBT);
-
-        // Stored items
-        NBTTagCompound tempItemTag = NBT.getCompoundTag("upgradeWindowStorage");
-        for (int index = 0; index < 16; index++) {
-            int stackSize = tempItemTag.getInteger(index + "stacksizeOfStoredUpgradeItems");
-            ItemStack itemStack = ItemStack.loadItemStackFromNBT(NBT.getCompoundTag(index + "storedUpgradeItem"));
-            if (itemStack != null) {
-                storedUpgradeWindowItems[index] = itemStack.splitStack(stackSize);
-            }
-        }
-
         super.loadNBTData(NBT);
     }
 
