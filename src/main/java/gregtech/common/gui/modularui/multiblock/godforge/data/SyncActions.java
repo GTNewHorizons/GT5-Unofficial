@@ -38,6 +38,15 @@ public final class SyncActions<T> {
         },
         Side.SERVER);
 
+    public static SyncActions<ForgeOfGodsUpgrade> PAY_UPGRADE_COST = new SyncActions<>(
+        "fog.sync_action.pay_upgrade_cost",
+        (buf, upgrade) -> buf.writeByte(upgrade.ordinal()),
+        (buf, data) -> {
+            ForgeOfGodsUpgrade upgrade = ForgeOfGodsUpgrade.VALUES[buf.readByte()];
+            data.getUpgrades().payCost(upgrade, data.getStoredUpgradeWindowItems());
+        },
+        Side.SERVER);
+
     // spotless:on
 
     private final String syncId;
