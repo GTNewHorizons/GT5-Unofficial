@@ -29,14 +29,13 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
+import gregtech.api.gui.widgets.CommonWidgets;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
 import gtPlusPlus.core.util.math.MathUtils;
 
 public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanochipAssemblyComplex> {
-
-    private final MTENanochipAssemblyComplex base;
 
     protected TerminalTextListWidget textList = new TerminalTextListWidget();
 
@@ -45,7 +44,6 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
 
     public MTENanochipAssemblyComplexGui(MTENanochipAssemblyComplex base) {
         super(base);
-        this.base = base;
     }
 
     @Override
@@ -55,28 +53,28 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
 
     @Override
     protected ParentWidget<?> createTerminalParentWidget(ModularPanel panel, PanelSyncManager syncManager) {
-        textList.setEnabledIf(a -> base.isTalkModeActive)
+        textList.setEnabledIf(a -> multiblock.isTalkModeActive)
             .childSeparator(
                 IDrawable.EMPTY.asIcon()
                     .height(2))
-            .size(getTerminalWidgetWidth(), getTerminalWidgetHeight() - 8);
+            .size(getTerminalWidgetWidth() - 6, getTerminalWidgetHeight() - 8);
         return super.createTerminalParentWidget(panel, syncManager).child(textList);
     }
 
     // disables hoverable in talk mode
     @Override
     protected boolean shouldShutdownReasonBeDisplayed(String shutdownString) {
-        return super.shouldShutdownReasonBeDisplayed(shutdownString) && !base.isTalkModeActive;
+        return super.shouldShutdownReasonBeDisplayed(shutdownString) && !multiblock.isTalkModeActive;
     }
 
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-        return super.createTerminalTextWidget(syncManager, parent).setEnabledIf(flow -> !base.isTalkModeActive);
+        return super.createTerminalTextWidget(syncManager, parent).setEnabledIf(flow -> !multiblock.isTalkModeActive);
     }
 
     @Override
     protected IDrawable.DrawableWidget makeLogoWidget() {
-        return super.makeLogoWidget().setEnabledIf(a -> !base.isTalkModeActive);
+        return super.makeLogoWidget().setEnabledIf(a -> !multiblock.isTalkModeActive);
     }
 
     @Override
@@ -85,8 +83,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             .paddingRight(6)
             .paddingLeft(4)
             .height(textBoxToInventoryGap)
-            .child(createTalkTextField(panel, syncManager))
-            .childIf(base.supportsPowerPanel(), createPowerPanelButton(syncManager, panel));
+            .child(createTalkTextField(panel, syncManager));
     }
 
     public IWidget createTalkTextField(ModularPanel panel, PanelSyncManager syncManager) {
@@ -119,18 +116,29 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
 
     @Override
     protected ToggleButton createMuffleButton() {
-        return super.createMuffleButton().background(IDrawable.EMPTY)
+        return CommonWidgets.createMuffleButton("mufflerSyncer")
+            .background(true, IDrawable.EMPTY)
+            .background(false, IDrawable.EMPTY)
+            .alignX(1)
+            .alignY(0.4f)
             .disableHoverBackground();
     }
 
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
+        syncManager.syncValue(
+            "talk",
+            0,
+            new BooleanSyncValue(() -> multiblock.isTalkModeActive, b -> multiblock.isTalkModeActive = b));
         syncManager
-            .syncValue("talk", 0, new BooleanSyncValue(() -> base.isTalkModeActive, b -> base.isTalkModeActive = b));
-        syncManager.syncValue("mood", 0, new DoubleSyncValue(() -> base.gregosMood, dub -> base.gregosMood = dub));
-        syncManager.syncValue("eff", 0, new DoubleSyncValue(() -> base.efficiency, dub -> base.efficiency = dub));
-        syncManager.syncValue("speed", 0, new DoubleSyncValue(() -> base.moduleSpeed, dub -> base.moduleSpeed = dub));
+            .syncValue("mood", 0, new DoubleSyncValue(() -> multiblock.gregosMood, dub -> multiblock.gregosMood = dub));
+        syncManager
+            .syncValue("eff", 0, new DoubleSyncValue(() -> multiblock.efficiency, dub -> multiblock.efficiency = dub));
+        syncManager.syncValue(
+            "speed",
+            0,
+            new DoubleSyncValue(() -> multiblock.moduleSpeed, dub -> multiblock.moduleSpeed = dub));
     }
 
     public IWidget createGREGOSMeterPages(ModularPanel panel, PanelSyncManager syncManager) {
@@ -148,17 +156,20 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                 new Column().coverChildren()
                     .rightRel(0f, 0, 1f)
                     .child(
-                        new PageButton(0, tabController).tab(GuiTextures.TAB_RIGHT, -1)
+                        new PageButton(0, tabController).excludeAreaInRecipeViewer()
+                            .tab(GuiTextures.TAB_RIGHT, -1)
                             .overlay(
                                 GTGuiTextures.PICTURE_BRAIN.asIcon()
                                     .size(15, 13)))
                     .child(
-                        new PageButton(1, tabController).tab(GuiTextures.TAB_RIGHT, 0)
+                        new PageButton(1, tabController).excludeAreaInRecipeViewer()
+                            .tab(GuiTextures.TAB_RIGHT, 0)
                             .overlay(
                                 GTGuiTextures.PICTURE_ELECRICITY.asIcon()
                                     .size(11, 15)))
                     .child(
-                        new PageButton(2, tabController).tab(GuiTextures.TAB_RIGHT, 0)
+                        new PageButton(2, tabController).excludeAreaInRecipeViewer()
+                            .tab(GuiTextures.TAB_RIGHT, 0)
                             .overlay(new ItemDrawable(new ItemStack(Items.iron_ingot, 1)).asIcon())))
             .child(
                 pagedWidget
@@ -290,7 +301,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                 if (text.isEmpty()) return Result.IGNORE;
                 // Reset the text box to be blank
                 this.handler.clear();
-                if (!checkForKeywords(text) && base.isTalkModeActive) {
+                if (!checkForKeywords(text) && multiblock.isTalkModeActive) {
                     DoubleSyncValue moodSyncer = syncManager.findSyncHandler("mood", DoubleSyncValue.class);
                     moodSyncer.setValue(Math.min(1, moodSyncer.getValue() + 0.05));
                     list.child(createPlayerTextWidget(text));
