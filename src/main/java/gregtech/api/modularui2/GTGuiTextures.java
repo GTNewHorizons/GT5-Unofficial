@@ -580,6 +580,11 @@ public final class GTGuiTextures {
         .fullImage(GregTech.ID, "gui/overlay_button/sorting_mode");
     public static final UITexture OVERLAY_BUTTON_ONE_STACK_LIMIT = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/one_stack_limit");
+    public static final UITexture OVERLAY_BUTTON_LMA_ANIMATION_ON = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/lma_animation_on");
+    public static final UITexture OVERLAY_BUTTON_LMA_ANIMATION_OFF = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/lma_animation_off");
+
     // endregion button overlay
 
     // region picture
