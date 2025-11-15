@@ -71,7 +71,6 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
 
     private final ArrayList<ItemStack> inputFakeItems = new ArrayList<>();
     private FluidStack[] fluidInputs = null;
-    private final ArrayList<ItemStack> outputFakeItems = new ArrayList<>();
     private byte outputColor = -1;
     private int currentParallel;
 
@@ -349,11 +348,12 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             .build();
         CheckRecipeResult result = parallelHelper.getResult();
         if (result.wasSuccessful()) {
-            // Set item outputs and parallel count. Note that while these outputs are fake, we override
-            // addOutput to convert these back into CCs in the right hatch
+            // Set item outputs and parallel count. Note that while these outputs are fake, we override the method to not output to normal busses
+            // Then use addVCOutput to convert these back into CCs in the right hatch
             this.currentParallel = parallelHelper.getCurrentParallel();
             this.mOutputItems = parallelHelper.getItemOutputs();
 
+            addVCOutput(mOutputItems[0], outputHatch);
             CircuitComponent fakeItem = CircuitComponent.tryGetFromFakeStack(mOutputItems[0]);
             incrementProcessedItemCounts(fakeItem, mOutputItems[0].stackSize);
             this.processingLogic.setSpeedBonus(1F / Math.min(10, Math.max(1, 1 + getSpeedModifierForOutput(fakeItem))));
@@ -473,17 +473,22 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         return true;
     }
 
-    public boolean addOutput(ItemStack aStack, MTEHatchVacuumConveyorOutput hatch) {
-        if (GTUtility.isStackInvalid(aStack)) return false;
+    // Modules may Override this depending on a specific mechanic
+    @Override
+    public boolean addItemOutputs(ItemStack[] outputItems) {
+        return true;
+    }
+
+    public void addVCOutput(ItemStack aStack, MTEHatchVacuumConveyorOutput hatch) {
+        if (GTUtility.isStackInvalid(aStack)) return;
         if (hatch == null) {
             stopMachine(SimpleShutDownReason.ofCritical("Colored output hatch disappeared mid-recipe."));
-            return false;
+            return;
         }
         // Look up component from this output fake stack and unify it with the packet inside the output hatch
         CircuitComponent component = CircuitComponent.getFromFakeStackUnsafe(aStack);
         CircuitComponentPacket outputPacket = new CircuitComponentPacket(component, aStack.stackSize);
         hatch.unifyPacket(outputPacket);
-        return true;
     }
 
     public void setAvailableEUt(long eut) {
