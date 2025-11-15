@@ -41,7 +41,15 @@ public class UpgradeStorage {
     }
 
     /** Handles consuming items and updating state if successful. Does NOT handle graviton shards! */
+    // todo remove
     public void payCost(ForgeOfGodsUpgrade upgrade, ItemStackHandler handler) {
+        ItemStack[] inputStacks = handler.getStacks()
+            .toArray(new ItemStack[0]);
+        payCost(upgrade, inputStacks);
+    }
+
+    /** Handles consuming items and updating state if successful. Does NOT handle graviton shards! */
+    public void payCost(ForgeOfGodsUpgrade upgrade, ItemStack[] inputStacks) {
         UpgradeData data = getData(upgrade);
 
         if (!upgrade.hasExtraCost()) {
@@ -50,20 +58,19 @@ public class UpgradeStorage {
         }
 
         ItemStack[] extraCost = upgrade.getExtraCost();
-        for (int i = 0; i < handler.getSlots(); i++) {
-            ItemStack inputStack = handler.getStackInSlot(i);
+        for (ItemStack inputStack : inputStacks) {
             if (inputStack == null) continue;
 
-            for (int j = 0; j < extraCost.length; j++) {
-                ItemStack costStack = extraCost[j];
-                int alreadyPaid = data.amountsPaid[j];
+            for (int i = 0; i < extraCost.length; i++) {
+                ItemStack costStack = extraCost[i];
+                int alreadyPaid = data.amountsPaid[i];
                 if (alreadyPaid >= costStack.stackSize) continue;
 
                 if (GTUtility.areStacksEqual(inputStack, costStack)) {
                     int maxExtract = costStack.stackSize - alreadyPaid;
-                    ItemStack extractedStack = handler.extractItem(i, maxExtract, false);
-                    if (extractedStack != null) {
-                        data.amountsPaid[j] += extractedStack.stackSize;
+                    int extractAmount = Math.min(maxExtract, inputStack.stackSize);
+                    if (extractAmount > 0) {
+                        data.amountsPaid[i] += (short) extractAmount;
                     }
                 }
             }
