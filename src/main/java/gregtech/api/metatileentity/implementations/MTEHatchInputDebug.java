@@ -140,12 +140,9 @@ public class MTEHatchInputDebug extends MTEHatchInput {
             GTAuthors.buildAuthorsWithFormat(GTAuthors.AuthorChrom));
     }
 
-    // ignores if the parameter fluid is in the hatch, just works instead.
     @Override
     public FluidStack drain(ForgeDirection from, FluidStack aFluid, boolean doDrain) {
-        FluidStack copiedInput = aFluid.copy();
-        copiedInput.amount = Integer.MAX_VALUE;
-        return copiedInput;
+        return aFluid.copy();
     }
 
     @Override

@@ -26,6 +26,11 @@ public class MTEHatchChiselBus extends MTEHatchInputBus implements IAddUIWidgets
     }
 
     @Override
+    protected boolean useMui2() {
+        return false;
+    }
+
+    @Override
     public boolean isValidSlot(int aIndex) {
         return aIndex < getSlots(this.mTier);
     }

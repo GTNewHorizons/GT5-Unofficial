@@ -41,6 +41,11 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
     }
 
     @Override
+    protected boolean useMui2() {
+        return false;
+    }
+
+    @Override
     public String[] getDescription() {
         return Utils.splitLocalizedWithAlkalus("gt.blockmachines.input_bus_turbine.desc");
     }

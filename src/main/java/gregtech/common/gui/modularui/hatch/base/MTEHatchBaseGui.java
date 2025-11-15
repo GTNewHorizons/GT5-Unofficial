@@ -1,7 +1,5 @@
 package gregtech.common.gui.modularui.hatch.base;
 
-import net.minecraft.item.ItemStack;
-
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.UITexture;
@@ -9,22 +7,19 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
-import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
+import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
-import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
+import gregtech.api.gui.widgets.CommonWidgets;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.util.item.GhostCircuitItemStackHandler;
-import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
-import gregtech.common.modularui2.widget.GhostCircuitSlotWidget;
 
 /**
  * A base class for common hatch implementations. Has configurable corner panels and makes building ui's easier.
@@ -120,12 +115,12 @@ public class MTEHatchBaseGui<T extends MTEHatch> {
 
     // Column by defualt, going bottom to up (reversed child order)
     protected Flow createRightCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
-        Flow cornerFlow = Flow.column()
+        Flow cornerFlow = Flow.row()
             .coverChildren()
             .reverseLayout(true)
             .align(Alignment.BottomRight)
             .paddingBottom(2)
-            .paddingRight(5);
+            .paddingRight(3);
         cornerFlow.childIf(this.doesAddGregTechLogo(), createLogo())
             .childIf(this.doesAddCircuitSlot(), createCircuitSlot(syncManager));
         return cornerFlow;
@@ -145,28 +140,16 @@ public class MTEHatchBaseGui<T extends MTEHatch> {
 
     protected IDrawable.DrawableWidget createLogo() {
         return new IDrawable.DrawableWidget(getLogoTexture()).size(18)
-            .marginTop(2);
+            .marginTop(2)
+            .marginLeft(2);
     }
 
     protected boolean doesAddCircuitSlot() {
         return hatch instanceof IConfigurationCircuitSupport circuitSupport && circuitSupport.allowSelectCircuit();
     }
 
-    protected IWidget createCircuitSlot(PanelSyncManager syncManager) {
-        if (!(hatch instanceof IConfigurationCircuitSupport)) return IDrawable.EMPTY.asWidget()
-            .size(18);
-
-        IntSyncValue selectedSyncHandler = new IntSyncValue(() -> {
-            ItemStack selectedItem = hatch.getStackInSlot(hatch.getCircuitSlot());
-            if (selectedItem != null && selectedItem.getItem() instanceof ItemIntegratedCircuit) {
-                // selected index 0 == config 1
-                return selectedItem.getItemDamage() - 1;
-            }
-            return -1;
-        });
-        syncManager.syncValue("selector_screen_selected", selectedSyncHandler);
-        return new GhostCircuitSlotWidget(hatch, syncManager)
-            .slot(new ModularSlot(new GhostCircuitItemStackHandler(hatch), 0));
+    protected Widget<? extends Widget<?>> createCircuitSlot(PanelSyncManager syncManager) {
+        return CommonWidgets.createCircuitSlot(syncManager, hatch);
     }
 
     protected IWidget createInventoryRow(ModularPanel panel, PanelSyncManager syncManager) {
