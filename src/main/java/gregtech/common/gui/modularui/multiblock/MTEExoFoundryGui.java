@@ -221,6 +221,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                             selectPanel.openPanel();
                         } else {
                             selectPanel.closePanel();
+                            selectPanel.closeSubPanels();
                         }
                         return true;
                     })
@@ -237,16 +238,22 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
     private ModularPanel openModuleConfigPanel(PanelSyncManager p_syncManager, ModularPanel parent,
         PanelSyncManager syncManager, int index) {
         Area area = parent.getArea();
-        int x = area.x + area.width;
-        int y = area.y;
         IntSyncValue moduleSync = syncManager.findSyncHandler("Module" + (index + 1), IntSyncValue.class);
         return new ModularPanel("moduleSelectPanel" + index) {
+
+            @Override
+            public boolean disablePanelsBelow() {
+                return true;
+            }
 
             @Override
             public boolean closeOnOutOfBoundsClick() {
                 return true;
             }
-        }.pos(x, y)
+
+        }.relative(parent)
+            .leftRel(1)
+            .topRel(0)
             .size(140, 130)
             .widgetTheme("backgroundPopup")
             .child(
