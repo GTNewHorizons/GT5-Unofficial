@@ -7,6 +7,7 @@ import java.util.function.Supplier;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.WidgetTree;
+import com.cleanroommc.modularui.widgets.Dialog;
 import com.cleanroommc.modularui.widgets.Expandable;
 
 import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
@@ -38,6 +39,14 @@ public final class SyncHypervisor {
 
     public ModularPanel getModularPanel(Panels panel) {
         return panels.get(panel);
+    }
+
+    public Dialog<?> getDialog(Panels panel) {
+        if (!panel.isDialog()) {
+            throw new IllegalStateException(
+                "Cannot get dialog from panel " + panel.getPanelId() + " as it is a ModularPanel");
+        }
+        return (Dialog<?>) getModularPanel(panel);
     }
 
     public void setPanelExpandable(Panels panel, Supplier<Boolean> value) {
