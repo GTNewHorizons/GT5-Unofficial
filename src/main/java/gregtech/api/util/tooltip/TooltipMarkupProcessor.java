@@ -64,22 +64,22 @@ public class TooltipMarkupProcessor {
                 continue;
             }
 
-            int colorStart = markIdx - 2;
             String colorCode = "";
-            if (colorStart >= 0 && str.charAt(colorStart) == '§') {
-                colorCode = str.substring(colorStart, markIdx);
+            boolean hasColorCode = false;
+            if (markIdx >= 2 && str.charAt(markIdx - 2) == '§') {
+                colorCode = str.substring(markIdx - 2, markIdx);
+                hasColorCode = true;
             }
 
             List<String> parts = new ArrayList<>();
 
-            if (colorStart > 0) {
-                String before = str.substring(0, colorStart);
+            if (markIdx > 0) {
+                int endIdx = hasColorCode ? markIdx - 2 : markIdx;
+                String before = str.substring(0, endIdx);
                 if (!before.trim()
                     .isEmpty()) {
                     parts.add(before);
                 }
-            } else if (colorStart < 0 && markIdx > 0) {
-                parts.add(str.substring(0, markIdx));
             }
 
             parts.add(colorCode + mark);
