@@ -107,6 +107,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     private static final IIconContainer TEXTURE_CONTROLLER_ACTIVE_GLOW = new Textures.BlockIcons.CustomIcon(
         "iconsets/TFFT_ACTIVE_GLOW");
     public ArrayList<MTEHatchTurbine> turbineRotorHatchList = new ArrayList<>();
+    private static final String anyCasing = GTUtility.nestParams("GT5U.MBTT.HatchInfo", "gt.blockcasings12.9.name");
 
     private boolean mStaticAnimations = false;
     // spotless:off
@@ -403,12 +404,12 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             .addCasingInfoExactly("gtplusplus.blockspecialcasings.1.0.name", 24)
             .addCasingInfoExactly("gt.blockmachines.hatch.turbine.name", 8)
             .addCasingInfoExactly("gtplusplus.blockspecialcasings.1.15.name", 264)
-            .addInputBus("gt.spinmatron.info.hatches", 1)
-            .addOutputBus("gt.spinmatron.info.hatches", 1)
-            .addInputHatch("gt.spinmatron.info.hatches", 1)
-            .addOutputHatch("gt.spinmatron.info.hatches", 1)
-            .addEnergyHatch("gt.spinmatron.info.hatches", 1)
-            .addMaintenanceHatch("gt.spinmatron.info.hatches", 1)
+            .addInputBus(anyCasing, 1)
+            .addOutputBus(anyCasing, 1)
+            .addInputHatch(anyCasing, 1)
+            .addOutputHatch(anyCasing, 1)
+            .addEnergyHatch(anyCasing, 1)
+            .addMaintenanceHatch(anyCasing, 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
 

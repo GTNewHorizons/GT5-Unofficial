@@ -77,7 +77,7 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
             tier,
             slots,
             ArrayExt.of(
-                GTUtility.addParams(
+                GTUtility.nestParams(
                     "gt.te.input_bus.desc",
                     getSlots(tier),
                     (getSlots(tier) >= 2 ? "gt.te.stack.plural" : "gt.te.stack.singular"))));

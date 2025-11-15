@@ -94,11 +94,11 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, this.getFrameMaterial(), 1)
                     .getDisplayName(),
                 "gt.driller_shaped_mb.info.frame")
-            .addEnergyHatch(GTUtility.addParams("gt.dehp.info.energy", VN[this.getMinTier()]))
-            .addMaintenanceHatch("gt.dehp.info.i_hatch")
+            .addEnergyHatch(GTUtility.nestParams("gt.dehp.info.energy", VN[this.getMinTier()]))
+            .addMaintenanceHatch("gt.driller_shaped_mb.info.replace")
             .addInputBus("gt.dehp.info.i_bus")
-            .addInputHatch("gt.dehp.info.i_hatch")
-            .addOutputHatch("gt.dehp.info.i_hatch")
+            .addInputHatch("gt.driller_shaped_mb.info.replace")
+            .addOutputHatch("gt.driller_shaped_mb.info.replace")
             .toolTipFinisher("tooltip.bw.author_bart_via_bw.name");
         return tt;
     }

@@ -4651,13 +4651,13 @@ public class GTUtility {
     }
 
     /**
-     * ONLY used in MTE tooltips<br>
+     * ONLY used in GT MTE tooltips<br>
      *
      * Different from translateToLocalFormatted, it's to make sure<br>
      * nothing gets hardcoded on startup<br>
      * for a seamless translation experience
      */
-    public static String addParams(String locKey, Object... params) {
+    public static String nestParams(String locKey, Object... params) {
         if (params == null || params.length == 0) {
             return locKey;
         }

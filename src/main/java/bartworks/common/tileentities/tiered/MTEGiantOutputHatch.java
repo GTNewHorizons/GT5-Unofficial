@@ -23,7 +23,7 @@ public class MTEGiantOutputHatch extends MTEHatchOutput {
 
     public MTEGiantOutputHatch(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 0);
-        this.mDescriptionArray[0] = GTUtility.addParams("gt.te.output_hatch.desc", getCapacity());
+        this.mDescriptionArray[0] = GTUtility.nestParams("gt.te.output_hatch.desc", getCapacity());
     }
 
     public MTEGiantOutputHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

@@ -3708,6 +3708,8 @@ gt.mb.corepos.top_center=Top center
 gt.mb.hint_block=Hint block with dot %d
 
 # Multiblock Tooltip lines
+gt.boldarnator.tips=Use Integrated Circuit to determine recipe\n1 = Cobble, 2 = Stone, 3 = Obsidian, 4 = Basalt, 5 = Deepslate, 6 = Netherrack\nNeeds Water and Lava in input hatch\nNeeds Soul Sand and Blue Ice in input bus for basalt\nNeeds Soul Sand and Magma in input bus for deepslate
+
 gt.completer.tips=Completes Thaumcraft research notes using EU and Thaumcraft nodes\nPlace nodes in the center row
 gt.completer.info.casing=Top and bottom layers outside. 3 x L minimum
 gt.completer.info.glass=Middle layer outside
@@ -3715,17 +3717,16 @@ gt.completer.info.glass=Middle layer outside
 gt.driller_shaped_mb.info.casing.1=form the 3x1x3 Base
 gt.driller_shaped_mb.info.casing.2=1x3x1 pillar above the center of the base (2 minimum total)
 gt.driller_shaped_mb.info.frame=Each pillar's side and 1x3x1 on top
+gt.driller_shaped_mb.info.replace=Any base casing
 
 gt.backfiller.tips=Will fill in areas below it with light concrete. This goes through walls\nUse it to remove any spawning locations beneath your base to reduce lag\nWill pull back the pipes after it finishes that layer\nRange is %1$sx%1$s blocks horizontally\nMinimum energy hatch tier: %2$s\nBase cycle time: %3$s%4$s
 gt.backfiller.info.energy=1x %s+, Any base casing
-gt.backfiller.info.maintenance=Any base casing
 gt.backfiller.info.i_bus=Mining Pipes, optional, any base casing
 gt.backfiller.info.i_hatch=GT Concrete, any base casing
 gt.backfiller.info.o_bus=Mining Pipes, optional, any base casing
 
 gt.dehp.tips=Consumes %sEU/t\nHas 2 Modes, use the Screwdriver to change them:\nDirect Steam and Coolant Heating\nDirect Steam Mode: Consumes §9Distilled Water§7 to produce §f%s§7L/s of §fSuperheated Steam\nCoolant Heating Mode: Converts %sL/s §bCoolant§7 to §cHot Coolant\nEach maintenance issue lowers output efficiency by §a10%%\nExplodes when it runs out of Distilled Water/Coolant\nBase cycle time: 1 tick
 gt.dehp.info.energy=%s+, Any base casing
-gt.dehp.info.i_hatch=Any base casing
 gt.dehp.info.i_bus=Mining Pipes, optional, any base casing
 
 gt.mb_air_filter.tips=Needs a Turbine in the controller\nCan process %1$sx%1$s chunks\nEach muffler hatch reduces pollution in one chunk of the working area by:\n  §f%s * multiTierBonus * turbineEff * FLOOR(%s^mufflerTier)\nevery second\n- multiTierBonus for this controller is %s\n- turbineEff is the efficiency of the Turbine in controller slot\n- Effective muffler tier is limited by energy input tier\n- Uses %s EU/t while working<SEPARATOR>Insert Absorption Filter in an input bus\n  to double pollution cleaning amount (30 uses per item)\nEach maintenance issue reduces cleaning amount by 10%
@@ -3751,7 +3752,6 @@ gt.spinmatron.tips.3=Non-Huge Turbines have reduced effectiveness...
 gt.spinmatron.tips.4=Requires Recipe Tier * §910L/s§7 of §5Kerosene§7 to operate by default\nSupply §5Biocatalyzed Propulsion Fluid§7 instead for a §f1.25x§7 Parallel multiplier<SEPARATOR>§dLight Mode§7: +§d100%§7 Speed Bonus, Maximum Recipe Tier is §dVoltage Tier - 3\n§6Standard Mode§7: No Changes\n§aHeavy Mode§7: Divides Parallels by §a32§7, Requires T3 Structure and §5Biocatalyzed Propulsion Fluid\nSome recipes §c§lrequire§a Heavy Mode<SEPARATOR>§o§4Maahes guides the way...
 gt.spinmatron.info.frame=Central Frame Blocks
 gt.spinmatron.info.rotor=Central Rotor Blocks
-gt.spinmatron.info.hatches=Any Vibration-Safe Casing
 
 gt.assline.tips.1=Used to craft complex machine parts (LuV+)\nItems & Fluids are inserted in NEI order, one per slice\nDoes not run Assembler recipes
 gt.assline.info.1=From Bottom to Top, Left to Right\nLayer 1 - Solid Steel Machine Casing, Input Bus, Solid Steel Machine Casing\nLayer 2 - Glass, Assembly Line Casing, Glass\nLayer 3 - Grate Machine Casing, Assembler Machine Casing, Grate Machine Casing\nLayer 4 - Empty, Solid Steel Machine Casing, Empty\nUp to 16 repeating slices, each one allows for 1 more item in recipes

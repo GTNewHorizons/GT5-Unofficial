@@ -50,6 +50,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
@@ -89,6 +90,11 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
 
     protected int itemPipeTier = 0;
     protected int fluidPipeTier = 0;
+
+    private static final String anyCasing = GTUtility.nestParams(
+        "GT5U.MBTT.HatchInfo",
+        ItemList.Casing_Autoclave.get(0)
+            .getDisplayName());
 
     @Nullable
     private static Integer getItemPipeTierFromMeta(Block block, Integer metaID) {
@@ -221,12 +227,12 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Polytetrafluoroethylene, 1)
                     .getDisplayName(),
                 42)
-            .addInputBus("gt.multi_autoclave.info.1", 1)
-            .addOutputBus("gt.multi_autoclave.info.1", 1)
-            .addInputHatch("gt.multi_autoclave.info.1", 1)
-            .addOutputHatch("gt.multi_autoclave.info.1", 1)
-            .addEnergyHatch("gt.multi_autoclave.info.1", 1)
-            .addMaintenanceHatch("gt.multi_autoclave.info.1", 1)
+            .addInputBus(anyCasing, 1)
+            .addOutputBus(anyCasing, 1)
+            .addInputHatch(anyCasing, 1)
+            .addOutputHatch(anyCasing, 1)
+            .addEnergyHatch(anyCasing, 1)
+            .addMaintenanceHatch(anyCasing, 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addSubChannelUsage(GTStructureChannels.ITEM_PIPE_CASING)
             .addSubChannelUsage(GTStructureChannels.PIPE_CASING)
