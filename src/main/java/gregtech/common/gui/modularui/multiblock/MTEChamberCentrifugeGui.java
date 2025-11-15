@@ -44,12 +44,18 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui<MTEChamberCent
         syncManager.syncValue("Parallels", new IntSyncValue(multiblock::getTrueParallel));
         syncManager.syncValue("Speed", new StringSyncValue(multiblock::getSpeedStr));
         syncManager.syncValue("modeString", new StringSyncValue(multiblock::modeToString));
-        syncManager.syncValue("modeValue", new DoubleSyncValue(() -> multiblock.mMode, dub -> multiblock.mMode = dub));
+        syncManager.syncValue("modeValue", new DoubleSyncValue(() -> multiblock.mode, dub -> multiblock.mode = dub));
     }
 
     @Override
-    protected Flow createPanelGap(ModularPanel parent, PanelSyncManager syncManager) {
-        return super.createPanelGap(parent, syncManager).child(createConfigButton(syncManager, parent));
+    protected Flow createRightPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
+        return Flow.row()
+            .mainAxisAlignment(Alignment.MainAxis.END)
+            .align(Alignment.CenterRight)
+            .coverChildrenWidth()
+            .heightRel(1)
+            .child(createConfigButton(syncManager, parent))
+            .childIf(multiblock.supportsPowerPanel(), createPowerPanelButton(syncManager, parent));
     }
 
     @Override
@@ -63,7 +69,6 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui<MTEChamberCent
             (p_syncManager, syncHandler) -> openInfoPanel(p_syncManager, parent, syncManager),
             true);
         return new ButtonWidget<>().size(18, 18)
-            .topRel(0)
             .overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/cyclic"))
             .onMousePressed(d -> {
                 if (!statsPanel.isPanelOpen()) {
@@ -121,8 +126,6 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui<MTEChamberCent
         IPanelHandler turbinePanel = syncManager // calls the panel itself.
             .panel("turbinePanel", (p_syncManager, syncHandler) -> openTurbinePanel(p_syncManager, parent), true);
         return new ButtonWidget<>().size(18, 18)
-            // power control + button size + margin, to be changed in panel gap refactor
-            .right(2 + 18 + 4)
             .marginTop(4)
             .overlay(GuiTextures.GEAR)
             .onMousePressed(d -> {
@@ -160,13 +163,12 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui<MTEChamberCent
                             .child(
                                 SlotGroupWidget.builder()
                                     .matrix("II", "II", "II", "II")
-                                    .key(
-                                        'I',
-                                        index -> {
-                                            return new ItemSlot().slot(
-                                                new ModularSlot(multiblock.turbineHolder, index)
-                                                    .filter(multiblock::isTurbine));
-                                        })
+                                    .key('I', index -> {
+                                        return new ItemSlot().slot(
+                                            new ModularSlot(multiblock.turbineHolder, index)
+                                                .singletonSlotGroup(50 + index)
+                                                .filter(multiblock::isTurbine));
+                                    })
                                     .build())
 
                     )

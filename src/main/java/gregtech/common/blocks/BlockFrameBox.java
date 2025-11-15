@@ -73,11 +73,12 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
                 GTLanguageManager.addStringLocalization(
                     getUnlocalizedName() + "." + meta + DOT_NAME,
                     GTLanguageManager.i18nPlaceholder ? getLocalizedNameFormat(material) : getLocalizedName(material));
-                GTLanguageManager
-                    .addStringLocalization(getUnlocalizedName() + "." + meta + DOT_TOOLTIP, material.getToolTip());
+                GTLanguageManager.addStringLocalization(
+                    getUnlocalizedName() + "." + meta + DOT_TOOLTIP,
+                    material.getChemicalTooltip());
 
                 ITexture[] texture = { TextureFactory.of(
-                    material.mIconSet.mTextures[OrePrefixes.frameGt.mTextureIndex],
+                    material.mIconSet.mTextures[OrePrefixes.frameGt.getTextureIndex()],
                     Dyes.getModulation(-1, material.mRGBa)) };
 
                 textures[meta] = new ITexture[][] { texture, texture, texture, texture, texture, texture };
@@ -462,7 +463,7 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
     public IIcon getIcon(int side, int meta) {
         Materials material = GregTechAPI.sGeneratedMaterials[meta];
         if (material == null) return null;
-        return material.mIconSet.mTextures[OrePrefixes.frameGt.mTextureIndex].getIcon();
+        return material.mIconSet.mTextures[OrePrefixes.frameGt.getTextureIndex()].getIcon();
     }
 
     @Override
