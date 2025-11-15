@@ -24,8 +24,8 @@ import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
 
 public class MilestonePanel {
 
-    private static final int WIDTH = 400;
-    private static final int HEIGHT = 300;
+    private static final int SIZE_W = 400;
+    private static final int SIZE_H = 300;
 
     private static final int MILESTONE_BUTTON_SIZE_W = 130;
     private static final int MILESTONE_BUTTON_SIZE_H = 100;
@@ -40,7 +40,7 @@ public class MilestonePanel {
 
         registerSyncValues(hypervisor);
 
-        panel.size(WIDTH, HEIGHT)
+        panel.size(SIZE_W, SIZE_H)
             .background(GTGuiTextures.BACKGROUND_SPACE)
             .disableHoverBackground();
 

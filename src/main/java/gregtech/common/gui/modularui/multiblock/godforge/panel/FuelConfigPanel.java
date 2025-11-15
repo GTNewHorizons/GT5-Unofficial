@@ -29,8 +29,8 @@ import tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath;
 
 public class FuelConfigPanel {
 
-    private static final int WIDTH = 78;
-    private static final int HEIGHT = 130;
+    private static final int SIZE_W = 78;
+    private static final int SIZE_H = 130;
 
     public static ModularPanel openPanel(SyncHypervisor hypervisor) {
         ModularPanel panel = hypervisor.getModularPanel(Panels.FUEL_CONFIG);
@@ -39,18 +39,18 @@ public class FuelConfigPanel {
         registerSyncHandlers(hypervisor);
 
         panel.relative(hypervisor.getModularPanel(Panels.MAIN))
-            .size(WIDTH, HEIGHT)
+            .size(SIZE_W, SIZE_H)
             .topRel(0)
             .leftRelOffset(1, -3);
 
-        Flow column = new Column().size(WIDTH, HEIGHT);
+        Flow column = new Column().size(SIZE_W, SIZE_H);
 
         // Header
         column.child(
             IKey.lang("gt.blockmachines.multimachine.FOG.fuelconsumption")
                 .alignment(Alignment.CENTER)
                 .asWidget()
-                .width(WIDTH - 4)
+                .width(SIZE_W - 4)
                 .alignX(0.5f)
                 .marginTop(5));
 
@@ -70,7 +70,7 @@ public class FuelConfigPanel {
         panel.child(
             GTGuiTextures.PICTURE_INFO.asWidget()
                 .size(10)
-                .pos(WIDTH - 10 - 4, 24) // i KNOW... its not really relative to anything tho...
+                .pos(SIZE_W - 10 - 4, 24) // i KNOW... its not really relative to anything tho...
                 .tooltip(t -> {
                     t.addLine(translateToLocal("gt.blockmachines.multimachine.FOG.fuelinfo.0"));
                     t.addLine(translateToLocal("gt.blockmachines.multimachine.FOG.fuelinfo.1"));
@@ -86,7 +86,7 @@ public class FuelConfigPanel {
             IKey.lang("gt.blockmachines.multimachine.FOG.fueltype")
                 .alignment(Alignment.CENTER)
                 .asWidget()
-                .width(WIDTH - 4)
+                .width(SIZE_W - 4)
                 .alignX(0.5f)
                 .marginTop(5));
 
@@ -106,7 +106,7 @@ public class FuelConfigPanel {
             IKey.lang("gt.blockmachines.multimachine.FOG.fuelusage")
                 .alignment(Alignment.CENTER)
                 .asWidget()
-                .width(WIDTH - 4)
+                .width(SIZE_W - 4)
                 .alignX(0.5f)
                 .marginTop(5));
         column.child(IKey.dynamic(() -> {
@@ -115,7 +115,7 @@ public class FuelConfigPanel {
         })
             .alignment(Alignment.CENTER)
             .asWidget()
-            .width(WIDTH - 4)
+            .width(SIZE_W - 4)
             .alignX(0.5f)
             .marginTop(3));
 
