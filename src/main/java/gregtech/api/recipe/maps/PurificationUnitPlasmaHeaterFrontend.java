@@ -20,7 +20,7 @@ import gregtech.nei.GTNEIDefaultHandler;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class PurificationUnitPlasmaHeaterFrontend extends PurificationUnitRecipeMapFrontend {
+public class PurificationUnitPlasmaHeaterFrontend extends CustomBackgroundRecipeMapFrontend {
 
     public PurificationUnitPlasmaHeaterFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
         NEIRecipePropertiesBuilder neiPropertiesBuilder) {
