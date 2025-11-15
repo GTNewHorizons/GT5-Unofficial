@@ -40,7 +40,6 @@ public class MTELargeMolecularAssemblerGui extends MTEMultiBlockBaseGui<MTELarge
                     showCraftingEffect.setValue(!showCraftingEffect.getValue());
                     return true;
                 })
-                .tooltip(
-                    new RichTooltip().add(StatCollector.translateToLocalFormatted("GT5U.gui.text.lma_craftingfx"))));
+                .tooltip(t -> t.add(StatCollector.translateToLocalFormatted("GT5U.gui.text.lma_craftingfx"))));
     }
 }
