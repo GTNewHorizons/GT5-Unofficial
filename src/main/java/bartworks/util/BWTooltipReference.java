@@ -13,30 +13,10 @@
 
 package bartworks.util;
 
-import static net.minecraft.util.EnumChatFormatting.BLUE;
-import static net.minecraft.util.EnumChatFormatting.DARK_BLUE;
-import static net.minecraft.util.EnumChatFormatting.GRAY;
-import static net.minecraft.util.EnumChatFormatting.GREEN;
-
-import java.util.function.Function;
-import java.util.function.Supplier;
-
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 
 public class BWTooltipReference {
 
-    public static final String BW_NO_RESET = EnumChatFormatting.DARK_GREEN + "BartWorks";
-    public static final String TT_NO_RESET = BLUE + "Tec" + DARK_BLUE + "Tech";
-    public static final String BW = BW_NO_RESET + GRAY;
-    public static final String TT = TT_NO_RESET + GRAY;
-
-    public static final Supplier<String> ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS = () -> StatCollector.translateToLocal(
-        "tooltip.bw.1.name") + " " + BW;
-
-    public static final Function<String, String> MULTIBLOCK_ADDED_VIA_BARTWORKS = owner -> String
-        .format(StatCollector.translateToLocal("tooltip.bw.mb_via.name"), owner);
-    public static final String MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS = MULTIBLOCK_ADDED_VIA_BARTWORKS
-        .apply(GREEN + "bartimaeusnek");
+    public static final String BW = EnumChatFormatting.DARK_GREEN + "BartWorks" + EnumChatFormatting.GRAY;
 
 }
