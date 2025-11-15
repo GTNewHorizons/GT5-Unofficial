@@ -58,19 +58,24 @@ public class UpgradeStorage {
         }
 
         ItemStack[] extraCost = upgrade.getExtraCost();
-        for (ItemStack inputStack : inputStacks) {
+        for (int i = 0; i < inputStacks.length; i++) {
+            ItemStack inputStack = inputStacks[i];
             if (inputStack == null) continue;
 
-            for (int i = 0; i < extraCost.length; i++) {
-                ItemStack costStack = extraCost[i];
-                int alreadyPaid = data.amountsPaid[i];
+            for (int j = 0; j < extraCost.length; j++) {
+                ItemStack costStack = extraCost[j];
+                int alreadyPaid = data.amountsPaid[j];
                 if (alreadyPaid >= costStack.stackSize) continue;
 
                 if (GTUtility.areStacksEqual(inputStack, costStack)) {
                     int maxExtract = costStack.stackSize - alreadyPaid;
                     int extractAmount = Math.min(maxExtract, inputStack.stackSize);
                     if (extractAmount > 0) {
-                        data.amountsPaid[i] += (short) extractAmount;
+                        data.amountsPaid[j] += (short) extractAmount;
+                        inputStack.stackSize -= extractAmount;
+                        if (inputStack.stackSize == 0) {
+                            inputStacks[i] = null;
+                        }
                     }
                 }
             }
