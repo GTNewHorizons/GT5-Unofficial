@@ -695,11 +695,6 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    protected boolean useMui2() {
-        return true;
-    }
-
-    @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new MTELargeMolecularAssemblerGui(this);
     }
