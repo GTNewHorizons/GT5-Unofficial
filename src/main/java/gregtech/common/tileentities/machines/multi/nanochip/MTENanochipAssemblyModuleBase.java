@@ -365,7 +365,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
 
             mEfficiency = 10000;
             mEfficiencyIncrease = 10000;
-            mMaxProgresstime = 100;
+            mMaxProgresstime = recipe.mDuration;
             // Needs to be negative obviously to display correctly
             this.lEUt = -(long) recipe.mEUt * (long) this.currentParallel;
         }
