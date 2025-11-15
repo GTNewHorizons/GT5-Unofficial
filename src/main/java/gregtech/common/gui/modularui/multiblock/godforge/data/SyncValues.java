@@ -26,6 +26,12 @@ public class SyncValues<T extends ValueSyncHandler<?>> {
 
     // spotless:off
 
+    // ----------------- //
+    // Inherited Syncers //
+    // ----------------- //
+
+    public static final SyncValues<BooleanSyncValue> STRUCTURE_UPDATE = new SyncValues<>("structureUpdateButton");
+
     // --------------- //
     // General Syncers //
     // --------------- //
@@ -94,8 +100,6 @@ public class SyncValues<T extends ValueSyncHandler<?>> {
     // Upgrades //
     // -------- //
 
-    // todo this "clicked" syncer concept does not work right since actually syncing it means that
-    // todo different clients clicking around would update every client
     public static final SyncValues<EnumSyncValue<ForgeOfGodsUpgrade>> UPGRADE_CLICKED = new SyncValues<>(
         "fog.sync.upgrade_clicked",
         data -> {
@@ -182,20 +186,31 @@ public class SyncValues<T extends ValueSyncHandler<?>> {
 
     private final String syncId;
     private final Function<ForgeOfGodsData, T> syncValueSupplier;
+    private final boolean inherited;
 
-    private SyncValues(String syncId, Function<ForgeOfGodsData, T> syncValueSupplier) {
-        this.syncValueSupplier = syncValueSupplier;
+    private SyncValues(String syncId) {
         this.syncId = syncId;
+        this.syncValueSupplier = null;
+        this.inherited = true;
     }
 
-    public T registerFor(Panels forPanel, SyncHypervisor hypervisor) {
+    private SyncValues(String syncId, Function<ForgeOfGodsData, T> syncValueSupplier) {
+        this.syncId = syncId;
+        this.syncValueSupplier = syncValueSupplier;
+        this.inherited = false;
+    }
+
+    public void registerFor(Panels forPanel, SyncHypervisor hypervisor) {
         T syncValue = create(hypervisor);
         PanelSyncManager syncManager = hypervisor.getSyncManager(forPanel);
         syncManager.syncValue(getSyncId(forPanel), syncValue);
-        return syncValue;
     }
 
     public T create(SyncHypervisor hypervisor) {
+        if (inherited || syncValueSupplier == null) {
+            throw new IllegalStateException("Cannot create SyncValue for inherited syncer! ID: " + syncId);
+        }
+
         return syncValueSupplier.apply(hypervisor.getData());
     }
 
@@ -211,7 +226,7 @@ public class SyncValues<T extends ValueSyncHandler<?>> {
     }
 
     public String getSyncId(Panels fromPanel) {
-        if (fromPanel == Panels.MAIN) {
+        if (fromPanel == Panels.MAIN || inherited) {
             return syncId;
         }
         return fromPanel.getPanelId() + "/" + syncId;
