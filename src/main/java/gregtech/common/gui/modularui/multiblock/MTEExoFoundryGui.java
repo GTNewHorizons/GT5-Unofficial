@@ -28,7 +28,6 @@ import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widget.sizer.Area;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
-import com.cleanroommc.modularui.widgets.Dialog;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
@@ -235,15 +234,19 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
 
     }
 
-    private Dialog<?> openModuleConfigPanel(PanelSyncManager p_syncManager, ModularPanel parent,
+    private ModularPanel openModuleConfigPanel(PanelSyncManager p_syncManager, ModularPanel parent,
         PanelSyncManager syncManager, int index) {
         Area area = parent.getArea();
         int x = area.x + area.width;
         int y = area.y;
         IntSyncValue moduleSync = syncManager.findSyncHandler("Module" + (index + 1), IntSyncValue.class);
-        return (Dialog<?>) new Dialog<>("moduleSelectPanel" + index).setCloseOnOutOfBoundsClick(true)
-            .setDisablePanelsBelow(true)
-            .pos(x, y)
+        return new ModularPanel("moduleSelectPanel" + index) {
+
+            @Override
+            public boolean closeOnOutOfBoundsClick() {
+                return true;
+            }
+        }.pos(x, y)
             .size(140, 130)
             .widgetTheme("backgroundPopup")
             .child(

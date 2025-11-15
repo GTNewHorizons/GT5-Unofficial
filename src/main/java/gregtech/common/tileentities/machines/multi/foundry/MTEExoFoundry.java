@@ -10,7 +10,6 @@ import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXOFOUNDRY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXOFOUNDRY_ACTIVE;
@@ -28,9 +27,6 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.I3DGeometryRenderer;
-import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.PostProcessingManager;
-import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.shaders.BloomShader;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -51,6 +47,9 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
 import com.google.common.collect.ImmutableList;
+import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.I3DGeometryRenderer;
+import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.PostProcessingManager;
+import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.shaders.BloomShader;
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
 import com.gtnewhorizon.gtnhlib.client.renderer.vbo.IModelCustomExt;
 import com.gtnewhorizon.gtnhlib.client.renderer.vertex.DefaultVertexFormat;
@@ -1128,7 +1127,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         // return;
         // }
 
-//        if (!shouldRender || !getBaseMetaTileEntity().isActive()) return;
+        // if (!shouldRender || !getBaseMetaTileEntity().isActive()) return;
 
         // Do a cool startup animation
         if (lastInactiveTime <= 0) {
@@ -1144,8 +1143,8 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             if (!renderInitialized) return;
         }
         ForgeDirection dir = getDirection();
-        PostProcessingManager.getInstance().addDelayedRenderer(
-            this, x + 0.5f - dir.offsetX * 7, y + 0.5f, z + 0.5f - dir.offsetZ * 7);
+        PostProcessingManager.getInstance()
+            .addDelayedRenderer(this, x + 0.5f - dir.offsetX * 7, y + 0.5f, z + 0.5f - dir.offsetZ * 7);
     }
 
     @Override
@@ -1155,7 +1154,8 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
 
         renderRingsDebug(false);
 
-        BloomShader.getInstance().bindFramebuffer();
+        BloomShader.getInstance()
+            .bindFramebuffer();
 
         renderRingsDebug(true);
 
@@ -1171,7 +1171,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     private void renderRingsDebug(boolean bloom) {
         int i = 0;
         float time = (System.currentTimeMillis() - lastInactiveTime) / 2000f;
-        //float multiplier = 1 - (1 / (time + 1));
+        // float multiplier = 1 - (1 / (time + 1));
         float multiplier = 1;
         for (FoundryModules module : modules) {// FoundryModules.values()) {
             // if (i == tier + 1) return;
@@ -1257,7 +1257,9 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
 
             GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
 
-            Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.locationItemsTexture);
+            Minecraft.getMinecraft()
+                .getTextureManager()
+                .bindTexture(TextureMap.locationItemsTexture);
 
             GL11.glColor4f(1, 1, 1, 1);
             GL11.glEnable(GL11.GL_TEXTURE_2D);
