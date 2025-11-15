@@ -265,7 +265,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         };
     }
 
-    public class TerminalTextFieldWidget extends TextFieldWidget {
+    private class TerminalTextFieldWidget extends TextFieldWidget {
 
         TerminalTextListWidget list;
         PanelSyncManager syncManager;
@@ -333,7 +333,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         }
     }
 
-    public static class TerminalTextListWidget extends ListWidget<IWidget, TerminalTextListWidget> {
+    private class TerminalTextListWidget extends ListWidget<IWidget, TerminalTextListWidget> {
 
         public int playerTextColor = Color.WHITE.main;
         public int responseTextColor = Color.CYAN.main;

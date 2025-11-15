@@ -212,7 +212,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     }
 
     protected IDrawable.DrawableWidget makeLogoWidget() {
-        return new IDrawable.DrawableWidget(IDrawable.EMPTY).size(18, 18)
+        return new IDrawable.DrawableWidget(IDrawable.EMPTY).size(18)
             .marginTop(4)
             .widgetTheme(GTWidgetThemes.PICTURE_LOGO);
     }
