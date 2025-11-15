@@ -76,7 +76,6 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
 
     private final ArrayList<ItemStack> inputFakeItems = new ArrayList<>();
     private FluidStack[] fluidInputs = null;
-    private final ArrayList<ItemStack> outputFakeItems = new ArrayList<>();
     private byte outputColor = -1;
     private int currentParallel;
 
@@ -359,13 +358,14 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             this.currentParallel = parallelHelper.getCurrentParallel();
             this.mOutputItems = parallelHelper.getItemOutputs();
 
+            addOutput(mOutputItems[0], outputHatch);
             CircuitComponent fakeItem = CircuitComponent.tryGetFromFakeStack(mOutputItems[0]);
             incrementProcessedItemCounts(fakeItem, mOutputItems[0].stackSize);
             this.processingLogic.setSpeedBonus(1F / Math.min(10, Math.max(1, 1 + getSpeedModifierForOutput(fakeItem))));
 
             mEfficiency = 10000;
             mEfficiencyIncrease = 10000;
-            mMaxProgresstime = recipe.mDuration;
+            mMaxProgresstime = 100;
             // Needs to be negative obviously to display correctly
             this.lEUt = -(long) recipe.mEUt * (long) this.currentParallel;
         }
@@ -475,6 +475,11 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         CircuitComponent component = CircuitComponent.getFromFakeStackUnsafe(aStack);
         CircuitComponentPacket outputPacket = new CircuitComponentPacket(component, aStack.stackSize);
         hatch.unifyPacket(outputPacket);
+        return true;
+    }
+
+    @Override
+    public boolean addItemOutputs(ItemStack[] outputItems) {
         return true;
     }
 
