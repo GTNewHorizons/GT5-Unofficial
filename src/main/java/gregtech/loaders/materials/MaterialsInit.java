@@ -11643,7 +11643,6 @@ public class MaterialsInit {
     private static Materials loadDiatomite() {
         return new MaterialBuilder().setName("Diatomite")
             .setDefaultLocalName("Diatomite")
-            .setChemicalFormula("(SiO₂)₈Fe₂O₃(Al₂O₃)")
             .setIconSet(TextureSet.SET_DULL)
             .setColor(Dyes.dyeGray)
             .setARGB(0x00e1e1e1)
