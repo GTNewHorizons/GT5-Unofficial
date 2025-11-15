@@ -92,7 +92,6 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     protected List<UITexture> machineModeIcons = new ArrayList<>();
     protected Map<String, UITexture> customIcons = new HashMap<>();
     private static final int borderRadius = 4;
-    protected final int textBoxToInventoryGap = 22;
     protected final Map<String, IPanelHandler> panelMap = new HashMap<>();
     protected Map<String, UITexture> shutdownReasonTextureMap = new HashMap<>();
     protected Map<String, String> shutdownReasonTooltipMap = new HashMap<>();
@@ -178,7 +177,11 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     }
 
     protected int getBasePanelHeight() {
-        return 181 + textBoxToInventoryGap;
+        return 181 + getTextBoxToInventoryGap();
+    }
+
+    protected int getTextBoxToInventoryGap() {
+        return 22;
     }
 
     protected Flow createTerminalRow(ModularPanel panel, PanelSyncManager syncManager) {
@@ -550,7 +553,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         return new Row().widthRel(1)
             .paddingRight(2)
             .paddingLeft(4)
-            .height(textBoxToInventoryGap)
+            .height(getTextBoxToInventoryGap())
             .child(createLeftPanelGapRow(parent, syncManager))
             .child(createRightPanelGapRow(parent, syncManager));
     }
