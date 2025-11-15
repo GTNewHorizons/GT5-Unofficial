@@ -1,18 +1,19 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import gregtech.common.gui.modularui.hatch.MTEHatchInputBusGui;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.common.gui.modularui.hatch.MTEHatchInputBusGui;
 import gtPlusPlus.core.lib.GTPPCore;
 
 public class MTEHatchSteamBusInput extends MTEHatchInputBus {
@@ -56,7 +57,7 @@ public class MTEHatchSteamBusInput extends MTEHatchInputBus {
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new MTEHatchInputBusGui(this){
+        return new MTEHatchInputBusGui(this) {
 
             // steam input buses don't follow into the common formula that others do, so its changed here,
             @Override
