@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.cleanroommc.modularui.widgets.layout.Flow;
 import net.minecraft.network.PacketBuffer;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
@@ -42,27 +43,34 @@ public class SplitterGui extends MTEMultiBlockBaseGui<Splitter> {
         this.base = base;
     }
 
-    public ModularPanel build(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        ModularPanel ui = super.build(data, syncManager, uiSettings);
-        IPanelHandler popupPanel = syncManager.panel("popup", (m, h) -> createRuleManagerPanel(syncManager), true);
+    @Override
+    protected void registerSyncValues(PanelSyncManager syncManager) {
+        super.registerSyncValues(syncManager);
         syncManager.syncValue(
             "rules",
             0,
             new GenericSyncValue<>(() -> base.colorMap, map -> { base.colorMap = map; }, new ColorMapAdapter()));
+    }
 
-        return ui.child(new ButtonWidget<>().onMousePressed(mouseButton -> {
-            if (!popupPanel.isPanelOpen()) {
-                popupPanel.openPanel();
-            } else {
-                popupPanel.closePanel();
-            }
-            return true;
-        })
+    @Override
+    protected Flow createRightPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
+        return super.createRightPanelGapRow(parent, syncManager).child(createRulesButton(parent,syncManager));
+    }
+
+    protected ButtonWidget<?> createRulesButton(ModularPanel panel, PanelSyncManager syncManager){
+        IPanelHandler popupPanel = syncManager.panel("popup", (m, h) -> createRuleManagerPanel(syncManager), true);
+        return new ButtonWidget<>().onMousePressed(mouseButton -> {
+                if (!popupPanel.isPanelOpen()) {
+                    popupPanel.openPanel();
+                } else {
+                    popupPanel.closePanel();
+                }
+                return true;
+            })
             .background(GTGuiTextures.BUTTON_STANDARD, GuiTextures.GEAR)
             .disableHoverBackground()
             .tooltip(tooltip -> tooltip.add("Open Rules manager"))
-            .pos(156, 102)
-            .size(18, 18));
+            .size(18);
     }
 
     public ModularPanel createRuleManagerPanel(PanelSyncManager syncManager) {

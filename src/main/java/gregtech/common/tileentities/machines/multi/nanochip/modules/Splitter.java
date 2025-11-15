@@ -318,11 +318,6 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
     }
 
     @Override
-    protected boolean useMui2() {
-        return true;
-    }
-
-    @Override
     protected @NotNull MTEMultiBlockBaseGui<Splitter> getGui() {
         return new SplitterGui(this);
     }
