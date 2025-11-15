@@ -273,7 +273,7 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
                     int itemsForThisBus = itemsPerBus + (busIndex < busRemainder ? 1 : 0);
                     // We can just output, we don't have to worry about packet size or anything.
                     ItemStack stackToOutput = new ItemStack(stack.getItem(), itemsForThisBus, stack.getItemDamage());
-                    this.addOutput(stackToOutput, group.get(busIndex));
+                    this.addVCOutput(stackToOutput, group.get(busIndex));
                     this.removeItemFromInputByColor(stackToOutput, currentDye);
                 }
             }
