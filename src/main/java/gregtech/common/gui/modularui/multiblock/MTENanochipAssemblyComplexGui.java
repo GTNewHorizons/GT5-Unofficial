@@ -29,7 +29,6 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
-import gregtech.api.gui.widgets.CommonWidgets;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
@@ -106,22 +105,17 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
 
     @Override
     protected int getMufflerPosFromRightOutwards() {
-        return -4;
+        return 12;
     }
 
     @Override
     protected int getMufflerPosFromTop() {
-        return 4;
+        return getTerminalRowHeight() - 6;
     }
 
     @Override
     protected ToggleButton createMuffleButton() {
-        return CommonWidgets.createMuffleButton("mufflerSyncer")
-            .background(true, IDrawable.EMPTY)
-            .background(false, IDrawable.EMPTY)
-            .alignX(1)
-            .alignY(0.4f)
-            .disableHoverBackground();
+        return super.createMuffleButton().disableHoverBackground();
     }
 
     @Override
