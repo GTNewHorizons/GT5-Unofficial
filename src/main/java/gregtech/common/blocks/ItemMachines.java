@@ -29,6 +29,11 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
@@ -62,6 +67,42 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
         if (!(aStack.getItem() instanceof ItemMachines)) return null;
         if (aStack.getItemDamage() < 0 || aStack.getItemDamage() > GregTechAPI.METATILEENTITIES.length) return null;
         return GregTechAPI.METATILEENTITIES[aStack.getItemDamage()];
+    }
+
+    private String resolveJsonLocalization(String json) {
+        try {
+            JsonObject obj = new JsonParser().parse(json)
+                .getAsJsonObject();
+
+            String key = obj.get("k")
+                .getAsString();
+            JsonArray paramsArray = obj.getAsJsonArray("p");
+
+            boolean hasIndent = key.startsWith(INDENT_MARK);
+            String cleanKey = removeStart(key, INDENT_MARK);
+
+            List<Object> resolvedParams = new ArrayList<>();
+            for (JsonElement elem : paramsArray) {
+                if (elem.isJsonNull()) {
+                    resolvedParams.add("");
+                } else {
+                    String paramStr = elem.getAsString();
+                    if (paramStr.startsWith("{\"k\":")) {
+                        resolvedParams.add(resolveJsonLocalization(paramStr));
+                    } else {
+                        String translated = translateToLocal(paramStr);
+                        resolvedParams.add(translated.equals(paramStr) ? paramStr : translated);
+                    }
+                }
+            }
+
+            String result = translate(cleanKey, resolvedParams.toArray());
+            if (result.isEmpty()) return key;
+            return hasIndent ? INDENT_MARK + result : result;
+        } catch (Exception e) {
+            GT_FML_LOGGER.error("Failed to parse localization JSON: " + json, e);
+            return json;
+        }
     }
 
     @Override
@@ -142,25 +183,15 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
         for (String tDescLine : aDescription) {
             if (!GTUtility.isStringValid(tDescLine)) continue;
 
-            if (tDescLine.contains(TooltipMarkupProcessor.LOC_SEPARATOR)) {
-                final String[] tSplitStrings = tDescLine.split(TooltipMarkupProcessor.LOC_SEPARATOR);
-                final String tKey = tSplitStrings[0];
-
-                List<Object> tParamsLoc = new ArrayList<>();
-                for (int j = 1; j < tSplitStrings.length; j++) {
-                    String param = tSplitStrings[j];
-                    String translated = translateToLocal(param);
-                    tParamsLoc.add(translated.equals(param) ? param : translated);
-                }
-
-                final String tTranslated = TooltipMarkupProcessor
-                    .formatTranslatedLine(tKey, translate(removeStart(tKey, INDENT_MARK), tParamsLoc.toArray()));
-                if (aList != null) aList.add(tTranslated);
+            String translated;
+            if (tDescLine.startsWith("{\"k\":")) {
+                translated = resolveJsonLocalization(tDescLine);
             } else {
-                final String tTranslated = TooltipMarkupProcessor
-                    .formatTranslatedLine(tDescLine, translate(removeStart(tDescLine, INDENT_MARK)));
-                if (aList != null) aList.add(tTranslated.isEmpty() ? tDescLine : tTranslated);
+                translated = translate(removeStart(tDescLine, INDENT_MARK));
             }
+
+            final String formatted = TooltipMarkupProcessor.formatTranslatedLine(tDescLine, translated);
+            if (aList != null) aList.add(formatted.isEmpty() ? tDescLine : formatted);
         }
         TooltipMarkupProcessor.processTooltips(aList);
     }

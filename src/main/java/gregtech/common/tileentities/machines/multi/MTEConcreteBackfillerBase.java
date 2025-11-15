@@ -112,8 +112,8 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
             .addStructurePart(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, getFrameMaterial(), 1)
                     .getDisplayName(),
-                "gt.driller_shaped_mb.info.generic.frame")
-            .addEnergyHatch(GTUtility.translate("gt.backfiller.info.energy", VN[getMinTier()]), 1)
+                "gt.driller_shaped_mb.info.frame")
+            .addEnergyHatch(GTUtility.addParams("gt.backfiller.info.energy", VN[getMinTier()]), 1)
             .addMaintenanceHatch("gt.backfiller.info.maintenance", 1)
             .addInputBus("gt.backfiller.info.i_bus", 1)
             .addInputHatch("gt.backfiller.info.i_hatch", 1)

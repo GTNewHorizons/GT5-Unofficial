@@ -132,6 +132,10 @@ import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.SetMultimap;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonNull;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
@@ -184,7 +188,6 @@ import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.RunnableSound;
-import gregtech.api.util.tooltip.TooltipMarkupProcessor;
 import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.ores.OreManager;
 import gregtech.common.pollution.Pollution;
@@ -4654,20 +4657,25 @@ public class GTUtility {
      * nothing gets hardcoded on startup<br>
      * for a seamless translation experience
      */
-    public static String appendParams(String locKey, Object... params) {
+    public static String addParams(String locKey, Object... params) {
         if (params == null || params.length == 0) {
             return locKey;
         }
 
-        StringBuilder sb = new StringBuilder();
-        sb.append(locKey);
+        JsonObject json = new JsonObject();
+        json.addProperty("k", locKey);
 
+        JsonArray paramsArray = new JsonArray();
         for (Object param : params) {
-            sb.append(TooltipMarkupProcessor.LOC_SEPARATOR);
-            sb.append(param != null ? param.toString() : "");
+            if (param == null) {
+                paramsArray.add(JsonNull.INSTANCE);
+            } else {
+                paramsArray.add(new JsonPrimitive(param.toString()));
+            }
         }
+        json.add("p", paramsArray);
 
-        return sb.toString();
+        return json.toString();
     }
 
     /**

@@ -23,7 +23,6 @@ public class TooltipMarkupProcessor {
     public static final String STRUCTURE_SEPARATOR_MARK = "<S_SEPARATOR>";
     public static final String FINISHER_MARK = "<FINISHER>";
     public static final String LINE_BREAK = "\\n";
-    public static final String LOC_SEPARATOR = "\u001F";
 
     @SideOnly(Side.CLIENT)
     public static void processTooltips(List<String> tooltips) {
@@ -167,8 +166,10 @@ public class TooltipMarkupProcessor {
     }
 
     public static String formatTranslatedLine(String original, String translated) {
-        String indent = original.startsWith(INDENT_MARK) ? INDENT : "";
-        return indent
-            + translated.replace(LINE_BREAK, original.startsWith(INDENT_MARK) ? LINE_BREAK + INDENT : LINE_BREAK);
+        boolean hasIndent = original.startsWith(INDENT_MARK) || translated.startsWith(INDENT_MARK);
+        String cleanTranslated = translated.startsWith(INDENT_MARK) ? translated.substring(INDENT_MARK.length())
+            : translated;
+        String indent = hasIndent ? INDENT : "";
+        return indent + cleanTranslated.replace(LINE_BREAK, hasIndent ? LINE_BREAK + INDENT : LINE_BREAK);
     }
 }
