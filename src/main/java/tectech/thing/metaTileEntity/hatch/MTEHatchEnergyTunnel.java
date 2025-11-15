@@ -19,6 +19,7 @@ import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTUtility;
@@ -28,6 +29,7 @@ import tectech.util.CommonValues;
 /**
  * Created by danie_000 on 16.12.2016.
  */
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchEnergyTunnel extends MTEHatchEnergyMulti implements IConnectsToEnergyTunnel {
 
     public MTEHatchEnergyTunnel(int aID, String aName, String aNameRegional, int aTier, int aAmp) {

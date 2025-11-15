@@ -2,6 +2,8 @@ package gregtech.common.items;
 
 import java.util.Arrays;
 
+import net.minecraft.util.StatCollector;
+
 import org.apache.commons.lang3.text.WordUtils;
 
 import gregtech.api.enums.Materials;
@@ -239,7 +241,7 @@ public enum CombType {
     public final int chance;
 
     private final int id;
-    private final String localizedName;
+    private final String name;
     private final int[] color;
 
     CombType(int id, String pName, boolean show, Materials material, int chance, int color1, int color2) {
@@ -255,7 +257,8 @@ public enum CombType {
         this.chance = chance;
         this.showInList = show;
         this.color = new int[] { color1, color2 };
-        this.localizedName = GTLanguageManager
+        this.name = pName;
+        GTLanguageManager
             .addStringLocalization("comb." + pName, WordUtils.capitalize(pName.replaceAll("_", " ")) + " Comb");
     }
 
@@ -263,9 +266,8 @@ public enum CombType {
         this.showInList = false;
     }
 
-    public String getName() {
-
-        return this.localizedName;
+    public String getLocalizedName() {
+        return StatCollector.translateToLocal("comb." + name);
     }
 
     public int[] getColours() {
