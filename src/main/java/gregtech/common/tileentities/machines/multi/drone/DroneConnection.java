@@ -127,4 +127,9 @@ public class DroneConnection {
     public boolean isValid() {
         return machine != null && machine.isValid() && centre != null && centre.isValid();
     }
+    //Todo: NO MORE MTE STORED
+    @Override
+    public boolean equals(Object obj){
+        return obj instanceof DroneConnection dc && dc.machineCoord.equals(machineCoord) && dc.centreCoord.equals(centreCoord);
+    }
 }

@@ -33,6 +33,10 @@ public class Gregtech {
     @Config.LangKey("GT5U.gui.config.gregtech.debug")
     public static class Debug {
 
+        @Config.Comment("enable Drone Centre MUI2 mode")
+        @Config.DefaultBoolean(true)
+        public boolean D0;
+
         @Config.Comment("enable D1 flag (a set of debug logs)")
         @Config.DefaultBoolean(false)
         @Config.RequiresMcRestart
