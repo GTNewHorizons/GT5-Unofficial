@@ -1,6 +1,4 @@
-package gregtech.common.tileentities.machines.multi.gui.nanochip;
-
-import java.util.List;
+package gregtech.common.gui.modularui.multiblock;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -19,13 +17,13 @@ import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
-import com.cleanroommc.modularui.widget.SingleChildWidget;
 import com.cleanroommc.modularui.widget.scroll.ScrollData;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.PageButton;
 import com.cleanroommc.modularui.widgets.PagedWidget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
+import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
@@ -50,33 +48,35 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
         this.base = base;
     }
 
-    // TODO: this implementation kinda super sucks. once things in basegui are more solid we should refactor this method
-    // TODO: there a bit so this is a little easier to do
     @Override
     protected Flow createTerminalRow(ModularPanel panel, PanelSyncManager syncManager) {
-        Flow row = super.createTerminalRow(panel, syncManager);
-        List<IWidget> aunts = row.getChildren();
-        // what a terrible way to add to the parent background widget
-        if (!aunts.isEmpty() && (aunts.get(0) instanceof ParentWidget<?>parent)) {
-            List<IWidget> sisters = parent.getChildren();
-            // what a terrible way to change the logo widget
-            if (!sisters.isEmpty() && (sisters.get(1) instanceof SingleChildWidget<?>logo)) {
-                logo.setEnabledIf(a -> !base.isTalkModeActive);
-            }
-            textList.setEnabledIf(a -> base.isTalkModeActive)
-                .childSeparator(
-                    IDrawable.EMPTY.asIcon()
-                        .height(2))
-                .size(getTerminalWidgetWidth() - 10, getTerminalWidgetHeight() - 8);
-            parent.child(textList);
+        return super.createTerminalRow(panel, syncManager).child(createGREGOSMeterPages(panel, syncManager));
+    }
 
-        }
-        return row.child(createGREGOSMeterPages(panel, syncManager));
+    @Override
+    protected ParentWidget<?> createTerminalParentWidget(ModularPanel panel, PanelSyncManager syncManager) {
+        textList.setEnabledIf(a -> base.isTalkModeActive)
+            .childSeparator(
+                IDrawable.EMPTY.asIcon()
+                    .height(2))
+            .size(getTerminalWidgetWidth(), getTerminalWidgetHeight() - 8);
+        return super.createTerminalParentWidget(panel, syncManager).child(textList);
+    }
+
+    // disables hoverable in talk mode
+    @Override
+    protected boolean shouldShutdownReasonBeDisplayed(String shutdownString) {
+        return super.shouldShutdownReasonBeDisplayed(shutdownString) && !base.isTalkModeActive;
     }
 
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
         return super.createTerminalTextWidget(syncManager, parent).setEnabledIf(flow -> !base.isTalkModeActive);
+    }
+
+    @Override
+    protected IDrawable.DrawableWidget makeLogoWidget() {
+        return super.makeLogoWidget().setEnabledIf(a -> !base.isTalkModeActive);
     }
 
     @Override
@@ -91,7 +91,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
 
     public IWidget createTalkTextField(ModularPanel panel, PanelSyncManager syncManager) {
         return new TerminalTextFieldWidget(textList, syncManager).setFocusOnGuiOpen(true)
-            .size(getTerminalRowWidth() - 27, 10);
+            .size(getTerminalRowWidth() - 27, 14);
     }
 
     @Override
@@ -108,6 +108,22 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
     }
 
     @Override
+    protected int getMufflerPosFromRightOutwards() {
+        return -4;
+    }
+
+    @Override
+    protected int getMufflerPosFromTop() {
+        return 4;
+    }
+
+    @Override
+    protected ToggleButton createMuffleButton() {
+        return super.createMuffleButton().background(IDrawable.EMPTY)
+            .disableHoverBackground();
+    }
+
+    @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
         syncManager
@@ -119,9 +135,9 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
 
     public IWidget createGREGOSMeterPages(ModularPanel panel, PanelSyncManager syncManager) {
 
-        DoubleSyncValue moodSyncer = (DoubleSyncValue) syncManager.getSyncHandler("mood:0");
-        DoubleSyncValue effSyncer = (DoubleSyncValue) syncManager.getSyncHandler("eff:0");
-        DoubleSyncValue speedSyncer = (DoubleSyncValue) syncManager.getSyncHandler("speed:0");
+        DoubleSyncValue moodSyncer = syncManager.findSyncHandler("mood", DoubleSyncValue.class);
+        DoubleSyncValue effSyncer = syncManager.findSyncHandler("eff", DoubleSyncValue.class);
+        DoubleSyncValue speedSyncer = syncManager.findSyncHandler("speed", DoubleSyncValue.class);
 
         PagedWidget.Controller tabController = new PagedWidget.Controller();
         PagedWidget<?> pagedWidget = new PagedWidget<>().controller(tabController);
@@ -249,7 +265,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
         };
     }
 
-    public class TerminalTextFieldWidget extends TextFieldWidget {
+    private class TerminalTextFieldWidget extends TextFieldWidget {
 
         TerminalTextListWidget list;
         PanelSyncManager syncManager;
@@ -263,7 +279,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
         @Override
         public void onInit() {
             super.onInit();
-            BooleanSyncValue talkSyncer = (BooleanSyncValue) syncManager.getSyncHandler("talk:0");
+            BooleanSyncValue talkSyncer = syncManager.findSyncHandler("talk", BooleanSyncValue.class);
             talkSyncer.setChangeListener(this::updateHintText);
         }
 
@@ -275,7 +291,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
                 // Reset the text box to be blank
                 this.handler.clear();
                 if (!checkForKeywords(text) && base.isTalkModeActive) {
-                    DoubleSyncValue moodSyncer = (DoubleSyncValue) syncManager.getSyncHandler("mood:0");
+                    DoubleSyncValue moodSyncer = syncManager.findSyncHandler("mood", DoubleSyncValue.class);
                     moodSyncer.setValue(Math.min(1, moodSyncer.getValue() + 0.05));
                     list.child(createPlayerTextWidget(text));
                     list.child(createResponseTextWidget(getGREGOSResponse(text)));
@@ -286,7 +302,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
         }
 
         public boolean checkForKeywords(String text) {
-            BooleanSyncValue talkSyncer = (BooleanSyncValue) syncManager.getSyncHandler("talk:0");
+            BooleanSyncValue talkSyncer = syncManager.findSyncHandler("talk", BooleanSyncValue.class);
             return switch (text.toLowerCase()) {
                 case "talk" -> {
                     talkSyncer.setValue(true);
@@ -300,22 +316,24 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
             };
         }
 
-        public TextWidget createResponseTextWidget(String text) {
-            return new TextWidget(text).color(list.responseTextColor);
+        public TextWidget<?> createResponseTextWidget(String text) {
+            return new TextWidget<>(text).color(list.responseTextColor)
+                .anchorLeft(0)
+                .width(getTerminalWidgetWidth() - 6);
         }
 
-        public TextWidget createPlayerTextWidget(String text) {
-            return new TextWidget<>(text).alignX(1F)
+        public TextWidget<?> createPlayerTextWidget(String text) {
+            return new TextWidget<>(text).right(6)
                 .color(list.playerTextColor);
         }
 
         public void updateHintText() {
-            BooleanSyncValue talkSyncer = (BooleanSyncValue) syncManager.getSyncHandler("talk:0");
+            BooleanSyncValue talkSyncer = syncManager.findSyncHandler("talk", BooleanSyncValue.class);
             this.hintText(talkSyncer.getValue() ? fieldHintExit : fieldHintTalk);
         }
     }
 
-    public class TerminalTextListWidget extends ListWidget<IWidget, TerminalTextListWidget> {
+    private class TerminalTextListWidget extends ListWidget<IWidget, TerminalTextListWidget> {
 
         public int playerTextColor = Color.WHITE.main;
         public int responseTextColor = Color.CYAN.main;
@@ -329,7 +347,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
         public void onInit() {
             super.onInit();
             this.child(
-                new TextWidget<>("Ask GREGOS a question").alignX(0.5F)
+                new TextWidget<>("Ask GREGOS a question").left(6)
                     .color(genericTextColor));
         }
 
