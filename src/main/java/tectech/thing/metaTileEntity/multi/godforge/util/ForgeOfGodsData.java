@@ -5,6 +5,7 @@ import static tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpg
 import java.math.BigInteger;
 import java.util.Collection;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
 
@@ -81,6 +82,7 @@ public class ForgeOfGodsData {
     private final UpgradeStorage upgrades = new UpgradeStorage();
     // todo remove
     private ForgeOfGodsUpgrade currentUpgradeWindow;
+    private final ItemStack[] storedUpgradeWindowItems = new ItemStack[16];
 
     // Star cosmetics fields
     // actual star cosmetics
@@ -420,6 +422,10 @@ public class ForgeOfGodsData {
         this.currentUpgradeWindow = currentUpgradeWindow;
     }
 
+    public ItemStack[] getStoredUpgradeWindowItems() {
+        return storedUpgradeWindowItems;
+    }
+
     public StarColorStorage getStarColors() {
         return starColors;
     }
@@ -542,6 +548,21 @@ public class ForgeOfGodsData {
             NBT.setInteger("formatter", formatter.ordinal());
         }
 
+        // Upgrade window stored items
+        if (force) {
+            NBTTagCompound upgradeWindowStorageNBTTag = new NBTTagCompound();
+            int storageIndex = 0;
+            for (ItemStack itemStack : storedUpgradeWindowItems) {
+                if (itemStack != null) {
+                    upgradeWindowStorageNBTTag
+                        .setInteger(storageIndex + "stacksizeOfStoredUpgradeItems", itemStack.stackSize);
+                    NBT.setTag(storageIndex + "storedUpgradeItem", itemStack.writeToNBT(new NBTTagCompound()));
+                }
+                storageIndex++;
+            }
+            NBT.setTag("upgradeWindowStorage", upgradeWindowStorageNBTTag);
+        }
+
         upgrades.serializeToNBT(NBT, force);
         starColors.serializeToNBT(NBT);
     }
@@ -586,6 +607,18 @@ public class ForgeOfGodsData {
         if (NBT.hasKey("formatter")) {
             int index = MathHelper.clamp_int(NBT.getInteger("formatter"), 0, Formatters.VALUES.length);
             formatter = Formatters.VALUES[index];
+        }
+
+        // Stored items
+        NBTTagCompound tempItemTag = NBT.getCompoundTag("upgradeWindowStorage");
+        if (tempItemTag != null) {
+            for (int index = 0; index < 16; index++) {
+                int stackSize = tempItemTag.getInteger(index + "stacksizeOfStoredUpgradeItems");
+                ItemStack itemStack = ItemStack.loadItemStackFromNBT(NBT.getCompoundTag(index + "storedUpgradeItem"));
+                if (itemStack != null) {
+                    storedUpgradeWindowItems[index] = itemStack.splitStack(stackSize);
+                }
+            }
         }
 
         // Renderer information
