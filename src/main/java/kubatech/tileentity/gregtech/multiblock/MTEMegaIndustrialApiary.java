@@ -137,6 +137,7 @@ import kubatech.api.DynamicInventory;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.client.effect.MegaApiaryBeesRenderer;
 
+// public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaIndustrialApiary>
 public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaIndustrialApiary>
     implements ISurvivalConstructable {
 
@@ -728,6 +729,8 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     private static final UIInfo<?, ?> MegaApiaryUI = createKTMetaTileEntityUI(
         KT_ModulaUIContainer_MegaIndustrialApiary::new);
 
+    //spotless:off
+    /*
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
@@ -739,6 +742,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             aBaseMetaTileEntity.getZCoord());
         return true;
     }
+    */
 
     private static class KT_ModulaUIContainer_MegaIndustrialApiary extends ModularUIContainer {
 
@@ -1416,4 +1420,22 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             });
         }
     }
+
+    // !!!!!!!!!
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    protected @NotNull MTEMapiaryGui getGui() {
+        return new MTEMapiaryGui(this);
+    }
+
+    public int getPrimaryMode(){return mPrimaryMode;}
+    public void setPrimaryMode(int primaryMode){mPrimaryMode = primaryMode;}
+
+    public int getSecondaryMode(){return mSecondaryMode;}
+    public void setSecondaryMode(int SecondaryMode){mSecondaryMode = SecondaryMode;}
 }

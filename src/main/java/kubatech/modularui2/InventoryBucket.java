@@ -1,10 +1,12 @@
 package kubatech.modularui2;
 
-import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 
 // Most of the code is from kubatech.api.eig.EIGBucket
 public interface InventoryBucket<MTE extends KubaTechGTMultiBlockBase<MTE>> {
@@ -22,7 +24,6 @@ public interface InventoryBucket<MTE extends KubaTechGTMultiBlockBase<MTE>> {
      * @return The display name of the ItemStack.
      */
     String getDisplayName();
-
 
     /**
      * Attempts to add seeds to bucket if the input is compatible
