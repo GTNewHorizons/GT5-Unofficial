@@ -251,20 +251,6 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch implements IAddGreg
     }
 
     @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {
-        switch (totalSlotCount) {
-            case 8, 18 -> builder.widget(
-                new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
-                    .setSize(17, 17)
-                    .setPos(152, 63));
-            case 32 -> builder.widget(
-                new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
-                    .setSize(17, 17)
-                    .setPos(79, 35));
-        }
-    }
-
-    @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEHatchNbtConsumableGui(this).build(data, syncManager, uiSettings);
     }
