@@ -411,7 +411,8 @@ public class RecipeLoaderChemicalSkips {
                 Particle.getBaseParticle(Particle.W_BOSON),
                 Particle.getBaseParticle(Particle.LAMBDA),
                 Particle.getBaseParticle(Particle.OMEGA),
-                Particle.getBaseParticle(Particle.HIGGS_BOSON))
+                Particle.getBaseParticle(Particle.HIGGS_BOSON),
+                Particle.getBaseParticle(Particle.ETA_MESON))
             .fluidInputs(
                 FluidUtils.getFluidStack("plasma.hydrogen", 30_000),
                 Materials.Helium.getPlasma(30_000),
