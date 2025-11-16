@@ -1,14 +1,28 @@
 package kubatech.tileentity.gregtech.multiblock;
 
+import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.DynamicDrawable;
+import com.cleanroommc.modularui.drawable.GuiTextures;
+import com.cleanroommc.modularui.drawable.ItemDrawable;
+import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.value.BoolValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widget.ParentWidget;
+import com.cleanroommc.modularui.widgets.PageButton;
+import com.cleanroommc.modularui.widgets.PagedWidget;
+import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.slot.ItemSlot;
-import com.cleanroommc.modularui.widgets.slot.ModularSlot;
+import com.cleanroommc.modularui.widgets.layout.Row;
+import gregtech.api.GregTechAPI;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
+import net.minecraft.item.ItemStack;
+
+
+import gregtech.api.enums.MetaTileEntityIDs;
 
 // for Mapiary and EIG
 public class MTEKubaExtraInventoryGui<T extends KubaTechGTMultiBlockBase<T>> extends MTEKubaGui<T> {
@@ -17,23 +31,32 @@ public class MTEKubaExtraInventoryGui<T extends KubaTechGTMultiBlockBase<T>> ext
     }
 
     @Override
-    protected Flow createButtonColumn(ModularPanel panel, PanelSyncManager syncManager) {
-        return new Column().width(18)
-            .leftRel(1, -2, 1)
-            .mainAxisAlignment(Alignment.MainAxis.END)
-            .reverseLayout(true)
-            .child(createExtraInventoryButton())
-            .child(createPowerSwitchButton())
-            .child(createStructureUpdateButton(syncManager));
+    protected Flow createTerminalRow(ModularPanel panel, PanelSyncManager syncManager){
+        PagedWidget.Controller tabController = new PagedWidget.Controller();
 
+        PagedWidget<?> pagedWidget = new PagedWidget<>().controller(tabController);
+        pagedWidget
+            // preventative comment so spotless doesnt move child call up
+            .addPage(super.createTerminalRow(panel, syncManager))
+            .addPage(createExtraInventory(panel, syncManager))
+            .size(getTerminalRowWidth(), getTerminalRowHeight());
+
+        Flow pageButtons = new Column().coverChildren()
+            .child(
+                new PageButton(0, tabController).tab(GuiTextures.TAB_RIGHT, -1)
+                    .overlay(new ItemDrawable(multiblock.getMachineCraftingIcon()).asIcon()))
+            .child(
+                new PageButton(1, tabController).tab(GuiTextures.TAB_RIGHT, 0)
+                    .overlay(new ItemDrawable(new ItemStack(GregTechAPI.sBlockMachines, 1, MetaTileEntityIDs.QUANTUM_CHEST_LV.ID)).asIcon()))
+            .excludeAreaInRecipeViewer(true);
+
+        return new Row()
+            .size(getTerminalRowWidth(), getTerminalRowHeight())
+            .child(pagedWidget)
+            .child(pageButtons);
     }
 
-    // Todo. Rewrite this to actually Inventory
-    protected IWidget createExtraInventoryButton(){
-        return new ItemSlot()
-            .slot(
-                new ModularSlot(multiblock.inventoryHandler, multiblock.getControllerSlotIndex())
-                    .slotGroup("item_inv"))
-            .marginTop(4);
+    protected IWidget createExtraInventory(ModularPanel panel, PanelSyncManager syncManager){
+        return new Row().size(getTerminalRowWidth(), getTerminalRowHeight());
     }
 }
