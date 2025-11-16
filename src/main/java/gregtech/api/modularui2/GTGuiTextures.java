@@ -412,10 +412,26 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.PROGRESSBAR_FUEL_BRONZE, GTTextureIds.PROGRESSBAR_FUEL_STEEL, null)
         .build();
+
     public static final UITexture PROGRESSBAR_SIEVERT = UITexture.builder()
         .location(MainMod.MOD_ID, "GUI/progressbar/sievert")
         .fullImage()
         .name(GTTextureIds.PROGRESSBAR_SIEVERT)
+        .build();
+    public static final UITexture PROGRESSBAR_METER_MINT = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/meter_mint")
+        .fullImage()
+        .name(GTTextureIds.PROGRESSBAR_METER_MINT)
+        .build();
+    public static final UITexture PROGRESSBAR_METER_ORANGE = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/meter_orange")
+        .fullImage()
+        .name(GTTextureIds.PROGRESSBAR_METER_ORANGE)
+        .build();
+    public static final UITexture PROGRESSBAR_METER_ROSE = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/meter_rose")
+        .fullImage()
+        .name(GTTextureIds.PROGRESSBAR_METER_ROSE)
         .build();
 
     public static final UITexture STEAM_GAUGE_BG = UITexture.fullImage(GregTech.ID, "gui/background/steam_dial");
@@ -624,6 +640,17 @@ public final class GTGuiTextures {
         .location(MainMod.MOD_ID, "GUI/picture/bw_logo_47x21")
         .fullImage()
         .name(GTTextureIds.PICTURE_BW_LOGO_STANDARD)
+        .build();
+
+    public static final UITexture PICTURE_BRAIN = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/brain")
+        .fullImage()
+        .name(GTTextureIds.PICTURE_BRAIN)
+        .build();
+    public static final UITexture PICTURE_ELECRICITY = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/electricity")
+        .fullImage()
+        .name(GTTextureIds.PICTURE_ELECRICITY)
         .build();
 
     public static final UITexture PICTURE_TRANSPARENT = UITexture.builder()

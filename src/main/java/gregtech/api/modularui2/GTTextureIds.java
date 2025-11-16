@@ -19,6 +19,8 @@ public final class GTTextureIds {
     public static final String BACKGROUND_TITLE_PRIMITIVE = "gregtech:bg_title_primitive";
 
     public static final String BACKGROUND_TERMINAL_STANDARD = "gregtech:bg_terminal_standard";
+    public static final String BACKGROUND_TEXT_FIELD = "gregtech:bg_text_field";
+    public static final String BACKGROUND_TEXT_FIELD_LIGHT_GRAY = "gregtech:bg_text_field_light_gray";
     public static final String BACKGROUND_TERMINAL_TECTECH = "gregtech:bg_terminal_tectech";
     public static final String BACKGROUND_REDSTONE_SNIFFER = "gregtech:bg_redstone_sniffer";
     public static final String BACKGROUND_CHAOS_LOCATOR = "gregtech:bg_chaos_locator";
@@ -116,6 +118,8 @@ public final class GTTextureIds {
     public static final String PICTURE_INFORMATION_SYMBOL = "gregtech:picture_information_symbol";
     public static final String PICTURE_INFORMATION_BUBBLE = "gregtech:picture_information_bubble";
     public static final String PICTURE_BW_LOGO_STANDARD = "bartworks:picture_bw_logo";
+    public static final String PICTURE_BRAIN = "gregtech:picture_brain";
+    public static final String PICTURE_ELECRICITY = "gregtech:picture_electricity";
     public static final String PICTURE_SIEVERT_CONTAINER = "bartworks:picture_bw_sievert_container";
     public static final String PICTURE_DECAY_TIME_CONTAINER = "bartworks:picture_bw_decay_time_container";
     public static final String PICTURE_DECAY_TIME_INSIDE = "bartworks:picture_bw_decay_time_inside";
