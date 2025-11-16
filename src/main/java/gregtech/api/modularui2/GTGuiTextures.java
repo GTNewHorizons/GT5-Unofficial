@@ -421,11 +421,6 @@ public final class GTGuiTextures {
     public static final UITexture STEAM_GAUGE_BG = UITexture.fullImage(GregTech.ID, "gui/background/steam_dial");
     public static final UITexture STEAM_GAUGE_BG_STEEL = UITexture
         .fullImage(GregTech.ID, "gui/background/steam_dial_steel");
-    public static final UITexture PROGRESSBAR_SIEVERT = UITexture.builder()
-        .location(MainMod.MOD_ID, "GUI/progressbar/sievert")
-        .fullImage()
-        .name(GTTextureIds.PROGRESSBAR_SIEVERT)
-        .build();
     public static final UITexture PROGRESSBAR_METER_MINT = UITexture.builder()
         .location(GregTech.ID, "gui/progressbar/meter_mint")
         .fullImage()
@@ -678,12 +673,6 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.PICTURE_RADIATION_SHUTTER_INSIDE)
         .build();
-    public static final UITexture PICTURE_BARTWORKS_LOGO_STANDARD = UITexture.builder()
-        .location(MainMod.MOD_ID, "GUI/picture/bw_logo_47x21")
-        .fullImage()
-        .name(GTTextureIds.PICTURE_BW_LOGO_STANDARD)
-        .build();
-
     public static final UITexture PICTURE_BRAIN = UITexture.builder()
         .location(GregTech.ID, "gui/picture/brain")
         .fullImage()
@@ -693,42 +682,6 @@ public final class GTGuiTextures {
         .location(GregTech.ID, "gui/picture/electricity")
         .fullImage()
         .name(GTTextureIds.PICTURE_ELECRICITY)
-        .build();
-
-    public static final UITexture PICTURE_TRANSPARENT = UITexture.builder()
-        .location(GregTech.ID, "gui/picture/transparent")
-        .fullImage()
-        .name(GTTextureIds.PICTURE_TRANSPARENT)
-        .build();
-    public static final UITexture PICTURE_SIEVERT_CONTAINER = UITexture.builder()
-        .location(MainMod.MOD_ID, "GUI/picture/sievert_container")
-        .fullImage()
-        .canApplyTheme()
-        .name(GTTextureIds.PICTURE_SIEVERT_CONTAINER)
-        .build();
-    public static final UITexture PICTURE_DECAY_TIME_CONTAINER = UITexture.builder()
-        .location(MainMod.MOD_ID, "GUI/picture/decay_time_container")
-        .fullImage()
-        .canApplyTheme()
-        .name(GTTextureIds.PICTURE_DECAY_TIME_CONTAINER)
-        .build();
-    public static final UITexture PICTURE_DECAY_TIME_INSIDE = UITexture.builder()
-        .location(MainMod.MOD_ID, "GUI/picture/decay_time_inside")
-        .fullImage()
-        .canApplyTheme()
-        .name(GTTextureIds.PICTURE_DECAY_TIME_INSIDE)
-        .build();
-    public static final UITexture PICTURE_RADIATION_SHUTTER_FRAME = UITexture.builder()
-        .location(MainMod.MOD_ID, "GUI/picture/radiation_shutter_frame")
-        .fullImage()
-        .canApplyTheme()
-        .name(GTTextureIds.PICTURE_RADIATION_SHUTTER_FRAME)
-        .build();
-    public static final UITexture PICTURE_RADIATION_SHUTTER_INSIDE = UITexture.builder()
-        .location(MainMod.MOD_ID, "GUI/picture/radiation_shutter_inside")
-        .adaptable(1, 1, 1, 1)
-        .canApplyTheme()
-        .name(GTTextureIds.PICTURE_RADIATION_SHUTTER_INSIDE)
         .build();
 
     public static final UITexture TT_CONTROLLER_SLOT_HEAT_SINK = UITexture.builder()

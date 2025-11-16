@@ -81,7 +81,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         return new Row().widthRel(1)
             .paddingRight(6)
             .paddingLeft(4)
-            .height(textBoxToInventoryGap)
+            .height(22)
             .child(createTalkTextField(panel, syncManager));
     }
 

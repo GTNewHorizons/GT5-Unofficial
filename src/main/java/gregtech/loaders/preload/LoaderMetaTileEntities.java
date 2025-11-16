@@ -3,6 +3,7 @@ package gregtech.loaders.preload;
 // spotless:off
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.addItemTooltip;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.chain;
+import static gregtech.api.enums.MetaTileEntityIDs.*;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
@@ -205,15 +206,15 @@ import gregtech.common.tileentities.machines.multi.compressor.MTEIndustrialCompr
 import gregtech.common.tileentities.machines.multi.compressor.MTENeutroniumCompressor;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
-import gregtech.common.tileentities.machines.multi.pcb.MTEPCBBioChamber;
-import gregtech.common.tileentities.machines.multi.pcb.MTEPCBCoolingTower;
-import gregtech.common.tileentities.machines.multi.pcb.MTEPCBFactory;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
 import gregtech.common.tileentities.machines.multi.nanochip.MTEVacuumConveyorPipe;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchParticleSensor;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorOutput;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.*;
+import gregtech.common.tileentities.machines.multi.pcb.MTEPCBBioChamber;
+import gregtech.common.tileentities.machines.multi.pcb.MTEPCBCoolingTower;
+import gregtech.common.tileentities.machines.multi.pcb.MTEPCBFactory;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchDegasifierControl;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchLensHousing;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchLensIndicator;
