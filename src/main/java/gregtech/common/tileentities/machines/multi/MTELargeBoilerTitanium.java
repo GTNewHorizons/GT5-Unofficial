@@ -92,7 +92,7 @@ public class MTELargeBoilerTitanium extends MTELargeBoiler {
     }
 
     @Override
-    boolean isSuperheated() {
+    public boolean isSuperheated() {
         return true;
     }
 

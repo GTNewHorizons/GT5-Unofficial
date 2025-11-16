@@ -17,6 +17,10 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.formatNumbers;
+import static mcp.mobius.waila.api.SpecialChars.GREEN;
+import static mcp.mobius.waila.api.SpecialChars.RED;
+import static mcp.mobius.waila.api.SpecialChars.RESET;
+import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
@@ -24,9 +28,11 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import gregtech.api.util.GTWaila;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -389,9 +395,17 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
 
     abstract int runtimeBoost(int mTime);
 
-    abstract boolean isSuperheated();
+    public abstract boolean isSuperheated();
 
     private final int superToNormalSteam = 3;
+
+    public int getCurrentEfficiency() {
+        return mEfficiency;
+    }
+
+    public boolean isActive() {
+        return this.getBaseMetaTileEntity() != null && this.getBaseMetaTileEntity().isActive();
+    }
 
     @Override
     protected @NotNull MTELargeBoilerGui getGui() {
@@ -520,15 +534,44 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         final NBTTagCompound tag = accessor.getNBTData();
+        if (tag.getBoolean("incompleteStructure")) {
+            currentTip.add(RED + translateToLocalFormatted("GT5U.waila.multiblock.status.incomplete") + RESET);
+        }
+        String efficiency = RESET
+            + translateToLocalFormatted("GT5U.waila.multiblock.status.efficiency", tag.getFloat("efficiency"));
+        if (tag.getBoolean("hasProblems")) {
+            currentTip.add(RED + translateToLocal("GT5U.waila.multiblock.status.has_problem") + efficiency);
+        } else if (!tag.getBoolean("incompleteStructure")) {
+            currentTip.add(GREEN + translateToLocal("GT5U.waila.multiblock.status.running_fine") + efficiency);
+        }
         boolean isActive = tag.getBoolean("isActive");
         if (isActive) {
             currentTip.add(
                 translateToLocalFormatted(
                     "GT5U.waila.energy.produce_steam",
-                    formatNumbers(-tag.getLong("energyUsage") * 40L)));
+                    formatNumbers(-tag.getLong("energyUsage") * 40L/(isSuperheated() ? superToNormalSteam : 1)),
+                    isSuperheated() ? translateToLocal("GT5U.machines.large_boiler.gui.shsteam")
+                        : translateToLocal("GT5U.machines.large_boiler.gui.steam")));
+            long actualEnergyUsage = tag.getLong("energyUsage");
+                    currentTip.add(
+                        translateToLocalFormatted(
+                            "GT5U.waila.energy.steam_to_eu",
+                            formatNumbers(-actualEnergyUsage),
+                            GTUtility.getColoredTierNameFromVoltage(-actualEnergyUsage)));
         }
-
-        super.getWailaBody(itemStack, currentTip, accessor, config);
+        currentTip.add(
+            GTWaila.getMachineProgressString(
+                isActive,
+                tag.getBoolean("isAllowedToWork"),
+                tag.getInteger("maxProgress"),
+                tag.getInteger("progress")));
+        currentTip.add(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.waila.facing",
+                getFacingNameLocalized(
+                    this.getBaseMetaTileEntity().getFrontFacing()
+                        .ordinal())));
+//        super.getWailaBody(itemStack, currentTip, accessor, config);
     }
 
     private int adjustBurnTimeForConfig(int rawBurnTime) {

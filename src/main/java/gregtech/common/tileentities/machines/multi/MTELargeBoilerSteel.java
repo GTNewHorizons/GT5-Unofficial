@@ -92,7 +92,7 @@ public class MTELargeBoilerSteel extends MTELargeBoiler {
     }
 
     @Override
-    boolean isSuperheated() {
+    public boolean isSuperheated() {
         return false;
     }
 
