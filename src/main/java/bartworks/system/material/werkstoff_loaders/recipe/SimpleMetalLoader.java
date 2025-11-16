@@ -155,7 +155,8 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
 
             if (werkstoff != WerkstoffLoader.Fluorophlogopite) {
                 GTValues.RA.stdBuilder()
-                    .itemInputs(werkstoff.get(plate), GTUtility.getIntegratedCircuit(1))
+                    .itemInputs(werkstoff.get(plate))
+                    .iCircuit(1)
                     .itemOutputs(werkstoff.get(foil, 4))
                     .duration(
                         (int) Math.max(
@@ -167,7 +168,8 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
             }
 
             GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(ingot), GTUtility.getIntegratedCircuit(10))
+                .itemInputs(werkstoff.get(ingot))
+                .iCircuit(10)
                 .itemOutputs(werkstoff.get(foil, 4))
                 .duration(
                     (int) Math.max(
