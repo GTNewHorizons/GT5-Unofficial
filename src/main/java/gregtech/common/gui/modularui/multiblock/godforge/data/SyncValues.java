@@ -72,7 +72,7 @@ public class SyncValues<T extends ValueSyncHandler<?>> {
 
     public static final SyncValues<IntSyncValue> PREVIEW_FUEL_FACTOR = new SyncValues<>(
         "fog.sync.preview_fuel_factor",
-        data-> new IntSyncValue(data::getPreviewFuelConsumptionFactor,data::setPreviewFuelConsumptionFactor));
+        data -> new IntSyncValue(data::getPreviewFuelConsumptionFactor, data::setPreviewFuelConsumptionFactor));
 
     // ------- //
     // Battery //

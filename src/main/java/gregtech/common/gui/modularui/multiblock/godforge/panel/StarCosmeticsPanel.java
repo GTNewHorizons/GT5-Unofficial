@@ -202,6 +202,7 @@ public class StarCosmeticsPanel {
         Flow row = new Row().coverChildren()
             .marginBottom(4);
 
+        // todo tooltip and button press area are messed up here
         row.child(
             new ParentWidget<>().size(16)
                 .child(

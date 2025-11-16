@@ -40,12 +40,8 @@ public enum Statistics {
     }
 
     // todo: test if this works with upgrades when synced, it works fine with preview fuel
-    public String calculate(MTEBaseModule module, int fuelFactor, ForgeOfGodsData data,
-        Formatters format) {
-        String relevantInfo = "report me :(";
-        if (data == null) return relevantInfo;
-
-        relevantInfo = switch (this) {
+    public String calculate(MTEBaseModule module, int fuelFactor, ForgeOfGodsData data, Formatters format) {
+        return switch (this) {
             case HEAT -> {
                 GodforgeMath.calculateMaxHeatForModules(module, data, fuelFactor);
                 yield String.valueOf(format.format(module.getHeat()));
@@ -75,7 +71,6 @@ public enum Statistics {
                 yield String.valueOf(MilestoneFormatter.EXPONENT.format((module.getProcessingVoltage())));
             }
         };
-        return relevantInfo;
     }
 
 }
