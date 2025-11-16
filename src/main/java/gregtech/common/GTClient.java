@@ -589,6 +589,8 @@ public class GTClient extends GTProxy {
             addHazmatTooltip(event, HazardProtectionTooltip.EXTREME_TEMP_TRANSLATION_KEY);
         }
         for (Hazard hazard : protections) {
+            // Handled by GalaxySpace
+            if (hazard == Hazard.SPACE) continue;
             addHazmatTooltip(event, HazardProtectionTooltip.singleHazardTranslationKey(hazard));
         }
     }

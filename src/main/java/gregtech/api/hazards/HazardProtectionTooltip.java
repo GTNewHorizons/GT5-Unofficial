@@ -17,6 +17,7 @@ public class HazardProtectionTooltip {
             case RADIOLOGICAL -> "GT5U.providesradiohazmatprotection";
             case ELECTRICAL -> "GT5U.provideselectricalhazmatprotection";
             case GAS -> "GT5U.providesgashazmatprotection";
+            case SPACE -> "tooltip.spacesuit";
         };
     }
 
