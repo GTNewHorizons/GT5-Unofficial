@@ -1,6 +1,11 @@
 package gregtech.common.gui.modularui.multiblock.godforge.panel;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import java.util.Arrays;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -8,12 +13,18 @@ import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.Dialog;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
+import com.cleanroommc.modularui.widgets.layout.Column;
+import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
+import codechicken.nei.recipe.GuiCraftingRecipe;
+import codechicken.nei.recipe.GuiUsageRecipe;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.StringUtils;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
@@ -21,6 +32,7 @@ import gregtech.common.gui.modularui.multiblock.godforge.data.SyncActions;
 import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValues;
 import gregtech.common.gui.modularui.multiblock.godforge.util.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
+import gregtech.common.modularui2.widget.SlotLikeButtonWidget;
 import tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade;
 
 public class ManualInsertionPanel {
@@ -46,20 +58,46 @@ public class ManualInsertionPanel {
             .background(GTGuiTextures.BACKGROUND_STANDARD)
             .disableHoverBackground();
 
-        // Inputs grid
-        dialog.child(createInputSlots(hypervisor));
+        Flow mainRow = new Row().size(SIZE_W - 10, 72)
+            .align(Alignment.TopLeft)
+            .marginLeft(5)
+            .marginTop(6); // todo change this margin
 
+        // Required inputs and input progress columns
+        mainRow.child(
+            new Column().size(36, 72)
+                .child(createCostRow(hypervisor, 0))
+                .child(createCostRow(hypervisor, 1))
+                .child(createCostRow(hypervisor, 2))
+                .child(createCostRow(hypervisor, 3)));
+        mainRow.child(
+            new Column().size(36, 72)
+                .child(createCostRow(hypervisor, 4))
+                .child(createCostRow(hypervisor, 5))
+                .child(createCostRow(hypervisor, 6))
+                .child(createCostRow(hypervisor, 7)));
+        mainRow.child(
+            new Column().size(36, 72)
+                .child(createCostRow(hypervisor, 8))
+                .child(createCostRow(hypervisor, 9))
+                .child(createCostRow(hypervisor, 10))
+                .child(createCostRow(hypervisor, 11)));
+
+        // Inputs grid
+        mainRow.child(createInputSlots(hypervisor));
+
+        dialog.child(mainRow);
+
+        // Consume inputs button
         EnumSyncValue<ForgeOfGodsUpgrade> upgradeSyncer = SyncValues.UPGRADE_CLICKED
             .lookupFrom(Panels.UPGRADE_TREE, hypervisor);
 
-        // Required inputs and input progress columns
-        // todo
-
-        // Consume inputs button
         dialog.child(
             new ButtonWidget<>().background(GTGuiTextures.BUTTON_STANDARD)
                 .overlay(
-                    IKey.lang("gt.blockmachines.multimachine.FOG.consumeUpgradeMats")
+                    IKey.str(
+                        EnumChatFormatting.DARK_GRAY
+                            + translateToLocal("gt.blockmachines.multimachine.FOG.consumeUpgradeMats"))
                         .alignment(Alignment.CENTER)
                         .scale(0.75f))
                 .disableHoverBackground()
@@ -82,6 +120,87 @@ public class ManualInsertionPanel {
         SyncActions.PAY_UPGRADE_COST.registerFor(Panels.MANUAL_INSERTION, hypervisor);
     }
 
+    private static ParentWidget<?> createCostRow(SyncHypervisor hypervisor, int index) {
+        EnumSyncValue<ForgeOfGodsUpgrade> upgradeSyncer = SyncValues.UPGRADE_CLICKED
+            .lookupFrom(Panels.UPGRADE_TREE, hypervisor);
+
+        return new ParentWidget<>().size(36, 18)
+
+            // Widgets when there is an extra cost to display
+            .child(
+                new SlotLikeButtonWidget(
+                    () -> upgradeSyncer.getValue()
+                        .getExtraCost()[index]).onMousePressed(d -> {
+                            ItemStack stack = upgradeSyncer.getValue()
+                                .getExtraCost()[index];
+                            if (d == 0) {
+                                GuiCraftingRecipe.openRecipeGui("item", stack);
+                            } else if (d == 1) {
+                                GuiUsageRecipe.openRecipeGui("item", stack);
+                            }
+                            return true;
+                        })
+                            .setEnabledIf(
+                                $ -> upgradeSyncer.getValue()
+                                    .getExtraCost()[index] != null)
+                            .size(18)
+                            .alignX(0))
+            .child(
+                new ParentWidget<>().size(18)
+                    .alignX(1)
+                    .overlay(IKey.dynamic(() -> {
+                        ForgeOfGodsUpgrade upgrade = upgradeSyncer.getValue();
+                        ItemStack costStack = upgrade.getExtraCost()[index];
+                        short amountPaid = hypervisor.getData()
+                            .getUpgrades()
+                            .getPaidCosts(upgrade)[index];
+                        if (costStack == null) return "";
+
+                        EnumChatFormatting color = EnumChatFormatting.YELLOW;
+                        if (amountPaid == 0) color = EnumChatFormatting.RED;
+                        else if (amountPaid == costStack.stackSize) color = EnumChatFormatting.GREEN;
+
+                        return color + "x" + (costStack.stackSize - amountPaid);
+                    })
+                        .alignment(Alignment.CENTER)
+                        .scale(0.8f))
+                    .setEnabledIf($ -> {
+                        ForgeOfGodsUpgrade upgrade = upgradeSyncer.getValue();
+                        ItemStack costStack = upgrade.getExtraCost()[index];
+                        short amountPaid = hypervisor.getData()
+                            .getUpgrades()
+                            .getPaidCosts(upgrade)[index];
+
+                        if (costStack == null) return false;
+                        return amountPaid < costStack.stackSize;
+                    }))
+            .child(
+                GTGuiTextures.GREEN_CHECKMARK_11x9.asWidget()
+                    .size(11, 9)
+                    .alignX(1)
+                    .marginRight(4)
+                    .marginTop(5)
+                    .setEnabledIf($ -> {
+                        ForgeOfGodsUpgrade upgrade = upgradeSyncer.getValue();
+                        ItemStack costStack = upgrade.getExtraCost()[index];
+                        short amountPaid = hypervisor.getData()
+                            .getUpgrades()
+                            .getPaidCosts(upgrade)[index];
+
+                        if (costStack == null) return false;
+                        return amountPaid >= costStack.stackSize;
+                    }))
+
+            // Widgets when there is no extra cost to display
+            .child(
+                GTGuiTextures.BUTTON_STANDARD_DISABLED.asWidget()
+                    .size(18)
+                    .alignX(0)
+                    .setEnabledIf(
+                        $ -> upgradeSyncer.getValue()
+                            .getExtraCost()[index] == null));
+    }
+
     private static SlotGroupWidget createInputSlots(SyncHypervisor hypervisor) {
         PanelSyncManager syncManager = hypervisor.getSyncManager(Panels.MANUAL_INSERTION);
         syncManager.registerSlotGroup("item_inv_manual_insertion", 4);
@@ -98,8 +217,6 @@ public class ManualInsertionPanel {
             .key('s', i -> new ItemSlot().slot(new ModularSlot(handler, i).slotGroup("item_inv_manual_insertion")))
             .build()
             .coverChildren()
-            .align(Alignment.TopRight)
-            .marginTop(6)
-            .marginRight(5);
+            .align(Alignment.CenterRight);
     }
 }
