@@ -13772,7 +13772,7 @@ public class MaterialsInit {
             .setDefaultLocalName("Nefarious Oil")
             .setIconSet(TextureSet.SET_FLUID)
             .setARGB(0x00391616)
-            .setFuel(MaterialBuilder.FuelType.SemiFluid, 286)
+            .setFuel(MaterialBuilder.FuelType.SemiFluid, 256)
             .addCell()
             .addFluid()
             .constructMaterial();
