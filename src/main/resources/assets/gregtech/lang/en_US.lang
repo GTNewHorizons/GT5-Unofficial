@@ -3833,18 +3833,15 @@ gt.nano_forge.info=Total blocks needed for the structure at tier %s\n%s Radiant 
 
 gt.multi_autoclave.info.1=Any Pressure Containment Casing
 
-gt.mapiary.tips.1=The ideal home for your bees\nUse screwdriver to change primary mode (INPUT/OUTPUT/OPERATING)\nUse screwdriver + shift to change operation mode (NORMAL/SWARMER)
-gt.mapiary.tips.2=§6Input Mode:\n- Does not take power\n- Put your queens in the input bus to put them in the internal buffer
-gt.mapiary.tips.3=§6Output Mode:\n- Does not take power\n- Will give your bees back to output bus
-gt.mapiary.tips.4=§6Operating Mode:\n- NORMAL:\n  - Processing time: 5 seconds\n  - Uses 1 %s amp per queen\n  - All bees are accelerated 64 times\n  - 8 production upgrades are applied\n  - Genetic Stabilizer upgrade applied\n  - Simulates perfect environment for your bees\n  - Additionally you can provide royal jelly to increase the outputs:\n    - 1 royal jelly grants 5%% bonus per bee\n    - They will be consumed on each start of operation\n    - and be applied to that operation only\n    - Max bonus: 200%%\n- SWARMER:\n  - You can only insert 1 queen\n  - It will slowly produce ignoble princesses\n  - Consumes 100 royal jelly per operation\n  - Base processing time: 1 minute\n  - Uses 1 amp %s\n  - Can overclock
-gt.mapiary.info.1=The glass tier limits the Energy Input tier\nRegular water and IC2 Distilled Water are accepted
-gt.mapiary.info.2=On dirt/grass
+gt.mapiary.tips=The ideal home for your bees\nUse screwdriver to change primary mode (INPUT/OUTPUT/OPERATING)\nUse screwdriver + shift to change operation mode (NORMAL/SWARMER)<SEPARATOR>§6Input Mode:\n- Does not take power\n- Put your queens in the input bus to put them in the internal buffer<SEPARATOR>§6Output Mode:\n- Does not take power\n- Will give your bees back to output bus<SEPARATOR>§6Operating Mode:\n- NORMAL:\n  - Processing time: 5 seconds\n  - Uses 1 %s amp per queen\n  - All bees are accelerated 64 times\n  - 8 production upgrades are applied\n  - Genetic Stabilizer upgrade applied\n  - Simulates perfect environment for your bees\n  - Additionally you can provide royal jelly to increase the outputs:\n    - 1 royal jelly grants 5%% bonus per bee\n    - They will be consumed on each start of operation\n    - and be applied to that operation only\n    - Max bonus: 200%%\n- SWARMER:\n  - You can only insert 1 queen\n  - It will slowly produce ignoble princesses\n  - Consumes 100 royal jelly per operation\n  - Base processing time: 1 minute\n  - Uses 1 amp %s\n  - Can overclock
+gt.mapiary.info=The glass tier limits the Energy Input tier\nRegular water and IC2 Distilled Water are accepted
+gt.mapiary.info.flowers=On dirt/grass
 
-gt.defc.tips.1=Gains 1 §dperfect overclock§7 per casing tier above recipe\nNormal EU OC still applies!
-gt.defc.info.1=Center pillar
-gt.defc.info.2=Touching Fusion Coil Block at every side
-gt.defc.info.3=Rings (5x5 hollow) at layer 4 and 7
-gt.defc.info.4=Bloody Ichorium for tier 1, Draconium for tier 2, etc\nTo use tier 3 + you have to use fusion casing MK II
+gt.defc.tips=Gains 1 §dperfect overclock§7 per casing tier above recipe\nNormal EU OC still applies!
+gt.defc.info.coil=Center pillar
+gt.defc.info.casing=Touching Fusion Coil Block at every side
+gt.defc.info.tiered_casing=Rings (5x5 hollow) at layer 4 and 7
+gt.defc.info.tiers=Bloody Ichorium for tier 1, Draconium for tier 2, etc\nTo use tier 3 + you have to use fusion casing MK II
 
 gt.eec.tips.1=Spawns and kills monsters for you!\nProduces §a120 Liquid XP§7 per operation\nPowered Spawner goes in Controller Slot\nBase energy usage: §b1920§7 EU/t\nSupports §dperfect OC!
 gt.eec.tips.2=Has a minimum recipe time of 20 ticks, further overclocks multiply outputs by 4x\nRecipe time is based on mob health\nYou can additionally put a weapon inside the GUI\nIt will speed up the process and apply the looting level from the weapon (maximum %s levels)\nEnable Weapon Preservation to prevent the weapon from breaking on it's last hit\nEnable Weapon Cycling to pull a weapon from input when the current one breaks or is moved to an output\n§cEnchanting the spikes inside the structure does nothing!
@@ -3852,13 +3849,12 @@ gt.eec.tips.3=If the mob spawns §cinfernal§7, it will drain 8 times more power
 gt.eec.tips.4=You can enable ritual mode with a screwdriver\nWhen in ritual mode, can link to above Well of Suffering rituals\nThe Ritual must be built directly centered above the machine\nWhen linked, mobs will start to buffer and die very slowly, providing blood to the linked altar
 gt.eec.tips.5=You can disable mob animation with a soldering iron\nYou can enable batch mode with wire cutters. Providing §9 16x Time, Output, Weapon Damage
 
-gt.ei_greenhouse.tips.1=Grow your crops like a chad!\nUse screwdriver to enable/change/disable setup mode\nUse screwdriver while sneaking to enable/disable IC2 mode\nUse wire cutters to give incoming IC2 seeds 0 humidity\nUses %sL of water per seed per operation\nUses 1L of %s per operation per seed if it contains more than %s seeds\nOtherwise, around 1% of seeds will be voided each operation\nYou can insert fertilizer each operation to get more drops (max + %s)
-gt.ei_greenhouse.tips.2=§6Setup Mode:\nDoes not take power\nThere are two modes: input / output\nInput mode: machine will take seeds from input bus and plant them\n[IC2] You need to also input block that is required under the crop\nOutput mode: machine will take planted seeds and output them
+gt.ei_greenhouse.tips=Grow your crops like a chad!\nUse screwdriver to enable/change/disable setup mode\nUse screwdriver while sneaking to enable/disable IC2 mode\nUse wire cutters to give incoming IC2 seeds 0 humidity\nUses %sL of water per seed per operation\nUses 1L of %s per operation per seed if it contains more than %s seeds\nOtherwise, around 1% of seeds will be voided each operation\nYou can insert fertilizer each operation to get more drops (max + %s)<SEPARATOR>§6Setup Mode:\nDoes not take power\nThere are two modes: input / output\nInput mode: machine will take seeds from input bus and plant them\n[IC2] You need to also input block that is required under the crop\nOutput mode: machine will take planted seeds and output them
 gt.ei_greenhouse.tips.normal=§6Normal Crops:\nMinimal voltage tier: %s\nStarting with %s slot\nEvery tier past %s, slots are multiplied by %s\nEvery slot adds %s seed to the total seed capacity\nBase process time: 5 sec\nProcess time is divided by number of tiers past %s (Minimum 1 sec)\nAll crops are grown at the end of the operation\nDoes not drop seeds\nCan consume up to %s fertilizer per seed per cycle\nBoost per fertilizer: %s
 gt.ei_greenhouse.tips.ic2=§6IC2 Crops:\nMinimal voltage tier: %s\nMinimal glass tier: %s\nStarting with %s slot\nEvery tier past %s, slots are multiplied by %s\nEvery slot adds %s seed to the total seed capacity\nProcess time: 5 sec\nAll crops are accelerated by x%s times\nCan consume up to %s fertilizer per seed per cycle\nBoost per fertilizer: %s\nWeed-EX 9000 consumption is multiplied by %s
-gt.ei_greenhouse.info.1=Hollow two middle layers
-gt.ei_greenhouse.info.2=The glass tier limits the Energy Input tier\nThe dirt is from RandomThings, must be tilled\nRegular water and IC2 Distilled Water are accepted\nPurple lamps are from ProjectRedIllumination. They can be powered and/or inverted
-gt.ei_greenhouse.info.3=Any casing (Except inner bottom ones)
+gt.ei_greenhouse.info.glass=Hollow two middle layers
+gt.ei_greenhouse.info.parts=The glass tier limits the Energy Input tier\nThe dirt is from RandomThings, must be tilled\nRegular water and IC2 Distilled Water are accepted\nPurple lamps are from ProjectRedIllumination. They can be powered and/or inverted
+gt.ei_greenhouse.info.hatches=Any casing (Except inner bottom ones)
 
 gt.htgr.tips.1=Uses up to §c%s§7%% of fuel per operation, §c10§7%% of this value is flat and §c90§7%% dependent on the formula y=1-(1-x)^3 (x is % of pellet fill level)\nMaintenance problems decrease the efficiency of cooling by §c20§7%% for each issue\nUses §c%s§7  EU/t increasing by up to §c%s§7 times when lacking Helium Gas\nHelium gas increases effectiveness of heat exchangers linearly up to §c100§7%% at max capacity\nThe Reactor loses §c%s§7%% helium per operation and requires at least §c%s§7%% helium to start operation\nOne Operation takes longer based on reactor fill level (between §c%s§7s and §c%s§7s)\nProviding coolant/water/both speeds up recipe by §c%s§7%%/§c%s§7%%/§c%s§7%% total recipe time/second\nThe amount of necessary fluid for maximum bonus speed scales with pellets, §c%s§7 coolant/tick/pellet and §c%s§7 distilled water/tick/pellet
 gt.htgr.info.1=Top of the Pump
@@ -4002,19 +3998,17 @@ gt.so_fuel_cell_i.info.1=Steam, any casing
 gt.so_fuel_cell_ii.tips.1=Nitrobenzene and other gas fuels above 1M EU/bucket are more efficient
 gt.so_fuel_cell_ii.info.1=Superheated Steam, any casing
 
-gt.lapo_super_capacitor.tips.1=Loses energy equal to 1%% of the total capacity every 24 hours\nCapped at §c%s §7EU/t passive loss per %s%s §7capacitor\nThe passive loss increases §4100§7-fold for every capacitor tier above\nPassive loss is multiplied by the number of maintenance issues present
-gt.lapo_super_capacitor.tips.2=Glass shell has to be Tier - 3 of the highest capacitor tier
-gt.lapo_super_capacitor.tips.3=Add more or better capacitors to increase capacity
-gt.lapo_super_capacitor.tips.4=Wireless mode can be enabled by right clicking with a screwdriver\nThis mode can only be enabled if you have a %1$s%2$s§7+ capacitor in the multiblock\nWhen enabled every §9%3$s §7ticks the LSC will attempt to re-balance\nagainst your wireless EU network\nIf there is less than §c%4$s §7(%1$s%2$s§7) EU in the LSC\nit will withdraw from the network and add to the LSC\nIf there is more it will add §4§l§nall excess §r§7EU to the network, removing it from the LSC\nThis can potentially brick your base, be careful\nThe threshold increases §4100§7-fold for every capacitor tier above
-gt.lapo_super_capacitor.info.1=Modular height of 4-50 blocks
-gt.lapo_super_capacitor.info.2=5x2x5 base (at least 17x)
-gt.lapo_super_capacitor.info.3=Lapotronic Capacitor §7(%s%s§7-%s%s§7), §fUltimate Capacitor §7(%s%s§7-%s%s§7)
-gt.lapo_super_capacitor.info.4=Center 3x(1-47)x3 above base (9-423 blocks)
-gt.lapo_super_capacitor.info.5=You can also use the Empty Capacitor to save materials if you use it for less than half the blocks
-gt.lapo_super_capacitor.info.6=Laser Target/Source Hatches
-gt.lapo_super_capacitor.info.7=Any casing, must be using %s%s§7-tier glass
-gt.lapo_super_capacitor.info.8=You can have several I/O Hatches
-gt.lapo_super_capacitor.info.9=Capacitor Tier if specified. Otherwise pick any acceptable capacitor
+gt.lapo_super_capacitor.tips.1=Loses energy equal to 1%% of the total capacity every 24 hours\nCapped at §c%s §7EU/t passive loss per %s%s §7capacitor\nThe passive loss increases §4100§7-fold for every capacitor tier above\nPassive loss is multiplied by the number of maintenance issues present<SEPARATOR>Glass shell has to be Tier - 3 of the highest capacitor tier
+gt.lapo_super_capacitor.tips.2=Add more or better capacitors to increase capacity<SEPARATOR>Wireless mode can be enabled by right clicking with a screwdriver\nThis mode can only be enabled if you have a %1$s%2$s§7+ capacitor in the multiblock\nWhen enabled every §9%3$s §7ticks the LSC will attempt to re-balance\nagainst your wireless EU network\nIf there is less than §c%4$s §7(%1$s%2$s§7) EU in the LSC\nit will withdraw from the network and add to the LSC\nIf there is more it will add §4§l§nall excess §r§7EU to the network, removing it from the LSC\nThis can potentially brick your base, be careful\nThe threshold increases §4100§7-fold for every capacitor tier above
+gt.lapo_super_capacitor.info.height=Modular height of 4-50 blocks
+gt.lapo_super_capacitor.info.casing=5x2x5 base (at least 17x)
+gt.lapo_super_capacitor.info.caps=Lapotronic Capacitor §7(%s-%s), §fUltimate Capacitor §7(%s-%s)
+gt.lapo_super_capacitor.info.caps.pos=Center 3x(1-47)x3 above base (9-423 blocks)
+gt.lapo_super_capacitor.info.caps.tips=You can also use the Empty Capacitor to save materials if you use it for less than half the blocks
+gt.lapo_super_capacitor.info.lasers=Laser Target/Source Hatches
+gt.lapo_super_capacitor.info.lasers.pos=Any casing, must be using %s+-tier glass
+gt.lapo_super_capacitor.info.energy.tip=You can have several I/O Hatches
+gt.lapo_super_capacitor.info.channel_purpose=Capacitor Tier if specified. Otherwise pick any acceptable capacitor
 
 gt.nuclear_salt_processing_plant.tips.1=Processes depleted nuclear salts that come from the LFTR\nHandles the recipes of the Reactor Processor Unit and Cold Trap\nOnly Thermally Insulated Casings can be replaced with hatches\nMufflers on top, Energy Hatches on bottom, exactly 2 of each are required\nMaintenance Hatch goes on the back, opposite of the controller block\nInputs go on the left side of the multi, outputs on the right side
 gt.nuclear_salt_processing_plant.info.1=Left Half

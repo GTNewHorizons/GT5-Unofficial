@@ -68,6 +68,7 @@ import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.LongData;
 import gregtech.api.util.LongRunningAverage;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.multiblock.MTELapotronicSuperCapacitorgui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
@@ -394,46 +395,38 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                 GTUtility.formatNumbers(max_passive_drain_eu_per_tick_per_uhv_cap),
                 GTValues.TIER_COLORS[9],
                 GTValues.VN[9])
-            .addSeparator()
-            .addInfo("gt.lapo_super_capacitor.tips.2")
             .addTecTechHatchInfo()
             .addMinGlassForLaser(VoltageIndex.UV)
-            .addInfo("gt.lapo_super_capacitor.tips.3")
-            .addSeparator()
             .addInfo(
-                "gt.lapo_super_capacitor.tips.4",
+                "gt.lapo_super_capacitor.tips.2",
                 GTValues.TIER_COLORS[9],
                 GTValues.VN[9],
                 GTUtility.formatNumbers(ItemBlockLapotronicEnergyUnit.LSC_time_between_wireless_rebalance_in_ticks),
                 GTUtility.formatNumbers(ItemBlockLapotronicEnergyUnit.LSC_wireless_eu_cap))
             .beginVariableStructureBlock(5, 5, 4, 50, 5, 5, false)
-            .addStructureInfo("gt.lapo_super_capacitor.info.1")
+            .addStructureInfo("gt.lapo_super_capacitor.info.height")
             .addController("front_bottom_middle")
-            .addStructurePart("tile.kekztech_lapotronicenergyunit_block.0.name", "gt.lapo_super_capacitor.info.2")
+            .addStructurePart("tile.kekztech_lapotronicenergyunit_block.0.name", "gt.lapo_super_capacitor.info.casing")
             .addStructurePart(
-                translateToLocalFormatted(
-                    "gt.lapo_super_capacitor.info.3",
-                    GTValues.TIER_COLORS[4],
-                    GTValues.VN[4],
-                    GTValues.TIER_COLORS[8],
-                    GTValues.VN[8],
-                    GTValues.TIER_COLORS[9],
-                    GTValues.VN[9],
-                    GTValues.TIER_COLORS[12],
-                    GTValues.VN[12]),
-                "gt.lapo_super_capacitor.info.4")
-            .addStructureInfo("gt.lapo_super_capacitor.info.5")
+                GTUtility.nestParams(
+                    "gt.lapo_super_capacitor.info.caps",
+                    TooltipHelper.voltageText(4, false),
+                    TooltipHelper.voltageText(8, false),
+                    TooltipHelper.voltageText(9, false),
+                    TooltipHelper.voltageText(12, false)),
+                "gt.lapo_super_capacitor.info.caps.pos")
+            .addStructureInfo("gt.lapo_super_capacitor.info.caps.tip")
             .addCasingInfoRange("GT5U.MBTT.AnyGlass", 41, 777, true)
-            .addEnergyHatch("GT5U.MBTT.AnyCasing")
-            .addDynamoHatch("GT5U.MBTT.AnyCasing")
+            .addEnergyHatch("<casing>")
+            .addDynamoHatch("<casing>")
             .addStructurePart(
-                "gt.lapo_super_capacitor.info.6",
-                translateToLocalFormatted("gt.lapo_super_capacitor.info.7", GTValues.TIER_COLORS[8], GTValues.VN[8]))
-            .addStructureInfo("gt.lapo_super_capacitor.info.8")
+                "gt.lapo_super_capacitor.info.lasers",
+                GTUtility.nestParams("gt.lapo_super_capacitor.info.lasers.pos", TooltipHelper.voltageText(8, false)))
+            .addStructureInfo("gt.lapo_super_capacitor.info.energy.tip")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addSubChannelUsage(GTStructureChannels.LSC_CAPACITOR, "gt.lapo_super_capacitor.info.9")
+            .addSubChannelUsage(GTStructureChannels.LSC_CAPACITOR, "gt.lapo_super_capacitor.info.channel_purpose")
             .addSubChannelUsage(GTStructureChannels.STRUCTURE_HEIGHT)
-            .addMaintenanceHatch("GT5U.MBTT.AnyCasing")
+            .addMaintenanceHatch("<casing>")
             .toolTipFinisher();
         return tt;
     }

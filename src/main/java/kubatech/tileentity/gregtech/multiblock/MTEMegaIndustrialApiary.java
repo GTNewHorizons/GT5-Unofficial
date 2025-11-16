@@ -372,15 +372,13 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.mapiary")
-            .addManyInfo("gt.mapiary.tips.1", "gt.mapiary.tips.2", "gt.mapiary.tips.3")
-            .addSeparator()
-            .addInfo("gt.mapiary.tips.4", voltageTooltipFormatted(6), voltageTooltipFormatted(5))
+            .addInfo("gt.mapiary.tips", voltageTooltipFormatted(6), voltageTooltipFormatted(5))
             .beginStructureBlock(15, 17, 15, false)
             .addController("front_bottom_middle")
             .addCasingInfoMin("gt.blockcasings.10.name", 190)
             .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 121, true)
-            .addStructureInfo("gt.mapiary.info.1")
-            .addStructurePart("kubatech.tooltip.structure.flowers", "gt.mapiary.info.2", 2)
+            .addStructureInfo("gt.mapiary.info")
+            .addStructurePart("kubatech.tooltip.structure.flowers", "gt.mapiary.info.flowers", 2)
             .addInputBus("<casing>", 1)
             .addOutputBus("<casing>", 1)
             .addEnergyHatch("<casing>", 1)

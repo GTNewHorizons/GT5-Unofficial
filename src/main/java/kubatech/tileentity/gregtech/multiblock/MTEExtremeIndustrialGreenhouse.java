@@ -292,24 +292,22 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         String fertilizerBoostMax = String.format("%.0f", EIG_BALANCE_MAX_FERTILIZER_BOOST * 100);
         tt.addMachineType("machtype.ei_greenhouse")
             .addInfo(
-                "gt.ei_greenhouse.tips.1",
+                "gt.ei_greenhouse.tips",
                 EIG_BALANCE_WATER_USAGE_PER_SEED,
                 new FluidStack(WEEDEX_FLUID, 1).getLocalizedName(),
                 EIG_BALANCE_WEED_EX_USAGE_BEGINS_AT,
-                fertilizerBoostMax)
-            .addSeparator()
-            .addInfo("gt.ei_greenhouse.tips.2");
+                fertilizerBoostMax);
         EIGModes.addTooltipInfo(tt);
         tt.beginStructureBlock(5, 6, 5, false)
             .addController("front_bottom_middle")
             .addCasingInfoMin("gt.blockcasings4.1.name", 70, false)
-            .addStructurePart("Material.borosilicateglass", "gt.ei_greenhouse.info.1")
-            .addStructureInfo("gt.ei_greenhouse.info.2")
-            .addMaintenanceHatch("gt.ei_greenhouse.info.3", 1)
-            .addInputBus("gt.ei_greenhouse.info.3", 1)
-            .addOutputBus("gt.ei_greenhouse.info.3", 1)
-            .addInputHatch("gt.ei_greenhouse.info.3", 1)
-            .addEnergyHatch("gt.ei_greenhouse.info.3", 1)
+            .addStructurePart("Material.borosilicateglass", "gt.ei_greenhouse.info.glass")
+            .addStructureInfo("gt.ei_greenhouse.info.parts")
+            .addMaintenanceHatch("gt.ei_greenhouse.info.hatches", 1)
+            .addInputBus("gt.ei_greenhouse.info.hatches", 1)
+            .addOutputBus("gt.ei_greenhouse.info.hatches", 1)
+            .addInputHatch("gt.ei_greenhouse.info.hatches", 1)
+            .addEnergyHatch("gt.ei_greenhouse.info.hatches", 1)
             .toolTipFinisher(GTValues.AuthorKuba);
         return tt;
     }
