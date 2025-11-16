@@ -1223,6 +1223,7 @@ fog.cosmetics.misc=Miscellaneous
 fog.cosmetics.spin=Spin
 fog.cosmetics.size=Size
 fog.cosmetics.animations=Animations
+fog.cosmetics.animations.tooltip=May take a moment to refresh when toggled
 fog.cosmetics.cyclespeed=Cycle speed between colors
 fog.cosmetics.onlyintegers=Accepts Integers
 fog.cosmetics.onlydecimals=Accepts Decimals

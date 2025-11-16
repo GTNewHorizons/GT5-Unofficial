@@ -1,5 +1,6 @@
 package gregtech.common.gui.modularui.multiblock.godforge.panel;
 
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import net.minecraft.util.EnumChatFormatting;
@@ -11,6 +12,7 @@ import com.cleanroommc.modularui.api.widget.Interactable;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DynamicSyncHandler;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
@@ -22,6 +24,7 @@ import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
+import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
@@ -101,7 +104,8 @@ public class StarCosmeticsPanel {
                         return true;
                     })
                     .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
-                    .tooltip(t -> t.addLine(translateToLocal("fog.cosmetics.starcolor"))));
+                    .tooltip(t -> t.addLine(translateToLocal("fog.cosmetics.starcolor")))
+                    .tooltipShowUpTimer(TOOLTIP_DELAY));
 
             // "Custom..." text
             newStarColorRow.child(
@@ -127,6 +131,52 @@ public class StarCosmeticsPanel {
         panel.child(colorColumn);
 
         // Misc options
+        Flow miscColumn = new Column().coverChildren()
+            .alignX(1)
+            .marginTop(28)
+            .marginRight(9);
+
+        // Header
+        miscColumn.child(
+            IKey.str(
+                EnumChatFormatting.GOLD + "" + EnumChatFormatting.UNDERLINE + translateToLocal("fog.cosmetics.misc"))
+                .alignment(Alignment.CenterLeft)
+                .asWidget()
+                .alignX(0)
+                .marginBottom(10));
+
+        // Text fields
+        miscColumn.child(createMiscTextFieldRow(SyncValues.STAR_ROTATION_SPEED, "spin", 100, hypervisor));
+        miscColumn.child(createMiscTextFieldRow(SyncValues.STAR_SIZE, "size", 40, hypervisor));
+
+        // Animation toggle
+        BooleanSyncValue rendererDisabledSyncer = SyncValues.RENDERER_DISABLED
+            .lookupFrom(Panels.STAR_COSMETICS, hypervisor);
+        miscColumn.child(
+            new Row().coverChildren()
+                .child(
+                    IKey.str(EnumChatFormatting.GOLD + translateToLocal("fog.cosmetics.animations"))
+                        .alignment(Alignment.CenterLeft)
+                        .asWidget()
+                        .size(53, 16))
+                .child(
+                    new ButtonWidget<>().size(16)
+                        .background(GTGuiTextures.TT_BUTTON_CELESTIAL_32x32)
+                        .overlay(new DynamicDrawable(() -> {
+                            if (rendererDisabledSyncer.getBoolValue()) {
+                                return GTGuiTextures.TT_OVERLAY_BUTTON_POWER_SWITCH_OFF;
+                            }
+                            return GTGuiTextures.TT_OVERLAY_BUTTON_POWER_SWITCH_ON;
+                        }))
+                        .onMousePressed(d -> {
+                            SyncActions.DISABLE_RENDERER
+                                .callFrom(Panels.STAR_COSMETICS, hypervisor, !rendererDisabledSyncer.getBoolValue());
+                            return true;
+                        })
+                        .tooltip(t -> t.addLine(translateToLocal("fog.cosmetics.animations.tooltip")))
+                        .tooltipShowUpTimer(TOOLTIP_DELAY)));
+
+        panel.child(miscColumn);
 
         return panel;
     }
@@ -135,8 +185,10 @@ public class StarCosmeticsPanel {
         SyncValues.STAR_COLORS.registerFor(Panels.STAR_COSMETICS, hypervisor);
         SyncValues.STAR_COLOR_CLICKED.registerFor(Panels.STAR_COSMETICS, hypervisor);
         SyncValues.SELECTED_STAR_COLOR.registerFor(Panels.STAR_COSMETICS, hypervisor);
+        SyncValues.RENDERER_DISABLED.registerFor(Panels.STAR_COSMETICS, hypervisor);
 
         SyncActions.UPDATE_RENDERER.registerFor(Panels.STAR_COSMETICS, hypervisor, hypervisor.getMultiblock());
+        SyncActions.DISABLE_RENDERER.registerFor(Panels.STAR_COSMETICS, hypervisor, hypervisor.getMultiblock());
     }
 
     private static Flow createStarColorRow(ForgeOfGodsStarColor starColor, int index, SyncHypervisor hypervisor) {
@@ -180,7 +232,8 @@ public class StarCosmeticsPanel {
                         .tooltip(t -> {
                             t.addLine(translateToLocal("fog.cosmetics.selectcolor.tooltip.1"));
                             t.addLine(translateToLocal("fog.cosmetics.selectcolor.tooltip.2"));
-                        }))
+                        })
+                        .tooltipShowUpTimer(TOOLTIP_DELAY))
                 .child(
                     starColor.getDrawable()
                         .asWidget()
@@ -196,5 +249,28 @@ public class StarCosmeticsPanel {
                 .marginLeft(4));
 
         return row;
+    }
+
+    private static Flow createMiscTextFieldRow(SyncValues<IntSyncValue> syncer, String name, int maxValue,
+        SyncHypervisor hypervisor) {
+        IntSyncValue syncValue = syncer.create(hypervisor);
+        syncValue
+            .setChangeListener(() -> SyncActions.UPDATE_RENDERER.callFrom(Panels.STAR_COSMETICS, hypervisor, null));
+        return new Row().coverChildren()
+            .marginBottom(2)
+            .child(
+                IKey.str(EnumChatFormatting.GOLD + translateToLocal("fog.cosmetics." + name))
+                    .alignment(Alignment.CenterLeft)
+                    .asWidget()
+                    .size(34, 16))
+            .child(
+                new TextFieldWidget().setFormatAsInteger(true)
+                    .setNumbers(0, maxValue)
+                    .setTextAlignment(Alignment.CENTER)
+                    .value(syncValue)
+                    .setTooltipOverride(true)
+                    .tooltip(t -> t.addLine(translateToLocal("fog.cosmetics.onlyintegers")))
+                    .tooltipShowUpTimer(TOOLTIP_DELAY)
+                    .size(35, 18));
     }
 }

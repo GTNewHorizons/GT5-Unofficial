@@ -55,6 +55,19 @@ public final class SyncActions<T, U> {
         (buf, multiblock) -> multiblock.updateRenderer(),
         Side.SERVER);
 
+    public static SyncActions<Boolean, MTEForgeOfGods> DISABLE_RENDERER = new SyncActions<>(
+        "fog.sync_action.disable_renderer",
+        PacketBuffer::writeBoolean,
+        (buf, multiblock) -> {
+            ForgeOfGodsData data = multiblock.getData();
+            boolean newValue = buf.readBoolean();
+            data.setRendererDisabled(newValue);
+            if (newValue && data.isRenderActive()) {
+                multiblock.destroyRenderer();
+            }
+        },
+        Side.SERVER);
+
     // spotless:on
 
     private final String syncId;

@@ -677,7 +677,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         enableWorking();
     }
 
-    private void destroyRenderer() {
+    public void destroyRenderer() {
         ChunkCoordinates renderPos = getRenderPos();
         this.getBaseMetaTileEntity()
             .getWorld()

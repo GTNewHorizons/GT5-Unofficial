@@ -203,6 +203,18 @@ public class SyncValues<T extends ValueSyncHandler<?>> {
         "fog.sync.star_colors",
         data -> data.getStarColors().getSyncer());
 
+    public static final SyncValues<IntSyncValue> STAR_ROTATION_SPEED = new SyncValues<>(
+        "fog.sync.star_rotation_speed",
+        data -> new IntSyncValue(data::getRotationSpeed, data::setRotationSpeed));
+
+    public static final SyncValues<IntSyncValue> STAR_SIZE = new SyncValues<>(
+        "fog.sync.star_size",
+        data -> new IntSyncValue(data::getStarSize, data::setStarSize));
+
+    public static final SyncValues<BooleanSyncValue> RENDERER_DISABLED = new SyncValues<>(
+        "fog.sync.renderer_disabled",
+        data -> new BooleanSyncValue(data::isRendererDisabled, data::setRendererDisabled));
+
     // spotless:on
 
     private final String syncId;
