@@ -64,6 +64,7 @@ public class UpgradeStorage {
 
             for (int j = 0; j < extraCost.length; j++) {
                 ItemStack costStack = extraCost[j];
+                if (costStack == null) continue;
                 int alreadyPaid = data.amountsPaid[j];
                 if (alreadyPaid >= costStack.stackSize) continue;
 

@@ -352,7 +352,12 @@ public enum ForgeOfGodsUpgrade {
     }
 
     public ItemStack[] getExtraCost() {
-        return extraCost.toArray(new ItemStack[0]);
+        // Ensure this array always has a size of 12
+        ItemStack[] cost = new ItemStack[12];
+        for (int i = 0; i < extraCost.size(); i++) {
+            cost[i] = extraCost.get(i);
+        }
+        return cost;
     }
 
     public UITexture getBackground() {
