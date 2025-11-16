@@ -1,0 +1,162 @@
+item.kekztech_error_item.name=Ошибка KekzTech Coin
+
+# -------- Multiblock Tooltip Builder Keywords
+# -------- Context can be found in the class util.MultiBlockTooltipBuilder
+mbdesc.beginStructureBlock.Dimensions=Размеры
+mbdesc.beginStructureBlock.Structure=Структура
+mbdesc.addController.Controller=Контроллер
+mbdesc.addCasing.atleast=(не меньше)
+mbdesc.addEnergyHatch.EnergyHatch=Энерговвод
+mbdesc.addDynamoHatch.DynamoHatch=Энерговывод
+mbdesc.addMaintenanceHatch.MaintenanceHatch=Люк техобслуживания
+mbdesc.addIOHatches.IOHatches=Шлюзы ввода/вывода
+mbdesc.addInputBus.InputBus=Входной люк/и
+mbdesc.addInputHatch.InputHatch=Входной шлюз/ы
+mbdesc.addOutputBus.OutputBus=Выходной люк/и
+mbdesc.addOutputHatch.OutputHatch=Выходной шлюз/ы
+mbdesc.signAndFinalize.Hold=Удерживайте
+mbdesc.signAndFinalize.todisplay=чтобы отобразить рекомендации по структуре
+mbdesc.signAndFinalize.createdby=Создано
+
+# -------- Fuel Cell: Structure Blocks
+tile.kekztech_gdcceramicelectrolyteunit_block.name=Керамический электролитный блок GDC
+tile.kekztech_yszceramicelectrolyteunit_block.name=Керамический электролитный блок YSZ
+
+# -------- Fuel Cell: Crafting Components
+item.kekztech_crafting_item.name=Крафтовый компонент
+item.kekztech_crafting_item.9.name=YSZ Керамическая пыль
+item.kekztech_crafting_item.10.name=GDC Керамическая пыль
+item.kekztech_crafting_item.11.name=Иттриевая пыль
+item.kekztech_crafting_item.12.name=Циркониевая пыль
+item.kekztech_crafting_item.13.name=Цериевая пыль
+item.kekztech_crafting_item.14.name=YSZ Керамическая пластина
+item.kekztech_crafting_item.15.name=GDC Керамическая пластина
+
+# -------- TFFT: Structure Blocks
+tile.kekztech_tfftstoragefield_block.name=T.F.F.T Корпус/Блок хранения жидкостей
+tile.kekztech_tfftstoragefield_block.0.name=T.F.F.T Корпус
+tile.kekztech_tfftstoragefield_block.1.name=T.F.F.T Блок хранения жидкостей T1
+tile.kekztech_tfftstoragefield_block.2.name=T.F.F.T Блок хранения жидкостей T2
+tile.kekztech_tfftstoragefield_block.3.name=T.F.F.T Блок хранения жидкостей T3
+tile.kekztech_tfftstoragefield_block.4.name=T.F.F.T Блок хранения жидкостей T4
+tile.kekztech_tfftstoragefield_block.5.name=T.F.F.T Блок хранения жидкостей T5
+tile.kekztech_tfftstoragefield_block.6.name=T.F.F.T Блок хранения жидкостей T6
+tile.kekztech_tfftstoragefield_block.7.name=T.F.F.T Блок хранения жидкостей T7
+tile.kekztech_tfftstoragefield_block.8.name=T.F.F.T Блок хранения жидкостей T8
+tile.kekztech_tfftstoragefield_block.9.name=T.F.F.T Блок хранения жидкостей T9
+tile.kekztech_tfftstoragefield_block.10.name=T.F.F.T Блок хранения жидкостей T10
+tile.kekztech_tfftstoragefield_block.desc=Это не резервуар для жидкости.
+tile.kekztech_tfftstoragefield_block.hint.1=Подсказка 1 точка: T.F.F.T Корпус
+tile.kekztech_tfftstoragefield_block.hint.2=Подсказка 2 точки: T.F.F.T Корпус, Люк техобслуживания, T.F.F.T Мульти I/O шлюз, Входной/Выходной шлюз, Энерговвод
+tile.kekztech_tfftstoragefield_block.hint.3=Подсказка 3 точки: EV+ тировое стекло, T.F.F.T Мульти I/O шлюз, Входной/Выходной шлюз
+tile.kekztech_tfftstoragefield_block.hint.4=Подсказка 4 точки: EV+ тировое стекло
+
+# -------- Lapotronic Super Capacitor: Structure Blocks
+tile.kekztech_lapotronicenergyunit_block.name=Лазуротроновый корпус/конденсатор
+tile.kekztech_lapotronicenergyunit_block.0.name=Лазуротроновый корпус суперконденсатора
+tile.kekztech_lapotronicenergyunit_block.1.name=Лазуротроновый конденсатор (IV)
+tile.kekztech_lapotronicenergyunit_block.2.name=Лазуротроновый конденсатор (LuV)
+tile.kekztech_lapotronicenergyunit_block.3.name=Лазуротроновый конденсатор (ZPM)
+tile.kekztech_lapotronicenergyunit_block.4.name=Лазуротроновый конденсатор (UV)
+tile.kekztech_lapotronicenergyunit_block.5.name=Совершенный конденсатор (UHV)
+tile.kekztech_lapotronicenergyunit_block.6.name=Пустой конденсатор (-)
+tile.kekztech_lapotronicenergyunit_block.7.name=Лазуротроновый конденсатор (EV)
+tile.kekztech_lapotronicenergyunit_block.8.name=Абсолютный суперконденсатор (UEV)
+tile.kekztech_lapotronicenergyunit_block.9.name=Безумный суперконденсатор (UIV)
+tile.kekztech_lapotronicenergyunit_block.10.name=Мега суперконденсатор (UMV)
+tile.kekztech_lapotronicenergyunit_block.desc=Часть лазуротронового суперконденсатора
+
+# -------- Thaumium Reinforced Jar: Block
+tile.kekztech_thaumiumreinforcedjar_block.name=Укреплённая банка из таум-металла
+tile.kekztech_thaumiumreinforcedjar_block.0.name=Укреплённая банка из таум-металла
+tile.kekztech_thaumiumreinforcedjar_block.3.name=Укреплённая пустотная банка из таум-металла
+
+# -------- Thaumium Reinforced Jar: Research
+# This is the name of the research
+tc.research_name.THAUMIUMREINFORCEDJAR=Укреплённые банки из таум-металла
+# This is the subtext for the research note
+tc.research_text.THAUMIUMREINFORCEDJAR=Слегка улучшенная банка
+# Lore text for the research pages
+kekztech.research_page.THAUMIUMREINFORCEDJAR.0=Вы слышали, как ваши коллеги-тауматурги говорили о преимуществах оцифрованного хранения эссенции.<BR><BR>Хранение достаточного количества эссенции для ваших продвинутых инфузий действительно было проблемой и для вас. Однако эти банки просто слишком приятны на вид, чтобы даже рассматривать идею замены их на какую-то компактную технологическую конструкцию.<BR><BR>Благодаря этому новому открытию вам удалось увеличить вместимость ваших банок в четыре раза, улучшив их с помощью толстой подкладки из таумия. Это должно дать вам немного больше времени, чтобы придумать лучшее решение.
+kekztech.research_page.THAUMIUMREINFORCEDJAR.1=Сжатие такого количества эссенции в таком маленьком пространстве вызывает некоторую нестабильность. Подбирать усиленные банки, вероятно, плохая идея...<BR><BR>Вы представляете, что вы могли бы получить еще больше из своих банок, если бы у вас был какой-то материал, который тверже алмаза или любого другого магического металла, который вы видели до сих пор.
+
+# -------- Ichor Jar: Block
+tile.kekztech_ichorjar_block.name=Ихоровая банка
+tile.kekztech_ichorjar_block.0.name=Ихоровая банка
+tile.kekztech_ichorjar_block.3.name=Ихоровая пустотная банка
+
+# -------- Ichor Jar: Research
+tc.research_name.ICHORJAR=Ихоровая банка
+tc.research_text.ICHORJAR=Гораздо улучшенная банка
+kekztech.research_page.ICHORJAR.0=Вот оно!<BR><BR>Добавив в банку всего один кусочек Ихора, вы создали нечто, способное соперничать с оцифрованным хранилищем Эссенции, не жертвуя при этом красотой защищенных банок.<BR><BR>Ихоровые банки могут вместить поразительные 4096 Эссенции и прекрасно впишутся в ваш недавно приобретенный набор достижений на основе Ихора.<BR><BR>Вы определенно не захотите тревожить эти банки. К счастью, Ихор достаточно устойчив, чтобы случайное уничтожение одной из них было маловероятным.
+
+# -------- Cosmetic Blocks
+tile.kekztech_largehextile_block.name=Большая шестигранная плитка
+
+# -------- Achievements
+achievement.tile.kekztech_lapotronicenergyunit_block.2.desc=Просто посмотри рецепт в NEI
+achievement.tile.kekztech_lapotronicenergyunit_block.2=Лазуротроновый конденсатор (LuV)
+achievement.tile.kekztech_lapotronicenergyunit_block.3.desc=Просто посмотри рецепт в NEI
+achievement.tile.kekztech_lapotronicenergyunit_block.3=Лазуротроновый конденсатор (ZPM)
+achievement.tile.kekztech_lapotronicenergyunit_block.4.desc=Просто посмотри рецепт в NEI
+achievement.tile.kekztech_lapotronicenergyunit_block.4=Лазуротроновый конденсатор (UV)
+achievement.tile.kekztech_lapotronicenergyunit_block.5.desc=Просто посмотри рецепт в NEI
+achievement.tile.kekztech_lapotronicenergyunit_block.5=Совершенный конденсатор (UHV)
+achievement.tile.kekztech_lapotronicenergyunit_block.8.desc=За гранью богов
+achievement.tile.kekztech_lapotronicenergyunit_block.8=Абсолютный суперконденсатор (UEV)
+achievement.tile.kekztech_lapotronicenergyunit_block.9.desc=Безумие продолжается!
+achievement.tile.kekztech_lapotronicenergyunit_block.9=Безумный суперконденсатор (UIV)
+achievement.tile.kekztech_lapotronicenergyunit_block.10.desc=Как далеко мы можем зайти?
+achievement.tile.kekztech_lapotronicenergyunit_block.10=Мега суперконденсатор (UMV)
+
+
+# -------- GUI
+gui.kekztech_lapotronicenergyunit.wireless=Беспроводной режим
+gui.kekztech_lapotronicenergyunit.wireless_rebalance=Перебалансировать беспроводную сеть (одноразовое использование)
+gui.kekztech_lapotronicenergyunit.warning.header=Предупреждение!
+gui.kekztech_lapotronicenergyunit.warning.text=Обязательно внимательно прочтите и перед активацией беспроводного режима внимательно изучите tooltip, это может потенциально привести к поломке вашей базы. Это предупреждение больше не появится.
+
+# -------- Tooltips
+tooltip.kekztech.crafting_component=Крафтовый компонент вещей KekzTech
+tooltip.kekztech.lapotronic_energy_unit.capacity=Ёмкость: §c%s§7 EU
+tooltip.kekztech.lapotronic_energy_unit.wire_less_transfer=Поддерживает до §c%s§7 EU/t беспроводной передачи на %s§7 конденсатор.
+tooltip.kekztech.lapotronic_energy_unit.capacity.none=Ёмкость: Нет
+tooltip.kekztech.tfft.capacity=Ёмкость: §9%s§7 Л
+tooltip.kekztech.tfft.capacity.per_fluid=По объему жидкости: §9%s§7 Л
+tooltip.kekztech.tfft.power_draw=Потребление энергии: §9%d§7 EU/t
+tooltip.kekztech.wrong=НАПОМИНАЕМ: Рецепты KekzTech проверены только для работы в GTNH!\nЗамещающий предмет на случай, если что-то пошло не так.\nЕсли этот предмет появится в GTNH, вы можете сообщить об этом по адресу:\nhttps://github.com/kekzdealer/KekzTech
+
+# -------- InfoData
+kekztech.infodata.operational_data=Эксплуатационные данные:
+kekztech.infodata.multi.maintenance_status=Статус техобслуживания: %s
+kekztech.infodata.multi.maintenance_status.ok=Работает отлично
+kekztech.infodata.multi.maintenance_status.bad=Есть проблемы
+kekztech.infodata.lapotronic_super_capacitor.eu_stored=EU хранится: %s EU
+kekztech.infodata.lapotronic_super_capacitor.used_capacity=Использованная ёмкость: %s
+kekztech.infodata.lapotronic_super_capacitor.total_capacity=Общая ёмкость: %s EU
+kekztech.infodata.lapotronic_super_capacitor.passive_loss=Пассивная потеря: %s EU/t
+kekztech.infodata.lapotronic_super_capacitor.eu_in=Ввод EU: %s EU/t
+kekztech.infodata.lapotronic_super_capacitor.eu_out=Вывод EU: %s EU/t
+kekztech.infodata.lapotronic_super_capacitor.avg_eu_in.sec=Средний ввод EU: %s (последние %d секунд)
+kekztech.infodata.lapotronic_super_capacitor.avg_eu_out.sec=Средний вывод EU: %s (последние %d секунд)
+kekztech.infodata.lapotronic_super_capacitor.avg_eu_in.min5=Средний ввод EU: %s (последние 5 минут)
+kekztech.infodata.lapotronic_super_capacitor.avg_eu_out.min5=Средний вывод EU: %s (последние 5 минут)
+kekztech.infodata.lapotronic_super_capacitor.avg_eu_in.hour1=Средний ввод EU: %s (последний 1 час)
+kekztech.infodata.lapotronic_super_capacitor.avg_eu_out.hour1=Средний вывод EU: %s (последний 1 час)
+kekztech.infodata.lapotronic_super_capacitor.time_to.full=Время до заполнения: %s
+kekztech.infodata.lapotronic_super_capacitor.time_to.sth=Время до чего-то: Бесконечные годы
+kekztech.infodata.lapotronic_super_capacitor.time_to.empty=Время до опустошения: %s
+kekztech.infodata.lapotronic_super_capacitor.wireless_mode=Беспроводной режим: %s
+kekztech.infodata.lapotronic_super_capacitor.wireless_mode.enabled=включён
+kekztech.infodata.lapotronic_super_capacitor.wireless_mode.disabled=отключён
+kekztech.infodata.lapotronic_super_capacitor.capacitors=%s Обнаружено конденсаторов: %d
+kekztech.infodata.lapotronic_super_capacitor.wireless_eu=Всего в беспроводной EU сети: %s EU
+kekztech.infodata.tank.tfft.stored_fluids=Хранимые жидкости:
+kekztech.infodata.tank.tfft.stored_fluids.null=NULL
+kekztech.infodata.tank.tfft.used=Использованная ёмкость: %sЛ
+kekztech.infodata.tank.tfft.total=Общая ёмкость: %sЛ
+kekztech.infodata.tank.tfft.per_fluid_capacity=По объему жидкости: %sЛ
+kekztech.infodata.tank.tfft.running_cost=Расход при работе: %dEU/t
+kekztech.infodata.tank.tfft.auto_voiding=Авто-уничтожение: %b
+
+kekztech.structure.glass_incompatible=§cНесовместимая конфигурация стекла 

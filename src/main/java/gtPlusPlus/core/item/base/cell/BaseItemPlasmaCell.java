@@ -39,7 +39,7 @@ public class BaseItemPlasmaCell extends BaseItemComponent {
     public void registerIcons(final IIconRegister i) {
         this.base = i.registerIcon(GTPlusPlus.ID + ":" + "item" + this.PlasmaCell.getComponent());
         this.overlay = i.registerIcon(GTPlusPlus.ID + ":" + "item" + this.PlasmaCell.getComponent() + "_Overlay");
-        // this.overlay = cellMaterial.getFluid(1000).getFluid().get
+        // this.overlay = cellMaterial.getFluid(1_000).getFluid().get
     }
 
     @Override
@@ -65,7 +65,7 @@ public class BaseItemPlasmaCell extends BaseItemComponent {
             if (!world.isRemote) {
                 if (this.tickCounter < this.tickCounterMax) {
                     this.tickCounter++;
-                } else if (this.tickCounter >= this.tickCounterMax) {
+                } else {
                     entityHolding.attackEntityFrom(DamageSource.onFire, 2);
                     this.tickCounter = 0;
                 }

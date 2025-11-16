@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -65,8 +66,8 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
                         : getDefaultLocalization(tPrefix, tMaterial, i));
                 GTLanguageManager.addStringLocalization(
                     getUnlocalizedName(tStack) + ".tooltip",
-                    tMaterial.getToolTip(tPrefix.mMaterialAmount / M));
-                if (tPrefix.mIsUnificatable) {
+                    tMaterial.getChemicalTooltip(tPrefix.getMaterialAmount() / M));
+                if (tPrefix.isUnifiable()) {
                     GTOreDictUnificator.set(tPrefix, tMaterial, tStack);
                 } else {
                     GTOreDictUnificator.registerOre(tPrefix.get(tMaterial), tStack);
@@ -133,8 +134,8 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
      */
     public final IIconContainer getIconContainer(int aMetaData, Materials aMaterial) {
         return mGeneratedPrefixList[aMetaData / 1000] != null
-            && mGeneratedPrefixList[aMetaData / 1000].mTextureIndex >= 0
-                ? aMaterial.mIconSet.mTextures[mGeneratedPrefixList[aMetaData / 1000].mTextureIndex]
+            && mGeneratedPrefixList[aMetaData / 1000].getTextureIndex() >= 0
+                ? aMaterial.mIconSet.mTextures[mGeneratedPrefixList[aMetaData / 1000].getTextureIndex()]
                 : null;
     }
 
@@ -216,10 +217,25 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
     }
 
     @Override
-    public int getItemStackLimit(ItemStack aStack) {
-        int tDamage = getDamage(aStack);
-        if (tDamage < 32000 && mGeneratedPrefixList[tDamage / 1000] != null)
-            return Math.min(super.getItemStackLimit(aStack), mGeneratedPrefixList[tDamage / 1000].mDefaultStackSize);
-        return super.getItemStackLimit(aStack);
+    public int getItemStackLimit(ItemStack stack) {
+        final int damage = getDamage(stack);
+        final int stackSize = super.getItemStackLimit(stack);
+        if (damage >= 32_000) return stackSize;
+
+        final OrePrefixes prefix = mGeneratedPrefixList[damage / 1000];
+        if (prefix == null) return stackSize;
+
+        return Math.min(stackSize, prefix.getDefaultStackSize());
+    }
+
+    @Override
+    protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
+        Materials material = GregTechAPI.sGeneratedMaterials[getDamage(aStack) % 1000];
+        if (material == null) return;
+        String flavorText = material.getFlavorText();
+        if (flavorText == null) return;
+        if (!flavorText.isEmpty()) {
+            aList.add("§8§o" + flavorText);
+        }
     }
 }

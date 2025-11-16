@@ -6,6 +6,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.ApiStatus;
+
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
@@ -162,8 +164,8 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
 
     /**
      * When an old {@link ExtendedFacing} is loaded upon MTE deserialization, and the loaded facing cannot pass test of
-     * current {@link #getAlignmentLimits()}, this method will be called to retrieve a corrected version. This method
-     * is currently only intended to be used as a mean to migrate alignment limits, so if you never change the alignment
+     * current {@link #getAlignmentLimits()}, this method will be called to retrieve a corrected version. This method is
+     * currently only intended to be used as a mean to migrate alignment limits, so if you never change the alignment
      * limit then you can probably just use the default implementation.
      * <p>
      * The returned new facing must be able to pass the test of {@link #isNewExtendedFacingValid(ExtendedFacing)}
@@ -236,7 +238,7 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     }
 
     @Deprecated
-    protected final int survivialBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset,
+    protected final int survivalBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset,
         int depthOffset, int elementsBudget, IItemSource source, EntityPlayerMP actor, boolean check) {
         final IGregTechTileEntity tTile = getBaseMetaTileEntity();
         return getCastedStructureDefinition().survivalBuild(
@@ -257,7 +259,7 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
             check);
     }
 
-    protected final int survivialBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset,
+    protected final int survivalBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset,
         int depthOffset, int elementsBudget, ISurvivalBuildEnvironment env, boolean check) {
         final IGregTechTileEntity tTile = getBaseMetaTileEntity();
         return getCastedStructureDefinition().survivalBuild(
@@ -278,10 +280,10 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     }
 
     @Deprecated
-    protected final int survivialBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset,
+    protected final int survivalBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset,
         int depthOffset, int elementsBudget, IItemSource source, EntityPlayerMP actor, boolean check,
         boolean checkIfPlaced) {
-        int built = survivialBuildPiece(
+        int built = survivalBuildPiece(
             piece,
             trigger,
             horizontalOffset,
@@ -295,9 +297,9 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         return built;
     }
 
-    protected final int survivialBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset,
+    protected final int survivalBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset,
         int depthOffset, int elementsBudget, ISurvivalBuildEnvironment env, boolean check, boolean checkIfPlaced) {
-        int built = survivialBuildPiece(
+        int built = survivalBuildPiece(
             piece,
             trigger,
             horizontalOffset,
@@ -308,6 +310,95 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
             check);
         if (checkIfPlaced && built > 0) checkStructure(true, getBaseMetaTileEntity());
         return built;
+    }
+
+    /**
+     * @deprecated typo in the name. Use
+     *             {@link #survivalBuildPiece(String, ItemStack, int, int, int, int, IItemSource, EntityPlayerMP, boolean)}
+     *             instead.
+     */
+    @SuppressWarnings("SpellCheckingInspection")
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
+    protected final int survivialBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset,
+        int depthOffset, int elementsBudget, IItemSource source, EntityPlayerMP actor, boolean check) {
+        return survivalBuildPiece(
+            piece,
+            trigger,
+            horizontalOffset,
+            verticalOffset,
+            depthOffset,
+            elementsBudget,
+            source,
+            actor,
+            check);
+    }
+
+    /**
+     * @deprecated typo in the name. Use
+     *             {@link #survivalBuildPiece(String, ItemStack, int, int, int, int, ISurvivalBuildEnvironment, boolean)}
+     *             instead.
+     */
+    @SuppressWarnings("SpellCheckingInspection")
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
+    protected final int survivialBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset,
+        int depthOffset, int elementsBudget, ISurvivalBuildEnvironment env, boolean check) {
+        return survivalBuildPiece(
+            piece,
+            trigger,
+            horizontalOffset,
+            verticalOffset,
+            depthOffset,
+            elementsBudget,
+            env,
+            check);
+    }
+
+    /**
+     * @deprecated typo in the name. Use
+     *             {@link #survivalBuildPiece(String, ItemStack, int, int, int, int, IItemSource, EntityPlayerMP, boolean, boolean)}
+     *             instead.
+     */
+    @SuppressWarnings("SpellCheckingInspection")
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
+    protected final int survivialBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset,
+        int depthOffset, int elementsBudget, IItemSource source, EntityPlayerMP actor, boolean check,
+        boolean checkIfPlaced) {
+        return survivalBuildPiece(
+            piece,
+            trigger,
+            horizontalOffset,
+            verticalOffset,
+            depthOffset,
+            elementsBudget,
+            source,
+            actor,
+            check,
+            checkIfPlaced);
+    }
+
+    /**
+     * @deprecated typo in the name. Use
+     *             {@link #survivalBuildPiece(String, ItemStack, int, int, int, int, ISurvivalBuildEnvironment, boolean, boolean)}
+     *             instead.
+     */
+    @SuppressWarnings("SpellCheckingInspection")
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
+    protected final int survivialBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset,
+        int depthOffset, int elementsBudget, ISurvivalBuildEnvironment env, boolean check, boolean checkIfPlaced) {
+        return survivalBuildPiece(
+            piece,
+            trigger,
+            horizontalOffset,
+            verticalOffset,
+            depthOffset,
+            elementsBudget,
+            env,
+            check,
+            checkIfPlaced);
     }
 
     @Override

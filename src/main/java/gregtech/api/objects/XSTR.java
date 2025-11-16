@@ -4,9 +4,8 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 
 /*
- * TODO: Check the validity of the algorithm.
- * There is a claim that this particular implementation is not faithful to the articles it links, skewing the
- * distribution.
+ * TODO: Check the validity of the algorithm. There is a claim that this particular implementation is not faithful to
+ * the articles it links, skewing the distribution.
  */
 /**
  * XSTR - Xorshift ThermiteRandom Modified by Bogdan-G 03.06.2016 version 0.0.4

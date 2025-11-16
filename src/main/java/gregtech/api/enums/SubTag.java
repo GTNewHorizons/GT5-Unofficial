@@ -83,8 +83,8 @@ public final class SubTag implements ICondition<ISubTagContainer> {
      */
     public static final SubTag NO_WORKING = getNewSubTag("NO_WORKING");
     /**
-     * This Material cannot be used for regular Metal working techniques. Already
-     * listed are: Rubber, Plastic, Paper, Wood, Stone
+     * This Material cannot be used for regular Metal working techniques. Already listed are: Rubber, Plastic, Paper,
+     * Wood, Stone
      */
     public static final SubTag NO_SMASHING = getNewSubTag("NO_SMASHING");
     /**
@@ -248,11 +248,19 @@ public final class SubTag implements ICondition<ISubTagContainer> {
      * If this material cannot be made superdense using the HIP unit
      */
     public static final SubTag BLACK_HOLE = getNewSubTag("BLACK_HOLE");
-
+    /**
+     * This material has ice ores, but not rock ores or ore items
+     */
+    public static final SubTag ICE_ORE = getNewSubTag("ICE_ORE");
     /**
      * If this material should generate Multi-plates (triple, quadruple, quintuple)
      */
     public static final SubTag MULTI_PLATE = getNewSubTag("MULTI_PLATE");
+    /**
+     * If this material's nuggets should have witching gadgets transmutation recipes. The recipe generation is all done
+     * in Witching Gadgets, not GT.
+     */
+    public static final SubTag TRANSMUTABLE_NUGGETS = getNewSubTag("TRANSMUTABLE_NUGGETS");
 
     public final Collection<ISubTagContainer> mRelevantTaggedItems = new HashSet<>(1);
 

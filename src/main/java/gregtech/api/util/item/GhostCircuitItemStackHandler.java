@@ -14,8 +14,7 @@ import gregtech.common.items.ItemIntegratedCircuit;
 
 /**
  * Inventory handler dedicated for {@link gregtech.common.modularui2.sync.GhostCircuitSyncHandler
- * GhostCircuitSyncHandler} and {@link gregtech.common.modularui2.widget.GhostCircuitSlotWidget
- * GhostCircuitSlotWidget}.
+ * GhostCircuitSyncHandler} and {@link gregtech.common.modularui2.widget.GhostCircuitSlotWidget GhostCircuitSlotWidget}.
  */
 public class GhostCircuitItemStackHandler implements IItemHandlerModifiable {
 

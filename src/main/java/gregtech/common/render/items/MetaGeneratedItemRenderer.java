@@ -31,12 +31,11 @@ public class MetaGeneratedItemRenderer implements IItemRenderer {
     }
 
     public static void registerSpecialRenderer(ItemList item, IItemRenderer renderer) {
-        specialRenderers.put(
-            new RendererKey(
-                item.getItem(),
-                (short) item.getInternalStack_unsafe()
-                    .getItemDamage()),
-            renderer);
+        registerSpecialRenderer(item.getItem(), item.getInternalStack_unsafe(), renderer);
+    }
+
+    public static void registerSpecialRenderer(Item aItem, ItemStack aStack, IItemRenderer renderer) {
+        specialRenderers.put(new RendererKey(aItem, (short) aStack.getItemDamage()), renderer);
     }
 
     @Override

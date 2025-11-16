@@ -8,21 +8,16 @@ import gregtech.api.enums.Mods;
 import gregtech.api.structure.IStructureChannels;
 
 /*
- * To unofficial addon authors:
- * Do not add to this enum with EnumHelper or equivalent. Just copy this class into your namespace, and replace
- * the constants
+ * To unofficial addon authors: Do not add to this enum with EnumHelper or equivalent. Just copy this class into your
+ * namespace, and replace the constants
  */
 /*
- * Dev notes:
- * Q1: central manage indicator item or in each blocks' constructor?
- * A1: before this is merged #4067 happens. we can build on this info and central manage it
- * EDIT: I ended up with a registerAsIndicator() method here
- * Q2: default tooltip in MBTT builder?
- * A2: Yes
- * Q3: multi specific tier managed here or in individual controller?
- * A3: here, because it needs to be registered to a central location, so it would be nice to have a central location
- * with an easy overview. Plus, it's possible these multi-specific tiers would be become reused by others as development
- * carries on, e.g. PRASS_UNIT_CASING
+ * Dev notes: Q1: central manage indicator item or in each blocks' constructor? A1: before this is merged #4067 happens.
+ * we can build on this info and central manage it EDIT: I ended up with a registerAsIndicator() method here Q2: default
+ * tooltip in MBTT builder? A2: Yes Q3: multi specific tier managed here or in individual controller? A3: here, because
+ * it needs to be registered to a central location, so it would be nice to have a central location with an easy
+ * overview. Plus, it's possible these multi-specific tiers would be become reused by others as development carries on,
+ * e.g. PRASS_UNIT_CASING
  */
 public enum GTStructureChannels implements IStructureChannels {
 
@@ -47,6 +42,10 @@ public enum GTStructureChannels implements IStructureChannels {
     EOH_DILATION("time_dilation", "Time Dilation Field Generator Tier"),
     NO_HATCH("gt_no_hatch", ""),
     TFFT_FIELD("field", "Storage Field Tier"),
+    EIC_PISTON("piston_block", "Metal Block Tier"),
+    ALCHEMICAL_CASING("casing", "Alchemical Casing Tier"),
+    ALCHEMICAL_CONSTRUCT("construct", "Alchemical Construct Tier"),
+    SUPER_CHEST("super_chest", "Super Chest Tier")
     //
     ;
 
@@ -70,14 +69,14 @@ public enum GTStructureChannels implements IStructureChannels {
 
     @Override
     public void registerAsIndicator(ItemStack indicator, int channelValue) {
-        StructureLibAPI.registerChannelItem(get(), Mods.Names.GREG_TECH, channelValue, indicator);
+        StructureLibAPI.registerChannelItem(get(), Mods.ModIDs.GREG_TECH, channelValue, indicator);
     }
 
     public static void register() {
         for (GTStructureChannels value : values()) {
             StructureLibAPI.registerChannelDescription(
                 value.get(),
-                Mods.Names.GREG_TECH,
+                Mods.ModIDs.GREG_TECH,
                 "channels." + Mods.GregTech.ID + "." + value.get());
         }
     }

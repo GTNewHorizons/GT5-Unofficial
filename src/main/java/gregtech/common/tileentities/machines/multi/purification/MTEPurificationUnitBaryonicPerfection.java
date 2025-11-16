@@ -9,12 +9,12 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_WATER_T8;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_WATER_T8_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_WATER_T8_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_WATER_T8_GLOW;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
-import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,7 +42,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
-import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
@@ -52,7 +51,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.items.IDMetaItem03;
 import gregtech.common.items.MetaGeneratedItem03;
-import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.loaders.postload.chains.PurifiedWaterRecipes;
 
 public class MTEPurificationUnitBaryonicPerfection
@@ -170,7 +168,7 @@ public class MTEPurificationUnitBaryonicPerfection
 
     private ArrayList<ItemStack> insertedCatalysts = new ArrayList<>();
 
-    private static final long CATALYST_BASE_COST = 144L;
+    private static final long CATALYST_BASE_COST = 1 * INGOTS;
 
     private int correctStartIndex = -1;
     private int numCasings = 0;
@@ -195,21 +193,21 @@ public class MTEPurificationUnitBaryonicPerfection
         if (side == facing) {
             if (active) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MAIN),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE)
+                    .addIcon(OVERLAY_FRONT_WATER_T8_ACTIVE)
                     .extFacing()
                     .build(),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW)
+                    .addIcon(OVERLAY_FRONT_WATER_T8_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MAIN),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY)
+                    .addIcon(OVERLAY_FRONT_WATER_T8)
                     .extFacing()
                     .build(),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_GLOW)
+                    .addIcon(OVERLAY_FRONT_WATER_T8_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
@@ -230,7 +228,7 @@ public class MTEPurificationUnitBaryonicPerfection
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             STRUCTURE_X_OFFSET,
@@ -251,11 +249,6 @@ public class MTEPurificationUnitBaryonicPerfection
         numCasings = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET)) return false;
         if (numCasings < MIN_CASINGS) return false;
-        // Blacklist stocking bus because it's incredibly buggy with this and keeps duping catalyst no matter how much
-        // I try to fix it.
-        for (MTEHatchInputBus bus : validMTEList(mInputBusses)) {
-            if (bus instanceof MTEHatchInputBusME) return false;
-        }
         return super.checkMachine(aBaseMetaTileEntity, aStack);
     }
 
@@ -270,13 +263,13 @@ public class MTEPurificationUnitBaryonicPerfection
                     + EnumChatFormatting.WHITE
                     + GTUtility.formatNumbers(getWaterTier())
                     + EnumChatFormatting.RESET)
-            .addInfo("Must be linked to a Purification Plant using a data stick to work.")
+            .addInfo("Must be linked to a Purification Plant using a data stick to work")
             .addSeparator()
             .addInfo(
                 "Insert " + EnumChatFormatting.WHITE
                     + "Quark Releasing Catalysts "
                     + EnumChatFormatting.GRAY
-                    + "into the input bus while running.")
+                    + "into the input bus while running")
             .addInfo(
                 "Every recipe cycle, a different combination of " + EnumChatFormatting.RED
                     + "2"
@@ -284,7 +277,7 @@ public class MTEPurificationUnitBaryonicPerfection
                     + " different "
                     + EnumChatFormatting.WHITE
                     + "Quark Releasing Catalysts")
-            .addInfo("will correctly identify the lone quark and succeed the recipe.")
+            .addInfo("will correctly identify the lone quark and succeed the recipe")
             .addInfo(
                 "The order of catalysts in the combination does not matter, so " + EnumChatFormatting.BLUE
                     + "Up"
@@ -299,35 +292,29 @@ public class MTEPurificationUnitBaryonicPerfection
                     + EnumChatFormatting.GRAY
                     + "/"
                     + EnumChatFormatting.BLUE
-                    + "Up"
-                    + EnumChatFormatting.GRAY
-                    + ".")
+                    + "Up")
             .addSeparator()
             .addInfo(
                 "Every " + EnumChatFormatting.RED
                     + "20"
                     + EnumChatFormatting.GRAY
-                    + " ticks, consumes ALL catalysts in the input bus.")
+                    + " ticks, consumes ALL catalysts in the input bus")
             .addInfo(
                 "The base cost of inserting a catalyst is " + EnumChatFormatting.RED
                     + CATALYST_BASE_COST
                     + "L"
                     + EnumChatFormatting.WHITE
-                    + " Molten Infinity"
-                    + EnumChatFormatting.GRAY
-                    + ".")
-            .addInfo("For every duplicate occurrence of an inserted catalyst in the sequence, this cost is doubled.")
+                    + " Molten Infinity")
+            .addInfo("For every duplicate occurrence of an inserted catalyst in the sequence, this cost is doubled")
             .addSeparator()
-            .addInfo("Keeps track of the entire sequence of catalysts inserted this recipe.")
+            .addInfo("Keeps track of the entire sequence of catalysts inserted this recipe")
             .addInfo(
                 "If the correct catalyst combination is in the sequence of inserted catalysts, immediately outputs "
                     + EnumChatFormatting.RED
                     + BARYONIC_MATTER_OUTPUT
                     + "L "
                     + EnumChatFormatting.WHITE
-                    + "Stabilised Baryonic Matter"
-                    + EnumChatFormatting.GRAY
-                    + ".")
+                    + "Stabilised Baryonic Matter")
             .addInfo(
                 "At the end of a successful recipe, outputs additional " + EnumChatFormatting.RED
                     + PurifiedWaterRecipes.extraBaryonicOutput
@@ -335,8 +322,8 @@ public class MTEPurificationUnitBaryonicPerfection
                     + EnumChatFormatting.WHITE
                     + "Stabilised Baryonic Matter"
                     + EnumChatFormatting.GRAY
-                    + " per parallel.")
-            .addInfo("At the end of the recipe, returns all incorrectly inserted catalysts in the output bus.")
+                    + " per parallel")
+            .addInfo("At the end of the recipe, returns all incorrectly inserted catalysts in the output bus")
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.AQUA + ""
@@ -349,7 +336,7 @@ public class MTEPurificationUnitBaryonicPerfection
             .addInfo(
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
-                    + "flavors are required, the unit will activate the catalysts, stabilizing the errant particles.")
+                    + "flavors are required, the unit will activate the catalysts, stabilizing the errant particles")
             .addInfo(
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
@@ -424,7 +411,7 @@ public class MTEPurificationUnitBaryonicPerfection
         for (int i = 0; i < insertedCatalysts.size(); ++i) {
             if (correctStartIndex != -1 && (i == correctStartIndex || i == correctStartIndex + 1)) continue;
 
-            addOutput(insertedCatalysts.get(i));
+            addOutputPartial(insertedCatalysts.get(i));
         }
     }
 
@@ -445,7 +432,7 @@ public class MTEPurificationUnitBaryonicPerfection
             }
         }
         // Cost is exponential in function of amount of duplicate catalysts
-        return (int) (Math.pow(2, count) * CATALYST_BASE_COST);
+        return (int) (GTUtility.powInt(2, count) * CATALYST_BASE_COST);
     }
 
     // Returns the first index of a valid combination, or -1 if there is no valid combination in the sequence
@@ -499,9 +486,10 @@ public class MTEPurificationUnitBaryonicPerfection
                         this.insertedCatalysts.add(singleStack);
                     }
                     // Then deplete the entire stack
-                    this.depleteInput(stack);
+                    stack.stackSize = 0;
                 }
             }
+            updateSlots();
             endRecipeProcessing();
 
             // Only do this check if we didn't find a correct combination yet
@@ -591,11 +579,6 @@ public class MTEPurificationUnitBaryonicPerfection
             StatCollector
                 .translateToLocalFormatted("GT5U.infodata.pubp.quark_combination", getCorrectlyDecodedString()));
         return info.toArray(new String[] {});
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
     }
 
     @Override

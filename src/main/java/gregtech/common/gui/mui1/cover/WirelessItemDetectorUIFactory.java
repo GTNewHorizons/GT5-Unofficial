@@ -16,7 +16,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 import gregtech.common.covers.redstone.CoverWirelessItemDetector;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
@@ -37,7 +36,7 @@ public class WirelessItemDetectorUIFactory extends AdvancedRedstoneTransmitterBa
         @Override
         public StringBuffer format(double number, StringBuffer toAppendTo, FieldPosition pos) {
             if (number < 0) {
-                return toAppendTo.append(GTUtility.trans("ALL", "All"));
+                return toAppendTo.append(StatCollector.translateToLocal("gt.interact.desc.Item_Item_Detector.All"));
             } else {
                 return super.format(number, toAppendTo, pos);
             }
@@ -75,10 +74,10 @@ public class WirelessItemDetectorUIFactory extends AdvancedRedstoneTransmitterBa
             new ItemWatcherSlotWidget().setGetter(this::getTargetItem)
                 .setPos(startX + spaceX * 4 - 1, startY + spaceY * 3))
             .widget(
-                new TextWidget(GTUtility.trans("221", "Item threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(StatCollector.translateToLocal("gt.interact.desc.Item_Item_Detector.ItemThreshold"))
                     .setPos(startX + spaceX * 5, 4 + startY + spaceY * 2))
             .widget(
-                new TextWidget(GTUtility.trans("254", "Detect Slot #")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(StatCollector.translateToLocal("gt.interact.desc.Item_Item_Detector.DetectSlot"))
                     .setPos(startX + spaceX * 5, 4 + startY + spaceY * 3))
             .widget(
                 TextWidget
@@ -88,7 +87,6 @@ public class WirelessItemDetectorUIFactory extends AdvancedRedstoneTransmitterBa
                                 ? StatCollector.translateToLocal("gt.cover" + ".wirelessdetector.redstone.1")
                                 : StatCollector.translateToLocal("gt.cover" + ".wirelessdetector.redstone.0")))
                     .setSynced(false)
-                    .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setTextAlignment(Alignment.CenterLeft)
                     .setPos(startX + spaceX, 5 + startY + spaceY * 4)
                     .setSize(spaceX * 10, 12));
@@ -101,7 +99,7 @@ public class WirelessItemDetectorUIFactory extends AdvancedRedstoneTransmitterBa
             .addFollower(
                 new CoverDataFollowerNumericWidget<>(),
                 coverData -> (double) coverData.getThreshold(),
-                (coverData, state) -> coverData.setThresdhold(state.intValue()),
+                (coverData, state) -> coverData.setThreshold(state.intValue()),
                 widget -> widget.setBounds(0, maxThreshold)
                     .setScrollValues(1, 64, 1000)
                     .setFocusOnGuiOpen(true)

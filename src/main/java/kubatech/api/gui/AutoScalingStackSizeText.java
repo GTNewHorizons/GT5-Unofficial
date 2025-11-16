@@ -2,6 +2,8 @@ package kubatech.api.gui;
 
 import java.util.Collections;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.TextRenderer;
@@ -27,12 +29,12 @@ public class AutoScalingStackSizeText implements IDrawable {
         this.measure();
     }
 
-    public AutoScalingStackSizeText color(int color) {
+    public @NotNull AutoScalingStackSizeText color(int color) {
         this.color = Color.withAlpha(color, 255);
         return this;
     }
 
-    public AutoScalingStackSizeText shadow(boolean shadow) {
+    public @NotNull AutoScalingStackSizeText shadow(boolean shadow) {
         this.shadow = shadow;
         return this;
     }
@@ -41,12 +43,12 @@ public class AutoScalingStackSizeText implements IDrawable {
         return shadow(true);
     }
 
-    public AutoScalingStackSizeText alignment(Alignment alignment) {
+    public @NotNull AutoScalingStackSizeText alignment(Alignment alignment) {
         this.alignment = alignment;
         return this;
     }
 
-    public AutoScalingStackSizeText measure() {
+    public @NotNull AutoScalingStackSizeText measure() {
         this.simWidth = measuringRenderer.getMaxWidth(Collections.singletonList(this.text));
         return this;
     }

@@ -69,7 +69,7 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
     /**
      * If the player inserts more ozone gas than this amount, the multi will explode.
      */
-    public static final int MAX_OZONE_GAS_FOR_EXPLOSION = 1000 * (int) Math.pow(2, 10);
+    public static final int MAX_OZONE_GAS_FOR_EXPLOSION = 1000 * (int) GTUtility.powInt(2, 10);
 
     private int casingCount = 0;
     private static final int MIN_CASING = 96;
@@ -154,7 +154,7 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             OFFSET_X,
@@ -181,25 +181,21 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
                     + EnumChatFormatting.WHITE
                     + GTUtility.formatNumbers(getWaterTier())
                     + EnumChatFormatting.RESET)
-            .addInfo("Must be linked to a Purification Plant using a data stick to work.")
+            .addInfo("Must be linked to a Purification Plant using a data stick to work")
             .addSeparator()
             .addInfo(
                 "Will explode if the input hatch contains more than " + EnumChatFormatting.RED
                     + MAX_OZONE_GAS_FOR_EXPLOSION
                     + "L "
                     + EnumChatFormatting.WHITE
-                    + "Ozone Gas"
-                    + EnumChatFormatting.GRAY
-                    + ".")
+                    + "Ozone Gas")
             .addInfo(
                 "Receives a " + EnumChatFormatting.RED
                     + "20%"
                     + EnumChatFormatting.GRAY
                     + " bonus to success chance for every doubling of "
                     + EnumChatFormatting.WHITE
-                    + "Ozone Gas"
-                    + EnumChatFormatting.GRAY
-                    + ".")
+                    + "Ozone Gas")
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.AQUA + ""
@@ -277,11 +273,6 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
     @Override
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_OZONATION_LOOP;
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
     }
 
     @Override

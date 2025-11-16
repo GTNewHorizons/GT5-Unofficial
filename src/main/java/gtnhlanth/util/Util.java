@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizons.modularui.api.math.Pos2d;
+
+import gregtech.api.util.GTModHandler;
 
 public class Util {
 
@@ -49,14 +50,14 @@ public class Util {
 
     public static boolean coolantFluidCheck(FluidStack inStack, int fluidToConsume) {
         return (inStack.amount < fluidToConsume
-            || (!inStack.isFluidEqual(FluidRegistry.getFluidStack("ic2coolant", 1)) && inStack.getFluid()
+            || (!inStack.isFluidEqual(GTModHandler.getIC2Coolant(1)) && inStack.getFluid()
                 .getTemperature() > 200));
     }
 
     public static int coolantFluidTemperature(FluidStack inStack) {
         int fluidTemperature = 300;
 
-        if (inStack.isFluidEqual(new FluidStack(FluidRegistry.getFluid("ic2coolant"), 1))) {
+        if (inStack.isFluidEqual(GTModHandler.getIC2Coolant(1))) {
             fluidTemperature = 60; // Default temp of 300 is unreasonable
         } else {
             fluidTemperature = inStack.getFluid()

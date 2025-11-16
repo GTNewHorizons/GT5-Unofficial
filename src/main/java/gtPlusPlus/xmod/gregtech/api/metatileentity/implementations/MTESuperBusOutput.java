@@ -34,11 +34,6 @@ public class MTESuperBusOutput extends MTEHatchOutputBus {
     }
 
     @Override
-    public boolean isValidSlot(int aIndex) {
-        return true;
-    }
-
-    @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTESuperBusOutput(this.mName, this.mTier, mDescriptionArray, this.mTextures);
     }
@@ -61,22 +56,7 @@ public class MTESuperBusOutput extends MTEHatchOutputBus {
     }
 
     protected void fillStacksIntoFirstSlots() {
-        for (int i = 0; i < this.mInventory.length; ++i) {
-            for (int j = i + 1; j < this.mInventory.length; ++j) {
-                if (this.mInventory[j] != null && (this.mInventory[i] == null
-                    || GTUtility.areStacksEqual(this.mInventory[i], this.mInventory[j]))) {
-                    GTUtility.moveStackFromSlotAToSlotB(
-                        this.getBaseMetaTileEntity(),
-                        this.getBaseMetaTileEntity(),
-                        j,
-                        i,
-                        (byte) 64,
-                        (byte) 1,
-                        (byte) 64,
-                        (byte) 1);
-                }
-            }
-        }
+        GTUtility.compactInventory(this);
     }
 
     @Override

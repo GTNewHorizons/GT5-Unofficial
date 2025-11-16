@@ -2,8 +2,7 @@ package gregtech.common.covers;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.nbt.NBTTagInt;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverContext;
@@ -22,7 +21,7 @@ public class CoverRedstoneTransmitterInternal extends CoverRedstoneWirelessBase 
 
     @Override
     public void onCoverRemoval() {
-        GregTechAPI.sWirelessRedstone.remove(coverData);
+        GregTechAPI.sWirelessRedstone.remove(getMapFrequency());
     }
 
     @Override
@@ -31,7 +30,7 @@ public class CoverRedstoneTransmitterInternal extends CoverRedstoneWirelessBase 
         if (coverable == null) {
             return;
         }
-        GregTechAPI.sWirelessRedstone.put(coverData, coverable.getOutputRedstoneSignal(coverSide));
+        GregTechAPI.sWirelessRedstone.put(getMapFrequency(), coverable.getOutputRedstoneSignal(coverSide));
     }
 
     @Override
@@ -44,19 +43,15 @@ public class CoverRedstoneTransmitterInternal extends CoverRedstoneWirelessBase 
         return true;
     }
 
+    // TODO: Remove this in 2.9 unless class moved from CoverLegacyData
     @Override
     protected void readDataFromNbt(NBTBase nbt) {
-        NBTTagCompound tag = (NBTTagCompound) nbt;
-        if (tag.hasKey("frequency") && !(tag.getInteger("frequency") == coverData)) {
-            GregTechAPI.sWirelessRedstone.remove(coverData);
+        if (nbt instanceof NBTTagInt nbtInt) {
+            int data = nbtInt.func_150287_d();
+            processCoverData(getFlagFrequency(data), getFlagCheckbox(data));
+            return;
         }
-        coverData = tag.getInteger("frequency");
-    }
-
-    @Override
-    protected @NotNull NBTBase saveDataToNbt() {
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setInteger("frequency", coverData);
-        return tag;
+        NBTTagCompound tag = (NBTTagCompound) nbt;
+        processCoverData(tag.getInteger("frequency"), tag.getBoolean("privateChannel"));
     }
 }
