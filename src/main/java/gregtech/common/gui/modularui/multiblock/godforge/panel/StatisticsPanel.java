@@ -84,7 +84,7 @@ public class StatisticsPanel {
         panel.child(createPreviewRow(hypervisor));
 
         populateModuleValues(hypervisor);
-        Grid grid = new Grid().top(38)// .alignY(0.25f)
+        Grid grid = new Grid().top(38)
             .row(createHeaderRow());
         for (Statistics stat : Statistics.values()) {
             grid.row(createStatisticsRow(stat));
@@ -143,7 +143,6 @@ public class StatisticsPanel {
     }
 
     private static Flow createPreviewRow(SyncHypervisor hypervisor) {
-        IntSyncValue FUEL_FACTOR_SYNCER = SyncValues.FUEL_FACTOR.lookupFrom(Panels.STATISTICS, hypervisor);
         Flow previewRow = Flow.row()
             .coverChildren()
             .alignX(0.8f)
@@ -159,7 +158,6 @@ public class StatisticsPanel {
             new TextFieldWidget().addTooltipLine(translateToLocal("fog.text.tooltip.factorpreview"))
                 .size(70, 18)
                 .setFormatAsInteger(true)
-                .setDefaultNumber(FUEL_FACTOR_SYNCER.getIntValue())
                 .value(SyncValues.PREVIEW_FUEL_FACTOR.create(hypervisor))
                 .setNumbers(1, Integer.MAX_VALUE)
                 .setScrollValues(1, 4, 64)
@@ -184,29 +182,29 @@ public class StatisticsPanel {
 
     private static List<IWidget> createStatisticsRow(Statistics statistic) {
         List<IWidget> returnList = new ArrayList<>();
-        int base_index = statistic.displayIndex * 4;
+        int baseIndex = statistic.displayIndex * 4;
         returnList.add(
             IKey.str(statistic.toString())
                 .alignment(Alignment.Center)
                 .asWidget()
                 .size(69, HEIGHT_MAJOR));
         returnList.add(
-            IKey.dynamic(() -> EnumChatFormatting.GREEN + moduleValues[base_index + SMELTING_INDEX])
+            IKey.dynamic(() -> EnumChatFormatting.GREEN + moduleValues[baseIndex + SMELTING_INDEX])
                 .alignment(Alignment.CENTER)
                 .asWidget()
                 .size(WIDTH_MAJOR, HEIGHT_MAJOR));
         returnList.add(
-            IKey.dynamic(() -> EnumChatFormatting.GREEN + moduleValues[base_index + MOLTEN_INDEX])
+            IKey.dynamic(() -> EnumChatFormatting.GREEN + moduleValues[baseIndex + MOLTEN_INDEX])
                 .alignment(Alignment.CENTER)
                 .asWidget()
                 .size(WIDTH_MAJOR, HEIGHT_MAJOR));
         returnList.add(
-            IKey.dynamic(() -> EnumChatFormatting.GREEN + moduleValues[base_index + PLASMA_INDEX])
+            IKey.dynamic(() -> EnumChatFormatting.GREEN + moduleValues[baseIndex + PLASMA_INDEX])
                 .alignment(Alignment.CENTER)
                 .asWidget()
                 .size(WIDTH_MAJOR, HEIGHT_MAJOR));
         returnList.add(
-            IKey.dynamic(() -> EnumChatFormatting.GREEN + moduleValues[base_index + EXOTIC_INDEX])
+            IKey.dynamic(() -> EnumChatFormatting.GREEN + moduleValues[baseIndex + EXOTIC_INDEX])
                 .alignment(Alignment.CENTER)
                 .asWidget()
                 .size(WIDTH_MAJOR, HEIGHT_MAJOR));
@@ -218,24 +216,23 @@ public class StatisticsPanel {
     private static final int MOLTEN_INDEX = 1;
     private static final int PLASMA_INDEX = 2;
     private static final int EXOTIC_INDEX = 3;
-    private static final MTEBaseModule[] modules = new MTEBaseModule[] { new MTESmeltingModule("smelting"),
+    private static final MTEBaseModule[] MODULES = new MTEBaseModule[] { new MTESmeltingModule("smelting"),
         new MTEMoltenModule("molten"), new MTEPlasmaModule("plasma"), new MTEExoticModule("exotic") };
 
     private static void populateModuleValues(SyncHypervisor hypervisor) {
-        IntSyncValue FUEL_FACTOR_SYNCER = SyncValues.FUEL_FACTOR.lookupFrom(Panels.STATISTICS, hypervisor);
-        IntSyncValue PREVIEW_FUEL_FACTOR_SYNCER = SyncValues.PREVIEW_FUEL_FACTOR
+        IntSyncValue fuelFactorSyncer = SyncValues.FUEL_FACTOR.lookupFrom(Panels.STATISTICS, hypervisor);
+        IntSyncValue previewFuelFactorSyncer = SyncValues.PREVIEW_FUEL_FACTOR
             .lookupFrom(Panels.STATISTICS, hypervisor);
         EnumSyncValue<Formatters> formatSyncer = SyncValues.FORMATTER.lookupFrom(Panels.MAIN, hypervisor);
 
         for (Statistics stat : Statistics.values()) {
-            for (int moduleIndex = 0; moduleIndex < modules.length; moduleIndex++) {
+            for (int moduleIndex = 0; moduleIndex < MODULES.length; moduleIndex++) {
                 int currentIndex = stat.displayIndex * 4 + moduleIndex;
-                MTEBaseModule currentModule = modules[moduleIndex];
-                moduleValues[currentIndex] = Statistics.calculate(
-                    stat,
+                MTEBaseModule currentModule = MODULES[moduleIndex];
+                moduleValues[currentIndex] = stat.calculate(
                     currentModule,
-                    usingPreview ? Math.max(1, PREVIEW_FUEL_FACTOR_SYNCER.getIntValue())
-                        : FUEL_FACTOR_SYNCER.getIntValue(),
+                    usingPreview ? Math.max(1, previewFuelFactorSyncer.getIntValue())
+                        : fuelFactorSyncer.getIntValue(),
                     hypervisor.getData(),
                     formatSyncer.getValue());
             }
