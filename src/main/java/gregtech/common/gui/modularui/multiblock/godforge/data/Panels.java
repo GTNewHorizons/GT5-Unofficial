@@ -8,6 +8,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.Dialog;
 
 import gregtech.common.gui.modularui.multiblock.godforge.panel.BatteryConfigPanel;
+import gregtech.common.gui.modularui.multiblock.godforge.panel.CustomStarColorPanel;
 import gregtech.common.gui.modularui.multiblock.godforge.panel.FuelConfigPanel;
 import gregtech.common.gui.modularui.multiblock.godforge.panel.GeneralInfoPanel;
 import gregtech.common.gui.modularui.multiblock.godforge.panel.IndividualMilestonePanel;
@@ -15,6 +16,7 @@ import gregtech.common.gui.modularui.multiblock.godforge.panel.IndividualUpgrade
 import gregtech.common.gui.modularui.multiblock.godforge.panel.ManualInsertionPanel;
 import gregtech.common.gui.modularui.multiblock.godforge.panel.MilestonePanel;
 import gregtech.common.gui.modularui.multiblock.godforge.panel.SpecialThanksPanel;
+import gregtech.common.gui.modularui.multiblock.godforge.panel.StarColorImportPanel;
 import gregtech.common.gui.modularui.multiblock.godforge.panel.StarCosmeticsPanel;
 import gregtech.common.gui.modularui.multiblock.godforge.panel.StatisticsPanel;
 import gregtech.common.gui.modularui.multiblock.godforge.panel.UpgradeTreePanel;
@@ -28,6 +30,8 @@ public enum Panels {
     FUEL_CONFIG(FuelConfigPanel::openPanel),
     BATTERY_CONFIG(BatteryConfigPanel::openPanel),
     STAR_COSMETICS(StarCosmeticsPanel::openPanel),
+    CUSTOM_STAR_COLOR(CustomStarColorPanel::openPanel),
+    STAR_COLOR_IMPORT(StarColorImportPanel::openPanel),
     UPGRADE_TREE(UpgradeTreePanel::openPanel),
     INDIVIDUAL_UPGRADE(IndividualUpgradePanel::openPanel),
     MANUAL_INSERTION(ManualInsertionPanel::openDialog, true),
