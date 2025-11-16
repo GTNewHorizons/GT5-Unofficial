@@ -237,9 +237,4 @@ public class MTEIndustrialExtractor extends MTEExtendedPowerMultiBlockBase<MTEIn
     public boolean supportsInputSeparation() {
         return true;
     }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
 }

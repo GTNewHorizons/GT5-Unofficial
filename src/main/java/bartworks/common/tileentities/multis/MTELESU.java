@@ -589,4 +589,9 @@ public class MTELESU extends MTEMultiBlockBase {
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
     }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
 }
