@@ -128,7 +128,6 @@ public class GhostCircuitSlotWidget extends PhantomItemSlot {
 
     private IPanelHandler buildSelectorPanel(IntSyncValue selectedSyncHandler) {
 
-        // TODO: fix crash on shift click, it does not work.
         return syncManager.panel("ghostCircuitPanel", (mainPanel, player) -> {
             ModularPanel panel = GTGuis.createPopUpPanel(GUI_ID);
             return new SelectItemGuiBuilder(panel, GTUtility.getAllIntegratedCircuits()) //
