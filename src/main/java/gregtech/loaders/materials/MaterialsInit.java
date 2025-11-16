@@ -13761,6 +13761,7 @@ public class MaterialsInit {
             .setDefaultLocalName("Nefarious Gas")
             .setIconSet(TextureSet.SET_FLUID)
             .setARGB(0x00300a05)
+            .setFuel(MaterialBuilder.FuelType.Gas, 1200)
             .addCell()
             .addFluid()
             .constructMaterial();
@@ -13771,6 +13772,7 @@ public class MaterialsInit {
             .setDefaultLocalName("Nefarious Oil")
             .setIconSet(TextureSet.SET_FLUID)
             .setARGB(0x00391616)
+            .setFuel(MaterialBuilder.FuelType.SemiFluid, 286)
             .addCell()
             .addFluid()
             .constructMaterial();

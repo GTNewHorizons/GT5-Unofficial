@@ -256,14 +256,6 @@ public class NetheriteRecipes {
             .addTo(distillationTowerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.NefariousGas, 1))
-            .metadata(FUEL_VALUE, 1200)
-            .metadata(FUEL_TYPE, 1)
-            .duration(0)
-            .eut(0)
-            .addTo(GTRecipeConstants.Fuel);
-
-        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(1))
             .fluidInputs(Materials.Grade1PurifiedWater.getFluid(4_000), Materials.NefariousGas.getFluid(16_000))
             .fluidOutputs(Materials.NefariousOil.getFluid(12_000))
@@ -278,13 +270,6 @@ public class NetheriteRecipes {
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(crackingRecipes);
-
-        GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.NefariousOil.getFluid(1_000))
-            .duration(0)
-            .eut(0)
-            .metadata(FUEL_VALUE, 572)
-            .addTo(semiFluidFuels);
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Heavy_Hellish_Mud.get(32))
