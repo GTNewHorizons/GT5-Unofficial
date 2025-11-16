@@ -771,6 +771,7 @@ public final class GTGuiTextures {
     public static final UITexture PICTURE_OVERLAY_GREEN = UITexture.fullImage(MODID, "gui/picture/overlay_green");
     public static final UITexture PICTURE_OVERLAY_PURPLE = UITexture.fullImage(MODID, "gui/picture/overlay_purple");
     public static final UITexture PICTURE_OVERLAY_RED = UITexture.fullImage(MODID, "gui/picture/overlay_red");
+    public static final UITexture PICTURE_RAINBOW_SQUARE = UITexture.fullImage(MODID, "gui/picture/rainbow_square");
     public static final UITexture PICTURE_UPGRADE_CONNECTOR_PURPLE = UITexture.builder()
         .location(MODID, "gui/picture/connector_purple")
         .nonOpaque()

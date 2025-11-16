@@ -1830,7 +1830,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         builder.widget(new FakeSyncWidget.IntegerSyncer(data::getEditingStarIndex, data::setEditingStarIndex));
         builder.widget(
             data.getStarColors()
-                .getSyncer());
+                .getSyncerMUI1());
 
         // Exit button and header
         builder.widget(
@@ -1861,8 +1861,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
         // Option to add a new preset, only shown if there is room available
         MultiChildWidget newPreset = new MultiChildWidget();
-        Function<Widget, Boolean> newPresetEnabled = $ -> !data.getStarColors()
-            .isFull();
+        Function<Widget, Boolean> newPresetEnabled = $ -> true;
         newPreset.setSize(18, 80);
         newPreset.setPosProvider(
             ($, $$, $$$) -> new Pos2d(
@@ -2054,8 +2053,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         parent.addChild(new DrawableWidget().setDrawable(() -> {
             StarColorStorage starColors = data.getStarColors();
             if (index < starColors.size()) {
-                return starColors.getByIndex(index)
-                    .getDrawable();
+                return IDrawable.EMPTY;
+                // return starColors.getByIndex(index)
+                // .getDrawable();
             }
             return IDrawable.EMPTY;
         })

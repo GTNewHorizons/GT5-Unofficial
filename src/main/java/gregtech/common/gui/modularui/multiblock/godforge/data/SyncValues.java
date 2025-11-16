@@ -11,9 +11,11 @@ import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.value.sync.ValueSyncHandler;
 
 import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
+import tectech.thing.metaTileEntity.multi.godforge.color.ForgeOfGodsStarColor;
 import tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 
@@ -181,6 +183,25 @@ public class SyncValues<T extends ValueSyncHandler<?>> {
     public static final SyncValues<FloatSyncValue> MILESTONE_COMPOSITION_PROGRESS_INVERTED = new SyncValues<>(
         "fog.sync.milestone_composition_progress_inverted",
         data -> new FloatSyncValue(data::getInvertedStructureMilestonePercentage, data::setInvertedStructureMilestonePercentage));
+
+    // ---------- //
+    // Star Color //
+    // ---------- //
+
+    public static final SyncValues<IntSyncValue> STAR_COLOR_CLICKED = new SyncValues<>(
+        "fog.sync.star_color_clicked",
+        data -> {
+            AtomicInteger i = new AtomicInteger();
+            return new IntSyncValue(i::intValue, i::set);
+        });
+
+    public static final SyncValues<StringSyncValue> SELECTED_STAR_COLOR = new SyncValues<>(
+        "fog.sync.selected_star_color",
+        data -> new StringSyncValue(data::getSelectedStarColor, data::setSelectedStarColor));
+
+    public static final SyncValues<GenericListSyncHandler<ForgeOfGodsStarColor>> STAR_COLORS = new SyncValues<>(
+        "fog.sync.star_colors",
+        data -> data.getStarColors().getSyncer());
 
     // spotless:on
 
