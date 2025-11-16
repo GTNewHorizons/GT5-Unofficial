@@ -22,7 +22,6 @@ import gtPlusPlus.core.block.machine.BlockFlaskSetter;
 import gtPlusPlus.core.block.machine.BlockPestKiller;
 import gtPlusPlus.core.block.machine.BlockPooCollector;
 import gtPlusPlus.core.block.machine.BlockProjectTable;
-import gtPlusPlus.core.block.machine.BlockSuperJukebox;
 import gtPlusPlus.core.fluids.FluidRegistryHandler;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
@@ -80,7 +79,6 @@ public final class ModBlocks {
         GregtechItemList.WitherGuard.set(new ItemStack(new BlockWitherProof()));
         blockCircuitProgrammer = new BlockCircuitProgrammer();
         blockDecayablesChest = new BlockDecayablesChest();
-        blockCustomJukebox = new BlockSuperJukebox();
         blockPooCollector = new BlockPooCollector();
         GregtechItemList.PestKiller.set(new ItemStack(new BlockPestKiller()));
         blockVolumetricFlaskSetter = new BlockFlaskSetter();
