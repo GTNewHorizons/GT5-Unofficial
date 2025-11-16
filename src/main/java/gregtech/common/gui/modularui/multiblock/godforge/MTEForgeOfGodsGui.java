@@ -43,7 +43,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
     public MTEForgeOfGodsGui(MTEForgeOfGods multiblock) {
         super(multiblock);
         this.data = multiblock.getData();
-        this.hypervisor = new SyncHypervisor(data);
+        this.hypervisor = new SyncHypervisor(multiblock, data);
     }
 
     @Override

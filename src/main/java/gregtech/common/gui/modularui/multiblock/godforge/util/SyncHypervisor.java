@@ -11,6 +11,7 @@ import com.cleanroommc.modularui.widgets.Dialog;
 import com.cleanroommc.modularui.widgets.Expandable;
 
 import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
+import tectech.thing.metaTileEntity.multi.godforge.MTEForgeOfGods;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 
 /**
@@ -21,12 +22,19 @@ import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
  */
 public final class SyncHypervisor {
 
+    private final MTEForgeOfGods multiblock;
     private final ForgeOfGodsData data;
+
     private final Map<Panels, ModularPanel> panels = new HashMap<>();
     private final Map<Panels, PanelSyncManager> syncManagers = new HashMap<>();
 
-    public SyncHypervisor(ForgeOfGodsData data) {
+    public SyncHypervisor(MTEForgeOfGods multiblock, ForgeOfGodsData data) {
+        this.multiblock = multiblock;
         this.data = data;
+    }
+
+    public MTEForgeOfGods getMultiblock() {
+        return multiblock;
     }
 
     public ForgeOfGodsData getData() {

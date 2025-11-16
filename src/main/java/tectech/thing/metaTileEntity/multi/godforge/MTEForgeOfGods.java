@@ -625,7 +625,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         return null;
     }
 
-    private void updateRenderer() {
+    public void updateRenderer() {
         TileEntityForgeOfGods tile = getRenderer();
         if (tile == null) return;
 

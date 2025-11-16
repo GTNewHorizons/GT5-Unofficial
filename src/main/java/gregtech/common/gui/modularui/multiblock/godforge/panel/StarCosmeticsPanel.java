@@ -12,8 +12,10 @@ import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.DynamicSyncHandler;
+import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
+import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
@@ -23,6 +25,7 @@ import com.cleanroommc.modularui.widgets.layout.Row;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
+import gregtech.common.gui.modularui.multiblock.godforge.data.SyncActions;
 import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValues;
 import gregtech.common.gui.modularui.multiblock.godforge.util.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
@@ -62,14 +65,14 @@ public class StarCosmeticsPanel {
             IKey.str(
                 EnumChatFormatting.GOLD + "" + EnumChatFormatting.UNDERLINE + translateToLocal("fog.cosmetics.color"))
                 .alignment(Alignment.CenterLeft)
-                .asWidget());
+                .asWidget()
+                .alignX(0));
 
         // Color selector list
         IntSyncValue starColorClickedSyncer = SyncValues.STAR_COLOR_CLICKED
             .lookupFrom(Panels.STAR_COSMETICS, hypervisor);
         IPanelHandler customStarColorPanel = Panels.CUSTOM_STAR_COLOR.getFrom(Panels.STAR_COSMETICS, hypervisor);
 
-        // todo fix this
         DynamicSyncHandler handler = new DynamicSyncHandler().widgetProvider(($, $$) -> {
             ForgeOfGodsData data = hypervisor.getData();
             StarColorStorage starColors = data.getStarColors();
@@ -113,6 +116,10 @@ public class StarCosmeticsPanel {
             return colorList;
         });
 
+        GenericListSyncHandler<ForgeOfGodsStarColor> starColorsSyncer = SyncValues.STAR_COLORS
+            .lookupFrom(Panels.STAR_COSMETICS, hypervisor);
+        starColorsSyncer.setChangeListener(() -> handler.notifyUpdate($ -> {}));
+
         colorColumn.child(
             new DynamicSyncedWidget<>().coverChildren()
                 .marginTop(10)
@@ -128,6 +135,8 @@ public class StarCosmeticsPanel {
         SyncValues.STAR_COLORS.registerFor(Panels.STAR_COSMETICS, hypervisor);
         SyncValues.STAR_COLOR_CLICKED.registerFor(Panels.STAR_COSMETICS, hypervisor);
         SyncValues.SELECTED_STAR_COLOR.registerFor(Panels.STAR_COSMETICS, hypervisor);
+
+        SyncActions.UPDATE_RENDERER.registerFor(Panels.STAR_COSMETICS, hypervisor, hypervisor.getMultiblock());
     }
 
     private static Flow createStarColorRow(ForgeOfGodsStarColor starColor, int index, SyncHypervisor hypervisor) {
@@ -142,35 +151,42 @@ public class StarCosmeticsPanel {
             .marginBottom(4);
 
         row.child(
-            new ButtonWidget<>().size(16)
-                .disableHoverBackground()
-                .background(new DynamicDrawable(() -> {
-                    if (starColor.getName()
-                        .equals(selectedStarColorSyncer.getValue())) {
-                        return GTGuiTextures.BUTTON_STANDARD_PRESSED;
-                    }
-                    return GTGuiTextures.BUTTON_STANDARD;
-                }))
-                .overlay(starColor.getDrawable())
-                .onMousePressed(d -> {
-                    if (Interactable.hasShiftDown() && !starColor.isPresetColor()) {
-                        // If shift is held, open color editor for this preset, if not a default preset
-                        starColorClickedSyncer.setValue(index);
-                        if (!customStarColorPanel.isPanelOpen()) {
-                            customStarColorPanel.openPanel();
-                        }
-                    } else {
-                        // Otherwise select this color
-                        selectedStarColorSyncer.setValue(starColor.getName());
-                        // todo update renderer
-                    }
-                    return true;
-                })
-                .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
-                .tooltip(t -> {
-                    t.addLine(translateToLocal("fog.cosmetics.selectcolor.tooltip.1"));
-                    t.addLine(translateToLocal("fog.cosmetics.selectcolor.tooltip.2"));
-                }));
+            new ParentWidget<>().size(16)
+                .child(
+                    new ButtonWidget<>().size(16)
+                        .disableHoverBackground()
+                        .background(new DynamicDrawable(() -> {
+                            if (starColor.getName()
+                                .equals(selectedStarColorSyncer.getValue())) {
+                                return GTGuiTextures.BUTTON_STANDARD_PRESSED;
+                            }
+                            return GTGuiTextures.BUTTON_STANDARD;
+                        }))
+                        .onMousePressed(d -> {
+                            if (Interactable.hasShiftDown() && !starColor.isPresetColor()) {
+                                // If shift is held, open color editor for this preset, if not a default preset
+                                starColorClickedSyncer.setValue(index);
+                                if (!customStarColorPanel.isPanelOpen()) {
+                                    customStarColorPanel.openPanel();
+                                }
+                            } else {
+                                // Otherwise select this color
+                                selectedStarColorSyncer.setValue(starColor.getName());
+                                SyncActions.UPDATE_RENDERER.callFrom(Panels.STAR_COSMETICS, hypervisor, starColor);
+                            }
+                            return true;
+                        })
+                        .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
+                        .tooltip(t -> {
+                            t.addLine(translateToLocal("fog.cosmetics.selectcolor.tooltip.1"));
+                            t.addLine(translateToLocal("fog.cosmetics.selectcolor.tooltip.2"));
+                        }))
+                .child(
+                    starColor.getDrawable()
+                        .asWidget()
+                        .size(14)
+                        .marginTop(1)
+                        .marginLeft(1)));
 
         row.child(
             IKey.dynamic(() -> EnumChatFormatting.GOLD + starColor.getLocalizedName())

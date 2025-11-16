@@ -7,6 +7,8 @@ import net.minecraft.network.PacketBuffer;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
+import tectech.thing.metaTileEntity.multi.godforge.MTEForgeOfGods;
+import tectech.thing.metaTileEntity.multi.godforge.color.ForgeOfGodsStarColor;
 import tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 
@@ -16,11 +18,11 @@ import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
  * direction and timing rather than being automated. Ideal for things like button
  * presses that trigger complex checks.
  */
-public final class SyncActions<T> {
+public final class SyncActions<T, U> {
 
     // spotless:off
 
-    public static SyncActions<ForgeOfGodsUpgrade> RESPEC_UPGRADE = new SyncActions<>(
+    public static SyncActions<ForgeOfGodsUpgrade, ForgeOfGodsData> RESPEC_UPGRADE = new SyncActions<>(
         "fog.sync_action.respec_upgrade",
         (buf, upgrade) -> buf.writeByte(upgrade.ordinal()),
         (buf, data) -> {
@@ -29,7 +31,7 @@ public final class SyncActions<T> {
         },
         Side.SERVER);
 
-    public static SyncActions<ForgeOfGodsUpgrade> COMPLETE_UPGRADE = new SyncActions<>(
+    public static SyncActions<ForgeOfGodsUpgrade, ForgeOfGodsData> COMPLETE_UPGRADE = new SyncActions<>(
         "fog.sync_action.complete_upgrade",
         (buf, upgrade) -> buf.writeByte(upgrade.ordinal()),
         (buf, data) -> {
@@ -38,7 +40,7 @@ public final class SyncActions<T> {
         },
         Side.SERVER);
 
-    public static SyncActions<ForgeOfGodsUpgrade> PAY_UPGRADE_COST = new SyncActions<>(
+    public static SyncActions<ForgeOfGodsUpgrade, ForgeOfGodsData> PAY_UPGRADE_COST = new SyncActions<>(
         "fog.sync_action.pay_upgrade_cost",
         (buf, upgrade) -> buf.writeByte(upgrade.ordinal()),
         (buf, data) -> {
@@ -47,25 +49,37 @@ public final class SyncActions<T> {
         },
         Side.SERVER);
 
+    public static SyncActions<ForgeOfGodsStarColor, MTEForgeOfGods> UPDATE_RENDERER = new SyncActions<>(
+        "fog.sync_action.update_renderer",
+        (buf, starColor) -> {},
+        (buf, multiblock) -> multiblock.updateRenderer(),
+        Side.SERVER);
+
     // spotless:on
 
     private final String syncId;
     private final BiConsumer<PacketBuffer, T> writer;
-    private final BiConsumer<PacketBuffer, ForgeOfGodsData> action;
+    private final BiConsumer<PacketBuffer, U> action;
     private final Side executeSide;
 
-    private SyncActions(String syncId, BiConsumer<PacketBuffer, T> writer,
-        BiConsumer<PacketBuffer, ForgeOfGodsData> action, Side executeSide) {
+    private SyncActions(String syncId, BiConsumer<PacketBuffer, T> writer, BiConsumer<PacketBuffer, U> action,
+        Side executeSide) {
         this.syncId = syncId;
         this.writer = writer;
         this.action = action;
         this.executeSide = executeSide;
     }
 
+    /** Registers for the panel, assuming the server-side required data is the ForgeOfGodsData instance. */
+    @SuppressWarnings("unchecked")
     public void registerFor(Panels forPanel, SyncHypervisor hypervisor) {
+        registerFor(forPanel, hypervisor, (U) hypervisor.getData());
+    }
+
+    /** Registers for the panel with whatever data is required on the server to run the action. */
+    public void registerFor(Panels forPanel, SyncHypervisor hypervisor, U data) {
         PanelSyncManager syncManager = hypervisor.getSyncManager(forPanel);
         syncManager.registerSyncedAction(syncId, buf -> {
-            ForgeOfGodsData data = hypervisor.getData();
             switch (executeSide) {
                 case SERVER -> {
                     if (!syncManager.isClient()) {
