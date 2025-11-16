@@ -55,6 +55,7 @@ public class ForgeOfGodsData {
     private long totalRecipesProcessed;
     private long totalFuelConsumed;
     private float totalExtensionsBuilt;
+    private int previewFuelConsumptionFactor = 1;
 
     // todo remove these
     private float powerMilestonePercentage;
@@ -200,6 +201,14 @@ public class ForgeOfGodsData {
 
     public void setTotalExtensionsBuilt(float totalExtensionsBuilt) {
         this.totalExtensionsBuilt = totalExtensionsBuilt;
+    }
+
+    public int getPreviewFuelConsumptionFactor() {
+        return previewFuelConsumptionFactor;
+    }
+
+    public void setPreviewFuelConsumptionFactor(int previewFuelConsumptionFactor) {
+        this.previewFuelConsumptionFactor = previewFuelConsumptionFactor;
     }
 
     public float getPowerMilestonePercentage() {
