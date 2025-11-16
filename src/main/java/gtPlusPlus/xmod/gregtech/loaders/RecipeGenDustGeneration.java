@@ -368,6 +368,14 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
             .duration(5 * SECONDS)
             .eut(4)
             .addTo(packagerRecipes);
+
+        // Normal Dust
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.copyAmount(1, aMatInfo.getDust(1)), ItemList.Schematic_Dust_Small.get(0))
+            .itemOutputs(aMatInfo.getSmallDust(4))
+            .duration(5 * SECONDS)
+            .eut(4)
+            .addTo(packagerRecipes);
         return true;
     }
 
