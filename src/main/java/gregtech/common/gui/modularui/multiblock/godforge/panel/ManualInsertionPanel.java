@@ -34,6 +34,7 @@ import gregtech.common.gui.modularui.multiblock.godforge.util.ForgeOfGodsGuiUtil
 import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
 import gregtech.common.modularui2.widget.SlotLikeButtonWidget;
 import tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade;
+import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 
 public class ManualInsertionPanel {
 
@@ -140,65 +141,59 @@ public class ManualInsertionPanel {
                             }
                             return true;
                         })
-                            .setEnabledIf(
-                                $ -> upgradeSyncer.getValue()
-                                    .getExtraCost()[index] != null)
+                            .setEnabledIf($ -> hasExtraCost(upgradeSyncer, index))
                             .size(18)
                             .alignX(0))
-            .child(
-                new ParentWidget<>().size(18)
-                    .alignX(1)
-                    .overlay(IKey.dynamic(() -> {
-                        ForgeOfGodsUpgrade upgrade = upgradeSyncer.getValue();
-                        ItemStack costStack = upgrade.getExtraCost()[index];
-                        short amountPaid = hypervisor.getData()
-                            .getUpgrades()
-                            .getPaidCosts(upgrade)[index];
-                        if (costStack == null) return "";
+            .child(IKey.dynamic(() -> {
+                ForgeOfGodsUpgrade upgrade = upgradeSyncer.getValue();
+                ItemStack costStack = upgrade.getExtraCost()[index];
+                short amountPaid = hypervisor.getData()
+                    .getUpgrades()
+                    .getPaidCosts(upgrade)[index];
+                if (costStack == null) return "";
 
-                        EnumChatFormatting color = EnumChatFormatting.YELLOW;
-                        if (amountPaid == 0) color = EnumChatFormatting.RED;
-                        else if (amountPaid == costStack.stackSize) color = EnumChatFormatting.GREEN;
+                EnumChatFormatting color = EnumChatFormatting.YELLOW;
+                if (amountPaid == 0) color = EnumChatFormatting.RED;
+                else if (amountPaid == costStack.stackSize) color = EnumChatFormatting.GREEN;
 
-                        return color + "x" + (costStack.stackSize - amountPaid);
-                    })
-                        .alignment(Alignment.CENTER)
-                        .scale(0.8f))
-                    .setEnabledIf($ -> {
-                        ForgeOfGodsUpgrade upgrade = upgradeSyncer.getValue();
-                        ItemStack costStack = upgrade.getExtraCost()[index];
-                        short amountPaid = hypervisor.getData()
-                            .getUpgrades()
-                            .getPaidCosts(upgrade)[index];
-
-                        if (costStack == null) return false;
-                        return amountPaid < costStack.stackSize;
-                    }))
+                return color + "x" + (costStack.stackSize - amountPaid);
+            })
+                .alignment(Alignment.CENTER)
+                .scale(0.8f)
+                .asWidget()
+                .size(18)
+                .setEnabledIf(
+                    $ -> hasExtraCost(upgradeSyncer, index)
+                        && !isExtraCostPaid(upgradeSyncer, hypervisor.getData(), index)))
             .child(
                 GTGuiTextures.GREEN_CHECKMARK_11x9.asWidget()
                     .size(11, 9)
                     .alignX(1)
                     .marginRight(4)
                     .marginTop(5)
-                    .setEnabledIf($ -> {
-                        ForgeOfGodsUpgrade upgrade = upgradeSyncer.getValue();
-                        ItemStack costStack = upgrade.getExtraCost()[index];
-                        short amountPaid = hypervisor.getData()
-                            .getUpgrades()
-                            .getPaidCosts(upgrade)[index];
-
-                        if (costStack == null) return false;
-                        return amountPaid >= costStack.stackSize;
-                    }))
+                    .setEnabledIf($ -> isExtraCostPaid(upgradeSyncer, hypervisor.getData(), index)))
 
             // Widgets when there is no extra cost to display
             .child(
                 GTGuiTextures.BUTTON_STANDARD_DISABLED.asWidget()
                     .size(18)
                     .alignX(0)
-                    .setEnabledIf(
-                        $ -> upgradeSyncer.getValue()
-                            .getExtraCost()[index] == null));
+                    .setEnabledIf($ -> !hasExtraCost(upgradeSyncer, index)));
+    }
+
+    private static boolean hasExtraCost(EnumSyncValue<ForgeOfGodsUpgrade> syncer, int index) {
+        return syncer.getValue()
+            .getExtraCost()[index] != null;
+    }
+
+    private static boolean isExtraCostPaid(EnumSyncValue<ForgeOfGodsUpgrade> syncer, ForgeOfGodsData data, int index) {
+        ForgeOfGodsUpgrade upgrade = syncer.getValue();
+        ItemStack costStack = upgrade.getExtraCost()[index];
+        short amountPaid = data.getUpgrades()
+            .getPaidCosts(upgrade)[index];
+
+        if (costStack == null) return false;
+        return amountPaid >= costStack.stackSize;
     }
 
     private static SlotGroupWidget createInputSlots(SyncHypervisor hypervisor) {
