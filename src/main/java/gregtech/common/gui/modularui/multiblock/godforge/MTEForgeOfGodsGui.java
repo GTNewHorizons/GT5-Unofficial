@@ -80,11 +80,11 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
             .leftRel(1, -3, 1)
             .childPadding(3)
             .mainAxisAlignment(MainAxis.END)
-            .child(createMilestoneWindowButton())
-            .child(createFuelConfigWindowButton())
-            .child(createBatteryConfigWindowButton())
-            .child(createStarCosmeticsWindowButton())
-            .child(createUpgradeTreeWindowButton());
+            .child(createMilestonePanelButton())
+            .child(createFuelConfigPanelButton())
+            .child(createBatteryConfigPanelButton())
+            .child(createStarCosmeticsPanelButton())
+            .child(createUpgradeTreePanelButton());
     }
 
     @Override
@@ -96,8 +96,8 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
             .childPadding(2)
             .height(getTextBoxToInventoryGap())
             .child(createModuleRefreshButton())
-            .child(createStatisticsWindowButton())
-            .child(createEjectionButton());
+            .child(createStatisticsPanelButton())
+            .child(createShardEjectionButton());
     }
 
     @Override
@@ -105,7 +105,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
         return new Column().coverChildren()
             .rightRel(0, 6, 0)
             .bottomRel(0, 6, 0)
-            .child(createGeneralInfoWindowButton());
+            .child(createGeneralInfoPanelButton());
     }
 
     @Override
@@ -113,7 +113,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
         return new Column().coverChildren()
             .leftRel(0, 6, 0)
             .bottomRel(0, 6, 0)
-            .child(createSpecialThanksWindowButton());
+            .child(createSpecialThanksPanelButton());
     }
 
     @Override
@@ -150,7 +150,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
         return 20;
     }
 
-    private IWidget createMilestoneWindowButton() {
+    private IWidget createMilestonePanelButton() {
         IPanelHandler milestonePanel = Panels.MILESTONE.getFrom(Panels.MAIN, hypervisor);
         return new ButtonWidget<>().size(16)
             .overlay(GTGuiTextures.TT_OVERLAY_BUTTON_FLAG)
@@ -169,7 +169,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
-    private IWidget createFuelConfigWindowButton() {
+    private IWidget createFuelConfigPanelButton() {
         IPanelHandler fuelConfigPanel = Panels.FUEL_CONFIG.getFrom(Panels.MAIN, hypervisor);
         return new ButtonWidget<>().size(16)
             .overlay(GTGuiTextures.TT_OVERLAY_BUTTON_HEAT_ON)
@@ -188,7 +188,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
-    private IWidget createBatteryConfigWindowButton() {
+    private IWidget createBatteryConfigPanelButton() {
         IPanelHandler batteryConfigPanel = Panels.BATTERY_CONFIG.getFrom(Panels.MAIN, hypervisor);
         BooleanSyncValue batteryChargingSyncer = SyncValues.BATTERY_CHARGING.lookupFrom(Panels.MAIN, hypervisor);
 
@@ -222,7 +222,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
-    private IWidget createStarCosmeticsWindowButton() {
+    private IWidget createStarCosmeticsPanelButton() {
         IPanelHandler starCosmeticsPanel = Panels.STAR_COSMETICS.getFrom(Panels.MAIN, hypervisor);
         return new ButtonWidget<>().size(16)
             .overlay(GTGuiTextures.TT_OVERLAY_BUTTON_RAINBOW_SPIRAL)
@@ -241,7 +241,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
-    private IWidget createUpgradeTreeWindowButton() {
+    private IWidget createUpgradeTreePanelButton() {
         IPanelHandler upgradeTreePanel = Panels.UPGRADE_TREE.getFrom(Panels.MAIN, hypervisor);
         return new ButtonWidget<>().size(16)
             .marginBottom(2)
@@ -278,7 +278,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
-    private IWidget createStatisticsWindowButton() {
+    private IWidget createStatisticsPanelButton() {
         IPanelHandler statisticsPanel = Panels.STATISTICS.getFrom(Panels.MAIN, hypervisor);
         return new ButtonWidget<>().size(16)
             .overlay(GTGuiTextures.TT_OVERLAY_BUTTON_STATISTICS)
@@ -297,7 +297,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
-    private IWidget createEjectionButton() {
+    private IWidget createShardEjectionButton() {
         BooleanSyncValue shardEjectionSyncer = SyncValues.SHARD_EJECTION.lookupFrom(Panels.MAIN, hypervisor);
         return new ButtonWidget<>().size(16)
             .setEnabledIf($ -> data.isUpgradeActive(END))
@@ -319,7 +319,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
-    private IWidget createGeneralInfoWindowButton() {
+    private IWidget createGeneralInfoPanelButton() {
         IPanelHandler generalInfoPanel = Panels.GENERAL_INFO.getFrom(Panels.MAIN, hypervisor);
         return new ButtonWidget<>().size(18)
             .overlay(IDrawable.EMPTY)
@@ -338,7 +338,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
-    private IWidget createSpecialThanksWindowButton() {
+    private IWidget createSpecialThanksPanelButton() {
         IPanelHandler specialThanksPanel = Panels.SPECIAL_THANKS.getFrom(Panels.MAIN, hypervisor);
         return new ButtonWidget<>().size(16)
             .overlay(IDrawable.EMPTY)
