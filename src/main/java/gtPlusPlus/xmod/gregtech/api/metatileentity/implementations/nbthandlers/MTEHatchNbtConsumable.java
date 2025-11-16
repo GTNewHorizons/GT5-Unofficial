@@ -25,24 +25,24 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public abstract class MTEHatchNbtConsumable extends MTEHatch implements IAddGregtechLogo {
 
-    private final int mInputSlotCount;
-    private final int mTotalSlotCount;
-    private final boolean mAllowDuplicateUsageTypes;
+    private final int inputSlotCount;
+    private final int totalSlotCount;
+    private final boolean allowDuplicateUsageTypes;
 
     public MTEHatchNbtConsumable(int aID, String aName, String aNameRegional, int aTier, int aInputSlots,
         String aDescription, boolean aAllowDuplicateTypes) {
         super(aID, aName, aNameRegional, aTier, aInputSlots * 2, aDescription);
-        mInputSlotCount = getInputSlotCount();
-        mTotalSlotCount = getInputSlotCount() * 2;
-        mAllowDuplicateUsageTypes = aAllowDuplicateTypes;
+        inputSlotCount = getInputSlotCount();
+        totalSlotCount = getInputSlotCount() * 2;
+        allowDuplicateUsageTypes = aAllowDuplicateTypes;
     }
 
     public MTEHatchNbtConsumable(String aName, int aTier, int aInputSlots, String[] aDescription,
         boolean aAllowDuplicateTypes, ITexture[][][] aTextures) {
         super(aName, aTier, aInputSlots * 2, aDescription, aTextures);
-        mInputSlotCount = getInputSlotCount();
-        mTotalSlotCount = getInputSlotCount() * 2;
-        mAllowDuplicateUsageTypes = aAllowDuplicateTypes;
+        inputSlotCount = getInputSlotCount();
+        totalSlotCount = getInputSlotCount() * 2;
+        allowDuplicateUsageTypes = aAllowDuplicateTypes;
     }
 
     @Override
@@ -115,7 +115,7 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch implements IAddGreg
     }
 
     public final void tryFillUsageSlots() {
-        int aSlotSpace = (mInputSlotCount - getContentUsageSlots().size());
+        int aSlotSpace = (inputSlotCount - getContentUsageSlots().size());
         if (aSlotSpace > 0) {
             Logger.INFO("We have empty usage slots. " + aSlotSpace);
             for (int i = getSlotID_FirstInput(); i <= getSlotID_LastInput(); i++) {
@@ -136,20 +136,20 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch implements IAddGreg
     }
 
     private int getSlotID_LastInput() {
-        return mInputSlotCount - 1;
+        return inputSlotCount - 1;
     }
 
     private int getSlotID_FirstUsage() {
-        return mInputSlotCount;
+        return inputSlotCount;
     }
 
     private int getSlotID_LastUsage() {
-        return mTotalSlotCount - 1;
+        return totalSlotCount - 1;
     }
 
     public final ArrayList<ItemStack> getContentUsageSlots() {
         ArrayList<ItemStack> aItems = new ArrayList<>();
-        for (int i = mInputSlotCount; i < mTotalSlotCount; i++) {
+        for (int i = inputSlotCount; i < totalSlotCount; i++) {
             if (mInventory[i] != null) {
                 aItems.add(mInventory[i]);
             }
@@ -158,7 +158,7 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch implements IAddGreg
     }
 
     public final boolean moveItemFromStockToUsageSlots(ItemStack aStack) {
-        return moveItemFromStockToUsageSlots(aStack, mAllowDuplicateUsageTypes);
+        return moveItemFromStockToUsageSlots(aStack, allowDuplicateUsageTypes);
     }
 
     public final boolean moveItemFromStockToUsageSlots(ItemStack aStack, boolean aAllowMultiOfSameTypeInUsageSlots) {
@@ -221,7 +221,7 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch implements IAddGreg
     public final boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return side == getBaseMetaTileEntity().getFrontFacing() && isItemValidForUsageSlot(aStack)
-            && aIndex < mInputSlotCount;
+            && aIndex < inputSlotCount;
     }
 
     /**
@@ -252,7 +252,7 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch implements IAddGreg
 
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
-        switch (mTotalSlotCount) {
+        switch (totalSlotCount) {
             case 8, 18 -> builder.widget(
                 new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
                     .setSize(17, 17)
