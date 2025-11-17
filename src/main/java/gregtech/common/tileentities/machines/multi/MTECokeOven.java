@@ -317,7 +317,8 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
         if (tick % 20 == 0) {
             mMachine = checkMachine(baseMetaTileEntity, null);
 
-            if (mMachine) baseMetaTileEntity.enableWorking();
+            // Sets "Incomplete Structure" text in WAILA
+            setErrorDisplayID(mMachine ? 0 : 64);
 
             if (baseMetaTileEntity.isActive()) {
                 Pollution.addPollution(baseMetaTileEntity, GTMod.proxy.mPollutionCokeOvenPerSecond);
