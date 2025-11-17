@@ -18,7 +18,7 @@ import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitUVTreatment;
 import gregtech.nei.GTNEIDefaultHandler;
 
-public class PurificationUnitLaserFrontend extends PurificationUnitRecipeMapFrontend {
+public class PurificationUnitLaserFrontend extends CustomBackgroundRecipeMapFrontend {
 
     public PurificationUnitLaserFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
         NEIRecipePropertiesBuilder neiPropertiesBuilder) {
