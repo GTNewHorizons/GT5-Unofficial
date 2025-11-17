@@ -5,7 +5,6 @@ import static kubatech.api.utils.ItemUtils.writeItemStackToNBT;
 
 import java.util.LinkedList;
 
-import kubatech.modularui2.InventoryBucket;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -15,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import gregtech.api.util.GTUtility;
+import kubatech.modularui2.InventoryBucket;
 import kubatech.tileentity.gregtech.multiblock.MTEExtremeIndustrialGreenhouse;
 
 public abstract class EIGBucket implements InventoryBucket<MTEExtremeIndustrialGreenhouse> {

@@ -1,6 +1,8 @@
 package kubatech.modularui2;
 
-// Basically it does both render Widget and store Buckets.
-public abstract class DynamicInventoryV2<T extends BucketButton> {
+import kubatech.api.implementations.KubaTechGTMultiBlockBase;
+
+// Basically it store Buckets.
+public abstract class DynamicInventoryV2<T extends InventoryBucket<MTE>, MTE extends KubaTechGTMultiBlockBase<MTE>> {
 
 }

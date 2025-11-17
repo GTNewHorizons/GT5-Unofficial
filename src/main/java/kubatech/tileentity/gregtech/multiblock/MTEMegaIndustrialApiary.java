@@ -728,20 +728,20 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     private static final UIInfo<?, ?> MegaApiaryUI = createKTMetaTileEntityUI(
         KT_ModulaUIContainer_MegaIndustrialApiary::new);
 
-    //spotless:off
+    // spotless:off
     /*
-    @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) return true;
-        MegaApiaryUI.open(
-            aPlayer,
-            aBaseMetaTileEntity.getWorld(),
-            aBaseMetaTileEntity.getXCoord(),
-            aBaseMetaTileEntity.getYCoord(),
-            aBaseMetaTileEntity.getZCoord());
-        return true;
-    }
-    */
+     * @Override
+     * public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+     * if (aBaseMetaTileEntity.isClientSide()) return true;
+     * MegaApiaryUI.open(
+     * aPlayer,
+     * aBaseMetaTileEntity.getWorld(),
+     * aBaseMetaTileEntity.getXCoord(),
+     * aBaseMetaTileEntity.getYCoord(),
+     * aBaseMetaTileEntity.getZCoord());
+     * return true;
+     * }
+     */
 
     private static class KT_ModulaUIContainer_MegaIndustrialApiary extends ModularUIContainer {
 
@@ -1432,9 +1432,19 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         return new MTEMapiaryGui(this);
     }
 
-    public int getPrimaryMode(){return mPrimaryMode;}
-    public void setPrimaryMode(int primaryMode){mPrimaryMode = primaryMode;}
+    public int getPrimaryMode() {
+        return mPrimaryMode;
+    }
 
-    public int getSecondaryMode(){return mSecondaryMode;}
-    public void setSecondaryMode(int SecondaryMode){mSecondaryMode = SecondaryMode;}
+    public void setPrimaryMode(int primaryMode) {
+        mPrimaryMode = primaryMode;
+    }
+
+    public int getSecondaryMode() {
+        return mSecondaryMode;
+    }
+
+    public void setSecondaryMode(int SecondaryMode) {
+        mSecondaryMode = SecondaryMode;
+    }
 }

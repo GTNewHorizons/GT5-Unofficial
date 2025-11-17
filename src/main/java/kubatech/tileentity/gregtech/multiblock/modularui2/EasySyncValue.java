@@ -4,12 +4,14 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.ValueSyncHandler;
 
 /*
-* Basicly a wrapper of ValueSyncHandler, makes code looks better.
-*/
+ * Basicly a wrapper of ValueSyncHandler, makes code looks better.
+ */
 public abstract class EasySyncValue<T extends ValueSyncHandler<Y>, Y> {
+
     public final String name;
     public T handler;
-    public EasySyncValue (String name) {
+
+    public EasySyncValue(String name) {
         this.name = name;
     }
 
@@ -21,7 +23,7 @@ public abstract class EasySyncValue<T extends ValueSyncHandler<Y>, Y> {
         syncManager.syncValue(name, handler);
     }
 
-    public Y getValue(){
+    public Y getValue() {
         return handler.getValue();
     }
 }
