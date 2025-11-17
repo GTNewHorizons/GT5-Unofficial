@@ -36,18 +36,14 @@ public class MTEBusInputFocus extends MTEHatchNbtConsumable {
 
     @Override
     public boolean isItemValidForUsageSlot(ItemStack aStack) {
+        ArrayList<ItemStack> usageSlots = this.getContentUsageSlots();
 
-        if (this.getContentUsageSlots()
-            .size() < 16) {
-            if (this.getContentUsageSlots()
-                .isEmpty()) return aStack.getItem() instanceof ICanFocus;
-            return aStack.getItem() == this.getContentUsageSlots()
-                .get(0)
-                .getItem();
-        } else {
-            return false;
+        if (usageSlots.isEmpty()) {
+            return aStack.getItem() instanceof ICanFocus;
         }
 
+        return aStack.getItem() == usageSlots.get(0)
+            .getItem();
     }
 
     @Override
