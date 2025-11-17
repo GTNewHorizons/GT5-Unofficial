@@ -29,6 +29,7 @@ public class ForgeOfGodsStarColor {
     public static final int DEFAULT_RED = 179;
     public static final int DEFAULT_GREEN = 204;
     public static final int DEFAULT_BLUE = 255;
+    public static final int DEFAULT_COLOR = Color.rgb(DEFAULT_RED, DEFAULT_GREEN, DEFAULT_BLUE);
     public static final float DEFAULT_GAMMA = 3.0f;
     public static final int DEFAULT_CYCLE_SPEED = 1;
 
