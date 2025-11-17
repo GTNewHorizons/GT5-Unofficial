@@ -20,7 +20,7 @@ import gtnhlanth.common.item.ICanFocus;
 
 public class MTEBusInputFocus extends MTEHatchNbtConsumable {
 
-    private static final int INPUT_SLOTS = 64;
+    private static final int INPUT_SLOTS = 256;
 
     public MTEBusInputFocus(int id, String name, String nameRegional) {
         super(id, name, nameRegional, 0, INPUT_SLOTS, "Input Bus for Foci", true);
