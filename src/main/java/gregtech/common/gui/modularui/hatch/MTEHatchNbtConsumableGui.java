@@ -36,7 +36,7 @@ public class MTEHatchNbtConsumableGui extends MTEHatchBaseGui<MTEHatchNbtConsuma
         };
     }
 
-    private static int dimension = 1;
+    private int dimension = 1;
 
     @Override
     public void registerSyncValues(PanelSyncManager syncManager) {
@@ -86,10 +86,9 @@ public class MTEHatchNbtConsumableGui extends MTEHatchBaseGui<MTEHatchNbtConsuma
         inputColumn.child(
             SlotGroupWidget.builder()
                 .matrix(matrix)
-                .key('c', index -> {
-                    return new ItemSlot().slot(new ModularSlot(hatch.inventoryHandler, index).slotGroup("input"));
-
-                })
+                .key(
+                    'c',
+                    index -> new ItemSlot().slot(new ModularSlot(hatch.inventoryHandler, index).slotGroup("input")))
                 .build());
         return inputColumn;
     }
@@ -117,11 +116,11 @@ public class MTEHatchNbtConsumableGui extends MTEHatchBaseGui<MTEHatchNbtConsuma
         outputColumn.child(
             SlotGroupWidget.builder()
                 .matrix(matrix)
-                .key('c', index -> {
-                    return new ItemSlot().slot(
+                .key(
+                    'c',
+                    index -> new ItemSlot().slot(
                         new ModularSlot(hatch.inventoryHandler, index + amountPerSlotGroup).accessibility(false, true)
-                            .slotGroup("output"));
-                })
+                            .slotGroup("output")))
                 .build());
         return outputColumn;
     }
