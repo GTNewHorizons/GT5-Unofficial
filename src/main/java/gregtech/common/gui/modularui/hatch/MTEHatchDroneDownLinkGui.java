@@ -26,28 +26,24 @@ import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.gui.modularui.synchandler.DroneConnectionListSyncHandler;
 import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
 import gregtech.common.tileentities.machines.multi.drone.DroneConnection;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
 
-public class MTEHatchDroneDownLinkGui<T extends MTEHatchDroneDownLink> {
+public class MTEHatchDroneDownLinkGui extends MTEHatchBaseGui<MTEHatchDroneDownLink> {
 
-    protected final T hatch;
-    protected final IGregTechTileEntity baseMetaTileEntity;
-
-    public MTEHatchDroneDownLinkGui(T hatch) {
-        this.hatch = hatch;
-        this.baseMetaTileEntity = hatch.getBaseMetaTileEntity();
+    public MTEHatchDroneDownLinkGui(MTEHatchDroneDownLink hatch) {
+        super(hatch);
     }
 
+    @Override
     public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         registerSyncValues(syncManager);
-        final ModularPanel panel = new GTBaseGuiBuilder(hatch, guiData, syncManager, uiSettings)
-            .setWidth(176)
+        final ModularPanel panel = new GTBaseGuiBuilder(hatch, guiData, syncManager, uiSettings).setWidth(176)
             .doesAddCoverTabs(false)
             .doesBindPlayerInventory(false)
             .build()
@@ -135,16 +131,14 @@ public class MTEHatchDroneDownLinkGui<T extends MTEHatchDroneDownLink> {
                                 })
                                 .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.drone_highlight")))
                                 .tooltipShowUpTimer(TOOLTIP_DELAY))
-                        .child(new TextFieldWidget() {
-
-                            @Override
-                            public boolean onMouseRelease(int mouseButton) {
-                                if (!isValid()) return false;
-                                return super.onMouseRelease(mouseButton);
-                            }
-                        }.value(nameSyncValue)
-                            .setValidator(s -> s.substring(0, Math.min(s.length(), 50)))
-                            .size(140, 16)));
+                        .child(
+                            new TextFieldWidget()
+                                // Todo: When switching textField rapidly, getContext() will be called even before
+                                // initialising and finally crash the game.
+                                // No idea how to fix it. Maybe a MUI2 issue?
+                                .value(nameSyncValue)
+                                .setValidator(s -> s.substring(0, Math.min(s.length(), 50)))
+                                .size(140, 16)));
             }
         }
         return column;

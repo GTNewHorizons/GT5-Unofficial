@@ -267,7 +267,7 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new MTEHatchDroneDownLinkGui<>(this).build(data, syncManager, uiSettings);
+        return new MTEHatchDroneDownLinkGui(this).build(data, syncManager, uiSettings);
     }
 
     @Override
