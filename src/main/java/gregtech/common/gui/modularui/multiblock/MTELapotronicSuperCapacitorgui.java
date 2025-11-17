@@ -269,9 +269,11 @@ public class MTELapotronicSuperCapacitorgui extends MTEMultiBlockBaseGui<MTELapo
         BigIntSyncValue stored = new BigIntSyncValue(multiblock::getStored, multiblock::setStored);
         LongSyncValue passiveDischargeSync = new LongSyncValue(multiblock::getPassiveDischargeAmount);
         LongSyncValue avgEuIn = new LongSyncValue(
-            () -> multiblock.getEnergyInputValues5m()
+            () -> multiblock.getEnergyInputValues()
                 .avgLong());
-        LongSyncValue avgEuOut = new LongSyncValue(multiblock::getPassiveDischargeAmount);
+        LongSyncValue avgEuOut = new LongSyncValue(
+            () -> multiblock.getEnergyOutputValues()
+                .avgLong());
         BooleanSyncValue wirelessMode = new BooleanSyncValue(multiblock::isWireless_mode, multiblock::setWireless_mode);
         BooleanSyncValue warningSync = new BooleanSyncValue(multiblock::getShowWarning, multiblock::setShowWarning);
         BooleanSyncValue canRebalance = new BooleanSyncValue(multiblock::getCanRebalance, multiblock::setCanRebalance);
