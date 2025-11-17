@@ -4,8 +4,10 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.MathHelper;
 
 import com.cleanroommc.modularui.api.GuiAxis;
+import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.HueBar;
@@ -107,7 +109,7 @@ public class CustomStarColorPanel {
         // Title
         row.child(
             IKey.str(color.getTitle())
-                .alignment(Alignment.CenterLeft)
+                .alignment(Alignment.CENTER)
                 .asWidget()
                 .size(32, 16));
 
@@ -194,124 +196,101 @@ public class CustomStarColorPanel {
     }
 
     private static Flow createStarColorHSVPage(ColorData colorData) {
-        Flow column = new Column().coverChildren();
+        return new Column().coverChildren()
+            .child(createStarColorHSVRow(StarColors.HSV.HUE, colorData))
+            .child(createStarColorHSVRow(StarColors.HSV.SATURATION, colorData))
+            .child(createStarColorHSVRow(StarColors.HSV.VALUE, colorData))
+            .child(createStarColorGammaRow(colorData));
+    }
 
-        Flow hueRow = new Row().size(SIZE - 16, 16)
+    private static Flow createStarColorHSVRow(StarColors.HSV color, ColorData colorData) {
+        int maxValue = color == StarColors.HSV.HUE ? 360 : 1;
+
+        Flow row = new Row().size(SIZE - 16, 16)
             .marginBottom(3);
 
-        // Hue title
-        hueRow.child(
-            IKey.str(StarColors.HSV.HUE.getTitle())
-                .alignment(Alignment.CenterLeft)
+        // Title
+        row.child(
+            IKey.str(color.getTitle())
+                .alignment(Alignment.CENTER)
                 .asWidget()
                 .size(32, 16));
 
-        // Hue slider
-        hueRow.child(
+        // Slider
+        IDrawable background = switch (color) {
+            case HUE -> new HueBar(GuiAxis.X);
+            case SATURATION -> new DynamicDrawable(() -> {
+                int start = Color.withHSVSaturation(colorData.getColor(), 0.0f);
+                int end = Color.withHSVSaturation(colorData.getColor(), 1.0f);
+                return new Rectangle().setHorizontalGradient(start, end);
+            });
+            case VALUE -> new DynamicDrawable(() -> {
+                int start = Color.withValue(colorData.getColor(), 0.0f);
+                int end = Color.withValue(colorData.getColor(), 1.0f);
+                return new Rectangle().setHorizontalGradient(start, end);
+            });
+        };
+
+        row.child(
             new SliderWidget().size(118, 8)
-                .background(new HueBar(GuiAxis.X))
-                .bounds(0, 360)
+                .background(background)
+                .bounds(0, maxValue)
                 .sliderTexture(new Rectangle().setColor(Color.WHITE.main))
                 .sliderSize(2, 8)
-                .value(new DoubleValue.Dynamic(colorData::getH, val -> colorData.setH((int) val)))
-                .tooltipDynamic(t -> StarColors.HSV.HUE.getTooltip(colorData.getH()))
+                // spotless:off
+                .value(new DoubleValue.Dynamic(
+                    () ->
+                        switch (color) {
+                            case HUE -> colorData.getH();
+                            case SATURATION -> colorData.getS();
+                            case VALUE -> colorData.getV();
+                        },
+                    val -> {
+                        switch (color) {
+                            case HUE -> colorData.setH((float) val);
+                            case SATURATION -> colorData.setS((float) val);
+                            case VALUE -> colorData.setV((float) val);
+                        }
+                    }))
+                .tooltipDynamic(t -> {
+                    float value = switch (color) {
+                        case HUE -> colorData.getH();
+                        case SATURATION -> colorData.getS();
+                        case VALUE -> colorData.getV();
+                    };
+                    t.addLine(color.getTooltip(value));
+                })
+                // spotless:on
                 .tooltipShowUpTimer(TOOLTIP_DELAY)
                 .tooltipAutoUpdate(true));
 
-        // Hue text field
-        hueRow.child(
-            new TextFieldWidget().setFormatAsInteger(true)
-                .setNumbers(0, 360)
-                .value(new IntValue.Dynamic(colorData::getH, colorData::setH))
+        // Text field
+        row.child(
+            new TextFieldWidget().setNumbersDouble(raw -> MathHelper.clamp_double(raw, 0, maxValue))
+                // spotless:off
+                .value(new FloatValue.Dynamic(
+                    () ->
+                        switch (color) {
+                            case HUE -> colorData.getH();
+                            case SATURATION -> colorData.getS();
+                            case VALUE -> colorData.getV();
+                        },
+                    val -> {
+                        switch (color) {
+                            case HUE -> colorData.setH(val);
+                            case SATURATION -> colorData.setS(val);
+                            case VALUE -> colorData.setV(val);
+                        }
+                    }))
+                // spotless:on
                 .size(32, 16)
                 .marginLeft(2)
                 .setTextAlignment(Alignment.CENTER)
-                .setTextColor(StarColors.HSV.HUE.getHexColor())
-                .tooltip(t -> t.addLine(translateToLocal("fog.cosmetics.onlyintegers")))
-                .tooltipShowUpTimer(TOOLTIP_DELAY));
-
-        column.child(hueRow);
-
-        Flow saturationRow = new Row().size(SIZE - 16, 16)
-            .marginBottom(3);
-
-        // Saturation title
-        saturationRow.child(
-            IKey.str(StarColors.HSV.SATURATION.getTitle())
-                .alignment(Alignment.CenterLeft)
-                .asWidget()
-                .size(32, 16));
-
-        // Saturation slider
-        saturationRow.child(
-            new SliderWidget().size(118, 8)
-                .background(new DynamicDrawable(() -> {
-                    int start = Color.withHSVSaturation(colorData.getColor(), 0.0f);
-                    int end = Color.withHSVSaturation(colorData.getColor(), 1.0f);
-                    return new Rectangle().setHorizontalGradient(start, end);
-                }))
-                .bounds(0, 1)
-                .sliderTexture(new Rectangle().setColor(Color.WHITE.main))
-                .sliderSize(2, 8)
-                .value(new DoubleValue.Dynamic(colorData::getS, val -> colorData.setS((float) val)))
-                .tooltipDynamic(t -> StarColors.HSV.SATURATION.getTooltip(colorData.getS()))
-                .tooltipShowUpTimer(TOOLTIP_DELAY)
-                .tooltipAutoUpdate(true));
-
-        // Saturation text field
-        saturationRow.child(
-            new TextFieldWidget().setNumbersDouble(val -> Math.min(1, Math.max(0, val)))
-                .value(new FloatValue.Dynamic(colorData::getS, colorData::setS))
-                .size(32, 16)
-                .marginLeft(2)
-                .setTextAlignment(Alignment.CENTER)
-                .setTextColor(StarColors.HSV.SATURATION.getHexColor())
+                .setTextColor(color.getHexColor())
                 .tooltip(t -> t.addLine(translateToLocal("fog.cosmetics.onlydecimals")))
                 .tooltipShowUpTimer(TOOLTIP_DELAY));
 
-        column.child(saturationRow);
-
-        Flow valueRow = new Row().size(SIZE - 16, 16)
-            .marginBottom(3);
-
-        // Value title
-        valueRow.child(
-            IKey.str(StarColors.HSV.VALUE.getTitle())
-                .alignment(Alignment.CenterLeft)
-                .asWidget()
-                .size(32, 16));
-
-        // Value slider
-        valueRow.child(
-            new SliderWidget().size(118, 8)
-                .background(new DynamicDrawable(() -> {
-                    int start = Color.withValue(colorData.getColor(), 0.0f);
-                    int end = Color.withValue(colorData.getColor(), 1.0f);
-                    return new Rectangle().setHorizontalGradient(start, end);
-                }))
-                .bounds(0, 1)
-                .sliderTexture(new Rectangle().setColor(Color.WHITE.main))
-                .sliderSize(2, 8)
-                .value(new DoubleValue.Dynamic(colorData::getV, val -> colorData.setV((float) val)))
-                .tooltipDynamic(t -> StarColors.HSV.VALUE.getTooltip(colorData.getV()))
-                .tooltipShowUpTimer(TOOLTIP_DELAY)
-                .tooltipAutoUpdate(true));
-
-        // Value text field
-        valueRow.child(
-            new TextFieldWidget().setNumbersDouble(val -> Math.min(1, Math.max(0, val)))
-                .value(new FloatValue.Dynamic(colorData::getV, colorData::setV))
-                .size(32, 16)
-                .marginLeft(2)
-                .setTextAlignment(Alignment.CENTER)
-                .setTextColor(StarColors.HSV.VALUE.getHexColor())
-                .tooltip(t -> t.addLine(translateToLocal("fog.cosmetics.onlydecimals")))
-                .tooltipShowUpTimer(TOOLTIP_DELAY));
-
-        column.child(valueRow);
-
-        column.child(createStarColorGammaRow(colorData));
-        return column;
+        return row;
     }
 
     private static Flow createStarColorGammaRow(ColorData colorData) {
@@ -321,7 +300,7 @@ public class CustomStarColorPanel {
         // Title
         row.child(
             IKey.str(gamma.getTitle())
-                .alignment(Alignment.CenterLeft)
+                .alignment(Alignment.CENTER)
                 .asWidget()
                 .align(Alignment.CenterLeft)
                 .size(32, 16));
@@ -330,10 +309,8 @@ public class CustomStarColorPanel {
         // todo
 
         // Text field
-        // todo make sure to bound this to 1 decimal place somehow
         row.child(
-            new TextFieldWidget().setFormatAsInteger(true)
-                .setNumbersDouble(val -> Math.min(100, Math.max(0, val)))
+            new TextFieldWidget().setNumbersDouble(raw -> MathHelper.clamp_double(raw, 0, 100))
                 .value(new FloatValue.Dynamic(colorData::getGamma, colorData::setGamma))
                 .size(32, 16)
                 .setTextAlignment(Alignment.CENTER)
@@ -351,39 +328,42 @@ public class CustomStarColorPanel {
         row.child(
             new PageButton(0, pageController).size(24, 16)
                 .marginRight(3)
-                .overlay(IKey.str("RGB"))); // todo lang?
+                .overlay(IKey.lang("fog.cosmetics.color.rgb")));
         row.child(
             new PageButton(1, pageController).size(24, 16)
                 .marginRight(5)
-                .overlay(IKey.str("HSV"))); // todo lang?
+                .overlay(IKey.lang("fog.cosmetics.color.hsv")));
 
         // RGB text field header
         row.child(
-            IKey.str("Hex: ")
+            IKey.lang("fog.cosmetics.color.hex")
                 .asWidget()
                 .height(15)
                 .marginRight(3));
 
         // RGB text field
-        row.child(new TextFieldWidget().setValidator(raw -> {
-            if (!raw.startsWith("#")) {
-                if (raw.startsWith("0x") || raw.startsWith("0X")) {
-                    raw = raw.substring(2);
+        row.child(
+            new TextFieldWidget()
+                // spotless:off
+            .setValidator(raw -> {
+                if (!raw.startsWith("#")) {
+                    if (raw.startsWith("0x") || raw.startsWith("0X")) {
+                        raw = raw.substring(2);
+                    }
+                    return "#" + raw;
                 }
-                return "#" + raw;
-            }
-            return raw;
-        })
-            .value(
-                new StringValue.Dynamic(
-                    () -> "#" + Color.toFullHexString(colorData.getR(), colorData.getG(), colorData.getB()),
-                    val -> {
-                        try {
-                            colorData.updateFrom((int) (long) Long.decode(val));
-                        } catch (NumberFormatException ignored) {}
-                    }))
-            .size(50, 15)
-            .marginRight(5));
+                return raw;
+            })
+            .value(new StringValue.Dynamic(
+                () -> "#" + Color.toFullHexString(colorData.getR(), colorData.getG(), colorData.getB()),
+                val -> {
+                    try {
+                        colorData.updateFrom((int) (long) Long.decode(val));
+                    } catch (NumberFormatException ignored) {}
+                }))
+            // spotless:on
+                .size(50, 15)
+                .marginRight(5));
 
         // Color preview
         row.child(

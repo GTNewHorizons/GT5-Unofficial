@@ -7,7 +7,7 @@ public class ColorData {
     private int r = (int) StarColors.RGB.RED.getDefaultValue();
     private int g = (int) StarColors.RGB.GREEN.getDefaultValue();
     private int b = (int) StarColors.RGB.BLUE.getDefaultValue();
-    private int h = (int) StarColors.HSV.HUE.getDefaultValue();
+    private float h = StarColors.HSV.HUE.getDefaultValue();
     private float s = StarColors.HSV.SATURATION.getDefaultValue();
     private float v = StarColors.HSV.VALUE.getDefaultValue();
     private float gamma = StarColors.Extra.GAMMA.getDefaultValue();
@@ -41,12 +41,12 @@ public class ColorData {
         updateFromRGB();
     }
 
-    public int getH() {
+    public float getH() {
         return h;
     }
 
-    public void setH(int h) {
-        this.h = h;
+    public void setH(float h) {
+        this.h = Float.parseFloat(String.format("%.1f", h));
         updateFromHSV();
     }
 
@@ -55,7 +55,7 @@ public class ColorData {
     }
 
     public void setS(float s) {
-        this.s = s;
+        this.s = Float.parseFloat(String.format("%.3f", s));
         updateFromHSV();
     }
 
@@ -64,7 +64,7 @@ public class ColorData {
     }
 
     public void setV(float v) {
-        this.v = v;
+        this.v = Float.parseFloat(String.format("%.3f", v));
         updateFromHSV();
     }
 
@@ -73,7 +73,7 @@ public class ColorData {
     }
 
     public void setGamma(float gamma) {
-        this.gamma = gamma;
+        this.gamma = Float.parseFloat(String.format("%.1f", gamma));
     }
 
     public int getColor() {
@@ -82,9 +82,9 @@ public class ColorData {
 
     private void updateFromRGB() {
         color = Color.rgb(r, g, b);
-        h = (int) Color.getHue(color);
-        s = Color.getHSVSaturation(color);
-        v = Color.getValue(color);
+        h = Float.parseFloat(String.format("%.1f", Color.getHue(color)));
+        s = Float.parseFloat(String.format("%.3f", Color.getHSVSaturation(color)));
+        v = Float.parseFloat(String.format("%.3f", Color.getValue(color)));
     }
 
     private void updateFromHSV() {
@@ -99,8 +99,8 @@ public class ColorData {
         r = Color.getRed(color);
         g = Color.getGreen(color);
         b = Color.getBlue(color);
-        h = (int) Color.getHue(color);
-        s = Color.getHSVSaturation(color);
-        v = Color.getValue(color);
+        h = Float.parseFloat(String.format("%.1f", Color.getHue(color)));
+        s = Float.parseFloat(String.format("%.3f", Color.getHSVSaturation(color)));
+        v = Float.parseFloat(String.format("%.3f", Color.getValue(color)));
     }
 }

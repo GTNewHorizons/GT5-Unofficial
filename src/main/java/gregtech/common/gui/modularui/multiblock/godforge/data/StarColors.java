@@ -4,8 +4,6 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 
 import net.minecraft.util.EnumChatFormatting;
 
-import com.cleanroommc.modularui.utils.Color;
-
 import tectech.thing.metaTileEntity.multi.godforge.color.ForgeOfGodsStarColor;
 
 public final class StarColors {
@@ -69,9 +67,9 @@ public final class StarColors {
 
     public enum HSV implements IStarColor {
 
-        HUE(Color.getHue(ForgeOfGodsStarColor.DEFAULT_COLOR)),
-        SATURATION(Color.getHSVSaturation(ForgeOfGodsStarColor.DEFAULT_COLOR)),
-        VALUE(Color.getValue(ForgeOfGodsStarColor.DEFAULT_COLOR));
+        HUE(ForgeOfGodsStarColor.DEFAULT_HUE),
+        SATURATION(ForgeOfGodsStarColor.DEFAULT_SATURATION),
+        VALUE(ForgeOfGodsStarColor.DEFAULT_VALUE);
 
         private final String title;
         private final float defaultValue;
