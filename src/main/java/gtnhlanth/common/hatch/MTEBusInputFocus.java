@@ -4,17 +4,23 @@ import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.common.gui.modularui.hatch.MTEBusInputFocusGui;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers.MTEHatchNbtConsumable;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtnhlanth.common.item.ICanFocus;
 
 public class MTEBusInputFocus extends MTEHatchNbtConsumable {
 
-    private static final int INPUT_SLOTS = 16;
+    private static final int INPUT_SLOTS = 64;
 
     public MTEBusInputFocus(int id, String name, String nameRegional) {
         super(id, name, nameRegional, 0, INPUT_SLOTS, "Input Bus for Foci", true);
@@ -44,6 +50,11 @@ public class MTEBusInputFocus extends MTEHatchNbtConsumable {
 
         return aStack.getItem() == usageSlots.get(0)
             .getItem();
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEBusInputFocusGui(this).build(data, syncManager, uiSettings);
     }
 
     @Override
