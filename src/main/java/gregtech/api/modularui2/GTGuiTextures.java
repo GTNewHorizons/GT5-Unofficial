@@ -437,6 +437,22 @@ public final class GTGuiTextures {
     public static final UITexture STEAM_GAUGE_BG = UITexture.fullImage(GregTech.ID, "gui/background/steam_dial");
     public static final UITexture STEAM_GAUGE_BG_STEEL = UITexture
         .fullImage(GregTech.ID, "gui/background/steam_dial_steel");
+    public static final UITexture PROGRESSBAR_METER_MINT = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/meter_mint")
+        .fullImage()
+        .name(GTTextureIds.PROGRESSBAR_METER_MINT)
+        .build();
+    public static final UITexture PROGRESSBAR_METER_ORANGE = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/meter_orange")
+        .fullImage()
+        .name(GTTextureIds.PROGRESSBAR_METER_ORANGE)
+        .build();
+    public static final UITexture PROGRESSBAR_METER_ROSE = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/meter_rose")
+        .fullImage()
+        .name(GTTextureIds.PROGRESSBAR_METER_ROSE)
+        .build();
+
     // endregion progressbar
 
     // region button
@@ -588,6 +604,11 @@ public final class GTGuiTextures {
         .fullImage(GregTech.ID, "gui/overlay_button/sorting_mode");
     public static final UITexture OVERLAY_BUTTON_ONE_STACK_LIMIT = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/one_stack_limit");
+    public static final UITexture OVERLAY_BUTTON_LMA_ANIMATION_ON = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/lma_animation_on");
+    public static final UITexture OVERLAY_BUTTON_LMA_ANIMATION_OFF = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/lma_animation_off");
+
     // endregion button overlay
 
     // region picture
@@ -678,6 +699,16 @@ public final class GTGuiTextures {
         .adaptable(1, 1, 1, 1)
         .canApplyTheme()
         .name(GTTextureIds.PICTURE_RADIATION_SHUTTER_INSIDE)
+        .build();
+    public static final UITexture PICTURE_BRAIN = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/brain")
+        .fullImage()
+        .name(GTTextureIds.PICTURE_BRAIN)
+        .build();
+    public static final UITexture PICTURE_ELECRICITY = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/electricity")
+        .fullImage()
+        .name(GTTextureIds.PICTURE_ELECRICITY)
         .build();
 
     public static final UITexture TT_CONTROLLER_SLOT_HEAT_SINK = UITexture.builder()
