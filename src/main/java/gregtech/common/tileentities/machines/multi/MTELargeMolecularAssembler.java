@@ -8,7 +8,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
@@ -29,25 +28,19 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElementCheckOnly;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.mojang.authlib.GameProfile;
 
 import appeng.api.AEApi;
@@ -77,7 +70,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -88,6 +80,8 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.gui.modularui.multiblock.MTELargeMolecularAssemblerGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 
@@ -701,34 +695,8 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    protected boolean useMui2() {
-        return false;
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
-        builder.widget(
-            new ButtonWidget().setOnClick((clickData, widget) -> hiddenCraftingFX = !hiddenCraftingFX)
-                .setPlayClickSound(true)
-                .setBackground(() -> {
-                    List<UITexture> ret = new ArrayList<>();
-                    if (hiddenCraftingFX) {
-                        ret.add(GTUITextures.BUTTON_STANDARD);
-                        ret.add(GTUITextures.OVERLAY_BUTTON_LMA_ANIMATION_OFF);
-                    } else {
-                        ret.add(GTUITextures.BUTTON_STANDARD_PRESSED);
-                        ret.add(GTUITextures.OVERLAY_BUTTON_LMA_ANIMATION_ON);
-                    }
-                    return ret.toArray(new IDrawable[0]);
-                })
-                .attachSyncer(
-                    new FakeSyncWidget.BooleanSyncer(() -> hiddenCraftingFX, val -> hiddenCraftingFX = val),
-                    builder)
-                .addTooltip(StatCollector.translateToLocal("GT5U.gui.text.lma_craftingfx"))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setPos(80, 91)
-                .setSize(16, 16));
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTELargeMolecularAssemblerGui(this);
     }
 
     private static class CraftingDisplayPoint {
@@ -745,4 +713,13 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
             this.z = z;
         }
     }
+
+    public boolean isHiddenCraftingFX() {
+        return hiddenCraftingFX;
+    }
+
+    public void setHiddenCraftingFX(boolean hiddenCraftingFX) {
+        this.hiddenCraftingFX = hiddenCraftingFX;
+    }
+
 }
