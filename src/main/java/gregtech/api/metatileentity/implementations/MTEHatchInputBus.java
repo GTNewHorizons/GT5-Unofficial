@@ -548,7 +548,7 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
     @Override
     public NBTTagCompound getDescriptionData() {
 
-        NBTTagCompound tag = new NBTTagCompound();
+        NBTTagCompound tag = super.getDescriptionData();
         for (int i = 0; i < mInventory.length; i++) {
             ItemStack stack = mInventory[i];
             if (stack != null) {
