@@ -60,22 +60,7 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
                         if (e.toString()
                             .equals(werkstoff.getToolTip())) {
                             if (!e.mLinkedMaterials.isEmpty()) break;
-                            werkstoffBridgeMaterial = werkstoff.getBridgeMaterial() != null
-                                ? werkstoff.getBridgeMaterial()
-                                : Materials.get(werkstoff.getVarName()) != Materials._NULL
-                                    ? Materials.get(werkstoff.getVarName())
-                                    : new MaterialBuilder().setName(werkstoff.getVarName())
-                                        .setDefaultLocalName(werkstoff.getDefaultName())
-                                        .setIconSet(werkstoff.getTexSet())
-                                        .setARGB(argb)
-                                        .setTool(
-                                            werkstoff.getDurability(),
-                                            werkstoff.getToolQuality(),
-                                            werkstoff.getToolSpeed())
-                                        .setMeltingPoint(stats.getMeltingPoint())
-                                        .setBlastFurnaceTemp(stats.getMeltingPoint())
-                                        .setBlastFurnaceRequired(stats.isBlastFurnace())
-                                        .constructMaterial();
+
                             werkstoffBridgeMaterial.mElement = e;
                             e.mLinkedMaterials = new ArrayList<>();
                             e.mLinkedMaterials.add(werkstoffBridgeMaterial);
