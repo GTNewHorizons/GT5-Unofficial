@@ -3272,6 +3272,17 @@ public class AssemblerRecipes implements Runnable {
             .eut(30)
             .addTo(assemblerRecipes);
 
+        GTOreDictUnificator.addItemDataFromInputs(
+            ItemList.Machine_Bronze_Boiler_Solar.get(1L),
+            GTOreDictUnificator.get(OrePrefixes.block, Materials.Glass, 1),
+            GTOreDictUnificator.get(OrePrefixes.block, Materials.Glass, 1),
+            GTOreDictUnificator.get(OrePrefixes.block, Materials.Glass, 1),
+            GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Silver, 1),
+            GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Silver, 1),
+            GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Silver, 1),
+            GTOreDictUnificator.get(OrePrefixes.pipeSmall, Materials.Bronze, 1),
+            ItemList.Hull_Bronze_Bricks.get(1L));
+
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTModHandler.getModItem(IndustrialCraft2.ID, "blockAlloyGlass", 3L),
@@ -3283,6 +3294,17 @@ public class AssemblerRecipes implements Runnable {
             .duration(30 * SECONDS)
             .eut(30)
             .addTo(assemblerRecipes);
+
+        GTOreDictUnificator.addItemDataFromInputs(
+            ItemList.Machine_HP_Solar.get(1L),
+            GTModHandler.getModItem(IndustrialCraft2.ID, "blockAlloyGlass", 1L),
+            GTModHandler.getModItem(IndustrialCraft2.ID, "blockAlloyGlass", 1L),
+            GTModHandler.getModItem(IndustrialCraft2.ID, "blockAlloyGlass", 1L),
+            GTOreDictUnificator.get(OrePrefixes.plateTriple, Materials.Silver, 1),
+            GTOreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1),
+            GTOreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1),
+            GTOreDictUnificator.get(OrePrefixes.pipeSmall, Materials.Steel, 1),
+            ItemList.Machine_Bronze_Boiler_Solar.get(1L));
     }
 
     /**
