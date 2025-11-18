@@ -37,7 +37,7 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
         if (werkstoffBridgeMaterial == null) {
             werkstoffBridgeMaterial = Materials.get(werkstoff.getVarName());
 
-            if (werkstoffBridgeMaterial == Materials._NULL){
+            if (werkstoffBridgeMaterial == Materials._NULL) {
                 werkstoffBridgeMaterial = new MaterialBuilder().setName(werkstoff.getVarName())
                     .setDefaultLocalName(werkstoff.getDefaultName())
                     .setIconSet(werkstoff.getTexSet())
@@ -53,12 +53,15 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
         if (werkstoff.hasItemType(cell)) {
             werkstoffBridgeMaterial.setHasCorrespondingFluid(true);
             werkstoffBridgeMaterial.setHasCorrespondingGas(true);
-            werkstoffBridgeMaterial.mFluid = werkstoff.getFluidOrGas(1).getFluid();
-            werkstoffBridgeMaterial.mGas = werkstoff.getFluidOrGas(1).getFluid();
+            werkstoffBridgeMaterial.mFluid = werkstoff.getFluidOrGas(1)
+                .getFluid();
+            werkstoffBridgeMaterial.mGas = werkstoff.getFluidOrGas(1)
+                .getFluid();
         }
 
         if (werkstoff.hasItemType(cellMolten)) {
-            werkstoffBridgeMaterial.mStandardMoltenFluid = werkstoff.getMolten(1).getFluid();
+            werkstoffBridgeMaterial.mStandardMoltenFluid = werkstoff.getMolten(1)
+                .getFluid();
         }
         werkstoffBridgeMaterial.mName = werkstoff.getVarName();
         werkstoffBridgeMaterial.mDefaultLocalName = werkstoff.getDefaultName();
@@ -75,14 +78,16 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
         werkstoffBridgeMaterial.mHandleMaterial = getHandleMaterial(werkstoff, werkstoffBridgeMaterial.mDurability);
 
         if (stats.isRadioactive()) {
-            werkstoffBridgeMaterial.setEnchantmentForArmors(EnchantmentRadioactivity.INSTANCE, stats.getEnchantmentlvl());
-            werkstoffBridgeMaterial.setEnchantmentForTools(EnchantmentRadioactivity.INSTANCE, stats.getEnchantmentlvl());
+            werkstoffBridgeMaterial
+                .setEnchantmentForArmors(EnchantmentRadioactivity.INSTANCE, stats.getEnchantmentlvl());
+            werkstoffBridgeMaterial
+                .setEnchantmentForTools(EnchantmentRadioactivity.INSTANCE, stats.getEnchantmentlvl());
         }
 
         werkstoff.setBridgeMaterial(werkstoffBridgeMaterial);
     }
 
-    private static Materials getHandleMaterial(Werkstoff werkstoff, int durability){
+    private static Materials getHandleMaterial(Werkstoff werkstoff, int durability) {
         if (werkstoff.contains(SubTag.BURNING)) return Materials.Blaze;
 
         if (werkstoff.contains(SubTag.MAGICAL)) return Materials.Thaumium;
