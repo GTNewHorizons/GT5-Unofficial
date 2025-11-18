@@ -1,5 +1,7 @@
 package gregtech.common.items;
 
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
+
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -178,8 +180,8 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
     private enum CellType {
 
         REGULAR(1_000, OrePrefixes.cell),
-        SMALL(144, OrePrefixes.cell),
-        MOLTEN(144, OrePrefixes.cellMolten),
+        SMALL(1 * INGOTS, OrePrefixes.cell),
+        MOLTEN(1 * INGOTS, OrePrefixes.cellMolten),
         PLASMA(1_000, OrePrefixes.cellPlasma);
 
         private final int capacity;
@@ -232,7 +234,7 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
 
         // We'll just steal the icons from Water. They are all the same anyway (except _NULL is broken for cells).
         for (CellType cellType : CellType.values()) {
-            IIconContainer iconContainer = Materials.Water.mIconSet.mTextures[cellType.prefix.mTextureIndex];
+            IIconContainer iconContainer = Materials.Water.mIconSet.mTextures[cellType.prefix.getTextureIndex()];
             INSTANCE.iconContainerMap.put(cellType, iconContainer);
         }
     }
@@ -289,8 +291,8 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
 
         GTLanguageManager.addStringLocalization(
             getUnlocalizedName(aCell.mStack) + ".name",
-            cellType.prefix.mLocalizedMaterialPre + fluid.getLocalizedName(fluidStack)
-                + cellType.prefix.mLocalizedMaterialPost);
+            cellType.prefix.getMaterialPrefix() + fluid.getLocalizedName(fluidStack)
+                + cellType.prefix.getMaterialPostfix());
 
         int color = fluid.getColor();
         short[] rgba = GTUtil.getRGBaArray(color);

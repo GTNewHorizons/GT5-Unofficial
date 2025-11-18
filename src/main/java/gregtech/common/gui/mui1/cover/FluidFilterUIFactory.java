@@ -1,6 +1,7 @@
 package gregtech.common.gui.mui1.cover;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -51,37 +52,37 @@ public class FluidFilterUIFactory extends CoverUIFactory<CoverFluidfilter> {
                         0,
                         CoverDataFollowerToggleButtonWidget.ofDisableable(),
                         widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_IMPORT)
-                            .addTooltip(GTUtility.trans("232", "Filter Input"))
+                            .addTooltip(StatCollector.translateToLocal("gt.interact.desc.FluidFilter.FilterInput"))
                             .setPos(spaceX * 0, spaceY * 0))
                     .addToggleButton(
                         1,
                         CoverDataFollowerToggleButtonWidget.ofDisableable(),
                         widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_EXPORT)
-                            .addTooltip(GTUtility.trans("233", "Filter Output"))
+                            .addTooltip(StatCollector.translateToLocal("gt.interact.desc.FluidFilter.FilterOutput"))
                             .setPos(spaceX * 1, spaceY * 0))
                     .addToggleButton(
                         2,
                         CoverDataFollowerToggleButtonWidget.ofDisableable(),
                         widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_BLOCK_INPUT)
-                            .addTooltip(GTUtility.trans("234", "Block Output"))
+                            .addTooltip(StatCollector.translateToLocal("gt.interact.desc.FluidFilter.BlockOutput"))
                             .setPos(spaceX * 0, spaceY * 2))
                     .addToggleButton(
                         3,
                         CoverDataFollowerToggleButtonWidget.ofDisableable(),
                         widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_ALLOW_INPUT)
-                            .addTooltip(GTUtility.trans("235", "Allow Output"))
+                            .addTooltip(StatCollector.translateToLocal("gt.interact.desc.FluidFilter.AllowOutput"))
                             .setPos(spaceX * 1, spaceY * 2))
                     .addToggleButton(
                         4,
                         CoverDataFollowerToggleButtonWidget.ofDisableable(),
                         widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_WHITELIST)
-                            .addTooltip(GTUtility.trans("236", "Whitelist " + "Fluid"))
+                            .addTooltip(StatCollector.translateToLocal("gt.interact.desc.FluidFilter.WhitelistFluid"))
                             .setPos(spaceX * 0, spaceY * 1))
                     .addToggleButton(
                         5,
                         CoverDataFollowerToggleButtonWidget.ofDisableable(),
                         widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_BLACKLIST)
-                            .addTooltip(GTUtility.trans("237", "Blacklist " + "Fluid"))
+                            .addTooltip(StatCollector.translateToLocal("gt.interact.desc.FluidFilter.BlacklistFluid"))
                             .setPos(spaceX * 1, spaceY * 1))
                     .addFollower(new CoverDataFollowerSlotWidget<CoverFluidfilter>(new ItemStackHandler(), 0, true) {
 
@@ -110,13 +111,13 @@ public class FluidFilterUIFactory extends CoverUIFactory<CoverFluidfilter> {
                             .setPos(0, spaceY * 3 + 2))
                     .setPos(startX, startY))
             .widget(
-                new TextWidget(GTUtility.trans("238", "Filter Direction")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(StatCollector.translateToLocal("gt.interact.desc.FluidFilter.Direction"))
                     .setPos(startX + spaceX * 2, 3 + startY + spaceY * 0))
             .widget(
-                new TextWidget(GTUtility.trans("239", "Filter Type")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(StatCollector.translateToLocal("gt.interact.desc.FluidFilter.Type"))
                     .setPos(startX + spaceX * 2, 3 + startY + spaceY * 1))
             .widget(
-                new TextWidget(GTUtility.trans("240", "Block Flow")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(StatCollector.translateToLocal("gt.interact.desc.FluidFilter.BlockFlow"))
                     .setPos(startX + spaceX * 2, 3 + startY + spaceY * 2))
             .widget(TextWidget.dynamicString(() -> {
                 CoverFluidfilter cover = getCover();
@@ -126,7 +127,7 @@ public class FluidFilterUIFactory extends CoverUIFactory<CoverFluidfilter> {
                         return fluidDisplay.getDisplayName();
                     }
                 }
-                return GTUtility.trans("315", "Filter Empty");
+                return (StatCollector.translateToLocal("gt.interact.desc.FluidFilter.Empty"));
             })
                 .setSynced(false)
                 .setDefaultColor(COLOR_TITLE.get())

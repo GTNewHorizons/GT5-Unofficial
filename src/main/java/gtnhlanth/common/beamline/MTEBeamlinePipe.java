@@ -12,13 +12,14 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
-import gregtech.common.GTClient;
 import gregtech.common.render.GTTextureBuilder;
 
 public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamline {
@@ -63,14 +64,15 @@ public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamli
                     }
                 }
             }
-        } else if (aBaseMetaTileEntity.isClientSide() && GTClient.changeDetected == 4) {
-            aBaseMetaTileEntity.issueTextureUpdate();
-        }
+        } else if (aBaseMetaTileEntity.isClientSide() && GTMod.clientProxy()
+            .changeDetected() == 4) {
+                aBaseMetaTileEntity.issueTextureUpdate();
+            }
     }
 
     @Override
     public byte getTileEntityBaseType() {
-        return 7;
+        return HarvestTool.WrenchPipeLevel3.toTileEntityBaseType();
     }
 
     @Override
@@ -105,29 +107,15 @@ public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamli
     public IConnectsToBeamline getNext(IConnectsToBeamline source) {
 
         /*
-         * for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-         * if ((mConnections & 1 << dir.ordinal()) == 0) {
-         * continue;
-         * }
-         * TileEntity next = this.getBaseMetaTileEntity()
-         * .getTileEntityAtSide(dir);
-         * if (next instanceof IConnectsToBeamline && next != source) {
-         * if (((IConnectsToBeamline) next).isDataInputFacing(dir.getOpposite())) {
-         * return (IConnectsToBeamline) next;
-         * }
-         * } else if (next instanceof IGregTechTileEntity) {
-         * IMetaTileEntity meta = ((IGregTechTileEntity) next).getMetaTileEntity();
-         * if (meta instanceof IConnectsToBeamline && meta != source) {
-         * if (meta instanceof TileBeamline && (((TileBeamline) meta).connectionCount == 2)) {
-         * ((TileBeamline) meta).markUsed();
-         * return (IConnectsToBeamline) meta;
-         * }
-         * if (((IConnectsToBeamline) meta).isDataInputFacing(dir.getOpposite())) {
-         * return (IConnectsToBeamline) meta;
-         * }
-         * }
-         * }
-         * }
+         * for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) { if ((mConnections & 1 << dir.ordinal()) == 0) {
+         * continue; } TileEntity next = this.getBaseMetaTileEntity() .getTileEntityAtSide(dir); if (next instanceof
+         * IConnectsToBeamline && next != source) { if (((IConnectsToBeamline)
+         * next).isDataInputFacing(dir.getOpposite())) { return (IConnectsToBeamline) next; } } else if (next instanceof
+         * IGregTechTileEntity) { IMetaTileEntity meta = ((IGregTechTileEntity) next).getMetaTileEntity(); if (meta
+         * instanceof IConnectsToBeamline && meta != source) { if (meta instanceof TileBeamline && (((TileBeamline)
+         * meta).connectionCount == 2)) { ((TileBeamline) meta).markUsed(); return (IConnectsToBeamline) meta; } if
+         * (((IConnectsToBeamline) meta).isDataInputFacing(dir.getOpposite())) { return (IConnectsToBeamline) meta; } }
+         * } }
          */
 
         return null;
@@ -146,7 +134,7 @@ public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamli
         return new ITexture[] { new GTTextureBuilder().addIcon(pipe)
             .build(),
             new GTTextureBuilder().addIcon(pipe)
-                .setRGBA(Dyes.getModulation((byte) aColorIndex, MACHINE_METAL.getRGBA()))
+                .setRGBA(Dyes.getModulation(aColorIndex, MACHINE_METAL.getRGBA()))
                 .build() };
     }
 
@@ -162,7 +150,8 @@ public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamli
     @Override
     public String[] getDescription() {
         return new String[] { StatCollector.translateToLocal("beamline.pipe.desc.0"), // Beamline pipe
-            EnumChatFormatting.AQUA + StatCollector.translateToLocal("beamline.pipe.desc.1"), // Does not cross, split
+            EnumChatFormatting.AQUA + StatCollector.translateToLocal("beamline.pipe.desc.1"), // Does not cross,
+                                                                                              // split
                                                                                               // or turn
             "Added by " + EnumChatFormatting.GREEN + "GTNH: Lanthanides"
 

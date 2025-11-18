@@ -11,28 +11,16 @@ import net.minecraft.entity.passive.EntityMooshroom;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class TileEntityPooCollector extends TileEntityBaseFluidCollector {
 
     public TileEntityPooCollector() {
         super(9, 8000);
-    }
-
-    @Override
-    public boolean canFill(ForgeDirection from, Fluid fluid) {
-        return false;
-    }
-
-    @Override
-    public boolean canDrain(ForgeDirection from, Fluid fluid) {
-        return true;
     }
 
     @Override
@@ -52,9 +40,8 @@ public class TileEntityPooCollector extends TileEntityBaseFluidCollector {
             } else {
                 return false;
             }
-            if (!ItemUtils.checkForInvalidItems(aPoop)) {
-                return false;
-            }
+
+            if (aPoop == null) return false;
 
             // Add poop to world
             // Logger.INFO("Adding animal waste for "+aPooMaker.getCommandSenderName());

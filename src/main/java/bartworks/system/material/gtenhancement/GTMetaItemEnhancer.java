@@ -14,6 +14,7 @@
 package bartworks.system.material.gtenhancement;
 
 import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import java.util.List;
@@ -57,7 +58,7 @@ public class GTMetaItemEnhancer {
             Materials m = values[i];
             if (m.mStandardMoltenFluid != null && GTOreDictUnificator.get(OrePrefixes.cellMolten, m, 1) != null) {
                 final FluidContainerRegistry.FluidContainerData emptyData = new FluidContainerRegistry.FluidContainerData(
-                    m.getMolten(144),
+                    m.getMolten(1 * INGOTS),
                     new ItemStack(moltenCapsuls, 1, i),
                     GTModHandler.getModItem(Forestry.ID, "refractoryEmpty", 1));
                 FluidContainerRegistry.registerFluidContainer(emptyData);

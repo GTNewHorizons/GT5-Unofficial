@@ -38,8 +38,8 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
-        switch (aPrefix) {
-            case pipeHuge, pipeLarge, pipeMedium, pipeSmall, pipeTiny -> {
+        switch (aPrefix.getName()) {
+            case "pipeHuge", "pipeLarge", "pipeMedium", "pipeSmall", "pipeTiny" -> {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
 
                     GTModHandler.addCraftingRecipe(
@@ -53,7 +53,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                             aMaterial == Materials.Wood ? OrePrefixes.plank.get(aMaterial)
                                 : OrePrefixes.plate.get(aMaterial),
                             'H',
-                            aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSoftHammer
+                            aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSoftMallet
                                 : ToolDictNames.craftingToolHardHammer,
                             'W', aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSaw
                                 : ToolDictNames.craftingToolWrench });
@@ -64,7 +64,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                             aMaterial == Materials.Wood ? OrePrefixes.plank.get(aMaterial)
                                 : OrePrefixes.plate.get(aMaterial),
                             'H',
-                            aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSoftHammer
+                            aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSoftMallet
                                 : ToolDictNames.craftingToolHardHammer,
                             'W', aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSaw
                                 : ToolDictNames.craftingToolWrench });
@@ -75,7 +75,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                             aMaterial == Materials.Wood ? OrePrefixes.plank.get(aMaterial)
                                 : OrePrefixes.plate.get(aMaterial),
                             'H',
-                            aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSoftHammer
+                            aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSoftMallet
                                 : ToolDictNames.craftingToolHardHammer,
                             'W', aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSaw
                                 : ToolDictNames.craftingToolWrench });
@@ -85,21 +85,22 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                         new Object[] { "DhD", "D D", "DwD", 'D', OrePrefixes.plateDouble.get(aMaterial) });
                 }
             }
-            case pipeRestrictiveHuge, pipeRestrictiveLarge, pipeRestrictiveMedium, pipeRestrictiveSmall, pipeRestrictiveTiny -> {
+            case "pipeRestrictiveHuge", "pipeRestrictiveLarge", "pipeRestrictiveMedium", "pipeRestrictiveSmall", "pipeRestrictiveTiny" -> {
                 GTValues.RA.stdBuilder()
                     .itemInputs(
                         GTOreDictUnificator.get(
                             OrePrefixes.ring,
                             Materials.Steel,
-                            aPrefix.mSecondaryMaterial.mAmount / OrePrefixes.ring.mMaterialAmount),
+                            aPrefix.mSecondaryMaterial.mAmount / OrePrefixes.ring.getMaterialAmount()),
                         GTOreDictUnificator.get(aOreDictName.replaceFirst("Restrictive", ""), null, 1L, false, true))
                     .itemOutputs(GTUtility.copyAmount(1, aStack))
                     .duration(
-                        ((int) (aPrefix.mSecondaryMaterial.mAmount * 400L / OrePrefixes.ring.mMaterialAmount)) * TICKS)
+                        ((int) (aPrefix.mSecondaryMaterial.mAmount * 400L / OrePrefixes.ring.getMaterialAmount()))
+                            * TICKS)
                     .eut(4)
                     .addTo(assemblerRecipes);
             }
-            case pipeQuadruple -> {
+            case "pipeQuadruple" -> {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
 
                     GTModHandler.addCraftingRecipe(
@@ -117,7 +118,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                     .eut(calculateRecipeEU(aMaterial, 4))
                     .addTo(assemblerRecipes);
             }
-            case pipeNonuple -> {
+            case "pipeNonuple" -> {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
 
                     GTModHandler.addCraftingRecipe(

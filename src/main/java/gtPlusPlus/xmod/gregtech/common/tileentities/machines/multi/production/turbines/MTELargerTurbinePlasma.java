@@ -54,11 +54,6 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
     }
 
     @Override
-    public int getPollutionPerSecond(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
     public int getFuelValue(FluidStack aLiquid) {
         if (aLiquid == null) {
             return 0;

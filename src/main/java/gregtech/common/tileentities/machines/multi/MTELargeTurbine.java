@@ -106,10 +106,12 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
 
     public MTELargeTurbine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
+        usesTurbine = true;
     }
 
     public MTELargeTurbine(String aName) {
         super(aName);
+        usesTurbine = true;
     }
 
     @Override
@@ -442,11 +444,6 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
                 looseFit ? GTUtility.trans("500", "Fitting: Loose - More Flow")
                     : GTUtility.trans("501", "Fitting: Tight - More Efficiency"));
         }
-    }
-
-    @Override
-    public boolean isGivingInformation() {
-        return true;
     }
 
     @Override

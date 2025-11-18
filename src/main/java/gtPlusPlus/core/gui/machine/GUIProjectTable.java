@@ -2,7 +2,6 @@ package gtPlusPlus.core.gui.machine;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -23,11 +22,6 @@ public class GUIProjectTable extends GuiContainer {
 
     public GUIProjectTable(final InventoryPlayer player_inventory, final TileEntityProjectTable tile) {
         super(new ContainerProjectTable(player_inventory, tile));
-    }
-
-    @Override
-    protected void drawGuiContainerForegroundLayer(final int i, final int j) {
-
     }
 
     @Override
@@ -53,6 +47,4 @@ public class GUIProjectTable extends GuiContainer {
         // Add any other buttons here too!
     }
 
-    @Override
-    protected void actionPerformed(final GuiButton B) {}
 }

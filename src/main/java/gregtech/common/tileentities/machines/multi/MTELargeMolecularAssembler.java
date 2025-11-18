@@ -5,8 +5,10 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAn
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -26,23 +28,19 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElementCheckOnly;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.mojang.authlib.GameProfile;
 
 import appeng.api.AEApi;
@@ -72,7 +70,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -83,15 +80,17 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.gui.modularui.multiblock.MTELargeMolecularAssemblerGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 
 public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<MTELargeMolecularAssembler>
-    implements ICraftingProvider, IActionHost, IGridProxyable {
+    implements ICraftingProvider, IActionHost, IGridProxyable, ISurvivalConstructable {
 
     private static final String DATA_ORB_JOBS_KEY = "MX-CraftingJobs";
     private static final String DATA_ORB_JOBS_JOB_KEY = "Job";
-    private static final String MACHINE_TYPE = "Molecular Assembler";
+    private static final String MACHINE_TYPE = "Molecular Assembler, LMA";
     private static final int EU_PER_TICK_BASIC = 16;
     private static final int EU_PER_TICK_CRAFTING = 64;
     private static final int CASING_INDEX = 48;
@@ -115,7 +114,10 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
         .addElement(
             'C',
             ofChain(
-                ofHatchAdder(MTELargeMolecularAssembler::addToLargeMolecularAssemblerList, CASING_INDEX, 1),
+                buildHatchAdder(MTELargeMolecularAssembler.class).atLeast(Energy, InputBus, Maintenance)
+                    .casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .build(),
                 onElementPass(it -> it.casing++, ofBlock(GregTechAPI.sBlockCasings4, 0))))
         .addElement(
             'G',
@@ -188,7 +190,7 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
             mMaxProgresstime = 20;
             long craftingProgressTime = 20;
             long craftingEUt = EU_PER_TICK_CRAFTING;
-            mEUt = -EU_PER_TICK_BASIC;
+            lEUt = -EU_PER_TICK_BASIC;
             // Tier EU_PER_TICK_CRAFTING == 2
             int extraTier = Math.max(0, GTUtility.getTier(getMaxInputVoltage()) - 2);
             // The first two Overclocks reduce the Finish time to 0.5s and 0.25s
@@ -306,6 +308,16 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
             .beginStructureBlock(5, 5, 5, true)
             .addController("Front center")
             .addCasingInfoMin("Robust Tungstensteel Machine Casing", MIN_CASING_COUNT, false)
+            .addCasingInfoExactly(
+                AEApi.instance()
+                    .definitions()
+                    .blocks()
+                    .quartzVibrantGlass()
+                    .maybeBlock()
+                    .get()
+                    .getLocalizedName(),
+                54,
+                false)
             .addInputBus("Any casing", 1)
             .addEnergyHatch("Any casing", 1)
             .addMaintenanceHatch("Any casing", 1)
@@ -342,17 +354,36 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        if (mMachine) return -1;
+        return survivalBuildPiece(
+            STRUCTURE_PIECE_MAIN,
+            stackSize,
+            STRUCTURE_HORIZONTAL_OFFSET,
+            STRUCTURE_VERTICAL_OFFSET,
+            STRUCTURE_DEPTH_OFFSET,
+            elementBudget,
+            env,
+            false,
+            true);
+    }
+
+    @Override
     public IStructureDefinition<MTELargeMolecularAssembler> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
     @Override
-    public boolean addOutput(ItemStack aStack) {
-        cachedOutputs.add(
-            AEApi.instance()
-                .storage()
-                .createItemStack(aStack));
+    public boolean addItemOutputs(ItemStack[] outputItems) {
+        for (ItemStack stack : outputItems) {
+            cachedOutputs.add(
+                AEApi.instance()
+                    .storage()
+                    .createItemStack(stack));
+        }
+
         markDirty();
+
         return true;
     }
 
@@ -382,7 +413,7 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
         if (dataTitle == null || dataTitle.isEmpty()) {
             dataTitle = DATA_ORB_TITLE;
             BehaviourDataOrb.setDataName(dataOrb, dataTitle);
-            BehaviourDataOrb.setNBTInventory(dataOrb, new ItemStack[0]);
+            BehaviourDataOrb.setNBTInventory(dataOrb, GTValues.emptyItemStackArray);
         }
         if (!dataTitle.equals(DATA_ORB_TITLE)) {
             cachedDataOrb = null;
@@ -664,32 +695,10 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
-        builder.widget(
-            new ButtonWidget().setOnClick((clickData, widget) -> hiddenCraftingFX = !hiddenCraftingFX)
-                .setPlayClickSound(true)
-                .setBackground(() -> {
-                    List<UITexture> ret = new ArrayList<>();
-                    if (hiddenCraftingFX) {
-                        ret.add(GTUITextures.BUTTON_STANDARD);
-                        ret.add(GTUITextures.OVERLAY_BUTTON_LMA_ANIMATION_OFF);
-                    } else {
-                        ret.add(GTUITextures.BUTTON_STANDARD_PRESSED);
-                        ret.add(GTUITextures.OVERLAY_BUTTON_LMA_ANIMATION_ON);
-                    }
-                    return ret.toArray(new IDrawable[0]);
-                })
-                .attachSyncer(
-                    new FakeSyncWidget.BooleanSyncer(() -> hiddenCraftingFX, val -> hiddenCraftingFX = val),
-                    builder)
-                .addTooltip(StatCollector.translateToLocal("GT5U.gui.text.lma_craftingfx"))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setPos(80, 91)
-                .setSize(16, 16));
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTELargeMolecularAssemblerGui(this);
     }
 
-    @SuppressWarnings("all")
     private static class CraftingDisplayPoint {
 
         private final World w;
@@ -704,4 +713,13 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
             this.z = z;
         }
     }
+
+    public boolean isHiddenCraftingFX() {
+        return hiddenCraftingFX;
+    }
+
+    public void setHiddenCraftingFX(boolean hiddenCraftingFX) {
+        this.hiddenCraftingFX = hiddenCraftingFX;
+    }
+
 }

@@ -8,16 +8,17 @@ import static gregtech.api.enums.GTValues.AuthorNotAPenguin;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.Maintenance;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PURIFICATION_PLANT;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PURIFICATION_PLANT_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PURIFICATION_PLANT_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PURIFICATION_PLANT_GLOW;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitBase.WATER_BOOST_BONUS_CHANCE;
 import static gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitBase.WATER_BOOST_NEEDED_FLUID;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,7 +33,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.collect.ImmutableList;
@@ -97,15 +97,14 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     public static final int CYCLE_TIME_TICKS = 120 * SECONDS;
 
     /**
-     * Stores all purification units linked to this controller.
-     * Normally all units in this list should be valid and unique, if not then there is a bug where they are not being
-     * unlinked properly on block destruction/relinking.
+     * Stores all purification units linked to this controller. Normally all units in this list should be valid and
+     * unique, if not then there is a bug where they are not being unlinked properly on block destruction/relinking.
      */
     private final List<LinkedPurificationUnit> mLinkedUnits = new ArrayList<>();
 
     /**
-     * Debug mode is an operational mode that does not produce output or consume input, but cuts down
-     * processing time for players to more easily debug their automation setups.
+     * Debug mode is an operational mode that does not produce output or consume input, but cuts down processing time
+     * for players to more easily debug their automation setups.
      */
     private boolean debugMode = false;
     public static final int CYCLE_TIME_IN_DEBUG = 30 * SECONDS;
@@ -178,8 +177,8 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Purification Plant")
-            .addInfo("Main controller block for the Water Purification Plant.")
+        tt.addMachineType("Purification Plant, WPP")
+            .addInfo("Main controller block for the Water Purification Plant")
             .addInfo(
                 "Freely place " + EnumChatFormatting.YELLOW
                     + "Purification Units "
@@ -188,20 +187,20 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                     + EnumChatFormatting.RED
                     + MAX_UNIT_DISTANCE
                     + EnumChatFormatting.GRAY
-                    + " blocks along each axis.")
-            .addInfo("Left click this controller with a data stick, then right click a purification unit to link.")
-            .addInfo("Supplies power to linked purification units.")
+                    + " blocks along each axis")
+            .addInfo("Left click this controller with a data stick, then right click a purification unit to link")
+            .addInfo("Supplies power to linked purification units")
             .addTecTechHatchInfo()
             .addSeparator()
             .addInfo(
                 "Works in fixed time processing cycles of " + EnumChatFormatting.RED
                     + CYCLE_TIME_TICKS / SECONDS
                     + EnumChatFormatting.GRAY
-                    + " seconds.")
-            .addInfo("All linked units follow this cycle.")
+                    + " seconds")
+            .addInfo("All linked units follow this cycle")
             .addSeparator()
             .addInfo("Every recipe has a base chance of success. Success rate can be boosted")
-            .addInfo("by using a portion of the target output as a secondary input.")
+            .addInfo("by using a portion of the target output as a secondary input")
             .addInfo(
                 EnumChatFormatting.RED + GTUtility.formatNumbers(WATER_BOOST_NEEDED_FLUID * 100)
                     + "%"
@@ -212,18 +211,18 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                     + GTUtility.formatNumbers(WATER_BOOST_BONUS_CHANCE * 100)
                     + "%"
                     + EnumChatFormatting.GRAY
-                    + " increase to success.")
+                    + " increase to success")
             .addInfo(
                 "On recipe failure, each purification unit has a " + EnumChatFormatting.RED
                     + "50%"
                     + EnumChatFormatting.GRAY
                     + " chance")
-            .addInfo("to return water of the same quality as the input or lower.")
+            .addInfo("to return water of the same quality as the input or lower")
             .addSeparator()
-            .addInfo("Every purification unit has a configuration window to configure maximum parallel amount.")
+            .addInfo("Every purification unit has a configuration window to configure maximum parallel amount")
             .addInfo(
-                "This will only scale purified water input, ALL fluid output and power usage. Other catalysts and outputs are unchanged.")
-            .addInfo("Toggle debug mode to reduce cycle time to 30s but disable water I/O.")
+                "This will only scale purified water input, ALL fluid output and power usage. Other catalysts and outputs are unchanged")
+            .addInfo("Toggle debug mode to reduce cycle time to 30s but disable water I/O")
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.AQUA + ""
@@ -240,7 +239,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             .addInfo(
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
-                    + "purification processes, and this multiblock is the heart of the operation.")
+                    + "purification processes, and this multiblock is the heart of the operation")
             .beginStructureBlock(7, 9, 8, false)
             .addController("Front center")
             .addCasingInfoExactlyColored(
@@ -294,11 +293,11 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                 Textures.BlockIcons
                     .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings9, 4)),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE)
+                    .addIcon(OVERLAY_FRONT_PURIFICATION_PLANT_ACTIVE)
                     .extFacing()
                     .build(),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW)
+                    .addIcon(OVERLAY_FRONT_PURIFICATION_PLANT_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
@@ -306,11 +305,11 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                 Textures.BlockIcons
                     .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings9, 4)),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY)
+                    .addIcon(OVERLAY_FRONT_PURIFICATION_PLANT)
                     .extFacing()
                     .build(),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_GLOW)
+                    .addIcon(OVERLAY_FRONT_PURIFICATION_PLANT_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
@@ -515,7 +514,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     public String[] getInfoData() {
         var ret = new ArrayList<String>();
         // Show linked purification units and their status
-        ret.add(StatCollector.translateToLocal("GT5U.infodata.purification_plant.linked_units"));
+        ret.add(translateToLocal("GT5U.infodata.purification_plant.linked_units"));
         for (LinkedPurificationUnit unit : this.mLinkedUnits) {
             String text = EnumChatFormatting.AQUA + unit.metaTileEntity()
                 .getLocalName() + ": ";
@@ -524,17 +523,15 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             switch (status) {
                 case ONLINE -> {
                     text = text + EnumChatFormatting.GREEN
-                        + StatCollector.translateToLocal("GT5U.infodata.purification_plant.linked_units.status.online");
+                        + translateToLocal("GT5U.infodata.purification_plant.linked_units.status.online");
                 }
                 case DISABLED -> {
                     text = text + EnumChatFormatting.YELLOW
-                        + StatCollector
-                            .translateToLocal("GT5U.infodata.purification_plant.linked_units.status.disabled");
+                        + translateToLocal("GT5U.infodata.purification_plant.linked_units.status.disabled");
                 }
                 case INCOMPLETE_STRUCTURE -> {
                     text = text + EnumChatFormatting.RED
-                        + StatCollector
-                            .translateToLocal("GT5U.infodata.purification_plant.linked_units.status.incomplete");
+                        + translateToLocal("GT5U.infodata.purification_plant.linked_units.status.incomplete");
                 }
             }
             ret.add(text);
@@ -563,10 +560,12 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                     .setEnabled(widget -> !mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
 
-        screenElements.widget(
-            new TextWidget("Hit with Soft Mallet to start.").setTextAlignment(Alignment.CenterLeft)
-                .setDefaultColor(EnumChatFormatting.BLACK)
-                .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()))
+        screenElements
+            .widget(
+                new TextWidget(translateToLocal("GT5U.gui.text.purification_plant.hit_to_start"))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(EnumChatFormatting.BLACK)
+                    .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()))
             .widget(new FakeSyncWidget.IntegerSyncer(this::getErrorDisplayID, this::setErrorDisplayID))
             .widget(
                 new FakeSyncWidget.BooleanSyncer(
@@ -621,7 +620,8 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
 
         // Title widget
         builder.widget(
-            new TextWidget(EnumChatFormatting.BOLD + "Purification Unit Status").setTextAlignment(Alignment.Center)
+            new TextWidget(translateToLocal("GT5U.infodata.purification_plant.status_title"))
+                .setTextAlignment(Alignment.Center)
                 .setPos(5, 10)
                 .setSize(windowWidth, 8));
 
@@ -641,9 +641,10 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     }
 
     private Widget makeStatusWindowButton() {
-        TextButtonWidget widget = (TextButtonWidget) new TextButtonWidget("Status").setLeftMargin(4)
-            .setSize(40, 16)
-            .setPos(10, 40);
+        TextButtonWidget widget = (TextButtonWidget) new TextButtonWidget(
+            translateToLocal("GT5U.infodata.purification_plant.status_button")).setLeftMargin(4)
+                .setSize(40, 16)
+                .setPos(10, 40);
         widget.button()
             .setOnClick(
                 (clickData, w) -> {
@@ -700,6 +701,11 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     }
 
     @Override
+    protected boolean useMui2() {
+        return false;
+    }
+
+    @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
 
         buildContext.addSyncedWindow(STATUS_WINDOW_ID, this::createStatusWindow);
@@ -739,7 +745,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                     return ret.toArray(new IDrawable[0]);
                 })
                 .attachSyncer(new FakeSyncWidget.BooleanSyncer(() -> debugMode, b -> debugMode = b), builder)
-                .addTooltip("Toggle debug mode.")
+                .addTooltip(translateToLocal("GT5U.gui.tooltip.purification_plant.debug_mode"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setPos(174, 112)
                 .setSize(16, 16));

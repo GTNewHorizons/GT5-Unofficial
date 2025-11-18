@@ -19,6 +19,7 @@ import net.minecraftforge.event.world.BlockEvent;
 import detrav.enums.Textures01;
 import detrav.items.behaviours.BehaviourDetravToolElectricProspector;
 import gregtech.api.damagesources.GTDamageSources;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IToolStats;
@@ -93,7 +94,7 @@ public class DetravToolElectricProspectorBase implements IToolStats {
 
     @Override
     public int[] getEnchantmentLevels(ItemStack itemStack) {
-        return new int[0];
+        return GTValues.emptyIntArray;
     }
 
     public String getMiningSound() {

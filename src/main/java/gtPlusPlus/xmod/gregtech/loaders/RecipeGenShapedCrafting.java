@@ -8,7 +8,6 @@ import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class RecipeGenShapedCrafting extends RecipeGenBase {
 
@@ -32,24 +31,20 @@ public class RecipeGenShapedCrafting extends RecipeGenBase {
         Logger.WARNING("Generating Shaped Crafting recipes for " + material.getLocalizedName()); // TODO
 
         // Single Plate Shaped/Shapeless
-        if (ItemUtils.checkForInvalidItems(material.getPlate(1))
-            && ItemUtils.checkForInvalidItems(material.getIngot(1)))
+        if (material.getPlate(1) != null && material.getIngot(1) != null)
             if (material.getPlate(1) != null && material.getIngot(1) != null) GTModHandler.addCraftingRecipe(
                 material.getPlate(1),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "h", "B", "I", 'I', material.getIngot(1), 'B', material.getIngot(1) });
 
         // Double Plate Shaped/Shapeless
-        if (ItemUtils.checkForInvalidItems(material.getPlateDouble(1))
-            && ItemUtils.checkForInvalidItems(material.getPlate(1)))
-            GTModHandler.addCraftingRecipe(
-                material.getPlateDouble(1),
-                GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                new Object[] { "I", "B", "h", 'I', material.getPlate(1), 'B', material.getPlate(1) });
+        if (material.getPlateDouble(1) != null && material.getPlate(1) != null) GTModHandler.addCraftingRecipe(
+            material.getPlateDouble(1),
+            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "I", "B", "h", 'I', material.getPlate(1), 'B', material.getPlate(1) });
 
         // Ring Recipe
-        if (!material.isRadioactive && ItemUtils.checkForInvalidItems(material.getRing(1))
-            && ItemUtils.checkForInvalidItems(material.getRod(1))) {
+        if (!material.isRadioactive && material.getRing(1) != null && material.getRod(1) != null) {
             if (GTModHandler.addCraftingRecipe(
                 material.getRing(1),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
@@ -61,8 +56,7 @@ public class RecipeGenShapedCrafting extends RecipeGenBase {
         }
 
         // Framebox Recipe
-        if (!material.isRadioactive && ItemUtils.checkForInvalidItems(material.getFrameBox(1))
-            && ItemUtils.checkForInvalidItems(material.getRod(1))) {
+        if (!material.isRadioactive && material.getFrameBox(1) != null && material.getRod(1) != null) {
             if (GTModHandler.addCraftingRecipe(
                 material.getFrameBox(2),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
@@ -74,8 +68,7 @@ public class RecipeGenShapedCrafting extends RecipeGenBase {
         }
 
         // Shaped Recipe - Bolts
-        if (!material.isRadioactive && ItemUtils.checkForInvalidItems(material.getBolt(1))
-            && ItemUtils.checkForInvalidItems(material.getRod(1))) {
+        if (!material.isRadioactive && material.getBolt(1) != null && material.getRod(1) != null) {
             if (GTModHandler.addCraftingRecipe(
                 material.getBolt(2),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
@@ -87,8 +80,7 @@ public class RecipeGenShapedCrafting extends RecipeGenBase {
         }
 
         // Shaped Recipe - Fine Wire
-        if (!material.isRadioactive && ItemUtils.checkForInvalidItems(material.getFoil(1))
-            && ItemUtils.checkForInvalidItems(material.getFineWire(1))) {
+        if (!material.isRadioactive && material.getFoil(1) != null && material.getFineWire(1) != null) {
             if (GTModHandler.addCraftingRecipe(
                 material.getFineWire(1),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
@@ -100,8 +92,7 @@ public class RecipeGenShapedCrafting extends RecipeGenBase {
         }
 
         // Shaped Recipe - Foil
-        if (ItemUtils.checkForInvalidItems(material.getFoil(1))
-            && ItemUtils.checkForInvalidItems(material.getPlate(1))) {
+        if (material.getFoil(1) != null && material.getPlate(1) != null) {
             if (GTModHandler.addCraftingRecipe(
                 material.getFoil(2),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
@@ -113,46 +104,41 @@ public class RecipeGenShapedCrafting extends RecipeGenBase {
         }
 
         // Shaped Recipe - Ingot to Rod
-        if (ItemUtils.checkForInvalidItems(material.getRod(1)) && ItemUtils.checkForInvalidItems(material.getIngot(1)))
-            if (GTModHandler.addCraftingRecipe(
-                material.getRod(1),
-                GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                new Object[] { "f ", " I", 'I', material.getIngot(1) })) {
-                    Logger.WARNING("Rod Recipe: " + material.getLocalizedName() + " - Success");
-                } else {
-                    Logger.WARNING("Rod Recipe: " + material.getLocalizedName() + " - Failed");
-                }
+        if (material.getRod(1) != null && material.getIngot(1) != null) if (GTModHandler.addCraftingRecipe(
+            material.getRod(1),
+            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "f ", " I", 'I', material.getIngot(1) })) {
+                Logger.WARNING("Rod Recipe: " + material.getLocalizedName() + " - Success");
+            } else {
+                Logger.WARNING("Rod Recipe: " + material.getLocalizedName() + " - Failed");
+            }
 
         // Shaped Recipe - Long Rod to two smalls
-        if (ItemUtils.checkForInvalidItems(material.getRod(1))
-            && ItemUtils.checkForInvalidItems(material.getLongRod(1)))
-            if (GTModHandler.addCraftingRecipe(
-                material.getRod(2),
-                GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                new Object[] { "s", "L", 'L', material.getLongRod(1) })) {
-                    Logger.WARNING("Rod Recipe: " + material.getLocalizedName() + " - Success");
-                } else {
-                    Logger.WARNING("Rod Recipe: " + material.getLocalizedName() + " - Failed");
-                }
+        if (material.getRod(1) != null && material.getLongRod(1) != null) if (GTModHandler.addCraftingRecipe(
+            material.getRod(2),
+            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "s", "L", 'L', material.getLongRod(1) })) {
+                Logger.WARNING("Rod Recipe: " + material.getLocalizedName() + " - Success");
+            } else {
+                Logger.WARNING("Rod Recipe: " + material.getLocalizedName() + " - Failed");
+            }
 
         // Two small to long rod
-        if (ItemUtils.checkForInvalidItems(material.getLongRod(1))
-            && ItemUtils.checkForInvalidItems(material.getRod(1)))
-            if (GTModHandler.addCraftingRecipe(
-                material.getLongRod(1),
-                GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                new Object[] { "RhR", 'R', material.getRod(1) })) {
-                    Logger.WARNING("Long Rod Recipe: " + material.getLocalizedName() + " - Success");
-                } else {
-                    Logger.WARNING("Long Rod Recipe: " + material.getLocalizedName() + " - Failed");
-                }
+        if (material.getLongRod(1) != null && material.getRod(1) != null) if (GTModHandler.addCraftingRecipe(
+            material.getLongRod(1),
+            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "RhR", 'R', material.getRod(1) })) {
+                Logger.WARNING("Long Rod Recipe: " + material.getLocalizedName() + " - Success");
+            } else {
+                Logger.WARNING("Long Rod Recipe: " + material.getLocalizedName() + " - Failed");
+            }
 
         // Rotor Recipe
-        if (!material.isRadioactive && ItemUtils.checkForInvalidItems(material.getRotor(1))
-            && ItemUtils.checkForInvalidItems(material.getRing(1))
+        if (!material.isRadioactive && material.getRotor(1) != null
+            && material.getRing(1) != null
             && !material.isRadioactive
-            && ItemUtils.checkForInvalidItems(material.getPlate(1))
-            && ItemUtils.checkForInvalidItems(material.getScrew(1))) {
+            && material.getPlate(1) != null
+            && material.getScrew(1) != null) {
             if (GTModHandler.addCraftingRecipe(
                 material.getRotor(1),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
@@ -165,9 +151,9 @@ public class RecipeGenShapedCrafting extends RecipeGenBase {
         }
 
         // Gear Recipe
-        if (!material.isRadioactive && ItemUtils.checkForInvalidItems(material.getGear(1))
-            && ItemUtils.checkForInvalidItems(material.getPlate(1))
-            && ItemUtils.checkForInvalidItems(material.getRod(1))) {
+        if (!material.isRadioactive && material.getGear(1) != null
+            && material.getPlate(1) != null
+            && material.getRod(1) != null) {
             if (GTModHandler.addCraftingRecipe(
                 material.getGear(1),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
@@ -179,8 +165,7 @@ public class RecipeGenShapedCrafting extends RecipeGenBase {
         }
 
         // Screws
-        if (!material.isRadioactive && ItemUtils.checkForInvalidItems(material.getScrew(1))
-            && ItemUtils.checkForInvalidItems(material.getBolt(1))) {
+        if (!material.isRadioactive && material.getScrew(1) != null && material.getBolt(1) != null) {
             if (GTModHandler.addCraftingRecipe(
                 material.getScrew(1),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,

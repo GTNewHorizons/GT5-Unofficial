@@ -53,7 +53,6 @@ import bartworks.util.ConnectedBlocksChecker;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IIconContainer;
@@ -232,8 +231,7 @@ public class MTELESU extends MTEMultiBlockBase {
         if (this.isClientSide()) {
 
             for (int i = 0; i < MTELESU.iTextures.length; i++) {
-                MTELESU.iTextures[i][0] = TextureFactory
-                    .of(MTELESU.iIconContainers[i], Dyes.getModulation(0, Dyes.MACHINE_METAL.mRGBa));
+                MTELESU.iTextures[i][0] = TextureFactory.of(MTELESU.iIconContainers[i]);
             }
 
             if (side == facing && this.getBaseMetaTileEntity()
@@ -391,10 +389,10 @@ public class MTELESU extends MTEMultiBlockBase {
         }
 
         this.mEfficiency = this.getMaxEfficiency(null);
-        this.mStorage = Configuration.multiblocks.energyPerCell * this.connectedcells.hashset.size()
+        this.mStorage = (long) Configuration.multiblocks.energyPerCell * this.connectedcells.hashset.size()
             >= Long.MAX_VALUE - 1 || Configuration.multiblocks.energyPerCell * this.connectedcells.hashset.size() < 0
                 ? Long.MAX_VALUE - 1
-                : Configuration.multiblocks.energyPerCell * this.connectedcells.hashset.size();
+                : (long) Configuration.multiblocks.energyPerCell * this.connectedcells.hashset.size();
         this.mMaxProgresstime = 1;
         this.mProgresstime = 0;
 
@@ -438,6 +436,11 @@ public class MTELESU extends MTEMultiBlockBase {
             new DrawableWidget().setDrawable(GTUITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY)
                 .setSize(17, 17)
                 .setPos(105, 51));
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
     }
 
     @Override
@@ -506,17 +509,24 @@ public class MTELESU extends MTEMultiBlockBase {
         screenElements.setSpace(0)
             .setPos(11, 8);
 
-        screenElements.widget(
-            new TextWidget().setStringSupplier(() -> "EU: " + numberFormat.format(this.clientEU))
-                .setTextAlignment(Alignment.CenterLeft)
-                .setDefaultColor(this.COLOR_TEXT_WHITE.get()))
+        screenElements
+            .widget(
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector
+                            .translateToLocalFormatted("BW.gui.text.lesu.eu", numberFormat.format(this.clientEU)))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(this.COLOR_TEXT_WHITE.get()))
             .widget(
                 new FakeSyncWidget.LongSyncer(
                     () -> this.getBaseMetaTileEntity()
                         .getStoredEU(),
                     val -> clientEU = val))
             .widget(
-                new TextWidget().setStringSupplier(() -> "MAX: " + numberFormat.format(clientMaxEU))
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector
+                            .translateToLocalFormatted("BW.gui.text.lesu.max", numberFormat.format(clientMaxEU)))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(this.COLOR_TEXT_WHITE.get()))
             .widget(
@@ -528,7 +538,10 @@ public class MTELESU extends MTEMultiBlockBase {
                             : 0,
                     val -> clientMaxEU = val))
             .widget(
-                new TextWidget().setStringSupplier(() -> "MAX EU/t IN: " + numberFormat.format(clientMaxIn))
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector
+                            .translateToLocalFormatted("BW.gui.text.lesu.max_in", numberFormat.format(clientMaxIn)))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(this.COLOR_TEXT_WHITE.get()))
             .widget(
@@ -537,7 +550,10 @@ public class MTELESU extends MTEMultiBlockBase {
                         .getInputVoltage(),
                     val -> clientMaxIn = val))
             .widget(
-                new TextWidget().setStringSupplier(() -> "EU/t OUT: " + numberFormat.format(clientMaxOut))
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector
+                            .translateToLocalFormatted("BW.gui.text.lesu.eu_out", numberFormat.format(clientMaxOut)))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(this.COLOR_TEXT_WHITE.get()))
             .widget(
@@ -546,7 +562,10 @@ public class MTELESU extends MTEMultiBlockBase {
                         .getOutputVoltage(),
                     val -> clientMaxOut = val))
             .widget(
-                new TextWidget().setStringSupplier(() -> "AMP/t IN/OUT: " + numberFormat.format(clientAmps))
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector
+                            .translateToLocalFormatted("BW.gui.text.lesu.amp_io", numberFormat.format(clientAmps)))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(this.COLOR_TEXT_WHITE.get()))
             .widget(

@@ -25,12 +25,6 @@ public abstract class AbstractWorldProviderSpace extends WorldProviderSpace impl
     }
 
     @Override
-    public String getDimensionName() {
-        return this.getCelestialBody()
-            .getLocalizedName();
-    }
-
-    @Override
     public boolean hasSunset() {
         return true;
     }
