@@ -61,7 +61,6 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
             if (!(prefixes == cell && Werkstoff.Types.ELEMENT.equals(werkstoff.getType()))) continue;
 
             if (prefixes == dust && Werkstoff.Types.ELEMENT.equals(werkstoff.getType())) {
-                boolean ElementSet = false;
                 for (Element e : ELEMENT_VALUES) {
                     if (!e.toString().equals(werkstoff.getToolTip())) continue;
 
@@ -75,12 +74,7 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
                             .addAssociation(dust, werkstoffBridgeMaterial, werkstoff.get(dust), false);
                         GTOreDictUnificator.set(dust, werkstoffBridgeMaterial, werkstoff.get(dust), true, true);
                     }
-                    ElementSet = true;
                     break;
-
-                }
-                if (!ElementSet) {
-                    continue;
                 }
             }
         }
