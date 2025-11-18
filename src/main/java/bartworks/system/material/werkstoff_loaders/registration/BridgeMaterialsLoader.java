@@ -16,20 +16,14 @@ package bartworks.system.material.werkstoff_loaders.registration;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.OrePrefixes.cell;
 import static gregtech.api.enums.OrePrefixes.cellMolten;
-import static gregtech.api.enums.OrePrefixes.dust;
-
-import java.util.ArrayList;
 
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import gregtech.api.enchants.EnchantmentRadioactivity;
-import gregtech.api.enums.Element;
 import gregtech.api.enums.MaterialBuilder;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTOreDictUnificator;
 
 public class BridgeMaterialsLoader implements IWerkstoffRunnable {
 
@@ -54,30 +48,6 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
                     .setBlastFurnaceRequired(stats.isBlastFurnace())
                     .constructMaterial();
             }
-        }
-
-        final Element[] ELEMENT_VALUES = Element.values();
-        final boolean isElementMaterial = Werkstoff.Types.ELEMENT.equals(werkstoff.getType());
-        for (OrePrefixes prefixes : OrePrefixes.VALUES) {
-            if (!(prefixes == cell && isElementMaterial)) continue;
-
-            if (prefixes != dust) continue;
-
-            for (Element e : ELEMENT_VALUES) {
-                if (!e.toString().equals(werkstoff.getToolTip())) continue;
-
-                if (!e.mLinkedMaterials.isEmpty()) break;
-
-                werkstoffBridgeMaterial.mElement = e;
-                e.mLinkedMaterials = new ArrayList<>();
-                e.mLinkedMaterials.add(werkstoffBridgeMaterial);
-                if (werkstoff.hasItemType(dust)) {
-                    GTOreDictUnificator.addAssociation(dust, werkstoffBridgeMaterial, werkstoff.get(dust), false);
-                    GTOreDictUnificator.set(dust, werkstoffBridgeMaterial, werkstoff.get(dust), true, true);
-                }
-                break;
-            }
-
         }
 
         if (werkstoff.hasItemType(cell)) {
