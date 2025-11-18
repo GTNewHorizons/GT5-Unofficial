@@ -1,16 +1,9 @@
 package gregtech.common.gui.modularui.hatch;
 
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.StatCollector;
 
-import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -19,22 +12,21 @@ import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.DynamicSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
-import com.cleanroommc.modularui.widget.EmptyWidget;
-import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
-import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
+import gregtech.common.gui.modularui.multiblock.MTEDroneCentreGui;
 import gregtech.common.gui.modularui.synchandler.DroneConnectionListSyncHandler;
 import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
 import gregtech.common.tileentities.machines.multi.drone.DroneConnection;
-import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
 
 public class MTEHatchDroneDownLinkGui extends MTEHatchBaseGui<MTEHatchDroneDownLink> {
+
+    private DroneConnectionListSyncHandler droneConnectionListSyncHandler;
 
     public MTEHatchDroneDownLinkGui(MTEHatchDroneDownLink hatch) {
         super(hatch);
@@ -59,47 +51,25 @@ public class MTEHatchDroneDownLinkGui extends MTEHatchBaseGui<MTEHatchDroneDownL
     }
 
     private IWidget createDynamicTextWidget(PanelSyncManager syncManager) {
-        DroneConnectionListSyncHandler droneConnectionListSyncHandler = syncManager
-            .findSyncHandler("droneConnections", DroneConnectionListSyncHandler.class);
 
-        DynamicSyncHandler customNameHandler = new DynamicSyncHandler().widgetProvider((syncManager1, packet) -> {
-            if (packet == null) {
-                return new EmptyWidget();
-            }
-            try {
-                return createTextArea(packet, syncManager1);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        DynamicSyncHandler customNameHandler = new DynamicSyncHandler()
+            .widgetProvider((syncManager1, packet) -> createTextArea(syncManager1));
 
-        droneConnectionListSyncHandler
-            .setChangeListener(() -> notifyCustomNameHandler(customNameHandler, droneConnectionListSyncHandler));
+        droneConnectionListSyncHandler.setChangeListener(() -> customNameHandler.notifyUpdate(packet -> {}));
+        // We need to trigger initial build manually
+        customNameHandler.notifyUpdate(packet -> {});
+
         return new DynamicSyncedWidget<>().leftRel(0.85f)
             .coverChildrenHeight()
             .pos(4, 20)
             .syncHandler(customNameHandler);
     }
 
-    private void notifyCustomNameHandler(DynamicSyncHandler recipeHandler,
-        DroneConnectionListSyncHandler droneConnectionListSyncHandler) {
-        recipeHandler.notifyUpdate(packet -> {
-            List<DroneConnection> clientConnections = droneConnectionListSyncHandler.getValue();
-            for (DroneConnection clientConnection : clientConnections) {
-                DroneConnection.serialize(packet, clientConnection);
-            }
-        });
-    }
-
-    private IWidget createTextArea(PacketBuffer packet, PanelSyncManager syncManager1) throws IOException {
+    private IWidget createTextArea(PanelSyncManager syncManager1) {
         Flow column = Flow.column()
             .coverChildren()
             .childPadding(3);
-        List<DroneConnection> clientConnections = new ArrayList<>();
-        while (packet.isReadable()) {
-            DroneConnection connection = DroneConnection.deserialize(packet);
-            clientConnections.add(connection);
-        }
+        List<DroneConnection> clientConnections = droneConnectionListSyncHandler.getValue();
         if (clientConnections.isEmpty()) {
             column.child(
                 new TextWidget<>(StatCollector.translateToLocal("GT5U.gui.text.drone_no_machines"))
@@ -111,7 +81,10 @@ public class MTEHatchDroneDownLinkGui extends MTEHatchBaseGui<MTEHatchDroneDownL
                     conn.uuid.toString(),
                     StringSyncValue.class,
                     () -> new StringSyncValue(
-                        () -> hatch.findConnection(conn.uuid)
+                        () -> droneConnectionListSyncHandler.getValue()
+                            .stream()
+                            .filter(c -> c.uuid.equals(conn.uuid))
+                            .findFirst()
                             .map(DroneConnection::getCustomName)
                             .orElse(""),
                         var -> hatch.findConnection(conn.uuid)
@@ -120,22 +93,12 @@ public class MTEHatchDroneDownLinkGui extends MTEHatchBaseGui<MTEHatchDroneDownL
                     Flow.row()
                         .coverChildren()
                         .childPadding(3)
-                        .child(
-                            new ButtonWidget<>().size(16, 16)
-                                .background(GTGuiTextures.BUTTON_STANDARD, GTGuiTextures.OVERLAY_BUTTON_REDSTONE_ON)
-                                .onMousePressed(mouseButton -> {
-                                    EntityPlayer player = syncManager1.getPlayer();
-                                    MTEDroneCentre.highlightMachine(player, conn.machineCoord);
-                                    player.closeScreen();
-                                    return true;
-                                })
-                                .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.drone_highlight")))
-                                .tooltipShowUpTimer(TOOLTIP_DELAY))
+                        .child(MTEDroneCentreGui.createHighLightButton(conn, syncManager1))
                         .child(
                             new TextFieldWidget()
-                                // Todo: When switching textField rapidly, getContext() will be called even before
+                                // When switching textField rapidly, getContext() will be called even before
                                 // initialising and finally crash the game.
-                                // No idea how to fix it. Maybe a MUI2 issue?
+                                // No idea how to fix it. Maybe it should be fixed on MUI2 side?
                                 .value(nameSyncValue)
                                 .setValidator(s -> s.substring(0, Math.min(s.length(), 50)))
                                 .size(140, 16)));
@@ -144,10 +107,9 @@ public class MTEHatchDroneDownLinkGui extends MTEHatchBaseGui<MTEHatchDroneDownL
         return column;
     }
 
+    @Override
     public void registerSyncValues(PanelSyncManager syncManager) {
-        DroneConnectionListSyncHandler droneConnectionListSyncHandler = new DroneConnectionListSyncHandler(
-            hatch::getConnections,
-            hatch::setConnections);
+        droneConnectionListSyncHandler = new DroneConnectionListSyncHandler(hatch::getConnections);
         syncManager.syncValue("droneConnections", droneConnectionListSyncHandler);
     }
 }
