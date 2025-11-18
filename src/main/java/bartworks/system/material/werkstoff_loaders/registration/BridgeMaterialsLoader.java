@@ -39,9 +39,13 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
         final int argb = (rgba[3] & 0xff) << 24 | (rgba[0] & 0xff) << 16 | (rgba[1] & 0xff) << 8 | rgba[2] & 0xff;
         final Werkstoff.Stats stats = werkstoff.getStats();
 
-        Materials werkstoffBridgeMaterial = werkstoff.getBridgeMaterial() != null ? werkstoff.getBridgeMaterial()
-            : Materials.get(werkstoff.getVarName()) != Materials._NULL ? Materials.get(werkstoff.getVarName())
-                : new MaterialBuilder().setName(werkstoff.getVarName())
+        Materials werkstoffBridgeMaterial = werkstoff.getBridgeMaterial();
+        if (werkstoffBridgeMaterial == null) {
+            if(Materials.get(werkstoff.getVarName()) != Materials._NULL) {
+                werkstoffBridgeMaterial = Materials.get(werkstoff.getVarName());
+            }
+            else {
+                werkstoffBridgeMaterial = new MaterialBuilder().setName(werkstoff.getVarName())
                     .setDefaultLocalName(werkstoff.getDefaultName())
                     .setIconSet(werkstoff.getTexSet())
                     .setARGB(argb)
@@ -50,6 +54,8 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
                     .setBlastFurnaceTemp(stats.getMeltingPoint())
                     .setBlastFurnaceRequired(stats.isBlastFurnace())
                     .constructMaterial();
+            }
+        }
 
         final Element[] ELEMENT_VALUES = Element.values();
         for (OrePrefixes prefixes : OrePrefixes.VALUES) {
