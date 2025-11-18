@@ -208,6 +208,12 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      */
     boolean isValidSlot(int aIndex);
 
+    /// Checks if the slot is an I/O slot that contributes to [GTItemSink#getStoredItemsInSink(ItemStackPredicate)].
+    /// Also controls which slots block AE pattern pushes for blocking mode.
+    default boolean isIOSlot(int slot) {
+        return true;
+    }
+
     /**
      * Gets the max stack size limit for a slot and a stack.
      *
