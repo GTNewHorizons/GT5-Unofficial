@@ -93,9 +93,8 @@ public class RenderOverlay {
         return overlays.get(new ChunkCoordinates(x, y, z));
     }
 
-    public void reset() {
-        overlays.clear();
-        byChunk.clear();
+    public static void reset() {
+        instances.invalidateAll();
     }
 
     public static RenderOverlay getOrCreate(World world) {
