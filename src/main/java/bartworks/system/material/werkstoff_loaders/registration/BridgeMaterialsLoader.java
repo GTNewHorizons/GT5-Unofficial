@@ -20,6 +20,7 @@ import static gregtech.api.enums.OrePrefixes.dust;
 
 import java.util.ArrayList;
 
+import bartworks.MainMod;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import gregtech.api.enchants.EnchantmentRadioactivity;
@@ -41,10 +42,9 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
 
         Materials werkstoffBridgeMaterial = werkstoff.getBridgeMaterial();
         if (werkstoffBridgeMaterial == null) {
-            if(Materials.get(werkstoff.getVarName()) != Materials._NULL) {
-                werkstoffBridgeMaterial = Materials.get(werkstoff.getVarName());
-            }
-            else {
+            werkstoffBridgeMaterial = Materials.get(werkstoff.getVarName());
+
+            if (werkstoffBridgeMaterial == Materials._NULL){
                 werkstoffBridgeMaterial = new MaterialBuilder().setName(werkstoff.getVarName())
                     .setDefaultLocalName(werkstoff.getDefaultName())
                     .setIconSet(werkstoff.getTexSet())
@@ -110,10 +110,8 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
                 werkstoffBridgeMaterial.mAspects = werkstoff.getGTWrappedTCAspects();
             }
             werkstoffBridgeMaterial.mMaterialInto = werkstoffBridgeMaterial;
-            werkstoffBridgeMaterial.mHandleMaterial = werkstoff.contains(SubTag.BURNING) ? Materials.Blaze
-                : werkstoff.contains(SubTag.MAGICAL) ? Materials.Thaumium
-                    : werkstoffBridgeMaterial.mDurability > 5120 ? Materials.TungstenSteel
-                        : werkstoffBridgeMaterial.mDurability > 1280 ? Materials.Steel : Materials.Wood;
+            werkstoffBridgeMaterial.mHandleMaterial = getHandleMaterial(werkstoff, werkstoffBridgeMaterial.mDurability);
+
             if (werkstoff.getStats()
                 .isRadioactive()) {
                 werkstoffBridgeMaterial.setEnchantmentForArmors(
@@ -127,5 +125,17 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
             }
         }
         werkstoff.setBridgeMaterial(werkstoffBridgeMaterial);
+    }
+
+    private static Materials getHandleMaterial(Werkstoff werkstoff, int durability){
+        if (werkstoff.contains(SubTag.BURNING)) return Materials.Blaze;
+
+        if (werkstoff.contains(SubTag.MAGICAL)) return Materials.Thaumium;
+
+        if (durability > 5120) return Materials.TungstenSteel;
+
+        if (durability > 1280) return Materials.Steel;
+
+        return Materials.Wood;
     }
 }
