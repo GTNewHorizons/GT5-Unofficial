@@ -83,41 +83,37 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
                     continue;
                 }
             }
-
-            if (werkstoff.hasItemType(cell)) {
-                werkstoffBridgeMaterial.setHasCorrespondingFluid(true);
-                werkstoffBridgeMaterial.setHasCorrespondingGas(true);
-                werkstoffBridgeMaterial.mFluid = werkstoff.getFluidOrGas(1)
-                    .getFluid();
-                werkstoffBridgeMaterial.mGas = werkstoff.getFluidOrGas(1)
-                    .getFluid();
-            }
-
-            if (werkstoff.hasItemType(cellMolten)) {
-                werkstoffBridgeMaterial.mStandardMoltenFluid = werkstoff.getMolten(1)
-                    .getFluid();
-            }
-            werkstoffBridgeMaterial.mName = werkstoff.getVarName();
-            werkstoffBridgeMaterial.mDefaultLocalName = werkstoff.getDefaultName();
-            werkstoffBridgeMaterial.mChemicalFormula = werkstoff.getToolTip();
-            if ("null".equals(werkstoffBridgeMaterial.mLocalizedName))
-                // only reload from lang file if not localized already
-                werkstoffBridgeMaterial.mLocalizedName = GTLanguageManager.addStringLocalization(
-                    "Material." + werkstoffBridgeMaterial.mName.toLowerCase(),
-                    werkstoffBridgeMaterial.mDefaultLocalName);
-            if (Thaumcraft.isModLoaded()) {
-                werkstoffBridgeMaterial.mAspects = werkstoff.getGTWrappedTCAspects();
-            }
-            werkstoffBridgeMaterial.mMaterialInto = werkstoffBridgeMaterial;
-            werkstoffBridgeMaterial.mHandleMaterial = getHandleMaterial(werkstoff, werkstoffBridgeMaterial.mDurability);
-
-            if (stats.isRadioactive()) {
-                werkstoffBridgeMaterial
-                    .setEnchantmentForArmors(EnchantmentRadioactivity.INSTANCE, stats.getEnchantmentlvl());
-                werkstoffBridgeMaterial
-                    .setEnchantmentForTools(EnchantmentRadioactivity.INSTANCE, stats.getEnchantmentlvl());
-            }
         }
+
+        if (werkstoff.hasItemType(cell)) {
+            werkstoffBridgeMaterial.setHasCorrespondingFluid(true);
+            werkstoffBridgeMaterial.setHasCorrespondingGas(true);
+            werkstoffBridgeMaterial.mFluid = werkstoff.getFluidOrGas(1).getFluid();
+            werkstoffBridgeMaterial.mGas = werkstoff.getFluidOrGas(1).getFluid();
+        }
+
+        if (werkstoff.hasItemType(cellMolten)) {
+            werkstoffBridgeMaterial.mStandardMoltenFluid = werkstoff.getMolten(1).getFluid();
+        }
+        werkstoffBridgeMaterial.mName = werkstoff.getVarName();
+        werkstoffBridgeMaterial.mDefaultLocalName = werkstoff.getDefaultName();
+        werkstoffBridgeMaterial.mChemicalFormula = werkstoff.getToolTip();
+        if ("null".equals(werkstoffBridgeMaterial.mLocalizedName))
+            // only reload from lang file if not localized already
+            werkstoffBridgeMaterial.mLocalizedName = GTLanguageManager.addStringLocalization(
+                "Material." + werkstoffBridgeMaterial.mName.toLowerCase(),
+                werkstoffBridgeMaterial.mDefaultLocalName);
+        if (Thaumcraft.isModLoaded()) {
+            werkstoffBridgeMaterial.mAspects = werkstoff.getGTWrappedTCAspects();
+        }
+        werkstoffBridgeMaterial.mMaterialInto = werkstoffBridgeMaterial;
+        werkstoffBridgeMaterial.mHandleMaterial = getHandleMaterial(werkstoff, werkstoffBridgeMaterial.mDurability);
+
+        if (stats.isRadioactive()) {
+            werkstoffBridgeMaterial.setEnchantmentForArmors(EnchantmentRadioactivity.INSTANCE, stats.getEnchantmentlvl());
+            werkstoffBridgeMaterial.setEnchantmentForTools(EnchantmentRadioactivity.INSTANCE, stats.getEnchantmentlvl());
+        }
+
         werkstoff.setBridgeMaterial(werkstoffBridgeMaterial);
     }
 
