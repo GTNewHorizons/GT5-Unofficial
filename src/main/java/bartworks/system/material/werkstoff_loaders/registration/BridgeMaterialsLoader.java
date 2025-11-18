@@ -125,8 +125,7 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
                     werkstoff.getStats()
                         .getEnchantmentlvl());
             }
-            werkstoff.setBridgeMaterial(werkstoffBridgeMaterial);
-
         }
+        werkstoff.setBridgeMaterial(werkstoffBridgeMaterial);
     }
 }
