@@ -59,73 +59,74 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
 
         final Element[] ELEMENT_VALUES = Element.values();
         for (OrePrefixes prefixes : OrePrefixes.VALUES) {
-            if (prefixes != cell || !Werkstoff.Types.ELEMENT.equals(werkstoff.getType())) {
-                if (prefixes == dust && Werkstoff.Types.ELEMENT.equals(werkstoff.getType())) {
-                    boolean ElementSet = false;
-                    for (Element e : ELEMENT_VALUES) {
-                        if (e.toString()
-                            .equals(werkstoff.getToolTip())) {
-                            if (!e.mLinkedMaterials.isEmpty()) break;
+            if (!(prefixes == cell && Werkstoff.Types.ELEMENT.equals(werkstoff.getType()))) continue;
 
-                            werkstoffBridgeMaterial.mElement = e;
-                            e.mLinkedMaterials = new ArrayList<>();
-                            e.mLinkedMaterials.add(werkstoffBridgeMaterial);
-                            if (werkstoff.hasItemType(dust)) {
-                                GTOreDictUnificator
-                                    .addAssociation(dust, werkstoffBridgeMaterial, werkstoff.get(dust), false);
-                                GTOreDictUnificator.set(dust, werkstoffBridgeMaterial, werkstoff.get(dust), true, true);
-                            }
-                            ElementSet = true;
-                            break;
-                        }
+            if (prefixes == dust && Werkstoff.Types.ELEMENT.equals(werkstoff.getType())) {
+                boolean ElementSet = false;
+                for (Element e : ELEMENT_VALUES) {
+                    if (!e.toString().equals(werkstoff.getToolTip())) continue;
+
+                    if (!e.mLinkedMaterials.isEmpty()) break;
+
+                    werkstoffBridgeMaterial.mElement = e;
+                    e.mLinkedMaterials = new ArrayList<>();
+                    e.mLinkedMaterials.add(werkstoffBridgeMaterial);
+                    if (werkstoff.hasItemType(dust)) {
+                        GTOreDictUnificator
+                            .addAssociation(dust, werkstoffBridgeMaterial, werkstoff.get(dust), false);
+                        GTOreDictUnificator.set(dust, werkstoffBridgeMaterial, werkstoff.get(dust), true, true);
                     }
-                    if (!ElementSet) {
-                        continue;
-                    }
-                }
+                    ElementSet = true;
+                    break;
 
-                if (werkstoff.hasItemType(cell)) {
-                    werkstoffBridgeMaterial.setHasCorrespondingFluid(true);
-                    werkstoffBridgeMaterial.setHasCorrespondingGas(true);
-                    werkstoffBridgeMaterial.mFluid = werkstoff.getFluidOrGas(1)
-                        .getFluid();
-                    werkstoffBridgeMaterial.mGas = werkstoff.getFluidOrGas(1)
-                        .getFluid();
                 }
-
-                if (werkstoff.hasItemType(cellMolten)) {
-                    werkstoffBridgeMaterial.mStandardMoltenFluid = werkstoff.getMolten(1)
-                        .getFluid();
+                if (!ElementSet) {
+                    continue;
                 }
-                werkstoffBridgeMaterial.mName = werkstoff.getVarName();
-                werkstoffBridgeMaterial.mDefaultLocalName = werkstoff.getDefaultName();
-                werkstoffBridgeMaterial.mChemicalFormula = werkstoff.getToolTip();
-                if ("null".equals(werkstoffBridgeMaterial.mLocalizedName))
-                    // only reload from lang file if not localized already
-                    werkstoffBridgeMaterial.mLocalizedName = GTLanguageManager.addStringLocalization(
-                        "Material." + werkstoffBridgeMaterial.mName.toLowerCase(),
-                        werkstoffBridgeMaterial.mDefaultLocalName);
-                if (Thaumcraft.isModLoaded()) {
-                    werkstoffBridgeMaterial.mAspects = werkstoff.getGTWrappedTCAspects();
-                }
-                werkstoffBridgeMaterial.mMaterialInto = werkstoffBridgeMaterial;
-                werkstoffBridgeMaterial.mHandleMaterial = werkstoff.contains(SubTag.BURNING) ? Materials.Blaze
-                    : werkstoff.contains(SubTag.MAGICAL) ? Materials.Thaumium
-                        : werkstoffBridgeMaterial.mDurability > 5120 ? Materials.TungstenSteel
-                            : werkstoffBridgeMaterial.mDurability > 1280 ? Materials.Steel : Materials.Wood;
-                if (werkstoff.getStats()
-                    .isRadioactive()) {
-                    werkstoffBridgeMaterial.setEnchantmentForArmors(
-                        EnchantmentRadioactivity.INSTANCE,
-                        werkstoff.getStats()
-                            .getEnchantmentlvl());
-                    werkstoffBridgeMaterial.setEnchantmentForTools(
-                        EnchantmentRadioactivity.INSTANCE,
-                        werkstoff.getStats()
-                            .getEnchantmentlvl());
-                }
-                werkstoff.setBridgeMaterial(werkstoffBridgeMaterial);
             }
+
+            if (werkstoff.hasItemType(cell)) {
+                werkstoffBridgeMaterial.setHasCorrespondingFluid(true);
+                werkstoffBridgeMaterial.setHasCorrespondingGas(true);
+                werkstoffBridgeMaterial.mFluid = werkstoff.getFluidOrGas(1)
+                    .getFluid();
+                werkstoffBridgeMaterial.mGas = werkstoff.getFluidOrGas(1)
+                    .getFluid();
+            }
+
+            if (werkstoff.hasItemType(cellMolten)) {
+                werkstoffBridgeMaterial.mStandardMoltenFluid = werkstoff.getMolten(1)
+                    .getFluid();
+            }
+            werkstoffBridgeMaterial.mName = werkstoff.getVarName();
+            werkstoffBridgeMaterial.mDefaultLocalName = werkstoff.getDefaultName();
+            werkstoffBridgeMaterial.mChemicalFormula = werkstoff.getToolTip();
+            if ("null".equals(werkstoffBridgeMaterial.mLocalizedName))
+                // only reload from lang file if not localized already
+                werkstoffBridgeMaterial.mLocalizedName = GTLanguageManager.addStringLocalization(
+                    "Material." + werkstoffBridgeMaterial.mName.toLowerCase(),
+                    werkstoffBridgeMaterial.mDefaultLocalName);
+            if (Thaumcraft.isModLoaded()) {
+                werkstoffBridgeMaterial.mAspects = werkstoff.getGTWrappedTCAspects();
+            }
+            werkstoffBridgeMaterial.mMaterialInto = werkstoffBridgeMaterial;
+            werkstoffBridgeMaterial.mHandleMaterial = werkstoff.contains(SubTag.BURNING) ? Materials.Blaze
+                : werkstoff.contains(SubTag.MAGICAL) ? Materials.Thaumium
+                    : werkstoffBridgeMaterial.mDurability > 5120 ? Materials.TungstenSteel
+                        : werkstoffBridgeMaterial.mDurability > 1280 ? Materials.Steel : Materials.Wood;
+            if (werkstoff.getStats()
+                .isRadioactive()) {
+                werkstoffBridgeMaterial.setEnchantmentForArmors(
+                    EnchantmentRadioactivity.INSTANCE,
+                    werkstoff.getStats()
+                        .getEnchantmentlvl());
+                werkstoffBridgeMaterial.setEnchantmentForTools(
+                    EnchantmentRadioactivity.INSTANCE,
+                    werkstoff.getStats()
+                        .getEnchantmentlvl());
+            }
+            werkstoff.setBridgeMaterial(werkstoffBridgeMaterial);
+
         }
     }
 }
