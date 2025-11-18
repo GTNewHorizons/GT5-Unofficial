@@ -20,7 +20,6 @@ import static gregtech.api.enums.OrePrefixes.dust;
 
 import java.util.ArrayList;
 
-import bartworks.MainMod;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import gregtech.api.enchants.EnchantmentRadioactivity;
@@ -112,16 +111,11 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
             werkstoffBridgeMaterial.mMaterialInto = werkstoffBridgeMaterial;
             werkstoffBridgeMaterial.mHandleMaterial = getHandleMaterial(werkstoff, werkstoffBridgeMaterial.mDurability);
 
-            if (werkstoff.getStats()
-                .isRadioactive()) {
-                werkstoffBridgeMaterial.setEnchantmentForArmors(
-                    EnchantmentRadioactivity.INSTANCE,
-                    werkstoff.getStats()
-                        .getEnchantmentlvl());
-                werkstoffBridgeMaterial.setEnchantmentForTools(
-                    EnchantmentRadioactivity.INSTANCE,
-                    werkstoff.getStats()
-                        .getEnchantmentlvl());
+            if (stats.isRadioactive()) {
+                werkstoffBridgeMaterial
+                    .setEnchantmentForArmors(EnchantmentRadioactivity.INSTANCE, stats.getEnchantmentlvl());
+                werkstoffBridgeMaterial
+                    .setEnchantmentForTools(EnchantmentRadioactivity.INSTANCE, stats.getEnchantmentlvl());
             }
         }
         werkstoff.setBridgeMaterial(werkstoffBridgeMaterial);
