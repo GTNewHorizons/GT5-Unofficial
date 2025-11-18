@@ -61,23 +61,23 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
         for (OrePrefixes prefixes : OrePrefixes.VALUES) {
             if (!(prefixes == cell && isElementMaterial)) continue;
 
-            if (prefixes == dust && isElementMaterial) {
-                for (Element e : ELEMENT_VALUES) {
-                    if (!e.toString().equals(werkstoff.getToolTip())) continue;
+            if (prefixes != dust) continue;
 
-                    if (!e.mLinkedMaterials.isEmpty()) break;
+            for (Element e : ELEMENT_VALUES) {
+                if (!e.toString().equals(werkstoff.getToolTip())) continue;
 
-                    werkstoffBridgeMaterial.mElement = e;
-                    e.mLinkedMaterials = new ArrayList<>();
-                    e.mLinkedMaterials.add(werkstoffBridgeMaterial);
-                    if (werkstoff.hasItemType(dust)) {
-                        GTOreDictUnificator
-                            .addAssociation(dust, werkstoffBridgeMaterial, werkstoff.get(dust), false);
-                        GTOreDictUnificator.set(dust, werkstoffBridgeMaterial, werkstoff.get(dust), true, true);
-                    }
-                    break;
+                if (!e.mLinkedMaterials.isEmpty()) break;
+
+                werkstoffBridgeMaterial.mElement = e;
+                e.mLinkedMaterials = new ArrayList<>();
+                e.mLinkedMaterials.add(werkstoffBridgeMaterial);
+                if (werkstoff.hasItemType(dust)) {
+                    GTOreDictUnificator.addAssociation(dust, werkstoffBridgeMaterial, werkstoff.get(dust), false);
+                    GTOreDictUnificator.set(dust, werkstoffBridgeMaterial, werkstoff.get(dust), true, true);
                 }
+                break;
             }
+
         }
 
         if (werkstoff.hasItemType(cell)) {
