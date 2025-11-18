@@ -287,12 +287,12 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         this.hasRebalanced = hasRebalanced;
     }
 
-    public LongData getEnergyInputValues5m() {
-        return energyInputValues5m;
+    public LongData getEnergyInputValues() {
+        return energyInputValues;
     }
 
-    public LongData getEnergyOutputValues5m() {
-        return energyOutputValues5m;
+    public LongData getEnergyOutputValues() {
+        return energyOutputValues;
     }
 
     public void setStored(BigInteger stored) {

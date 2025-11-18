@@ -11643,7 +11643,6 @@ public class MaterialsInit {
     private static Materials loadDiatomite() {
         return new MaterialBuilder().setName("Diatomite")
             .setDefaultLocalName("Diatomite")
-            .setChemicalFormula("(SiO₂)₈Fe₂O₃(Al₂O₃)")
             .setIconSet(TextureSet.SET_DULL)
             .setColor(Dyes.dyeGray)
             .setARGB(0x00e1e1e1)
@@ -13762,6 +13761,7 @@ public class MaterialsInit {
             .setDefaultLocalName("Nefarious Gas")
             .setIconSet(TextureSet.SET_FLUID)
             .setARGB(0x00300a05)
+            .setFuel(MaterialBuilder.FuelType.Gas, 1200)
             .addCell()
             .addFluid()
             .constructMaterial();
@@ -13772,6 +13772,7 @@ public class MaterialsInit {
             .setDefaultLocalName("Nefarious Oil")
             .setIconSet(TextureSet.SET_FLUID)
             .setARGB(0x00391616)
+            .setFuel(MaterialBuilder.FuelType.SemiFluid, 256)
             .addCell()
             .addFluid()
             .constructMaterial();
