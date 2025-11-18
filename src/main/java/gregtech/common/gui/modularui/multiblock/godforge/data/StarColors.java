@@ -102,9 +102,9 @@ public final class StarColors {
         @Override
         public String getTooltip(float value) {
             if (this == HUE) {
-                return String.format("%s: %d", getTitle(), (int) value);
+                return String.format("%s: %.1f", getTitle(), value);
             }
-            return String.format("%s: %.1f", getTitle(), value);
+            return String.format("%s: %.3f", getTitle(), value);
         }
     }
 
@@ -146,7 +146,7 @@ public final class StarColors {
 
         @Override
         public String getTooltip(float value) {
-            return String.format("%s: %.1f", getTitle(), value);
+            return String.format("%s: %.2f", getTitle(), value);
         }
     }
 }

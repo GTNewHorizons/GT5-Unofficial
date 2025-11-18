@@ -73,7 +73,7 @@ public class ColorData {
     }
 
     public void setGamma(float gamma) {
-        this.gamma = Float.parseFloat(String.format("%.1f", gamma));
+        this.gamma = Float.parseFloat(String.format("%.2f", gamma));
     }
 
     public int getColor() {
@@ -99,8 +99,19 @@ public class ColorData {
         r = Color.getRed(color);
         g = Color.getGreen(color);
         b = Color.getBlue(color);
-        h = Float.parseFloat(String.format("%.1f", Color.getHue(color)));
-        s = Float.parseFloat(String.format("%.3f", Color.getHSVSaturation(color)));
-        v = Float.parseFloat(String.format("%.3f", Color.getValue(color)));
+        updateFromRGB();
+    }
+
+    public void decode(String colorStr) {
+        if (colorStr == null) return;
+        try {
+            updateFrom((int) (long) Long.decode(colorStr));
+        } catch (NumberFormatException ignored) {
+            ignored.printStackTrace();
+        }
+    }
+
+    public String getHexString() {
+        return "#" + Color.toFullHexString(r, g, b);
     }
 }

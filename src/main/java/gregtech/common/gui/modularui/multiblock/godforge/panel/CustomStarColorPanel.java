@@ -57,7 +57,7 @@ public class CustomStarColorPanel {
                 .alignment(Alignment.CENTER)
                 .asWidget()
                 .align(Alignment.TopCenter)
-                .marginTop(9)); // todo check
+                .marginTop(9));
 
         Flow mainColumn = new Column().coverChildren()
             .marginTop(23)
@@ -70,6 +70,7 @@ public class CustomStarColorPanel {
 
         mainColumn.child(
             new PagedWidget<>().coverChildren()
+                .marginBottom(5)
                 .expanded()
                 .controller(controller)
                 .addPage(createStarColorRGBPage(colorData))
@@ -302,17 +303,26 @@ public class CustomStarColorPanel {
             IKey.str(gamma.getTitle())
                 .alignment(Alignment.CENTER)
                 .asWidget()
-                .align(Alignment.CenterLeft)
                 .size(32, 16));
 
         // Slider
-        // todo
+        row.child(
+            new SliderWidget().size(118, 8)
+                .background(new Rectangle().setColor(Color.GREY.main))
+                .bounds(0, 100)
+                .sliderTexture(new Rectangle().setColor(Color.WHITE.main))
+                .sliderSize(2, 8)
+                .value(new DoubleValue.Dynamic(colorData::getGamma, val -> colorData.setGamma((float) val)))
+                .tooltipDynamic(t -> t.addLine(StarColors.Extra.GAMMA.getTooltip(colorData.getGamma())))
+                .tooltipShowUpTimer(TOOLTIP_DELAY)
+                .tooltipAutoUpdate(true));
 
         // Text field
         row.child(
             new TextFieldWidget().setNumbersDouble(raw -> MathHelper.clamp_double(raw, 0, 100))
                 .value(new FloatValue.Dynamic(colorData::getGamma, colorData::setGamma))
                 .size(32, 16)
+                .marginLeft(2)
                 .setTextAlignment(Alignment.CENTER)
                 .setTextColor(gamma.getHexColor())
                 .tooltip(t -> t.addLine(translateToLocal("fog.cosmetics.onlydecimals")))
@@ -322,55 +332,58 @@ public class CustomStarColorPanel {
     }
 
     private static Flow createColorPreviewRow(PagedWidget.Controller pageController, ColorData colorData) {
-        Flow row = new Row().coverChildren();
+        Flow row = new Row().coverChildrenWidth()
+            .height(15);
 
         // RGB/HSV switchers
         row.child(
-            new PageButton(0, pageController).size(24, 16)
+            new PageButton(0, pageController).size(24, 15)
                 .marginRight(3)
-                .overlay(IKey.lang("fog.cosmetics.color.rgb")));
+                .overlay(new DynamicDrawable(() -> {
+                    if (pageController.getActivePageIndex() == 0) {
+                        return IKey.lang("fog.cosmetics.color.rgb_colored");
+                    }
+                    return IKey.str(EnumChatFormatting.DARK_GRAY + translateToLocal("fog.cosmetics.color.rgb"));
+                })));
         row.child(
-            new PageButton(1, pageController).size(24, 16)
+            new PageButton(1, pageController).size(24, 15)
                 .marginRight(5)
-                .overlay(IKey.lang("fog.cosmetics.color.hsv")));
+                .overlay(new DynamicDrawable(() -> {
+                    if (pageController.getActivePageIndex() == 1) {
+                        return IKey.str(EnumChatFormatting.WHITE + translateToLocal("fog.cosmetics.color.hsv"));
+                    }
+                    return IKey.str(EnumChatFormatting.DARK_GRAY + translateToLocal("fog.cosmetics.color.hsv"));
+                })));
 
-        // RGB text field header
+        // Hex code text field header
         row.child(
             IKey.lang("fog.cosmetics.color.hex")
                 .asWidget()
                 .height(15)
                 .marginRight(3));
 
-        // RGB text field
+        // Hex code text field
         row.child(
             new TextFieldWidget()
                 // spotless:off
-            .setValidator(raw -> {
-                if (!raw.startsWith("#")) {
-                    if (raw.startsWith("0x") || raw.startsWith("0X")) {
-                        raw = raw.substring(2);
+                .setValidator(raw -> {
+                    if (!raw.startsWith("#")) {
+                        if (raw.startsWith("0x") || raw.startsWith("0X")) {
+                            raw = raw.substring(2);
+                        }
+                        return "#" + raw;
                     }
-                    return "#" + raw;
-                }
-                return raw;
-            })
-            .value(new StringValue.Dynamic(
-                () -> "#" + Color.toFullHexString(colorData.getR(), colorData.getG(), colorData.getB()),
-                val -> {
-                    try {
-                        colorData.updateFrom((int) (long) Long.decode(val));
-                    } catch (NumberFormatException ignored) {}
-                }))
-            // spotless:on
+                    return raw;
+                })
+                // spotless:on
+                .value(new StringValue.Dynamic(colorData::getHexString, colorData::decode))
                 .size(50, 15)
                 .marginRight(5));
 
         // Color preview
         row.child(
             new DynamicDrawable(() -> new Rectangle().setColor(colorData.getColor())).asWidget()
-                .size(30, 15)
-                .alignX(0.5f)
-                .marginTop(4));
+                .size(30, 15));
 
         return row;
     }
