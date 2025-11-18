@@ -15,7 +15,6 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
-import com.cleanroommc.modularui.widgets.layout.Flow;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
@@ -40,10 +39,10 @@ public class MTELargeBoilerGui extends MTEMultiBlockBaseGui<MTELargeBoiler> {
         syncManager.syncValue("superheated", new BooleanSyncValue(base::isSuperheated));
     }
 
-//    @Override
-//    protected Flow createPanelGap(ModularPanel parent, PanelSyncManager syncManager) {
-//        return super.createPanelGap(parent, syncManager).child(createOverdriveButton(syncManager, parent));
-//    }
+    // @Override
+    // protected Flow createPanelGap(ModularPanel parent, PanelSyncManager syncManager) {
+    // return super.createPanelGap(parent, syncManager).child(createOverdriveButton(syncManager, parent));
+    // }
 
     protected IWidget createOverdriveButton(PanelSyncManager syncManager, ModularPanel parent) {
         return new ToggleButton().size(18, 18)
@@ -67,7 +66,8 @@ public class MTELargeBoilerGui extends MTEMultiBlockBaseGui<MTELargeBoiler> {
         BooleanSyncValue superheatedSync = syncManager.findSyncHandler("superheated", BooleanSyncValue.class);
         BooleanSyncValue isActive = syncManager.findSyncHandler("isActive", BooleanSyncValue.class);
 
-        return super.createTerminalTextWidget(syncManager, parent).childIf(isActive.getBoolValue(),
+        return super.createTerminalTextWidget(syncManager, parent).childIf(
+            isActive.getBoolValue(),
             new TextWidget<>(
                 IKey.dynamic(
                     () -> EnumChatFormatting.WHITE
@@ -77,7 +77,10 @@ public class MTELargeBoilerGui extends MTEMultiBlockBaseGui<MTELargeBoiler> {
                                 : translateToLocal("GT5U.machines.large_boiler.gui.steam"))
                         + ": "
                         + EnumChatFormatting.BLUE
-                        + efficiencySync.getIntValue() / 10000F * eutSync.getIntValue() * 40L / (superheatedSync.getBoolValue() ? 3 : 1)
+                        + efficiencySync.getIntValue() / 10000F
+                            * eutSync.getIntValue()
+                            * 40L
+                            / (superheatedSync.getBoolValue() ? 3 : 1)
                         + EnumChatFormatting.WHITE
                         + " L/s")));
     }

@@ -28,7 +28,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import gregtech.api.util.GTWaila;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -66,6 +65,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTWaila;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.MTELargeBoilerGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -404,7 +404,8 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
     }
 
     public boolean isActive() {
-        return this.getBaseMetaTileEntity() != null && this.getBaseMetaTileEntity().isActive();
+        return this.getBaseMetaTileEntity() != null && this.getBaseMetaTileEntity()
+            .isActive();
     }
 
     @Override
@@ -549,15 +550,15 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
             currentTip.add(
                 translateToLocalFormatted(
                     "GT5U.waila.energy.produce_steam",
-                    formatNumbers(-tag.getLong("energyUsage") * 40L/(isSuperheated() ? superToNormalSteam : 1)),
+                    formatNumbers(-tag.getLong("energyUsage") * 40L / (isSuperheated() ? superToNormalSteam : 1)),
                     isSuperheated() ? translateToLocal("GT5U.machines.large_boiler.gui.shsteam")
                         : translateToLocal("GT5U.machines.large_boiler.gui.steam")));
             long actualEnergyUsage = tag.getLong("energyUsage");
-                    currentTip.add(
-                        translateToLocalFormatted(
-                            "GT5U.waila.energy.steam_to_eu",
-                            formatNumbers(-actualEnergyUsage),
-                            GTUtility.getColoredTierNameFromVoltage(-actualEnergyUsage)));
+            currentTip.add(
+                translateToLocalFormatted(
+                    "GT5U.waila.energy.steam_to_eu",
+                    formatNumbers(-actualEnergyUsage),
+                    GTUtility.getColoredTierNameFromVoltage(-actualEnergyUsage)));
         }
         currentTip.add(
             GTWaila.getMachineProgressString(
@@ -569,9 +570,10 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
             StatCollector.translateToLocalFormatted(
                 "GT5U.waila.facing",
                 getFacingNameLocalized(
-                    this.getBaseMetaTileEntity().getFrontFacing()
+                    this.getBaseMetaTileEntity()
+                        .getFrontFacing()
                         .ordinal())));
-//        super.getWailaBody(itemStack, currentTip, accessor, config);
+        // super.getWailaBody(itemStack, currentTip, accessor, config);
     }
 
     private int adjustBurnTimeForConfig(int rawBurnTime) {
