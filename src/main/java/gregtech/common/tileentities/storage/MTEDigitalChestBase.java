@@ -486,7 +486,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     class ItemIOImpl extends SimpleItemIO {
 
-        private static final int[] SLOTS = { 0 };
+        private static final int[] SLOTS = { 0, 1 };
 
         @Override
         protected @NotNull InventoryIterator iterator(int[] allowedSlots) {
@@ -494,32 +494,58 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
                 @Override
                 protected ItemStack getStackInSlot(int slot) {
-                    if (slot != 0) return null;
-
-                    return GTUtility.copyAmountUnsafe(getItemCount(), getItemStack());
+                    switch (slot) {
+                        case 0 -> {
+                            return GTUtility.copyAmountUnsafe(getItemCount(), getItemStack());
+                        }
+                        case 1 -> {
+                            return GTUtility.copy(mInventory[1]);
+                        }
+                        default -> {
+                            return null;
+                        }
+                    }
                 }
 
                 @Override
                 public ItemStack extract(int amount, boolean forced) {
-                    if (getCurrentSlot() != 0) return null;
+                    switch (getCurrentSlot()) {
+                        case 0 -> {
+                            int toExtract = Math.min(amount, getItemCount());
 
-                    int toExtract = Math.min(amount, getItemCount());
+                            if (toExtract <= 0) return null;
 
-                    if (toExtract <= 0) return null;
+                            ItemStack extracted = GTUtility.copyAmountUnsafe(toExtract, getItemStack());
 
-                    ItemStack extracted = GTUtility.copyAmountUnsafe(toExtract, getItemStack());
+                            setItemCount(getItemCount() - toExtract);
 
-                    setItemCount(getItemCount() - toExtract);
+                            if (getItemCount() <= 0) {
+                                setItemStack(null);
+                            }
 
-                    if (getItemCount() <= 0) {
-                        setItemStack(null);
+                            meInventoryHandler.notifyListeners(-toExtract, extracted);
+
+                            MTEDigitalChestBase.this.markDirty();
+
+                            return extracted;
+                        }
+                        case 1 -> {
+                            ItemStack inSlot = mInventory[1];
+
+                            if (inSlot == null) return null;
+
+                            int toExtract = Math.min(amount, inSlot.stackSize);
+
+                            ItemStack extracted = decrStackSize(1, toExtract);
+
+                            MTEDigitalChestBase.this.markDirty();
+
+                            return extracted;
+                        }
+                        default -> {
+                            return null;
+                        }
                     }
-
-                    meInventoryHandler.notifyListeners(-toExtract, extracted);
-
-                    MTEDigitalChestBase.this.markDirty();
-
-                    return extracted;
                 }
 
                 @Override
