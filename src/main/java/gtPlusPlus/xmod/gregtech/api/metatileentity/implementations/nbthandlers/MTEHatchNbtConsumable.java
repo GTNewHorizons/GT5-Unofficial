@@ -4,14 +4,12 @@ import java.util.ArrayList;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotGroup;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
@@ -19,29 +17,30 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.hatch.MTEHatchNbtConsumableGui;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public abstract class MTEHatchNbtConsumable extends MTEHatch implements IAddGregtechLogo {
 
-    private final int mInputslotCount;
-    private final int mTotalSlotCount;
-    private final boolean mAllowDuplicateUsageTypes;
+    private final int inputSlotCount;
+    private final int totalSlotCount;
+    private final boolean allowDuplicateUsageTypes;
 
     public MTEHatchNbtConsumable(int aID, String aName, String aNameRegional, int aTier, int aInputSlots,
         String aDescription, boolean aAllowDuplicateTypes) {
         super(aID, aName, aNameRegional, aTier, aInputSlots * 2, aDescription);
-        mInputslotCount = getInputSlotCount();
-        mTotalSlotCount = getInputSlotCount() * 2;
-        mAllowDuplicateUsageTypes = aAllowDuplicateTypes;
+        inputSlotCount = getInputSlotCount();
+        totalSlotCount = getInputSlotCount() * 2;
+        allowDuplicateUsageTypes = aAllowDuplicateTypes;
     }
 
     public MTEHatchNbtConsumable(String aName, int aTier, int aInputSlots, String[] aDescription,
         boolean aAllowDuplicateTypes, ITexture[][][] aTextures) {
         super(aName, aTier, aInputSlots * 2, aDescription, aTextures);
-        mInputslotCount = getInputSlotCount();
-        mTotalSlotCount = getInputSlotCount() * 2;
-        mAllowDuplicateUsageTypes = aAllowDuplicateTypes;
+        inputSlotCount = getInputSlotCount();
+        totalSlotCount = getInputSlotCount() * 2;
+        allowDuplicateUsageTypes = aAllowDuplicateTypes;
     }
 
     @Override
@@ -110,26 +109,11 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch implements IAddGreg
 
     // Only moves items in the first four slots
     protected final void fillStacksIntoFirstSlots() {
-        for (int i = 0; i <= getSlotID_LastInput(); i++) {
-            for (int j = i + 1; j <= getSlotID_LastInput(); j++) {
-                if (mInventory[j] != null
-                    && (mInventory[i] == null || GTUtility.areStacksEqual(mInventory[i], mInventory[j]))) {
-                    GTUtility.moveStackFromSlotAToSlotB(
-                        getBaseMetaTileEntity(),
-                        getBaseMetaTileEntity(),
-                        j,
-                        i,
-                        (byte) 64,
-                        (byte) 1,
-                        (byte) 64,
-                        (byte) 1);
-                }
-            }
-        }
+        GTUtility.compactInventory(this, 0, getSlotID_LastInput() + 1);
     }
 
     public final void tryFillUsageSlots() {
-        int aSlotSpace = (mInputslotCount - getContentUsageSlots().size());
+        int aSlotSpace = (inputSlotCount - getContentUsageSlots().size());
         if (aSlotSpace > 0) {
             Logger.INFO("We have empty usage slots. " + aSlotSpace);
             for (int i = getSlotID_FirstInput(); i <= getSlotID_LastInput(); i++) {
@@ -150,20 +134,20 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch implements IAddGreg
     }
 
     private int getSlotID_LastInput() {
-        return mInputslotCount - 1;
+        return inputSlotCount - 1;
     }
 
     private int getSlotID_FirstUsage() {
-        return mInputslotCount;
+        return inputSlotCount;
     }
 
     private int getSlotID_LastUsage() {
-        return mTotalSlotCount - 1;
+        return totalSlotCount - 1;
     }
 
     public final ArrayList<ItemStack> getContentUsageSlots() {
         ArrayList<ItemStack> aItems = new ArrayList<>();
-        for (int i = mInputslotCount; i < mTotalSlotCount; i++) {
+        for (int i = inputSlotCount; i < totalSlotCount; i++) {
             if (mInventory[i] != null) {
                 aItems.add(mInventory[i]);
             }
@@ -172,7 +156,7 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch implements IAddGreg
     }
 
     public final boolean moveItemFromStockToUsageSlots(ItemStack aStack) {
-        return moveItemFromStockToUsageSlots(aStack, mAllowDuplicateUsageTypes);
+        return moveItemFromStockToUsageSlots(aStack, allowDuplicateUsageTypes);
     }
 
     public final boolean moveItemFromStockToUsageSlots(ItemStack aStack, boolean aAllowMultiOfSameTypeInUsageSlots) {
@@ -235,7 +219,7 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch implements IAddGreg
     public final boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return side == getBaseMetaTileEntity().getFrontFacing() && isItemValidForUsageSlot(aStack)
-            && aIndex < mInputslotCount;
+            && aIndex < inputSlotCount;
     }
 
     /**
@@ -265,85 +249,12 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch implements IAddGreg
     }
 
     @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {
-        switch (mTotalSlotCount) {
-            case 8, 18 -> builder.widget(
-                new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
-                    .setSize(17, 17)
-                    .setPos(152, 63));
-            case 32 -> builder.widget(
-                new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
-                    .setSize(17, 17)
-                    .setPos(79, 35));
-        }
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchNbtConsumableGui(this).build(data, syncManager, uiSettings);
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        switch (mTotalSlotCount) {
-            case 8 -> {
-                builder.widget(
-                    SlotGroup.ofItemHandler(inventoryHandler, 2)
-                        .startFromSlot(0)
-                        .endAtSlot(3)
-                        .build()
-                        .setPos(25, 25));
-                builder.widget(
-                    SlotGroup.ofItemHandler(inventoryHandler, 2)
-                        .startFromSlot(4)
-                        .endAtSlot(7)
-                        .canInsert(false)
-                        .build()
-                        .setPos(115, 25));
-                builder
-                    .widget(
-                        new TextWidget(StatCollector.translateToLocal("gtpp.gui.text.stock"))
-                            .setDefaultColor(COLOR_TEXT_GRAY.get())
-                            .setPos(25, 16))
-                    .widget(
-                        new TextWidget(StatCollector.translateToLocal("gtpp.gui.text.active"))
-                            .setDefaultColor(COLOR_TEXT_GRAY.get())
-                            .setPos(115, 16));
-            }
-            case 18 -> {
-                builder.widget(
-                    SlotGroup.ofItemHandler(inventoryHandler, 3)
-                        .startFromSlot(0)
-                        .endAtSlot(8)
-                        .build()
-                        .setPos(25, 19));
-                builder.widget(
-                    SlotGroup.ofItemHandler(inventoryHandler, 3)
-                        .startFromSlot(9)
-                        .endAtSlot(17)
-                        .canInsert(false)
-                        .build()
-                        .setPos(97, 19));
-                builder
-                    .widget(
-                        new TextWidget(StatCollector.translateToLocal("gtpp.gui.text.stock"))
-                            .setDefaultColor(COLOR_TEXT_GRAY.get())
-                            .setPos(25, 14))
-                    .widget(
-                        new TextWidget(StatCollector.translateToLocal("gtpp.gui.text.active"))
-                            .setDefaultColor(COLOR_TEXT_GRAY.get())
-                            .setPos(15, 14));
-            }
-            case 32 -> {
-                builder.widget(
-                    SlotGroup.ofItemHandler(inventoryHandler, 4)
-                        .startFromSlot(0)
-                        .endAtSlot(15)
-                        .build()
-                        .setPos(7, 7));
-                builder.widget(
-                    SlotGroup.ofItemHandler(inventoryHandler, 4)
-                        .startFromSlot(16)
-                        .endAtSlot(31)
-                        .canInsert(false)
-                        .build()
-                        .setPos(96, 7));
-            }
-        }
+    protected boolean useMui2() {
+        return true;
     }
 }

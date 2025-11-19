@@ -205,7 +205,7 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
             .addCasingInfoExactly("Processor Machine Casing", 18, false)
             .addCasingInfoMin("Steel Frame Box", 16, false)
             .addCasingInfoMin("Speeding Pipe Casing", 4, false)
-            .addCasingInfoMin("EV+ Glass", 32, false)
+            .addCasingInfoMin("Any Tiered Glass", 32, false)
             .addInputHatch("Hint block with dot 1")
             .addInputBus("Hint block with dot 1")
             .addOutputHatch("Hint block with dot 2")
