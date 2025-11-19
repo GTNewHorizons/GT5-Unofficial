@@ -38,6 +38,7 @@ public class MTEHatchDroneDownLinkGui extends MTEHatchBaseGui<MTEHatchDroneDownL
         final ModularPanel panel = new GTBaseGuiBuilder(hatch, guiData, syncManager, uiSettings).setWidth(176)
             .doesAddCoverTabs(false)
             .doesBindPlayerInventory(false)
+            .doesAddGregTechLogo(false)
             .build()
             .coverChildrenHeight();
 
