@@ -92,11 +92,6 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
     }
 
     @Override
-    protected boolean forceUseMui2() {
-        return true;
-    }
-
-    @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         openGui(aPlayer);
         return true;
@@ -123,6 +118,11 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
     public void onDescriptionPacket(NBTTagCompound data) {
         super.onDescriptionPacket(data);
         loadInputMapFromNBT(data, acceptedInputMap);
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
     }
 
     @Override
