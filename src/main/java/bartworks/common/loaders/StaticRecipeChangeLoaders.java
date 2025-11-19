@@ -71,9 +71,9 @@ public class StaticRecipeChangeLoaders {
                             || replacement.getItem() == null) continue;
                         for (RecipeMap<?> map : RecipeMap.ALL_RECIPE_MAPS.values()) {
                             toRemove.clear();
+                            boolean removal = map.equals(RecipeMaps.fluidExtractionRecipes)
+                                || map.equals(RecipeMaps.fluidSolidifierRecipes);
                             nextRecipe: for (GTRecipe recipe : map.getAllRecipes()) {
-                                boolean removal = map.equals(RecipeMaps.fluidExtractionRecipes)
-                                    || map.equals(RecipeMaps.fluidSolidifierRecipes);
                                 for (int i = 0; i < recipe.mInputs.length; i++) {
                                     if (!GTUtility.areStacksEqual(recipe.mInputs[i], toReplace)) continue;
                                     if (removal) {
