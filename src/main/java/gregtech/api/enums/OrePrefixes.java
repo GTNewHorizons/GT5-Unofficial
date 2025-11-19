@@ -1098,6 +1098,7 @@ public class OrePrefixes {
         .withDefaultLocalName("Sheetmetal Blocks")
         .withNameKey("gt.component.sheetmetal")
         .unifiable()
+        .recyclable()
         .materialBased()
         .materialAmount(M * 2)
         .materialGenerationBits(METAL)

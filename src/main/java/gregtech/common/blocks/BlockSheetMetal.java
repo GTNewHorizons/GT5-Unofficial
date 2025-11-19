@@ -15,7 +15,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
@@ -23,10 +22,8 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.common.render.GTRendererBlock;
 import it.unimi.dsi.fastutil.ints.Int2ObjectFunction;
@@ -49,8 +46,6 @@ public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures 
                 IOreMaterial material = materials.get(i);
 
                 if (material == null) continue;
-                if (!material.generatesPrefix(OrePrefixes.sheetmetal)) continue;
-                if (!material.generatesPrefix(OrePrefixes.ingot)) continue;
 
                 OreDictionary.registerOre(
                     OrePrefixes.sheetmetal.get(material.getInternalName())
@@ -138,7 +133,9 @@ public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures 
         for (int i = 0; i < maxMeta; i++) {
             IOreMaterial material = materials.get(i);
 
-            if (material == null || !material.generatesPrefix(OrePrefixes.sheetmetal)) continue;
+            if (material == null) continue;
+            if (!material.generatesPrefix(OrePrefixes.sheetmetal)) continue;
+            if (!material.generatesPrefix(OrePrefixes.ingot)) continue;
 
             GTValues.RA.stdBuilder()
                 .itemInputs(material.getPart(OrePrefixes.plate, 2), GTUtility.getIntegratedCircuit(11))
@@ -146,38 +143,6 @@ public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures 
                 .eut(TierEU.RECIPE_LV)
                 .duration(10)
                 .addTo(RecipeMaps.benderRecipes);
-
-            // Manually add recycling recipes so that this also works with BW materials
-
-            if (material.getPart(OrePrefixes.dust, 1) != null) {
-                GTValues.RA.stdBuilder()
-                    .itemInputs(material.getPart(OrePrefixes.sheetmetal, 1))
-                    .itemOutputs(material.getPart(OrePrefixes.dust, 2))
-                    .eut(TierEU.RECIPE_LV)
-                    .duration(30)
-                    .recipeCategory(RecipeCategories.maceratorRecycling)
-                    .addTo(RecipeMaps.maceratorRecipes);
-            }
-
-            if (material.getPart(OrePrefixes.ingot, 1) != null) {
-                GTValues.RA.stdBuilder()
-                    .itemInputs(material.getPart(OrePrefixes.sheetmetal, 1))
-                    .itemOutputs(material.getPart(OrePrefixes.ingot, 2))
-                    .eut(TierEU.RECIPE_LV)
-                    .duration(10)
-                    .recipeCategory(RecipeCategories.arcFurnaceRecycling)
-                    .addTo(GTRecipeConstants.UniversalArcFurnace);
-
-                GTValues.RA.stdBuilder()
-                    .itemInputs(material.getPart(OrePrefixes.sheetmetal, 1), ItemList.Shape_Mold_Ingot.get(0))
-                    .itemOutputs(material.getPart(OrePrefixes.ingot, 2))
-                    .eut(TierEU.RECIPE_LV)
-                    .duration(15)
-                    .addTo(RecipeMaps.alloySmelterRecipes);
-            }
-
-            // Skip fluid extractor recycling to avoid balance issues (also I don't feel like messing with molten stacks
-            // :tootroll:)
         }
     }
 }
