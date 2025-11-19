@@ -51,6 +51,7 @@ import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.I3DGeometryRender
 import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.PostProcessingManager;
 import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.shaders.BloomShader;
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
+import com.gtnewhorizon.gtnhlib.client.renderer.shader.UniverseShader;
 import com.gtnewhorizon.gtnhlib.client.renderer.vbo.IModelCustomExt;
 import com.gtnewhorizon.gtnhlib.client.renderer.vertex.DefaultVertexFormat;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
@@ -61,7 +62,6 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.system.material.WerkstoffLoader;
-import fox.spiteful.avaritia.render.CosmicRenderShenanigans;
 import goodgenerator.items.GGMaterial;
 import goodgenerator.loader.Loaders;
 import gregtech.GTMod;
@@ -1250,34 +1250,32 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
 
     private void renderUniversiumRing(int index) {
         // todo: stars on this render, not showing up for some reason
-        if (true) {
-            CosmicRenderShenanigans.cosmicOpacity = 1f;
-            CosmicRenderShenanigans.setLightLevel(10);
-            CosmicRenderShenanigans.useShader();
 
-            GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
+        UniverseShader.INSTANCE.use();
+        UniverseShader.setLightLevel(10);
 
-            Minecraft.getMinecraft()
-                .getTextureManager()
-                .bindTexture(TextureMap.locationItemsTexture);
+        GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
 
-            GL11.glColor4f(1, 1, 1, 1);
-            GL11.glEnable(GL11.GL_TEXTURE_2D);
-            GL11.glPushMatrix();
-            GL11.glTranslated(0, 9 + index * 8 + (index > 1 ? 10 : 0), 0);
-            GL11.glScalef(1, 1.2f, 1);
-            GL11.glEnable(GL11.GL_BLEND);
-            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            GL11.glDisable(GL11.GL_ALPHA_TEST);
+        Minecraft.getMinecraft()
+            .getTextureManager()
+            .bindTexture(TextureMap.locationBlocksTexture);
 
-            ring.renderAllVBO();
-            GL11.glPopMatrix();
-            CosmicRenderShenanigans.releaseShader();
-            GL20.glUseProgram(0);
+        GL11.glColor4f(1, 1, 1, 1);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glPushMatrix();
+        GL11.glTranslated(0, 9 + index * 8 + (index > 1 ? 10 : 0), 0);
+        GL11.glScalef(1, 1.2f, 1);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glDisable(GL11.GL_ALPHA_TEST);
 
-            GL11.glPopAttrib();
+        ring.renderAllVBO();
+        GL11.glPopMatrix();
+        UniverseShader.clear();
+        GL20.glUseProgram(0);
 
-        }
+        GL11.glPopAttrib();
+
     }
 
     @Override
