@@ -1713,6 +1713,11 @@ public class WerkstoffLoader {
         return new ItemStack(WerkstoffLoader.items.get(orePrefixes), amount, werkstoff.getmID()).copy();
     }
 
+    /// Forces this class to be loaded
+    public static void load() {
+
+    }
+
     public static void runInit() {
         MainMod.LOGGER.info("Making Meta Items for BW Materials");
         long timepre = System.nanoTime();

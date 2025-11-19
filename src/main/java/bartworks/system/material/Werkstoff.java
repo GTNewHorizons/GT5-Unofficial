@@ -36,6 +36,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.Nullable;
 
 import bartworks.MainMod;
 import bartworks.system.oredict.OreDictHandler;
@@ -61,6 +62,7 @@ import gregtech.api.interfaces.IStoneType;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import it.unimi.dsi.fastutil.shorts.Short2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.shorts.Short2ObjectMap;
 import thaumcraft.api.aspects.Aspect;
@@ -109,6 +111,11 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
 
     public Materials getBridgeMaterial() {
         return this.bridgeMaterial;
+    }
+
+    @Override
+    public @Nullable Materials getGTMaterial() {
+        return bridgeMaterial;
     }
 
     public void setBridgeMaterial(Materials bridgeMaterial) {
@@ -608,6 +615,11 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
         return WerkstoffLoader.getCorrespondingItemStack(prefixes, this);
     }
 
+    @Override
+    public ItemStack getPart(OrePrefixes prefix, int amount) {
+        return GTUtility.copyAmountUnsafe(amount, get(prefix));
+    }
+
     public FluidStack getFluidOrGas(int fluidAmount) {
         return new FluidStack(Objects.requireNonNull(WerkstoffLoader.fluids.get(this)), fluidAmount);
     }
@@ -672,6 +684,11 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
     public boolean hasGenerationFeature(OrePrefixes prefixes) {
         int unpacked = Werkstoff.GenerationFeatures.getPrefixDataRaw(prefixes);
         return (this.getGenerationFeatures().toGenerate & unpacked) != 0;
+    }
+
+    @Override
+    public boolean generatesPrefix(OrePrefixes prefix) {
+        return hasItemType(prefix);
     }
 
     /**
@@ -777,6 +794,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.toolHeadWrench, 0b10000000);
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.toolHeadSaw, 0b10000000);
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.turbineBlade, 0b10000000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.sheetmetal, 0b10000000);
 
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.screw, 0b100000000);
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.gearGt, 0b100000000);

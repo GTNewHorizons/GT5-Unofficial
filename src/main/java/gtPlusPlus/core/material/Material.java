@@ -18,6 +18,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.Nullable;
+
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -1726,6 +1728,17 @@ public class Material implements IOreMaterial {
 
     public Materials tryFindGregtechMaterialEquivalent() {
         return tryFindGregtechMaterialEquivalent(this);
+    }
+
+    @Override
+    public @Nullable Materials getGTMaterial() {
+        return tryFindGregtechMaterialEquivalent();
+    }
+
+    @Override
+    public boolean generatesPrefix(OrePrefixes prefix) {
+        // This is really unreliable but it's also gt++ so there isn't a better solution
+        return getComponentByPrefix(prefix, 1) != null;
     }
 
     public static Materials tryFindGregtechMaterialEquivalent(Material aMaterial) {

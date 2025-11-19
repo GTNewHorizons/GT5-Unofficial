@@ -1,0 +1,183 @@
+package gregtech.common.blocks;
+
+import java.util.List;
+
+import net.minecraft.block.material.Material;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
+
+import org.jetbrains.annotations.Nullable;
+
+import bartworks.system.material.WerkstoffLoader;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.TierEU;
+import gregtech.api.interfaces.IBlockWithTextures;
+import gregtech.api.interfaces.IOreMaterial;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.recipe.RecipeCategories;
+import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTRecipeConstants;
+import gregtech.api.util.GTUtility;
+import gregtech.common.render.GTRendererBlock;
+import it.unimi.dsi.fastutil.ints.Int2ObjectFunction;
+import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap;
+
+public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures {
+
+    private final Int2ObjectFunction<IOreMaterial> materials;
+    private final int maxMeta;
+
+    public BlockSheetMetal(String aName, Int2ObjectFunction<IOreMaterial> materials, int maxMeta) {
+        super(ItemStorage.class, aName, Material.iron);
+        this.materials = materials;
+        this.maxMeta = maxMeta;
+
+        GregTechAPI.sAfterGTLoad.add(() -> {
+            WerkstoffLoader.load();
+
+            for (int i = 0; i < maxMeta; i++) {
+                IOreMaterial material = materials.get(i);
+
+                if (material == null) continue;
+                if (!material.generatesPrefix(OrePrefixes.sheetmetal)) continue;
+                if (!material.generatesPrefix(OrePrefixes.ingot)) continue;
+
+                OreDictionary.registerOre(
+                    OrePrefixes.sheetmetal.get(material.getInternalName())
+                        .toString(),
+                    new ItemStack(this, 1, i));
+            }
+        });
+
+        GregTechAPI.sAfterGTPostload.add(this::registerRecipes);
+    }
+
+    @Override
+    public String getLocalizedName(int meta) {
+        IOreMaterial material = materials.get(meta);
+
+        if (material == null) material = Materials._NULL;
+
+        Materials gt = material.getGTMaterial();
+
+        if (gt != null) {
+            return OrePrefixes.sheetmetal.getDefaultLocalNameForItem(gt);
+        }
+
+        return OrePrefixes.block.getDefaultLocalNameForItem(Materials._NULL)
+            .replace("%material", material.getLocalizedName());
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void getSubBlocks(Item self, CreativeTabs tab, List<ItemStack> stacks) {
+        for (int i = 0; i < maxMeta; i++) {
+            IOreMaterial material = materials.get(i);
+
+            if (material == null) continue;
+            if (!material.generatesPrefix(OrePrefixes.sheetmetal)) continue;
+            if (!material.generatesPrefix(OrePrefixes.ingot)) continue;
+
+            stacks.add(new ItemStack(self, 1, i));
+        }
+    }
+
+    @Override
+    public int getRenderType() {
+        return GTRendererBlock.RENDER_ID;
+    }
+
+    @Override
+    public boolean renderAsNormalBlock() {
+        return false;
+    }
+
+    private final Int2ObjectLinkedOpenHashMap<ITexture[][]> textureCache = new Int2ObjectLinkedOpenHashMap<>();
+
+    @Override
+    public @Nullable ITexture[][] getTextures(int meta) {
+        ITexture[][] cached = textureCache.getAndMoveToFirst(meta);
+
+        if (cached != null) return cached;
+
+        IOreMaterial material = materials.get(meta);
+
+        ITexture texture;
+
+        if (material != null) {
+            texture = TextureFactory.builder()
+                .addIcon(material.getTextureSet().mTextures[OrePrefixes.sheetmetal.getTextureIndex()])
+                .setRGBA(material.getRGBA())
+                .build();
+        } else {
+            texture = TextureFactory.builder()
+                .addIcon(TextureSet.SET_NONE.mTextures[OrePrefixes.sheetmetal.getTextureIndex()])
+                .build();
+        }
+
+        cached = new ITexture[][] { { texture }, { texture }, { texture }, { texture }, { texture }, { texture }, };
+
+        textureCache.putAndMoveToFirst(meta, cached);
+
+        while (textureCache.size() > 512) textureCache.removeLast();
+
+        return cached;
+    }
+
+    public void registerRecipes() {
+        for (int i = 0; i < maxMeta; i++) {
+            IOreMaterial material = materials.get(i);
+
+            if (material == null || !material.generatesPrefix(OrePrefixes.sheetmetal)) continue;
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(material.getPart(OrePrefixes.plate, 2), GTUtility.getIntegratedCircuit(11))
+                .itemOutputs(material.getPart(OrePrefixes.sheetmetal, 1))
+                .eut(TierEU.RECIPE_LV)
+                .duration(10)
+                .addTo(RecipeMaps.benderRecipes);
+
+            // Manually add recycling recipes so that this also works with BW materials
+
+            if (material.getPart(OrePrefixes.dust, 1) != null) {
+                GTValues.RA.stdBuilder()
+                    .itemInputs(material.getPart(OrePrefixes.sheetmetal, 1))
+                    .itemOutputs(material.getPart(OrePrefixes.dust, 2))
+                    .eut(TierEU.RECIPE_LV)
+                    .duration(30)
+                    .recipeCategory(RecipeCategories.maceratorRecycling)
+                    .addTo(RecipeMaps.maceratorRecipes);
+            }
+
+            if (material.getPart(OrePrefixes.ingot, 1) != null) {
+                GTValues.RA.stdBuilder()
+                    .itemInputs(material.getPart(OrePrefixes.sheetmetal, 1))
+                    .itemOutputs(material.getPart(OrePrefixes.ingot, 2))
+                    .eut(TierEU.RECIPE_LV)
+                    .duration(10)
+                    .recipeCategory(RecipeCategories.arcFurnaceRecycling)
+                    .addTo(GTRecipeConstants.UniversalArcFurnace);
+
+                GTValues.RA.stdBuilder()
+                    .itemInputs(material.getPart(OrePrefixes.sheetmetal, 1), ItemList.Shape_Mold_Ingot.get(0))
+                    .itemOutputs(material.getPart(OrePrefixes.ingot, 2))
+                    .eut(TierEU.RECIPE_LV)
+                    .duration(15)
+                    .addTo(RecipeMaps.alloySmelterRecipes);
+            }
+
+            // Skip fluid extractor recycling to avoid balance issues (also I don't feel like messing with molten stacks
+            // :tootroll:)
+        }
+    }
+}
