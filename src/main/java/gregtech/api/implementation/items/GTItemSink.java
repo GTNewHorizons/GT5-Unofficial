@@ -32,6 +32,8 @@ public class GTItemSink extends InventoryItemSink {
         long total = 0;
 
         for (int i = 0; i < size; i++) {
+            if (!imte.isIOSlot(i)) continue;
+
             immutable.stack = imte.getStackInSlot(i);
 
             if (immutable.stack == null) continue;
