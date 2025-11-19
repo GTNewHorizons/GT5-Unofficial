@@ -21,9 +21,12 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
 
@@ -42,6 +45,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.extensions.ArrayExt;
+import gregtech.common.gui.modularui.hatch.MTEHatchInputBusGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -146,16 +150,6 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
     }
 
     @Override
-    public int getCircuitSlotX() {
-        return 153;
-    }
-
-    @Override
-    public int getCircuitSlotY() {
-        return 63;
-    }
-
-    @Override
     public void initDefaultModes(NBTTagCompound aNBT) {
         if (!getBaseMetaTileEntity().getWorld().isRemote) {
             GTClientPreference tPreference = GTMod.proxy.getClientPreference(getBaseMetaTileEntity().getOwnerUuid());
@@ -165,7 +159,7 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
-        if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.hasInventoryBeenModified()) {
+        if (aBaseMetaTileEntity.isServerSide()) {
             updateSlots();
         }
     }
@@ -216,6 +210,7 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
         if (mRecipeMap != null) {
             aNBT.setString("recipeMap", mRecipeMap.unlocalizedName);
         }
+        aNBT.setBoolean("migrationCircuitSlot", true);
     }
 
     @Override
@@ -227,6 +222,20 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
             disableLimited = aNBT.getBoolean("disableLimited");
         }
         mRecipeMap = RecipeMap.getFromOldIdentifier(aNBT.getString("recipeMap"));
+
+        // TODO Delete this code after one update. Also, don't forget to delete the NbtTag - "migrationCircuitSlot".
+        if (allowSelectCircuit()) {
+            if (!aNBT.hasKey("migrationCircuitSlot")) {
+                int newCircuitSlot = getSlots(mTier);
+                int oldCircuitSlot = mTier < 1 ? 1 : mTier == 1 ? 4 : mTier == 2 ? 9 : 16;
+                ItemStack oldCircuit = getStackInSlot(oldCircuitSlot);
+
+                if (oldCircuit != null && getStackInSlot(newCircuitSlot) == null) {
+                    setInventorySlotContents(newCircuitSlot, oldCircuit.copy());
+                    setInventorySlotContents(oldCircuitSlot, null);
+                }
+            }
+        }
     }
 
     @Override
@@ -287,6 +296,27 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
         return getSlots(mTier);
     }
 
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchInputBusGui(this).build(data, syncManager, uiSettings);
+    }
+
+    private Widget createToggleButton(Supplier<Boolean> getter, Consumer<Boolean> setter, UITexture picture,
+        Supplier<GTTooltipDataCache.TooltipData> tooltipDataSupplier) {
+        return new CycleButtonWidget().setToggle(getter, setter)
+            .setStaticTexture(picture)
+            .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setPos(6 + (uiButtonCount++ * BUTTON_SIZE), 60 + getOffsetY())
+            .setSize(BUTTON_SIZE, BUTTON_SIZE)
+            .setGTTooltip(tooltipDataSupplier);
+    }
+
     protected void addSortStacksButton(ModularWindow.Builder builder) {
         builder.widget(
             createToggleButton(
@@ -304,34 +334,23 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        buildContext.addCloseListener(() -> uiButtonCount = 0);
-        addSortStacksButton(builder);
-        addOneStackLimitButton(builder);
-        // Remove one for ghost circuit slot
-        int slotCount = getSizeInventory();
-        if (allowSelectCircuit()) {
-            slotCount = slotCount - 1;
-        }
-        // We do this to decouple slot count from tier in here, since there is no reason to do so.
-        switch (slotCount) {
-            case 1 -> getBaseMetaTileEntity().add1by1Slot(builder);
-            case 4 -> getBaseMetaTileEntity().add2by2Slots(builder);
-            case 9 -> getBaseMetaTileEntity().add3by3Slots(builder);
-            case 16 -> getBaseMetaTileEntity().add4by4Slots(builder);
-            default -> {}
-        }
+    public int getGUIWidth() {
+        return super.getGUIWidth() + getOffsetX();
     }
 
-    private Widget createToggleButton(Supplier<Boolean> getter, Consumer<Boolean> setter, UITexture picture,
-        Supplier<GTTooltipDataCache.TooltipData> tooltipDataSupplier) {
-        return new CycleButtonWidget().setToggle(getter, setter)
-            .setStaticTexture(picture)
-            .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(7 + (uiButtonCount++ * BUTTON_SIZE), 62)
-            .setSize(BUTTON_SIZE, BUTTON_SIZE)
-            .setGTTooltip(tooltipDataSupplier);
+    @Override
+    public int getGUIHeight() {
+        return super.getGUIHeight() + getOffsetY();
+    }
+
+    @Override
+    public int getCircuitSlotX() {
+        return 153 + getOffsetX();
+    }
+
+    @Override
+    public int getCircuitSlotY() {
+        return 60 + getOffsetY();
     }
 
     /**
@@ -524,5 +543,33 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
     public boolean hasResource(ItemStack target, int amount) {
         if (target == null) return false;
         return hasResource(new ItemStack[] { target }, amount);
+    }
+
+    @Override
+    public NBTTagCompound getDescriptionData() {
+
+        NBTTagCompound tag = super.getDescriptionData();
+        for (int i = 0; i < mInventory.length; i++) {
+            ItemStack stack = mInventory[i];
+            if (stack != null) {
+                NBTTagCompound s = new NBTTagCompound();
+                stack.writeToNBT(s);
+                tag.setTag("slot" + i, s);
+            }
+        }
+        return tag;
+    }
+
+    @Override
+    public void onDescriptionPacket(NBTTagCompound data) {
+        for (int i = 0; i < mInventory.length; i++) {
+            String key = "slot" + i;
+            if (data.hasKey(key)) {
+                mInventory[i] = ItemStack.loadItemStackFromNBT(data.getCompoundTag(key));
+            } else {
+                mInventory[i] = null;
+            }
+        }
+        super.onDescriptionPacket(data);
     }
 }

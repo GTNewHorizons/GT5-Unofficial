@@ -56,6 +56,7 @@ import java.util.Objects;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -80,6 +81,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
+import gtPlusPlus.core.fluids.GTPPFluids;
 
 public class AdditionalRecipes {
 
@@ -255,7 +257,10 @@ public class AdditionalRecipes {
             ImmutablePair.of(Materials.DilutedSulfuricAcid, 9),
             ImmutablePair.of(Materials.SulfuricAcid, 18),
             ImmutablePair.of(Materials.AceticAcid, 11),
-            ImmutablePair.of(WerkstoffLoader.FormicAcid.getBridgeMaterial(), 40));
+            ImmutablePair.of(WerkstoffLoader.FormicAcid.getBridgeMaterial(), 40),
+            ImmutablePair.of(WerkstoffLoader.HexafluorosilicicAcid.getBridgeMaterial(), 350),
+            ImmutablePair.of(Materials.PhthalicAcid, 270),
+            ImmutablePair.of(Materials.NaphthenicAcid, 250));
         for (Pair<Materials, Integer> fuel : liquidFuels) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
@@ -270,6 +275,30 @@ public class AdditionalRecipes {
             .itemOutputs(Materials.Empty.getCells(1))
             .metadata(FUEL_VALUE, 10)
             .addTo(BartWorksRecipeMaps.acidGenFuels);
+        // should probably also find a way to auto-fill these with an array but i am too lazy to do that rn
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                FluidContainerRegistry.fillFluidContainer(
+                    new FluidStack(GTPPFluids.IndustrialStrengthHydrofluoricAcid, 1000),
+                    ItemList.Cell_Empty.get(1L)))
+            .itemOutputs(Materials.Empty.getCells(1))
+            .metadata(FUEL_VALUE, 320)
+            .addTo(BartWorksRecipeMaps.acidGenFuels);
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                FluidContainerRegistry.fillFluidContainer(
+                    new FluidStack(GTPPFluids.IndustrialStrengthHydrogenChloride, 1000),
+                    ItemList.Cell_Empty.get(1L)))
+            .itemOutputs(Materials.Empty.getCells(1))
+            .metadata(FUEL_VALUE, 224)
+            .addTo(BartWorksRecipeMaps.acidGenFuels);
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                FluidContainerRegistry
+                    .fillFluidContainer(new FluidStack(GTPPFluids.PropionicAcid, 1000), ItemList.Cell_Empty.get(1L)))
+            .itemOutputs(Materials.Empty.getCells(1))
+            .metadata(FUEL_VALUE, 150)
+            .addTo(BartWorksRecipeMaps.acidGenFuels);
     }
 
     public static void run() {
@@ -283,7 +312,7 @@ public class AdditionalRecipes {
             .metadata(ADDITIVE_AMOUNT, 4)
             .addTo(implosionRecipes);
 
-        // Thorium/Yttrium Glas
+        // Thorium/Yttrium Glass
         GTValues.RA.stdBuilder()
             .itemInputs(WerkstoffLoader.YttriumOxide.get(dustSmall, 2), WerkstoffLoader.Thorianit.get(dustSmall, 2))
             .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 12))

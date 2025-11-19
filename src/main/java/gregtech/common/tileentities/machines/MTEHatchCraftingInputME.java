@@ -114,6 +114,11 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     implements IConfigurationCircuitSupport, IAddGregtechLogo, IAddUIWidgets, IPowerChannelState, ICraftingProvider,
     IGridProxyable, IDualInputHatchWithPattern, ICustomNameObject, IInterfaceViewable, IMEConnectable {
 
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
+
     // Each pattern slot in the crafting input hatch has its own internal inventory
     public static class PatternSlot<P extends IMetaTileEntity & IDualInputHatch>
         implements IDualInputInventoryWithPattern {
@@ -856,7 +861,12 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
 
     @Override
     public int getGUIWidth() {
-        return super.getGUIWidth() + 16;
+        return 176 + 16;
+    }
+
+    @Override
+    public int getGUIHeight() {
+        return 166;
     }
 
     @Override

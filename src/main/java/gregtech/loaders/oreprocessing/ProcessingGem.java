@@ -198,7 +198,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                 .itemInputs(GTUtility.copyAmount(3, aStack))
                                 .itemOutputs(
                                     GTOreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, 1),
-                                    GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
+                                    GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.AshDark, 2))
                                 .duration(1 * SECONDS)
                                 .eut(TierEU.RECIPE_LV)
                                 .metadata(ADDITIVE_AMOUNT, 8)
@@ -278,7 +278,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                     .itemInputs(GTUtility.copyAmount(3, aStack))
                                     .itemOutputs(
                                         GTOreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, 1),
-                                        GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
+                                        GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.AshDark, 2))
                                     .duration(1 * SECONDS)
                                     .eut(TierEU.RECIPE_LV)
                                     .metadata(ADDITIVE_AMOUNT, 8)
@@ -379,7 +379,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                     .itemInputs(GTUtility.copyAmount(3, aStack))
                                     .itemOutputs(
                                         GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1),
-                                        GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
+                                        GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.AshDark, 2))
                                     .duration(1 * SECONDS)
                                     .eut(TierEU.RECIPE_LV)
                                     .metadata(ADDITIVE_AMOUNT, 8)
@@ -457,7 +457,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                     .itemInputs(GTUtility.copyAmount(3, aStack))
                                     .itemOutputs(
                                         GTOreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, 1),
-                                        GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
+                                        GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.AshDark, 2))
                                     .duration(1 * SECONDS)
                                     .eut(TierEU.RECIPE_LV)
                                     .metadata(ADDITIVE_AMOUNT, 8)

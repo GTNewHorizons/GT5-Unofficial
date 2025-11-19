@@ -19,6 +19,7 @@ import gregtech.loaders.postload.recipes.CentrifugeRecipes;
 import gregtech.loaders.postload.recipes.ChemicalBathRecipes;
 import gregtech.loaders.postload.recipes.ChemicalRecipes;
 import gregtech.loaders.postload.recipes.CircuitAssemblerRecipes;
+import gregtech.loaders.postload.recipes.CokeOvenRecipes;
 import gregtech.loaders.postload.recipes.CompressorRecipes;
 import gregtech.loaders.postload.recipes.CropProcessingRecipes;
 import gregtech.loaders.postload.recipes.CuttingRecipes;
@@ -80,6 +81,7 @@ public class MachineRecipeLoader implements Runnable {
         new ChemicalBathRecipes().run();
         new ChemicalRecipes().run();
         new CircuitAssemblerRecipes().run();
+        new CokeOvenRecipes().run();
         new CompressorRecipes().run();
         new CropProcessingRecipes().run();
         new CuttingRecipes().run();
