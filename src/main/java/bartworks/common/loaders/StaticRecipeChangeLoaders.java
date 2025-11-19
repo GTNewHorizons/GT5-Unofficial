@@ -52,6 +52,7 @@ public class StaticRecipeChangeLoaders {
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
             StaticRecipeChangeLoaders.runMaterialLinker(werkstoff);
             if (!werkstoff.getGenerationFeatures().enforceUnification) continue;
+            MainMod.LOGGER.info("Materials: "+werkstoff.getVarName());
             StaticRecipeChangeLoaders.runMoltenUnificationEnforcement(werkstoff);
             StaticRecipeChangeLoaders.runUnficationDeleter(werkstoff);
         }
@@ -80,6 +81,7 @@ public class StaticRecipeChangeLoaders {
             }
         }
         Set<GTRecipe> toremRecipeList = new HashSet<>();
+        int count = 0;
         if (toReplace != null) {
             for (RecipeMap<?> map : RecipeMap.ALL_RECIPE_MAPS.values()) {
                 toremRecipeList.clear();
@@ -108,10 +110,12 @@ public class StaticRecipeChangeLoaders {
                         // recipe.mSpecialItems = data.filledContainer;
                     }
                 }
+                count+=toremRecipeList.size();
                 map.getBackend()
                     .removeRecipes(toremRecipeList);
             }
         }
+        MainMod.LOGGER.info("Modified recipes: "+count);
         GTUtility.addFluidContainerData(data);
 
     }
