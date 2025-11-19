@@ -117,6 +117,7 @@ import bwcrossmod.cls.CLSCompat;
 import codechicken.nei.api.API;
 import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.FluidState;
 import gregtech.api.enums.GTValues;
@@ -1688,6 +1689,9 @@ public class WerkstoffLoader {
         }
         if (orePrefixes == OrePrefixes.blockCasingAdvanced) {
             return new ItemStack(WerkstoffLoader.BWBlockCasingsAdvanced, amount, werkstoff.getmID());
+        }
+        if (orePrefixes == OrePrefixes.sheetmetal) {
+            return new ItemStack(GregTechAPI.sBlockSheetmetalBW, amount, werkstoff.getmID());
         }
 
         if (WerkstoffLoader.items.get(orePrefixes) == null) {
