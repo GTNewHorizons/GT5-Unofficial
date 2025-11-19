@@ -1,5 +1,6 @@
 package gtnhlanth.common.beamline;
 
+import com.google.common.collect.ImmutableList;
 import gtnhlanth.common.item.ItemParticle;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;

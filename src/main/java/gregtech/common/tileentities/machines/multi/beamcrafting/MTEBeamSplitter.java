@@ -10,16 +10,22 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings13;
 import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.common.beamline.BeamInformation;
+import gtnhlanth.common.beamline.BeamLinePacket;
+import gtnhlanth.common.beamline.Particle;
 import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -45,7 +51,7 @@ public class MTEBeamSplitter extends MTEExtendedPowerMultiBlockBase<MTEBeamSplit
 
     private static final int CASING_INDEX_CENTRE = 1662; // Shielded Acc.
     private final ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
-    private final ArrayList<MTEHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
+    private final ArrayList<MTEHatchAdvancedOutputBeamline> mAdvancedOutputBeamline = new ArrayList<>();
 
     private static final IStructureDefinition<MTEBeamSplitter> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEBeamSplitter>builder()
@@ -105,10 +111,10 @@ public class MTEBeamSplitter extends MTEExtendedPowerMultiBlockBase<MTEBeamSplit
                 .build()) // beamline input hatch
         .addElement(
             'D',
-            buildHatchAdder(MTEBeamSplitter.class).hatchClass(MTEHatchOutputBeamline.class)
+            buildHatchAdder(MTEBeamSplitter.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
                 .casingIndex(CASING_INDEX_CENTRE)
                 .dot(3)
-                .adder(MTEBeamSplitter::addBeamLineOutputHatch)
+                .adder(MTEBeamSplitter::addAdvancedBeamLineOutputHatch)
                 .build()) // beamline input hatch
         .build();
 
@@ -125,17 +131,20 @@ public class MTEBeamSplitter extends MTEExtendedPowerMultiBlockBase<MTEBeamSplit
         return false;
     }
 
-    private boolean addBeamLineOutputHatch(IGregTechTileEntity te, int casingIndex) {
+    private boolean addAdvancedBeamLineOutputHatch(IGregTechTileEntity te, int casingIndex) {
         if (te == null) return false;
 
         IMetaTileEntity mte = te.getMetaTileEntity();
         if (mte == null) return false;
 
-        if (mte instanceof MTEHatchOutputBeamline) {
-            return this.mOutputBeamline.add((MTEHatchOutputBeamline) mte);
+        if (mte instanceof MTEHatchAdvancedOutputBeamline hatch) {
+            ((MTEHatch) mte).updateTexture(casingIndex);
+            hatch.setInitialParticleList(LHCModules.EM.acceptedParticles);
+            this.mAdvancedOutputBeamline.add(hatch);
+            return true;
         }
-
         return false;
+
     }
 
     public MTEBeamSplitter(final int aID, final String aName, final String aNameRegional) {
@@ -215,7 +224,7 @@ public class MTEBeamSplitter extends MTEExtendedPowerMultiBlockBase<MTEBeamSplit
             .addCasingInfoExactly("Collider Casing", 68, false)
             .addCasingInfoExactly("Any Glass", 9, true)
             .addCasingInfoExactly("Beamline Input Hatch", 1, false)
-            .addCasingInfoExactly("Beamline Output Hatch", 4, false)
+            .addCasingInfoExactly("Filtered Beamline Output Hatch", 4, false)
             .addEnergyHatch("Any Collider Casing", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addTecTechHatchInfo()
@@ -250,4 +259,38 @@ public class MTEBeamSplitter extends MTEExtendedPowerMultiBlockBase<MTEBeamSplit
     }
 
 
+    @Override
+    public @NotNull CheckRecipeResult checkProcessing() {
+        BeamInformation inputInfo = this.getInputParticle();
+
+        if (inputInfo == null || inputInfo.getRate() == 0) return CheckRecipeResultRegistry.NO_RECIPE;
+
+        outputPacketAfterRecipe(inputInfo);
+        return CheckRecipeResultRegistry.SUCCESSFUL;
+    }
+
+    private void outputPacketAfterRecipe(BeamInformation inputInfo) {
+        if (!this.mAdvancedOutputBeamline.isEmpty()) {
+
+            int numValidOutputs = 0;
+            for (MTEHatchAdvancedOutputBeamline o : this.mAdvancedOutputBeamline) {
+                if (o.acceptedInputMap.getOrDefault(Particle.getParticleFromId(inputInfo.getParticleId()), false)
+                    == false) {
+                    numValidOutputs++;
+                }
+            }
+            if (numValidOutputs > 0) {
+                for (MTEHatchAdvancedOutputBeamline o : this.mAdvancedOutputBeamline) {
+                    BeamInformation outputInfo = new BeamInformation(
+                        inputInfo.getEnergy(),
+                        inputInfo.getRate() / numValidOutputs,
+                        inputInfo.getParticleId(),
+                        inputInfo.getFocus()
+                    );
+                    BeamLinePacket packet = new BeamLinePacket(outputInfo);
+                    o.dataPacket = packet;
+                }
+            }
+        }
+    }
 }

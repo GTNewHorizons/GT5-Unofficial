@@ -42,7 +42,26 @@ public enum LHCModules {
             Particle.ETA,
             Particle.JPSI,
             Particle.UPSILON)),
-    Grav("Grav", ImmutableList.of(Particle.HIGGS, Particle.GRAVITON));
+    Grav("Grav", ImmutableList.of(Particle.HIGGS, Particle.GRAVITON)),
+    AllParticles("AllParticles",ImmutableList.of(
+        Particle.PHOTON,
+        Particle.WBOSON,
+        Particle.ELECTRON,
+        Particle.MUON,
+        Particle.TAU,
+        Particle.PROTON,
+        Particle.OMEGA,
+        Particle.ZBOSON,
+        Particle.HIGGS,
+        Particle.ELECTRONNEUTRINO,
+        Particle.MUONNEUTRINO,
+        Particle.TAUNEUTRINO,
+        Particle.NEUTRON,
+        Particle.LAMBDA,
+        Particle.ETA,
+        Particle.JPSI,
+        Particle.UPSILON,
+        Particle.GRAVITON));
 
     public final String structurePiece;
     public final ImmutableList<Particle> acceptedParticles;
