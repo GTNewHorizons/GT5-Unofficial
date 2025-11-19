@@ -11,57 +11,60 @@ import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.serialization.IByteBufAdapter;
 import com.cleanroommc.modularui.value.BoolValue;
 import com.cleanroommc.modularui.value.sync.GenericMapSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
-import gregtech.api.modularui2.GTGuis;
+import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.tileentities.machines.multi.beamcrafting.MTEHatchAdvancedOutputBeamline;
 import gtnhlanth.common.beamline.Particle;
 
-public class MTEHatchAdvancedOutputBeamlineGui {
-
-    MTEHatchAdvancedOutputBeamline base;
+public class MTEHatchAdvancedOutputBeamlineGui extends MTEHatchBaseGui<MTEHatchAdvancedOutputBeamline> {
 
     public MTEHatchAdvancedOutputBeamlineGui(MTEHatchAdvancedOutputBeamline base) {
-        this.base = base;
+        super(base);
     }
 
-    public ModularPanel build(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-
+    @Override
+    public void registerSyncValues(PanelSyncManager syncManager) {
+        super.registerSyncValues(syncManager);
         GenericMapSyncHandler<Particle, Boolean> mapSyncHandler = new GenericMapSyncHandler.Builder<Particle, Boolean>()
-            .getter(() -> base.getParticleMap())
-            .setter(map -> base.setMap(map))
+            .getter(hatch::getParticleMap)
+            .setter(hatch::setMap)
             .valueAdapter(new ValueBooleanAdapter())
             .keyAdapter(new KeyParticleAdapter())
             .build();
 
         syncManager.syncValue("inputMap", mapSyncHandler);
+    }
 
-        return GTGuis.mteTemplatePanelBuilder(base, data, syncManager, uiSettings)
-            .doesAddGregTechLogo(false)
-            .build()
-            .child(
-                Flow.column()
-                    .align(Alignment.START)
-                    .child(
-                        IKey.lang("GT5U.gui.text.BeamlineHatch.blacklist")
-                            .asWidget()
-                            .anchorLeft(0)
-                            .size(120, 18)
-                            .padding(4, 0))
-                    .child(createBlacklistWidget(mapSyncHandler).left(4))
-                    .setEnabledIf(
-                        widget -> !base.getParticleMap()
-                            .isEmpty()))
+    @SuppressWarnings("unchecked")
+    @Override
+    protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
+
+        GenericMapSyncHandler<Particle, Boolean> mapSyncHandler = syncManager
+            .findSyncHandler("inputMap", GenericMapSyncHandler.class);
+
+        return super.createContentSection(panel, syncManager).child(
+            Flow.column()
+                .align(Alignment.START)
+                .child(
+                    IKey.lang("GT5U.gui.text.BeamlineHatch.blacklist")
+                        .asWidget()
+                        .anchorLeft(0)
+                        .size(120, 18)
+                        .padding(4, 0))
+                .child(createBlacklistWidget(mapSyncHandler).left(4))
+                .setEnabledIf(
+                    widget -> !hatch.getParticleMap()
+                        .isEmpty()))
 
             .child(
                 IKey.lang("GT5U.gui.text.BeamlineHatch.emptylist")
@@ -70,23 +73,26 @@ public class MTEHatchAdvancedOutputBeamlineGui {
                     .size(120, 18)
                     .padding(4, 16)
                     .setEnabledIf(
-                        widget -> base.getParticleMap()
-                            .isEmpty()))
-
-        ;
-
+                        widget -> hatch.getParticleMap()
+                            .isEmpty()));
     }
 
-    private final int BUTTONS_PER_ROW = 6;
-    private final int PADDED_WIDTH_PER_BUTTON = 22;
-    private final int PADDED_HEIGHT_PER_BUTTON = 20;
+    @Override
+    protected int getBasePanelHeight() {
+        return super.getBasePanelHeight() + 16;
+    }
+
+    private static final int BUTTONS_PER_ROW = 6;
+    private static final int PADDED_WIDTH_PER_BUTTON = 22;
+    private static final int PADDED_HEIGHT_PER_BUTTON = 20;
 
     protected ListWidget<IWidget, ?> createBlacklistWidget(GenericMapSyncHandler<Particle, Boolean> map) {
         ListWidget<IWidget, ?> blacklistOptions = new ListWidget<>();
-        blacklistOptions.size(PADDED_WIDTH_PER_BUTTON * BUTTONS_PER_ROW, PADDED_HEIGHT_PER_BUTTON * 3);
+        blacklistOptions.size(PADDED_WIDTH_PER_BUTTON * BUTTONS_PER_ROW, 8 + PADDED_HEIGHT_PER_BUTTON * 3)
+            .crossAxisAlignment(Alignment.CrossAxis.START);
         // for every 6 particles in the allowed particle list, make a new row
         // add each row to the blacklistOptions
-        final Set<Particle> particleSet = base.getParticleMap()
+        final Set<Particle> particleSet = hatch.getParticleMap()
             .keySet();
 
         int numRows = (int) Math.ceil((double) particleSet.size() / BUTTONS_PER_ROW); // gross java math
