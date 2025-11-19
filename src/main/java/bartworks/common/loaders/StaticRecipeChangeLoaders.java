@@ -51,63 +51,64 @@ public class StaticRecipeChangeLoaders {
         List<GTRecipe> toRemove = new ArrayList<>();
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
             StaticRecipeChangeLoaders.runMaterialLinker(werkstoff);
-            if (werkstoff.getGenerationFeatures().enforceUnification) {
-                HashSet<String> oreDictNames = new HashSet<>(werkstoff.getAdditionalOredict());
-                oreDictNames.add(werkstoff.getVarName());
-                StaticRecipeChangeLoaders.runMoltenUnificationEnforcement(werkstoff);
-                StaticRecipeChangeLoaders.runUnficationDeleter(werkstoff);
-                for (String s : oreDictNames) {
-                    for (OrePrefixes prefixes : OrePrefixes.VALUES) {
-                        if (!werkstoff.hasItemType(prefixes)) continue;
-                        String fullOreName = prefixes + s;
-                        List<ItemStack> ores = OreDictionary.getOres(fullOreName, false);
-                        if (ores.size() <= 1) // empty or one entry, i.e. no unification needed
-                            continue;
-                        for (ItemStack toReplace : ores) {
-                            ItemStack replacement = werkstoff.get(prefixes);
-                            if (toReplace == null || GTUtility.areStacksEqual(toReplace, replacement)
-                                || replacement == null
-                                || replacement.getItem() == null) continue;
-                            for (RecipeMap<?> map : RecipeMap.ALL_RECIPE_MAPS.values()) {
-                                toRemove.clear();
-                                nextRecipe: for (GTRecipe recipe : map.getAllRecipes()) {
-                                    boolean removal = map.equals(RecipeMaps.fluidExtractionRecipes)
-                                        || map.equals(RecipeMaps.fluidSolidifierRecipes);
-                                    for (int i = 0; i < recipe.mInputs.length; i++) {
-                                        if (!GTUtility.areStacksEqual(recipe.mInputs[i], toReplace)) continue;
-                                        if (removal) {
-                                            toRemove.add(recipe);
-                                            continue nextRecipe;
-                                        }
-                                        recipe.mInputs[i] = GTUtility
-                                            .copyAmount(recipe.mInputs[i].stackSize, replacement);
+            if (!werkstoff.getGenerationFeatures().enforceUnification) continue;
+
+            HashSet<String> oreDictNames = new HashSet<>(werkstoff.getAdditionalOredict());
+            oreDictNames.add(werkstoff.getVarName());
+            StaticRecipeChangeLoaders.runMoltenUnificationEnforcement(werkstoff);
+            StaticRecipeChangeLoaders.runUnficationDeleter(werkstoff);
+            for (String s : oreDictNames) {
+                for (OrePrefixes prefixes : OrePrefixes.VALUES) {
+                    if (!werkstoff.hasItemType(prefixes)) continue;
+                    String fullOreName = prefixes + s;
+                    List<ItemStack> ores = OreDictionary.getOres(fullOreName, false);
+                    if (ores.size() <= 1) // empty or one entry, i.e. no unification needed
+                        continue;
+                    for (ItemStack toReplace : ores) {
+                        ItemStack replacement = werkstoff.get(prefixes);
+                        if (toReplace == null || GTUtility.areStacksEqual(toReplace, replacement)
+                            || replacement == null
+                            || replacement.getItem() == null) continue;
+                        for (RecipeMap<?> map : RecipeMap.ALL_RECIPE_MAPS.values()) {
+                            toRemove.clear();
+                            nextRecipe: for (GTRecipe recipe : map.getAllRecipes()) {
+                                boolean removal = map.equals(RecipeMaps.fluidExtractionRecipes)
+                                    || map.equals(RecipeMaps.fluidSolidifierRecipes);
+                                for (int i = 0; i < recipe.mInputs.length; i++) {
+                                    if (!GTUtility.areStacksEqual(recipe.mInputs[i], toReplace)) continue;
+                                    if (removal) {
+                                        toRemove.add(recipe);
+                                        continue nextRecipe;
                                     }
-                                    for (int i = 0; i < recipe.mOutputs.length; i++) {
-                                        if (!GTUtility.areStacksEqual(recipe.mOutputs[i], toReplace)) continue;
-                                        if (removal) {
-                                            toRemove.add(recipe);
-                                            continue nextRecipe;
-                                        }
-                                        recipe.mOutputs[i] = GTUtility
-                                            .copyAmount(recipe.mOutputs[i].stackSize, replacement);
-                                    }
-                                    if (recipe.mSpecialItems instanceof ItemStack specialItemStack) {
-                                        if (!GTUtility.areStacksEqual(specialItemStack, toReplace)) continue;
-                                        if (removal) {
-                                            toRemove.add(recipe);
-                                            continue nextRecipe;
-                                        }
-                                        recipe.mSpecialItems = GTUtility
-                                            .copyAmount(specialItemStack.stackSize, replacement);
-                                    }
+                                    recipe.mInputs[i] = GTUtility
+                                        .copyAmount(recipe.mInputs[i].stackSize, replacement);
                                 }
-                                map.getBackend()
-                                    .removeRecipes(toRemove);
+                                for (int i = 0; i < recipe.mOutputs.length; i++) {
+                                    if (!GTUtility.areStacksEqual(recipe.mOutputs[i], toReplace)) continue;
+                                    if (removal) {
+                                        toRemove.add(recipe);
+                                        continue nextRecipe;
+                                    }
+                                    recipe.mOutputs[i] = GTUtility
+                                        .copyAmount(recipe.mOutputs[i].stackSize, replacement);
+                                }
+                                if (recipe.mSpecialItems instanceof ItemStack specialItemStack) {
+                                    if (!GTUtility.areStacksEqual(specialItemStack, toReplace)) continue;
+                                    if (removal) {
+                                        toRemove.add(recipe);
+                                        continue nextRecipe;
+                                    }
+                                    recipe.mSpecialItems = GTUtility
+                                        .copyAmount(specialItemStack.stackSize, replacement);
+                                }
                             }
+                            map.getBackend()
+                                .removeRecipes(toRemove);
                         }
                     }
                 }
             }
+
         }
     }
 
@@ -195,7 +196,7 @@ public class StaticRecipeChangeLoaders {
         }
 
         for (OrePrefixes prefixes : OrePrefixes.VALUES)
-            if (werkstoff.hasItemType(prefixes) && werkstoff.getBridgeMaterial() != null) {
+            if (werkstoff.hasItemType(prefixes) && werkstoff.getBridgeMaterial() == null) {
                 GTOreDictUnificator.set(prefixes, werkstoff.getBridgeMaterial(), werkstoff.get(prefixes), true, true);
                 for (ItemStack stack : OreDictionary.getOres(prefixes + werkstoff.getVarName())) {
                     GTOreDictUnificator.addAssociation(prefixes, werkstoff.getBridgeMaterial(), stack, false);
