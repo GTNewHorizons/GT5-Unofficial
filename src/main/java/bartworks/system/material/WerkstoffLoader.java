@@ -70,9 +70,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -129,10 +127,6 @@ import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.ores.BWOreAdapter;
 import gregtech.common.ores.OreInfo;
-import ic2.api.recipe.IRecipeInput;
-import ic2.api.recipe.RecipeInputOreDict;
-import ic2.api.recipe.RecipeOutput;
-import ic2.api.recipe.Recipes;
 
 @SuppressWarnings("deprecation")
 public class WerkstoffLoader {
@@ -2053,29 +2047,6 @@ public class WerkstoffLoader {
             for (IWerkstoffRunnable registration : registrations) {
                 registration.run(werkstoff);
             }
-        }
-    }
-
-    public static void removeIC2Recipes() {
-        try {
-            Set<Map.Entry<IRecipeInput, RecipeOutput>> remset = new HashSet<>();
-            for (Map.Entry<IRecipeInput, RecipeOutput> curr : Recipes.macerator.getRecipes()
-                .entrySet()) {
-                if (curr.getKey() instanceof RecipeInputOreDict) {
-                    if ("oreNULL".equalsIgnoreCase(((RecipeInputOreDict) curr.getKey()).input)) {
-                        remset.add(curr);
-                    }
-                    for (ItemStack stack : curr.getValue().items) {
-                        if (stack.getItem() instanceof BWMetaGeneratedItems) remset.add(curr);
-                    }
-                }
-            }
-            MainMod.LOGGER.info("Amount of IC2 recipes removed: " + remset.size());
-            Recipes.macerator.getRecipes()
-                .entrySet()
-                .removeAll(remset);
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
