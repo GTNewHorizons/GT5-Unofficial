@@ -105,7 +105,7 @@ public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures 
     private final Int2ObjectLinkedOpenHashMap<ITexture[][]> textureCache = new Int2ObjectLinkedOpenHashMap<>();
 
     @Override
-    public @Nullable ITexture[][] getTextures(int meta) {
+    public synchronized @Nullable ITexture[][] getTextures(int meta) {
         ITexture[][] cached = textureCache.getAndMoveToFirst(meta);
 
         if (cached != null) return cached;
