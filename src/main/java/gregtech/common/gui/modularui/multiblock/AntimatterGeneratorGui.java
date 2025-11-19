@@ -89,10 +89,10 @@ public class AntimatterGeneratorGui extends MTEMultiBlockBaseGui<AntimatterGener
     }
 
     @Override
-    protected Flow createPanelGap(ModularPanel parent, PanelSyncManager syncManager) {
+    protected Flow createLeftPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
         BooleanSyncValue canUseWireless = syncManager.findSyncHandler("canUseWireless", BooleanSyncValue.class);
         BooleanSyncValue wirelessMode = syncManager.findSyncHandler("wirelessMode", BooleanSyncValue.class);
-        return super.createPanelGap(parent, syncManager).child(
+        return super.createLeftPanelGapRow(parent, syncManager).child(
             new ButtonWidget<>().size(18, 18)
                 .playClickSound(true)
                 .overlay(new DynamicDrawable(() -> {
@@ -118,6 +118,5 @@ public class AntimatterGeneratorGui extends MTEMultiBlockBaseGui<AntimatterGener
                 .tooltipBuilder(
                     t -> t.addLine(StatCollector.translateToLocal("gui.kekztech_lapotronicenergyunit.wireless")))
                 .tooltipShowUpTimer(TOOLTIP_DELAY));
-
     }
 }

@@ -620,6 +620,23 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     }
 
     @Override
+    public boolean hasWailaAdvancedBody(ItemStack itemStack, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        if (hasValidMetaTileEntity()) {
+            return getMetaTileEntity().hasWailaAdvancedBody(itemStack, accessor, config);
+        }
+        return super.hasWailaAdvancedBody(itemStack, accessor, config);
+    }
+
+    @Override
+    public void getWailaAdvancedBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        if (hasValidMetaTileEntity()) {
+            getMetaTileEntity().getWailaAdvancedBody(itemStack, currentTip, accessor, config);
+        }
+        super.getWailaAdvancedBody(itemStack, currentTip, accessor, config);
+    }
+
+    @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
@@ -1216,7 +1233,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         if (!canAccessData()) {
             return false;
         }
-        if (mMetaTileEntity.getEUVar() - aEnergy >= 0 || aIgnoreTooLessEnergy) {
+        if (aIgnoreTooLessEnergy || mMetaTileEntity.getEUVar() - aEnergy >= 0) {
             setStoredEU(mMetaTileEntity.getEUVar() - aEnergy);
             if (mMetaTileEntity.getEUVar() < 0) {
                 setStoredEU(0);
@@ -1229,7 +1246,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
 
     public boolean decreaseStoredSteam(long aEnergy, boolean aIgnoreTooLessEnergy) {
         if (!canAccessData()) return false;
-        if (mMetaTileEntity.getSteamVar() - aEnergy >= 0 || aIgnoreTooLessEnergy) {
+        if (aIgnoreTooLessEnergy || mMetaTileEntity.getSteamVar() - aEnergy >= 0) {
             setStoredSteam(mMetaTileEntity.getSteamVar() - aEnergy);
             if (mMetaTileEntity.getSteamVar() < 0) {
                 setStoredSteam(0);

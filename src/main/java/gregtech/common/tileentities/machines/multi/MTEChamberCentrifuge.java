@@ -764,11 +764,6 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         return new MTEChamberCentrifugeGui(this);
     }
 
-    @Override
-    protected boolean forceUseMui2() {
-        return true;
-    }
-
     public int getRP() {
         RP = 4 * getSumRotorLevels();
         return RP;
