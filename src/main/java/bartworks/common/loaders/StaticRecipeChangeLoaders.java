@@ -49,69 +49,12 @@ public class StaticRecipeChangeLoaders {
     private StaticRecipeChangeLoaders() {}
 
     public static void unificationRecipeEnforcer() {
-        List<GTRecipe> toRemove = new ArrayList<>();
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
             StaticRecipeChangeLoaders.runMaterialLinker(werkstoff);
             if (!werkstoff.getGenerationFeatures().enforceUnification) continue;
-            MainMod.LOGGER.info("Material: "+werkstoff.getVarName());
-            HashSet<String> oreDictNames = new HashSet<>(werkstoff.getAdditionalOredict());
-            oreDictNames.add(werkstoff.getVarName());
             StaticRecipeChangeLoaders.runMoltenUnificationEnforcement(werkstoff);
             StaticRecipeChangeLoaders.runUnficationDeleter(werkstoff);
-            int count = 0;
-            for (String s : oreDictNames) {
-                for (OrePrefixes prefixes : OrePrefixes.VALUES) {
-                    if (!werkstoff.hasItemType(prefixes)) continue;
-                    String fullOreName = prefixes + s;
-                    List<ItemStack> ores = OreDictionary.getOres(fullOreName, false);
-                    if (ores.size() <= 1) // empty or one entry, i.e. no unification needed
-                        continue;
-                    for (ItemStack toReplace : ores) {
-                        ItemStack replacement = werkstoff.get(prefixes);
-                        if (toReplace == null || GTUtility.areStacksEqual(toReplace, replacement)
-                            || replacement == null
-                            || replacement.getItem() == null) continue;
-                        for (RecipeMap<?> map : RecipeMap.ALL_RECIPE_MAPS.values()) {
-                            toRemove.clear();
-                            boolean removal = map.equals(RecipeMaps.fluidExtractionRecipes)
-                                || map.equals(RecipeMaps.fluidSolidifierRecipes);
-                            nextRecipe: for (GTRecipe recipe : map.getAllRecipes()) {
-                                for (int i = 0; i < recipe.mInputs.length; i++) {
-                                    if (!GTUtility.areStacksEqual(recipe.mInputs[i], toReplace)) continue;
-                                    if (removal) {
-                                        toRemove.add(recipe);
-                                        continue nextRecipe;
-                                    }
-                                    recipe.mInputs[i] = GTUtility
-                                        .copyAmount(recipe.mInputs[i].stackSize, replacement);
-                                }
-                                for (int i = 0; i < recipe.mOutputs.length; i++) {
-                                    if (!GTUtility.areStacksEqual(recipe.mOutputs[i], toReplace)) continue;
-                                    if (removal) {
-                                        toRemove.add(recipe);
-                                        continue nextRecipe;
-                                    }
-                                    recipe.mOutputs[i] = GTUtility
-                                        .copyAmount(recipe.mOutputs[i].stackSize, replacement);
-                                }
-                                if (recipe.mSpecialItems instanceof ItemStack specialItemStack) {
-                                    if (!GTUtility.areStacksEqual(specialItemStack, toReplace)) continue;
-                                    if (removal) {
-                                        toRemove.add(recipe);
-                                        continue nextRecipe;
-                                    }
-                                    recipe.mSpecialItems = GTUtility
-                                        .copyAmount(specialItemStack.stackSize, replacement);
-                                }
-                            }
-                            count+=toRemove.size();
-                            map.getBackend()
-                                .removeRecipes(toRemove);
-                        }
-                    }
-                }
-            }
-            MainMod.LOGGER.info("recipes removed: "+count);
+
         }
     }
 
