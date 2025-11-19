@@ -502,7 +502,8 @@ public class GTUtility {
      */
     @Nonnull
     public static String getTierNameWithParentheses(long voltage) {
-        byte tier = (byte) Math.max(getTier(voltage), 1);
+        byte tier = getTier(voltage);
+        tier = tier < 1 ? 1 : tier;
         String color = GTValues.TIER_COLORS[tier];
         return "(" + color + GTValues.VN[tier] + EnumChatFormatting.RESET + ")";
     }
