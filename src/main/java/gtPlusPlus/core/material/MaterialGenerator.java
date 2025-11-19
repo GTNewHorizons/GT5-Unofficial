@@ -240,7 +240,7 @@ public class MaterialGenerator {
     }
 
     public static void generateNuclearDusts(final Material matInfo, boolean generateDehydratorRecipe) {
-        generateNuclearMaterial(matInfo, false, true, false, false,true, true);
+        generateNuclearMaterial(matInfo, false, true, false, false, true, true);
         if (generateDehydratorRecipe && matInfo.getFluid() != null && matInfo.getDust(0) != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.getIntegratedCircuit(20))
@@ -264,8 +264,8 @@ public class MaterialGenerator {
     }
 
     public static void generateNuclearMaterial(final Material matInfo, final boolean generateBlock,
-        final boolean generateDusts, final boolean generateIngot, final boolean generatePlates, final boolean generateRods,
-        final boolean disableOptionalRecipes) {
+        final boolean generateDusts, final boolean generateIngot, final boolean generatePlates,
+        final boolean generateRods, final boolean disableOptionalRecipes) {
         try {
 
             if (generateBlock) {
@@ -287,7 +287,7 @@ public class MaterialGenerator {
                 new RecipeGenAssembler(matInfo);
             }
 
-            if(generateRods){
+            if (generateRods) {
                 temp = new BaseItemRod(matInfo);
                 temp = new BaseItemRodLong(matInfo);
             }
