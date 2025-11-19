@@ -17,8 +17,6 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
 
-import gregtech.api.enums.SoundResource;
-import gregtech.common.gui.modularui.multiblock.MTELargeHadronColliderGui;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -37,6 +35,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.ITexture;
@@ -53,6 +52,7 @@ import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.common.blocks.BlockCasings13;
+import gregtech.common.gui.modularui.multiblock.MTELargeHadronColliderGui;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.Particle;
@@ -114,7 +114,9 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 aNBT.getInteger("particleId"),
                 aNBT.getFloat("focus"));
         }
-        if (aNBT.hasKey("iniParticleEnergy") && aNBT.hasKey("iniParticleRate") && aNBT.hasKey("iniParticleId") && aNBT.hasKey("iniParticleFocus")) {
+        if (aNBT.hasKey("iniParticleEnergy") && aNBT.hasKey("iniParticleRate")
+            && aNBT.hasKey("iniParticleId")
+            && aNBT.hasKey("iniParticleFocus")) {
             initialParticleInfo = new BeamInformation(
                 aNBT.getFloat("iniParticleEnergy"),
                 aNBT.getInteger("iniParticleRate"),
@@ -2589,9 +2591,8 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                         .extFacing()
                         .glow()
                         .build() };
-            }
-            else if ((aActive) && (this.machineMode == 1)) {
-                rTexture = new ITexture[]{
+            } else if ((aActive) && (this.machineMode == 1)) {
+                rTexture = new ITexture[] {
                     Textures.BlockIcons
                         .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings13, 10)),
                     TextureFactory.builder()
@@ -2602,17 +2603,15 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                         .addIcon(OVERLAY_FRONT_LHC_COLLIDER_GLOW)
                         .extFacing()
                         .glow()
-                        .build()};
-            }
-            else {
+                        .build() };
+            } else {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
                         .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings13, 10)),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_LHC)
                         .extFacing()
-                        .build()
-                };
+                        .build() };
             }
         } else {
             rTexture = new ITexture[] { Textures.BlockIcons
@@ -2899,12 +2898,12 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                 + (dataPacket != null ? dataPacket.getTraceSize() : 0), };
     }
 
-    public double getCachedBeamEnergy(){
-        return cachedOutputParticle!=null?cachedOutputParticle.getEnergy():0;
+    public double getCachedBeamEnergy() {
+        return cachedOutputParticle != null ? cachedOutputParticle.getEnergy() : 0;
     }
 
-    public int getCachedBeamRate(){
-        return cachedOutputParticle!=null?cachedOutputParticle.getRate():0;
+    public int getCachedBeamRate() {
+        return cachedOutputParticle != null ? cachedOutputParticle.getRate() : 0;
     }
 
     public final float MAXIMUM_PARTICLE_ENERGY_keV = 2_000_000_000; // 2TeV max
@@ -2921,8 +2920,9 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
 
         long machineVoltage = getAverageInputVoltage();
 
-        if (inputEnergy <= playerTargetBeamEnergyeV/1000) { // inputEnergy is in keV, playerTargetBeamEnergyeV is in eV
-                                                            // did this so player can type '2G eV' instead of '2M keV'
+        if (inputEnergy <= playerTargetBeamEnergyeV / 1000) { // inputEnergy is in keV, playerTargetBeamEnergyeV is in
+                                                              // eV
+                                                              // did this so player can type '2G eV' instead of '2M keV'
             outEnergy += (float) (Math.pow(accelerationCycleCounter + 1, 2) * this.mMaxProgresstime
                 * machineVoltage
                 * keVEURatio);
@@ -2932,7 +2932,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                     outRate,
                     particle.getParticleId(),
                     particle.getFocus());
-                    // or should this crash the machine instead?
+                // or should this crash the machine instead?
             }
 
         } else {
@@ -2945,8 +2945,9 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
     public long calculateEnergyCostAccelerator(BeamInformation particle) {
         long machineVoltage = getAverageInputVoltage();
 
-        return (long) (machineVoltage * Math.pow(accelerationCycleCounter + 1, 2)
-            * particle.getRate()); // counter starts at 0, so +1
+        return (long) (machineVoltage * Math.pow(accelerationCycleCounter + 1, 2) * particle.getRate()); // counter
+                                                                                                         // starts at 0,
+                                                                                                         // so +1
     }
 
     @Override
@@ -2960,9 +2961,9 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
 
     @Override
     public void onValueUpdate(byte aValue) {
-        boolean oldMachineMode = machineMode==1;
+        boolean oldMachineMode = machineMode == 1;
         machineMode = ((aValue & 1) == 1) ? 1 : 0;
-        if (oldMachineMode != (machineMode==1)) getBaseMetaTileEntity().issueTextureUpdate();
+        if (oldMachineMode != (machineMode == 1)) getBaseMetaTileEntity().issueTextureUpdate();
     }
 
     @Override
@@ -3012,8 +3013,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                         return CheckRecipeResultRegistry.insufficientPower(lEUt);
                     }
 
-                    if (accelerationCycleCounter
-                        < playerTargetAccelerationCycles) {
+                    if (accelerationCycleCounter < playerTargetAccelerationCycles) {
                         cachedOutputParticle = accelerateParticle(cachedOutputParticle);
                         accelerationCycleCounter += 1;
                     } else {
@@ -3152,12 +3152,13 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
         return true;
     }
 
-
     @Override
     protected @NotNull MTELargeHadronColliderGui getGui() {
         return new MTELargeHadronColliderGui(this);
     }
 
-    protected SoundResource getProcessStartSound() { return SoundResource.GT_MACHINES_LHC_SPIN_UP; }
+    protected SoundResource getProcessStartSound() {
+        return SoundResource.GT_MACHINES_LHC_SPIN_UP;
+    }
 
 }

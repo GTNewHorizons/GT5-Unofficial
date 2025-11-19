@@ -18,7 +18,6 @@ import static gtnhlanth.util.DescTextLocalization.addDotText;
 
 import java.util.ArrayList;
 
-import gregtech.common.tileentities.machines.multi.LHC.MTEHatchAdvancedOutputBeamline;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -47,6 +46,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
+import gregtech.common.tileentities.machines.multi.LHC.MTEHatchAdvancedOutputBeamline;
 import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;

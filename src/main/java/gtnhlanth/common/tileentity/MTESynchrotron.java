@@ -21,7 +21,6 @@ import java.util.Objects;
 
 import javax.annotation.Nullable;
 
-import gregtech.common.tileentities.machines.multi.LHC.MTEHatchAdvancedOutputBeamline;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -60,6 +59,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.common.misc.GTStructureChannels;
+import gregtech.common.tileentities.machines.multi.LHC.MTEHatchAdvancedOutputBeamline;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.Particle;
