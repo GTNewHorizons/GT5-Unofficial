@@ -54,12 +54,11 @@ public class StaticRecipeChangeLoaders {
             if (!werkstoff.getGenerationFeatures().enforceUnification) continue;
             StaticRecipeChangeLoaders.runMoltenUnificationEnforcement(werkstoff);
             StaticRecipeChangeLoaders.runUnficationDeleter(werkstoff);
-
         }
     }
 
     private static void runMoltenUnificationEnforcement(Werkstoff werkstoff) {
-        if (werkstoff.getGenerationFeatures().enforceUnification && werkstoff.hasItemType(OrePrefixes.cellMolten)) {
+        if (werkstoff.hasItemType(OrePrefixes.cellMolten)) {
             FluidContainerRegistry.FluidContainerData data = new FluidContainerRegistry.FluidContainerData(
                 new FluidStack(Objects.requireNonNull(WerkstoffLoader.molten.get(werkstoff)), 1 * INGOTS),
                 werkstoff.get(OrePrefixes.cellMolten),
