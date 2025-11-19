@@ -99,7 +99,7 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
             .addInfo("Will fill in areas below it with light concrete. This goes through walls")
             .addInfo("Use it to remove any spawning locations beneath your base to reduce lag")
             .addInfo("Will pull back the pipes after it finishes that layer")
-            .addInfo("Radius is " + getRadius() + " blocks")
+            .addInfo("Range is " + getRadius() + "x" + getRadius() + " blocks horizontally")
             .addInfo("Minimum energy hatch tier: " + GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
             .addInfo(
                 "Base cycle time: " + (baseCycleTime < 20 ? GTUtility.formatNumbers(baseCycleTime) + " ticks"

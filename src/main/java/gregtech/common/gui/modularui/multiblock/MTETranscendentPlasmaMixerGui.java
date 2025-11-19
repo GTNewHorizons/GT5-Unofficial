@@ -10,10 +10,7 @@ import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.slot.ItemSlot;
-import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
@@ -35,18 +32,7 @@ public class MTETranscendentPlasmaMixerGui extends MTEMultiBlockBaseGui<MTETrans
 
     @Override
     protected Flow createButtonColumn(ModularPanel panel, PanelSyncManager syncManager) {
-        // todo: when mui2 gets reversed child insertion order, change this to be super+child
-        return new Column().width(18)
-            .leftRel(1, -2, 1)
-            .mainAxisAlignment(Alignment.MainAxis.END)
-            .child(createParallelButton(syncManager, panel))
-            .child(createStructureUpdateButton(syncManager))
-            .child(createPowerSwitchButton())
-            .childIf(
-                multiblock.doesBindPlayerInventory(),
-                new ItemSlot().slot(
-                    new ModularSlot(multiblock.inventoryHandler, multiblock.getControllerSlotIndex())
-                        .slotGroup("item_inv")));
+        return super.createButtonColumn(panel, syncManager).child(createParallelButton(syncManager, panel));
     }
 
     protected IWidget createParallelButton(PanelSyncManager syncManager, ModularPanel parent) {
@@ -56,7 +42,6 @@ public class MTETranscendentPlasmaMixerGui extends MTEMultiBlockBaseGui<MTETrans
             true);
 
         return new ButtonWidget<>().size(18)
-            .marginBottom(2)
             .overlay(GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_ON)
             .tooltip(t -> t.addLine(translateToLocal("GT5U.tpm.parallelwindow")))
             .onMousePressed(mouseButton -> {
@@ -69,24 +54,24 @@ public class MTETranscendentPlasmaMixerGui extends MTEMultiBlockBaseGui<MTETrans
             });
     }
 
-    private static final int WIDTH = 158;
-    private static final int HEIGHT = 60;
+    private static final int WIDTH = 120;
+    private static final int HEIGHT = 50;
     private static final int PADDING_SIDES = 4;
 
     private ModularPanel openParallelSelectPanel(PanelSyncManager syncManager, ModularPanel parent) {
         ModularPanel returnPanel = new ModularPanel("parallelSelectPanel").size(WIDTH, HEIGHT)
-            .padding(4)
             .relative(parent)
             .leftRel(1)
             .topRel(0.8f);
 
         IntSyncValue parallelSyncer = syncManager.findSyncHandler("maximumParallels", IntSyncValue.class);
         Flow holdingColumn = Flow.column()
-            .sizeRel(1);
+            .sizeRel(1)
+            .paddingTop(12);
         holdingColumn.child(
             IKey.lang("GTPP.CC.parallel")
                 .asWidget()
-                .marginBottom(2));
+                .marginBottom(4));
         holdingColumn.child(
             new TextFieldWidget().setFormatAsInteger(true)
                 .setNumbers(1, Integer.MAX_VALUE)
@@ -94,8 +79,7 @@ public class MTETranscendentPlasmaMixerGui extends MTEMultiBlockBaseGui<MTETrans
                 .setDefaultNumber(1)
                 .value(parallelSyncer)
                 .size(WIDTH - PADDING_SIDES * 2, 18)
-                .align(Alignment.Center)
-                .setFocusOnGuiOpen(true));
+                .align(Alignment.Center));
 
         returnPanel.child(holdingColumn);
 
