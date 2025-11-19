@@ -16,32 +16,19 @@ package bartworks.common.loaders;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
-import net.minecraft.client.main.Main;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import bartworks.MainMod;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
-import bwcrossmod.BartWorksCrossmod;
-import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.objects.GTItemStack;
-import gregtech.api.recipe.RecipeMap;
-import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 
 public class StaticRecipeChangeLoaders {
@@ -52,7 +39,6 @@ public class StaticRecipeChangeLoaders {
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
             StaticRecipeChangeLoaders.runMaterialLinker(werkstoff);
             if (!werkstoff.getGenerationFeatures().enforceUnification) continue;
-            MainMod.LOGGER.info("Materials: "+werkstoff.getVarName());
             StaticRecipeChangeLoaders.runMoltenUnificationEnforcement(werkstoff);
             StaticRecipeChangeLoaders.runUnficationDeleter(werkstoff);
         }
@@ -65,57 +51,7 @@ public class StaticRecipeChangeLoaders {
             new FluidStack(Objects.requireNonNull(WerkstoffLoader.molten.get(werkstoff)), 1 * INGOTS),
             werkstoff.get(OrePrefixes.cellMolten),
             Materials.Empty.getCells(1));
-        ItemStack toReplace = null;
-        Iterator<Map.Entry<GTItemStack, FluidContainerRegistry.FluidContainerData>> iterator = GTUtility
-            .getFilledContainerToData()
-            .entrySet()
-            .iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<GTItemStack, FluidContainerRegistry.FluidContainerData> entry = iterator.next();
-            final String MODID = GameRegistry.findUniqueIdentifierFor(data.filledContainer.getItem()).modId;
-            if (MainMod.MOD_ID.equals(MODID) || BartWorksCrossmod.MOD_ID.equals(MODID)) continue;
-            if (entry.getValue().fluid.equals(data.fluid)
-                && !entry.getValue().filledContainer.equals(data.filledContainer)) {
-                toReplace = entry.getValue().filledContainer;
-                iterator.remove();
-            }
-        }
-        Set<GTRecipe> toremRecipeList = new HashSet<>();
-        int count = 0;
-        if (toReplace != null) {
-            for (RecipeMap<?> map : RecipeMap.ALL_RECIPE_MAPS.values()) {
-                toremRecipeList.clear();
-                for (GTRecipe recipe : map.getAllRecipes()) {
-                    for (ItemStack mInput : recipe.mInputs) {
-                        if (GTUtility.areStacksEqual(mInput, toReplace)) {
-                            toremRecipeList.add(recipe);
-                            // recipe.mInputs[i] = data.filledContainer;
-                        }
-                    }
-                    for (ItemStack mOutput : recipe.mOutputs) {
-                        if (GTUtility.areStacksEqual(mOutput, toReplace)) {
-                            toremRecipeList.add(recipe);
-                            // recipe.mOutputs[i] = data.filledContainer;
-                            if (map == RecipeMaps.fluidCannerRecipes
-                                && GTUtility.areStacksEqual(mOutput, data.filledContainer)
-                                && !recipe.mFluidInputs[0].equals(data.fluid)) {
-                                toremRecipeList.add(recipe);
-                                // recipe.mOutputs[i] = data.filledContainer;
-                            }
-                        }
-                    }
-                    if (recipe.mSpecialItems instanceof ItemStack
-                        && GTUtility.areStacksEqual((ItemStack) recipe.mSpecialItems, toReplace)) {
-                        toremRecipeList.add(recipe);
-                        // recipe.mSpecialItems = data.filledContainer;
-                    }
-                }
-                count+=toremRecipeList.size();
-                map.getBackend()
-                    .removeRecipes(toremRecipeList);
-            }
-        }
-        MainMod.LOGGER.info("Modified recipes: "+count);
+
         GTUtility.addFluidContainerData(data);
 
     }
