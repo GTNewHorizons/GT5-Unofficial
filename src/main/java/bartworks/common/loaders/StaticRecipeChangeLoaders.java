@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+import net.minecraft.client.main.Main;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -52,11 +53,12 @@ public class StaticRecipeChangeLoaders {
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
             StaticRecipeChangeLoaders.runMaterialLinker(werkstoff);
             if (!werkstoff.getGenerationFeatures().enforceUnification) continue;
-
+            MainMod.LOGGER.info("Material: "+werkstoff.getVarName());
             HashSet<String> oreDictNames = new HashSet<>(werkstoff.getAdditionalOredict());
             oreDictNames.add(werkstoff.getVarName());
             StaticRecipeChangeLoaders.runMoltenUnificationEnforcement(werkstoff);
             StaticRecipeChangeLoaders.runUnficationDeleter(werkstoff);
+            int count = 0;
             for (String s : oreDictNames) {
                 for (OrePrefixes prefixes : OrePrefixes.VALUES) {
                     if (!werkstoff.hasItemType(prefixes)) continue;
@@ -102,13 +104,14 @@ public class StaticRecipeChangeLoaders {
                                         .copyAmount(specialItemStack.stackSize, replacement);
                                 }
                             }
+                            count+=toRemove.size();
                             map.getBackend()
                                 .removeRecipes(toRemove);
                         }
                     }
                 }
             }
-
+            MainMod.LOGGER.info("recipes removed: "+count);
         }
     }
 
