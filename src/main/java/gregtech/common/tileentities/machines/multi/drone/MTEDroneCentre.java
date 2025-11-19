@@ -10,20 +10,12 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
 import java.io.IOException;
-import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-import appeng.client.render.highlighter.BlockPosHighlighter;
-import gregtech.common.config.Gregtech;
-import gregtech.common.gui.modularui.multiblock.MTEDroneCentreGui;
-import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -67,6 +59,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
 import appeng.api.util.DimensionalCoord;
+import appeng.client.render.highlighter.BlockPosHighlighter;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.SoundResource;
@@ -86,6 +79,9 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.config.Gregtech;
+import gregtech.common.gui.modularui.multiblock.MTEDroneCentreGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
 import gregtech.common.items.ItemTierDrone;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -107,7 +103,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     private String searchFilter = "";
     private boolean useRender = true;
     private boolean showLocalizedName = false;
-    private String sort = "distance";
+    public MTEDroneCentreGui.SortMode sortMode = MTEDroneCentreGui.SortMode.NAME;
     private List<DroneConnection> connectionList = new ArrayList<>();
     public HashMap<String, String> tempNameList = new HashMap<>();
     // Save centre by dimID
@@ -283,7 +279,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         super.loadNBTData(aNBT);
         droneLevel = aNBT.getInteger("drone");
         useRender = aNBT.getBoolean("useRender");
-        sort = aNBT.getString("sort");
+        sortMode = MTEDroneCentreGui.SortMode.valueOf(aNBT.getString("sort"));
         NBTTagCompound nameList = aNBT.getCompoundTag("conList");
         for (String s : nameList.func_150296_c()) {
             tempNameList.put(s, nameList.getString(s));
@@ -295,10 +291,13 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         super.saveNBTData(aNBT);
         aNBT.setInteger("drone", droneLevel);
         aNBT.setBoolean("useRender", useRender);
-        aNBT.setString("sort", sort);
+        aNBT.setString("sort", sortMode.toString());
         NBTTagCompound conList = new NBTTagCompound();
         for (DroneConnection con : connectionList) {
-            if (!con.customName.equals(con.machine.getLocalName()))
+            if (con.getLinkedMachine() == null) continue;
+            if (!con.customName.equals(
+                con.getLinkedMachine()
+                    .getLocalName()))
                 conList.setString(con.machineCoord.toString(), con.customName);
         }
         for (String pos : tempNameList.keySet()) {
@@ -400,6 +399,10 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         return connectionList;
     }
 
+    public void setConnectionList(List<DroneConnection> connectionList) {
+        this.connectionList = connectionList;
+    }
+
     public int getRange() {
         return switch (droneLevel) {
             case 1 -> 128;
@@ -467,14 +470,30 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         }
     }
 
+    public void turnOnAll() {
+        for (DroneConnection droneConnection : connectionList) {
+            if (droneConnection.isValid()) droneConnection.getLinkedMachine()
+                .enableWorking();
+        }
+    }
+
+    public void turnOffAll() {
+        for (DroneConnection droneConnection : connectionList) {
+            if (droneConnection.isValid()) droneConnection.getLinkedMachine()
+                .disableWorking();
+        }
+    }
+
     @Override
     protected boolean useMui2() {
         return Gregtech.debug.D0;
     }
+
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new MTEDroneCentreGui(this);
     }
+
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
@@ -507,7 +526,8 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
                             return;
                         }
                         for (DroneConnection mte : connectionList) {
-                            mte.machine.getBaseMetaTileEntity()
+                            mte.getLinkedMachine()
+                                .getBaseMetaTileEntity()
                                 .enableWorking();
                         }
                         widget.getContext()
@@ -539,7 +559,8 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
                             return;
                         }
                         for (DroneConnection mte : connectionList) {
-                            mte.machine.getBaseMetaTileEntity()
+                            mte.getLinkedMachine()
+                                .getBaseMetaTileEntity()
                                 .disableWorking();
                         }
                         widget.getContext()
@@ -643,19 +664,12 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
                         }
                     }
                 }
-            }.setOnClick((clickData, widget) -> {
-                switch (sort) {
-                    case "name" -> sort = "distance";
-                    case "distance" -> sort = "error";
-                    case "error" -> sort = "name";
-                }
-            })
-                .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_" + sort))
+            }.setOnClick((clickData, widget) -> {})
+                .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_" + sortMode))
                 .setBackground(
                     () -> new IDrawable[] { GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_SORTING_MODE })
                 .setPos(10, 30)
                 .setSize(16, 16))
-            .widget(new FakeSyncWidget.StringSyncer(() -> sort, var1 -> sort = var1))
             // Localized Button
             .widget(new ButtonWidget() {
 
@@ -684,23 +698,6 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
                         GTUITextures.OVERLAY_BUTTON_CYCLIC })
                 .setPos(30, 30)
                 .setSize(16, 16));
-        // Sort first
-        switch (sort) {
-            case "name" -> connectionList = connectionList.stream()
-                .sorted(
-                    (o1, o2) -> Collator.getInstance(Locale.UK)
-                        .compare(o1.getCustomName(false), o2.getCustomName(false)))
-                .collect(Collectors.toList());
-            case "distance" -> connectionList = connectionList.stream()
-                .sorted(Comparator.comparing(DroneConnection::getDistanceSquared))
-                .collect(Collectors.toList());
-            case "error" -> connectionList = connectionList.stream()
-                .sorted(
-                    Comparator.comparing(DroneConnection::isMachineShutdown)
-                        .reversed()
-                        .thenComparing(DroneConnection::getDistanceSquared))
-                .collect(Collectors.toList());
-        }
 
         Scrollable MachineContainer = new Scrollable().setVerticalScroll();
         int posY = 0;
@@ -711,7 +708,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
             ItemStackHandler drawitem = new ItemStackHandler(1);
             drawitem.setStackInSlot(0, connection.machineItem);
             DynamicPositionedRow row = new DynamicPositionedRow().setSynced(false);
-            MTEMultiBlockBase coreMachine = connection.machine;
+            MTEMultiBlockBase coreMachine = connection.getLinkedMachine();
             int finalI = i;
             row.widget(
                 SlotWidget.phantom(drawitem, 0)
@@ -829,7 +826,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
             row.widget(
                 new TextWidget(
                     connectionList.get(i)
-                        .getCustomName(showLocalizedName)).setTextAlignment(Alignment.CenterLeft)
+                        .getCustomName()).setTextAlignment(Alignment.CenterLeft)
                             .setPos(0, 4));
             MachineContainer.widget(
                 row.setAlignment(MainAxisAlignment.SPACE_BETWEEN)
@@ -866,7 +863,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
                 }
             }.setGetter(
                 () -> connectionList.get(buttonID)
-                    .getCustomName(false))
+                    .getCustomName())
                 .setSetter(
                     var -> connectionList.get(buttonID)
                         .setCustomName(var))
@@ -880,7 +877,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     }
 
     // Just like HIGHLIGHT_INTERFACE (and exactly from it)
-    private void highlightMachine(EntityPlayer player, ChunkCoordinates machineCoord) {
+    public static void highlightMachine(EntityPlayer player, ChunkCoordinates machineCoord) {
         DimensionalCoord blockPos = new DimensionalCoord(
             machineCoord.posX,
             machineCoord.posY,
@@ -896,5 +893,13 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     @Override
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
+    }
+
+    public MTEDroneCentreGui.SortMode getSortMode() {
+        return sortMode;
+    }
+
+    public void setSortMode(MTEDroneCentreGui.SortMode sortMode) {
+        this.sortMode = sortMode;
     }
 }

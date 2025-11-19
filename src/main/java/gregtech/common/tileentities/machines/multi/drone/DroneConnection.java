@@ -1,14 +1,11 @@
 package gregtech.common.tileentities.machines.multi.drone;
 
-import static gregtech.GTMod.proxy;
-
 import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
@@ -28,38 +25,35 @@ public class DroneConnection {
     // To make it work on client, no mte should be stored inside connection
     String customName;
     String unlocalizedName;
-    ItemStack machineItem;
+    public ItemStack machineItem;
     public ChunkCoordinates machineCoord;
     boolean machineStatus;
-    ShutDownReason shutdownReason;
+    String shutdownReason = "";
     ChunkCoordinates centreCoord;
     public UUID uuid;
-    World world;
+    public boolean isSelected;
+    int worldID;
 
     public DroneConnection(MTEMultiBlockBase machine, MTEDroneCentre centre) {
         this.machineItem = machine.getStackForm(1);
-        machineCoord = machine.getBaseMetaTileEntity()
+        this.machineCoord = machine.getBaseMetaTileEntity()
             .getCoords();
-        centreCoord = centre.getBaseMetaTileEntity()
+        this.centreCoord = centre.getBaseMetaTileEntity()
             .getCoords();
-        this.world = centre.getBaseMetaTileEntity()
-            .getWorld();
-        uuid = UUID.nameUUIDFromBytes(
+        this.worldID = centre.getBaseMetaTileEntity()
+            .getWorld().provider.dimensionId;
+        this.uuid = UUID.nameUUIDFromBytes(
             machineCoord.toString()
                 .getBytes());
-        unlocalizedName = machine.mName;
-        customName = Optional.ofNullable(centre.tempNameList.remove(machineCoord.toString()))
+        this.unlocalizedName = machine.mName;
+        this.customName = Optional.ofNullable(centre.tempNameList.remove(machineCoord.toString()))
             .orElse(machine.getLocalName());
     }
 
     public DroneConnection(NBTTagCompound aNBT) {
         NBTTagCompound machineTag = aNBT.getCompoundTag("machine");
         NBTTagCompound centreTag = aNBT.getCompoundTag("centre");
-        if (!proxy.isClientSide()) {
-            this.world = DimensionManager.getWorld(aNBT.getInteger("worldID"));
-        } else {
-            this.world = Minecraft.getMinecraft().thePlayer.worldObj;
-        }
+        this.worldID = aNBT.getInteger("worldID");
         machineItem = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("item"));
         machineCoord = new ChunkCoordinates(
             machineTag.getInteger("x"),
@@ -71,18 +65,21 @@ public class DroneConnection {
             centreTag.getInteger("z"));
         this.customName = aNBT.getString("name");
         this.unlocalizedName = aNBT.getString("unlocalizedName");
-        if (aNBT.hasKey("uuid")) {
-            this.uuid = UUID.fromString(aNBT.getString("uuid"));
-        }
+        this.uuid = UUID.fromString(aNBT.getString("uuid"));
+        this.machineStatus = aNBT.getBoolean("machineStatus");
+        this.shutdownReason = aNBT.getString("shutdownReason");
+        this.isSelected = aNBT.getBoolean("isSelected");
     }
 
     @Nullable
     public MTEMultiBlockBase getLinkedMachine() {
-        return getLoadedGTBaseMachineAt(machineCoord, world, false);
+        return getLoadedGTBaseMachineAt(machineCoord, DimensionManager.getWorld(worldID), false);
     }
 
+    @Nullable
     public MTEMultiBlockBase getLinkedCentre() {
-        return getLoadedGTBaseMachineAt(centreCoord, world, true);
+        // Has to be carefully since the centre maybe cross-dimension. Do not call this method in the client.
+        return getLoadedGTBaseMachineAt(centreCoord, DimensionManager.getWorld(worldID), true);
     }
 
     public String getCustomName() {
@@ -114,13 +111,13 @@ public class DroneConnection {
         aNBT.setTag("machine", transCoordsToNBT(machineCoord));
         aNBT.setTag("centre", transCoordsToNBT(centreCoord));
         aNBT.setTag("item", machineItem.writeToNBT(new NBTTagCompound()));
-        aNBT.setInteger(
-            "worldID",
-            getLinkedCentre().getBaseMetaTileEntity()
-                .getWorld().provider.dimensionId);
+        aNBT.setInteger("worldID", worldID);
         aNBT.setString("name", getCustomName());
         aNBT.setString("unlocalizedName", unlocalizedName);
         aNBT.setString("uuid", this.uuid.toString());
+        aNBT.setBoolean("machineStatus", machineStatus);
+        aNBT.setString("shutdownReason", shutdownReason);
+        aNBT.setBoolean("isSelected", isSelected);
         return aNBT;
     }
 
@@ -149,7 +146,7 @@ public class DroneConnection {
     }
 
     public void setShutdownReason(ShutDownReason reason) {
-        shutdownReason = reason;
+        shutdownReason = reason.getDisplayString();
     }
 
     public static DroneConnection deserialize(PacketBuffer buf) throws IOException {
@@ -165,7 +162,11 @@ public class DroneConnection {
     public static boolean areEqual(DroneConnection a, DroneConnection b) {
         if (a == null || b == null) return false;
         return a.machineCoord.equals(b.machineCoord) && a.centreCoord.equals(b.centreCoord)
+            && a.unlocalizedName.equals(b.unlocalizedName)
             && a.customName.equals(b.customName)
-            && a.unlocalizedName.equals(b.unlocalizedName);
+            && a.isSelected == b.isSelected
+            && a.machineStatus == b.machineStatus
+            && a.shutdownReason.equals(b.shutdownReason);
+
     }
 }
