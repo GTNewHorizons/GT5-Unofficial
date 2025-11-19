@@ -193,7 +193,9 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                             .setEnabledIf(widget -> multiblock.terminalSwitch)
                             .size(getTerminalWidgetWidth() - 10, getTerminalWidgetHeight() - 8)
                             .collapseDisabledChild())
-                    .childIf(multiblock.supportsTerminalCornerColumn(), createTerminalCornerColumn(panel, syncManager))
+                    .childIf(
+                        multiblock.supportsTerminalRightCornerColumn(),
+                        createTerminalRightCornerColumn(panel, syncManager))
 
             );
     }
