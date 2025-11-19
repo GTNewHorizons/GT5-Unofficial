@@ -139,7 +139,7 @@ public class MTEBeamSplitter extends MTEExtendedPowerMultiBlockBase<MTEBeamSplit
 
         if (mte instanceof MTEHatchAdvancedOutputBeamline hatch) {
             ((MTEHatch) mte).updateTexture(casingIndex);
-            hatch.setInitialParticleList(LHCModules.EM.acceptedParticles);
+            hatch.setInitialParticleList(LHCModules.AllParticles.acceptedParticles);
             this.mAdvancedOutputBeamline.add(hatch);
             return true;
         }
@@ -246,6 +246,8 @@ public class MTEBeamSplitter extends MTEExtendedPowerMultiBlockBase<MTEBeamSplit
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        mInputBeamline.clear();
+        mAdvancedOutputBeamline.clear();
         return checkPiece(STRUCTURE_PIECE_MAIN, 4, 2, 0);
     }
 
@@ -257,8 +259,7 @@ public class MTEBeamSplitter extends MTEExtendedPowerMultiBlockBase<MTEBeamSplit
         }
         return null;
     }
-
-
+    
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
         BeamInformation inputInfo = this.getInputParticle();
@@ -270,25 +271,27 @@ public class MTEBeamSplitter extends MTEExtendedPowerMultiBlockBase<MTEBeamSplit
     }
 
     private void outputPacketAfterRecipe(BeamInformation inputInfo) {
+        int numValidOutputs = 0;
         if (!this.mAdvancedOutputBeamline.isEmpty()) {
-
-            int numValidOutputs = 0;
             for (MTEHatchAdvancedOutputBeamline o : this.mAdvancedOutputBeamline) {
                 if (o.acceptedInputMap.getOrDefault(Particle.getParticleFromId(inputInfo.getParticleId()), false)
-                    == false) {
+                    == true) {
                     numValidOutputs++;
                 }
             }
             if (numValidOutputs > 0) {
                 for (MTEHatchAdvancedOutputBeamline o : this.mAdvancedOutputBeamline) {
-                    BeamInformation outputInfo = new BeamInformation(
-                        inputInfo.getEnergy(),
-                        inputInfo.getRate() / numValidOutputs,
-                        inputInfo.getParticleId(),
-                        inputInfo.getFocus()
-                    );
-                    BeamLinePacket packet = new BeamLinePacket(outputInfo);
-                    o.dataPacket = packet;
+                    if (o.acceptedInputMap.getOrDefault(Particle.getParticleFromId(inputInfo.getParticleId()), false)
+                        == true) {
+                        BeamInformation outputInfo = new BeamInformation(
+                            inputInfo.getEnergy(),
+                            inputInfo.getRate() / numValidOutputs,
+                            inputInfo.getParticleId(),
+                            inputInfo.getFocus()
+                        );
+                        BeamLinePacket packet = new BeamLinePacket(outputInfo);
+                        o.dataPacket = packet;
+                    }
                 }
             }
         }
