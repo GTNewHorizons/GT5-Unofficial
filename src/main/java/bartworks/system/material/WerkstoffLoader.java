@@ -2070,6 +2070,7 @@ public class WerkstoffLoader {
                     }
                 }
             }
+            MainMod.LOGGER.info("Amount of IC2 recipes removed: " + remset.size());
             Recipes.macerator.getRecipes()
                 .entrySet()
                 .removeAll(remset);
