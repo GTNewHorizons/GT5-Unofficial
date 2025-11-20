@@ -16,7 +16,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
@@ -173,7 +172,7 @@ public class AutoclaveRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 4))
             .itemOutputs(GTModHandler.getIC2Item("carbonFiber", 1L))
             .outputChances(10000)
-            .fluidInputs(Materials.Plastic.getMolten(1 * QUARTER_INGOTS))
+            .fluidInputs(Materials.Polyethylene.getMolten(1 * QUARTER_INGOTS))
             .duration(1 * SECONDS + 17 * TICKS)
             .eut((int) TierEU.RECIPE_LV)
             .addTo(autoclaveRecipes);
@@ -283,8 +282,8 @@ public class AutoclaveRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.TranscendentMetal, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.Mellion, 32L))
+                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.TranscendentMetal, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Mellion, 32L))
             .itemOutputs(ItemList.Phononic_Seed_Crystal.get(8L))
             .fluidInputs(Materials.Grade8PurifiedWater.getFluid(32_000L))
             .duration(15 * SECONDS)
@@ -292,9 +291,9 @@ public class AutoclaveRecipes implements Runnable {
             .addTo(autoclaveRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.round, MaterialsUEVplus.MagMatter, 1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.round, Materials.MagMatter, 1))
             .itemOutputs(ItemList.Phononic_Seed_Crystal.get(5))
-            .fluidInputs(MaterialsUEVplus.PhononCrystalSolution.getFluid(250))
+            .fluidInputs(Materials.PhononCrystalSolution.getFluid(250))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_UXV)
             .addTo(autoclaveRecipes);

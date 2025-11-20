@@ -61,7 +61,6 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
-import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.objects.ArtificialOrganism;
@@ -70,9 +69,10 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings12;
+import gregtech.common.gui.modularui.multiblock.MTEEvolutionChamberGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.render.IMTERenderer;
 import gregtech.common.tileentities.machines.IDualInputHatch;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.gui.MTEEvolutionChamberGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -113,7 +113,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
             ofChain(
                 buildHatchAdder(MTEEvolutionChamber.class)
                     .atLeast(InputBus, Maintenance, Energy, InputHatch, SpecialHatchElement.BioOutput)
-                    .casingIndex(((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(0))
+                    .casingIndex(((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(1))
                     .dot(1)
                     .build(),
                 onElementPass(
@@ -121,9 +121,9 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
                     StructureUtility.ofBlocksTiered(
                         MTEEvolutionChamber::getTierFromMeta,
                         ImmutableList.of(
-                            Pair.of(GregTechAPI.sBlockCasings12, 0),
                             Pair.of(GregTechAPI.sBlockCasings12, 1),
-                            Pair.of(GregTechAPI.sBlockCasings12, 2)),
+                            Pair.of(GregTechAPI.sBlockCasings12, 2),
+                            Pair.of(GregTechAPI.sBlockCasings12, 3)),
                         -1,
                         MTEEvolutionChamber::setCasingTier,
                         MTEEvolutionChamber::getCasingTier))))
@@ -191,8 +191,8 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
 
     private static Integer getTierFromMeta(Block block, Integer metaID) {
         if (block != GregTechAPI.sBlockCasings12) return -1;
-        if (metaID < 0 || metaID > 2) return -2;
-        return metaID + 1;
+        if (metaID < 1 || metaID > 3) return -2;
+        return metaID;
     }
 
     @Override
@@ -237,7 +237,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         ITexture[] rTexture;
-        int casingMeta = Math.max(casingTier - 1, 0);
+        int casingMeta = Math.max(casingTier, 1);
         if (side == aFacing) {
             if (currentSpecies != null && currentSpecies.getFinalized()) {
                 rTexture = new ITexture[] {
@@ -297,7 +297,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
 
     private void updateTextures() {
         getBaseMetaTileEntity().issueTextureUpdate();
-        int textureID = GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, casingTier - 1);
+        int textureID = GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, casingTier);
         for (MTEHatch h : mInputBusses) h.updateTexture(textureID);
         for (MTEHatch h : mInputHatches) h.updateTexture(textureID);
         for (IDualInputHatch h : mDualInputHatches) h.updateTexture(textureID);
@@ -442,7 +442,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(currentSpecies.saveAOToCompound(aNBT));
-        aNBT.setInteger("casingTier", Math.max(0, casingTier));
+        aNBT.setInteger("casingTier", Math.max(1, casingTier));
 
         if (tank.getFluid() != null) {
             NBTTagCompound fluidTag = new NBTTagCompound();
@@ -521,7 +521,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("casingTier", Math.max(0, casingTier));
+        tag.setInteger("casingTier", Math.max(1, casingTier));
     }
 
     @Override
@@ -556,7 +556,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     }
 
     @Override
-    protected @NotNull MTEMultiBlockBaseGui getGui() {
+    protected @NotNull MTEMultiBlockBaseGui<MTEEvolutionChamber> getGui() {
         return new MTEEvolutionChamberGui(this);
     }
 

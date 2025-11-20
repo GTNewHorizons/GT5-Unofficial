@@ -262,7 +262,7 @@ public enum SmallOres {
     Foolsruby(new SmallOreBuilder().name("ore.small.foolsruby")
         .heightRange(5, 35)
         .amount(2)
-        .ore(Materials.FoolsRuby)
+        .ore(Materials.Spinel)
         .enableInDim(Horus)
         .enableInDim(TWILIGHT_FOREST)),
 

@@ -13,13 +13,11 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
-import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.SingleChildWidget;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
-import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
@@ -69,6 +67,8 @@ public final class GTBaseGuiBuilder {
     private boolean doesAddCoverTabs = true;
     private boolean doesAddGhostCircuitSlot;
     private boolean doesAddGregTechLogo;
+    private int gregtechLogoPosX = 152;
+    private int gregtechLogoPosY = 63;
 
     public GTBaseGuiBuilder(IMetaTileEntity mte, PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         this.mte = mte;
@@ -138,6 +138,15 @@ public final class GTBaseGuiBuilder {
     }
 
     /**
+     * Sets a new position for the Gregtech Logo
+     */
+    public GTBaseGuiBuilder moveGregtechLogoPos(int X, int Y) {
+        this.gregtechLogoPosX = X;
+        this.gregtechLogoPosY = Y;
+        return this;
+    }
+
+    /**
      * Builds the resulting panel. Call after calling all the necessary feature switch methods.
      */
     public ModularPanel build() {
@@ -162,11 +171,11 @@ public final class GTBaseGuiBuilder {
     }
 
     private IWidget createTitle() {
-        // client side assumed
         String title = mte.getLocalName();
 
         int borderRadius = 5;
         int maxWidth = width - borderRadius * 2;
+
         int titleWidth = TextRenderer.getFontRenderer()
             .getStringWidth(title);
         int widgetWidth = Math.min(maxWidth, titleWidth);
@@ -175,21 +184,18 @@ public final class GTBaseGuiBuilder {
         int heightPerRow = (int) (IKey.renderer.getFontHeight());
         int height = heightPerRow * rows;
 
-        TextWidget<?> titleTextWidget = IKey.str(title)
-            .asWidget()
-            .alignment(Alignment.TopLeft)
-            .marginLeft(5)
-            .marginRight(5)
-            .marginTop(5)
-            .marginBottom(4);
-
         return new SingleChildWidget<>().coverChildren()
             .topRelAnchor(0, 1)
-            .height(height + 10)
             .widgetTheme(GTWidgetThemes.BACKGROUND_TITLE)
             .child(
-                titleTextWidget.height(height)
-                    .width(widgetWidth));
+                IKey.str(title)
+                    .asWidget()
+                    .size(widgetWidth, height)
+                    .widgetTheme(GTWidgetThemes.TEXT_TITLE)
+                    .marginLeft(5)
+                    .marginRight(5)
+                    .marginTop(5)
+                    .marginBottom(1));
     }
 
     private IWidget createCoverTabs() {
@@ -202,7 +208,7 @@ public final class GTBaseGuiBuilder {
             column.child(getCoverTabButton(mte.getBaseMetaTileEntity(), ForgeDirection.getOrientation(i)));
         }
         uiSettings.getRecipeViewerSettings()
-            .addRecipeViewerExclusionArea(column);
+            .addExclusionArea(column);
         return column;
     }
 
@@ -244,7 +250,7 @@ public final class GTBaseGuiBuilder {
             return -1;
         });
         syncManager.syncValue("selector_screen_selected", selectedSyncHandler);
-        return new GhostCircuitSlotWidget(mte, selectedSyncHandler)
+        return new GhostCircuitSlotWidget(mte, syncManager)
             .slot(new ModularSlot(new GhostCircuitItemStackHandler(mte), 0))
             .pos(ccs.getCircuitSlotX() - 1, ccs.getCircuitSlotY() - 1);
     }
@@ -252,6 +258,6 @@ public final class GTBaseGuiBuilder {
     private IWidget createGregTechLogo() {
         return new Widget<>().widgetTheme(GTWidgetThemes.PICTURE_LOGO)
             .size(17, 17) // todo: size
-            .pos(152, 63);
+            .pos(gregtechLogoPosX, gregtechLogoPosY);
     }
 }

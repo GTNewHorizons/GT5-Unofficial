@@ -689,7 +689,7 @@ public class GTAchievements {
                 if (data.mMaterial.mMaterial != Materials.Gunpowder) {
                     issueAchievement(player, "cleandust");
                 }
-            } else if (data.mPrefix.name()
+            } else if (data.mPrefix.getName()
                 .startsWith("ore")) {
                     int data_getAllMaterialStacks_sS = data.getAllMaterialStacks()
                         .size();
@@ -753,6 +753,16 @@ public class GTAchievements {
             case "gt.metaitem.03.32089" -> issueAchievement(player, "gtcrystalprocessor");
             case "gt.metaitem.03.32092" -> issueAchievement(player, "gtwetware");
             case "gt.metaitem.03.32095" -> issueAchievement(player, "gtwetmain");
+            case "gt.metaitem.01.11019" -> issueAchievement(player, "gtaluminium");
+            case "gt.metaitem.01.11028" -> issueAchievement(player, "titan");
+            case "gt.metaitem.01.11349" -> issueAchievement(player, "complexalloys");
+            case "gt.metaitem.01.11081" -> issueAchievement(player, "tungsten");
+            case "gt.metaitem.01.11083" -> issueAchievement(player, "osmium");
+            case "gt.metaitem.01.11316" -> issueAchievement(player, "tungstensteel");
+            case "gt.metaitem.01.11372" -> issueAchievement(player, "hssg");
+            case "gt.metaitem.01.11324" -> issueAchievement(player, "stargatematerial");
+            case "gt.metaitem.01.11325" -> issueAchievement(player, "alienmetallurgy");
+            case "gt.metaitem.01.11327" -> issueAchievement(player, "finalpreparations");
             case "gt.Thoriumcell" -> issueAchievement(player, "newfuel");
             case "ic2.itemPartCircuitAdv" -> issueAchievement(player, "stepforward");
             case "gt.blockcasings5.1" -> issueAchievement(player, "upgrade");
@@ -780,6 +790,11 @@ public class GTAchievements {
             || (stack.getItem() == Ic2Items.quantumHelmet.getItem())
             || (stack.getItem() == Ic2Items.quantumLeggings.getItem())) {
             issueAchievement(player, "buildQArmor");
+        }
+
+        if ((stack.getItem()) == ItemList.IC2_Industrial_Diamond.getItem()) {
+            issueAchievement(player, "artificaldia");
+            issueAchievement(player, "buildCoalDiamond");
         }
 
         for (GTRecipe recipe : RecipeMaps.assemblylineVisualRecipes.getAllRecipes()) {

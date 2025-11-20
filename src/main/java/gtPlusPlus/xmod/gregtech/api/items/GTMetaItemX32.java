@@ -66,8 +66,8 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
                     this.getDefaultLocalization(tPrefix, tMaterial, i));
                 GTLanguageManager.addStringLocalization(
                     this.getUnlocalizedName(tStack) + ".tooltip",
-                    tMaterial.getToolTip(tPrefix.mMaterialAmount / GTValues.M));
-                if (tPrefix.mIsUnificatable) {
+                    tMaterial.getChemicalTooltip(tPrefix.getMaterialAmount() / GTValues.M));
+                if (tPrefix.isUnifiable()) {
                     GTOreDictUnificator.set(tPrefix, tMaterial, tStack);
                 } else {
                     GTOreDictUnificator.registerOre(tPrefix.get(tMaterial), tStack);
@@ -123,8 +123,8 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
      */
     public final IIconContainer getIconContainer(final int aMetaData, final Materials aMaterial) {
         return (this.mGeneratedPrefixList[aMetaData / 1000] != null)
-            && (this.mGeneratedPrefixList[aMetaData / 1000].mTextureIndex >= 0)
-                ? aMaterial.mIconSet.mTextures[this.mGeneratedPrefixList[aMetaData / 1000].mTextureIndex]
+            && (this.mGeneratedPrefixList[aMetaData / 1000].getTextureIndex() >= 0)
+                ? aMaterial.mIconSet.mTextures[this.mGeneratedPrefixList[aMetaData / 1000].getTextureIndex()]
                 : null;
     }
 
@@ -206,7 +206,7 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
         final int tDamage = this.getDamage(aStack);
         if ((tDamage < 32000) && (this.mGeneratedPrefixList[tDamage / 1000] != null)) {
             return Math
-                .min(super.getItemStackLimit(aStack), this.mGeneratedPrefixList[tDamage / 1000].mDefaultStackSize);
+                .min(super.getItemStackLimit(aStack), this.mGeneratedPrefixList[tDamage / 1000].getDefaultStackSize());
         }
         return super.getItemStackLimit(aStack);
     }

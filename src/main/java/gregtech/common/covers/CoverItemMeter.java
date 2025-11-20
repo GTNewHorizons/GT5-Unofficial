@@ -20,8 +20,8 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
-import gregtech.common.covers.gui.CoverGui;
-import gregtech.common.covers.gui.CoverItemMeterGui;
+import gregtech.common.gui.modularui.cover.CoverItemMeterGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.gui.mui1.cover.ItemMeterUIFactory;
 import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
@@ -214,7 +214,7 @@ public class CoverItemMeter extends Cover {
     }
 
     @Override
-    protected @NotNull CoverGui<?> getCoverGui() {
+    protected @NotNull CoverBaseGui<?> getCoverGui() {
         return new CoverItemMeterGui(this);
     }
 

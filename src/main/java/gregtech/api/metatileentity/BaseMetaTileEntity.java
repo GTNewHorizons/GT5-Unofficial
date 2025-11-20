@@ -25,6 +25,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.EnumSkyBlock;
@@ -77,6 +78,7 @@ import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.covers.Cover;
 import gregtech.common.pollution.Pollution;
+import gregtech.common.render.IMTERenderer;
 import gregtech.mixin.interfaces.accessors.EntityItemAccessor;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
 import ic2.api.Direction;
@@ -615,6 +617,23 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
             getMetaTileEntity().getWailaBody(itemStack, currentTip, accessor, config);
         }
         super.getWailaBody(itemStack, currentTip, accessor, config);
+    }
+
+    @Override
+    public boolean hasWailaAdvancedBody(ItemStack itemStack, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        if (hasValidMetaTileEntity()) {
+            return getMetaTileEntity().hasWailaAdvancedBody(itemStack, accessor, config);
+        }
+        return super.hasWailaAdvancedBody(itemStack, accessor, config);
+    }
+
+    @Override
+    public void getWailaAdvancedBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        if (hasValidMetaTileEntity()) {
+            getMetaTileEntity().getWailaAdvancedBody(itemStack, currentTip, accessor, config);
+        }
+        super.getWailaAdvancedBody(itemStack, currentTip, accessor, config);
     }
 
     @Override
@@ -1214,7 +1233,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         if (!canAccessData()) {
             return false;
         }
-        if (mMetaTileEntity.getEUVar() - aEnergy >= 0 || aIgnoreTooLessEnergy) {
+        if (aIgnoreTooLessEnergy || mMetaTileEntity.getEUVar() - aEnergy >= 0) {
             setStoredEU(mMetaTileEntity.getEUVar() - aEnergy);
             if (mMetaTileEntity.getEUVar() < 0) {
                 setStoredEU(0);
@@ -1227,7 +1246,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
 
     public boolean decreaseStoredSteam(long aEnergy, boolean aIgnoreTooLessEnergy) {
         if (!canAccessData()) return false;
-        if (mMetaTileEntity.getSteamVar() - aEnergy >= 0 || aIgnoreTooLessEnergy) {
+        if (aIgnoreTooLessEnergy || mMetaTileEntity.getSteamVar() - aEnergy >= 0) {
             setStoredSteam(mMetaTileEntity.getSteamVar() - aEnergy);
             if (mMetaTileEntity.getSteamVar() < 0) {
                 setStoredSteam(0);
@@ -2206,5 +2225,13 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     @Override
     protected int getCoverTabHeightOffset() {
         return isSteampowered() || getMetaTileEntity() instanceof MTESteamMultiBase<?> ? 32 : 0;
+    }
+
+    @Override
+    public AxisAlignedBB getRenderBoundingBox() {
+
+        return getMetaTileEntity() instanceof IMTERenderer mteRenderer
+            ? mteRenderer.getRenderBoundingBox(xCoord, yCoord, zCoord)
+            : super.getRenderBoundingBox();
     }
 }

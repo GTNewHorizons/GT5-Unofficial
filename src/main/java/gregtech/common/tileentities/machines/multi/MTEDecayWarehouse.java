@@ -342,6 +342,7 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
             return;
         }
 
+        if (mStartUpCheck > 0) return;
         if (aTick % 20 != 0) return;
 
         decayRate = 0;
@@ -405,9 +406,9 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
                         SoundResource.GTCEU_OP_PLUNGER,
                         1.0F,
                         -1.0F,
-                        base.getXCoord(),
-                        base.getYCoord(),
-                        base.getZCoord());
+                        base.getXCoord() + .5,
+                        base.getYCoord() + .5,
+                        base.getZCoord() + .5);
 
                     return true;
                 }
@@ -428,10 +429,13 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
         long availableEUt = mEnergyHatches.size() > 1 ? getMaxInputPower() : getMaxInputVoltage();
+
+        availableEUt = (long) (availableEUt * 0.95);
+
         int remainingIOQuota = GTUtility.safeInt(availableEUt / EU_PER_IO, 0);
 
         mMaxProgresstime = 20;
-        mEfficiencyIncrease = 10_000;
+        mEfficiency = 10_000;
         lEUt = 0;
 
         List<ItemStack> outputs = new ArrayList<>();

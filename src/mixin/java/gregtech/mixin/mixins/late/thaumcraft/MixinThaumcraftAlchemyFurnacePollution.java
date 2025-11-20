@@ -14,10 +14,10 @@ import gregtech.common.pollution.FurnacePollution;
 import thaumcraft.common.tiles.TileAlchemyFurnace;
 
 // Merged from ModMixins under the MIT License Copyright bartimaeusnek & GTNewHorizons
-@Mixin(TileAlchemyFurnace.class)
+@Mixin(value = TileAlchemyFurnace.class, remap = false)
 public abstract class MixinThaumcraftAlchemyFurnacePollution extends TileEntity {
 
-    @Shadow
+    @Shadow(remap = false)
     public abstract boolean isBurning();
 
     @Inject(method = "updateEntity", at = @At("TAIL"))

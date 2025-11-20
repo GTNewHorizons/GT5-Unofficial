@@ -9,14 +9,11 @@ import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.*;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GTRecipeConstants.DISSOLUTION_TANK_RATIO;
-import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
-import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.alloyBlastSmelterRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.centrifugeNonCellRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorNonCellRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.mixerNonCellRecipes;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.semiFluidFuels;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.vacuumFurnaceRecipes;
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.dissolutionTankRecipes;
 
@@ -29,12 +26,10 @@ import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsGTNH;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GTBees;
@@ -57,7 +52,7 @@ public class NetheriteRecipes {
                     GregtechItemList.RedAlgaeBiomass.get(32),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.CertusQuartz, 32))
                 .fluidInputs(Materials.Grade1PurifiedWater.getFluid(8000))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.shard, MaterialsGTNH.Prismarine, 8))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.shard, Materials.Prismarine, 8))
                 .duration(15 * SECONDS)
                 .eut(TierEU.RECIPE_LuV)
                 .addTo(autoclaveRecipes);
@@ -68,14 +63,14 @@ public class NetheriteRecipes {
                         GregtechItemList.RedAlgaeBiomass.get(32),
                         GTBees.combs.getStackForType(CombType.PRISMATIC, 32))
                     .fluidInputs(Materials.Grade1PurifiedWater.getFluid(8000))
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.shard, MaterialsGTNH.Prismarine, 16))
+                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.shard, Materials.Prismarine, 16))
                     .duration(15 * SECONDS)
                     .eut(TierEU.RECIPE_LuV)
                     .addTo(autoclaveRecipes);
             }
 
             GTValues.RA.stdBuilder() // Leaching
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.shard, MaterialsGTNH.Prismarine, 24))
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.shard, Materials.Prismarine, 24))
                 .fluidInputs(
                     FluidUtils.getHydrofluoricAcid(4000), // Industrial Strength Hydrofluoric Acid
                     FluidRegistry.getFluidStack("fluid.hydrogenperoxide", 4000)) // Hydrogen Peroxide
@@ -87,7 +82,7 @@ public class NetheriteRecipes {
                 .addTo(dissolutionTankRecipes);
 
             GTValues.RA.stdBuilder() // Looped Leaching
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.shard, MaterialsGTNH.Prismarine, 6))
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.shard, Materials.Prismarine, 6))
                 .fluidInputs(
                     Materials.PrismarineContaminatedHydrogenPeroxide.getFluid(6000),
                     FluidRegistry.getFluidStack("fluid.hydrogenperoxide", 2000)) // Hydrogen Peroxide
@@ -131,7 +126,7 @@ public class NetheriteRecipes {
                 .addTo(multiblockChemicalReactorRecipes);
 
             GTValues.RA.stdBuilder() // Precipitation
-                .itemInputs(MaterialMisc.STRONTIUM_HYDROXIDE.getDust(48))
+                .itemInputs(MaterialMisc.STRONTIUM_HYDROXIDE.getDust(42))
                 .itemOutputs(ItemList.Prismarine_Precipitate.get(8))
                 .fluidInputs(Materials.PrismarineRichNitrobenzeneSolution.getFluid(16000))
                 .fluidOutputs(
@@ -257,14 +252,6 @@ public class NetheriteRecipes {
             .addTo(distillationTowerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.NefariousGas, 1))
-            .metadata(FUEL_VALUE, 1200)
-            .metadata(FUEL_TYPE, 1)
-            .duration(0)
-            .eut(0)
-            .addTo(GTRecipeConstants.Fuel);
-
-        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(1))
             .fluidInputs(Materials.Grade1PurifiedWater.getFluid(4_000), Materials.NefariousGas.getFluid(16_000))
             .fluidOutputs(Materials.NefariousOil.getFluid(12_000))
@@ -279,13 +266,6 @@ public class NetheriteRecipes {
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(crackingRecipes);
-
-        GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.NefariousOil.getFluid(1_000))
-            .duration(0)
-            .eut(0)
-            .metadata(FUEL_VALUE, 572)
-            .addTo(semiFluidFuels);
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Heavy_Hellish_Mud.get(32))
