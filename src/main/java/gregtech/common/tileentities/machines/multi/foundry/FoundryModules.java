@@ -23,6 +23,13 @@ public enum FoundryModules {
         EnumChatFormatting.GRAY,
         0
     ),
+    EXTRA_CASTING_BASINS("Extra Casting Basins", "E.C.B", "extra_casting_basins",
+        ItemList.Extra_Casting_Basins_ExoFoundry.get(1),
+        GTGuiTextures.EXOFOUNDRY_ECB,
+        58f / 255f * 3, 58f / 255f * 3, 34f / 255f * 3,
+        EnumChatFormatting.YELLOW,
+        10
+    ),
     ACTIVE_TIME_DILATION_SYSTEM(
         "Time Dilation System", "T.D.S", "tds",
         ItemList.Active_Time_Dilation_System_ExoFoundry.get(0),
@@ -30,6 +37,14 @@ public enum FoundryModules {
         10f / 255f * 5, 24f / 255f * 5, 43f / 255f * 5,
         EnumChatFormatting.DARK_PURPLE,
         13
+    ),
+    POWER_EFFICIENT_SUBSYSTEMS(
+        "Power Efficient Subsystems", "P.E.S", "power_efficient_subsystems",
+        ItemList.Power_Efficient_Subsystems_ExoFoundry.get(1),
+        GTGuiTextures.EXOFOUNDRY_PES,
+        10f / 255f, 143f / 255f, 38f / 255f,
+        EnumChatFormatting.GREEN,
+        10
     ),
     EFFICIENT_OC(
         "Efficient Overclocking System", "E.O.C", "eff_oc",
@@ -39,12 +54,12 @@ public enum FoundryModules {
         EnumChatFormatting.DARK_AQUA,
         12
     ),
-    POWER_EFFICIENT_SUBSYSTEMS(
-        "Power Efficient Subsystems", "P.E.S", "power_efficient_subsystems",
-        ItemList.Power_Efficient_Subsystems_ExoFoundry.get(1),
-        GTGuiTextures.EXOFOUNDRY_PES,
-        10f / 255f, 143f / 255f, 38f / 255f,
-        EnumChatFormatting.GREEN,
+    STREAMLINED_CASTERS(
+        "Streamlined Casters", "S.L.C", "streamlined_casters",
+        ItemList.Streamlined_Casters_ExoFoundry.get(1),
+        GTGuiTextures.EXOFOUNDRY_SLC,
+        130f / 255f * 2, 30f / 255f * 2, 30f / 255f * 2,
+        EnumChatFormatting.RED,
         10
     ),
     HARMONIC_REINFORCEMENT(
@@ -55,13 +70,7 @@ public enum FoundryModules {
         EnumChatFormatting.LIGHT_PURPLE,
         11
     ),
-    EXTRA_CASTING_BASINS("Extra Casting Basins", "E.C.B", "extra_casting_basins",
-        ItemList.Extra_Casting_Basins_ExoFoundry.get(1),
-        GTGuiTextures.EXOFOUNDRY_ECB,
-        58f / 255f * 3, 58f / 255f * 3, 34f / 255f * 3,
-        EnumChatFormatting.YELLOW,
-        10
-    ),
+
     HYPERCOOLER(
         "Hypercooler", "H.C", "hypercooler",
         ItemList.Hypercooler_ExoFoundry.get(1),
@@ -70,14 +79,9 @@ public enum FoundryModules {
         EnumChatFormatting.AQUA,
         11
     ),
-    STREAMLINED_CASTERS(
-        "Streamlined Casters", "S.L.C", "streamlined_casters",
-        ItemList.Streamlined_Casters_ExoFoundry.get(1),
-        GTGuiTextures.EXOFOUNDRY_SLC,
-        130f / 255f * 2, 30f / 255f * 2, 30f / 255f * 2,
-        EnumChatFormatting.RED,
-        10
-    );
+
+    ;
+
     //spotless:on
 
     public final String displayName;

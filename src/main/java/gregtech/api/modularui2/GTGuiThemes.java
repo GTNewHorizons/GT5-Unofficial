@@ -1,5 +1,7 @@
 package gregtech.api.modularui2;
 
+import java.awt.Color;
+
 import gregtech.api.enums.Dyes;
 import gtPlusPlus.xmod.gregtech.common.modularui2.GTPPTextureIds;
 
@@ -213,10 +215,11 @@ public final class GTGuiThemes {
         .simpleToggleButton(
             GTTextureIds.BUTTON_FOUNDRY,
             GTTextureIds.BUTTON_FOUNDRY_PRESSED,
-            Dyes.MACHINE_METAL.toInt()) // todo change color here
-        .color(Dyes.dyeWhite.toInt()) // todo change color here
-        .textColor(0xfafaff) // todo change color here
-        .customTextColor(GTWidgetThemes.TEXT_TITLE.getFullName(), 0xfafaff) // todo change color here
+            Dyes.MACHINE_METAL.toInt())
+        .color(Dyes.dyeWhite.toInt())
+        .textColor(new Color(0xBDA44A).getRGB()) // todo change color here
+        .customTextColor(GTWidgetThemes.TEXT_TITLE.getFullName(), new Color(0xBDA44A).getRGB()) // todo change color
+                                                                                                // here
         .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_LOGO_EXOFOUNDRY)
         .build();
 

@@ -19,8 +19,6 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
-import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
-import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
@@ -45,17 +43,8 @@ import gregtech.common.tileentities.machines.multi.foundry.MTEExoFoundry;
 
 public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
 
-    private final IItemHandlerModifiable itemHandler = new ItemStackHandler(8);
-
     public MTEExoFoundryGui(MTEExoFoundry base) {
         super(base);
-        // manual init :P
-        for (int i = 0; i < 8; i++) {
-            itemHandler.setStackInSlot(
-                i,
-                FoundryModules.getModule(i)
-                    .getItemIcon());
-        }
     }
 
     @Override
@@ -81,23 +70,21 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
     }
 
     @Override
-    protected Flow createPanelGap(ModularPanel parent, PanelSyncManager syncManager) {
-        return super.createPanelGap(parent, syncManager).child(createConfigButton(syncManager, parent));
+    protected Flow createRightPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
+        return super.createRightPanelGapRow(parent, syncManager).child(createOverviewButton(syncManager, parent));
     }
 
     @Override
     protected Flow createButtonColumn(ModularPanel panel, PanelSyncManager syncManager) {
-        return super.createButtonColumn(panel, syncManager).child(createOverviewButton(syncManager, panel));
+        return super.createButtonColumn(panel, syncManager).child(createConfigButton(syncManager, panel));
     }
 
-    // 2 buttons on the panelGap, one opens stats info, other opens module config.
     protected IWidget createOverviewButton(PanelSyncManager syncManager, ModularPanel parent) {
         IPanelHandler statsPanel = syncManager.panel(
             "statsPanel",
             (p_syncManager, syncHandler) -> openInfoPanel(p_syncManager, parent, syncManager),
             true);
         return new ButtonWidget<>().size(18, 18)
-            .topRel(0)
             .overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/cyclic"))
             .onMousePressed(d -> {
                 if (!statsPanel.isPanelOpen()) {
@@ -131,40 +118,32 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                             .height(9))
                     .widgetTheme("backgroundPopup")
                     .child(
-                        new TextWidget<>(
-                            IKey.dynamic(
-                                () -> EnumChatFormatting.DARK_PURPLE + "Speed: "
-                                    + EnumChatFormatting.WHITE
-                                    + speedSync.getValue())).size(120, 20)
-                                        .marginBottom(2))
+                        IKey.dynamic(() -> "Speed: " + TooltipHelper.SPEED_COLOR + speedSync.getValue())
+                            .asWidget()
+                            .size(120, 20)
+                            .marginBottom(2))
+
                     .child(
-                        new TextWidget<>(
-                            IKey.dynamic(
-                                () -> EnumChatFormatting.DARK_PURPLE + "Parallels Per Tier: "
-                                    + EnumChatFormatting.WHITE
-                                    + parallelSync.getValue())).size(120, 20)
-                                        .marginBottom(2))
+                        IKey.dynamic(
+                            () -> "Parallels Per Tier: " + TooltipHelper.PARALLEL_COLOR + parallelSync.getValue())
+                            .asWidget()
+                            .size(120, 20)
+                            .marginBottom(2))
                     .child(
-                        new TextWidget<>(
-                            IKey.dynamic(
-                                () -> EnumChatFormatting.DARK_PURPLE + "EU Consumption: "
-                                    + EnumChatFormatting.WHITE
-                                    + euEffBaseSync.getValue())).size(120, 20)
-                                        .marginBottom(2))
+                        IKey.dynamic(() -> "EU Consumption: " + TooltipHelper.EFF_COLOR + euEffBaseSync.getValue())
+                            .asWidget()
+                            .size(120, 20)
+                            .marginBottom(2))
                     .child(
-                        new TextWidget<>(
-                            IKey.dynamic(
-                                () -> EnumChatFormatting.DARK_PURPLE + "OC Factor: "
-                                    + EnumChatFormatting.WHITE
-                                    + ocFactorSync.getValue())).size(120, 20)
-                                        .marginBottom(2)));
+                        IKey.dynamic(() -> "OC Factor: " + EnumChatFormatting.LIGHT_PURPLE + ocFactorSync.getValue())
+                            .asWidget()
+                            .size(120, 20)
+                            .marginBottom(2)));
 
     }
 
     protected IWidget createConfigButton(PanelSyncManager syncManager, ModularPanel parent) {
         return new ButtonWidget<>().size(18, 18)
-            .right(2 + 18 + 4)
-            .marginTop(4)
             .overlay(GuiTextures.GEAR)
             .onMousePressed(d -> {
                 multiblock.terminalSwitch = !multiblock.terminalSwitch;
@@ -276,7 +255,8 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                                 'I',
                                 i -> new ButtonWidget<>().size(18)
                                     .overlay(
-                                        new ItemDrawable(Objects.requireNonNull(this.itemHandler.getStackInSlot(i))))
+                                        new ItemDrawable(
+                                            Objects.requireNonNull(FoundryModules.values()[i].getItemIcon())))
                                     .tooltipBuilder(t -> createTooltipForModule(t, i))
                                     .onMouseTapped(mouseButton -> {
                                         moduleSync.setIntValue(i);
@@ -318,7 +298,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
             }
             case EFFICIENT_OC -> {
                 t.addLine(moduleLimitText);
-                t.addLine("Increases Overclock Factor by " + EnumChatFormatting.LIGHT_PURPLE + "0.35");
+                t.addLine("Increases Overclock Factor by " + EnumChatFormatting.LIGHT_PURPLE + "0.25");
             }
             case HYPERCOOLER -> {
                 t.addLine(moduleLimitText);

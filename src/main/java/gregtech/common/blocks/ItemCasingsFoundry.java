@@ -55,9 +55,9 @@ public class ItemCasingsFoundry extends ItemCasings {
             case 5 -> {
                 tooltip.add(moduleBaseText);
                 tooltip.add(moduleLimitText);
-                tooltip.add("Increases Overclock Factor by " + EnumChatFormatting.LIGHT_PURPLE + "0.35");
+                tooltip.add("Increases Overclock Factor by " + EnumChatFormatting.LIGHT_PURPLE + "0.25");
                 tooltip.add(
-                    "This means that each overclock provides an additional " + TooltipHelper.speedText("35%")
+                    "This means that each overclock provides an additional " + TooltipHelper.speedText("25%")
                         + " speed");
                 tooltip.add(createTierLine(12));
                 tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.efficientoc"));
