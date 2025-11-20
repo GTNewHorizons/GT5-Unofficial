@@ -373,7 +373,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         // Time Dilation System
         .addElement('!', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsBA0, 10)))
         .addElement('@', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsBA0, 11)))
-        .addElement('#', activeCoils(ofBlock(GregTechAPI.sBlockCasingsFoundry, 4)))
+        .addElement('#', ofBlock(GregTechAPI.sBlockCasingsFoundry, 4))
         .addElement('$', ofFrame(Materials.Universium))
         .addElement('%', ofFrame(Materials.Eternity))
         .addElement('^', ofFrame(Materials.WhiteDwarfMatter))
