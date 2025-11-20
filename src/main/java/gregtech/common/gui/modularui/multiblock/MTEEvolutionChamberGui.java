@@ -23,22 +23,19 @@ import org.jetbrains.annotations.NotNull;
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.ItemDrawable;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.factory.PosGuiData;
-import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
-import com.cleanroommc.modularui.utils.item.IItemHandler;
-import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 import com.cleanroommc.modularui.utils.serialization.IByteBufAdapter;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.GenericSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.InteractionSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.WidgetTree;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.CategoryList;
 import com.cleanroommc.modularui.widgets.ListWidget;
@@ -48,7 +45,6 @@ import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.google.common.collect.ImmutableList;
-import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.objects.ArtificialOrganism;
@@ -60,24 +56,6 @@ public class MTEEvolutionChamberGui extends MTEMultiBlockBaseGui<MTEEvolutionCha
     public MTEEvolutionChamberGui(MTEEvolutionChamber base) {
         super(base);
     }
-
-    private static class LimitingItemStackHandler extends ItemStackHandler
-        implements IItemHandlerModifiable, IItemHandler {
-
-        private final int slotLimit;
-
-        private LimitingItemStackHandler(int slots, int slotLimit) {
-            super(slots);
-            this.slotLimit = slotLimit;
-        }
-
-        @Override
-        public int getSlotLimit(int slot) {
-            return slotLimit;
-        }
-    }
-
-    LimitingItemStackHandler limitedHandler = new LimitingItemStackHandler(1, 1);
 
     private static final UITexture intIcon = UITexture.builder()
         .location(GregTech.ID, "gui/picture/icon_intelligence")
@@ -208,11 +186,7 @@ public class MTEEvolutionChamberGui extends MTEMultiBlockBaseGui<MTEEvolutionCha
 
                     // Add the unique trait icon and get the Trait's descLocKey as a tooltip
                     .child(
-                        UITexture.builder()
-                            .location(GregTech.ID, "gui/picture/artificial_organisms/trait_" + t.id)
-                            .imageSize(10, 10)
-                            .build()
-                            .asWidget()
+                        t.texture.asWidget()
                             .size(10, 10)
                             .addTooltipStringLines(
                                 ImmutableList.of(
@@ -269,7 +243,18 @@ public class MTEEvolutionChamberGui extends MTEMultiBlockBaseGui<MTEEvolutionCha
         // AO count Syncers
         GenericSyncValue<ArtificialOrganism> organismSyncer = syncManager.findSyncHandler("ao", GenericSyncValue.class);
         IntSyncValue aoCapacitySyncer = syncManager.findSyncHandler("aoCapacity", IntSyncValue.class);
+        for (ArtificialOrganism.Trait t : multiblock.currentSpecies.traits) {
+            traitRow.child(
+                new DynamicDrawable(() -> t.texture)
 
+                    .asWidget()
+                    .size(10, 10)
+                    .background()
+                    .addTooltipStringLines(
+                        ImmutableList.of(
+                            EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal(t.nameLocKey),
+                            StatCollector.translateToLocal(t.descLocKey))));
+        }
         // Nutrient Syncers
         IntSyncValue fillLevelSyncer = syncManager.findSyncHandler("fillLevel", IntSyncValue.class);
         IntSyncValue internalTankCapacitySyncer = syncManager
@@ -336,29 +321,27 @@ public class MTEEvolutionChamberGui extends MTEMultiBlockBaseGui<MTEEvolutionCha
             .child(
                 new ItemSlot().pos(7, 60)
                     .slot(
-                        new ModularSlot(limitedHandler, 0).slotGroup("culture_slot")
+                        new ModularSlot(multiblock.limitedHandler, 0).slotGroup("culture_slot")
                             .ignoreMaxStackSize(true)
                             .filter(multiblock::isValidCulture))
-                    .setEnabledIf(ignored -> multiblock.canAddTrait())
+                    .setEnabledIf(ignored -> multiblock.mMachine && multiblock.canAddTrait())
                     .size(16, 16))
 
             // This is the "insert item" button
             .child(
                 new ButtonWidget<>().pos(27, 61)
                     .syncHandler(new InteractionSyncHandler().setOnMousePressed(mouseData -> {
-                        ItemStack is = limitedHandler.getStackInSlot(0);
+                        ItemStack is = multiblock.limitedHandler.getStackInSlot(0);
                         if (is != null && multiblock.canAddTrait()) {
                             ArtificialOrganism.Trait t = ArtificialOrganism.getTraitFromItem(is);
                             if (t == null) return;
 
-                            limitedHandler.extractItem(0, 1, false);
+                            multiblock.limitedHandler.extractItem(0, 1, false);
 
                             multiblock.currentSpecies.addTrait(t);
                             traitRow.child(
-                                UITexture.builder()
-                                    .location(GregTech.ID, "gui/picture/artificial_organisms/trait_" + t.id)
-                                    .imageSize(10, 10)
-                                    .build()
+                                new DynamicDrawable(() -> t.texture)
+
                                     .asWidget()
                                     .size(10, 10)
                                     .background()
@@ -368,14 +351,15 @@ public class MTEEvolutionChamberGui extends MTEMultiBlockBaseGui<MTEEvolutionCha
                                             StatCollector.translateToLocal(t.descLocKey))));
 
                             if (syncManager.isClient()) {
-                                WidgetTree.resize(panel);
+                                panel.scheduleResize();
                             }
                         }
                     }))
                     .overlay(OVERLAY_BUTTON_ADDITION)
                     .addTooltipLine(StatCollector.translateToLocal("GT5U.artificialorganisms.button.addculture"))
                     .size(16, 16)
-                    .setEnabledIf(ignored -> multiblock.canAddTrait()))
+                    .setEnabledIf(ignored -> multiblock.mMachine && multiblock.canAddTrait()))
+            // these are currently enabled with mMachine, if you want to change this just remove it - chrom
 
             // This button finalizes the aos, preventing further modification and allowing user to add primordial soup
             .child(
@@ -384,7 +368,7 @@ public class MTEEvolutionChamberGui extends MTEMultiBlockBaseGui<MTEEvolutionCha
                     .overlay(OVERLAY_BUTTON_CHECKMARK)
                     .addTooltipLine(StatCollector.translateToLocal("GT5U.artificialorganisms.button.finalize"))
                     .size(16, 16)
-                    .setEnabledIf(ignored -> !multiblock.currentSpecies.getFinalized()))
+                    .setEnabledIf(ignored -> multiblock.mMachine && !multiblock.currentSpecies.getFinalized()))
 
             // Opens the trait list popup
             .child(
@@ -494,31 +478,6 @@ public class MTEEvolutionChamberGui extends MTEMultiBlockBaseGui<MTEEvolutionCha
                             EnumChatFormatting.UNDERLINE
                                 + StatCollector.translateToLocal("GT5U.artificialorganisms.reproduction"),
                             StatCollector.translateToLocal("GT5U.artificialorganisms.reproductiondesc"))));
-
-        // Render the trait icons for traits previously added
-        organismSyncer.setChangeListener(() -> {
-            traitRow.getChildren()
-                .clear();
-
-            for (ArtificialOrganism.Trait t : multiblock.currentSpecies.traits) {
-                traitRow.child(
-                    UITexture.builder()
-                        .location(GregTech.ID, "gui/picture/artificial_organisms/trait_" + t.id)
-                        .imageSize(10, 10)
-                        .build()
-                        .asWidget()
-                        .size(10, 10)
-                        .background()
-                        .addTooltipStringLines(
-                            ImmutableList.of(
-                                EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal(t.nameLocKey),
-                                StatCollector.translateToLocal(t.descLocKey))));
-            }
-            if (NetworkUtils.isClient()) {
-                // todo: causes stuttering of the icons as they are redrawn every frame, should be avoided somehow
-                WidgetTree.resize(traitRow);
-            }
-        });
 
         panel.child(traitRow);
         return panel;

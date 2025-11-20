@@ -1,5 +1,7 @@
 package gregtech.api.objects;
 
+import static gregtech.api.enums.Mods.GregTech;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
@@ -12,6 +14,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraftforge.common.util.Constants;
+
+import com.cleanroommc.modularui.drawable.UITexture;
 
 import gregtech.api.enums.ItemList;
 
@@ -339,6 +343,7 @@ public class ArtificialOrganism {
         public final int baseInt, baseStr, baseRep;
         public final int id;
         public final String nameLocKey, descLocKey;
+        public final UITexture texture;
 
         Trait(ItemStack cultureItem, int baseInt, int baseStr, int baseRep, int id, String nameLocKey,
             String descLocKey) {
@@ -349,6 +354,10 @@ public class ArtificialOrganism {
             this.id = id;
             this.nameLocKey = nameLocKey;
             this.descLocKey = descLocKey;
+            this.texture = UITexture.builder()
+                .location(GregTech.ID, "gui/picture/artificial_organisms/trait_" + this.id)
+                .imageSize(10, 10)
+                .build();
         }
     }
 }

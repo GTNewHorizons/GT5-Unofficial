@@ -40,6 +40,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
 
+import com.cleanroommc.modularui.utils.item.LimitingItemStackHandler;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -190,8 +191,8 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     }
 
     private static Integer getTierFromMeta(Block block, Integer metaID) {
-        if (block != GregTechAPI.sBlockCasings12) return -1;
-        if (metaID < 1 || metaID > 3) return -2;
+        if (block != GregTechAPI.sBlockCasings12) return null;
+        if (metaID < 1 || metaID > 3) return null;
         return metaID;
     }
 
@@ -237,7 +238,8 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         ITexture[] rTexture;
-        int casingMeta = Math.max(casingTier, 1);
+        // stupid fix because casing tier was 117 if machine was not formed ???
+        int casingMeta = mMachine ? Math.max(1, getCasingTier()) : 1;
         if (side == aFacing) {
             if (currentSpecies != null && currentSpecies.getFinalized()) {
                 rTexture = new ITexture[] {
@@ -297,7 +299,8 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
 
     private void updateTextures() {
         getBaseMetaTileEntity().issueTextureUpdate();
-        int textureID = GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, casingTier);
+
+        int textureID = GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, Math.max(1, casingTier));
         for (MTEHatch h : mInputBusses) h.updateTexture(textureID);
         for (MTEHatch h : mInputHatches) h.updateTexture(textureID);
         for (IDualInputHatch h : mDualInputHatches) h.updateTexture(textureID);
@@ -423,6 +426,8 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         }
     }
 
+    public LimitingItemStackHandler limitedHandler = new LimitingItemStackHandler(1, 1);
+
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
@@ -437,6 +442,9 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         } else {
             tank.setFluid(null);
         }
+        if (limitedHandler != null) {
+            limitedHandler.deserializeNBT(aNBT.getCompoundTag("inventory"));
+        }
     }
 
     @Override
@@ -449,6 +457,9 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
             tank.getFluid()
                 .writeToNBT(fluidTag);
             aNBT.setTag("fluidTank", fluidTag);
+        }
+        if (limitedHandler != null) {
+            aNBT.setTag("inventory", limitedHandler.serializeNBT());
         }
     }
 
