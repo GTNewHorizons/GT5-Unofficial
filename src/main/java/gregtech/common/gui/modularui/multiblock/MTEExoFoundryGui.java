@@ -71,12 +71,12 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
 
     @Override
     protected Flow createRightPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
-        return super.createRightPanelGapRow(parent, syncManager).child(createOverviewButton(syncManager, parent));
+        return super.createRightPanelGapRow(parent, syncManager).child(createConfigButton(syncManager, parent));
     }
 
     @Override
     protected Flow createButtonColumn(ModularPanel panel, PanelSyncManager syncManager) {
-        return super.createButtonColumn(panel, syncManager).child(createConfigButton(syncManager, panel));
+        return super.createButtonColumn(panel, syncManager).child(createOverviewButton(syncManager, panel));
     }
 
     protected IWidget createOverviewButton(PanelSyncManager syncManager, ModularPanel parent) {
