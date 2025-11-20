@@ -298,6 +298,7 @@ public class MaterialGenerator {
             }
 
             new RecipeGenRecycling(matInfo);
+            new RecipeGenExtruder(matInfo);
             new RecipeGenFluids(matInfo);
             new RecipeGenMetalRecipe(matInfo);
             new RecipeGenDustGeneration(matInfo, disableOptionalRecipes);
