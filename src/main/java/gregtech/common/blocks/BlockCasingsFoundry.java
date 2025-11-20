@@ -49,7 +49,7 @@ public class BlockCasingsFoundry extends BlockCasingsAbstract
 
     @Override
     public int getTextureIndex(int aMeta) {
-        return (8 << 7) | (aMeta + 80);
+        return (8 << 7) | ((aMeta % ACTIVE_OFFSET) + 80);
     }
 
     @Override
@@ -120,6 +120,11 @@ public class BlockCasingsFoundry extends BlockCasingsAbstract
     @Override
     public int getDamageValue(World aWorld, int aX, int aY, int aZ) {
         return super.getDamageValue(aWorld, aX, aY, aZ) % ACTIVE_OFFSET;
+    }
+
+    @Override
+    public int damageDropped(int metadata) {
+        return super.damageDropped(metadata) % ACTIVE_OFFSET;
     }
 
     @Override
