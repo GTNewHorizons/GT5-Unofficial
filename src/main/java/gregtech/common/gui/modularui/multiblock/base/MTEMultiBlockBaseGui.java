@@ -324,6 +324,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                 return new EmptyWidget();
             }
             return Flow.column()
+                .crossAxisAlignment(Alignment.CrossAxis.START)
                 .coverChildren()
                 .child(createItemRecipeInfo(packet, syncManager))
                 .child(createFluidRecipeInfo(packet, syncManager));
@@ -356,7 +357,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         });
     }
 
-    private final int DISPLAY_ROW_HEIGHT = 13;
+    private final int DISPLAY_ROW_HEIGHT = 15;
 
     private IWidget createItemRecipeInfo(PacketBuffer packet, PanelSyncManager syncManager) {
         int size = packet.readInt();
@@ -475,7 +476,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
             .item(itemStack)
             .size(DISPLAY_ROW_HEIGHT - 1)
-            .marginRight(1);
+            .marginRight(2);
     }
 
     private TextWidget<?> createHoverableTextForItem(ItemDisplayKey key, long amount, PanelSyncManager syncManager) {
@@ -502,7 +503,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             + GTUtility.formatShortenedLong(amount)
             + EnumChatFormatting.WHITE
             + GTUtility.appendRate(false, amount, true, maxProgressTimeSyncer.getValue());
-        String itemTextLine = EnumChatFormatting.AQUA + GTUtility.truncateText(itemName, 48 - amountString.length())
+        String itemTextLine = EnumChatFormatting.AQUA + GTUtility.truncateText(itemName, 46 - amountString.length())
             + amountString;
         return itemTextLine;
     }
@@ -513,7 +514,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
             .fluid(fluidStack)
             .size(DISPLAY_ROW_HEIGHT - 1)
-            .marginRight(1);
+            .marginRight(2);
     }
 
     private TextWidget<?> createHoverableTextForFluid(FluidStack fluidStack, long amount,
@@ -528,7 +529,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                 t -> t.addLine(
                     EnumChatFormatting.AQUA + fluidName
                         + "\n"
-                        + GTUtility.appendRate(true, amount, false, maxProgressSyncer.getValue())));
+                        + GTUtility.appendRate(true, amount, false, maxProgressSyncer.getIntValue())));
     }
 
     private @NotNull String getFluidTextLine(String fluidName, long amount, IntSyncValue maxProgressTimeSyncer) {
@@ -538,7 +539,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             + "L"
             + EnumChatFormatting.WHITE
             + GTUtility.appendRate(false, amount, true, maxProgressTimeSyncer.getValue());
-        String fluidTextLine = EnumChatFormatting.AQUA + GTUtility.truncateText(fluidName, 48 - amountString.length())
+        String fluidTextLine = EnumChatFormatting.AQUA + GTUtility.truncateText(fluidName, 46 - amountString.length())
             + amountString;
         return fluidTextLine;
     }

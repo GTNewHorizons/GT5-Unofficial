@@ -160,7 +160,7 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
-        if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.hasInventoryBeenModified()) {
+        if (aBaseMetaTileEntity.isServerSide()) {
             updateSlots();
         }
     }
@@ -544,5 +544,33 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
     public boolean hasResource(ItemStack target, int amount) {
         if (target == null) return false;
         return hasResource(new ItemStack[] { target }, amount);
+    }
+
+    @Override
+    public NBTTagCompound getDescriptionData() {
+
+        NBTTagCompound tag = super.getDescriptionData();
+        for (int i = 0; i < mInventory.length; i++) {
+            ItemStack stack = mInventory[i];
+            if (stack != null) {
+                NBTTagCompound s = new NBTTagCompound();
+                stack.writeToNBT(s);
+                tag.setTag("slot" + i, s);
+            }
+        }
+        return tag;
+    }
+
+    @Override
+    public void onDescriptionPacket(NBTTagCompound data) {
+        for (int i = 0; i < mInventory.length; i++) {
+            String key = "slot" + i;
+            if (data.hasKey(key)) {
+                mInventory[i] = ItemStack.loadItemStackFromNBT(data.getCompoundTag(key));
+            } else {
+                mInventory[i] = null;
+            }
+        }
+        super.onDescriptionPacket(data);
     }
 }
