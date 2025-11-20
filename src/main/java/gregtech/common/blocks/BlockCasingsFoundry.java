@@ -1,15 +1,30 @@
 package gregtech.common.blocks;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
+
+import org.jetbrains.annotations.Nullable;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IBlockWithActiveOffset;
+import gregtech.api.interfaces.IBlockWithClientMeta;
+import gregtech.api.interfaces.IBlockWithTextures;
+import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.render.TextureFactory;
+import gregtech.common.data.GTCoilTracker;
 import gregtech.common.misc.GTStructureChannels;
+import gregtech.common.render.GTRendererBlock;
 
-public class BlockCasingsFoundry extends BlockCasingsAbstract {
+public class BlockCasingsFoundry extends BlockCasingsAbstract
+    implements IBlockWithActiveOffset, IBlockWithClientMeta, IBlockWithTextures {
 
     public BlockCasingsFoundry() {
         super(ItemCasingsFoundry.class, "gt.foundrycasings", MaterialCasings.INSTANCE, 16);
@@ -93,5 +108,72 @@ public class BlockCasingsFoundry extends BlockCasingsAbstract {
             }
 
         }
+    }
+
+    @Override
+    public int getClientMeta(World world, int x, int y, int z) {
+        int meta = world.getBlockMetadata(x, y, z);
+
+        if (GTCoilTracker.isCoilActive(world, x, y, z)) meta += ACTIVE_OFFSET;
+
+        return meta;
+    }
+
+    @Override
+    public @Nullable ITexture[][] getTextures(int metadata) {
+        List<ITexture> textures = new ArrayList<>();
+        List<ITexture> topTextures = new ArrayList<>();
+        IIconContainer texture = switch (metadata % ACTIVE_OFFSET) {
+            case 0 -> Textures.BlockIcons.EXOFOUNDRY_CASING;
+            case 1 -> Textures.BlockIcons.EXOFOUNDRY_INFINITE_CHASSIS;
+            case 2 -> Textures.BlockIcons.EXOFOUNDRY_ETERNAL_CHASSIS;
+            case 3 -> Textures.BlockIcons.EXOFOUNDRY_CELESTIAL_CHASSIS;
+            case 4 -> Textures.BlockIcons.EXOFOUNDRY_ACTIVE_TIME_DILATION_SYSTEM;
+            case 5 -> Textures.BlockIcons.EXOFOUNDRY_EFFICIENT_OVERCLOCKING;
+            case 6 -> Textures.BlockIcons.EXOFOUNDRY_POWER_EFFICIENT_SUBSYSTEMS;
+            case 7 -> Textures.BlockIcons.EXOFOUNDRY_HARMONIC_REINFORCEMENT;
+            case 8 -> Textures.BlockIcons.EXOFOUNDRY_EXTRA_CASTING_BASINS;
+            case 9 -> Textures.BlockIcons.EXOFOUNDRY_HYPERCOOLER;
+            case 10 -> Textures.BlockIcons.EXOFOUNDRY_STREAMLINED_CASTERS;
+            case 11 -> Textures.BlockIcons.EXOFOUNDRY_SECONDARY_CASING;
+            case 12 -> Textures.BlockIcons.EXOFOUNDRY_CENTRAL_CASING;
+            default -> Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL_BACKGROUND;
+        };
+        textures.add(TextureFactory.of(texture));
+        IIconContainer topTexture = switch (metadata % ACTIVE_OFFSET) {
+            case 1 -> Textures.BlockIcons.EXOFOUNDRY_INFINITE_CHASSIS_TOP;
+            case 2 -> Textures.BlockIcons.EXOFOUNDRY_ETERNAL_CHASSIS_TOP;
+            case 3 -> Textures.BlockIcons.EXOFOUNDRY_CELESTIAL_CHASSIS_TOP;
+            case 12 -> Textures.BlockIcons.EXOFOUNDRY_CENTRAL_CASING_TOP;
+            default -> texture;
+        };
+
+        topTextures.add(TextureFactory.of(topTexture));
+
+        if (metadata >= ACTIVE_OFFSET) {
+            IIconContainer foreground = texture;
+            if (metadata % ACTIVE_OFFSET == 12) {
+                foreground = Textures.BlockIcons.EXOFOUNDRY_CENTRAL_CASING_ACTIVE;
+            }
+            textures.add(
+                TextureFactory.builder()
+                    .addIcon(foreground)
+                    .glow()
+                    .build());
+        }
+        ITexture[] standardLayers = textures.toArray(new ITexture[0]);
+        ITexture[] topLayers = topTextures.toArray(new ITexture[0]);
+        return new ITexture[][] { topLayers, topLayers, standardLayers, standardLayers, standardLayers,
+            standardLayers };
+    }
+
+    @Override
+    public int getRenderType() {
+        return GTRendererBlock.RENDER_ID;
+    }
+
+    @Override
+    public boolean renderAsNormalBlock() {
+        return false;
     }
 }

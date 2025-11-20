@@ -15,6 +15,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXOFOUNDRY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXOFOUNDRY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXOFOUNDRY_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXOFOUNDRY_GLOW;
+import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.getTier;
@@ -293,7 +294,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         //spotless:on
         .addElement('A', ofBlock(GregTechAPI.sBlockGlass1, 7)) // Foundry Glass
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings11, 7))
-        .addElement('C', ofBlock(GregTechAPI.sBlockCasingsFoundry, 12))
+        .addElement('C', activeCoils(ofBlock(GregTechAPI.sBlockCasingsFoundry, 12)))
         .addElement('D', ofFrame(Materials.Netherite))
         .addElement('E', ofBlock(GregTechAPI.sBlockCasingsFoundry, 11))
         .addElement(
