@@ -309,7 +309,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                     -1,
                     MTEExoFoundry::setMachineTier,
                     MTEExoFoundry::getMachineTier)))
-        .addElement('G', ofBlock(GregTechAPI.sBlockCasings11, 7)) // item pipe casing
+        .addElement('G', ofBlock(GregTechAPI.sBlockCasings11, 7))
         .addElement(
             'H',
             buildHatchAdder(MTEExoFoundry.class).atLeast(InputHatch, OutputBus, InputBus, Energy.or(ExoticEnergy))
@@ -319,22 +319,22 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                     onElementPass(MTEExoFoundry::onCasingAdded, ofBlock(GregTechAPI.sBlockCasingsFoundry, 0))))
         // streamlined casters
         .addElement('a', ofFrame(Materials.SuperconductorUEVBase))
-        .addElement('b', ofBlock(GregTechAPI.sBlockCasingsFoundry, 10)) // Streamlined Caster
+        .addElement('b', ofBlock(GregTechAPI.sBlockCasingsFoundry, 10))
         .addElement('c', ofFrame(Materials.Tritanium))
         .addElement('T', ofBlock(GregTechAPI.sBlockMetal7, 10))
         .addElement('U', lazy(() -> ofBlock(ModBlocks.blockCasings5Misc, 3)))
         .addElement('V', lazy(() -> ofBlock(ModBlocks.blockSpecialMultiCasings, 13)))
 
         // power efficient subsystems
-        .addElement('d', ofBlock(GregTechAPI.sBlockCasingsFoundry, 6)) // power eff subsystems
+        .addElement('d', ofBlock(GregTechAPI.sBlockCasingsFoundry, 6))
         .addElement('e', ofFrame(Materials.Samarium))
         .addElement('f', ofFrame(Materials.TengamPurified))
         .addElement('g', lazy(() -> ofBlock(ModBlocks.blockCustomMachineCasings, 3))) // TODO: replace with MEBF/green
                                                                                       // casing after rework
         // casting basins
-        .addElement('h', ofBlock(GregTechAPI.sBlockCasings10, 13)) // shaper casing
-        .addElement('i', ofBlock(GregTechAPI.sBlockCasings10, 14)) // shaper radiator
-        .addElement('j', ofBlock(GregTechAPI.sBlockCasingsFoundry, 8)) // extra casting basings
+        .addElement('h', ofBlock(GregTechAPI.sBlockCasings10, 13))
+        .addElement('i', ofBlock(GregTechAPI.sBlockCasings10, 14))
+        .addElement('j', ofBlock(GregTechAPI.sBlockCasingsFoundry, 8))
         .addElement('k', ofFrame(Materials.Erbium))
         .addElement(
             'l',
@@ -373,7 +373,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         // Time Dilation System
         .addElement('!', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsBA0, 10)))
         .addElement('@', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsBA0, 11)))
-        .addElement('#', ofBlock(GregTechAPI.sBlockCasingsFoundry, 4))
+        .addElement('#', activeCoils(ofBlock(GregTechAPI.sBlockCasingsFoundry, 4)))
         .addElement('$', ofFrame(Materials.Universium))
         .addElement('%', ofFrame(Materials.Eternity))
         .addElement('^', ofFrame(Materials.WhiteDwarfMatter))

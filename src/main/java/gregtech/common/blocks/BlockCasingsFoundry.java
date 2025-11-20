@@ -55,7 +55,7 @@ public class BlockCasingsFoundry extends BlockCasingsAbstract
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int ordinalSide, int aMeta) {
-        switch (aMeta) {
+        switch (aMeta % ACTIVE_OFFSET) {
             case 0 -> {
                 return Textures.BlockIcons.EXOFOUNDRY_CASING.getIcon();
             }
@@ -75,7 +75,7 @@ public class BlockCasingsFoundry extends BlockCasingsAbstract
                 return Textures.BlockIcons.EXOFOUNDRY_CELESTIAL_CHASSIS.getIcon();
             }
             case 4 -> {
-                return Textures.BlockIcons.EXOFOUNDRY_ACTIVE_TIME_DILATION_SYSTEM.getIcon();
+                return Textures.BlockIcons.EXOFOUNDRY_ACTIVE_TIME_DILATION_SYSTEM_ACTIVE.getIcon();
             }
             case 5 -> {
                 return Textures.BlockIcons.EXOFOUNDRY_EFFICIENT_OVERCLOCKING.getIcon();
@@ -113,10 +113,13 @@ public class BlockCasingsFoundry extends BlockCasingsAbstract
     @Override
     public int getClientMeta(World world, int x, int y, int z) {
         int meta = world.getBlockMetadata(x, y, z);
-
-        if (GTCoilTracker.isCoilActive(world, x, y, z)) meta += ACTIVE_OFFSET;
-
+        if (meta == 12 && GTCoilTracker.isCoilActive(world, x, y, z)) meta += ACTIVE_OFFSET;
         return meta;
+    }
+
+    @Override
+    public int getDamageValue(World aWorld, int aX, int aY, int aZ) {
+        return super.getDamageValue(aWorld, aX, aY, aZ) % ACTIVE_OFFSET;
     }
 
     @Override
@@ -128,7 +131,7 @@ public class BlockCasingsFoundry extends BlockCasingsAbstract
             case 1 -> Textures.BlockIcons.EXOFOUNDRY_INFINITE_CHASSIS;
             case 2 -> Textures.BlockIcons.EXOFOUNDRY_ETERNAL_CHASSIS;
             case 3 -> Textures.BlockIcons.EXOFOUNDRY_CELESTIAL_CHASSIS;
-            case 4 -> Textures.BlockIcons.EXOFOUNDRY_ACTIVE_TIME_DILATION_SYSTEM;
+            case 4 -> Textures.BlockIcons.EXOFOUNDRY_ACTIVE_TIME_DILATION_SYSTEM_ACTIVE;
             case 5 -> Textures.BlockIcons.EXOFOUNDRY_EFFICIENT_OVERCLOCKING;
             case 6 -> Textures.BlockIcons.EXOFOUNDRY_POWER_EFFICIENT_SUBSYSTEMS;
             case 7 -> Textures.BlockIcons.EXOFOUNDRY_HARMONIC_REINFORCEMENT;
@@ -148,19 +151,18 @@ public class BlockCasingsFoundry extends BlockCasingsAbstract
             default -> texture;
         };
 
-        topTextures.add(TextureFactory.of(topTexture));
-
         if (metadata >= ACTIVE_OFFSET) {
-            IIconContainer foreground = texture;
             if (metadata % ACTIVE_OFFSET == 12) {
-                foreground = Textures.BlockIcons.EXOFOUNDRY_CENTRAL_CASING_ACTIVE;
+                textures.add(
+                    TextureFactory.builder()
+                        .addIcon(Textures.BlockIcons.EXOFOUNDRY_CENTRAL_CASING_ACTIVE)
+                        .glow()
+                        .build());
             }
-            textures.add(
-                TextureFactory.builder()
-                    .addIcon(foreground)
-                    .glow()
-                    .build());
+
         }
+
+        topTextures.add(TextureFactory.of(topTexture));
         ITexture[] standardLayers = textures.toArray(new ITexture[0]);
         ITexture[] topLayers = topTextures.toArray(new ITexture[0]);
         return new ITexture[][] { topLayers, topLayers, standardLayers, standardLayers, standardLayers,
