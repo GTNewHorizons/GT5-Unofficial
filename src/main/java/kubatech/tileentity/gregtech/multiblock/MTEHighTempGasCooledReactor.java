@@ -314,7 +314,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.htgr")
             .addInfo(
-                "gt.htgr.tips.1",
+                "gt.htgr.tips",
                 formatNumbers(CONVERSION_FACTOR * 100),
                 formatNumbers(POWER_USAGE),
                 formatNumbers(POWER_PENALTY_WHEN_MINIMUM_HELIUM + 1),
@@ -329,15 +329,15 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                 formatNumbers(WATER_PER_PELLET))
             .beginStructureBlock(29, 16, 18, true)
             .addController("front_center")
-            .addInputHatch("gt.htgr.info.1", 1)
-            .addEnergyHatch("gt.htgr.info.1", 1)
-            .addMaintenanceHatch("gt.htgr.info.1", 1)
-            .addInputBus("gt.htgr.info.2", 2)
-            .addOutputBus("gt.htgr.info.3", 3)
-            .addInputHatch("gt.htgr.info.4", 4)
-            .addOutputHatch("gt.htgr.info.5", 5)
-            .addInputHatch("gt.htgr.info.6", 6)
-            .addOutputHatch("gt.htgr.info.7", 7)
+            .addInputHatch("gt.htgr.info.i_hatch.a", 1)
+            .addEnergyHatch("gt.htgr.info.i_hatch.a", 1)
+            .addMaintenanceHatch("gt.htgr.info.i_hatch.a", 1)
+            .addInputBus("gt.htgr.info.i_bus", 2)
+            .addOutputBus("gt.htgr.info.o_bus", 3)
+            .addInputHatch("gt.htgr.info.i_hatch.b", 4)
+            .addOutputHatch("gt.htgr.info.o_hatch.a", 5)
+            .addInputHatch("gt.htgr.info.i_hatch.c", 6)
+            .addOutputHatch("gt.htgr.info.o_hatch.b", 7)
 
             .toolTipFinisher(AuthorKuba, AuthorPxx500);
         return tt;
