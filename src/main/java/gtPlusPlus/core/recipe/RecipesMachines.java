@@ -174,9 +174,6 @@ public class RecipesMachines {
     public static ItemStack IC2MFE;
     public static ItemStack IC2MFSU;
 
-    // Misc
-    public static ItemStack INPUT_RCCokeOvenBlock;
-
     public static void loadRecipes() {
         run();
         Logger.INFO("Loading Recipes for the Various machine blocks.");
@@ -921,10 +918,6 @@ public class RecipesMachines {
         IV_MACHINE_AlloySmelter = ItemList.Machine_IV_AlloySmelter.get(1);
         IV_MACHINE_Mixer = ItemList.Machine_IV_Mixer.get(1);
         EV_MACHINE_ChemicalBath = ItemList.Machine_EV_ChemicalBath.get(1);
-        if (Railcraft.isModLoaded()) {
-            // Misc
-            INPUT_RCCokeOvenBlock = getModItem(Railcraft.ID, "machine.alpha", 1, 7);
-        }
         runModRecipes();
     }
 
@@ -1235,7 +1228,7 @@ public class RecipesMachines {
                 "circuitData",
                 CI.component_Plate[7],
                 ItemList.Casing_EV.get(1),
-                INPUT_RCCokeOvenBlock,
+                ItemList.CokeOvenController,
                 ItemList.Casing_EV.get(1),
                 CI.component_Plate[7],
                 "circuitData",

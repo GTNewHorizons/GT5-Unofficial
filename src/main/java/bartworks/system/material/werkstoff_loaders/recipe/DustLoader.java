@@ -85,7 +85,7 @@ public class DustLoader implements IWerkstoffRunnable {
                         final ISubTagContainer key = container.getKey();
                         final int value = container.getValue();
                         if (key instanceof Materials materialKey) {
-                            if ((materialKey.getGas(0) != null || materialKey.getFluid(0) != null
+                            if ((materialKey.getGas(1) != null || materialKey.getFluid(1) != null
                                 || materialKey.mIconSet == TextureSet.SET_FLUID) && materialKey.getDust(0) == null) {
                                 FluidStack tmpFl = materialKey.getGas(1000L * value);
                                 if (tmpFl == null || tmpFl.getFluid() == null) {
