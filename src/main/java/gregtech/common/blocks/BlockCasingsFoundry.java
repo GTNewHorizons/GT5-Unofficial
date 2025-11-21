@@ -113,7 +113,7 @@ public class BlockCasingsFoundry extends BlockCasingsAbstract
     @Override
     public int getClientMeta(World world, int x, int y, int z) {
         int meta = world.getBlockMetadata(x, y, z);
-        if (meta == 12 && GTCoilTracker.isCoilActive(world, x, y, z)) meta += ACTIVE_OFFSET;
+        if ((meta == 12 || meta == 4) && GTCoilTracker.isCoilActive(world, x, y, z)) meta += ACTIVE_OFFSET;
         return meta;
     }
 
@@ -136,7 +136,7 @@ public class BlockCasingsFoundry extends BlockCasingsAbstract
             case 1 -> Textures.BlockIcons.EXOFOUNDRY_INFINITE_CHASSIS;
             case 2 -> Textures.BlockIcons.EXOFOUNDRY_ETERNAL_CHASSIS;
             case 3 -> Textures.BlockIcons.EXOFOUNDRY_CELESTIAL_CHASSIS;
-            case 4 -> Textures.BlockIcons.EXOFOUNDRY_ACTIVE_TIME_DILATION_SYSTEM_ACTIVE;
+            case 4 -> Textures.BlockIcons.EXOFOUNDRY_ACTIVE_TIME_DILATION_SYSTEM;
             case 5 -> Textures.BlockIcons.EXOFOUNDRY_EFFICIENT_OVERCLOCKING;
             case 6 -> Textures.BlockIcons.EXOFOUNDRY_POWER_EFFICIENT_SUBSYSTEMS;
             case 7 -> Textures.BlockIcons.EXOFOUNDRY_HARMONIC_REINFORCEMENT;
@@ -164,6 +164,13 @@ public class BlockCasingsFoundry extends BlockCasingsAbstract
                         .glow()
                         .build());
             }
+            if (metadata % ACTIVE_OFFSET == 4) {
+                textures.add(
+                    TextureFactory.builder()
+                        .addIcon(Textures.BlockIcons.EXOFOUNDRY_ACTIVE_TIME_DILATION_SYSTEM_ACTIVE)
+                        .glow()
+                        .build());
+            }
 
         }
 
@@ -172,6 +179,18 @@ public class BlockCasingsFoundry extends BlockCasingsAbstract
         ITexture[] topLayers = topTextures.toArray(new ITexture[0]);
         return new ITexture[][] { topLayers, topLayers, standardLayers, standardLayers, standardLayers,
             standardLayers };
+    }
+
+    @Override
+    public @Nullable ITexture[][] getInventoryTextures(int meta) {
+        if (meta % ACTIVE_OFFSET == 4) {
+            ITexture[] standard = new ITexture[] { TextureFactory.builder()
+                .addIcon(Textures.BlockIcons.EXOFOUNDRY_ACTIVE_TIME_DILATION_SYSTEM_ACTIVE)
+                .build() };
+            return new ITexture[][] { standard, standard, standard, standard, standard, standard };
+        } else {
+            return getTextures(meta);
+        }
     }
 
     @Override
