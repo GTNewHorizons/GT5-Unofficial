@@ -9,21 +9,18 @@ import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChunkCoordinates;
@@ -41,30 +38,12 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.math.Color;
-import com.gtnewhorizons.modularui.api.math.MainAxisAlignment;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.Scrollable;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
 import appeng.api.util.DimensionalCoord;
 import appeng.client.render.highlighter.BlockPosHighlighter;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -74,15 +53,14 @@ import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.common.config.Gregtech;
+import gregtech.common.covers.CoverControlsWork;
+import gregtech.common.covers.conditions.RedstoneCondition;
 import gregtech.common.gui.modularui.multiblock.MTEDroneCentreGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
-import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
 import gregtech.common.items.ItemTierDrone;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -93,19 +71,18 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     private static final IIconContainer FACE = new Textures.BlockIcons.CustomIcon("iconsets/DRONE_CENTRE_FACE");
     private static final IIconContainer INACTIVE = new Textures.BlockIcons.CustomIcon("iconsets/DRONE_CENTRE_INACTIVE");
     public static final int CASING_INDEX = GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings4, 2);
-    private final int MACHINE_LIST_WINDOW_ID = 10;
-    private final int CUSTOM_NAME_WINDOW_ID = 11;
     private static final int CASINGS_MIN = 85;
     private int mCasingAmount = 0;
     private Vec3Impl centreCoord;
     private int droneLevel = 0;
-    private int buttonID;
-    private String searchFilter = "";
-    private boolean useRender = true;
-    private boolean showLocalizedName = false;
+
+    public String searchFilter = "";
+    public boolean useRender = true;
+    public boolean searchOriginalName = false;
     public MTEDroneCentreGui.SortMode sortMode = MTEDroneCentreGui.SortMode.NAME;
+
     private List<DroneConnection> connectionList = new ArrayList<>();
-    public HashMap<String, String> tempNameList = new HashMap<>();
+
     // Save centre by dimID
     private static final HashMultimap<Integer, MTEDroneCentre> droneMap = HashMultimap.create();
     // spotless off
@@ -187,12 +164,12 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
             .addInfo("Monitors multiblock machines in range")
             .addInfo("Replace maintenance hatch on other multi with drone downlink module")
             .addInfo("Provides maintenance, power control, monitoring, and more")
-            .addInfo("Range is determined by drone tier: T1-128, T2-512, T3-4096")
+            .addInfo("Range is determined by drone tier: T1-128, T2-512, T3-4096, T4-Infinite")
+            .addInfo("T4 Drone supports cross-dimension connection")
             .addInfo("Place drones in input bus; only one needed to operate")
             .addInfo("Automatically upgrade based on the drone level in the input bus")
             .addInfo("There is a chance per second that the drone will crash")
-            .addInfo("Chance is determined by drone tier: T1-1/28800, T2-1/172800, T3-0")
-            .addInfo("If machine is too far, remote control would not available")
+            .addInfo("Chance is determined by drone tier: T1: 1/28800, T2: 1/172800, T3 & T4: 0")
             .beginStructureBlock(5, 4, 9, false)
             .addController("Front center")
             .addCasingInfoRange("Stable Titanium Machine Casing", CASINGS_MIN, 91, false)
@@ -280,10 +257,6 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         droneLevel = aNBT.getInteger("drone");
         useRender = aNBT.getBoolean("useRender");
         sortMode = MTEDroneCentreGui.SortMode.valueOf(aNBT.getString("sort"));
-        NBTTagCompound nameList = aNBT.getCompoundTag("conList");
-        for (String s : nameList.func_150296_c()) {
-            tempNameList.put(s, nameList.getString(s));
-        }
     }
 
     @Override
@@ -292,18 +265,6 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         aNBT.setInteger("drone", droneLevel);
         aNBT.setBoolean("useRender", useRender);
         aNBT.setString("sort", sortMode.toString());
-        NBTTagCompound conList = new NBTTagCompound();
-        for (DroneConnection con : connectionList) {
-            if (con.getLinkedMachine() == null) continue;
-            if (!con.customName.equals(
-                con.getLinkedMachine()
-                    .getLocalName()))
-                conList.setString(con.machineCoord.toString(), con.customName);
-        }
-        for (String pos : tempNameList.keySet()) {
-            conList.setString(pos, tempNameList.get(pos));
-        }
-        aNBT.setTag("conList", conList);
     }
 
     @Override
@@ -395,14 +356,6 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         droneMap.remove(getBaseMetaTileEntity().getWorld().provider.dimensionId, this);
     }
 
-    public List<DroneConnection> getConnectionList() {
-        return connectionList;
-    }
-
-    public void setConnectionList(List<DroneConnection> connectionList) {
-        this.connectionList = connectionList;
-    }
-
     public int getRange() {
         return switch (droneLevel) {
             case 1 -> 128;
@@ -473,407 +426,33 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     public void turnOnAll() {
         for (DroneConnection droneConnection : connectionList) {
             if (droneConnection.isValid()) droneConnection.getLinkedMachine()
-                .enableWorking();
+                .ifPresent(MTEMultiBlockBase::enableWorking);
         }
     }
 
-    public void turnOffAll() {
+    public void turnOffAll(boolean force) {
         for (DroneConnection droneConnection : connectionList) {
             if (droneConnection.isValid()) droneConnection.getLinkedMachine()
-                .disableWorking();
+                .ifPresent(mte -> {
+                    mte.disableWorking();
+                    if (force && mte.getBaseMetaTileEntity() != null) {
+                        for (int i = 0; i < 6; i++) {
+                            if (mte.getBaseMetaTileEntity()
+                                .hasCoverAtSide(ForgeDirection.getOrientation(i))
+                                && mte.getBaseMetaTileEntity()
+                                    .getCoverAtSide(
+                                        ForgeDirection.getOrientation(i)) instanceof CoverControlsWork cover) {
+                                cover.setRedstoneCondition(RedstoneCondition.DISABLE);
+                            }
+                        }
+                    }
+                });
         }
-    }
-
-    @Override
-    protected boolean useMui2() {
-        return Gregtech.debug.D0;
     }
 
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new MTEDroneCentreGui(this);
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
-        buildContext.addSyncedWindow(MACHINE_LIST_WINDOW_ID, this::createMachineListWindow);
-        buildContext.addSyncedWindow(CUSTOM_NAME_WINDOW_ID, this::createCustomNameWindow);
-        builder.widget(// Machine List
-            new ButtonWidget().setOnClick(
-                (clickData, widget) -> {
-                    if (!widget.isClient()) widget.getContext()
-                        .openSyncedWindow(MACHINE_LIST_WINDOW_ID);
-                })
-                .setSize(16, 16)
-                .setBackground(() -> {
-                    List<UITexture> UI = new ArrayList<>();
-                    UI.add(GTUITextures.BUTTON_STANDARD);
-                    UI.add(GTUITextures.OVERLAY_BUTTON_WHITELIST);
-                    return UI.toArray(new IDrawable[0]);
-                })
-                .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_open_list"))
-                .setPos(94, 91)
-                .setEnabled(var -> getBaseMetaTileEntity().isActive()))
-            .widget(// Turn on ALL machines
-                new ButtonWidget().setOnClick((clickData, widget) -> {
-                    if (!widget.isClient()) {
-                        if (!getBaseMetaTileEntity().isActive()) {
-                            widget.getContext()
-                                .getPlayer()
-                                .addChatComponentMessage(
-                                    new ChatComponentTranslation("GT5U.machines.dronecentre.shutdown"));
-                            return;
-                        }
-                        for (DroneConnection mte : connectionList) {
-                            mte.getLinkedMachine()
-                                .getBaseMetaTileEntity()
-                                .enableWorking();
-                        }
-                        widget.getContext()
-                            .getPlayer()
-                            .addChatComponentMessage(new ChatComponentTranslation("GT5U.machines.dronecentre.turnon"));
-                        widget.getContext()
-                            .getPlayer()
-                            .closeScreen();
-                    }
-                })
-                    .setSize(16, 16)
-                    .setBackground(() -> {
-                        List<UITexture> UI = new ArrayList<>();
-                        UI.add(GTUITextures.BUTTON_STANDARD);
-                        UI.add(GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON);
-                        return UI.toArray(new IDrawable[0]);
-                    })
-                    .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_poweron_all"))
-                    .setPos(146, 91)
-                    .setEnabled(var -> getBaseMetaTileEntity().isActive()))
-            .widget(// Turn off ALL machines
-                new ButtonWidget().setOnClick((clickData, widget) -> {
-                    if (!widget.isClient()) {
-                        if (!getBaseMetaTileEntity().isActive()) {
-                            widget.getContext()
-                                .getPlayer()
-                                .addChatComponentMessage(
-                                    new ChatComponentTranslation("GT5U.machines.dronecentre.shutdown"));
-                            return;
-                        }
-                        for (DroneConnection mte : connectionList) {
-                            mte.getLinkedMachine()
-                                .getBaseMetaTileEntity()
-                                .disableWorking();
-                        }
-                        widget.getContext()
-                            .getPlayer()
-                            .addChatComponentMessage(new ChatComponentTranslation("GT5U.machines.dronecentre.turnoff"));
-                        widget.getContext()
-                            .getPlayer()
-                            .closeScreen();
-                    }
-                })
-                    .setSize(16, 16)
-                    .setBackground(() -> {
-                        List<UITexture> UI = new ArrayList<>();
-                        UI.add(GTUITextures.BUTTON_STANDARD);
-                        UI.add(GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF);
-                        return UI.toArray(new IDrawable[0]);
-                    })
-                    .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_poweroff_all"))
-                    .setPos(120, 91)
-                    .setEnabled(var -> getBaseMetaTileEntity().isActive()))
-            .widget(new FakeSyncWidget.ListSyncer<>(() -> connectionList, var1 -> {
-                connectionList.clear();
-                connectionList.addAll(var1);
-            }, (buffer, j) -> {
-                try {
-                    buffer.writeNBTTagCompoundToBuffer(j.transConnectionToNBT());
-                } catch (IOException e) {
-                    GTLog.err.println(e.getCause());
-                }
-            }, buffer -> {
-                try {
-                    return new DroneConnection(buffer.readNBTTagCompoundFromBuffer());
-                } catch (IOException e) {
-                    GTLog.err.println(e.getCause());
-                }
-                return null;
-            }));
-    }
-
-    protected ModularWindow createMachineListWindow(final EntityPlayer player) {
-        int heightCoff = getBaseMetaTileEntity().isServerSide() ? 0
-            : Minecraft.getMinecraft().currentScreen.height - 40;
-        ModularWindow.Builder builder = ModularWindow.builder(260, heightCoff);
-        builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
-        builder.setGuiTint(getGUIColorization());
-        builder.widget(
-            ButtonWidget.closeWindowButton(true)
-                .setPos(245, 3));
-        builder.widget(
-            new TextWidget(EnumChatFormatting.BOLD + StatCollector.translateToLocal("GT5U.gui.text.drone_title"))
-                .setScale(2)
-                .setTextAlignment(Alignment.Center)
-                .setPos(0, 10)
-                .setSize(260, 8));
-        // SearchBar
-        builder.widget(new TextFieldWidget() {
-
-            @Override
-            public void onRemoveFocus() {
-                super.onRemoveFocus();
-                syncToServer(2, buffer -> {});
-            }
-
-            // Refresh
-            @Override
-            public void readOnServer(int id, PacketBuffer buf) {
-                switch (id) {
-                    case 1 -> super.readOnServer(id, buf);
-                    case 2 -> {
-                        getContext().closeWindow(MACHINE_LIST_WINDOW_ID);
-                        getContext().openSyncedWindow(MACHINE_LIST_WINDOW_ID);
-                    }
-                }
-            }
-        }.setGetter(() -> searchFilter)
-            .setSetter(var -> searchFilter = var)
-            .setTextAlignment(Alignment.CenterLeft)
-            .setTextColor(Color.WHITE.dark(1))
-            .setFocusOnGuiOpen(false)
-            .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD_LIGHT_GRAY.withOffset(-1, -1, 2, 2))
-            .addTooltip(StatCollector.translateToLocal("GT5U.gui.text.drone_search"))
-            .setPos(50, 30)
-            .setSize(200, 16))
-            // Sort button
-            .widget(new ButtonWidget() {
-
-                @Override
-                public ClickResult onClick(int buttonId, boolean doubleClick) {
-                    ClickResult result = super.onClick(buttonId, doubleClick);
-                    syncToServer(2, buffer -> {});
-                    return result;
-                }
-
-                @Override
-                public void readOnServer(int id, PacketBuffer buf) {
-                    switch (id) {
-                        case 1 -> super.readOnServer(id, buf);
-                        case 2 -> {
-                            getContext().closeWindow(MACHINE_LIST_WINDOW_ID);
-                            getContext().openSyncedWindow(MACHINE_LIST_WINDOW_ID);
-                        }
-                    }
-                }
-            }.setOnClick((clickData, widget) -> {})
-                .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_" + sortMode))
-                .setBackground(
-                    () -> new IDrawable[] { GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_SORTING_MODE })
-                .setPos(10, 30)
-                .setSize(16, 16))
-            // Localized Button
-            .widget(new ButtonWidget() {
-
-                @Override
-                public ClickResult onClick(int buttonId, boolean doubleClick) {
-                    ClickResult result = super.onClick(buttonId, doubleClick);
-                    syncToServer(2, buffer -> {});
-                    return result;
-                }
-
-                @Override
-                public void readOnServer(int id, PacketBuffer buf) {
-                    switch (id) {
-                        case 1 -> super.readOnServer(id, buf);
-                        case 2 -> {
-                            getContext().closeWindow(MACHINE_LIST_WINDOW_ID);
-                            getContext().openSyncedWindow(MACHINE_LIST_WINDOW_ID);
-                        }
-                    }
-                }
-            }.setOnClick((clickData, widget) -> showLocalizedName = !showLocalizedName)
-                .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_showLocalName"))
-                .setBackground(
-                    () -> new IDrawable[] {
-                        showLocalizedName ? GTUITextures.BUTTON_STANDARD_PRESSED : GTUITextures.BUTTON_STANDARD,
-                        GTUITextures.OVERLAY_BUTTON_CYCLIC })
-                .setPos(30, 30)
-                .setSize(16, 16));
-
-        Scrollable MachineContainer = new Scrollable().setVerticalScroll();
-        int posY = 0;
-        for (int i = 0; i < connectionList.size(); i++) {
-            DroneConnection connection = connectionList.get(i);
-            if (!connection.customName.toLowerCase()
-                .contains(searchFilter.toLowerCase())) continue;
-            ItemStackHandler drawitem = new ItemStackHandler(1);
-            drawitem.setStackInSlot(0, connection.machineItem);
-            DynamicPositionedRow row = new DynamicPositionedRow().setSynced(false);
-            MTEMultiBlockBase coreMachine = connection.getLinkedMachine();
-            int finalI = i;
-            row.widget(
-                SlotWidget.phantom(drawitem, 0)
-                    .disableInteraction()
-                    .setPos(0, 0))
-                .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                    buttonID = finalI;
-                    if (!widget.isClient()) widget.getContext()
-                        .openSyncedWindow(CUSTOM_NAME_WINDOW_ID);
-                })
-                    .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_setname"))
-                    .setBackground(
-                        () -> new IDrawable[] { GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_PRINT })
-                    .setSize(16, 16));
-            // Client can't handle unloaded machines
-            row.widget(
-                new ButtonWidget().setOnClick(
-                    (clickData, widget) -> Optional.ofNullable(coreMachine)
-                        .ifPresent(machine -> {
-                            if (!getBaseMetaTileEntity().isActive()) {
-                                player.addChatComponentMessage(
-                                    new ChatComponentTranslation("GT5U.machines.dronecentre.shutdown"));
-                                return;
-                            }
-                            if (machine.isAllowedToWork()) {
-                                machine.disableWorking();
-                            } else {
-                                machine.enableWorking();
-                            }
-                        }))
-                    .setPlayClickSoundResource(
-                        () -> Optional.ofNullable(coreMachine)
-                            .filter(MTEMultiBlockBase::isAllowedToWork)
-                            .map(var -> SoundResource.GUI_BUTTON_UP.resourceLocation)
-                            .orElse(SoundResource.GUI_BUTTON_DOWN.resourceLocation))
-                    .setBackground(
-                        () -> Optional.ofNullable(coreMachine)
-                            .map(
-                                machine -> machine.isAllowedToWork()
-                                    ? new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED,
-                                        GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON }
-                                    : new IDrawable[] { GTUITextures.BUTTON_STANDARD,
-                                        GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF })
-                            .orElse(new IDrawable[] { GTUITextures.OVERLAY_BUTTON_CROSS }))
-                    .attachSyncer(
-                        new FakeSyncWidget.BooleanSyncer(
-                            () -> Optional.ofNullable(coreMachine)
-                                .map(MTEMultiBlockBase::isAllowedToWork)
-                                .orElse(false),
-                            var -> Optional.ofNullable(coreMachine)
-                                .ifPresent(machine -> {
-                                    if (var) machine.enableWorking();
-                                    else machine.disableWorking();
-                                })),
-                        builder)
-                    .addTooltip(
-                        coreMachine != null ? StatCollector.translateToLocal("GT5U.gui.button.power_switch")
-                            : StatCollector.translateToLocal("GT5U.gui.button.drone_outofrange"))
-                    .setSize(16, 16))
-                .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                    if (widget.isClient()) {
-                        highlightMachine(player, connection.machineCoord);
-                        player.closeScreen();
-                    }
-                })
-                    .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_highlight"))
-                    .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_INVERT_REDSTONE)
-                    .setSize(16, 16));
-            // Show the reason why the machine shutdown
-            row.widget(
-                new DrawableWidget().dynamicTooltip(
-                    () -> Collections.singletonList(
-                        Optional.ofNullable(coreMachine)
-                            .map(
-                                machine -> machine.getBaseMetaTileEntity()
-                                    .getLastShutDownReason()
-                                    .getDisplayString())
-                            .orElse("")))
-                    .setBackground(GTUITextures.PICTURE_STALLED_ELECTRICITY)
-                    .setSize(16, 16)
-                    .setEnabled(
-                        var -> coreMachine != null && coreMachine.shouldDisplayShutDownReason()
-                            && !coreMachine.getBaseMetaTileEntity()
-                                .isActive()
-                            && GTUtility.isStringValid(
-                                coreMachine.getBaseMetaTileEntity()
-                                    .getLastShutDownReason()
-                                    .getDisplayString())
-                            && coreMachine.getBaseMetaTileEntity()
-                                .wasShutdown())
-                    .attachSyncer(
-                        new ShutDownReasonSyncer(
-                            () -> Optional.ofNullable(coreMachine)
-                                .map(
-                                    var -> coreMachine.getBaseMetaTileEntity()
-                                        .getLastShutDownReason())
-                                .orElse(ShutDownReasonRegistry.NONE),
-                            reason -> Optional.ofNullable(coreMachine)
-                                .ifPresent(
-                                    machine -> coreMachine.getBaseMetaTileEntity()
-                                        .setShutDownReason(reason))),
-                        builder)
-                    .attachSyncer(
-                        new FakeSyncWidget.BooleanSyncer(
-                            () -> Optional.ofNullable(coreMachine)
-                                .map(
-                                    var -> coreMachine.getBaseMetaTileEntity()
-                                        .wasShutdown())
-                                .orElse(false),
-                            wasShutDown -> Optional.ofNullable(coreMachine)
-                                .ifPresent(
-                                    machine -> coreMachine.getBaseMetaTileEntity()
-                                        .setShutdownStatus(wasShutDown))),
-                        builder));
-            row.widget(
-                new TextWidget(
-                    connectionList.get(i)
-                        .getCustomName()).setTextAlignment(Alignment.CenterLeft)
-                            .setPos(0, 4));
-            MachineContainer.widget(
-                row.setAlignment(MainAxisAlignment.SPACE_BETWEEN)
-                    .setSpace(4)
-                    .setPos(0, posY));
-            posY += 20;
-        }
-        return builder.widget(
-            MachineContainer.setPos(10, 50)
-                .setSize(240, heightCoff - 60))
-            .setDraggable(false)
-            .build();
-    }
-
-    protected ModularWindow createCustomNameWindow(final EntityPlayer player) {
-        ModularWindow.Builder builder = ModularWindow.builder(150, 40);
-        builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
-        builder.setGuiTint(getGUIColorization());
-        return builder.widget(
-            ButtonWidget.closeWindowButton(true)
-                .setPos(135, 3))
-            .widget(
-                new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.drone_custom_name"))
-                    .setTextAlignment(Alignment.Center)
-                    .setPos(0, 5)
-                    .setSize(150, 8))
-            .widget(new TextFieldWidget() {
-
-                @Override
-                public void onDestroy() {
-                    if (isClient()) return;
-                    getContext().closeWindow(MACHINE_LIST_WINDOW_ID);
-                    getContext().openSyncedWindow(MACHINE_LIST_WINDOW_ID);
-                }
-            }.setGetter(
-                () -> connectionList.get(buttonID)
-                    .getCustomName())
-                .setSetter(
-                    var -> connectionList.get(buttonID)
-                        .setCustomName(var))
-                .setTextAlignment(Alignment.CenterLeft)
-                .setTextColor(Color.WHITE.dark(1))
-                .setFocusOnGuiOpen(true)
-                .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD_LIGHT_GRAY.withOffset(-1, -1, 2, 2))
-                .setPos(10, 16)
-                .setSize(130, 16))
-            .build();
     }
 
     // Just like HIGHLIGHT_INTERFACE (and exactly from it)
@@ -895,11 +474,42 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         return false;
     }
 
+    public List<DroneConnection> getConnectionList() {
+        return connectionList;
+    }
+
+    public void setConnectionList(List<DroneConnection> connectionList) {
+        this.connectionList = connectionList;
+    }
+
+    public Optional<MTEMultiBlockBase> findConnection(UUID uuid) {
+        return connectionList.stream()
+            .filter(connection -> connection.uuid.equals(uuid))
+            .findFirst()
+            .flatMap(DroneConnection::getLinkedMachine);
+    }
+
     public MTEDroneCentreGui.SortMode getSortMode() {
         return sortMode;
     }
 
     public void setSortMode(MTEDroneCentreGui.SortMode sortMode) {
         this.sortMode = sortMode;
+    }
+
+    public String getSearchBarText() {
+        return searchFilter;
+    }
+
+    public void setSearchBarText(String text) {
+        searchFilter = text;
+    }
+
+    public boolean getSearchOriginalName() {
+        return searchOriginalName;
+    }
+
+    public void setSearchOriginalName(boolean searchOriginalName) {
+        this.searchOriginalName = searchOriginalName;
     }
 }

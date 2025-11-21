@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.machines.multi.drone;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -46,6 +47,7 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
     private MTEDroneCentre centre;
     private final List<DroneConnection> connections = new ArrayList<>();
     private final List<MTEMultiBlockBase> unlinkedMachines = new ArrayList<>();
+    private final HashMap<String, String> savedNameList = new HashMap<>();
 
     private static final IIconContainer moduleActive = new Textures.BlockIcons.CustomIcon(
         "iconsets/OVERLAY_DRONE_MODULE_ACTIVE");
@@ -101,15 +103,22 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
-            // validate that all connections to the center and the machines are still valid every 4s
-            if (aTick % 80 == 0) {
+            // validate that all connections to the center and the machines are still valid every 5s
+            if (aTick % 100 == 0) {
                 validateConnections();
             }
 
             // if we don't have a connection to a center, search for one every 10s
-            if (centre == null && aTick % 200 == 0) {
-                tryFindDroneCenter();
-                if (centre == null) return;
+            if (aTick % 200 == 0) {
+                if (centre == null) {
+                    tryFindDroneCenter();
+                    if (centre == null) return;
+                }
+                // In rare cases, this status may not refresh to the connection. Manually refresh it.
+                for (DroneConnection conn : connections) {
+                    conn.getLinkedMachine()
+                        .ifPresent(mte -> conn.machineStatus = mte.isAllowedToWork());
+                }
             }
 
             // Maintain
@@ -122,7 +131,7 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
     }
 
     private void validateConnections() {
-        // If centre is offline, delete its connection.
+        // If centre is offline, delete all connection.
         if (centre != null && (!centre.isValid() || !centre.getBaseMetaTileEntity()
             .isActive())) {
             centre.getConnectionList()
@@ -220,10 +229,10 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
     }
 
     private boolean addConnection(MTEMultiBlockBase machine) {
-        if (centre == null || findConnection(machine) != null) {
+        if (centre == null || findConnection(machine).isPresent()) {
             return false;
         }
-        DroneConnection connection = new DroneConnection(machine, centre);
+        DroneConnection connection = new DroneConnection(machine, centre, savedNameList);
         connections.add(connection);
         centre.getConnectionList()
             .add(connection);
@@ -231,11 +240,13 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
     }
 
     private void clearConnections() {
-        unlinkedMachines.addAll(
-            connections.stream()
-                .map(DroneConnection::getLinkedMachine)
-                .collect(Collectors.toList()));
-        connections.clear();
+        // save data first
+        connections.removeIf(conn -> {
+            conn.getLinkedMachine()
+                .ifPresent(unlinkedMachines::add);
+            savedNameList.put(conn.uuid.toString(), conn.getCustomName());
+            return true;
+        });
     }
 
     public List<DroneConnection> getConnections() {
@@ -247,11 +258,13 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
         this.connections.addAll(connections);
     }
 
-    public DroneConnection findConnection(MTEMultiBlockBase machine) {
+    public Optional<DroneConnection> findConnection(MTEMultiBlockBase machine) {
         return connections.stream()
-            .filter(connection -> connection.getLinkedMachine() == machine)
-            .findFirst()
-            .orElse(null);
+            .filter(
+                connection -> connection.getLinkedMachine()
+                    .filter(machine::equals)
+                    .isPresent())
+            .findFirst();
     }
 
     public Optional<DroneConnection> findConnection(UUID uuid1) {
@@ -268,6 +281,21 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEHatchDroneDownLinkGui(this).build(data, syncManager, uiSettings);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        NBTTagCompound nameList = aNBT.getCompoundTag("conList");
+        for (String s : nameList.func_150296_c()) {
+            savedNameList.put(s, nameList.getString(s));
+        }
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        NBTTagCompound conList = new NBTTagCompound();
+        connections.forEach(conn -> conList.setString(conn.uuid.toString(), conn.getCustomName()));
+        aNBT.setTag("conList", conList);
     }
 
     @Override

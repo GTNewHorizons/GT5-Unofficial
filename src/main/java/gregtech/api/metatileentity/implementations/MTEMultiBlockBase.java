@@ -731,6 +731,25 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         return false;
     }
 
+    @Override
+    public void onDisableWorking() {
+        if (!mMaintenanceHatches.isEmpty() && mMaintenanceHatches.get(0) instanceof MTEHatchDroneDownLink ddl) {
+            ddl.findConnection(this)
+                .ifPresent(conn -> {
+                    conn.setActive(false);
+                    conn.setShutdownReason(getBaseMetaTileEntity().getLastShutDownReason());
+                });
+        }
+    }
+
+    @Override
+    public void onEnableWorking() {
+        if (!mMaintenanceHatches.isEmpty() && mMaintenanceHatches.get(0) instanceof MTEHatchDroneDownLink ddl) {
+            ddl.findConnection(this)
+                .ifPresent(conn -> conn.setActive(true));
+        }
+    }
+
     protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (mMaxProgresstime > 0 && doRandomMaintenanceDamage()) {
             if (onRunningTick(mInventory[1])) {
@@ -1304,9 +1323,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         mMaxProgresstime = 0;
         mEfficiencyIncrease = 0;
         IGregTechTileEntity igte = getBaseMetaTileEntity();
-        igte.disableWorking();
-        igte.setShutDownReason(reason);
-        igte.setShutdownStatus(true);
+        if (igte != null) {
+            igte.setShutDownReason(reason);
+            igte.setShutdownStatus(true);
+            igte.disableWorking();
+        }
         if (reason.wasCritical()) {
             sendSound(INTERRUPT_SOUND_INDEX);
         }

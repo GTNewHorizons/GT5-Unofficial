@@ -1,10 +1,9 @@
 package gregtech.common.tileentities.machines.multi.drone;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
-
-import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -16,6 +15,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.util.GTUtil;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -23,18 +23,19 @@ import gregtech.api.util.shutdown.ShutDownReason;
 public class DroneConnection {
 
     // To make it work on client, no mte should be stored inside connection
-    String customName;
-    String unlocalizedName;
-    public ItemStack machineItem;
-    public ChunkCoordinates machineCoord;
-    boolean machineStatus;
-    String shutdownReason = "";
-    ChunkCoordinates centreCoord;
+    private final String unlocalizedName;
+    private final ItemStack machineItem;
+    private final ChunkCoordinates machineCoord;
+    private final ChunkCoordinates centreCoord;
+    private final int worldID;
+
+    public String customName;
+    public boolean machineStatus;
+    public String shutdownReason;
     public UUID uuid;
     public boolean isSelected;
-    int worldID;
 
-    public DroneConnection(MTEMultiBlockBase machine, MTEDroneCentre centre) {
+    public DroneConnection(MTEMultiBlockBase machine, MTEDroneCentre centre, HashMap<String, String> tempNameList) {
         this.machineItem = machine.getStackForm(1);
         this.machineCoord = machine.getBaseMetaTileEntity()
             .getCoords();
@@ -42,12 +43,14 @@ public class DroneConnection {
             .getCoords();
         this.worldID = centre.getBaseMetaTileEntity()
             .getWorld().provider.dimensionId;
-        this.uuid = UUID.nameUUIDFromBytes(
-            machineCoord.toString()
-                .getBytes());
+        this.uuid = UUID.nameUUIDFromBytes((machineCoord.toString() + worldID).getBytes());
         this.unlocalizedName = machine.mName;
-        this.customName = Optional.ofNullable(centre.tempNameList.remove(machineCoord.toString()))
+        this.customName = Optional.ofNullable(tempNameList.remove(uuid.toString()))
             .orElse(machine.getLocalName());
+        this.machineStatus = machine.isAllowedToWork();
+        this.shutdownReason = machine.getBaseMetaTileEntity()
+            .getLastShutDownReason()
+            .getDisplayString();
     }
 
     public DroneConnection(NBTTagCompound aNBT) {
@@ -71,27 +74,33 @@ public class DroneConnection {
         this.isSelected = aNBT.getBoolean("isSelected");
     }
 
-    @Nullable
-    public MTEMultiBlockBase getLinkedMachine() {
-        return getLoadedGTBaseMachineAt(machineCoord, DimensionManager.getWorld(worldID), false);
+    public Optional<MTEMultiBlockBase> getLinkedMachine() {
+        // It will always be null if this method is called on client with out-range coords
+        return Optional.ofNullable(getLoadedGTBaseMachineAt(machineCoord, DimensionManager.getWorld(worldID), false));
     }
 
-    @Nullable
-    public MTEMultiBlockBase getLinkedCentre() {
-        // Has to be carefully since the centre maybe cross-dimension. Do not call this method in the client.
-        return getLoadedGTBaseMachineAt(centreCoord, DimensionManager.getWorld(worldID), true);
+    public Optional<MTEMultiBlockBase> getLinkedCentre() {
+        return Optional.ofNullable(getLoadedGTBaseMachineAt(centreCoord, DimensionManager.getWorld(worldID), true));
     }
 
     public String getCustomName() {
         return customName;
     }
 
-    public String getLocalizedName() {
-        return StatCollector.translateToLocal("gt.blockmachines." + unlocalizedName + ".name");
+    public ChunkCoordinates getCentreCoord() {
+        return centreCoord;
     }
 
-    public String getUUIDString() {
-        return uuid.toString();
+    public ChunkCoordinates getMachineCoord() {
+        return machineCoord;
+    }
+
+    public ItemStack getMachineItem() {
+        return machineItem;
+    }
+
+    public String getLocalizedName() {
+        return StatCollector.translateToLocal("gt.blockmachines." + unlocalizedName + ".name");
     }
 
     public float getDistanceSquared() {
@@ -103,7 +112,11 @@ public class DroneConnection {
     }
 
     public boolean isMachineShutdown() {
-        return false;
+        return !shutdownReason.isEmpty() && !machineStatus;
+    }
+
+    public String getShutdownReason() {
+        return shutdownReason;
     }
 
     public NBTTagCompound transConnectionToNBT() {
@@ -136,9 +149,11 @@ public class DroneConnection {
     }
 
     public boolean isValid() {
-        return getLinkedMachine() != null && getLinkedMachine().isValid()
-            && getLinkedCentre() != null
-            && getLinkedCentre().isValid();
+        boolean isMachineValid = getLinkedMachine().map(MetaTileEntity::isValid)
+            .orElse(false);
+        boolean isCentreValid = getLinkedCentre().map(MetaTileEntity::isValid)
+            .orElse(false);
+        return isMachineValid && isCentreValid;
     }
 
     public void setActive(boolean active) {
