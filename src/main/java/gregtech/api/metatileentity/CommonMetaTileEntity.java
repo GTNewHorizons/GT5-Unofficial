@@ -25,6 +25,10 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.gtnewhorizon.gtnhlib.capability.item.ItemIO;
+import com.gtnewhorizon.gtnhlib.capability.item.ItemSink;
+import com.gtnewhorizon.gtnhlib.capability.item.ItemSource;
+import com.gtnewhorizon.gtnhlib.item.InventoryItemSource;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -34,6 +38,7 @@ import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.gui.modularui.GTUIInfos;
+import gregtech.api.implementation.items.GTItemSink;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -109,6 +114,28 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     @Nullable
     @Override
     public <T> T getCapability(@NotNull Class<T> capability, @NotNull ForgeDirection side) {
+        if (capability == ItemSink.class) {
+            return capability.cast(getItemSink(side));
+        }
+        if (capability == ItemSource.class) {
+            return capability.cast(getItemSource(side));
+        }
+        if (capability == ItemIO.class) {
+            return capability.cast(getItemIO(side));
+        }
+
+        return null;
+    }
+
+    protected ItemSink getItemSink(ForgeDirection side) {
+        return getSizeInventory() == 0 ? null : new GTItemSink(this, side);
+    }
+
+    protected ItemSource getItemSource(ForgeDirection side) {
+        return getSizeInventory() == 0 ? null : new InventoryItemSource(this, side);
+    }
+
+    protected ItemIO getItemIO(ForgeDirection side) {
         return null;
     }
 
@@ -414,6 +441,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     public int[] getAccessibleSlotsFromSide(int ordinalSide) {
         final TIntList tList = new TIntArrayList();
         final IGregTechTileEntity tTileEntity = getBaseMetaTileEntity();
+        if (tTileEntity == null || tTileEntity.isDead()) return GTValues.emptyIntArray;
         final Cover tileCover = tTileEntity.getCoverAtSide(ForgeDirection.getOrientation(ordinalSide));
         final boolean tSkip = tileCover.letsItemsIn(-2) || tileCover.letsItemsOut(-2);
         for (int i = 0; i < getSizeInventory(); i++) {
