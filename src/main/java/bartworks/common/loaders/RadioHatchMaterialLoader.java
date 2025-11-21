@@ -7,6 +7,7 @@ import static gregtech.api.util.GTRecipeConstants.SIEVERT;
 import java.util.ArrayList;
 import java.util.List;
 
+import bartworks.MainMod;
 import net.minecraft.item.ItemStack;
 
 import bartworks.system.material.Werkstoff;
@@ -55,6 +56,7 @@ public class RadioHatchMaterialLoader {
                 .isRadioactive() || material == WerkstoffLoader.Tiberium) {
                 continue;
             }
+            MainMod.LOGGER.info("Radioactive BW material: "+material.getVarName());
 
             int level = (int) material.getStats()
                 .getProtons();
@@ -67,9 +69,11 @@ public class RadioHatchMaterialLoader {
 
         for (Materials material : Materials.getAll()) {
             if (material == null || material.mElement == null) continue;
+
             boolean validProton = material.getProtons() >= 83 && !material.equals(Materials.Tritanium) // No Tritanium
                 && !material.equals(Materials.Naquadah); // Naquadah needs spacial value
             if (validProton) {
+                MainMod.LOGGER.info("Radioactive GT material: "+material.getName());
                 int level = (int) material.getProtons();
                 if (GTOreDictUnificator.get(OrePrefixes.stick, material, 1) != null) {
                     radioHatchMaterialAdder(GTOreDictUnificator.get(OrePrefixes.stick, material, 1), level, (byte) 1);
