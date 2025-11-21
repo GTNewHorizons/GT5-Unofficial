@@ -17,6 +17,15 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
+import com.gtnewhorizon.gtnhlib.capability.item.ItemIO;
+import com.gtnewhorizon.gtnhlib.capability.item.ItemSink;
+import com.gtnewhorizon.gtnhlib.capability.item.ItemSource;
+import com.gtnewhorizon.gtnhlib.item.AbstractInventoryIterator;
+import com.gtnewhorizon.gtnhlib.item.ImmutableItemStack;
+import com.gtnewhorizon.gtnhlib.item.InventoryIterator;
+import com.gtnewhorizon.gtnhlib.util.ItemUtil;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -35,6 +44,7 @@ import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
 import gregtech.api.enums.GTValues;
 import gregtech.api.gui.modularui.GTUITextures;
+import gregtech.api.implementation.items.SimpleItemIO;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -384,6 +394,21 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     }
 
     @Override
+    protected ItemSink getItemSink(ForgeDirection side) {
+        return new ItemIOImpl();
+    }
+
+    @Override
+    protected ItemSource getItemSource(ForgeDirection side) {
+        return new ItemIOImpl();
+    }
+
+    @Override
+    protected ItemIO getItemIO(ForgeDirection side) {
+        return new ItemIOImpl();
+    }
+
+    @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side != aFacing) return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1] };
@@ -457,5 +482,95 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                     () -> this instanceof MTEQuantumChest ? ((MTEQuantumChest) this).mItemCount : 0,
                     value -> clientItemCount = value));
 
+    }
+
+    class ItemIOImpl extends SimpleItemIO {
+
+        private static final int[] SLOTS = { 0, 1 };
+
+        @Override
+        protected @NotNull InventoryIterator iterator(int[] allowedSlots) {
+            return new AbstractInventoryIterator(SLOTS, allowedSlots) {
+
+                @Override
+                protected ItemStack getStackInSlot(int slot) {
+                    switch (slot) {
+                        case 0 -> {
+                            return GTUtility.copyAmountUnsafe(getItemCount(), getItemStack());
+                        }
+                        case 1 -> {
+                            return GTUtility.copy(mInventory[1]);
+                        }
+                        default -> {
+                            return null;
+                        }
+                    }
+                }
+
+                @Override
+                public ItemStack extract(int amount, boolean forced) {
+                    switch (getCurrentSlot()) {
+                        case 0 -> {
+                            int toExtract = Math.min(amount, getItemCount());
+
+                            if (toExtract <= 0) return null;
+
+                            ItemStack extracted = GTUtility.copyAmountUnsafe(toExtract, getItemStack());
+
+                            setItemCount(getItemCount() - toExtract);
+
+                            if (getItemCount() <= 0) {
+                                setItemStack(null);
+                            }
+
+                            meInventoryHandler.notifyListeners(-toExtract, extracted);
+
+                            MTEDigitalChestBase.this.markDirty();
+
+                            return extracted;
+                        }
+                        case 1 -> {
+                            ItemStack inSlot = mInventory[1];
+
+                            if (inSlot == null) return null;
+
+                            int toExtract = Math.min(amount, inSlot.stackSize);
+
+                            ItemStack extracted = decrStackSize(1, toExtract);
+
+                            MTEDigitalChestBase.this.markDirty();
+
+                            return extracted;
+                        }
+                        default -> {
+                            return null;
+                        }
+                    }
+                }
+
+                @Override
+                public int insert(ImmutableItemStack stack, boolean forced) {
+                    if (getCurrentSlot() != 0) return stack.getStackSize();
+
+                    if (!ItemUtil.isStackEmpty(getItemStack()) && !stack.matches(getItemStack())) {
+                        return stack.getStackSize();
+                    }
+
+                    int insertable = Math.min(getItemCapacity() - getItemCount(), stack.getStackSize());
+
+                    if (ItemUtil.isStackEmpty(getItemStack())) {
+                        setItemStack(stack.toStack(0));
+                    }
+
+                    setItemCount(getItemCount() + insertable);
+
+                    meInventoryHandler.notifyListeners(insertable, getItemStack());
+
+                    MTEDigitalChestBase.this.markDirty();
+
+                    return stack.getStackSize() - insertable;
+                }
+            };
+        }
     }
 }

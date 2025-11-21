@@ -313,4 +313,13 @@ public class MTEHatchTFFT extends MTEHatch implements IMEMonitor<IAEFluidStack> 
             }
         }
     }
+
+    @Override
+    public int getCapacity() {
+        if (controller != null) {
+            return (int) Math.min(controller.getCapacityPerFluid(), Integer.MAX_VALUE);
+        }
+        return 0;
+    }
+
 }

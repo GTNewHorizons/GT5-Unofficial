@@ -596,6 +596,11 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
     }
 
     @Override
+    protected boolean useMui2() {
+        return false;
+    }
+
+    @Override
     public int getSizeInventory() {
         // Add fake slots so that multis can detect the stocked items properly
         // 0 to 15: stocked items
