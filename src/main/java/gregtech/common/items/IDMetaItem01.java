@@ -237,6 +237,7 @@ public enum IDMetaItem01 {
     Book_Written_03(489),
     Schematic(490),
     Schematic_Crafting(491),
+    Schematic_Dust_Small(492),
     Schematic_1by1(495),
     Schematic_2by2(496),
     Schematic_3by3(497),
