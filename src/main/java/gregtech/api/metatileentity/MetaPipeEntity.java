@@ -486,7 +486,8 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
     }
 
     @Override
-    public IGregTechTileEntity getBaseMetaTileEntity() {
+    // making this method final allows it to be inlined by the JIT compiler
+    public final IGregTechTileEntity getBaseMetaTileEntity() {
         return mBaseMetaTileEntity;
     }
 
