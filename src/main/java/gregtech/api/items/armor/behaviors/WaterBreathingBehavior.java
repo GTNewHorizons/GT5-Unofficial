@@ -3,15 +3,11 @@ package gregtech.api.items.armor.behaviors;
 import static gregtech.loaders.ExtraIcons.rebreatherAugment;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 
 import org.jetbrains.annotations.NotNull;
 
-import gregtech.api.items.armor.ArmorHelper;
+import gregtech.api.items.armor.ArmorContext;
 
 public class WaterBreathingBehavior implements IArmorBehavior {
 
@@ -20,33 +16,23 @@ public class WaterBreathingBehavior implements IArmorBehavior {
     protected WaterBreathingBehavior() {}
 
     @Override
+    public BehaviorName getName() {
+        return BehaviorName.WaterBreathing;
+    }
+
+    @Override
     public IIcon getModularArmorTexture() {
         return rebreatherAugment;
     }
 
     @Override
-    public String getMainNBTTag() {
-        return ArmorHelper.WATER_BREATHING_KEY;
-    }
+    public void onArmorTick(@NotNull ArmorContext context) {
+        EntityPlayer player = context.getPlayer();
 
-    @Override
-    public void onArmorTick(@NotNull World world, @NotNull EntityPlayer player, @NotNull ItemStack stack) {
-        if (player.isInWater() && stack.hasTagCompound()
-            && stack.getTagCompound()
-                .getBoolean(ArmorHelper.WATER_BREATHING_KEY)) {
-            if (player.getAir() <= 1 && ArmorHelper.drainArmor(stack, 5000)) {
+        if (player.isInWater()) {
+            if (player.getAir() <= 1 && context.drainEnergy(5000)) {
                 player.setAir(300);
             }
         }
-    }
-
-    @Override
-    public void addBehaviorNBT(@NotNull NBTTagCompound tag) {
-        tag.setBoolean(ArmorHelper.WATER_BREATHING_KEY, true);
-    }
-
-    @Override
-    public String getBehaviorName() {
-        return StatCollector.translateToLocal("GT5U.armor.behavior.waterbreathing");
     }
 }

@@ -1,21 +1,12 @@
 package gregtech.common.items.armor;
 
 import static gregtech.api.enums.Mods.GregTech;
-import static gregtech.api.enums.Mods.Thaumcraft;
-import static gregtech.api.items.armor.ArmorHelper.APIARIST_KEY;
-import static gregtech.api.items.armor.ArmorHelper.FORCE_FIELD_KEY;
-import static gregtech.api.items.armor.ArmorHelper.GOGGLES_OF_REVEALING_KEY;
-import static gregtech.api.items.armor.ArmorHelper.INFINITE_ENERGY_KEY;
-import static gregtech.api.items.armor.ArmorHelper.JETPACK_KEY;
 import static gregtech.api.items.armor.ArmorHelper.SLOT_CHEST;
 import static gregtech.api.items.armor.ArmorHelper.SLOT_LEGS;
-import static gregtech.api.items.armor.ArmorHelper.VIS_DISCOUNT_KEY;
-import static gregtech.api.items.armor.ArmorHelper.drainArmor;
 import static gregtech.api.items.armor.MechArmorAugmentRegistries.coresMap;
 import static gregtech.api.items.armor.MechArmorAugmentRegistries.framesMap;
 import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.client.model.ModelBiped;
@@ -30,7 +21,6 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -41,33 +31,38 @@ import org.lwjgl.input.Keyboard;
 
 import com.gtnewhorizon.gtnhlib.keybind.IKeyPressedListener;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
-
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.Optional;
+import cpw.mods.fml.common.Optional.Interface;
+import cpw.mods.fml.common.Optional.InterfaceList;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.apiculture.IArmorApiarist;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Mods;
+import gregtech.api.enums.Mods.ModIDs;
+import gregtech.api.hazards.Hazard;
+import gregtech.api.hazards.IHazardProtector;
+import gregtech.api.items.armor.ArmorContext;
+import gregtech.api.items.armor.ArmorContext.ArmorContextImpl;
+import gregtech.api.items.armor.ArmorState;
+import gregtech.api.items.armor.MechArmorAugmentRegistries.ArmorType;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.Cores;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.Frames;
+import gregtech.api.items.armor.behaviors.BehaviorName;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
 import gregtech.api.util.GTUtility;
-import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import thaumcraft.api.IGoggles;
 import thaumcraft.api.IVisDiscountGear;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.nodes.IRevealer;
 
-@Optional.InterfaceList(
-    value = { @Optional.Interface(iface = "forestry.api.apiculture.IArmorApiarist", modid = Mods.ModIDs.FORESTRY),
-        @Optional.Interface(iface = "thaumcraft.api.IVisDiscountGear", modid = Mods.ModIDs.THAUMCRAFT),
-        @Optional.Interface(iface = "thaumcraft.api.IGoggles", modid = Mods.ModIDs.THAUMCRAFT),
-        @Optional.Interface(iface = "thaumcraft.api.nodes.IRevealer", modid = Mods.ModIDs.THAUMCRAFT), })
+@InterfaceList(
+    value = { @Interface(iface = "forestry.api.apiculture.IArmorApiarist", modid = ModIDs.FORESTRY),
+        @Interface(iface = "thaumcraft.api.IVisDiscountGear", modid = ModIDs.THAUMCRAFT),
+        @Interface(iface = "thaumcraft.api.IGoggles", modid = ModIDs.THAUMCRAFT),
+        @Interface(iface = "thaumcraft.api.nodes.IRevealer", modid = ModIDs.THAUMCRAFT), })
 
 public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISpecialArmor, IElectricItem, IGoggles,
-    IRevealer, IVisDiscountGear, IArmorApiarist {
+    IRevealer, IVisDiscountGear, IArmorApiarist, IHazardProtector {
 
     protected IIcon coreIcon;
     protected IIcon frameIcon;
@@ -77,18 +72,12 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
     public static final String MECH_FRAME_KEY = "frame";
     public static final String MECH_CORE_KEY = "core";
 
-    protected List<IArmorBehavior> behaviors = new ArrayList<>();
-
-    private int slot;
+    private final int slot;
 
     public MechArmorBase(int slot, String type, int register) {
         super(ArmorMaterial.IRON, 2, register);
         this.slot = slot;
         this.type = type;
-    }
-
-    public void addBehavior(IArmorBehavior behavior) {
-        behaviors.add(behavior);
     }
 
     @Override
@@ -106,60 +95,100 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
         return stack;
     }
 
-    public List<IArmorBehavior> getBehaviors() {
-        return behaviors;
+    public static ArmorContext load(EntityLivingBase entity, ItemStack stack) {
+        if (entity instanceof EntityPlayer player) {
+            return load(player.getEntityWorld(), player, stack);
+        } else {
+            ArmorContextImpl context = new ArmorContextImpl(stack, null);
+
+            ArmorState.load(context);
+
+            return context;
+        }
+    }
+
+    public static ArmorContext load(World world, EntityPlayer player, ItemStack stack) {
+        ArmorContextImpl context = new ArmorContextImpl(world, player, stack, null);
+
+        ArmorState.load(context);
+
+        return context;
     }
 
     @Override
-    public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
-        for (IArmorBehavior behavior : behaviors) {
-            behavior.onArmorTick(world, player, itemStack);
+    public void onArmorTick(World world, EntityPlayer player, ItemStack stack) {
+        ArmorContext context = load(world, player, stack);
+
+        for (IArmorBehavior behavior : context.getArmorState().behaviors.values()) {
+            behavior.onArmorTick(context);
         }
     }
 
     public void onArmorUnequip(@NotNull World world, @NotNull EntityPlayer player, @NotNull ItemStack stack) {
-        for (IArmorBehavior behavior : behaviors) {
+        ArmorContext context = load(world, player, stack);
+
+        for (IArmorBehavior behavior : context.getArmorState().behaviors.values()) {
             if (player instanceof EntityPlayerMP playerMP) {
-                for (SyncedKeybind keyBind : behavior.getListenedKeys()) {
+                for (SyncedKeybind keyBind : behavior.getListenedKeys(context)) {
                     keyBind.removePlayerListener(playerMP, this);
                 }
             }
-            behavior.onArmorUnequip(world, player, stack);
+
+            behavior.onArmorUnequip(context);
         }
     }
 
     public void onArmorEquip(@NotNull World world, @NotNull EntityPlayer player, @NotNull ItemStack stack) {
-        boolean initMessage = false;
-        for (IArmorBehavior behavior : behaviors) {
-            if (player instanceof EntityPlayerMP playerMP) {
-                for (SyncedKeybind keyBind : behavior.getListenedKeys()) {
+        ArmorContext context = load(world, player, stack);
+
+        if (player instanceof EntityPlayerMP playerMP) {
+            boolean initMessage = false;
+
+            for (IArmorBehavior behavior : context.getArmorState().behaviors.values()) {
+                for (SyncedKeybind keyBind : behavior.getListenedKeys(context)) {
                     keyBind.registerPlayerListener(playerMP, this);
-                    if (getOrCreateNbtCompound(stack).hasKey(behavior.getMainNBTTag())) {
-                        if (!initMessage) {
-                            GTUtility.sendChatToPlayer(player, "Armor Systems Online... Active keybindings: ");
-                            initMessage = true;
-                        }
-                        GTUtility.sendChatToPlayer(
-                            playerMP,
-                            StatCollector.translateToLocal(
-                                keyBind.getKeybinding()
-                                    .getKeyDescription())
-                                + ": "
-                                + Keyboard.getKeyName(keyBind.getKeyCode()));
+
+                    if (!initMessage) {
+                        GTUtility.sendChatToPlayer(player, "Armor Systems Online... Active keybindings: ");
+                        initMessage = true;
                     }
+
+                    GTUtility.sendChatToPlayer(
+                        playerMP,
+                        StatCollector.translateToLocal(
+                            keyBind.getKeybinding()
+                                .getKeyDescription())
+                            + ": "
+                            + Keyboard.getKeyName(keyBind.getKeyCode()));
                 }
             }
-            behavior.onArmorEquip(world, player, stack);
+        }
+
+        for (IArmorBehavior behavior : context.getArmorState().behaviors.values()) {
+            behavior.onArmorEquip(context);
         }
     }
 
     @Override
     public void onKeyPressed(EntityPlayerMP player, SyncedKeybind keyPressed, boolean isDown) {
-        for (IArmorBehavior behavior : behaviors) {
-            if (behavior.getListenedKeys()
-                .contains(keyPressed)) {
-                behavior.onKeyPressed(player.getCurrentArmor(slot), player, keyPressed, isDown);
-            }
+        ItemStack stack = player.getCurrentArmor(slot);
+
+        if (stack == null) return;
+        if (stack.getItem() != this) return;
+
+        ArmorContext context = load(player.getEntityWorld(), player, stack);
+
+        boolean didSomething = false;
+
+        for (IArmorBehavior behavior : context.getArmorState().behaviors.values()) {
+            if (!behavior.getListenedKeys(context).contains(keyPressed)) continue;
+
+            didSomething = true;
+            behavior.onKeyPressed(context, keyPressed, isDown);
+        }
+
+        if (didSomething) {
+            ArmorState.save(context);
         }
     }
 
@@ -187,30 +216,10 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
     }
 
     @Override
-    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
-        NBTTagCompound tag = aStack.getTagCompound();
-        if (tag != null) {
-            if (tag.hasKey(MECH_FRAME_KEY)) {
-                aList.add("Armor Frame: " + tag.getString(MECH_FRAME_KEY));
-            }
-            if (tag.hasKey(MECH_CORE_KEY)) {
-                aList.add("Energy Core: " + tag.getString(MECH_CORE_KEY));
-            }
-            for (IArmorBehavior behavior : behaviors) {
-                behavior.addInformation(aStack, aList);
-            }
-        }
-        if (Loader.isModLoaded(Thaumcraft.ID)) {
-            int visDiscount = this.getVisDiscount(aStack, aPlayer, (Aspect) null);
-            if (visDiscount > 0) {
-                aList.add("");
-                aList.add(
-                    EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal("tc.visdiscount")
-                        + ": "
-                        + visDiscount
-                        + "%");
-            }
-        }
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean aF3_H) {
+        ArmorContext context = load(player.getEntityWorld(), player, stack);
+
+        context.getArmorState().addArmorInformation(context, tooltip);
     }
 
     @Override
@@ -237,18 +246,19 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
         model.bipedLeftLeg.showModel = (armorType == 2 || armorType == 3);
         model.bipedRightLeg.showModel = (armorType == 2 || armorType == 3);
 
-        model.jettank1.showModel = (armorSlot == SLOT_CHEST && itemStack.getTagCompound()
-            .hasKey(JETPACK_KEY));
+        ArmorState state = ArmorState.load(itemStack);
 
-        Cores core = getCore(itemStack);
-        if (core != null) {
-            switch (core.tier) {
+        model.jettank1.showModel = (armorSlot == SLOT_CHEST && state.hasBehavior(BehaviorName.Jetpack));
+
+        if (state.core != null) {
+            switch (state.core.getTier()) {
                 case 1 -> model.core1.showModel = true;
                 case 2 -> model.core2.showModel = true;
                 case 3 -> model.core3.showModel = true;
                 case 4 -> model.core4.showModel = true;
             }
         }
+
         return model;
     }
 
@@ -272,10 +282,10 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
 
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
-        Cores core = getCore(stack);
-        if (core == null) return false;
-        return (!stack.getTagCompound()
-            .hasKey(INFINITE_ENERGY_KEY));
+        ArmorState state = ArmorState.load(stack);
+
+        if (state.core == null) return false;
+        return !state.hasBehavior(BehaviorName.InfiniteEnergy);
     }
 
     @Override
@@ -295,7 +305,7 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
     private float getDamageReduction(ItemStack stack) {
         Frames frame = getFrame(stack);
         if (frame != null) {
-            return frame.protection * getProtectionShare();
+            return frame.getProtection() * getProtectionShare();
         }
         return 0;
     }
@@ -306,11 +316,18 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
     public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage,
         int slot) {
         if (source.isUnblockable()) return new ArmorProperties(0, getDamageReduction(armor) / 100D, 15);
-        if (armor.getTagCompound()
-            .getBoolean(FORCE_FIELD_KEY) && drainArmor(armor, 100000 * damage))
+
+        ArmorContext context = load(player, armor);
+
+        if (context.isBehaviorActive(BehaviorName.ForceField) && context.drainEnergy(100000 * damage)) {
+            context.save();
             return new ArmorProperties(0, 100, Integer.MAX_VALUE);
-        if (source.isDamageAbsolute() || source.isMagicDamage() || ElectricItem.manager.getCharge(armor) < damage * 100)
+        }
+
+        if (source.isDamageAbsolute() || source.isMagicDamage() || context.getArmorState().charge < damage * 100) {
             return new ArmorProperties(0, getDamageReduction(armor) / 100D, 15);
+        }
+
         return new ArmorProperties(0, getDamageReduction(armor) / 24.5D, 1000);
     }
 
@@ -321,35 +338,60 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
 
     @Override
     public void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) {
-        drainArmor(stack, damage * 100);
+        ArmorContext context = load(entity, stack);
+
+        context.drainEnergy(damage * 100);
     }
 
     // Thaumcraft compat
 
     @Override
-    public boolean showIngamePopups(ItemStack item, EntityLivingBase var2) {
-        return (getOrCreateNbtCompound(item).getBoolean(GOGGLES_OF_REVEALING_KEY));
+    public boolean showIngamePopups(ItemStack armor, EntityLivingBase entity) {
+        ArmorContext context = load(entity, armor);
+
+        return context.hasBehavior(BehaviorName.GogglesOfRevealing);
     }
 
     @Override
-    public boolean showNodes(ItemStack item, EntityLivingBase var2) {
-        return (getOrCreateNbtCompound(item).getBoolean(GOGGLES_OF_REVEALING_KEY));
+    public boolean showNodes(ItemStack armor, EntityLivingBase entity) {
+        ArmorContext context = load(entity, armor);
+
+        return context.hasBehavior(BehaviorName.GogglesOfRevealing);
     }
 
     @Override
-    public int getVisDiscount(ItemStack item, EntityPlayer var2, Aspect var3) {
-        return (getOrCreateNbtCompound(item).getInteger(VIS_DISCOUNT_KEY));
+    public int getVisDiscount(ItemStack armor, EntityPlayer player, Aspect aspect) {
+        ArmorContext context = load(player.getEntityWorld(), player, armor);
+
+        return context.getArmorState().visDiscount;
     }
 
     // Forestry apiarist compat
     @Override
     public boolean protectEntity(EntityLivingBase entity, ItemStack armor, String cause, boolean doProtect) {
-        return (getOrCreateNbtCompound(armor).getBoolean(APIARIST_KEY));
+        ArmorContext context = load(entity, armor);
+
+        return context.hasBehavior(BehaviorName.Apiarist);
     }
 
     @Override
     public boolean protectPlayer(EntityPlayer player, ItemStack armor, String cause, boolean doProtect) {
-        return (getOrCreateNbtCompound(armor).getBoolean(APIARIST_KEY));
+        ArmorContext context = load(player.getEntityWorld(), player, armor);
+
+        return context.hasBehavior(BehaviorName.Apiarist);
+    }
+
+    // Hazards
+
+    @Override
+    public boolean protectsAgainst(ItemStack itemStack, Hazard hazard) {
+        ArmorContext context = load(null, itemStack);
+
+        for (IArmorBehavior behavior : context.getArmorState().behaviors.values()) {
+            if (behavior.protectsAgainst(context, hazard)) return true;
+        }
+
+        return false;
     }
 
     // IC2 electric api
@@ -372,21 +414,31 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
     @Override
     public double getMaxCharge(ItemStack itemStack) {
         Cores core = getCore(itemStack);
-        if (core != null) return getCore(itemStack).chargeMax;
+        if (core != null) return getCore(itemStack).getChargeMax();
         return 0;
     }
 
     @Override
     public int getTier(ItemStack itemStack) {
         Cores core = getCore(itemStack);
-        if (core != null) return getCore(itemStack).chargeTier;
-        return -1;
+        if (core != null) return getCore(itemStack).getChargeTier();
+        return 0;
     }
 
     @Override
     public double getTransferLimit(ItemStack itemStack) {
         Cores core = getCore(itemStack);
-        if (core != null) return GTValues.V[getCore(itemStack).chargeTier];
+        if (core != null) return GTValues.V[getCore(itemStack).getChargeTier()];
         return 0;
+    }
+
+    public ArmorType getArmorType() {
+        return switch(armorType) {
+            case 0 -> ArmorType.Helmet;
+            case 1 -> ArmorType.Chestplate;
+            case 2 -> ArmorType.Leggings;
+            case 3 -> ArmorType.Boots;
+            default -> throw new IllegalStateException("Unexpected value: " + armorType);
+        };
     }
 }

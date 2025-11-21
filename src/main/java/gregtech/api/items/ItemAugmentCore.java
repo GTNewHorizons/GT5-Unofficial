@@ -2,49 +2,40 @@ package gregtech.api.items;
 
 import static gregtech.api.enums.GTValues.VN;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.Cores;
-import gregtech.api.items.armor.behaviors.IArmorBehavior;
-import gregtech.common.items.armor.MechArmorLoader;
+import gregtech.api.util.GTUtility;
 import ic2.api.item.IElectricItem;
 
 public class ItemAugmentCore extends ItemAugmentAbstract implements IElectricItem {
 
-    public final Cores coreData;
+    public final Cores core;
 
-    public ItemAugmentCore(String aUnlocalized, String aEnglish, String aEnglishTooltip,
-        Collection<IArmorBehavior> behaviors, Cores coredata) {
-        super(
-            aUnlocalized,
-            aEnglish,
-            aEnglishTooltip,
-            MechArmorLoader.AllMechArmor,
-            behaviors,
-            Collections.emptyList(),
-            Collections.emptyList(),
-            0);
-        this.coreData = coredata;
+    public ItemAugmentCore(Cores core) {
+        super(core);
+        this.core = core;
         this.maxStackSize = 1;
     }
 
     @Override
-    protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
-        aList.add(StatCollector.translateToLocalFormatted("GT5U.armor.tooltip.energycore", coreData.tier));
-        aList.add(
-            StatCollector.translateToLocalFormatted(
+    protected void addAdditionalToolTips(List<String> desc, ItemStack augmentStack, EntityPlayer player) {
+        desc.add(GTUtility.translate("GT5U.armor.tooltip.energycore", core.getTier()));
+        desc.add(
+            GTUtility.translate(
                 "GT5U.armor.tooltip.chargetier",
-                GTValues.TIER_COLORS[coreData.chargeTier] + VN[coreData.chargeTier]));
-        aList.add(StatCollector.translateToLocalFormatted("GT5U.armor.tooltip.maxenergy", coreData.chargeMax));
-        super.addAdditionalToolTips(aList, aStack, aPlayer);
+                GTValues.TIER_COLORS[core.getChargeTier()] + VN[core.getChargeTier()]));
+
+        String energy = core == Cores.Singularity ? EnumChatFormatting.LIGHT_PURPLE + "Infinite" : EnumChatFormatting.YELLOW + GTUtility.formatNumbers(core.getChargeMax());
+
+        desc.add(GTUtility.translate("GT5U.armor.tooltip.maxenergy", energy));
+        super.addAdditionalToolTips(desc, augmentStack, player);
     }
 
     @Override
@@ -64,16 +55,16 @@ public class ItemAugmentCore extends ItemAugmentAbstract implements IElectricIte
 
     @Override
     public double getMaxCharge(ItemStack itemStack) {
-        return coreData.chargeMax;
+        return core.getChargeMax();
     }
 
     @Override
     public int getTier(ItemStack aStack) {
-        return coreData.chargeTier;
+        return core.getChargeTier();
     }
 
     @Override
     public double getTransferLimit(ItemStack itemStack) {
-        return Math.pow(2, 2 * coreData.chargeTier + 3);
+        return Math.pow(2, 2 * core.getChargeTier() + 3);
     }
 }

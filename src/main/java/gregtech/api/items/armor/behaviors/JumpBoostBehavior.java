@@ -1,34 +1,35 @@
 package gregtech.api.items.armor.behaviors;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
 
-import gregtech.api.items.armor.ArmorHelper;
+import gregtech.api.items.armor.ArmorContext;
 
 public class JumpBoostBehavior implements IArmorBehavior {
 
     public static final JumpBoostBehavior MECH_ARMOR_INSTANCE = new JumpBoostBehavior(0.2F);
 
-    final private float boost;
+    private final float boost;
 
     protected JumpBoostBehavior(float boost) {
         this.boost = boost;
     }
 
     @Override
-    public void addBehaviorNBT(@NotNull NBTTagCompound tag) {
-        tag.setFloat(ArmorHelper.JUMP_BOOST_KEY, boost);
+    public BehaviorName getName() {
+        return BehaviorName.JumpBoost;
     }
 
     @Override
-    public String getMainNBTTag() {
-        return ArmorHelper.JUMP_BOOST_KEY;
+    public void configureArmorState(@NotNull ArmorContext context, @NotNull NBTTagCompound stackTag) {
+        context.getArmorState().jumpBoost = boost;
     }
 
     @Override
-    public String getBehaviorName() {
-        return StatCollector.translateToLocal("GT5U.armor.behavior.jumpboost");
+    public @NotNull IArmorBehavior merge(@NotNull IArmorBehavior other) {
+        if (!(other instanceof JumpBoostBehavior jumpBoost)) return null;
+
+        return new JumpBoostBehavior(this.boost + jumpBoost.boost);
     }
 }

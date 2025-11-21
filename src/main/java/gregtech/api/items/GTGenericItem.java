@@ -44,9 +44,19 @@ public class GTGenericItem extends Item implements IProjectileItem {
         super();
         mName = "gt." + aUnlocalized;
         GTLanguageManager.addStringLocalization(mName + ".name", aEnglish);
-        if (GTUtility.isStringValid(aEnglishTooltip))
+        if (GTUtility.isStringValid(aEnglishTooltip)) {
             GTLanguageManager.addStringLocalization(mTooltip = mName + ".tooltip_main", aEnglishTooltip);
-        else mTooltip = null;
+        } else {
+            mTooltip = null;
+        }
+        setCreativeTab(GregTechAPI.TAB_GREGTECH);
+        GameRegistry.registerItem(this, mName, GregTech.ID);
+        BlockDispenser.dispenseBehaviorRegistry.putObject(this, new GT_Item_Dispense());
+    }
+
+    public GTGenericItem(String unlocalized) {
+        mName = "gt." + unlocalized;
+        mTooltip = null;
         setCreativeTab(GregTechAPI.TAB_GREGTECH);
         GameRegistry.registerItem(this, mName, GregTech.ID);
         BlockDispenser.dispenseBehaviorRegistry.putObject(this, new GT_Item_Dispense());

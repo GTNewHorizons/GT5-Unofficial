@@ -1,18 +1,13 @@
 package gregtech.api.items.armor.behaviors;
 
-import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 import static gregtech.loaders.ExtraIcons.creativeFlightAugment;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 
 import org.jetbrains.annotations.NotNull;
 
-import gregtech.api.items.armor.ArmorHelper;
+import gregtech.api.items.armor.ArmorContext;
 
 public class CreativeFlightBehavior implements IArmorBehavior {
 
@@ -21,16 +16,23 @@ public class CreativeFlightBehavior implements IArmorBehavior {
     protected CreativeFlightBehavior() {/**/}
 
     @Override
+    public BehaviorName getName() {
+        return BehaviorName.CreativeFlight;
+    }
+
+    @Override
     public IIcon getModularArmorTexture() {
         return creativeFlightAugment;
     }
 
     @Override
-    public void onArmorTick(@NotNull World world, @NotNull EntityPlayer player, @NotNull ItemStack stack) {
-        if (!world.isRemote) return;
-        NBTTagCompound tag = getOrCreateNbtCompound(stack);
-        if (tag.getBoolean(ArmorHelper.CREATIVE_FLIGHT_KEY) && player.capabilities.isFlying) {
-            if (!ArmorHelper.drainArmor(stack, 75)) {
+    public void onArmorTick(@NotNull ArmorContext context) {
+        if (!context.isRemote()) return;
+
+        EntityPlayer player = context.getPlayer();
+
+        if (player.capabilities.isFlying) {
+            if (!context.drainEnergy(75)) {
                 player.capabilities.isFlying = false;
                 player.sendPlayerAbilities();
             }
@@ -38,36 +40,21 @@ public class CreativeFlightBehavior implements IArmorBehavior {
     }
 
     @Override
-    public void onArmorEquip(@NotNull World world, @NotNull EntityPlayer player, @NotNull ItemStack stack) {
-        NBTTagCompound tag = getOrCreateNbtCompound(stack);
-        if (tag.getBoolean(ArmorHelper.CREATIVE_FLIGHT_KEY)) {
-            player.capabilities.allowFlying = true;
-            player.sendPlayerAbilities();
-        }
+    public void onArmorEquip(@NotNull ArmorContext context) {
+        EntityPlayer player = context.getPlayer();
+
+        player.capabilities.allowFlying = true;
+        player.sendPlayerAbilities();
     }
 
     @Override
-    public void onArmorUnequip(@NotNull World world, @NotNull EntityPlayer player, @NotNull ItemStack stack) {
-        NBTTagCompound tag = getOrCreateNbtCompound(stack);
-        if (tag.getBoolean(ArmorHelper.CREATIVE_FLIGHT_KEY) && !player.capabilities.isCreativeMode) {
+    public void onArmorUnequip(@NotNull ArmorContext context) {
+        EntityPlayer player = context.getPlayer();
+
+        if (!player.capabilities.isCreativeMode) {
             player.capabilities.allowFlying = false;
             player.capabilities.isFlying = false;
             player.sendPlayerAbilities();
         }
-    }
-
-    @Override
-    public void addBehaviorNBT(@NotNull NBTTagCompound tag) {
-        tag.setBoolean(ArmorHelper.CREATIVE_FLIGHT_KEY, true);
-    }
-
-    @Override
-    public String getMainNBTTag() {
-        return ArmorHelper.CREATIVE_FLIGHT_KEY;
-    }
-
-    @Override
-    public String getBehaviorName() {
-        return StatCollector.translateToLocal("GT5U.armor.behavior.creativeflight");
     }
 }

@@ -10,12 +10,9 @@ import static gregtech.api.items.armor.ArmorHelper.SLOT_CHEST;
 import static gregtech.api.items.armor.ArmorHelper.SLOT_HELMET;
 import static gregtech.api.items.armor.ArmorHelper.SLOT_LEGS;
 
-import java.util.List;
-
-import com.google.common.collect.ImmutableList;
-
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.ItemList;
+import gregtech.api.items.armor.MechArmorAugmentRegistries;
 
 public class MechArmorLoader {
 
@@ -23,8 +20,6 @@ public class MechArmorLoader {
     public static MechArmorBase MechArmorChestplate;
     public static MechArmorBase MechArmorLeggings;
     public static MechArmorBase MechArmorBoots;
-
-    public static List<MechArmorBase> AllMechArmor;
 
     public static void run() {
         MechArmorHelmet = new MechArmorBase(SLOT_HELMET, "helmet", REGISTER_HELMET);
@@ -47,6 +42,6 @@ public class MechArmorLoader {
         ItemList.Mechanical_Leggings.set(MechArmorLeggings);
         ItemList.Mechanical_Boots.set(MechArmorBoots);
 
-        AllMechArmor = ImmutableList.of(MechArmorHelmet, MechArmorChestplate, MechArmorLeggings, MechArmorBoots);
+        MechArmorAugmentRegistries.init();
     }
 }

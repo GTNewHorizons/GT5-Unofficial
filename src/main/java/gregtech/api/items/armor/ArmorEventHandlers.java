@@ -1,27 +1,22 @@
 package gregtech.api.items.armor;
 
-import static gregtech.api.items.armor.ArmorHelper.FALL_PROTECTION_KEY;
-import static gregtech.api.items.armor.ArmorHelper.JUMP_BOOST_KEY;
 import static gregtech.api.items.armor.ArmorHelper.SLOT_BOOTS;
-import static gregtech.api.items.armor.ArmorHelper.drainArmor;
-import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 
 import com.gtnewhorizon.gtnhlib.client.event.LivingEquipmentChangeEvent;
-
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.items.armor.behaviors.BehaviorName;
 import gregtech.common.items.armor.MechArmorBase;
 
 public class ArmorEventHandlers {
@@ -87,10 +82,10 @@ public class ArmorEventHandlers {
             for (int i = 0; i < 4; i++) {
                 ItemStack armorStack = player.getCurrentArmor(i);
                 if (armorStack == null) continue;
-                if (armorStack.getItem() instanceof MechArmorBase gtArmor) {
-                    NBTTagCompound behaviorTag = getOrCreateNbtCompound(armorStack);
+                if (armorStack.getItem() instanceof MechArmorBase) {
+                    ArmorContext context = MechArmorBase.load(player, armorStack);
 
-                    if (behaviorTag.getBoolean(ArmorHelper.STEP_ASSIST_KEY)) {
+                    if (context.hasBehavior(BehaviorName.StepAssist)) {
                         if (player.stepHeight < MAGIC_STEP_HEIGHT) {
                             player.stepHeight = MAGIC_STEP_HEIGHT;
                             return;
@@ -110,15 +105,16 @@ public class ArmorEventHandlers {
             ItemStack boots = player.getCurrentArmor(SLOT_BOOTS);
 
             if (boots == null) return;
-            NBTTagCompound tag = boots.getTagCompound();
 
-            if (tag == null) return;
+            if (!(boots.getItem() instanceof MechArmorBase)) return;
 
-            float jumpboost = tag.getFloat(JUMP_BOOST_KEY);
-            if (jumpboost != 0) {
-                player.motionY += jumpboost;
-                player.fallDistance = player.fallDistance - (jumpboost * 10);
-                drainArmor(boots, 50);
+            ArmorContext context = MechArmorBase.load(player, boots);
+
+            float jumpBoost = context.getArmorState().jumpBoost;
+            if (jumpBoost > 0) {
+                player.motionY += jumpBoost;
+                player.fallDistance = player.fallDistance - (jumpBoost * 10);
+                context.drainEnergy(50);
             }
         }
     }
@@ -132,11 +128,12 @@ public class ArmorEventHandlers {
             }
             ItemStack boots = player.getCurrentArmor(SLOT_BOOTS);
             if (boots == null) return;
-            NBTTagCompound tag = boots.getTagCompound();
 
-            if (tag == null) return;
-            if (tag.getBoolean(FALL_PROTECTION_KEY)
-                && ArmorHelper.drainArmor(boots, 500 * (player.fallDistance - 1.2f))) {
+            if (!(boots.getItem() instanceof MechArmorBase)) return;
+
+            ArmorContext context = MechArmorBase.load(player, boots);
+
+            if (context.hasBehavior(BehaviorName.FallProtection) && context.drainEnergy(500 * (player.fallDistance - 1.2f))) {
                 player.fallDistance = 0;
                 event.setCanceled(true);
             }

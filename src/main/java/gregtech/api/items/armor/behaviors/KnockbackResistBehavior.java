@@ -1,23 +1,15 @@
 package gregtech.api.items.armor.behaviors;
 
-import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
-
 import java.util.UUID;
 
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-
-import gregtech.api.items.armor.ArmorHelper;
+import gregtech.api.items.armor.ArmorContext;
 
 public class KnockbackResistBehavior implements IArmorBehavior {
 
@@ -32,33 +24,19 @@ public class KnockbackResistBehavior implements IArmorBehavior {
     }
 
     @Override
-    public String getMainNBTTag() {
-        return ArmorHelper.KNOCKBACK_RESISTANCE_KEY;
+    public BehaviorName getName() {
+        return BehaviorName.KnockbackResistance;
     }
 
     @Override
-    public void onArmorEquip(@NotNull World world, @NotNull EntityPlayer player, @NotNull ItemStack stack) {
-        if (getOrCreateNbtCompound(stack).getBoolean(ArmorHelper.KNOCKBACK_RESISTANCE_KEY)) {
-            player.getAttributeMap()
-                .applyAttributeModifiers(attributes);
-        }
+    public void onArmorEquip(@NotNull ArmorContext context) {
+        context.getPlayer().getAttributeMap()
+            .applyAttributeModifiers(attributes);
     }
 
     @Override
-    public void onArmorUnequip(@NotNull World world, @NotNull EntityPlayer player, @NotNull ItemStack stack) {
-        if (getOrCreateNbtCompound(stack).getBoolean(ArmorHelper.KNOCKBACK_RESISTANCE_KEY)) {
-            player.getAttributeMap()
-                .removeAttributeModifiers(attributes);
-        }
-    }
-
-    @Override
-    public void addBehaviorNBT(@NotNull NBTTagCompound tag) {
-        tag.setBoolean(ArmorHelper.KNOCKBACK_RESISTANCE_KEY, true);
-    }
-
-    @Override
-    public String getBehaviorName() {
-        return StatCollector.translateToLocal("GT5U.armor.behavior.knockbackresistance");
+    public void onArmorUnequip(@NotNull ArmorContext context) {
+        context.getPlayer().getAttributeMap()
+            .removeAttributeModifiers(attributes);
     }
 }

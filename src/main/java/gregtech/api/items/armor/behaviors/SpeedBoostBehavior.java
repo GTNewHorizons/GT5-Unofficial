@@ -1,23 +1,18 @@
 package gregtech.api.items.armor.behaviors;
 
-import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
-
 import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 
 import org.jetbrains.annotations.NotNull;
 
+import bartworks.util.MathUtils;
 import com.google.common.collect.ImmutableSet;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
-
-import bartworks.util.MathUtils;
-import gregtech.api.items.armor.ArmorHelper;
+import gregtech.api.items.armor.ArmorContext;
 import gregtech.api.items.armor.ArmorKeybinds;
+import gregtech.api.items.armor.ArmorState;
 import gregtech.api.util.GTUtility;
 
 public class SpeedBoostBehavior implements IArmorBehavior {
@@ -31,93 +26,75 @@ public class SpeedBoostBehavior implements IArmorBehavior {
     }
 
     @Override
-    public String getMainNBTTag() {
-        return ArmorHelper.SPEED_BOOST_MAX_KEY;
+    public BehaviorName getName() {
+        return BehaviorName.SpeedBoost;
     }
 
     @Override
-    public boolean isStackable() {
-        return true;
-    }
-
-    @Override
-    public void onKeyPressed(@NotNull ItemStack stack, @NotNull EntityPlayer player, SyncedKeybind keyPressed,
-        boolean isDown) {
+    public void onKeyPressed(@NotNull ArmorContext context, SyncedKeybind keyPressed, boolean isDown) {
         if (!isDown) return;
-        NBTTagCompound tag = getOrCreateNbtCompound(stack);
-        if (!tag.hasKey(ArmorHelper.SPEED_BOOST_MAX_KEY)) return;
 
-        float current = tag.getFloat(ArmorHelper.SPEED_BOOST_CURRENT_KEY);
+        ArmorState state = context.getArmorState();
 
         if (keyPressed == ArmorKeybinds.SPEED_INCREASE_KEYBIND) {
-            current += 0.05F;
+            state.speedBoost += 0.25F;
         } else if (keyPressed == ArmorKeybinds.SPEED_DECREASE_KEYBIND) {
-            current -= 0.05F;
+            state.speedBoost -= 0.25F;
         }
-        current = MathUtils.clamp(current, 0, 1);
 
-        GTUtility.sendChatToPlayer(player, "New speed: " + Math.round(current * 100F) + "%");
-        tag.setFloat(ArmorHelper.SPEED_BOOST_CURRENT_KEY, current);
+        state.speedBoost = MathUtils.clamp(state.speedBoost, 0, 1);
+
+        GTUtility.sendChatToPlayer(context.getPlayer(), "New speed: " + Math.round(state.speedBoost * 100F) + "%");
     }
 
     @Override
-    public Set<SyncedKeybind> getListenedKeys() {
+    public void configureArmorState(@NotNull ArmorContext context, @NotNull NBTTagCompound stackTag) {
+        context.getArmorState().speedBoost = stackTag.getFloat("speedBoost");
+    }
+
+    @Override
+    public void saveArmorState(@NotNull ArmorContext context, @NotNull NBTTagCompound stackTag) {
+        stackTag.setFloat("speedBoost", context.getArmorState().speedBoost);
+    }
+
+    @Override
+    public @NotNull IArmorBehavior merge(@NotNull IArmorBehavior other) {
+        return new SpeedBoostBehavior(this.speedup + ((SpeedBoostBehavior) other).speedup);
+    }
+
+    @Override
+    public Set<SyncedKeybind> getListenedKeys(@NotNull ArmorContext context) {
         return ImmutableSet.of(ArmorKeybinds.SPEED_INCREASE_KEYBIND, ArmorKeybinds.SPEED_DECREASE_KEYBIND);
     }
 
     @Override
-    public void onArmorTick(@NotNull World world, @NotNull EntityPlayer player, @NotNull ItemStack stack) {
-        if (!world.isRemote) return;
-        NBTTagCompound tag = getOrCreateNbtCompound(stack);
-        float speed = tag.getFloat(ArmorHelper.SPEED_BOOST_CURRENT_KEY) * tag.getFloat(ArmorHelper.SPEED_BOOST_MAX_KEY);
-        if (speed > 0F) {
-            if ((player.onGround || player.capabilities.isFlying) && !player.isInWater()
-                && (player.moveForward != 0 || player.moveStrafing != 0)) {
-                if (ArmorHelper.drainArmor(stack, 1)) {
-                    if (player.moveForward > 0F) {
-                        player.moveFlying(0F, 1F, speed);
+    public void onArmorTick(@NotNull ArmorContext context) {
+        if (!context.isRemote()) return;
+
+        EntityPlayer player = context.getPlayer();
+
+        float speed = context.getArmorState().speedBoost * this.speedup;
+
+        if (speed <= 0) return;
+
+        if ((player.onGround || player.capabilities.isFlying) && !player.isInWater()
+            && (player.moveForward != 0 || player.moveStrafing != 0)) {
+            if (context.drainEnergy(1)) {
+                if (player.moveForward > 0F) {
+                    player.moveFlying(0F, 1F, speed);
+                }
+                if (context.isBehaviorActive(BehaviorName.OmniMovement)) {
+                    if (player.moveForward < 0F) {
+                        player.moveFlying(0F, -1F, speed);
                     }
-                    if (tag.getBoolean(ArmorHelper.OMNI_MOVEMENT_KEY)) {
-                        if (player.moveForward < 0F) {
-                            player.moveFlying(0F, -1F, speed);
-                        }
-                        if (player.moveStrafing > 0F) {
-                            player.moveFlying(1F, 0F, speed);
-                        }
-                        if (player.moveStrafing < 0F) {
-                            player.moveFlying(-1F, 0F, speed);
-                        }
+                    if (player.moveStrafing > 0F) {
+                        player.moveFlying(1F, 0F, speed);
+                    }
+                    if (player.moveStrafing < 0F) {
+                        player.moveFlying(-1F, 0F, speed);
                     }
                 }
             }
         }
-    }
-
-    @Override
-    public void addBehaviorNBT(@NotNull NBTTagCompound tag) {
-        float increaseMax = speedup;
-        if (tag.hasKey(ArmorHelper.SPEED_BOOST_MAX_KEY)) {
-            increaseMax += tag.getFloat(ArmorHelper.SPEED_BOOST_MAX_KEY);
-        } else {
-            tag.setFloat(ArmorHelper.SPEED_BOOST_CURRENT_KEY, 1F);
-        }
-        tag.setFloat(ArmorHelper.SPEED_BOOST_MAX_KEY, increaseMax);
-    }
-
-    @Override
-    public void removeBehaviorNBT(@NotNull NBTTagCompound tag) {
-        if (tag.hasKey(ArmorHelper.SPEED_BOOST_MAX_KEY)) {
-            float oldSpeed = tag.getFloat(ArmorHelper.SPEED_BOOST_MAX_KEY);
-            if (oldSpeed - speedup <= 0) {
-                tag.removeTag(ArmorHelper.SPEED_BOOST_MAX_KEY);
-            } else {
-                tag.setFloat(ArmorHelper.SPEED_BOOST_MAX_KEY, oldSpeed - speedup);
-            }
-        }
-    }
-
-    @Override
-    public String getBehaviorName() {
-        return StatCollector.translateToLocal("GT5U.armor.behavior.speedboost");
     }
 }
