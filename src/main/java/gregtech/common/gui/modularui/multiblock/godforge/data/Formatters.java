@@ -23,7 +23,7 @@ public enum Formatters {
 
     public String format(Number number) {
         return switch (this) {
-            case NONE -> number.toString(); // todo: NONE uses decimals, others don't. fix on either end (i prefer dec)
+            case NONE -> number.toString();
             case COMMA -> {
                 if (number instanceof BigInteger bi) yield formatNumbers(bi);
                 else yield formatNumbers(number.longValue());

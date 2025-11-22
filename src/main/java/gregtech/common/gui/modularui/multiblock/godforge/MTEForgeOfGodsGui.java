@@ -119,7 +119,6 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
             .child(createSpecialThanksPanelButton());
     }
 
-    // todo fix issue with text not wrapping
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
         return new ListWidget<>().widthRel(1)
