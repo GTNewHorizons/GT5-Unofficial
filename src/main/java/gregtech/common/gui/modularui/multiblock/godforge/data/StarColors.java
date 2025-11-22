@@ -114,7 +114,7 @@ public final class StarColors {
 
     public enum Extra implements IStarColor {
 
-        GAMMA(EnumChatFormatting.GOLD, 0xFFFFAA00, ForgeOfGodsStarColor.DEFAULT_GAMMA);
+        GAMMA(EnumChatFormatting.GRAY, 0xFFAAAAAA, ForgeOfGodsStarColor.DEFAULT_GAMMA);
 
         private final String title;
         private final EnumChatFormatting color;
