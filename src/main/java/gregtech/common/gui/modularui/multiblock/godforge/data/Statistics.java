@@ -5,6 +5,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
+import gregtech.api.util.GTUtility;
 import tectech.thing.metaTileEntity.multi.godforge.MTEBaseModule;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 import tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath;
@@ -12,22 +13,20 @@ import tectech.thing.metaTileEntity.multi.godforge.util.MilestoneFormatter;
 
 public enum Statistics {
 
-    HEAT("gt.blockmachines.multimachine.FOG.heat", "fog.text.tooltip.heat", 0),
-    EFFECTIVE_HEAT("gt.blockmachines.multimachine.FOG.effectiveheat", "fog.text.tooltip.effectiveheat", 1),
-    PARALLEL("gt.blockmachines.multimachine.FOG.parallel", "fog.text.tooltip.parallel", 2),
-    SPEED_BONUS("gt.blockmachines.multimachine.FOG.speedbonus", "fog.text.tooltip.speedbonus", 3),
-    ENERGY_DISCOUNT("gt.blockmachines.multimachine.FOG.energydiscount", "fog.text.tooltip.energydiscount", 4),
-    OC_DIVISOR("gt.blockmachines.multimachine.FOG.ocdivisor", "fog.text.tooltip.ocdivisor", 5),
-    PROCESSING_VOLTAGE("gt.blockmachines.multimachine.FOG.processingvoltage", "fog.text.tooltip.processingvoltage", 6);
+    HEAT("gt.blockmachines.multimachine.FOG.heat", "fog.text.tooltip.heat"),
+    EFFECTIVE_HEAT("gt.blockmachines.multimachine.FOG.effectiveheat", "fog.text.tooltip.effectiveheat"),
+    PARALLEL("gt.blockmachines.multimachine.FOG.parallel", "fog.text.tooltip.parallel"),
+    SPEED_BONUS("gt.blockmachines.multimachine.FOG.speedbonus", "fog.text.tooltip.speedbonus"),
+    ENERGY_DISCOUNT("gt.blockmachines.multimachine.FOG.energydiscount", "fog.text.tooltip.energydiscount"),
+    OC_DIVISOR("gt.blockmachines.multimachine.FOG.ocdivisor", "fog.text.tooltip.ocdivisor"),
+    PROCESSING_VOLTAGE("gt.blockmachines.multimachine.FOG.processingvoltage", "fog.text.tooltip.processingvoltage");
 
     private final String key;
     private final String tooltipKey;
-    public final int displayIndex;
 
-    Statistics(String key, String tooltipKey, int displayIndex) {
+    Statistics(String key, String tooltipKey) {
         this.key = key;
         this.tooltipKey = tooltipKey;
-        this.displayIndex = displayIndex;
     }
 
     @Override
@@ -39,7 +38,6 @@ public enum Statistics {
         return StatCollector.translateToLocal(tooltipKey);
     }
 
-    // todo: test if this works with upgrades when synced, it works fine with preview fuel
     public String calculate(MTEBaseModule module, int fuelFactor, ForgeOfGodsData data, Formatters format) {
         return switch (this) {
             case HEAT -> {
@@ -56,15 +54,15 @@ public enum Statistics {
             }
             case SPEED_BONUS -> {
                 GodforgeMath.calculateSpeedBonusForModules(module, data);
-                yield String.valueOf(format.format(module.getSpeedBonus()));
+                yield String.valueOf(GTUtility.formatNumbers(module.getSpeedBonus()));
             }
             case ENERGY_DISCOUNT -> {
                 GodforgeMath.calculateEnergyDiscountForModules(module, data);
-                yield String.valueOf(format.format(module.getEnergyDiscount()));
+                yield String.valueOf(GTUtility.formatNumbers(module.getEnergyDiscount()));
             }
             case OC_DIVISOR -> {
                 GodforgeMath.setMiscModuleParameters(module, data);
-                yield String.valueOf(format.format(module.getOverclockTimeFactor()));
+                yield String.valueOf(GTUtility.formatNumbers(module.getOverclockTimeFactor()));
             }
             case PROCESSING_VOLTAGE -> {
                 GodforgeMath.calculateProcessingVoltageForModules(module, data, fuelFactor);
@@ -72,5 +70,4 @@ public enum Statistics {
             }
         };
     }
-
 }

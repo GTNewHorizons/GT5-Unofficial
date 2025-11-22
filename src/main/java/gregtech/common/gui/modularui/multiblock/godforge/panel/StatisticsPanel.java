@@ -8,14 +8,17 @@ import java.util.List;
 
 import net.minecraft.util.EnumChatFormatting;
 
+import org.apache.commons.lang3.mutable.MutableBoolean;
+import org.apache.commons.lang3.mutable.MutableInt;
+
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.Rectangle;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.value.IntValue;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
-import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
@@ -46,20 +49,21 @@ public class StatisticsPanel {
     private static final int WIDTH_MINOR = 40;
     private static final int WIDTH_MAJOR = 53;
 
-    private static boolean usingPreview = false;
     private static final int SMELTING_INDEX = 0;
     private static final int MOLTEN_INDEX = 1;
     private static final int PLASMA_INDEX = 2;
     private static final int EXOTIC_INDEX = 3;
-    private static final MTEBaseModule[] MODULES = new MTEBaseModule[] { new MTESmeltingModule("smelting"),
-        new MTEMoltenModule("molten"), new MTEPlasmaModule("plasma"), new MTEExoticModule("exotic") };
-    private static final String[] MODULE_VALUES = new String[28];
+
+    private static final MTEBaseModule[] MODULES = { new MTESmeltingModule("smelting"), new MTEMoltenModule("molten"),
+        new MTEPlasmaModule("plasma"), new MTEExoticModule("exotic") };
 
     public static ModularPanel openPanel(SyncHypervisor hypervisor) {
         ModularPanel panel = hypervisor.getModularPanel(Panels.STATISTICS);
 
+        MutableBoolean usingPreview = new MutableBoolean(false);
+        MutableInt previewFuelFactor = new MutableInt(1);
+
         registerSyncValues(hypervisor);
-        usingPreview = false;
 
         panel.size(SIZE_W, SIZE_H)
             .background(GTGuiTextures.BACKGROUND_GLOW_WHITE)
@@ -67,7 +71,11 @@ public class StatisticsPanel {
             .paddingLeft(12)
             .paddingBottom(8)
             .paddingTop(12)
-            .child(ForgeOfGodsGuiUtil.panelCloseButton());
+            .child(ForgeOfGodsGuiUtil.panelCloseButton())
+            .onCloseAction(() -> {
+                usingPreview.setValue(false);
+                previewFuelFactor.setValue(1);
+            });
 
         // Title
         panel.child(
@@ -87,7 +95,6 @@ public class StatisticsPanel {
                 .onMousePressed(d -> {
                     Formatters current = formatSyncer.getValue();
                     formatSyncer.setValue(current.cycle());
-                    populateModuleValues(hypervisor);
                     return true;
                 })
                 .size(16)
@@ -97,14 +104,13 @@ public class StatisticsPanel {
                 .tooltipShowUpTimer(TOOLTIP_DELAY));
 
         // Preview fuel factor widgets
-        panel.child(createPreviewRow(hypervisor));
+        panel.child(createPreviewRow(usingPreview, previewFuelFactor));
 
         // Statistics grid
-        populateModuleValues(hypervisor);
         Grid grid = new Grid().top(38)
             .row(createHeaderRow());
         for (Statistics stat : Statistics.values()) {
-            grid.row(createStatisticsRow(stat));
+            grid.row(createStatisticsRow(hypervisor, stat, usingPreview, previewFuelFactor));
         }
         panel.child(grid);
 
@@ -127,7 +133,6 @@ public class StatisticsPanel {
     }
 
     public static void registerSyncValues(SyncHypervisor hypervisor) {
-        SyncValues.PREVIEW_FUEL_FACTOR.registerFor(Panels.STATISTICS, hypervisor);
         SyncValues.FUEL_FACTOR.registerFor(Panels.STATISTICS, hypervisor);
     }
 
@@ -157,7 +162,7 @@ public class StatisticsPanel {
             .scale(0.8f);
     }
 
-    private static Flow createPreviewRow(SyncHypervisor hypervisor) {
+    private static Flow createPreviewRow(MutableBoolean usingPreview, MutableInt previewFuelFactor) {
         Flow previewRow = Flow.row()
             .coverChildren()
             .alignX(0.8f)
@@ -177,7 +182,7 @@ public class StatisticsPanel {
         previewRow.child(
             new TextFieldWidget().setFormatAsInteger(true)
                 .size(70, 18)
-                .value(SyncValues.PREVIEW_FUEL_FACTOR.create(hypervisor))
+                .value(new IntValue.Dynamic(previewFuelFactor::intValue, previewFuelFactor::setValue))
                 .setNumbers(1, Integer.MAX_VALUE)
                 .setScrollValues(1, 4, 64)
                 .setTextAlignment(Alignment.CENTER)
@@ -187,12 +192,10 @@ public class StatisticsPanel {
         // Apply button
         previewRow.child(
             new ButtonWidget<>().size(35, 18)
+                .background(GTGuiTextures.BUTTON_OUTLINE_HOLLOW)
                 .overlay(IKey.lang("fog.cosmetics.applycolor"))
                 .onMousePressed(d -> {
-                    if (d == 0) {
-                        usingPreview = true;
-                        populateModuleValues(hypervisor);
-                    }
+                    usingPreview.setValue(true);
                     return true;
                 })
                 .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
@@ -202,18 +205,18 @@ public class StatisticsPanel {
         return previewRow;
     }
 
-    private static List<IWidget> createStatisticsRow(Statistics statistic) {
+    private static List<IWidget> createStatisticsRow(SyncHypervisor hypervisor, Statistics stat,
+        MutableBoolean usingPreview, MutableInt previewFuelFactor) {
         List<IWidget> returnList = new ArrayList<>();
-        int baseIndex = statistic.displayIndex * 4;
         returnList.add(
-            IKey.str(statistic.toString())
+            IKey.str(stat.toString())
                 .alignment(Alignment.Center)
                 .asWidget()
                 .size(69, HEIGHT_MAJOR));
 
         // Smelting module
         returnList.add(
-            IKey.dynamic(() -> MODULE_VALUES[baseIndex + SMELTING_INDEX])
+            IKey.dynamic(() -> getModuleValue(hypervisor, stat, SMELTING_INDEX, usingPreview, previewFuelFactor))
                 .style(EnumChatFormatting.GREEN)
                 .alignment(Alignment.CENTER)
                 .asWidget()
@@ -221,7 +224,7 @@ public class StatisticsPanel {
 
         // Molten module
         returnList.add(
-            IKey.dynamic(() -> MODULE_VALUES[baseIndex + MOLTEN_INDEX])
+            IKey.dynamic(() -> getModuleValue(hypervisor, stat, MOLTEN_INDEX, usingPreview, previewFuelFactor))
                 .style(EnumChatFormatting.GREEN)
                 .alignment(Alignment.CENTER)
                 .asWidget()
@@ -229,7 +232,7 @@ public class StatisticsPanel {
 
         // Plasma module
         returnList.add(
-            IKey.dynamic(() -> MODULE_VALUES[baseIndex + PLASMA_INDEX])
+            IKey.dynamic(() -> getModuleValue(hypervisor, stat, PLASMA_INDEX, usingPreview, previewFuelFactor))
                 .style(EnumChatFormatting.GREEN)
                 .alignment(Alignment.CENTER)
                 .asWidget()
@@ -237,7 +240,7 @@ public class StatisticsPanel {
 
         // Exotic module
         returnList.add(
-            IKey.dynamic(() -> MODULE_VALUES[baseIndex + EXOTIC_INDEX])
+            IKey.dynamic(() -> getModuleValue(hypervisor, stat, EXOTIC_INDEX, usingPreview, previewFuelFactor))
                 .style(EnumChatFormatting.GREEN)
                 .alignment(Alignment.CENTER)
                 .asWidget()
@@ -246,22 +249,14 @@ public class StatisticsPanel {
         return returnList;
     }
 
-    private static void populateModuleValues(SyncHypervisor hypervisor) {
-        IntSyncValue fuelFactorSyncer = SyncValues.FUEL_FACTOR.lookupFrom(Panels.STATISTICS, hypervisor);
-        IntSyncValue previewFuelFactorSyncer = SyncValues.PREVIEW_FUEL_FACTOR.lookupFrom(Panels.STATISTICS, hypervisor);
-        EnumSyncValue<Formatters> formatSyncer = SyncValues.FORMATTER.lookupFrom(Panels.MAIN, hypervisor);
+    private static String getModuleValue(SyncHypervisor hypervisor, Statistics stat, int moduleIndex,
+        MutableBoolean usingPreview, MutableInt previewFuelFactor) {
+        int fuelFactor = SyncValues.FUEL_FACTOR.lookupFrom(Panels.STATISTICS, hypervisor)
+            .getIntValue();
+        Formatters format = SyncValues.FORMATTER.lookupFrom(Panels.MAIN, hypervisor)
+            .getValue();
 
-        for (Statistics stat : Statistics.values()) {
-            for (int moduleIndex = 0; moduleIndex < MODULES.length; moduleIndex++) {
-                int currentIndex = stat.displayIndex * 4 + moduleIndex;
-                MTEBaseModule currentModule = MODULES[moduleIndex];
-                MODULE_VALUES[currentIndex] = stat.calculate(
-                    currentModule,
-                    usingPreview ? Math.max(1, previewFuelFactorSyncer.getIntValue()) : fuelFactorSyncer.getIntValue(),
-                    hypervisor.getData(),
-                    formatSyncer.getValue());
-            }
-        }
+        int displayFuelFactor = usingPreview.booleanValue() ? Math.max(1, previewFuelFactor.intValue()) : fuelFactor;
+        return stat.calculate(MODULES[moduleIndex], displayFuelFactor, hypervisor.getData(), format);
     }
-
 }

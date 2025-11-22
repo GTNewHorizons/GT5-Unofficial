@@ -49,6 +49,10 @@ public class SyncValues<T extends ValueSyncHandler<?>> {
         "fog.sync.inversion",
         data -> new BooleanSyncValue(data::isInversion, data::setInversion));
 
+    public static final SyncValues<IntSyncValue> RING_AMOUNT = new SyncValues<>(
+        "fog.sync.ring_amount",
+        data -> new IntSyncValue(data::getRingAmount, data::setRingAmount));
+
     // ---- //
     // Fuel //
     // ---- //
@@ -72,10 +76,6 @@ public class SyncValues<T extends ValueSyncHandler<?>> {
     public static final SyncValues<IntSyncValue> FUEL_AMOUNT = new SyncValues<>(
         "fog.sync.fuel_amount",
         data -> new IntSyncValue(data::getStellarFuelAmount, data::setStellarFuelAmount));
-
-    public static final SyncValues<IntSyncValue> PREVIEW_FUEL_FACTOR = new SyncValues<>(
-        "fog.sync.preview_fuel_factor",
-        data -> new IntSyncValue(data::getPreviewFuelConsumptionFactor, data::setPreviewFuelConsumptionFactor));
 
     // ------- //
     // Battery //

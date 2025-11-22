@@ -55,12 +55,22 @@ public class ManualInsertionPanel {
             .topRelOffset(0, 4)
             .size(SIZE_W, SIZE_H)
             .background(GTGuiTextures.BACKGROUND_STANDARD)
-            .disableHoverBackground();
+            .disableHoverBackground()
+            .child(ForgeOfGodsGuiUtil.panelCloseButtonStandard());
+
+        // Title
+        dialog.child(
+            IKey.lang("gt.blockmachines.multimachine.FOG.payUpgradeCosts")
+                .style(EnumChatFormatting.DARK_GRAY)
+                .alignment(Alignment.CENTER)
+                .asWidget()
+                .alignX(0.5f)
+                .marginTop(5));
 
         Flow mainRow = new Row().size(SIZE_W - 10, 72)
             .align(Alignment.TopLeft)
             .marginLeft(5)
-            .marginTop(6); // todo change this margin
+            .marginTop(16);
 
         // Required inputs and input progress columns
         mainRow.child(
@@ -138,6 +148,13 @@ public class ManualInsertionPanel {
                             }
                             return true;
                         })
+                            .tooltipDynamic(t -> {
+                                if (hasExtraCost(upgradeSyncer, index)) {
+                                    ForgeOfGodsUpgrade upgrade = upgradeSyncer.getValue();
+                                    t.addFromItem(upgrade.getExtraCost()[index]);
+                                }
+                            })
+                            .tooltipAutoUpdate(true)
                             .setEnabledIf($ -> hasExtraCost(upgradeSyncer, index))
                             .size(18)
                             .alignX(0))
@@ -159,6 +176,7 @@ public class ManualInsertionPanel {
                 .scale(0.8f)
                 .asWidget()
                 .size(18)
+                .alignX(1)
                 .setEnabledIf(
                     $ -> hasExtraCost(upgradeSyncer, index)
                         && !isExtraCostPaid(upgradeSyncer, hypervisor.getData(), index)))

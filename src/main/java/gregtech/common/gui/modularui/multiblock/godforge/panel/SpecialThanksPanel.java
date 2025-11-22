@@ -89,7 +89,7 @@ public class SpecialThanksPanel {
                 .color(0xBBBDBD)
                 .scale(0.8f)
                 .asWidget()
-                .size(100, 60) // special size to make it look exactly right, please don't kill me mui2 overlords
+                .size(100, 60)
                 .marginRight(10)
                 .align(Alignment.BottomRight));
 

@@ -1163,6 +1163,7 @@ gt.blockmachines.multimachine.FOG.recipes=Recipes Processed
 gt.blockmachines.multimachine.FOG.fuelconsumed=Fuel Units Consumed
 gt.blockmachines.multimachine.FOG.extensions=Extensions Built
 gt.blockmachines.multimachine.FOG.shardgain=Graviton Shards gained
+gt.blockmachines.multimachine.FOG.payUpgradeCosts=Pay Upgrade Cost
 gt.blockmachines.multimachine.FOG.consumeUpgradeMats=Click to consume upgrade materials
 gt.blockmachines.multimachine.FOG.clickhere=Confused? Click here for some general info
 gt.blockmachines.multimachine.FOG.introduction=§NIntroduction

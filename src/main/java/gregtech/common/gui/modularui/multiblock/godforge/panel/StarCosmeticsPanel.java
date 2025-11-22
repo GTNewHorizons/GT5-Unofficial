@@ -62,7 +62,7 @@ public class StarCosmeticsPanel {
         // Color options
         Flow colorColumn = new Column().coverChildren()
             .marginTop(28)
-            .marginLeft(9);
+            .marginLeft(4);
 
         // Header
         colorColumn.child(
@@ -70,7 +70,7 @@ public class StarCosmeticsPanel {
                 .style(EnumChatFormatting.GOLD, EnumChatFormatting.UNDERLINE)
                 .alignment(Alignment.CenterLeft)
                 .asWidget()
-                .alignX(0));
+                .leftRelOffset(0, 5));
 
         // Color selector list
         IPanelHandler customStarColorPanel = Panels.CUSTOM_STAR_COLOR.getFrom(Panels.STAR_COSMETICS, hypervisor);
@@ -78,7 +78,7 @@ public class StarCosmeticsPanel {
         DynamicSyncHandler handler = new DynamicSyncHandler().widgetProvider(($, $$) -> {
             ForgeOfGodsData data = hypervisor.getData();
             StarColorStorage starColors = data.getStarColors();
-            ListWidget<IWidget, ?> colorList = new ListWidget<>().size(80, 147)
+            ListWidget<IWidget, ?> colorList = new ListWidget<>().size(85, 147)
                 .scrollDirection(new VerticalScrollData(true));
 
             // Star colors
@@ -105,7 +105,8 @@ public class StarCosmeticsPanel {
                     })
                     .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
                     .tooltip(t -> t.addLine(translateToLocal("fog.cosmetics.starcolor")))
-                    .tooltipShowUpTimer(TOOLTIP_DELAY));
+                    .tooltipShowUpTimer(TOOLTIP_DELAY)
+                    .marginLeft(5));
 
             // "Custom..." text
             newStarColorRow.child(
@@ -246,7 +247,8 @@ public class StarCosmeticsPanel {
                     t.addLine(translateToLocal("fog.cosmetics.selectcolor.tooltip.1"));
                     t.addLine(translateToLocal("fog.cosmetics.selectcolor.tooltip.2"));
                 })
-                .tooltipShowUpTimer(TOOLTIP_DELAY));
+                .tooltipShowUpTimer(TOOLTIP_DELAY)
+                .marginLeft(5));
 
         row.child(
             IKey.dynamic(starColor::getLocalizedName)

@@ -74,6 +74,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
         SyncValues.SHARD_EJECTION.registerFor(Panels.MAIN, hypervisor);
         SyncValues.FORMATTER.registerFor(Panels.MAIN, hypervisor);
         SyncValues.UPGRADES_LIST.registerFor(Panels.MAIN, hypervisor);
+        SyncValues.RING_AMOUNT.registerFor(Panels.MAIN, hypervisor);
     }
 
     @Override
@@ -121,7 +122,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
     // todo fix issue with text not wrapping
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-        return new ListWidget<>().coverChildren()
+        return new ListWidget<>().widthRel(1)
             .align(Alignment.TopCenter)
             .child(IKey.dynamic(() -> {
                 if (data.getInternalBattery() == 0) {
@@ -132,7 +133,8 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
                 .color(Color.WHITE.main)
                 .alignment(Alignment.CENTER)
                 .asWidget()
-                .marginTop(1))
+                .marginTop(1)
+                .widthRel(1))
             .child(IKey.dynamic(() -> {
                 Formatters formatter = data.getFormatter();
                 if (data.getInternalBattery() == 0) {
@@ -145,7 +147,8 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
                 .alignment(Alignment.CENTER)
                 .asWidget()
                 .marginTop(2)
-                .alignX(0.5f));
+                .alignX(0.5f)
+                .widthRel(1));
     }
 
     @Override

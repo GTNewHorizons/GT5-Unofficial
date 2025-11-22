@@ -155,7 +155,6 @@ public class StarColorImportPanel {
                 ForgeOfGodsStarColor starColor = color.getValue();
                 if (starColor != null && index < starColor.numColors()) {
                     StarColorSetting setting = starColor.getColor(index);
-                    // todo consider hsv?
                     t.addLine(StarColors.RGB.RED.getTooltip(setting.getColorR()));
                     t.addLine(StarColors.RGB.GREEN.getTooltip(setting.getColorG()));
                     t.addLine(StarColors.RGB.BLUE.getTooltip(setting.getColorB()));

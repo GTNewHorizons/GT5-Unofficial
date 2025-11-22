@@ -146,7 +146,7 @@ public class FuelConfigPanel {
                     .disableHoverOverlay()
                     .size(18)
                     .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
-                    .tooltip(t -> t.addFromFluid(option.getFluid())) // todo check this
+                    .tooltip(t -> t.addFromFluid(option.getFluid()))
                     .tooltipShowUpTimer(TOOLTIP_DELAY));
     }
 }

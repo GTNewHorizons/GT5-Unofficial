@@ -39,4 +39,9 @@ public class ForgeOfGodsGuiUtil {
             .disableHoverOverlay()
             .clickSound(getButtonSound());
     }
+
+    public static ButtonWidget<?> panelCloseButtonStandard() {
+        return ButtonWidget.panelCloseButton()
+            .clickSound(getButtonSound());
+    }
 }
