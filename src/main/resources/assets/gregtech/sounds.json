@@ -382,6 +382,15 @@
       }
     ]
   },
+  "machines.MTEExoFoundry": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MTEExoFoundry",
+        "stream": false
+      }
+    ]
+  },
   "maintenance.MaintenanceAutoHatch": {
     "category": "block",
     "sounds": [
