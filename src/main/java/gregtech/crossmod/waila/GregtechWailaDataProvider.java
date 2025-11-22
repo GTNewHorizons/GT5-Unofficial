@@ -44,6 +44,40 @@ public class GregtechWailaDataProvider implements IWailaDataProvider {
         return currenttip;
     }
 
+    public boolean hasWailaAdvancedBody(ItemStack itemStack, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        final TileEntity tile = accessor.getTileEntity();
+
+        if (tile instanceof IGregtechWailaProvider) {
+            try {
+                return ((IGregtechWailaProvider) tile).hasWailaAdvancedBody(itemStack, accessor, config);
+            } catch (Throwable t) {
+                GTMod.GT_FML_LOGGER.error("Could not call hasWailaAdvancedBody on " + tile, t);
+                throw t;
+            }
+        }
+
+        return IWailaDataProvider.super.hasWailaAdvancedBody(itemStack, accessor, config);
+    }
+
+    @Override
+    public List<String> getWailaAdvancedBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        final TileEntity tile = accessor.getTileEntity();
+
+        if (tile instanceof IGregtechWailaProvider) {
+            try {
+                ((IGregtechWailaProvider) tile).getWailaAdvancedBody(itemStack, currentTip, accessor, config);
+            } catch (Throwable t) {
+                GTMod.GT_FML_LOGGER.error("Could not call getWailaAdvancedBody on " + tile, t);
+                throw t;
+            }
+
+            return currentTip;
+        }
+
+        return IWailaDataProvider.super.getWailaAdvancedBody(itemStack, currentTip, accessor, config);
+    }
+
     @Override
     public List<String> getWailaTail(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
