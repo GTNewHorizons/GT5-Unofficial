@@ -7,7 +7,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
-import gregtech.api.enums.Textures;
+import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.common.items.behaviors.BehaviorTrowel;
@@ -28,7 +28,8 @@ public class ToolTrowel extends GTTool {
 
     @Override
     public IIconContainer getIcon(final boolean aIsToolHead, final ItemStack aStack) {
-        return aIsToolHead ? Textures.ItemIcons.TROWEL : Textures.ItemIcons.HANDLE_TROWEL;
+        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[TextureSet.INDEX_trowel]
+            : MetaGeneratedTool.getSecondaryMaterial(aStack).mIconSet.mTextures[TextureSet.INDEX_handleTrowel];
     }
 
     @Override
