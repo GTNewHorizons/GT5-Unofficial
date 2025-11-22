@@ -52,10 +52,12 @@ public class VisDiscountBehavior implements IArmorBehavior {
 
     @Override
     public void addPartInformation(List<String> desc, ItemStack augmentStack, EntityPlayer player) {
-        desc.add(
-            EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal("tc.visdiscount")
+        if (Thaumcraft.isModLoaded()) {
+            desc.add(EnumChatFormatting.DARK_PURPLE
+                + StatCollector.translateToLocal("tc.visdiscount")
                 + ": "
                 + visDiscount
                 + "%");
+        }
     }
 }

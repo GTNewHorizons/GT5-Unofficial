@@ -1,5 +1,7 @@
 package gregtech.api.items.armor;
 
+import net.minecraft.item.EnumRarity;
+
 public class AugmentBuilder extends ArmorPartBuilder<AugmentBuilder> {
 
     public enum AugmentCategory {
@@ -14,22 +16,29 @@ public class AugmentBuilder extends ArmorPartBuilder<AugmentBuilder> {
     private int minimumCore = 1;
     /// The maximum number of times this augment can be installed.
     private int maxStack = 1;
+    private EnumRarity rarity;
 
-    public AugmentBuilder category(AugmentCategory category) {
+    public AugmentBuilder setCategory(AugmentCategory category) {
         onMutated();
         this.category = category;
         return this;
     }
 
-    public AugmentBuilder minimumCore(int minimumCore) {
+    public AugmentBuilder setMinimumCore(int minimumCore) {
         onMutated();
         this.minimumCore = minimumCore;
         return this;
     }
 
-    public AugmentBuilder maxStack(int maxStack) {
+    public AugmentBuilder setMaxStack(int maxStack) {
         onMutated();
         this.maxStack = maxStack;
+        return this;
+    }
+
+    public AugmentBuilder setRarity(EnumRarity rarity) {
+        onMutated();
+        this.rarity = rarity;
         return this;
     }
 
@@ -43,5 +52,9 @@ public class AugmentBuilder extends ArmorPartBuilder<AugmentBuilder> {
 
     public int getMaxStack() {
         return maxStack;
+    }
+
+    public EnumRarity getRarity() {
+        return rarity;
     }
 }

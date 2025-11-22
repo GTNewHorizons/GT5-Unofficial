@@ -3,8 +3,6 @@ package gregtech.common.items.armor;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.items.armor.ArmorHelper.SLOT_CHEST;
 import static gregtech.api.items.armor.ArmorHelper.SLOT_LEGS;
-import static gregtech.api.items.armor.MechArmorAugmentRegistries.coresMap;
-import static gregtech.api.items.armor.MechArmorAugmentRegistries.framesMap;
 import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
 import java.util.List;
@@ -27,6 +25,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ISpecialArmor;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.lwjgl.input.Keyboard;
 
 import com.gtnewhorizon.gtnhlib.keybind.IKeyPressedListener;
@@ -48,8 +47,12 @@ import gregtech.api.items.armor.MechArmorAugmentRegistries.Cores;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.Frames;
 import gregtech.api.items.armor.behaviors.BehaviorName;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
+import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTUtility;
-import ic2.api.item.IElectricItem;
+import gregtech.common.misc.NoTooltipElectricItemManager;
+import ic2.api.item.ICustomDamageItem;
+import ic2.api.item.IElectricItemManager;
+import ic2.api.item.ISpecialElectricItem;
 import thaumcraft.api.IGoggles;
 import thaumcraft.api.IVisDiscountGear;
 import thaumcraft.api.aspects.Aspect;
@@ -61,8 +64,8 @@ import thaumcraft.api.nodes.IRevealer;
         @Interface(iface = "thaumcraft.api.IGoggles", modid = ModIDs.THAUMCRAFT),
         @Interface(iface = "thaumcraft.api.nodes.IRevealer", modid = ModIDs.THAUMCRAFT), })
 
-public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISpecialArmor, IElectricItem, IGoggles,
-    IRevealer, IVisDiscountGear, IArmorApiarist, IHazardProtector {
+public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISpecialArmor, ISpecialElectricItem,
+    IGoggles, IRevealer, IVisDiscountGear, IArmorApiarist, IHazardProtector, ICustomDamageItem {
 
     protected IIcon coreIcon;
     protected IIcon frameIcon;
@@ -78,6 +81,8 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
         super(ArmorMaterial.IRON, 2, register);
         this.slot = slot;
         this.type = type;
+        this.setMaxDamage(0);
+        this.setHasSubtypes(false);
     }
 
     @Override
@@ -122,6 +127,8 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
         for (IArmorBehavior behavior : context.getArmorState().behaviors.values()) {
             behavior.onArmorTick(context);
         }
+
+        context.save();
     }
 
     public void onArmorUnequip(@NotNull World world, @NotNull EntityPlayer player, @NotNull ItemStack stack) {
@@ -167,6 +174,8 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
         for (IArmorBehavior behavior : context.getArmorState().behaviors.values()) {
             behavior.onArmorEquip(context);
         }
+
+        context.save();
     }
 
     @Override
@@ -220,6 +229,8 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
         ArmorContext context = load(player.getEntityWorld(), player, stack);
 
         context.getArmorState().addArmorInformation(context, tooltip);
+
+        tooltip.replaceAll(GTUtility::processFormatStacks);
     }
 
     @Override
@@ -263,21 +274,15 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
     }
 
     protected Cores getCore(ItemStack stack) {
-        String core = stack.getTagCompound()
-            .getString(MECH_CORE_KEY);
-        if (coresMap.containsKey(core)) {
-            return (coresMap.get(core));
-        }
-        return null;
+        ArmorState state = ArmorState.load(stack);
+
+        return state == null ? null : state.core;
     }
 
     protected Frames getFrame(ItemStack stack) {
-        String frame = stack.getTagCompound()
-            .getString(MECH_FRAME_KEY);
-        if (framesMap.containsKey(frame)) {
-            return (framesMap.get(frame));
-        }
-        return null;
+        ArmorState state = ArmorState.load(stack);
+
+        return state == null ? null : state.frame;
     }
 
     @Override
@@ -369,16 +374,18 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
     // Forestry apiarist compat
     @Override
     public boolean protectEntity(EntityLivingBase entity, ItemStack armor, String cause, boolean doProtect) {
-        ArmorContext context = load(entity, armor);
+        ItemStack leggings = GTDataUtils.getIndexSafe(entity.getLastActiveItems(), SLOT_LEGS);
+
+        if (leggings == null) return false;
+
+        ArmorContext context = load(entity, leggings);
 
         return context.hasBehavior(BehaviorName.Apiarist);
     }
 
     @Override
     public boolean protectPlayer(EntityPlayer player, ItemStack armor, String cause, boolean doProtect) {
-        ArmorContext context = load(player.getEntityWorld(), player, armor);
-
-        return context.hasBehavior(BehaviorName.Apiarist);
+        return protectEntity(player, armor, cause, doProtect);
     }
 
     // Hazards
@@ -389,6 +396,17 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
 
         for (IArmorBehavior behavior : context.getArmorState().behaviors.values()) {
             if (behavior.protectsAgainst(context, hazard)) return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean protectsAgainstFully(@Nullable EntityLivingBase entity, ItemStack itemStack, Hazard hazard) {
+        ArmorContext context = load(null, itemStack);
+
+        for (IArmorBehavior behavior : context.getArmorState().behaviors.values()) {
+            if (behavior.protectsAgainstFully(context, hazard)) return true;
         }
 
         return false;
@@ -414,22 +432,24 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
     @Override
     public double getMaxCharge(ItemStack itemStack) {
         Cores core = getCore(itemStack);
-        if (core != null) return getCore(itemStack).getChargeMax();
-        return 0;
+        return core != null ? core.getChargeMax() : 0;
     }
 
     @Override
     public int getTier(ItemStack itemStack) {
         Cores core = getCore(itemStack);
-        if (core != null) return getCore(itemStack).getChargeTier();
-        return 0;
+        return core != null ? core.getChargeTier() : 0;
     }
 
     @Override
     public double getTransferLimit(ItemStack itemStack) {
         Cores core = getCore(itemStack);
-        if (core != null) return GTValues.V[getCore(itemStack).getChargeTier()];
-        return 0;
+        return core != null ? GTValues.V[core.getChargeTier()] : 0;
+    }
+
+    @Override
+    public IElectricItemManager getManager(ItemStack itemStack) {
+        return NoTooltipElectricItemManager.INSTANCE;
     }
 
     public ArmorType getArmorType() {
@@ -440,5 +460,31 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
             case 3 -> ArmorType.Boots;
             default -> throw new IllegalStateException("Unexpected value: " + armorType);
         };
+    }
+
+    @Override
+    public int getCustomDamage(ItemStack itemStack) {
+        // do nothing
+        return 0;
+    }
+
+    @Override
+    public int getMaxCustomDamage(ItemStack itemStack) {
+        // do nothing
+        return 0;
+    }
+
+    /// Disables the meta modifications in [ic2.core.item.ElectricItemManager] charge/discharge by ignoring this method
+    /// call (which is called by [ic2.core.item.DamageHandler]). This prevents constant armor equipped notifications
+    /// from [gregtech.api.items.armor.ArmorEventHandlers].
+    @Override
+    public void setCustomDamage(ItemStack itemStack, int i) {
+        // do nothing
+    }
+
+    @Override
+    public boolean applyCustomDamage(ItemStack itemStack, int i, EntityLivingBase entityLivingBase) {
+        // do nothing
+        return false;
     }
 }

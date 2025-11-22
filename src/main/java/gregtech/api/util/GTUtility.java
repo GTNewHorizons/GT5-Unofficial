@@ -605,10 +605,10 @@ public class GTUtility {
                         .append(code);
                 } else if (code == 's') {
                     // Push, save the current format and don't emit to the output buffer
-                    stack.push(currentFormat);
+                    stack.push(currentFormat.isEmpty() ? "§r" : currentFormat);
                 } else if (code == 't') {
                     // Pop, restore the top format and don't emit to the output buffer
-                    currentFormat = stack.isEmpty() ? "" : stack.pop();
+                    currentFormat = stack.isEmpty() ? "§r" : stack.pop();
                     out.append(currentFormat);
                 }
 
@@ -618,6 +618,12 @@ public class GTUtility {
         }
 
         return out.toString();
+    }
+
+    public static void addSeparatorIfNeeded(List<String> tooltip) {
+        if (!tooltip.isEmpty() && !tooltip.get(tooltip.size() - 1).trim().isEmpty()) {
+            tooltip.add("");
+        }
     }
 
     public static void checkAvailabilities() {

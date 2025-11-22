@@ -1,5 +1,7 @@
 package gregtech.api.items.armor;
 
+import net.minecraft.item.EnumRarity;
+
 public class FrameBuilder extends ArmorPartBuilder<FrameBuilder> {
 
     private int protectionSlots;
@@ -10,6 +12,7 @@ public class FrameBuilder extends ArmorPartBuilder<FrameBuilder> {
     private short[] color = { 0, 0, 0, 0};
 
     private int protection;
+    private EnumRarity rarity = EnumRarity.common;
 
     public FrameBuilder setSlotCounts(int protectionSlots, int movementSlots, int utilitySlots, int prismaticSlots) {
         onMutated();
@@ -29,6 +32,12 @@ public class FrameBuilder extends ArmorPartBuilder<FrameBuilder> {
     public FrameBuilder setProtection(int protection) {
         onMutated();
         this.protection = protection;
+        return this;
+    }
+
+    public FrameBuilder setRarity(EnumRarity rarity) {
+        onMutated();
+        this.rarity = rarity;
         return this;
     }
 
@@ -54,5 +63,9 @@ public class FrameBuilder extends ArmorPartBuilder<FrameBuilder> {
 
     public int getProtection() {
         return protection;
+    }
+
+    public EnumRarity getRarity() {
+        return rarity;
     }
 }

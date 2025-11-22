@@ -2,7 +2,7 @@ package gregtech.api.items.armor.behaviors;
 
 import java.util.Set;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.nbt.NBTTagCompound;
 
 import org.jetbrains.annotations.NotNull;
@@ -10,6 +10,8 @@ import org.jetbrains.annotations.NotNull;
 import bartworks.util.MathUtils;
 import com.google.common.collect.ImmutableSet;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.items.armor.ArmorContext;
 import gregtech.api.items.armor.ArmorKeybinds;
 import gregtech.api.items.armor.ArmorState;
@@ -18,6 +20,10 @@ import gregtech.api.util.GTUtility;
 public class SpeedBoostBehavior implements IArmorBehavior {
 
     public static final SpeedBoostBehavior MECH_ARMOR_INSTANCE = new SpeedBoostBehavior(0.05F);
+
+    /// Somewhat arbitrary multiplier to make vertical flight speed comparable to horizontal flight speed
+    private static final double VERTICAL_SPEED_MULT = 8;
+    public static final float SPEED_INCREMENT = 0.25F;
 
     private final float speedup;
 
@@ -37,9 +43,9 @@ public class SpeedBoostBehavior implements IArmorBehavior {
         ArmorState state = context.getArmorState();
 
         if (keyPressed == ArmorKeybinds.SPEED_INCREASE_KEYBIND) {
-            state.speedBoost += 0.25F;
+            state.speedBoost += SPEED_INCREMENT;
         } else if (keyPressed == ArmorKeybinds.SPEED_DECREASE_KEYBIND) {
-            state.speedBoost -= 0.25F;
+            state.speedBoost -= SPEED_INCREMENT;
         }
 
         state.speedBoost = MathUtils.clamp(state.speedBoost, 0, 1);
@@ -68,30 +74,43 @@ public class SpeedBoostBehavior implements IArmorBehavior {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void onArmorTick(@NotNull ArmorContext context) {
         if (!context.isRemote()) return;
 
-        EntityPlayer player = context.getPlayer();
+        EntityPlayerSP player = (EntityPlayerSP) context.getPlayer();
 
         float speed = context.getArmorState().speedBoost * this.speedup;
 
         if (speed <= 0) return;
 
-        if ((player.onGround || player.capabilities.isFlying) && !player.isInWater()
-            && (player.moveForward != 0 || player.moveStrafing != 0)) {
+        if ((player.onGround || player.capabilities.isFlying) && !player.isInWater() && (player.moveForward != 0 || player.moveStrafing != 0 || (player.capabilities.isFlying && (player.movementInput.sneak || player.movementInput.jump)))) {
             if (context.drainEnergy(1)) {
                 if (player.moveForward > 0F) {
                     player.moveFlying(0F, 1F, speed);
                 }
+
                 if (context.isBehaviorActive(BehaviorName.OmniMovement)) {
                     if (player.moveForward < 0F) {
                         player.moveFlying(0F, -1F, speed);
                     }
+
                     if (player.moveStrafing > 0F) {
                         player.moveFlying(1F, 0F, speed);
                     }
+
                     if (player.moveStrafing < 0F) {
                         player.moveFlying(-1F, 0F, speed);
+                    }
+
+                    if (player.capabilities.isFlying) {
+                        if (player.movementInput.sneak) {
+                            player.moveEntity(0, -speed * VERTICAL_SPEED_MULT, 0);
+                        }
+
+                        if (player.movementInput.jump) {
+                            player.moveEntity(0, speed * VERTICAL_SPEED_MULT, 0);
+                        }
                     }
                 }
             }

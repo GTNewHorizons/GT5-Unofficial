@@ -1,14 +1,17 @@
 package gregtech.api.items;
 
+import static gregtech.api.util.GTUtility.addSeparatorIfNeeded;
+import static net.minecraft.util.EnumChatFormatting.GRAY;
+
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.items.armor.AugmentBuilder.AugmentCategory;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.ArmorType;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.Augments;
+import gregtech.api.util.GTTextBuilder;
 import gregtech.api.util.GTUtility;
 
 public class ItemAugment extends ItemAugmentAbstract {
@@ -22,23 +25,40 @@ public class ItemAugment extends ItemAugmentAbstract {
 
     @Override
     protected void addAdditionalToolTips(List<String> desc, ItemStack augmentStack, EntityPlayer player) {
+        boolean showAllInfo = showAllInfo();
+
         desc.add(getCategoryText(augment.getCategory()));
-        desc.add(GTUtility.translate("GT5U.armor.tooltip.energycoreminimum", augment.getMinimumCore()));
 
-        if (augment.getMaxStack() > 1) {
-            desc.add(GTUtility.translate("GT5U.armor.tooltip.maxstack", augment.getMaxStack()));
-        }
+        addSeparatorIfNeeded(desc);
 
-        desc.add(EnumChatFormatting.WHITE + GTUtility.translate("GT5U.armor.tooltip.applicable"));
-        for (ArmorType armor : augment.getAllowedArmorTypes()) {
-            desc.add("-" + armor.getItem()
-                .get(1)
-                .getDisplayName());
+        if (showAllInfo) {
+            desc.add(GTUtility.translate("GT5U.armor.tooltip.energycoreminimum",
+                augment.getMinimumCore()
+                    .getLocalizedName()));
+
+            addSeparatorIfNeeded(desc);
+
+            if (augment.getMaxStack() > 1) {
+                desc.add(GTUtility.translate("GT5U.armor.tooltip.maxstack", GTTextBuilder.VALUE.toString() + augment.getMaxStack()));
+            }
+
+            addSeparatorIfNeeded(desc);
+
+            desc.add(GRAY + GTUtility.translate("GT5U.armor.tooltip.applicable"));
+            for (ArmorType armor : augment.getAllowedArmorTypes()) {
+                desc.add(GRAY + "- " + armor.getItem()
+                    .get(1)
+                    .getDisplayName());
+            }
+
+            addSeparatorIfNeeded(desc);
         }
 
         if (augment.hasTooltip()) {
             desc.add(augment.getTooltip());
         }
+
+        addSeparatorIfNeeded(desc);
 
         super.addAdditionalToolTips(desc, augmentStack, player);
     }

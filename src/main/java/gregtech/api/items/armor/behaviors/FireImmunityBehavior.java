@@ -4,6 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 
 import org.jetbrains.annotations.NotNull;
 
+import gregtech.api.hazards.Hazard;
 import gregtech.api.items.armor.ArmorContext;
 
 public class FireImmunityBehavior implements IArmorBehavior {
@@ -13,6 +14,21 @@ public class FireImmunityBehavior implements IArmorBehavior {
     @Override
     public BehaviorName getName() {
         return BehaviorName.FireImmunity;
+    }
+
+    @Override
+    public boolean protectsAgainstFully(@NotNull ArmorContext context, Hazard hazard) {
+        // Protect against extreme temperatures.
+        // Protects fully - this behavior only needs to be on the leggings to work.
+        return switch (hazard) {
+            case BIOLOGICAL -> false;
+            case FROST -> true;
+            case HEAT -> true;
+            case RADIOLOGICAL -> false;
+            case ELECTRICAL -> false;
+            case GAS -> false;
+            case SPACE -> false;
+        };
     }
 
     @Override

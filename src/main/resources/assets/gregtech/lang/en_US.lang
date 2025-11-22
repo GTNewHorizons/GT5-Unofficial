@@ -1816,7 +1816,7 @@ GT5U.armor.part.name.OmniMovement=Augment: Rotational Movement Adjusters
 GT5U.armor.part.name.WaterBreathing=Augment: Rebreather
 
 GT5U.armor.part.tooltip.NightVision=Allows user to see clearly at night and in the dark
-GT5U.armor.part.tooltip.CreativeFlight=Allows user to fly
+GT5U.armor.part.tooltip.CreativeFlight=Grants the user creative flight
 GT5U.armor.part.tooltip.Jetpack=Allows user to jet upwards and hover in midair
 GT5U.armor.part.tooltip.JetpackPerfectHover=Prevents user from slowly descending while in hover mode
 GT5U.armor.part.tooltip.FireImmunity=Renders user entirely immune to fire and lava
@@ -1862,6 +1862,7 @@ GT5U.armor.message.enabled=%s Enabled
 GT5U.armor.message.disabled=%s Disabled
 GT5U.armor.message.installed=%s Installed
 
+GT5U.armor.tooltip.hold_shift=Hold Shift for more info
 GT5U.armor.tooltip.energycoreminimum=Minimum Energy Core Tier: %s
 GT5U.armor.tooltip.energycore=Energy Core Tier: %s
 GT5U.armor.tooltip.chargetier=Charge Tier: %s

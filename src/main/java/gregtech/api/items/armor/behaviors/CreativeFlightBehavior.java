@@ -31,20 +31,18 @@ public class CreativeFlightBehavior implements IArmorBehavior {
 
         EntityPlayer player = context.getPlayer();
 
+        // Constantly re-check because alloyFlying is reset when you travel between dimensions
+        if (!player.capabilities.allowFlying) {
+            player.capabilities.allowFlying = true;
+            player.sendPlayerAbilities();
+        }
+
         if (player.capabilities.isFlying) {
             if (!context.drainEnergy(75)) {
                 player.capabilities.isFlying = false;
                 player.sendPlayerAbilities();
             }
         }
-    }
-
-    @Override
-    public void onArmorEquip(@NotNull ArmorContext context) {
-        EntityPlayer player = context.getPlayer();
-
-        player.capabilities.allowFlying = true;
-        player.sendPlayerAbilities();
     }
 
     @Override

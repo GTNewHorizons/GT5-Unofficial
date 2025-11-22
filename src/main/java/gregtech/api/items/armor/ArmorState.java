@@ -1,8 +1,15 @@
 package gregtech.api.items.armor;
 
+import static gregtech.api.util.GTUtility.addSeparatorIfNeeded;
 import static gregtech.common.items.armor.MechArmorBase.MECH_CORE_KEY;
 import static gregtech.common.items.armor.MechArmorBase.MECH_FRAME_KEY;
+import static net.minecraft.util.EnumChatFormatting.AQUA;
+import static net.minecraft.util.EnumChatFormatting.GRAY;
+import static net.minecraft.util.EnumChatFormatting.GREEN;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +26,7 @@ import net.minecraftforge.common.util.Constants.NBT;
 import org.jetbrains.annotations.NotNull;
 
 import gregtech.GTMod;
+import gregtech.api.enums.GTValues;
 import gregtech.api.items.armor.ArmorContext.ArmorContextImpl;
 import gregtech.api.items.armor.AugmentBuilder.AugmentCategory;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.Augments;
@@ -26,6 +34,7 @@ import gregtech.api.items.armor.MechArmorAugmentRegistries.Cores;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.Frames;
 import gregtech.api.items.armor.behaviors.BehaviorName;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
+import gregtech.api.util.GTUtility;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectIntPair;
 import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
@@ -48,30 +57,89 @@ public class ArmorState {
     public float speedBoost, jumpBoost;
 
     public void addArmorInformation(ArmorContext context, List<String> tooltip) {
-        if (frame != null) {
-            tooltip.add("Armor Frame: " + frame.getLocalizedName());
+        boolean showAllInfo = ArmorHelper.isShiftPressed();
+
+        if (!showAllInfo) {
+            tooltip.add(GRAY + GTUtility.translate("GT5U.armor.tooltip.hold_shift"));
         }
 
-        if (core != null) {
-            tooltip.add("Energy Core: " + core.getLocalizedName());
+        if (showAllInfo) {
+            if (frame != null) {
+                tooltip.add(GRAY + "Armor Frame: " + frame.getLocalizedName());
+                tooltip.add("");
+            }
+
+            if (core != null) {
+                tooltip.add(GRAY + "Energy Core: " + core.getLocalizedName());
+                tooltip.add("");
+            }
         }
 
-        for (IArmorBehavior behavior : behaviors.values()) {
+        if (showAllInfo) {
+            boolean printedHeader = false;
+
+            for (IArmorBehavior behavior : sortBehaviors(behaviors.values())) {
+                if (!behavior.hasDisplayName()) continue;
+
+                if (!printedHeader) {
+                    printedHeader = true;
+                    tooltip.add(GRAY + "Installed Augments:");
+                }
+
+                tooltip.add(GRAY + "- " + behavior.getDisplayName());
+            }
+
+            addSeparatorIfNeeded(tooltip);
+
+            printedHeader = false;
+
+            for (BehaviorName behavior : sortBehaviorNames(activeBehaviors)) {
+                if (!behavior.hasDisplayName()) continue;
+
+                if (!printedHeader) {
+                    printedHeader = true;
+                    tooltip.add(GREEN + "Active Augments:");
+                }
+
+                tooltip.add("- " + behavior.getDisplayName());
+            }
+
+            addSeparatorIfNeeded(tooltip);
+        }
+
+        for (IArmorBehavior behavior : sortBehaviors(behaviors.values())) {
             behavior.addArmorInformation(context, tooltip);
         }
 
-        boolean printedHeader = false;
+        if (showAllInfo) addSeparatorIfNeeded(tooltip);
 
-        for (BehaviorName behavior : activeBehaviors) {
-            if (!behavior.hasDisplayName()) continue;
+        if (core != null) {
+            boolean infinite = this.hasBehavior(BehaviorName.InfiniteEnergy);
 
-            if (!printedHeader) {
-                printedHeader = true;
-                tooltip.add("Active Augments:");
-            }
+            String stored = infinite ? "∞" : GTUtility.formatNumbers(Math.round(this.charge));
+            String capacity = infinite ? "∞" : GTUtility.formatNumbers(core.getChargeMax());
+            String voltage = GTUtility.formatNumbers(GTValues.V[core.getChargeTier()]);
 
-            tooltip.add("-" + behavior.getDisplayName());
+            tooltip.add(AQUA + GTUtility.translate("item.itemBaseEuItem.tooltip.3", stored, capacity, voltage));
         }
+
+        if (showAllInfo) addSeparatorIfNeeded(tooltip);
+    }
+
+    private List<BehaviorName> sortBehaviorNames(Collection<BehaviorName> behaviors) {
+        List<BehaviorName> sorted = new ArrayList<>(behaviors);
+
+        sorted.sort(Comparator.<BehaviorName>comparingInt(behavior -> -behavior.getRarity().ordinal()).thenComparing(BehaviorName::getDisplayName));
+
+        return sorted;
+    }
+
+    private List<IArmorBehavior> sortBehaviors(Collection<IArmorBehavior> behaviors) {
+        List<IArmorBehavior> sorted = new ArrayList<>(behaviors);
+
+        sorted.sort(Comparator.<IArmorBehavior>comparingInt(behavior -> -behavior.getName().getRarity().ordinal()).thenComparing(IArmorBehavior::getDisplayName));
+
+        return sorted;
     }
 
     public boolean isActive(BehaviorName behavior) {

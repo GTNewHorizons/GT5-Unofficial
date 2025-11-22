@@ -1,20 +1,25 @@
 package gregtech.api.items;
 
-import static gregtech.api.enums.GTValues.VN;
+import static gregtech.api.util.GTUtility.addSeparatorIfNeeded;
+import static net.minecraft.util.EnumChatFormatting.GRAY;
 
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.Cores;
 import gregtech.api.util.GTUtility;
-import ic2.api.item.IElectricItem;
+import gregtech.common.misc.NoTooltipElectricItemManager;
+import ic2.api.item.IElectricItemManager;
+import ic2.api.item.ISpecialElectricItem;
 
-public class ItemAugmentCore extends ItemAugmentAbstract implements IElectricItem {
+public class ItemAugmentCore extends ItemAugmentAbstract implements ISpecialElectricItem {
 
     public final Cores core;
 
@@ -25,17 +30,43 @@ public class ItemAugmentCore extends ItemAugmentAbstract implements IElectricIte
     }
 
     @Override
+    public EnumRarity getRarity(ItemStack p_77613_1_) {
+        return super.getRarity(p_77613_1_);
+    }
+
+    @Override
+    protected boolean showAllInfo() {
+        return true;
+    }
+
+    @Override
     protected void addAdditionalToolTips(List<String> desc, ItemStack augmentStack, EntityPlayer player) {
-        desc.add(GTUtility.translate("GT5U.armor.tooltip.energycore", core.getTier()));
-        desc.add(
-            GTUtility.translate(
-                "GT5U.armor.tooltip.chargetier",
-                GTValues.TIER_COLORS[core.getChargeTier()] + VN[core.getChargeTier()]));
+        desc.add(GRAY + GTUtility.translate("GT5U.armor.tooltip.energycore", core.getRarity().rarityColor.toString() + core.getTier()));
 
-        String energy = core == Cores.Singularity ? EnumChatFormatting.LIGHT_PURPLE + "Infinite" : EnumChatFormatting.YELLOW + GTUtility.formatNumbers(core.getChargeMax());
+        addSeparatorIfNeeded(desc);
 
-        desc.add(GTUtility.translate("GT5U.armor.tooltip.maxenergy", energy));
         super.addAdditionalToolTips(desc, augmentStack, player);
+
+        addSeparatorIfNeeded(desc);
+
+        NBTTagCompound tag = augmentStack.getTagCompound();
+        if (tag == null) tag = new NBTTagCompound();
+
+        boolean infinite = this.core == Cores.Singularity;
+        String stored = infinite ? "∞" : GTUtility.formatNumbers(Math.round(tag.getDouble("charge")));
+        String capacity = infinite ? "∞" : GTUtility.formatNumbers(core.getChargeMax());
+        String voltage = GTUtility.formatNumbers(GTValues.V[core.getChargeTier()]);
+
+        addSeparatorIfNeeded(desc);
+
+        desc.add(EnumChatFormatting.AQUA + GTUtility.translate("item.itemBaseEuItem.tooltip.3", stored, capacity, voltage));
+
+        addSeparatorIfNeeded(desc);
+    }
+
+    @Override
+    public IElectricItemManager getManager(ItemStack itemStack) {
+        return NoTooltipElectricItemManager.INSTANCE;
     }
 
     @Override

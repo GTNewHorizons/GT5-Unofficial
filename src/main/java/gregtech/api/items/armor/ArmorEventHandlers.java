@@ -6,6 +6,7 @@ import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
@@ -17,6 +18,7 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.items.armor.behaviors.BehaviorName;
+import gregtech.api.util.GTUtility;
 import gregtech.common.items.armor.MechArmorBase;
 
 public class ArmorEventHandlers {
@@ -34,22 +36,36 @@ public class ArmorEventHandlers {
         ItemStack from = event.getFrom();
         ItemStack to = event.getTo();
 
+        if (GTUtility.areStacksEqual(from, to, true) && from.getItem() instanceof MechArmorBase) {
+            ItemStack fromCopy = from.copy();
+            ItemStack toCopy = to.copy();
+
+            NBTTagCompound fromTag = fromCopy.getTagCompound();
+            NBTTagCompound toTag = toCopy.getTagCompound();
+            
+            // If only the charge changes, don't treat this change as an 'equip'
+            if (fromTag != null && toTag != null) {
+                toTag.removeTag("charge");
+                fromTag.removeTag("charge");
+
+                if (GTUtility.areStacksEqual(from, toCopy)) return;
+            }
+        }
+
         if (from != null) {
             // maybe unnecessary sanity check to make sure this same item wasn't immediately re-equipped
-            if (to != null && event.getFrom()
-                .isItemEqual(event.getTo())) {
+            if (to != null && from.isItemEqual(to)) {
                 return;
             }
 
-            if (event.getFrom()
-                .getItem() instanceof MechArmorBase armor) {
-                armor.onArmorUnequip(player.getEntityWorld(), player, event.getFrom());
+            if (from.getItem() instanceof MechArmorBase armor) {
+                armor.onArmorUnequip(player.getEntityWorld(), player, from);
             }
         }
+
         if (to != null) {
-            if (event.getTo()
-                .getItem() instanceof MechArmorBase armor) {
-                armor.onArmorEquip(player.getEntityWorld(), player, event.getTo());
+            if (to.getItem() instanceof MechArmorBase armor) {
+                armor.onArmorEquip(player.getEntityWorld(), player, to);
             }
         }
     }

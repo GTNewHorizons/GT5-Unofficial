@@ -1,5 +1,7 @@
 package gregtech.api.items.armor.behaviors;
 
+import static net.minecraft.util.EnumChatFormatting.GRAY;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -8,11 +10,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
+import gregtech.GTMod;
 import gregtech.api.hazards.Hazard;
 import gregtech.api.items.armor.ArmorContext;
 import gregtech.api.util.GTUtility;
@@ -57,7 +59,7 @@ public interface IArmorBehavior {
         if (hasDisplayName()) {
             GTUtility.sendChatToPlayer(
                 context.getPlayer(),
-                StatCollector.translateToLocalFormatted("GT5U.armor.message.enabled", getDisplayName()));
+                GTUtility.processFormatStacks(GRAY + GTUtility.translate("GT5U.armor.message.enabled", getDisplayName())));
         }
     }
 
@@ -68,7 +70,7 @@ public interface IArmorBehavior {
         if (hasDisplayName()) {
             GTUtility.sendChatToPlayer(
                 context.getPlayer(),
-                StatCollector.translateToLocalFormatted("GT5U.armor.message.disabled", getDisplayName()));
+                GTUtility.processFormatStacks(GRAY + GTUtility.translate("GT5U.armor.message.disabled", getDisplayName())));
         }
     }
 
@@ -95,13 +97,22 @@ public interface IArmorBehavior {
     }
 
     /**
+     * Checks if this behavior provides protection against a hazard. Protects the player regardless of whether the other
+     * pieces provide protection.
+     */
+    default boolean protectsAgainstFully(@NotNull ArmorContext context, Hazard hazard) {
+        return false;
+    }
+
+    /**
      * Merges two behaviors with the same name ({@link #getName()}). The resulting behavior must be the 'summation' of
      * this behavior and the given behavior. If this behavior cannot be stacked, this may remain unimplemented. If this
      * behavior may be stacked, this must return a valid behavior.
      */
     @NotNull
     default IArmorBehavior merge(@NotNull IArmorBehavior other) {
-        throw new UnsupportedOperationException();
+        GTMod.GT_FML_LOGGER.warn("Tried to merge armor behavior that does not support stacking! {} -> {}", other, this);
+        return this;
     }
 
     /**
@@ -115,9 +126,7 @@ public interface IArmorBehavior {
      * Add to this behavior's armor item tooltip.
      */
     default void addArmorInformation(@NotNull ArmorContext context, @NotNull List<String> tooltip) {
-        if (hasDisplayName()) {
-            tooltip.add(GTUtility.translate("GT5U.armor.message.installed", getDisplayName()));
-        }
+
     }
 
     /**

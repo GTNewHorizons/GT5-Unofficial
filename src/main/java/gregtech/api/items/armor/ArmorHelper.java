@@ -1,5 +1,9 @@
 package gregtech.api.items.armor;
 
+import org.lwjgl.input.Keyboard;
+
+import cpw.mods.fml.common.FMLCommonHandler;
+
 public class ArmorHelper {
 
     // This is a magic key synchronized with an identical one in GalaxySpace. When GS runs checks for spacesuits, it
@@ -17,4 +21,12 @@ public class ArmorHelper {
     public static final int SLOT_CHEST = 2;
     public static final int SLOT_LEGS = 1;
     public static final int SLOT_BOOTS = 0;
+
+    public static boolean isShiftPressed() {
+        if (FMLCommonHandler.instance().getSide().isClient()) {
+            return Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
+        } else {
+            return true;
+        }
+    }
 }

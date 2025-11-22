@@ -355,7 +355,7 @@ public class MTEModificationTable extends MetaTileEntity {
             if (!augment.getAllowedArmorTypes().contains(armorItem.getArmorType())) return false;
 
             // Check installed core is high enough tier
-            return state.core != null && state.core.getTier() >= augment.getMinimumCore();
+            return state.core != null && state.core.getTier() >= augment.getMinimumCore().getTier();
         };
     }
 
