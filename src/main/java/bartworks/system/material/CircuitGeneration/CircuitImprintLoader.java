@@ -36,6 +36,7 @@ import com.google.common.collect.HashBiMap;
 
 import bartworks.API.recipe.BWNBTDependantCraftingRecipe;
 import bartworks.API.recipe.BartWorksRecipeMaps;
+import bartworks.MainMod;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.util.BWUtil;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -95,7 +96,7 @@ public class CircuitImprintLoader {
 
             CircuitImprintLoader.recipeTagMap
                 .put(CircuitImprintLoader.getTagFromStack(outputs[0]), circuitRecipe.copy());
-
+            MainMod.LOGGER.info("recipe edited for item: " + unlocalizedName);
             if (circuitRecipe.mFluidInputs[0].isFluidEqual(Materials.SolderingAlloy.getMolten(0))
                 || circuitRecipe.mFluidInputs[0].isFluidEqual(MaterialsAlloy.INDALLOY_140.getFluidStack(0))
                 || circuitRecipe.mFluidInputs[0].isFluidEqual(MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(0))) {
