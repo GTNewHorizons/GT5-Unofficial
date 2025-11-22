@@ -211,6 +211,7 @@ public final class GTGuiTextures {
         .build();
 
     public static final UITexture SLOT_OUTLINE_GREEN = UITexture.fullImage(MODID, "gui/picture/green_selector");
+    public static final UITexture UNSELECTED_OPTION = UITexture.fullImage(MODID, "gui/picture/unselected_option");
 
     // endregion slot
 

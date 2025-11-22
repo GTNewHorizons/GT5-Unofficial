@@ -15,6 +15,7 @@ import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DynamicSyncHandler;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
+import com.cleanroommc.modularui.value.sync.GenericSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
@@ -72,7 +73,7 @@ public class StarCosmeticsPanel {
                 .alignX(0));
 
         // Color selector list
-        IntSyncValue starColorClickedSyncer = SyncValues.STAR_COLOR_CLICKED
+        GenericSyncValue<ForgeOfGodsStarColor> starColorClickedSyncer = SyncValues.STAR_COLOR_CLICKED
             .lookupFrom(Panels.STAR_COSMETICS, hypervisor);
         IPanelHandler customStarColorPanel = Panels.CUSTOM_STAR_COLOR.getFrom(Panels.STAR_COSMETICS, hypervisor);
 
@@ -85,7 +86,7 @@ public class StarCosmeticsPanel {
             // Star colors
             for (int i = 0; i < starColors.size(); i++) {
                 ForgeOfGodsStarColor starColor = starColors.getByIndex(i);
-                colorList.child(createStarColorRow(starColor, i, hypervisor));
+                colorList.child(createStarColorRow(starColor, hypervisor));
             }
 
             // Create new star color button
@@ -97,7 +98,7 @@ public class StarCosmeticsPanel {
                         IKey.str(EnumChatFormatting.DARK_GRAY + "+")
                             .alignment(Alignment.CENTER))
                     .onMousePressed(d -> {
-                        starColorClickedSyncer.setValue(-1);
+                        starColorClickedSyncer.setValue(null);
                         if (!customStarColorPanel.isPanelOpen()) {
                             customStarColorPanel.openPanel();
                         }
@@ -191,20 +192,24 @@ public class StarCosmeticsPanel {
         SyncActions.DISABLE_RENDERER.registerFor(Panels.STAR_COSMETICS, hypervisor, hypervisor.getMultiblock());
     }
 
-    private static Flow createStarColorRow(ForgeOfGodsStarColor starColor, int index, SyncHypervisor hypervisor) {
+    private static Flow createStarColorRow(ForgeOfGodsStarColor starColor, SyncHypervisor hypervisor) {
         IPanelHandler customStarColorPanel = Panels.CUSTOM_STAR_COLOR.getFrom(Panels.STAR_COSMETICS, hypervisor);
 
         StringSyncValue selectedStarColorSyncer = SyncValues.SELECTED_STAR_COLOR
             .lookupFrom(Panels.STAR_COSMETICS, hypervisor);
-        IntSyncValue starColorClickedSyncer = SyncValues.STAR_COLOR_CLICKED
+        GenericSyncValue<ForgeOfGodsStarColor> starColorClickedSyncer = SyncValues.STAR_COLOR_CLICKED
             .lookupFrom(Panels.STAR_COSMETICS, hypervisor);
 
         Flow row = new Row().coverChildren()
             .marginBottom(4);
 
-        // todo tooltip and button press area are messed up here
         row.child(
             new ParentWidget<>().size(16)
+                .child(
+                    starColor.getDrawable()
+                        .asWidget()
+                        .size(14)
+                        .margin(1))
                 .child(
                     new ButtonWidget<>().size(16)
                         .disableHoverBackground()
@@ -218,7 +223,7 @@ public class StarCosmeticsPanel {
                         .onMousePressed(d -> {
                             if (Interactable.hasShiftDown() && !starColor.isPresetColor()) {
                                 // If shift is held, open color editor for this preset, if not a default preset
-                                starColorClickedSyncer.setValue(index);
+                                starColorClickedSyncer.setValue(starColor);
                                 if (!customStarColorPanel.isPanelOpen()) {
                                     customStarColorPanel.openPanel();
                                 }
@@ -234,13 +239,7 @@ public class StarCosmeticsPanel {
                             t.addLine(translateToLocal("fog.cosmetics.selectcolor.tooltip.1"));
                             t.addLine(translateToLocal("fog.cosmetics.selectcolor.tooltip.2"));
                         })
-                        .tooltipShowUpTimer(TOOLTIP_DELAY))
-                .child(
-                    starColor.getDrawable()
-                        .asWidget()
-                        .size(14)
-                        .marginTop(1)
-                        .marginLeft(1)));
+                        .tooltipShowUpTimer(TOOLTIP_DELAY)));
 
         row.child(
             IKey.dynamic(() -> EnumChatFormatting.GOLD + starColor.getLocalizedName())

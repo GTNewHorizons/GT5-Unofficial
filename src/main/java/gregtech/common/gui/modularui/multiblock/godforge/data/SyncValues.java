@@ -1,13 +1,16 @@
 package gregtech.common.gui.modularui.multiblock.godforge.data;
 
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
+
+import org.apache.commons.lang3.mutable.MutableInt;
+import org.apache.commons.lang3.mutable.MutableObject;
 
 import com.cleanroommc.modularui.value.sync.BigIntSyncValue;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.FloatSyncValue;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
+import com.cleanroommc.modularui.value.sync.GenericSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -110,11 +113,11 @@ public class SyncValues<T extends ValueSyncHandler<?>> {
         "fog.sync.upgrade_clicked",
         data -> {
             // Integer for 0 value instead of null value at init. Sync values crash if you try to sync a null
-            AtomicInteger i = new AtomicInteger();
+            MutableInt i = new MutableInt();
             return new EnumSyncValue<>(
                 ForgeOfGodsUpgrade.class,
                 () -> ForgeOfGodsUpgrade.VALUES[i.intValue()],
-                val -> i.set(val.ordinal()));
+                val -> i.setValue(val.ordinal()));
         });
 
     public static final SyncValues<GenericListSyncHandler<?>> UPGRADES_LIST = new SyncValues<>(
@@ -129,11 +132,11 @@ public class SyncValues<T extends ValueSyncHandler<?>> {
         "fog.sync.milestone_clicked",
         data -> {
             // Integer for 0 value instead of null value at init. Sync values crash if you try to sync a null
-            AtomicInteger i = new AtomicInteger();
+            MutableInt i = new MutableInt();
             return new EnumSyncValue<>(
                 Milestones.class,
                 () -> Milestones.VALUES[i.intValue()],
-                val -> i.set(val.ordinal()));
+                val -> i.setValue(val.ordinal()));
         });
 
     public static final SyncValues<BigIntSyncValue> TOTAL_POWER_CONSUMED = new SyncValues<>(
@@ -192,11 +195,24 @@ public class SyncValues<T extends ValueSyncHandler<?>> {
     // Star Color //
     // ---------- //
 
-    public static final SyncValues<IntSyncValue> STAR_COLOR_CLICKED = new SyncValues<>(
+    public static final SyncValues<GenericSyncValue<ForgeOfGodsStarColor>> STAR_COLOR_CLICKED = new SyncValues<>(
         "fog.sync.star_color_clicked",
         data -> {
-            AtomicInteger i = new AtomicInteger();
-            return new IntSyncValue(i::intValue, i::set);
+            MutableObject<ForgeOfGodsStarColor> mut = new MutableObject<>(data.getStarColors().newTemplateColor());
+            return new GenericSyncValue<>(
+                mut::getValue,
+                mut::setValue,
+                ForgeOfGodsStarColor::readFromBuffer,
+                ForgeOfGodsStarColor::writeToBuffer) {
+
+                @Override
+                public void setValue(ForgeOfGodsStarColor value, boolean setSource, boolean sync) {
+                    if (value == null) {
+                        value = data.getStarColors().newTemplateColor();
+                    }
+                    super.setValue(value, setSource, sync);
+                }
+            };
         });
 
     public static final SyncValues<StringSyncValue> SELECTED_STAR_COLOR = new SyncValues<>(

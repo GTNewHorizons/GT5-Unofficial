@@ -2,6 +2,8 @@ package gregtech.common.gui.modularui.multiblock.godforge.data;
 
 import com.cleanroommc.modularui.utils.Color;
 
+import tectech.thing.metaTileEntity.multi.godforge.color.StarColorSetting;
+
 public class ColorData {
 
     private int r = (int) StarColors.RGB.RED.getDefaultValue();
@@ -100,6 +102,30 @@ public class ColorData {
         g = Color.getGreen(color);
         b = Color.getBlue(color);
         updateFromRGB();
+    }
+
+    public void updateFrom(StarColorSetting setting) {
+        color = Color.rgb(setting.getColorR(), setting.getColorG(), setting.getColorB());
+        r = Color.getRed(color);
+        g = Color.getGreen(color);
+        b = Color.getBlue(color);
+        gamma = setting.getGamma();
+        updateFromRGB();
+    }
+
+    public void reset() {
+        r = (int) StarColors.RGB.RED.getDefaultValue();
+        g = (int) StarColors.RGB.GREEN.getDefaultValue();
+        b = (int) StarColors.RGB.BLUE.getDefaultValue();
+        h = StarColors.HSV.HUE.getDefaultValue();
+        s = StarColors.HSV.SATURATION.getDefaultValue();
+        v = StarColors.HSV.VALUE.getDefaultValue();
+        gamma = StarColors.Extra.GAMMA.getDefaultValue();
+        color = Color.rgb(r, g, b);
+    }
+
+    public StarColorSetting createSetting() {
+        return new StarColorSetting(r, g, b, gamma);
     }
 
     public void decode(String colorStr) {

@@ -31,7 +31,10 @@ import gregtech.common.gui.modularui.multiblock.godforge.data.StarColors;
 
 public class CustomStarColorSelector {
 
-    private static final int SIZE = 200;
+    private static final int SIZE = CustomStarColorPanel.SIZE;
+
+    private static final int RGB_PAGE_INDEX = CustomStarColorPanel.RGB_PAGE_INDEX;
+    private static final int HSV_PAGE_INDEX = CustomStarColorPanel.HSV_PAGE_INDEX;
 
     protected static Flow createStarColorRGBPage(ColorData colorData) {
         return new Column().coverChildren()
@@ -270,26 +273,27 @@ public class CustomStarColorSelector {
     }
 
     protected static Flow createColorPreviewRow(PagedWidget.Controller pageController, ColorData colorData) {
-        Flow row = new Row().size(SIZE - 16, 15);
+        Flow row = new Row().size(SIZE - 16, 15)
+            .marginBottom(4);
 
         // RGB/HSV switchers
         Flow rgbhsvRow = new Row().coverChildrenWidth()
             .height(15)
             .alignX(0);
         rgbhsvRow.child(
-            new PageButton(0, pageController).size(24, 15)
+            new PageButton(RGB_PAGE_INDEX, pageController).size(24, 15)
                 .marginRight(3)
                 .overlay(new DynamicDrawable(() -> {
-                    if (pageController.getActivePageIndex() == 0) {
+                    if (pageController.getActivePageIndex() == RGB_PAGE_INDEX) {
                         return IKey.lang("fog.cosmetics.color.rgb_colored");
                     }
                     return IKey.str(EnumChatFormatting.DARK_GRAY + translateToLocal("fog.cosmetics.color.rgb"));
                 })));
         rgbhsvRow.child(
-            new PageButton(1, pageController).size(24, 15)
+            new PageButton(HSV_PAGE_INDEX, pageController).size(24, 15)
                 .marginRight(5)
                 .overlay(new DynamicDrawable(() -> {
-                    if (pageController.getActivePageIndex() == 1) {
+                    if (pageController.getActivePageIndex() == HSV_PAGE_INDEX) {
                         return IKey.str(EnumChatFormatting.WHITE + translateToLocal("fog.cosmetics.color.hsv"));
                     }
                     return IKey.str(EnumChatFormatting.DARK_GRAY + translateToLocal("fog.cosmetics.color.hsv"));
