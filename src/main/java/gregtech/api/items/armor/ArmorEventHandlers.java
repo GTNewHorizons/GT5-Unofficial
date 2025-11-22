@@ -1,10 +1,6 @@
 package gregtech.api.items.armor;
 
-import static gregtech.api.items.armor.ArmorHelper.FALL_PROTECTION_KEY;
-import static gregtech.api.items.armor.ArmorHelper.JUMP_BOOST_KEY;
 import static gregtech.api.items.armor.ArmorHelper.SLOT_BOOTS;
-import static gregtech.api.items.armor.ArmorHelper.drainArmor;
-import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,6 +18,8 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.items.armor.behaviors.BehaviorName;
+import gregtech.api.util.GTUtility;
 import gregtech.common.items.armor.MechArmorBase;
 
 public class ArmorEventHandlers {
@@ -39,22 +37,36 @@ public class ArmorEventHandlers {
         ItemStack from = event.getFrom();
         ItemStack to = event.getTo();
 
+        if (GTUtility.areStacksEqual(from, to, true) && from.getItem() instanceof MechArmorBase) {
+            ItemStack fromCopy = from.copy();
+            ItemStack toCopy = to.copy();
+
+            NBTTagCompound fromTag = fromCopy.getTagCompound();
+            NBTTagCompound toTag = toCopy.getTagCompound();
+
+            // If only the charge changes, don't treat this change as an 'equip'
+            if (fromTag != null && toTag != null) {
+                toTag.removeTag("charge");
+                fromTag.removeTag("charge");
+
+                if (GTUtility.areStacksEqual(from, toCopy)) return;
+            }
+        }
+
         if (from != null) {
             // maybe unnecessary sanity check to make sure this same item wasn't immediately re-equipped
-            if (to != null && event.getFrom()
-                .isItemEqual(event.getTo())) {
+            if (to != null && from.isItemEqual(to)) {
                 return;
             }
 
-            if (event.getFrom()
-                .getItem() instanceof MechArmorBase armor) {
-                armor.onArmorUnequip(player.getEntityWorld(), player, event.getFrom());
+            if (from.getItem() instanceof MechArmorBase armor) {
+                armor.onArmorUnequip(player.getEntityWorld(), player, from);
             }
         }
+
         if (to != null) {
-            if (event.getTo()
-                .getItem() instanceof MechArmorBase armor) {
-                armor.onArmorEquip(player.getEntityWorld(), player, event.getTo());
+            if (to.getItem() instanceof MechArmorBase armor) {
+                armor.onArmorEquip(player.getEntityWorld(), player, to);
             }
         }
     }
@@ -87,10 +99,10 @@ public class ArmorEventHandlers {
             for (int i = 0; i < 4; i++) {
                 ItemStack armorStack = player.getCurrentArmor(i);
                 if (armorStack == null) continue;
-                if (armorStack.getItem() instanceof MechArmorBase gtArmor) {
-                    NBTTagCompound behaviorTag = getOrCreateNbtCompound(armorStack);
+                if (armorStack.getItem() instanceof MechArmorBase) {
+                    ArmorContext context = MechArmorBase.load(player, armorStack);
 
-                    if (behaviorTag.getBoolean(ArmorHelper.STEP_ASSIST_KEY)) {
+                    if (context.hasBehavior(BehaviorName.StepAssist)) {
                         if (player.stepHeight < MAGIC_STEP_HEIGHT) {
                             player.stepHeight = MAGIC_STEP_HEIGHT;
                             return;
@@ -110,15 +122,16 @@ public class ArmorEventHandlers {
             ItemStack boots = player.getCurrentArmor(SLOT_BOOTS);
 
             if (boots == null) return;
-            NBTTagCompound tag = boots.getTagCompound();
 
-            if (tag == null) return;
+            if (!(boots.getItem() instanceof MechArmorBase)) return;
 
-            float jumpboost = tag.getFloat(JUMP_BOOST_KEY);
-            if (jumpboost != 0) {
-                player.motionY += jumpboost;
-                player.fallDistance = player.fallDistance - (jumpboost * 10);
-                drainArmor(boots, 50);
+            ArmorContext context = MechArmorBase.load(player, boots);
+
+            float jumpBoost = context.getArmorState().jumpBoost;
+            if (jumpBoost > 0) {
+                player.motionY += jumpBoost;
+                player.fallDistance = player.fallDistance - (jumpBoost * 10);
+                context.drainEnergy(50);
             }
         }
     }
@@ -132,11 +145,13 @@ public class ArmorEventHandlers {
             }
             ItemStack boots = player.getCurrentArmor(SLOT_BOOTS);
             if (boots == null) return;
-            NBTTagCompound tag = boots.getTagCompound();
 
-            if (tag == null) return;
-            if (tag.getBoolean(FALL_PROTECTION_KEY)
-                && ArmorHelper.drainArmor(boots, 500 * (player.fallDistance - 1.2f))) {
+            if (!(boots.getItem() instanceof MechArmorBase)) return;
+
+            ArmorContext context = MechArmorBase.load(player, boots);
+
+            if (context.hasBehavior(BehaviorName.FallProtection)
+                && context.drainEnergy(500 * (player.fallDistance - 1.2f))) {
                 player.fallDistance = 0;
                 event.setCanceled(true);
             }

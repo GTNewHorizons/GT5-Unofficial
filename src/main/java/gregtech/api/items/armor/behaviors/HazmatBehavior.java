@@ -1,11 +1,9 @@
 package gregtech.api.items.armor.behaviors;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
-
 import org.jetbrains.annotations.NotNull;
 
-import gregtech.api.items.armor.ArmorHelper;
+import gregtech.api.hazards.Hazard;
+import gregtech.api.items.armor.ArmorContext;
 
 public class HazmatBehavior implements IArmorBehavior {
 
@@ -13,19 +11,22 @@ public class HazmatBehavior implements IArmorBehavior {
 
     protected HazmatBehavior() {/**/}
 
-    // This tag will treat the armor as if it has the Hazmat Protection Enchantment
     @Override
-    public void addBehaviorNBT(@NotNull NBTTagCompound tag) {
-        tag.setBoolean(ArmorHelper.HAZMAT_PROTECTION_KEY, true);
+    public boolean protectsAgainst(@NotNull ArmorContext context, Hazard hazard) {
+        // Protect against non-space and non-temperature hazards
+        return switch (hazard) {
+            case BIOLOGICAL -> true;
+            case FROST -> false;
+            case HEAT -> false;
+            case RADIOLOGICAL -> true;
+            case ELECTRICAL -> true;
+            case GAS -> true;
+            case SPACE -> false;
+        };
     }
 
     @Override
-    public String getMainNBTTag() {
-        return ArmorHelper.HAZMAT_PROTECTION_KEY;
-    }
-
-    @Override
-    public String getBehaviorName() {
-        return StatCollector.translateToLocal("GT5U.armor.behavior.hazmat");
+    public BehaviorName getName() {
+        return BehaviorName.HazmatProtection;
     }
 }

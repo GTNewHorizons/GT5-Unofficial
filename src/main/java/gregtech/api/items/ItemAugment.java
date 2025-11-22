@@ -1,142 +1,96 @@
 package gregtech.api.items;
 
-import java.util.Collection;
-import java.util.Collections;
+import static gregtech.api.util.GTUtility.addSeparatorIfNeeded;
+import static net.minecraft.util.EnumChatFormatting.GRAY;
+
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 
+import gregtech.api.items.armor.AugmentBuilder.AugmentCategory;
+import gregtech.api.items.armor.MechArmorAugmentRegistries.ArmorType;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.Augments;
-import gregtech.api.items.armor.behaviors.IArmorBehavior;
-import gregtech.common.items.armor.MechArmorBase;
+import gregtech.api.util.GTTextBuilder;
+import gregtech.api.util.GTUtility;
 
 public class ItemAugment extends ItemAugmentAbstract {
 
-    public static final int CATEGORY_PROTECTION = 1;
-    public static final int CATEGORY_MOVEMENT = 2;
-    public static final int CATEGORY_UTILITY = 3;
-    public static final int CATEGORY_PRISMATIC = 4;
+    public final Augments augment;
 
-    public final int category;
-    public final int minimumCore;
-
-    public final Augments augmentData;
-
-    public ItemAugment(AugmentBuilder builder) {
-        super(
-            builder.aUnlocalized,
-            builder.aEnglish,
-            builder.aEnglishTooltip,
-            builder.validArmors,
-            builder.attachedBehaviors,
-            builder.requiredBehaviors,
-            builder.incompatibleBehaviors,
-            builder.visDiscount);
-        this.augmentData = builder.augmentData;
-        this.category = builder.category;
-        this.minimumCore = builder.minimumCore;
+    public ItemAugment(Augments augment) {
+        super(augment);
+        this.augment = augment;
     }
 
     @Override
-    protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
-        aList.add(getCategoryText(category));
-        aList.add(StatCollector.translateToLocalFormatted("GT5U.armor.tooltip.energycoreminimum", minimumCore));
-        if (!validArmors.isEmpty()) {
-            aList.add(EnumChatFormatting.WHITE + StatCollector.translateToLocal("GT5U.armor.tooltip.applicable"));
-            for (MechArmorBase armor : validArmors)
-                aList.add("-" + StatCollector.translateToLocal(armor.getUnlocalizedName() + ".name"));
+    protected void addAdditionalToolTips(List<String> desc, ItemStack augmentStack, EntityPlayer player) {
+        boolean showAllInfo = showAllInfo();
+
+        desc.add(getCategoryText(augment.getCategory()));
+
+        addSeparatorIfNeeded(desc);
+
+        if (showAllInfo) {
+            desc.add(
+                GTUtility.translate(
+                    "GT5U.armor.tooltip.energycoreminimum",
+                    augment.getMinimumCore()
+                        .getLocalizedName()));
+
+            addSeparatorIfNeeded(desc);
+
+            if (augment.getMaxStack() > 1) {
+                desc.add(
+                    GTUtility.translate(
+                        "GT5U.armor.tooltip.maxstack",
+                        GTTextBuilder.VALUE.toString() + augment.getMaxStack()));
+            }
+
+            addSeparatorIfNeeded(desc);
+
+            desc.add(GRAY + GTUtility.translate("GT5U.armor.tooltip.applicable"));
+            for (ArmorType armor : augment.getAllowedArmorTypes()) {
+                desc.add(
+                    GRAY + "- "
+                        + armor.getItem()
+                            .get(1)
+                            .getDisplayName());
+            }
+
+            addSeparatorIfNeeded(desc);
         }
-        super.addAdditionalToolTips(aList, aStack, aPlayer);
+
+        if (augment.hasTooltip()) {
+            desc.add(augment.getTooltip());
+        }
+
+        addSeparatorIfNeeded(desc);
+
+        super.addAdditionalToolTips(desc, augmentStack, player);
     }
 
-    private static String getCategoryText(int c) {
+    private static String getCategoryText(AugmentCategory c) {
         switch (c) {
-            case CATEGORY_PROTECTION -> {
-                return StatCollector.translateToLocalFormatted(
-                    "GT5U.armor.tooltip.category",
-                    StatCollector.translateToLocal("GT5U.armor.tooltip.protection"));
+            case Protection -> {
+                return GTUtility
+                    .translate("GT5U.armor.tooltip.category", GTUtility.translate("GT5U.armor.tooltip.protection"));
             }
-            case CATEGORY_MOVEMENT -> {
-                return StatCollector.translateToLocalFormatted(
-                    "GT5U.armor.tooltip.category",
-                    StatCollector.translateToLocal("GT5U.armor.tooltip.movement"));
+            case Movement -> {
+                return GTUtility
+                    .translate("GT5U.armor.tooltip.category", GTUtility.translate("GT5U.armor.tooltip.movement"));
             }
-            case CATEGORY_UTILITY -> {
-                return StatCollector.translateToLocalFormatted(
-                    "GT5U.armor.tooltip.category",
-                    StatCollector.translateToLocal("GT5U.armor.tooltip.utility"));
+            case Utility -> {
+                return GTUtility
+                    .translate("GT5U.armor.tooltip.category", GTUtility.translate("GT5U.armor.tooltip.utility"));
             }
-            case CATEGORY_PRISMATIC -> {
-                return StatCollector.translateToLocalFormatted(
-                    "GT5U.armor.tooltip.category",
-                    StatCollector.translateToLocal("GT5U.armor.tooltip.prismatic"));
+            case Prismatic -> {
+                return GTUtility
+                    .translate("GT5U.armor.tooltip.category", GTUtility.translate("GT5U.armor.tooltip.prismatic"));
             }
             default -> {
                 return "";
             }
-        }
-    }
-
-    public static class AugmentBuilder {
-
-        private final String aUnlocalized, aEnglish, aEnglishTooltip;
-        private final Augments augmentData;
-
-        private Collection<MechArmorBase> validArmors;
-        private Collection<IArmorBehavior> attachedBehaviors = Collections.emptyList();
-        private Collection<IArmorBehavior> requiredBehaviors = Collections.emptyList();
-        private Collection<IArmorBehavior> incompatibleBehaviors = Collections.emptyList();
-        private int visDiscount = 0;
-        private int category = CATEGORY_PROTECTION;
-        private int minimumCore = 1;
-
-        public AugmentBuilder(String aUnlocalized, String aEnglish, String aEnglishTooltip, Augments augmentData) {
-            this.aUnlocalized = aUnlocalized;
-            this.aEnglish = aEnglish;
-            this.aEnglishTooltip = aEnglishTooltip;
-            this.augmentData = augmentData;
-        }
-
-        public AugmentBuilder validArmors(Collection<MechArmorBase> validArmors) {
-            this.validArmors = validArmors;
-            return this;
-        }
-
-        public AugmentBuilder attachedBehaviors(Collection<IArmorBehavior> attachedBehaviors) {
-            this.attachedBehaviors = attachedBehaviors;
-            return this;
-        }
-
-        public AugmentBuilder requiredBehaviors(Collection<IArmorBehavior> requiredBehaviors) {
-            this.requiredBehaviors = requiredBehaviors;
-            return this;
-        }
-
-        public AugmentBuilder incompatibleBehaviors(Collection<IArmorBehavior> incompatibleBehaviors) {
-            this.incompatibleBehaviors = incompatibleBehaviors;
-            return this;
-        }
-
-        public AugmentBuilder visDiscount(int visDiscount) {
-            this.visDiscount = visDiscount;
-            return this;
-        }
-
-        public AugmentBuilder category(int category) {
-            this.category = category;
-            return this;
-        }
-
-        public AugmentBuilder minimumCore(int minimumCore) {
-            this.minimumCore = minimumCore;
-            return this;
-        }
-
-        public ItemAugment build() {
-            return new ItemAugment(this);
         }
     }
 }

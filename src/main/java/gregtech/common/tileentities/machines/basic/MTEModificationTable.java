@@ -1,21 +1,9 @@
 package gregtech.common.tileentities.machines.basic;
 
-import static gregtech.api.items.ItemAugment.*;
-import static gregtech.api.items.armor.MechArmorAugmentRegistries.LARGEST_FRAME;
-import static gregtech.api.items.armor.MechArmorAugmentRegistries.augmentsMap;
-import static gregtech.api.items.armor.MechArmorAugmentRegistries.coresMap;
-import static gregtech.api.items.armor.MechArmorAugmentRegistries.framesMap;
-import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
-import static gregtech.common.items.armor.MechArmorBase.MECH_CORE_KEY;
-import static gregtech.common.items.armor.MechArmorBase.MECH_FRAME_KEY;
-
-import java.util.Map;
 import java.util.function.BooleanSupplier;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -23,6 +11,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.factory.PosGuiData;
@@ -30,13 +19,11 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.item.IItemHandler;
 import com.cleanroommc.modularui.utils.item.LimitingItemStackHandler;
-import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
-import com.google.common.collect.ImmutableMap;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -46,44 +33,31 @@ import gregtech.api.items.ItemAugment;
 import gregtech.api.items.ItemAugmentAbstract;
 import gregtech.api.items.ItemAugmentCore;
 import gregtech.api.items.ItemAugmentFrame;
-import gregtech.api.items.armor.ArmorHelper;
-import gregtech.api.items.armor.MechArmorAugmentRegistries.Cores;
-import gregtech.api.items.armor.MechArmorAugmentRegistries.Frames;
+import gregtech.api.items.armor.ArmorContext.ArmorContextImpl;
+import gregtech.api.items.armor.ArmorState;
+import gregtech.api.items.armor.AugmentBuilder.AugmentCategory;
+import gregtech.api.items.armor.MechArmorAugmentRegistries.Augments;
+import gregtech.api.items.armor.behaviors.BehaviorName;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.items.armor.MechArmorBase;
+import it.unimi.dsi.fastutil.objects.ObjectIntPair;
 
 public class MTEModificationTable extends MetaTileEntity {
 
-    private static final int AUGMENT_SLOTS_COUNT = LARGEST_FRAME * 4;
-    private static final Map<Integer, IDrawable> CATEGORY_SLOT_TEXTURES = ImmutableMap.of(
-        CATEGORY_PROTECTION,
-        GTGuiTextures.SLOT_ITEM_GOLD,
-        CATEGORY_MOVEMENT,
-        GTGuiTextures.SLOT_ITEM_GREEN,
-        CATEGORY_UTILITY,
-        GTGuiTextures.SLOT_ITEM_PURPLE,
-        CATEGORY_PRISMATIC,
-        GTGuiTextures.SLOT_ITEM_PRISMATIC);
-    private static final Map<Integer, Function<Frames, Integer>> CATEGORY_SLOT_COUNTS = ImmutableMap.of(
-        CATEGORY_PROTECTION,
-        Frames::getProtectionSlots,
-        CATEGORY_MOVEMENT,
-        Frames::getMovementSlots,
-        CATEGORY_UTILITY,
-        Frames::getUtilitySlots,
-        CATEGORY_PRISMATIC,
-        Frames::getPrismaticSlots);
+    public static final int AUGMENT_CATEGORY_COUNT = AugmentCategory.values().length;
+    // Update this integer if you add a frame with more slots in a single category than the previous highest
+    public static final int LARGEST_FRAME = 5;
+    private static final int AUGMENT_SLOTS_COUNT = LARGEST_FRAME * AUGMENT_CATEGORY_COUNT;
 
-    private @NotNull Frames frame = Frames.None;
     private int installedAugments = 0;
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        ItemStack armorStack = armorSlotHandler.getStackInSlot(0);
+        ItemStack armorStack = getArmorStack();
         if (armorStack != null) {
             aNBT.setTag("armor", armorStack.writeToNBT(new NBTTagCompound()));
         }
@@ -134,14 +108,6 @@ public class MTEModificationTable extends MetaTileEntity {
         super(aName, 3 + (LARGEST_FRAME * 4));
     }
 
-    public @NotNull Frames getFrame() {
-        return frame;
-    }
-
-    public void setFrame(@NotNull Frames frame) {
-        this.frame = frame;
-    }
-
     @Override
     public byte getTileEntityBaseType() {
         return 2;
@@ -153,139 +119,68 @@ public class MTEModificationTable extends MetaTileEntity {
     }
 
     private void updateFrameSlot(ItemStack newItem) {
-        ItemStack armorItem = armorSlotHandler.getStackInSlot(0);
-        if (armorItem == null) return;
-        ItemStack updatedArmorItem = armorItem.copy();
-        NBTTagCompound armorTag = getOrCreateNbtCompound(armorItem);
-        if (!armorTag.hasKey(MECH_FRAME_KEY)) armorTag.setString(MECH_FRAME_KEY, "None");
+        ArmorState state = getArmorState();
+
+        if (state == null) return;
 
         if (newItem != null) {
             if (newItem.getItem() instanceof ItemAugmentFrame itemAugment) {
-                armorTag.setString(MECH_FRAME_KEY, itemAugment.frameData.id);
-                applyAugmentToTag(armorTag, newItem);
+                state.frame = itemAugment.frame;
             }
         } else {
-            String oldFrameID = armorTag.getString(MECH_FRAME_KEY);
-            if (!oldFrameID.equals("None")) {
-                Item oldItem = framesMap.get(oldFrameID).item.getItem();
-                if (oldItem instanceof ItemAugmentFrame frameItem) {
-                    armorTag.setString(MECH_FRAME_KEY, "None");
-                    frameItem.getAttachedBehaviors()
-                        .forEach(behavior -> armorTag.removeTag(behavior.getMainNBTTag()));
-                }
-            }
+            state.frame = null;
         }
-        updatedArmorItem.setTagCompound(armorTag);
-        armorSlotHandler.setStackInSlot(0, updatedArmorItem);
+
+        setArmorState(state);
     }
 
     private void updateCoreSlot(ItemStack newItem) {
-        ItemStack armorItem = armorSlotHandler.getStackInSlot(0);
-        if (armorItem == null) return;
-        ItemStack updatedArmorItem = armorItem.copy();
-        NBTTagCompound armorTag = getOrCreateNbtCompound(armorItem);
-        if (!armorTag.hasKey(MECH_CORE_KEY)) armorTag.setString(MECH_CORE_KEY, "None");
+        ArmorState state = getArmorState();
+
+        if (state == null) return;
 
         if (newItem != null) {
             if (newItem.getItem() instanceof ItemAugmentCore itemAugment) {
-                armorTag.setString(MECH_CORE_KEY, itemAugment.coreData.id);
+                state.core = itemAugment.core;
+
                 if (newItem.getTagCompound() != null) {
-                    armorTag.setDouble(
-                        "charge",
-                        newItem.getTagCompound()
-                            .getDouble("charge"));
+                    state.charge = newItem.getTagCompound()
+                        .getDouble("charge");
                 }
-                applyAugmentToTag(armorTag, newItem);
             }
         } else {
-            String oldCoreID = armorTag.getString(MECH_CORE_KEY);
-            if (!oldCoreID.equals("None")) {
-                Item oldItem = coresMap.get(oldCoreID).item.getItem();
-                if (oldItem instanceof ItemAugmentCore coreItem) {
-                    armorTag.setString(MECH_CORE_KEY, "None");
-                    coreItem.getAttachedBehaviors()
-                        .forEach(behavior -> armorTag.removeTag(behavior.getMainNBTTag()));
-                }
-            }
+            state.core = null;
         }
 
-        if (armorItem.getItem() instanceof MechArmorBase armor) {
-            double charge = armorTag.getDouble("charge");
-            double max = armor.getMaxCharge(armorItem);
-            if (charge > max) {
-                armorTag.setDouble("charge", max);
+        if (state.core != null) {
+            double max = state.core.getChargeMax();
+
+            if (state.charge > max) {
+                state.charge = max;
             }
+        } else {
+            state.charge = 0;
         }
 
-        updatedArmorItem.setTagCompound(armorTag);
-        armorSlotHandler.setStackInSlot(0, updatedArmorItem);
+        setArmorState(state);
     }
 
-    private void updateAugmentSlot(ItemStack newItem, int category, int column) {
-        ItemStack armorItem = armorSlotHandler.getStackInSlot(0);
-        if (armorItem == null) return;
-        ItemStack updatedArmorItem = armorItem.copy();
-        NBTTagCompound armorTag = getOrCreateNbtCompound(armorItem);
-        if (!armorTag.hasKey("augments")) {
-            NBTTagCompound augmentsTag = new NBTTagCompound();
-            augmentsTag.setTag("1", new NBTTagCompound());
-            augmentsTag.setTag("2", new NBTTagCompound());
-            augmentsTag.setTag("3", new NBTTagCompound());
-            augmentsTag.setTag("4", new NBTTagCompound());
-            armorTag.setTag("augments", augmentsTag);
-        }
-        NBTTagCompound categoryTag = armorTag.getCompoundTag("augments")
-            .getCompoundTag(Integer.toString(category));
+    private void updateAugmentSlot(ItemStack newItem, AugmentCategory category, int column) {
+        ArmorState state = getArmorState();
+
+        if (state == null) return;
+
         if (newItem != null) {
             if (newItem.getItem() instanceof ItemAugment itemAugment) {
-                categoryTag.setString(Integer.toString(column), itemAugment.augmentData.id);
-                applyAugmentToTag(armorTag, newItem);
-                installedAugments++;
+                state.augments.put(ObjectIntPair.of(category, column), itemAugment.augment);
             }
         } else {
-            String oldAugmentID = categoryTag.getString(Integer.toString(column));
-            if (!oldAugmentID.isEmpty()) {
-                Item oldItem = augmentsMap.get(oldAugmentID).item.getItem();
-                if (oldItem instanceof ItemAugmentAbstract augmentItem) {
-                    categoryTag.removeTag(Integer.toString(column));
-                    augmentItem.getAttachedBehaviors()
-                        .forEach(behavior -> behavior.removeBehaviorNBT(armorTag));
-                    installedAugments--;
-                    armorTag.setInteger(
-                        ArmorHelper.VIS_DISCOUNT_KEY,
-                        armorTag.getInteger(ArmorHelper.VIS_DISCOUNT_KEY) - augmentItem.getVisDiscount());
-                }
-            }
+            state.augments.remove(ObjectIntPair.of(category, column));
         }
 
-        updatedArmorItem.setTagCompound(armorTag);
-        armorSlotHandler.setStackInSlot(0, updatedArmorItem);
-    }
+        installedAugments = state.augments.size();
 
-    private void applyAugmentToTag(NBTTagCompound armorTag, ItemStack modItem) {
-        if (armorTag == null || modItem == null) return;
-
-        // Sanity check, filter on the item slots should already verify this
-        if (!(modItem.getItem() instanceof ItemAugmentAbstract baseAugment)) {
-            return;
-        }
-
-        // At this point the modification should be successful, verification has passed
-        armorTag.setInteger(
-            ArmorHelper.VIS_DISCOUNT_KEY,
-            armorTag.getInteger(ArmorHelper.VIS_DISCOUNT_KEY) + baseAugment.getVisDiscount());
-
-        if (baseAugment instanceof ItemAugmentFrame f) {
-            armorTag.setString("frame", f.frameData.id);
-        }
-
-        if (baseAugment instanceof ItemAugmentCore core) {
-            armorTag.setString("core", core.coreData.id);
-        }
-
-        baseAugment.getAttachedBehaviors()
-            .forEach(behavior -> behavior.addBehaviorNBT(armorTag));
-
+        setArmorState(state);
     }
 
     LimitingItemStackHandler armorSlotHandler = new LimitingItemStackHandler(3, 1);
@@ -305,14 +200,14 @@ public class MTEModificationTable extends MetaTileEntity {
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        EnumSyncValue<Frames> frameSyncHandler = new EnumSyncValue<>(Frames.class, this::getFrame, this::setFrame);
-        syncManager.syncValue("frame", frameSyncHandler);
-
         ModularPanel panel = GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings)
             .build();
 
-        syncManager.registerSlotGroup("armor", 1);
-        syncManager.registerSlotGroup("augments", LARGEST_FRAME);
+        syncManager.registerSlotGroup("armor", 1, 130);
+        syncManager.registerSlotGroup("augment" + AugmentCategory.Protection.name(), LARGEST_FRAME, 140);
+        syncManager.registerSlotGroup("augment" + AugmentCategory.Movement.name(), LARGEST_FRAME, 141);
+        syncManager.registerSlotGroup("augment" + AugmentCategory.Utility.name(), LARGEST_FRAME, 142);
+        syncManager.registerSlotGroup("augment" + AugmentCategory.Prismatic.name(), LARGEST_FRAME, 143);
 
         ParentWidget<?> slots = new ParentWidget<>().alignX(0.3f)
             .top(4)
@@ -325,39 +220,33 @@ public class MTEModificationTable extends MetaTileEntity {
             .top(4);
 
         for (int i = 0; i < LARGEST_FRAME; i++) {
-            slots.child(buildAugmentSlot(i, CATEGORY_PROTECTION));
-            slots.child(buildAugmentSlot(i, CATEGORY_MOVEMENT));
-            slots.child(buildAugmentSlot(i, CATEGORY_UTILITY));
-            slots.child(buildAugmentSlot(i, CATEGORY_PRISMATIC));
+            slots.child(buildAugmentSlot(AugmentCategory.Protection, i));
+            slots.child(buildAugmentSlot(AugmentCategory.Movement, i));
+            slots.child(buildAugmentSlot(AugmentCategory.Utility, i));
+            slots.child(buildAugmentSlot(AugmentCategory.Prismatic, i));
         }
+
         ItemSlot armorSlot = new ItemSlot().slot(
             new ModularSlot(armorSlotHandler, 0).slotGroup("armor")
                 .filter((x) -> x.getItem() instanceof MechArmorBase)
-                .changeListener((newItem, onlyAmountChanged, client, init) -> {
-                    Frames newFrame = getFrameFromItemStack(newItem);
-                    if (newFrame != getFrame()) {
-                        displayInstalledAugments();
-                    }
-                    setFrame(newFrame);
-                }))
+                .changeListener((newItem, onlyAmountChanged, client, init) -> displayInstalledAugments()))
             .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_ARMOR);
         ItemSlot frameSlot = new ItemSlot()
             .slot(
                 new AccessModifiableModularSlot(armorSlotHandler, 1)
-                    .setCanTake(() -> installedAugments == 0 && armorSlotHandler.getStackInSlot(2) == null)
+                    .setCanTake(() -> installedAugments == 0 && getCoreStack() == null)
                     .slotGroup("armor")
                     .filter((x) -> x.getItem() instanceof ItemAugmentFrame)
-                    .changeListener((newItem, onlyAmountChanged, client, init) -> { updateFrameSlot(newItem); }))
-            .setEnabledIf((slot) -> armorSlotHandler.getStackInSlot(0) != null)
+                    .changeListener((newItem, onlyAmountChanged, client, init) -> updateFrameSlot(newItem)))
+            .setEnabledIf((slot) -> getArmorStack() != null)
             .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_ARMOR_FRAME);
         ItemSlot coreSlot = new ItemSlot()
             .slot(
                 new AccessModifiableModularSlot(armorSlotHandler, 2).setCanTake(() -> installedAugments == 0)
                     .slotGroup("armor")
                     .filter((x) -> x.getItem() instanceof ItemAugmentCore)
-                    .changeListener((newItem, onlyAmountChanged, client, init) -> { updateCoreSlot(newItem); }))
-            .setEnabledIf(
-                (slot) -> armorSlotHandler.getStackInSlot(0) != null && armorSlotHandler.getStackInSlot(1) != null)
+                    .changeListener((newItem, onlyAmountChanged, client, init) -> updateCoreSlot(newItem)))
+            .setEnabledIf((slot) -> getArmorStack() != null && getFrameStack() != null)
             .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_ARMOR_CORE);
         armorConfigurationColumn.child(armorSlot)
             .child(frameSlot)
@@ -368,160 +257,180 @@ public class MTEModificationTable extends MetaTileEntity {
         return panel;
     }
 
-    private ItemSlot buildAugmentSlot(int column, int category) {
-        int row = category - 1;
-        Function<Frames, Integer> categorySlotCount = CATEGORY_SLOT_COUNTS.get(category);
-        return new ItemSlot().slot(
-            new AugmentSlot(augmentsSlotHandler, column + LARGEST_FRAME * row, armorSlotHandler).slotGroup("augments")
-                .filter(isAugmentOfCategory(category).and(isValidForArmor()))
-                .changeListener(
-                    (newItem, onlyAmountChanged, client, init) -> { updateAugmentSlot(newItem, category, column); }))
-            .setEnabledIf(slot -> categorySlotCount.apply(frame) >= column + 1)
-            .background(CATEGORY_SLOT_TEXTURES.get(category))
+    private @Nullable ItemStack getCoreStack() {
+        return armorSlotHandler.getStackInSlot(2);
+    }
+
+    private @Nullable ItemStack getFrameStack() {
+        return armorSlotHandler.getStackInSlot(1);
+    }
+
+    private @Nullable ItemStack getArmorStack() {
+        return armorSlotHandler.getStackInSlot(0);
+    }
+
+    private ArmorState getArmorState() {
+        return getArmorStack() == null ? null : ArmorState.load(getArmorStack());
+    }
+
+    private void setArmorState(ArmorState state) {
+        ItemStack armorItem = getArmorStack();
+
+        if (armorItem == null) return;
+
+        ArmorContextImpl context = new ArmorContextImpl(armorItem.copy(), state);
+
+        ArmorState.save(context);
+
+        armorSlotHandler.setStackInSlot(0, context.armorStack);
+    }
+
+    private ItemSlot buildAugmentSlot(AugmentCategory category, int column) {
+        int row = category.ordinal();
+
+        IDrawable background = switch (category) {
+            case Protection -> GTGuiTextures.SLOT_ITEM_GOLD;
+            case Movement -> GTGuiTextures.SLOT_ITEM_GREEN;
+            case Utility -> GTGuiTextures.SLOT_ITEM_PURPLE;
+            case Prismatic -> GTGuiTextures.SLOT_ITEM_PRISMATIC;
+        };
+
+        return new ItemSlot()
+            .slot(
+                new AugmentSlot(augmentsSlotHandler, column + LARGEST_FRAME * row)
+                    .slotGroup("augment" + category.name())
+                    // TODO: fix shift + clicking augments inserting more than should be allowed
+                    .filter(isAugmentOfCategory(category).and(isValidForArmor()))
+                    .changeListener(
+                        (newItem, onlyAmountChanged, client, init) -> updateAugmentSlot(newItem, category, column)))
+            .setEnabledIf(slot -> {
+                ArmorState state = getArmorState();
+
+                if (state == null || state.frame == null) return false;
+
+                int categorySlotCount = switch (category) {
+                    case Protection -> state.frame.getProtectionSlots();
+                    case Movement -> state.frame.getMovementSlots();
+                    case Utility -> state.frame.getUtilitySlots();
+                    case Prismatic -> state.frame.getPrismaticSlots();
+                };
+
+                return categorySlotCount >= column + 1;
+            })
+            .background(background)
             .posRel(column, row);
     }
 
-    private Frames getFrameFromItemStack(ItemStack itemStack) {
-        if (itemStack == null) {
-            return Frames.None;
+    private static @NotNull Predicate<ItemStack> isAugmentOfCategory(AugmentCategory category) {
+        if (category == AugmentCategory.Prismatic) {
+            return x -> x.getItem() instanceof ItemAugment;
+        } else {
+            return (x) -> x.getItem() instanceof ItemAugment augment && augment.augment.getCategory() == category;
         }
-        String frameId = itemStack.getTagCompound()
-            .getString("frame");
-        Frames frames = framesMap.get(frameId);
-        if (frames == null) {
-            return Frames.None;
-        }
-        return frames;
-    }
-
-    private static @NotNull Predicate<ItemStack> isAugmentOfCategory(int category) {
-        return (x) -> x.getItem() instanceof ItemAugment augment && augment.category == category
-            || category == CATEGORY_PRISMATIC;
     }
 
     private @NotNull Predicate<ItemStack> isValidForArmor() {
         return (x) -> {
-            ItemStack armorStack = armorSlotHandler.getStackInSlot(0);
+            ItemStack armorStack = getArmorStack();
             if (armorStack == null || !(armorStack.getItem() instanceof MechArmorBase armorItem)
                 || !(x.getItem() instanceof ItemAugment augmentItem)) return false;
 
-            NBTTagCompound armorTag = getOrCreateNbtCompound(armorStack);
+            ArmorState state = ArmorState.load(armorStack);
 
-            String core = armorTag.getString(MECH_CORE_KEY);
+            Augments augment = augmentItem.augment;
 
-            if (core.equals("None")) return false;
-            Cores coredata = coresMap.get(core);
+            int installed = (int) state.augments.values()
+                .stream()
+                .filter(x2 -> x2 == augment)
+                .count();
 
-            // Check armor against required and incompatible lists
-            for (IArmorBehavior requiredBehavior : augmentItem.getRequiredBehaviors()) {
-                if (!armorTag.hasKey(requiredBehavior.getMainNBTTag())) return false;
-            }
-            for (IArmorBehavior incompatibleBehavior : augmentItem.getIncompatibleBehaviors()) {
-                if (armorTag.hasKey(incompatibleBehavior.getMainNBTTag())) return false;
+            if (installed + 1 > augment.getMaxStack()) {
+                return false;
             }
 
-            // Check armor slot is valid, check installed core is high enough tier
-            return augmentItem.getValidArmors()
-                .contains(armorItem) && coredata.tier >= augmentItem.minimumCore;
+            for (BehaviorName required : augment.getRequiredBehaviors()) {
+                if (!state.hasBehavior(required)) return false;
+            }
+
+            for (BehaviorName incompatible : augment.getIncompatibleBehaviors()) {
+                if (state.hasBehavior(incompatible)) return false;
+            }
+
+            // Check armor slot is valid
+            if (!augment.getAllowedArmorTypes()
+                .contains(armorItem.getArmorType())) return false;
+
+            // Check installed core is high enough tier
+            return state.core != null && state.core.getTier() >= augment.getMinimumCore()
+                .getTier();
         };
     }
 
     private void displayInstalledAugments() {
         installedAugments = 0;
-        ItemStack armorStack = armorSlotHandler.getStackInSlot(0);
+        ArmorState state = getArmorState();
+
         for (int i = 0; i < AUGMENT_SLOTS_COUNT; i++) {
-            ItemStack augmentStack = getAugmentStackInCategoryAndColumn(
-                armorStack,
-                (i / LARGEST_FRAME) + 1,
-                i % LARGEST_FRAME);
-            // if (augmentStack != null) installedAugments++;
-            augmentsSlotHandler.setStackInSlot(i, augmentStack);
+            augmentsSlotHandler.setStackInSlot(i, null);
         }
-        armorSlotHandler.setStackInSlot(1, getFrameStack(armorStack));
-        armorSlotHandler.setStackInSlot(2, getCoreStack(armorStack));
 
+        armorSlotHandler.setStackInSlot(1, null);
+        armorSlotHandler.setStackInSlot(2, null);
+
+        if (state != null) {
+            for (var e : state.augments.entrySet()) {
+                int row = e.getKey()
+                    .left()
+                    .ordinal();
+                int col = e.getKey()
+                    .rightInt();
+                Augments augment = e.getValue();
+
+                augmentsSlotHandler.setStackInSlot(row * LARGEST_FRAME + col, augment.getItem(1));
+            }
+
+            if (state.frame != null) {
+                armorSlotHandler.setStackInSlot(1, state.frame.getItem(1));
+            }
+
+            if (state.core != null) {
+                ItemStack core = state.core.getItem(1);
+
+                NBTTagCompound tag = new NBTTagCompound();
+                core.setTagCompound(tag);
+
+                tag.setDouble("charge", state.charge);
+
+                armorSlotHandler.setStackInSlot(2, core);
+            }
+        }
     }
 
-    private ItemStack getFrameStack(ItemStack armorStack) {
-        if (armorStack == null) return null;
-        NBTTagCompound armorTag = armorStack.getTagCompound();
-        if (armorTag == null) return null;
-        String frame = armorTag.getString(MECH_FRAME_KEY);
-        if (frame.equals("None")) return null;
-        return framesMap.get(frame).item.get(1);
-    }
+    private class AugmentSlot extends ModularSlot {
 
-    private ItemStack getCoreStack(ItemStack armorStack) {
-        if (armorStack == null) return null;
-        NBTTagCompound armorTag = armorStack.getTagCompound();
-        if (armorTag == null) return null;
-        String core = armorTag.getString(MECH_CORE_KEY);
-        if (core.equals("None")) return null;
-
-        ItemStack coreDisplay = coresMap.get(core).item.get(1);
-        if (coreDisplay.getTagCompound() == null) {
-            coreDisplay.setTagCompound(new NBTTagCompound());
-        }
-        coreDisplay.getTagCompound()
-            .setDouble("charge", armorTag.getDouble("charge"));
-        return coreDisplay;
-    }
-
-    private static ItemStack getAugmentStackInCategoryAndColumn(ItemStack armorStack, int category, int column) {
-        if (armorStack == null) {
-            return null;
-        }
-        NBTTagCompound armorTag = armorStack.getTagCompound();
-        if (armorTag == null) {
-            return null;
-        }
-        NBTTagCompound augmentTag = armorStack.getTagCompound()
-            .getCompoundTag("augments");
-        if (augmentTag == null) {
-            return null;
-        }
-        NBTTagCompound categoryTag = augmentTag.getCompoundTag(Integer.toString(category));
-        if (categoryTag == null) {
-            return null;
-        }
-        String columnTag = categoryTag.getString(Integer.toString(column));
-        if (columnTag.isEmpty()) {
-            return null;
-        }
-        return augmentsMap.get(columnTag).item.get(1);
-    }
-
-    private static class AugmentSlot extends ModularSlot {
-
-        public AugmentSlot(IItemHandler itemHandler, int index, LimitingItemStackHandler armorSlotHandler) {
+        public AugmentSlot(IItemHandler itemHandler, int index) {
             super(itemHandler, index);
-            this.armorSlotHandler = armorSlotHandler;
         }
-
-        LimitingItemStackHandler armorSlotHandler;
 
         @Override
         public boolean canTakeStack(EntityPlayer playerIn) {
-            ItemStack armorStack = armorSlotHandler.getStackInSlot(0);
             ItemStack myStack = getStack();
             if (myStack == null) return true;
             if (!(myStack.getItem() instanceof ItemAugmentAbstract myAugment)) return true;
-            if (armorStack != null) {
-                for (int i = 0; i < AUGMENT_SLOTS_COUNT; i++) {
-                    ItemStack augmentStack = getAugmentStackInCategoryAndColumn(
-                        armorStack,
-                        (i / LARGEST_FRAME) + 1,
-                        i % LARGEST_FRAME);
-                    if (augmentStack == null) continue;
-                    if (!(augmentStack.getItem() instanceof ItemAugmentAbstract augment)) continue;
-                    for (IArmorBehavior behavior : myAugment.getAttachedBehaviors()) {
-                        if (augment.getRequiredBehaviors()
-                            .contains(behavior)) {
-                            return false;
+
+            ArmorState state = MTEModificationTable.this.getArmorState();
+
+            if (state != null) {
+                for (Augments augment : state.augments.values()) {
+                    for (BehaviorName required : augment.getRequiredBehaviors()) {
+                        for (IArmorBehavior provided : myAugment.getPart()
+                            .getProvidedBehaviors()) {
+                            if (provided.getName() == required) return false;
                         }
                     }
                 }
             }
+
             return true;
         }
     }

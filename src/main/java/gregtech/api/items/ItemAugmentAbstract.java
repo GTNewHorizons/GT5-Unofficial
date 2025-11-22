@@ -1,94 +1,116 @@
 package gregtech.api.items;
 
-import java.util.Collection;
+import static gregtech.api.util.GTUtility.addSeparatorIfNeeded;
+import static net.minecraft.util.EnumChatFormatting.GRAY;
+
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 
+import org.jetbrains.annotations.NotNull;
+
+import gregtech.api.items.armor.ArmorContext.ArmorContextImpl;
+import gregtech.api.items.armor.ArmorHelper;
+import gregtech.api.items.armor.ArmorState;
+import gregtech.api.items.armor.IArmorPart;
+import gregtech.api.items.armor.behaviors.BehaviorName;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
-import gregtech.common.items.armor.MechArmorBase;
+import gregtech.api.util.GTUtility;
 
 public abstract class ItemAugmentAbstract extends GTGenericItem {
 
-    // The behaviors that will be activated by this augment
-    final Collection<IArmorBehavior> attachedBehaviors;
+    @NotNull
+    private final IArmorPart part;
 
-    // Behavior dependencies
-    final Collection<IArmorBehavior> requiredBehaviors;
-    final Collection<IArmorBehavior> incompatibleBehaviors;
-
-    // Compatible items
-    final Collection<MechArmorBase> validArmors;
-
-    int visDiscount = 0;
-
-    public ItemAugmentAbstract(String aUnlocalized, String aEnglish, String aEnglishTooltip,
-        Collection<MechArmorBase> validArmors, Collection<IArmorBehavior> attachedBehaviors,
-        Collection<IArmorBehavior> requiredBehaviors, Collection<IArmorBehavior> incompatibleBehaviors,
-        int visDiscount) {
-        super(aUnlocalized, aEnglish, aEnglishTooltip);
-        this.validArmors = validArmors;
-        this.attachedBehaviors = attachedBehaviors;
-        this.requiredBehaviors = requiredBehaviors;
-        this.incompatibleBehaviors = incompatibleBehaviors;
-        this.visDiscount = visDiscount;
-        addBehaviorsToArmor();
-    }
-
-    private void addBehaviorsToArmor() {
-        for (MechArmorBase armor : validArmors) {
-            for (IArmorBehavior behavior : attachedBehaviors) {
-                armor.addBehavior(behavior);
-            }
-        }
+    public ItemAugmentAbstract(IArmorPart part) {
+        super(part.getItemId());
+        this.part = part;
     }
 
     @Override
-    protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
-        if (!attachedBehaviors.isEmpty()) {
-            aList.add(EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.armor.tooltip.effects"));
-            for (IArmorBehavior behavior : attachedBehaviors) aList.add(
-                "-" + behavior.getBehaviorName()
-                    + (behavior.isStackable() ? StatCollector.translateToLocal("GT5U.armor.tooltip.stackable") : ""));
+    public String getItemStackDisplayName(ItemStack p_77653_1_) {
+        return part.getLocalizedName();
+    }
+
+    @Override
+    protected boolean showElectricTier() {
+        return false;
+    }
+
+    protected boolean showAllInfo() {
+        return ArmorHelper.isShiftPressed();
+    }
+
+    @Override
+    protected void addAdditionalToolTips(List<String> desc, ItemStack augmentStack, EntityPlayer player) {
+        boolean showAllInfo = showAllInfo();
+
+        ArmorContextImpl context = new ArmorContextImpl(player, augmentStack, null);
+
+        ArmorState.load(context);
+
+        addSeparatorIfNeeded(desc);
+
+        if (showAllInfo && !part.getProvidedBehaviors()
+            .isEmpty()) {
+            desc.add(EnumChatFormatting.GREEN + GTUtility.translate("GT5U.armor.tooltip.effects"));
+
+            for (IArmorBehavior behavior : part.getProvidedBehaviors()) {
+                if (!behavior.hasDisplayName()) continue;
+
+                desc.add(GRAY + "- " + behavior.getDisplayName());
+            }
         }
-        if (!requiredBehaviors.isEmpty()) {
-            aList.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("GT5U.armor.tooltip.requires"));
-            for (IArmorBehavior behavior : requiredBehaviors) aList.add("-" + behavior.getBehaviorName());
+
+        addSeparatorIfNeeded(desc);
+
+        if (showAllInfo && !part.getRequiredBehaviors()
+            .isEmpty()) {
+            desc.add(EnumChatFormatting.DARK_AQUA + GTUtility.translate("GT5U.armor.tooltip.requires"));
+
+            for (BehaviorName behavior : part.getRequiredBehaviors()) {
+                if (!behavior.hasDisplayName()) continue;
+
+                desc.add(GRAY + "- " + behavior.getDisplayName());
+            }
         }
-        if (!incompatibleBehaviors.isEmpty()) {
-            aList.add(EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.armor.tooltip.incompatible"));
-            for (IArmorBehavior behavior : incompatibleBehaviors) aList.add("-" + behavior.getBehaviorName());
+
+        addSeparatorIfNeeded(desc);
+
+        if (showAllInfo && !part.getIncompatibleBehaviors()
+            .isEmpty()) {
+            desc.add(EnumChatFormatting.RED + GTUtility.translate("GT5U.armor.tooltip.incompatible"));
+
+            for (BehaviorName behavior : part.getIncompatibleBehaviors()) {
+                if (!behavior.hasDisplayName()) continue;
+
+                desc.add(GRAY + "- " + behavior.getDisplayName());
+            }
         }
-        if (visDiscount > 0) {
-            aList.add(
-                EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal("tc.visdiscount")
-                    + ": "
-                    + visDiscount
-                    + "%");
+
+        addSeparatorIfNeeded(desc);
+
+        if (showAllInfo && !part.getProvidedBehaviors()
+            .isEmpty()) {
+            for (IArmorBehavior behavior : part.getProvidedBehaviors()) {
+                behavior.addPartInformation(desc, augmentStack, player);
+            }
         }
-        super.addAdditionalToolTips(aList, aStack, aPlayer);
+
+        addSeparatorIfNeeded(desc);
+
+        super.addAdditionalToolTips(desc, augmentStack, player);
+
+        if (!showAllInfo) {
+            desc.add(GRAY + GTUtility.translate("GT5U.armor.tooltip.hold_shift"));
+        }
+
+        desc.replaceAll(GTUtility::processFormatStacks);
     }
 
-    public Collection<IArmorBehavior> getAttachedBehaviors() {
-        return attachedBehaviors;
-    }
-
-    public Collection<IArmorBehavior> getRequiredBehaviors() {
-        return requiredBehaviors;
-    }
-
-    public Collection<IArmorBehavior> getIncompatibleBehaviors() {
-        return incompatibleBehaviors;
-    }
-
-    public Collection<MechArmorBase> getValidArmors() {
-        return validArmors;
-    }
-
-    public int getVisDiscount() {
-        return visDiscount;
+    public @NotNull IArmorPart getPart() {
+        return part;
     }
 }

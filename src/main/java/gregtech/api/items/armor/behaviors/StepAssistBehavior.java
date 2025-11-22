@@ -1,12 +1,5 @@
 package gregtech.api.items.armor.behaviors;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
-
-import org.jetbrains.annotations.NotNull;
-
-import gregtech.api.items.armor.ArmorHelper;
-
 public class StepAssistBehavior implements IArmorBehavior {
 
     public static final StepAssistBehavior INSTANCE = new StepAssistBehavior();
@@ -14,17 +7,7 @@ public class StepAssistBehavior implements IArmorBehavior {
     protected StepAssistBehavior() {/**/}
 
     @Override
-    public void addBehaviorNBT(@NotNull NBTTagCompound tag) {
-        tag.setBoolean(ArmorHelper.STEP_ASSIST_KEY, true);
-    }
-
-    @Override
-    public String getMainNBTTag() {
-        return ArmorHelper.STEP_ASSIST_KEY;
-    }
-
-    @Override
-    public String getBehaviorName() {
-        return StatCollector.translateToLocal("GT5U.armor.behavior.stepassist");
+    public BehaviorName getName() {
+        return BehaviorName.StepAssist;
     }
 }

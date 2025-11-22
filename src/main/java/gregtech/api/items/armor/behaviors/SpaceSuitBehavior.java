@@ -1,11 +1,9 @@
 package gregtech.api.items.armor.behaviors;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
-
 import org.jetbrains.annotations.NotNull;
 
-import gregtech.api.items.armor.ArmorHelper;
+import gregtech.api.hazards.Hazard;
+import gregtech.api.items.armor.ArmorContext;
 
 public class SpaceSuitBehavior implements IArmorBehavior {
 
@@ -14,17 +12,12 @@ public class SpaceSuitBehavior implements IArmorBehavior {
     protected SpaceSuitBehavior() {}
 
     @Override
-    public void addBehaviorNBT(@NotNull NBTTagCompound tag) {
-        tag.setBoolean(ArmorHelper.FORCE_SPACE_SUIT_NBT_KEY, true);
+    public BehaviorName getName() {
+        return BehaviorName.SpaceSuit;
     }
 
     @Override
-    public String getMainNBTTag() {
-        return ArmorHelper.FORCE_SPACE_SUIT_NBT_KEY;
-    }
-
-    @Override
-    public String getBehaviorName() {
-        return StatCollector.translateToLocal("GT5U.armor.behavior.spacesuit");
+    public boolean protectsAgainst(@NotNull ArmorContext context, Hazard hazard) {
+        return hazard == Hazard.SPACE;
     }
 }

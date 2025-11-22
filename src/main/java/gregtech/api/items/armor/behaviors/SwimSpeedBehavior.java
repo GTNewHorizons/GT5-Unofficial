@@ -1,45 +1,69 @@
 package gregtech.api.items.armor.behaviors;
 
-import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
-
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
+import net.minecraft.client.entity.EntityPlayerSP;
 
 import org.jetbrains.annotations.NotNull;
 
-import gregtech.api.items.armor.ArmorHelper;
+import gregtech.api.items.armor.ArmorContext;
 
 public class SwimSpeedBehavior implements IArmorBehavior {
 
-    public static final SwimSpeedBehavior INSTANCE = new SwimSpeedBehavior();
+    public static final SwimSpeedBehavior INSTANCE = new SwimSpeedBehavior(0.025f);
+    /// Somewhat arbitrary multiplier to make vertical flight speed comparable to horizontal flight speed
+    private static final double VERTICAL_SPEED_MULT = 3;
 
-    protected SwimSpeedBehavior() {}
+    private final float swimSpeed;
 
-    @Override
-    public String getMainNBTTag() {
-        return ArmorHelper.SWIM_SPEED_KEY;
+    protected SwimSpeedBehavior(float swimSpeed) {
+        this.swimSpeed = swimSpeed;
     }
 
     @Override
-    public void onArmorTick(@NotNull World world, @NotNull EntityPlayer player, @NotNull ItemStack stack) {
-        if (!world.isRemote || !player.isInWater() || player.capabilities.isFlying) return;
-        NBTTagCompound tag = getOrCreateNbtCompound(stack);
-        if (tag.getBoolean(ArmorHelper.SWIM_SPEED_KEY) && ArmorHelper.drainArmor(stack, 2)) {
-            player.motionX *= 1.2;
-            player.motionZ *= 1.2;
+    public BehaviorName getName() {
+        return BehaviorName.SwimSpeed;
+    }
+
+    @Override
+    public @NotNull IArmorBehavior merge(@NotNull IArmorBehavior other) {
+        return new SwimSpeedBehavior(swimSpeed + ((SwimSpeedBehavior) other).swimSpeed);
+    }
+
+    @Override
+    public void onArmorTick(@NotNull ArmorContext context) {
+        if (!context.isRemote()) return;
+
+        EntityPlayerSP player = (EntityPlayerSP) context.getPlayer();
+
+        if (!player.isInWater() || player.capabilities.isFlying) return;
+
+        if (player.moveForward != 0 || player.moveStrafing != 0) {
+            if (context.drainEnergy(2)) {
+                if (player.moveForward > 0F) {
+                    player.moveFlying(0F, 1F, swimSpeed);
+                }
+
+                if (context.isBehaviorActive(BehaviorName.OmniMovement)) {
+                    if (player.moveForward < 0F) {
+                        player.moveFlying(0F, -1F, swimSpeed);
+                    }
+
+                    if (player.moveStrafing > 0F) {
+                        player.moveFlying(1F, 0F, swimSpeed);
+                    }
+
+                    if (player.moveStrafing < 0F) {
+                        player.moveFlying(-1F, 0F, swimSpeed);
+                    }
+
+                    if (player.movementInput.sneak) {
+                        player.moveEntity(0, -swimSpeed * VERTICAL_SPEED_MULT, 0);
+                    }
+
+                    if (player.movementInput.jump) {
+                        player.moveEntity(0, swimSpeed * VERTICAL_SPEED_MULT, 0);
+                    }
+                }
+            }
         }
-    }
-
-    @Override
-    public void addBehaviorNBT(@NotNull NBTTagCompound tag) {
-        tag.setBoolean(ArmorHelper.SWIM_SPEED_KEY, true);
-    }
-
-    @Override
-    public String getBehaviorName() {
-        return StatCollector.translateToLocal("GT5U.armor.behavior.swimspeed");
     }
 }
