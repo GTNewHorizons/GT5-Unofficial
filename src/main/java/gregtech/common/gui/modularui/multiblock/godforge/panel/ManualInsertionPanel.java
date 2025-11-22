@@ -1,7 +1,5 @@
 package gregtech.common.gui.modularui.multiblock.godforge.panel;
 
-import static net.minecraft.util.StatCollector.translateToLocal;
-
 import java.util.Arrays;
 
 import net.minecraft.item.ItemStack;
@@ -96,9 +94,8 @@ public class ManualInsertionPanel {
         dialog.child(
             new ButtonWidget<>().background(GTGuiTextures.BUTTON_STANDARD)
                 .overlay(
-                    IKey.str(
-                        EnumChatFormatting.DARK_GRAY
-                            + translateToLocal("gt.blockmachines.multimachine.FOG.consumeUpgradeMats"))
+                    IKey.lang("gt.blockmachines.multimachine.FOG.consumeUpgradeMats")
+                        .style(EnumChatFormatting.DARK_GRAY)
                         .alignment(Alignment.CENTER)
                         .scale(0.75f))
                 .disableHoverBackground()

@@ -77,8 +77,9 @@ public class IndividualMilestonePanel {
         // Header
         column.child(IKey.dynamic(() -> {
             Milestones milestone = milestoneSyncer.getValue();
-            return EnumChatFormatting.GOLD + translateToLocal(milestone.getTitleLangKey());
+            return translateToLocal(milestone.getTitleLangKey());
         })
+            .style(EnumChatFormatting.GOLD)
             .alignment(Alignment.CENTER)
             .asWidget()
             .alignX(0.5f)
@@ -136,7 +137,8 @@ public class IndividualMilestonePanel {
 
         // Inversion status
         column.child(
-            IKey.str(EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.FOG.inversionactive"))
+            IKey.lang("gt.blockmachines.multimachine.FOG.inversionactive")
+                .style(EnumChatFormatting.BOLD)
                 .alignment(Alignment.CENTER)
                 .scale(0.8f)
                 .asWidget()

@@ -287,7 +287,8 @@ public class CustomStarColorSelector {
                     if (pageController.getActivePageIndex() == RGB_PAGE_INDEX) {
                         return IKey.lang("fog.cosmetics.color.rgb_colored");
                     }
-                    return IKey.str(EnumChatFormatting.DARK_GRAY + translateToLocal("fog.cosmetics.color.rgb"));
+                    return IKey.lang("fog.cosmetics.color.rgb")
+                        .style(EnumChatFormatting.DARK_GRAY);
                 })));
         rgbhsvRow.child(
             new PageButton(HSV_PAGE_INDEX, pageController).size(24, 15)
@@ -296,7 +297,8 @@ public class CustomStarColorSelector {
                     if (pageController.getActivePageIndex() == HSV_PAGE_INDEX) {
                         return IKey.lang("fog.cosmetics.color.hsv_colored");
                     }
-                    return IKey.str(EnumChatFormatting.DARK_GRAY + translateToLocal("fog.cosmetics.color.hsv"));
+                    return IKey.lang("fog.cosmetics.color.hsv")
+                        .style(EnumChatFormatting.DARK_GRAY);
                 })));
         row.child(rgbhsvRow);
 
@@ -305,7 +307,8 @@ public class CustomStarColorSelector {
             .height(15)
             .alignX(1);
         colorRow.child(
-            IKey.str(EnumChatFormatting.GOLD + translateToLocal("fog.cosmetics.color.hex"))
+            IKey.lang("fog.cosmetics.color.hex")
+                .style(EnumChatFormatting.GOLD)
                 .asWidget()
                 .height(15)
                 .marginRight(3));

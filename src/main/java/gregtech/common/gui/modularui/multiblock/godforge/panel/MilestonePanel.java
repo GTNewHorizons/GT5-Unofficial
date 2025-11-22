@@ -114,7 +114,8 @@ public class MilestonePanel {
 
         // Milestone title
         parent.child(
-            IKey.str(EnumChatFormatting.GOLD + translateToLocal(milestone.getTitleLangKey()))
+            IKey.lang(milestone.getTitleLangKey())
+                .style(EnumChatFormatting.GOLD)
                 .asWidget()
                 .alignY(0.35f)
                 .alignX(Alignment.CENTER));

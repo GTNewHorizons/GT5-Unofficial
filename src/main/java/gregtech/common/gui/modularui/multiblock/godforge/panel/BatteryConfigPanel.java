@@ -1,7 +1,5 @@
 package gregtech.common.gui.modularui.multiblock.godforge.panel;
 
-import static net.minecraft.util.StatCollector.translateToLocal;
-
 import net.minecraft.util.EnumChatFormatting;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -28,7 +26,8 @@ public class BatteryConfigPanel {
 
         // Header
         panel.child(
-            IKey.str(EnumChatFormatting.DARK_GRAY + translateToLocal("gt.blockmachines.multimachine.FOG.batteryinfo"))
+            IKey.lang("gt.blockmachines.multimachine.FOG.batteryinfo")
+                .style(EnumChatFormatting.DARK_GRAY)
                 .alignment(Alignment.CENTER)
                 .asWidget()
                 .width(SIZE_W - 8)

@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -72,7 +71,8 @@ public class StatisticsPanel {
 
         // Title
         panel.child(
-            IKey.str(EnumChatFormatting.GOLD + translateToLocal("gt.blockmachines.multimachine.FOG.modulestats"))
+            IKey.lang("gt.blockmachines.multimachine.FOG.modulestats")
+                .style(EnumChatFormatting.GOLD)
                 .alignment(Alignment.TopCenter)
                 .asWidget()
                 .height(15)
@@ -149,7 +149,8 @@ public class StatisticsPanel {
     }
 
     private static TextWidget<?> createHeaderModuleEntry(String key) {
-        return IKey.str(EnumChatFormatting.GOLD + translateToLocal(key))
+        return IKey.lang(key)
+            .style(EnumChatFormatting.GOLD)
             .alignment(Alignment.Center)
             .asWidget()
             .size(WIDTH_MINOR, HEIGHT_MINOR)
@@ -164,7 +165,8 @@ public class StatisticsPanel {
 
         // Header
         previewRow.child(
-            IKey.str(EnumChatFormatting.GOLD + translateToLocal("gt.blockmachines.multimachine.FOG.factorpreview"))
+            IKey.lang("gt.blockmachines.multimachine.FOG.factorpreview")
+                .style(EnumChatFormatting.GOLD)
                 .alignment(Alignment.CenterRight)
                 .asWidget()
                 .scale(0.9f)
@@ -173,22 +175,18 @@ public class StatisticsPanel {
 
         // Preview text field
         previewRow.child(
-            new TextFieldWidget().addTooltipLine(translateToLocal("fog.text.tooltip.factorpreview"))
+            new TextFieldWidget().setFormatAsInteger(true)
                 .size(70, 18)
-                .setFormatAsInteger(true)
                 .value(SyncValues.PREVIEW_FUEL_FACTOR.create(hypervisor))
                 .setNumbers(1, Integer.MAX_VALUE)
                 .setScrollValues(1, 4, 64)
                 .setTextAlignment(Alignment.CENTER)
+                .tooltip(t -> t.addLine(translateToLocal("fog.text.tooltip.factorpreview")))
                 .marginRight(4));
 
         // Apply button
         previewRow.child(
-            new ButtonWidget<>().clickSound(ForgeOfGodsGuiUtil.getButtonSound())
-                .tooltip(
-                    t -> t.addLine(StatCollector.translateToLocal("fog.text.tooltip.applysimulationchanges"))
-                        .showUpTimer(TOOLTIP_DELAY))
-                .size(35, 18)
+            new ButtonWidget<>().size(35, 18)
                 .overlay(IKey.lang("fog.cosmetics.applycolor"))
                 .onMousePressed(d -> {
                     if (d == 0) {
@@ -196,7 +194,10 @@ public class StatisticsPanel {
                         populateModuleValues(hypervisor);
                     }
                     return true;
-                }));
+                })
+                .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
+                .tooltip(t -> t.addLine(translateToLocal("fog.text.tooltip.applysimulationchanges")))
+                .tooltipShowUpTimer(TOOLTIP_DELAY));
 
         return previewRow;
     }
@@ -212,28 +213,32 @@ public class StatisticsPanel {
 
         // Smelting module
         returnList.add(
-            IKey.dynamic(() -> EnumChatFormatting.GREEN + MODULE_VALUES[baseIndex + SMELTING_INDEX])
+            IKey.dynamic(() -> MODULE_VALUES[baseIndex + SMELTING_INDEX])
+                .style(EnumChatFormatting.GREEN)
                 .alignment(Alignment.CENTER)
                 .asWidget()
                 .size(WIDTH_MAJOR, HEIGHT_MAJOR));
 
         // Molten module
         returnList.add(
-            IKey.dynamic(() -> EnumChatFormatting.GREEN + MODULE_VALUES[baseIndex + MOLTEN_INDEX])
+            IKey.dynamic(() -> MODULE_VALUES[baseIndex + MOLTEN_INDEX])
+                .style(EnumChatFormatting.GREEN)
                 .alignment(Alignment.CENTER)
                 .asWidget()
                 .size(WIDTH_MAJOR, HEIGHT_MAJOR));
 
         // Plasma module
         returnList.add(
-            IKey.dynamic(() -> EnumChatFormatting.GREEN + MODULE_VALUES[baseIndex + PLASMA_INDEX])
+            IKey.dynamic(() -> MODULE_VALUES[baseIndex + PLASMA_INDEX])
+                .style(EnumChatFormatting.GREEN)
                 .alignment(Alignment.CENTER)
                 .asWidget()
                 .size(WIDTH_MAJOR, HEIGHT_MAJOR));
 
         // Exotic module
         returnList.add(
-            IKey.dynamic(() -> EnumChatFormatting.GREEN + MODULE_VALUES[baseIndex + EXOTIC_INDEX])
+            IKey.dynamic(() -> MODULE_VALUES[baseIndex + EXOTIC_INDEX])
+                .style(EnumChatFormatting.GREEN)
                 .alignment(Alignment.CENTER)
                 .asWidget()
                 .size(WIDTH_MAJOR, HEIGHT_MAJOR));

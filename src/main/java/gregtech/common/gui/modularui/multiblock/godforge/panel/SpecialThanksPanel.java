@@ -42,7 +42,8 @@ public class SpecialThanksPanel {
 
         // Title
         panel.child(
-            IKey.str(EnumChatFormatting.GOLD + translateToLocal("gt.blockmachines.multimachine.FOG.contributors"))
+            IKey.lang("gt.blockmachines.multimachine.FOG.contributors")
+                .style(EnumChatFormatting.GOLD)
                 .asWidget()
                 .marginTop(7)
                 .align(Alignment.TopCenter));
@@ -82,7 +83,8 @@ public class SpecialThanksPanel {
 
         // Corner message
         panel.child(
-            IKey.str(EnumChatFormatting.ITALIC + translateToLocal("gt.blockmachines.multimachine.FOG.thanks"))
+            IKey.lang("gt.blockmachines.multimachine.FOG.thanks")
+                .style(EnumChatFormatting.ITALIC)
                 .alignment(Alignment.CENTER)
                 .color(0xBBBDBD)
                 .scale(0.8f)
@@ -99,7 +101,8 @@ public class SpecialThanksPanel {
             .marginBottom(5)
             .alignX(0)
             .child(
-                IKey.str(EnumChatFormatting.GOLD + "" + EnumChatFormatting.UNDERLINE + translateToLocal(titleKey))
+                IKey.lang(titleKey)
+                    .style(EnumChatFormatting.GOLD, EnumChatFormatting.UNDERLINE)
                     .alignment(Alignment.CenterLeft)
                     .scale(0.8f)
                     .asWidget()

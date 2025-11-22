@@ -18,7 +18,6 @@ import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.GenericSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
-import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
@@ -53,7 +52,8 @@ public class StarCosmeticsPanel {
 
         // Title
         panel.child(
-            IKey.str(EnumChatFormatting.GOLD + translateToLocal("fog.cosmetics.header"))
+            IKey.lang("fog.cosmetics.header")
+                .style(EnumChatFormatting.GOLD)
                 .alignment(Alignment.CENTER)
                 .asWidget()
                 .alignX(0.5f)
@@ -66,8 +66,8 @@ public class StarCosmeticsPanel {
 
         // Header
         colorColumn.child(
-            IKey.str(
-                EnumChatFormatting.GOLD + "" + EnumChatFormatting.UNDERLINE + translateToLocal("fog.cosmetics.color"))
+            IKey.lang("fog.cosmetics.color")
+                .style(EnumChatFormatting.GOLD, EnumChatFormatting.UNDERLINE)
                 .alignment(Alignment.CenterLeft)
                 .asWidget()
                 .alignX(0));
@@ -93,7 +93,8 @@ public class StarCosmeticsPanel {
                 new ButtonWidget<>().size(16)
                     .disableHoverBackground()
                     .overlay(
-                        IKey.str(EnumChatFormatting.DARK_GRAY + "+")
+                        IKey.str("+")
+                            .style(EnumChatFormatting.DARK_GRAY)
                             .alignment(Alignment.CENTER))
                     .onMousePressed(d -> {
                         setEditingStarColor(null, -1, hypervisor);
@@ -108,7 +109,8 @@ public class StarCosmeticsPanel {
 
             // "Custom..." text
             newStarColorRow.child(
-                IKey.str(EnumChatFormatting.GOLD + translateToLocal("fog.cosmetics.customstarcolor"))
+                IKey.lang("fog.cosmetics.customstarcolor")
+                    .style(EnumChatFormatting.GOLD)
                     .alignment(Alignment.CenterLeft)
                     .asWidget()
                     .size(60, 16)
@@ -137,8 +139,8 @@ public class StarCosmeticsPanel {
 
         // Header
         miscColumn.child(
-            IKey.str(
-                EnumChatFormatting.GOLD + "" + EnumChatFormatting.UNDERLINE + translateToLocal("fog.cosmetics.misc"))
+            IKey.lang("fog.cosmetics.misc")
+                .style(EnumChatFormatting.GOLD, EnumChatFormatting.UNDERLINE)
                 .alignment(Alignment.CenterLeft)
                 .asWidget()
                 .alignX(0)
@@ -154,7 +156,8 @@ public class StarCosmeticsPanel {
         miscColumn.child(
             new Row().coverChildren()
                 .child(
-                    IKey.str(EnumChatFormatting.GOLD + translateToLocal("fog.cosmetics.animations"))
+                    IKey.lang("fog.cosmetics.animations")
+                        .style(EnumChatFormatting.GOLD)
                         .alignment(Alignment.CenterLeft)
                         .asWidget()
                         .size(53, 16))
@@ -211,45 +214,44 @@ public class StarCosmeticsPanel {
             .marginBottom(4);
 
         row.child(
-            new ParentWidget<>().size(16)
-                .child(
+            new ButtonWidget<>().size(16)
+                .disableHoverBackground()
+                .background(new DynamicDrawable(() -> {
+                    if (starColor.getName()
+                        .equals(selectedStarColorSyncer.getValue())) {
+                        return GTGuiTextures.BUTTON_STANDARD_PRESSED;
+                    }
+                    return GTGuiTextures.BUTTON_STANDARD;
+                }))
+                .overlay(
                     starColor.getDrawable()
-                        .asWidget()
+                        .asIcon()
                         .size(14)
                         .margin(1))
-                .child(
-                    new ButtonWidget<>().size(16)
-                        .disableHoverBackground()
-                        .background(new DynamicDrawable(() -> {
-                            if (starColor.getName()
-                                .equals(selectedStarColorSyncer.getValue())) {
-                                return GTGuiTextures.BUTTON_STANDARD_PRESSED;
-                            }
-                            return GTGuiTextures.BUTTON_STANDARD;
-                        }))
-                        .onMousePressed(d -> {
-                            if (Interactable.hasShiftDown() && !starColor.isPresetColor()) {
-                                // If shift is held, open color editor for this preset, if not a default preset
-                                setEditingStarColor(starColor, index, hypervisor);
-                                if (!customStarColorPanel.isPanelOpen()) {
-                                    customStarColorPanel.openPanel();
-                                }
-                            } else {
-                                // Otherwise select this color
-                                selectedStarColorSyncer.setValue(starColor.getName());
-                                SyncActions.UPDATE_RENDERER.callFrom(Panels.STAR_COSMETICS, hypervisor, starColor);
-                            }
-                            return true;
-                        })
-                        .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
-                        .tooltip(t -> {
-                            t.addLine(translateToLocal("fog.cosmetics.selectcolor.tooltip.1"));
-                            t.addLine(translateToLocal("fog.cosmetics.selectcolor.tooltip.2"));
-                        })
-                        .tooltipShowUpTimer(TOOLTIP_DELAY)));
+                .onMousePressed(d -> {
+                    if (Interactable.hasShiftDown() && !starColor.isPresetColor()) {
+                        // If shift is held, open color editor for this preset, if not a default preset
+                        setEditingStarColor(starColor, index, hypervisor);
+                        if (!customStarColorPanel.isPanelOpen()) {
+                            customStarColorPanel.openPanel();
+                        }
+                    } else {
+                        // Otherwise select this color
+                        selectedStarColorSyncer.setValue(starColor.getName());
+                        SyncActions.UPDATE_RENDERER.callFrom(Panels.STAR_COSMETICS, hypervisor, starColor);
+                    }
+                    return true;
+                })
+                .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
+                .tooltip(t -> {
+                    t.addLine(translateToLocal("fog.cosmetics.selectcolor.tooltip.1"));
+                    t.addLine(translateToLocal("fog.cosmetics.selectcolor.tooltip.2"));
+                })
+                .tooltipShowUpTimer(TOOLTIP_DELAY));
 
         row.child(
-            IKey.dynamic(() -> EnumChatFormatting.GOLD + starColor.getLocalizedName())
+            IKey.dynamic(starColor::getLocalizedName)
+                .style(EnumChatFormatting.GOLD)
                 .alignment(Alignment.CenterLeft)
                 .asWidget()
                 .size(60, 16)
@@ -266,7 +268,8 @@ public class StarCosmeticsPanel {
         return new Row().coverChildren()
             .marginBottom(2)
             .child(
-                IKey.str(EnumChatFormatting.GOLD + translateToLocal("fog.cosmetics." + name))
+                IKey.lang("fog.cosmetics." + name)
+                    .style(EnumChatFormatting.GOLD)
                     .alignment(Alignment.CenterLeft)
                     .asWidget()
                     .size(34, 16))
@@ -275,7 +278,6 @@ public class StarCosmeticsPanel {
                     .setNumbers(0, maxValue)
                     .setTextAlignment(Alignment.CENTER)
                     .value(syncValue)
-                    .setTooltipOverride(true)
                     .tooltip(t -> t.addLine(translateToLocal("fog.cosmetics.onlyintegers")))
                     .tooltipShowUpTimer(TOOLTIP_DELAY)
                     .size(35, 18));

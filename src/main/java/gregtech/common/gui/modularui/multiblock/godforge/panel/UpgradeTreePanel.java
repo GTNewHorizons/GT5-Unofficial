@@ -135,7 +135,8 @@ public class UpgradeTreePanel {
                 return GTGuiTextures.BUTTON_SPACE_32x16;
             }))
             .overlay(
-                IKey.str(EnumChatFormatting.GOLD + upgrade.getShortNameText())
+                IKey.str(upgrade.getShortNameText())
+                    .style(EnumChatFormatting.GOLD)
                     .scale(0.8f)
                     .alignment(Alignment.CENTER))
             .onMousePressed(d -> {
@@ -235,7 +236,6 @@ public class UpgradeTreePanel {
                 .setTextAlignment(Alignment.CENTER)
                 .value(SyncValues.AVAILABLE_GRAVITON_SHARDS.create(hypervisor))
                 .setScrollValues(1, 4, 64)
-                .setTooltipOverride(true)
                 .size(25, 18)
                 .tooltip(t -> t.addLine(translateToLocal("fog.debug.gravitonshardsetter.tooltip")))
                 .tooltipShowUpTimer(TOOLTIP_DELAY));

@@ -97,19 +97,16 @@ public class GeneralInfoPanel {
     }
 
     private static TextWidget<?> createHeader(String langKey) {
-        return IKey
-            .str(
-                EnumChatFormatting.DARK_PURPLE + ""
-                    + EnumChatFormatting.BOLD
-                    + EnumChatFormatting.UNDERLINE
-                    + translateToLocal(langKey))
+        return IKey.lang(langKey)
+            .style(EnumChatFormatting.DARK_PURPLE, EnumChatFormatting.BOLD, EnumChatFormatting.UNDERLINE)
             .asWidget()
             .alignX(Alignment.CENTER)
             .marginBottom(8);
     }
 
     private static TextWidget<?> createTextEntry(String langKey) {
-        return IKey.str(EnumChatFormatting.GOLD + translateToLocal(langKey))
+        return IKey.lang(langKey)
+            .style(EnumChatFormatting.GOLD)
             .alignment(Alignment.CenterLeft)
             .asWidget()
             .width(OFFSET_SIZE)
@@ -117,11 +114,8 @@ public class GeneralInfoPanel {
     }
 
     private static TextWidget<?> createTableOfContentsHeader() {
-        return IKey
-            .str(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.BOLD
-                    + translateToLocal("gt.blockmachines.multimachine.FOG.tableofcontents"))
+        return IKey.lang("gt.blockmachines.multimachine.FOG.tableofcontents")
+            .style(EnumChatFormatting.AQUA, EnumChatFormatting.BOLD)
             .alignment(Alignment.CenterLeft)
             .asWidget()
             .width(OFFSET_SIZE)
@@ -132,7 +126,8 @@ public class GeneralInfoPanel {
         TextWidget<?> jumpPoint) {
         return new ParentWidget<>().coverChildren()
             .child(
-                IKey.str(EnumChatFormatting.AQUA + "" + EnumChatFormatting.BOLD + translateToLocal(langKey))
+                IKey.lang(langKey)
+                    .style(EnumChatFormatting.AQUA, EnumChatFormatting.BOLD)
                     .asWidget()
                     .width(OFFSET_SIZE)
                     .marginBottom(8))

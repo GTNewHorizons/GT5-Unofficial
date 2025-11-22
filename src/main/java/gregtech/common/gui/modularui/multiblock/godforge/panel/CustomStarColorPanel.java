@@ -64,7 +64,8 @@ public class CustomStarColorPanel {
 
         // Title
         panel.child(
-            IKey.str(EnumChatFormatting.GOLD + translateToLocal("fog.cosmetics.starcolor"))
+            IKey.lang("fog.cosmetics.starcolor")
+                .style(EnumChatFormatting.GOLD)
                 .alignment(Alignment.CENTER)
                 .asWidget()
                 .align(Alignment.TopCenter)
@@ -116,7 +117,6 @@ public class CustomStarColorPanel {
                     ForgeOfGodsStarColor starColor = getClickedStarColor(hypervisor);
                     starColor.setCycleSpeed(val);
                 }))
-                .setTooltipOverride(true)
                 .tooltip(t -> t.addLine(translateToLocal("fog.cosmetics.cyclespeed")))
                 .tooltipShowUpTimer(TOOLTIP_DELAY)
                 .size(21, 16)
@@ -309,7 +309,8 @@ public class CustomStarColorPanel {
 
         // Name header
         row.child(
-            IKey.str(EnumChatFormatting.GOLD + translateToLocal("fog.cosmetics.starcolorname"))
+            IKey.lang("fog.cosmetics.starcolorname")
+                .style(EnumChatFormatting.GOLD)
                 .alignment(Alignment.CenterLeft)
                 .asWidget()
                 .size(92, 16));
@@ -327,7 +328,6 @@ public class CustomStarColorPanel {
                 .setTextAlignment(Alignment.CenterLeft)
                 .setTextColor(0xFFFFAA00)
                 .setMaxLength(15)
-                .setTooltipOverride(true)
                 .tooltip(t -> {
                     t.addLine(translateToLocal("fog.cosmetics.starcolorname.tooltip.1"));
                     t.addLine(translateToLocal("fog.cosmetics.starcolorname.tooltip.2"));
