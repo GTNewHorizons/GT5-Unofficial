@@ -54,6 +54,7 @@ public class GTGenericItem extends Item implements IProjectileItem {
         BlockDispenser.dispenseBehaviorRegistry.putObject(this, new GT_Item_Dispense());
     }
 
+    /// An alternate constructor that doesn't require a tooltip
     public GTGenericItem(String unlocalized) {
         mName = "gt." + unlocalized;
         mTooltip = null;

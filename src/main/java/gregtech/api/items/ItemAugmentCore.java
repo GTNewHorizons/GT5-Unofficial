@@ -36,6 +36,7 @@ public class ItemAugmentCore extends ItemAugmentAbstract implements ISpecialElec
 
     @Override
     protected boolean showAllInfo() {
+        // Don't require holding shift to display all info because cores don't have many lines
         return true;
     }
 

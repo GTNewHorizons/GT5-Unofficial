@@ -14,7 +14,7 @@ public interface IHazardProtector {
     }
 
     /// Checks if this armor provides protection regardless of whether the other pieces also provide protection. I.E.
-    /// your leggings provide full protection against heat, but no other armor piece do, which protects the player from
+    /// your leggings provide full protection against heat, but no other armor pieces do, which protects the player from
     /// heat.
     default boolean protectsAgainstFully(@Nullable EntityLivingBase entity, ItemStack itemStack, Hazard hazard) {
         return false;

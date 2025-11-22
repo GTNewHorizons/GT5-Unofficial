@@ -40,12 +40,15 @@ public class ItemAugmentFrame extends ItemAugmentAbstract {
             if (frame.getProtectionSlots() > 0) {
                 desc.add(frame.getProtectionSlots() + " " + GTUtility.translate("GT5U.armor.tooltip.protection"));
             }
+
             if (frame.getMovementSlots() > 0) {
                 desc.add(frame.getMovementSlots() + " " + GTUtility.translate("GT5U.armor.tooltip.movement"));
             }
+
             if (frame.getUtilitySlots() > 0) {
                 desc.add(frame.getUtilitySlots() + " " + GTUtility.translate("GT5U.armor.tooltip.utility"));
             }
+
             if (frame.getPrismaticSlots() > 0) {
                 desc.add(frame.getPrismaticSlots() + " " + GTUtility.translate("GT5U.armor.tooltip.prismatic"));
             }

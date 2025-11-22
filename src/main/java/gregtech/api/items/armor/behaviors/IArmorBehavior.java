@@ -26,7 +26,7 @@ public interface IArmorBehavior {
      */
 
     /**
-     * Gets this behavior's name.
+     * Gets this behavior's name. This is used to check for behavior presence and equality.
      */
     BehaviorName getName();
 
@@ -119,14 +119,14 @@ public interface IArmorBehavior {
     }
 
     /**
-     * Adds to the part item tooltip.
+     * Adds to the augment/core/frame item tooltip.
      */
     default void addPartInformation(List<String> desc, ItemStack augmentStack, EntityPlayer player) {
 
     }
 
     /**
-     * Add to this behavior's armor item tooltip.
+     * Add to the armor item tooltip.
      */
     default void addArmorInformation(@NotNull ArmorContext context, @NotNull List<String> tooltip) {
 

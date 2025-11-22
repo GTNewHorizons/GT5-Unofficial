@@ -7,6 +7,9 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.items.armor.behaviors.BehaviorName;
 
+/// An armor context wraps several contextual objects into one parameter. It also exposes several utility methods. Its
+/// main purpose is to make it trivial to add new fields to the various [IArmorBehavior] methods without changing their
+/// signature.
 public interface ArmorContext {
 
     default boolean isRemote() {

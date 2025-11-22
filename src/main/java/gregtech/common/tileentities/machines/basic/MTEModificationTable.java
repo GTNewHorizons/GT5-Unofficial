@@ -204,6 +204,10 @@ public class MTEModificationTable extends MetaTileEntity {
             .build();
 
         syncManager.registerSlotGroup("armor", 1, 130);
+        syncManager.registerSlotGroup("augment" + AugmentCategory.Protection.name(), LARGEST_FRAME, 140);
+        syncManager.registerSlotGroup("augment" + AugmentCategory.Movement.name(), LARGEST_FRAME, 141);
+        syncManager.registerSlotGroup("augment" + AugmentCategory.Utility.name(), LARGEST_FRAME, 142);
+        syncManager.registerSlotGroup("augment" + AugmentCategory.Prismatic.name(), LARGEST_FRAME, 143);
 
         ParentWidget<?> slots = new ParentWidget<>().alignX(0.3f)
             .top(4)
@@ -216,10 +220,10 @@ public class MTEModificationTable extends MetaTileEntity {
             .top(4);
 
         for (int i = 0; i < LARGEST_FRAME; i++) {
-            slots.child(buildAugmentSlot(syncManager, AugmentCategory.Protection, i));
-            slots.child(buildAugmentSlot(syncManager, AugmentCategory.Movement, i));
-            slots.child(buildAugmentSlot(syncManager, AugmentCategory.Utility, i));
-            slots.child(buildAugmentSlot(syncManager, AugmentCategory.Prismatic, i));
+            slots.child(buildAugmentSlot(AugmentCategory.Protection, i));
+            slots.child(buildAugmentSlot(AugmentCategory.Movement, i));
+            slots.child(buildAugmentSlot(AugmentCategory.Utility, i));
+            slots.child(buildAugmentSlot(AugmentCategory.Prismatic, i));
         }
 
         ItemSlot armorSlot = new ItemSlot().slot(
@@ -281,15 +285,8 @@ public class MTEModificationTable extends MetaTileEntity {
         armorSlotHandler.setStackInSlot(0, context.armorStack);
     }
 
-    private ItemSlot buildAugmentSlot(PanelSyncManager syncManager, AugmentCategory category, int column) {
+    private ItemSlot buildAugmentSlot(AugmentCategory category, int column) {
         int row = category.ordinal();
-
-        String slotGroup = "augment" + category.ordinal() + "." + column;
-
-        // Hack to prevent shift + click from moving several augments at once. Since each slot has its own group, MUI
-        // won't insert several augments from a stack, which doesn't call isValidForArmor for some reason, breaking the
-        // max stack limit.
-        syncManager.registerSlotGroup(slotGroup, 1, 140 + category.ordinal() * LARGEST_FRAME + column);
 
         IDrawable background = switch (category) {
             case Protection -> GTGuiTextures.SLOT_ITEM_GOLD;
@@ -300,7 +297,9 @@ public class MTEModificationTable extends MetaTileEntity {
 
         return new ItemSlot()
             .slot(
-                new AugmentSlot(augmentsSlotHandler, column + LARGEST_FRAME * row).slotGroup(slotGroup)
+                new AugmentSlot(augmentsSlotHandler, column + LARGEST_FRAME * row)
+                    .slotGroup("augment" + category.name())
+                    // TODO: fix shift + clicking augments inserting more than should be allowed
                     .filter(isAugmentOfCategory(category).and(isValidForArmor()))
                     .changeListener(
                         (newItem, onlyAmountChanged, client, init) -> updateAugmentSlot(newItem, category, column)))

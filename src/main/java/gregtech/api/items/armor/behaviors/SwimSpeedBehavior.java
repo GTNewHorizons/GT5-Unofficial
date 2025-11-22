@@ -1,6 +1,6 @@
 package gregtech.api.items.armor.behaviors;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.client.entity.EntityPlayerSP;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -9,6 +9,8 @@ import gregtech.api.items.armor.ArmorContext;
 public class SwimSpeedBehavior implements IArmorBehavior {
 
     public static final SwimSpeedBehavior INSTANCE = new SwimSpeedBehavior(0.025f);
+    /// Somewhat arbitrary multiplier to make vertical flight speed comparable to horizontal flight speed
+    private static final double VERTICAL_SPEED_MULT = 3;
 
     private final float swimSpeed;
 
@@ -30,7 +32,7 @@ public class SwimSpeedBehavior implements IArmorBehavior {
     public void onArmorTick(@NotNull ArmorContext context) {
         if (!context.isRemote()) return;
 
-        EntityPlayer player = context.getPlayer();
+        EntityPlayerSP player = (EntityPlayerSP) context.getPlayer();
 
         if (!player.isInWater() || player.capabilities.isFlying) return;
 
@@ -39,15 +41,26 @@ public class SwimSpeedBehavior implements IArmorBehavior {
                 if (player.moveForward > 0F) {
                     player.moveFlying(0F, 1F, swimSpeed);
                 }
+
                 if (context.isBehaviorActive(BehaviorName.OmniMovement)) {
                     if (player.moveForward < 0F) {
                         player.moveFlying(0F, -1F, swimSpeed);
                     }
+
                     if (player.moveStrafing > 0F) {
                         player.moveFlying(1F, 0F, swimSpeed);
                     }
+
                     if (player.moveStrafing < 0F) {
                         player.moveFlying(-1F, 0F, swimSpeed);
+                    }
+
+                    if (player.movementInput.sneak) {
+                        player.moveEntity(0, -swimSpeed * VERTICAL_SPEED_MULT, 0);
+                    }
+
+                    if (player.movementInput.jump) {
+                        player.moveEntity(0, swimSpeed * VERTICAL_SPEED_MULT, 0);
                     }
                 }
             }

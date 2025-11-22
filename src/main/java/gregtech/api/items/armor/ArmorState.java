@@ -39,6 +39,7 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectIntPair;
 import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
 
+/// An armor state contains all relevant state values for an individual piece of armor.
 public class ArmorState {
 
     public Cores core;
@@ -50,10 +51,9 @@ public class ArmorState {
 
     public Set<BehaviorName> activeBehaviors = new ObjectLinkedOpenHashSet<>();
 
-    public int visDiscount;
-
     public double charge;
 
+    public int visDiscount;
     public float speedBoost, jumpBoost;
 
     public void addArmorInformation(ArmorContext context, List<String> tooltip) {

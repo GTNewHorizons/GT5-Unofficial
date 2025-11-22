@@ -9,7 +9,7 @@ public class FrameBuilder extends ArmorPartBuilder<FrameBuilder> {
     private int utilitySlots;
     private int prismaticSlots;
 
-    private short[] color = { 0, 0, 0, 0 };
+    private short[] color = { 255, 255, 255, 255 };
 
     private int protection;
     private EnumRarity rarity = EnumRarity.common;

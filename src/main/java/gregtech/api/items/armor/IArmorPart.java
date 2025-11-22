@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import gregtech.api.items.armor.behaviors.BehaviorName;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
 
+// An armor part. May be a frame, core, or augment.
 public interface IArmorPart {
 
     ItemStack getItem(int amount);
