@@ -41,7 +41,9 @@ public class ItemAugmentCore extends ItemAugmentAbstract implements ISpecialElec
 
     @Override
     protected void addAdditionalToolTips(List<String> desc, ItemStack augmentStack, EntityPlayer player) {
-        desc.add(GRAY + GTUtility.translate("GT5U.armor.tooltip.energycore", core.getRarity().rarityColor.toString() + core.getTier()));
+        desc.add(
+            GRAY + GTUtility
+                .translate("GT5U.armor.tooltip.energycore", core.getRarity().rarityColor.toString() + core.getTier()));
 
         addSeparatorIfNeeded(desc);
 
@@ -59,7 +61,8 @@ public class ItemAugmentCore extends ItemAugmentAbstract implements ISpecialElec
 
         addSeparatorIfNeeded(desc);
 
-        desc.add(EnumChatFormatting.AQUA + GTUtility.translate("item.itemBaseEuItem.tooltip.3", stored, capacity, voltage));
+        desc.add(
+            EnumChatFormatting.AQUA + GTUtility.translate("item.itemBaseEuItem.tooltip.3", stored, capacity, voltage));
 
         addSeparatorIfNeeded(desc);
     }

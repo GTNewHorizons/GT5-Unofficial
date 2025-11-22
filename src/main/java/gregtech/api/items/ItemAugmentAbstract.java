@@ -53,7 +53,8 @@ public abstract class ItemAugmentAbstract extends GTGenericItem {
 
         addSeparatorIfNeeded(desc);
 
-        if (showAllInfo && !part.getProvidedBehaviors().isEmpty()) {
+        if (showAllInfo && !part.getProvidedBehaviors()
+            .isEmpty()) {
             desc.add(EnumChatFormatting.GREEN + GTUtility.translate("GT5U.armor.tooltip.effects"));
 
             for (IArmorBehavior behavior : part.getProvidedBehaviors()) {
@@ -65,7 +66,8 @@ public abstract class ItemAugmentAbstract extends GTGenericItem {
 
         addSeparatorIfNeeded(desc);
 
-        if (showAllInfo && !part.getRequiredBehaviors().isEmpty()) {
+        if (showAllInfo && !part.getRequiredBehaviors()
+            .isEmpty()) {
             desc.add(EnumChatFormatting.DARK_AQUA + GTUtility.translate("GT5U.armor.tooltip.requires"));
 
             for (BehaviorName behavior : part.getRequiredBehaviors()) {
@@ -77,7 +79,8 @@ public abstract class ItemAugmentAbstract extends GTGenericItem {
 
         addSeparatorIfNeeded(desc);
 
-        if (showAllInfo && !part.getIncompatibleBehaviors().isEmpty()) {
+        if (showAllInfo && !part.getIncompatibleBehaviors()
+            .isEmpty()) {
             desc.add(EnumChatFormatting.RED + GTUtility.translate("GT5U.armor.tooltip.incompatible"));
 
             for (BehaviorName behavior : part.getIncompatibleBehaviors()) {
@@ -89,7 +92,8 @@ public abstract class ItemAugmentAbstract extends GTGenericItem {
 
         addSeparatorIfNeeded(desc);
 
-        if (showAllInfo && !part.getProvidedBehaviors().isEmpty()) {
+        if (showAllInfo && !part.getProvidedBehaviors()
+            .isEmpty()) {
             for (IArmorBehavior behavior : part.getProvidedBehaviors()) {
                 behavior.addPartInformation(desc, augmentStack, player);
             }

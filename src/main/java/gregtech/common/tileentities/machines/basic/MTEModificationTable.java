@@ -24,6 +24,7 @@ import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -143,7 +144,8 @@ public class MTEModificationTable extends MetaTileEntity {
                 state.core = itemAugment.core;
 
                 if (newItem.getTagCompound() != null) {
-                    state.charge = newItem.getTagCompound().getDouble("charge");
+                    state.charge = newItem.getTagCompound()
+                        .getDouble("charge");
                 }
             }
         } else {
@@ -296,11 +298,12 @@ public class MTEModificationTable extends MetaTileEntity {
             case Prismatic -> GTGuiTextures.SLOT_ITEM_PRISMATIC;
         };
 
-        return new ItemSlot().slot(
-            new AugmentSlot(augmentsSlotHandler, column + LARGEST_FRAME * row).slotGroup(slotGroup)
-                .filter(isAugmentOfCategory(category).and(isValidForArmor()))
-                .changeListener(
-                    (newItem, onlyAmountChanged, client, init) -> updateAugmentSlot(newItem, category, column)))
+        return new ItemSlot()
+            .slot(
+                new AugmentSlot(augmentsSlotHandler, column + LARGEST_FRAME * row).slotGroup(slotGroup)
+                    .filter(isAugmentOfCategory(category).and(isValidForArmor()))
+                    .changeListener(
+                        (newItem, onlyAmountChanged, client, init) -> updateAugmentSlot(newItem, category, column)))
             .setEnabledIf(slot -> {
                 ArmorState state = getArmorState();
 
@@ -337,7 +340,10 @@ public class MTEModificationTable extends MetaTileEntity {
 
             Augments augment = augmentItem.augment;
 
-            int installed = (int) state.augments.values().stream().filter(x2 -> x2 == augment).count();
+            int installed = (int) state.augments.values()
+                .stream()
+                .filter(x2 -> x2 == augment)
+                .count();
 
             if (installed + 1 > augment.getMaxStack()) {
                 return false;
@@ -352,10 +358,12 @@ public class MTEModificationTable extends MetaTileEntity {
             }
 
             // Check armor slot is valid
-            if (!augment.getAllowedArmorTypes().contains(armorItem.getArmorType())) return false;
+            if (!augment.getAllowedArmorTypes()
+                .contains(armorItem.getArmorType())) return false;
 
             // Check installed core is high enough tier
-            return state.core != null && state.core.getTier() >= augment.getMinimumCore().getTier();
+            return state.core != null && state.core.getTier() >= augment.getMinimumCore()
+                .getTier();
         };
     }
 
@@ -372,8 +380,11 @@ public class MTEModificationTable extends MetaTileEntity {
 
         if (state != null) {
             for (var e : state.augments.entrySet()) {
-                int row = e.getKey().left().ordinal();
-                int col = e.getKey().rightInt();
+                int row = e.getKey()
+                    .left()
+                    .ordinal();
+                int col = e.getKey()
+                    .rightInt();
                 Augments augment = e.getValue();
 
                 augmentsSlotHandler.setStackInSlot(row * LARGEST_FRAME + col, augment.getItem(1));
@@ -413,7 +424,8 @@ public class MTEModificationTable extends MetaTileEntity {
             if (state != null) {
                 for (Augments augment : state.augments.values()) {
                     for (BehaviorName required : augment.getRequiredBehaviors()) {
-                        for (IArmorBehavior provided : myAugment.getPart().getProvidedBehaviors()) {
+                        for (IArmorBehavior provided : myAugment.getPart()
+                            .getProvidedBehaviors()) {
                             if (provided.getName() == required) return false;
                         }
                     }

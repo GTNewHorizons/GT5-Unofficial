@@ -61,6 +61,7 @@ public class MechArmorAugmentRegistries {
     }
 
     public enum ArmorType {
+
         Helmet,
         Chestplate,
         Leggings,
@@ -78,6 +79,7 @@ public class MechArmorAugmentRegistries {
 
     public enum Frames implements IArmorPart {
 
+        // spotless:off
         Light(ItemList.Armor_Frame_Light, new FrameBuilder()
             .setId("Light")
             .setItemId("armorframelight")
@@ -161,6 +163,7 @@ public class MechArmorAugmentRegistries {
             .setRarity(EnumRarity.epic)
             .setProtection(30)
         );
+        // spotless:on
 
         private final ItemList item;
         private final FrameBuilder builder;
@@ -255,6 +258,7 @@ public class MechArmorAugmentRegistries {
 
     public enum Cores implements IArmorPart {
 
+        // spotless:off
         Nano(ItemList.Armor_Core_T1, new CoreBuilder()
             .setId("Nano")
             .setItemId("armorcore1")
@@ -288,6 +292,7 @@ public class MechArmorAugmentRegistries {
             .setChargeTier(VoltageIndex.UHV)
             .providesBehaviors(InfiniteEnergyBehavior.INSTANCE)
         );
+        // spotless:on
 
         private final ItemList item;
         private final CoreBuilder builder;
@@ -370,6 +375,7 @@ public class MechArmorAugmentRegistries {
 
     public enum Augments implements IArmorPart {
 
+        // spotless:off
         NightVision(ItemList.Augment_NightVision, new AugmentBuilder()
             .setId("NightVision")
             .setItemId("augmentnightvision")
@@ -534,6 +540,7 @@ public class MechArmorAugmentRegistries {
             .setCategory(AugmentCategory.Utility)
             .setRarity(EnumRarity.uncommon)
         );
+        // spotless:on
 
         private final ItemList item;
         private final AugmentBuilder builder;

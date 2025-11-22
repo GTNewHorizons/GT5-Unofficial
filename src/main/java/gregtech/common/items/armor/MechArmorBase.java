@@ -30,6 +30,7 @@ import org.lwjgl.input.Keyboard;
 
 import com.gtnewhorizon.gtnhlib.keybind.IKeyPressedListener;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
+
 import cpw.mods.fml.common.Optional.Interface;
 import cpw.mods.fml.common.Optional.InterfaceList;
 import cpw.mods.fml.relauncher.Side;
@@ -190,7 +191,8 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
         boolean didSomething = false;
 
         for (IArmorBehavior behavior : context.getArmorState().behaviors.values()) {
-            if (!behavior.getListenedKeys(context).contains(keyPressed)) continue;
+            if (!behavior.getListenedKeys(context)
+                .contains(keyPressed)) continue;
 
             didSomething = true;
             behavior.onKeyPressed(context, keyPressed, isDown);
@@ -228,7 +230,8 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean aF3_H) {
         ArmorContext context = load(player.getEntityWorld(), player, stack);
 
-        context.getArmorState().addArmorInformation(context, tooltip);
+        context.getArmorState()
+            .addArmorInformation(context, tooltip);
 
         tooltip.replaceAll(GTUtility::processFormatStacks);
     }
@@ -453,7 +456,7 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
     }
 
     public ArmorType getArmorType() {
-        return switch(armorType) {
+        return switch (armorType) {
             case 0 -> ArmorType.Helmet;
             case 1 -> ArmorType.Chestplate;
             case 2 -> ArmorType.Leggings;

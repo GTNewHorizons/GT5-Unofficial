@@ -12,6 +12,7 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 
 import com.gtnewhorizon.gtnhlib.client.event.LivingEquipmentChangeEvent;
+
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -42,7 +43,7 @@ public class ArmorEventHandlers {
 
             NBTTagCompound fromTag = fromCopy.getTagCompound();
             NBTTagCompound toTag = toCopy.getTagCompound();
-            
+
             // If only the charge changes, don't treat this change as an 'equip'
             if (fromTag != null && toTag != null) {
                 toTag.removeTag("charge");
@@ -149,7 +150,8 @@ public class ArmorEventHandlers {
 
             ArmorContext context = MechArmorBase.load(player, boots);
 
-            if (context.hasBehavior(BehaviorName.FallProtection) && context.drainEnergy(500 * (player.fallDistance - 1.2f))) {
+            if (context.hasBehavior(BehaviorName.FallProtection)
+                && context.drainEnergy(500 * (player.fallDistance - 1.2f))) {
                 player.fallDistance = 0;
                 event.setCanceled(true);
             }

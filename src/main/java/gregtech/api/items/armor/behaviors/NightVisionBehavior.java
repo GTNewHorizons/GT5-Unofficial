@@ -13,6 +13,7 @@ import net.minecraft.util.IIcon;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
+
 import gregtech.api.items.armor.ArmorContext;
 
 public class NightVisionBehavior implements IArmorBehavior {
@@ -32,11 +33,11 @@ public class NightVisionBehavior implements IArmorBehavior {
     }
 
     @Override
-    public void onKeyPressed(@NotNull ArmorContext context, SyncedKeybind keyPressed,
-        boolean isDown) {
+    public void onKeyPressed(@NotNull ArmorContext context, SyncedKeybind keyPressed, boolean isDown) {
         if (!isDown) return;
 
-        context.getArmorState().toggle(context, BehaviorName.NightVision);
+        context.getArmorState()
+            .toggle(context, BehaviorName.NightVision);
     }
 
     @Override
@@ -49,15 +50,19 @@ public class NightVisionBehavior implements IArmorBehavior {
         if (context.isRemote()) return;
 
         if (context.isBehaviorActive(BehaviorName.NightVision) && context.drainEnergy(2)) {
-            context.getPlayer().removePotionEffect(Potion.blindness.id);
-            context.getPlayer().addPotionEffect(new PotionEffect(Potion.nightVision.id, 999999, 0, true));
+            context.getPlayer()
+                .removePotionEffect(Potion.blindness.id);
+            context.getPlayer()
+                .addPotionEffect(new PotionEffect(Potion.nightVision.id, 999999, 0, true));
         } else {
-            context.getPlayer().removePotionEffect(Potion.nightVision.id);
+            context.getPlayer()
+                .removePotionEffect(Potion.nightVision.id);
         }
     }
 
     @Override
     public void onArmorUnequip(@NotNull ArmorContext context) {
-        context.getPlayer().removePotionEffect(Potion.nightVision.id);
+        context.getPlayer()
+            .removePotionEffect(Potion.nightVision.id);
     }
 }

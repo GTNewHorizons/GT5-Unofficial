@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+
 import gregtech.api.items.armor.ArmorContext;
 
 public class KnockbackResistBehavior implements IArmorBehavior {
@@ -30,13 +31,15 @@ public class KnockbackResistBehavior implements IArmorBehavior {
 
     @Override
     public void onArmorEquip(@NotNull ArmorContext context) {
-        context.getPlayer().getAttributeMap()
+        context.getPlayer()
+            .getAttributeMap()
             .applyAttributeModifiers(attributes);
     }
 
     @Override
     public void onArmorUnequip(@NotNull ArmorContext context) {
-        context.getPlayer().getAttributeMap()
+        context.getPlayer()
+            .getAttributeMap()
             .removeAttributeModifiers(attributes);
     }
 }

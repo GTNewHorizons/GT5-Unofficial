@@ -2,7 +2,6 @@ package gregtech.common.misc;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.common.items.armor.MechArmorBase;
 import ic2.core.item.ElectricItemManager;
 
 public class NoTooltipElectricItemManager extends ElectricItemManager {

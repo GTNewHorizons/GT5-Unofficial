@@ -129,7 +129,11 @@ public class ArmorState {
     private List<BehaviorName> sortBehaviorNames(Collection<BehaviorName> behaviors) {
         List<BehaviorName> sorted = new ArrayList<>(behaviors);
 
-        sorted.sort(Comparator.<BehaviorName>comparingInt(behavior -> -behavior.getRarity().ordinal()).thenComparing(BehaviorName::getDisplayName));
+        sorted.sort(
+            Comparator.<BehaviorName>comparingInt(
+                behavior -> -behavior.getRarity()
+                    .ordinal())
+                .thenComparing(BehaviorName::getDisplayName));
 
         return sorted;
     }
@@ -137,7 +141,12 @@ public class ArmorState {
     private List<IArmorBehavior> sortBehaviors(Collection<IArmorBehavior> behaviors) {
         List<IArmorBehavior> sorted = new ArrayList<>(behaviors);
 
-        sorted.sort(Comparator.<IArmorBehavior>comparingInt(behavior -> -behavior.getName().getRarity().ordinal()).thenComparing(IArmorBehavior::getDisplayName));
+        sorted.sort(
+            Comparator.<IArmorBehavior>comparingInt(
+                behavior -> -behavior.getName()
+                    .getRarity()
+                    .ordinal())
+                .thenComparing(IArmorBehavior::getDisplayName));
 
         return sorted;
     }
@@ -211,7 +220,8 @@ public class ArmorState {
     public static ArmorState load(ArmorContext context) {
         ArmorState state = new ArmorState();
 
-        NBTTagCompound tag = context.getArmorStack().getTagCompound();
+        NBTTagCompound tag = context.getArmorStack()
+            .getTagCompound();
 
         if (tag == null) return state;
 
@@ -229,7 +239,7 @@ public class ArmorState {
 
                 if (categoryTag == null) continue;
 
-                //noinspection unchecked
+                // noinspection unchecked
                 for (var e : ((Map<String, NBTTagString>) categoryTag.tagMap).entrySet()) {
                     int slot;
 
@@ -239,7 +249,9 @@ public class ArmorState {
                         continue;
                     }
 
-                    Augments augment = MechArmorAugmentRegistries.augmentsMap.get(e.getValue().func_150285_a_());
+                    Augments augment = MechArmorAugmentRegistries.augmentsMap.get(
+                        e.getValue()
+                            .func_150285_a_());
 
                     if (augment == null) continue;
 
@@ -251,18 +263,21 @@ public class ArmorState {
         Consumer<IArmorBehavior> addBehavior = state::addBehavior;
 
         if (state.frame != null) {
-            state.frame.getProvidedBehaviors().forEach(addBehavior);
+            state.frame.getProvidedBehaviors()
+                .forEach(addBehavior);
         }
 
         if (state.core != null) {
-            state.core.getProvidedBehaviors().forEach(addBehavior);
+            state.core.getProvidedBehaviors()
+                .forEach(addBehavior);
         }
 
         for (Augments augment : state.augments.values()) {
-            augment.getProvidedBehaviors().forEach(addBehavior);
+            augment.getProvidedBehaviors()
+                .forEach(addBehavior);
         }
 
-        //noinspection unchecked
+        // noinspection unchecked
         for (NBTTagString str : (List<NBTTagString>) tag.getTagList("active", NBT.TAG_STRING).tagList) {
             try {
                 state.activeBehaviors.add(BehaviorName.valueOf(str.func_150285_a_()));
@@ -278,16 +293,15 @@ public class ArmorState {
         return state;
     }
 
-    private static final String[] KEPT_TAGS = {
-        "display",
-        "ench"
-    };
+    private static final String[] KEPT_TAGS = { "display", "ench" };
 
     public static void save(ArmorContext context) {
-        NBTTagCompound oldTag = context.getArmorStack().getTagCompound();
+        NBTTagCompound oldTag = context.getArmorStack()
+            .getTagCompound();
 
         NBTTagCompound tag = new NBTTagCompound();
-        context.getArmorStack().setTagCompound(tag);
+        context.getArmorStack()
+            .setTagCompound(tag);
 
         if (oldTag != null) {
             for (String name : KEPT_TAGS) {
@@ -311,10 +325,18 @@ public class ArmorState {
         }
 
         for (var e : state.augments.entrySet()) {
-            int row = e.getKey().left().ordinal();
-            int col = e.getKey().rightInt();
+            int row = e.getKey()
+                .left()
+                .ordinal();
+            int col = e.getKey()
+                .rightInt();
 
-            augmentTag.getCompoundTag(Integer.toString(row)).setTag(Integer.toString(col), new NBTTagString(e.getValue().getId()));
+            augmentTag.getCompoundTag(Integer.toString(row))
+                .setTag(
+                    Integer.toString(col),
+                    new NBTTagString(
+                        e.getValue()
+                            .getId()));
         }
 
         NBTTagList active = new NBTTagList();

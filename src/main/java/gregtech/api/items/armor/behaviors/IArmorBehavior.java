@@ -14,6 +14,7 @@ import net.minecraft.util.IIcon;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
+
 import gregtech.GTMod;
 import gregtech.api.hazards.Hazard;
 import gregtech.api.items.armor.ArmorContext;
@@ -59,7 +60,8 @@ public interface IArmorBehavior {
         if (hasDisplayName()) {
             GTUtility.sendChatToPlayer(
                 context.getPlayer(),
-                GTUtility.processFormatStacks(GRAY + GTUtility.translate("GT5U.armor.message.enabled", getDisplayName())));
+                GTUtility
+                    .processFormatStacks(GRAY + GTUtility.translate("GT5U.armor.message.enabled", getDisplayName())));
         }
     }
 
@@ -70,7 +72,8 @@ public interface IArmorBehavior {
         if (hasDisplayName()) {
             GTUtility.sendChatToPlayer(
                 context.getPlayer(),
-                GTUtility.processFormatStacks(GRAY + GTUtility.translate("GT5U.armor.message.disabled", getDisplayName())));
+                GTUtility
+                    .processFormatStacks(GRAY + GTUtility.translate("GT5U.armor.message.disabled", getDisplayName())));
         }
     }
 

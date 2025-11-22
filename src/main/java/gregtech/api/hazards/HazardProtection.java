@@ -57,19 +57,23 @@ public class HazardProtection {
         return true;
     }
 
-    public static boolean protectsAgainstHazard(@Nullable EntityLivingBase entity, @Nullable ItemStack stack, @NotNull Hazard hazard) {
+    public static boolean protectsAgainstHazard(@Nullable EntityLivingBase entity, @Nullable ItemStack stack,
+        @NotNull Hazard hazard) {
         return stack != null && (hasHazmatEnchant(stack) || (stack.getItem() instanceof IHazardProtector hazardProtector
-            && (hazardProtector.protectsAgainst(entity, stack, hazard) || hazardProtector.protectsAgainstFully(entity, stack, hazard))));
+            && (hazardProtector.protectsAgainst(entity, stack, hazard)
+                || hazardProtector.protectsAgainstFully(entity, stack, hazard))));
     }
 
-    public static boolean protectsAgainstHazardFully(@Nullable EntityLivingBase entity, @Nullable ItemStack stack, @NotNull Hazard hazard) {
+    public static boolean protectsAgainstHazardFully(@Nullable EntityLivingBase entity, @Nullable ItemStack stack,
+        @NotNull Hazard hazard) {
         return stack != null && (hasHazmatEnchant(stack) || (stack.getItem() instanceof IHazardProtector hazardProtector
             && hazardProtector.protectsAgainstFully(entity, stack, hazard)));
     }
 
     public static boolean protectsAgainstHazard(@Nullable ItemStack stack, @NotNull Hazard hazard) {
         return stack != null && (hasHazmatEnchant(stack) || (stack.getItem() instanceof IHazardProtector hazardProtector
-            && (hazardProtector.protectsAgainst(stack, hazard) || hazardProtector.protectsAgainstFully(null, stack, hazard))));
+            && (hazardProtector.protectsAgainst(stack, hazard)
+                || hazardProtector.protectsAgainstFully(null, stack, hazard))));
     }
 
     public static boolean providesFullHazmatProtection(@Nullable ItemStack stack) {

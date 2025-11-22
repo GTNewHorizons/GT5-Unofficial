@@ -13,7 +13,9 @@ public interface ArmorContext {
         if (getWorld() != null) {
             return getWorld().isRemote;
         } else {
-            return FMLCommonHandler.instance().getEffectiveSide().isClient();
+            return FMLCommonHandler.instance()
+                .getEffectiveSide()
+                .isClient();
         }
     }
 
@@ -61,6 +63,7 @@ public interface ArmorContext {
     }
 
     class ArmorContextImpl implements ArmorContext {
+
         public World world;
         public EntityPlayer player;
         public ItemStack armorStack;

@@ -23,7 +23,9 @@ public class ArmorHelper {
     public static final int SLOT_BOOTS = 0;
 
     public static boolean isShiftPressed() {
-        if (FMLCommonHandler.instance().getSide().isClient()) {
+        if (FMLCommonHandler.instance()
+            .getSide()
+            .isClient()) {
             return Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
         } else {
             return true;

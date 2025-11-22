@@ -11,6 +11,7 @@ import net.minecraft.util.IIcon;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
+
 import gregtech.api.items.armor.ArmorContext;
 import gregtech.api.items.armor.ArmorKeybinds;
 import gregtech.api.items.armor.JetpackStats;
@@ -36,7 +37,8 @@ public class JetpackBehavior implements IArmorBehavior {
 
     @Override
     public void onArmorTick(@NotNull ArmorContext context) {
-        if (context.getArmorState().isActive(BehaviorName.Jetpack)) {
+        if (context.getArmorState()
+            .isActive(BehaviorName.Jetpack)) {
             performFlying(context);
         }
     }
@@ -83,7 +85,7 @@ public class JetpackBehavior implements IArmorBehavior {
                     player.motionY = Math.min(
                         player.motionY + currentAccel,
                         context.hasBehavior(BehaviorName.JetpackPerfectHover) ? 0
-                                : -jetpackStats.getVerticalHoverSlowSpeed());
+                            : -jetpackStats.getVerticalHoverSlowSpeed());
                 }
                 float speedSideways = (float) (player.isSneaking() ? jetpackStats.getSidewaysSpeed() * 0.5f
                     : jetpackStats.getSidewaysSpeed());

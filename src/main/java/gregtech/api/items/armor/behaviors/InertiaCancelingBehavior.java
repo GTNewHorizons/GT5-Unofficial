@@ -10,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
+
 import gregtech.api.items.armor.ArmorContext;
 
 public class InertiaCancelingBehavior implements IArmorBehavior {
@@ -17,11 +18,11 @@ public class InertiaCancelingBehavior implements IArmorBehavior {
     public static InertiaCancelingBehavior INSTANCE = new InertiaCancelingBehavior();
 
     @Override
-    public void onKeyPressed(@NotNull ArmorContext context, SyncedKeybind keyPressed,
-        boolean isDown) {
+    public void onKeyPressed(@NotNull ArmorContext context, SyncedKeybind keyPressed, boolean isDown) {
         if (!isDown) return;
 
-        context.getArmorState().toggle(context, BehaviorName.InertiaCanceling);
+        context.getArmorState()
+            .toggle(context, BehaviorName.InertiaCanceling);
     }
 
     @Override

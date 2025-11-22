@@ -32,23 +32,30 @@ public class ItemAugment extends ItemAugmentAbstract {
         addSeparatorIfNeeded(desc);
 
         if (showAllInfo) {
-            desc.add(GTUtility.translate("GT5U.armor.tooltip.energycoreminimum",
-                augment.getMinimumCore()
-                    .getLocalizedName()));
+            desc.add(
+                GTUtility.translate(
+                    "GT5U.armor.tooltip.energycoreminimum",
+                    augment.getMinimumCore()
+                        .getLocalizedName()));
 
             addSeparatorIfNeeded(desc);
 
             if (augment.getMaxStack() > 1) {
-                desc.add(GTUtility.translate("GT5U.armor.tooltip.maxstack", GTTextBuilder.VALUE.toString() + augment.getMaxStack()));
+                desc.add(
+                    GTUtility.translate(
+                        "GT5U.armor.tooltip.maxstack",
+                        GTTextBuilder.VALUE.toString() + augment.getMaxStack()));
             }
 
             addSeparatorIfNeeded(desc);
 
             desc.add(GRAY + GTUtility.translate("GT5U.armor.tooltip.applicable"));
             for (ArmorType armor : augment.getAllowedArmorTypes()) {
-                desc.add(GRAY + "- " + armor.getItem()
-                    .get(1)
-                    .getDisplayName());
+                desc.add(
+                    GRAY + "- "
+                        + armor.getItem()
+                            .get(1)
+                            .getDisplayName());
             }
 
             addSeparatorIfNeeded(desc);
@@ -66,24 +73,20 @@ public class ItemAugment extends ItemAugmentAbstract {
     private static String getCategoryText(AugmentCategory c) {
         switch (c) {
             case Protection -> {
-                return GTUtility.translate(
-                    "GT5U.armor.tooltip.category",
-                    GTUtility.translate("GT5U.armor.tooltip.protection"));
+                return GTUtility
+                    .translate("GT5U.armor.tooltip.category", GTUtility.translate("GT5U.armor.tooltip.protection"));
             }
             case Movement -> {
-                return GTUtility.translate(
-                    "GT5U.armor.tooltip.category",
-                    GTUtility.translate("GT5U.armor.tooltip.movement"));
+                return GTUtility
+                    .translate("GT5U.armor.tooltip.category", GTUtility.translate("GT5U.armor.tooltip.movement"));
             }
             case Utility -> {
-                return GTUtility.translate(
-                    "GT5U.armor.tooltip.category",
-                    GTUtility.translate("GT5U.armor.tooltip.utility"));
+                return GTUtility
+                    .translate("GT5U.armor.tooltip.category", GTUtility.translate("GT5U.armor.tooltip.utility"));
             }
             case Prismatic -> {
-                return GTUtility.translate(
-                    "GT5U.armor.tooltip.category",
-                    GTUtility.translate("GT5U.armor.tooltip.prismatic"));
+                return GTUtility
+                    .translate("GT5U.armor.tooltip.category", GTUtility.translate("GT5U.armor.tooltip.prismatic"));
             }
             default -> {
                 return "";

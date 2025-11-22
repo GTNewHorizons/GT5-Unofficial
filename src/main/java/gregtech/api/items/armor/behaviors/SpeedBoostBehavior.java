@@ -7,9 +7,10 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import org.jetbrains.annotations.NotNull;
 
-import bartworks.util.MathUtils;
 import com.google.common.collect.ImmutableSet;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
+
+import bartworks.util.MathUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.items.armor.ArmorContext;
@@ -84,7 +85,9 @@ public class SpeedBoostBehavior implements IArmorBehavior {
 
         if (speed <= 0) return;
 
-        if ((player.onGround || player.capabilities.isFlying) && !player.isInWater() && (player.moveForward != 0 || player.moveStrafing != 0 || (player.capabilities.isFlying && (player.movementInput.sneak || player.movementInput.jump)))) {
+        if ((player.onGround || player.capabilities.isFlying) && !player.isInWater()
+            && (player.moveForward != 0 || player.moveStrafing != 0
+                || (player.capabilities.isFlying && (player.movementInput.sneak || player.movementInput.jump)))) {
             if (context.drainEnergy(1)) {
                 if (player.moveForward > 0F) {
                     player.moveFlying(0F, 1F, speed);

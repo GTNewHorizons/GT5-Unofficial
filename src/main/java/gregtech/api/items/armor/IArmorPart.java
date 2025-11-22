@@ -15,16 +15,21 @@ public interface IArmorPart {
     ItemStack getItem(int amount);
 
     String getId();
+
     String getItemId();
 
     String getLocalizedName();
+
     boolean hasTooltip();
+
     @NotNull
     EnumRarity getRarity();
 
     String getTooltip();
 
     Collection<IArmorBehavior> getProvidedBehaviors();
+
     Collection<BehaviorName> getRequiredBehaviors();
+
     Collection<BehaviorName> getIncompatibleBehaviors();
 }
