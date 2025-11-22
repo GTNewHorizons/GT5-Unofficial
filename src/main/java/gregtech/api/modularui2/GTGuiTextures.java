@@ -805,6 +805,16 @@ public final class GTGuiTextures {
         .fullImage(MODID, "gui/picture/connector_red_opaque");
     public static final UITexture PICTURE_HEAT_SINK_16x8 = UITexture.fullImage(MODID, "gui/picture/heat_sink_16x8");
     public static final UITexture GREEN_CHECKMARK_11x9 = UITexture.fullImage(MODID, "gui/picture/green_checkmark");
+    public static final UITexture BUTTON_OUTLINE_HOLLOW = UITexture.builder()
+        .location(MODID, "gui/button/transparent_16x16")
+        .imageSize(16, 16)
+        .adaptable(1)
+        .build();
+    public static final UITexture BUTTON_OUTLINE_HOLLOW_PRESSED = UITexture.builder()
+        .location(MODID, "gui/button/transparent_pressed_16x16")
+        .imageSize(16, 16)
+        .adaptable(1)
+        .build();
 
     public static final UITexture TT_CONTROLLER_SLOT_HEAT_SINK = UITexture.builder()
         .location(MODID, "gui/picture/heat_sink_small")

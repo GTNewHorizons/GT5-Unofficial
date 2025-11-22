@@ -26,6 +26,7 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.godforge.data.ColorData;
 import gregtech.common.gui.modularui.multiblock.godforge.data.StarColors;
 
@@ -283,6 +284,12 @@ public class CustomStarColorSelector {
         rgbhsvRow.child(
             new PageButton(RGB_PAGE_INDEX, pageController).size(24, 15)
                 .marginRight(3)
+                .background(new DynamicDrawable(() -> {
+                    if (pageController.getActivePageIndex() == RGB_PAGE_INDEX) {
+                        return GTGuiTextures.BUTTON_OUTLINE_HOLLOW_PRESSED;
+                    }
+                    return GTGuiTextures.BUTTON_OUTLINE_HOLLOW;
+                }))
                 .overlay(new DynamicDrawable(() -> {
                     if (pageController.getActivePageIndex() == RGB_PAGE_INDEX) {
                         return IKey.lang("fog.cosmetics.color.rgb_colored");
@@ -293,6 +300,12 @@ public class CustomStarColorSelector {
         rgbhsvRow.child(
             new PageButton(HSV_PAGE_INDEX, pageController).size(24, 15)
                 .marginRight(5)
+                .background(new DynamicDrawable(() -> {
+                    if (pageController.getActivePageIndex() == HSV_PAGE_INDEX) {
+                        return GTGuiTextures.BUTTON_OUTLINE_HOLLOW_PRESSED;
+                    }
+                    return GTGuiTextures.BUTTON_OUTLINE_HOLLOW;
+                }))
                 .overlay(new DynamicDrawable(() -> {
                     if (pageController.getActivePageIndex() == HSV_PAGE_INDEX) {
                         return IKey.lang("fog.cosmetics.color.hsv_colored");

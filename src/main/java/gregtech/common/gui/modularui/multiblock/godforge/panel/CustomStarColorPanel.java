@@ -260,6 +260,7 @@ public class CustomStarColorPanel {
                     }
                     return true;
                 })
+                .background(GTGuiTextures.BUTTON_OUTLINE_HOLLOW)
                 .overlay(IKey.dynamic(() -> {
                     if (editingIndex.intValue() >= 0) {
                         return translateToLocal("fog.cosmetics.applycolor");
@@ -295,6 +296,7 @@ public class CustomStarColorPanel {
                     colorData.reset();
                     return true;
                 })
+                .background(GTGuiTextures.BUTTON_OUTLINE_HOLLOW)
                 .overlay(
                     IKey.lang("fog.cosmetics.resetcolor")
                         .alignment(Alignment.CENTER))
@@ -361,6 +363,7 @@ public class CustomStarColorPanel {
                     }
                     return true;
                 })
+                .background(GTGuiTextures.BUTTON_OUTLINE_HOLLOW)
                 .overlay(
                     IKey.lang("fog.cosmetics.exportcolors")
                         .alignment(Alignment.CENTER))
@@ -377,6 +380,7 @@ public class CustomStarColorPanel {
                     }
                     return true;
                 })
+                .background(GTGuiTextures.BUTTON_OUTLINE_HOLLOW)
                 .overlay(
                     IKey.lang("fog.cosmetics.importcolors")
                         .alignment(Alignment.CENTER))
@@ -408,6 +412,7 @@ public class CustomStarColorPanel {
                         .closeIfOpen();
                     return true;
                 })
+                .background(GTGuiTextures.BUTTON_OUTLINE_HOLLOW)
                 .overlay(
                     IKey.lang("fog.cosmetics.deletecolors")
                         .alignment(Alignment.CENTER))
@@ -440,6 +445,7 @@ public class CustomStarColorPanel {
                         .closeIfOpen();
                     return true;
                 })
+                .background(GTGuiTextures.BUTTON_OUTLINE_HOLLOW)
                 .overlay(
                     IKey.lang("fog.cosmetics.savecolors")
                         .alignment(Alignment.CENTER))
