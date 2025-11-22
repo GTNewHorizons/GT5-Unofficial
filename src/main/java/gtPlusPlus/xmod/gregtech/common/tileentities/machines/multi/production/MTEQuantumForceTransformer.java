@@ -48,7 +48,7 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.GTValues;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
@@ -223,7 +223,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             .addStructureInfo(EnumChatFormatting.WHITE + "Bulk Catalyst Housing: " + EnumChatFormatting.BLUE + "Bottom" + EnumChatFormatting.GRAY + " Layer")
             .addSubChannelUsage(GTStructureChannels.QFT_SHIELDING)
             .addSubChannelUsage(GTStructureChannels.QFT_MANIPULATOR)
-            .toolTipFinisher(GTValues.AuthorBlueWeabo, EnumChatFormatting.GREEN + "Steelux");
+            .toolTipFinisher(GTAuthors.AuthorBlueWeabo, EnumChatFormatting.GREEN + "Steelux");
         return tt;
         //spotless:on
     }

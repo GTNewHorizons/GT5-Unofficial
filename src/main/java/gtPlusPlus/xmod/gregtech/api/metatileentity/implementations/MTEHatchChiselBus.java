@@ -1,18 +1,20 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
-import net.minecraft.util.EnumChatFormatting;
-
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gtPlusPlus.core.util.Utils;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchChiselBus extends MTEHatchInputBus implements IAddUIWidgets {
 
     public MTEHatchChiselBus(int id, String name, String nameRegional, int tier) {
@@ -49,15 +51,10 @@ public class MTEHatchChiselBus extends MTEHatchInputBus implements IAddUIWidgets
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            "Item Input Bus for " + EnumChatFormatting.YELLOW + "Industrial Chisel" + EnumChatFormatting.RESET,
-            getSlots(this.mTier) - 1 + " + 1 " + " Slots",
-            "Added by: " + EnumChatFormatting.AQUA
-                + "Quetz4l"
-                + " - "
-                + EnumChatFormatting.RED
-                + "[GT++]"
-                + EnumChatFormatting.RESET };
+        return Utils.splitLocalizedFormattedWithAuthor(
+            "gt.blockmachines.input_bus_chisel.desc",
+            GTAuthors.AuthorQuetz4l,
+            getSlots(this.mTier) - 1);
     }
 
     @Override

@@ -56,7 +56,7 @@ public class GTItemOre extends ItemBlock implements IItemFirestoneBurning {
 
         boolean small = blockOre.isSmallOre(stack.getItemDamage());
 
-        return (small ? OrePrefixes.oreSmall : OrePrefixes.ore).getDefaultLocalNameForItem(mat);
+        return (small ? OrePrefixes.oreSmall : OrePrefixes.ore).getLocalizedNameForItem(mat);
     }
 
     @Override
@@ -66,9 +66,7 @@ public class GTItemOre extends ItemBlock implements IItemFirestoneBurning {
 
         if (mat == null) mat = Materials._NULL;
 
-        if (mat.mChemicalFormula != null && !mat.mChemicalFormula.isEmpty()) {
-            desc.add(mat.mChemicalFormula);
-        }
+        mat.addTooltips(desc);
     }
 
     @Override

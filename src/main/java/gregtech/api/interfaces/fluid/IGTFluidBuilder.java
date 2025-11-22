@@ -24,7 +24,7 @@ public interface IGTFluidBuilder {
      * @return {@link IGTFluidBuilder} self for call chaining
      */
     @SuppressWarnings("UnusedReturnValue") // Last call in chain, may not use this returned value
-    IGTFluidBuilder withLocalizedName(final String localizedName);
+    IGTFluidBuilder withDefaultLocalName(final String localizedName);
 
     /**
      * @param fluidState  The {@link FluidState} of this {@link IGTFluidBuilder}

@@ -4,6 +4,7 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.common.items.ItemIntegratedCircuit.findConfiguratorInInv;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -29,7 +30,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.INetworkUpdatableItem;
 import gregtech.api.net.GTPacketUpdateItem;
 import gregtech.api.objects.XSTR;
-import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTSplit;
 import gregtech.common.gui.modularui.base.ItemSelectBaseGui;
 import gtPlusPlus.core.util.math.MathUtils;
 
@@ -65,17 +66,10 @@ public class GTPPIntegratedCircuitItem extends Item implements INetworkUpdatable
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer p_77624_2_, List<String> aList, boolean p_77624_4_) {
         try {
-            aList.add(
-                StatCollector.translateToLocalFormatted(
-                    "gtpp.tooltip.integrated_circuit.configuration",
-                    aStack.getItemDamage()));
-            aList.add(
-                GTLanguageManager
-                    .addStringLocalization(getUnlocalizedName() + ".tooltip.0", "Right click to reconfigure"));
-            aList.add(
-                GTLanguageManager.addStringLocalization(
-                    getUnlocalizedName() + ".tooltip.1",
-                    "Needs a screwdriver or circuit programming tool"));
+            Collections.addAll(
+                aList,
+                GTSplit
+                    .splitLocalizedFormatted("gtpp.tooltip.integrated_circuit.configuration", aStack.getItemDamage()));
         } catch (Throwable t) {
             t.printStackTrace();
         }

@@ -16,6 +16,8 @@ public interface IOreMaterial {
 
     String getLocalizedName();
 
+    String getLocalizedNameKey();
+
     int getId();
 
     String getInternalName();

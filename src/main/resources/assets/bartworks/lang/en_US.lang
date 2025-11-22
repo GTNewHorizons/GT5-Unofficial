@@ -1,3 +1,7 @@
+# Components
+gt.oreprefix.bolted_material_casing=Bolted %s Casing
+gt.oreprefix.rebolted_material_casing=Rebolted %s Casing
+
 itemGroup.GT2C=Gregtech 2 Compat
 item.GT_Rockcutter_Item_LV.name=Rockcutter LV
 item.GT_Rockcutter_Item_MV.name=Rockcutter MV
@@ -276,3 +280,7 @@ BW.gui.text.lesu.max=MAX: %s
 BW.gui.text.lesu.max_in=MAX EU/t IN: %s
 BW.gui.text.lesu.eu_out=EU/t OUT: %s
 BW.gui.text.lesu.amp_io=AMP/t IN/OUT: %s
+
+# Tooltip for Material
+gt.bwMetaGenerateddust.4.tooltip=§3Check Flawed Crystal recipe in EBF
+gt.bwMetaGeneratedgem.4.tooltip=§3Check Flawed Crystal recipe in EBF

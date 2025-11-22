@@ -11,6 +11,7 @@ import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.OrePrefixes;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
 @Optional.Interface(
@@ -33,10 +34,10 @@ public class ItemStorage extends ItemBlock implements IItemFirestoneBurning {
     @Override
     public String getItemStackDisplayName(ItemStack aStack) {
         String aName = super.getItemStackDisplayName(aStack);
-        if (this.field_150939_a instanceof BlockMetal) {
+        if (this.field_150939_a instanceof BlockMetal blockMetal) {
             int aDamage = aStack.getItemDamage();
-            if (aDamage >= 0 && aDamage < ((BlockMetal) this.field_150939_a).mMats.length) {
-                aName = ((BlockMetal) this.field_150939_a).mMats[aDamage].getLocalizedNameForItem(aName);
+            if (aDamage >= 0 && aDamage < blockMetal.mMats.length) {
+                aName = OrePrefixes.block.getLocalizedNameForItem(blockMetal.mMats[aDamage]);
             }
         }
         return aName;
@@ -49,6 +50,12 @@ public class ItemStorage extends ItemBlock implements IItemFirestoneBurning {
 
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
+        if (this.field_150939_a instanceof BlockMetal blockMetal) {
+            int aDamage = aStack.getItemDamage();
+            if (aDamage >= 0 && aDamage < blockMetal.mMats.length) {
+                blockMetal.mMats[aDamage].addTooltips(aList);
+            }
+        }
         super.addInformation(aStack, aPlayer, aList, aF3_H);
     }
 

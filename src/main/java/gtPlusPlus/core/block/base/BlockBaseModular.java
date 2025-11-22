@@ -9,6 +9,7 @@ import java.util.Map;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 
 import org.jetbrains.annotations.NotNull;
@@ -19,7 +20,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
@@ -34,7 +34,6 @@ public class BlockBaseModular extends BasicBlock {
     protected int blockColour;
     public BlockTypes thisBlock;
     protected String thisBlockMaterial;
-    protected String thisBlockMaterialTranslatedName;
     protected final String thisBlockType;
 
     private static final HashMap<String, Block> sBlockCache = new HashMap<>();
@@ -50,7 +49,7 @@ public class BlockBaseModular extends BasicBlock {
     public BlockBaseModular(final Material material, final BlockTypes blockType, final int colour) {
         this(
             material.getUnlocalizedName(),
-            material.getLocalizedName(),
+            material.getDefaultLocalName(),
             net.minecraft.block.material.Material.iron,
             blockType,
             colour,
@@ -58,8 +57,6 @@ public class BlockBaseModular extends BasicBlock {
         blockMaterial = material;
         registerComponent();
         sBlockCache.put(material.getUnlocalizedName() + "." + blockType.name(), this);
-        thisBlockMaterialTranslatedName = material.getTranslatedName();
-        GTLanguageManager.addStringLocalization("gtplusplus." + getUnlocalizedName() + ".name", getProperName());
     }
 
     protected BlockBaseModular(final String unlocalizedName, final String blockMaterialString,
@@ -155,29 +152,29 @@ public class BlockBaseModular extends BasicBlock {
     }
 
     public String getProperName() {
-        String tempIngot = null;
-        if (this.thisBlock == BlockTypes.STANDARD) {
-            tempIngot = "Block of %material";
-        } else if (this.thisBlock == BlockTypes.FRAME) {
-            tempIngot = "%material Frame Box";
-        } else if (this.thisBlock == BlockTypes.ORE) {
-            tempIngot = "%material Ore [Old]";
+        switch (this.thisBlock) {
+            case STANDARD -> {
+                return "Block of %s";
+            }
+            case FRAME -> {
+                return "%s Frame Box";
+            }
+            case ORE -> {
+                return "%s Ore [Old]";
+            }
         }
-        return tempIngot;
+        return null;
     }
 
     public String getUnlocalizedProperName() {
-        return getProperName().replace("%s", "%temp")
-            .replace("%material", this.thisBlockMaterial)
-            .replace("%temp", "%s");
+        return String.format(getProperName(), this.thisBlockMaterial);
     }
 
     @Override
     public String getLocalizedName() {
-        return GTLanguageManager.getTranslation("gtplusplus." + getUnlocalizedName() + ".name")
-            .replace("%s", "%temp")
-            .replace("%material", this.thisBlockMaterialTranslatedName)
-            .replace("%temp", "%s");
+        return StatCollector.translateToLocalFormatted(
+            OrePrefixes.getOreprefixKey(getProperName(), "%s"),
+            this.blockMaterial.getLocalizedName());
     }
 
     @Override
