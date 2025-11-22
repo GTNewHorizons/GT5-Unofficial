@@ -14,8 +14,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
-import gtPlusPlus.core.util.Utils;
 import gregtech.common.gui.modularui.hatch.MTEHatchInputBusGui;
+import gtPlusPlus.core.util.Utils;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchSteamBusInput extends MTEHatchInputBus {
