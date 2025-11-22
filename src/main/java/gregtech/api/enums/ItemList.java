@@ -369,6 +369,7 @@ public enum ItemList implements IItemContainer {
     Schematic_2by2,
     Schematic_3by3,
     Schematic_Dust,
+    Schematic_Dust_Small,
 
     GigaChad,
 
