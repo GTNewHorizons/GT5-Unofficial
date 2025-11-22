@@ -10,14 +10,13 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
 
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 
 public class StarColorStorage {
 
     private static final String NBT_LIST_KEY = "customStarColors";
 
     private final Map<String, ForgeOfGodsStarColor> nameMapping = new HashMap<>();
-    private List<ForgeOfGodsStarColor> indexMapping = new ArrayList<>();
+    private final List<ForgeOfGodsStarColor> indexMapping = new ArrayList<>();
 
     public StarColorStorage() {
         initPresets();
@@ -112,16 +111,6 @@ public class StarColorStorage {
                 }
             }
         }
-    }
-
-    public FakeSyncWidget<?> getSyncerMUI1() {
-        return new FakeSyncWidget.ListSyncer<>(() -> indexMapping, val -> {
-            indexMapping = val;
-            nameMapping.clear();
-            for (ForgeOfGodsStarColor color : indexMapping) {
-                nameMapping.put(color.getName(), color);
-            }
-        }, ForgeOfGodsStarColor::writeToBuffer, ForgeOfGodsStarColor::readFromBuffer);
     }
 
     public GenericListSyncHandler<ForgeOfGodsStarColor> getSyncer() {

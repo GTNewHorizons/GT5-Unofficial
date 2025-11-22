@@ -16,7 +16,6 @@ import net.minecraft.util.StatCollector;
 
 import com.google.common.collect.ImmutableSet;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -387,11 +386,6 @@ public enum ForgeOfGodsUpgrade {
 
     public int getLoreYPos() {
         return windowSize.getLoreY();
-    }
-
-    // todo remove
-    public Pos2d getTreePos() {
-        return new Pos2d(treeX, treeY);
     }
 
     public int getTreeX() {

@@ -3,7 +3,6 @@ package tectech.thing.metaTileEntity.multi.godforge.util;
 import static tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade.END;
 
 import java.math.BigInteger;
-import java.util.Collection;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -26,8 +25,6 @@ public class ForgeOfGodsData {
     public static final int DEFAULT_ROTATION_SPEED = 5;
     public static final int DEFAULT_STAR_SIZE = 20;
     public static final String DEFAULT_STAR_COLOR = ForgeOfGodsStarColor.DEFAULT.getName();
-    @Deprecated
-    public static final MilestoneFormatter DEFAULT_FORMATTING_MODE = MilestoneFormatter.COMMA;
     public static final Formatters DEFAULT_FORMATTER = Formatters.COMMA;
     public static final BigInteger DEFAULT_TOTAL_POWER = BigInteger.ZERO;
 
@@ -55,9 +52,7 @@ public class ForgeOfGodsData {
     private long totalRecipesProcessed;
     private long totalFuelConsumed;
     private float totalExtensionsBuilt;
-    private int previewFuelConsumptionFactor = 1;
 
-    // todo remove these
     private float powerMilestonePercentage;
     private float recipeMilestonePercentage;
     private float fuelMilestonePercentage;
@@ -73,8 +68,6 @@ public class ForgeOfGodsData {
     private boolean batteryCharging;
     private boolean inversion;
     private boolean gravitonShardEjection;
-    @Deprecated
-    private MilestoneFormatter formattingMode = DEFAULT_FORMATTING_MODE;
     private Formatters formatter = DEFAULT_FORMATTER;
     private boolean isRenderActive;
     private boolean secretUpgrade;
@@ -86,18 +79,10 @@ public class ForgeOfGodsData {
     private final ItemStack[] storedUpgradeWindowItems = new ItemStack[16];
 
     // Star cosmetics fields
-    // actual star cosmetics
     private final StarColorStorage starColors = new StarColorStorage();
     private String selectedStarColor = DEFAULT_STAR_COLOR;
     private int rotationSpeed = DEFAULT_ROTATION_SPEED;
     private int starSize = DEFAULT_STAR_SIZE;
-    // editing star color
-    private ForgeOfGodsStarColor newStarColor = starColors.newTemplateColor();
-    private int starColorR, starColorG, starColorB;
-    private float starGamma;
-    private int editingStarIndex; // editing a full color preset
-    private int editingColorIndex; // editing a single color in a preset
-    private ForgeOfGodsStarColor importedStarColor;
 
     public int getFuelConsumptionFactor() {
         return fuelConsumptionFactor;
@@ -203,14 +188,6 @@ public class ForgeOfGodsData {
         this.totalExtensionsBuilt = totalExtensionsBuilt;
     }
 
-    public int getPreviewFuelConsumptionFactor() {
-        return previewFuelConsumptionFactor;
-    }
-
-    public void setPreviewFuelConsumptionFactor(int previewFuelConsumptionFactor) {
-        this.previewFuelConsumptionFactor = previewFuelConsumptionFactor;
-    }
-
     public float getPowerMilestonePercentage() {
         return powerMilestonePercentage;
     }
@@ -303,10 +280,6 @@ public class ForgeOfGodsData {
         this.batteryCharging = batteryCharging;
     }
 
-    public void toggleBatteryCharging() {
-        this.batteryCharging = !this.batteryCharging;
-    }
-
     public boolean isInversion() {
         return inversion;
     }
@@ -323,32 +296,12 @@ public class ForgeOfGodsData {
         this.gravitonShardEjection = gravitonShardEjection;
     }
 
-    public void toggleGravitonShardEjection() {
-        this.gravitonShardEjection = !this.gravitonShardEjection;
-    }
-
-    public MilestoneFormatter getFormattingMode() {
-        return formattingMode;
-    }
-
     public Formatters getFormatter() {
         return formatter;
     }
 
-    public void setFormattingMode(MilestoneFormatter formattingMode) {
-        this.formattingMode = formattingMode;
-    }
-
     public void setFormatter(Formatters formatter) {
         this.formatter = formatter;
-    }
-
-    public void cycleFormattingMode() {
-        this.formattingMode = this.formattingMode.cycle();
-    }
-
-    public String format(Number number) {
-        return this.formattingMode.format(number);
     }
 
     public boolean isRenderActive() {
@@ -367,10 +320,6 @@ public class ForgeOfGodsData {
         this.secretUpgrade = secretUpgrade;
     }
 
-    public void toggleSecretUpgrade() {
-        this.secretUpgrade = !this.secretUpgrade;
-    }
-
     public boolean isRendererDisabled() {
         return isRendererDisabled;
     }
@@ -381,10 +330,6 @@ public class ForgeOfGodsData {
 
     public UpgradeStorage getUpgrades() {
         return upgrades;
-    }
-
-    public Collection<ForgeOfGodsUpgrade> getAllUpgrades() {
-        return upgrades.getAllUpgrades();
     }
 
     public void resetAllUpgrades() {
@@ -427,10 +372,6 @@ public class ForgeOfGodsData {
         return currentUpgradeWindow;
     }
 
-    public void setCurrentUpgradeWindow(ForgeOfGodsUpgrade currentUpgradeWindow) {
-        this.currentUpgradeWindow = currentUpgradeWindow;
-    }
-
     public ItemStack[] getStoredUpgradeWindowItems() {
         return storedUpgradeWindowItems;
     }
@@ -463,70 +404,6 @@ public class ForgeOfGodsData {
         this.starSize = starSize;
     }
 
-    public ForgeOfGodsStarColor getNewStarColor() {
-        return newStarColor;
-    }
-
-    public void setNewStarColor(ForgeOfGodsStarColor newStarColor) {
-        this.newStarColor = newStarColor;
-    }
-
-    public int getStarColorR() {
-        return starColorR;
-    }
-
-    public void setStarColorR(int starColorR) {
-        this.starColorR = starColorR;
-    }
-
-    public int getStarColorG() {
-        return starColorG;
-    }
-
-    public void setStarColorG(int starColorG) {
-        this.starColorG = starColorG;
-    }
-
-    public int getStarColorB() {
-        return starColorB;
-    }
-
-    public void setStarColorB(int starColorB) {
-        this.starColorB = starColorB;
-    }
-
-    public float getStarGamma() {
-        return starGamma;
-    }
-
-    public void setStarGamma(float starGamma) {
-        this.starGamma = starGamma;
-    }
-
-    public int getEditingStarIndex() {
-        return editingStarIndex;
-    }
-
-    public void setEditingStarIndex(int editingStarIndex) {
-        this.editingStarIndex = editingStarIndex;
-    }
-
-    public int getEditingColorIndex() {
-        return editingColorIndex;
-    }
-
-    public void setEditingColorIndex(int editingColorIndex) {
-        this.editingColorIndex = editingColorIndex;
-    }
-
-    public ForgeOfGodsStarColor getImportedStarColor() {
-        return importedStarColor;
-    }
-
-    public void setImportedStarColor(ForgeOfGodsStarColor importedStarColor) {
-        this.importedStarColor = importedStarColor;
-    }
-
     public void serializeNBT(NBTTagCompound NBT, boolean force) {
         if (force || selectedFuelType != 0) NBT.setInteger("selectedFuelType", selectedFuelType);
         if (force || internalBattery != 0) NBT.setInteger("internalBattery", internalBattery);
@@ -549,9 +426,6 @@ public class ForgeOfGodsData {
         }
         if (force || !DEFAULT_TOTAL_POWER.equals(totalPowerConsumed)) {
             NBT.setByteArray("totalPowerConsumed", totalPowerConsumed.toByteArray());
-        }
-        if (force || formattingMode != DEFAULT_FORMATTING_MODE) {
-            NBT.setInteger("formattingMode", formattingMode.ordinal());
         }
         if (force || formatter != DEFAULT_FORMATTER) {
             NBT.setInteger("formatter", formatter.ordinal());
@@ -608,10 +482,10 @@ public class ForgeOfGodsData {
         if (NBT.hasKey("totalPowerConsumed")) {
             totalPowerConsumed = new BigInteger(NBT.getByteArray("totalPowerConsumed"));
         }
-        // todo legacy nbt handle this
+        // Legacy NBT handling of the old formatting mode
         if (NBT.hasKey("formattingMode")) {
-            int index = MathHelper.clamp_int(NBT.getInteger("formattingMode"), 0, MilestoneFormatter.VALUES.length);
-            formattingMode = MilestoneFormatter.VALUES[index];
+            int index = MathHelper.clamp_int(NBT.getInteger("formattingMode"), 0, Formatters.VALUES.length);
+            formatter = Formatters.VALUES[index];
         }
         if (NBT.hasKey("formatter")) {
             int index = MathHelper.clamp_int(NBT.getInteger("formatter"), 0, Formatters.VALUES.length);

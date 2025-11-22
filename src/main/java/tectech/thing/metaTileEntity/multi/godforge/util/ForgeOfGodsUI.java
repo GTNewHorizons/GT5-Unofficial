@@ -9,11 +9,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.function.DoubleConsumer;
-import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
@@ -21,9 +18,7 @@ import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.math.MainAxisAlignment;
 import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -31,37 +26,23 @@ import com.gtnewhorizons.modularui.api.widget.IWidgetBuilder;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
-import com.gtnewhorizons.modularui.common.widget.DynamicTextWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
-import com.gtnewhorizons.modularui.common.widget.SliderWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
-import codechicken.nei.recipe.GuiCraftingRecipe;
-import codechicken.nei.recipe.GuiUsageRecipe;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.modularui.IControllerWithOptionalFeatures;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import tectech.TecTech;
 import tectech.thing.gui.TecTechUITextures;
-import tectech.thing.metaTileEntity.multi.godforge.color.ForgeOfGodsStarColor;
 import tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade;
 
 /**
  * Holds UI element builders and other conveniences shared between the primary Forge of the Gods and its modules.
  */
 public class ForgeOfGodsUI {
-
-    // ARGB representations of the 4 colors used in the color selector (red, green, blue, gold)
-    public static final int RED_ARGB = 0xFFFF5555;
-    public static final int GREEN_ARGB = 0xFF55FF55;
-    public static final int BLUE_ARGB = 0xFF0000AA;
-    public static final int GOLD_ARGB = 0xFFFFAA00;
 
     public static ButtonWidget createPowerSwitchButton(final IGregTechTileEntity tileEntity) {
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
@@ -460,134 +441,6 @@ public class ForgeOfGodsUI {
         }
     }
 
-    public enum StarColorRGBM {
-
-        RED(EnumChatFormatting.RED, RED_ARGB, 0, 255, ForgeOfGodsStarColor.DEFAULT_RED),
-        GREEN(EnumChatFormatting.GREEN, GREEN_ARGB, 0, 255, ForgeOfGodsStarColor.DEFAULT_GREEN),
-        BLUE(EnumChatFormatting.DARK_BLUE, BLUE_ARGB, 0, 255, ForgeOfGodsStarColor.DEFAULT_BLUE),
-        GAMMA(EnumChatFormatting.GOLD, GOLD_ARGB, 0, 100, ForgeOfGodsStarColor.DEFAULT_GAMMA);
-
-        private final String title;
-        private final EnumChatFormatting mcColor;
-        private final int muiColor;
-        private final float lowerBound, upperBound;
-        private final float defaultValue;
-
-        StarColorRGBM(EnumChatFormatting mcColor, int muiColor, float lower, float upper, float defaultVal) {
-            this.title = "fog.cosmetics.color." + name().toLowerCase();
-            this.mcColor = mcColor;
-            this.muiColor = muiColor;
-            this.lowerBound = lower;
-            this.upperBound = upper;
-            this.defaultValue = defaultVal;
-        }
-
-        public String tooltip(float value) {
-            if (this == GAMMA) {
-                return String.format("%s%s: %.1f", mcColor, translateToLocal(title), value);
-            }
-            return String.format("%s%s: %d", mcColor, translateToLocal(title), (int) value);
-        }
-    }
-
-    public static Widget createStarColorRGBMGroup(StarColorRGBM color, DoubleConsumer setter, DoubleSupplier getter) {
-        MultiChildWidget widget = new MultiChildWidget();
-        widget.setSize(184, 16);
-
-        // Title
-        widget.addChild(
-            new TextWidget(translateToLocal(color.title)).setDefaultColor(color.mcColor)
-                .setTextAlignment(Alignment.CenterLeft)
-                .setPos(0, 0)
-                .setSize(32, 16));
-
-        // Color slider
-        widget.addChild(new SliderWidget().setSetter(val -> {
-            int aux = (int) (val * 10);
-            setter.accept(aux / 10d);
-        })
-            .setGetter(() -> (float) getter.getAsDouble())
-            .setBounds(color.lowerBound, color.upperBound)
-            .setHandleSize(new Size(4, 0))
-            .dynamicTooltip(() -> {
-                List<String> ret = new ArrayList<>();
-                ret.add(color.tooltip((float) getter.getAsDouble()));
-                return ret;
-            })
-            .setUpdateTooltipEveryTick(true)
-            .setSize(118, 8)
-            .setPos(32, 4));
-
-        // Color manual text box
-        Widget numberEntry = new NumericWidget().setSetter(setter)
-            .setGetter(getter)
-            .setBounds(color.lowerBound, color.upperBound)
-            .setDefaultValue(color.defaultValue)
-            .setTextAlignment(Alignment.Center)
-            .setTextColor(color.muiColor)
-            .setSize(32, 16)
-            .setPos(152, 0)
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD);
-
-        if (color == StarColorRGBM.GAMMA) {
-            numberEntry.addTooltip(translateToLocal("fog.cosmetics.onlydecimals"));
-            ((NumericWidget) numberEntry).setIntegerOnly(false);
-        } else {
-            numberEntry.addTooltip(translateToLocal("fog.cosmetics.onlyintegers"));
-        }
-
-        return widget.addChild(numberEntry);
-    }
-
-    public static Widget createStarColorButton(String text, String tooltip,
-        BiConsumer<Widget.ClickData, Widget> onClick) {
-        MultiChildWidget widget = new MultiChildWidget();
-        widget.setSize(35, 15);
-
-        widget.addChild(
-            new ButtonWidget().setOnClick(onClick)
-                .setSize(35, 15)
-                .setBackground(GTUITextures.BUTTON_STANDARD)
-                .addTooltip(translateToLocal(tooltip))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setPos(0, 0));
-
-        widget.addChild(
-            TextWidget.localised(text)
-                .setTextAlignment(Alignment.Center)
-                .setPos(0, 0)
-                .setSize(35, 15));
-
-        return widget;
-    }
-
-    public static Widget createStarColorButton(Supplier<String> text, Supplier<String> tooltip,
-        BiConsumer<Widget.ClickData, Widget> onClick) {
-        MultiChildWidget widget = new MultiChildWidget();
-        widget.setSize(35, 15);
-
-        widget.addChild(
-            new ButtonWidget().setOnClick(onClick)
-                .setSize(35, 15)
-                .setBackground(GTUITextures.BUTTON_STANDARD)
-                .dynamicTooltip(() -> {
-                    List<String> ret = new ArrayList<>();
-                    ret.add(translateToLocal(tooltip.get()));
-                    return ret;
-                })
-                .setUpdateTooltipEveryTick(true)
-                .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setPos(0, 0));
-
-        widget.addChild(
-            new DynamicTextWidget(() -> new Text(translateToLocal(text.get()))).setTextAlignment(Alignment.Center)
-                .setPos(0, 0)
-                .setSize(35, 15));
-
-        return widget;
-    }
-
     public static Widget getIndividualUpgradeGroup(ForgeOfGodsUpgrade upgrade, Supplier<Integer> shardGetter,
         Runnable complete, Runnable respec, Supplier<Boolean> check, Supplier<MilestoneFormatter> formatGetter) {
         MultiChildWidget widget = new MultiChildWidget();
@@ -743,192 +596,5 @@ public class ForgeOfGodsUI {
             return ImmutableList.of(translateToLocal("fog.button.materialrequirementsmet.tooltip"));
         }
         return ImmutableList.of(translateToLocal("fog.button.materialrequirements.tooltip"));
-    }
-
-    public static Widget createExtraCostWidget(final ItemStack costStack, Supplier<Short> paidAmount) {
-        MultiChildWidget widget = new MultiChildWidget();
-        widget.setSize(36, 18);
-
-        if (costStack == null) {
-            // Nothing to pay, so just create a simple disabled slot drawable
-            widget.addChild(
-                new DrawableWidget().setDrawable(GTUITextures.BUTTON_STANDARD_DISABLED)
-                    .setSize(18, 18));
-            return widget;
-        }
-
-        // Item slot
-        ItemStackHandler handler = new ItemStackHandler(1);
-        ItemStack handlerStack = costStack.copy();
-        handlerStack.stackSize = Math.max(1, handlerStack.stackSize - paidAmount.get());
-        handler.setStackInSlot(0, handlerStack);
-        widget.addChild(
-            new SlotWidget(handler, 0).setAccess(false, false)
-                .setRenderStackSize(false)
-                .disableInteraction()
-                .setBackground(GTUITextures.BUTTON_STANDARD_PRESSED))
-            .addChild(new ButtonWidget().setOnClick((clickData, w) -> {
-                if (widget.isClient()) {
-                    if (clickData.mouseButton == 0) {
-                        GuiCraftingRecipe.openRecipeGui("item", handlerStack.copy());
-                    } else if (clickData.mouseButton == 1) {
-                        GuiUsageRecipe.openRecipeGui("item", handlerStack.copy());
-                    }
-                }
-            })
-                .setSize(16, 16)
-                .setPos(1, 1));
-
-        // Progress text
-        widget.addChild(new DynamicTextWidget(() -> {
-            short paid = paidAmount.get();
-            EnumChatFormatting color = EnumChatFormatting.YELLOW;
-            if (paid == 0) color = EnumChatFormatting.RED;
-            else if (paid == costStack.stackSize) color = EnumChatFormatting.GREEN;
-            return new Text(color + "x" + (costStack.stackSize - paid));
-        }).setTextAlignment(Alignment.Center)
-            .setScale(0.8f)
-            .setPos(18, 5)
-            .setSize(18, 9)
-            .setEnabled(w -> paidAmount.get() < costStack.stackSize));
-
-        // Completed checkmark
-        widget.addChild(
-            new DrawableWidget().setDrawable(TecTechUITextures.GREEN_CHECKMARK_11x9)
-                .setPos(21, 5)
-                .setSize(11, 9)
-                .setEnabled(w -> paidAmount.get() >= costStack.stackSize));
-
-        return widget;
-    }
-
-    public static ModularWindow createSpecialThanksWindow() {
-        final int WIDTH = 200;
-        final int HEIGHT = 200;
-        ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
-
-        builder.setBackground(TecTechUITextures.BACKGROUND_GLOW_RAINBOW);
-        builder.setDraggable(true);
-        builder.widget(
-            ButtonWidget.closeWindowButton(true)
-                .setPos(184, 4))
-            .widget(
-                new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_GODFORGE_THANKS)
-                    .setPos(50, 50)
-                    .setSize(100, 100))
-            .widget(
-                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.contributors"))
-                    .setDefaultColor(EnumChatFormatting.GOLD)
-                    .setTextAlignment(Alignment.Center)
-                    .setScale(1f)
-                    .setPos(0, 5)
-                    .setSize(200, 15))
-            .widget(
-                new TextWidget(
-                    EnumChatFormatting.UNDERLINE + translateToLocal("gt.blockmachines.multimachine.FOG.lead"))
-                        .setScale(0.8f)
-                        .setDefaultColor(EnumChatFormatting.GOLD)
-                        .setTextAlignment(Alignment.CenterLeft)
-                        .setPos(7, 30)
-                        .setSize(60, 10))
-            .widget(
-                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.cloud")).setScale(0.8f)
-                    .setDefaultColor(EnumChatFormatting.AQUA)
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(7, 40)
-                    .setSize(60, 10))
-            .widget(
-                new TextWidget(
-                    EnumChatFormatting.UNDERLINE + translateToLocal("gt.blockmachines.multimachine.FOG.programming"))
-                        .setScale(0.8f)
-                        .setDefaultColor(EnumChatFormatting.GOLD)
-                        .setTextAlignment(Alignment.CenterLeft)
-                        .setPos(7, 55)
-                        .setSize(60, 10))
-            .widget(
-                new TextWidget(
-                    translateToLocal("gt.blockmachines.multimachine.FOG.serenibyss") + " "
-                        + EnumChatFormatting.DARK_AQUA
-                        + translateToLocal("gt.blockmachines.multimachine.FOG.teg")).setScale(0.8f)
-                            .setTextAlignment(Alignment.CenterLeft)
-                            .setPos(7, 67)
-                            .setSize(60, 10))
-            .widget(
-                new TextWidget(
-                    EnumChatFormatting.UNDERLINE + translateToLocal("gt.blockmachines.multimachine.FOG.textures"))
-                        .setScale(0.8f)
-                        .setDefaultColor(EnumChatFormatting.GOLD)
-                        .setTextAlignment(Alignment.CenterLeft)
-                        .setPos(7, 85)
-                        .setSize(100, 10))
-            .widget(
-                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.ant")).setScale(0.8f)
-                    .setDefaultColor(EnumChatFormatting.GREEN)
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(7, 95)
-                    .setSize(60, 10))
-            .widget(
-                new TextWidget(
-                    EnumChatFormatting.UNDERLINE + translateToLocal("gt.blockmachines.multimachine.FOG.rendering"))
-                        .setScale(0.8f)
-                        .setDefaultColor(EnumChatFormatting.GOLD)
-                        .setTextAlignment(Alignment.CenterLeft)
-                        .setPos(7, 110)
-                        .setSize(100, 10))
-            .widget(
-                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.bucket")).setScale(0.8f)
-                    .setDefaultColor(EnumChatFormatting.WHITE)
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(7, 120)
-                    .setSize(60, 10))
-            .widget(
-                new TextWidget(
-                    EnumChatFormatting.UNDERLINE + translateToLocal("gt.blockmachines.multimachine.FOG.lore"))
-                        .setScale(0.8f)
-                        .setDefaultColor(EnumChatFormatting.GOLD)
-                        .setTextAlignment(Alignment.CenterLeft)
-                        .setPos(7, 135)
-                        .setSize(100, 10))
-            .widget(
-                delenoName().setSpace(-1)
-                    .setAlignment(MainAxisAlignment.SPACE_BETWEEN)
-                    .setPos(7, 145)
-                    .setSize(60, 10))
-            .widget(
-                new TextWidget(
-                    EnumChatFormatting.UNDERLINE + translateToLocal("gt.blockmachines.multimachine.FOG.playtesting"))
-                        .setScale(0.8f)
-                        .setDefaultColor(EnumChatFormatting.GOLD)
-                        .setTextAlignment(Alignment.CenterLeft)
-                        .setPos(7, 160)
-                        .setSize(100, 10))
-            .widget(
-                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.misi")).setScale(0.8f)
-                    .setDefaultColor(0xffc26f)
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(7, 170)
-                    .setSize(60, 10))
-            .widget(
-                new TextWidget(EnumChatFormatting.ITALIC + translateToLocal("gt.blockmachines.multimachine.FOG.thanks"))
-                    .setScale(0.8f)
-                    .setDefaultColor(0xbbbdbd)
-                    .setTextAlignment(Alignment.Center)
-                    .setPos(90, 140)
-                    .setSize(100, 60));
-        return builder.build();
-    }
-
-    private static DynamicPositionedRow delenoName() {
-        DynamicPositionedRow nameRow = new DynamicPositionedRow();
-        String deleno = translateToLocal("gt.blockmachines.multimachine.FOG.deleno");
-        int[] colors = new int[] { 0xffffff, 0xf6fff5, 0xecffec, 0xe3ffe2, 0xd9ffd9, 0xd0ffcf };
-
-        for (int i = 0; i < deleno.length(); i++) {
-            nameRow.addChild(
-                new TextWidget(Character.toString(deleno.charAt(i))).setDefaultColor(colors[i])
-                    .setScale(0.8f)
-                    .setTextAlignment(Alignment.CenterLeft));
-        }
-        return nameRow;
     }
 }

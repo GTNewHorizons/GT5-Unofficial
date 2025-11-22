@@ -12,7 +12,6 @@ import net.minecraft.network.PacketBuffer;
 
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.GenericSyncValue;
-import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 
 import gregtech.api.util.GTUtility;
@@ -38,14 +37,6 @@ public class UpgradeStorage {
 
     public short[] getPaidCosts(ForgeOfGodsUpgrade upgrade) {
         return getData(upgrade).amountsPaid;
-    }
-
-    /** Handles consuming items and updating state if successful. Does NOT handle graviton shards! */
-    // todo remove
-    public void payCost(ForgeOfGodsUpgrade upgrade, ItemStackHandler handler) {
-        ItemStack[] inputStacks = handler.getStacks()
-            .toArray(new ItemStack[0]);
-        payCost(upgrade, inputStacks);
     }
 
     /** Handles consuming items and updating state if successful. Does NOT handle graviton shards! */
@@ -235,6 +226,7 @@ public class UpgradeStorage {
         }
     }
 
+    // todo remove
     /** Sync widget to sync a single upgrade. */
     public FakeSyncWidget<?> getSyncerMUI1(ForgeOfGodsUpgrade upgrade) {
         return new FakeSyncWidget<>(
@@ -251,15 +243,6 @@ public class UpgradeStorage {
             val -> unlockedUpgrades.put(upgrade, val),
             UpgradeData::readFromBuffer,
             UpgradeData::writeToBuffer);
-    }
-
-    /** Sync widget to sync the full upgrade tree. */
-    public FakeSyncWidget<?> getFullSyncerMUI1() {
-        return new FakeSyncWidget.ListSyncer<>(() -> new ArrayList<>(unlockedUpgrades.values()), val -> {
-            for (int i = 0; i < val.size(); i++) {
-                unlockedUpgrades.put(ForgeOfGodsUpgrade.VALUES[i], val.get(i));
-            }
-        }, UpgradeData::writeToBuffer, UpgradeData::readFromBuffer);
     }
 
     /** Sync the full upgrade tree. */
