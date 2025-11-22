@@ -54,6 +54,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialsAlloy;
+import gtnhlanth.common.register.LanthItemList;
 import tectech.thing.CustomItemList;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
@@ -6921,6 +6922,20 @@ public class AssemblerRecipes implements Runnable {
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                new ItemStack(LanthItemList.SHIELDED_ACCELERATOR_CASING, 16),
+                new ItemStack(LanthItemList.NIOBIUM_CAVITY_CASING, 16),
+                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.NiobiumTitanium, 64),
+                ItemList.Sensor_UV.get(1),
+                ItemList.Naquarite_Universal_Insulator_Foil.get(16))
+            .itemOutputs(ItemList.ColliderCasing.get(16))
+            .fluidInputs(MaterialsAlloy.PIKYONIUM.getFluidStack(64 * INGOTS))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_ZPM)
+            .addTo(assemblerRecipes);
+
     }
 
     public void withIC2NuclearControl() {
