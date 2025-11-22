@@ -144,6 +144,13 @@ public class ItemUtils {
             .eut(4)
             .addTo(packagerRecipes);
 
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.copyAmount(1, normalDust), ItemList.Schematic_Dust_Small.get(0))
+            .itemOutputs(GTUtility.copyAmount(4, smallDust))
+            .duration(5 * SECONDS)
+            .eut(4)
+            .addTo(packagerRecipes);
+
         if (tinyDust != null && normalDust != null) {
             if (RecipeUtils.addShapedRecipe(
                 tinyDust,
