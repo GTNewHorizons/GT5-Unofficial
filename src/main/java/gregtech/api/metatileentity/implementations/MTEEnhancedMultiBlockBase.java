@@ -4,9 +4,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
@@ -18,13 +22,21 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.IStructureElement;
+import com.gtnewhorizon.structurelib.structure.IStructureWalker;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.client.GTSoundLoop;
+import gregtech.client.volumetric.ISoundPosition;
 
 /**
  * Enhanced multiblock base class, featuring following improvement over {@link MTEMultiBlockBase}
@@ -39,6 +51,10 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
 
     private ExtendedFacing mExtendedFacing = ExtendedFacing.DEFAULT;
     private IAlignmentLimits mLimits = getInitialAlignmentLimits();
+
+    private final StructureCenterWalker centerWalker = new StructureCenterWalker();
+    private final Vector3f center = new Vector3f();
+    private int structureRadius;
 
     protected MTEEnhancedMultiBlockBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -162,6 +178,81 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         }
     }
 
+    @Override
+    public NBTTagCompound getDescriptionData() {
+        NBTTagCompound tag = super.getDescriptionData();
+
+        if (tag == null) tag = new NBTTagCompound();
+
+        tag.setFloat("centerX", center.x);
+        tag.setFloat("centerY", center.y);
+        tag.setFloat("centerZ", center.z);
+        tag.setInteger("radius", structureRadius);
+
+        return tag;
+    }
+
+    @Override
+    public void onDescriptionPacket(NBTTagCompound data) {
+        super.onDescriptionPacket(data);
+
+        int oldRadius = structureRadius;
+
+        center.set(data.getFloat("centerX"), data.getFloat("centerY"), data.getFloat("centerZ"));
+        structureRadius = data.getInteger("radius");
+
+        if (oldRadius != structureRadius && getBaseMetaTileEntity().isClientSide()) {
+            restartActivitySound();
+        }
+    }
+
+    @Nullable
+    public Vector3f getCenter() {
+        return center;
+    }
+
+    /// Gets the approximate radius of this multi in blocks.
+    public final int getApproximateRadius() {
+        return structureRadius;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected @NotNull GTSoundLoop createSoundLoop(SoundResource activitySound) {
+        GTSoundLoop loop = super.createSoundLoop(activitySound);
+
+        // 16 blocks = 1f volume, doubled so that you can hear the sound outside of large multis
+        loop.setVolume(Math.max(1f, structureRadius / 16f * 2f));
+
+        return loop;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected ISoundPosition getSoundPosition() {
+        return this::getCenter;
+    }
+
+    @Override
+    public boolean checkStructure(boolean aForceReset, IGregTechTileEntity aBaseMetaTileEntity) {
+        centerWalker.start();
+
+        boolean success = super.checkStructure(aForceReset, aBaseMetaTileEntity);
+
+        StructureSize size = centerWalker.stop();
+
+        if (size != null) {
+            this.center.set(size.centerX, size.centerY, size.centerZ);
+            this.structureRadius = size.radius;
+        }
+
+        if (success) {
+            aBaseMetaTileEntity.issueTileUpdate();
+        }
+
+        return success;
+    }
+
     /**
      * When an old {@link ExtendedFacing} is loaded upon MTE deserialization, and the loaded facing cannot pass test of
      * current {@link #getAlignmentLimits()}, this method will be called to retrieve a corrected version. This method is
@@ -205,7 +296,7 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
      */
     protected final boolean checkPiece(String piece, int horizontalOffset, int verticalOffset, int depthOffset) {
         final IGregTechTileEntity tTile = getBaseMetaTileEntity();
-        return getCastedStructureDefinition().check(
+        boolean success = getCastedStructureDefinition().check(
             this,
             piece,
             tTile.getWorld(),
@@ -217,6 +308,22 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
             verticalOffset,
             depthOffset,
             !mMachine);
+
+        if (success) {
+            getCastedStructureDefinition().iterate(
+                piece,
+                tTile.getWorld(),
+                getExtendedFacing(),
+                tTile.getXCoord(),
+                tTile.getYCoord(),
+                tTile.getZCoord(),
+                horizontalOffset,
+                verticalOffset,
+                depthOffset,
+                centerWalker);
+        }
+
+        return success;
     }
 
     protected final boolean buildPiece(String piece, ItemStack trigger, boolean hintOnly, int horizontalOffset,
@@ -406,5 +513,47 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         super.onFirstTick(aBaseMetaTileEntity);
         if (aBaseMetaTileEntity.isClientSide())
             StructureLibAPI.queryAlignment((IAlignmentProvider) aBaseMetaTileEntity);
+    }
+
+    public static class StructureSize {
+
+        public int minX = Integer.MAX_VALUE, minY = Integer.MAX_VALUE, minZ = Integer.MAX_VALUE;
+        public int maxX = Integer.MIN_VALUE, maxY = Integer.MIN_VALUE, maxZ = Integer.MIN_VALUE;
+
+        public float centerX, centerY, centerZ;
+        public int radius;
+    }
+
+    private class StructureCenterWalker implements IStructureWalker<MTEEnhancedMultiBlockBase<T>> {
+
+        private StructureSize size;
+
+        public void start() {
+            size = new StructureSize();
+        }
+
+        public StructureSize stop() {
+            size.centerX = (size.minX + size.maxX) * 0.5f;
+            size.centerY = (size.minY + size.maxY) * 0.5f;
+            size.centerZ = (size.minZ + size.maxZ) * 0.5f;
+
+            size.radius = GTUtility.max(size.maxX - size.minX, size.maxY - size.minY, size.maxZ - size.minZ) / 2;
+
+            return size;
+        }
+
+        @Override
+        public boolean visit(IStructureElement<MTEEnhancedMultiBlockBase<T>> element, World world, int x, int y, int z,
+            int a, int b, int c) {
+            size.minX = Math.min(size.minX, x);
+            size.minY = Math.min(size.minY, y);
+            size.minZ = Math.min(size.minZ, z);
+
+            size.maxX = Math.max(size.maxX, x);
+            size.maxY = Math.max(size.maxY, y);
+            size.maxZ = Math.max(size.maxZ, z);
+
+            return true;
+        }
     }
 }
