@@ -73,13 +73,28 @@ public class RadioHatchMaterialLoader {
     }
 
     public static void addRadioHatchMaterials() {
+        /*
+        Todo: map statically all the materials used instead of iterating on the pools of materials.
+        List of Werstoff materials processed dynamically as of this commit: Thorium232, UraniumBasedLiquidFuel,
+        UraniumBasedLiquidFuel(ExcitedState), ThoriumBasedLiquidFuel, ThoriumBasedLiquidFuel(ExcitedState),
+        PlutoniumBasedLiquidFuel, PlutoniumBasedLiquidFuel(ExcitedState), ExtremelyUnstableNaquadah, LightNaquadahFuel,
+        HeavyNaquadahFuel, NaquadahGas, NaquadahAsphalt, RadioactiveSludge, AcidNaquadahEmulsion, NaquadahEmulsion,
+        NaquadahSolution, NaquadahBasedLiquidFuelMkI, NaquadahBasedLiquidFuelMkII, NaquadahBasedLiquidFuelMkIII,
+        NaquadahBasedLiquidFuelMkIV, NaquadahBasedLiquidFuelMkV, NaquadahBasedLiquidFuelMkVI,
+        Enriched-NaquadahOxideMixture, Enriched-Naquadah-RichSolution, ConcentratedEnriched-NaquadahSludge,
+        Enriched-NaquadahSulphate, NaquadriaOxideMixture, LowQualityNaquadriaPhosphate, Naquadria-RichSolution,
+        LowQualityNaquadriaSulphate, LowQualityNaquadriaSulphate, NaquadriaSulphate, EnrichedNaquadahGoo,
+        NaquadriaGoo, InertEnrichedNaquadah, InertNaquadria, Thorium234
+
+        List of GT materials processed dynamically as of this commit: Americium, Bismuth, Flerovium_GT5U, Plutonium,
+        Radon, Thorium, Uranium, Plutonium241, Uranium235, Oganesson, Californium, Tiberium
+         */
 
         for (Werkstoff material : Werkstoff.werkstoffHashSet) {
             if (material == null || !material.getStats()
                 .isRadioactive() || material == WerkstoffLoader.Tiberium) {
                 continue;
             }
-            MainMod.LOGGER.info("Radioactive BW material: " + material.getVarName());
 
             int level = (int) material.getStats()
                 .getProtons();
@@ -96,7 +111,6 @@ public class RadioHatchMaterialLoader {
             boolean validProton = material.getProtons() >= 83 && !material.equals(Materials.Tritanium) // No Tritanium
                 && !material.equals(Materials.Naquadah); // Naquadah needs spacial value
             if (validProton) {
-                MainMod.LOGGER.info("Radioactive GT material: " + material.getName());
                 int level = (int) material.getProtons();
                 if (GTOreDictUnificator.get(OrePrefixes.stick, material, 1) != null) {
                     radioHatchMaterialAdder(GTOreDictUnificator.get(OrePrefixes.stick, material, 1), level, 1);
