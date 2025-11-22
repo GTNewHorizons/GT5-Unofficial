@@ -59,7 +59,7 @@ public class MTEIndustrialSifter extends GTPPMultiBlockBase<MTEIndustrialSifter>
 
     @Override
     public String getMachineType() {
-        return "Sifter";
+        return "gt.recipe.sifter";
     }
 
     @Override
@@ -69,16 +69,16 @@ public class MTEIndustrialSifter extends GTPPMultiBlockBase<MTEIndustrialSifter>
             .addBulkMachineInfo(4, 5f, 0.75f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 3, 5, false)
-            .addController("Bottom Center")
-            .addCasingInfoMin("Sieve Grate", 18, false)
-            .addCasingInfoMin("Sieve Casings", 35, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addOutputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
+            .addController("front_bottom_middle")
+            .addCasingInfoMin("gtplusplus.blockcasings.2.6.name", 18)
+            .addCasingInfoMin("gtplusplus.blockcasings.2.5.name", 35)
+            .addInputBus("<casing>", 1)
+            .addOutputBus("<casing>", 1)
+            .addInputHatch("<casing>", 1)
+            .addOutputHatch("<casing>", 1)
+            .addEnergyHatch("<casing>", 1)
+            .addMaintenanceHatch("<casing>", 1)
+            .addMufflerHatch("<casing>", 1)
             .toolTipFinisher();
         return tt;
     }

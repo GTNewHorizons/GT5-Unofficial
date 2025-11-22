@@ -1,5 +1,7 @@
 package gregtech.api.util.tooltip;
 
+import static gregtech.api.util.GTUtility.translate;
+
 import java.text.DecimalFormat;
 
 import net.minecraft.util.EnumChatFormatting;
@@ -128,10 +130,19 @@ public class TooltipHelper {
      * If the voltage index is out of range, it returns "Invalid Voltage Tier".
      *
      * @param voltageIndex The voltage index, as defined in {@link VoltageIndex}.
+     * @param withSuffix If false, returns only the voltage name without '-tier'.
+     *                   True by default.
      * @return A formatted string representing the voltage tier.
      */
+    public static String voltageText(int voltageIndex, boolean withSuffix) {
+        if (voltageIndex < VoltageIndex.ULV || voltageIndex >= VoltageIndex.MAX)
+            return translate("GT5U.MBTT.ErrorTier");
+        return translate(
+            withSuffix ? "GT5U.MBTT.Tier" : "%s",
+            GTValues.TIER_COLORS[voltageIndex] + GTValues.VN[voltageIndex] + EnumChatFormatting.GRAY);
+    }
+
     public static String voltageText(int voltageIndex) {
-        if (voltageIndex < VoltageIndex.ULV || voltageIndex >= VoltageIndex.MAX) return "Invalid Voltage Tier";
-        return GTValues.TIER_COLORS[voltageIndex] + GTValues.VN[voltageIndex] + EnumChatFormatting.GRAY + "-tier";
+        return voltageText(voltageIndex, true);
     }
 }

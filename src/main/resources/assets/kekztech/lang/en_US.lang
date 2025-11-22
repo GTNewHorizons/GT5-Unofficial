@@ -35,6 +35,7 @@ item.kekztech_crafting_item.15.name=GDC Ceramic Plate
 # -------- TFFT: Structure Blocks
 tile.kekztech_tfftstoragefield_block.name=T.F.F.T Casing/Storage Field Block
 tile.kekztech_tfftstoragefield_block.0.name=T.F.F.T Casing
+tile.kekztech_tfftstoragefield_block.generic.name=T.F.F.T Storage Field Block
 tile.kekztech_tfftstoragefield_block.1.name=T.F.F.T Storage Field Block (Tier I)
 tile.kekztech_tfftstoragefield_block.2.name=T.F.F.T Storage Field Block (Tier II)
 tile.kekztech_tfftstoragefield_block.3.name=T.F.F.T Storage Field Block (Tier III)
