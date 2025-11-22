@@ -311,6 +311,7 @@ import static gregtech.common.items.IDMetaItem01.Schematic_2by2;
 import static gregtech.common.items.IDMetaItem01.Schematic_3by3;
 import static gregtech.common.items.IDMetaItem01.Schematic_Crafting;
 import static gregtech.common.items.IDMetaItem01.Schematic_Dust;
+import static gregtech.common.items.IDMetaItem01.Schematic_Dust_Small;
 import static gregtech.common.items.IDMetaItem01.Sensor_EV;
 import static gregtech.common.items.IDMetaItem01.Sensor_HV;
 import static gregtech.common.items.IDMetaItem01.Sensor_IV;
@@ -1279,7 +1280,14 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 new ItemData(Materials.Steel, 7257600L),
                 new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FABRICO, 1L)));
-
+        ItemList.Schematic_Dust_Small.set(
+            addItem(
+                Schematic_Dust_Small.ID,
+                "Schematic (Small Dusts)",
+                "Splits Dusts into 4 (use in Packager)",
+                new ItemData(Materials.Steel, 7257600L),
+                new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 1L),
+                new TCAspects.TC_AspectStack(TCAspects.FABRICO, 1L)));
         ItemList.Battery_Hull_LV.set(
             addItem(
                 Battery_Hull_LV.ID,
@@ -4238,6 +4246,10 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             ItemList.Schematic_Dust.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { aTextEmptyRow, aTextShape, "  d", 'P', ItemList.Schematic });
+        GTModHandler.addCraftingRecipe(
+            ItemList.Schematic_Dust_Small.get(1L),
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { aTextEmptyRow, aTextShape, " d ", 'P', ItemList.Schematic });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Battery_Hull_LV.get(1L),
@@ -4710,6 +4722,10 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             ItemList.Schematic.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { ItemList.Schematic_Dust });
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.Schematic.get(1L),
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { ItemList.Schematic_Dust_Small });
 
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.Tool_DataOrb.get(1L),

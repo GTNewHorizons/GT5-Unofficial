@@ -451,10 +451,15 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                         .setDurationModifier(getDurationMultiplierFromRoughness())
                         .setDurationDecreasePerOC(compatMode.OCTier == 2 ? 4.0 : 2.0);
                 }
+                if (mCoolingTower != null) {
+                    return super.createOverclockCalculator(recipe).setNoOverclock(!isOC())
+                        .setEUtDiscount(Math.sqrt(structures))
+                        .setDurationModifier(getDurationMultiplierFromRoughness())
+                        .setDurationDecreasePerOC(!mCoolingTower.isTier1 ? 4.0 : 2.0);
+                }
                 return super.createOverclockCalculator(recipe).setNoOverclock(!isOC())
                     .setEUtDiscount(Math.sqrt(structures))
-                    .setDurationModifier(getDurationMultiplierFromRoughness())
-                    .setDurationDecreasePerOC(!mCoolingTower.isTier1 ? 4.0 : 2.0);
+                    .setDurationModifier(getDurationMultiplierFromRoughness());
             }
 
             @Nonnull

@@ -15,7 +15,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
@@ -733,11 +732,21 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
                 EnumChatFormatting.GOLD,
                 GTUtility.formatNumbers(tag.getLong("cacheCapacity")),
                 EnumChatFormatting.RESET));
+    }
 
-        if (!GuiScreen.isShiftKeyDown()) {
-            ss.add("Hold Shift for more info");
-            return;
-        }
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean hasWailaAdvancedBody(ItemStack itemStack, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        return true;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void getWailaAdvancedBody(ItemStack itemStack, List<String> ss, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaAdvancedBody(itemStack, ss, accessor, config);
+
+        NBTTagCompound tag = accessor.getNBTData();
 
         NBTTagList stacks = tag.getTagList("stacks", 10);
         int stackCount = tag.getInteger("stackCount");

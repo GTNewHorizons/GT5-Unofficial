@@ -77,7 +77,7 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
              */
 
             // Process Dust
-            if (!componentMap.isEmpty() && componentMap.size() <= 6) {
+            if (!componentMap.isEmpty() && componentMap.size() <= 6 && material.smallestStackSizeWhenProcessing <= 64) {
                 ItemStack[] mInternalOutputs = new ItemStack[6];
                 int[] mChances = new int[6];
                 int mCellCount = 0;
