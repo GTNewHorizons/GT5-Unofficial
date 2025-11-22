@@ -369,6 +369,7 @@ public enum ItemList implements IItemContainer {
     Schematic_2by2,
     Schematic_3by3,
     Schematic_Dust,
+    Schematic_Dust_Small,
 
     GigaChad,
 
@@ -1083,6 +1084,7 @@ public enum ItemList implements IItemContainer {
     Hatch_Input_Bus_ZPM,
     Hatch_Input_Bus_UV,
     Hatch_Input_Bus_MAX,
+    Hatch_Input_Bus_Debug,
 
     Hatch_Output_ULV,
     Hatch_Output_LV,
@@ -1660,6 +1662,8 @@ public enum ItemList implements IItemContainer {
     Super_Chest_EV,
     Super_Chest_IV,
 
+    Debug_Fluid_Tank,
+
     Long_Distance_Pipeline_Fluid,
     Long_Distance_Pipeline_Item,
 
@@ -2154,6 +2158,8 @@ public enum ItemList implements IItemContainer {
     Superconducting_Magnet_Solenoid_UMV,
     RadiantNaquadahAlloyCasing,
     PCBFactory,
+    PCBBioChamber,
+    PCBCoolingTower,
     BasicPhotolithographicFrameworkCasing,
     ReinforcedPhotolithographicFrameworkCasing,
     RadiationProofPhotolithographicFrameworkCasing,
@@ -2230,6 +2236,7 @@ public enum ItemList implements IItemContainer {
     Hatch_Input_UMV,
     Hatch_Input_UXV,
     Hatch_Input_MAX,
+    Hatch_Input_Debug,
     Hatch_Output_UEV,
     Hatch_Output_UIV,
     Hatch_Output_UMV,
@@ -2759,11 +2766,11 @@ public enum ItemList implements IItemContainer {
     ManaFly,
     DebugEnergyHatch,
 
-    Machine_LV_CableCoater,
-    Machine_MV_CableCoater,
-    Machine_HV_CableCoater,
-    Machine_EV_CableCoater,
     ChaosLocator,
+
+    CokeOvenController,
+    CokeOvenCasing,
+    CokeOvenHatch,
 
     Mechanical_Helmet,
     Mechanical_Chestplate,

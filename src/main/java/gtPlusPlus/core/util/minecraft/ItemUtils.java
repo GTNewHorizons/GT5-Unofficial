@@ -144,6 +144,13 @@ public class ItemUtils {
             .eut(4)
             .addTo(packagerRecipes);
 
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.copyAmount(1, normalDust), ItemList.Schematic_Dust_Small.get(0))
+            .itemOutputs(GTUtility.copyAmount(4, smallDust))
+            .duration(5 * SECONDS)
+            .eut(4)
+            .addTo(packagerRecipes);
+
         if (tinyDust != null && normalDust != null) {
             if (RecipeUtils.addShapedRecipe(
                 tinyDust,
@@ -408,27 +415,7 @@ public class ItemUtils {
     }
 
     public static IInventory organiseInventory(IInventory aInputInventory) {
-        ItemStack[] p = new ItemStack[aInputInventory.getSizeInventory()];
-        for (int o = 0; o < aInputInventory.getSizeInventory(); o++) {
-            p[o] = aInputInventory.getStackInSlot(o);
-        }
-        // ItemStack[] g = organiseInventory(p);
-
-        for (int i = 0; i < p.length; ++i) {
-            for (int j = i + 1; j < p.length; ++j) {
-                if (p[j] != null && (p[i] == null || GTUtility.areStacksEqual(p[i], p[j]))) {
-                    GTUtility.moveStackFromSlotAToSlotB(
-                        aInputInventory,
-                        aInputInventory,
-                        j,
-                        i,
-                        (byte) 64,
-                        (byte) 1,
-                        (byte) 64,
-                        (byte) 1);
-                }
-            }
-        }
+        GTUtility.compactStandardInventory(aInputInventory);
 
         return aInputInventory;
     }
