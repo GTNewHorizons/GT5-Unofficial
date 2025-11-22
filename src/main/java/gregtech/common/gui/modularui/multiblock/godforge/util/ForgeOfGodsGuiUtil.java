@@ -4,11 +4,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.util.ResourceLocation;
 
+import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Mods;
+import gregtech.api.modularui2.GTGuiTextures;
 
 public class ForgeOfGodsGuiUtil {
 
@@ -31,6 +33,10 @@ public class ForgeOfGodsGuiUtil {
 
     public static ButtonWidget<?> panelCloseButton() {
         return ButtonWidget.panelCloseButton()
+            .background(GTGuiTextures.CLOSE_BUTTON_HOLLOW)
+            .overlay(IDrawable.EMPTY)
+            .disableHoverBackground()
+            .disableHoverOverlay()
             .clickSound(getButtonSound());
     }
 }

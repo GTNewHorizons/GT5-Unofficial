@@ -24,6 +24,7 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
+import gregtech.common.gui.modularui.multiblock.godforge.data.StarColors;
 import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValues;
 import gregtech.common.gui.modularui.multiblock.godforge.util.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
@@ -60,7 +61,7 @@ public class StarColorImportPanel {
                 .marginTop(9));
 
         Flow mainColumn = new Column().coverChildren()
-            .marginTop(22)
+            .marginTop(23)
             .alignX(0.5f);
 
         // Serialized star color text field
@@ -130,7 +131,9 @@ public class StarColorImportPanel {
                     .color(Color.WHITE.main)
                     .alignment(Alignment.CENTER))
                 .size(21, 16)
-                .marginLeft(1));
+                .marginLeft(1)
+                .tooltip(t -> t.addLine(translateToLocal("fog.cosmetics.cyclespeed")))
+                .tooltipShowUpTimer(TOOLTIP_DELAY));
 
         return row;
     }
@@ -147,18 +150,31 @@ public class StarColorImportPanel {
                 .size(16)
                 .margin(1);
         }).asWidget()
-            .size(18);
+            .size(18)
+            .tooltipDynamic(t -> {
+                ForgeOfGodsStarColor starColor = color.getValue();
+                if (starColor != null && index < starColor.numColors()) {
+                    StarColorSetting setting = starColor.getColor(index);
+                    // todo consider hsv?
+                    t.addLine(StarColors.RGB.RED.getTooltip(setting.getColorR()));
+                    t.addLine(StarColors.RGB.GREEN.getTooltip(setting.getColorG()));
+                    t.addLine(StarColors.RGB.BLUE.getTooltip(setting.getColorB()));
+                    t.addLine(StarColors.Extra.GAMMA.getTooltip(setting.getGamma()));
+                }
+            })
+            .tooltipAutoUpdate(true)
+            .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
     private static Flow createApplyResetRow(SyncHypervisor hypervisor, MutableObject<ForgeOfGodsStarColor> color,
         MutableObject<String> colorStr) {
-        Flow row = new Row().size(74, 16)
+        Flow row = new Row().size(76, 15)
             .childPadding(2)
             .alignX(0.5f);
 
         // Reset button
         row.child(
-            new ButtonWidget<>().size(36, 16)
+            new ButtonWidget<>().size(37, 15)
                 .onMousePressed(d -> {
                     color.setValue(null);
                     colorStr.setValue("");
@@ -174,7 +190,7 @@ public class StarColorImportPanel {
 
         // Apply button
         row.child(
-            new ButtonWidget<>().size(36, 16)
+            new ButtonWidget<>().size(37, 15)
                 .onMousePressed(d -> {
                     if (color.getValue() != null) {
                         GenericSyncValue<ForgeOfGodsStarColor> starColorClickedSyncer = SyncValues.STAR_COLOR_CLICKED

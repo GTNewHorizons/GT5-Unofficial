@@ -79,7 +79,7 @@ public class CustomStarColorPanel {
                 .marginTop(9));
 
         Flow mainColumn = new Column().coverChildren()
-            .marginTop(23)
+            .marginTop(22)
             .alignX(0.5f);
 
         // Color rows
@@ -241,13 +241,14 @@ public class CustomStarColorPanel {
 
     private static Flow createAddApplyResetRow(SyncHypervisor hypervisor, ColorData colorData,
         MutableInt editingIndex) {
-        Flow row = new Row().size(74, 15)
+        Flow row = new Row().size(76, 15)
+            .childPadding(2)
             .marginBottom(3)
             .alignX(0.5f);
 
         // Add/Apply button
         row.child(
-            new ButtonWidget<>().size(35, 15)
+            new ButtonWidget<>().size(37, 15)
                 .onMousePressed(d -> {
                     ForgeOfGodsStarColor starColor = getClickedStarColor(hypervisor);
                     StarColorSetting setting = colorData.createSetting();
@@ -281,8 +282,7 @@ public class CustomStarColorPanel {
 
         // Reset button
         row.child(
-            new ButtonWidget<>().size(35, 15)
-                .marginLeft(4)
+            new ButtonWidget<>().size(37, 15)
                 .onMousePressed(d -> {
                     // Reset color to previously saved color if possible
                     ForgeOfGodsStarColor starColor = getClickedStarColor(hypervisor);
@@ -345,13 +345,13 @@ public class CustomStarColorPanel {
     private static Flow createSaveDeleteRow(SyncHypervisor hypervisor) {
         IPanelHandler importerPanel = Panels.STAR_COLOR_IMPORT.getFrom(Panels.CUSTOM_STAR_COLOR, hypervisor);
 
-        Flow row = new Row().size(146, 15)
+        Flow row = new Row().size(154, 15)
             .childPadding(2)
             .alignX(0.5f);
 
         // Export button
         row.child(
-            new ButtonWidget<>().size(35, 15)
+            new ButtonWidget<>().size(37, 15)
                 .onMousePressed(d -> {
                     ForgeOfGodsStarColor starColor = getClickedStarColor(hypervisor);
                     if (starColor.numColors() == 0) return true;
@@ -373,7 +373,7 @@ public class CustomStarColorPanel {
 
         // Import button
         row.child(
-            new ButtonWidget<>().size(35, 15)
+            new ButtonWidget<>().size(37, 15)
                 .onMousePressed(d -> {
                     if (!importerPanel.isPanelOpen()) {
                         importerPanel.openPanel();
@@ -390,7 +390,7 @@ public class CustomStarColorPanel {
 
         // Delete button
         row.child(
-            new ButtonWidget<>().size(35, 15)
+            new ButtonWidget<>().size(37, 15)
                 .onMousePressed(d -> {
                     StringSyncValue selectedStarColor = SyncValues.SELECTED_STAR_COLOR
                         .lookupFrom(Panels.CUSTOM_STAR_COLOR, hypervisor);
@@ -422,7 +422,7 @@ public class CustomStarColorPanel {
 
         // Save button
         row.child(
-            new ButtonWidget<>().size(35, 15)
+            new ButtonWidget<>().size(37, 15)
                 .onMousePressed(d -> {
                     ForgeOfGodsStarColor starColor = getClickedStarColor(hypervisor);
                     int editingIndex = getEditingColorIndex(hypervisor);

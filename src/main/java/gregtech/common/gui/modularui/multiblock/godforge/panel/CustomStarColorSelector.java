@@ -54,7 +54,8 @@ public class CustomStarColorSelector {
             IKey.str(color.getTitle())
                 .alignment(Alignment.CENTER)
                 .asWidget()
-                .size(32, 16));
+                .size(31, 16)
+                .marginRight(1));
 
         // Slider
         row.child(
@@ -157,7 +158,8 @@ public class CustomStarColorSelector {
             IKey.str(color.getTitle())
                 .alignment(Alignment.CENTER)
                 .asWidget()
-                .size(32, 16));
+                .size(31, 16)
+                .marginRight(1));
 
         // Slider
         IDrawable background = switch (color) {
@@ -245,7 +247,8 @@ public class CustomStarColorSelector {
             IKey.str(gamma.getTitle())
                 .alignment(Alignment.CENTER)
                 .asWidget()
-                .size(32, 16));
+                .size(31, 16)
+                .marginRight(1));
 
         // Slider
         row.child(
@@ -279,11 +282,12 @@ public class CustomStarColorSelector {
 
         // RGB/HSV switchers
         Flow rgbhsvRow = new Row().coverChildrenWidth()
+            .childPadding(2)
             .height(15)
             .alignX(0);
+
         rgbhsvRow.child(
             new PageButton(RGB_PAGE_INDEX, pageController).size(24, 15)
-                .marginRight(3)
                 .background(new DynamicDrawable(() -> {
                     if (pageController.getActivePageIndex() == RGB_PAGE_INDEX) {
                         return GTGuiTextures.BUTTON_OUTLINE_HOLLOW_PRESSED;
@@ -295,11 +299,11 @@ public class CustomStarColorSelector {
                         return IKey.lang("fog.cosmetics.color.rgb_colored");
                     }
                     return IKey.lang("fog.cosmetics.color.rgb")
-                        .style(EnumChatFormatting.DARK_GRAY);
+                        .style(EnumChatFormatting.WHITE);
                 })));
+
         rgbhsvRow.child(
             new PageButton(HSV_PAGE_INDEX, pageController).size(24, 15)
-                .marginRight(5)
                 .background(new DynamicDrawable(() -> {
                     if (pageController.getActivePageIndex() == HSV_PAGE_INDEX) {
                         return GTGuiTextures.BUTTON_OUTLINE_HOLLOW_PRESSED;
@@ -311,14 +315,16 @@ public class CustomStarColorSelector {
                         return IKey.lang("fog.cosmetics.color.hsv_colored");
                     }
                     return IKey.lang("fog.cosmetics.color.hsv")
-                        .style(EnumChatFormatting.DARK_GRAY);
+                        .style(EnumChatFormatting.WHITE);
                 })));
+
         row.child(rgbhsvRow);
 
         // Hex code text field header
         Flow colorRow = new Row().coverChildrenWidth()
             .height(15)
             .alignX(1);
+
         colorRow.child(
             IKey.lang("fog.cosmetics.color.hex")
                 .style(EnumChatFormatting.GOLD)
@@ -348,6 +354,7 @@ public class CustomStarColorSelector {
         colorRow.child(
             new DynamicDrawable(() -> new Rectangle().setColor(colorData.getColor())).asWidget()
                 .size(32, 15));
+
         row.child(colorRow);
 
         return row;

@@ -21,10 +21,12 @@ import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
+import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
 
+import gregtech.api.gui.widgets.CommonWidgets;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.base.TTMultiblockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Formatters;
@@ -148,6 +150,17 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
     @Override
     protected int getTextBoxToInventoryGap() {
         return 20;
+    }
+
+    @Override
+    protected ToggleButton createMuffleButton() {
+        return CommonWidgets.createMuffleButton("mufflerSyncer")
+            .size(7)
+            .background(IDrawable.EMPTY)
+            .overlay(true, GTGuiTextures.GODFORGE_SOUND_OFF)
+            .overlay(false, GTGuiTextures.GODFORGE_SOUND_ON)
+            .top(8)
+            .right(8);
     }
 
     private IWidget createMilestonePanelButton() {

@@ -92,9 +92,9 @@ public class StarCosmeticsPanel {
             newStarColorRow.child(
                 new ButtonWidget<>().size(16)
                     .disableHoverBackground()
+                    .background(GTGuiTextures.BUTTON_OUTLINE_HOLLOW)
                     .overlay(
                         IKey.str("+")
-                            .style(EnumChatFormatting.DARK_GRAY)
                             .alignment(Alignment.CENTER))
                     .onMousePressed(d -> {
                         setEditingStarColor(null, -1, hypervisor);
