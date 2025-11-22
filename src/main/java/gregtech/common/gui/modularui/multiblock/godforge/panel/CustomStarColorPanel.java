@@ -405,8 +405,7 @@ public class CustomStarColorPanel {
                         .equals(starColor.getName())) {
                         // set to default if the deleted color was selected
                         selectedStarColor.setValue(ForgeOfGodsStarColor.DEFAULT.getName());
-                        SyncActions.UPDATE_RENDERER
-                            .callFrom(Panels.CUSTOM_STAR_COLOR, hypervisor, ForgeOfGodsStarColor.DEFAULT);
+                        SyncActions.UPDATE_RENDERER.callFrom(Panels.CUSTOM_STAR_COLOR, hypervisor, null);
                     }
                     hypervisor.getModularPanel(Panels.CUSTOM_STAR_COLOR)
                         .closeIfOpen();
@@ -435,11 +434,10 @@ public class CustomStarColorPanel {
                         SyncValues.STAR_COLORS.notifyUpdateFrom(Panels.CUSTOM_STAR_COLOR, hypervisor);
                         SyncValues.SELECTED_STAR_COLOR.lookupFrom(Panels.CUSTOM_STAR_COLOR, hypervisor)
                             .setValue(starColor.getName());
-                        SyncActions.UPDATE_RENDERER.callFrom(Panels.CUSTOM_STAR_COLOR, hypervisor, starColor);
+                        SyncActions.UPDATE_RENDERER.callFrom(Panels.CUSTOM_STAR_COLOR, hypervisor, null);
                     } else {
                         starColors.store(starColor);
-                        SyncValues.STAR_COLORS.lookupFrom(Panels.CUSTOM_STAR_COLOR, hypervisor)
-                            .notifyUpdate();
+                        SyncValues.STAR_COLORS.notifyUpdateFrom(Panels.CUSTOM_STAR_COLOR, hypervisor);
                     }
                     hypervisor.getModularPanel(Panels.CUSTOM_STAR_COLOR)
                         .closeIfOpen();

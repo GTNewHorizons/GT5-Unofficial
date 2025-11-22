@@ -14,10 +14,10 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DynamicSyncHandler;
-import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.GenericSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
+import com.cleanroommc.modularui.widget.scroll.VerticalScrollData;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
@@ -78,8 +78,8 @@ public class StarCosmeticsPanel {
         DynamicSyncHandler handler = new DynamicSyncHandler().widgetProvider(($, $$) -> {
             ForgeOfGodsData data = hypervisor.getData();
             StarColorStorage starColors = data.getStarColors();
-            // todo move scroll bar to the left instead of the right
-            ListWidget<IWidget, ?> colorList = new ListWidget<>().size(80, 147);
+            ListWidget<IWidget, ?> colorList = new ListWidget<>().size(80, 147)
+                .scrollDirection(new VerticalScrollData(true));
 
             // Star colors
             for (int i = 0; i < starColors.size(); i++) {
@@ -121,9 +121,8 @@ public class StarCosmeticsPanel {
             return colorList;
         });
 
-        GenericListSyncHandler<ForgeOfGodsStarColor> starColorsSyncer = SyncValues.STAR_COLORS
-            .lookupFrom(Panels.STAR_COSMETICS, hypervisor);
-        starColorsSyncer.setChangeListener(() -> handler.notifyUpdate($ -> {}));
+        SyncValues.STAR_COLORS.lookupFrom(Panels.STAR_COSMETICS, hypervisor)
+            .setChangeListener(() -> handler.notifyUpdate($ -> {}));
 
         colorColumn.child(
             new DynamicSyncedWidget<>().coverChildren()
@@ -238,7 +237,7 @@ public class StarCosmeticsPanel {
                     } else {
                         // Otherwise select this color
                         selectedStarColorSyncer.setValue(starColor.getName());
-                        SyncActions.UPDATE_RENDERER.callFrom(Panels.STAR_COSMETICS, hypervisor, starColor);
+                        SyncActions.UPDATE_RENDERER.callFrom(Panels.STAR_COSMETICS, hypervisor, null);
                     }
                     return true;
                 })

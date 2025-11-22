@@ -138,7 +138,7 @@ public class IndividualMilestonePanel {
         // Inversion status
         column.child(
             IKey.lang("gt.blockmachines.multimachine.FOG.inversionactive")
-                .style(EnumChatFormatting.BOLD)
+                .style(EnumChatFormatting.WHITE, EnumChatFormatting.BOLD)
                 .alignment(Alignment.CENTER)
                 .scale(0.8f)
                 .asWidget()
