@@ -311,6 +311,7 @@ import static gregtech.common.items.IDMetaItem01.Schematic_2by2;
 import static gregtech.common.items.IDMetaItem01.Schematic_3by3;
 import static gregtech.common.items.IDMetaItem01.Schematic_Crafting;
 import static gregtech.common.items.IDMetaItem01.Schematic_Dust;
+import static gregtech.common.items.IDMetaItem01.Schematic_Dust_Small;
 import static gregtech.common.items.IDMetaItem01.Sensor_EV;
 import static gregtech.common.items.IDMetaItem01.Sensor_HV;
 import static gregtech.common.items.IDMetaItem01.Sensor_IV;
@@ -1275,7 +1276,14 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 new ItemData(Materials.Steel, 7257600L),
                 new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FABRICO, 1L)));
-
+        ItemList.Schematic_Dust_Small.set(
+            addItem(
+                Schematic_Dust_Small.ID,
+                "Schematic (Small Dusts)",
+                "Splits Dusts into 4 (use in Packager)",
+                new ItemData(Materials.Steel, 7257600L),
+                new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 1L),
+                new TCAspects.TC_AspectStack(TCAspects.FABRICO, 1L)));
         ItemList.Battery_Hull_LV.set(
             addItem(
                 Battery_Hull_LV.ID,
@@ -1955,7 +1963,9 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 addItem(
                     Electric_Pump_UIV.ID,
                     "Electric Pump (UIV)",
-                    PartNotCoverText,
+                    GTUtility.formatNumbers(4194304) + PartCoverText
+                        + GTUtility.formatNumbers(4194304 * 20)
+                        + PartCoverText2,
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
@@ -1965,7 +1975,9 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Electric_Pump_UMV.ID,
                 "Electric Pump (UMV)",
-                PartNotCoverText,
+                GTUtility.formatNumbers(8388608) + PartCoverText
+                    + GTUtility.formatNumbers(8388608 * 20)
+                    + PartCoverText2,
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
@@ -1974,7 +1986,9 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Electric_Pump_UXV.ID,
                 "Electric Pump (UXV)",
-                PartNotCoverText,
+                GTUtility.formatNumbers(16777216) + PartCoverText
+                    + GTUtility.formatNumbers(16777216 * 20)
+                    + PartCoverText2,
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
@@ -1983,7 +1997,9 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Electric_Pump_MAX.ID,
                 "Electric Pump (MAX)",
-                PartNotCoverText,
+                GTUtility.formatNumbers(33554432) + PartCoverText
+                    + GTUtility.formatNumbers(33554432 * 20)
+                    + PartCoverText2,
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
@@ -2219,7 +2235,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 addItem(
                     Conveyor_Module_UIV.ID,
                     "Conveyor Module (UIV)",
-                    PartNotCoverText,
+                    "64 stacks every 1/20 sec (as Cover)",
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.ITER, 512L)))
@@ -2228,7 +2244,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Conveyor_Module_UMV.ID,
                 "Conveyor Module (UMV)",
-                PartNotCoverText,
+                "128 stacks every 1/20 sec (as Cover)",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 512L)));
@@ -2236,7 +2252,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Conveyor_Module_UXV.ID,
                 "Conveyor Module (UXV)",
-                PartNotCoverText,
+                "256 stacks every 1/20 sec (as Cover)",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 512L)));
@@ -2244,7 +2260,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Conveyor_Module_MAX.ID,
                 "Conveyor Module (MAX)",
-                PartNotCoverText,
+                "512 stacks every 1/20 sec (as Cover)",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 512L)));
@@ -3797,6 +3813,22 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             ItemList.Electric_Pump_UEV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[10][0], TextureFactory.of(OVERLAY_PUMP)),
             context -> new CoverPump(context, 2097152, TextureFactory.of(OVERLAY_PUMP)));
+        CoverRegistry.registerCover(
+            ItemList.Electric_Pump_UIV.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[11][0], TextureFactory.of(OVERLAY_PUMP)),
+            context -> new CoverPump(context, 4194304, TextureFactory.of(OVERLAY_PUMP)));
+        CoverRegistry.registerCover(
+            ItemList.Electric_Pump_UMV.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[12][0], TextureFactory.of(OVERLAY_PUMP)),
+            context -> new CoverPump(context, 8388608, TextureFactory.of(OVERLAY_PUMP)));
+        CoverRegistry.registerCover(
+            ItemList.Electric_Pump_UXV.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[13][0], TextureFactory.of(OVERLAY_PUMP)),
+            context -> new CoverPump(context, 16777216, TextureFactory.of(OVERLAY_PUMP)));
+        CoverRegistry.registerCover(
+            ItemList.Electric_Pump_MAX.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[14][0], TextureFactory.of(OVERLAY_PUMP)),
+            context -> new CoverPump(context, 33554432, TextureFactory.of(OVERLAY_PUMP)));
 
         CoverRegistry.registerCover(
             ItemList.Steam_Valve_LV.get(1L),
@@ -3936,6 +3968,22 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             ItemList.Conveyor_Module_UEV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[10][0], TextureFactory.of(OVERLAY_CONVEYOR)),
             context -> new CoverConveyor(context, 1, 32, TextureFactory.of(OVERLAY_CONVEYOR)));
+        CoverRegistry.registerCover(
+            ItemList.Conveyor_Module_UIV.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[11][0], TextureFactory.of(OVERLAY_CONVEYOR)),
+            context -> new CoverConveyor(context, 1, 64, TextureFactory.of(OVERLAY_CONVEYOR)));
+        CoverRegistry.registerCover(
+            ItemList.Conveyor_Module_UMV.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[12][0], TextureFactory.of(OVERLAY_CONVEYOR)),
+            context -> new CoverConveyor(context, 1, 128, TextureFactory.of(OVERLAY_CONVEYOR)));
+        CoverRegistry.registerCover(
+            ItemList.Conveyor_Module_UXV.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[13][0], TextureFactory.of(OVERLAY_CONVEYOR)),
+            context -> new CoverConveyor(context, 1, 256, TextureFactory.of(OVERLAY_CONVEYOR)));
+        CoverRegistry.registerCover(
+            ItemList.Conveyor_Module_MAX.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[14][0], TextureFactory.of(OVERLAY_CONVEYOR)),
+            context -> new CoverConveyor(context, 1, 512, TextureFactory.of(OVERLAY_CONVEYOR)));
 
         CoverRegistry.registerCover(
             ItemList.Robot_Arm_LV.get(1L),
@@ -4193,6 +4241,10 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             ItemList.Schematic_Dust.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { aTextEmptyRow, aTextShape, "  d", 'P', ItemList.Schematic });
+        GTModHandler.addCraftingRecipe(
+            ItemList.Schematic_Dust_Small.get(1L),
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { aTextEmptyRow, aTextShape, " d ", 'P', ItemList.Schematic });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Battery_Hull_LV.get(1L),
@@ -4665,6 +4717,10 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             ItemList.Schematic.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { ItemList.Schematic_Dust });
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.Schematic.get(1L),
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { ItemList.Schematic_Dust_Small });
 
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.Tool_DataOrb.get(1L),

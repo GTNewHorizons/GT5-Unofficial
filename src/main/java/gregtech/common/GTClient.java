@@ -76,6 +76,7 @@ import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.net.GTPacketClientPreference;
+import gregtech.api.net.cape.GTPacketSetCape;
 import gregtech.api.recipe.RecipeCategory;
 import gregtech.api.util.ColorsMetadataSection;
 import gregtech.api.util.ColorsMetadataSectionSerializer;
@@ -88,11 +89,11 @@ import gregtech.client.BlockOverlayRenderer;
 import gregtech.client.GTMouseEventHandler;
 import gregtech.client.GTPowerfailRenderer;
 import gregtech.client.SeekingOggCodec;
-import gregtech.client.capes.GTCapesLoader;
 import gregtech.client.renderer.entity.RenderPowderBarrel;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.config.Client;
 import gregtech.common.entity.EntityPowderBarrelPrimed;
+import gregtech.common.misc.GTCapeCommand;
 import gregtech.common.misc.GTPowerfailCommandClient;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.pollution.PollutionRenderer;
@@ -283,12 +284,12 @@ public class GTClient extends GTProxy {
         Minecraft.getMinecraft()
             .getResourcePackRepository().rprMetadataSerializer
                 .registerMetadataSectionType(new ColorsMetadataSectionSerializer(), ColorsMetadataSection.class);
-        new Thread(new GTCapesLoader(), "GT Cape Loader").start();
         mPreference = new GTClientPreference();
         Materials.initClient();
 
         ClientCommandHandler.instance.registerCommand(new GTPowerfailCommandClient());
         ClientCommandHandler.instance.registerCommand(new PowerGogglesCommand());
+        ClientCommandHandler.instance.registerCommand(new GTCapeCommand());
 
         if (Mods.Navigator.isModLoaded()) {
             registerMapLayers();
@@ -436,6 +437,7 @@ public class GTClient extends GTProxy {
             if (mFirstTick) {
                 mFirstTick = false;
                 GTValues.NW.sendToServer(new GTPacketClientPreference(mPreference));
+                GTValues.NW.sendToServer(new GTPacketSetCape(Client.preference.selectedCape));
 
                 if (!Minecraft.getMinecraft()
                     .isSingleplayer()) {
@@ -465,7 +467,10 @@ public class GTClient extends GTProxy {
             // refresh client preference and send to server, since it's the only config we allow changing at runtime.
             mPreference = new GTClientPreference();
             GTPreLoad.loadClientConfig();
-            if (e.isWorldRunning) GTValues.NW.sendToServer(new GTPacketClientPreference(mPreference));
+            if (e.isWorldRunning) {
+                GTValues.NW.sendToServer(new GTPacketClientPreference(mPreference));
+                GTValues.NW.sendToServer(new GTPacketSetCape(Client.preference.selectedCape));
+            }
         }
     }
 
@@ -584,6 +589,8 @@ public class GTClient extends GTProxy {
             addHazmatTooltip(event, HazardProtectionTooltip.EXTREME_TEMP_TRANSLATION_KEY);
         }
         for (Hazard hazard : protections) {
+            // Handled by GalaxySpace
+            if (hazard == Hazard.SPACE) continue;
             addHazmatTooltip(event, HazardProtectionTooltip.singleHazardTranslationKey(hazard));
         }
     }
