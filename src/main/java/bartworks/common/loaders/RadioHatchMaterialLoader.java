@@ -9,7 +9,6 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 
-import bartworks.MainMod;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
@@ -74,20 +73,20 @@ public class RadioHatchMaterialLoader {
 
     public static void addRadioHatchMaterials() {
         /*
-        Todo: map statically all the materials used instead of iterating on the pools of materials.
-        List of Werstoff materials processed dynamically as of this commit: Thorium232, UraniumBasedLiquidFuel,
-        UraniumBasedLiquidFuel(ExcitedState), ThoriumBasedLiquidFuel, ThoriumBasedLiquidFuel(ExcitedState),
-        PlutoniumBasedLiquidFuel, PlutoniumBasedLiquidFuel(ExcitedState), ExtremelyUnstableNaquadah, LightNaquadahFuel,
-        HeavyNaquadahFuel, NaquadahGas, NaquadahAsphalt, RadioactiveSludge, AcidNaquadahEmulsion, NaquadahEmulsion,
-        NaquadahSolution, NaquadahBasedLiquidFuelMkI, NaquadahBasedLiquidFuelMkII, NaquadahBasedLiquidFuelMkIII,
-        NaquadahBasedLiquidFuelMkIV, NaquadahBasedLiquidFuelMkV, NaquadahBasedLiquidFuelMkVI,
-        Enriched-NaquadahOxideMixture, Enriched-Naquadah-RichSolution, ConcentratedEnriched-NaquadahSludge,
-        Enriched-NaquadahSulphate, NaquadriaOxideMixture, LowQualityNaquadriaPhosphate, Naquadria-RichSolution,
-        LowQualityNaquadriaSulphate, LowQualityNaquadriaSulphate, NaquadriaSulphate, EnrichedNaquadahGoo,
-        NaquadriaGoo, InertEnrichedNaquadah, InertNaquadria, Thorium234
-
-        List of GT materials processed dynamically as of this commit: Americium, Bismuth, Flerovium_GT5U, Plutonium,
-        Radon, Thorium, Uranium, Plutonium241, Uranium235, Oganesson, Californium, Tiberium
+         * Todo: map statically all the materials used instead of iterating on the pools of materials.
+         * List of Werstoff materials processed dynamically as of this commit: Thorium232, UraniumBasedLiquidFuel,
+         * UraniumBasedLiquidFuel(ExcitedState), ThoriumBasedLiquidFuel, ThoriumBasedLiquidFuel(ExcitedState),
+         * PlutoniumBasedLiquidFuel, PlutoniumBasedLiquidFuel(ExcitedState), ExtremelyUnstableNaquadah,
+         * LightNaquadahFuel,
+         * HeavyNaquadahFuel, NaquadahGas, NaquadahAsphalt, RadioactiveSludge, AcidNaquadahEmulsion, NaquadahEmulsion,
+         * NaquadahSolution, NaquadahBasedLiquidFuelMkI, NaquadahBasedLiquidFuelMkII, NaquadahBasedLiquidFuelMkIII,
+         * NaquadahBasedLiquidFuelMkIV, NaquadahBasedLiquidFuelMkV, NaquadahBasedLiquidFuelMkVI,
+         * Enriched-NaquadahOxideMixture, Enriched-Naquadah-RichSolution, ConcentratedEnriched-NaquadahSludge,
+         * Enriched-NaquadahSulphate, NaquadriaOxideMixture, LowQualityNaquadriaPhosphate, Naquadria-RichSolution,
+         * LowQualityNaquadriaSulphate, LowQualityNaquadriaSulphate, NaquadriaSulphate, EnrichedNaquadahGoo,
+         * NaquadriaGoo, InertEnrichedNaquadah, InertNaquadria, Thorium234
+         * List of GT materials processed dynamically as of this commit: Americium, Bismuth, Flerovium_GT5U, Plutonium,
+         * Radon, Thorium, Uranium, Plutonium241, Uranium235, Oganesson, Californium, Tiberium
          */
 
         for (Werkstoff material : Werkstoff.werkstoffHashSet) {
