@@ -3,11 +3,11 @@ package kubatech.loaders;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
-import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.formingPressRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.centrifugeNonCellRecipes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -128,7 +128,7 @@ public class HTGRLoader {
                 .eut(TierEU.RECIPE_EV)
                 .duration(300)
                 .nbtSensitive()
-                .addTo(centrifugeRecipes);
+                .addTo(centrifugeNonCellRecipes);
         })
         .build();
 
