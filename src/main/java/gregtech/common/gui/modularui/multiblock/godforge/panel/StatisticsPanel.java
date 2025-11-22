@@ -38,11 +38,11 @@ import tectech.thing.metaTileEntity.multi.godforge.MTEExoticModule;
 import tectech.thing.metaTileEntity.multi.godforge.MTEMoltenModule;
 import tectech.thing.metaTileEntity.multi.godforge.MTEPlasmaModule;
 import tectech.thing.metaTileEntity.multi.godforge.MTESmeltingModule;
+import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 
 public class StatisticsPanel {
 
-    private static final int SIZE_W = 300;
-    private static final int SIZE_H = 300;
+    private static final int SIZE = 300;
 
     private static final int HEIGHT_MINOR = 18;
     private static final int HEIGHT_MAJOR = 30;
@@ -65,7 +65,7 @@ public class StatisticsPanel {
 
         registerSyncValues(hypervisor);
 
-        panel.size(SIZE_W, SIZE_H)
+        panel.size(SIZE)
             .background(GTGuiTextures.BACKGROUND_GLOW_WHITE)
             .disableHoverBackground()
             .paddingLeft(12)
@@ -132,7 +132,7 @@ public class StatisticsPanel {
         return panel;
     }
 
-    public static void registerSyncValues(SyncHypervisor hypervisor) {
+    private static void registerSyncValues(SyncHypervisor hypervisor) {
         SyncValues.FUEL_FACTOR.registerFor(Panels.STATISTICS, hypervisor);
     }
 
@@ -251,10 +251,9 @@ public class StatisticsPanel {
 
     private static String getModuleValue(SyncHypervisor hypervisor, Statistics stat, int moduleIndex,
         MutableBoolean usingPreview, MutableInt previewFuelFactor) {
-        int fuelFactor = SyncValues.FUEL_FACTOR.lookupFrom(Panels.STATISTICS, hypervisor)
-            .getIntValue();
-        Formatters format = SyncValues.FORMATTER.lookupFrom(Panels.MAIN, hypervisor)
-            .getValue();
+        ForgeOfGodsData data = hypervisor.getData();
+        int fuelFactor = data.getFuelConsumptionFactor();
+        Formatters format = data.getFormatter();
 
         int displayFuelFactor = usingPreview.booleanValue() ? Math.max(1, previewFuelFactor.intValue()) : fuelFactor;
         return stat.calculate(MODULES[moduleIndex], displayFuelFactor, hypervisor.getData(), format);

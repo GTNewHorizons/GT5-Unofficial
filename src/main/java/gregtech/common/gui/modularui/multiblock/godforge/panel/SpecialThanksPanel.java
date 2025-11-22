@@ -53,32 +53,39 @@ public class SpecialThanksPanel {
             .coverChildren()
             .leftRelOffset(0, 7)
             .marginTop(LIST_OFFSET);
+
         creditsList.child(
             createCreditsSection(
                 "gt.blockmachines.multimachine.FOG.lead",
                 createCreditsEntry(
                     EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.multimachine.FOG.cloud"))));
+
         creditsList.child(
             createCreditsSection(
                 "gt.blockmachines.multimachine.FOG.programming",
                 createCreditsEntry(translateToLocal("gt.blockmachines.multimachine.FOG.serenibyss")),
                 createCreditsEntry(
                     EnumChatFormatting.DARK_AQUA + translateToLocal("gt.blockmachines.multimachine.FOG.teg"))));
+
         creditsList.child(
             createCreditsSection(
                 "gt.blockmachines.multimachine.FOG.textures",
                 createCreditsEntry(
                     EnumChatFormatting.GREEN + translateToLocal("gt.blockmachines.multimachine.FOG.ant"))));
+
         creditsList.child(
             createCreditsSection(
                 "gt.blockmachines.multimachine.FOG.rendering",
                 createCreditsEntry(
                     EnumChatFormatting.WHITE + translateToLocal("gt.blockmachines.multimachine.FOG.bucket"))));
+
         creditsList.child(createCreditsSection("gt.blockmachines.multimachine.FOG.lore", createDelenoName()));
+
         creditsList.child(
             createCreditsSection(
                 "gt.blockmachines.multimachine.FOG.playtesting",
                 createCreditsEntry(translateToLocal("gt.blockmachines.multimachine.FOG.misi"), 0xFFC26F)));
+
         panel.child(creditsList);
 
         // Corner message

@@ -42,14 +42,14 @@ public class MilestonePanel {
 
         panel.size(SIZE_W, SIZE_H)
             .background(GTGuiTextures.BACKGROUND_SPACE)
-            .disableHoverBackground();
+            .disableHoverBackground()
+            .child(ForgeOfGodsGuiUtil.panelCloseButton());
 
         panel.child(createMilestone(Milestones.CHARGE, hypervisor));
         panel.child(createMilestone(Milestones.CONVERSION, hypervisor));
         panel.child(createMilestone(Milestones.CATALYST, hypervisor));
         panel.child(createMilestone(Milestones.COMPOSITION, hypervisor));
 
-        panel.child(ForgeOfGodsGuiUtil.panelCloseButton());
         return panel;
     }
 
@@ -66,15 +66,18 @@ public class MilestonePanel {
     }
 
     private static ParentWidget<?> createMilestone(Milestones milestone, SyncHypervisor hypervisor) {
-        ParentWidget<?> parent = new ParentWidget<>().size(MILESTONE_BUTTON_SIZE_W, MILESTONE_BUTTON_SIZE_H)
-            .align(milestone.getPosition())
-            .margin(MILESTONE_BUTTON_MARGIN_X, MILESTONE_BUTTON_MARGIN_Y);
-
         IPanelHandler individualPanel = Panels.INDIVIDUAL_MILESTONE.getFrom(Panels.MILESTONE, hypervisor);
+
+        EnumSyncValue<Milestones> milestoneSyncer = SyncValues.MILESTONE_CLICKED
+            .lookupFrom(Panels.MILESTONE, hypervisor);
         FloatSyncValue progressSyncer = milestone.getProgressSyncer()
             .lookupFrom(Panels.MILESTONE, hypervisor);
         FloatSyncValue invertedProgressSyncer = milestone.getProgressInvertedSyncer()
             .lookupFrom(Panels.MILESTONE, hypervisor);
+
+        ParentWidget<?> parent = new ParentWidget<>().size(MILESTONE_BUTTON_SIZE_W, MILESTONE_BUTTON_SIZE_H)
+            .align(milestone.getPosition())
+            .margin(MILESTONE_BUTTON_MARGIN_X, MILESTONE_BUTTON_MARGIN_Y);
 
         // Background image and individual milestone button
         parent.child(
@@ -82,10 +85,8 @@ public class MilestonePanel {
                 .size(milestone.getMainWidth(), milestone.getMainHeight())
                 .background(milestone.getMainBackground())
                 .disableHoverBackground()
-                .onMousePressed($ -> {
-                    EnumSyncValue<Milestones> syncer = SyncValues.MILESTONE_CLICKED
-                        .lookupFrom(Panels.MILESTONE, hypervisor);
-                    syncer.setValue(milestone);
+                .onMousePressed(d -> {
+                    milestoneSyncer.setValue(milestone);
                     if (!individualPanel.isPanelOpen()) {
                         individualPanel.openPanel();
                     }

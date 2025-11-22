@@ -3,6 +3,8 @@ package gregtech.common.gui.modularui.multiblock.godforge.panel;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import net.minecraft.util.MathHelper;
+
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -57,7 +59,7 @@ public class FuelConfigPanel {
         // Textbox
         column.child(
             new TextFieldWidget().setFormatAsInteger(true)
-                .setNumbers(() -> 1, () -> GodforgeMath.calculateMaxFuelFactor(data))
+                .setNumbers(raw -> MathHelper.clamp_int(raw, 1, GodforgeMath.calculateMaxFuelFactor(data)))
                 .setTextAlignment(Alignment.CENTER)
                 .value(SyncValues.FUEL_FACTOR.create(hypervisor))
                 .setTooltipOverride(true)

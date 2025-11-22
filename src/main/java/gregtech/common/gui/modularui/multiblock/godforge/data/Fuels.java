@@ -11,9 +11,7 @@ public enum Fuels {
 
     RESIDUE(() -> Materials.DTR.getFluid(1)),
     STELLAR(() -> Materials.RawStarMatter.getFluid(1)),
-    MHDCSM(() -> Materials.MHDCSM.getMolten(1)),
-
-    ;
+    MHDCSM(() -> Materials.MHDCSM.getMolten(1));
 
     public static final Fuels[] VALUES = values();
 
@@ -29,10 +27,6 @@ public enum Fuels {
 
     public void select(ForgeOfGodsData data) {
         data.setSelectedFuelType(ordinal());
-    }
-
-    public boolean isSelected(ForgeOfGodsData data) {
-        return data.getSelectedFuelType() == ordinal();
     }
 
     public static Fuels getFromData(ForgeOfGodsData data) {

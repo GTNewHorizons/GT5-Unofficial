@@ -41,7 +41,8 @@ public class IndividualMilestonePanel {
 
         panel.size(SIZE)
             .background(GTGuiTextures.BACKGROUND_GLOW_WHITE)
-            .disableHoverBackground();
+            .disableHoverBackground()
+            .child(ForgeOfGodsGuiUtil.panelCloseButton());
 
         // registered on the Milestone panel, look up from there
         EnumSyncValue<Milestones> milestoneSyncer = SyncValues.MILESTONE_CLICKED
@@ -148,7 +149,6 @@ public class IndividualMilestonePanel {
                 .setEnabledIf($ -> inversionSyncer.getBoolValue()));
 
         panel.child(column);
-        panel.child(ForgeOfGodsGuiUtil.panelCloseButton());
         return panel;
     }
 
