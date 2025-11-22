@@ -57,10 +57,17 @@ public class CustomStarColorPanel {
 
         registerSyncValues(hypervisor);
 
+        MutableInt editingIndex = new MutableInt(-1);
+        ColorData colorData = new ColorData();
+
         panel.size(SIZE)
             .background(GTGuiTextures.BACKGROUND_GLOW_WHITE)
             .disableHoverBackground()
-            .child(ForgeOfGodsGuiUtil.panelCloseButton());
+            .child(ForgeOfGodsGuiUtil.panelCloseButton())
+            .onCloseAction(() -> {
+                editingIndex.setValue(-1);
+                colorData.reset();
+            });
 
         // Title
         panel.child(
@@ -76,8 +83,6 @@ public class CustomStarColorPanel {
             .alignX(0.5f);
 
         // Color rows
-        ColorData colorData = new ColorData();
-
         PagedWidget.Controller controller = new PagedWidget.Controller();
 
         mainColumn.child(
@@ -90,8 +95,6 @@ public class CustomStarColorPanel {
 
         // Color preview
         mainColumn.child(CustomStarColorSelector.createColorPreviewRow(controller, colorData));
-
-        MutableInt editingIndex = new MutableInt(-1);
 
         // Add/Apply/Reset buttons
         mainColumn.child(createAddApplyResetRow(hypervisor, colorData, editingIndex));
@@ -393,8 +396,7 @@ public class CustomStarColorPanel {
                         .getStarColors();
 
                     starColors.drop(starColor);
-                    SyncValues.STAR_COLORS.lookupFrom(Panels.CUSTOM_STAR_COLOR, hypervisor)
-                        .notifyUpdate();
+                    SyncValues.STAR_COLORS.notifyUpdateFrom(Panels.CUSTOM_STAR_COLOR, hypervisor);
                     if (selectedStarColor.getStringValue()
                         .equals(starColor.getName())) {
                         // set to default if the deleted color was selected
@@ -425,8 +427,7 @@ public class CustomStarColorPanel {
                     if (starColor.numColors() == 0) return true;
                     if (editingIndex >= 0) {
                         starColors.insert(starColor, editingIndex);
-                        SyncValues.STAR_COLORS.lookupFrom(Panels.CUSTOM_STAR_COLOR, hypervisor)
-                            .notifyUpdate();
+                        SyncValues.STAR_COLORS.notifyUpdateFrom(Panels.CUSTOM_STAR_COLOR, hypervisor);
                         SyncValues.SELECTED_STAR_COLOR.lookupFrom(Panels.CUSTOM_STAR_COLOR, hypervisor)
                             .setValue(starColor.getName());
                         SyncActions.UPDATE_RENDERER.callFrom(Panels.CUSTOM_STAR_COLOR, hypervisor, starColor);

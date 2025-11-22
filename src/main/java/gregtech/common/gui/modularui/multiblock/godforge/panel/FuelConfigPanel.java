@@ -55,16 +55,16 @@ public class FuelConfigPanel {
                 .marginTop(5));
 
         // Textbox
-        TextFieldWidget textBox = new TextFieldWidget().setFormatAsInteger(true)
-            .setNumbers(() -> 1, () -> GodforgeMath.calculateMaxFuelFactor(data))
-            .setTextAlignment(Alignment.CENTER)
-            .value(SyncValues.FUEL_FACTOR.create(hypervisor))
-            .setTooltipOverride(true)
-            .setScrollValues(1, 4, 64)
-            .size(70, 18)
-            .marginLeft(4)
-            .marginTop(3);
-        column.child(textBox);
+        column.child(
+            new TextFieldWidget().setFormatAsInteger(true)
+                .setNumbers(() -> 1, () -> GodforgeMath.calculateMaxFuelFactor(data))
+                .setTextAlignment(Alignment.CENTER)
+                .value(SyncValues.FUEL_FACTOR.create(hypervisor))
+                .setTooltipOverride(true)
+                .setScrollValues(1, 4, 64)
+                .size(70, 18)
+                .marginLeft(4)
+                .marginTop(3));
 
         // Info widget
         panel.child(
