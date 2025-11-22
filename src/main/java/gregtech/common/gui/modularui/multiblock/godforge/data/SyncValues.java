@@ -215,6 +215,13 @@ public class SyncValues<T extends ValueSyncHandler<?>> {
             };
         });
 
+    public static final SyncValues<IntSyncValue> STAR_COLOR_EDITING_INDEX = new SyncValues<>(
+        "fog.sync.star_color_editing_index",
+        data -> {
+            MutableInt i = new MutableInt(-1);
+            return new IntSyncValue(i::intValue, i::setValue);
+        });
+
     public static final SyncValues<StringSyncValue> SELECTED_STAR_COLOR = new SyncValues<>(
         "fog.sync.selected_star_color",
         data -> new StringSyncValue(data::getSelectedStarColor, data::setSelectedStarColor));

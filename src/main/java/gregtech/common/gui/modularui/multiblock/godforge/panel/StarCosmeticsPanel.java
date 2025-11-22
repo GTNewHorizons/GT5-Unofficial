@@ -73,8 +73,6 @@ public class StarCosmeticsPanel {
                 .alignX(0));
 
         // Color selector list
-        GenericSyncValue<ForgeOfGodsStarColor> starColorClickedSyncer = SyncValues.STAR_COLOR_CLICKED
-            .lookupFrom(Panels.STAR_COSMETICS, hypervisor);
         IPanelHandler customStarColorPanel = Panels.CUSTOM_STAR_COLOR.getFrom(Panels.STAR_COSMETICS, hypervisor);
 
         DynamicSyncHandler handler = new DynamicSyncHandler().widgetProvider(($, $$) -> {
@@ -86,7 +84,7 @@ public class StarCosmeticsPanel {
             // Star colors
             for (int i = 0; i < starColors.size(); i++) {
                 ForgeOfGodsStarColor starColor = starColors.getByIndex(i);
-                colorList.child(createStarColorRow(starColor, hypervisor));
+                colorList.child(createStarColorRow(starColor, i, hypervisor));
             }
 
             // Create new star color button
@@ -98,7 +96,7 @@ public class StarCosmeticsPanel {
                         IKey.str(EnumChatFormatting.DARK_GRAY + "+")
                             .alignment(Alignment.CENTER))
                     .onMousePressed(d -> {
-                        starColorClickedSyncer.setValue(null);
+                        setEditingStarColor(null, -1, hypervisor);
                         if (!customStarColorPanel.isPanelOpen()) {
                             customStarColorPanel.openPanel();
                         }
@@ -185,6 +183,7 @@ public class StarCosmeticsPanel {
     private static void registerSyncValues(SyncHypervisor hypervisor) {
         SyncValues.STAR_COLORS.registerFor(Panels.STAR_COSMETICS, hypervisor);
         SyncValues.STAR_COLOR_CLICKED.registerFor(Panels.STAR_COSMETICS, hypervisor);
+        SyncValues.STAR_COLOR_EDITING_INDEX.registerFor(Panels.STAR_COSMETICS, hypervisor);
         SyncValues.SELECTED_STAR_COLOR.registerFor(Panels.STAR_COSMETICS, hypervisor);
         SyncValues.RENDERER_DISABLED.registerFor(Panels.STAR_COSMETICS, hypervisor);
 
@@ -192,12 +191,20 @@ public class StarCosmeticsPanel {
         SyncActions.DISABLE_RENDERER.registerFor(Panels.STAR_COSMETICS, hypervisor, hypervisor.getMultiblock());
     }
 
-    private static Flow createStarColorRow(ForgeOfGodsStarColor starColor, SyncHypervisor hypervisor) {
+    private static void setEditingStarColor(ForgeOfGodsStarColor starColor, int index, SyncHypervisor hypervisor) {
+        GenericSyncValue<ForgeOfGodsStarColor> starColorClicked = SyncValues.STAR_COLOR_CLICKED
+            .lookupFrom(Panels.STAR_COSMETICS, hypervisor);
+        IntSyncValue editingColorIndex = SyncValues.STAR_COLOR_EDITING_INDEX
+            .lookupFrom(Panels.STAR_COSMETICS, hypervisor);
+
+        starColorClicked.setValue(starColor);
+        editingColorIndex.setIntValue(index);
+    }
+
+    private static Flow createStarColorRow(ForgeOfGodsStarColor starColor, int index, SyncHypervisor hypervisor) {
         IPanelHandler customStarColorPanel = Panels.CUSTOM_STAR_COLOR.getFrom(Panels.STAR_COSMETICS, hypervisor);
 
         StringSyncValue selectedStarColorSyncer = SyncValues.SELECTED_STAR_COLOR
-            .lookupFrom(Panels.STAR_COSMETICS, hypervisor);
-        GenericSyncValue<ForgeOfGodsStarColor> starColorClickedSyncer = SyncValues.STAR_COLOR_CLICKED
             .lookupFrom(Panels.STAR_COSMETICS, hypervisor);
 
         Flow row = new Row().coverChildren()
@@ -223,7 +230,7 @@ public class StarCosmeticsPanel {
                         .onMousePressed(d -> {
                             if (Interactable.hasShiftDown() && !starColor.isPresetColor()) {
                                 // If shift is held, open color editor for this preset, if not a default preset
-                                starColorClickedSyncer.setValue(starColor);
+                                setEditingStarColor(starColor, index, hypervisor);
                                 if (!customStarColorPanel.isPanelOpen()) {
                                     customStarColorPanel.openPanel();
                                 }

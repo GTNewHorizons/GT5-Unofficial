@@ -3,10 +3,16 @@ package gregtech.common.gui.modularui.multiblock.godforge.panel;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import java.awt.Desktop;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+
 import net.minecraft.util.EnumChatFormatting;
 
 import org.apache.commons.lang3.mutable.MutableInt;
 
+import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
@@ -15,7 +21,10 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.IntValue;
+import com.cleanroommc.modularui.value.StringValue;
 import com.cleanroommc.modularui.value.sync.GenericSyncValue;
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
+import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.PagedWidget;
@@ -28,11 +37,13 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.godforge.data.ColorData;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
 import gregtech.common.gui.modularui.multiblock.godforge.data.StarColors;
+import gregtech.common.gui.modularui.multiblock.godforge.data.SyncActions;
 import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValues;
 import gregtech.common.gui.modularui.multiblock.godforge.util.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
 import tectech.thing.metaTileEntity.multi.godforge.color.ForgeOfGodsStarColor;
 import tectech.thing.metaTileEntity.multi.godforge.color.StarColorSetting;
+import tectech.thing.metaTileEntity.multi.godforge.color.StarColorStorage;
 
 public class CustomStarColorPanel {
 
@@ -112,18 +123,33 @@ public class CustomStarColorPanel {
                 .marginLeft(1));
         mainColumn.child(colorListRow);
 
+        // Custom name row
+        mainColumn.child(createNameRow(hypervisor));
+
+        // Export/Import/Delete/Save row
+        mainColumn.child(createSaveDeleteRow(hypervisor));
+
         panel.child(mainColumn);
         return panel;
     }
 
     private static void registerSyncValues(SyncHypervisor hypervisor) {
+        SyncValues.STAR_COLORS.registerFor(Panels.CUSTOM_STAR_COLOR, hypervisor);
+        SyncValues.SELECTED_STAR_COLOR.registerFor(Panels.CUSTOM_STAR_COLOR, hypervisor);
 
+        SyncActions.UPDATE_RENDERER.registerFor(Panels.CUSTOM_STAR_COLOR, hypervisor, hypervisor.getMultiblock());
     }
 
     private static ForgeOfGodsStarColor getClickedStarColor(SyncHypervisor hypervisor) {
         GenericSyncValue<ForgeOfGodsStarColor> starColorClickedSyncer = SyncValues.STAR_COLOR_CLICKED
             .lookupFrom(Panels.STAR_COSMETICS, hypervisor);
         return starColorClickedSyncer.getValue();
+    }
+
+    private static int getEditingColorIndex(SyncHypervisor hypervisor) {
+        IntSyncValue editingIndexSyncer = SyncValues.STAR_COLOR_EDITING_INDEX
+            .lookupFrom(Panels.STAR_COSMETICS, hypervisor);
+        return editingIndexSyncer.getIntValue();
     }
 
     private static ParentWidget<?> createColorButton(SyncHypervisor hypervisor, PagedWidget.Controller rgbhsvController,
@@ -271,6 +297,153 @@ public class CustomStarColorPanel {
                         .alignment(Alignment.CENTER))
                 .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
                 .tooltip(t -> t.addLine(translateToLocal("fog.cosmetics.resetcolor.tooltip")))
+                .tooltipShowUpTimer(TOOLTIP_DELAY));
+
+        return row;
+    }
+
+    private static Flow createNameRow(SyncHypervisor hypervisor) {
+        Flow row = new Row().size(184, 16)
+            .marginBottom(3)
+            .alignX(0.5f);
+
+        // Name header
+        row.child(
+            IKey.str(EnumChatFormatting.GOLD + translateToLocal("fog.cosmetics.starcolorname"))
+                .alignment(Alignment.CenterLeft)
+                .asWidget()
+                .size(92, 16));
+
+        // Name text field
+        row.child(
+            new TextFieldWidget().size(92, 16)
+                .value(new StringValue.Dynamic(() -> {
+                    ForgeOfGodsStarColor starColor = getClickedStarColor(hypervisor);
+                    return starColor.getName();
+                }, val -> {
+                    ForgeOfGodsStarColor starColor = getClickedStarColor(hypervisor);
+                    starColor.setName(val);
+                }))
+                .setTextAlignment(Alignment.CenterLeft)
+                .setTextColor(0xFFFFAA00)
+                .setMaxLength(15)
+                .setTooltipOverride(true)
+                .tooltip(t -> {
+                    t.addLine(translateToLocal("fog.cosmetics.starcolorname.tooltip.1"));
+                    t.addLine(translateToLocal("fog.cosmetics.starcolorname.tooltip.2"));
+                })
+                .tooltipShowUpTimer(TOOLTIP_DELAY));
+
+        return row;
+    }
+
+    private static Flow createSaveDeleteRow(SyncHypervisor hypervisor) {
+        IPanelHandler importerPanel = Panels.STAR_COLOR_IMPORT.getFrom(Panels.CUSTOM_STAR_COLOR, hypervisor);
+
+        Flow row = new Row().size(146, 15)
+            .childPadding(2)
+            .alignX(0.5f);
+
+        // Export button
+        row.child(
+            new ButtonWidget<>().size(35, 15)
+                .onMousePressed(d -> {
+                    ForgeOfGodsStarColor starColor = getClickedStarColor(hypervisor);
+                    if (starColor.numColors() == 0) return true;
+                    if (Desktop.isDesktopSupported()) {
+                        String output = starColor.serializeToString();
+                        Clipboard clipboard = Toolkit.getDefaultToolkit()
+                            .getSystemClipboard();
+                        clipboard.setContents(new StringSelection(output), null);
+                    }
+                    return true;
+                })
+                .overlay(
+                    IKey.lang("fog.cosmetics.exportcolors")
+                        .alignment(Alignment.CENTER))
+                .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
+                .tooltip(t -> t.addLine(translateToLocal("fog.cosmetics.exportcolors.tooltip")))
+                .tooltipShowUpTimer(TOOLTIP_DELAY));
+
+        // Import button
+        row.child(
+            new ButtonWidget<>().size(35, 15)
+                .onMousePressed(d -> {
+                    if (!importerPanel.isPanelOpen()) {
+                        importerPanel.openPanel();
+                    }
+                    return true;
+                })
+                .overlay(
+                    IKey.lang("fog.cosmetics.importcolors")
+                        .alignment(Alignment.CENTER))
+                .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
+                .tooltip(t -> t.addLine(translateToLocal("fog.cosmetics.importcolors.tooltip")))
+                .tooltipShowUpTimer(TOOLTIP_DELAY));
+
+        // Delete button
+        row.child(
+            new ButtonWidget<>().size(35, 15)
+                .onMousePressed(d -> {
+                    StringSyncValue selectedStarColor = SyncValues.SELECTED_STAR_COLOR
+                        .lookupFrom(Panels.CUSTOM_STAR_COLOR, hypervisor);
+
+                    ForgeOfGodsStarColor starColor = getClickedStarColor(hypervisor);
+                    StarColorStorage starColors = hypervisor.getData()
+                        .getStarColors();
+
+                    starColors.drop(starColor);
+                    SyncValues.STAR_COLORS.lookupFrom(Panels.CUSTOM_STAR_COLOR, hypervisor)
+                        .notifyUpdate();
+                    if (selectedStarColor.getStringValue()
+                        .equals(starColor.getName())) {
+                        // set to default if the deleted color was selected
+                        selectedStarColor.setValue(ForgeOfGodsStarColor.DEFAULT.getName());
+                        SyncActions.UPDATE_RENDERER
+                            .callFrom(Panels.CUSTOM_STAR_COLOR, hypervisor, ForgeOfGodsStarColor.DEFAULT);
+                    }
+                    hypervisor.getModularPanel(Panels.CUSTOM_STAR_COLOR)
+                        .closeIfOpen();
+                    return true;
+                })
+                .overlay(
+                    IKey.lang("fog.cosmetics.deletecolors")
+                        .alignment(Alignment.CENTER))
+                .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
+                .tooltip(t -> t.addLine(translateToLocal("fog.cosmetics.deletecolors.tooltip")))
+                .tooltipShowUpTimer(TOOLTIP_DELAY));
+
+        // Save button
+        row.child(
+            new ButtonWidget<>().size(35, 15)
+                .onMousePressed(d -> {
+                    ForgeOfGodsStarColor starColor = getClickedStarColor(hypervisor);
+                    int editingIndex = getEditingColorIndex(hypervisor);
+                    StarColorStorage starColors = hypervisor.getData()
+                        .getStarColors();
+
+                    if (starColor.numColors() == 0) return true;
+                    if (editingIndex >= 0) {
+                        starColors.insert(starColor, editingIndex);
+                        SyncValues.STAR_COLORS.lookupFrom(Panels.CUSTOM_STAR_COLOR, hypervisor)
+                            .notifyUpdate();
+                        SyncValues.SELECTED_STAR_COLOR.lookupFrom(Panels.CUSTOM_STAR_COLOR, hypervisor)
+                            .setValue(starColor.getName());
+                        SyncActions.UPDATE_RENDERER.callFrom(Panels.CUSTOM_STAR_COLOR, hypervisor, starColor);
+                    } else {
+                        starColors.store(starColor);
+                        SyncValues.STAR_COLORS.lookupFrom(Panels.CUSTOM_STAR_COLOR, hypervisor)
+                            .notifyUpdate();
+                    }
+                    hypervisor.getModularPanel(Panels.CUSTOM_STAR_COLOR)
+                        .closeIfOpen();
+                    return true;
+                })
+                .overlay(
+                    IKey.lang("fog.cosmetics.savecolors")
+                        .alignment(Alignment.CENTER))
+                .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
+                .tooltip(t -> t.addLine(translateToLocal("fog.cosmetics.savecolors.tooltip")))
                 .tooltipShowUpTimer(TOOLTIP_DELAY));
 
         return row;

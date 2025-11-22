@@ -128,9 +128,10 @@ public class StarColorStorage {
         return GenericListSyncHandler.<ForgeOfGodsStarColor>builder()
             .getter(() -> indexMapping)
             .setter(val -> {
-                indexMapping = val;
+                indexMapping.clear();
                 nameMapping.clear();
-                for (ForgeOfGodsStarColor color : indexMapping) {
+                for (ForgeOfGodsStarColor color : val) {
+                    indexMapping.add(color);
                     nameMapping.put(color.getName(), color);
                 }
             })
