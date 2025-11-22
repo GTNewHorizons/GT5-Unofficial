@@ -25,6 +25,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
@@ -92,19 +93,50 @@ public class CircuitImprintLoader {
         ItemStack[] outputs = circuitRecipe.mOutputs;
         boolean isOrePass = isCircuitOreDict(outputs[0]);
         String unlocalizedName = outputs[0].getUnlocalizedName();
-        if (isOrePass || unlocalizedName.contains("Circuit") || unlocalizedName.contains("circuit")) {
 
-            CircuitImprintLoader.recipeTagMap
-                .put(CircuitImprintLoader.getTagFromStack(outputs[0]), circuitRecipe.copy());
-            MainMod.LOGGER.info("recipe edited for item: " + unlocalizedName);
-            if (circuitRecipe.mFluidInputs[0].isFluidEqual(Materials.SolderingAlloy.getMolten(0))
-                || circuitRecipe.mFluidInputs[0].isFluidEqual(MaterialsAlloy.INDALLOY_140.getFluidStack(0))
-                || circuitRecipe.mFluidInputs[0].isFluidEqual(MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(0))) {
-                GTRecipe newRecipe = CircuitImprintLoader.reBuildRecipe(circuitRecipe);
-                if (newRecipe != null) BartWorksRecipeMaps.circuitAssemblyLineRecipes.addRecipe(newRecipe);
-                addCutoffRecipeToSets(toRem, toAdd, circuitRecipe);
-            } else if (circuitRecipe.mEUt > TierEU.IV) toRem.add(circuitRecipe);
+        boolean isCircuitRecipeCandidate = isOrePass || unlocalizedName.contains("Circuit")
+            || unlocalizedName.contains("circuit");
+
+        if (!isCircuitRecipeCandidate) return;
+
+        CircuitImprintLoader.recipeTagMap.put(CircuitImprintLoader.getTagFromStack(outputs[0]), circuitRecipe.copy());
+        MainMod.LOGGER.info("treating recipe for item: " + unlocalizedName);
+
+        FluidStack circuitFluidStack = circuitRecipe.mFluidInputs[0];
+
+        FluidStack solderingAlloy = Materials.SolderingAlloy.getMolten(0);
+        FluidStack indalloy140 = MaterialsAlloy.INDALLOY_140.getFluidStack(0);
+        FluidStack mutatedLivingSolder = MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(0);
+
+        // First compare to usual soldering
+        if (circuitFluidStack.isFluidEqual(solderingAlloy) || circuitFluidStack.isFluidEqual(indalloy140)
+            || circuitFluidStack.isFluidEqual(mutatedLivingSolder)) {
+            // try to deduce the CAL recipe from the original circass recipe
+            GTRecipe CALRecipe = CircuitImprintLoader.generateCALRecipe(circuitRecipe);
+            MainMod.LOGGER.info("candidate for CAL addition + circass nerf");
+            // If the CAL recipe had no blacklisted items for CAL, add it to the CAL recipe map
+            if (CALRecipe != null) {
+                MainMod.LOGGER.info("adding the recipe to CAL");
+                BartWorksRecipeMaps.circuitAssemblyLineRecipes.addRecipe(CALRecipe);
+            }
+
+            // heavily nerf the original circass recipe if above IV tier in terms of energy
+            if (circuitRecipe.mEUt > TierEU.IV) {
+                MainMod.LOGGER.info("nerfed the recipe in the circass");
+                toRem.add(circuitRecipe);
+                toAdd.add(CircuitImprintLoader.makeMoreExpensive(circuitRecipe));
+            }
         }
+        // else if it has no usual soldering but above cutoff tier we yeet
+        else if (circuitRecipe.mEUt > TierEU.IV) {
+            toRem.add(circuitRecipe);
+            MainMod.LOGGER.info("yeeting recipe for item: " + unlocalizedName);
+        }
+        // else do nothing
+        else {
+            MainMod.LOGGER.info("Doing nothing to the circass recipe for item: " + unlocalizedName);
+        }
+
     }
 
     private static boolean isCircuitOreDict(ItemStack item) {
@@ -119,14 +151,6 @@ public class CircuitImprintLoader {
             .removeRecipes(toRem);
         ORIGINAL_CAL_RECIPES.addAll(toRem);
         MODIFIED_CAL_RECIPES.addAll(toAdd);
-    }
-
-    private static void addCutoffRecipeToSets(HashSet<GTRecipe> toRem, HashSet<GTRecipe> toAdd,
-        GTRecipe circuitRecipe) {
-        if (circuitRecipe.mEUt > TierEU.IV) {
-            toRem.add(circuitRecipe);
-            toAdd.add(CircuitImprintLoader.makeMoreExpensive(circuitRecipe));
-        }
     }
 
     @SuppressWarnings("deprecation")
@@ -144,7 +168,7 @@ public class CircuitImprintLoader {
         return newRecipe;
     }
 
-    public static GTRecipe reBuildRecipe(GTRecipe original) {
+    public static GTRecipe generateCALRecipe(GTRecipe original) {
         ItemStack[] in = new ItemStack[6];
         BiMap<ItemList, Short> inversed = CircuitImprintLoader.circuitIIconRefs.inverse();
 
