@@ -1,5 +1,7 @@
 package gregtech.common.gui.modularui.multiblock.godforge.data;
 
+import net.minecraft.util.EnumChatFormatting;
+
 import com.cleanroommc.modularui.utils.Color;
 
 import tectech.thing.metaTileEntity.multi.godforge.color.StarColorSetting;
@@ -132,12 +134,16 @@ public class ColorData {
         if (colorStr == null) return;
         try {
             updateFrom((int) (long) Long.decode(colorStr));
-        } catch (NumberFormatException ignored) {
-            ignored.printStackTrace();
-        }
+        } catch (NumberFormatException ignored) {}
     }
 
     public String getHexString() {
-        return "#" + Color.toFullHexString(r, g, b);
+        String hexString = Color.toFullHexString(r, g, b);
+        return "#" + EnumChatFormatting.RED
+            + hexString.substring(0, 2)
+            + EnumChatFormatting.GREEN
+            + hexString.substring(2, 4)
+            + EnumChatFormatting.BLUE
+            + hexString.substring(4, 6);
     }
 }

@@ -25,7 +25,7 @@ public final class StarColors {
 
         RED(EnumChatFormatting.RED, 0xFFFF5555, ForgeOfGodsStarColor.DEFAULT_RED),
         GREEN(EnumChatFormatting.GREEN, 0xFF55FF55, ForgeOfGodsStarColor.DEFAULT_GREEN),
-        BLUE(EnumChatFormatting.BLUE, 0xFF0000AA, ForgeOfGodsStarColor.DEFAULT_BLUE);
+        BLUE(EnumChatFormatting.BLUE, 0xFF5555FF, ForgeOfGodsStarColor.DEFAULT_BLUE);
 
         private final String title;
         private final EnumChatFormatting color;
@@ -67,31 +67,35 @@ public final class StarColors {
 
     public enum HSV implements IStarColor {
 
-        HUE(ForgeOfGodsStarColor.DEFAULT_HUE),
-        SATURATION(ForgeOfGodsStarColor.DEFAULT_SATURATION),
-        VALUE(ForgeOfGodsStarColor.DEFAULT_VALUE);
+        HUE(EnumChatFormatting.LIGHT_PURPLE, 0xFFFF55FF, ForgeOfGodsStarColor.DEFAULT_HUE),
+        SATURATION(EnumChatFormatting.GOLD, 0xFFFFAA00, ForgeOfGodsStarColor.DEFAULT_SATURATION),
+        VALUE(EnumChatFormatting.AQUA, 0xFF55FFFF, ForgeOfGodsStarColor.DEFAULT_VALUE);
 
         private final String title;
+        private final EnumChatFormatting color;
+        private final int hexColor;
         private final float defaultValue;
 
-        HSV(float defaultValue) {
+        HSV(EnumChatFormatting color, int hexColor, float defaultValue) {
             this.title = "fog.cosmetics.color." + name().toLowerCase();
+            this.color = color;
+            this.hexColor = hexColor;
             this.defaultValue = defaultValue;
         }
 
         @Override
         public String getTitle() {
-            return EnumChatFormatting.GOLD + translateToLocal(title);
+            return color + translateToLocal(title);
         }
 
         @Override
         public EnumChatFormatting getColor() {
-            return EnumChatFormatting.GOLD;
+            return color;
         }
 
         @Override
         public int getHexColor() {
-            return 0xFFFFAA00;
+            return hexColor;
         }
 
         @Override

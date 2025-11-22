@@ -294,7 +294,7 @@ public class CustomStarColorSelector {
                 .marginRight(5)
                 .overlay(new DynamicDrawable(() -> {
                     if (pageController.getActivePageIndex() == HSV_PAGE_INDEX) {
-                        return IKey.str(EnumChatFormatting.WHITE + translateToLocal("fog.cosmetics.color.hsv"));
+                        return IKey.lang("fog.cosmetics.color.hsv_colored");
                     }
                     return IKey.str(EnumChatFormatting.DARK_GRAY + translateToLocal("fog.cosmetics.color.hsv"));
                 })));

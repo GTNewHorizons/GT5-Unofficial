@@ -201,6 +201,7 @@ public class CustomStarColorPanel {
                             t.addLine(StarColors.HSV.SATURATION.getTooltip(Color.getHSVSaturation(rgb)));
                             t.addLine(StarColors.HSV.VALUE.getTooltip(Color.getValue(rgb)));
                         }
+                        t.addLine(StarColors.Extra.GAMMA.getTooltip(color.getGamma()));
                     }
                 })
                 .tooltipAutoUpdate(true)

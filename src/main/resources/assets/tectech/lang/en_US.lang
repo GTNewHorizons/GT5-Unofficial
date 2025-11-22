@@ -1221,6 +1221,7 @@ fog.cosmetics.color.gamma=Gamma
 fog.cosmetics.color.rgb=RGB
 fog.cosmetics.color.rgb_colored=§cR§aG§9B
 fog.cosmetics.color.hsv=HSV
+fog.cosmetics.color.hsv_colored=§5H§6S§bV
 fog.cosmetics.color.hex=Hex:
 fog.cosmetics.selectcolor.tooltip.1=Left click to select this Star Color
 fog.cosmetics.selectcolor.tooltip.2=Shift-Left click to edit this Star Color (must be a custom color)
