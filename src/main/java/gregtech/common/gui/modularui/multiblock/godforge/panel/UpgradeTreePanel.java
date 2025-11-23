@@ -181,7 +181,8 @@ public class UpgradeTreePanel {
                 return true;
             })
             .tooltip(t -> t.addLine(translateToLocal(upgrade.getNameKey())))
-            .tooltipShowUpTimer(TOOLTIP_DELAY);
+            .tooltipShowUpTimer(TOOLTIP_DELAY)
+            .clickSound(ForgeOfGodsGuiUtil.getButtonSound());
     }
 
     private static Widget<?> createConnectorLine(UpgradeColor color, ForgeOfGodsUpgrade fromUpgrade,
