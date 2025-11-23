@@ -17,6 +17,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IBlockWithTextures;
@@ -46,6 +47,7 @@ public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures 
                 IOreMaterial material = materials.get(i);
 
                 if (material == null) continue;
+                if (!material.generatesPrefix(OrePrefixes.sheetmetal)) continue;
 
                 OreDictionary.registerOre(
                     OrePrefixes.sheetmetal.get(material.getInternalName())
@@ -81,7 +83,6 @@ public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures 
 
             if (material == null) continue;
             if (!material.generatesPrefix(OrePrefixes.sheetmetal)) continue;
-            if (!material.generatesPrefix(OrePrefixes.ingot)) continue;
 
             stacks.add(new ItemStack(self, 1, i));
         }
@@ -135,7 +136,7 @@ public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures 
 
             if (material == null) continue;
             if (!material.generatesPrefix(OrePrefixes.sheetmetal)) continue;
-            if (!material.generatesPrefix(OrePrefixes.ingot)) continue;
+            if (material.contains(SubTag.NO_RECIPES)) continue;
 
             GTValues.RA.stdBuilder()
                 .itemInputs(material.getPart(OrePrefixes.plate, 2), GTUtility.getIntegratedCircuit(11))

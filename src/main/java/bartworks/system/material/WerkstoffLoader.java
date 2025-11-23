@@ -1636,8 +1636,7 @@ public class WerkstoffLoader {
         Werkstoff.Types.COMPOUND,
         new Werkstoff.GenerationFeatures().onlyDust()
             .addMetalItems()
-            .addMolten()
-            .setBlacklist(OrePrefixes.plate),
+            .addMolten(),
         11503,
         TextureSet.SET_METALLIC);
 
@@ -1929,7 +1928,7 @@ public class WerkstoffLoader {
                             + werkstoff.getVarName()
                             + " in GT material system, disable and reroute my Items to that, also add a Tooltip.");
                     werkstoff.getGenerationFeatures()
-                        .setBlacklist(p);
+                        .removePrefix(p);
                 }
             WerkstoffLoader.toGenerateGlobal = WerkstoffLoader.toGenerateGlobal
                 | werkstoff.getGenerationFeatures().toGenerate;

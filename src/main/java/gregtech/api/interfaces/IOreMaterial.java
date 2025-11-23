@@ -18,7 +18,7 @@ import gtPlusPlus.core.material.Material;
  * Once the new material system is finished, this should be removed and all the code referencing this should be migrated
  * to the new system.
  */
-public interface IOreMaterial {
+public interface IOreMaterial extends ISubTagContainer {
 
     String getLocalizedName();
 

@@ -2372,6 +2372,9 @@ public class OrePrefixes {
 
         wireFine.mCondition = SubTag.METAL;
 
+        sheetmetal.mCondition = new ICondition.And<>(
+            obj -> obj instanceof Materials mat && mat.hasMetalItems(),
+            new ICondition.Nor<>(SubTag.STRETCHY, SubTag.SOFT, SubTag.BOUNCY, SubTag.NO_SMASHING));
         // -----
 
         pipeRestrictiveTiny.mSecondaryMaterial = new MaterialStack(Materials.Steel, ring.materialAmount);

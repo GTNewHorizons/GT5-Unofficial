@@ -26,9 +26,11 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
+import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
+import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
@@ -1765,5 +1767,20 @@ public class Material implements IOreMaterial {
 
     public void setWerkstoffID(short werkstoffID) {
         this.werkstoffID = werkstoffID;
+    }
+
+    @Override
+    public boolean contains(SubTag aTag) {
+        return false;
+    }
+
+    @Override
+    public ISubTagContainer add(SubTag... aTags) {
+        throw new UnsupportedOperationException("GT++ does not implement subtags");
+    }
+
+    @Override
+    public boolean remove(SubTag aTag) {
+        return false;
     }
 }
