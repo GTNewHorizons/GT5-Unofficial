@@ -11,8 +11,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
-import com.cleanroommc.modularui.value.sync.GenericSyncValue;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 
 import gregtech.api.util.GTUtility;
 
@@ -224,25 +222,6 @@ public class UpgradeStorage {
                 }
             }
         }
-    }
-
-    // todo remove
-    /** Sync widget to sync a single upgrade. */
-    public FakeSyncWidget<?> getSyncerMUI1(ForgeOfGodsUpgrade upgrade) {
-        return new FakeSyncWidget<>(
-            () -> unlockedUpgrades.get(upgrade),
-            val -> unlockedUpgrades.put(upgrade, val),
-            UpgradeData::writeToBuffer,
-            UpgradeData::readFromBuffer);
-    }
-
-    /** Sync a single upgrade. */
-    public GenericSyncValue<?> getSyncer(ForgeOfGodsUpgrade upgrade) {
-        return new GenericSyncValue<>(
-            () -> unlockedUpgrades.get(upgrade),
-            val -> unlockedUpgrades.put(upgrade, val),
-            UpgradeData::readFromBuffer,
-            UpgradeData::writeToBuffer);
     }
 
     /** Sync the full upgrade tree. */
