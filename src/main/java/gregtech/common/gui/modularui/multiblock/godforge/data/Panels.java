@@ -41,6 +41,8 @@ public enum Panels {
 
     ;
 
+    public static final Panels[] VALUES = values();
+
     private final String panelId = "fog.panel." + name().toLowerCase();
     private final Function<SyncHypervisor, ModularPanel> panelSupplier;
     private final Function<SyncHypervisor, Dialog<?>> dialogSupplier;
@@ -60,10 +62,6 @@ public enum Panels {
 
     public String getPanelId() {
         return panelId;
-    }
-
-    public String getExpandableId() {
-        return getPanelId() + ".expandable";
     }
 
     public boolean isDialog() {

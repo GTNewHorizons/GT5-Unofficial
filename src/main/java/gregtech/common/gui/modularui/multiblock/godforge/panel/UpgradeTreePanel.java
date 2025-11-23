@@ -46,6 +46,7 @@ public class UpgradeTreePanel {
     private static final int BUTTON_W = 40;
     private static final int BUTTON_H = 15;
 
+    // todo secret upgrade
     public static ModularPanel openPanel(SyncHypervisor hypervisor) {
         ModularPanel panel = hypervisor.getModularPanel(Panels.UPGRADE_TREE);
 
@@ -118,6 +119,7 @@ public class UpgradeTreePanel {
 
         SyncActions.RESPEC_UPGRADE.registerFor(Panels.UPGRADE_TREE, hypervisor);
         SyncActions.COMPLETE_UPGRADE.registerFor(Panels.UPGRADE_TREE, hypervisor);
+        SyncActions.REFRESH_DYNAMIC.registerFor(Panels.UPGRADE_TREE, hypervisor, hypervisor);
     }
 
     private static ButtonWidget<?> createUpgradeButton(ForgeOfGodsUpgrade upgrade, SyncHypervisor hypervisor) {
@@ -135,7 +137,7 @@ public class UpgradeTreePanel {
                 return GTGuiTextures.BUTTON_SPACE_32x16;
             }))
             .overlay(
-                IKey.str(upgrade.getShortNameText())
+                IKey.lang(upgrade.getShortNameKey())
                     .style(EnumChatFormatting.GOLD)
                     .scale(0.8f)
                     .alignment(Alignment.CENTER))
@@ -161,17 +163,17 @@ public class UpgradeTreePanel {
                             .lookupFrom(Panels.UPGRADE_TREE, hypervisor);
                         syncer.setValue(upgrade);
                         if (!individualPanel.isPanelOpen()) {
-                            individualPanel.openPanel(); // todo initial size is not always correct
-                        } else {
-                            hypervisor.setPanelExpandable(Panels.INDIVIDUAL_UPGRADE, upgrade::isLargePanel);
+                            individualPanel.openPanel();
                         }
+                        SyncActions.REFRESH_DYNAMIC
+                            .callFrom(Panels.UPGRADE_TREE, hypervisor, Panels.INDIVIDUAL_UPGRADE);
                     }
                 } else if (d == 1) {
                     SyncActions.RESPEC_UPGRADE.callFrom(Panels.UPGRADE_TREE, hypervisor, upgrade);
                 }
                 return true;
             })
-            .tooltip(t -> t.addLine(upgrade.getNameText()))
+            .tooltip(t -> t.addLine(translateToLocal(upgrade.getNameKey())))
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 

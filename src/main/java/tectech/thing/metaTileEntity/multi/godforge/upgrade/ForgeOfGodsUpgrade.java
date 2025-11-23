@@ -1,8 +1,8 @@
 package tectech.thing.metaTileEntity.multi.godforge.upgrade;
 
-import static tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade.BGWindowSize.*;
-import static tectech.thing.metaTileEntity.multi.godforge.util.MilestoneIcon.*;
-import static tectech.thing.metaTileEntity.multi.godforge.util.UpgradeColor.*;
+import static gregtech.common.gui.modularui.multiblock.godforge.data.Milestones.*;
+import static gregtech.common.gui.modularui.multiblock.godforge.data.UpgradeColor.*;
+import static tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade.PanelSize.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,16 +12,14 @@ import java.util.Set;
 import java.util.function.UnaryOperator;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 
+import com.cleanroommc.modularui.drawable.UITexture;
 import com.google.common.collect.ImmutableSet;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.math.Size;
 
+import gregtech.common.gui.modularui.multiblock.godforge.data.Milestones;
+import gregtech.common.gui.modularui.multiblock.godforge.data.UpgradeColor;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectList;
-import tectech.thing.metaTileEntity.multi.godforge.util.MilestoneIcon;
-import tectech.thing.metaTileEntity.multi.godforge.util.UpgradeColor;
 
 public enum ForgeOfGodsUpgrade {
 
@@ -70,7 +68,7 @@ public enum ForgeOfGodsUpgrade {
 
         START.build(b -> b
             .background(BLUE, COMPOSITION)
-            .windowSize(LARGE)
+            .panelSize(LARGE)
             .treePos(126, 56));
 
         IGCC.build(b -> b
@@ -253,7 +251,7 @@ public enum ForgeOfGodsUpgrade {
             .prereqs(EE)
             .cost(12)
             .background(BLUE, COMPOSITION)
-            .windowSize(LARGE)
+            .panelSize(LARGE)
             .treePos(126, 798));
 
         // spotless:on
@@ -288,9 +286,8 @@ public enum ForgeOfGodsUpgrade {
 
     // UI
     private UpgradeColor color;
-    private MilestoneIcon icon;
-    private boolean largePanel;
-    public BGWindowSize windowSize; // todo remove
+    private Milestones icon;
+    private PanelSize panelSize;
     private int treeX;
     private int treeY;
 
@@ -317,8 +314,7 @@ public enum ForgeOfGodsUpgrade {
         this.shardCost = b.shardCost;
         this.color = b.color;
         this.icon = b.icon;
-        this.largePanel = b.largePanel;
-        this.windowSize = b.windowSize;
+        this.panelSize = b.panelSize;
         this.treeX = b.treeX;
         this.treeY = b.treeY;
     }
@@ -368,24 +364,23 @@ public enum ForgeOfGodsUpgrade {
     }
 
     public UITexture getSymbol() {
-        return icon.getSymbol();
+        return icon.getSymbolBackground();
     }
 
     public float getSymbolWidthRatio() {
-        return icon.getWidthRatio();
+        return icon.getSymbolWidthRatio();
     }
 
-    // todo remove
-    public Size getWindowSize() {
-        return windowSize.getWindowSize();
+    public int getPanelSize() {
+        return panelSize.getPanelSize();
     }
 
-    public boolean isLargePanel() {
-        return windowSize == LARGE; // todo
+    public int getBodySize() {
+        return panelSize.getBodySize();
     }
 
-    public int getLoreYPos() {
-        return windowSize.getLoreY();
+    public int getLoreSize() {
+        return panelSize.getLoreSize();
     }
 
     public int getTreeX() {
@@ -396,20 +391,20 @@ public enum ForgeOfGodsUpgrade {
         return treeY;
     }
 
-    public String getNameText() {
-        return StatCollector.translateToLocal(name);
+    public String getNameKey() {
+        return name;
     }
 
-    public String getShortNameText() {
-        return StatCollector.translateToLocal(nameShort);
+    public String getShortNameKey() {
+        return nameShort;
     }
 
-    public String getBodyText() {
-        return StatCollector.translateToLocal(bodyText);
+    public String getBodyKey() {
+        return bodyText;
     }
 
-    public String getLoreText() {
-        return StatCollector.translateToLocal(loreText);
+    public String getLoreKey() {
+        return loreText;
     }
 
     public static class Builder {
@@ -423,9 +418,8 @@ public enum ForgeOfGodsUpgrade {
 
         // UI
         private UpgradeColor color = BLUE;
-        private MilestoneIcon icon = CHARGE;
-        private boolean largePanel = false;
-        private BGWindowSize windowSize = STANDARD;
+        private Milestones icon = CHARGE;
+        private PanelSize panelSize = STANDARD;
         private int treeX;
         private int treeY;
 
@@ -451,19 +445,14 @@ public enum ForgeOfGodsUpgrade {
         }
 
         // UI
-        public Builder background(UpgradeColor color, MilestoneIcon icon) {
+        public Builder background(UpgradeColor color, Milestones icon) {
             this.color = color;
             this.icon = icon;
             return this;
         }
 
-        public Builder largePanel() {
-            this.largePanel = true;
-            return this;
-        }
-
-        public Builder windowSize(BGWindowSize windowSize) {
-            this.windowSize = windowSize;
+        public Builder panelSize(PanelSize panelSize) {
+            this.panelSize = panelSize;
             return this;
         }
 
@@ -474,27 +463,31 @@ public enum ForgeOfGodsUpgrade {
         }
     }
 
-    public enum BGWindowSize {
+    public enum PanelSize {
 
-        STANDARD(250, 250, 110),
-        LARGE(300, 300, 85),
+        STANDARD(250, 80, 115),
+        LARGE(300, 55, 170);
 
-        ;
+        private final int panelSize;
+        private final int bodySize;
+        private final int loreSize;
 
-        private final Size size;
-        private final int loreY;
-
-        BGWindowSize(int width, int height, int loreY) {
-            this.size = new Size(width, height);
-            this.loreY = loreY;
+        PanelSize(int panelSize, int bodySize, int loreSize) {
+            this.panelSize = panelSize;
+            this.bodySize = bodySize;
+            this.loreSize = loreSize;
         }
 
-        public Size getWindowSize() {
-            return size;
+        public int getPanelSize() {
+            return panelSize;
         }
 
-        public int getLoreY() {
-            return loreY;
+        public int getBodySize() {
+            return bodySize;
+        }
+
+        public int getLoreSize() {
+            return loreSize;
         }
     }
 }

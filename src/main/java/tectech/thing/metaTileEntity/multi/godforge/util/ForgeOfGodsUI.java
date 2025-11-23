@@ -7,19 +7,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
-import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.widget.IWidgetBuilder;
@@ -27,17 +24,14 @@ import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.enums.VoidingMode;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.modularui.IControllerWithOptionalFeatures;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import tectech.TecTech;
 import tectech.thing.gui.TecTechUITextures;
-import tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade;
 
 /**
  * Holds UI element builders and other conveniences shared between the primary Forge of the Gods and its modules.
@@ -430,171 +424,5 @@ public class ForgeOfGodsUI {
             }
             ctx.openSyncedWindow(windowId);
         }
-    }
-
-    public static void closeWindow(Widget widget, int windowId) {
-        if (!widget.isClient()) {
-            ModularUIContext ctx = widget.getContext();
-            if (ctx.isWindowOpen(windowId)) {
-                ctx.closeWindow(windowId);
-            }
-        }
-    }
-
-    public static Widget getIndividualUpgradeGroup(ForgeOfGodsUpgrade upgrade, Supplier<Integer> shardGetter,
-        Runnable complete, Runnable respec, Supplier<Boolean> check, Supplier<MilestoneFormatter> formatGetter) {
-        MultiChildWidget widget = new MultiChildWidget();
-        widget.setSize(upgrade.getWindowSize());
-
-        Size windowSize = upgrade.getWindowSize();
-        int w = windowSize.width;
-        int h = windowSize.height;
-
-        // Close window button
-        widget.addChild(
-            ButtonWidget.closeWindowButton(true)
-                .setPos(w - 15, 3));
-
-        // Background symbol
-        widget.addChild(
-            new DrawableWidget().setDrawable(upgrade.getSymbol())
-                .setPos((int) ((1 - upgrade.getSymbolWidthRatio() / 2) * w / 2), h / 4)
-                .setSize((int) (w / 2 * upgrade.getSymbolWidthRatio()), h / 2));
-
-        // Background overlay
-        widget.addChild(
-            new DrawableWidget().setDrawable(upgrade.getOverlay())
-                .setPos(w / 4, h / 4)
-                .setSize(w / 2, h / 2));
-
-        // Upgrade name title
-        widget.addChild(
-            new TextWidget(upgrade.getNameText()).setTextAlignment(Alignment.Center)
-                .setDefaultColor(EnumChatFormatting.GOLD)
-                .setSize(w - 15, 30)
-                .setPos(9, 5));
-
-        // Upgrade body text
-        widget.addChild(
-            new TextWidget(upgrade.getBodyText()).setTextAlignment(Alignment.Center)
-                .setDefaultColor(EnumChatFormatting.WHITE)
-                .setSize(w - 15, upgrade.getLoreYPos() - 30)
-                .setPos(9, 30));
-
-        // Lore Text
-        widget.addChild(
-            new TextWidget(EnumChatFormatting.ITALIC + upgrade.getLoreText()).setTextAlignment(Alignment.Center)
-                .setDefaultColor(0xbbbdbd)
-                .setSize(w - 15, (int) (h * 0.9) - upgrade.getLoreYPos())
-                .setPos(9, upgrade.getLoreYPos()));
-
-        // Shard cost text
-        String costStr = " " + EnumChatFormatting.BLUE + upgrade.getShardCost();
-        widget.addChild(
-            new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.shardcost") + costStr)
-                .setTextAlignment(Alignment.Center)
-                .setScale(0.7f)
-                .setMaxWidth(70)
-                .setDefaultColor(0x9c9c9c)
-                .setPos(11, h - 25));
-
-        // Available shards text
-        widget.addChild(
-            new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.availableshards"))
-                .setTextAlignment(Alignment.Center)
-                .setScale(0.7f)
-                .setMaxWidth(90)
-                .setDefaultColor(0x9c9c9c)
-                .setPos(w - 87, h - 25));
-
-        // Available shards amount
-        widget.addChild(
-            TextWidget.dynamicText(() -> getAvailableShardsText(upgrade, shardGetter, formatGetter))
-                .setTextAlignment(Alignment.Center)
-                .setScale(0.7f)
-                .setMaxWidth(90)
-                .setDefaultColor(0x9c9c9c)
-                .setPos(w - 27, h - 18));
-
-        // Complete button group
-        MultiChildWidget completeGroup = new MultiChildWidget();
-        completeGroup.setPos(w / 2 - 21, (int) (h * 0.9));
-
-        // Complete button
-        completeGroup.addChild(new ButtonWidget().setOnClick(($, $$) -> {
-            if (check.get()) {
-                respec.run();
-            } else {
-                complete.run();
-            }
-        })
-            .setSize(40, 15)
-            .setBackground(
-                () -> new IDrawable[] {
-                    check.get() ? GTUITextures.BUTTON_STANDARD_PRESSED : GTUITextures.BUTTON_STANDARD })
-            .dynamicTooltip(() -> constructionStatusString(check))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY));
-
-        // Complete text overlay
-        completeGroup.addChild(
-            TextWidget.dynamicText(() -> constructionStatusText(check))
-                .setTextAlignment(Alignment.Center)
-                .setScale(0.7f)
-                .setMaxWidth(36)
-                .setPos(3, 5));
-
-        widget.addChild(completeGroup);
-
-        return widget;
-    }
-
-    public static Widget createMaterialInputButton(ForgeOfGodsUpgrade upgrade, Supplier<Boolean> check,
-        BiConsumer<Widget.ClickData, Widget> clickAction) {
-        Size windowSize = upgrade.getWindowSize();
-        int w = windowSize.width;
-        int h = windowSize.height;
-
-        return new ButtonWidget().setOnClick(clickAction)
-            .setPlayClickSound(true)
-            .setBackground(
-                () -> new IDrawable[] { check.get() ? TecTechUITextures.BUTTON_BOXED_CHECKMARK_18x18
-                    : TecTechUITextures.BUTTON_BOXED_EXCLAMATION_POINT_18x18 })
-            .setPos(w / 2 - 40, (int) (h * 0.9))
-            .setSize(15, 15)
-            .dynamicTooltip(() -> upgradeMaterialRequirements(check))
-            .addTooltip(
-                EnumChatFormatting.GRAY + translateToLocal("fog.button.materialrequirements.tooltip.clickhere"));
-    }
-
-    private static Text getAvailableShardsText(ForgeOfGodsUpgrade upgrade, Supplier<Integer> shardGetter,
-        Supplier<MilestoneFormatter> formatGetter) {
-        EnumChatFormatting enoughShards = EnumChatFormatting.RED;
-        if (shardGetter.get() >= upgrade.getShardCost()) {
-            enoughShards = EnumChatFormatting.GREEN;
-        }
-        return new Text(
-            enoughShards + formatGetter.get()
-                .format(shardGetter.get()));
-    }
-
-    private static List<String> constructionStatusString(Supplier<Boolean> check) {
-        if (check.get()) {
-            return ImmutableList.of(translateToLocal("fog.upgrade.respec"));
-        }
-        return ImmutableList.of(translateToLocal("fog.upgrade.confirm"));
-    }
-
-    private static Text constructionStatusText(Supplier<Boolean> check) {
-        if (check.get()) {
-            return new Text(translateToLocal("fog.upgrade.respec"));
-        }
-        return new Text(translateToLocal("fog.upgrade.confirm"));
-    }
-
-    private static List<String> upgradeMaterialRequirements(Supplier<Boolean> check) {
-        if (check.get()) {
-            return ImmutableList.of(translateToLocal("fog.button.materialrequirementsmet.tooltip"));
-        }
-        return ImmutableList.of(translateToLocal("fog.button.materialrequirements.tooltip"));
     }
 }

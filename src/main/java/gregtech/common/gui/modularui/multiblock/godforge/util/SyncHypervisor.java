@@ -2,13 +2,13 @@ package gregtech.common.gui.modularui.multiblock.godforge.util;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Supplier;
 
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.value.sync.DynamicSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.WidgetTree;
 import com.cleanroommc.modularui.widgets.Dialog;
-import com.cleanroommc.modularui.widgets.Expandable;
+import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
 
 import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
 import tectech.thing.metaTileEntity.multi.godforge.MTEForgeOfGods;
@@ -57,16 +57,6 @@ public final class SyncHypervisor {
         return (Dialog<?>) getModularPanel(panel);
     }
 
-    public void setPanelExpandable(Panels panel, Supplier<Boolean> value) {
-        ModularPanel modularPanel = getModularPanel(panel);
-        if (modularPanel == null) return;
-        Expandable expandable = WidgetTree
-            .findFirstWithNameNullable(modularPanel, panel.getExpandableId(), Expandable.class);
-        if (expandable != null) {
-            expandable.expanded(value.get());
-        }
-    }
-
     public void setSyncManager(Panels panel, PanelSyncManager syncManager) {
         syncManagers.put(panel, syncManager);
     }
@@ -78,5 +68,15 @@ public final class SyncHypervisor {
     public void onPanelDispose(Panels panel) {
         panels.remove(panel);
         syncManagers.remove(panel);
+    }
+
+    public void refreshDynamicWidget(Panels panel) {
+        ModularPanel modularPanel = getModularPanel(panel);
+        if (modularPanel == null) return;
+        DynamicSyncedWidget<?> dynamic = WidgetTree.findFirst(modularPanel, DynamicSyncedWidget.class, $ -> true);
+        if (dynamic == null) return;
+        DynamicSyncHandler handler = (DynamicSyncHandler) dynamic.getSyncHandler();
+        if (!handler.isValid()) return;
+        handler.notifyUpdate($ -> {});
     }
 }

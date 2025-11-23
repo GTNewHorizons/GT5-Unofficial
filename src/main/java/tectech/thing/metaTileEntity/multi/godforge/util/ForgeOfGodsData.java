@@ -74,8 +74,6 @@ public class ForgeOfGodsData {
     private boolean isRendererDisabled;
 
     private final UpgradeStorage upgrades = new UpgradeStorage();
-    // todo remove
-    private ForgeOfGodsUpgrade currentUpgradeWindow;
     private final ItemStack[] storedUpgradeWindowItems = new ItemStack[16];
 
     // Star cosmetics fields
@@ -366,10 +364,6 @@ public class ForgeOfGodsData {
 
     public boolean isUpgradeActive(ForgeOfGodsUpgrade upgrade) {
         return upgrades.isUpgradeActive(upgrade);
-    }
-
-    public ForgeOfGodsUpgrade getCurrentUpgradeWindow() {
-        return currentUpgradeWindow;
     }
 
     public ItemStack[] getStoredUpgradeWindowItems() {

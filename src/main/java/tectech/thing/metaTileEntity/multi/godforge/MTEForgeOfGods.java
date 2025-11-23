@@ -52,9 +52,6 @@ import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -87,10 +84,7 @@ import tectech.thing.block.TileEntityForgeOfGods;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.godforge.structure.ForgeOfGodsRingsStructureString;
 import tectech.thing.metaTileEntity.multi.godforge.structure.ForgeOfGodsStructureString;
-import tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
-import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsUI;
-import tectech.thing.metaTileEntity.multi.godforge.util.MilestoneFormatter;
 
 public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, ISurvivalConstructable {
 
@@ -99,11 +93,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     public ArrayList<MTEBaseModule> moduleHatches = new ArrayList<>();
 
     private final ForgeOfGodsData data = new ForgeOfGodsData();
-
-    // todo remove these
-    private static final int UPGRADE_TREE_WINDOW_ID = 10;
-    private static final int INDIVIDUAL_UPGRADE_WINDOW_ID = 11;
-    private static final int MANUAL_INSERTION_WINDOW_ID = 15;
 
     private static final int TEXTURE_INDEX = 960;
     private static final long SOUND_LOOP_LENGTH = 440;
@@ -776,51 +765,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     @Override
     public boolean supportsTerminalLeftCornerColumn() {
         return true;
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        // todo
-        buildContext.addSyncedWindow(INDIVIDUAL_UPGRADE_WINDOW_ID, this::createIndividualUpgradeWindow);
-    }
-
-    protected ModularWindow createIndividualUpgradeWindow(final EntityPlayer player) {
-        ForgeOfGodsUpgrade upgrade = data.getCurrentUpgradeWindow();
-
-        ModularWindow.Builder builder = ModularWindow.builder(upgrade.getWindowSize());
-        builder.setBackground(upgrade.getBackground());
-
-        // Syncers
-        builder.widget(
-            new FakeSyncWidget.IntegerSyncer(data::getGravitonShardsAvailable, data::setGravitonShardsAvailable));
-        builder.widget(
-            data.getUpgrades()
-                .getSyncerMUI1(upgrade));
-
-        builder.widget(
-            ForgeOfGodsUI.getIndividualUpgradeGroup(
-                upgrade,
-                data::getGravitonShardsAvailable,
-                () -> data.unlockUpgrade(upgrade),
-                () -> data.respecUpgrade(upgrade),
-                () -> data.isUpgradeActive(upgrade),
-                // data::getFormattingMode));
-                () -> MilestoneFormatter.NONE));
-
-        if (upgrade.hasExtraCost()) {
-            builder.widget(
-                ForgeOfGodsUI.createMaterialInputButton(
-                    upgrade,
-                    () -> data.getUpgrades()
-                        .isCostPaid(upgrade),
-                    (clickData, widget) -> {
-                        ForgeOfGodsUI.reopenWindow(widget, MANUAL_INSERTION_WINDOW_ID);
-                        ForgeOfGodsUI.closeWindow(widget, INDIVIDUAL_UPGRADE_WINDOW_ID);
-                        ForgeOfGodsUI.closeWindow(widget, UPGRADE_TREE_WINDOW_ID);
-                    }));
-        }
-
-        return builder.build();
     }
 
     @Override

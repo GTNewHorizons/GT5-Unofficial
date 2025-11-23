@@ -68,6 +68,15 @@ public final class SyncActions<T, U> {
         },
         Side.SERVER);
 
+    public static SyncActions<Panels, SyncHypervisor> REFRESH_DYNAMIC = new SyncActions<>(
+        "fog.sync_action.refresh_dynamic",
+        (buf, panel) -> buf.writeByte(panel.ordinal()),
+        (buf, hypervisor) -> {
+            Panels panel = Panels.VALUES[buf.readByte()];
+            hypervisor.refreshDynamicWidget(panel);
+        },
+        Side.SERVER);
+
     // spotless:on
 
     private final String syncId;

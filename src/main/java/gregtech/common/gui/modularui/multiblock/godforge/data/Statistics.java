@@ -9,7 +9,6 @@ import gregtech.api.util.GTUtility;
 import tectech.thing.metaTileEntity.multi.godforge.MTEBaseModule;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 import tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath;
-import tectech.thing.metaTileEntity.multi.godforge.util.MilestoneFormatter;
 
 public enum Statistics {
 
@@ -66,7 +65,7 @@ public enum Statistics {
             }
             case PROCESSING_VOLTAGE -> {
                 GodforgeMath.calculateProcessingVoltageForModules(module, data, fuelFactor);
-                yield String.valueOf(MilestoneFormatter.EXPONENT.format((module.getProcessingVoltage())));
+                yield String.valueOf(Formatters.EXPONENT.format((module.getProcessingVoltage())));
             }
         };
     }

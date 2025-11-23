@@ -139,6 +139,10 @@ public enum Milestones {
         return symbolHeight;
     }
 
+    public float getSymbolWidthRatio() {
+        return 1.0f * symbolWidth / symbolHeight;
+    }
+
     public UITexture getProgressBarMainOverlay() {
         return progressBarMainOverlay;
     }

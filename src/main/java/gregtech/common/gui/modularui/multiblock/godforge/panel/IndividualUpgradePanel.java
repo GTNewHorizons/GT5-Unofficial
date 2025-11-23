@@ -1,106 +1,264 @@
 package gregtech.common.gui.modularui.multiblock.godforge.panel;
 
-import org.jetbrains.annotations.NotNull;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
-import com.cleanroommc.modularui.api.drawable.IDrawable;
+import net.minecraft.util.EnumChatFormatting;
+
+import com.cleanroommc.modularui.api.IPanelHandler;
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.value.sync.DynamicSyncHandler;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
-import com.cleanroommc.modularui.widgets.Expandable;
+import com.cleanroommc.modularui.widgets.ButtonWidget;
+import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
+import com.cleanroommc.modularui.widgets.layout.Column;
+import com.cleanroommc.modularui.widgets.layout.Flow;
 
+import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.common.gui.modularui.multiblock.godforge.data.Formatters;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
+import gregtech.common.gui.modularui.multiblock.godforge.data.SyncActions;
 import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValues;
-import gregtech.common.gui.modularui.multiblock.godforge.data.UpgradeColor;
+import gregtech.common.gui.modularui.multiblock.godforge.util.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
-import gregtech.common.gui.modularui.widget.InterpolatedUITexture;
 import tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade;
+import tectech.thing.metaTileEntity.multi.godforge.upgrade.UpgradeStorage;
+import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 
 public class IndividualUpgradePanel {
-
-    private static final int SIZE_LARGE = 300;
-    private static final int SIZE_SMALL = 250;
 
     public static ModularPanel openPanel(SyncHypervisor hypervisor) {
         ModularPanel panel = hypervisor.getModularPanel(Panels.INDIVIDUAL_UPGRADE);
 
         registerSyncValues(hypervisor);
 
-        panel.coverChildren()
-            .background(IDrawable.EMPTY)
-            .disableHoverBackground();
-
         // registered on the Upgrade Tree panel, look up from there
         EnumSyncValue<ForgeOfGodsUpgrade> upgradeSyncer = SyncValues.UPGRADE_CLICKED
             .lookupFrom(Panels.UPGRADE_TREE, hypervisor);
 
-        // todo testing
-        InterpolatedUITexture background = new InterpolatedUITexture(
-            UpgradeColor.BLUE.getBackground(),
-            UpgradeColor.RED.getBackground()).fadeOver();
-        InterpolatedUITexture image = new InterpolatedUITexture(
-            UpgradeColor.BLUE.getOverlay(),
-            UpgradeColor.RED.getOverlay()).fadeOutThenIn();
+        // Do this here since doing it inside the dynamic sync handler crashes on panel close.
+        // I need to get this "from the upgrade tree panel" because of MUI being weird and dumb and
+        // getting mad at me about sync handler mismatch
+        IPanelHandler manualInsertionPanel = Panels.MANUAL_INSERTION.getFrom(Panels.UPGRADE_TREE, hypervisor);
 
-        // todo figure out how to make the panel not "move" and resize as if its from the center
-        Expandable resizer = new Expandable() {
+        DynamicSyncHandler handler = new DynamicSyncHandler().widgetProvider(($, $$) -> {
+            ForgeOfGodsUpgrade upgrade = upgradeSyncer.getValue();
+            panel.size(upgrade.getPanelSize());
+            panel.background(upgrade.getBackground());
+            panel.disableHoverBackground();
+            return buildPanel(upgrade.getPanelSize(), upgrade, hypervisor, manualInsertionPanel);
+        });
 
-            @Override
-            public @NotNull Result onMousePressed(int mouseButton) {
-                // To make the panel resize on a specific action rather
-                // than clicking anywhere in the expandable widget's area
-                return Result.ACCEPT;
+        upgradeSyncer.setChangeListener(() -> {
+            if (handler.isValid()) {
+                handler.notifyUpdate($ -> {});
             }
+        });
 
-            @Override
-            public Expandable expanded(boolean expanded) {
-                if (expanded != this.isExpanded()) {
-                    background.toggle(100);
-                    image.toggle(100);
-                }
-                return super.expanded(expanded);
-            }
-        }.name(Panels.INDIVIDUAL_UPGRADE.getExpandableId())
-            .background(background)
-            .collapsedView(
-                new ParentWidget<>().size(SIZE_SMALL)
-                    .child(
-                        image.asWidget()
-                            .size(50)
-                            .align(Alignment.CENTER)))
-            .expandedView(
-                new ParentWidget<>().size(SIZE_LARGE)
-                    .child(
-                        image.asWidget()
-                            .size(50)
-                            .align(Alignment.CENTER)))
-            // start with the initial sync value, afterward it will be dynamically resized
-            .expanded(
-                upgradeSyncer.getValue()
-                    .isLargePanel())
-            .animationDuration(500)
-            .stencilTransform((r, expanded) -> {
-                r.width = Math.max(20, r.width - 5);
-                r.height = Math.max(20, r.height - 5);
-            });
-        panel.child(resizer);
+        panel.child(
+            new DynamicSyncedWidget<>().coverChildren()
+                .syncHandler(handler));
 
         return panel;
     }
 
     private static void registerSyncValues(SyncHypervisor hypervisor) {
         SyncValues.AVAILABLE_GRAVITON_SHARDS.registerFor(Panels.INDIVIDUAL_UPGRADE, hypervisor);
+
+        SyncActions.COMPLETE_UPGRADE.registerFor(Panels.INDIVIDUAL_UPGRADE, hypervisor);
+        SyncActions.RESPEC_UPGRADE.registerFor(Panels.INDIVIDUAL_UPGRADE, hypervisor);
     }
 
-    private static ParentWidget<?> buildSmallPanel(EnumSyncValue<ForgeOfGodsUpgrade> upgradeSyncer,
-        SyncHypervisor hypervisor) {
-        ParentWidget<?> parent = new ParentWidget<>().size(SIZE_SMALL);
-        return parent;
-    }
+    private static ParentWidget<?> buildPanel(int size, ForgeOfGodsUpgrade upgrade, SyncHypervisor hypervisor,
+        IPanelHandler manualInsertionPanel) {
+        ParentWidget<?> parent = new ParentWidget<>().size(size)
+            .child(ForgeOfGodsGuiUtil.panelCloseButton());
 
-    private static ParentWidget<?> buildLargePanel(EnumSyncValue<ForgeOfGodsUpgrade> upgradeSyncer,
-        SyncHypervisor hypervisor) {
-        ParentWidget<?> parent = new ParentWidget<>().size(SIZE_LARGE);
+        // Background symbol
+        parent.child(
+            upgrade.getSymbol()
+                .asWidget()
+                .size((int) (size / 2.0f * upgrade.getSymbolWidthRatio()), size / 2)
+                .align(Alignment.CENTER));
+
+        // Background overlay
+        parent.child(
+            upgrade.getOverlay()
+                .asWidget()
+                .size(size / 2)
+                .align(Alignment.CENTER));
+
+        Flow column = new Column().size(size - 16, size - 26) // 16 top, 10 bottom
+            .marginTop(15)
+            .alignX(0.5f);
+
+        // Title
+        column.child(
+            IKey.lang(upgrade.getNameKey())
+                .style(EnumChatFormatting.GOLD)
+                .alignment(Alignment.CENTER)
+                .asWidget()
+                .alignX(0.5f)
+                .widthRel(1));
+
+        // Body text
+        column.child(
+            IKey.lang(upgrade.getBodyKey())
+                .style(EnumChatFormatting.WHITE)
+                .alignment(Alignment.CENTER)
+                .asWidget()
+                .alignX(0.5f)
+                .widthRel(1)
+                .height(upgrade.getBodySize())
+                .marginTop(7));
+
+        // Lore text
+        column.child(
+            IKey.lang(upgrade.getLoreKey())
+                .style(EnumChatFormatting.ITALIC)
+                .color(0xFFBBBDBD)
+                .alignment(Alignment.CENTER)
+                .asWidget()
+                .alignX(0.5f)
+                .widthRel(1)
+                .height(upgrade.getLoreSize())
+                .marginTop(5));
+
+        // Bottom row widgets
+        ParentWidget<?> bottomRow = new ParentWidget<>().widthRel(1)
+            .height(15)
+            .align(Alignment.BottomCenter);
+
+        // Shard cost
+        bottomRow.child(IKey.dynamic(() -> {
+            String cost = " " + EnumChatFormatting.BLUE + upgrade.getShardCost();
+            return translateToLocal("gt.blockmachines.multimachine.FOG.shardcost") + cost;
+        })
+            .alignment(Alignment.CENTER)
+            .scale(0.7f)
+            .color(0xFF9C9C9C)
+            .asWidget()
+            .size(70, 15)
+            .alignX(0));
+
+        // Available shards
+        bottomRow.child(IKey.dynamic(() -> {
+            int shardsAvailable = hypervisor.getData()
+                .getGravitonShardsAvailable();
+            Formatters formatter = hypervisor.getData()
+                .getFormatter();
+
+            EnumChatFormatting enoughShards = EnumChatFormatting.RED;
+            if (shardsAvailable >= upgrade.getShardCost()) {
+                enoughShards = EnumChatFormatting.GREEN;
+            }
+
+            String available = " " + enoughShards + formatter.format(shardsAvailable);
+            return translateToLocal("gt.blockmachines.multimachine.FOG.availableshards") + available;
+        })
+            .alignment(Alignment.CENTER)
+            .scale(0.7f)
+            .color(0xFF9C9C9C)
+            .asWidget()
+            .size(70, 15)
+            .alignX(1));
+
+        // Complete/Respec button
+        ButtonWidget<?> completeButton = new ButtonWidget<>().size(40, 15)
+            .background(new DynamicDrawable(() -> {
+                ForgeOfGodsData data = hypervisor.getData();
+                if (data.isUpgradeActive(upgrade)) {
+                    return GTGuiTextures.BUTTON_OUTLINE_HOLLOW_PRESSED;
+                }
+                return GTGuiTextures.BUTTON_OUTLINE_HOLLOW;
+            }))
+            .overlay(new DynamicDrawable(() -> {
+                ForgeOfGodsData data = hypervisor.getData();
+                if (data.isUpgradeActive(upgrade)) {
+                    return IKey.lang("fog.upgrade.respec")
+                        .alignment(Alignment.CENTER)
+                        .scale(0.7f);
+                }
+                return IKey.lang("fog.upgrade.confirm")
+                    .alignment(Alignment.CENTER)
+                    .scale(0.7f);
+            }))
+            .onMousePressed(d -> {
+                ForgeOfGodsData data = hypervisor.getData();
+                if (data.isUpgradeActive(upgrade)) {
+                    SyncActions.RESPEC_UPGRADE.callFrom(Panels.INDIVIDUAL_UPGRADE, hypervisor, upgrade);
+                } else {
+                    SyncActions.COMPLETE_UPGRADE.callFrom(Panels.INDIVIDUAL_UPGRADE, hypervisor, upgrade);
+                }
+                return true;
+            })
+            .tooltipDynamic(t -> {
+                ForgeOfGodsData data = hypervisor.getData();
+                if (data.isUpgradeActive(upgrade)) {
+                    t.addLine(translateToLocal("fog.upgrade.respec"));
+                } else {
+                    t.addLine(translateToLocal("fog.upgrade.confirm"));
+                }
+            })
+            .tooltipAutoUpdate(true)
+            .tooltipShowUpTimer(TOOLTIP_DELAY)
+            .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
+            .alignX(0.5f);
+        bottomRow.child(completeButton);
+
+        // Extra cost button
+        bottomRow.child(
+            new ButtonWidget<>().size(15)
+                .relative(completeButton)
+                .topRel(0)
+                .rightRelOffset(0, -4)
+                .background(new DynamicDrawable(() -> {
+                    UpgradeStorage storage = hypervisor.getData()
+                        .getUpgrades();
+                    if (storage.isCostPaid(upgrade)) {
+                        return GTGuiTextures.BUTTON_BOXED_CHECKMARK_18x18;
+                    }
+                    return GTGuiTextures.BUTTON_BOXED_EXCLAMATION_POINT_18x18;
+                }))
+                .onMousePressed(d -> {
+                    UpgradeStorage storage = hypervisor.getData()
+                        .getUpgrades();
+                    if (!storage.isCostPaid(upgrade)) {
+                        ModularPanel upgradeTreePanel = hypervisor.getModularPanel(Panels.UPGRADE_TREE);
+                        if (upgradeTreePanel != null) {
+                            upgradeTreePanel.closeIfOpen();
+                        }
+                        parent.getPanel()
+                            .closeIfOpen();
+                        if (!manualInsertionPanel.isPanelOpen()) {
+                            manualInsertionPanel.openPanel();
+                        }
+                    }
+                    return true;
+                })
+                .tooltipDynamic(t -> {
+                    UpgradeStorage storage = hypervisor.getData()
+                        .getUpgrades();
+                    if (storage.isCostPaid(upgrade)) {
+                        t.addLine(translateToLocal("fog.button.materialrequirementsmet.tooltip"));
+                    } else {
+                        t.addLine(translateToLocal("fog.button.materialrequirements.tooltip"));
+                    }
+                    t.addLine(
+                        EnumChatFormatting.GRAY
+                            + translateToLocal("fog.button.materialrequirements.tooltip.clickhere"));
+                })
+                .tooltipAutoUpdate(true)
+                .tooltipShowUpTimer(TOOLTIP_DELAY)
+                .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
+                .setEnabledIf($ -> upgrade.hasExtraCost()));
+
+        column.child(bottomRow);
+        parent.child(column);
         return parent;
     }
 }
