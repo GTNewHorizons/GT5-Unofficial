@@ -84,7 +84,7 @@ public class IndividualMilestonePanel {
             .alignment(Alignment.CENTER)
             .asWidget()
             .alignX(0.5f)
-            .marginBottom(20));
+            .marginBottom(16));
 
         // Total progress
         column.child(
@@ -104,7 +104,7 @@ public class IndividualMilestonePanel {
                 .asWidget()
                 .width(140)
                 .alignX(0.5f)
-                .marginTop(12));
+                .marginTop(10));
 
         // Next level progress
         column.child(
@@ -119,7 +119,7 @@ public class IndividualMilestonePanel {
                 .asWidget()
                 .width(140)
                 .alignX(0.5f)
-                .marginTop(12));
+                .marginTop(10));
 
         // Shards gained
         column.child(
@@ -134,7 +134,7 @@ public class IndividualMilestonePanel {
                 .asWidget()
                 .width(140)
                 .alignX(0.5f)
-                .marginTop(12));
+                .marginTop(10));
 
         // Inversion status
         column.child(
@@ -145,7 +145,7 @@ public class IndividualMilestonePanel {
                 .asWidget()
                 .width(150)
                 .alignX(0.5f)
-                .marginTop(12)
+                .marginTop(10)
                 .setEnabledIf($ -> inversionSyncer.getBoolValue()));
 
         panel.child(column);

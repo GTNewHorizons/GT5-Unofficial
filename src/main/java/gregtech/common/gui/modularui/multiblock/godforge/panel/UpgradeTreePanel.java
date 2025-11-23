@@ -9,6 +9,7 @@ import java.util.Arrays;
 import net.minecraft.util.EnumChatFormatting;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
+import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IDrawable.DrawableWidget;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.Interactable;
@@ -16,6 +17,7 @@ import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.widget.ScrollWidget;
 import com.cleanroommc.modularui.widget.Widget;
@@ -23,6 +25,7 @@ import com.cleanroommc.modularui.widget.scroll.VerticalScrollData;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
@@ -46,7 +49,6 @@ public class UpgradeTreePanel {
     private static final int BUTTON_W = 40;
     private static final int BUTTON_H = 15;
 
-    // todo secret upgrade
     public static ModularPanel openPanel(SyncHypervisor hypervisor) {
         ModularPanel panel = hypervisor.getModularPanel(Panels.UPGRADE_TREE);
 
@@ -110,12 +112,16 @@ public class UpgradeTreePanel {
             .map(upgrade -> createUpgradeButton(upgrade, hypervisor))
             .forEach(treeList::child);
 
+        // Secret upgrade
+        treeList.child(createSecretUpgrade(hypervisor));
+
         panel.child(treeList);
         return panel;
     }
 
     private static void registerSyncValues(SyncHypervisor hypervisor) {
         SyncValues.UPGRADE_CLICKED.registerFor(Panels.UPGRADE_TREE, hypervisor);
+        SyncValues.SECRET_UPGRADE.registerFor(Panels.UPGRADE_TREE, hypervisor);
 
         SyncActions.RESPEC_UPGRADE.registerFor(Panels.UPGRADE_TREE, hypervisor);
         SyncActions.COMPLETE_UPGRADE.registerFor(Panels.UPGRADE_TREE, hypervisor);
@@ -209,6 +215,52 @@ public class UpgradeTreePanel {
             return new RotatedDrawable(texture).rotationRadian(rotation);
         })).pos(x, y)
             .size(width, height);
+    }
+
+    private static Flow createSecretUpgrade(SyncHypervisor hypervisor) {
+        Flow row = new Row().size(60, 15)
+            .pos(START.getTreeX() - 60, START.getTreeY());
+
+        // Upgrade button
+        row.child(
+            new ButtonWidget<>().size(40, 15)
+                .background(new DynamicDrawable(() -> {
+                    ForgeOfGodsData data = hypervisor.getData();
+                    if (data.isSecretUpgrade()) {
+                        return GTGuiTextures.BUTTON_SPACE_PRESSED_32x16;
+                    }
+                    return IDrawable.EMPTY;
+                }))
+                .overlay(new DynamicDrawable(() -> {
+                    ForgeOfGodsData data = hypervisor.getData();
+                    if (data.isSecretUpgrade()) {
+                        return IKey.lang("fog.upgrade.tt.short.secret")
+                            .style(EnumChatFormatting.GOLD)
+                            .scale(0.8f)
+                            .alignment(Alignment.CENTER);
+                    }
+                    return IDrawable.EMPTY;
+                }))
+                .onMousePressed(d -> {
+                    BooleanSyncValue syncer = SyncValues.SECRET_UPGRADE.lookupFrom(Panels.UPGRADE_TREE, hypervisor);
+                    syncer.setBoolValue(!syncer.getBoolValue());
+                    return true;
+                })
+                .tooltip(t -> t.addLine(translateToLocal("fog.upgrade.tt.secret")))
+                .tooltipShowUpTimer(20)
+                .clickSound(ForgeOfGodsGuiUtil.getButtonSound()));
+
+        // Connector line
+        row.child(
+            GTGuiTextures.PICTURE_UPGRADE_CONNECTOR_BLUE_OPAQUE.asWidget()
+                .size(20, 6)
+                .alignY(0.5f)
+                .setEnabledIf($ -> {
+                    ForgeOfGodsData data = hypervisor.getData();
+                    return data.isSecretUpgrade();
+                }));
+
+        return row;
     }
 
     private static Flow getDebugWidgets(SyncHypervisor hypervisor) {

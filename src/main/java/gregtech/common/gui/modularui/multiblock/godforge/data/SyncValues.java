@@ -124,6 +124,10 @@ public class SyncValues<T extends ValueSyncHandler<?>> {
         "fog.sync.upgrades_list",
         data -> data.getUpgrades().getFullSyncer());
 
+    public static final SyncValues<BooleanSyncValue> SECRET_UPGRADE = new SyncValues<>(
+        "fog.sync.secret_upgrade",
+        data -> new BooleanSyncValue(data::isSecretUpgrade, data::setSecretUpgrade));
+
     // ---------- //
     // Milestones //
     // ---------- //

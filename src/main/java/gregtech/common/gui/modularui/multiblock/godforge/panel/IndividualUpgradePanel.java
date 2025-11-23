@@ -17,6 +17,7 @@ import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.layout.Row;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Formatters;
@@ -167,55 +168,55 @@ public class IndividualUpgradePanel {
             .size(70, 15)
             .alignX(1));
 
+        Flow buttonRow = new Row().size(78, 15)
+            .alignX(0.5f);
+
         // Complete/Respec button
-        ButtonWidget<?> completeButton = new ButtonWidget<>().size(40, 15)
-            .background(new DynamicDrawable(() -> {
-                ForgeOfGodsData data = hypervisor.getData();
-                if (data.isUpgradeActive(upgrade)) {
-                    return GTGuiTextures.BUTTON_OUTLINE_HOLLOW_PRESSED;
-                }
-                return GTGuiTextures.BUTTON_OUTLINE_HOLLOW;
-            }))
-            .overlay(new DynamicDrawable(() -> {
-                ForgeOfGodsData data = hypervisor.getData();
-                if (data.isUpgradeActive(upgrade)) {
-                    return IKey.lang("fog.upgrade.respec")
+        buttonRow.child(
+            new ButtonWidget<>().size(40, 15)
+                .background(new DynamicDrawable(() -> {
+                    ForgeOfGodsData data = hypervisor.getData();
+                    if (data.isUpgradeActive(upgrade)) {
+                        return GTGuiTextures.BUTTON_OUTLINE_HOLLOW_PRESSED;
+                    }
+                    return GTGuiTextures.BUTTON_OUTLINE_HOLLOW;
+                }))
+                .overlay(new DynamicDrawable(() -> {
+                    ForgeOfGodsData data = hypervisor.getData();
+                    if (data.isUpgradeActive(upgrade)) {
+                        return IKey.lang("fog.upgrade.respec")
+                            .alignment(Alignment.CENTER)
+                            .scale(0.7f);
+                    }
+                    return IKey.lang("fog.upgrade.confirm")
                         .alignment(Alignment.CENTER)
                         .scale(0.7f);
-                }
-                return IKey.lang("fog.upgrade.confirm")
-                    .alignment(Alignment.CENTER)
-                    .scale(0.7f);
-            }))
-            .onMousePressed(d -> {
-                ForgeOfGodsData data = hypervisor.getData();
-                if (data.isUpgradeActive(upgrade)) {
-                    SyncActions.RESPEC_UPGRADE.callFrom(Panels.INDIVIDUAL_UPGRADE, hypervisor, upgrade);
-                } else {
-                    SyncActions.COMPLETE_UPGRADE.callFrom(Panels.INDIVIDUAL_UPGRADE, hypervisor, upgrade);
-                }
-                return true;
-            })
-            .tooltipDynamic(t -> {
-                ForgeOfGodsData data = hypervisor.getData();
-                if (data.isUpgradeActive(upgrade)) {
-                    t.addLine(translateToLocal("fog.upgrade.respec"));
-                } else {
-                    t.addLine(translateToLocal("fog.upgrade.confirm"));
-                }
-            })
-            .tooltipAutoUpdate(true)
-            .tooltipShowUpTimer(TOOLTIP_DELAY)
-            .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
-            .alignX(0.5f);
-        bottomRow.child(completeButton);
+                }))
+                .onMousePressed(d -> {
+                    ForgeOfGodsData data = hypervisor.getData();
+                    if (data.isUpgradeActive(upgrade)) {
+                        SyncActions.RESPEC_UPGRADE.callFrom(Panels.INDIVIDUAL_UPGRADE, hypervisor, upgrade);
+                    } else {
+                        SyncActions.COMPLETE_UPGRADE.callFrom(Panels.INDIVIDUAL_UPGRADE, hypervisor, upgrade);
+                    }
+                    return true;
+                })
+                .tooltipDynamic(t -> {
+                    ForgeOfGodsData data = hypervisor.getData();
+                    if (data.isUpgradeActive(upgrade)) {
+                        t.addLine(translateToLocal("fog.upgrade.respec"));
+                    } else {
+                        t.addLine(translateToLocal("fog.upgrade.confirm"));
+                    }
+                })
+                .tooltipAutoUpdate(true)
+                .tooltipShowUpTimer(TOOLTIP_DELAY)
+                .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
+                .alignX(0.5f));
 
         // Extra cost button
-        bottomRow.child(
+        buttonRow.child(
             new ButtonWidget<>().size(15)
-                .relative(completeButton)
-                .topRel(0)
-                .rightRelOffset(0, -4)
                 .background(new DynamicDrawable(() -> {
                     UpgradeStorage storage = hypervisor.getData()
                         .getUpgrades();
@@ -223,7 +224,8 @@ public class IndividualUpgradePanel {
                         return GTGuiTextures.BUTTON_BOXED_CHECKMARK_18x18;
                     }
                     return GTGuiTextures.BUTTON_BOXED_EXCLAMATION_POINT_18x18;
-                }))
+                }).asIcon()
+                    .size(15)) // for some reason this is needed
                 .onMousePressed(d -> {
                     UpgradeStorage storage = hypervisor.getData()
                         .getUpgrades();
@@ -255,8 +257,10 @@ public class IndividualUpgradePanel {
                 .tooltipAutoUpdate(true)
                 .tooltipShowUpTimer(TOOLTIP_DELAY)
                 .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
-                .setEnabledIf($ -> upgrade.hasExtraCost()));
+                .setEnabledIf($ -> upgrade.hasExtraCost())
+                .alignX(0));
 
+        bottomRow.child(buttonRow);
         column.child(bottomRow);
         parent.child(column);
         return parent;
