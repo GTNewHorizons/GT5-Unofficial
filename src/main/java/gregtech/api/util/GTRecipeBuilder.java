@@ -286,7 +286,6 @@ public class GTRecipeBuilder {
     public GTRecipeBuilder itemInputsUnified(ItemStack... inputs) {
         if (skip) return this;
         if (debugNull() && containsNull(inputs)) handleNullRecipeComponents("itemInputUnified");
-        inputsBasic = ArrayExt.removeTrailingNulls(inputs);
 
         ItemStack[] itemInputs = ArrayExt.removeTrailingNulls(inputs);
         inputsBasic = applyPendingCircuit(itemInputs);
@@ -302,7 +301,6 @@ public class GTRecipeBuilder {
     public GTRecipeBuilder itemInputs(ItemStack... inputs) {
         if (skip) return this;
         if (debugNull() && containsNull(inputs)) handleNullRecipeComponents("itemInputs");
-        inputsBasic = fixItemArray(inputs, false);
 
         ItemStack[] itemInputs = fixItemArray(inputs, false);
         inputsBasic = applyPendingCircuit(itemInputs);
@@ -318,7 +316,6 @@ public class GTRecipeBuilder {
     public GTRecipeBuilder itemInputsUnsafe(ItemStack... inputs) {
         if (skip) return this;
         if (debugNull() && containsNull(inputs)) handleNullRecipeComponents("itemInputs");
-        inputsBasic = fixItemArray(inputs, true);
 
         ItemStack[] itemInputs = fixItemArray(inputs, true);
         inputsBasic = applyPendingCircuit(itemInputs);
