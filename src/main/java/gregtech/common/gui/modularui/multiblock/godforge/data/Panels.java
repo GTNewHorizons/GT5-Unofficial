@@ -5,7 +5,6 @@ import java.util.function.Function;
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widgets.Dialog;
 
 import gregtech.common.gui.modularui.multiblock.godforge.panel.BatteryConfigPanel;
 import gregtech.common.gui.modularui.multiblock.godforge.panel.CustomStarColorPanel;
@@ -34,7 +33,7 @@ public enum Panels {
     STAR_COLOR_IMPORT(StarColorImportPanel::openPanel),
     UPGRADE_TREE(UpgradeTreePanel::openPanel),
     INDIVIDUAL_UPGRADE(IndividualUpgradePanel::openPanel),
-    MANUAL_INSERTION(ManualInsertionPanel::openDialog, true),
+    MANUAL_INSERTION(ManualInsertionPanel::openPanel),
     STATISTICS(StatisticsPanel::openPanel),
     GENERAL_INFO(GeneralInfoPanel::openPanel),
     SPECIAL_THANKS(SpecialThanksPanel::openPanel),
@@ -45,27 +44,13 @@ public enum Panels {
 
     private final String panelId = "fog.panel." + name().toLowerCase();
     private final Function<SyncHypervisor, ModularPanel> panelSupplier;
-    private final Function<SyncHypervisor, Dialog<?>> dialogSupplier;
-    private final boolean useDialog;
 
     Panels(Function<SyncHypervisor, ModularPanel> panelSupplier) {
         this.panelSupplier = panelSupplier;
-        this.dialogSupplier = null;
-        this.useDialog = false;
-    }
-
-    Panels(Function<SyncHypervisor, Dialog<?>> dialogSupplier, boolean useDialog) {
-        this.panelSupplier = null;
-        this.dialogSupplier = dialogSupplier;
-        this.useDialog = useDialog;
     }
 
     public String getPanelId() {
         return panelId;
-    }
-
-    public boolean isDialog() {
-        return useDialog;
     }
 
     public IPanelHandler getFrom(Panels fromPanel, SyncHypervisor hypervisor) {
@@ -80,36 +65,19 @@ public enum Panels {
             hypervisor.setModularPanel(this, panel);
             hypervisor.setSyncManager(this, p_syncManager);
 
-            if (useDialog) {
-                // noinspection ConstantConditions
-                return dialogSupplier.apply(hypervisor);
-            }
             // noinspection ConstantConditions
             return panelSupplier.apply(hypervisor);
         }, true);
     }
 
     private ModularPanel createPanel(SyncHypervisor hypervisor) {
-        ModularPanel panel;
-        if (useDialog) {
-            panel = new Dialog<>(getPanelId()) {
+        return new ModularPanel(getPanelId()) {
 
-                @Override
-                public void dispose() {
-                    hypervisor.onPanelDispose(Panels.this);
-                    super.dispose();
-                }
-            };
-        } else {
-            panel = new ModularPanel(getPanelId()) {
-
-                @Override
-                public void dispose() {
-                    hypervisor.onPanelDispose(Panels.this);
-                    super.dispose();
-                }
-            };
-        }
-        return panel;
+            @Override
+            public void dispose() {
+                hypervisor.onPanelDispose(Panels.this);
+                super.dispose();
+            }
+        };
     }
 }

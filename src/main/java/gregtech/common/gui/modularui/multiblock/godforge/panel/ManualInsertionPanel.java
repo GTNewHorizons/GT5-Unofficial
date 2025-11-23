@@ -5,6 +5,7 @@ import java.util.Arrays;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
+import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
@@ -13,7 +14,6 @@ import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
-import com.cleanroommc.modularui.widgets.Dialog;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
@@ -42,24 +42,33 @@ public class ManualInsertionPanel {
     private static final int BUTTON_W = 180;
     private static final int BUTTON_H = 18;
 
-    public static Dialog<?> openDialog(SyncHypervisor hypervisor) {
-        Dialog<?> dialog = hypervisor.getDialog(Panels.MANUAL_INSERTION);
+    public static ModularPanel openPanel(SyncHypervisor hypervisor) {
+        ModularPanel panel = hypervisor.getModularPanel(Panels.MANUAL_INSERTION);
 
         registerSyncValues(hypervisor);
 
         ModularPanel mainPanel = hypervisor.getModularPanel(Panels.MAIN);
-        dialog.setDisablePanelsBelow(true)
-            .setDraggable(true)
-            .relative(mainPanel)
+        panel.relative(mainPanel)
             .leftRelOffset(0, 4)
-            .topRelOffset(0, 4)
+            .topRelOffset(0, 3)
             .size(SIZE_W, SIZE_H)
             .background(GTGuiTextures.BACKGROUND_STANDARD)
             .disableHoverBackground()
-            .child(ForgeOfGodsGuiUtil.panelCloseButtonStandard());
+            .child(ForgeOfGodsGuiUtil.panelCloseButtonStandard())
+            .onCloseAction(() -> {
+                IPanelHandler handler = Panels.UPGRADE_TREE.getFrom(Panels.MAIN, hypervisor);
+                if (!handler.isPanelOpen()) {
+                    handler.openPanel();
+                }
+
+                handler = Panels.INDIVIDUAL_UPGRADE.getFrom(Panels.UPGRADE_TREE, hypervisor);
+                if (!handler.isPanelOpen()) {
+                    handler.openPanel();
+                }
+            });
 
         // Title
-        dialog.child(
+        panel.child(
             IKey.lang("gt.blockmachines.multimachine.FOG.payUpgradeCosts")
                 .style(EnumChatFormatting.DARK_GRAY)
                 .alignment(Alignment.CENTER)
@@ -95,13 +104,13 @@ public class ManualInsertionPanel {
         // Inputs grid
         mainRow.child(createInputSlots(hypervisor));
 
-        dialog.child(mainRow);
+        panel.child(mainRow);
 
         // Consume inputs button
         EnumSyncValue<ForgeOfGodsUpgrade> upgradeSyncer = SyncValues.UPGRADE_CLICKED
             .lookupFrom(Panels.UPGRADE_TREE, hypervisor);
 
-        dialog.child(
+        panel.child(
             new ButtonWidget<>().background(GTGuiTextures.BUTTON_STANDARD)
                 .overlay(
                     IKey.lang("gt.blockmachines.multimachine.FOG.consumeUpgradeMats")
@@ -121,7 +130,7 @@ public class ManualInsertionPanel {
                 .marginLeft(5)
                 .clickSound(ForgeOfGodsGuiUtil.getButtonSound()));
 
-        return dialog;
+        return panel;
     }
 
     private static void registerSyncValues(SyncHypervisor hypervisor) {
