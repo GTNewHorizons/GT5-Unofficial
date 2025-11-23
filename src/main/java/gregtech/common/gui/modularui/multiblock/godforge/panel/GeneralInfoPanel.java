@@ -144,6 +144,7 @@ public class GeneralInfoPanel {
                     .style(EnumChatFormatting.AQUA, EnumChatFormatting.BOLD)
                     .alignment(Alignment.CenterLeft))
             .disableHoverBackground()
+            .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
             .onMousePressed(d -> {
                 textList.getScrollData()
                     .animateTo(
@@ -161,6 +162,7 @@ public class GeneralInfoPanel {
                 IKey.str(getInversionHeaderText())
                     .alignment(Alignment.CenterLeft))
             .disableHoverBackground()
+            .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
             .onMousePressed(d -> {
                 textList.getScrollData()
                     .animateTo(
