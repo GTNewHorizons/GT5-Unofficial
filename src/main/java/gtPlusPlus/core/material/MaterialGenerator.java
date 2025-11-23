@@ -83,7 +83,7 @@ public class MaterialGenerator {
         FluidStack rFluidOut, Integer aTime, Integer aEu) {
 
         RecipeGenFluidCanning g = new RecipeGenFluidCanning(false, aEmpty, aFullContainer, aFluidIn, null, null, 0);
-        return g != null && g.valid();
+        return g.valid();
     }
 
     public static void generate(final Material matInfo) {
@@ -109,7 +109,7 @@ public class MaterialGenerator {
             }
 
             int sRadiation = 0;
-            if (ItemUtils.isRadioactive(materialName) || (matInfo.vRadiationLevel != 0)) {
+            if (ItemUtils.getRadioactivityLevel(materialName) > 0 || (matInfo.vRadiationLevel != 0)) {
                 sRadiation = matInfo.vRadiationLevel;
             }
 
@@ -171,8 +171,6 @@ public class MaterialGenerator {
             } else if (matInfo.getState() == MaterialState.PURE_LIQUID) {
                 FluidUtils.generateFluidNoPrefix(unlocalizedName, materialName, matInfo.getMeltingPointK(), C);
                 return true;
-            } else if (matInfo.getState() == MaterialState.ORE) {
-
             }
 
             // Add A jillion Recipes - old code
@@ -212,7 +210,7 @@ public class MaterialGenerator {
         }
 
         int sRadiation = 0;
-        if (ItemUtils.isRadioactive(materialName) || (matInfo.vRadiationLevel != 0)) {
+        if (ItemUtils.getRadioactivityLevel(materialName) > 0 || (matInfo.vRadiationLevel != 0)) {
             sRadiation = matInfo.vRadiationLevel;
         }
 
@@ -242,7 +240,7 @@ public class MaterialGenerator {
     }
 
     public static void generateNuclearDusts(final Material matInfo, boolean generateDehydratorRecipe) {
-        generateNuclearMaterial(matInfo, false, true, false, false, true);
+        generateNuclearMaterial(matInfo, false, true, false, false, true, true);
         if (generateDehydratorRecipe && matInfo.getFluid() != null && matInfo.getDust(0) != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.getIntegratedCircuit(20))
@@ -262,12 +260,12 @@ public class MaterialGenerator {
     }
 
     public static void generateNuclearMaterial(final Material matInfo, final boolean generatePlates) {
-        generateNuclearMaterial(matInfo, true, true, true, generatePlates, true);
+        generateNuclearMaterial(matInfo, true, true, true, generatePlates, true, true);
     }
 
     public static void generateNuclearMaterial(final Material matInfo, final boolean generateBlock,
         final boolean generateDusts, final boolean generateIngot, final boolean generatePlates,
-        final boolean disableOptionalRecipes) {
+        final boolean generateRods, final boolean disableOptionalRecipes) {
         try {
 
             if (generateBlock) {
@@ -289,12 +287,18 @@ public class MaterialGenerator {
                 new RecipeGenAssembler(matInfo);
             }
 
+            if (generateRods) {
+                temp = new BaseItemRod(matInfo);
+                temp = new BaseItemRodLong(matInfo);
+            }
+
             if (!disableOptionalRecipes) {
                 new RecipeGenShapedCrafting(matInfo);
                 new RecipeGenMaterialProcessing(matInfo);
             }
 
             new RecipeGenRecycling(matInfo);
+            new RecipeGenExtruder(matInfo);
             new RecipeGenFluids(matInfo);
             new RecipeGenMetalRecipe(matInfo);
             new RecipeGenDustGeneration(matInfo, disableOptionalRecipes);
@@ -309,7 +313,6 @@ public class MaterialGenerator {
         generateOreMaterial(matInfo, true, true, true, matInfo.getRGBA());
     }
 
-    @SuppressWarnings("unused")
     public static void generateOreMaterial(final Material matInfo, boolean generateOre, boolean generateDust,
         boolean generateSmallTinyDusts, short[] customRGB) {
         try {
@@ -321,12 +324,6 @@ public class MaterialGenerator {
 
             final String unlocalizedName = matInfo.getUnlocalizedName();
             final String materialName = matInfo.getLocalizedName();
-            final Integer Colour = Utils.rgbtoHexValue(customRGB[0], customRGB[1], customRGB[2]);
-
-            if (Colour == null) {
-                Logger.DEBUG_MATERIALS("Invalid Material while constructing " + materialName + ".");
-                return;
-            }
 
             int sRadiation = 0;
             if (matInfo.vRadiationLevel > 0) {
@@ -335,6 +332,7 @@ public class MaterialGenerator {
 
             if (generateOre) {
                 tempBlock = new BlockBaseOre(matInfo, BlockTypes.ORE);
+                matInfo.setHasOre();
             }
 
             DustState aState = new DustState(generateDust, generateSmallTinyDusts, generateSmallTinyDusts);
@@ -384,6 +382,7 @@ public class MaterialGenerator {
             final Integer Colour = Utils.rgbtoHexValue(C[0], C[1], C[2]);
 
             tempBlock = new BlockBaseOre(matInfo, BlockTypes.ORE);
+            matInfo.setHasOre();
             tempBlock = new BlockBaseModular(matInfo, BlockTypes.STANDARD);
             temp = new BaseItemIngot(matInfo);
             temp = new BaseItemDust(matInfo);

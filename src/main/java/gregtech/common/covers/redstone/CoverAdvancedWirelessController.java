@@ -30,4 +30,5 @@ public class CoverAdvancedWirelessController extends CoverAdvancedRedstoneReceiv
     public boolean isRedstoneSensitive(long aTimer) {
         return true;
     }
+
 }

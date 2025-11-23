@@ -31,7 +31,6 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntityFireball;
 import net.minecraft.entity.projectile.EntityFishHook;
 import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -60,8 +59,11 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.MachineStats;
+import ic2.core.block.EntityItnt;
+import ic2.core.block.EntityNuke;
 
 public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAddUIWidgets {
 
@@ -90,17 +92,17 @@ public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAd
         super(aName, aTier, 3, aDescription, aTextures);
     }
 
-    private static float calculateWeight(Entity aEntity) {
-        if ((aEntity instanceof EntityFishHook)) {
+    private static float calculateWeight(Entity entity) {
+        if ((entity instanceof EntityFishHook)) {
             return -1.0F;
         }
-        if ((aEntity instanceof EntityDragonPart)) {
+        if ((entity instanceof EntityDragonPart)) {
             return -1.0F;
         }
-        if ((aEntity instanceof EntityWeatherEffect)) {
+        if ((entity instanceof EntityWeatherEffect)) {
             return -1.0F;
         }
-        if ((aEntity instanceof EntityPlayer tPlayer)) {
+        if ((entity instanceof EntityPlayer tPlayer)) {
             int tCount = 64;
             for (int i = 0; i < 36; i++) {
                 if (tPlayer.inventory.getStackInSlot(i) != null) {
@@ -115,51 +117,49 @@ public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAd
             }
             return Math.min(5.0F, tCount / 666.6F);
         }
-        if (GTUtility.getClassName(aEntity)
-            .equals("EntityItnt")) {
+        if (entity instanceof EntityItnt) {
             return 5.0F;
         }
-        if (GTUtility.getClassName(aEntity)
-            .equals("EntityNuke")) {
+        if (entity instanceof EntityNuke) {
             return 50.0F;
         }
-        if ((aEntity instanceof EntityArrow)) {
+        if ((entity instanceof EntityArrow)) {
             return 0.001F;
         }
-        if ((aEntity instanceof EntityBoat)) {
+        if ((entity instanceof EntityBoat)) {
             return 0.1F;
         }
-        if ((aEntity instanceof EntityEnderCrystal)) {
+        if ((entity instanceof EntityEnderCrystal)) {
             return 2.0F;
         }
-        if ((aEntity instanceof EntityEnderEye)) {
+        if ((entity instanceof EntityEnderEye)) {
             return 0.001F;
         }
-        if ((aEntity instanceof EntityFireball)) {
+        if ((entity instanceof EntityFireball)) {
             return 0.001F;
         }
-        if ((aEntity instanceof EntityFireworkRocket)) {
+        if ((entity instanceof EntityFireworkRocket)) {
             return 0.001F;
         }
-        if ((aEntity instanceof EntityHanging)) {
+        if ((entity instanceof EntityHanging)) {
             return 0.005F;
         }
-        if ((aEntity instanceof EntityItem)) {
+        if ((entity instanceof EntityItem)) {
             return 0.001F;
         }
-        if ((aEntity instanceof EntityLiving)) {
+        if ((entity instanceof EntityLiving)) {
             return 0.5F;
         }
-        if ((aEntity instanceof EntityMinecart)) {
+        if ((entity instanceof EntityMinecart)) {
             return 0.1F;
         }
-        if ((aEntity instanceof EntityThrowable)) {
+        if ((entity instanceof EntityThrowable)) {
             return 0.001F;
         }
-        if ((aEntity instanceof EntityTNTPrimed)) {
+        if ((entity instanceof EntityTNTPrimed)) {
             return 5.0F;
         }
-        if ((aEntity instanceof EntityXPOrb)) {
+        if ((entity instanceof EntityXPOrb)) {
             return 0.001F;
         }
         return -1.0F;
@@ -307,28 +307,19 @@ public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAd
                                 tTile = tWorld.getTileEntity(this.mTargetX, this.mTargetY, this.mTargetZ);
                             }
                         }
-                        if (tTile instanceof IInventory) {
-                            int tStacksize = mInventory[0].stackSize;
-                            GTUtility.moveOneItemStack(
-                                this,
-                                tTile,
-                                ForgeDirection.DOWN,
-                                ForgeDirection.DOWN,
-                                null,
-                                false,
-                                (byte) 64,
-                                (byte) 1,
-                                (byte) 64,
-                                (byte) 1);
-                            if (mInventory[0] == null || mInventory[0].stackSize < tStacksize) {
-                                getBaseMetaTileEntity().decreaseStoredEnergyUnits(
-                                    (long) (Math.pow(tDistance, 1.5) * tDistance
-                                        * (tStacksize - (mInventory[0] == null ? 0 : mInventory[0].stackSize))
-                                        * sFPowerMultiplyer),
-                                    false);
-                            }
-                        }
+
+                        GTItemTransfer transfer = new GTItemTransfer();
+
+                        transfer.source(this, ForgeDirection.UNKNOWN);
+                        transfer.sink(tTile, ForgeDirection.UNKNOWN);
+
+                        int transferred = transfer.transfer();
+
+                        getBaseMetaTileEntity().decreaseStoredEnergyUnits(
+                            (long) (Math.pow(tDistance, 1.5) * tDistance * transferred * sFPowerMultiplyer),
+                            false);
                     }
+
                     List<Entity> entities_in_box = getBaseMetaTileEntity().getWorld()
                         .getEntitiesWithinAABB(
                             Entity.class,
@@ -384,19 +375,12 @@ public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAd
     }
 
     private int distanceCalculation() {
+        double dx = getBaseMetaTileEntity().getXCoord() - this.mTargetX;
+        double dy = getBaseMetaTileEntity().getYCoord() - this.mTargetY;
+        double dz = getBaseMetaTileEntity().getZCoord() - this.mTargetZ;
         return Math.abs(
             ((this.mTargetD != getBaseMetaTileEntity().getWorld().provider.dimensionId)
-                && (isDimensionalTeleportAvailable())
-                    ? 4000
-                    : (int) Math.sqrt(
-                        Math.pow(getBaseMetaTileEntity().getXCoord() - this.mTargetX, 2.0D)
-                            + Math.pow(getBaseMetaTileEntity().getYCoord() - this.mTargetY, 2.0D)
-                            + Math.pow(getBaseMetaTileEntity().getZCoord() - this.mTargetZ, 2.0D))));
-    }
-
-    @Override
-    public boolean isElectric() {
-        return true;
+                && (isDimensionalTeleportAvailable()) ? 4000 : (int) Math.sqrt(dx * dx + dy * dy + dz * dz)));
     }
 
     @Override
@@ -412,11 +396,6 @@ public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAd
     @Override
     public boolean isInputFacing(ForgeDirection side) {
         return true;
-    }
-
-    @Override
-    public boolean isOutputFacing(ForgeDirection side) {
-        return false;
     }
 
     @Override
@@ -440,28 +419,8 @@ public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAd
     }
 
     @Override
-    public long maxSteamStore() {
-        return maxEUStore();
-    }
-
-    @Override
     public long maxAmperesIn() {
         return 2;
-    }
-
-    @Override
-    public int getStackDisplaySlot() {
-        return 2;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
-    public int getInputSlot() {
-        return 0;
     }
 
     @Override
@@ -508,23 +467,34 @@ public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAd
                 .setSize(90, 72)
                 .setPos(43, 4))
             .widget(
-                new TextWidget().setStringSupplier(() -> "X: " + numberFormat.format(mTargetX))
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector.translateToLocalFormatted("GT5U.gui.text.x", numberFormat.format(mTargetX)))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(46, 8))
             .widget(
-                new TextWidget().setStringSupplier(() -> "Y: " + numberFormat.format(mTargetY))
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector.translateToLocalFormatted("GT5U.gui.text.y", numberFormat.format(mTargetY)))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(46, 16))
             .widget(
-                new TextWidget().setStringSupplier(() -> "Z: " + numberFormat.format(mTargetZ))
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector.translateToLocalFormatted("GT5U.gui.text.z", numberFormat.format(mTargetZ)))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(46, 24))
             .widget(
-                new TextWidget().setStringSupplier(() -> "Dim: " + numberFormat.format(mTargetD))
+                new TextWidget().setStringSupplier(
+                    () -> StatCollector.translateToLocalFormatted("GT5U.gui.text.dim", numberFormat.format(mTargetD)))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(46, 32))
             .widget(
-                TextWidget.dynamicString(() -> "Dim Valid: " + (GTUtility.isRealDimension(mTargetD) ? "Yes" : "No"))
+                TextWidget
+                    .dynamicString(
+                        () -> (GTUtility.isRealDimension(mTargetD)
+                            ? StatCollector.translateToLocal("GT5U.gui.text.dim.valid")
+                            : StatCollector.translateToLocal("GT5U.gui.text.dim.invalid")))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> hasDimensionalTeleportCapability())
                     .setPos(46, 40))

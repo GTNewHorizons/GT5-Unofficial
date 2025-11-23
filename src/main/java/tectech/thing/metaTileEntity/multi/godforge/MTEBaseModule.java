@@ -492,11 +492,11 @@ public class MTEBaseModule extends TTMultiblockBase implements IConstructable, I
 
         builder.widget(
             TextWidget.localised("gt.blockmachines.multimachine.FOG.voltageinfo")
-                .setPos(0, 59)
-                .setSize(138, 15));
+                .setPos(0, 60)
+                .setSize(138, 18));
         builder.widget(
             new DrawableWidget().setDrawable(ModularUITextures.ICON_INFO)
-                .setPos(127, 67)
+                .setPos(126, 67)
                 .setSize(8, 8)
                 .addTooltip(translateToLocal("fog.text.tooltip.voltageadjustment"))
                 .addTooltip(translateToLocal("fog.text.tooltip.voltageadjustment.1"))

@@ -30,7 +30,6 @@ import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import codechicken.nei.PositionedStack;
-import gregtech.GTMod;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -246,7 +245,7 @@ public class RecipeMapFrontend {
 
     protected void drawRecipeOwnerInfo(RecipeDisplayInfo recipeInfo) {
         GTRecipe recipe = recipeInfo.recipe;
-        if (GTMod.gregtechproxy.mNEIRecipeOwner) {
+        if (recipe.owners != null) {
             if (recipe.owners.size() > 1) {
                 recipeInfo.drawText(
                     EnumChatFormatting.ITALIC + trans("273", "Original Recipe by: ")
@@ -265,8 +264,7 @@ public class RecipeMapFrontend {
                             .getName());
             }
         }
-        if (GTMod.gregtechproxy.mNEIRecipeOwnerStackTrace && recipe.stackTraces != null
-            && !recipe.stackTraces.isEmpty()) {
+        if (recipe.stackTraces != null && !recipe.stackTraces.isEmpty()) {
             recipeInfo.drawText("stackTrace:");
             // todo: good way to show all stacktraces
             for (String stackTrace : recipe.stackTraces.get(0)) {

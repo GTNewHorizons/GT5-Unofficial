@@ -4,14 +4,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.world.chunk.IChunkProvider;
-
 import galacticgreg.GalacticGreg;
-import galacticgreg.api.Enums.DimensionType;
 import galacticgreg.api.ModContainer;
 import galacticgreg.api.ModDimensionDef;
 import galacticgreg.dynconfig.DynamicDimensionConfig;
-import galacticgreg.generators.GenEllipsoid;
 
 /**
  * GalacticGregs registry
@@ -47,35 +43,6 @@ public class GalacticGregRegistry {
     }
 
     /**
-     * Lookup the registered dimensions and try to find the DimensionDefinition that has the ChunkProvider that we have
-     * here
-     */
-    public static ModDimensionDef getDimensionTypeByChunkGenerator(IChunkProvider chunkProvider) {
-        try {
-            if (!initializationDone) return null;
-
-            String tFQCPN = chunkProvider.toString()
-                .split("@")[0];
-            ModDimensionDef tReturnMDD = null;
-
-            for (ModContainer mc : modContainers.values()) {
-                for (ModDimensionDef mdd : mc.getDimensionList()) {
-                    if (mdd.getChunkProviderName()
-                        .equals(tFQCPN)) {
-                        tReturnMDD = mdd;
-                        break;
-                    }
-                }
-            }
-
-            return tReturnMDD;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    /**
      * Get all registered modcontainers. Can only be done after the initialization process is done
      */
     public static Collection<ModContainer> getModContainers() {
@@ -98,7 +65,7 @@ public class GalacticGregRegistry {
     }
 
     /**
-     * Parse modcontainers and search for loaded mods. Enable found mods for generation
+     * Currently only prints some debug logs. Keeping this because it could be useful in the future.
      */
     private static void InitModContainers() {
         for (ModContainer mc : modContainers.values()) {
@@ -114,29 +81,10 @@ public class GalacticGregRegistry {
 
             for (ModDimensionDef md : mc.getDimensionList()) {
                 GalacticGreg.Logger.info(
-                    "ModID: [%s] DimName: [%s] ValidBlocks: [%d] Identifier: [%s] Generators: [%d]",
+                    "ModID: [%s] DimName: [%s] Identifier: [%s]",
                     mc.getModName(),
                     md.getDimensionName(),
-                    md.getReplaceableBlocks()
-                        .size(),
-                    md.getDimIdentifier(),
-                    md.getSpaceObjectGenerators()
-                        .size());
-
-                // Register default generator if dimension is asteroid and no generator was added
-                if (md.getDimensionType() == DimensionType.Asteroid) {
-                    if (md.getSpaceObjectGenerators()
-                        .isEmpty()) {
-                        GalacticGreg.Logger.debug("No generators found, adding built-in ellipsoid generator");
-                        md.registerSpaceObjectGenerator(new GenEllipsoid());
-                    }
-                    GalacticGreg.Logger.info(
-                        "Asteroid-Enabled dimension. Registered Generators: [%d]",
-                        md.getSpaceObjectGenerators()
-                            .size());
-                }
-
-                md.finalizeReplaceableBlocks(mc.getModName());
+                    md.getDimIdentifier());
             }
         }
         initializationDone = true;

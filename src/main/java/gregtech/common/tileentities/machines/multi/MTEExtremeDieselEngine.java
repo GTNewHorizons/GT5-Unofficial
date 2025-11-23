@@ -95,11 +95,6 @@ public class MTEExtremeDieselEngine extends MTEDieselEngine {
     }
 
     @Override
-    public Block getCasingBlock() {
-        return GregTechAPI.sBlockCasings4;
-    }
-
-    @Override
     public byte getCasingMeta() {
         return 0;
     }
@@ -115,23 +110,8 @@ public class MTEExtremeDieselEngine extends MTEDieselEngine {
     }
 
     @Override
-    public Block getGearboxBlock() {
-        return GregTechAPI.sBlockCasings2;
-    }
-
-    @Override
-    public byte getGearboxMeta() {
-        return 4;
-    }
-
-    @Override
     public byte getCasingTextureIndex() {
         return 60;
-    }
-
-    @Override
-    public boolean supportsPowerPanel() {
-        return false;
     }
 
     @Override
@@ -145,18 +125,8 @@ public class MTEExtremeDieselEngine extends MTEDieselEngine {
     }
 
     @Override
-    protected int getBoostFactor() {
-        return 2;
-    }
-
-    @Override
     protected Materials getBooster() {
         return Materials.LiquidOxygen;
-    }
-
-    @Override
-    protected int getAdditiveFactor() {
-        return 1;
     }
 
     @Override
@@ -166,7 +136,7 @@ public class MTEExtremeDieselEngine extends MTEDieselEngine {
 
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
-        return GTMod.gregtechproxy.mPollutionExtremeCombustionEnginePerSecond;
+        return GTMod.proxy.mPollutionExtremeCombustionEnginePerSecond;
     }
 
     @Override

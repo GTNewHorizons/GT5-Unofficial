@@ -67,6 +67,7 @@ public class RecipeLoaderAgriculturalChem {
         addBasicOrganiseFertRecipes();
         addAdvancedOrganiseFertRecipes();
 
+        recipeFermentationBase();
         addMiscRecipes();
 
         BioRecipes.init();
@@ -76,9 +77,9 @@ public class RecipeLoaderAgriculturalChem {
         processOreDict("listAllmeatraw", mMeats);
         processOreDict("listAllfishraw", mFish);
         processOreDict("listAllfruit", mFruits);
-        processOreDict("listAllVeggie", mVege);
+        processOreDict("listAllveggie", mVege);
         processOreDict("listAllnut", mNuts);
-        processOreDict("listAllSeed", mSeeds);
+        processOreDict("listAllseed", mSeeds);
         processOreDict("brickPeat", mPeat);
         processOreDict("bone", mBones);
         processOreDict("dustBone", mBoneMeal);
@@ -143,6 +144,7 @@ public class RecipeLoaderAgriculturalChem {
 
         // Poop Juice to Basic Slurry
         GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(21))
             .itemOutputs(aDirtDust, aDirtDust, aManureByprod1, aManureByprod1, aManureByprod1, aManureByprod1)
             .outputChances(2000, 2000, 500, 500, 250, 250)
             .fluidInputs(new FluidStack(GTPPFluids.PoopJuice, 1_000))
@@ -258,7 +260,7 @@ public class RecipeLoaderAgriculturalChem {
             if (aMap.contains(a)) {
                 continue;
             }
-            if (ItemUtils.checkForInvalidItems(a)) {
+            if (a != null) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.getIntegratedCircuit(2), GTUtility.copyAmount(10, a))
                     .fluidInputs(GTModHandler.getDistilledWater(1_000))
@@ -271,7 +273,7 @@ public class RecipeLoaderAgriculturalChem {
         }
 
         for (ItemStack a : mList_Master_Seeds) {
-            if (ItemUtils.checkForInvalidItems(a)) {
+            if (a != null) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.getIntegratedCircuit(3), GTUtility.copyAmount(20, a))
                     .fluidInputs(GTModHandler.getDistilledWater(1_000))
@@ -433,7 +435,7 @@ public class RecipeLoaderAgriculturalChem {
             .addTo(centrifugeRecipes);
     }
 
-    @Optional.Method(modid = Mods.Names.FORESTRY)
+    @Optional.Method(modid = Mods.ModIDs.FORESTRY)
     private static void addMiscForestryRecipes() {
         if (ItemList.FR_Fertilizer.hasBeenSet()) {
             GTValues.RA.stdBuilder()

@@ -93,9 +93,7 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
     @Override
     public void loadUsageRecipes(ItemStack ingredient) {
         final List<DecayableRecipe> recipes = DecayableRecipe.mRecipes;
-        if (ingredient != null) {
-            // Logger.INFO("Looking up Usage results for "+ItemUtils.getItemName(ingredient));
-        }
+
         for (final DecayableRecipe recipe : recipes) {
             if (recipe.isValid()) {
                 final ItemStack input = recipe.mInput.copy();
@@ -117,7 +115,7 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
         for (CachedRecipe u : arecipes) {
             g.add((DecayableRecipeNEI) u);
         }
-        if (g != null && !g.isEmpty()) {
+        if (!g.isEmpty()) {
             Collections.sort(g);
         }
     }

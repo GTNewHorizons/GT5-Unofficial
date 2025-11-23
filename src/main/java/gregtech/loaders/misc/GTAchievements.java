@@ -139,7 +139,7 @@ public class GTAchievements {
             "crushed",
             false);
 
-        registerAchievement("newfuel", -4, 8, ItemList.ThoriumCell_4.get(1), "spinit", false);
+        registerAchievement("newfuel", -4, 8, ItemList.RodThorium4.get(1), "spinit", false);
         registerAchievement(
             "newmetal",
             -4,
@@ -260,7 +260,6 @@ public class GTAchievements {
             false);
         registerAchievement("highpowersmelt", 8, 2, ItemList.Machine_Multi_Furnace.get(1), "gtaluminium", false);
         registerAchievement("oilplant", 8, 4, ItemList.Distillation_Tower.get(1), "highpowersmelt", false);
-        registerAchievement("factory", 8, 6, ItemList.Processing_Array.get(1), "oilplant", false);
         registerAchievement("upgradeebf", 8, -2, ItemList.Hatch_Energy_MV.get(1), "gtaluminium", false);
         registerAchievement("maintainance", 10, -2, ItemList.Hatch_Maintenance.get(1), "upgradeebf", false);
 
@@ -353,7 +352,7 @@ public class GTAchievements {
         registerAchievement("uvage", 10, 10, ItemList.Energy_Cluster.get(1), "zpmage", false);
         registerAchievement("whatnow", 12, 10, ItemList.ZPM2.get(1), "uvage", false);
 
-        if (GTMod.gregtechproxy.mAchievements) {
+        if (GTMod.proxy.mAchievements) {
             AchievementPage.registerAchievementPage(
                 new AchievementPage(
                     "GregTech 5",
@@ -371,7 +370,7 @@ public class GTAchievements {
 
     public Achievement registerAchievement(String textId, int x, int y, ItemStack icon, Achievement requirement,
         boolean special) {
-        if (!GTMod.gregtechproxy.mAchievements) {
+        if (!GTMod.proxy.mAchievements) {
             return null;
         }
         Achievement achievement = new Achievement(textId, textId, this.adjX + x, this.adjY + y, icon, requirement);
@@ -389,7 +388,7 @@ public class GTAchievements {
 
     public Achievement registerAchievement(String textId, int x, int y, ItemStack icon, String requirement,
         boolean special) {
-        if (!GTMod.gregtechproxy.mAchievements) {
+        if (!GTMod.proxy.mAchievements) {
             return null;
         }
         Achievement achievement = new Achievement(
@@ -443,7 +442,7 @@ public class GTAchievements {
     }
 
     public void issueAchievement(EntityPlayer entityplayer, String textId) {
-        if (entityplayer == null || !GTMod.gregtechproxy.mAchievements) {
+        if (entityplayer == null || !GTMod.proxy.mAchievements) {
             return;
         }
         entityplayer.triggerAchievement(this.achievementList.get(textId));
@@ -456,7 +455,7 @@ public class GTAchievements {
         return null;
     }
 
-    public void issueAchivementHatch(EntityPlayer player, ItemStack stack) {
+    public void issueAchievementHatch(EntityPlayer player, ItemStack stack) {
         if (player == null || stack == null) {
             return;
         }
@@ -491,7 +490,7 @@ public class GTAchievements {
         }
     }
 
-    public void issueAchivementHatchFluid(EntityPlayer player, FluidStack fluid) {
+    public void issueAchievementHatchFluid(EntityPlayer player, FluidStack fluid) {
         if (player == null || fluid == null) {
             return;
         }
@@ -559,7 +558,6 @@ public class GTAchievements {
             case "gt.blockmachines.hatch.energy.tier.02" -> issueAchievement(player, "upgradeebf");
             case "gt.blockmachines.multimachine.multifurnace" -> issueAchievement(player, "highpowersmelt");
             case "gt.blockmachines.hatch.energy.tier.01" -> issueAchievement(player, "energyhatch");
-            case "gt.blockmachines.multimachine.processingarray" -> issueAchievement(player, "factory");
             case "gt.blockmachines.basicgenerator.magicenergyconverter.tier.01" -> issueAchievement(player, "magic");
             case "gt.blockmachines.basicgenerator.magicenergyabsorber.tier.03" -> issueAchievement(player, "highmage");
             case "gt.blockmachines.basicgenerator.plasmagenerator.tier.07" -> issueAchievement(
@@ -659,7 +657,6 @@ public class GTAchievements {
         if (stack.getUnlocalizedName()
             .startsWith("gt.blockmachines.basicmachine.replicator.tier.")) {
             issueAchievement(player, "replication");
-            return;
         }
 
     }
@@ -692,7 +689,7 @@ public class GTAchievements {
                 if (data.mMaterial.mMaterial != Materials.Gunpowder) {
                     issueAchievement(player, "cleandust");
                 }
-            } else if (data.mPrefix.name()
+            } else if (data.mPrefix.getName()
                 .startsWith("ore")) {
                     int data_getAllMaterialStacks_sS = data.getAllMaterialStacks()
                         .size();
@@ -756,6 +753,16 @@ public class GTAchievements {
             case "gt.metaitem.03.32089" -> issueAchievement(player, "gtcrystalprocessor");
             case "gt.metaitem.03.32092" -> issueAchievement(player, "gtwetware");
             case "gt.metaitem.03.32095" -> issueAchievement(player, "gtwetmain");
+            case "gt.metaitem.01.11019" -> issueAchievement(player, "gtaluminium");
+            case "gt.metaitem.01.11028" -> issueAchievement(player, "titan");
+            case "gt.metaitem.01.11349" -> issueAchievement(player, "complexalloys");
+            case "gt.metaitem.01.11081" -> issueAchievement(player, "tungsten");
+            case "gt.metaitem.01.11083" -> issueAchievement(player, "osmium");
+            case "gt.metaitem.01.11316" -> issueAchievement(player, "tungstensteel");
+            case "gt.metaitem.01.11372" -> issueAchievement(player, "hssg");
+            case "gt.metaitem.01.11324" -> issueAchievement(player, "stargatematerial");
+            case "gt.metaitem.01.11325" -> issueAchievement(player, "alienmetallurgy");
+            case "gt.metaitem.01.11327" -> issueAchievement(player, "finalpreparations");
             case "gt.Thoriumcell" -> issueAchievement(player, "newfuel");
             case "ic2.itemPartCircuitAdv" -> issueAchievement(player, "stepforward");
             case "gt.blockcasings5.1" -> issueAchievement(player, "upgrade");
@@ -783,6 +790,11 @@ public class GTAchievements {
             || (stack.getItem() == Ic2Items.quantumHelmet.getItem())
             || (stack.getItem() == Ic2Items.quantumLeggings.getItem())) {
             issueAchievement(player, "buildQArmor");
+        }
+
+        if ((stack.getItem()) == ItemList.IC2_Industrial_Diamond.getItem()) {
+            issueAchievement(player, "artificaldia");
+            issueAchievement(player, "buildCoalDiamond");
         }
 
         for (GTRecipe recipe : RecipeMaps.assemblylineVisualRecipes.getAllRecipes()) {

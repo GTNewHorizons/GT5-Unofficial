@@ -18,12 +18,12 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.ToolDictNames;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
@@ -45,7 +45,7 @@ public class RecipeGenFluorite extends RecipeGenBase {
          * Shaped Crafting
          */
         RecipeUtils.addShapedRecipe(
-            CI.craftingToolHammer_Hard,
+            ToolDictNames.craftingToolHardHammer.name(),
             null,
             null,
             material.getCrushedPurified(1),
@@ -57,7 +57,7 @@ public class RecipeGenFluorite extends RecipeGenBase {
             material.getDustPurified(1));
 
         RecipeUtils.addShapedRecipe(
-            CI.craftingToolHammer_Hard,
+            ToolDictNames.craftingToolHardHammer.name(),
             null,
             null,
             material.getCrushed(1),
@@ -69,7 +69,7 @@ public class RecipeGenFluorite extends RecipeGenBase {
             material.getDustImpure(1));
 
         RecipeUtils.addShapedRecipe(
-            CI.craftingToolHammer_Hard,
+            ToolDictNames.craftingToolHardHammer.name(),
             null,
             null,
             material.getCrushedCentrifuged(1),
@@ -142,8 +142,7 @@ public class RecipeGenFluorite extends RecipeGenBase {
          * Package
          */
         // Allow ore dusts to be packaged
-        if (ItemUtils.checkForInvalidItems(material.getSmallDust(1))
-            && ItemUtils.checkForInvalidItems(material.getTinyDust(1))) {
+        if (material.getSmallDust(1) != null && material.getTinyDust(1) != null) {
             RecipeGenDustGeneration.generatePackagerRecipes(material);
         }
 

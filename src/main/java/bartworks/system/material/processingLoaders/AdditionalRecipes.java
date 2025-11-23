@@ -25,10 +25,8 @@ import static gregtech.api.enums.OrePrefixes.gemChipped;
 import static gregtech.api.enums.OrePrefixes.gemFlawed;
 import static gregtech.api.enums.OrePrefixes.stick;
 import static gregtech.api.enums.OrePrefixes.stickLong;
-import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
-import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
 import static gregtech.api.recipe.RecipeMaps.extremeNaquadahReactorFuels;
@@ -58,6 +56,7 @@ import java.util.Objects;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -68,13 +67,11 @@ import bartworks.common.loaders.BioCultureLoader;
 import bartworks.common.loaders.BioItemList;
 import bartworks.common.loaders.FluidLoader;
 import bartworks.common.loaders.ItemRegistry;
-import bartworks.system.material.BWNonMetaMaterialItems;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.util.BioCulture;
 import bartworks.util.BioDNA;
 import bartworks.util.BioData;
 import bartworks.util.BioPlasmid;
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -84,6 +81,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
+import gtPlusPlus.core.fluids.GTPPFluids;
 
 public class AdditionalRecipes {
 
@@ -174,9 +172,9 @@ public class AdditionalRecipes {
                 stack.getTagCompound()
                     .getCompoundTag("Plasmid"));
             if (!Objects.equals(DNA.getName(), Plasmid.getName())) {
-                if (DNA.getName() == "TCetiEis Fucus Serratus") {
+                if ("TCetiEis Fucus Serratus".equals(DNA.getName())) {
                     energyUsageWithTransformModule = TierEU.RECIPE_LuV;
-                } else if (DNA.getName() == "Escherichia koli") {
+                } else if ("Escherichia koli".equals(DNA.getName())) {
                     energyUsageWithTransformModule = TierEU.RECIPE_EV;
                 }
                 GTValues.RA.stdBuilder()
@@ -259,7 +257,10 @@ public class AdditionalRecipes {
             ImmutablePair.of(Materials.DilutedSulfuricAcid, 9),
             ImmutablePair.of(Materials.SulfuricAcid, 18),
             ImmutablePair.of(Materials.AceticAcid, 11),
-            ImmutablePair.of(WerkstoffLoader.FormicAcid.getBridgeMaterial(), 40));
+            ImmutablePair.of(WerkstoffLoader.FormicAcid.getBridgeMaterial(), 40),
+            ImmutablePair.of(WerkstoffLoader.HexafluorosilicicAcid.getBridgeMaterial(), 350),
+            ImmutablePair.of(Materials.PhthalicAcid, 270),
+            ImmutablePair.of(Materials.NaphthenicAcid, 250));
         for (Pair<Materials, Integer> fuel : liquidFuels) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
@@ -274,6 +275,30 @@ public class AdditionalRecipes {
             .itemOutputs(Materials.Empty.getCells(1))
             .metadata(FUEL_VALUE, 10)
             .addTo(BartWorksRecipeMaps.acidGenFuels);
+        // should probably also find a way to auto-fill these with an array but i am too lazy to do that rn
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                FluidContainerRegistry.fillFluidContainer(
+                    new FluidStack(GTPPFluids.IndustrialStrengthHydrofluoricAcid, 1000),
+                    ItemList.Cell_Empty.get(1L)))
+            .itemOutputs(Materials.Empty.getCells(1))
+            .metadata(FUEL_VALUE, 320)
+            .addTo(BartWorksRecipeMaps.acidGenFuels);
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                FluidContainerRegistry.fillFluidContainer(
+                    new FluidStack(GTPPFluids.IndustrialStrengthHydrogenChloride, 1000),
+                    ItemList.Cell_Empty.get(1L)))
+            .itemOutputs(Materials.Empty.getCells(1))
+            .metadata(FUEL_VALUE, 224)
+            .addTo(BartWorksRecipeMaps.acidGenFuels);
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                FluidContainerRegistry
+                    .fillFluidContainer(new FluidStack(GTPPFluids.PropionicAcid, 1000), ItemList.Cell_Empty.get(1L)))
+            .itemOutputs(Materials.Empty.getCells(1))
+            .metadata(FUEL_VALUE, 150)
+            .addTo(BartWorksRecipeMaps.acidGenFuels);
     }
 
     public static void run() {
@@ -287,7 +312,7 @@ public class AdditionalRecipes {
             .metadata(ADDITIVE_AMOUNT, 4)
             .addTo(implosionRecipes);
 
-        // Thorium/Yttrium Glas
+        // Thorium/Yttrium Glass
         GTValues.RA.stdBuilder()
             .itemInputs(WerkstoffLoader.YttriumOxide.get(dustSmall, 2), WerkstoffLoader.Thorianit.get(dustSmall, 2))
             .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 12))
@@ -487,51 +512,5 @@ public class AdditionalRecipes {
             .eut(0)
             .metadata(FUEL_VALUE, 125_000)
             .addTo(ultraHugeNaquadahReactorFuels);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Large_Fluid_Cell_TungstenSteel.get(1L), WerkstoffLoader.Tiberium.get(dust, 3))
-            .itemOutputs(BWNonMetaMaterialItems.TiberiumCell_1.get(1L))
-            .duration(1 * SECONDS + 10 * TICKS)
-            .eut(16)
-            .addTo(cannerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                BWNonMetaMaterialItems.TiberiumCell_1.get(2L),
-                GTOreDictUnificator.get(stick, Materials.TungstenSteel, 4L))
-            .itemOutputs(BWNonMetaMaterialItems.TiberiumCell_2.get(1L))
-            .duration(5 * SECONDS)
-            .eut(400)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                BWNonMetaMaterialItems.TiberiumCell_1.get(4L),
-                GTOreDictUnificator.get(stickLong, Materials.TungstenSteel, 6L))
-            .itemOutputs(BWNonMetaMaterialItems.TiberiumCell_4.get(1L))
-            .duration(7 * SECONDS + 10 * TICKS)
-            .eut(400)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                BWNonMetaMaterialItems.TiberiumCell_2.get(2L),
-                GTOreDictUnificator.get(stick, Materials.TungstenSteel, 4L))
-            .itemOutputs(BWNonMetaMaterialItems.TiberiumCell_4.get(1L))
-            .duration(5 * SECONDS)
-            .eut(400)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.NaquadahCell_1.get(32L),
-                GTOreDictUnificator.get(stickLong, Materials.TungstenSteel, 64L),
-                GTOreDictUnificator.get(stickLong, Materials.TungstenSteel, 64L),
-                GTOreDictUnificator.get(stickLong, Materials.TungstenSteel, 64L),
-                WerkstoffLoader.Tiberium.get(dust, 64),
-                WerkstoffLoader.Tiberium.get(dust, 64))
-            .itemOutputs(BWNonMetaMaterialItems.TheCoreCell.get(1L))
-            .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_LuV)
-            .addTo(assemblerRecipes);
-
-        GregTechAPI.sAfterGTPostload.add(new AddSomeRecipes());
     }
 }

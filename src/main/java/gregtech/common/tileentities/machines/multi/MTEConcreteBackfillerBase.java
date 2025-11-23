@@ -99,7 +99,7 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
             .addInfo("Will fill in areas below it with light concrete. This goes through walls")
             .addInfo("Use it to remove any spawning locations beneath your base to reduce lag")
             .addInfo("Will pull back the pipes after it finishes that layer")
-            .addInfo("Radius is " + getRadius() + " blocks")
+            .addInfo("Range is " + getRadius() + "x" + getRadius() + " blocks horizontally")
             .addInfo("Minimum energy hatch tier: " + GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
             .addInfo(
                 "Base cycle time: " + (baseCycleTime < 20 ? GTUtility.formatNumbers(baseCycleTime) + " ticks"
@@ -142,7 +142,7 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
 
     @Override
     public int calculateMaxProgressTime(int tier, boolean simulateWorking) {
-        return (int) Math.max(1, (workState == STATE_UPWARD || simulateWorking ? 240 : 80) / Math.pow(2, tier));
+        return (int) Math.max(1, (workState == STATE_UPWARD || simulateWorking ? 240 : 80) / GTUtility.powInt(2, tier));
     }
 
     @Override

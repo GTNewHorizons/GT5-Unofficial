@@ -34,14 +34,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 @ThreadSafeISBRH(perThread = false)
 public class RendererGlassBlock implements ISimpleBlockRenderingHandler {
 
-    public static int renderID;
+    public static final int renderID = RenderingRegistry.getNextAvailableRenderId();
     public static RendererGlassBlock INSTANCE;
-
-    public static void register() {
-        renderID = RenderingRegistry.getNextAvailableRenderId();
-        INSTANCE = new RendererGlassBlock();
-        RenderingRegistry.registerBlockHandler(INSTANCE);
-    }
 
     @Override
     public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {

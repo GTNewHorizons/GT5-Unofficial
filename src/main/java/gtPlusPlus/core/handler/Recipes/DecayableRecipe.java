@@ -8,7 +8,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class DecayableRecipe {
 
@@ -29,7 +28,7 @@ public class DecayableRecipe {
             .itemOutputs(output)
             .eut(1)
             .duration(1)
-            .metadata(GTRecipeConstants.HALF_LIFE, time / 40d)
+            .metadata(GTRecipeConstants.HALF_LIFE, time / 320d)
             .metadata(GTRecipeConstants.DECAY_TYPE, decayType)
             .addTo(RecipeMaps.isotopeDecay);
     }
@@ -44,6 +43,6 @@ public class DecayableRecipe {
     }
 
     public boolean isValid() {
-        return (mTime > 0 && ItemUtils.checkForInvalidItems(mInput) && ItemUtils.checkForInvalidItems(mOutput));
+        return (mTime > 0 && mInput != null && mOutput != null);
     }
 }

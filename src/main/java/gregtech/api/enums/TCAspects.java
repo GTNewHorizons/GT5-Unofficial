@@ -2,12 +2,17 @@ package gregtech.api.enums;
 
 import java.util.List;
 
+import cpw.mods.fml.common.Optional;
+import thaumcraft.api.aspects.Aspect;
+
 public enum TCAspects {
 
     AER(1),
+    AEQUALITAS(65),
     ALIENIS(20),
     AQUA(3),
     ARBOR(1),
+    ASTRUM(68),
     AURAM(16),
     BESTIA(6),
     COGNITIO(2),
@@ -17,6 +22,7 @@ public enum TCAspects {
     FABRICO(2),
     FAMES(2),
     GELUM(1),
+    GLORIA(69),
     GRANUM(4),
     HERBA(2),
     HUMANUS(8),
@@ -41,6 +47,7 @@ public enum TCAspects {
     PERMUTATIO(12),
     POTENTIA(16),
     PRAECANTATIO(16),
+    PRIMORDIUM(67),
     RADIO(48),
     SANO(24),
     SENSUS(4),
@@ -53,6 +60,7 @@ public enum TCAspects {
     TUTAMEN(12),
     VACUOS(6),
     VENENUM(16),
+    VESANIA(66),
     VICTUS(4),
     VINCULUM(16),
     VITIUM(48),
@@ -68,6 +76,11 @@ public enum TCAspects {
 
     TCAspects(int aValue) {
         mValue = aValue;
+    }
+
+    @Optional.Method(modid = Mods.ModIDs.THAUMCRAFT)
+    public Aspect getAspect() {
+        return (Aspect) mAspect;
     }
 
     public static class TC_AspectStack {

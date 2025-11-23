@@ -11,10 +11,11 @@ import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.GuiDraw;
 import com.cleanroommc.modularui.drawable.ItemDrawable;
-import com.cleanroommc.modularui.integration.nei.NEIIngredientProvider;
+import com.cleanroommc.modularui.integration.recipeviewer.RecipeViewerIngredientProvider;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
-import com.cleanroommc.modularui.theme.WidgetSlotTheme;
+import com.cleanroommc.modularui.theme.SlotTheme;
 import com.cleanroommc.modularui.theme.WidgetTheme;
+import com.cleanroommc.modularui.theme.WidgetThemeEntry;
 import com.cleanroommc.modularui.utils.GlStateManager;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 
@@ -22,7 +23,7 @@ import com.cleanroommc.modularui.widgets.ButtonWidget;
  * Button widget that looks like and partially behaves like item slot. Draws supplied ItemStack, draws white overlay
  * when hovered, and allows interaction with NEI.
  */
-public class SlotLikeButtonWidget extends ButtonWidget<SlotLikeButtonWidget> implements NEIIngredientProvider {
+public class SlotLikeButtonWidget extends ButtonWidget<SlotLikeButtonWidget> implements RecipeViewerIngredientProvider {
 
     private final Supplier<ItemStack> itemSupplier;
     private final IDrawable itemDrawable;
@@ -46,36 +47,38 @@ public class SlotLikeButtonWidget extends ButtonWidget<SlotLikeButtonWidget> imp
     }
 
     @Override
-    public WidgetTheme getWidgetThemeInternal(ITheme theme) {
+    public WidgetThemeEntry<?> getWidgetThemeInternal(ITheme theme) {
         return theme.getItemSlotTheme();
     }
 
     @Override
-    public void draw(ModularGuiContext context, WidgetTheme widgetTheme) {
-        super.draw(context, widgetTheme);
-        itemDrawable.drawAtZero(context, getArea(), widgetTheme);
+    public void draw(ModularGuiContext context, WidgetThemeEntry<?> widgetThemeEntry) {
+        super.draw(context, widgetThemeEntry);
+        itemDrawable.drawAtZero(context, getArea(), widgetThemeEntry.getTheme());
         if (isHovering()) {
             GlStateManager.disableLighting();
             GlStateManager.enableBlend();
             GlStateManager.colorMask(true, true, true, false);
-            GuiDraw.drawRect(1, 1, 16, 16, getHoverColor(widgetTheme));
+            GuiDraw.drawRect(1, 1, 16, 16, getHoverColor(widgetThemeEntry.getTheme()));
             GlStateManager.colorMask(true, true, true, true);
             GlStateManager.disableBlend();
         }
     }
 
     private int getHoverColor(WidgetTheme widgetTheme) {
-        if (widgetTheme instanceof WidgetSlotTheme slotTheme) {
+        if (widgetTheme instanceof SlotTheme slotTheme) {
             return slotTheme.getSlotHoverColor();
         }
         return ITheme.getDefault()
             .getItemSlotTheme()
+            .getTheme()
             .getSlotHoverColor();
+
     }
 
-    @Nullable
     @Override
-    public ItemStack getStackForNEI() {
+    public @Nullable ItemStack getStackForRecipeViewer() {
         return itemSupplier.get();
     }
+
 }

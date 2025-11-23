@@ -110,11 +110,6 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
     }
 
     @Override
-    public boolean supportsVoidProtection() {
-        return true;
-    }
-
-    @Override
     public boolean supportsBatchMode() {
         return false;
     }
@@ -262,11 +257,6 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
             }
             return false;
         }
-    }
-
-    @Override
-    public int getMaxParallelRecipes() {
-        return 1;
     }
 
     public int getEfficiencyIncrease() {

@@ -36,6 +36,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class BioRecipeLoader {
 
     public static void run() {
@@ -121,6 +122,7 @@ public class BioRecipeLoader {
         }
     }
 
+    @SuppressWarnings({ "PointlessArithmeticExpression", "RedundantSuppression" })
     public static void registerWaterBasedBacterialVatRecipes() {
         FluidStack[] easyFluids = { Materials.Water.getFluid(1_000), GTModHandler.getDistilledWater(1_000) };
         for (FluidStack fluidStack : easyFluids) {
@@ -171,6 +173,7 @@ public class BioRecipeLoader {
         }
     }
 
+    @SuppressWarnings({ "PointlessArithmeticExpression", "RedundantSuppression" })
     public static void registerBacterialVatRecipes() {
         registerWaterBasedBacterialVatRecipes();
 

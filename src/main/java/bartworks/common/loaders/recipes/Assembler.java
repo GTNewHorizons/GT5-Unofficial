@@ -11,7 +11,6 @@ import net.minecraft.item.ItemStack;
 
 import bartworks.common.loaders.ItemRegistry;
 import goodgenerator.items.GGMaterial;
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -21,6 +20,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
+@SuppressWarnings({ "PointlessArithmeticExpression" })
 public class Assembler implements Runnable {
 
     @Override
@@ -48,7 +48,7 @@ public class Assembler implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Machine_Multi_BlastFurnace.get(64), GTUtility.getIntegratedCircuit(17))
+            .itemInputs(ItemList.Machine_Multi_BlastFurnace.get(64))
             .itemOutputs(ItemRegistry.megaMachines[0])
             .fluidInputs(Materials.SolderingAlloy.getMolten(1 * STACKS))
             .duration(1 * HOURS)
@@ -56,7 +56,7 @@ public class Assembler implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Machine_Multi_VacuumFreezer.get(64), GTUtility.getIntegratedCircuit(17))
+            .itemInputs(ItemList.Machine_Multi_VacuumFreezer.get(64))
             .itemOutputs(ItemRegistry.megaMachines[1])
             .fluidInputs(Materials.SolderingAlloy.getMolten(1 * STACKS))
             .duration(1 * HOURS)
@@ -64,7 +64,7 @@ public class Assembler implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Distillation_Tower.get(64), GTUtility.getIntegratedCircuit(17))
+            .itemInputs(ItemList.Distillation_Tower.get(64))
             .itemOutputs(ItemRegistry.megaMachines[2])
             .fluidInputs(Materials.SolderingAlloy.getMolten(1 * STACKS))
             .duration(1 * HOURS)
@@ -72,7 +72,7 @@ public class Assembler implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Machine_Multi_LargeChemicalReactor.get(64), GTUtility.getIntegratedCircuit(17))
+            .itemInputs(ItemList.Machine_Multi_LargeChemicalReactor.get(64))
             .itemOutputs(ItemRegistry.megaMachines[3])
             .fluidInputs(Materials.SolderingAlloy.getMolten(1 * STACKS))
             .duration(1 * HOURS)
@@ -80,7 +80,7 @@ public class Assembler implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.OilCracker.get(64), GTUtility.getIntegratedCircuit(17))
+            .itemInputs(ItemList.OilCracker.get(64))
             .itemOutputs(ItemRegistry.megaMachines[4])
             .fluidInputs(Materials.SolderingAlloy.getMolten(1 * STACKS))
             .duration(1 * HOURS)
@@ -90,7 +90,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder() // DEHP
             .itemInputs(
                 ItemList.OilDrill4.get(1),
-                GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Ultimate, 8),
+                GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.ZPM, 8),
                 GGMaterial.incoloy903.get(OrePrefixes.gearGt, 32),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Polytetrafluoroethylene, 16),
                 ItemList.Field_Generator_IV.get(1))
@@ -105,7 +105,7 @@ public class Assembler implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.AnnealedCopper, 64L),
                 GTUtility.getIntegratedCircuit(17))
             .itemOutputs(new ItemStack(ItemRegistry.BW_BLOCKS[2], 1, 1))
-            .fluidInputs(Materials.Plastic.getMolten(8 * INGOTS))
+            .fluidInputs(Materials.Polyethylene.getMolten(8 * INGOTS))
             .duration(1 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -154,7 +154,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Lead, 6),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1))
-            .itemOutputs(new ItemStack(GregTechAPI.sBlockCasings3, 1, 12))
+            .itemOutputs(ItemList.Casing_RadiationProof.get(1))
             .fluidInputs(Materials.Concrete.getMolten(9 * INGOTS))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_IV)
@@ -162,10 +162,11 @@ public class Assembler implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                new ItemStack(GregTechAPI.sBlockCasings3, 1, 12),
+                ItemList.Casing_RadiationProof.get(1),
+                ItemList.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet.get(4),
                 GTOreDictUnificator.get(OrePrefixes.foil, Materials.Europium, 6),
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.Europium, 24))
-            .itemOutputs(new ItemStack(GregTechAPI.sBlockCasings8, 1, 5))
+            .itemOutputs(ItemList.Casing_AdvancedRadiationProof.get(1))
             .fluidInputs(Materials.Lead.getMolten(6 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LuV)

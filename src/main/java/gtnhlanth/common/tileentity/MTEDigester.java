@@ -21,7 +21,6 @@ import static gregtech.api.util.GTStructureUtility.ofCoil;
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -43,6 +42,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 import gtnhlanth.util.DescTextLocalization;
 
@@ -71,7 +71,10 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester> implemen
                 .buildAndChain(GregTechAPI.sBlockCasings4, 0))
         .addElement('h', ofBlock(GregTechAPI.sBlockCasings1, 11))
         .addElement('s', ofBlock(GregTechAPI.sBlockCasings4, 1))
-        .addElement('c', activeCoils(ofCoil(MTEDigester::setCoilLevel, MTEDigester::getCoilLevel)))
+        .addElement(
+            'c',
+            GTStructureChannels.HEATING_COIL
+                .use(activeCoils(ofCoil(MTEDigester::setCoilLevel, MTEDigester::getCoilLevel))))
         .build();
 
     public MTEDigester(String name) {
@@ -198,8 +201,8 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester> implemen
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Digester")
-            .addInfo("Input ores and fluid, output water.")
-            .addInfo(StatCollector.translateToLocal("GT5U.machines.perfectoc.tooltip"))
+            .addInfo("Input ores and fluid, output water")
+            .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 7, 4, true)
             .addController("Front bottom")
@@ -213,6 +216,7 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester> implemen
             .addOutputBus("Hint block with dot 1")
             .addMaintenanceHatch("Hint block with dot 1")
             .addMufflerHatch("Hint block with dot 1")
+            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }

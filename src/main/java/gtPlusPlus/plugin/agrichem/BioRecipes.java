@@ -30,6 +30,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -42,6 +44,7 @@ import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -84,8 +87,8 @@ public class BioRecipes {
 
     private static void registerFuels() {
         // Burnables
-        ItemUtils.registerFuel(GregtechItemList.WoodPellet.get(1), 800);
-        ItemUtils.registerFuel(GregtechItemList.WoodBrick.get(1), 4800);
+        GTPPCore.burnables.add(Pair.of(800, GregtechItemList.WoodPellet.get(1)));
+        GTPPCore.burnables.add(Pair.of(4800, GregtechItemList.WoodBrick.get(1)));
 
         // Combustion Fuels
         GTValues.RA.stdBuilder()
@@ -195,14 +198,6 @@ public class BioRecipes {
             .eut(16)
             .addTo(UniversalChemical);
 
-        // Craft into Wood Pellets
-        GTValues.RA.stdBuilder()
-            .itemInputs(GregtechItemList.CelluloseFiber.get(12))
-            .itemOutputs(GregtechItemList.WoodPellet.get(24))
-            .duration(2 * SECONDS + 8 * TICKS)
-            .eut(8)
-            .addTo(assemblerRecipes);
-
         // Methanol Extraction
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.CelluloseFiber.get(3))
@@ -223,7 +218,7 @@ public class BioRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(16), GregtechItemList.CellulosePulp.get(4))
             .fluidInputs(Materials.AceticAcid.getFluid(500), new FluidStack(GTPPFluids.PropionicAcid, 500))
-            .fluidOutputs(Materials.Plastic.getMolten(1_000))
+            .fluidOutputs(Materials.Polyethylene.getMolten(1_000))
             .duration(10 * SECONDS)
             .eut(240)
             .metadata(CHEMPLANT_CASING_TIER, 2)
@@ -241,9 +236,9 @@ public class BioRecipes {
 
         // Extruder Recipe
         GTValues.RA.stdBuilder()
-            .itemInputs(GregtechItemList.CelluloseFiber.get(4), GregtechItemList.Pellet_Mold.get(0))
+            .itemInputs(GregtechItemList.CelluloseFiber.get(1), GregtechItemList.Pellet_Mold.get(0))
             .itemOutputs(GregtechItemList.WoodPellet.get(1))
-            .duration(3 * SECONDS + 6 * TICKS)
+            .duration(2 * SECONDS + 8 * TICKS)
             .eut(16)
             .addTo(extruderRecipes);
 
@@ -399,7 +394,7 @@ public class BioRecipes {
             .itemOutputs(Materials.SodiumHydroxide.getDust(3))
             .fluidInputs(Materials.SaltWater.getFluid(1_000))
             .fluidOutputs(Materials.Chlorine.getGas(1_000), Materials.Hydrogen.getGas(1_000))
-            .duration(5 * MINUTES)
+            .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(CHEMPLANT_CASING_TIER, 1)
             .addTo(chemicalPlantRecipes);
@@ -411,7 +406,7 @@ public class BioRecipes {
             .fluidInputs(GTModHandler.getDistilledWater(5_000))
             .fluidOutputs(Materials.Hydrogen.getGas(5_000))
             .duration(60 * SECONDS)
-            .eut(60)
+            .eut(TierEU.RECIPE_MV / 2)
             .metadata(CHEMPLANT_CASING_TIER, 1)
             .addTo(chemicalPlantRecipes);
     }

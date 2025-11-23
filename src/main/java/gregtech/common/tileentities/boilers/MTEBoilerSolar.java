@@ -14,12 +14,11 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.SteamVariant;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -50,7 +49,7 @@ public class MTEBoilerSolar extends MTEBoiler {
     private int mRunTimeTicks = 0;
 
     public MTEBoilerSolar(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, new String[0]);
+        super(aID, aName, aNameRegional, GTValues.emptyStringArray);
     }
 
     public MTEBoilerSolar(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -80,7 +79,7 @@ public class MTEBoilerSolar extends MTEBoiler {
         ITexture[][][] rTextures = new ITexture[4][17][];
         for (int color = -1; color < 16; color++) {
             int i = color + 1;
-            short[] colorModulation = Dyes.getModulation(color, Dyes._NULL.mRGBa);
+            short[] colorModulation = Dyes.getModulation(color);
             rTextures[0][i] = new ITexture[] {
                 TextureFactory.of(BlockIcons.MACHINE_BRONZEBRICKS_BOTTOM, colorModulation) };
             rTextures[1][i] = new ITexture[] { TextureFactory.of(BlockIcons.MACHINE_BRONZEBRICKS_TOP, colorModulation),
@@ -102,11 +101,6 @@ public class MTEBoilerSolar extends MTEBoiler {
             return mTextures[3][i];
         }
         return mTextures[sideDirection.ordinal()][i];
-    }
-
-    @Override
-    public int maxProgresstime() {
-        return 500;
     }
 
     @Override
@@ -222,11 +216,6 @@ public class MTEBoilerSolar extends MTEBoiler {
     }
 
     @Override
-    public SteamVariant getSteamVariant() {
-        return SteamVariant.BRONZE;
-    }
-
-    @Override
     public boolean isGivingInformation() {
         return true;
     }
@@ -276,18 +265,13 @@ public class MTEBoilerSolar extends MTEBoiler {
     }
 
     @Override
-    protected boolean doesAddFuelSlot() {
+    public boolean doesAddFuelSlot() {
         return false;
     }
 
     @Override
-    protected boolean doesAddAshSlot() {
+    public boolean doesAddAshSlot() {
         return false;
-    }
-
-    @Override
-    protected Widget createFuelSlotMui1() {
-        return null;
     }
 
     @Override

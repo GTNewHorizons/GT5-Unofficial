@@ -32,14 +32,6 @@ public class SlotCraftingNoCollect extends SlotCrafting {
     }
 
     /**
-     * Check if the stack is a valid item for this slot. Always true beside for the armor slots.
-     */
-    @Override
-    public boolean isItemValid(ItemStack p_75214_1_) {
-        return false;
-    }
-
-    /**
      * Decrease the size of the stack in slot (first int arg) by the amount of the second int arg. Returns the new
      * stack.
      */

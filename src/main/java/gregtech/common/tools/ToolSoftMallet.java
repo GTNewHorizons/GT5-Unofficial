@@ -8,6 +8,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
@@ -19,26 +20,6 @@ public class ToolSoftMallet extends GTTool {
     @Override
     public int getToolDamagePerBlockBreak() {
         return 50;
-    }
-
-    @Override
-    public int getToolDamagePerDropConversion() {
-        return 100;
-    }
-
-    @Override
-    public int getToolDamagePerContainerCraft() {
-        return 800;
-    }
-
-    @Override
-    public int getToolDamagePerEntityAttack() {
-        return 200;
-    }
-
-    @Override
-    public int getBaseQuality() {
-        return 0;
     }
 
     @Override
@@ -63,27 +44,22 @@ public class ToolSoftMallet extends GTTool {
 
     @Override
     public String getCraftingSound() {
-        return SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE.toString();
+        return SoundResource.GTCEU_OP_SOFT_HAMMER.toString();
     }
 
     @Override
     public String getEntityHitSound() {
-        return SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE.toString();
+        return SoundResource.GTCEU_OP_SOFT_HAMMER.toString();
     }
 
     @Override
     public String getMiningSound() {
-        return SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE.toString();
+        return SoundResource.GTCEU_OP_SOFT_HAMMER.toString();
     }
 
     @Override
     public boolean canBlock() {
         return true;
-    }
-
-    @Override
-    public boolean isCrowbar() {
-        return false;
     }
 
     @Override
@@ -102,17 +78,12 @@ public class ToolSoftMallet extends GTTool {
     }
 
     @Override
-    public ItemStack getBrokenItem(ItemStack aStack) {
-        return null;
-    }
-
-    @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead
-            ? MetaGeneratedTool.getPrimaryMaterial(
-                aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadMallet.mTextureIndex]
-            : MetaGeneratedTool.getSecondaryMaterial(
-                aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.handleMallet.mTextureIndex];
+            ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadMallet
+                .getTextureIndex()]
+            : MetaGeneratedTool.getSecondaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.handleMallet
+                .getTextureIndex()];
     }
 
     @Override

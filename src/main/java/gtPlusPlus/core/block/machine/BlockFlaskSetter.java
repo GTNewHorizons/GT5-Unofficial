@@ -5,13 +5,11 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import gregtech.api.util.GTLog;
@@ -23,7 +21,6 @@ import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.handler.GuiHandler;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockBasicTile;
 import gtPlusPlus.core.tileentities.general.TileEntityVolumetricFlaskSetter;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 public class BlockFlaskSetter extends BasicTileBlockWithTooltip {
 
@@ -54,34 +51,29 @@ public class BlockFlaskSetter extends BasicTileBlockWithTooltip {
         final int side, final float lx, final float ly, final float lz) {
         if (world.isRemote) {
             return true;
-        } else {
-
-            boolean mDidScrewDriver = false;
-            // Check For Screwdriver
-            try {
-                final ItemStack mHandStack = PlayerUtils.getItemStackInPlayersHand(world, player.getDisplayName());
-                final Item mHandItem = mHandStack.getItem();
-                if (((mHandItem instanceof MetaGeneratedTool01)
-                    && ((mHandItem.getDamage(mHandStack) == 22) || (mHandItem.getDamage(mHandStack) == 150)))) {
-                    final TileEntityVolumetricFlaskSetter tile = (TileEntityVolumetricFlaskSetter) world
-                        .getTileEntity(x, y, z);
-                    if (tile != null) {
-                        mDidScrewDriver = tile.onScrewdriverRightClick((byte) side, player, x, y, z);
+        }
+        // Check For Screwdriver
+        try {
+            final ItemStack mHandStack = player.getHeldItem();
+            final Item mHandItem = mHandStack.getItem();
+            if (((mHandItem instanceof MetaGeneratedTool01)
+                && ((mHandItem.getDamage(mHandStack) == 22) || (mHandItem.getDamage(mHandStack) == 150)))) {
+                final TileEntityVolumetricFlaskSetter tile = (TileEntityVolumetricFlaskSetter) world
+                    .getTileEntity(x, y, z);
+                if (tile != null) {
+                    if (tile.onScrewdriverRightClick((byte) side, player, x, y, z)) {
+                        return true;
                     }
                 }
-            } catch (Exception e) {
-                e.printStackTrace(GTLog.err);
             }
-            if (!mDidScrewDriver) {
-                final TileEntity te = world.getTileEntity(x, y, z);
-                if (te instanceof TileEntityVolumetricFlaskSetter) {
-                    player.openGui(GTplusplus.instance, GuiHandler.GUI18, world, x, y, z);
-                    // new Packet_VolumetricFlaskGui2(aTile, aTile.getCustomValue());
-                    return true;
-                }
-            } else {
-                return true;
-            }
+        } catch (Exception e) {
+            e.printStackTrace(GTLog.err);
+        }
+        final TileEntity te = world.getTileEntity(x, y, z);
+        if (te instanceof TileEntityVolumetricFlaskSetter) {
+            player.openGui(GTplusplus.instance, GuiHandler.GUI18, world, x, y, z);
+            // new Packet_VolumetricFlaskGui2(aTile, aTile.getCustomValue());
+            return true;
         }
         return false;
     }
@@ -107,12 +99,6 @@ public class BlockFlaskSetter extends BasicTileBlockWithTooltip {
         if (stack.hasDisplayName()) {
             ((TileEntityVolumetricFlaskSetter) world.getTileEntity(x, y, z)).setCustomName(stack.getDisplayName());
         }
-    }
-
-    @Override
-    public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y,
-        final int z) {
-        return false;
     }
 
     @Override

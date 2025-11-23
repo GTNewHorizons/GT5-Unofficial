@@ -65,7 +65,7 @@ public class BaseItemPlasmaCell extends BaseItemComponent {
             if (!world.isRemote) {
                 if (this.tickCounter < this.tickCounterMax) {
                     this.tickCounter++;
-                } else if (this.tickCounter >= this.tickCounterMax) {
+                } else {
                     entityHolding.attackEntityFrom(DamageSource.onFire, 2);
                     this.tickCounter = 0;
                 }

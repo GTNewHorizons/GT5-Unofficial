@@ -20,10 +20,10 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Mods;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.core.client.renderer.particle.EntityDropParticleFX;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockMeta;
-import gtPlusPlus.core.util.Utils;
 
 public class BlockBaseFluid extends BlockFluidClassic {
 
@@ -37,7 +37,7 @@ public class BlockBaseFluid extends BlockFluidClassic {
     public BlockBaseFluid(String materialName, Fluid fluid, Material material) {
         super(fluid, material);
         this.setLightOpacity(2);
-        this.name = Utils.sanitizeString(materialName);
+        this.name = StringUtils.sanitizeString(materialName);
         this.setBlockName("fluid" + this.name);
         this.setCreativeTab(AddToCreativeTab.tabBlock);
         GameRegistry.registerBlock(this, ItemBlockMeta.class, "fluid" + this.name);
@@ -66,7 +66,7 @@ public class BlockBaseFluid extends BlockFluidClassic {
     }
 
     @Override
-    @Optional.Method(modid = Mods.Names.C_O_F_H_CORE)
+    @Optional.Method(modid = Mods.ModIDs.C_O_F_H_CORE)
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(World arg0, int arg1, int arg2, int arg3, Random arg4) {
         super.randomDisplayTick(arg0, arg1, arg2, arg3, arg4);
