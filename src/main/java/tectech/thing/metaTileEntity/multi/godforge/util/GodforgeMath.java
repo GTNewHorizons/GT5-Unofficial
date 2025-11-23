@@ -36,7 +36,8 @@ public class GodforgeMath {
 
     public static int calculateStartupFuelConsumption(ForgeOfGodsData data) {
         int fuelFactor = data.getFuelConsumptionFactor();
-        return (int) Math.max(fuelFactor * 25 * GTUtility.powInt(1.2, fuelFactor), 1);
+        double value = Math.max(fuelFactor * 25 * GTUtility.powInt(1.2, fuelFactor), 1);
+        return (int) Math.min(value, Integer.MAX_VALUE);
     }
 
     public static int calculateMaxFuelFactor(ForgeOfGodsData data) {

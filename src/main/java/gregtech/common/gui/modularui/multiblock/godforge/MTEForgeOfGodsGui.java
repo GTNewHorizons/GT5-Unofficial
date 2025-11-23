@@ -278,7 +278,6 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
     }
 
     private IWidget createModuleRefreshButton() {
-        // From MTEMultiBlockBase
         BooleanSyncValue refreshSyncer = SyncValues.STRUCTURE_UPDATE.lookupFrom(Panels.MAIN, hypervisor);
 
         return new ButtonWidget<>().size(16)

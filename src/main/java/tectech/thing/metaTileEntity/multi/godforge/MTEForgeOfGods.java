@@ -959,8 +959,10 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     }
 
     private void increaseBattery(int amount) {
-        if ((data.getInternalBattery() + amount) <= data.getMaxBatteryCharge()) {
-            data.setInternalBattery(data.getInternalBattery() + amount);
+        // Written to be careful of potential overflow
+        long newCharge = Long.sum(data.getInternalBattery(), amount);
+        if (newCharge <= data.getMaxBatteryCharge()) {
+            data.setInternalBattery((int) newCharge);
         } else {
             data.setInternalBattery(data.getMaxBatteryCharge());
             data.setBatteryCharging(false);

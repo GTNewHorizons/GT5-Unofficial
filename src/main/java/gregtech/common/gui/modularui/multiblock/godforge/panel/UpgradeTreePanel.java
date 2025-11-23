@@ -10,7 +10,6 @@ import net.minecraft.util.EnumChatFormatting;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
-import com.cleanroommc.modularui.api.drawable.IDrawable.DrawableWidget;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.Interactable;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
@@ -135,14 +134,16 @@ public class UpgradeTreePanel {
         ButtonWidget<?> widget = new ButtonWidget<>();
         return widget.size(BUTTON_W, BUTTON_H)
             .pos(upgrade.getTreeX(), upgrade.getTreeY())
-            .background(new DynamicDrawable(() -> {
+            // skip background since the connector lines draw over the background layer
+            // no matter the order widgets are added to the panel
+            .background(IDrawable.EMPTY)
+            .overlay(new DynamicDrawable(() -> {
                 ForgeOfGodsData data = hypervisor.getData();
                 if (data.isUpgradeActive(upgrade)) {
                     return GTGuiTextures.BUTTON_SPACE_PRESSED_32x16;
                 }
                 return GTGuiTextures.BUTTON_SPACE_32x16;
-            }))
-            .overlay(
+            }),
                 IKey.lang(upgrade.getShortNameKey())
                     .style(EnumChatFormatting.GOLD)
                     .scale(0.8f)
@@ -206,14 +207,15 @@ public class UpgradeTreePanel {
         x -= width / 2;
         y -= height / 2;
 
-        return new DrawableWidget(new DynamicDrawable(() -> {
+        return new DynamicDrawable(() -> {
             ForgeOfGodsData data = hypervisor.getData();
             UITexture texture = color.getConnector();
             if (data.isUpgradeActive(fromUpgrade) && data.isUpgradeActive(toUpgrade)) {
                 texture = color.getOpaqueConnector();
             }
             return new RotatedDrawable(texture).rotationRadian(rotation);
-        })).pos(x, y)
+        }).asWidget()
+            .pos(x, y)
             .size(width, height);
     }
 
