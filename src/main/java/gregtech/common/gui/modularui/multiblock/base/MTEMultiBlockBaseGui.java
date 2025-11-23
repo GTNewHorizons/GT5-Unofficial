@@ -143,8 +143,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         return panel.child(
             Flow.column()
                 .padding(borderRadius)
-                .childIf(multiblock.canBeMuffled(), this.createMuffleButton())
                 .child(createTerminalRow(panel, syncManager))
+                .childIf(multiblock.canBeMuffled(), this.createMuffleButton())
                 .child(createPanelGap(panel, syncManager))
                 .childIf(multiblock.supportsInventoryRow(), createInventoryRow(panel, syncManager)));
     }
@@ -200,7 +200,10 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                             .collapseDisabledChild())
                     .childIf(
                         multiblock.supportsTerminalRightCornerColumn(),
-                        createTerminalRightCornerColumn(panel, syncManager)));
+                        createTerminalRightCornerColumn(panel, syncManager))
+                    .childIf(
+                        multiblock.supportsTerminalLeftCornerColumn(),
+                        createTerminalLeftCornerColumn(panel, syncManager)));
     }
 
     protected Flow createTerminalRightCornerColumn(ModularPanel panel, PanelSyncManager syncManager) {
@@ -214,6 +217,12 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                 new Widget<>().size(18, 18)
                     .marginTop(4)
                     .widgetTheme(GTWidgetThemes.PICTURE_LOGO));
+    }
+
+    protected Flow createTerminalLeftCornerColumn(ModularPanel panel, PanelSyncManager syncManager) {
+        return new Column().coverChildren()
+            .leftRel(0, 6, 0)
+            .bottomRel(0, 6, 0);
     }
 
     protected int getTerminalRowWidth() {
