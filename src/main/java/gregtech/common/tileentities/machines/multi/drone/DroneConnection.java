@@ -119,7 +119,7 @@ public class DroneConnection {
         return shutdownReason;
     }
 
-    public NBTTagCompound transConnectionToNBT() {
+    public NBTTagCompound writeToNBT() {
         NBTTagCompound aNBT = new NBTTagCompound();
         aNBT.setTag("machine", transCoordsToNBT(machineCoord));
         aNBT.setTag("centre", transCoordsToNBT(centreCoord));
@@ -171,7 +171,7 @@ public class DroneConnection {
     }
 
     public static void serialize(PacketBuffer buf, DroneConnection connection) throws IOException {
-        buf.writeNBTTagCompoundToBuffer(connection.transConnectionToNBT());
+        buf.writeNBTTagCompoundToBuffer(connection.writeToNBT());
     }
 
     public static boolean areEqual(DroneConnection a, DroneConnection b) {

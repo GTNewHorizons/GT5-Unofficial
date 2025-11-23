@@ -273,6 +273,10 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
             .findFirst();
     }
 
+    public MTEDroneCentre getCentre() {
+        return centre;
+    }
+
     @Override
     protected boolean useMui2() {
         return true;
