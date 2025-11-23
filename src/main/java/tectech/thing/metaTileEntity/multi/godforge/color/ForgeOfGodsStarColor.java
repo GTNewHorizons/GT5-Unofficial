@@ -34,6 +34,7 @@ public class ForgeOfGodsStarColor {
     public static final float DEFAULT_VALUE = 1.0f;
     public static final float DEFAULT_GAMMA = 3.0f;
     public static final int DEFAULT_CYCLE_SPEED = 1;
+    public static final int MAX_COLORS = 9;
 
     public static final ForgeOfGodsStarColor DEFAULT = new ForgeOfGodsStarColor("Default")
         .setNameKey("tt.godforge.star_color.preset.default")

@@ -36,6 +36,7 @@ import tectech.thing.gui.TecTechUITextures;
 /**
  * Holds UI element builders and other conveniences shared between the primary Forge of the Gods and its modules.
  */
+// todo remove after gorge modules are ported
 public class ForgeOfGodsUI {
 
     public static ButtonWidget createPowerSwitchButton(final IGregTechTileEntity tileEntity) {

@@ -3,6 +3,8 @@ package gregtech.common.gui.modularui.multiblock.godforge.util;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraft.entity.player.EntityPlayer;
+
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.DynamicSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -69,5 +71,13 @@ public final class SyncHypervisor {
         DynamicSyncHandler handler = (DynamicSyncHandler) dynamic.getSyncHandler();
         if (!handler.isValid()) return;
         handler.notifyUpdate($ -> {});
+    }
+
+    public boolean isClient() {
+        return getSyncManager(Panels.MAIN).isClient();
+    }
+
+    public EntityPlayer getPlayer() {
+        return getSyncManager(Panels.MAIN).getPlayer();
     }
 }

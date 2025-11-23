@@ -114,7 +114,7 @@ public class StarColorImportPanel {
             .alignX(0.5f);
 
         // Color previews
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < ForgeOfGodsStarColor.MAX_COLORS; i++) {
             row.child(createPreviewColor(color, i));
         }
 

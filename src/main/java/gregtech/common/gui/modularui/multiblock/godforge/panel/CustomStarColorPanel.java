@@ -8,6 +8,7 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 
 import org.apache.commons.lang3.mutable.MutableInt;
@@ -104,7 +105,7 @@ public class CustomStarColorPanel {
             .marginBottom(4)
             .alignX(0.5f);
 
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < ForgeOfGodsStarColor.MAX_COLORS; i++) {
             colorListRow.child(createColorButton(hypervisor, controller, colorData, i, editingIndex));
         }
 
@@ -360,6 +361,12 @@ public class CustomStarColorPanel {
                         Clipboard clipboard = Toolkit.getDefaultToolkit()
                             .getSystemClipboard();
                         clipboard.setContents(new StringSelection(output), null);
+                        hypervisor.getPlayer()
+                            .addChatComponentMessage(
+                                new ChatComponentTranslation("fog.cosmetics.exportcolors.message"));
+                    } else {
+                        hypervisor.getPlayer()
+                            .addChatComponentMessage(new ChatComponentTranslation("fog.cosmetics.exportcolors.failed"));
                     }
                     return true;
                 })

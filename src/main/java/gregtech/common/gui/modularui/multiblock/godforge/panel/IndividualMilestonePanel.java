@@ -8,6 +8,7 @@ import static tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData.P
 import static tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData.RECIPE_MILESTONE_T7_CONSTANT;
 
 import java.math.BigInteger;
+import java.util.function.Supplier;
 
 import net.minecraft.util.EnumChatFormatting;
 
@@ -86,55 +87,28 @@ public class IndividualMilestonePanel {
             .alignX(0.5f)
             .marginBottom(16));
 
-        // Total progress
-        column.child(
-            IKey.dynamic(() -> getTotalProgress(milestoneSyncer.getValue(), formatSyncer.getValue(), hypervisor))
-                .alignment(Alignment.CENTER)
-                .scale(0.7f)
-                .asWidget()
-                .width(140)
-                .alignX(0.5f));
-
-        // Current level
+        // Info texts
         BooleanSyncValue inversionSyncer = SyncValues.INVERSION.lookupFrom(Panels.INDIVIDUAL_MILESTONE, hypervisor);
-        column.child(
-            IKey.dynamic(() -> getLevel(milestoneSyncer.getValue(), inversionSyncer.getBoolValue(), hypervisor))
-                .alignment(Alignment.CENTER)
-                .scale(0.7f)
-                .asWidget()
-                .width(140)
-                .alignX(0.5f)
-                .marginTop(10));
 
-        // Next level progress
         column.child(
-            IKey.dynamic(
+            createInfoWidget(() -> getTotalProgress(milestoneSyncer.getValue(), formatSyncer.getValue(), hypervisor)));
+        column.child(
+            createInfoWidget(() -> getLevel(milestoneSyncer.getValue(), inversionSyncer.getBoolValue(), hypervisor))
+                .marginTop(10));
+        column.child(
+            createInfoWidget(
                 () -> getLevelProgress(
                     milestoneSyncer.getValue(),
                     formatSyncer.getValue(),
                     inversionSyncer.getBoolValue(),
-                    hypervisor))
-                .alignment(Alignment.CENTER)
-                .scale(0.7f)
-                .asWidget()
-                .width(140)
-                .alignX(0.5f)
-                .marginTop(10));
-
-        // Shards gained
+                    hypervisor)).marginTop(10));
         column.child(
-            IKey.dynamic(
+            createInfoWidget(
                 () -> getShardsGained(
                     milestoneSyncer.getValue(),
                     formatSyncer.getValue(),
                     inversionSyncer.getBoolValue(),
-                    hypervisor))
-                .alignment(Alignment.CENTER)
-                .scale(0.7f)
-                .asWidget()
-                .width(140)
-                .alignX(0.5f)
-                .marginTop(10));
+                    hypervisor)).marginTop(10));
 
         // Inversion status
         column.child(
@@ -172,6 +146,15 @@ public class IndividualMilestonePanel {
             .size(milestone.getSymbolWidth(), milestone.getSymbolHeight())
             .align(Alignment.CENTER)
             .setEnabledIf($ -> syncer.getValue() == milestone);
+    }
+
+    private static Widget<?> createInfoWidget(Supplier<String> textSupplier) {
+        return IKey.dynamic(textSupplier)
+            .alignment(Alignment.CENTER)
+            .scale(0.7f)
+            .asWidget()
+            .width(140)
+            .alignX(0.5f);
     }
 
     private static String getTotalProgress(Milestones milestone, Formatters formatter, SyncHypervisor hypervisor) {

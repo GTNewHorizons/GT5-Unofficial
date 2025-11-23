@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
 
+import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.google.common.math.LongMath;
 
 import gregtech.common.gui.modularui.multiblock.godforge.data.Formatters;
@@ -75,6 +76,7 @@ public class ForgeOfGodsData {
 
     private final UpgradeStorage upgrades = new UpgradeStorage();
     private final ItemStack[] storedUpgradeWindowItems = new ItemStack[16];
+    private final ItemStackHandler upgradeWindowHandler = new ItemStackHandler(storedUpgradeWindowItems);
 
     // Star cosmetics fields
     private final StarColorStorage starColors = new StarColorStorage();
@@ -368,6 +370,10 @@ public class ForgeOfGodsData {
 
     public ItemStack[] getStoredUpgradeWindowItems() {
         return storedUpgradeWindowItems;
+    }
+
+    public ItemStackHandler getUpgradeWindowHandler() {
+        return upgradeWindowHandler;
     }
 
     public StarColorStorage getStarColors() {

@@ -249,10 +249,10 @@ public class IndividualUpgradePanel {
                         t.addLine(translateToLocal("fog.button.materialrequirementsmet.tooltip"));
                     } else {
                         t.addLine(translateToLocal("fog.button.materialrequirements.tooltip"));
+                        t.addLine(
+                            EnumChatFormatting.GRAY
+                                + translateToLocal("fog.button.materialrequirements.tooltip.clickhere"));
                     }
-                    t.addLine(
-                        EnumChatFormatting.GRAY
-                            + translateToLocal("fog.button.materialrequirements.tooltip.clickhere"));
                 })
                 .tooltipAutoUpdate(true)
                 .tooltipShowUpTimer(TOOLTIP_DELAY)

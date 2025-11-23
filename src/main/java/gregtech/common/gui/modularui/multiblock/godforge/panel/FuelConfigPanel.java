@@ -98,9 +98,9 @@ public class FuelConfigPanel {
             .alignX(0.5f)
             .marginTop(5)
             .childPadding(7)
-            .child(createFuelSelection(selectionSyncer, Fuels.RESIDUE))
-            .child(createFuelSelection(selectionSyncer, Fuels.STELLAR))
-            .child(createFuelSelection(selectionSyncer, Fuels.MHDCSM));
+            .child(createFuelSelection(hypervisor, selectionSyncer, Fuels.RESIDUE))
+            .child(createFuelSelection(hypervisor, selectionSyncer, Fuels.STELLAR))
+            .child(createFuelSelection(hypervisor, selectionSyncer, Fuels.MHDCSM));
         column.child(fuelRow);
 
         // Fuel usage text
@@ -129,12 +129,12 @@ public class FuelConfigPanel {
         SyncValues.FUEL_CONSUMPTION.registerFor(Panels.FUEL_CONFIG, hypervisor);
     }
 
-    private static ParentWidget<?> createFuelSelection(EnumSyncValue<Fuels> syncer, Fuels option) {
+    private static ParentWidget<?> createFuelSelection(SyncHypervisor hypervisor, EnumSyncValue<Fuels> syncer,
+        Fuels option) {
         return new ParentWidget<>().coverChildrenWidth()
             .size(18)
             .child(
                 new FluidDisplayWidget().background(IDrawable.EMPTY)
-                    .displayAmount(false)
                     .fluid(option.getFluid())
                     .displayAmount(false)
                     .align(Alignment.CENTER)
@@ -148,7 +148,11 @@ public class FuelConfigPanel {
                     .disableHoverOverlay()
                     .size(18)
                     .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
-                    .tooltip(t -> t.addFromFluid(option.getFluid()))
+                    .tooltip(t -> {
+                        if (hypervisor.isClient()) {
+                            t.addFromFluid(option.getFluid());
+                        }
+                    })
                     .tooltipShowUpTimer(TOOLTIP_DELAY));
     }
 }

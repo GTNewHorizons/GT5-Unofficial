@@ -42,6 +42,8 @@ public class ManualInsertionPanel {
     private static final int BUTTON_W = 180;
     private static final int BUTTON_H = 18;
 
+    private static final String SLOT_GROUP_SYNC_NAME = "item_inv_manual_insertion";
+
     public static ModularPanel openPanel(SyncHypervisor hypervisor) {
         ModularPanel panel = hypervisor.getModularPanel(Panels.MANUAL_INSERTION);
 
@@ -135,6 +137,9 @@ public class ManualInsertionPanel {
 
     private static void registerSyncValues(SyncHypervisor hypervisor) {
         SyncActions.PAY_UPGRADE_COST.registerFor(Panels.MANUAL_INSERTION, hypervisor);
+
+        PanelSyncManager syncManager = hypervisor.getSyncManager(Panels.MANUAL_INSERTION);
+        syncManager.registerSlotGroup(SLOT_GROUP_SYNC_NAME, 4);
     }
 
     private static ParentWidget<?> createCostRow(SyncHypervisor hypervisor, int index) {
@@ -221,19 +226,14 @@ public class ManualInsertionPanel {
     }
 
     private static SlotGroupWidget createInputSlots(SyncHypervisor hypervisor) {
-        PanelSyncManager syncManager = hypervisor.getSyncManager(Panels.MANUAL_INSERTION);
-        syncManager.registerSlotGroup("item_inv_manual_insertion", 4);
-
-        ItemStackHandler handler = new ItemStackHandler(
-            hypervisor.getData()
-                .getStoredUpgradeWindowItems());
-
+        ItemStackHandler handler = hypervisor.getData()
+            .getUpgradeWindowHandler();
         String[] matrix = new String[4];
         String repeat = StringUtils.getRepetitionOf('s', 4);
         Arrays.fill(matrix, repeat);
         return SlotGroupWidget.builder()
             .matrix(matrix)
-            .key('s', i -> new ItemSlot().slot(new ModularSlot(handler, i).slotGroup("item_inv_manual_insertion")))
+            .key('s', i -> new ItemSlot().slot(new ModularSlot(handler, i).slotGroup(SLOT_GROUP_SYNC_NAME)))
             .build()
             .coverChildren()
             .align(Alignment.CenterRight);
