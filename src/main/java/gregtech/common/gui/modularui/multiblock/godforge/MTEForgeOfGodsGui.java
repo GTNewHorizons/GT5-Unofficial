@@ -163,7 +163,8 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
             .overlay(true, GTGuiTextures.GODFORGE_SOUND_OFF)
             .overlay(false, GTGuiTextures.GODFORGE_SOUND_ON)
             .top(8)
-            .right(8);
+            .right(8)
+            .clickSound(ForgeOfGodsGuiUtil.getButtonSound());
     }
 
     private IWidget createMilestonePanelButton() {

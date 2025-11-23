@@ -92,7 +92,8 @@ public class MilestonePanel {
                     }
                     return true;
                 })
-                .tooltip(t -> t.addLine(translateToLocal("gt.blockmachines.multimachine.FOG.milestoneinfo"))));
+                .tooltip(t -> t.addLine(translateToLocal("gt.blockmachines.multimachine.FOG.milestoneinfo")))
+                .clickSound(ForgeOfGodsGuiUtil.getButtonSound()));
 
         // Milestone progress bar
         parent.child(
