@@ -371,6 +371,9 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_MUFFLE_OFF = fullImage(GregTech.ID, "gui/overlay_button/muffle_off");
     public static final UITexture OVERLAY_BUTTON_PRINT = fullImage(GregTech.ID, "gui/overlay_button/print");
     public static final UITexture OVERLAY_BUTTON_TRANSPOSE = fullImage(GregTech.ID, "gui/overlay_button/transpose");
+    public static final UITexture OVERLAY_BUTTON_REDSTONESNIFFERLOCATE = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/redstoneSnifferLocate");
 
     public static final UITexture OVERLAY_EXPORT = fullImage(GregTech.ID, "gui/overlay_button/export");
     public static final UITexture OVERLAY_IMPORT = fullImage(GregTech.ID, "gui/overlay_button/import");
