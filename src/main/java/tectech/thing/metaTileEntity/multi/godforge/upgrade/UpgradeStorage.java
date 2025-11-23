@@ -10,8 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 
-import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 
 import gregtech.api.util.GTUtility;
 
@@ -39,7 +38,7 @@ public class UpgradeStorage {
     }
 
     /** Handles consuming items and updating state if successful. Does NOT handle graviton shards! */
-    public void payCost(ForgeOfGodsUpgrade upgrade, ItemStackHandler handler) {
+    public void payCost(ForgeOfGodsUpgrade upgrade, ItemStack[] inputStacks) {
         UpgradeData data = getData(upgrade);
 
         if (!upgrade.hasExtraCost()) {
@@ -48,20 +47,25 @@ public class UpgradeStorage {
         }
 
         ItemStack[] extraCost = upgrade.getExtraCost();
-        for (int i = 0; i < handler.getSlots(); i++) {
-            ItemStack inputStack = handler.getStackInSlot(i);
+        for (int i = 0; i < inputStacks.length; i++) {
+            ItemStack inputStack = inputStacks[i];
             if (inputStack == null) continue;
 
             for (int j = 0; j < extraCost.length; j++) {
                 ItemStack costStack = extraCost[j];
+                if (costStack == null) continue;
                 int alreadyPaid = data.amountsPaid[j];
                 if (alreadyPaid >= costStack.stackSize) continue;
 
                 if (GTUtility.areStacksEqual(inputStack, costStack)) {
                     int maxExtract = costStack.stackSize - alreadyPaid;
-                    ItemStack extractedStack = handler.extractItem(i, maxExtract, false);
-                    if (extractedStack != null) {
-                        data.amountsPaid[j] += extractedStack.stackSize;
+                    int extractAmount = Math.min(maxExtract, inputStack.stackSize);
+                    if (extractAmount > 0) {
+                        data.amountsPaid[j] += (short) extractAmount;
+                        inputStack.stackSize -= extractAmount;
+                        if (inputStack.stackSize == 0) {
+                            inputStacks[i] = null;
+                        }
                     }
                 }
             }
@@ -220,22 +224,18 @@ public class UpgradeStorage {
         }
     }
 
-    /** Sync widget to sync a single upgrade. */
-    public FakeSyncWidget<?> getSyncer(ForgeOfGodsUpgrade upgrade) {
-        return new FakeSyncWidget<>(
-            () -> unlockedUpgrades.get(upgrade),
-            val -> unlockedUpgrades.put(upgrade, val),
-            UpgradeData::writeToBuffer,
-            UpgradeData::readFromBuffer);
-    }
-
-    /** Sync widget to sync the full upgrade tree. */
-    public FakeSyncWidget<?> getFullSyncer() {
-        return new FakeSyncWidget.ListSyncer<>(() -> new ArrayList<>(unlockedUpgrades.values()), val -> {
-            for (int i = 0; i < val.size(); i++) {
-                unlockedUpgrades.put(ForgeOfGodsUpgrade.VALUES[i], val.get(i));
-            }
-        }, UpgradeData::writeToBuffer, UpgradeData::readFromBuffer);
+    /** Sync the full upgrade tree. */
+    public GenericListSyncHandler<?> getFullSyncer() {
+        return GenericListSyncHandler.<UpgradeData>builder()
+            .getter(() -> new ArrayList<>(unlockedUpgrades.values()))
+            .setter(val -> {
+                for (int i = 0; i < val.size(); i++) {
+                    unlockedUpgrades.put(ForgeOfGodsUpgrade.VALUES[i], val.get(i));
+                }
+            })
+            .deserializer(UpgradeData::readFromBuffer)
+            .serializer(UpgradeData::writeToBuffer)
+            .build();
     }
 
     private static class UpgradeData {
