@@ -227,18 +227,14 @@ public class IndividualUpgradePanel {
                 }).asIcon()
                     .size(15)) // for some reason this is needed
                 .onMousePressed(d -> {
-                    UpgradeStorage storage = hypervisor.getData()
-                        .getUpgrades();
-                    if (!storage.isCostPaid(upgrade)) {
-                        ModularPanel upgradeTreePanel = hypervisor.getModularPanel(Panels.UPGRADE_TREE);
-                        if (upgradeTreePanel != null) {
-                            upgradeTreePanel.closeIfOpen();
-                        }
-                        parent.getPanel()
-                            .closeIfOpen();
-                        if (!manualInsertionPanel.isPanelOpen()) {
-                            manualInsertionPanel.openPanel();
-                        }
+                    ModularPanel upgradeTreePanel = hypervisor.getModularPanel(Panels.UPGRADE_TREE);
+                    if (upgradeTreePanel != null) {
+                        upgradeTreePanel.closeIfOpen();
+                    }
+                    parent.getPanel()
+                        .closeIfOpen();
+                    if (!manualInsertionPanel.isPanelOpen()) {
+                        manualInsertionPanel.openPanel();
                     }
                     return true;
                 })
@@ -249,10 +245,10 @@ public class IndividualUpgradePanel {
                         t.addLine(translateToLocal("fog.button.materialrequirementsmet.tooltip"));
                     } else {
                         t.addLine(translateToLocal("fog.button.materialrequirements.tooltip"));
-                        t.addLine(
-                            EnumChatFormatting.GRAY
-                                + translateToLocal("fog.button.materialrequirements.tooltip.clickhere"));
                     }
+                    t.addLine(
+                        EnumChatFormatting.GRAY
+                            + translateToLocal("fog.button.materialrequirements.tooltip.clickhere"));
                 })
                 .tooltipAutoUpdate(true)
                 .tooltipShowUpTimer(TOOLTIP_DELAY)
