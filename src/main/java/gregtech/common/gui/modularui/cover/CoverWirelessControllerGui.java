@@ -5,12 +5,14 @@ import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
 
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.common.covers.CoverRedstoneWirelessBase;
 import gregtech.common.covers.CoverWirelessController;
 import gregtech.common.covers.conditions.RedstoneCondition;
 import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
@@ -29,6 +31,11 @@ public class CoverWirelessControllerGui extends CoverBaseGui<CoverWirelessContro
     }
 
     @Override
+    protected int getGUIWidth() {
+        return 200;
+    }
+
+    @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
         EnumSyncValue<RedstoneCondition> conditionModeSyncValue = new EnumSyncValue<>(
             RedstoneCondition.class,
@@ -36,6 +43,7 @@ public class CoverWirelessControllerGui extends CoverBaseGui<CoverWirelessContro
             cover::setRedstoneCondition);
         syncManager.syncValue("condition_mode", conditionModeSyncValue);
         BooleanSyncValue safeModeSyncValue = new BooleanSyncValue(cover::isSafeMode, cover::setSafeMode);
+        StringSyncValue frequencySyncer = new StringSyncValue(cover::getFrequency, cover::setFrequency);
 
         column.child(
             new Grid().marginLeft(WIDGET_MARGIN)
@@ -45,6 +53,11 @@ public class CoverWirelessControllerGui extends CoverBaseGui<CoverWirelessContro
                 .minElementMarginTop(0)
                 .minElementMarginLeft(0)
                 .alignment(Alignment.CenterLeft)
+                .row(
+                    makeNumberField(88).marginRight(2)
+                        .height(12)
+                        .setNumbers(0, CoverRedstoneWirelessBase.MAX_CHANNEL)
+                        .value(frequencySyncer))
                 .row(
                     new SelectButton()
                         .value(LinkedBoolValue.of(conditionModeSyncValue, RedstoneCondition.ENABLE_WITH_REDSTONE))
