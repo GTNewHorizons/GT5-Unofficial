@@ -31,7 +31,7 @@ public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamli
     private boolean active;
 
     public MTEBeamlinePipe(int id, String name, String nameRegional) {
-        super(id, name, nameRegional, 0);
+        super(id, name, 0);
     }
 
     public MTEBeamlinePipe(String name) {

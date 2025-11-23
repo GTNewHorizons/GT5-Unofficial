@@ -38,11 +38,13 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntityCable;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.ILocalizedMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTGCCompat;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.covers.Cover;
@@ -56,18 +58,21 @@ import ic2.api.reactor.IReactorChamber;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
+@IMetaTileEntity.SkipGenerateDescription
+public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, ILocalizedMetaPipeEntity {
 
     public final float mThickNess;
     public final Materials mMaterial;
     public final long mCableLossPerMeter, mAmperage, mVoltage;
     public final boolean mInsulated, mCanShock;
+    private String prefixKey;
 
     public int mTransferredAmperage = 0;
 
-    public MTECable(int aID, String aName, String aNameRegional, float aThickNess, Materials aMaterial,
+    public MTECable(int aID, String aName, String aPrefixKey, float aThickNess, Materials aMaterial,
         long aCableLossPerMeter, long aAmperage, long aVoltage, boolean aInsulated, boolean aCanShock) {
-        super(aID, aName, aNameRegional, 0);
+        super(aID, aName, 0);
+        prefixKey = aPrefixKey;
         mThickNess = aThickNess;
         mMaterial = aMaterial;
         mAmperage = aAmperage;
@@ -506,25 +511,16 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            StatCollector.translateToLocal("GT5U.item.cable.max_voltage") + ": %%%"
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mVoltage)
+        return GTSplit.splitLocalizedFormatted(
+            "gt.blockmachines.cable.desc",
+            EnumChatFormatting.GREEN + GTUtility.formatNumbers(mVoltage)
                 + " ("
                 + GTUtility.getColoredTierNameFromVoltage(mVoltage)
                 + EnumChatFormatting.GREEN
                 + ")"
                 + EnumChatFormatting.GRAY,
-            StatCollector.translateToLocal("GT5U.item.cable.max_amperage") + ": %%%"
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(mAmperage)
-                + EnumChatFormatting.GRAY,
-            StatCollector.translateToLocal("GT5U.item.cable.loss") + ": %%%"
-                + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(mCableLossPerMeter)
-                + EnumChatFormatting.GRAY
-                + "%%% "
-                + StatCollector.translateToLocal("GT5U.item.cable.eu_volt") };
+            EnumChatFormatting.YELLOW + GTUtility.formatNumbers(mAmperage) + EnumChatFormatting.GRAY,
+            EnumChatFormatting.RED + GTUtility.formatNumbers(mCableLossPerMeter) + EnumChatFormatting.GRAY);
     }
 
     @Override
@@ -668,5 +664,15 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
                 + EnumChatFormatting.RESET
                 + " "
                 + StatCollector.translateToLocal("GT5U.item.cable.eu_volt"));
+    }
+
+    @Override
+    public Materials getMaterial() {
+        return mMaterial;
+    }
+
+    @Override
+    public String getPrefixKey() {
+        return prefixKey;
     }
 }

@@ -19,18 +19,22 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import ggfab.GGItemList;
 import gregtech.GTMod;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.net.GTPacketSetMold;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.base.ItemSelectBaseGui;
+import gtPlusPlus.core.util.Utils;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationCircuitSupport {
 
     public static final int moldSlot = 2;
@@ -62,14 +66,10 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            "Fluid Input with Mold for " + EnumChatFormatting.YELLOW + "Fluid Shaper" + EnumChatFormatting.RESET,
-            "Capacity: " + GTUtility.formatNumbers(getCapacity()) + "L",
-            "Added by: " + EnumChatFormatting.AQUA
-                + "Quetz4l - "
-                + EnumChatFormatting.RED
-                + "[GT++]"
-                + EnumChatFormatting.RESET };
+        return Utils.splitLocalizedFormattedWithAuthor(
+            "gt.blockmachines.input_hatch_solidifier.desc",
+            GTAuthors.AuthorQuetz4l,
+            GTUtility.formatNumbers(getCapacity()));
     }
 
     public static ItemStack findMatchingMold(ItemStack stack) {

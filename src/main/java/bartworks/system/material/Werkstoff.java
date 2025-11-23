@@ -33,6 +33,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -61,6 +62,7 @@ import gregtech.api.interfaces.IStoneType;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import it.unimi.dsi.fastutil.shorts.Short2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.shorts.Short2ObjectMap;
 import thaumcraft.api.aspects.Aspect;
@@ -98,6 +100,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
     private byte[] rgb = new byte[3];
     private final String defaultName;
     private String toolTip;
+    private boolean isFormulaNeededLocalized = false;
 
     private Werkstoff.Stats stats;
     private final Werkstoff.Types type;
@@ -286,7 +289,8 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
         this.mID = (short) mID;
         this.defaultName = defaultName;
         // Ensure that localization key are written to the lang file
-        GregTechAPI.sAfterGTPreload.add(() -> this.getLocalizedName());
+        GregTechAPI.sAfterGTPreload
+            .add(() -> GTLanguageManager.addStringLocalization(getLocalizedNameKey(), this.defaultName));
         this.stats = stats;
         this.type = type;
         this.generationFeatures = generationFeatures;
@@ -318,13 +322,13 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
                 } else if (p.getKey() instanceof Werkstoff) this.toolTip += getFormula((Werkstoff) p.getKey())
                     + (p.getValue() > 1 ? BWUtil.subscriptNumber(p.getValue()) : "");
             }
-        } else this.toolTip = toolTip;
-
+        } else {
+            this.toolTip = toolTip;
+            this.isFormulaNeededLocalized = true;
+            GTLanguageManager.addStringLocalization(getLocalizedNameKey() + ".ChemicalFormula", this.toolTip);
+        }
         // if (this.toolTip.length() > 25)
         // this.toolTip = "The formula is to long...";
-
-        // Ensure that localization key are written to the lang file
-        GregTechAPI.sAfterGTPreload.add(() -> this.getLocalizedToolTip());
 
         if (this.stats.protons == 0) {
             long tmpprotons = 0;
@@ -392,7 +396,8 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
     }
 
     private static String getFormula(Materials material) {
-        return material.mChemicalFormula.isEmpty() ? "?" : material.mChemicalFormula;
+        return material.getChemicalFormula()
+            .isEmpty() ? "?" : material.getChemicalFormula();
     }
 
     private static String getFormula(Werkstoff material) {
@@ -510,25 +515,32 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
 
     @Override
     public String getLocalizedName() {
-        return GTLanguageManager.addStringLocalization(
-            String.format("bw.werkstoff.%05d.name", this.mID),
-            this.defaultName,
-            !GregTechAPI.sPostloadFinished);
+        return StatCollector.translateToLocal(getLocalizedNameKey());
+    }
+
+    public String getLocalizedNameKey() {
+        return "Material." + this.defaultName.toLowerCase()
+            .replace(" ", "");
     }
 
     public String getVarName() {
         return this.defaultName.replace(" ", "");
     }
 
-    public String getToolTip() {
+    public String getFormulaTooltip() {
         return this.toolTip;
     }
 
-    public String getLocalizedToolTip() {
-        return GTLanguageManager.addStringLocalization(
-            String.format("bw.werkstoff.%05d.tooltip", this.mID),
-            this.toolTip,
-            !GregTechAPI.sPostloadFinished);
+    public String getLocalizedFormulaTooltip() {
+        if (isFormulaNeededLocalized) {
+            return StatCollector.translateToLocal(getLocalizedNameKey() + ".ChemicalFormula");
+        }
+        return this.toolTip;
+    }
+
+    public void addTooltip(List<String> list) {
+        final String formula = getLocalizedFormulaTooltip();
+        if (GTUtility.isStringValid(formula)) list.add(formula);
     }
 
     public Werkstoff.Stats getStats() {
@@ -696,6 +708,10 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
             return null;
         }
         return GREEN + modName;
+    }
+
+    public boolean isFormulaNeededLocalized() {
+        return isFormulaNeededLocalized;
     }
 
     public enum Types {
