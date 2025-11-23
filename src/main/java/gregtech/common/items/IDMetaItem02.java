@@ -193,7 +193,7 @@ public enum IDMetaItem02 {
     Cover_AdvancedRedstoneTransmitter(577),
     Cover_AdvancedRedstoneTransmitterInternal(578),
     Cover_AdvancedRedstoneReceiver(579),
-    Cover_AdvancedWirelessController(580),
+    Cover_AdvancedRedstoneReceiverInternal(580),
     Cover_WirelessFluidDetector(581),
     Cover_WirelessItemDetector(582),
     Cover_WirelessNeedsMaintainance(583),

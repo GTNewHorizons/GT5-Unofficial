@@ -3213,7 +3213,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Cover_WirelessController.ID,
                 "Wireless Machine Controller Cover",
-                "Turns Machines ON/OFF wirelessly",
+                "Turns Machines ON/OFF wirelessly/n Can only connect with advanced wireless covers",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L)));
 

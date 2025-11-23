@@ -4,9 +4,9 @@ import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 
-public class CoverAdvancedWirelessController extends CoverAdvancedRedstoneReceiverBase {
+public class CoverAdvancedRedstoneReceiverInternal extends CoverAdvancedRedstoneReceiverBase {
 
-    public CoverAdvancedWirelessController(CoverContext context, ITexture coverTexture) {
+    public CoverAdvancedRedstoneReceiverInternal(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
     }
 
