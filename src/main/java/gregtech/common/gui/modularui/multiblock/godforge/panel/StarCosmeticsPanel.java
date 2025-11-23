@@ -78,7 +78,7 @@ public class StarCosmeticsPanel {
         DynamicSyncHandler handler = new DynamicSyncHandler().widgetProvider(($, $$) -> {
             ForgeOfGodsData data = hypervisor.getData();
             StarColorStorage starColors = data.getStarColors();
-            ListWidget<IWidget, ?> colorList = new ListWidget<>().size(85, 147)
+            ListWidget<IWidget, ?> colorList = new ListWidget<>().size(100, 147)
                 .scrollDirection(new VerticalScrollData(true));
 
             // Star colors
@@ -114,7 +114,7 @@ public class StarCosmeticsPanel {
                     .style(EnumChatFormatting.GOLD)
                     .alignment(Alignment.CenterLeft)
                     .asWidget()
-                    .size(60, 16)
+                    .size(75, 16)
                     .marginLeft(4));
 
             colorList.child(newStarColorRow);
@@ -255,7 +255,7 @@ public class StarCosmeticsPanel {
                 .style(EnumChatFormatting.GOLD)
                 .alignment(Alignment.CenterLeft)
                 .asWidget()
-                .size(60, 16)
+                .size(75, 16)
                 .marginLeft(4));
 
         return row;
