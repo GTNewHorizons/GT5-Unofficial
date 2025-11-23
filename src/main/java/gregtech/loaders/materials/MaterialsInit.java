@@ -377,6 +377,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.IGNIS, 1)
             .addSubTag(SubTag.NO_SMELTING)
             .addOrePrefix(OrePrefixes.nanite)
+            .removeOrePrefix(OrePrefixes.sheetmetal)
             .constructMaterial();
     }
 

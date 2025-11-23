@@ -692,6 +692,11 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
         return (this.getGenerationFeatures().toGenerate & unpacked) != 0;
     }
 
+    @Deprecated
+    public boolean hasGenerationFeature(OrePrefixes prefix) {
+        return hasItemType(prefix);
+    }
+
     /**
      * Checks if the Actual Stack exists in the OreDict
      */
@@ -753,12 +758,6 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
         public static final int DOUBLE_DENSE_PLATES = 0b1 << 9;
         /// Triple, quadruple, and quintuple plates
         public static final int MULTI_PLATES = 0b1 << 10;
-
-        public static final int CHEMICAL_RECIPES = 0b1;
-        public static final int METAL_CRAFTING_SOLIDIFIER_RECIPES = 0b1;
-        public static final int METAL_SOLIDIFIER_RECIPES = 0b10;
-        public static final int MIXER_RECIPES = 0b10;
-        public static final int SIFTER_RECIPES = 0b100;
 
         long toGenerate = DUSTS | ORES;
 

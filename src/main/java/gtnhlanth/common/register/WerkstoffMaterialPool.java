@@ -9,6 +9,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import bartworks.system.material.Werkstoff;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 
 public class WerkstoffMaterialPool implements Runnable {
@@ -691,7 +692,9 @@ public class WerkstoffMaterialPool implements Runnable {
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
-            .onlyDust(),
+            .onlyDust()
+            // Used for gangue singularities
+            .addPrefix(OrePrefixes.block),
         offsetID2 + 9,
         TextureSet.SET_DULL);
     // TODO: Deal with colouring
