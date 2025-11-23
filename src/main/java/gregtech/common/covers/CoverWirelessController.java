@@ -9,17 +9,17 @@ import net.minecraft.nbt.NBTTagCompound;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.io.ByteArrayDataInput;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
 import gregtech.api.covers.CoverContext;
-import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.util.GTUtility;
+import gregtech.common.covers.conditions.RedstoneCondition;
 import gregtech.common.covers.redstone.CoverAdvancedRedstoneReceiverBase;
 import gregtech.common.covers.redstone.CoverAdvancedWirelessRedstoneBase;
-import gregtech.common.gui.mui1.cover.AdvancedRedstoneReceiverBaseUIFactory;
+import gregtech.common.gui.modularui.cover.CoverWirelessControllerGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import io.netty.buffer.ByteBuf;
 
 public class CoverWirelessController extends CoverAdvancedWirelessRedstoneBase {
@@ -67,13 +67,6 @@ public class CoverWirelessController extends CoverAdvancedWirelessRedstoneBase {
         byteBuf.writeByte(state.ordinal());
     }
 
-    // GUI stuff
-
-    @Override
-    public ModularWindow createWindow(CoverUIBuildContext buildContext) {
-        return new AdvancedRedstoneReceiverBaseUIFactory(buildContext).createWindow();
-    }
-
     @Override
     public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
@@ -83,7 +76,7 @@ public class CoverWirelessController extends CoverAdvancedWirelessRedstoneBase {
         if (coverable instanceof IMachineProgress machine) {
             switch (state) {
                 case ENABLE_WITH_SIGNAL, DISABLE_WITH_SIGNAL -> {
-                    if ((signal > 0) == (state == CoverWirelessController.State.ENABLE_WITH_SIGNAL)) {
+                    if ((signal > 0) == (state == State.ENABLE_WITH_SIGNAL)) {
                         if (!machine.isAllowedToWork()) {
                             machine.enableWorking();
                             handledShutdown = false;
@@ -115,9 +108,9 @@ public class CoverWirelessController extends CoverAdvancedWirelessRedstoneBase {
                             }
                         }
                         handledShutdown = true;
-                        state = CoverWirelessController.State.DISABLED;
+                        state = State.DISABLED;
                     } else {
-                        if ((signal > 0) == (state == CoverWirelessController.State.ENABLE_WITH_SIGNAL_SAFE)) {
+                        if ((signal > 0) == (state == State.ENABLE_WITH_SIGNAL_SAFE)) {
                             if (!machine.isAllowedToWork()) {
                                 machine.enableWorking();
                                 handledShutdown = false;
@@ -129,5 +122,46 @@ public class CoverWirelessController extends CoverAdvancedWirelessRedstoneBase {
                 }
             }
         }
+    }
+
+    public RedstoneCondition getRedstoneCondition() {
+        return switch (state) {
+            case ENABLE_WITH_SIGNAL, ENABLE_WITH_SIGNAL_SAFE -> RedstoneCondition.ENABLE_WITH_REDSTONE;
+            case DISABLE_WITH_SIGNAL, DISABLE_WITH_SIGNAL_SAFE -> RedstoneCondition.DISABLE_WITH_REDSTONE;
+            case DISABLED -> RedstoneCondition.DISABLE;
+        };
+    }
+
+    public void setRedstoneCondition(RedstoneCondition mode) {
+        final boolean safeMode = isSafeMode();
+        state = switch (mode) {
+            case ENABLE_WITH_REDSTONE -> safeMode ? State.ENABLE_WITH_SIGNAL_SAFE : State.ENABLE_WITH_SIGNAL;
+            case DISABLE_WITH_REDSTONE -> safeMode ? State.DISABLE_WITH_SIGNAL_SAFE : State.DISABLE_WITH_SIGNAL;
+            case DISABLE -> State.DISABLED;
+        };
+    }
+
+    public boolean isSafeMode() {
+        return switch (state) {
+            case ENABLE_WITH_SIGNAL_SAFE, DISABLE_WITH_SIGNAL_SAFE -> true;
+            case ENABLE_WITH_SIGNAL, DISABLED, DISABLE_WITH_SIGNAL -> false;
+        };
+    }
+
+    public void setSafeMode(boolean safeMode) {
+        state = switch (state) {
+            case ENABLE_WITH_SIGNAL, ENABLE_WITH_SIGNAL_SAFE -> safeMode ? State.ENABLE_WITH_SIGNAL_SAFE
+                : State.ENABLE_WITH_SIGNAL;
+            case DISABLE_WITH_SIGNAL, DISABLE_WITH_SIGNAL_SAFE -> safeMode ? State.DISABLE_WITH_SIGNAL_SAFE
+                : State.DISABLE_WITH_SIGNAL;
+            case DISABLED -> State.DISABLED;
+        };
+    }
+
+    // GUI stuff
+
+    @Override
+    protected @NotNull CoverBaseGui<?> getCoverGui() {
+        return new CoverWirelessControllerGui(this);
     }
 }
