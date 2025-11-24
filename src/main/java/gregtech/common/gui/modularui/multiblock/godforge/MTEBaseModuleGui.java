@@ -3,7 +3,9 @@ package gregtech.common.gui.modularui.multiblock.godforge;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment.MainAxis;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.Widget;
@@ -15,17 +17,33 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.base.TTMultiblockBaseGui;
+import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
 import gregtech.common.gui.modularui.multiblock.godforge.util.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
 import tectech.thing.metaTileEntity.multi.godforge.MTEBaseModule;
 
 public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultiblockBaseGui<T> {
 
-    private final SyncHypervisor hypervisor;
+    protected final SyncHypervisor hypervisor;
 
     public MTEBaseModuleGui(T multiblock) {
         super(multiblock);
-        this.hypervisor = new SyncHypervisor(multiblock);
+        this.hypervisor = new SyncHypervisor(getMainPanel());
+    }
+
+    public abstract Panels getMainPanel();
+
+    @Override
+    protected ModularPanel getBasePanel(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        ModularPanel panel = super.getBasePanel(guiData, syncManager, uiSettings);
+        hypervisor.setModularPanel(getMainPanel(), panel);
+        return panel;
+    }
+
+    @Override
+    protected void registerSyncValues(PanelSyncManager syncManager) {
+        hypervisor.setSyncManager(getMainPanel(), syncManager);
+        super.registerSyncValues(syncManager);
     }
 
     @Override

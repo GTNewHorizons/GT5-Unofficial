@@ -39,7 +39,7 @@ public abstract class SyncValue<U extends ValueSyncHandler<?>> {
     }
 
     public String getSyncId(Panels fromPanel) {
-        if (fromPanel == Panels.MAIN || inherited) {
+        if (inherited) {
             return syncId;
         }
         return fromPanel.getPanelId() + "/" + syncId;
@@ -99,7 +99,10 @@ public abstract class SyncValue<U extends ValueSyncHandler<?>> {
         }
     }
 
-    /** Sync values that could be from the main Godforge or a module depending on hypervisor state. */
+    /**
+     * Sync values that could be from the main Godforge or a module depending on hypervisor state.
+     * Will prioritize the main Godforge if both are available.
+     */
     public static class HybridSyncValue<U extends ValueSyncHandler<?>> extends SyncValue<U> {
 
         private final Function<ForgeOfGodsData, U> dataSupplier;

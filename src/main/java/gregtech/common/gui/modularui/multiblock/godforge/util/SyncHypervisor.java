@@ -28,16 +28,12 @@ public final class SyncHypervisor {
     private ForgeOfGodsData data;
     private MTEBaseModule module;
 
+    private final Panels mainPanel;
     private final Map<Panels, ModularPanel> panels = new HashMap<>();
     private final Map<Panels, PanelSyncManager> syncManagers = new HashMap<>();
 
-    public SyncHypervisor(MTEForgeOfGods multiblock) {
-        this.multiblock = multiblock;
-        this.data = multiblock.getData();
-    }
-
-    public SyncHypervisor(MTEBaseModule module) {
-        this.module = module;
+    public SyncHypervisor(Panels mainPanel) {
+        this.mainPanel = mainPanel;
     }
 
     public void setMultiblock(MTEForgeOfGods multiblock) {
@@ -59,6 +55,10 @@ public final class SyncHypervisor {
 
     public MTEBaseModule getModule() {
         return module;
+    }
+
+    public Panels getMainPanel() {
+        return mainPanel;
     }
 
     public void setModularPanel(Panels panel, ModularPanel modularPanel) {
@@ -93,10 +93,12 @@ public final class SyncHypervisor {
     }
 
     public boolean isClient() {
-        return getSyncManager(Panels.MAIN).isClient();
+        return syncManagers.get(mainPanel)
+            .isClient();
     }
 
     public EntityPlayer getPlayer() {
-        return getSyncManager(Panels.MAIN).getPlayer();
+        return syncManagers.get(mainPanel)
+            .getPlayer();
     }
 }
