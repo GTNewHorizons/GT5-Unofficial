@@ -7,6 +7,8 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -273,6 +275,7 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
             .findFirst();
     }
 
+    @Nullable
     public MTEDroneCentre getCentre() {
         return centre;
     }
