@@ -43,6 +43,8 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.gui.modularui.multiblock.godforge.MTEPlasmaModuleGui;
 import tectech.loader.ConfigHandler;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.thing.gui.TecTechUITextures;
@@ -123,6 +125,11 @@ public class MTEPlasmaModule extends MTEBaseModule {
         logic.setMaxParallel(getActualParallel());
         logic.setSpeedBonus(getSpeedBonus());
         logic.setEuModifier(getEnergyDiscount());
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEPlasmaModuleGui(this);
     }
 
     @Override

@@ -12,6 +12,7 @@ import com.cleanroommc.modularui.widget.WidgetTree;
 import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
 
 import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
+import tectech.thing.metaTileEntity.multi.godforge.MTEBaseModule;
 import tectech.thing.metaTileEntity.multi.godforge.MTEForgeOfGods;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 
@@ -23,15 +24,25 @@ import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
  */
 public final class SyncHypervisor {
 
-    private final MTEForgeOfGods multiblock;
-    private final ForgeOfGodsData data;
+    private MTEForgeOfGods multiblock;
+    private ForgeOfGodsData data;
+    private MTEBaseModule module;
 
     private final Map<Panels, ModularPanel> panels = new HashMap<>();
     private final Map<Panels, PanelSyncManager> syncManagers = new HashMap<>();
 
-    public SyncHypervisor(MTEForgeOfGods multiblock, ForgeOfGodsData data) {
+    public SyncHypervisor(MTEForgeOfGods multiblock) {
         this.multiblock = multiblock;
-        this.data = data;
+        this.data = multiblock.getData();
+    }
+
+    public SyncHypervisor(MTEBaseModule module) {
+        this.module = module;
+    }
+
+    public void setMultiblock(MTEForgeOfGods multiblock) {
+        this.multiblock = multiblock;
+        this.data = multiblock != null ? multiblock.getData() : null;
     }
 
     public MTEForgeOfGods getMultiblock() {
@@ -40,6 +51,14 @@ public final class SyncHypervisor {
 
     public ForgeOfGodsData getData() {
         return data;
+    }
+
+    public void setModule(MTEBaseModule module) {
+        this.module = module;
+    }
+
+    public MTEBaseModule getModule() {
+        return module;
     }
 
     public void setModularPanel(Panels panel, ModularPanel modularPanel) {

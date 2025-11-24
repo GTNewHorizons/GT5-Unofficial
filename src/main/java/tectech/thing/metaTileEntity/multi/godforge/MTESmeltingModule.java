@@ -42,6 +42,8 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.gui.modularui.multiblock.godforge.MTESmeltingModuleGui;
 import tectech.TecTech;
 import tectech.thing.gui.TecTechUITextures;
 
@@ -147,6 +149,11 @@ public class MTESmeltingModule extends MTEBaseModule {
         logic.setMaxParallel(getActualParallel());
         logic.setSpeedBonus(getSpeedBonus());
         logic.setEuModifier(getEnergyDiscount());
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTESmeltingModuleGui(this);
     }
 
     @Override

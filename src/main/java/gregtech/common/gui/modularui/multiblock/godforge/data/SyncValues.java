@@ -1,7 +1,5 @@
 package gregtech.common.gui.modularui.multiblock.godforge.data;
 
-import java.util.function.Function;
-
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.apache.commons.lang3.mutable.MutableObject;
 
@@ -13,21 +11,19 @@ import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.GenericSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
-import com.cleanroommc.modularui.value.sync.ValueSyncHandler;
 
-import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
+import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValue.ForgeOfGodsSyncValue;
+import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValue.HybridSyncValue;
 import tectech.thing.metaTileEntity.multi.godforge.color.ForgeOfGodsStarColor;
 import tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade;
-import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 
 /**
  * Sync handler helper primarily written to solve the issue of multiple panels needing
  * sync handlers for the same data, resulting in issues with sync value ID collisions.
  * Also is just a lot cleaner to use, especially when many are used in multiple panels.
  */
-public class SyncValues<T extends ValueSyncHandler<?>> {
+public class SyncValues {
 
     // spotless:off
 
@@ -35,21 +31,22 @@ public class SyncValues<T extends ValueSyncHandler<?>> {
     // Inherited Syncers //
     // ----------------- //
 
-    public static final SyncValues<BooleanSyncValue> STRUCTURE_UPDATE = new SyncValues<>("structureUpdateButton");
+    public static final ForgeOfGodsSyncValue<BooleanSyncValue> STRUCTURE_UPDATE = new ForgeOfGodsSyncValue<>("structureUpdateButton");
 
     // --------------- //
     // General Syncers //
     // --------------- //
 
-    public static final SyncValues<EnumSyncValue<Formatters>> FORMATTER = new SyncValues<>(
+    public static final ForgeOfGodsSyncValue<EnumSyncValue<Formatters>> FORMATTER = new ForgeOfGodsSyncValue<>(
         "fog.sync.formatter",
         data -> new EnumSyncValue<>(Formatters.class, data::getFormatter, data::setFormatter));
 
-    public static final SyncValues<BooleanSyncValue> INVERSION = new SyncValues<>(
+    public static final HybridSyncValue<BooleanSyncValue> INVERSION = new HybridSyncValue<>(
         "fog.sync.inversion",
-        data -> new BooleanSyncValue(data::isInversion, data::setInversion));
+        data -> new BooleanSyncValue(data::isInversion, data::setInversion),
+        module -> new BooleanSyncValue(module::getInversionConfig, module::setInversionConfig));
 
-    public static final SyncValues<IntSyncValue> RING_AMOUNT = new SyncValues<>(
+    public static final ForgeOfGodsSyncValue<IntSyncValue> RING_AMOUNT = new ForgeOfGodsSyncValue<>(
         "fog.sync.ring_amount",
         data -> new IntSyncValue(data::getRingAmount, data::setRingAmount));
 
@@ -57,23 +54,23 @@ public class SyncValues<T extends ValueSyncHandler<?>> {
     // Fuel //
     // ---- //
 
-    public static final SyncValues<EnumSyncValue<Fuels>> SELECTED_FUEL = new SyncValues<>(
+    public static final ForgeOfGodsSyncValue<EnumSyncValue<Fuels>> SELECTED_FUEL = new ForgeOfGodsSyncValue<>(
         "fog.sync.selected_fuel",
         data -> new EnumSyncValue<>(Fuels.class, () -> Fuels.getFromData(data), fuel -> fuel.select(data)));
 
-    public static final SyncValues<LongSyncValue> FUEL_CONSUMPTION = new SyncValues<>(
+    public static final ForgeOfGodsSyncValue<LongSyncValue> FUEL_CONSUMPTION = new ForgeOfGodsSyncValue<>(
         "fog.sync.fuel_consumption",
         data -> new LongSyncValue(data::getFuelConsumption, data::setFuelConsumption));
 
-    public static final SyncValues<IntSyncValue> FUEL_FACTOR = new SyncValues<>(
+    public static final ForgeOfGodsSyncValue<IntSyncValue> FUEL_FACTOR = new ForgeOfGodsSyncValue<>(
         "fog.sync.fuel_factor",
         data -> new IntSyncValue(data::getFuelConsumptionFactor, data::setFuelConsumptionFactor));
 
-    public static final SyncValues<IntSyncValue> NEEDED_STARTUP_FUEL = new SyncValues<>(
+    public static final ForgeOfGodsSyncValue<IntSyncValue> NEEDED_STARTUP_FUEL = new ForgeOfGodsSyncValue<>(
         "fog.sync.needed_startup_fuel",
         data -> new IntSyncValue(data::getNeededStartupFuel, data::setNeededStartupFuel));
 
-    public static final SyncValues<IntSyncValue> FUEL_AMOUNT = new SyncValues<>(
+    public static final ForgeOfGodsSyncValue<IntSyncValue> FUEL_AMOUNT = new ForgeOfGodsSyncValue<>(
         "fog.sync.fuel_amount",
         data -> new IntSyncValue(data::getStellarFuelAmount, data::setStellarFuelAmount));
 
@@ -81,15 +78,15 @@ public class SyncValues<T extends ValueSyncHandler<?>> {
     // Battery //
     // ------  //
 
-    public static final SyncValues<BooleanSyncValue> BATTERY_CHARGING = new SyncValues<>(
+    public static final ForgeOfGodsSyncValue<BooleanSyncValue> BATTERY_CHARGING = new ForgeOfGodsSyncValue<>(
         "fog.sync.battery_charging",
         data -> new BooleanSyncValue(data::isBatteryCharging, data::setBatteryCharging));
 
-    public static final SyncValues<IntSyncValue> INTERNAL_BATTERY = new SyncValues<>(
+    public static final ForgeOfGodsSyncValue<IntSyncValue> INTERNAL_BATTERY = new ForgeOfGodsSyncValue<>(
         "fog.sync.internal_battery",
         data -> new IntSyncValue(data::getInternalBattery, data::setInternalBattery));
 
-    public static final SyncValues<IntSyncValue> MAX_BATTERY_CHARGE = new SyncValues<>(
+    public static final ForgeOfGodsSyncValue<IntSyncValue> MAX_BATTERY_CHARGE = new ForgeOfGodsSyncValue<>(
         "fog.sync.max_battery_charge",
         data -> new IntSyncValue(data::getMaxBatteryCharge, data::setMaxBatteryCharge));
 
@@ -97,11 +94,11 @@ public class SyncValues<T extends ValueSyncHandler<?>> {
     // Graviton Shards //
     // --------------- //
 
-    public static final SyncValues<BooleanSyncValue> SHARD_EJECTION = new SyncValues<>(
+    public static final ForgeOfGodsSyncValue<BooleanSyncValue> SHARD_EJECTION = new ForgeOfGodsSyncValue<>(
         "fog.sync.shard_ejection",
         data -> new BooleanSyncValue(data::isGravitonShardEjection, data::setGravitonShardEjection));
 
-    public static final SyncValues<IntSyncValue> AVAILABLE_GRAVITON_SHARDS = new SyncValues<>(
+    public static final ForgeOfGodsSyncValue<IntSyncValue> AVAILABLE_GRAVITON_SHARDS = new ForgeOfGodsSyncValue<>(
         "fog.sync.available_graviton_shards",
         data -> new IntSyncValue(data::getGravitonShardsAvailable, data::setGravitonShardsAvailable));
 
@@ -109,7 +106,7 @@ public class SyncValues<T extends ValueSyncHandler<?>> {
     // Upgrades //
     // -------- //
 
-    public static final SyncValues<EnumSyncValue<ForgeOfGodsUpgrade>> UPGRADE_CLICKED = new SyncValues<>(
+    public static final ForgeOfGodsSyncValue<EnumSyncValue<ForgeOfGodsUpgrade>> UPGRADE_CLICKED = new ForgeOfGodsSyncValue<>(
         "fog.sync.upgrade_clicked",
         data -> {
             // Integer for 0 value instead of null value at init. Sync values crash if you try to sync a null
@@ -120,11 +117,11 @@ public class SyncValues<T extends ValueSyncHandler<?>> {
                 val -> i.setValue(val.ordinal()));
         });
 
-    public static final SyncValues<GenericListSyncHandler<?>> UPGRADES_LIST = new SyncValues<>(
+    public static final ForgeOfGodsSyncValue<GenericListSyncHandler<?>> UPGRADES_LIST = new ForgeOfGodsSyncValue<>(
         "fog.sync.upgrades_list",
         data -> data.getUpgrades().getFullSyncer());
 
-    public static final SyncValues<BooleanSyncValue> SECRET_UPGRADE = new SyncValues<>(
+    public static final ForgeOfGodsSyncValue<BooleanSyncValue> SECRET_UPGRADE = new ForgeOfGodsSyncValue<>(
         "fog.sync.secret_upgrade",
         data -> new BooleanSyncValue(data::isSecretUpgrade, data::setSecretUpgrade));
 
@@ -132,7 +129,7 @@ public class SyncValues<T extends ValueSyncHandler<?>> {
     // Milestones //
     // ---------- //
 
-    public static final SyncValues<EnumSyncValue<Milestones>> MILESTONE_CLICKED = new SyncValues<>(
+    public static final ForgeOfGodsSyncValue<EnumSyncValue<Milestones>> MILESTONE_CLICKED = new ForgeOfGodsSyncValue<>(
         "fog.sync.milestone_clicked",
         data -> {
             // Integer for 0 value instead of null value at init. Sync values crash if you try to sync a null
@@ -143,55 +140,55 @@ public class SyncValues<T extends ValueSyncHandler<?>> {
                 val -> i.setValue(val.ordinal()));
         });
 
-    public static final SyncValues<BigIntSyncValue> TOTAL_POWER_CONSUMED = new SyncValues<>(
+    public static final ForgeOfGodsSyncValue<BigIntSyncValue> TOTAL_POWER_CONSUMED = new ForgeOfGodsSyncValue<>(
         "fog.sync.total_power_consumed",
         data -> new BigIntSyncValue(data::getTotalPowerConsumed, data::setTotalPowerConsumed));
 
-    public static final SyncValues<LongSyncValue> TOTAL_RECIPES_PROCESSED = new SyncValues<>(
+    public static final ForgeOfGodsSyncValue<LongSyncValue> TOTAL_RECIPES_PROCESSED = new ForgeOfGodsSyncValue<>(
         "fog.sync.total_recipes_processed",
         data -> new LongSyncValue(data::getTotalRecipesProcessed, data::setTotalRecipesProcessed));
 
-    public static final SyncValues<LongSyncValue> TOTAL_FUEL_CONSUMED = new SyncValues<>(
+    public static final ForgeOfGodsSyncValue<LongSyncValue> TOTAL_FUEL_CONSUMED = new ForgeOfGodsSyncValue<>(
         "fog.sync.total_fuel_consumed",
         data -> new LongSyncValue(data::getTotalFuelConsumed, data::setTotalFuelConsumed));
 
-    public static final SyncValues<IntSyncValue> MILESTONE_CHARGE_LEVEL = new SyncValues<>(
+    public static final ForgeOfGodsSyncValue<IntSyncValue> MILESTONE_CHARGE_LEVEL = new ForgeOfGodsSyncValue<>(
         "fog.sync.milestone_charge_level",
         data -> new IntSyncValue(() -> data.getMilestoneProgress(0), val -> data.setMilestoneProgress(0, val)));
-    public static final SyncValues<FloatSyncValue> MILESTONE_CHARGE_PROGRESS = new SyncValues<>(
+    public static final ForgeOfGodsSyncValue<FloatSyncValue> MILESTONE_CHARGE_PROGRESS = new ForgeOfGodsSyncValue<>(
         "fog.sync.milestone_charge_progress",
         data -> new FloatSyncValue(data::getPowerMilestonePercentage, data::setPowerMilestonePercentage));
-    public static final SyncValues<FloatSyncValue> MILESTONE_CHARGE_PROGRESS_INVERTED = new SyncValues<>(
+    public static final ForgeOfGodsSyncValue<FloatSyncValue> MILESTONE_CHARGE_PROGRESS_INVERTED = new ForgeOfGodsSyncValue<>(
         "fog.sync.milestone_charge_progress_inverted",
         data -> new FloatSyncValue(data::getInvertedPowerMilestonePercentage, data::setInvertedPowerMilestonePercentage));
 
-    public static final SyncValues<IntSyncValue> MILESTONE_CONVERSION_LEVEL = new SyncValues<>(
+    public static final ForgeOfGodsSyncValue<IntSyncValue> MILESTONE_CONVERSION_LEVEL = new ForgeOfGodsSyncValue<>(
         "fog.sync.milestone_conversion_level",
         data -> new IntSyncValue(() -> data.getMilestoneProgress(1), val -> data.setMilestoneProgress(1, val)));
-    public static final SyncValues<FloatSyncValue> MILESTONE_CONVERSION_PROGRESS = new SyncValues<>(
+    public static final ForgeOfGodsSyncValue<FloatSyncValue> MILESTONE_CONVERSION_PROGRESS = new ForgeOfGodsSyncValue<>(
         "fog.sync.milestone_conversion_progress",
         data -> new FloatSyncValue(data::getRecipeMilestonePercentage, data::setRecipeMilestonePercentage));
-    public static final SyncValues<FloatSyncValue> MILESTONE_CONVERSION_PROGRESS_INVERTED = new SyncValues<>(
+    public static final ForgeOfGodsSyncValue<FloatSyncValue> MILESTONE_CONVERSION_PROGRESS_INVERTED = new ForgeOfGodsSyncValue<>(
         "fog.sync.milestone_conversion_progress_inverted",
         data -> new FloatSyncValue(data::getInvertedRecipeMilestonePercentage, data::setInvertedRecipeMilestonePercentage));
 
-    public static final SyncValues<IntSyncValue> MILESTONE_CATALYST_LEVEL = new SyncValues<>(
+    public static final ForgeOfGodsSyncValue<IntSyncValue> MILESTONE_CATALYST_LEVEL = new ForgeOfGodsSyncValue<>(
         "fog.sync.milestone_catalyst_level",
         data -> new IntSyncValue(() -> data.getMilestoneProgress(2), val -> data.setMilestoneProgress(2, val)));
-    public static final SyncValues<FloatSyncValue> MILESTONE_CATALYST_PROGRESS = new SyncValues<>(
+    public static final ForgeOfGodsSyncValue<FloatSyncValue> MILESTONE_CATALYST_PROGRESS = new ForgeOfGodsSyncValue<>(
         "fog.sync.milestone_catalyst_progress",
         data -> new FloatSyncValue(data::getFuelMilestonePercentage, data::setFuelMilestonePercentage));
-    public static final SyncValues<FloatSyncValue> MILESTONE_CATALYST_PROGRESS_INVERTED = new SyncValues<>(
+    public static final ForgeOfGodsSyncValue<FloatSyncValue> MILESTONE_CATALYST_PROGRESS_INVERTED = new ForgeOfGodsSyncValue<>(
         "fog.sync.milestone_catalyst_progress_inverted",
         data -> new FloatSyncValue(data::getInvertedFuelMilestonePercentage, data::setInvertedFuelMilestonePercentage));
 
-    public static final SyncValues<IntSyncValue> MILESTONE_COMPOSITION_LEVEL = new SyncValues<>(
+    public static final ForgeOfGodsSyncValue<IntSyncValue> MILESTONE_COMPOSITION_LEVEL = new ForgeOfGodsSyncValue<>(
         "fog.sync.milestone_composition_level",
         data -> new IntSyncValue(() -> data.getMilestoneProgress(3), val -> data.setMilestoneProgress(3, val)));
-    public static final SyncValues<FloatSyncValue> MILESTONE_COMPOSITION_PROGRESS = new SyncValues<>(
+    public static final ForgeOfGodsSyncValue<FloatSyncValue> MILESTONE_COMPOSITION_PROGRESS = new ForgeOfGodsSyncValue<>(
         "fog.sync.milestone_composition_progress",
         data -> new FloatSyncValue(data::getStructureMilestonePercentage, data::setStructureMilestonePercentage));
-    public static final SyncValues<FloatSyncValue> MILESTONE_COMPOSITION_PROGRESS_INVERTED = new SyncValues<>(
+    public static final ForgeOfGodsSyncValue<FloatSyncValue> MILESTONE_COMPOSITION_PROGRESS_INVERTED = new ForgeOfGodsSyncValue<>(
         "fog.sync.milestone_composition_progress_inverted",
         data -> new FloatSyncValue(data::getInvertedStructureMilestonePercentage, data::setInvertedStructureMilestonePercentage));
 
@@ -199,7 +196,7 @@ public class SyncValues<T extends ValueSyncHandler<?>> {
     // Star Color //
     // ---------- //
 
-    public static final SyncValues<GenericSyncValue<ForgeOfGodsStarColor>> STAR_COLOR_CLICKED = new SyncValues<>(
+    public static final ForgeOfGodsSyncValue<GenericSyncValue<ForgeOfGodsStarColor>> STAR_COLOR_CLICKED = new ForgeOfGodsSyncValue<>(
         "fog.sync.star_color_clicked",
         data -> {
             MutableObject<ForgeOfGodsStarColor> mut = new MutableObject<>(data.getStarColors().newTemplateColor());
@@ -219,80 +216,33 @@ public class SyncValues<T extends ValueSyncHandler<?>> {
             };
         });
 
-    public static final SyncValues<IntSyncValue> STAR_COLOR_EDITING_INDEX = new SyncValues<>(
+    public static final ForgeOfGodsSyncValue<IntSyncValue> STAR_COLOR_EDITING_INDEX = new ForgeOfGodsSyncValue<>(
         "fog.sync.star_color_editing_index",
         data -> {
             MutableInt i = new MutableInt(-1);
             return new IntSyncValue(i::intValue, i::setValue);
         });
 
-    public static final SyncValues<StringSyncValue> SELECTED_STAR_COLOR = new SyncValues<>(
+    public static final ForgeOfGodsSyncValue<StringSyncValue> SELECTED_STAR_COLOR = new ForgeOfGodsSyncValue<>(
         "fog.sync.selected_star_color",
         data -> new StringSyncValue(data::getSelectedStarColor, data::setSelectedStarColor));
 
-    public static final SyncValues<GenericListSyncHandler<ForgeOfGodsStarColor>> STAR_COLORS = new SyncValues<>(
+    public static final ForgeOfGodsSyncValue<GenericListSyncHandler<ForgeOfGodsStarColor>> STAR_COLORS = new ForgeOfGodsSyncValue<>(
         "fog.sync.star_colors",
         data -> data.getStarColors().getSyncer());
 
-    public static final SyncValues<IntSyncValue> STAR_ROTATION_SPEED = new SyncValues<>(
+    public static final ForgeOfGodsSyncValue<IntSyncValue> STAR_ROTATION_SPEED = new ForgeOfGodsSyncValue<>(
         "fog.sync.star_rotation_speed",
         data -> new IntSyncValue(data::getRotationSpeed, data::setRotationSpeed));
 
-    public static final SyncValues<IntSyncValue> STAR_SIZE = new SyncValues<>(
+    public static final ForgeOfGodsSyncValue<IntSyncValue> STAR_SIZE = new ForgeOfGodsSyncValue<>(
         "fog.sync.star_size",
         data -> new IntSyncValue(data::getStarSize, data::setStarSize));
 
-    public static final SyncValues<BooleanSyncValue> RENDERER_DISABLED = new SyncValues<>(
+    public static final ForgeOfGodsSyncValue<BooleanSyncValue> RENDERER_DISABLED = new ForgeOfGodsSyncValue<>(
         "fog.sync.renderer_disabled",
         data -> new BooleanSyncValue(data::isRendererDisabled, data::setRendererDisabled));
 
     // spotless:on
 
-    private final String syncId;
-    private final Function<ForgeOfGodsData, T> syncValueSupplier;
-    private final boolean inherited;
-
-    private SyncValues(String syncId) {
-        this.syncId = syncId;
-        this.syncValueSupplier = null;
-        this.inherited = true;
-    }
-
-    private SyncValues(String syncId, Function<ForgeOfGodsData, T> syncValueSupplier) {
-        this.syncId = syncId;
-        this.syncValueSupplier = syncValueSupplier;
-        this.inherited = false;
-    }
-
-    public void registerFor(Panels forPanel, SyncHypervisor hypervisor) {
-        T syncValue = create(hypervisor);
-        PanelSyncManager syncManager = hypervisor.getSyncManager(forPanel);
-        syncManager.syncValue(getSyncId(forPanel), syncValue);
-    }
-
-    public T create(SyncHypervisor hypervisor) {
-        if (inherited || syncValueSupplier == null) {
-            throw new IllegalStateException("Cannot create SyncValue for inherited syncer! ID: " + syncId);
-        }
-
-        return syncValueSupplier.apply(hypervisor.getData());
-    }
-
-    @SuppressWarnings("unchecked")
-    public T lookupFrom(Panels fromPanel, SyncHypervisor hypervisor) {
-        PanelSyncManager syncManager = hypervisor.getSyncManager(fromPanel);
-        return (T) syncManager.findSyncHandler(getSyncId(fromPanel));
-    }
-
-    public void notifyUpdateFrom(Panels fromPanel, SyncHypervisor hypervisor) {
-        T syncer = lookupFrom(fromPanel, hypervisor);
-        syncer.notifyUpdate();
-    }
-
-    public String getSyncId(Panels fromPanel) {
-        if (fromPanel == Panels.MAIN || inherited) {
-            return syncId;
-        }
-        return fromPanel.getPanelId() + "/" + syncId;
-    }
 }

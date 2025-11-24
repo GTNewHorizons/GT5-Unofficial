@@ -76,6 +76,8 @@ import gregtech.api.util.GTStreamUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.gui.modularui.multiblock.godforge.MTEExoticModuleGui;
 import tectech.TecTech;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.thing.CustomItemList;
@@ -456,6 +458,11 @@ public class MTEExoticModule extends MTEBaseModule {
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         ticker++;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEExoticModuleGui(this);
     }
 
     @Override

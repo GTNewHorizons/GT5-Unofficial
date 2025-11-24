@@ -22,6 +22,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -54,18 +56,18 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTStructureUtility;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import tectech.TecTech;
 import tectech.thing.gui.TecTechUITextures;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsUI;
 
-public class MTEBaseModule extends TTMultiblockBase implements IConstructable, ISurvivalConstructable {
+public abstract class MTEBaseModule extends TTMultiblockBase implements IConstructable, ISurvivalConstructable {
 
     protected final int tier = getTier();
     protected boolean isConnected = false;
@@ -102,11 +104,6 @@ public class MTEBaseModule extends TTMultiblockBase implements IConstructable, I
     }
 
     @Override
-    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEBaseModule(mName);
-    }
-
-    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide() && isConnected) {
             super.onPostTick(aBaseMetaTileEntity, aTick);
@@ -138,6 +135,10 @@ public class MTEBaseModule extends TTMultiblockBase implements IConstructable, I
 
     public void disconnect() {
         isConnected = false;
+    }
+
+    public boolean isConnected() {
+        return isConnected;
     }
 
     public void setHeat(int heat) {
@@ -226,6 +227,10 @@ public class MTEBaseModule extends TTMultiblockBase implements IConstructable, I
 
     public void setVoltageConfig(boolean unlocked) {
         isVoltageConfigUnlocked = unlocked;
+    }
+
+    public boolean getInversionConfig() {
+        return isInversionUnlocked;
     }
 
     public void setInversionConfig(boolean inversion) {
@@ -321,6 +326,14 @@ public class MTEBaseModule extends TTMultiblockBase implements IConstructable, I
             userUUID = processInitialSettings(aBaseMetaTileEntity);
         }
     }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    protected abstract @NotNull MTEMultiBlockBaseGui<?> getGui();
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
