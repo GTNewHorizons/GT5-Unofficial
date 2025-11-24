@@ -11,6 +11,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.WidgetTree;
 import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
 
+import gregtech.common.gui.modularui.multiblock.godforge.data.Modules;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
 import tectech.thing.metaTileEntity.multi.godforge.MTEBaseModule;
 import tectech.thing.metaTileEntity.multi.godforge.MTEForgeOfGods;
@@ -26,11 +27,11 @@ public final class SyncHypervisor {
 
     private MTEForgeOfGods multiblock;
     private ForgeOfGodsData data;
-    private MTEBaseModule module;
 
     private final Panels mainPanel;
     private final Map<Panels, ModularPanel> panels = new HashMap<>();
     private final Map<Panels, PanelSyncManager> syncManagers = new HashMap<>();
+    private final Map<Modules<?>, MTEBaseModule> modules = new HashMap<>();
 
     public SyncHypervisor(Panels mainPanel) {
         this.mainPanel = mainPanel;
@@ -49,12 +50,20 @@ public final class SyncHypervisor {
         return data;
     }
 
-    public void setModule(MTEBaseModule module) {
-        this.module = module;
+    public <T extends MTEBaseModule> void setModule(Modules<T> module, T moduleMultiblock) {
+        modules.put(module, moduleMultiblock);
     }
 
-    public MTEBaseModule getModule() {
-        return module;
+    public <T extends MTEBaseModule> T getModule(Modules<T> module) {
+        if (module == Modules.BASE) {
+            return modules.values()
+                .stream()
+                .map(module::cast)
+                .findAny()
+                .orElseThrow(IllegalStateException::new); // shouldn't ever happen
+        }
+
+        return module.cast(modules.get(module));
     }
 
     public Panels getMainPanel() {

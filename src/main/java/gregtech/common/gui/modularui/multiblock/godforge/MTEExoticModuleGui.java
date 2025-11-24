@@ -17,6 +17,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.common.gui.modularui.multiblock.godforge.data.Modules;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
 import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValues;
 import gregtech.common.gui.modularui.multiblock.godforge.util.ForgeOfGodsGuiUtil;
@@ -30,8 +31,8 @@ public class MTEExoticModuleGui extends MTEBaseModuleGui<MTEExoticModule> {
     }
 
     @Override
-    public Panels getMainPanel() {
-        return Panels.MAIN_EXOTIC;
+    public Modules<MTEExoticModule> getModuleType() {
+        return Modules.EXOTIC;
     }
 
     @Override

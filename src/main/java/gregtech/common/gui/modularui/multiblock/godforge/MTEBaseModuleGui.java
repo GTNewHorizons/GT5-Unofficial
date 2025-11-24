@@ -29,6 +29,7 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import gregtech.api.gui.widgets.CommonWidgets;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.base.TTMultiblockBaseGui;
+import gregtech.common.gui.modularui.multiblock.godforge.data.Modules;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
 import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValues;
 import gregtech.common.gui.modularui.multiblock.godforge.util.ForgeOfGodsGuiUtil;
@@ -43,10 +44,14 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
         super(multiblock);
         this.hypervisor = new SyncHypervisor(getMainPanel());
 
-        hypervisor.setModule(multiblock);
+        hypervisor.setModule(getModuleType(), multiblock);
     }
 
-    public abstract Panels getMainPanel();
+    public abstract Modules<T> getModuleType();
+
+    public Panels getMainPanel() {
+        return getModuleType().getMainPanel();
+    }
 
     @Override
     protected ModularPanel getBasePanel(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {

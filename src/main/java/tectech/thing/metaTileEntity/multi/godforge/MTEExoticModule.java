@@ -36,12 +36,12 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.cleanroommc.modularui.utils.fluid.FluidTanksHandler;
+import com.cleanroommc.modularui.utils.fluid.IFluidTanksHandler;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
-import com.gtnewhorizons.modularui.api.fluids.FluidTanksHandler;
-import com.gtnewhorizons.modularui.api.fluids.IFluidTanksHandler;
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.math.Alignment;
@@ -54,7 +54,6 @@ import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
@@ -87,6 +86,13 @@ import tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath;
 
 public class MTEExoticModule extends MTEBaseModule {
 
+    public static final int RECIPE_REFRESH_LIMIT = 60 * SECONDS;
+    public static final int NUMBER_OF_INPUTS = 7;
+
+    // todo remove
+    private static final int INPUT_LIST_WINDOW_ID = 11;
+    private static final int POSSIBLE_INPUTS_WINDOW_ID = 12;
+
     private int numberOfFluids = 0;
     private int numberOfItems = 0;
     private long ticker = 0;
@@ -98,10 +104,8 @@ public class MTEExoticModule extends MTEBaseModule {
     private FluidStack[] randomizedFluidInput = GTValues.emptyFluidStackArray;
     private ItemStack[] randomizedItemInput = GTValues.emptyItemStackArray;
     private GTRecipe plasmaRecipe = null;
+    public final IFluidTanksHandler tankHandler = new FluidTanksHandler(NUMBER_OF_INPUTS, 128000);
     private BigInteger powerForRecipe = BigInteger.ZERO;
-    private static final int NUMBER_OF_INPUTS = 7;
-    private static final int INPUT_LIST_WINDOW_ID = 11;
-    private static final int POSSIBLE_INPUTS_WINDOW_ID = 12;
 
     public MTEExoticModule(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -125,9 +129,9 @@ public class MTEExoticModule extends MTEBaseModule {
             protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
                 if (!recipeInProgress) {
                     if (magmatterMode) {
-                        plasmaRecipe = generateMagmatterRecipe();
+                        setPlasmaRecipe(generateMagmatterRecipe());
                     } else {
-                        plasmaRecipe = generateQuarkGluonRecipe();
+                        setPlasmaRecipe(generateQuarkGluonRecipe());
                     }
                 }
                 return GTStreamUtil.ofNullable(plasmaRecipe);
@@ -140,7 +144,7 @@ public class MTEExoticModule extends MTEBaseModule {
                     powerForRecipe = BigInteger.valueOf(getSafeProcessingVoltage())
                         .multiply(BigInteger.valueOf(recipe.mDuration * actualParallel));
                     if (getUserEU(userUUID).compareTo(powerForRecipe) < 0) {
-                        plasmaRecipe = null;
+                        setPlasmaRecipe(null);
                         return CheckRecipeResultRegistry.insufficientStartupPower(powerForRecipe);
                     }
 
@@ -184,7 +188,7 @@ public class MTEExoticModule extends MTEBaseModule {
                 addToPowerTally(powerForRecipe);
                 addToRecipeTally(calculatedParallels);
                 overwriteCalculatedEut(0);
-                plasmaRecipe = null;
+                setPlasmaRecipe(null);
                 recipeInProgress = false;
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
@@ -271,6 +275,24 @@ public class MTEExoticModule extends MTEBaseModule {
             10 * SECONDS,
             (int) TierEU.RECIPE_MAX,
             0);
+    }
+
+    private void setPlasmaRecipe(GTRecipe plasmaRecipe) {
+        this.plasmaRecipe = plasmaRecipe;
+
+        for (int i = 0; i < NUMBER_OF_INPUTS; i++) {
+            if (plasmaRecipe == null) {
+                tankHandler.setFluidInTank(i, null, 0);
+                continue;
+            }
+
+            if (i < plasmaRecipe.mFluidInputs.length) {
+                FluidStack plasma = plasmaRecipe.mFluidInputs[i];
+                tankHandler.setFluidInTank(i, plasma.getFluid(), plasma.amount);
+            } else {
+                tankHandler.setFluidInTank(i, null, 0);
+            }
+        }
     }
 
     private FluidStack[] getRandomFluidInputs(HashMap<FluidStack, Integer> fluidMap, int numberOfFluids) {
@@ -438,17 +460,18 @@ public class MTEExoticModule extends MTEBaseModule {
                 outputFluid = Materials.QuarkGluonPlasma.getFluid(1000L * actualParallel);
             }
 
-            plasmaRecipe = new GTRecipe(
-                false,
-                null,
-                null,
-                null,
-                null,
-                stacks,
-                new FluidStack[] { outputFluid },
-                10 * SECONDS,
-                (int) TierEU.RECIPE_MAX,
-                0);
+            setPlasmaRecipe(
+                new GTRecipe(
+                    false,
+                    null,
+                    null,
+                    null,
+                    null,
+                    stacks,
+                    new FluidStack[] { outputFluid },
+                    10 * SECONDS,
+                    (int) TierEU.RECIPE_MAX,
+                    0));
         }
 
         super.loadNBTData(NBT);
@@ -509,15 +532,17 @@ public class MTEExoticModule extends MTEBaseModule {
             builder.widget(
                 new DrawableWidget().setDrawable(ModularUITextures.FLUID_SLOT)
                     .setSize(18, 18)
-                    .setPos(slotPositions[i]))
-                .widget(
-                    new FluidSlotWidget(tanksHandler, i).setInteraction(false, false)
-                        .setSize(18, 18)
-                        .setPos(slotPositions[i])
-                        .attachSyncer(
-                            new FakeSyncWidget.BooleanSyncer(() -> recipeInProgress, val -> recipeInProgress = val),
-                            builder,
-                            (widget, val) -> widget.checkNeedsRebuild()));
+                    .setPos(slotPositions[i]));
+            /*
+             * .widget(
+             * new FluidSlotWidget(tanksHandler, i).setInteraction(false, false)
+             * .setSize(18, 18)
+             * .setPos(slotPositions[i])
+             * .attachSyncer(
+             * new FakeSyncWidget.BooleanSyncer(() -> recipeInProgress, val -> recipeInProgress = val),
+             * builder,
+             * (widget, val) -> widget.checkNeedsRebuild()));
+             */
         }
 
         builder.widget(
@@ -531,9 +556,9 @@ public class MTEExoticModule extends MTEBaseModule {
             if (!widget.isClient() && ticker > 1200) {
 
                 if (magmatterMode) {
-                    plasmaRecipe = generateMagmatterRecipe();
+                    setPlasmaRecipe(generateMagmatterRecipe());
                 } else {
-                    plasmaRecipe = generateQuarkGluonRecipe();
+                    setPlasmaRecipe(generateQuarkGluonRecipe());
                 }
                 recipeRegenerated = true;
 
@@ -563,6 +588,18 @@ public class MTEExoticModule extends MTEBaseModule {
         }
 
         return builder.build();
+    }
+
+    public void refreshRecipe() {
+        if (ticker <= RECIPE_REFRESH_LIMIT) return;
+
+        if (magmatterMode) {
+            setPlasmaRecipe(generateMagmatterRecipe());
+        } else {
+            setPlasmaRecipe(generateQuarkGluonRecipe());
+        }
+        recipeRegenerated = true;
+        ticker = 0;
     }
 
     private Widget createExpectedInputsButton() {
@@ -631,11 +668,13 @@ public class MTEExoticModule extends MTEBaseModule {
                 builder.widget(
                     new DrawableWidget().setDrawable(ModularUITextures.FLUID_SLOT)
                         .setSize(18, 18)
-                        .setPos(slotXQGP, slotYQGP))
-                    .widget(
-                        new FluidSlotWidget(QGPFluidHandler, i - QGPItemMapSize).setInteraction(false, false)
-                            .setSize(18, 18)
-                            .setPos(slotXQGP, slotYQGP));
+                        .setPos(slotXQGP, slotYQGP));
+                /*
+                 * .widget(
+                 * new FluidSlotWidget(QGPFluidHandler, i - QGPItemMapSize).setInteraction(false, false)
+                 * .setSize(18, 18)
+                 * .setPos(slotXQGP, slotYQGP));
+                 */
             }
         }
 
@@ -685,12 +724,14 @@ public class MTEExoticModule extends MTEBaseModule {
                 builder.widget(
                     new DrawableWidget().setDrawable(ModularUITextures.FLUID_SLOT)
                         .setSize(18, 18)
-                        .setPos(slotXMagmatter, slotYMagmatter))
-                    .widget(
-                        new FluidSlotWidget(magMatterFluidHandler, i - magMatterItemMapSize)
-                            .setInteraction(false, false)
-                            .setSize(18, 18)
-                            .setPos(slotXMagmatter, slotYMagmatter));
+                        .setPos(slotXMagmatter, slotYMagmatter));
+                /*
+                 * .widget(
+                 * new FluidSlotWidget(magMatterFluidHandler, i - magMatterItemMapSize)
+                 * .setInteraction(false, false)
+                 * .setSize(18, 18)
+                 * .setPos(slotXMagmatter, slotYMagmatter));
+                 */
             }
         }
 
@@ -783,6 +824,14 @@ public class MTEExoticModule extends MTEBaseModule {
 
     public void setMagmatterMode(boolean enabled) {
         magmatterMode = enabled;
+    }
+
+    public long getTicker() {
+        return ticker;
+    }
+
+    public void setTicker(long val) {
+        ticker = val;
     }
 
     @Override

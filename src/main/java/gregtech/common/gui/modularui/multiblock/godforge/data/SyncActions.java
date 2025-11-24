@@ -7,6 +7,7 @@ import net.minecraft.network.PacketBuffer;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
+import tectech.thing.metaTileEntity.multi.godforge.MTEExoticModule;
 import tectech.thing.metaTileEntity.multi.godforge.MTEForgeOfGods;
 import tectech.thing.metaTileEntity.multi.godforge.color.ForgeOfGodsStarColor;
 import tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade;
@@ -75,6 +76,12 @@ public final class SyncActions<T, U> {
             Panels panel = Panels.VALUES[buf.readByte()];
             hypervisor.refreshDynamicWidget(panel);
         },
+        Side.SERVER);
+
+    public static SyncActions<Void, MTEExoticModule> REFRESH_EXOTIC_RECIPE = new SyncActions<>(
+        "fog.sync_action.refresh_exotic_recipe",
+        (buf, $) -> {},
+        (buf, module) -> module.refreshRecipe(),
         Side.SERVER);
 
     // spotless:on

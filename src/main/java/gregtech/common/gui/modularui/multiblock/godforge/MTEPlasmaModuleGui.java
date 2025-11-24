@@ -8,6 +8,7 @@ import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.common.gui.modularui.multiblock.godforge.data.Modules;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
 import gregtech.common.gui.modularui.multiblock.godforge.util.ForgeOfGodsGuiUtil;
 import tectech.loader.ConfigHandler;
@@ -20,8 +21,8 @@ public class MTEPlasmaModuleGui extends MTEBaseModuleGui<MTEPlasmaModule> {
     }
 
     @Override
-    public Panels getMainPanel() {
-        return Panels.MAIN_PLASMA;
+    public Modules<MTEPlasmaModule> getModuleType() {
+        return Modules.PLASMA;
     }
 
     @Override

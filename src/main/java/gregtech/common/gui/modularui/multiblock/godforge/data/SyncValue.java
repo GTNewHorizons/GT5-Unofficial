@@ -74,36 +74,32 @@ public abstract class SyncValue<T extends ValueSyncHandler<?>> {
     public static class ModuleSyncValue<T extends ValueSyncHandler<?>, U extends MTEBaseModule> extends SyncValue<T> {
 
         private final Function<U, T> syncValueSupplier;
-        private final Class<U> moduleClass;
+        private final Modules<U> moduleType;
 
         public ModuleSyncValue(String syncId) {
             super(syncId, true);
             this.syncValueSupplier = null;
-            this.moduleClass = null;
+            this.moduleType = null;
         }
 
-        public ModuleSyncValue(String syncId, Class<U> moduleClass, Function<U, T> syncValueSupplier) {
+        public ModuleSyncValue(String syncId, Modules<U> moduleType, Function<U, T> syncValueSupplier) {
             super(syncId, false);
             this.syncValueSupplier = syncValueSupplier;
-            this.moduleClass = moduleClass;
+            this.moduleType = moduleType;
         }
 
         @Override
         public T create(SyncHypervisor hypervisor) {
-            if (inherited || syncValueSupplier == null || moduleClass == null) {
+            if (inherited || syncValueSupplier == null || moduleType == null) {
                 throw new IllegalStateException("Cannot create SyncValue for inherited syncer! ID: " + syncId);
             }
 
-            if (hypervisor.getModule() == null) {
+            U module = hypervisor.getModule(moduleType);
+            if (module == null) {
                 throw new IllegalStateException("Cannot create sync value for module with no module present");
             }
 
-            MTEBaseModule module = hypervisor.getModule();
-            if (!moduleClass.isAssignableFrom(module.getClass())) {
-                throw new IllegalStateException("Cannot create sync value for wrong module type " + module.getClass());
-            }
-
-            return syncValueSupplier.apply(moduleClass.cast(module));
+            return syncValueSupplier.apply(module);
         }
     }
 
@@ -139,8 +135,9 @@ public abstract class SyncValue<T extends ValueSyncHandler<?>> {
                 return dataSupplier.apply(hypervisor.getData());
             }
 
-            if (hypervisor.getModule() != null && moduleSupplier != null) {
-                return moduleSupplier.apply(hypervisor.getModule());
+            MTEBaseModule module = hypervisor.getModule(Modules.BASE);
+            if (module != null && moduleSupplier != null) {
+                return moduleSupplier.apply(module);
             }
 
             throw new IllegalStateException("Cannot create sync value as hypervisor has no applicable state");

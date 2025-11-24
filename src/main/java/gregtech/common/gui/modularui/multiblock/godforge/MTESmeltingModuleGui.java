@@ -10,7 +10,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
+import gregtech.common.gui.modularui.multiblock.godforge.data.Modules;
 import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValues;
 import gregtech.common.gui.modularui.multiblock.godforge.util.ForgeOfGodsGuiUtil;
 import tectech.thing.metaTileEntity.multi.godforge.MTESmeltingModule;
@@ -22,8 +22,8 @@ public class MTESmeltingModuleGui extends MTEBaseModuleGui<MTESmeltingModule> {
     }
 
     @Override
-    public Panels getMainPanel() {
-        return Panels.MAIN_SMELTING;
+    public Modules<MTESmeltingModule> getModuleType() {
+        return Modules.SMELTING;
     }
 
     @Override
