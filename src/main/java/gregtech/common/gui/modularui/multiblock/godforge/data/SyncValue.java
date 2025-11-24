@@ -9,6 +9,11 @@ import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
 import tectech.thing.metaTileEntity.multi.godforge.MTEBaseModule;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 
+/**
+ * Sync handler helper primarily written to solve the issue of multiple panels needing
+ * sync handlers for the same data, resulting in issues with sync value ID collisions.
+ * Also is just a lot cleaner to use, especially when many are used in multiple panels.
+ */
 public abstract class SyncValue<T extends ValueSyncHandler<?>> {
 
     protected final String syncId;

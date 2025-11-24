@@ -23,11 +23,6 @@ import tectech.thing.metaTileEntity.multi.godforge.MTESmeltingModule;
 import tectech.thing.metaTileEntity.multi.godforge.color.ForgeOfGodsStarColor;
 import tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade;
 
-/**
- * Sync handler helper primarily written to solve the issue of multiple panels needing
- * sync handlers for the same data, resulting in issues with sync value ID collisions.
- * Also is just a lot cleaner to use, especially when many are used in multiple panels.
- */
 public class SyncValues {
 
     // spotless:off

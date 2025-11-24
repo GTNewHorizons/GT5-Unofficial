@@ -19,12 +19,19 @@ import tectech.thing.metaTileEntity.multi.godforge.MTEBaseModule;
 import tectech.thing.metaTileEntity.multi.godforge.MTEForgeOfGods;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 
+// spotless:off
 /**
- * Solution to re-use sync handlers across multiple panels. If 10 panels are open, and
- * a lower-down panel requires a sync value that a higher-up panel needs, why should
- * this be re-synced? The hypervisor allows for accessing sync values and actions between
- * panels, as well as allowing access for any panel's ModularPanel.
+ * The hypervisor does 5 things:<br>
+ * 1. Allows reusing sync values and actions from parent panels<br>
+ * 2. Allows panels to check sync values of other panels, allowing panels to communicate<br>
+ * 3. Allows access to any sub-panel, allowing for things like parent-relative positioning<br>
+ * 4. Allows sharing panels between different GUI classes<br>
+ * 5. Allows tracking who is the "main panel," and storing sub-panel data per "module," resulting
+ *    in allowing for a multiblock to open the UI of another multiblock, or even multiple other
+ *    multiblocks at the same time, and allowing all of their syncing and sub-paneling to still
+ *    function exactly like if it were opened normally as a main panel.
  */
+// spotless:on
 public final class SyncHypervisor {
 
     private MTEForgeOfGods multiblock;
