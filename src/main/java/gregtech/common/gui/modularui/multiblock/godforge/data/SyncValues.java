@@ -17,6 +17,7 @@ import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValue.ForgeOfG
 import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValue.HybridSyncValue;
 import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValue.ModuleSyncValue;
 import tectech.thing.metaTileEntity.multi.godforge.MTEBaseModule;
+import tectech.thing.metaTileEntity.multi.godforge.MTEExoticModule;
 import tectech.thing.metaTileEntity.multi.godforge.MTEPlasmaModule;
 import tectech.thing.metaTileEntity.multi.godforge.MTESmeltingModule;
 import tectech.thing.metaTileEntity.multi.godforge.color.ForgeOfGodsStarColor;
@@ -275,6 +276,16 @@ public class SyncValues {
         "fog.sync.debug_multi_step",
         MTEPlasmaModule.class,
         module -> new BooleanSyncValue(module::isMultiStepPlasma, module::setMultiStepPlasma));
+
+    public static final ModuleSyncValue<BooleanSyncValue, MTEExoticModule> MAGMATTER_CAPABLE = new ModuleSyncValue<>(
+        "fog.sync.magmatter_capable",
+        MTEExoticModule.class,
+        module -> new BooleanSyncValue(module::isMagmatterCapable, module::setMagmatterCapable));
+
+    public static final ModuleSyncValue<BooleanSyncValue, MTEExoticModule> MAGMATTER_MODE = new ModuleSyncValue<>(
+        "fog.sync.magmatter_mode",
+        MTEExoticModule.class,
+        module -> new BooleanSyncValue(module::isMagmatterModeOn, module::setMagmatterMode));
 
     // spotless:on
 

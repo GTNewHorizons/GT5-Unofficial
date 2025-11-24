@@ -96,9 +96,7 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
 
     @Override
     protected Flow createTerminalLeftCornerColumn(ModularPanel panel, PanelSyncManager syncManager) {
-        return new Column().coverChildren()
-            .leftRel(0, 6, 0)
-            .bottomRel(0, 6, 0)
+        return super.createTerminalLeftCornerColumn(panel, syncManager)
             .childIf(usesTerminalLeftButton(), createTerminalLeftButton());
     }
 

@@ -781,7 +781,7 @@ public class MTEExoticModule extends MTEBaseModule {
         return magmatterMode;
     }
 
-    private void setMagmatterMode(boolean enabled) {
+    public void setMagmatterMode(boolean enabled) {
         magmatterMode = enabled;
     }
 

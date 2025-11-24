@@ -221,6 +221,10 @@ public abstract class MTEBaseModule extends TTMultiblockBase implements IConstru
         isMagmatterCapable = isCapable;
     }
 
+    public boolean isMagmatterCapable() {
+        return isMagmatterCapable;
+    }
+
     public double getHeatEnergyDiscount() {
         return isUpgrade83Unlocked ? 0.92 : 0.95;
     }
@@ -346,6 +350,11 @@ public abstract class MTEBaseModule extends TTMultiblockBase implements IConstru
     @Override
     public boolean supportsPowerPanel() {
         return false;
+    }
+
+    @Override
+    public boolean supportsTerminalLeftCornerColumn() {
+        return true;
     }
 
     @Override
