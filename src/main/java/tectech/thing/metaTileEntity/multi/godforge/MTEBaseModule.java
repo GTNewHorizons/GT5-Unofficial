@@ -8,9 +8,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import static tectech.thing.casing.TTCasingsContainer.GodforgeCasings;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.UUID;
 
 import net.minecraft.block.Block;
@@ -30,22 +28,12 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.Text;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.api.widget.IWidgetBuilder;
-import com.gtnewhorizons.modularui.api.widget.Widget;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.Scrollable;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
@@ -62,10 +50,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
-import tectech.TecTech;
-import tectech.thing.gui.TecTechUITextures;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
-import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsUI;
 
 public abstract class MTEBaseModule extends TTMultiblockBase implements IConstructable, ISurvivalConstructable {
 
@@ -358,116 +343,6 @@ public abstract class MTEBaseModule extends TTMultiblockBase implements IConstru
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
-        final SlotWidget inventorySlot = new SlotWidget(inventoryHandler, 1);
-        drawTexts(screenElements, inventorySlot);
-
-        buildContext.addSyncedWindow(GENERAL_INFO_WINDOW_ID, this::createGeneralInfoWindow);
-        buildContext.addSyncedWindow(POWER_PANEL_WINDOW_ID, this::createPowerPanel);
-
-        builder.widget(
-            new DrawableWidget().setSize(18, 18)
-                .setPos(172, 67)
-                .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.clickhere"))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY));
-
-        builder.widget(
-            new DrawableWidget().setDrawable(TecTechUITextures.BACKGROUND_SCREEN_BLUE)
-                .setPos(4, 4)
-                .setSize(190, 85))
-            .widget(
-                inventorySlot.setPos(173, 167)
-                    .setBackground(getGUITextureSet().getItemSlot(), TecTechUITextures.OVERLAY_SLOT_MESH))
-            .widget(
-                new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_HEAT_SINK_SMALL)
-                    .setPos(173, 185)
-                    .setSize(18, 6))
-            .widget(
-                new Scrollable().setVerticalScroll()
-                    .widget(screenElements)
-                    .setPos(10, 7)
-                    .setSize(182, 79))
-            .widget(
-                TextWidget.dynamicText(this::connectionStatus)
-                    .setDefaultColor(EnumChatFormatting.BLACK)
-                    .setPos(75, 94)
-                    .setSize(100, 10))
-            .widget(
-                new ButtonWidget().setOnClick(
-                    (data, widget) -> {
-                        if (!widget.isClient()) widget.getContext()
-                            .openSyncedWindow(GENERAL_INFO_WINDOW_ID);
-                    })
-                    .setSize(18, 18)
-                    .setPos(172, 67)
-                    .setTooltipShowUpDelay(TOOLTIP_DELAY))
-            .widget(createPowerSwitchButton(builder))
-            .widget(createStructureUpdateButton(builder))
-            .widget(createPowerPanelButton(builder));
-
-        if (supportsVoidProtection()) builder.widget(createVoidExcessButton(builder));
-        if (supportsInputSeparation()) builder.widget(createInputSeparationButton(builder));
-        if (supportsBatchMode()) builder.widget(createBatchModeButton(builder));
-        if (supportsSingleRecipeLocking()) builder.widget(createLockToSingleRecipeButton(builder));
-    }
-
-    protected ModularWindow createGeneralInfoWindow(final EntityPlayer player) {
-        return ForgeOfGodsUI.createGeneralInfoWindow(() -> isInversionUnlocked, val -> isInversionUnlocked = val);
-    }
-
-    @Override
-    public ButtonWidget createPowerSwitchButton(IWidgetBuilder<?> builder) {
-        return ForgeOfGodsUI.createPowerSwitchButton(getBaseMetaTileEntity());
-    }
-
-    @Override
-    public ButtonWidget createInputSeparationButton(IWidgetBuilder<?> builder) {
-        return ForgeOfGodsUI.createInputSeparationButton(getBaseMetaTileEntity(), this, builder);
-    }
-
-    @Override
-    public ButtonWidget createBatchModeButton(IWidgetBuilder<?> builder) {
-        return ForgeOfGodsUI.createBatchModeButton(getBaseMetaTileEntity(), this, builder);
-    }
-
-    @Override
-    public ButtonWidget createLockToSingleRecipeButton(IWidgetBuilder<?> builder) {
-        return ForgeOfGodsUI.createLockToSingleRecipeButton(getBaseMetaTileEntity(), this, builder);
-    }
-
-    @Override
-    public ButtonWidget createStructureUpdateButton(IWidgetBuilder<?> builder) {
-        return ForgeOfGodsUI.createStructureUpdateButton(getBaseMetaTileEntity(), this, builder);
-    }
-
-    @Override
-    public ButtonWidget createVoidExcessButton(IWidgetBuilder<?> builder) {
-        return ForgeOfGodsUI.createVoidExcessButton(getBaseMetaTileEntity(), this, builder);
-    }
-
-    @Override
-    public ButtonWidget createPowerPanelButton(IWidgetBuilder<?> builder) {
-        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
-            TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
-            if (!widget.isClient()) widget.getContext()
-                .openSyncedWindow(POWER_PANEL_WINDOW_ID);
-        })
-            .setPlayClickSound(false)
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                ret.add(TecTechUITextures.BUTTON_CELESTIAL_32x32);
-                ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_PANEL);
-                return ret.toArray(new IDrawable[0]);
-            })
-            .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.power_panel"))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(174, 112)
-            .setSize(16, 16);
-        return (ButtonWidget) button;
-    }
-
-    @Override
     public ModularWindow createPowerPanel(EntityPlayer player) {
         if (getBaseMetaTileEntity().isServerSide()) maxParallel = getMaxParallel();
         if (alwaysMaxParallel) powerPanelMaxParallel = maxParallel;
@@ -577,14 +452,6 @@ public abstract class MTEBaseModule extends TTMultiblockBase implements IConstru
     }
 
     @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(
-            new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_GODFORGE_LOGO)
-                .setSize(18, 18)
-                .setPos(172, 67));
-    }
-
-    @Override
     public boolean supportsInputSeparation() {
         return true;
     }
@@ -637,15 +504,6 @@ public abstract class MTEBaseModule extends TTMultiblockBase implements IConstru
             .addElement('F', ofBlock(GodforgeCasings, 3))
             .addElement('G', ofBlock(GodforgeCasings, 4))
             .build();
-    }
-
-    private Text connectionStatus() {
-        String status = EnumChatFormatting.RED
-            + translateToLocal("gt.blockmachines.multimachine.FOG.modulestatus.false");
-        if (isConnected) {
-            status = EnumChatFormatting.GREEN + translateToLocal("gt.blockmachines.multimachine.FOG.modulestatus.true");
-        }
-        return new Text(translateToLocal("gt.blockmachines.multimachine.FOG.modulestatus") + " " + status);
     }
 
     @Override
