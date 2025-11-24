@@ -16,6 +16,7 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Alignment.MainAxis;
+import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
@@ -29,6 +30,7 @@ import gregtech.api.gui.widgets.CommonWidgets;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.base.TTMultiblockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
+import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValues;
 import gregtech.common.gui.modularui.multiblock.godforge.util.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
 import tectech.thing.metaTileEntity.multi.godforge.MTEBaseModule;
@@ -57,6 +59,8 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
         hypervisor.setSyncManager(getMainPanel(), syncManager);
+
+        SyncValues.CONNECTION_STATUS.registerFor(getMainPanel(), hypervisor);
     }
 
     @Override
@@ -107,7 +111,7 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
 
     @Override
     protected Flow createRightPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
-        return super.createRightPanelGapRow(parent, syncManager).marginRight(1)
+        return super.createRightPanelGapRow(parent, syncManager).marginRight(2)
             .childIf(usesExtraButton(), createExtraButton());
     }
 
@@ -245,10 +249,11 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
     }
 
     protected IWidget createConnectionStatus() {
+        BooleanSyncValue connectionSyncer = SyncValues.CONNECTION_STATUS.lookupFrom(getMainPanel(), hypervisor);
         return IKey.dynamic(() -> {
             EnumChatFormatting color;
             String status;
-            if (multiblock.isConnected()) {
+            if (connectionSyncer.getBoolValue()) {
                 color = EnumChatFormatting.GREEN;
                 status = translateToLocal("gt.blockmachines.multimachine.FOG.modulestatus.true");
             } else {

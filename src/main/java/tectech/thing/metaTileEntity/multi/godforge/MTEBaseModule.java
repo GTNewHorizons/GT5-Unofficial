@@ -141,6 +141,10 @@ public abstract class MTEBaseModule extends TTMultiblockBase implements IConstru
         return isConnected;
     }
 
+    public void setConnected(boolean val) {
+        isConnected = val;
+    }
+
     public void setHeat(int heat) {
         machineHeat = heat;
     }

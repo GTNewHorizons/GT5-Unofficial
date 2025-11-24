@@ -190,11 +190,11 @@ public class MTESmeltingModule extends MTEBaseModule {
         return (ButtonWidget) button;
     }
 
-    private boolean isFurnaceModeOn() {
+    public boolean isFurnaceModeOn() {
         return furnaceMode;
     }
 
-    private void setFurnaceMode(boolean enabled) {
+    public void setFurnaceMode(boolean enabled) {
         furnaceMode = enabled;
     }
 

@@ -15,6 +15,9 @@ import com.cleanroommc.modularui.value.sync.StringSyncValue;
 
 import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValue.ForgeOfGodsSyncValue;
 import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValue.HybridSyncValue;
+import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValue.ModuleSyncValue;
+import tectech.thing.metaTileEntity.multi.godforge.MTEBaseModule;
+import tectech.thing.metaTileEntity.multi.godforge.MTESmeltingModule;
 import tectech.thing.metaTileEntity.multi.godforge.color.ForgeOfGodsStarColor;
 import tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade;
 
@@ -242,6 +245,20 @@ public class SyncValues {
     public static final ForgeOfGodsSyncValue<BooleanSyncValue> RENDERER_DISABLED = new ForgeOfGodsSyncValue<>(
         "fog.sync.renderer_disabled",
         data -> new BooleanSyncValue(data::isRendererDisabled, data::setRendererDisabled));
+
+    // -------------- //
+    // Module Syncers //
+    // -------------- //
+
+    public static final ModuleSyncValue<BooleanSyncValue, MTEBaseModule> CONNECTION_STATUS = new ModuleSyncValue<>(
+        "fog.sync.connection_status",
+        MTEBaseModule.class,
+        module -> new BooleanSyncValue(module::isConnected, module::setConnected));
+
+    public static final ModuleSyncValue<BooleanSyncValue, MTESmeltingModule> SMELTING_MODE = new ModuleSyncValue<>(
+        "fog.sync.smelting_mode",
+        MTESmeltingModule.class,
+        module -> new BooleanSyncValue(module::isFurnaceModeOn, module::setFurnaceMode));
 
     // spotless:on
 
