@@ -26,8 +26,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 import goodgenerator.items.GGMaterial;
 import goodgenerator.util.ItemRefer;
 import gregtech.api.enums.GTValues;
@@ -770,7 +768,7 @@ public class Godforge implements Runnable {
 
     public static void addFakeUpgradeCostRecipes() {
         GTValues.RA.stdBuilder()
-            .itemInputs(ArrayUtils.addAll(ForgeOfGodsUpgrade.START.getExtraCost()))
+            .itemInputs(ForgeOfGodsUpgrade.START.getExtraCostNoNulls())
             .itemOutputs(
                 CustomItemList.Godforge_GravitonFlowModulatorTier1.get(1),
                 CustomItemList.Machine_Multi_SmeltingModule.get(1))
@@ -780,7 +778,7 @@ public class Godforge implements Runnable {
             .fake()
             .addTo(TecTechRecipeMaps.godforgeFakeUpgradeCostRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(ArrayUtils.addAll(ForgeOfGodsUpgrade.FDIM.getExtraCost()))
+            .itemInputs(ForgeOfGodsUpgrade.FDIM.getExtraCostNoNulls())
             .itemOutputs(CustomItemList.Machine_Multi_MoltenModule.get(1))
             .duration(1)
             .eut(1)
@@ -788,7 +786,7 @@ public class Godforge implements Runnable {
             .fake()
             .addTo(TecTechRecipeMaps.godforgeFakeUpgradeCostRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(ArrayUtils.addAll(ForgeOfGodsUpgrade.GPCI.getExtraCost()))
+            .itemInputs(ForgeOfGodsUpgrade.GPCI.getExtraCostNoNulls())
             .itemOutputs(CustomItemList.Machine_Multi_PlasmaModule.get(1))
             .duration(1)
             .eut(1)
@@ -796,7 +794,7 @@ public class Godforge implements Runnable {
             .fake()
             .addTo(TecTechRecipeMaps.godforgeFakeUpgradeCostRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(ArrayUtils.addAll(ForgeOfGodsUpgrade.QGPIU.getExtraCost()))
+            .itemInputs(ForgeOfGodsUpgrade.QGPIU.getExtraCostNoNulls())
             .itemOutputs(CustomItemList.Machine_Multi_QuarkGluonPlasmaModule.get(1))
             .fluidOutputs(Materials.QuarkGluonPlasma.getFluid(1_000))
             .duration(1)
@@ -805,7 +803,7 @@ public class Godforge implements Runnable {
             .fake()
             .addTo(TecTechRecipeMaps.godforgeFakeUpgradeCostRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(ArrayUtils.addAll(ForgeOfGodsUpgrade.CD.getExtraCost()))
+            .itemInputs(ForgeOfGodsUpgrade.CD.getExtraCostNoNulls())
             .itemOutputs(CustomItemList.Godforge_GravitonFlowModulatorTier2.get(1))
             .duration(1)
             .eut(1)
@@ -813,7 +811,7 @@ public class Godforge implements Runnable {
             .fake()
             .addTo(TecTechRecipeMaps.godforgeFakeUpgradeCostRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(ArrayUtils.addAll(ForgeOfGodsUpgrade.EE.getExtraCost()))
+            .itemInputs(ForgeOfGodsUpgrade.EE.getExtraCostNoNulls())
             .itemOutputs(CustomItemList.Godforge_GravitonFlowModulatorTier3.get(1))
             .duration(1)
             .eut(1)
@@ -821,7 +819,7 @@ public class Godforge implements Runnable {
             .fake()
             .addTo(TecTechRecipeMaps.godforgeFakeUpgradeCostRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(ArrayUtils.addAll(ForgeOfGodsUpgrade.END.getExtraCost()))
+            .itemInputs(ForgeOfGodsUpgrade.END.getExtraCostNoNulls())
             .itemOutputs(Materials.GravitonShard.getGems(1))
             .fluidOutputs(Materials.MagMatter.getMolten(4 * INGOTS), Materials.Neutronium.getPlasma(1_000))
             .duration(1)
