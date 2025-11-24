@@ -13,6 +13,7 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.common.gui.modularui.multiblock.godforge.data.Modules;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
 import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValues;
 import gregtech.common.gui.modularui.multiblock.godforge.util.ForgeOfGodsGuiUtil;
@@ -24,13 +25,13 @@ public class PlasmaDebugPanel {
     private static final int SIZE_H = 60;
 
     public static ModularPanel openPanel(SyncHypervisor hypervisor) {
-        ModularPanel panel = hypervisor.getModularPanel(Panels.PLASMA_DEBUG);
+        ModularPanel panel = hypervisor.getModularPanel(Modules.PLASMA, Panels.PLASMA_DEBUG);
 
         registerSyncValues(hypervisor);
 
         panel.size(SIZE_W, SIZE_H)
             .padding(4)
-            .relative(hypervisor.getModularPanel(Panels.MAIN_PLASMA))
+            .relative(hypervisor.getModularPanel(Modules.PLASMA, Panels.MAIN_PLASMA))
             .topRel(0)
             .leftRelOffset(1, -3);
 

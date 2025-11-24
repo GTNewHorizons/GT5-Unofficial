@@ -26,6 +26,7 @@ import com.google.common.math.LongMath;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Formatters;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Milestones;
+import gregtech.common.gui.modularui.multiblock.godforge.data.Modules;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
 import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValues;
 import gregtech.common.gui.modularui.multiblock.godforge.util.ForgeOfGodsGuiUtil;
@@ -88,7 +89,8 @@ public class IndividualMilestonePanel {
             .marginBottom(16));
 
         // Info texts
-        BooleanSyncValue inversionSyncer = SyncValues.INVERSION.lookupFrom(Panels.INDIVIDUAL_MILESTONE, hypervisor);
+        BooleanSyncValue inversionSyncer = SyncValues.INVERSION
+            .lookupFrom(Modules.CORE, Panels.INDIVIDUAL_MILESTONE, hypervisor);
 
         column.child(
             createInfoWidget(() -> getTotalProgress(milestoneSyncer.getValue(), formatSyncer.getValue(), hypervisor)));
@@ -127,7 +129,7 @@ public class IndividualMilestonePanel {
     }
 
     public static void registerSyncValues(SyncHypervisor hypervisor) {
-        SyncValues.INVERSION.registerFor(Panels.INDIVIDUAL_MILESTONE, hypervisor);
+        SyncValues.INVERSION.registerFor(Modules.CORE, Panels.INDIVIDUAL_MILESTONE, hypervisor);
 
         SyncValues.TOTAL_RECIPES_PROCESSED.registerFor(Panels.INDIVIDUAL_MILESTONE, hypervisor);
         SyncValues.TOTAL_POWER_CONSUMED.registerFor(Panels.INDIVIDUAL_MILESTONE, hypervisor);

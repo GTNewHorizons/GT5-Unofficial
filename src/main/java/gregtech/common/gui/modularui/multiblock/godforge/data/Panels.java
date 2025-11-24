@@ -1,5 +1,6 @@
 package gregtech.common.gui.modularui.multiblock.godforge.data;
 
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
@@ -28,14 +29,15 @@ import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
 public enum Panels {
 
     // Main panels
-    MAIN(null),
-    MAIN_SMELTING(null),
-    MAIN_MOLTEN(null),
-    MAIN_PLASMA(null),
-    MAIN_EXOTIC(null),
+    MAIN,
+    MAIN_SMELTING,
+    MAIN_MOLTEN,
+    MAIN_PLASMA,
+    MAIN_EXOTIC,
 
     // Shared panels
-    GENERAL_INFO(GeneralInfoPanel::openPanel),
+    GENERAL_INFO(GeneralInfoPanel::openModulePanel),
+    VOLTAGE_CONFIG(VoltageConfigPanel::openModulePanel),
 
     // Godforge-specific panels
     MILESTONE(MilestonePanel::openPanel),
@@ -55,46 +57,60 @@ public enum Panels {
     EXOTIC_INPUTS_LIST(ExoticInputsListPanel::openPanel),
     EXOTIC_POSSIBLE_INPUTS_LIST(ExoticPossibleInputsListPanel::openPanel),
     PLASMA_DEBUG(PlasmaDebugPanel::openPanel),
-    VOLTAGE_CONFIG(VoltageConfigPanel::openPanel),
 
     ;
 
     public static final Panels[] VALUES = values();
 
     private final String panelId = "fog.panel." + name().toLowerCase();
-    private final Function<SyncHypervisor, ModularPanel> panelSupplier;
+    private final BiFunction<SyncHypervisor, Modules<?>, ModularPanel> panelSupplier;
 
-    Panels(Function<SyncHypervisor, ModularPanel> panelSupplier) {
-        this.panelSupplier = panelSupplier;
+    Panels() {
+        this.panelSupplier = null;
     }
 
-    public String getPanelId() {
+    Panels(Function<SyncHypervisor, ModularPanel> panelSupplier) {
+        this.panelSupplier = (hypervisor, module) -> panelSupplier.apply(hypervisor);
+    }
+
+    Panels(BiFunction<SyncHypervisor, Modules<?>, ModularPanel> modulePanelSupplier) {
+        this.panelSupplier = modulePanelSupplier;
+    }
+
+    public String getPanelId(Modules<?> module, SyncHypervisor hypervisor) {
+        if (module != hypervisor.getMainModule()) {
+            return module.getModuleId() + "/" + panelId;
+        }
         return panelId;
     }
 
     public IPanelHandler getFrom(Panels fromPanel, SyncHypervisor hypervisor) {
+        return getFrom(hypervisor.getMainModule(), fromPanel, hypervisor);
+    }
+
+    public IPanelHandler getFrom(Modules<?> fromModule, Panels fromPanel, SyncHypervisor hypervisor) {
         if (this == hypervisor.getMainPanel()) {
             throw new IllegalStateException("Cannot get panel handler of main panel!");
         }
 
-        PanelSyncManager syncManager = hypervisor.getSyncManager(fromPanel);
+        PanelSyncManager syncManager = hypervisor.getSyncManager(fromModule, fromPanel);
 
-        return syncManager.panel(getPanelId(), (p_syncManager, syncHandler) -> {
-            ModularPanel panel = createPanel(hypervisor);
-            hypervisor.setModularPanel(this, panel);
-            hypervisor.setSyncManager(this, p_syncManager);
+        return syncManager.panel(getPanelId(fromModule, hypervisor), (p_syncManager, syncHandler) -> {
+            ModularPanel panel = createPanel(fromModule, hypervisor);
+            hypervisor.setModularPanel(fromModule, this, panel);
+            hypervisor.setSyncManager(fromModule, this, p_syncManager);
 
             // noinspection ConstantConditions
-            return panelSupplier.apply(hypervisor);
+            return panelSupplier.apply(hypervisor, fromModule);
         }, true);
     }
 
-    private ModularPanel createPanel(SyncHypervisor hypervisor) {
-        return new ModularPanel(getPanelId()) {
+    private ModularPanel createPanel(Modules<?> fromModule, SyncHypervisor hypervisor) {
+        return new ModularPanel(getPanelId(fromModule, hypervisor)) {
 
             @Override
             public void dispose() {
-                hypervisor.onPanelDispose(Panels.this);
+                hypervisor.onPanelDispose(fromModule, Panels.this);
                 super.dispose();
             }
         };

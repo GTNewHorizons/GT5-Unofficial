@@ -254,7 +254,7 @@ public class SyncValues {
 
     public static final ModuleSyncValue<BooleanSyncValue, MTEBaseModule> CONNECTION_STATUS = new ModuleSyncValue<>(
         "fog.sync.connection_status",
-        Modules.BASE,
+        Modules.ANY,
         module -> new BooleanSyncValue(module::isConnected, module::setConnected));
 
     public static final ModuleSyncValue<BooleanSyncValue, MTESmeltingModule> SMELTING_MODE = new ModuleSyncValue<>(

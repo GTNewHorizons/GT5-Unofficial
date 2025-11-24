@@ -77,7 +77,6 @@ public abstract class MTEBaseModule extends TTMultiblockBase implements IConstru
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final int GENERAL_INFO_WINDOW_ID = 10;
     private static final int TEXTURE_INDEX = 960;
 
     public MTEBaseModule(int aID, String aName, String aNameRegional) {

@@ -34,12 +34,12 @@ public class ExoticInputsListPanel {
     private static final int SIZE_H = 60;
 
     public static ModularPanel openPanel(SyncHypervisor hypervisor) {
-        ModularPanel panel = hypervisor.getModularPanel(Panels.EXOTIC_INPUTS_LIST);
+        ModularPanel panel = hypervisor.getModularPanel(Modules.EXOTIC, Panels.EXOTIC_INPUTS_LIST);
 
         registerSyncValues(hypervisor);
 
         panel.size(SIZE_W, SIZE_H)
-            .relative(hypervisor.getModularPanel(Panels.MAIN_EXOTIC))
+            .relative(hypervisor.getModularPanel(Modules.EXOTIC, Panels.MAIN_EXOTIC))
             .leftRelOffset(0, -SIZE_W)
             .topRelOffset(0, 47);
 
@@ -72,7 +72,7 @@ public class ExoticInputsListPanel {
             .registerFor(Panels.EXOTIC_INPUTS_LIST, hypervisor, hypervisor.getModule(Modules.EXOTIC));
 
         for (int i = 0; i < NUMBER_OF_INPUTS; i++) {
-            hypervisor.getSyncManager(Panels.EXOTIC_INPUTS_LIST)
+            hypervisor.getSyncManager(Modules.EXOTIC, Panels.EXOTIC_INPUTS_LIST)
                 .syncValue(
                     "exotic_fluid_tanks",
                     i,

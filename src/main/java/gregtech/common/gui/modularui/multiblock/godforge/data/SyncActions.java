@@ -107,7 +107,12 @@ public final class SyncActions<T, U> {
 
     /** Registers for the panel with whatever data is required on the server to run the action. */
     public void registerFor(Panels forPanel, SyncHypervisor hypervisor, U data) {
-        PanelSyncManager syncManager = hypervisor.getSyncManager(forPanel);
+        registerFor(hypervisor.getMainModule(), forPanel, hypervisor, data);
+    }
+
+    /** Registers for the panel with whatever data is required on the server to run the action. */
+    public void registerFor(Modules<?> forModule, Panels forPanel, SyncHypervisor hypervisor, U data) {
+        PanelSyncManager syncManager = hypervisor.getSyncManager(forModule, forPanel);
         syncManager.registerSyncedAction(syncId, buf -> {
             switch (executeSide) {
                 case SERVER -> {

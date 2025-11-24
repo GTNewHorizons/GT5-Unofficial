@@ -42,7 +42,7 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
 
     public MTEBaseModuleGui(T multiblock) {
         super(multiblock);
-        this.hypervisor = new SyncHypervisor(getMainPanel());
+        this.hypervisor = new SyncHypervisor(getModuleType(), getMainPanel());
 
         hypervisor.setModule(getModuleType(), multiblock);
     }
@@ -65,7 +65,7 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
         super.registerSyncValues(syncManager);
         hypervisor.setSyncManager(getMainPanel(), syncManager);
 
-        SyncValues.CONNECTION_STATUS.registerFor(getMainPanel(), hypervisor);
+        SyncValues.CONNECTION_STATUS.registerFor(getModuleType(), getMainPanel(), hypervisor);
     }
 
     @Override
@@ -252,7 +252,8 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
     }
 
     protected IWidget createConnectionStatus() {
-        BooleanSyncValue connectionSyncer = SyncValues.CONNECTION_STATUS.lookupFrom(getMainPanel(), hypervisor);
+        BooleanSyncValue connectionSyncer = SyncValues.CONNECTION_STATUS
+            .lookupFrom(getModuleType(), getMainPanel(), hypervisor);
         return IKey.dynamic(() -> {
             EnumChatFormatting color;
             String status;
@@ -272,7 +273,7 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
     }
 
     protected ButtonWidget<?> createGeneralInfoPanelButton() {
-        IPanelHandler generalInfoPanel = Panels.GENERAL_INFO.getFrom(getMainPanel(), hypervisor);
+        IPanelHandler generalInfoPanel = Panels.GENERAL_INFO.getFrom(getModuleType(), getMainPanel(), hypervisor);
         return new ButtonWidget<>().size(18)
             .overlay(IDrawable.EMPTY)
             .background(GTGuiTextures.PICTURE_GODFORGE_LOGO)

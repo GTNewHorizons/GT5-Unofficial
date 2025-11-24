@@ -20,29 +20,45 @@ public abstract class SyncValue<T extends ValueSyncHandler<?>> {
     }
 
     public void registerFor(Panels forPanel, SyncHypervisor hypervisor) {
+        registerFor(getModule(hypervisor), forPanel, hypervisor);
+    }
+
+    public void registerFor(Modules<?> forModule, Panels forPanel, SyncHypervisor hypervisor) {
         T syncValue = create(hypervisor);
-        PanelSyncManager syncManager = hypervisor.getSyncManager(forPanel);
-        syncManager.syncValue(getSyncId(forPanel), syncValue);
+        PanelSyncManager syncManager = hypervisor.getSyncManager(forModule, forPanel);
+        syncManager.syncValue(getSyncId(forModule, forPanel, hypervisor), syncValue);
     }
 
     public abstract T create(SyncHypervisor hypervisor);
 
-    @SuppressWarnings("unchecked")
     public T lookupFrom(Panels fromPanel, SyncHypervisor hypervisor) {
-        PanelSyncManager syncManager = hypervisor.getSyncManager(fromPanel);
-        return (T) syncManager.findSyncHandler(getSyncId(fromPanel));
+        return lookupFrom(getModule(hypervisor), fromPanel, hypervisor);
+    }
+
+    @SuppressWarnings("unchecked")
+    public T lookupFrom(Modules<?> fromModule, Panels fromPanel, SyncHypervisor hypervisor) {
+        PanelSyncManager syncManager = hypervisor.getSyncManager(fromModule, fromPanel);
+        return (T) syncManager.findSyncHandler(getSyncId(fromModule, fromPanel, hypervisor));
     }
 
     public void notifyUpdateFrom(Panels fromPanel, SyncHypervisor hypervisor) {
-        T syncer = lookupFrom(fromPanel, hypervisor);
+        notifyUpdateFrom(getModule(hypervisor), fromPanel, hypervisor);
+    }
+
+    public void notifyUpdateFrom(Modules<?> fromModule, Panels fromPanel, SyncHypervisor hypervisor) {
+        T syncer = lookupFrom(fromModule, fromPanel, hypervisor);
         syncer.notifyUpdate();
     }
 
-    public String getSyncId(Panels fromPanel) {
+    protected String getSyncId(Modules<?> fromModule, Panels fromPanel, SyncHypervisor hypervisor) {
         if (inherited) {
             return syncId;
         }
-        return fromPanel.getPanelId() + "/" + syncId;
+        return fromPanel.getPanelId(fromModule, hypervisor) + "/" + syncId;
+    }
+
+    protected Modules<?> getModule(SyncHypervisor hypervisor) {
+        return Modules.CORE;
     }
 
     /** Sync values exclusive to the main Godforge controller. */
@@ -76,12 +92,6 @@ public abstract class SyncValue<T extends ValueSyncHandler<?>> {
         private final Function<U, T> syncValueSupplier;
         private final Modules<U> moduleType;
 
-        public ModuleSyncValue(String syncId) {
-            super(syncId, true);
-            this.syncValueSupplier = null;
-            this.moduleType = null;
-        }
-
         public ModuleSyncValue(String syncId, Modules<U> moduleType, Function<U, T> syncValueSupplier) {
             super(syncId, false);
             this.syncValueSupplier = syncValueSupplier;
@@ -101,6 +111,11 @@ public abstract class SyncValue<T extends ValueSyncHandler<?>> {
 
             return syncValueSupplier.apply(module);
         }
+
+        @Override
+        protected Modules<?> getModule(SyncHypervisor hypervisor) {
+            return moduleType;
+        }
     }
 
     /**
@@ -111,12 +126,6 @@ public abstract class SyncValue<T extends ValueSyncHandler<?>> {
 
         private final Function<ForgeOfGodsData, T> dataSupplier;
         private final Function<MTEBaseModule, T> moduleSupplier;
-
-        public HybridSyncValue(String syncId) {
-            super(syncId, true);
-            this.dataSupplier = null;
-            this.moduleSupplier = null;
-        }
 
         public HybridSyncValue(String syncId, Function<ForgeOfGodsData, T> dataSupplier,
             Function<MTEBaseModule, T> moduleSupplier) {
@@ -135,12 +144,32 @@ public abstract class SyncValue<T extends ValueSyncHandler<?>> {
                 return dataSupplier.apply(hypervisor.getData());
             }
 
-            MTEBaseModule module = hypervisor.getModule(Modules.BASE);
+            MTEBaseModule module = hypervisor.getModule(Modules.ANY);
             if (module != null && moduleSupplier != null) {
                 return moduleSupplier.apply(module);
             }
 
             throw new IllegalStateException("Cannot create sync value as hypervisor has no applicable state");
+        }
+
+        @Override
+        protected Modules<?> getModule(SyncHypervisor hypervisor) {
+            return hypervisor.getMainModule();
+        }
+
+        @Override
+        public void registerFor(Panels forPanel, SyncHypervisor hypervisor) {
+            throw new IllegalStateException("Must pass the relevant module directly!");
+        }
+
+        @Override
+        public T lookupFrom(Panels fromPanel, SyncHypervisor hypervisor) {
+            throw new IllegalStateException("Must pass the relevant module directly!");
+        }
+
+        @Override
+        public void notifyUpdateFrom(Panels fromPanel, SyncHypervisor hypervisor) {
+            throw new IllegalStateException("Must pass the relevant module directly!");
         }
     }
 }

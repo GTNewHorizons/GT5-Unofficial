@@ -25,6 +25,7 @@ import com.google.common.collect.ImmutableList;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.multiblock.godforge.data.Modules;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
 import gregtech.common.gui.modularui.multiblock.godforge.util.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
@@ -34,10 +35,10 @@ public class ExoticPossibleInputsListPanel {
 
     private static final int ROW_SLOTS_WIDTH = 16;
 
-    private static final int SIZE_W = ROW_SLOTS_WIDTH + 12;
+    private static final int SIZE_W = ROW_SLOTS_WIDTH * 18 + 12;
 
     public static ModularPanel openPanel(SyncHypervisor hypervisor) {
-        ModularPanel panel = hypervisor.getModularPanel(Panels.EXOTIC_POSSIBLE_INPUTS_LIST);
+        ModularPanel panel = hypervisor.getModularPanel(Modules.EXOTIC, Panels.EXOTIC_POSSIBLE_INPUTS_LIST);
 
         int qgpItemSize = Godforge.exoticModulePlasmaItemMap.size();
         int qgpFluidSize = Godforge.exoticModulePlasmaFluidMap.size();
