@@ -205,6 +205,10 @@ public abstract class MTEBaseModule extends TTMultiblockBase implements IConstru
         isMultiStepPlasmaCapable = isCapable;
     }
 
+    public boolean isMultiStepPlasma() {
+        return isMultiStepPlasmaCapable;
+    }
+
     public void setProcessingVoltage(long Voltage) {
         processingVoltage = Voltage;
     }

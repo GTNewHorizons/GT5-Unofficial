@@ -127,6 +127,14 @@ public class MTEPlasmaModule extends MTEBaseModule {
         logic.setEuModifier(getEnergyDiscount());
     }
 
+    public int getInputMaxParallel() {
+        return inputMaxParallel;
+    }
+
+    public void setInputMaxParallel(int val) {
+        inputMaxParallel = val;
+    }
+
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new MTEPlasmaModuleGui(this);

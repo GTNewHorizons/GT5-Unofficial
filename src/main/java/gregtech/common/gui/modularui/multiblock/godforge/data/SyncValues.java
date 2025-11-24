@@ -17,6 +17,7 @@ import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValue.ForgeOfG
 import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValue.HybridSyncValue;
 import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValue.ModuleSyncValue;
 import tectech.thing.metaTileEntity.multi.godforge.MTEBaseModule;
+import tectech.thing.metaTileEntity.multi.godforge.MTEPlasmaModule;
 import tectech.thing.metaTileEntity.multi.godforge.MTESmeltingModule;
 import tectech.thing.metaTileEntity.multi.godforge.color.ForgeOfGodsStarColor;
 import tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade;
@@ -259,6 +260,21 @@ public class SyncValues {
         "fog.sync.smelting_mode",
         MTESmeltingModule.class,
         module -> new BooleanSyncValue(module::isFurnaceModeOn, module::setFurnaceMode));
+
+    public static final ModuleSyncValue<IntSyncValue, MTEPlasmaModule> DEBUG_PLASMA_PARALLEL = new ModuleSyncValue<>(
+        "fog.sync.debug_plasma_parallel",
+        MTEPlasmaModule.class,
+        module -> new IntSyncValue(module::getInputMaxParallel, module::setInputMaxParallel));
+
+    public static final ModuleSyncValue<IntSyncValue, MTEPlasmaModule> DEBUG_FUSION_TIER = new ModuleSyncValue<>(
+        "fog.sync.debug_fusion_tier",
+        MTEPlasmaModule.class,
+        module -> new IntSyncValue(module::getPlasmaTier, module::setPlasmaTier));
+
+    public static final ModuleSyncValue<BooleanSyncValue, MTEPlasmaModule> DEBUG_MULTI_STEP = new ModuleSyncValue<>(
+        "fog.sync.debug_multi_step",
+        MTEPlasmaModule.class,
+        module -> new BooleanSyncValue(module::isMultiStepPlasma, module::setMultiStepPlasma));
 
     // spotless:on
 
