@@ -145,7 +145,9 @@ import gregtech.common.tileentities.machines.MTEHatchInputME;
 import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 import gregtech.common.tileentities.machines.MTEHatchOutputME;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbine;
+import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
+import gregtech.common.tileentities.machines.multi.drone.ProductionDataRecorder;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusOutput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
@@ -759,8 +761,17 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 }
                 if (mMaxProgresstime > 0) {
                     incrementProgressTime();
-
                     if (mProgresstime >= mMaxProgresstime) {
+                        // Record production data
+                        if (!mMaintenanceHatches.isEmpty()
+                            && mMaintenanceHatches.get(0) instanceof MTEHatchDroneDownLink ddl) {
+                            MTEDroneCentre centre = ddl.getCentre();
+                            if (centre != null) {
+                                ProductionDataRecorder pdr = centre.productionDataRecorder;
+                                if (pdr.isActive())
+                                    pdr.addRecord(((long) mMaxProgresstime) * mEUt, mOutputItems, mOutputFluids);
+                            }
+                        }
                         if (mOutputItems != null) {
                             addItemOutputs(mOutputItems);
                             mOutputItems = null;

@@ -76,11 +76,13 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     private Vec3Impl centreCoord;
     private int droneLevel = 0;
 
+    public int selectTime = 100;
     public String searchFilter = "";
     public boolean useRender = true;
     public boolean searchOriginalName = false;
     public MTEDroneCentreGui.SortMode sortMode = MTEDroneCentreGui.SortMode.NAME;
 
+    public ProductionDataRecorder productionDataRecorder = new ProductionDataRecorder(100, true);
     private List<DroneConnection> connectionList = new ArrayList<>();
 
     // Save centre by dimID
@@ -257,6 +259,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         droneLevel = aNBT.getInteger("drone");
         useRender = aNBT.getBoolean("useRender");
         sortMode = MTEDroneCentreGui.SortMode.valueOf(aNBT.getString("sort"));
+        productionDataRecorder = ProductionDataRecorder.fromNBT(aNBT.getCompoundTag("productionData"));
     }
 
     @Override
@@ -265,6 +268,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         aNBT.setInteger("drone", droneLevel);
         aNBT.setBoolean("useRender", useRender);
         aNBT.setString("sort", sortMode.toString());
+        aNBT.setTag("productionData", productionDataRecorder.writeToNBT());
     }
 
     @Override
