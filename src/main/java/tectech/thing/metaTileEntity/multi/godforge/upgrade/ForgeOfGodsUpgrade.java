@@ -355,6 +355,16 @@ public enum ForgeOfGodsUpgrade {
         return cost;
     }
 
+    public ItemStack[] getExtraCostNoNulls() {
+        List<ItemStack> cost = new ArrayList<>();
+        for (ItemStack singleCost : extraCost) {
+            if (singleCost != null) {
+                cost.add(singleCost);
+            }
+        }
+        return cost.toArray(new ItemStack[0]);
+    }
+
     public UITexture getBackground() {
         return color.getBackground();
     }
