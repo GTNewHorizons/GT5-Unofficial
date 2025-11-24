@@ -66,10 +66,10 @@ public class ExoticInputsListPanel {
     }
 
     private static void registerSyncValues(SyncHypervisor hypervisor) {
-        SyncValues.EXOTIC_INPUTS_TICKER.registerFor(Panels.EXOTIC_INPUTS_LIST, hypervisor);
+        SyncValues.EXOTIC_INPUTS_TICKER.registerFor(Modules.EXOTIC, Panels.EXOTIC_INPUTS_LIST, hypervisor);
 
         SyncActions.REFRESH_EXOTIC_RECIPE
-            .registerFor(Panels.EXOTIC_INPUTS_LIST, hypervisor, hypervisor.getModule(Modules.EXOTIC));
+            .registerFor(Modules.EXOTIC, Panels.EXOTIC_INPUTS_LIST, hypervisor, hypervisor.getModule(Modules.EXOTIC));
 
         for (int i = 0; i < NUMBER_OF_INPUTS; i++) {
             hypervisor.getSyncManager(Modules.EXOTIC, Panels.EXOTIC_INPUTS_LIST)
@@ -111,7 +111,8 @@ public class ExoticInputsListPanel {
                 .background(GTGuiTextures.TT_OVERLAY_CYCLIC_BLUE)
                 .onMousePressed(d -> {
                     if (tickerSyncer.getLongValue() > RECIPE_REFRESH_LIMIT) {
-                        SyncActions.REFRESH_EXOTIC_RECIPE.callFrom(Panels.EXOTIC_INPUTS_LIST, hypervisor, null);
+                        SyncActions.REFRESH_EXOTIC_RECIPE
+                            .callFrom(Modules.EXOTIC, Panels.EXOTIC_INPUTS_LIST, hypervisor, null);
                     }
                     return true;
                 })

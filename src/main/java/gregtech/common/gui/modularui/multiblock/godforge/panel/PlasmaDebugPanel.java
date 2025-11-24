@@ -59,7 +59,8 @@ public class PlasmaDebugPanel {
                 .tooltipShowUpTimer(TOOLTIP_DELAY));
 
         // Debug multi-step
-        BooleanSyncValue multiStepSyncer = SyncValues.DEBUG_MULTI_STEP.lookupFrom(Panels.PLASMA_DEBUG, hypervisor);
+        BooleanSyncValue multiStepSyncer = SyncValues.DEBUG_MULTI_STEP
+            .lookupFrom(Modules.PLASMA, Panels.PLASMA_DEBUG, hypervisor);
         column.child(
             new ButtonWidget<>().size(16)
                 .background(GTGuiTextures.TT_BUTTON_CELESTIAL_32x32)
@@ -82,6 +83,6 @@ public class PlasmaDebugPanel {
     }
 
     private static void registerSyncValues(SyncHypervisor hypervisor) {
-        SyncValues.DEBUG_MULTI_STEP.registerFor(Panels.PLASMA_DEBUG, hypervisor);
+        SyncValues.DEBUG_MULTI_STEP.registerFor(Modules.PLASMA, Panels.PLASMA_DEBUG, hypervisor);
     }
 }

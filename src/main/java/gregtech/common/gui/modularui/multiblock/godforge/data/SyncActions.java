@@ -131,7 +131,11 @@ public final class SyncActions<T, U> {
     }
 
     public void callFrom(Panels fromPanel, SyncHypervisor hypervisor, T data) {
-        PanelSyncManager syncManager = hypervisor.getSyncManager(fromPanel);
+        callFrom(hypervisor.getMainModule(), fromPanel, hypervisor, data);
+    }
+
+    public void callFrom(Modules<?> fromModule, Panels fromPanel, SyncHypervisor hypervisor, T data) {
+        PanelSyncManager syncManager = hypervisor.getSyncManager(fromModule, fromPanel);
         syncManager.callSyncedAction(syncId, buf -> writer.accept(buf, data));
     }
 
