@@ -336,6 +336,11 @@ public abstract class MTEBaseModule extends TTMultiblockBase implements IConstru
     protected abstract @NotNull MTEMultiBlockBaseGui<?> getGui();
 
     @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
+    @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
         final SlotWidget inventorySlot = new SlotWidget(inventoryHandler, 1);

@@ -10,6 +10,7 @@ import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DynamicSyncHandler;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
@@ -21,7 +22,6 @@ import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
 import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValues;
 import gregtech.common.gui.modularui.multiblock.godforge.util.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
-import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 
 public class GeneralInfoPanel {
 
@@ -30,7 +30,6 @@ public class GeneralInfoPanel {
 
     public static ModularPanel openPanel(SyncHypervisor hypervisor) {
         ModularPanel panel = hypervisor.getModularPanel(Panels.GENERAL_INFO);
-        ForgeOfGodsData data = hypervisor.getData();
 
         registerSyncValues(hypervisor);
 
@@ -39,6 +38,8 @@ public class GeneralInfoPanel {
             .background(GTGuiTextures.BACKGROUND_GLOW_WHITE)
             .disableHoverBackground()
             .child(ForgeOfGodsGuiUtil.panelCloseButton());
+
+        BooleanSyncValue inversionSyncer = SyncValues.INVERSION.lookupFrom(Panels.GENERAL_INFO, hypervisor);
 
         DynamicSyncHandler handler = new DynamicSyncHandler().widgetProvider(($, $$) -> {
             ListWidget<IWidget, ?> textList = new ListWidget<>().size(OFFSET_SIZE);
@@ -79,7 +80,7 @@ public class GeneralInfoPanel {
             textList.child(moduleToC);
             textList.child(upgradeToC);
             textList.child(milestoneToC);
-            textList.childIf(data.isInversion(), inversionToC);
+            textList.childIf(inversionSyncer.getBoolValue(), inversionToC);
 
             textList.child(fuelHeader);
             textList.child(fuelText);
@@ -89,14 +90,13 @@ public class GeneralInfoPanel {
             textList.child(upgradeText);
             textList.child(milestoneHeader);
             textList.child(milestoneText);
-            textList.childIf(data.isInversion(), inversionHeader);
-            textList.childIf(data.isInversion(), inversionText);
+            textList.childIf(inversionSyncer.getBoolValue(), inversionHeader);
+            textList.childIf(inversionSyncer.getBoolValue(), inversionText);
 
             return textList;
         });
 
-        SyncValues.INVERSION.lookupFrom(Panels.GENERAL_INFO, hypervisor)
-            .setChangeListener(() -> handler.notifyUpdate($ -> {}));
+        inversionSyncer.setChangeListener(() -> handler.notifyUpdate($ -> {}));
 
         panel.child(
             new DynamicSyncedWidget<>().coverChildren()
