@@ -6273,8 +6273,8 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.SodiumHydroxide.getDust(54), Materials.Manganese.getDust(1))
-            .itemOutputs(Materials.SodiumHydride.getDust(36))
             .circuit(18)
+            .itemOutputs(Materials.SodiumHydride.getDust(36))
             .fluidInputs(new FluidStack(FluidRegistry.getFluid("fluid.hydrazine"), 9_000))
             .fluidOutputs(Materials.Nitrogen.getGas(18_000), Materials.Water.getFluid(18_000))
             .duration(3 * SECONDS + 10 * TICKS)
