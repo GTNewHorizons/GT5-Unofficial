@@ -2956,6 +2956,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         return true;
     }
 
+    public boolean supportsTerminalLeftCornerColumn() {
+        return false;
+    }
+
     public boolean supportsLogo() {
         return true;
     }

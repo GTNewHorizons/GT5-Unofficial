@@ -499,5 +499,14 @@
         }
       }
     ]
+  },
+  "machines.MTEChamberCentrifuge": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MTEChamberCentrifuge",
+        "stream": false
+      }
+    ]
   }
 }

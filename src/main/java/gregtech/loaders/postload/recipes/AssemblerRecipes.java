@@ -391,7 +391,7 @@ public class AssemblerRecipes implements Runnable {
                     ItemList.Emitter_EV.get(1L),
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 1L),
                     GTUtility.getIntegratedCircuit(1))
-                .itemOutputs(ItemList.Cover_RedstoneTransmitterExternal.get(1L))
+                .itemOutputs(ItemList.Cover_RedstoneTransmitter.get(1L))
                 .duration(2 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
                 .addTo(assemblerRecipes);
@@ -400,7 +400,7 @@ public class AssemblerRecipes implements Runnable {
                     ItemList.Sensor_EV.get(1L),
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 1L),
                     GTUtility.getIntegratedCircuit(1))
-                .itemOutputs(ItemList.Cover_RedstoneReceiverExternal.get(1L))
+                .itemOutputs(ItemList.Cover_RedstoneReceiver.get(1L))
                 .duration(2 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
                 .addTo(assemblerRecipes);

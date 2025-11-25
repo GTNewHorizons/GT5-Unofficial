@@ -36,6 +36,8 @@ import net.minecraftforge.client.event.sound.SoundSetupEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.event.world.ChunkEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.lwjgl.input.Keyboard;
@@ -78,6 +80,7 @@ import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.net.GTPacketClientPreference;
 import gregtech.api.net.cape.GTPacketSetCape;
 import gregtech.api.recipe.RecipeCategory;
+import gregtech.api.render.RenderOverlay;
 import gregtech.api.util.ColorsMetadataSection;
 import gregtech.api.util.ColorsMetadataSectionSerializer;
 import gregtech.api.util.GTClientPreference;
@@ -420,6 +423,7 @@ public class GTClient extends GTProxy {
         mFirstTick = true;
         mReloadCount++;
         GTMusicSystem.ClientSystem.reset();
+        RenderOverlay.reset();
     }
 
     @Override
@@ -713,5 +717,19 @@ public class GTClient extends GTProxy {
 
     public void processChunkPollutionPacket(ChunkCoordIntPair chunk, int pollution) {
         mPollutionRenderer.processPacket(chunk, pollution);
+    }
+
+    @Override
+    public void onWorldUnload(WorldEvent.Unload event) {
+        super.onWorldUnload(event);
+        RenderOverlay.onWorldUnload(event.world);
+    }
+
+    @SubscribeEvent
+    public void onChunkUnload(ChunkEvent.Unload event) {
+        RenderOverlay.onChunkUnload(
+            event.world,
+            event.getChunk()
+                .getChunkCoordIntPair());
     }
 }
