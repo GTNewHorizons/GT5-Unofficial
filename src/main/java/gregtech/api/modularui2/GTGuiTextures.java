@@ -2,8 +2,11 @@ package gregtech.api.modularui2;
 
 import static com.cleanroommc.modularui.drawable.UITexture.fullImage;
 import static gregtech.api.enums.Mods.GTNHIntergalactic;
+import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 import static tectech.Reference.MODID;
+
+import java.util.stream.IntStream;
 
 import com.cleanroommc.modularui.drawable.ColorType;
 import com.cleanroommc.modularui.drawable.UITexture;
@@ -328,6 +331,8 @@ public final class GTGuiTextures {
             GTTextureIds.OVERLAY_SLOT_BLOCK_PRIMITIVE)
         .build();
 
+    public static final UITexture OVERLAY_SLOT_ARROW_4 = UITexture.fullImage(GTPlusPlus.ID, "gui/overlay_slot/arrow_4");
+
     public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_NONE = UITexture.builder()
         .canApplyTheme()
         .location(GregTech.ID, "gui/overlay_button/void_excess_none")
@@ -394,6 +399,14 @@ public final class GTGuiTextures {
         .fullImage()
         .canApplyTheme()
         .build();
+
+    public static final UITexture[] OVERLAY_BUTTON_THROUGHPUT = IntStream.range(0, 4) // MTEElectricAutoWorkbench#MAX_THROUGHPUT
+        .mapToObj(i -> UITexture.fullImage(GTPlusPlus.ID, "gui/overlay_button/throughput_" + i))
+        .toArray(UITexture[]::new);
+
+    public static final UITexture[] OVERLAY_BUTTON_MODE = IntStream.range(0, 10) // MTEElectricAutoWorkbench#MAX_MODES
+        .mapToObj(i -> UITexture.fullImage(GTPlusPlus.ID, "gui/overlay_button/mode_" + i))
+        .toArray(UITexture[]::new);
 
     public static final UITexture TT_OVERLAY_SLOT_MESH = UITexture.builder()
         .location(MODID, "gui/overlay_slot/mesh")
@@ -836,6 +849,19 @@ public final class GTGuiTextures {
 
     public static final UITexture TT_CONTROLLER_SLOT_HEAT_SINK = UITexture.builder()
         .location(MODID, "gui/picture/heat_sink_small")
+        .canApplyTheme()
+        .build();
+
+    public static final UITexture PICTURE_SLOTS_HOLO_3BY3 = UITexture
+        .fullImage(GregTech.ID, "gui/picture/slots_holo_3by3");
+    public static final UITexture PICTURE_WORKBENCH_CIRCLE = UITexture.builder()
+        .location(GTPlusPlus.ID, "gui/picture/workbench_circle")
+        .imageSize(16, 16)
+        .canApplyTheme()
+        .build();
+    public static final UITexture PICTURE_ARROW_WHITE_DOWN = UITexture.builder()
+        .location(GTPlusPlus.ID, "gui/picture/arrow_white_down")
+        .imageSize(10, 16)
         .canApplyTheme()
         .build();
     // endregion picture
