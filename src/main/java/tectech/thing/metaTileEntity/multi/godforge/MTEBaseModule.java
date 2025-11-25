@@ -1,23 +1,17 @@
 package tectech.thing.metaTileEntity.multi.godforge;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.processInitialSettings;
-import static net.minecraft.util.StatCollector.translateToLocal;
 import static tectech.thing.casing.TTCasingsContainer.GodforgeCasings;
 
 import java.math.BigInteger;
-import java.util.Collections;
 import java.util.UUID;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -27,22 +21,12 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.ModularUITextures;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.math.Color;
-import com.gtnewhorizons.modularui.api.math.Size;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
@@ -351,115 +335,6 @@ public abstract class MTEBaseModule extends TTMultiblockBase implements IConstru
     @Override
     public boolean supportsTerminalLeftCornerColumn() {
         return true;
-    }
-
-    @Override
-    public ModularWindow createPowerPanel(EntityPlayer player) {
-        if (getBaseMetaTileEntity().isServerSide()) maxParallel = getMaxParallel();
-        if (alwaysMaxParallel) powerPanelMaxParallel = maxParallel;
-
-        final int w = 138;
-        final int h = 105;
-        final int parentW = getGUIWidth();
-        final int parentH = getGUIHeight();
-
-        ModularWindow.Builder builder = ModularWindow.builder(w, h);
-
-        builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
-        builder.setGuiTint(getGUIColorization());
-        builder.setDraggable(true);
-        builder.setPos(
-            (size, window) -> Alignment.Center.getAlignedPos(size, new Size(parentW, parentH))
-                .add(
-                    Alignment.TopRight.getAlignedPos(new Size(parentW, parentH), new Size(w, h))
-                        .add(w - 3, 0)));
-
-        builder.widget(
-            new TextWidget(EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("GT5U.gui.text.power_panel"))
-                .setPos(0, 2)
-                .setSize(138, 18));
-
-        builder.widget(new FakeSyncWidget.IntegerSyncer(this::getMaxParallel, val -> maxParallel = val));
-        builder
-            .widget(new FakeSyncWidget.IntegerSyncer(() -> powerPanelMaxParallel, val -> powerPanelMaxParallel = val));
-        builder.widget(new FakeSyncWidget.BooleanSyncer(() -> alwaysMaxParallel, val -> alwaysMaxParallel = val));
-
-        builder.widget(
-            TextWidget.localised("GTPP.CC.parallel")
-                .setPos(0, 24)
-                .setSize(125, 18));
-
-        NumericWidget textField = (NumericWidget) new NumericWidget()
-            .setSetter(val -> powerPanelMaxParallel = (int) val)
-            .setGetter(() -> powerPanelMaxParallel)
-            .setValidator(val -> {
-                powerPanelMaxParallel = (int) Math
-                    .min(maxParallel, Math.max(val, (alwaysMaxParallel ? maxParallel : 1)));
-                return powerPanelMaxParallel;
-            })
-            .setDefaultValue(powerPanelMaxParallel)
-            .setScrollValues(1, 4, 64)
-            .setTextAlignment(Alignment.Center)
-            .setTextColor(Color.WHITE.normal)
-            .dynamicTooltip(
-                () -> Collections.singletonList(
-                    alwaysMaxParallel
-                        ? StatCollector.translateToLocalFormatted("GT5U.gui.text.lockedvalue", maxParallel)
-                        : StatCollector.translateToLocalFormatted("GT5U.gui.text.rangedvalue", 1, maxParallel)))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setSize(70, 18)
-            .setPos(12, 40)
-            .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD);
-
-        builder.widget(
-            TextWidget.localised("gt.blockmachines.multimachine.FOG.voltageinfo")
-                .setPos(0, 60)
-                .setSize(138, 18));
-        builder.widget(
-            new DrawableWidget().setDrawable(ModularUITextures.ICON_INFO)
-                .setPos(126, 67)
-                .setSize(8, 8)
-                .addTooltip(translateToLocal("fog.text.tooltip.voltageadjustment"))
-                .addTooltip(translateToLocal("fog.text.tooltip.voltageadjustment.1"))
-                .setEnabled($ -> isVoltageConfigUnlocked)
-                .setTooltipShowUpDelay(TOOLTIP_DELAY))
-            .widget(
-                new NumericWidget().setSetter(val -> processingVoltage = (long) val)
-                    .setGetter(() -> processingVoltage)
-                    .setBounds(2_000_000_000, Long.MAX_VALUE)
-                    .setDefaultValue(2_000_000_000)
-                    .setScrollValues(1, 4, 64)
-                    .setTextAlignment(Alignment.Center)
-                    .setTextColor(Color.WHITE.normal)
-                    .setSize(130, 18)
-                    .setPos(4, 76)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
-                    .setEnabled($ -> isVoltageConfigUnlocked)
-                    .attachSyncer(
-                        new FakeSyncWidget.LongSyncer(this::getProcessingVoltage, this::setProcessingVoltage),
-                        builder)
-                    .attachSyncer(
-                        new FakeSyncWidget.BooleanSyncer(
-                            () -> isVoltageConfigUnlocked,
-                            val -> isVoltageConfigUnlocked = val),
-                        builder))
-            .widget(
-                new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CROSS)
-                    .setPos(54, 70)
-                    .setSize(30, 30)
-                    .addTooltip(translateToLocal("fog.button.voltageconfig.tooltip.02"))
-                    .setEnabled($ -> !isVoltageConfigUnlocked)
-                    .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                    .attachSyncer(
-                        new FakeSyncWidget.BooleanSyncer(
-                            () -> isVoltageConfigUnlocked,
-                            val -> isVoltageConfigUnlocked = val),
-                        builder));
-
-        builder.widget(textField);
-        builder.widget(createMaxParallelCheckBox(textField));
-
-        return builder.build();
     }
 
     @Override
