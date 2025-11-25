@@ -111,22 +111,6 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                 GTModHandler.RecipeBits.BITS_STD,
                 new Object[] { "hX", 'X', werkstoff.get(plate) });
 
-            benderRecipes.add(
-                new GTRecipe(
-                    true,
-                    new ItemStack[] { werkstoff.get(ingot), GTUtility.getIntegratedCircuit(1) },
-                    new ItemStack[] { werkstoff.get(plate) },
-                    null,
-                    null,
-                    null,
-                    null,
-                    (int) Math.max(
-                        werkstoff.getStats()
-                            .getMass(),
-                        1L),
-                    24,
-                    0));
-
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(ingot))
                 .circuit(1)
