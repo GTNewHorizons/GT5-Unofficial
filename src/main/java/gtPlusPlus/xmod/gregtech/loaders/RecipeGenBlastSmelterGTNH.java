@@ -14,6 +14,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.ItemIntegratedCircuit;
 import gtPlusPlus.api.objects.Logger;
@@ -221,24 +222,8 @@ public class RecipeGenBlastSmelterGTNH {
             }
 
             inputs = aTempList.toArray(new ItemStack[0]);
-            int inputLength = inputs.length;
-            // If no circuit was found, increase array length by 1 to add circuit at newInput[0]
-            if (!circuitFound) {
-                inputLength++;
-            }
-
-            ItemStack[] newInput = new ItemStack[inputLength];
-
-            int l = 0;
-            // If no circuit was found, add a circuit here
-            if (!circuitFound) {
-                l = 1;
-                newInput[0] = GTUtility.getIntegratedCircuit(inputs.length);
-            }
-
-            for (ItemStack y : inputs) {
-                newInput[l++] = y;
-            }
+            int baseItemCount = inputs.length;
+            ItemStack[] newInput = inputs; // reuse inputs directly for matching & recipe
 
             boolean recipeFound = false;
             for (GTRecipe recipe : recipeCandidates) {
@@ -248,23 +233,29 @@ public class RecipeGenBlastSmelterGTNH {
                     break;
                 }
             }
-            // Recipe was already added in RecipeGenBlastSmelter
             if (recipeFound) {
                 Logger.MACHINE_INFO("[ABS] Skipping ABS addition for GTNH due to existing recipe.");
                 continue;
             }
 
-            GTValues.RA.stdBuilder()
+            GTRecipeBuilder builder = GTValues.RA.stdBuilder()
                 .itemInputs(newInput)
                 .fluidInputs(inputsF)
                 .fluidOutputs(mMoltenStack)
                 .duration(MathUtils.roundToClosestInt(time * 0.8))
                 .eut(voltage)
                 .recipeCategory(
-                    inputLength <= 2 ? RecipeCategories.absNonAlloyRecipes
-                        : GTPPRecipeMaps.alloyBlastSmelterRecipes.getDefaultRecipeCategory())
-                .addTo(GTPPRecipeMaps.alloyBlastSmelterRecipes);
+                    baseItemCount == 1 ? RecipeCategories.absNonAlloyRecipes
+                        : GTPPRecipeMaps.alloyBlastSmelterRecipes.getDefaultRecipeCategory());
+
+            if (!circuitFound) {
+                // no circuit in the original EBF recipe → add a "virtual" circuit now
+                builder.circuit(inputs.length);
+            }
+
+            builder.addTo(GTPPRecipeMaps.alloyBlastSmelterRecipes);
             mSuccess++;
+
         }
 
         Logger.INFO("[ABS] Processed " + mSuccess + " recipes.");
