@@ -2403,6 +2403,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Magnetron.set(addItem(Magnetron.ID, "Magnetron", ""));
         ItemList.ChaosLocator
             .set(new ItemChaosLocator("Item_Chaos_Locator", "Chaos Locator", "Warps to areas with extreme entropy"));
+        ItemList.GTToolBox.set(new ItemGTToolbox("Item_Toolbox", "Tool Box", "Stores all your tools!"));
 
         try {
             CropCard tCrop;

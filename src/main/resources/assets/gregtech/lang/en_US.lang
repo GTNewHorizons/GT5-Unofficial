@@ -1651,6 +1651,8 @@ GT5U.gui.text.dim.invalid=Dim Valid: No
 GT5U.gui.title.unknown=Unknown
 GT5U.gui.text.item_amount=Item Amount
 
+GT5U.gui.text.toolbox=Tool box
+
 GT5U.gui.circuit.generic.data_display.off=OFF
 GT5U.gui.circuit.generic.data_display.on=ON
 GT5U.gui.circuit.data_description.delay=Delay

@@ -2772,6 +2772,8 @@ public enum ItemList implements IItemContainer {
     CokeOvenCasing,
     CokeOvenHatch,
 
+    GTToolBox,
+
     // semicolon after the comment to reduce merge conflicts
     ;
 

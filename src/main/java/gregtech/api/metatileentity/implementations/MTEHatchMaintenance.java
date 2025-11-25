@@ -53,6 +53,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.common.items.ItemGTToolbox;
 import ic2.core.IHasGui;
 import ic2.core.item.ItemToolbox;
 import thaumic.tinkerer.common.block.tile.tablet.TabletFakePlayer;
@@ -415,6 +416,19 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
             }
         }
         setMaintenanceSound(SoundResource.GT_MAINTENANCE_TOOLBOX, 1.0F, 1.0F);
+    }
+
+    // TODO
+    private void applyGTToolbox(ItemStack stack, EntityPlayer player) {
+        final ItemGTToolbox toolbox = (ItemGTToolbox) stack.getItem();
+        ItemStack[] inventory = toolbox.getInventory(stack);
+        if (inventory == null) return;
+        for (int i = 0; i < toolbox.getSizeInventory(); i++) {
+            ItemStack currentTool = inventory[i];
+            if (currentTool == null) continue;
+            onToolClick(stack, player);
+            if (currentTool != null && currentTool.stackSize <= 0) inventory[i] = null; // idt this will work
+        }
     }
 
     private void applyDuctTape() {
