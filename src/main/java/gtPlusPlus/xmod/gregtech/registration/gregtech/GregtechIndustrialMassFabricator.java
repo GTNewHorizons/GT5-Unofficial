@@ -39,7 +39,6 @@ public class GregtechIndustrialMassFabricator {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.IC2_Scrap.get(9L))
             .circuit(9)
-            .circuit(9)
             .fluidOutputs(Materials.UUAmplifier.getFluid(1))
             .duration(9 * SECONDS)
             .eut(TierEU.RECIPE_LV)
