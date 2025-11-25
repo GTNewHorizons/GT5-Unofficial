@@ -1,7 +1,6 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
 import static gregtech.api.enums.GTValues.VP;
-import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.alloyBlastSmelterRecipes;
 
 import java.util.ArrayList;
@@ -15,7 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.ItemList;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTRecipeBuilder;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
