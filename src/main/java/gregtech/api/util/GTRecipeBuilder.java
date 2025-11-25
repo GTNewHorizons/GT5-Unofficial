@@ -247,7 +247,7 @@ public class GTRecipeBuilder {
     // region setter
 
     /**
-     * iCircuit Helper. Adds appropriate integrated circuit into item inputs.
+     * circuit method helper. Adds appropriate integrated circuit into item inputs.
      */
     private ItemStack[] applyPendingCircuit(ItemStack[] baseInputs) {
         if (pendingIntegratedCircuit == null) {
@@ -264,7 +264,7 @@ public class GTRecipeBuilder {
     /**
      * Specialized item input method for adding integrated circuits into a recipe.
      */
-    public GTRecipeBuilder iCircuit(int integratedCircuitNumber) {
+    public GTRecipeBuilder circuit(int integratedCircuitNumber) {
         ItemStack circuit = GTUtility.getIntegratedCircuit(integratedCircuitNumber);
 
         if (inputsBasic != null && inputsBasic.length > 0) {
