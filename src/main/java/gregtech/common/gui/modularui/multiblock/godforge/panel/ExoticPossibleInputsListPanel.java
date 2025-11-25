@@ -145,7 +145,8 @@ public class ExoticPossibleInputsListPanel {
         int itemIndex = 0;
         int fluidIndex = 0;
         for (int rowIndex = 0; rowIndex < rows; rowIndex++) {
-            Flow row = new Row().size(18 * ROW_SLOTS_WIDTH, 18);
+            Flow row = new Row().size(18 * ROW_SLOTS_WIDTH, 18)
+                .alignX(0.5f);
 
             for (int slotIndex = 0; slotIndex < ROW_SLOTS_WIDTH; slotIndex++) {
                 if (itemIndex < items.getSlots()) {

@@ -225,6 +225,10 @@ public abstract class MTEBaseModule extends TTMultiblockBase implements IConstru
         isVoltageConfigUnlocked = unlocked;
     }
 
+    public boolean getVoltageConfig() {
+        return isVoltageConfigUnlocked;
+    }
+
     public boolean getInversionConfig() {
         return isInversionUnlocked;
     }
@@ -272,6 +276,14 @@ public abstract class MTEBaseModule extends TTMultiblockBase implements IConstru
     @Override
     public long getMaxInputVoltage() {
         return GTValues.V[tier];
+    }
+
+    public int getBaseMaxParallel() {
+        return maxParallel;
+    }
+
+    public void setBaseMaxParallel(int val) {
+        maxParallel = val;
     }
 
     // This prevents processingLogic from overflowing on energy, can be changed if/when it can handle > max long

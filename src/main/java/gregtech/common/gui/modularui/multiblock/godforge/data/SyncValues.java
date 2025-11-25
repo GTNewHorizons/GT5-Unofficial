@@ -287,6 +287,30 @@ public class SyncValues {
         Modules.EXOTIC,
         module -> new LongSyncValue(module::getTicker, module::setTicker));
 
-    // spotless:on
+    public static final ModuleSyncValue<IntSyncValue, MTEBaseModule> MODULE_MAX_PARALLEL = new ModuleSyncValue<>(
+        "fog.sync.module_max_parallel",
+        Modules.ANY,
+        module -> new IntSyncValue(module::getBaseMaxParallel, module::setBaseMaxParallel));
 
+    public static final ModuleSyncValue<IntSyncValue, MTEBaseModule> MODULE_SET_MAX_PARALLEL = new ModuleSyncValue<>(
+        "fog.sync.module_set_max_parallel",
+        Modules.ANY,
+        module -> new IntSyncValue(module::getPowerPanelMaxParallel, module::setPowerPanelMaxParallel));
+
+    public static final ModuleSyncValue<BooleanSyncValue, MTEBaseModule> MODULE_ALWAYS_MAX_PARALLEL = new ModuleSyncValue<>(
+        "fog.sync.module_always_max_parallel",
+        Modules.ANY,
+        module -> new BooleanSyncValue(module::isAlwaysMaxParallel, module::setAlwaysMaxParallel));
+
+    public static final ModuleSyncValue<LongSyncValue, MTEBaseModule> MODULE_PROCESSING_VOLTAGE = new ModuleSyncValue<>(
+        "fog.sync.module_processing_voltage",
+        Modules.ANY,
+        module -> new LongSyncValue(module::getProcessingVoltage, module::setProcessingVoltage));
+
+    public static final ModuleSyncValue<BooleanSyncValue, MTEBaseModule> MODULE_VOLTAGE_CONFIG = new ModuleSyncValue<>(
+        "fog.sync.module_voltage_config",
+        Modules.ANY,
+        module -> new BooleanSyncValue(module::getVoltageConfig, module::setVoltageConfig));
+
+    // spotless:on
 }
