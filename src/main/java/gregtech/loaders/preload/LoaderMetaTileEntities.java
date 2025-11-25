@@ -220,7 +220,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.modules.SMDProcessor
 import gregtech.common.tileentities.machines.multi.nanochip.modules.SheetSupervisor;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.Splitter;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.SuperconductorSplitter;
-import gregtech.common.tileentities.machines.multi.nanochip.modules.WireTrace
+import gregtech.common.tileentities.machines.multi.nanochip.modules.WireTracer;
 import gregtech.common.tileentities.machines.multi.pcb.MTEPCBBioChamber;
 import gregtech.common.tileentities.machines.multi.pcb.MTEPCBCoolingTower;
 import gregtech.common.tileentities.machines.multi.pcb.MTEPCBFactory;
