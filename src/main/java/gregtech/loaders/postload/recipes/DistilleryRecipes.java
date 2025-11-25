@@ -20,7 +20,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
-import gregtech.api.util.GTUtility;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class DistilleryRecipes implements Runnable {
@@ -607,7 +606,7 @@ public class DistilleryRecipes implements Runnable {
     public void universalDistillationTowerRecipes() {
         addUniversalDistillationRecipewithCircuit(
             Materials.CharcoalByproducts.getGas(1_000),
-            new ItemStack[] { GTUtility.getIntegratedCircuit(1) },
+            1,
             new FluidStack[] { Materials.WoodTar.getFluid(250), Materials.WoodVinegar.getFluid(400),
                 Materials.WoodGas.getGas(250), Materials.Dimethylbenzene.getFluid(100) },
             Materials.Charcoal.getDustSmall(1),
@@ -616,7 +615,7 @@ public class DistilleryRecipes implements Runnable {
 
         addUniversalDistillationRecipewithCircuit(
             Materials.WoodGas.getGas(1_000),
-            new ItemStack[] { GTUtility.getIntegratedCircuit(1) },
+            1,
             new FluidStack[] { Materials.CarbonDioxide.getGas(390), Materials.Ethylene.getGas(120),
                 Materials.Methane.getGas(130), Materials.CarbonMonoxide.getGas(240), Materials.Hydrogen.getGas(120) },
             GTValues.NI,
@@ -624,7 +623,7 @@ public class DistilleryRecipes implements Runnable {
             256);
         addUniversalDistillationRecipewithCircuit(
             Materials.WoodVinegar.getFluid(1_000),
-            new ItemStack[] { GTUtility.getIntegratedCircuit(1) },
+            1,
             new FluidStack[] { Materials.AceticAcid.getFluid(100), Materials.Water.getFluid(500),
                 Materials.Ethanol.getFluid(10), Materials.Methanol.getFluid(300), Materials.Acetone.getFluid(50),
                 Materials.MethylAcetate.getFluid(10) },
@@ -633,7 +632,7 @@ public class DistilleryRecipes implements Runnable {
             256);
         addUniversalDistillationRecipewithCircuit(
             Materials.WoodTar.getFluid(1_000),
-            new ItemStack[] { GTUtility.getIntegratedCircuit(1) },
+            1,
             new FluidStack[] { Materials.Creosote.getFluid(250), Materials.Phenol.getFluid(100),
                 Materials.Benzene.getFluid(400), Materials.Toluene.getFluid(100),
                 Materials.Dimethylbenzene.getFluid(150) },
@@ -643,7 +642,7 @@ public class DistilleryRecipes implements Runnable {
 
         addUniversalDistillationRecipewithCircuit(
             Materials.OilLight.getFluid(100),
-            new ItemStack[] { GTUtility.getIntegratedCircuit(1) },
+            1,
             new FluidStack[] { Materials.SulfuricHeavyFuel.getFluid(7), Materials.SulfuricLightFuel.getFluid(13),
                 Materials.SulfuricNaphtha.getFluid(20), Materials.SulfuricGas.getGas(160) },
             null,
@@ -651,7 +650,7 @@ public class DistilleryRecipes implements Runnable {
             96);
         addUniversalDistillationRecipewithCircuit(
             Materials.OilMedium.getFluid(100),
-            new ItemStack[] { GTUtility.getIntegratedCircuit(1) },
+            1,
             new FluidStack[] { Materials.SulfuricHeavyFuel.getFluid(10), Materials.SulfuricLightFuel.getFluid(50),
                 Materials.SulfuricNaphtha.getFluid(150), Materials.SulfuricGas.getGas(60) },
             null,
@@ -659,7 +658,7 @@ public class DistilleryRecipes implements Runnable {
             96);
         addUniversalDistillationRecipewithCircuit(
             Materials.Oil.getFluid(100),
-            new ItemStack[] { GTUtility.getIntegratedCircuit(1) },
+            1,
             new FluidStack[] { Materials.SulfuricHeavyFuel.getFluid(30), Materials.SulfuricLightFuel.getFluid(100),
                 Materials.SulfuricNaphtha.getFluid(40), Materials.SulfuricGas.getGas(120) },
             null,
@@ -667,7 +666,7 @@ public class DistilleryRecipes implements Runnable {
             96);
         addUniversalDistillationRecipewithCircuit(
             Materials.OilHeavy.getFluid(100),
-            new ItemStack[] { GTUtility.getIntegratedCircuit(1) },
+            1,
             new FluidStack[] { Materials.SulfuricHeavyFuel.getFluid(100), Materials.SulfuricLightFuel.getFluid(45),
                 Materials.SulfuricNaphtha.getFluid(15), Materials.SulfuricGas.getGas(60) },
             null,
@@ -1190,10 +1189,10 @@ public class DistilleryRecipes implements Runnable {
             120);
     }
 
-    public void addUniversalDistillationRecipewithCircuit(FluidStack aInput, ItemStack[] aCircuit,
-        FluidStack[] aOutputs, ItemStack aOutput2, int aDuration, int aEUt) {
+    public void addUniversalDistillationRecipewithCircuit(FluidStack aInput, int aCircuit, FluidStack[] aOutputs,
+        ItemStack aOutput2, int aDuration, int aEUt) {
         GTRecipeBuilder buildDT = GTValues.RA.stdBuilder()
-            .itemInputs(aCircuit);
+            .circuit(aCircuit);
         if (aOutput2 != GTValues.NI) {
             buildDT.itemOutputs(aOutput2);
         }
