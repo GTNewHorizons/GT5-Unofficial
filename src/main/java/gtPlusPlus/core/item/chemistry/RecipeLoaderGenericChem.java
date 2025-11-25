@@ -233,7 +233,6 @@ public class RecipeLoaderGenericChem {
             .addTo(chemicalPlantRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs()
             .circuit(8)
             .fluidInputs(new FluidStack(GTPPFluids.Cyclohexane, 1_000), Materials.Oxygen.getGas(2_000))
             .fluidOutputs(new FluidStack(GTPPFluids.Cyclohexanone, 1_000))
@@ -418,7 +417,6 @@ public class RecipeLoaderGenericChem {
     private static void recipeNitroBenzene() {
         // C6H6 + HNO3 =H2SO4= C6H5NO2 +H2O
         GTValues.RA.stdBuilder()
-            .itemInputs()
             .circuit(12)
             .fluidInputs(
                 Materials.Benzene.getFluid(5_000),
@@ -485,7 +483,6 @@ public class RecipeLoaderGenericChem {
     private static void recipeHydrogenPeroxide() {
         // C6H4(COH)2C6H3CH2CH3 + 2O =(C6H4CH)2= H2O2 + C6H4(CO)2C6H3CH2CH3
         GTValues.RA.stdBuilder()
-            .itemInputs()
             .circuit(4)
             .fluidInputs(
                 Materials.Air.getGas(20_000),
@@ -500,7 +497,6 @@ public class RecipeLoaderGenericChem {
             .addTo(chemicalPlantRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs()
             .circuit(4)
             .fluidInputs(
                 Materials.Oxygen.getGas(10_000),

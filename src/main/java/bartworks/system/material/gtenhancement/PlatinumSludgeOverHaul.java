@@ -275,7 +275,6 @@ public class PlatinumSludgeOverHaul {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs()
             .circuit(9)
             .fluidInputs(Materials.Ammonia.getGas(64_000), Materials.HydrochloricAcid.getFluid(64_000))
             .fluidOutputs(AmmoniumChloride.getFluidOrGas(64_000))
@@ -391,7 +390,6 @@ public class PlatinumSludgeOverHaul {
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs()
             .circuit(1)
             .itemOutputs(PTSaltCrude.get(dustTiny, 32), PTRawPowder.get(dustTiny, 8))
             .fluidInputs(PTConcentrate.getFluidOrGas(8_000), AmmoniumChloride.getFluidOrGas(800))
@@ -404,7 +402,6 @@ public class PlatinumSludgeOverHaul {
             .addTo(multiblockChemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs()
             .circuit(3)
             .itemOutputs(PTSaltCrude.get(dust, 16), PTRawPowder.get(dust, 4))
             .fluidInputs(PTConcentrate.getFluidOrGas(36_000), AmmoniumChloride.getFluidOrGas(3_600))
@@ -482,7 +479,6 @@ public class PlatinumSludgeOverHaul {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs()
             .circuit(2)
             .itemOutputs(PDSalt.get(dust))
             .fluidInputs(PDAmmonia.getFluidOrGas(1_000))
