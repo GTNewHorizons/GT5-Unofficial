@@ -70,7 +70,7 @@ public class RecipeGenPlates extends RecipeGenBase {
         if (ingotStackOne != null && plate_Single != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(ingotStackOne)
-                .iCircuit(1)
+                .circuit(1)
                 .itemOutputs(plate_Single)
                 .duration(Math.max(material.getMass() * 1L, 1L))
                 .eut(material.vVoltageMultiplier)
@@ -82,7 +82,7 @@ public class RecipeGenPlates extends RecipeGenBase {
         if (ingotStackOne != null && foil_SingleFour != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(ingotStackOne)
-                .iCircuit(10)
+                .circuit(10)
                 .itemOutputs(foil_SingleFour)
                 .duration(Math.max(material.getMass() * 2L, 1L))
                 .eut(material.vVoltageMultiplier)
@@ -118,7 +118,7 @@ public class RecipeGenPlates extends RecipeGenBase {
         if (ingotStackTwo != null && plate_Double != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(ingotStackTwo)
-                .iCircuit(2)
+                .circuit(2)
                 .itemOutputs(plate_Double)
                 .duration(Math.max(material.getMass() * 2L, 1L))
                 .eut(material.vVoltageMultiplier)
@@ -130,7 +130,7 @@ public class RecipeGenPlates extends RecipeGenBase {
         if (plate_SingleTwo != null && plate_Double != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(plate_SingleTwo)
-                .iCircuit(2)
+                .circuit(2)
                 .itemOutputs(plate_Double)
                 .duration(Math.max(material.getMass() * 2L, 1L))
                 .eut(material.vVoltageMultiplier)
@@ -142,7 +142,7 @@ public class RecipeGenPlates extends RecipeGenBase {
         if (material.getPlate(1) != null && material.getFoil(1) != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(material.getPlate(1))
-                .iCircuit(1)
+                .circuit(1)
                 .itemOutputs(material.getFoil(4))
                 .duration(Math.max(material.getMass(), 1L))
                 .eut(material.vVoltageMultiplier)
@@ -158,7 +158,7 @@ public class RecipeGenPlates extends RecipeGenBase {
         if (ingotStackNine != null && plate_Dense != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(ingotStackNine)
-                .iCircuit(9)
+                .circuit(9)
                 .itemOutputs(plate_Dense)
                 .duration(Math.max(material.getMass() * 2L, 1L))
                 .eut(material.vVoltageMultiplier)
@@ -170,7 +170,7 @@ public class RecipeGenPlates extends RecipeGenBase {
         if (plate_SingleNine != null && plate_Dense != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(plate_SingleNine)
-                .iCircuit(9)
+                .circuit(9)
                 .itemOutputs(plate_Dense)
                 .duration(Math.max(material.getMass() * 2L, 1L))
                 .eut(material.vVoltageMultiplier)

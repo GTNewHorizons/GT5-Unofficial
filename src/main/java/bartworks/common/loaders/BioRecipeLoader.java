@@ -128,7 +128,7 @@ public class BioRecipeLoader {
             if (CropsPlusPlus.isModLoaded()) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(new ItemStack(Items.sugar, 64))
-                    .iCircuit(2)
+                    .circuit(2)
                     .special(BioItemList.getPetriDish(BioCultureLoader.CommonYeast))
                     .fluidInputs(new FluidStack(fluidStack, 100))
                     .fluidOutputs(FluidRegistry.getFluidStack("potion.ghp", 1))

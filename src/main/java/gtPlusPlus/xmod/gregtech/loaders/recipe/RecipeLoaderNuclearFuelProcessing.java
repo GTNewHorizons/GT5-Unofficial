@@ -80,7 +80,7 @@ public class RecipeLoaderNuclearFuelProcessing {
         // Reactor Blanket step 1 - Fluorination
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialsElements.getInstance().FLUORINE.getCell(6))
-            .iCircuit(17)
+            .circuit(17)
             .itemOutputs(
                 ItemList.Cell_Empty.get(5),
                 MaterialsFluorides.LITHIUM_FLUORIDE.getCell(1),
@@ -98,7 +98,7 @@ public class RecipeLoaderNuclearFuelProcessing {
             .addTo(reactorProcessingUnitRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialsElements.getInstance().FLUORINE.getCell(6))
-            .iCircuit(18)
+            .circuit(18)
             .itemOutputs(
                 ItemList.Cell_Empty.get(4),
                 MaterialsFluorides.LITHIUM_FLUORIDE.getCell(1),
@@ -118,7 +118,7 @@ public class RecipeLoaderNuclearFuelProcessing {
         // Reactor Blanket step 1 - Fluorination
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialsElements.getInstance().FLUORINE.getCell(6))
-            .iCircuit(7)
+            .circuit(7)
             .itemOutputs(
                 ItemList.Cell_Empty.get(4),
                 MaterialsFluorides.LITHIUM_FLUORIDE.getCell(2),
@@ -136,7 +136,7 @@ public class RecipeLoaderNuclearFuelProcessing {
             .addTo(reactorProcessingUnitRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialsElements.getInstance().FLUORINE.getCell(6))
-            .iCircuit(8)
+            .circuit(8)
             .itemOutputs(
                 ItemList.Cell_Empty.get(2),
                 MaterialsFluorides.LITHIUM_FLUORIDE.getCell(2),
@@ -157,7 +157,7 @@ public class RecipeLoaderNuclearFuelProcessing {
         // Reactor Blanket step 2 - Sorption + Cold Trap
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialsFluorides.SODIUM_FLUORIDE.getCell(4))
-            .iCircuit(8)
+            .circuit(8)
             .itemOutputs(
                 MaterialsElements.getInstance().FLUORINE.getCell(2),
                 MaterialsFluorides.URANIUM_HEXAFLUORIDE.getCell(2),
@@ -175,7 +175,7 @@ public class RecipeLoaderNuclearFuelProcessing {
         // Reactor Core step 1 - Process Burnt Salt
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialsElements.getInstance().FLUORINE.getCell(1))
-            .iCircuit(1)
+            .circuit(1)
             .itemOutputs(MaterialsNuclides.UF6F2FP.getCell(1))
             .outputChances(10000)
             .fluidInputs(MaterialsNuclides.LiFBeF2UF4FP.getFluidStack(1000))
@@ -187,7 +187,7 @@ public class RecipeLoaderNuclearFuelProcessing {
         // Reactor Core step 1 - Process Burnt Salt
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialsElements.getInstance().FLUORINE.getCell(3))
-            .iCircuit(1)
+            .circuit(1)
             .itemOutputs(ItemList.Cell_Empty.get(1), MaterialsNuclides.UF6F2FP.getCell(2))
             .fluidInputs(MaterialsNuclides.Sparged_LiFBeF2UF4FP.getFluidStack(1000))
             .fluidOutputs(new FluidStack(GTPPFluids.ImpureMoltenSaltBase, 2000))
@@ -198,7 +198,7 @@ public class RecipeLoaderNuclearFuelProcessing {
         // Reactor Core step 2A - Sorption + Cold Trap
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialsFluorides.SODIUM_FLUORIDE.getCell(3))
-            .iCircuit(8)
+            .circuit(8)
             .itemOutputs(
                 MaterialsElements.getInstance().FLUORINE.getCell(1),
                 MaterialsFluorides.URANIUM_HEXAFLUORIDE.getCell(2),

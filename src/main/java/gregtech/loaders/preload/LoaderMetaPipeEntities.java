@@ -60,7 +60,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
                     // Auto generate frame box recipe in an assembler.
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, material, 4))
-                        .iCircuit(4)
+                        .circuit(4)
                         .itemOutputs(block.getStackForm(1, meta))
                         .duration(3 * SECONDS + 4 * TICKS)
                         .eut(calculateRecipeEU(material, 7))

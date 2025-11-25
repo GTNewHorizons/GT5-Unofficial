@@ -43,7 +43,7 @@ class ComponentRecipeLoader implements Runnable {
                 ItemList.Emitter_IV.get(1L),
                 ItemList.Sensor_IV.get(1L),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Enderium, 1L))
-            .iCircuit(12)
+            .circuit(12)
             .itemOutputs(GGItemList.LinkedInputBus.get(1L))
             .fluidInputs(Materials.Polybenzimidazole.getMolten(1 * INGOTS))
             .duration(30 * SECONDS)

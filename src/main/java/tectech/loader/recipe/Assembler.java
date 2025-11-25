@@ -36,7 +36,7 @@ public class Assembler implements Runnable {
         for (int i = 0; i <= 15; i++) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cobalt, 1))
-                .iCircuit(i + 1)
+                .circuit(i + 1)
                 .itemOutputs(new ItemStack(StructureLibAPI.getBlockHint(), 1, i))
                 .fluidInputs(Materials.Aluminium.getMolten(6 * INGOTS))
                 .duration(1 * SECONDS + 12 * TICKS)
@@ -1157,7 +1157,7 @@ public class Assembler implements Runnable {
                         ItemList.Emitter_IV.get(1),
                         ItemList.Electric_Pump_IV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.TungstenSteel, 2))
-                    .iCircuit(1)
+                    .circuit(1)
                     .itemOutputs(CustomItemList.eM_dynamoTunnel1_IV.get(1))
                     .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_IV)
@@ -1169,7 +1169,7 @@ public class Assembler implements Runnable {
                         ItemList.Emitter_LuV.get(1),
                         ItemList.Electric_Pump_LuV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.VanadiumGallium, 2))
-                    .iCircuit(1)
+                    .circuit(1)
                     .itemOutputs(CustomItemList.eM_dynamoTunnel1_LuV.get(1))
                     .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_LuV)
@@ -1181,7 +1181,7 @@ public class Assembler implements Runnable {
                         ItemList.Emitter_ZPM.get(1),
                         ItemList.Electric_Pump_ZPM.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Naquadah, 2))
-                    .iCircuit(1)
+                    .circuit(1)
                     .itemOutputs(CustomItemList.eM_dynamoTunnel1_ZPM.get(1))
                     .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_ZPM)
@@ -1193,7 +1193,7 @@ public class Assembler implements Runnable {
                         ItemList.Emitter_UV.get(1),
                         ItemList.Electric_Pump_UV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.NaquadahAlloy, 2))
-                    .iCircuit(1)
+                    .circuit(1)
                     .itemOutputs(CustomItemList.eM_dynamoTunnel1_UV.get(1))
                     .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_UV)
@@ -1205,7 +1205,7 @@ public class Assembler implements Runnable {
                         ItemList.Emitter_UHV.get(1),
                         ItemList.Electric_Pump_UHV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Bedrockium, 2))
-                    .iCircuit(1)
+                    .circuit(1)
                     .itemOutputs(CustomItemList.eM_dynamoTunnel1_UHV.get(1))
                     .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_UHV)
@@ -1217,7 +1217,7 @@ public class Assembler implements Runnable {
                         ItemList.Emitter_UEV.get(1),
                         ItemList.Electric_Pump_UEV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Draconium, 2))
-                    .iCircuit(1)
+                    .circuit(1)
                     .itemOutputs(CustomItemList.eM_dynamoTunnel1_UEV.get(1))
                     .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_UEV)
@@ -1229,7 +1229,7 @@ public class Assembler implements Runnable {
                         ItemList.Emitter_UIV.get(1),
                         ItemList.Electric_Pump_UIV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.NetherStar, 2))
-                    .iCircuit(1)
+                    .circuit(1)
                     .itemOutputs(CustomItemList.eM_dynamoTunnel1_UIV.get(1))
                     .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
@@ -1241,7 +1241,7 @@ public class Assembler implements Runnable {
                         ItemList.Emitter_UMV.get(1),
                         ItemList.Electric_Pump_UMV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Quantium, 2))
-                    .iCircuit(1)
+                    .circuit(1)
                     .itemOutputs(CustomItemList.eM_dynamoTunnel1_UMV.get(1))
                     .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_UMV)
@@ -1253,7 +1253,7 @@ public class Assembler implements Runnable {
                         ItemList.Emitter_UXV.get(1),
                         ItemList.Electric_Pump_UXV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.BlackPlutonium, 2))
-                    .iCircuit(1)
+                    .circuit(1)
                     .itemOutputs(CustomItemList.eM_dynamoTunnel1_UXV.get(1))
                     .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_UXV)
@@ -1270,7 +1270,7 @@ public class Assembler implements Runnable {
                         ItemList.Emitter_LuV.get(2),
                         ItemList.Electric_Pump_LuV.get(2),
                         GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.VanadiumGallium, 4))
-                    .iCircuit(2)
+                    .circuit(2)
                     .itemOutputs(CustomItemList.eM_dynamoTunnel2_LuV.get(1))
                     .duration(40 * SECONDS)
                     .eut(TierEU.RECIPE_LuV)
@@ -1282,7 +1282,7 @@ public class Assembler implements Runnable {
                         ItemList.Emitter_ZPM.get(2),
                         ItemList.Electric_Pump_ZPM.get(2),
                         GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Naquadah, 4))
-                    .iCircuit(2)
+                    .circuit(2)
                     .itemOutputs(CustomItemList.eM_dynamoTunnel2_ZPM.get(1))
                     .duration(40 * SECONDS)
                     .eut(TierEU.RECIPE_ZPM)
@@ -1294,7 +1294,7 @@ public class Assembler implements Runnable {
                         ItemList.Emitter_UV.get(2),
                         ItemList.Electric_Pump_UV.get(2),
                         GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.NaquadahAlloy, 4))
-                    .iCircuit(2)
+                    .circuit(2)
                     .itemOutputs(CustomItemList.eM_dynamoTunnel2_UV.get(1))
                     .duration(40 * SECONDS)
                     .eut(TierEU.RECIPE_UV)
@@ -1306,7 +1306,7 @@ public class Assembler implements Runnable {
                         ItemList.Emitter_UHV.get(2),
                         ItemList.Electric_Pump_UHV.get(2),
                         GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Bedrockium, 4))
-                    .iCircuit(2)
+                    .circuit(2)
                     .itemOutputs(CustomItemList.eM_dynamoTunnel2_UHV.get(1))
                     .duration(40 * SECONDS)
                     .eut(TierEU.RECIPE_UHV)
@@ -1318,7 +1318,7 @@ public class Assembler implements Runnable {
                         ItemList.Emitter_UEV.get(2),
                         ItemList.Electric_Pump_UEV.get(2),
                         GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Draconium, 4))
-                    .iCircuit(2)
+                    .circuit(2)
                     .itemOutputs(CustomItemList.eM_dynamoTunnel2_UEV.get(1))
                     .duration(40 * SECONDS)
                     .eut(TierEU.RECIPE_UEV)
@@ -1330,7 +1330,7 @@ public class Assembler implements Runnable {
                         ItemList.Emitter_UIV.get(2),
                         ItemList.Electric_Pump_UIV.get(2),
                         GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.NetherStar, 4))
-                    .iCircuit(2)
+                    .circuit(2)
                     .itemOutputs(CustomItemList.eM_dynamoTunnel2_UIV.get(1))
                     .duration(40 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
@@ -1342,7 +1342,7 @@ public class Assembler implements Runnable {
                         ItemList.Emitter_UMV.get(2),
                         ItemList.Electric_Pump_UMV.get(2),
                         GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Quantium, 4))
-                    .iCircuit(2)
+                    .circuit(2)
                     .itemOutputs(CustomItemList.eM_dynamoTunnel2_UMV.get(1))
                     .duration(40 * SECONDS)
                     .eut(TierEU.RECIPE_UMV)
@@ -1354,7 +1354,7 @@ public class Assembler implements Runnable {
                         ItemList.Emitter_UXV.get(2),
                         ItemList.Electric_Pump_UXV.get(2),
                         GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.BlackPlutonium, 4))
-                    .iCircuit(2)
+                    .circuit(2)
                     .itemOutputs(CustomItemList.eM_dynamoTunnel2_UXV.get(1))
                     .duration(40 * SECONDS)
                     .eut(TierEU.RECIPE_UXV)
@@ -1371,7 +1371,7 @@ public class Assembler implements Runnable {
                         ItemList.Emitter_ZPM.get(4),
                         ItemList.Electric_Pump_ZPM.get(4),
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Naquadah, 4))
-                    .iCircuit(3)
+                    .circuit(3)
                     .itemOutputs(CustomItemList.eM_dynamoTunnel3_ZPM.get(1))
                     .duration(50 * SECONDS)
                     .eut(TierEU.RECIPE_ZPM)
@@ -1383,7 +1383,7 @@ public class Assembler implements Runnable {
                         ItemList.Emitter_UV.get(4),
                         ItemList.Electric_Pump_UV.get(4),
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.NaquadahAlloy, 4))
-                    .iCircuit(3)
+                    .circuit(3)
                     .itemOutputs(CustomItemList.eM_dynamoTunnel3_UV.get(1))
                     .duration(50 * SECONDS)
                     .eut(TierEU.RECIPE_UV)
@@ -1395,7 +1395,7 @@ public class Assembler implements Runnable {
                         ItemList.Emitter_UHV.get(4),
                         ItemList.Electric_Pump_UHV.get(4),
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Bedrockium, 4))
-                    .iCircuit(3)
+                    .circuit(3)
                     .itemOutputs(CustomItemList.eM_dynamoTunnel3_UHV.get(1))
                     .duration(50 * SECONDS)
                     .eut(TierEU.RECIPE_UHV)
@@ -1407,7 +1407,7 @@ public class Assembler implements Runnable {
                         ItemList.Emitter_UEV.get(4),
                         ItemList.Electric_Pump_UEV.get(4),
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Draconium, 4))
-                    .iCircuit(3)
+                    .circuit(3)
                     .itemOutputs(CustomItemList.eM_dynamoTunnel3_UEV.get(1))
                     .duration(50 * SECONDS)
                     .eut(TierEU.RECIPE_UEV)
@@ -1419,7 +1419,7 @@ public class Assembler implements Runnable {
                         ItemList.Emitter_UIV.get(4),
                         ItemList.Electric_Pump_UIV.get(4),
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.NetherStar, 4))
-                    .iCircuit(3)
+                    .circuit(3)
                     .itemOutputs(CustomItemList.eM_dynamoTunnel3_UIV.get(1))
                     .duration(50 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
@@ -1431,7 +1431,7 @@ public class Assembler implements Runnable {
                         ItemList.Emitter_UMV.get(4),
                         ItemList.Electric_Pump_UMV.get(4),
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Quantium, 4))
-                    .iCircuit(3)
+                    .circuit(3)
                     .itemOutputs(CustomItemList.eM_dynamoTunnel3_UMV.get(1))
                     .duration(50 * SECONDS)
                     .eut(TierEU.RECIPE_UMV)
@@ -1443,7 +1443,7 @@ public class Assembler implements Runnable {
                         ItemList.Emitter_UXV.get(4),
                         ItemList.Electric_Pump_UXV.get(4),
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.BlackPlutonium, 4))
-                    .iCircuit(3)
+                    .circuit(3)
                     .itemOutputs(CustomItemList.eM_dynamoTunnel3_UXV.get(1))
                     .duration(50 * SECONDS)
                     .eut(TierEU.RECIPE_UXV)
@@ -1460,7 +1460,7 @@ public class Assembler implements Runnable {
                         ItemList.Emitter_UV.get(8),
                         ItemList.Electric_Pump_UV.get(8),
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.NaquadahAlloy, 8))
-                    .iCircuit(4)
+                    .circuit(4)
                     .itemOutputs(CustomItemList.eM_dynamoTunnel4_UV.get(1))
                     .duration(60 * SECONDS)
                     .eut(TierEU.RECIPE_UV)
@@ -1472,7 +1472,7 @@ public class Assembler implements Runnable {
                         ItemList.Emitter_UHV.get(8),
                         ItemList.Electric_Pump_UHV.get(8),
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Bedrockium, 8))
-                    .iCircuit(4)
+                    .circuit(4)
                     .itemOutputs(CustomItemList.eM_dynamoTunnel4_UHV.get(1))
                     .duration(60 * SECONDS)
                     .eut(TierEU.RECIPE_UHV)
@@ -1484,7 +1484,7 @@ public class Assembler implements Runnable {
                         ItemList.Emitter_UEV.get(8),
                         ItemList.Electric_Pump_UEV.get(8),
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Draconium, 8))
-                    .iCircuit(4)
+                    .circuit(4)
                     .itemOutputs(CustomItemList.eM_dynamoTunnel4_UEV.get(1))
                     .duration(60 * SECONDS)
                     .eut(TierEU.RECIPE_UEV)
@@ -1496,7 +1496,7 @@ public class Assembler implements Runnable {
                         ItemList.Emitter_UIV.get(8),
                         ItemList.Electric_Pump_UIV.get(8),
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.NetherStar, 8))
-                    .iCircuit(4)
+                    .circuit(4)
                     .itemOutputs(CustomItemList.eM_dynamoTunnel4_UIV.get(1))
                     .duration(60 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
@@ -1508,7 +1508,7 @@ public class Assembler implements Runnable {
                         ItemList.Emitter_UMV.get(8),
                         ItemList.Electric_Pump_UMV.get(8),
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Quantium, 8))
-                    .iCircuit(4)
+                    .circuit(4)
                     .itemOutputs(CustomItemList.eM_dynamoTunnel4_UMV.get(1))
                     .duration(60 * SECONDS)
                     .eut(TierEU.RECIPE_UMV)
@@ -1520,7 +1520,7 @@ public class Assembler implements Runnable {
                         ItemList.Emitter_UXV.get(8),
                         ItemList.Electric_Pump_UXV.get(8),
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.BlackPlutonium, 8))
-                    .iCircuit(4)
+                    .circuit(4)
                     .itemOutputs(CustomItemList.eM_dynamoTunnel4_UXV.get(1))
                     .duration(60 * SECONDS)
                     .eut(TierEU.RECIPE_UXV)
@@ -1537,7 +1537,7 @@ public class Assembler implements Runnable {
                         ItemList.Emitter_UHV.get(16),
                         ItemList.Electric_Pump_UHV.get(16),
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Bedrockium, 8))
-                    .iCircuit(5)
+                    .circuit(5)
                     .itemOutputs(CustomItemList.eM_dynamoTunnel5_UHV.get(1))
                     .duration(70 * SECONDS)
                     .eut(TierEU.RECIPE_UHV)
@@ -1549,7 +1549,7 @@ public class Assembler implements Runnable {
                         ItemList.Emitter_UEV.get(16),
                         ItemList.Electric_Pump_UEV.get(16),
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Draconium, 8))
-                    .iCircuit(5)
+                    .circuit(5)
                     .itemOutputs(CustomItemList.eM_dynamoTunnel5_UEV.get(1))
                     .duration(70 * SECONDS)
                     .eut(TierEU.RECIPE_UEV)
@@ -1561,7 +1561,7 @@ public class Assembler implements Runnable {
                         ItemList.Emitter_UIV.get(16),
                         ItemList.Electric_Pump_UIV.get(16),
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.NetherStar, 8))
-                    .iCircuit(5)
+                    .circuit(5)
                     .itemOutputs(CustomItemList.eM_dynamoTunnel5_UIV.get(1))
                     .duration(70 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
@@ -1573,7 +1573,7 @@ public class Assembler implements Runnable {
                         ItemList.Emitter_UMV.get(16),
                         ItemList.Electric_Pump_UMV.get(16),
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Quantium, 8))
-                    .iCircuit(5)
+                    .circuit(5)
                     .itemOutputs(CustomItemList.eM_dynamoTunnel5_UMV.get(1))
                     .duration(70 * SECONDS)
                     .eut(TierEU.RECIPE_UMV)
@@ -1585,7 +1585,7 @@ public class Assembler implements Runnable {
                         ItemList.Emitter_UXV.get(16),
                         ItemList.Electric_Pump_UXV.get(16),
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.BlackPlutonium, 8))
-                    .iCircuit(5)
+                    .circuit(5)
                     .itemOutputs(CustomItemList.eM_dynamoTunnel5_UXV.get(1))
                     .duration(70 * SECONDS)
                     .eut(TierEU.RECIPE_UXV)
@@ -1602,7 +1602,7 @@ public class Assembler implements Runnable {
                         ItemList.Emitter_UEV.get(32),
                         ItemList.Electric_Pump_UEV.get(32),
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Draconium, 16))
-                    .iCircuit(6)
+                    .circuit(6)
                     .itemOutputs(CustomItemList.eM_dynamoTunnel6_UEV.get(1))
                     .duration(80 * SECONDS)
                     .eut(TierEU.RECIPE_UEV)
@@ -1614,7 +1614,7 @@ public class Assembler implements Runnable {
                         ItemList.Emitter_UIV.get(32),
                         ItemList.Electric_Pump_UIV.get(32),
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.NetherStar, 16))
-                    .iCircuit(6)
+                    .circuit(6)
                     .itemOutputs(CustomItemList.eM_dynamoTunnel6_UIV.get(1))
                     .duration(80 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
@@ -1626,7 +1626,7 @@ public class Assembler implements Runnable {
                         ItemList.Emitter_UMV.get(32),
                         ItemList.Electric_Pump_UMV.get(32),
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Quantium, 16))
-                    .iCircuit(6)
+                    .circuit(6)
                     .itemOutputs(CustomItemList.eM_dynamoTunnel6_UMV.get(1))
                     .duration(80 * SECONDS)
                     .eut(TierEU.RECIPE_UMV)
@@ -1638,7 +1638,7 @@ public class Assembler implements Runnable {
                         ItemList.Emitter_UXV.get(32),
                         ItemList.Electric_Pump_UXV.get(32),
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.BlackPlutonium, 16))
-                    .iCircuit(6)
+                    .circuit(6)
                     .itemOutputs(CustomItemList.eM_dynamoTunnel6_UXV.get(1))
                     .duration(80 * SECONDS)
                     .eut(TierEU.RECIPE_UXV)
@@ -1655,7 +1655,7 @@ public class Assembler implements Runnable {
                         ItemList.Emitter_UIV.get(64),
                         ItemList.Electric_Pump_UIV.get(64),
                         GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.NetherStar, 16))
-                    .iCircuit(7)
+                    .circuit(7)
                     .itemOutputs(CustomItemList.eM_dynamoTunnel7_UIV.get(1))
                     .duration(90 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
@@ -1667,7 +1667,7 @@ public class Assembler implements Runnable {
                         ItemList.Emitter_UMV.get(64),
                         ItemList.Electric_Pump_UMV.get(64),
                         GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Quantium, 16))
-                    .iCircuit(7)
+                    .circuit(7)
                     .itemOutputs(CustomItemList.eM_dynamoTunnel7_UMV.get(1))
                     .duration(90 * SECONDS)
                     .eut(TierEU.RECIPE_UMV)
@@ -1679,7 +1679,7 @@ public class Assembler implements Runnable {
                         ItemList.Emitter_UXV.get(64),
                         ItemList.Electric_Pump_UXV.get(64),
                         GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.BlackPlutonium, 16))
-                    .iCircuit(7)
+                    .circuit(7)
                     .itemOutputs(CustomItemList.eM_dynamoTunnel7_UXV.get(1))
                     .duration(90 * SECONDS)
                     .eut(TierEU.RECIPE_UXV)
@@ -1699,7 +1699,7 @@ public class Assembler implements Runnable {
                         ItemList.Sensor_IV.get(1),
                         ItemList.Electric_Pump_IV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.TungstenSteel, 2))
-                    .iCircuit(1)
+                    .circuit(1)
                     .itemOutputs(CustomItemList.eM_energyTunnel1_IV.get(1))
                     .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_IV)
@@ -1711,7 +1711,7 @@ public class Assembler implements Runnable {
                         ItemList.Sensor_LuV.get(1),
                         ItemList.Electric_Pump_LuV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.VanadiumGallium, 2))
-                    .iCircuit(1)
+                    .circuit(1)
                     .itemOutputs(CustomItemList.eM_energyTunnel1_LuV.get(1))
                     .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_LuV)
@@ -1723,7 +1723,7 @@ public class Assembler implements Runnable {
                         ItemList.Sensor_ZPM.get(1),
                         ItemList.Electric_Pump_ZPM.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Naquadah, 2))
-                    .iCircuit(1)
+                    .circuit(1)
                     .itemOutputs(CustomItemList.eM_energyTunnel1_ZPM.get(1))
                     .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_ZPM)
@@ -1735,7 +1735,7 @@ public class Assembler implements Runnable {
                         ItemList.Sensor_UV.get(1),
                         ItemList.Electric_Pump_UV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.NaquadahAlloy, 2))
-                    .iCircuit(1)
+                    .circuit(1)
                     .itemOutputs(CustomItemList.eM_energyTunnel1_UV.get(1))
                     .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_UV)
@@ -1747,7 +1747,7 @@ public class Assembler implements Runnable {
                         ItemList.Sensor_UHV.get(1),
                         ItemList.Electric_Pump_UHV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Bedrockium, 2))
-                    .iCircuit(1)
+                    .circuit(1)
                     .itemOutputs(CustomItemList.eM_energyTunnel1_UHV.get(1))
                     .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_UHV)
@@ -1759,7 +1759,7 @@ public class Assembler implements Runnable {
                         ItemList.Sensor_UEV.get(1),
                         ItemList.Electric_Pump_UEV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Draconium, 2))
-                    .iCircuit(1)
+                    .circuit(1)
                     .itemOutputs(CustomItemList.eM_energyTunnel1_UEV.get(1))
                     .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_UEV)
@@ -1771,7 +1771,7 @@ public class Assembler implements Runnable {
                         ItemList.Sensor_UIV.get(1),
                         ItemList.Electric_Pump_UIV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.NetherStar, 2))
-                    .iCircuit(1)
+                    .circuit(1)
                     .itemOutputs(CustomItemList.eM_energyTunnel1_UIV.get(1))
                     .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
@@ -1783,7 +1783,7 @@ public class Assembler implements Runnable {
                         ItemList.Sensor_UMV.get(1),
                         ItemList.Electric_Pump_UMV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Quantium, 2))
-                    .iCircuit(1)
+                    .circuit(1)
                     .itemOutputs(CustomItemList.eM_energyTunnel1_UMV.get(1))
                     .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_UMV)
@@ -1795,7 +1795,7 @@ public class Assembler implements Runnable {
                         ItemList.Sensor_UXV.get(1),
                         ItemList.Electric_Pump_UXV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.BlackPlutonium, 2))
-                    .iCircuit(1)
+                    .circuit(1)
                     .itemOutputs(CustomItemList.eM_energyTunnel1_UXV.get(1))
                     .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_UXV)
@@ -1812,7 +1812,7 @@ public class Assembler implements Runnable {
                         ItemList.Sensor_LuV.get(2),
                         ItemList.Electric_Pump_LuV.get(2),
                         GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.VanadiumGallium, 4))
-                    .iCircuit(2)
+                    .circuit(2)
                     .itemOutputs(CustomItemList.eM_energyTunnel2_LuV.get(1))
                     .duration(40 * SECONDS)
                     .eut(TierEU.RECIPE_LuV)
@@ -1824,7 +1824,7 @@ public class Assembler implements Runnable {
                         ItemList.Sensor_ZPM.get(2),
                         ItemList.Electric_Pump_ZPM.get(2),
                         GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Naquadah, 4))
-                    .iCircuit(2)
+                    .circuit(2)
                     .itemOutputs(CustomItemList.eM_energyTunnel2_ZPM.get(1))
                     .duration(40 * SECONDS)
                     .eut(TierEU.RECIPE_ZPM)
@@ -1836,7 +1836,7 @@ public class Assembler implements Runnable {
                         ItemList.Sensor_UV.get(2),
                         ItemList.Electric_Pump_UV.get(2),
                         GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.NaquadahAlloy, 4))
-                    .iCircuit(2)
+                    .circuit(2)
                     .itemOutputs(CustomItemList.eM_energyTunnel2_UV.get(1))
                     .duration(40 * SECONDS)
                     .eut(TierEU.RECIPE_UV)
@@ -1848,7 +1848,7 @@ public class Assembler implements Runnable {
                         ItemList.Sensor_UHV.get(2),
                         ItemList.Electric_Pump_UHV.get(2),
                         GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Bedrockium, 4))
-                    .iCircuit(2)
+                    .circuit(2)
                     .itemOutputs(CustomItemList.eM_energyTunnel2_UHV.get(1))
                     .duration(40 * SECONDS)
                     .eut(TierEU.RECIPE_UHV)
@@ -1860,7 +1860,7 @@ public class Assembler implements Runnable {
                         ItemList.Sensor_UEV.get(2),
                         ItemList.Electric_Pump_UEV.get(2),
                         GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Draconium, 4))
-                    .iCircuit(2)
+                    .circuit(2)
                     .itemOutputs(CustomItemList.eM_energyTunnel2_UEV.get(1))
                     .duration(40 * SECONDS)
                     .eut(TierEU.RECIPE_UEV)
@@ -1872,7 +1872,7 @@ public class Assembler implements Runnable {
                         ItemList.Sensor_UIV.get(2),
                         ItemList.Electric_Pump_UIV.get(2),
                         GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.NetherStar, 4))
-                    .iCircuit(2)
+                    .circuit(2)
                     .itemOutputs(CustomItemList.eM_energyTunnel2_UIV.get(1))
                     .duration(40 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
@@ -1884,7 +1884,7 @@ public class Assembler implements Runnable {
                         ItemList.Sensor_UMV.get(2),
                         ItemList.Electric_Pump_UMV.get(2),
                         GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Quantium, 4))
-                    .iCircuit(2)
+                    .circuit(2)
                     .itemOutputs(CustomItemList.eM_energyTunnel2_UMV.get(1))
                     .duration(40 * SECONDS)
                     .eut(TierEU.RECIPE_UMV)
@@ -1896,7 +1896,7 @@ public class Assembler implements Runnable {
                         ItemList.Sensor_UXV.get(2),
                         ItemList.Electric_Pump_UXV.get(2),
                         GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.BlackPlutonium, 4))
-                    .iCircuit(2)
+                    .circuit(2)
                     .itemOutputs(CustomItemList.eM_energyTunnel2_UXV.get(1))
                     .duration(40 * SECONDS)
                     .eut(TierEU.RECIPE_UXV)
@@ -1913,7 +1913,7 @@ public class Assembler implements Runnable {
                         ItemList.Sensor_ZPM.get(4),
                         ItemList.Electric_Pump_ZPM.get(4),
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Naquadah, 4))
-                    .iCircuit(3)
+                    .circuit(3)
                     .itemOutputs(CustomItemList.eM_energyTunnel3_ZPM.get(1))
                     .duration(50 * SECONDS)
                     .eut(TierEU.RECIPE_ZPM)
@@ -1925,7 +1925,7 @@ public class Assembler implements Runnable {
                         ItemList.Sensor_UV.get(4),
                         ItemList.Electric_Pump_UV.get(4),
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.NaquadahAlloy, 4))
-                    .iCircuit(3)
+                    .circuit(3)
                     .itemOutputs(CustomItemList.eM_energyTunnel3_UV.get(1))
                     .duration(50 * SECONDS)
                     .eut(TierEU.RECIPE_UV)
@@ -1937,7 +1937,7 @@ public class Assembler implements Runnable {
                         ItemList.Sensor_UHV.get(4),
                         ItemList.Electric_Pump_UHV.get(4),
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Bedrockium, 4))
-                    .iCircuit(3)
+                    .circuit(3)
                     .itemOutputs(CustomItemList.eM_energyTunnel3_UHV.get(1))
                     .duration(50 * SECONDS)
                     .eut(TierEU.RECIPE_UHV)
@@ -1949,7 +1949,7 @@ public class Assembler implements Runnable {
                         ItemList.Sensor_UEV.get(4),
                         ItemList.Electric_Pump_UEV.get(4),
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Draconium, 4))
-                    .iCircuit(3)
+                    .circuit(3)
                     .itemOutputs(CustomItemList.eM_energyTunnel3_UEV.get(1))
                     .duration(50 * SECONDS)
                     .eut(TierEU.RECIPE_UEV)
@@ -1961,7 +1961,7 @@ public class Assembler implements Runnable {
                         ItemList.Sensor_UIV.get(4),
                         ItemList.Electric_Pump_UIV.get(4),
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.NetherStar, 4))
-                    .iCircuit(3)
+                    .circuit(3)
                     .itemOutputs(CustomItemList.eM_energyTunnel3_UIV.get(1))
                     .duration(50 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
@@ -1973,7 +1973,7 @@ public class Assembler implements Runnable {
                         ItemList.Sensor_UMV.get(4),
                         ItemList.Electric_Pump_UMV.get(4),
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Quantium, 4))
-                    .iCircuit(3)
+                    .circuit(3)
                     .itemOutputs(CustomItemList.eM_energyTunnel3_UMV.get(1))
                     .duration(50 * SECONDS)
                     .eut(TierEU.RECIPE_UMV)
@@ -1985,7 +1985,7 @@ public class Assembler implements Runnable {
                         ItemList.Sensor_UXV.get(4),
                         ItemList.Electric_Pump_UXV.get(4),
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.BlackPlutonium, 4))
-                    .iCircuit(3)
+                    .circuit(3)
                     .itemOutputs(CustomItemList.eM_energyTunnel3_UXV.get(1))
                     .duration(50 * SECONDS)
                     .eut(TierEU.RECIPE_UXV)
@@ -2002,7 +2002,7 @@ public class Assembler implements Runnable {
                         ItemList.Sensor_UV.get(8),
                         ItemList.Electric_Pump_UV.get(8),
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.NaquadahAlloy, 8))
-                    .iCircuit(4)
+                    .circuit(4)
                     .itemOutputs(CustomItemList.eM_energyTunnel4_UV.get(1))
                     .duration(60 * SECONDS)
                     .eut(TierEU.RECIPE_UV)
@@ -2014,7 +2014,7 @@ public class Assembler implements Runnable {
                         ItemList.Sensor_UHV.get(8),
                         ItemList.Electric_Pump_UHV.get(8),
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Bedrockium, 8))
-                    .iCircuit(4)
+                    .circuit(4)
                     .itemOutputs(CustomItemList.eM_energyTunnel4_UHV.get(1))
                     .duration(60 * SECONDS)
                     .eut(TierEU.RECIPE_UHV)
@@ -2026,7 +2026,7 @@ public class Assembler implements Runnable {
                         ItemList.Sensor_UEV.get(8),
                         ItemList.Electric_Pump_UEV.get(8),
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Draconium, 8))
-                    .iCircuit(4)
+                    .circuit(4)
                     .itemOutputs(CustomItemList.eM_energyTunnel4_UEV.get(1))
                     .duration(60 * SECONDS)
                     .eut(TierEU.RECIPE_UEV)
@@ -2038,7 +2038,7 @@ public class Assembler implements Runnable {
                         ItemList.Sensor_UIV.get(8),
                         ItemList.Electric_Pump_UIV.get(8),
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.NetherStar, 8))
-                    .iCircuit(4)
+                    .circuit(4)
                     .itemOutputs(CustomItemList.eM_energyTunnel4_UIV.get(1))
                     .duration(60 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
@@ -2050,7 +2050,7 @@ public class Assembler implements Runnable {
                         ItemList.Sensor_UMV.get(8),
                         ItemList.Electric_Pump_UMV.get(8),
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Quantium, 8))
-                    .iCircuit(4)
+                    .circuit(4)
                     .itemOutputs(CustomItemList.eM_energyTunnel4_UMV.get(1))
                     .duration(60 * SECONDS)
                     .eut(TierEU.RECIPE_UMV)
@@ -2062,7 +2062,7 @@ public class Assembler implements Runnable {
                         ItemList.Sensor_UXV.get(8),
                         ItemList.Electric_Pump_UXV.get(8),
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.BlackPlutonium, 8))
-                    .iCircuit(4)
+                    .circuit(4)
                     .itemOutputs(CustomItemList.eM_energyTunnel4_UXV.get(1))
                     .duration(60 * SECONDS)
                     .eut(TierEU.RECIPE_UXV)
@@ -2079,7 +2079,7 @@ public class Assembler implements Runnable {
                         ItemList.Sensor_UHV.get(16),
                         ItemList.Electric_Pump_UHV.get(16),
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Bedrockium, 8))
-                    .iCircuit(5)
+                    .circuit(5)
                     .itemOutputs(CustomItemList.eM_energyTunnel5_UHV.get(1))
                     .duration(70 * SECONDS)
                     .eut(TierEU.RECIPE_UHV)
@@ -2091,7 +2091,7 @@ public class Assembler implements Runnable {
                         ItemList.Sensor_UEV.get(16),
                         ItemList.Electric_Pump_UEV.get(16),
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Draconium, 8))
-                    .iCircuit(5)
+                    .circuit(5)
                     .itemOutputs(CustomItemList.eM_energyTunnel5_UEV.get(1))
                     .duration(70 * SECONDS)
                     .eut(TierEU.RECIPE_UEV)
@@ -2103,7 +2103,7 @@ public class Assembler implements Runnable {
                         ItemList.Sensor_UIV.get(16),
                         ItemList.Electric_Pump_UIV.get(16),
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.NetherStar, 8))
-                    .iCircuit(5)
+                    .circuit(5)
                     .itemOutputs(CustomItemList.eM_energyTunnel5_UIV.get(1))
                     .duration(70 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
@@ -2115,7 +2115,7 @@ public class Assembler implements Runnable {
                         ItemList.Sensor_UMV.get(16),
                         ItemList.Electric_Pump_UMV.get(16),
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Quantium, 8))
-                    .iCircuit(5)
+                    .circuit(5)
                     .itemOutputs(CustomItemList.eM_energyTunnel5_UMV.get(1))
                     .duration(70 * SECONDS)
                     .eut(TierEU.RECIPE_UMV)
@@ -2127,7 +2127,7 @@ public class Assembler implements Runnable {
                         ItemList.Sensor_UXV.get(16),
                         ItemList.Electric_Pump_UXV.get(16),
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.BlackPlutonium, 8))
-                    .iCircuit(5)
+                    .circuit(5)
                     .itemOutputs(CustomItemList.eM_energyTunnel5_UXV.get(1))
                     .duration(70 * SECONDS)
                     .eut(TierEU.RECIPE_UXV)
@@ -2144,7 +2144,7 @@ public class Assembler implements Runnable {
                         ItemList.Sensor_UEV.get(32),
                         ItemList.Electric_Pump_UEV.get(32),
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Draconium, 16))
-                    .iCircuit(6)
+                    .circuit(6)
                     .itemOutputs(CustomItemList.eM_energyTunnel6_UEV.get(1))
                     .duration(80 * SECONDS)
                     .eut(TierEU.RECIPE_UEV)
@@ -2156,7 +2156,7 @@ public class Assembler implements Runnable {
                         ItemList.Sensor_UIV.get(32),
                         ItemList.Electric_Pump_UIV.get(32),
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.NetherStar, 16))
-                    .iCircuit(6)
+                    .circuit(6)
                     .itemOutputs(CustomItemList.eM_energyTunnel6_UIV.get(1))
                     .duration(80 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
@@ -2168,7 +2168,7 @@ public class Assembler implements Runnable {
                         ItemList.Sensor_UMV.get(32),
                         ItemList.Electric_Pump_UMV.get(32),
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Quantium, 16))
-                    .iCircuit(6)
+                    .circuit(6)
                     .itemOutputs(CustomItemList.eM_energyTunnel6_UMV.get(1))
                     .duration(80 * SECONDS)
                     .eut(TierEU.RECIPE_UMV)
@@ -2180,7 +2180,7 @@ public class Assembler implements Runnable {
                         ItemList.Sensor_UXV.get(32),
                         ItemList.Electric_Pump_UXV.get(32),
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.BlackPlutonium, 16))
-                    .iCircuit(6)
+                    .circuit(6)
                     .itemOutputs(CustomItemList.eM_energyTunnel6_UXV.get(1))
                     .duration(80 * SECONDS)
                     .eut(TierEU.RECIPE_UXV)
@@ -2197,7 +2197,7 @@ public class Assembler implements Runnable {
                         ItemList.Sensor_UIV.get(64),
                         ItemList.Electric_Pump_UIV.get(64),
                         GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.NetherStar, 16))
-                    .iCircuit(7)
+                    .circuit(7)
                     .itemOutputs(CustomItemList.eM_energyTunnel7_UIV.get(1))
                     .duration(90 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
@@ -2209,7 +2209,7 @@ public class Assembler implements Runnable {
                         ItemList.Sensor_UMV.get(64),
                         ItemList.Electric_Pump_UMV.get(64),
                         GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Quantium, 16))
-                    .iCircuit(7)
+                    .circuit(7)
                     .itemOutputs(CustomItemList.eM_energyTunnel7_UMV.get(1))
                     .duration(90 * SECONDS)
                     .eut(TierEU.RECIPE_UMV)
@@ -2221,7 +2221,7 @@ public class Assembler implements Runnable {
                         ItemList.Sensor_UXV.get(64),
                         ItemList.Electric_Pump_UXV.get(64),
                         GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.BlackPlutonium, 16))
-                    .iCircuit(7)
+                    .circuit(7)
                     .itemOutputs(CustomItemList.eM_energyTunnel7_UXV.get(1))
                     .duration(90 * SECONDS)
                     .eut(TierEU.RECIPE_UXV)
@@ -2410,7 +2410,7 @@ public class Assembler implements Runnable {
         // Power Pass Upgrade Cover
         GTValues.RA.stdBuilder()
             .itemInputs(CustomItemList.Machine_Multi_Transformer.get(1))
-            .iCircuit(1)
+            .circuit(1)
             .itemOutputs(CustomItemList.powerPassUpgradeCover.getWithDamage(1, 0))
             .duration(16 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
@@ -3023,7 +3023,7 @@ public class Assembler implements Runnable {
                 CustomItemList.DATApipe.get(16),
                 ItemList.Cover_Screen.get(1),
                 new ItemStack(Blocks.stone_button, 16))
-            .iCircuit(4)
+            .circuit(4)
             .itemOutputs(CustomItemList.UncertaintyX_Hatch.get(1))
             .fluidInputs(Materials.Iridium.getMolten(2592))
             .requiresCleanRoom()

@@ -41,7 +41,7 @@ public class CokeAndPyrolyseOven {
         for (ItemStack stack : aLogData) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(20, stack))
-                .iCircuit(20)
+                .circuit(20)
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 24))
                 .fluidInputs(Materials.Steam.getGas(1_000))
                 .fluidOutputs(new FluidStack(GTPPFluids.CoalGas, 1440))
@@ -53,7 +53,7 @@ public class CokeAndPyrolyseOven {
         // Coal to Coke
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 16))
-            .iCircuit(22)
+            .circuit(22)
             .itemOutputs(GTOreDictUnificator.get("fuelCoke", 10))
             .fluidInputs(Materials.Steam.getGas(1_000))
             .fluidOutputs(new FluidStack(GTPPFluids.CoalGas, 20 * INGOTS))
@@ -89,7 +89,7 @@ public class CokeAndPyrolyseOven {
         // Plant to Charcoal
         GTValues.RA.stdBuilder()
             .itemInputs(plant)
-            .iCircuit(3)
+            .circuit(3)
             .itemOutputs(charcoal)
             .fluidOutputs(Materials.Creosote.getFluid(2_000))
             .eut(16)
@@ -98,7 +98,7 @@ public class CokeAndPyrolyseOven {
 
         GTValues.RA.stdBuilder()
             .itemInputs(plant)
-            .iCircuit(4)
+            .circuit(4)
             .itemOutputs(charcoal)
             .fluidInputs(Materials.Nitrogen.getGas(2_000))
             .fluidOutputs(Materials.CharcoalByproducts.getGas(4_000))
@@ -109,7 +109,7 @@ public class CokeAndPyrolyseOven {
         // Charcoal to Coke
         GTValues.RA.stdBuilder()
             .itemInputs(charcoal)
-            .iCircuit(3)
+            .circuit(3)
             .itemOutputs(coke)
             .fluidOutputs(Materials.Creosote.getFluid(4_000))
             .eut(16)
@@ -118,7 +118,7 @@ public class CokeAndPyrolyseOven {
 
         GTValues.RA.stdBuilder()
             .itemInputs(charcoal)
-            .iCircuit(4)
+            .circuit(4)
             .itemOutputs(coke)
             .fluidInputs(Materials.Nitrogen.getGas(1_000))
             .fluidOutputs(Materials.CharcoalByproducts.getGas(2_000))
@@ -129,7 +129,7 @@ public class CokeAndPyrolyseOven {
         // Coke to Wood tar/Wood gas
         GTValues.RA.stdBuilder()
             .itemInputs(coke)
-            .iCircuit(5)
+            .circuit(5)
             .itemOutputs(Materials.Ash.getDust(5))
             .fluidInputs(Materials.Steam.getGas(2_000))
             .fluidOutputs(Materials.WoodTar.getFluid(4_000))
@@ -139,7 +139,7 @@ public class CokeAndPyrolyseOven {
 
         GTValues.RA.stdBuilder()
             .itemInputs(coke)
-            .iCircuit(6)
+            .circuit(6)
             .itemOutputs(Materials.Ash.getDust(5))
             .fluidInputs(Materials.Steam.getGas(2_000))
             .fluidOutputs(Materials.WoodGas.getGas(6_000))

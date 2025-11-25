@@ -39,7 +39,7 @@ public class RecipeLoaderMilling {
 
     private static void addVacuumFurnaceRecipes() {
         GTValues.RA.stdBuilder()
-            .iCircuit(1)
+            .circuit(1)
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Zinc, 64),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Zinc, 64),
@@ -56,7 +56,7 @@ public class RecipeLoaderMilling {
             .addTo(vacuumFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .iCircuit(1)
+            .circuit(1)
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 64),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 64),
@@ -429,7 +429,7 @@ public class RecipeLoaderMilling {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.CrushedPineMaterials.get(64))
-            .iCircuit(16)
+            .circuit(16)
             .itemOutputs(
                 Materials.Ash.getDustTiny(5),
                 Materials.Ash.getDustTiny(5),
@@ -444,7 +444,7 @@ public class RecipeLoaderMilling {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.CrushedPineMaterials.get(64))
-            .iCircuit(18)
+            .circuit(18)
             .itemOutputs(
                 Materials.Ash.getDustTiny(5),
                 Materials.Ash.getDustTiny(5),
@@ -461,7 +461,7 @@ public class RecipeLoaderMilling {
     private static void addPineLogRecipe(ItemStack log) {
         GTValues.RA.stdBuilder()
             .itemInputs(log)
-            .iCircuit(14)
+            .circuit(14)
             .itemOutputs(GregtechItemList.CrushedPineMaterials.get(64))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -472,7 +472,7 @@ public class RecipeLoaderMilling {
     private static void addPineLeafRecipe(ItemStack leaf) {
         GTValues.RA.stdBuilder()
             .itemInputs(leaf)
-            .iCircuit(14)
+            .circuit(14)
             .itemOutputs(GregtechItemList.CrushedPineMaterials.get(8))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -483,7 +483,7 @@ public class RecipeLoaderMilling {
     private static void addPineSaplingRecipe(ItemStack sapling) {
         GTValues.RA.stdBuilder()
             .itemInputs(sapling)
-            .iCircuit(14)
+            .circuit(14)
             .itemOutputs(GregtechItemList.CrushedPineMaterials.get(16))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)
@@ -494,7 +494,7 @@ public class RecipeLoaderMilling {
     private static void addPineconeRecipe(ItemStack cone) {
         GTValues.RA.stdBuilder()
             .itemInputs(cone)
-            .iCircuit(14)
+            .circuit(14)
             .itemOutputs(GregtechItemList.CrushedPineMaterials.get(4))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)

@@ -38,8 +38,8 @@ public class GregtechIndustrialMassFabricator {
         // Basic UUA1
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.IC2_Scrap.get(9L))
-            .iCircuit(9)
-            .iCircuit(9)
+            .circuit(9)
+            .circuit(9)
             .fluidOutputs(Materials.UUAmplifier.getFluid(1))
             .duration(9 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -48,7 +48,7 @@ public class GregtechIndustrialMassFabricator {
         // Basic UUA2
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.IC2_Scrapbox.get(1L))
-            .iCircuit(19)
+            .circuit(19)
             .fluidOutputs(Materials.UUAmplifier.getFluid(1))
             .duration(9 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -56,7 +56,7 @@ public class GregtechIndustrialMassFabricator {
 
         // Basic UUM
         GTValues.RA.stdBuilder()
-            .iCircuit(1)
+            .circuit(1)
             .fluidOutputs(Materials.UUMatter.getFluid(1 * NUGGETS))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(4096)
@@ -64,7 +64,7 @@ public class GregtechIndustrialMassFabricator {
 
         // Basic UUM
         GTValues.RA.stdBuilder()
-            .iCircuit(2)
+            .circuit(2)
             .fluidInputs(Materials.UUAmplifier.getFluid(1 * NUGGETS))
             .fluidOutputs(Materials.UUMatter.getFluid(1 * NUGGETS))
             .duration(40 * SECONDS)
@@ -73,7 +73,7 @@ public class GregtechIndustrialMassFabricator {
 
         // Advanced UUM
         GTValues.RA.stdBuilder()
-            .iCircuit(3)
+            .circuit(3)
             .fluidOutputs(Materials.UUMatter.getFluid(256))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(65536)
@@ -81,7 +81,7 @@ public class GregtechIndustrialMassFabricator {
 
         // Advanced UUM
         GTValues.RA.stdBuilder()
-            .iCircuit(4)
+            .circuit(4)
             .fluidInputs(Materials.UUAmplifier.getFluid(256))
             .fluidOutputs(Materials.UUMatter.getFluid(256))
             .duration(40 * SECONDS)

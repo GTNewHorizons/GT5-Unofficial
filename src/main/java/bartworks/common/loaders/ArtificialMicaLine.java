@@ -48,7 +48,7 @@ public class ArtificialMicaLine {
 
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Potassium.getDust(1))
-            .iCircuit(2)
+            .circuit(2)
             .itemOutputs(Materials.RockSalt.getDust(2))
             .fluidInputs(Materials.Chlorine.getGas(1_000))
             .duration(20 * TICKS)
@@ -90,7 +90,7 @@ public class ArtificialMicaLine {
                 WerkstoffLoader.Potassiumfluorosilicate.get(OrePrefixes.dust, 20),
                 WerkstoffLoader.Alumina.get(OrePrefixes.dust, 12),
                 WerkstoffLoader.PotassiumCarbonate.get(OrePrefixes.dust, 4))
-            .iCircuit(4)
+            .circuit(4)
             .itemOutputs(
                 WerkstoffLoader.RawFluorophlogopite.get(OrePrefixes.dust, 64),
                 WerkstoffLoader.RawFluorophlogopite.get(OrePrefixes.dust, 27))
@@ -105,7 +105,7 @@ public class ArtificialMicaLine {
                 WerkstoffLoader.Potassiumfluorosilicate.get(OrePrefixes.dust, 20),
                 WerkstoffLoader.Alumina.get(OrePrefixes.dust, 57),
                 WerkstoffLoader.PotassiumCarbonate.get(OrePrefixes.dust, 4))
-            .iCircuit(4)
+            .circuit(4)
             .itemOutputs(
                 WerkstoffLoader.RawFluorophlogopite.get(OrePrefixes.dust, 64),
                 WerkstoffLoader.RawFluorophlogopite.get(OrePrefixes.dust, 64),
@@ -122,7 +122,7 @@ public class ArtificialMicaLine {
                 WerkstoffLoader.Potassiumfluorosilicate.get(OrePrefixes.dust, 20),
                 WerkstoffLoader.Alumina.get(OrePrefixes.dust, 57),
                 WerkstoffLoader.PotassiumCarbonate.get(OrePrefixes.dust, 4))
-            .iCircuit(4)
+            .circuit(4)
             .itemOutputs(
                 WerkstoffLoader.RawFluorophlogopite.get(OrePrefixes.dust, 64),
                 WerkstoffLoader.RawFluorophlogopite.get(OrePrefixes.dust, 64),
@@ -138,7 +138,7 @@ public class ArtificialMicaLine {
                 WerkstoffLoader.Potassiumfluorosilicate.get(OrePrefixes.dust, 10),
                 WerkstoffLoader.Alumina.get(OrePrefixes.dust, 12),
                 WerkstoffLoader.PotassiumCarbonate.get(OrePrefixes.dust, 7))
-            .iCircuit(4)
+            .circuit(4)
             .itemOutputs(
                 WerkstoffLoader.RawFluorophlogopite.get(OrePrefixes.dust, 64),
                 WerkstoffLoader.RawFluorophlogopite.get(OrePrefixes.dust, 27))
@@ -180,7 +180,7 @@ public class ArtificialMicaLine {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(WerkstoffLoader.Fluorophlogopite.get(OrePrefixes.plate, 1))
-                .iCircuit(1)
+                .circuit(1)
                 .itemOutputs(GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MicaInsulatorFoil", 4))
                 .duration(10 * TICKS)
                 .eut(600)

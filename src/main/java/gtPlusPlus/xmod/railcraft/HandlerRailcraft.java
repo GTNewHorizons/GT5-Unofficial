@@ -118,7 +118,7 @@ public class HandlerRailcraft {
         // fluid input
         GTValues.RA.stdBuilder()
             .itemInputs(plant)
-            .iCircuit(3)
+            .circuit(3)
             .itemOutputs(charcoal)
             .fluidOutputs(Materials.Creosote.getFluid(100))
             .eut(16)
@@ -127,7 +127,7 @@ public class HandlerRailcraft {
 
         GTValues.RA.stdBuilder()
             .itemInputs(plant)
-            .iCircuit(4)
+            .circuit(4)
             .itemOutputs(charcoal)
             .fluidInputs(Materials.Nitrogen.getGas(100))
             .fluidOutputs(Materials.CharcoalByproducts.getGas(200))
@@ -137,7 +137,7 @@ public class HandlerRailcraft {
 
         GTValues.RA.stdBuilder()
             .itemInputs(charcoal)
-            .iCircuit(3)
+            .circuit(3)
             .itemOutputs(coke)
             .fluidOutputs(Materials.Creosote.getFluid(200))
             .eut(16)
@@ -146,7 +146,7 @@ public class HandlerRailcraft {
 
         GTValues.RA.stdBuilder()
             .itemInputs(charcoal)
-            .iCircuit(4)
+            .circuit(4)
             .itemOutputs(coke)
             .fluidInputs(Materials.Nitrogen.getGas(50))
             .fluidOutputs(Materials.CharcoalByproducts.getGas(100))
@@ -157,7 +157,7 @@ public class HandlerRailcraft {
         // Generate Wood Tar and Wood Gas from these Cokes
         GTValues.RA.stdBuilder()
             .itemInputs(coke)
-            .iCircuit(5)
+            .circuit(5)
             .itemOutputs(Materials.Ash.getDustSmall(1))
             .fluidInputs(Materials.Steam.getGas(100))
             .fluidOutputs(Materials.WoodTar.getFluid(200))
@@ -167,7 +167,7 @@ public class HandlerRailcraft {
 
         GTValues.RA.stdBuilder()
             .itemInputs(coke)
-            .iCircuit(6)
+            .circuit(6)
             .itemOutputs(Materials.Ash.getDustSmall(1))
             .fluidInputs(Materials.Steam.getGas(100))
             .fluidOutputs(Materials.WoodGas.getGas(300))
@@ -189,7 +189,7 @@ public class HandlerRailcraft {
         // C + O = CO
         GTValues.RA.stdBuilder()
             .itemInputs(charcoal)
-            .iCircuit(1)
+            .circuit(1)
             .itemOutputs(Materials.Ash.getDustTiny(1))
             .fluidInputs(Materials.Oxygen.getGas(500))
             .fluidOutputs(Materials.CarbonMonoxide.getGas(500))
@@ -200,7 +200,7 @@ public class HandlerRailcraft {
         // C + 2O = CO2
         GTValues.RA.stdBuilder()
             .itemInputs(charcoal)
-            .iCircuit(2)
+            .circuit(2)
             .itemOutputs(Materials.Ash.getDustTiny(1))
             .fluidInputs(Materials.Oxygen.getGas(2_000))
             .fluidOutputs(Materials.CarbonDioxide.getGas(1_000))

@@ -42,7 +42,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack))
-                    .iCircuit(3)
+                    .circuit(3)
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
                     .fluidInputs(
                         Materials.Water.getFluid(
@@ -55,7 +55,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack))
-                    .iCircuit(3)
+                    .circuit(3)
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
                     .fluidInputs(
                         GTModHandler.getDistilledWater(
@@ -68,7 +68,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack))
-                    .iCircuit(3)
+                    .circuit(3)
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
                     .fluidInputs(
                         Materials.Lubricant.getFluid(

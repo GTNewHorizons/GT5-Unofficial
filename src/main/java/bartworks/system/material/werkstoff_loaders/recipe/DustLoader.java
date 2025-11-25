@@ -357,7 +357,7 @@ public class DustLoader implements IWerkstoffRunnable {
                         || werkstoff.contains(WerkstoffLoader.NOBLE_GAS_SMELTING)) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(werkstoff.get(dust))
-                            .iCircuit(11)
+                            .circuit(11)
                             .itemOutputs(
                                 werkstoffStats.getMeltingPoint() < 1750 ? werkstoff.get(ingot)
                                     : werkstoff.get(ingotHot))
@@ -369,7 +369,7 @@ public class DustLoader implements IWerkstoffRunnable {
                     } else {
                         GTValues.RA.stdBuilder()
                             .itemInputs(werkstoff.get(dust))
-                            .iCircuit(1)
+                            .circuit(1)
                             .itemOutputs(
                                 werkstoffStats.getMeltingPoint() < 1750 ? werkstoff.get(ingot)
                                     : werkstoff.get(ingotHot))

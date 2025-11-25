@@ -25,7 +25,7 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
     public void run() {
 
         GTValues.RA.stdBuilder()
-            .iCircuit(1)
+            .circuit(1)
             .fluidInputs(
                 Materials.Helium.getPlasma(1_000),
                 Materials.Iron.getPlasma(1_000),
@@ -37,7 +37,7 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             .addTo(transcendentPlasmaMixerRecipes);
 
         GTValues.RA.stdBuilder()
-            .iCircuit(2)
+            .circuit(2)
             .fluidInputs(
                 Materials.Helium.getPlasma(1_000),
                 Materials.Iron.getPlasma(1_000),
@@ -53,7 +53,7 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             .addTo(transcendentPlasmaMixerRecipes);
 
         GTValues.RA.stdBuilder()
-            .iCircuit(3)
+            .circuit(3)
             .fluidInputs(
                 Materials.Helium.getPlasma(1_000),
                 Materials.Iron.getPlasma(1_000),
@@ -73,7 +73,7 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             .addTo(transcendentPlasmaMixerRecipes);
 
         GTValues.RA.stdBuilder()
-            .iCircuit(4)
+            .circuit(4)
             .fluidInputs(
                 Materials.Helium.getPlasma(1_000),
                 Materials.Iron.getPlasma(1_000),
@@ -97,7 +97,7 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             .addTo(transcendentPlasmaMixerRecipes);
 
         GTValues.RA.stdBuilder()
-            .iCircuit(5)
+            .circuit(5)
             .fluidInputs(
                 Materials.Helium.getPlasma(1_000),
                 Materials.Iron.getPlasma(1_000),
@@ -126,7 +126,7 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             .addTo(transcendentPlasmaMixerRecipes);
 
         GTValues.RA.stdBuilder()
-            .iCircuit(24)
+            .circuit(24)
             .fluidInputs(
                 Materials.RawStarMatter.getFluid(1_000),
                 Materials.SpaceTime.getMolten(1_000),
@@ -138,7 +138,7 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             .addTo(transcendentPlasmaMixerRecipes);
 
         GTValues.RA.stdBuilder()
-            .iCircuit(24)
+            .circuit(24)
             .fluidInputs(
                 new FluidStack(MaterialsElements.getInstance().FERMIUM.getPlasma(), 1_000),
                 Materials.Thorium.getPlasma(1_000),
@@ -151,7 +151,7 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             .addTo(transcendentPlasmaMixerRecipes);
 
         GTValues.RA.stdBuilder()
-            .iCircuit(24)
+            .circuit(24)
             .fluidInputs(
                 Materials.Infinity.getPlasma(1_000),
                 Materials.Neutronium.getPlasma(1_000),

@@ -142,7 +142,7 @@ public class CraftingMaterialLoader implements IWerkstoffRunnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(ingot))
-                .iCircuit(3)
+                .circuit(3)
                 .itemOutputs(werkstoff.get(wireFine, 8))
                 .duration(
                     (int) Math.max(
@@ -154,7 +154,7 @@ public class CraftingMaterialLoader implements IWerkstoffRunnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(stick))
-                .iCircuit(3)
+                .circuit(3)
                 .itemOutputs(werkstoff.get(wireFine, 4))
                 .duration(
                     (int) Math.max(

@@ -39,7 +39,7 @@ public class RecipeGenAssembler extends RecipeGenBase {
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { material.getRod(1), material.getFrameBox(1) })) {
             GTValues.RA.stdBuilder()
                 .itemInputs(material.getRod(4))
-                .iCircuit(4)
+                .circuit(4)
                 .itemOutputs(material.getFrameBox(1))
                 .duration(3 * SECONDS)
                 .eut(material.vVoltageMultiplier)

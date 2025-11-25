@@ -508,7 +508,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         .itemInputs(
                             GTOreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L),
                             GTOreDictUnificator.get(OrePrefixes.toolHeadFile, aMaterial, 1L))
-                        .iCircuit(15)
+                        .circuit(15)
                         .itemOutputs(
                             MetaGeneratedTool01.INSTANCE
                                 .getToolWithStats(IDMetaTool01.FILE.ID, 1, aMaterial, aMaterial.mHandleMaterial, null))
@@ -541,7 +541,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         .itemInputs(
                             GTOreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L),
                             GTOreDictUnificator.get(OrePrefixes.toolHeadSaw, aMaterial, 1L))
-                        .iCircuit(7)
+                        .circuit(7)
                         .itemOutputs(
                             MetaGeneratedTool01.INSTANCE
                                 .getToolWithStats(IDMetaTool01.SAW.ID, 1, aMaterial, aMaterial.mHandleMaterial, null))
@@ -803,7 +803,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         .itemInputs(
                             GTOreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L),
                             GTOreDictUnificator.get(OrePrefixes.toolHeadHammer, aMaterial, 1L))
-                        .iCircuit(14)
+                        .circuit(14)
                         .itemOutputs(
                             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                                 aProducesSoftMallet ? IDMetaTool01.SOFTMALLET.ID : IDMetaTool01.HARDHAMMER.ID,

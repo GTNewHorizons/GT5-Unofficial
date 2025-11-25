@@ -17,7 +17,7 @@ public class LaserEngraver implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.emerald))
-            .iCircuit(17)
+            .circuit(17)
             .itemOutputs(BioItemList.getPlasmidCell(null))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)

@@ -68,7 +68,7 @@ public class RecipesRareEarthProcessing {
         // Chloralkali process
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Cell_Empty.get(2L))
-            .iCircuit(1)
+            .circuit(1)
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Chlorine, 1L),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 1L),
@@ -83,7 +83,7 @@ public class RecipesRareEarthProcessing {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Chlorine, 1L),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 1L))
-            .iCircuit(2)
+            .circuit(2)
             .itemOutputs(new ItemStack(ModItems.cellHydrogenChlorideMix, 2))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)

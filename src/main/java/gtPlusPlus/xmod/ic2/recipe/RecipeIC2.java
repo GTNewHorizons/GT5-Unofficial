@@ -156,7 +156,7 @@ public class RecipeIC2 {
                 GTUtility.copyAmount(8, Ic2Items.coil),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Cobalt, 4),
                 GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Aluminium, 4))
-            .iCircuit(2)
+            .circuit(2)
             .itemOutputs(GregtechItemList.Armour_Hazmat_Advanced_Helmet.get(1))
             .fluidInputs(Materials.Rubber.getMolten(144 * 4))
             .duration(30 * SECONDS)
@@ -171,7 +171,7 @@ public class RecipeIC2 {
                 GTUtility.copyAmount(32, Ic2Items.coil),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Cobalt, 16),
                 MaterialsAlloy.SILICON_CARBIDE.getGear(8))
-            .iCircuit(2)
+            .circuit(2)
             .itemOutputs(GregtechItemList.Armour_Hazmat_Advanced_Chest.get(1))
             .fluidInputs(Materials.Rubber.getMolten(144 * 10))
             .duration(1 * MINUTES + 30 * SECONDS)
@@ -186,7 +186,7 @@ public class RecipeIC2 {
                 GTUtility.copyAmount(16, Ic2Items.coil),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Cobalt, 8),
                 MaterialsAlloy.SILICON_CARBIDE.getGear(4))
-            .iCircuit(2)
+            .circuit(2)
             .itemOutputs(GregtechItemList.Armour_Hazmat_Advanced_Legs.get(1))
             .fluidInputs(Materials.Rubber.getMolten(144 * 8))
             .duration(1 * MINUTES + 15 * SECONDS)
@@ -201,7 +201,7 @@ public class RecipeIC2 {
                 GTUtility.copyAmount(6, Ic2Items.coil),
                 GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Steel, 8),
                 MaterialsAlloy.TUMBAGA.getGear(4))
-            .iCircuit(2)
+            .circuit(2)
             .itemOutputs(GregtechItemList.Armour_Hazmat_Advanced_Boots.get(1))
             .fluidInputs(Materials.Rubber.getMolten(144 * 6))
             .duration(45 * SECONDS)

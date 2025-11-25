@@ -19,14 +19,14 @@ public class RecipeLoaderIndustrialRockBreaker {
 
     public static void run() {
         GTValues.RA.stdBuilder()
-            .iCircuit(1)
+            .circuit(1)
             .itemOutputs(new ItemStack(Blocks.cobblestone, 1))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(multiblockRockBreakerRecipes);
 
         GTValues.RA.stdBuilder()
-            .iCircuit(2)
+            .circuit(2)
             .itemOutputs(new ItemStack(Blocks.stone, 1))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_LV)
@@ -34,7 +34,7 @@ public class RecipeLoaderIndustrialRockBreaker {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L))
-            .iCircuit(3)
+            .circuit(3)
             .itemOutputs(new ItemStack(Blocks.obsidian, 1))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(TierEU.RECIPE_LV)
@@ -42,7 +42,7 @@ public class RecipeLoaderIndustrialRockBreaker {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L))
-            .iCircuit(6)
+            .circuit(6)
             .itemOutputs(new ItemStack(Blocks.netherrack, 1))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_LV)
@@ -53,7 +53,7 @@ public class RecipeLoaderIndustrialRockBreaker {
                 .itemInputs(
                     GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "blue_ice", 0, 0),
                     new ItemStack(Blocks.soul_sand, 0))
-                .iCircuit(4)
+                .circuit(4)
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stone, Materials.Basalt, 1L))
                 .duration(16 * TICKS)
                 .eut(TierEU.RECIPE_LV)
@@ -63,7 +63,7 @@ public class RecipeLoaderIndustrialRockBreaker {
                 .itemInputs(
                     GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "magma", 0, 0),
                     new ItemStack(Blocks.soul_sand, 0))
-                .iCircuit(5)
+                .circuit(5)
                 .itemOutputs(GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "cobbled_deepslate", 1, 0))
                 .duration(16 * TICKS)
                 .eut(TierEU.RECIPE_LV)

@@ -88,7 +88,7 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
                 .addTo(latheRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(8, aStack))
-                .iCircuit(8)
+                .circuit(8)
                 .itemOutputs(new ItemStack(Blocks.chest, 1))
                 .duration(40 * SECONDS)
                 .eut(4)

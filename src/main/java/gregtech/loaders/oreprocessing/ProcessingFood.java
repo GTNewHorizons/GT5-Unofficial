@@ -52,7 +52,7 @@ public class ProcessingFood implements gregtech.api.interfaces.IOreRecipeRegistr
     private void registerBenderRecipes(ItemStack stack) {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, stack))
-            .iCircuit(1)
+            .circuit(1)
             .itemOutputs(ItemList.Food_Flat_Dough.get(1L))
             .duration(16 * TICKS)
             .eut(4)

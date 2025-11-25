@@ -178,7 +178,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             if (GTOreDictUnificator.get(OrePrefixes.plateQuadruple, aMaterial, 1L) != null) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(2, aStack))
-                    .iCircuit(2)
+                    .circuit(2)
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateQuadruple, aMaterial, 1L))
                     .duration(Math.max(aMaterialMass * 2L, 1L))
                     .eut(calculateRecipeEU(aMaterial, 96))
@@ -187,7 +187,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             // 2 plates -> 1 double plate
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 2L))
-                .iCircuit(2)
+                .circuit(2)
                 .itemOutputs(GTUtility.copyAmount(1, aStack))
                 .duration(Math.max(aMaterialMass * 2L, 1L))
                 .eut(calculateRecipeEU(aMaterial, 96))
@@ -195,7 +195,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         } else {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 2L))
-                .iCircuit(2)
+                .circuit(2)
                 .itemOutputs(GTUtility.copyAmount(1, aStack))
                 .fluidInputs(Materials.Glue.getFluid(10L))
                 .duration(3 * SECONDS + 4 * TICKS)
@@ -227,7 +227,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 // 3 triple plates -> 1 dense plate
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(3, aStack))
-                    .iCircuit(3)
+                    .circuit(3)
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateDense, aMaterial, 1L))
                     .duration(Math.max(aMaterialMass * 3L, 1L))
                     .eut(calculateRecipeEU(aMaterial, 96))
@@ -236,7 +236,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 3L))
-                .iCircuit(3)
+                .circuit(3)
                 .itemOutputs(GTUtility.copyAmount(1, aStack))
                 .duration(Math.max(aMaterialMass * 3L, 1L))
                 .eut(calculateRecipeEU(aMaterial, 96))
@@ -244,7 +244,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         } else {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 3L))
-                .iCircuit(3)
+                .circuit(3)
                 .itemOutputs(GTUtility.copyAmount(1, aStack))
                 .fluidInputs(Materials.Glue.getFluid(20L))
                 .duration(4 * SECONDS + 16 * TICKS)
@@ -287,7 +287,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             // Quadruple plate
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 4L))
-                .iCircuit(4)
+                .circuit(4)
                 .itemOutputs(GTUtility.copyAmount(1, aStack))
                 .duration(Math.max(aMaterialMass * 4L, 1L))
                 .eut(calculateRecipeEU(aMaterial, 96))
@@ -295,7 +295,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         } else {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 4L))
-                .iCircuit(4)
+                .circuit(4)
                 .itemOutputs(GTUtility.copyAmount(1, aStack))
                 .fluidInputs(Materials.Glue.getFluid(30L))
                 .duration(6 * SECONDS + 8 * TICKS)
@@ -325,7 +325,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             // quintuple plate
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 5L))
-                .iCircuit(5)
+                .circuit(5)
                 .itemOutputs(GTUtility.copyAmount(1, aStack))
                 .duration(Math.max(aMaterialMass * 5L, 1L))
                 .eut(calculateRecipeEU(aMaterial, 96))
@@ -333,7 +333,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         } else {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 5L))
-                .iCircuit(5)
+                .circuit(5)
                 .itemOutputs(GTUtility.copyAmount(1, aStack))
                 .fluidInputs(Materials.Glue.getFluid(40L))
                 .duration(8 * SECONDS)
@@ -363,7 +363,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             // Dense plate
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
-                .iCircuit(9)
+                .circuit(9)
                 .itemOutputs(GTUtility.copyAmount(1, aStack))
                 .duration(Math.max(aMaterialMass * 9L, 1L))
                 .eut(calculateRecipeEU(aMaterial, 96))

@@ -420,7 +420,7 @@ public class ComponentAssemblyLineMiscRecipes {
         for (int i = 0; i <= 11; i++) {
             GTValues.RA.stdBuilder()
                 .itemInputs(getCircuit(i, 16))
-                .iCircuit(16)
+                .circuit(16)
                 .fluidInputs(Materials.SolderingAlloy.getMolten(1 * HALF_INGOTS))
                 .itemOutputs(new ItemStack(Loaders.circuitWrap, 1, i))
                 .duration(30 * SECONDS)
@@ -429,7 +429,7 @@ public class ComponentAssemblyLineMiscRecipes {
         }
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UMV, 16))
-            .iCircuit(16)
+            .circuit(16)
             .fluidInputs(Materials.SolderingAlloy.getMolten(1 * HALF_INGOTS))
             .itemOutputs(new ItemStack(Loaders.circuitWrap, 1, 12))
             .duration(30 * SECONDS)
@@ -437,7 +437,7 @@ public class ComponentAssemblyLineMiscRecipes {
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UXV, 16))
-            .iCircuit(16)
+            .circuit(16)
             .fluidInputs(Materials.SolderingAlloy.getMolten(1 * HALF_INGOTS))
             .itemOutputs(new ItemStack(Loaders.circuitWrap, 1, 13))
             .duration(30 * SECONDS)

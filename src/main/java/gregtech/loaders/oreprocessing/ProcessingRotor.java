@@ -47,7 +47,7 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(tPlate.copy(), tRing.copy())
-                    .iCircuit(4)
+                    .circuit(4)
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L))
                     .fluidInputs(Materials.Tin.getMolten(2 * NUGGETS))
                     .duration(((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
@@ -56,7 +56,7 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(tPlate.copy(), tRing.copy())
-                    .iCircuit(4)
+                    .circuit(4)
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L))
                     .fluidInputs(Materials.Lead.getMolten(3 * NUGGETS))
                     .duration(((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
@@ -65,7 +65,7 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(tPlate.copy(), tRing.copy())
-                    .iCircuit(4)
+                    .circuit(4)
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L))
                     .fluidInputs(Materials.SolderingAlloy.getMolten(1 * NUGGETS))
                     .duration(((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)

@@ -242,7 +242,7 @@ public class MaterialGenerator {
         generateNuclearMaterial(matInfo, false, true, false, false, true, true);
         if (generateDehydratorRecipe && matInfo.getFluid() != null && matInfo.getDust(0) != null) {
             GTValues.RA.stdBuilder()
-                .iCircuit(20)
+                .circuit(20)
                 .itemOutputs(matInfo.getDust(1))
                 .fluidInputs(matInfo.getFluidStack(1 * INGOTS))
                 .eut(matInfo.vVoltageMultiplier)

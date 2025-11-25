@@ -186,7 +186,7 @@ public final class BioObjectAdder {
                         .asFluid());
 
                 GTValues.RA.stdBuilder()
-                    .iCircuit(10)
+                    .circuit(10)
                     .fluidInputs(new FluidStack(B.getFluid(), 1000))
                     .fluidOutputs(dnaFluid)
                     .duration(25 * SECONDS)

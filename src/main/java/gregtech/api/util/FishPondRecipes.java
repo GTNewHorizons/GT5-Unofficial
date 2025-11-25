@@ -62,7 +62,7 @@ public class FishPondRecipes {
         }
 
         GTValues.RA.stdBuilder()
-            .iCircuit(circuitType)
+            .circuit(circuitType)
             .itemOutputs(outputs, chances)
             .duration(10 * SECONDS)
             .eut(16)

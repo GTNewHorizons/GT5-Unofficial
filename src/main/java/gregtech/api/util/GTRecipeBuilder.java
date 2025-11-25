@@ -264,7 +264,7 @@ public class GTRecipeBuilder {
     /**
      * Specialized item input method for adding integrated circuits into a recipe.
      */
-    public GTRecipeBuilder iCircuit(int integratedCircuitNumber) {
+    public GTRecipeBuilder circuit(int integratedCircuitNumber) {
         ItemStack circuit = GTUtility.getIntegratedCircuit(integratedCircuitNumber);
 
         if (inputsBasic != null && inputsBasic.length > 0) {

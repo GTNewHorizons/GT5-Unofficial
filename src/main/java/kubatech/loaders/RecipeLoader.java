@@ -245,7 +245,7 @@ public class RecipeLoader {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(TeaLeafDehydrated.get(1))
-                .iCircuit(1)
+                .circuit(1)
                 .itemOutputs(RolledTeaLeaf.get(1))
                 .eut(TierEU.RECIPE_LV)
                 .duration(5 * SECONDS)
@@ -260,7 +260,7 @@ public class RecipeLoader {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(RolledTeaLeaf.get(1))
-                .iCircuit(1)
+                .circuit(1)
                 .itemOutputs(OxidizedTeaLeaf.get(1))
                 .eut(TierEU.RECIPE_LV)
                 .duration(5 * SECONDS)
@@ -275,7 +275,7 @@ public class RecipeLoader {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(RolledTeaLeaf.get(1))
-                .iCircuit(2)
+                .circuit(2)
                 .itemOutputs(FermentedTeaLeaf.get(1))
                 .eut(TierEU.RECIPE_LV)
                 .duration(10 * SECONDS)
@@ -297,7 +297,7 @@ public class RecipeLoader {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(BruisedTeaLeaf.get(1))
-                .iCircuit(1)
+                .circuit(1)
                 .itemOutputs(PartiallyOxidizedTeaLeaf.get(1))
                 .eut(TierEU.RECIPE_LV)
                 .duration(2 * SECONDS + 10 * TICKS)

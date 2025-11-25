@@ -93,7 +93,7 @@ public class NetheriteRecipes {
                 .addTo(dissolutionTankRecipes);
 
             GTValues.RA.stdBuilder() // Extraction
-                .iCircuit(1)
+                .circuit(1)
                 .fluidInputs(
                     Materials.PrismarineSolution.getFluid(1000),
                     new FluidStack(FluidRegistry.getFluid("nitrobenzene"), 2000))
@@ -105,7 +105,7 @@ public class NetheriteRecipes {
                 .addTo(chemicalBathRecipes);
 
             GTValues.RA.stdBuilder() // Looped Extraction
-                .iCircuit(1)
+                .circuit(1)
                 .fluidInputs(
                     Materials.PrismarineSolution.getFluid(1000),
                     Materials.PrismarineContaminatedNitrobenzeSolution.getFluid(3000))
@@ -167,7 +167,7 @@ public class NetheriteRecipes {
         {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.NaquadahEnriched, 32))
-                .iCircuit(2)
+                .circuit(2)
                 .fluidInputs(Materials.PrismaticAcid.getFluid(8000))
                 .fluidOutputs(Materials.PrismaticNaquadah.getMolten(2304))
                 .duration(20 * SECONDS)
@@ -250,7 +250,7 @@ public class NetheriteRecipes {
             .addTo(distillationTowerRecipes);
 
         GTValues.RA.stdBuilder()
-            .iCircuit(1)
+            .circuit(1)
             .fluidInputs(Materials.Grade1PurifiedWater.getFluid(4_000), Materials.NefariousGas.getFluid(16_000))
             .fluidOutputs(Materials.NefariousOil.getFluid(12_000))
             .duration(26 * SECONDS)
@@ -258,7 +258,7 @@ public class NetheriteRecipes {
             .addTo(crackingRecipes);
 
         GTValues.RA.stdBuilder()
-            .iCircuit(1)
+            .circuit(1)
             .fluidInputs(Materials.Grade2PurifiedWater.getFluid(1_000), Materials.NefariousGas.getFluid(16_000))
             .fluidOutputs(Materials.NefariousOil.getFluid(18_000))
             .duration(6 * SECONDS)
@@ -351,7 +351,7 @@ public class NetheriteRecipes {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Netherite_Nanoparticles.get(1))
-            .iCircuit(1)
+            .circuit(1)
             .fluidInputs(Materials.HellishMetal.getMolten(1 * INGOTS))
             .itemOutputs(ItemList.Intensely_Bonded_Netherite_Nanoparticles.get(1))
             .fluidOutputs(Materials.Thaumium.getMolten(2 * NUGGETS))
@@ -365,7 +365,7 @@ public class NetheriteRecipes {
                 .itemInputs(
                     ItemList.Netherite_Nanoparticles.get(1),
                     GTBees.combs.getStackForType(CombType.NETHERITE, 32))
-                .iCircuit(2)
+                .circuit(2)
                 .fluidInputs(Materials.HellishMetal.getMolten(1 * INGOTS))
                 .itemOutputs(ItemList.Intensely_Bonded_Netherite_Nanoparticles.get(2))
                 .fluidOutputs(Materials.Thaumium.getMolten(2 * NUGGETS))
@@ -403,7 +403,7 @@ public class NetheriteRecipes {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Netherite, 4))
-            .iCircuit(4)
+            .circuit(4)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Netherite, 1))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_ZPM)

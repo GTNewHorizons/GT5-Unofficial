@@ -178,7 +178,7 @@ public class CircuitPartLoader implements Runnable {
                 .itemInputs(
                     single.get(16)
                         .copy())
-                .iCircuit(16)
+                .circuit(16)
                 .itemOutputs(
                     BWMetaItems.getCircuitParts()
                         .getStack(CircuitImprintLoader.reverseIDs))

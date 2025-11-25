@@ -142,7 +142,7 @@ public class MaterialFix {
             if (tMaterial.hasItemType(OrePrefixes.plateDouble)) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(tMaterial.get(OrePrefixes.plate, 2))
-                    .iCircuit(2)
+                    .circuit(2)
                     .itemOutputs(tMaterial.get(OrePrefixes.plateDouble, 1))
                     .duration(
                         Math.max(
@@ -158,7 +158,7 @@ public class MaterialFix {
             if (tMaterial.hasItemType(OrePrefixes.plateTriple)) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(tMaterial.get(OrePrefixes.plate, 3))
-                    .iCircuit(3)
+                    .circuit(3)
                     .itemOutputs(tMaterial.get(OrePrefixes.plateTriple, 1))
                     .duration(
                         Math.max(
@@ -169,7 +169,7 @@ public class MaterialFix {
                     .addTo(benderRecipes);
                 GTValues.RA.stdBuilder()
                     .itemInputs(tMaterial.get(OrePrefixes.ingot, 3))
-                    .iCircuit(3)
+                    .circuit(3)
                     .itemOutputs(tMaterial.get(OrePrefixes.plateTriple, 1))
                     .duration(
                         Math.max(
@@ -186,7 +186,7 @@ public class MaterialFix {
             if (tMaterial.hasItemType(OrePrefixes.plateDense)) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(tMaterial.get(OrePrefixes.plate, 9))
-                    .iCircuit(9)
+                    .circuit(9)
                     .itemOutputs(tMaterial.get(OrePrefixes.plateDense, 1))
                     .duration(
                         Math.max(
@@ -197,7 +197,7 @@ public class MaterialFix {
                     .addTo(benderRecipes);
                 GTValues.RA.stdBuilder()
                     .itemInputs(tMaterial.get(OrePrefixes.ingot, 9))
-                    .iCircuit(9)
+                    .circuit(9)
                     .itemOutputs(tMaterial.get(OrePrefixes.plateDense, 1))
                     .duration(
                         Math.max(
@@ -210,7 +210,7 @@ public class MaterialFix {
                 if (tMaterial.hasItemType(OrePrefixes.plateTriple)) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(tMaterial.get(OrePrefixes.plateTriple, 3))
-                        .iCircuit(3)
+                        .circuit(3)
                         .itemOutputs(tMaterial.get(OrePrefixes.plateDense, 1))
                         .duration(
                             Math.max(
@@ -234,7 +234,7 @@ public class MaterialFix {
                     new Object[] { " s ", "fPx", " P ", 'P', tMaterial.get(OrePrefixes.stickLong, 1) });
                 GTValues.RA.stdBuilder()
                     .itemInputs(tMaterial.get(OrePrefixes.stickLong, 1))
-                    .iCircuit(1)
+                    .circuit(1)
                     .itemOutputs(tMaterial.get(OrePrefixes.spring, 1))
                     .duration(
                         Math.max(
@@ -250,7 +250,7 @@ public class MaterialFix {
                     new Object[] { " s ", "fPx", 'P', tMaterial.get(OrePrefixes.stick, 1) });
                 GTValues.RA.stdBuilder()
                     .itemInputs(tMaterial.get(OrePrefixes.stick, 1))
-                    .iCircuit(1)
+                    .circuit(1)
                     .itemOutputs(tMaterial.get(OrePrefixes.springSmall, 1))
                     .duration(
                         Math.max(

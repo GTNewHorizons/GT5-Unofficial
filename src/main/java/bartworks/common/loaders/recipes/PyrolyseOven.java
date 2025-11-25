@@ -17,7 +17,7 @@ public class PyrolyseOven implements Runnable {
     public void run() {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Wood.getDust(10))
-            .iCircuit(10)
+            .circuit(10)
             .fluidInputs(new FluidStack(FluidLoader.Kerogen, 1_000))
             .fluidOutputs(Materials.Oil.getFluid(1_000))
             .duration(5 * SECONDS + 5 * TICKS)

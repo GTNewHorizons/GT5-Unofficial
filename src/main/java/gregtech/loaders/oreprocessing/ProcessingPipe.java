@@ -111,7 +111,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                 }
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTOreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 4))
-                    .iCircuit(9)
+                    .circuit(9)
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.pipeQuadruple, aMaterial, 1))
                     .duration(3 * SECONDS)
                     .eut(calculateRecipeEU(aMaterial, 4))
@@ -128,7 +128,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                 }
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTOreDictUnificator.get(OrePrefixes.pipeSmall, aMaterial, 9))
-                    .iCircuit(9)
+                    .circuit(9)
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.pipeNonuple, aMaterial, 1))
                     .duration(3 * SECONDS)
                     .eut(calculateRecipeEU(aMaterial, 8))

@@ -277,7 +277,7 @@ public class DEFCRecipes {
             .itemInputs(
                 new ItemStack(Blocks.dragon_egg, 0),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64))
-            .iCircuit(1)
+            .circuit(1)
             .fluidInputs(Materials.Radon.getPlasma(1 * INGOTS))
             .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 288))
             .eut(TierEU.RECIPE_UHV)
@@ -290,7 +290,7 @@ public class DEFCRecipes {
                 .itemInputs(
                     GTModHandler.getModItem(Witchery.ID, "infinityegg", 0),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64))
-                .iCircuit(1)
+                .circuit(1)
                 .fluidInputs(Materials.Radon.getPlasma(72))
                 .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 432))
                 .eut(TierEU.RECIPE_UHV)

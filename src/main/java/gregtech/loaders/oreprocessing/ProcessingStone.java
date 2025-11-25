@@ -73,7 +73,7 @@ public class ProcessingStone implements IOreRecipeRegistrator {
             case "NetherBrick":
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack))
-                    .iCircuit(1)
+                    .circuit(1)
                     .itemOutputs(new ItemStack(Blocks.nether_brick_fence, 1))
                     .duration(5 * SECONDS)
                     .eut(4)
@@ -176,7 +176,7 @@ public class ProcessingStone implements IOreRecipeRegistrator {
             case "Basalt":
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack))
-                    .iCircuit(3)
+                    .circuit(3)
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
                     .fluidInputs(Materials.Water.getFluid(Math.max(4, Math.min(1000, 400 * 30 / 320))))
                     .duration(20 * SECONDS)
@@ -185,7 +185,7 @@ public class ProcessingStone implements IOreRecipeRegistrator {
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack))
-                    .iCircuit(3)
+                    .circuit(3)
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
                     .fluidInputs(GTModHandler.getDistilledWater(Math.max(3, Math.min(750, 400 * 30 / 426))))
                     .duration(20 * SECONDS)
@@ -194,7 +194,7 @@ public class ProcessingStone implements IOreRecipeRegistrator {
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack))
-                    .iCircuit(3)
+                    .circuit(3)
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
                     .fluidInputs(Materials.Lubricant.getFluid(Math.max(1, Math.min(250, 200 * 30 / 1280))))
                     .duration(10 * SECONDS)

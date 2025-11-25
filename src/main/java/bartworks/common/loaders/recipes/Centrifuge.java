@@ -44,7 +44,7 @@ public class Centrifuge implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(MTEThoriumHighTempReactor.THTRMaterials.aTHTR_Materials, 1, 3))
-            .iCircuit(17)
+            .circuit(17)
             .itemOutputs(pellets)
             .duration(40 * MINUTES)
             .eut(TierEU.RECIPE_LV)
@@ -52,7 +52,7 @@ public class Centrifuge implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(MTEThoriumHighTempReactor.THTRMaterials.aTHTR_Materials, 1, 5))
-            .iCircuit(17)
+            .circuit(17)
             .itemOutputs(new ItemStack(MTEThoriumHighTempReactor.THTRMaterials.aTHTR_Materials, 64, 6))
             .duration(40 * MINUTES)
             .eut(TierEU.RECIPE_LV)
@@ -89,7 +89,7 @@ public class Centrifuge implements Runnable {
         }
 
         GTValues.RA.stdBuilder()
-            .iCircuit(17)
+            .circuit(17)
             .itemOutputs(BioItemList.getOther(4))
             .fluidInputs(new FluidStack(BioCultureLoader.eColi.getFluid(), 1000))
             .fluidOutputs(new FluidStack(FluidLoader.BioLabFluidMaterials[1], 10))
@@ -98,7 +98,7 @@ public class Centrifuge implements Runnable {
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .iCircuit(17)
+            .circuit(17)
             .fluidInputs(new FluidStack(FluidLoader.BioLabFluidMaterials[1], 1000))
             .fluidOutputs(new FluidStack(FluidLoader.BioLabFluidMaterials[3], 250))
             .duration(60 * SECONDS)
@@ -106,7 +106,7 @@ public class Centrifuge implements Runnable {
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .iCircuit(17)
+            .circuit(17)
             .fluidInputs(new FluidStack(BioCultureLoader.CommonYeast.getFluid(), 1000))
             .fluidOutputs(new FluidStack(FluidLoader.BioLabFluidMaterials[2], 10))
             .duration(60 * SECONDS)

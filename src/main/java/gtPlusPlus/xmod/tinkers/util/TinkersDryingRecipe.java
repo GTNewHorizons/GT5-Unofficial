@@ -45,7 +45,7 @@ public class TinkersDryingRecipe {
             for (TinkersDryingRecipe r : recipes) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(r.input)
-                    .iCircuit(16)
+                    .circuit(16)
                     .itemOutputs(r.result)
                     .eut(TierEU.RECIPE_LV)
                     .duration(r.time / 10)

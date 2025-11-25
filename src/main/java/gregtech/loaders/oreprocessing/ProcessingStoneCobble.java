@@ -22,7 +22,7 @@ public class ProcessingStoneCobble implements gregtech.api.interfaces.IOreRecipe
         ItemStack aStack) {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(8, aStack))
-            .iCircuit(8)
+            .circuit(8)
             .itemOutputs(new ItemStack(Blocks.furnace, 1))
             .duration(20 * SECONDS)
             .eut(4)
