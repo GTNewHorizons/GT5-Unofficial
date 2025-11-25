@@ -222,7 +222,7 @@ public class RecipeGenBlastSmelterGTNH {
             }
 
             inputs = aTempList.toArray(new ItemStack[0]);
-            int baseItemCount = inputs.length;
+            int baseItemCount = circuitFound ? inputs.length - 1 : inputs.length;
             ItemStack[] newInput = inputs; // reuse inputs directly for matching & recipe
 
             boolean recipeFound = false;
@@ -249,7 +249,6 @@ public class RecipeGenBlastSmelterGTNH {
                         : GTPPRecipeMaps.alloyBlastSmelterRecipes.getDefaultRecipeCategory());
 
             if (!circuitFound) {
-                // no circuit in the original EBF recipe → add a "virtual" circuit now
                 builder.circuit(inputs.length);
             }
 
