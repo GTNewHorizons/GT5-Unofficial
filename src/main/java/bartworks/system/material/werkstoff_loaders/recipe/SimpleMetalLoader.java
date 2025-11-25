@@ -26,8 +26,6 @@ import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.latheRecipes;
 
-import net.minecraft.item.ItemStack;
-
 import bartworks.API.SideReference;
 import bartworks.client.textures.PrefixTextureLinker;
 import bartworks.system.material.Werkstoff;
@@ -40,8 +38,6 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 
 public class SimpleMetalLoader implements IWerkstoffRunnable {
 
