@@ -2557,9 +2557,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
         RA.stdBuilder()
-            .itemInputs(
-                ItemList.Cover_Controller.get(1L),
-                ItemList.Sensor_EV.get(1L))
+            .itemInputs(ItemList.Cover_Controller.get(1L), ItemList.Sensor_EV.get(1L))
             .circuit(1)
             .itemOutputs(ItemList.Cover_WirelessController.get(1L))
             .duration(2 * MINUTES + 40 * SECONDS)
