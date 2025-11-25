@@ -16,12 +16,12 @@ package bartworks.system.material.werkstoff_loaders.recipe;
 import static gregtech.api.enums.OrePrefixes.ingot;
 import static gregtech.api.enums.OrePrefixes.plateDense;
 import static gregtech.api.enums.OrePrefixes.plateDouble;
+import static gregtech.api.recipe.RecipeMaps.benderRecipes;
 
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
-import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 
 public class MultipleMetalLoader implements IWerkstoffRunnable {
@@ -40,7 +40,7 @@ public class MultipleMetalLoader implements IWerkstoffRunnable {
                 .itemOutputs(werkstoff.get(plateDouble))
                 .duration(duration)
                 .eut(60)
-                .addTo(RecipeMaps.benderRecipes);
+                .addTo(benderRecipes);
 
             CoverRegistry.registerDecorativeCover(
                 werkstoff.get(plateDouble),

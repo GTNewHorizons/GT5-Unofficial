@@ -128,6 +128,18 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                     0));
 
             GTValues.RA.stdBuilder()
+                .itemInputs(werkstoff.get(ingot))
+                .circuit(1)
+                .itemOutputs(werkstoff.get(plate))
+                .duration(
+                    (int) Math.max(
+                        werkstoff.getStats()
+                            .getMass(),
+                        1L))
+                .eut(24)
+                .addTo(benderRecipes);
+
+            GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(ingot, 3))
                 .itemOutputs(werkstoff.get(plate, 2))
                 .duration(
