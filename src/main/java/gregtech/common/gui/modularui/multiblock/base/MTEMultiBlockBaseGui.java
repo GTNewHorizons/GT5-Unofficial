@@ -49,6 +49,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.EmptyWidget;
 import com.cleanroommc.modularui.widget.ParentWidget;
+import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.CycleButtonWidget;
 import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
@@ -213,7 +214,6 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .childIf(multiblock.supportsMaintenanceIssueHoverable(), createMaintIssueHoverableTerminal(syncManager))
             .childIf(multiblock.supportsLogo(), makeLogoWidget());
     }
-
 
     protected Widget<? extends Widget<?>> makeLogoWidget() {
         return new IDrawable.DrawableWidget(IDrawable.EMPTY).size(18)

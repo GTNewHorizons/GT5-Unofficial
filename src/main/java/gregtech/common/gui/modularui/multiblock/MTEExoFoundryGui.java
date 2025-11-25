@@ -414,7 +414,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
     }
 
     @Override
-    protected IDrawable.DrawableWidget makeLogoWidget() {
+    protected Widget<? extends Widget<?>> makeLogoWidget() {
         return super.makeLogoWidget().tooltip(
             t -> t.addLine(EnumChatFormatting.DARK_AQUA + "Thank you to Sisyphus and IX for their hard work!"));
     }
