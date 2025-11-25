@@ -247,7 +247,7 @@ public class GTRecipeBuilder {
     // region setter
 
     /**
-     * iCircuit Helper. Adds appropriate integrated circuit into item inputs.
+     * circuit method helper. Adds appropriate integrated circuit into item inputs.
      */
     private ItemStack[] applyPendingCircuit(ItemStack[] baseInputs) {
         if (pendingIntegratedCircuit == null) {
