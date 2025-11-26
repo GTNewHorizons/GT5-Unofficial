@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.loaders;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.minecraft.item.ItemStack;
@@ -262,12 +263,31 @@ public class RecipeGenBlastSmelterGTNH {
     }
 
     private static boolean itemStacksMatch(final ItemStack[] mStack1, final ItemStack[] mStack2) {
-        if (mStack1 == null || mStack2 == null || mStack1.length != mStack2.length) {
+        if (mStack1 == null || mStack2 == null) {
             return false;
         }
 
-        for (int c = 0; c < mStack1.length; c++) {
-            if (!GTUtility.areStacksEqual(mStack1[c], mStack2[c])) {
+        // Build lists of non-circuit, non-null items for more robust check
+        List<ItemStack> list1 = new ArrayList<>();
+        for (ItemStack part : mStack1) {
+            if (part != null && !(part.getItem() instanceof ItemIntegratedCircuit)) {
+                list1.add(part);
+            }
+        }
+
+        List<ItemStack> list2 = new ArrayList<>();
+        for (ItemStack part : mStack2) {
+            if (part != null && !(part.getItem() instanceof ItemIntegratedCircuit)) {
+                list2.add(part);
+            }
+        }
+
+        if (list1.size() != list2.size()) {
+            return false;
+        }
+
+        for (int i = 0; i < list1.size(); i++) {
+            if (!GTUtility.areStacksEqual(list1.get(i), list2.get(i))) {
                 return false;
             }
         }
