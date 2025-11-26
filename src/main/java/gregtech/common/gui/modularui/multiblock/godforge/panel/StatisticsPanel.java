@@ -27,12 +27,12 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizons.modularui.api.math.Color;
 
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.common.gui.modularui.multiblock.godforge.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Formatters;
-import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Statistics;
-import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValues;
-import gregtech.common.gui.modularui.multiblock.godforge.util.ForgeOfGodsGuiUtil;
-import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
+import gregtech.common.gui.modularui.multiblock.godforge.sync.Panels;
+import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncHypervisor;
+import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncValues;
 import tectech.thing.metaTileEntity.multi.godforge.MTEBaseModule;
 import tectech.thing.metaTileEntity.multi.godforge.MTEExoticModule;
 import tectech.thing.metaTileEntity.multi.godforge.MTEMoltenModule;
