@@ -209,28 +209,23 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
         List<ItemStack> inputs = new ArrayList<>(Arrays.asList(input));
         inputs.removeIf(Objects::isNull);
 
-        int duration = (int) Math.max(material.getMass() * 2L, 1);
-        int eut = material.vVoltageMultiplier;
-
         GTRecipeBuilder builder;
         if (oxygen == null) {
             builder = GTValues.RA.stdBuilder()
                 .itemInputs(inputs.toArray(new ItemStack[0]))
-                .itemOutputs(outputStacks)
-                .duration(duration)
-                .eut(eut);
+                .itemOutputs(outputStacks);
         } else {
             builder = GTValues.RA.stdBuilder()
                 .itemInputs(inputs.toArray(new ItemStack[0]))
                 .itemOutputs(outputStacks)
-                .fluidInputs(oxygen)
-                .duration(duration)
-                .eut(eut);
+                .fluidInputs(oxygen);
         }
         if (circuitNumber > 0) {
             builder.circuit(circuitNumber);
         }
-        builder.addTo(mixerRecipes);
+        builder.duration((int) Math.max(material.getMass() * 2L, 1))
+            .eut(material.vVoltageMultiplier)
+            .addTo(mixerRecipes);
 
         Logger.WARNING("Dust Mixer Recipe: " + material.getLocalizedName() + " - Success");
     }
@@ -334,28 +329,23 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
 
         // Add mixer Recipe
 
-        int duration = (int) Math.max(material.getMass() * 2L, 1);
-        int eut = material.vVoltageMultiplier;
-
         GTRecipeBuilder builder;
         if (oxygen == null) {
             builder = GTValues.RA.stdBuilder()
                 .itemInputs(input1, input2, input3, input4)
-                .itemOutputs(outputStacks)
-                .duration(duration)
-                .eut(eut);
+                .itemOutputs(outputStacks);
         } else {
             builder = GTValues.RA.stdBuilder()
                 .itemInputs(input1, input2, input3, input4)
                 .itemOutputs(outputStacks)
-                .fluidInputs(oxygen)
-                .duration(duration)
-                .eut(eut);
+                .fluidInputs(oxygen);
         }
         if (addCircuit) {
             builder.circuit(20);
         }
-        builder.addTo(mixerRecipes);
+        builder.duration((int) Math.max(material.getMass() * 2L, 1))
+            .eut(material.vVoltageMultiplier)
+            .addTo(mixerRecipes);
 
         Logger.WARNING("Dust Mixer Recipe: " + material.getLocalizedName() + " - Success");
 
