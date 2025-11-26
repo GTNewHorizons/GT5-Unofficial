@@ -6,10 +6,8 @@ import static gregtech.api.recipe.RecipeMaps.packagerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -151,13 +149,9 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
         // Relog input values, with stack sizes
         Logger.WARNING(ItemUtils.getArrayStackNames(inputStacks));
 
-        // Get us four ItemStacks to input into the mixer
-        ItemStack[] input = new ItemStack[4];
-
-        input[0] = (inputStacks.length >= 1) ? ((inputStacks[0] == null) ? null : inputStacks[0]) : null;
-        input[1] = (inputStacks.length >= 2) ? ((inputStacks[1] == null) ? null : inputStacks[1]) : null;
-        input[2] = (inputStacks.length >= 3) ? ((inputStacks[2] == null) ? null : inputStacks[2]) : null;
-        input[3] = (inputStacks.length >= 4) ? ((inputStacks[3] == null) ? null : inputStacks[3]) : null;
+        ItemStack[] cleanedInputs = Arrays.stream(inputStacks)
+            .filter(Objects::nonNull)
+            .toArray(ItemStack[]::new);
 
         // Circuit Number Declaration
         int circuitNumber = -1;
@@ -203,20 +197,16 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
             }
         }
 
-        input = ItemUtils.cleanItemStackArray(input);
-
         // Add mixer Recipe
-        List<ItemStack> inputs = new ArrayList<>(Arrays.asList(input));
-        inputs.removeIf(Objects::isNull);
 
         GTRecipeBuilder builder;
         if (oxygen == null) {
             builder = GTValues.RA.stdBuilder()
-                .itemInputs(inputs.toArray(new ItemStack[0]))
+                .itemInputs(cleanedInputs)
                 .itemOutputs(outputStacks);
         } else {
             builder = GTValues.RA.stdBuilder()
-                .itemInputs(inputs.toArray(new ItemStack[0]))
+                .itemInputs(cleanedInputs)
                 .itemOutputs(outputStacks)
                 .fluidInputs(oxygen);
         }
@@ -266,7 +256,6 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
         // Relog input values, with stack sizes
         Logger.WARNING(ItemUtils.getArrayStackNames(inputStacks));
 
-        // Clean up nulls
         ItemStack[] cleanedInputs = Arrays.stream(inputStacks)
             .filter(Objects::nonNull)
             .toArray(ItemStack[]::new);
