@@ -156,6 +156,9 @@ public class UpgradeTreePanel {
                             .isCostPaid(upgrade)) {
                             SyncActions.COMPLETE_UPGRADE.callFrom(Panels.UPGRADE_TREE, hypervisor, upgrade);
                         } else {
+                            EnumSyncValue<ForgeOfGodsUpgrade> syncer = SyncValues.UPGRADE_CLICKED
+                                .lookupFrom(Panels.UPGRADE_TREE, hypervisor);
+                            syncer.setValue(upgrade);
                             if (!manualInsertionPanel.isPanelOpen()) {
                                 manualInsertionPanel.openPanel();
                             }

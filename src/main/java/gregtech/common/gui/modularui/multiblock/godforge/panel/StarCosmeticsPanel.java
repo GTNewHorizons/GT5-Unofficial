@@ -29,6 +29,7 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
 import gregtech.common.gui.modularui.multiblock.godforge.data.SyncActions;
+import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValue.ForgeOfGodsSyncValue;
 import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValues;
 import gregtech.common.gui.modularui.multiblock.godforge.util.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
@@ -261,7 +262,7 @@ public class StarCosmeticsPanel {
         return row;
     }
 
-    private static Flow createMiscTextFieldRow(SyncValues<IntSyncValue> syncer, String name, int maxValue,
+    private static Flow createMiscTextFieldRow(ForgeOfGodsSyncValue<IntSyncValue> syncer, String name, int maxValue,
         SyncHypervisor hypervisor) {
         IntSyncValue syncValue = syncer.create(hypervisor);
         syncValue
