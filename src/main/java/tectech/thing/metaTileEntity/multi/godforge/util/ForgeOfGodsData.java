@@ -40,6 +40,8 @@ public class ForgeOfGodsData {
     public static final double RECIPE_LOG_CONSTANT = Math.log(4);
     public static final double FUEL_LOG_CONSTANT = Math.log(3);
 
+    private final ModuleManager moduleManager;
+
     private int fuelConsumptionFactor = DEFAULT_FUEL_CONSUMPTION_FACTOR;
     private int selectedFuelType;
     private int internalBattery;
@@ -83,6 +85,14 @@ public class ForgeOfGodsData {
     private String selectedStarColor = DEFAULT_STAR_COLOR;
     private int rotationSpeed = DEFAULT_ROTATION_SPEED;
     private int starSize = DEFAULT_STAR_SIZE;
+
+    public ForgeOfGodsData(ModuleManager moduleManager) {
+        this.moduleManager = moduleManager;
+    }
+
+    public ModuleManager getModuleManager() {
+        return moduleManager;
+    }
 
     public int getFuelConsumptionFactor() {
         return fuelConsumptionFactor;

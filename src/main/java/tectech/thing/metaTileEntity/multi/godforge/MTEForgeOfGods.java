@@ -91,8 +91,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
     private static Textures.BlockIcons.CustomIcon ScreenON;
 
-    private final ForgeOfGodsData data = new ForgeOfGodsData();
     private final ModuleManager moduleManager = new ModuleManager();
+    private final ForgeOfGodsData data = new ForgeOfGodsData(moduleManager);
 
     private static final int TEXTURE_INDEX = 960;
     private static final long SOUND_LOOP_LENGTH = 440;
