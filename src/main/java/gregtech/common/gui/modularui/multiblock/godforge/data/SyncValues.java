@@ -287,10 +287,10 @@ public class SyncValues {
         Modules.EXOTIC,
         module -> new LongSyncValue(module::getTicker, module::setTicker));
 
-    public static final ModuleSyncValue<IntSyncValue, MTEBaseModule> MODULE_MAX_PARALLEL = new ModuleSyncValue<>(
-        "fog.sync.module_max_parallel",
+    public static final ModuleSyncValue<IntSyncValue, MTEBaseModule> MODULE_CALCULATED_MAX_PARALLEL = new ModuleSyncValue<>(
+        "fog.sync.module_calculated_max_parallel",
         Modules.ANY,
-        module -> new IntSyncValue(module::getBaseMaxParallel, module::setBaseMaxParallel));
+        module -> new IntSyncValue(module::getCalculatedMaxParallel, module::setCalculatedMaxParallel));
 
     public static final ModuleSyncValue<IntSyncValue, MTEBaseModule> MODULE_SET_MAX_PARALLEL = new ModuleSyncValue<>(
         "fog.sync.module_set_max_parallel",

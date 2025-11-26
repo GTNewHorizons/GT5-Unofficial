@@ -5,20 +5,18 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.MathHelper;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
-import com.cleanroommc.modularui.value.BoolValue;
 import com.cleanroommc.modularui.value.IntValue;
 import com.cleanroommc.modularui.value.LongValue;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
-import com.cleanroommc.modularui.widgets.ToggleButton;
+import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
@@ -66,7 +64,7 @@ public class VoltageConfigPanel {
     }
 
     private static void registerSyncValues(Modules<?> module, SyncHypervisor hypervisor) {
-        SyncValues.MODULE_MAX_PARALLEL.registerFor(module, Panels.VOLTAGE_CONFIG, hypervisor);
+        SyncValues.MODULE_CALCULATED_MAX_PARALLEL.registerFor(module, Panels.VOLTAGE_CONFIG, hypervisor);
         SyncValues.MODULE_SET_MAX_PARALLEL.registerFor(module, Panels.VOLTAGE_CONFIG, hypervisor);
         SyncValues.MODULE_ALWAYS_MAX_PARALLEL.registerFor(module, Panels.VOLTAGE_CONFIG, hypervisor);
         SyncValues.MODULE_PROCESSING_VOLTAGE.registerFor(module, Panels.VOLTAGE_CONFIG, hypervisor);
@@ -74,7 +72,7 @@ public class VoltageConfigPanel {
     }
 
     private static Flow createMaxParallelGroup(SyncHypervisor hypervisor, Modules<?> module) {
-        IntSyncValue maxParallelSyncer = SyncValues.MODULE_MAX_PARALLEL
+        IntSyncValue maxParallelSyncer = SyncValues.MODULE_CALCULATED_MAX_PARALLEL
             .lookupFrom(module, Panels.VOLTAGE_CONFIG, hypervisor);
         IntSyncValue setMaxParallelSyncer = SyncValues.MODULE_SET_MAX_PARALLEL
             .lookupFrom(module, Panels.VOLTAGE_CONFIG, hypervisor);
@@ -100,13 +98,9 @@ public class VoltageConfigPanel {
         // Max parallel text field
         row.child(
             new TextFieldWidget().setFormatAsInteger(true)
-                .setNumbers(raw -> {
-                    int maxParallel = maxParallelSyncer.getIntValue();
-                    if (alwaysMaxParallelSyncer.getBoolValue()) {
-                        return maxParallel;
-                    }
-                    return MathHelper.clamp_int(raw, 1, maxParallel);
-                })
+                .setNumbers(
+                    () -> alwaysMaxParallelSyncer.getBoolValue() ? maxParallelSyncer.getIntValue() : 1,
+                    maxParallelSyncer::getIntValue)
                 .value(new IntValue.Dynamic(setMaxParallelSyncer::getIntValue, setMaxParallelSyncer::setIntValue))
                 .setScrollValues(1, 4, 64)
                 .setTextAlignment(Alignment.CENTER)
@@ -118,22 +112,26 @@ public class VoltageConfigPanel {
                         t.addLine(translateToLocalFormatted("GT5U.gui.text.rangedvalue", 1, maxParallel));
                     }
                 })
+                .tooltipAutoUpdate(true)
                 .tooltipShowUpTimer(TOOLTIP_DELAY)
                 .size(70, 18)
                 .marginRight(4));
 
         // Always max parallel button
         row.child(
-            new ToggleButton().size(16)
+            new ButtonWidget<>().size(16)
                 .margin(1)
-                .value(
-                    new BoolValue.Dynamic(alwaysMaxParallelSyncer::getBoolValue, alwaysMaxParallelSyncer::setBoolValue))
                 .overlay(new DynamicDrawable(() -> {
                     if (alwaysMaxParallelSyncer.getBoolValue()) {
                         return GTGuiTextures.OVERLAY_BUTTON_CHECKMARK;
                     }
                     return GTGuiTextures.OVERLAY_BUTTON_CROSS;
                 }))
+                .onMousePressed(d -> {
+                    alwaysMaxParallelSyncer.setValue(!alwaysMaxParallelSyncer.getBoolValue());
+                    setMaxParallelSyncer.setValue(maxParallelSyncer.getIntValue());
+                    return true;
+                })
                 .tooltip(t -> t.addLine(translateToLocal("GT5U.gui.button.max_parallel")))
                 .tooltipShowUpTimer(TOOLTIP_DELAY)
                 .clickSound(ForgeOfGodsGuiUtil.getButtonSound()));

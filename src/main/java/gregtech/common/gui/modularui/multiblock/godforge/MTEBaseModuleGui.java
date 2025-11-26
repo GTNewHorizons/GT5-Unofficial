@@ -168,7 +168,7 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
     }
 
     protected ButtonWidget<?> createVoltageConfigButton() {
-        IPanelHandler voltageConfigPanel = Panels.VOLTAGE_CONFIG.getFrom(getMainPanel(), hypervisor);
+        IPanelHandler voltageConfigPanel = Panels.VOLTAGE_CONFIG.getFrom(getModuleType(), getMainPanel(), hypervisor);
         return new ButtonWidget<>().size(16)
             .background(GTGuiTextures.TT_BUTTON_CELESTIAL_32x32)
             .overlay(GTGuiTextures.TT_OVERLAY_BUTTON_POWER_PANEL)

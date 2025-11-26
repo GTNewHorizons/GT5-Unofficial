@@ -49,7 +49,7 @@ public abstract class MTEBaseModule extends TTMultiblockBase implements IConstru
     protected UUID userUUID;
     protected int machineHeat = 0;
     protected int overclockHeat = 0;
-    protected int maximumParallel = 0;
+    protected int calculatedMaxParallel = 0;
     protected int plasmaTier = 0;
     protected double processingSpeedBonus = 0;
     protected double energyDiscount = 0;
@@ -129,16 +129,19 @@ public abstract class MTEBaseModule extends TTMultiblockBase implements IConstru
         return overclockHeat;
     }
 
-    public void setMaxParallel(int parallel) {
-        maximumParallel = parallel;
+    public void setCalculatedMaxParallel(int parallel) {
+        calculatedMaxParallel = parallel;
     }
 
-    public int getMaxParallel() {
-        return maximumParallel;
+    public int getCalculatedMaxParallel() {
+        return calculatedMaxParallel;
     }
 
     public int getActualParallel() {
-        return Math.max(1, alwaysMaxParallel ? getMaxParallel() : Math.min(getMaxParallel(), powerPanelMaxParallel));
+        return Math.max(
+            1,
+            alwaysMaxParallel ? getCalculatedMaxParallel()
+                : Math.min(getCalculatedMaxParallel(), powerPanelMaxParallel));
     }
 
     public void setSpeedBonus(double bonus) {
@@ -260,14 +263,6 @@ public abstract class MTEBaseModule extends TTMultiblockBase implements IConstru
     @Override
     public long getMaxInputVoltage() {
         return GTValues.V[tier];
-    }
-
-    public int getBaseMaxParallel() {
-        return maxParallel;
-    }
-
-    public void setBaseMaxParallel(int val) {
-        maxParallel = val;
     }
 
     // This prevents processingLogic from overflowing on energy, can be changed if/when it can handle > max long
