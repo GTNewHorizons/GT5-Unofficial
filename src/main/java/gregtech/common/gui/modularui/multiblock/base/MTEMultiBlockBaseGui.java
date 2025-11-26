@@ -49,6 +49,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.EmptyWidget;
 import com.cleanroommc.modularui.widget.ParentWidget;
+import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.CycleButtonWidget;
 import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
@@ -142,8 +143,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         return panel.child(
             Flow.column()
                 .padding(borderRadius)
-                .childIf(multiblock.canBeMuffled(), this.createMuffleButton())
                 .child(createTerminalRow(panel, syncManager))
+                .childIf(multiblock.canBeMuffled(), this.createMuffleButton())
                 .child(createPanelGap(panel, syncManager))
                 .childIf(multiblock.supportsInventoryRow(), createInventoryRow(panel, syncManager)));
     }
@@ -194,7 +195,6 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .paddingBottom(4)
             .paddingLeft(4)
             .paddingRight(0)
-
             .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
             .child(
                 createTerminalTextWidget(syncManager, panel)
@@ -202,7 +202,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                     .collapseDisabledChild())
             .childIf(
                 multiblock.supportsTerminalRightCornerColumn(),
-                createTerminalRightCornerColumn(panel, syncManager));
+                createTerminalRightCornerColumn(panel, syncManager))
+            .childIf(multiblock.supportsTerminalLeftCornerColumn(), createTerminalLeftCornerColumn(panel, syncManager));
     }
 
     protected Flow createTerminalRightCornerColumn(ModularPanel panel, PanelSyncManager syncManager) {
@@ -214,10 +215,16 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .childIf(multiblock.supportsLogo(), makeLogoWidget());
     }
 
-    protected IDrawable.DrawableWidget makeLogoWidget() {
+    protected Widget<? extends Widget<?>> makeLogoWidget() {
         return new IDrawable.DrawableWidget(IDrawable.EMPTY).size(18)
             .marginTop(4)
             .widgetTheme(GTWidgetThemes.PICTURE_LOGO);
+    }
+
+    protected Flow createTerminalLeftCornerColumn(ModularPanel panel, PanelSyncManager syncManager) {
+        return new Column().coverChildren()
+            .leftRel(0, 6, 0)
+            .bottomRel(0, 6, 0);
     }
 
     protected int getTerminalRowWidth() {

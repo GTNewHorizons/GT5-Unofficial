@@ -73,7 +73,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
 
     @Override
     protected IDrawable.DrawableWidget makeLogoWidget() {
-        return super.makeLogoWidget().setEnabledIf(a -> !multiblock.isTalkModeActive);
+        return (IDrawable.DrawableWidget) super.makeLogoWidget().setEnabledIf(a -> !multiblock.isTalkModeActive);
     }
 
     @Override
