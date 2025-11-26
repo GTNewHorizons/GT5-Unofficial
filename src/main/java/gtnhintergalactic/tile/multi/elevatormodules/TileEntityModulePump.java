@@ -317,6 +317,11 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
         super.registerIcons(aBlockIconRegister);
     }
 
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
     /**
      * Get the output name of a recipe
      *

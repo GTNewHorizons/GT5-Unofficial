@@ -384,6 +384,11 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
         return false;
     }
 
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
     @Nonnull
     @Override
     public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
