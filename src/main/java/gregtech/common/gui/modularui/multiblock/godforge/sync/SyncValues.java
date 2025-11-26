@@ -26,7 +26,7 @@ import tectech.thing.metaTileEntity.multi.godforge.MTESmeltingModule;
 import tectech.thing.metaTileEntity.multi.godforge.color.ForgeOfGodsStarColor;
 import tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade;
 
-public class SyncValues {
+public final class SyncValues {
 
     // spotless:off
 
@@ -249,6 +249,10 @@ public class SyncValues {
     // -------------- //
     // Module Syncers //
     // -------------- //
+
+    public static final ForgeOfGodsSyncValue<GenericListSyncHandler<MTEBaseModule>> MODULE_MANAGER = new ForgeOfGodsSyncValue<>(
+        "fog.sync.module_manager",
+        data -> data.getModuleManager().getSyncer());
 
     public static final ModuleSyncValue<BooleanSyncValue, MTEBaseModule> CONNECTION_STATUS = new ModuleSyncValue<>(
         "fog.sync.connection_status",
