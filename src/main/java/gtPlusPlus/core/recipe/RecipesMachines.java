@@ -3,7 +3,6 @@ package gtPlusPlus.core.recipe;
 import static goodgenerator.loader.Loaders.supercriticalFluidTurbineCasing;
 import static gregtech.api.enums.Mods.EtFuturumRequiem;
 import static gregtech.api.enums.Mods.EternalSingularity;
-import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.RemoteIO;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
@@ -1236,20 +1235,19 @@ public class RecipesMachines {
         RECIPE_IndustrialCokeOvenCasingA = GregtechItemList.Casing_CokeOven_Coil1.get(1);
         RECIPE_IndustrialCokeOvenCasingB = GregtechItemList.Casing_CokeOven_Coil2.get(1);
 
-        if (Railcraft.isModLoaded()) {
-            // Industrial Coke Oven
-            RecipeUtils.addShapedGregtechRecipe(
-                CI.component_Plate[7],
-                "circuitData",
-                CI.component_Plate[7],
-                ItemList.Casing_EV.get(1),
-                ItemList.CokeOvenController,
-                ItemList.Casing_EV.get(1),
-                CI.component_Plate[7],
-                "circuitData",
-                CI.component_Plate[7],
-                RECIPE_IndustrialCokeOvenController);
-        }
+        // Industrial Coke Oven
+        RecipeUtils.addShapedGregtechRecipe(
+            CI.component_Plate[7],
+            "circuitData",
+            CI.component_Plate[7],
+            ItemList.Casing_EV.get(1),
+            ItemList.CokeOvenController.get(1),
+            ItemList.Casing_EV.get(1),
+            CI.component_Plate[7],
+            "circuitData",
+            CI.component_Plate[7],
+            RECIPE_IndustrialCokeOvenController);
+
         // Coke Oven Frame Casing
         RecipeUtils.addShapedGregtechRecipe(
             CI.component_Plate[7],
