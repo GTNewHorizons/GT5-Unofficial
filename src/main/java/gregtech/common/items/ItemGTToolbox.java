@@ -1,8 +1,11 @@
 package gregtech.common.items;
 
+import mods.railcraft.api.core.items.TagList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
@@ -16,9 +19,10 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import gregtech.api.items.GTGenericItem;
 import gregtech.common.gui.modularui.item.ItemToolboxGui;
 
+import java.util.ArrayList;
+
 public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInventoryGuiData> {
 
-    public LimitingItemStackHandler handler = new LimitingItemStackHandler(9, 1);;
 
     public ItemGTToolbox(String aUnlocalized, String aEnglish, String aEnglishTooltip) {
         super(aUnlocalized, aEnglish, aEnglishTooltip);
@@ -30,6 +34,8 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
         if (!world.isRemote) {
             GuiFactories.playerInventory()
                 .openFromMainHand(player);
+
+
         }
         return super.onItemRightClick(stack, world, player);
     }
@@ -39,21 +45,25 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
         return new ItemToolboxGui(syncManager, data).build();
     }
 
-    // TODO: doubt this works
-    public ItemStack[] getInventory(ItemStack stack) {
-        if (stack.getTagCompound() == null || stack.getTagCompound()
-            .getCompoundTag("Items") == null) return null;
-        ItemStack[] inventory = new ItemStack[this.getSizeInventory()];
-        NBTTagCompound items = stack.getTagCompound()
-            .getCompoundTag("Items");
-        for (int i = 0; i < this.getSizeInventory(); i++) {
-            inventory[i] = ItemStack.loadItemStackFromNBT(items);
+    public static ItemStack[] loadItemsFromStack(ItemStack stack) {
+        if (stack == null || !stack.hasTagCompound()) {
+            return new ItemStack[0];
         }
-        return inventory;
-    }
 
-    public int getSizeInventory() {
-        return 9;
+        NBTTagCompound tag = stack.getTagCompound();
+        NBTTagList items = tag.getTagList("Items", 10); // 10 = TAG_Compound
+
+        ArrayList<ItemStack> list = new ArrayList<>();
+
+        for (int i = 0; i < items.tagCount(); i++) {
+            NBTTagCompound itemTag = items.getCompoundTagAt(i);
+            ItemStack item = ItemStack.loadItemStackFromNBT(itemTag);
+            if (item != null) {
+                list.add(item);
+            }
+        }
+
+        return list.toArray(new ItemStack[0]);
     }
 
 }

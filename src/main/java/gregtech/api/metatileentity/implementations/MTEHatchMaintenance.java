@@ -187,8 +187,8 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
             }
             ItemStack tStack = aPlayer.getCurrentEquippedItem();
             if (tStack != null) {
-                if (tStack.getItem() instanceof ItemToolbox) {
-                    applyToolbox(tStack, aPlayer);
+                if (tStack.getItem() instanceof ItemGTToolbox) {
+                    applyGTToolbox(tStack, aPlayer);
                 } else if (GTOreDictUnificator.isItemStackInstanceOf(tStack, "craftingDuctTape")) {
                     applyDuctTape();
                     if (--tStack.stackSize == 0) {
@@ -421,13 +421,10 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
     // TODO
     private void applyGTToolbox(ItemStack stack, EntityPlayer player) {
         final ItemGTToolbox toolbox = (ItemGTToolbox) stack.getItem();
-        ItemStack[] inventory = toolbox.getInventory(stack);
-        if (inventory == null) return;
-        for (int i = 0; i < toolbox.getSizeInventory(); i++) {
-            ItemStack currentTool = inventory[i];
-            if (currentTool == null) continue;
-            onToolClick(stack, player);
-            if (currentTool != null && currentTool.stackSize <= 0) inventory[i] = null; // idt this will work
+        ItemStack[] tools = toolbox.loadItemsFromStack(stack);
+        for(ItemStack tool : tools) {
+            System.out.println(tool.getDisplayName());
+            onToolClick(tool, player);
         }
     }
 
