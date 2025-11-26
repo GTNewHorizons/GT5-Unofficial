@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui.multiblock.godforge.data;
+package gregtech.common.gui.modularui.multiblock.godforge.sync;
 
 import java.util.function.BiConsumer;
 
@@ -6,7 +6,6 @@ import net.minecraft.network.PacketBuffer;
 
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
-import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
 import tectech.thing.metaTileEntity.multi.godforge.MTEExoticModule;
 import tectech.thing.metaTileEntity.multi.godforge.MTEForgeOfGods;
 import tectech.thing.metaTileEntity.multi.godforge.color.ForgeOfGodsStarColor;

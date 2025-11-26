@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui.multiblock.godforge.data;
+package gregtech.common.gui.modularui.multiblock.godforge.sync;
 
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.apache.commons.lang3.mutable.MutableObject;
@@ -13,9 +13,12 @@ import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 
-import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValue.ForgeOfGodsSyncValue;
-import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValue.HybridSyncValue;
-import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValue.ModuleSyncValue;
+import gregtech.common.gui.modularui.multiblock.godforge.data.Formatters;
+import gregtech.common.gui.modularui.multiblock.godforge.data.Fuels;
+import gregtech.common.gui.modularui.multiblock.godforge.data.Milestones;
+import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncValue.ForgeOfGodsSyncValue;
+import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncValue.HybridSyncValue;
+import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncValue.ModuleSyncValue;
 import tectech.thing.metaTileEntity.multi.godforge.MTEBaseModule;
 import tectech.thing.metaTileEntity.multi.godforge.MTEExoticModule;
 import tectech.thing.metaTileEntity.multi.godforge.MTEPlasmaModule;

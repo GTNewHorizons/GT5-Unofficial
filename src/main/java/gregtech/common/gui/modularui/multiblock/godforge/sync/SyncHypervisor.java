@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui.multiblock.godforge.util;
+package gregtech.common.gui.modularui.multiblock.godforge.sync;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,8 +13,6 @@ import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 
-import gregtech.common.gui.modularui.multiblock.godforge.data.Modules;
-import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
 import tectech.thing.metaTileEntity.multi.godforge.MTEBaseModule;
 import tectech.thing.metaTileEntity.multi.godforge.MTEForgeOfGods;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;

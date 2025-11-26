@@ -25,10 +25,10 @@ import com.google.common.collect.ImmutableList;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GTUtility;
-import gregtech.common.gui.modularui.multiblock.godforge.data.Modules;
-import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
-import gregtech.common.gui.modularui.multiblock.godforge.util.ForgeOfGodsGuiUtil;
-import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
+import gregtech.common.gui.modularui.multiblock.godforge.ForgeOfGodsGuiUtil;
+import gregtech.common.gui.modularui.multiblock.godforge.sync.Modules;
+import gregtech.common.gui.modularui.multiblock.godforge.sync.Panels;
+import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncHypervisor;
 import tectech.loader.recipe.Godforge;
 
 public class ExoticPossibleInputsListPanel {

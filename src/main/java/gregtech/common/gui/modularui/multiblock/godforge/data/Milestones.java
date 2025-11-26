@@ -7,7 +7,8 @@ import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.ValueSyncHandler;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValue.ForgeOfGodsSyncValue;
+import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncValue.ForgeOfGodsSyncValue;
+import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncValues;
 
 public enum Milestones {
 

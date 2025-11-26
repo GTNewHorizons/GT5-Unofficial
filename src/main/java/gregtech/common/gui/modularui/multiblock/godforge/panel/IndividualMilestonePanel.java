@@ -24,13 +24,13 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.google.common.math.LongMath;
 
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.common.gui.modularui.multiblock.godforge.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Formatters;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Milestones;
-import gregtech.common.gui.modularui.multiblock.godforge.data.Modules;
-import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
-import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValues;
-import gregtech.common.gui.modularui.multiblock.godforge.util.ForgeOfGodsGuiUtil;
-import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
+import gregtech.common.gui.modularui.multiblock.godforge.sync.Modules;
+import gregtech.common.gui.modularui.multiblock.godforge.sync.Panels;
+import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncHypervisor;
+import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncValues;
 
 public class IndividualMilestonePanel {
 

@@ -17,10 +17,9 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.common.gui.modularui.multiblock.godforge.data.Modules;
-import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
-import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValues;
-import gregtech.common.gui.modularui.multiblock.godforge.util.ForgeOfGodsGuiUtil;
+import gregtech.common.gui.modularui.multiblock.godforge.sync.Modules;
+import gregtech.common.gui.modularui.multiblock.godforge.sync.Panels;
+import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncValues;
 import tectech.thing.CustomItemList;
 import tectech.thing.metaTileEntity.multi.godforge.MTEExoticModule;
 
