@@ -278,7 +278,20 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
         input3 = (inputStacks.length >= 3) ? (input3 = (inputStacks[2] == null) ? null : inputStacks[2]) : null;
         input4 = (inputStacks.length >= 4) ? (input4 = (inputStacks[3] == null) ? null : inputStacks[3]) : null;
 
-        boolean addCircuit = inputStacks.length <= 3;
+        boolean addCircuit = false;
+        if (inputStacks.length == 1) {
+            input2 = input1;
+            addCircuit = true;
+        } else if (inputStacks.length == 2) {
+            input3 = input2;
+            input2 = input1;
+            addCircuit = true;
+        } else if (inputStacks.length == 3) {
+            input4 = input3;
+            input3 = input2;
+            input2 = input1;
+            addCircuit = true;
+        }
 
         // Add mixer Recipe
         FluidStack oxygen = GTValues.NF;
