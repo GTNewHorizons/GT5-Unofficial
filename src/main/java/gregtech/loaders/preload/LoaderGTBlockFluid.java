@@ -175,7 +175,6 @@ public class LoaderGTBlockFluid implements Runnable {
         new ItemWirelessHeadphones();
         new CircuitComponentFakeItem();
         new ItemMagLevHarness();
-        new CircuitComponentFakeItem();
 
         // Tiered recipe materials actually appear to be set in MTEBasicMachineWithRecipe, making these
         // unused

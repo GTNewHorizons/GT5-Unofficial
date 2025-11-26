@@ -1,5 +1,6 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import com.cleanroommc.modularui.widget.Widget;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
@@ -72,9 +73,11 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
     }
 
     @Override
-    protected IDrawable.DrawableWidget makeLogoWidget() {
+    protected Widget<? extends Widget<?>> makeLogoWidget() {
         return super.makeLogoWidget().setEnabledIf(a -> !multiblock.isTalkModeActive);
     }
+
+
 
     @Override
     protected Flow createPanelGap(ModularPanel panel, PanelSyncManager syncManager) {
