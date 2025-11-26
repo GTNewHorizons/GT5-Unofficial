@@ -183,7 +183,7 @@ public class MTEHatchCokeOven extends MTEHatch {
             case OutputFluid -> {
                 final IFluidHandler target = baseMetaTileEntity.getITankContainerAtSide(sideFront);
                 if (target == null) return;
-                GTUtility.moveFluid(activeController, target, sideFront, FLUID_TRANSFER_RATE, null);
+                GTUtility.moveFluid(activeController, target, ForgeDirection.UNKNOWN, FLUID_TRANSFER_RATE, null);
             }
         }
     }

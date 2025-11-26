@@ -142,8 +142,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         return panel.child(
             Flow.column()
                 .padding(borderRadius)
-                .childIf(multiblock.canBeMuffled(), this.createMuffleButton())
                 .child(createTerminalRow(panel, syncManager))
+                .childIf(multiblock.canBeMuffled(), this.createMuffleButton())
                 .child(createPanelGap(panel, syncManager))
                 .childIf(multiblock.supportsInventoryRow(), createInventoryRow(panel, syncManager)));
     }
@@ -194,7 +194,6 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .paddingBottom(4)
             .paddingLeft(4)
             .paddingRight(0)
-
             .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
             .child(
                 createTerminalTextWidget(syncManager, panel)
@@ -202,7 +201,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                     .collapseDisabledChild())
             .childIf(
                 multiblock.supportsTerminalRightCornerColumn(),
-                createTerminalRightCornerColumn(panel, syncManager));
+                createTerminalRightCornerColumn(panel, syncManager))
+            .childIf(multiblock.supportsTerminalLeftCornerColumn(), createTerminalLeftCornerColumn(panel, syncManager));
     }
 
     protected Flow createTerminalRightCornerColumn(ModularPanel panel, PanelSyncManager syncManager) {
@@ -211,13 +211,11 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .bottomRel(0, 6, 0)
             .childIf(multiblock.supportsShutdownReasonHoverable(), createShutdownReasonHoverableTerminal(syncManager))
             .childIf(multiblock.supportsMaintenanceIssueHoverable(), createMaintIssueHoverableTerminal(syncManager))
-            .childIf(multiblock.supportsLogo(), makeLogoWidget());
-    }
-
-    protected IDrawable.DrawableWidget makeLogoWidget() {
-        return new IDrawable.DrawableWidget(IDrawable.EMPTY).size(18)
-            .marginTop(4)
-            .widgetTheme(GTWidgetThemes.PICTURE_LOGO);
+            .childIf(
+                multiblock.supportsLogo(),
+                new Widget<>().size(18, 18)
+                    .marginTop(4)
+                    .widgetTheme(GTWidgetThemes.PICTURE_LOGO));
     }
 
     protected int getTerminalRowWidth() {
