@@ -224,11 +224,10 @@ public class RecipeGenBlastSmelterGTNH {
 
             inputs = aTempList.toArray(new ItemStack[0]);
             int baseItemCount = circuitFound ? inputs.length - 1 : inputs.length;
-            ItemStack[] newInput = inputs; // reuse inputs directly for matching & recipe
 
             boolean recipeFound = false;
             for (GTRecipe recipe : recipeCandidates) {
-                if (itemStacksMatch(recipe.mInputs, newInput) && fluidStacksMatch(recipe.mFluidInputs, inputsF)
+                if (itemStacksMatch(recipe.mInputs, inputs) && fluidStacksMatch(recipe.mFluidInputs, inputsF)
                     && GTUtility.areFluidsEqual(recipe.mFluidOutputs[0], mMoltenStack)) {
                     recipeFound = true;
                     break;
@@ -240,7 +239,7 @@ public class RecipeGenBlastSmelterGTNH {
             }
 
             GTRecipeBuilder builder = GTValues.RA.stdBuilder()
-                .itemInputs(newInput)
+                .itemInputs(inputs)
                 .fluidInputs(inputsF)
                 .fluidOutputs(mMoltenStack)
                 .duration(MathUtils.roundToClosestInt(time * 0.8))
