@@ -7,11 +7,14 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_AUTOMAINTENANCE_IDL
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DUCTTAPE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MAINTENANCE;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -420,13 +423,21 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
 
     // TODO
     private void applyGTToolbox(ItemStack stack, EntityPlayer player) {
-        final ItemGTToolbox toolbox = (ItemGTToolbox) stack.getItem();
-        ItemStack[] tools = toolbox.loadItemsFromStack(stack);
-        for(ItemStack tool : tools) {
+        ItemGTToolbox toolbox = (ItemGTToolbox) stack.getItem();
+        IItemHandlerModifiable handler = toolbox.getHandler(stack);
+        if(handler == null) {
+            return;
+        }
+        for (int i = 0; i < handler.getSlots(); i++) {
+            ItemStack tool = handler.getStackInSlot(i);
+            if (tool == null) continue;
+
             System.out.println(tool.getDisplayName());
             onToolClick(tool, player);
+            handler.setStackInSlot(i, tool);
         }
     }
+
 
     private void applyDuctTape() {
         mWrench = mScrewdriver = mSoftMallet = mHardHammer = mCrowbar = mSolderingTool = true;

@@ -1,5 +1,7 @@
 package gregtech.common.items;
 
+import com.cleanroommc.modularui.utils.ItemStackItemHandler;
+import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 import mods.railcraft.api.core.items.TagList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -45,25 +47,7 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
         return new ItemToolboxGui(syncManager, data).build();
     }
 
-    public static ItemStack[] loadItemsFromStack(ItemStack stack) {
-        if (stack == null || !stack.hasTagCompound()) {
-            return new ItemStack[0];
-        }
-
-        NBTTagCompound tag = stack.getTagCompound();
-        NBTTagList items = tag.getTagList("Items", 10); // 10 = TAG_Compound
-
-        ArrayList<ItemStack> list = new ArrayList<>();
-
-        for (int i = 0; i < items.tagCount(); i++) {
-            NBTTagCompound itemTag = items.getCompoundTagAt(i);
-            ItemStack item = ItemStack.loadItemStackFromNBT(itemTag);
-            if (item != null) {
-                list.add(item);
-            }
-        }
-
-        return list.toArray(new ItemStack[0]);
+    public IItemHandlerModifiable getHandler(ItemStack stack) {
+        return new ItemStackItemHandler(() -> stack, s -> {}, 9);
     }
-
 }
