@@ -99,7 +99,8 @@ public class ExoticInputsListPanel {
     private static Flow createSecondRow(SyncHypervisor hypervisor) {
         IPanelHandler possibleInputsPanel = Panels.EXOTIC_POSSIBLE_INPUTS_LIST
             .getFrom(Panels.EXOTIC_INPUTS_LIST, hypervisor);
-        LongSyncValue tickerSyncer = SyncValues.EXOTIC_INPUTS_TICKER.lookupFrom(Panels.EXOTIC_INPUTS_LIST, hypervisor);
+        LongSyncValue tickerSyncer = SyncValues.EXOTIC_INPUTS_TICKER
+            .lookupFrom(Modules.EXOTIC, Panels.EXOTIC_INPUTS_LIST, hypervisor);
 
         Flow row = new Row().size(92, 18)
             .alignX(0.5f);

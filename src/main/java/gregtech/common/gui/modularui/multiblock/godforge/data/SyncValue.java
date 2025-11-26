@@ -24,30 +24,18 @@ public abstract class SyncValue<T extends ValueSyncHandler<?>> {
         this.inherited = inherited;
     }
 
-    public void registerFor(Panels forPanel, SyncHypervisor hypervisor) {
-        registerFor(getModule(hypervisor), forPanel, hypervisor);
-    }
-
     public void registerFor(Modules<?> forModule, Panels forPanel, SyncHypervisor hypervisor) {
-        T syncValue = create(hypervisor);
+        T syncValue = create(forModule, hypervisor);
         PanelSyncManager syncManager = hypervisor.getSyncManager(forModule, forPanel);
         syncManager.syncValue(getSyncId(forModule, forPanel, hypervisor), syncValue);
     }
 
-    public abstract T create(SyncHypervisor hypervisor);
-
-    public T lookupFrom(Panels fromPanel, SyncHypervisor hypervisor) {
-        return lookupFrom(getModule(hypervisor), fromPanel, hypervisor);
-    }
+    public abstract T create(Modules<?> forModule, SyncHypervisor hypervisor);
 
     @SuppressWarnings("unchecked")
     public T lookupFrom(Modules<?> fromModule, Panels fromPanel, SyncHypervisor hypervisor) {
         PanelSyncManager syncManager = hypervisor.getSyncManager(fromModule, fromPanel);
         return (T) syncManager.findSyncHandler(getSyncId(fromModule, fromPanel, hypervisor));
-    }
-
-    public void notifyUpdateFrom(Panels fromPanel, SyncHypervisor hypervisor) {
-        notifyUpdateFrom(getModule(hypervisor), fromPanel, hypervisor);
     }
 
     public void notifyUpdateFrom(Modules<?> fromModule, Panels fromPanel, SyncHypervisor hypervisor) {
@@ -60,10 +48,6 @@ public abstract class SyncValue<T extends ValueSyncHandler<?>> {
             return syncId;
         }
         return fromPanel.getPanelId(fromModule, hypervisor) + "/" + syncId;
-    }
-
-    protected Modules<?> getModule(SyncHypervisor hypervisor) {
-        return Modules.CORE;
     }
 
     /** Sync values exclusive to the main Godforge controller. */
@@ -82,12 +66,29 @@ public abstract class SyncValue<T extends ValueSyncHandler<?>> {
         }
 
         @Override
-        public T create(SyncHypervisor hypervisor) {
+        public T create(Modules<?> forModule, SyncHypervisor hypervisor) {
             if (inherited || syncValueSupplier == null) {
                 throw new IllegalStateException("Cannot create SyncValue for inherited syncer! ID: " + syncId);
             }
 
             return syncValueSupplier.apply(hypervisor.getData());
+        }
+
+        // Shortcuts for convenience
+        public void registerFor(Panels forPanel, SyncHypervisor hypervisor) {
+            registerFor(Modules.CORE, forPanel, hypervisor);
+        }
+
+        public T create(SyncHypervisor hypervisor) {
+            return create(Modules.CORE, hypervisor);
+        }
+
+        public T lookupFrom(Panels fromPanel, SyncHypervisor hypervisor) {
+            return lookupFrom(Modules.CORE, fromPanel, hypervisor);
+        }
+
+        public void notifyUpdateFrom(Panels fromPanel, SyncHypervisor hypervisor) {
+            notifyUpdateFrom(Modules.CORE, fromPanel, hypervisor);
         }
     }
 
@@ -95,31 +96,25 @@ public abstract class SyncValue<T extends ValueSyncHandler<?>> {
     public static class ModuleSyncValue<T extends ValueSyncHandler<?>, U extends MTEBaseModule> extends SyncValue<T> {
 
         private final Function<U, T> syncValueSupplier;
-        private final Modules<U> moduleType;
 
-        public ModuleSyncValue(String syncId, Modules<U> moduleType, Function<U, T> syncValueSupplier) {
+        public ModuleSyncValue(String syncId, Function<U, T> syncValueSupplier) {
             super(syncId, false);
             this.syncValueSupplier = syncValueSupplier;
-            this.moduleType = moduleType;
         }
 
         @Override
-        public T create(SyncHypervisor hypervisor) {
-            if (inherited || syncValueSupplier == null || moduleType == null) {
+        public T create(Modules<?> forModule, SyncHypervisor hypervisor) {
+            if (inherited || syncValueSupplier == null) {
                 throw new IllegalStateException("Cannot create SyncValue for inherited syncer! ID: " + syncId);
             }
 
-            U module = hypervisor.getModule(moduleType);
+            // noinspection unchecked
+            U module = hypervisor.getModule((Modules<U>) forModule);
             if (module == null) {
                 throw new IllegalStateException("Cannot create sync value for module with no module present");
             }
 
             return syncValueSupplier.apply(module);
-        }
-
-        @Override
-        protected Modules<?> getModule(SyncHypervisor hypervisor) {
-            return moduleType;
         }
     }
 
@@ -140,7 +135,7 @@ public abstract class SyncValue<T extends ValueSyncHandler<?>> {
         }
 
         @Override
-        public T create(SyncHypervisor hypervisor) {
+        public T create(Modules<?> forModule, SyncHypervisor hypervisor) {
             if (inherited) {
                 throw new IllegalStateException("Cannot create SyncValue for inherited syncer! ID: " + syncId);
             }
@@ -149,32 +144,12 @@ public abstract class SyncValue<T extends ValueSyncHandler<?>> {
                 return dataSupplier.apply(hypervisor.getData());
             }
 
-            MTEBaseModule module = hypervisor.getModule(Modules.ANY);
+            MTEBaseModule module = hypervisor.getModule(forModule);
             if (module != null && moduleSupplier != null) {
                 return moduleSupplier.apply(module);
             }
 
             throw new IllegalStateException("Cannot create sync value as hypervisor has no applicable state");
-        }
-
-        @Override
-        protected Modules<?> getModule(SyncHypervisor hypervisor) {
-            return hypervisor.getMainModule();
-        }
-
-        @Override
-        public void registerFor(Panels forPanel, SyncHypervisor hypervisor) {
-            throw new IllegalStateException("Must pass the relevant module directly!");
-        }
-
-        @Override
-        public T lookupFrom(Panels fromPanel, SyncHypervisor hypervisor) {
-            throw new IllegalStateException("Must pass the relevant module directly!");
-        }
-
-        @Override
-        public void notifyUpdateFrom(Panels fromPanel, SyncHypervisor hypervisor) {
-            throw new IllegalStateException("Must pass the relevant module directly!");
         }
     }
 }

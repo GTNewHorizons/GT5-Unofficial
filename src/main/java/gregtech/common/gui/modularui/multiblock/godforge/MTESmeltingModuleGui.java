@@ -30,7 +30,7 @@ public class MTESmeltingModuleGui extends MTEBaseModuleGui<MTESmeltingModule> {
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
 
-        SyncValues.SMELTING_MODE.registerFor(getMainPanel(), hypervisor);
+        SyncValues.SMELTING_MODE.registerFor(getModuleType(), getMainPanel(), hypervisor);
     }
 
     @Override
@@ -40,7 +40,8 @@ public class MTESmeltingModuleGui extends MTEBaseModuleGui<MTESmeltingModule> {
 
     @Override
     protected IWidget createExtraButton() {
-        BooleanSyncValue furnaceModeSyncer = SyncValues.SMELTING_MODE.lookupFrom(getMainPanel(), hypervisor);
+        BooleanSyncValue furnaceModeSyncer = SyncValues.SMELTING_MODE
+            .lookupFrom(getModuleType(), getMainPanel(), hypervisor);
         return new ButtonWidget<>().size(16)
             .background(GTGuiTextures.TT_BUTTON_CELESTIAL_32x32)
             .overlay(new DynamicDrawable(() -> {

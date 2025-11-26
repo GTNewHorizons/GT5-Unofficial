@@ -39,8 +39,8 @@ public class MTEExoticModuleGui extends MTEBaseModuleGui<MTEExoticModule> {
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
 
-        SyncValues.MAGMATTER_CAPABLE.registerFor(getMainPanel(), hypervisor);
-        SyncValues.MAGMATTER_MODE.registerFor(getMainPanel(), hypervisor);
+        SyncValues.MAGMATTER_CAPABLE.registerFor(getModuleType(), getMainPanel(), hypervisor);
+        SyncValues.MAGMATTER_MODE.registerFor(getModuleType(), getMainPanel(), hypervisor);
     }
 
     @Override
@@ -50,8 +50,10 @@ public class MTEExoticModuleGui extends MTEBaseModuleGui<MTEExoticModule> {
 
     @Override
     protected IWidget createExtraButton() {
-        BooleanSyncValue magmatterCapable = SyncValues.MAGMATTER_CAPABLE.lookupFrom(getMainPanel(), hypervisor);
-        BooleanSyncValue magmatterMode = SyncValues.MAGMATTER_MODE.lookupFrom(getMainPanel(), hypervisor);
+        BooleanSyncValue magmatterCapable = SyncValues.MAGMATTER_CAPABLE
+            .lookupFrom(getModuleType(), getMainPanel(), hypervisor);
+        BooleanSyncValue magmatterMode = SyncValues.MAGMATTER_MODE
+            .lookupFrom(getModuleType(), getMainPanel(), hypervisor);
 
         return new ButtonWidget<>().size(16)
             .background(GTGuiTextures.TT_BUTTON_CELESTIAL_32x32)

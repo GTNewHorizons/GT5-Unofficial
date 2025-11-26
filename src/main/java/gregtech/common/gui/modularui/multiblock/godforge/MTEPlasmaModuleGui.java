@@ -32,7 +32,7 @@ public class MTEPlasmaModuleGui extends MTEBaseModuleGui<MTEPlasmaModule> {
 
     @Override
     protected IWidget createExtraButton() {
-        IPanelHandler debugPanel = Panels.PLASMA_DEBUG.getFrom(getMainPanel(), hypervisor);
+        IPanelHandler debugPanel = Panels.PLASMA_DEBUG.getFrom(getModuleType(), getMainPanel(), hypervisor);
         return new ButtonWidget<>().size(16)
             .background(GTGuiTextures.TT_BUTTON_CELESTIAL_32x32)
             .overlay(GTGuiTextures.TT_OVERLAY_BUTTON_LOAF_MODE)

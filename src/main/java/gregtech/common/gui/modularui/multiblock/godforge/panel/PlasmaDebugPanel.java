@@ -42,7 +42,7 @@ public class PlasmaDebugPanel {
         column.child(
             new TextFieldWidget().setFormatAsInteger(true)
                 .setNumbers(0, Integer.MAX_VALUE)
-                .value(SyncValues.DEBUG_PLASMA_PARALLEL.create(hypervisor))
+                .value(SyncValues.DEBUG_PLASMA_PARALLEL.create(Modules.PLASMA, hypervisor))
                 .setTextAlignment(Alignment.CENTER)
                 .size(70, 16)
                 .tooltip(t -> t.addLine(translateToLocal("tt.gui.tooltip.plasma_module.debug_window.parallel")))
@@ -52,7 +52,7 @@ public class PlasmaDebugPanel {
         column.child(
             new TextFieldWidget().setFormatAsInteger(true)
                 .setNumbers(0, 2)
-                .value(SyncValues.DEBUG_FUSION_TIER.create(hypervisor))
+                .value(SyncValues.DEBUG_FUSION_TIER.create(Modules.PLASMA, hypervisor))
                 .setTextAlignment(Alignment.CENTER)
                 .size(16)
                 .tooltip(t -> t.addLine(translateToLocal("tt.gui.tooltip.plasma_module.debug_window.fusion_tier")))

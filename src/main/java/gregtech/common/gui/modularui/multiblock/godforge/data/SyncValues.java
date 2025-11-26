@@ -249,67 +249,54 @@ public class SyncValues {
 
     public static final ModuleSyncValue<BooleanSyncValue, MTEBaseModule> CONNECTION_STATUS = new ModuleSyncValue<>(
         "fog.sync.connection_status",
-        Modules.ANY,
         module -> new BooleanSyncValue(module::isConnected, module::setConnected));
 
     public static final ModuleSyncValue<BooleanSyncValue, MTESmeltingModule> SMELTING_MODE = new ModuleSyncValue<>(
         "fog.sync.smelting_mode",
-        Modules.SMELTING,
         module -> new BooleanSyncValue(module::isFurnaceModeOn, module::setFurnaceMode));
 
     public static final ModuleSyncValue<IntSyncValue, MTEPlasmaModule> DEBUG_PLASMA_PARALLEL = new ModuleSyncValue<>(
         "fog.sync.debug_plasma_parallel",
-        Modules.PLASMA,
         module -> new IntSyncValue(module::getInputMaxParallel, module::setInputMaxParallel));
 
     public static final ModuleSyncValue<IntSyncValue, MTEPlasmaModule> DEBUG_FUSION_TIER = new ModuleSyncValue<>(
         "fog.sync.debug_fusion_tier",
-        Modules.PLASMA,
         module -> new IntSyncValue(module::getPlasmaTier, module::setPlasmaTier));
 
     public static final ModuleSyncValue<BooleanSyncValue, MTEPlasmaModule> DEBUG_MULTI_STEP = new ModuleSyncValue<>(
         "fog.sync.debug_multi_step",
-        Modules.PLASMA,
         module -> new BooleanSyncValue(module::isMultiStepPlasma, module::setMultiStepPlasma));
 
     public static final ModuleSyncValue<BooleanSyncValue, MTEExoticModule> MAGMATTER_CAPABLE = new ModuleSyncValue<>(
         "fog.sync.magmatter_capable",
-        Modules.EXOTIC,
         module -> new BooleanSyncValue(module::isMagmatterCapable, module::setMagmatterCapable));
 
     public static final ModuleSyncValue<BooleanSyncValue, MTEExoticModule> MAGMATTER_MODE = new ModuleSyncValue<>(
         "fog.sync.magmatter_mode",
-        Modules.EXOTIC,
         module -> new BooleanSyncValue(module::isMagmatterModeOn, module::setMagmatterMode));
 
     public static final ModuleSyncValue<LongSyncValue, MTEExoticModule> EXOTIC_INPUTS_TICKER = new ModuleSyncValue<>(
         "fog.sync.exotic_inputs_ticker",
-        Modules.EXOTIC,
         module -> new LongSyncValue(module::getTicker, module::setTicker));
 
     public static final ModuleSyncValue<IntSyncValue, MTEBaseModule> MODULE_CALCULATED_MAX_PARALLEL = new ModuleSyncValue<>(
         "fog.sync.module_calculated_max_parallel",
-        Modules.ANY,
         module -> new IntSyncValue(module::getCalculatedMaxParallel, module::setCalculatedMaxParallel));
 
     public static final ModuleSyncValue<IntSyncValue, MTEBaseModule> MODULE_SET_MAX_PARALLEL = new ModuleSyncValue<>(
         "fog.sync.module_set_max_parallel",
-        Modules.ANY,
         module -> new IntSyncValue(module::getPowerPanelMaxParallel, module::setPowerPanelMaxParallel));
 
     public static final ModuleSyncValue<BooleanSyncValue, MTEBaseModule> MODULE_ALWAYS_MAX_PARALLEL = new ModuleSyncValue<>(
         "fog.sync.module_always_max_parallel",
-        Modules.ANY,
         module -> new BooleanSyncValue(module::isAlwaysMaxParallel, module::setAlwaysMaxParallel));
 
     public static final ModuleSyncValue<LongSyncValue, MTEBaseModule> MODULE_PROCESSING_VOLTAGE = new ModuleSyncValue<>(
         "fog.sync.module_processing_voltage",
-        Modules.ANY,
         module -> new LongSyncValue(module::getProcessingVoltage, module::setProcessingVoltage));
 
     public static final ModuleSyncValue<BooleanSyncValue, MTEBaseModule> MODULE_VOLTAGE_CONFIG = new ModuleSyncValue<>(
         "fog.sync.module_voltage_config",
-        Modules.ANY,
         module -> new BooleanSyncValue(module::getVoltageConfig, module::setVoltageConfig));
 
     // spotless:on
