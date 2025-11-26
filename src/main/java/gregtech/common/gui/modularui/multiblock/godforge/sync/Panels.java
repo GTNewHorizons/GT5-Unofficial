@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui.multiblock.godforge.data;
+package gregtech.common.gui.modularui.multiblock.godforge.sync;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -24,7 +24,6 @@ import gregtech.common.gui.modularui.multiblock.godforge.panel.StarCosmeticsPane
 import gregtech.common.gui.modularui.multiblock.godforge.panel.StatisticsPanel;
 import gregtech.common.gui.modularui.multiblock.godforge.panel.UpgradeTreePanel;
 import gregtech.common.gui.modularui.multiblock.godforge.panel.VoltageConfigPanel;
-import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
 
 public enum Panels {
 

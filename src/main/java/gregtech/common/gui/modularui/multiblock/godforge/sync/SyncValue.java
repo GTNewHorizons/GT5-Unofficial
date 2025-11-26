@@ -1,11 +1,10 @@
-package gregtech.common.gui.modularui.multiblock.godforge.data;
+package gregtech.common.gui.modularui.multiblock.godforge.sync;
 
 import java.util.function.Function;
 
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.ValueSyncHandler;
 
-import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
 import tectech.thing.metaTileEntity.multi.godforge.MTEBaseModule;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 
