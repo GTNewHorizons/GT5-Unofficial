@@ -244,7 +244,6 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                             .dot(1)
                             .build(),
                         allCasingsElement))
-                // .addElement('X', allCasingsElement)
                 .addElement(
                     'M',
                     GTStructureChannels.TIER_MACHINE_CASING.use(
