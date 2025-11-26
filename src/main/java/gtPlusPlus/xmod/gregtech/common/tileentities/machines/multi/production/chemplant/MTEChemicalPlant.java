@@ -164,12 +164,12 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
             .addController("Bottom Center")
             .addOtherStructurePart("Catalyst Housing", "Bottom Casing")
             .addStructureHint("item.GTPP.catalyst_housing.name", 1)
-            .addInputBus("Bottom Casing", 1)
-            .addOutputBus("Bottom Casing", 1)
-            .addInputHatch("Bottom Casing", 1)
-            .addOutputHatch("Bottom Casing", 1)
-            .addEnergyHatch("Bottom Casing", 1)
-            .addMaintenanceHatch("Bottom Casing", 1)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addInputHatch("Any Casing", 1)
+            .addOutputHatch("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
             .addSubChannelUsage(GTStructureChannels.METAL_MACHINE_CASING, "metal machine casing (minimum 70)")
             .addSubChannelUsage(GTStructureChannels.TIER_MACHINE_CASING)
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
@@ -214,12 +214,12 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                     mName,
                     transpose(
                         new String[][] {
-                            { "XXXXXXX", "XXXXXXX", "XXXXXXX", "XXXXXXX", "XXXXXXX", "XXXXXXX", "XXXXXXX" },
-                            { "X     X", " MMMMM ", " MHHHM ", " MHHHM ", " MHHHM ", " MMMMM ", "X     X" },
-                            { "X     X", "       ", "  PPP  ", "  PPP  ", "  PPP  ", "       ", "X     X" },
-                            { "X     X", "       ", "  HHH  ", "  HHH  ", "  HHH  ", "       ", "X     X" },
-                            { "X     X", "       ", "  PPP  ", "  PPP  ", "  PPP  ", "       ", "X     X" },
-                            { "X     X", " MMMMM ", " MHHHM ", " MHHHM ", " MHHHM ", " MMMMM ", "X     X" },
+                            { "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC" },
+                            { "C     C", " MMMMM ", " MHHHM ", " MHHHM ", " MHHHM ", " MMMMM ", "C     C" },
+                            { "C     C", "       ", "  PPP  ", "  PPP  ", "  PPP  ", "       ", "C     C" },
+                            { "C     C", "       ", "  HHH  ", "  HHH  ", "  HHH  ", "       ", "C     C" },
+                            { "C     C", "       ", "  PPP  ", "  PPP  ", "  PPP  ", "       ", "C     C" },
+                            { "C     C", " MMMMM ", " MHHHM ", " MHHHM ", " MHHHM ", " MMMMM ", "C     C" },
                             { "CCC~CCC", "CMMMMMC", "CMMMMMC", "CMMMMMC", "CMMMMMC", "CMMMMMC", "CCCCCCC" }, }))
                 .addElement(
                     'C',
@@ -244,7 +244,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                             .dot(1)
                             .build(),
                         allCasingsElement))
-                .addElement('X', allCasingsElement)
+                // .addElement('X', allCasingsElement)
                 .addElement(
                     'M',
                     GTStructureChannels.TIER_MACHINE_CASING.use(
