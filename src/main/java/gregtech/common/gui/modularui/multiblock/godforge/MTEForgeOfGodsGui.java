@@ -76,6 +76,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
         SyncValues.FORMATTER.registerFor(Panels.MAIN, hypervisor);
         SyncValues.UPGRADES_LIST.registerFor(Panels.MAIN, hypervisor);
         SyncValues.RING_AMOUNT.registerFor(Panels.MAIN, hypervisor);
+        SyncValues.MODULE_MANAGER.registerFor(Panels.MAIN, hypervisor);
     }
 
     @Override
@@ -122,7 +123,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
 
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-        return new ListWidget<>().widthRel(1)
+        ListWidget<IWidget, ?> list = new ListWidget<>().widthRel(1)
             .align(Alignment.TopCenter)
             .child(IKey.dynamic(() -> {
                 if (data.getInternalBattery() == 0) {
@@ -149,6 +150,53 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
                 .marginTop(2)
                 .alignX(0.5f)
                 .widthRel(1));
+
+        // todo testing
+        Flow row = new Row().coverChildren()
+            .marginTop(4)
+            .childPadding(2)
+            .alignX(0.5f);
+        for (int i = 0; i < 8; i++) {
+            final int ii = i;
+            row.child(
+                new ButtonWidget<>().size(12)
+                    .background(IDrawable.EMPTY)
+                    .overlay(IKey.dynamic(() -> {
+                        EnumChatFormatting color = EnumChatFormatting.RED;
+                        if (data.getModuleManager()
+                            .getModuleAt(ii) != null) {
+                            color = EnumChatFormatting.GREEN;
+                        }
+                        return color + "" + ii;
+                    }))
+                    .onMousePressed(d -> {
+                        return true; // todo
+                    }));
+        }
+        Flow row2 = new Row().coverChildren()
+            .childPadding(2)
+            .alignX(0.5f);
+        for (int i = 8; i < 16; i++) {
+            final int ii = i;
+            row2.child(
+                new ButtonWidget<>().size(12)
+                    .background(IDrawable.EMPTY)
+                    .overlay(IKey.dynamic(() -> {
+                        EnumChatFormatting color = EnumChatFormatting.RED;
+                        if (data.getModuleManager()
+                            .getModuleAt(ii) != null) {
+                            color = EnumChatFormatting.GREEN;
+                        }
+                        return color + "" + ii;
+                    }))
+                    .onMousePressed(d -> {
+                        return true; // todo
+                    }));
+        }
+        list.child(row);
+        list.child(row2);
+
+        return list;
     }
 
     @Override
