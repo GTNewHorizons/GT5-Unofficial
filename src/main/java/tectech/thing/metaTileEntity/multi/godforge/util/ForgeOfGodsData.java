@@ -49,6 +49,8 @@ public class ForgeOfGodsData {
     public static final int MAX_STELLAR_PLASMA_FACTOR = 181;
     public static final int MAX_STELLAR_PLASMA_FACTOR_DISCOUNTED = 184;
 
+    private final ModuleManager moduleManager;
+
     private int fuelConsumptionFactor = DEFAULT_FUEL_CONSUMPTION_FACTOR;
     private int selectedFuelType;
     private long internalBattery;
@@ -92,6 +94,14 @@ public class ForgeOfGodsData {
     private String selectedStarColor = DEFAULT_STAR_COLOR;
     private int rotationSpeed = DEFAULT_ROTATION_SPEED;
     private int starSize = DEFAULT_STAR_SIZE;
+
+    public ForgeOfGodsData(ModuleManager moduleManager) {
+        this.moduleManager = moduleManager;
+    }
+
+    public ModuleManager getModuleManager() {
+        return moduleManager;
+    }
 
     public int getFuelConsumptionFactor() {
         return fuelConsumptionFactor;

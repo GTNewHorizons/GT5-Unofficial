@@ -76,6 +76,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
         SyncValues.FORMATTER.registerFor(Panels.MAIN, hypervisor);
         SyncValues.UPGRADES_LIST.registerFor(Panels.MAIN, hypervisor);
         SyncValues.RING_AMOUNT.registerFor(Panels.MAIN, hypervisor);
+        SyncValues.MODULE_MANAGER.registerFor(Panels.MAIN, hypervisor);
     }
 
     @Override
@@ -126,39 +127,80 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
 
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-        return super.createTerminalTextWidget(syncManager, parent).child(
-            Flow.column()
-                .mainAxisAlignment(Alignment.MainAxis.START)
-                .crossAxisAlignment(Alignment.CrossAxis.CENTER)
-                .paddingTop(4)
-                .expanded()
-                .fullWidth()
-                .setEnabledIf(w -> multiblock.mMachine)
-                .child(IKey.dynamic(() -> {
-                    if (data.getInternalBattery() == 0) {
-                        return translateToLocal("gt.blockmachines.multimachine.FOG.storedstartupfuel");
-                    }
-                    return translateToLocal("gt.blockmachines.multimachine.FOG.storedfuel");
-                })
-                    .color(Color.WHITE.main)
-                    .alignment(Alignment.CENTER)
-                    .asWidget()
-                    .fullWidth())
-                .child(IKey.dynamic(() -> {
-                    Formatters formatter = data.getFormatter();
-                    if (data.getInternalBattery() == 0) {
-                        return formatter.format(data.getStellarFuelAmount()) + "/"
-                            + formatter.format(data.getNeededStartupFuel());
-                    }
-                    return formatter.format(data.getInternalBattery()) + "/"
-                        + formatter.format(data.getMaxBatteryCharge());
-                })
-                    .color(Color.WHITE.main)
-                    .alignment(Alignment.CENTER)
-                    .asWidget()
-                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
-                    .marginTop(4)
-                    .fullWidth()));
+        ListWidget<IWidget, ?> list = new ListWidget<>().widthRel(1)
+            .align(Alignment.TopCenter)
+            .child(IKey.dynamic(() -> {
+                if (data.getInternalBattery() == 0) {
+                    return translateToLocal("gt.blockmachines.multimachine.FOG.storedstartupfuel");
+                }
+                return translateToLocal("gt.blockmachines.multimachine.FOG.storedfuel");
+            })
+                .color(Color.WHITE.main)
+                .alignment(Alignment.CENTER)
+                .asWidget()
+                .marginTop(1)
+                .widthRel(1))
+            .child(IKey.dynamic(() -> {
+                Formatters formatter = data.getFormatter();
+                if (data.getInternalBattery() == 0) {
+                    return formatter.format(data.getStellarFuelAmount()) + "/"
+                        + formatter.format(data.getNeededStartupFuel());
+                }
+                return formatter.format(data.getInternalBattery()) + "/" + formatter.format(data.getMaxBatteryCharge());
+            })
+                .color(Color.WHITE.main)
+                .alignment(Alignment.CENTER)
+                .asWidget()
+                .marginTop(2)
+                .alignX(0.5f)
+                .widthRel(1));
+
+        // todo testing
+        Flow row = new Row().coverChildren()
+            .marginTop(4)
+            .childPadding(2)
+            .alignX(0.5f);
+        for (int i = 0; i < 8; i++) {
+            final int ii = i;
+            row.child(
+                new ButtonWidget<>().size(12)
+                    .background(IDrawable.EMPTY)
+                    .overlay(IKey.dynamic(() -> {
+                        EnumChatFormatting color = EnumChatFormatting.RED;
+                        if (data.getModuleManager()
+                            .getModuleAt(ii) != null) {
+                            color = EnumChatFormatting.GREEN;
+                        }
+                        return color + "" + ii;
+                    }))
+                    .onMousePressed(d -> {
+                        return true; // todo
+                    }));
+        }
+        Flow row2 = new Row().coverChildren()
+            .childPadding(2)
+            .alignX(0.5f);
+        for (int i = 8; i < 16; i++) {
+            final int ii = i;
+            row2.child(
+                new ButtonWidget<>().size(12)
+                    .background(IDrawable.EMPTY)
+                    .overlay(IKey.dynamic(() -> {
+                        EnumChatFormatting color = EnumChatFormatting.RED;
+                        if (data.getModuleManager()
+                            .getModuleAt(ii) != null) {
+                            color = EnumChatFormatting.GREEN;
+                        }
+                        return color + "" + ii;
+                    }))
+                    .onMousePressed(d -> {
+                        return true; // todo
+                    }));
+        }
+        list.child(row);
+        list.child(row2);
+
+        return list;
     }
 
     @Override
