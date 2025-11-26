@@ -6,7 +6,9 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.value.IntValue;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
@@ -39,20 +41,24 @@ public class PlasmaDebugPanel {
             .childPadding(2);
 
         // Debug max parallel
+        IntSyncValue plasmaParallelSyncer = SyncValues.DEBUG_PLASMA_PARALLEL
+            .lookupFrom(Modules.PLASMA, Panels.PLASMA_DEBUG, hypervisor);
         column.child(
             new TextFieldWidget().setFormatAsInteger(true)
                 .setNumbers(0, Integer.MAX_VALUE)
-                .value(SyncValues.DEBUG_PLASMA_PARALLEL.create(Modules.PLASMA, hypervisor))
+                .value(new IntValue.Dynamic(plasmaParallelSyncer::getIntValue, plasmaParallelSyncer::setIntValue))
                 .setTextAlignment(Alignment.CENTER)
                 .size(70, 16)
                 .tooltip(t -> t.addLine(translateToLocal("tt.gui.tooltip.plasma_module.debug_window.parallel")))
                 .tooltipShowUpTimer(TOOLTIP_DELAY));
 
         // Debug plasma tier
+        IntSyncValue fusionTierSyncer = SyncValues.DEBUG_FUSION_TIER
+            .lookupFrom(Modules.PLASMA, Panels.PLASMA_DEBUG, hypervisor);
         column.child(
             new TextFieldWidget().setFormatAsInteger(true)
                 .setNumbers(0, 2)
-                .value(SyncValues.DEBUG_FUSION_TIER.create(Modules.PLASMA, hypervisor))
+                .value(new IntValue.Dynamic(fusionTierSyncer::getIntValue, fusionTierSyncer::setIntValue))
                 .setTextAlignment(Alignment.CENTER)
                 .size(16)
                 .tooltip(t -> t.addLine(translateToLocal("tt.gui.tooltip.plasma_module.debug_window.fusion_tier")))
@@ -84,5 +90,7 @@ public class PlasmaDebugPanel {
 
     private static void registerSyncValues(SyncHypervisor hypervisor) {
         SyncValues.DEBUG_MULTI_STEP.registerFor(Modules.PLASMA, Panels.PLASMA_DEBUG, hypervisor);
+        SyncValues.DEBUG_PLASMA_PARALLEL.registerFor(Modules.PLASMA, Panels.PLASMA_DEBUG, hypervisor);
+        SyncValues.DEBUG_FUSION_TIER.registerFor(Modules.PLASMA, Panels.PLASMA_DEBUG, hypervisor);
     }
 }
