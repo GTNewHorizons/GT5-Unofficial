@@ -230,20 +230,20 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
         Logger.WARNING("Dust Mixer Recipe: " + material.getLocalizedName() + " - Success");
     }
 
-    public static boolean addMixerRecipe_Standalone(final Material material) {
+    public static void addMixerRecipe_Standalone(final Material material) {
         final ItemStack[] inputStacks = material.getMaterialComposites();
         final ItemStack outputStacks = material.getDust(material.smallestStackSizeWhenProcessing);
         // Is this a composite?
         if (inputStacks == null) {
             Logger.WARNING("InputStacks == NUll - " + material.getLocalizedName());
-            return false;
+            return;
         }
 
         // Is this a composite?
         Logger.WARNING("mixer length: " + inputStacks.length);
         if (!((inputStacks.length >= 1) && (inputStacks.length <= 4))) {
             Logger.WARNING("InputStacks is out range 1-4 - " + material.getLocalizedName());
-            return false;
+            return;
         }
         // Log Input items
         Logger.WARNING(ItemUtils.getArrayStackNames(inputStacks));
@@ -253,7 +253,7 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
         // Is smallest ratio invalid?
         if (inputStackSize == null) {
             Logger.WARNING("inputStackSize == NUll - " + material.getLocalizedName());
-            return true;
+            return;
         }
 
         // set stack sizes on an input ItemStack[]
@@ -266,27 +266,12 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
         // Relog input values, with stack sizes
         Logger.WARNING(ItemUtils.getArrayStackNames(inputStacks));
 
-        // Get us four ItemStacks to input into the mixer
-        ItemStack input1, input2, input3, input4;
-        input1 = inputStacks[0];
-        input2 = (inputStacks.length >= 2) ? (input2 = (inputStacks[1] == null) ? null : inputStacks[1]) : null;
-        input3 = (inputStacks.length >= 3) ? (input3 = (inputStacks[2] == null) ? null : inputStacks[2]) : null;
-        input4 = (inputStacks.length >= 4) ? (input4 = (inputStacks[3] == null) ? null : inputStacks[3]) : null;
+        // Clean up nulls
+        ItemStack[] cleanedInputs = Arrays.stream(inputStacks)
+            .filter(Objects::nonNull)
+            .toArray(ItemStack[]::new);
 
-        boolean addCircuit = false;
-        if (inputStacks.length == 1) {
-            input2 = input1;
-            addCircuit = true;
-        } else if (inputStacks.length == 2) {
-            input3 = input2;
-            input2 = input1;
-            addCircuit = true;
-        } else if (inputStacks.length == 3) {
-            input4 = input3;
-            input3 = input2;
-            input2 = input1;
-            addCircuit = true;
-        }
+        boolean addCircuit = inputStacks.length <= 3;
 
         // Add mixer Recipe
         FluidStack oxygen = GTValues.NF;
@@ -332,11 +317,11 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
         GTRecipeBuilder builder;
         if (oxygen == null) {
             builder = GTValues.RA.stdBuilder()
-                .itemInputs(input1, input2, input3, input4)
+                .itemInputs(cleanedInputs)
                 .itemOutputs(outputStacks);
         } else {
             builder = GTValues.RA.stdBuilder()
-                .itemInputs(input1, input2, input3, input4)
+                .itemInputs(cleanedInputs)
                 .itemOutputs(outputStacks)
                 .fluidInputs(oxygen);
         }
@@ -349,7 +334,6 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
 
         Logger.WARNING("Dust Mixer Recipe: " + material.getLocalizedName() + " - Success");
 
-        return true;
     }
 
     public static boolean generatePackagerRecipes(Material aMatInfo) {
