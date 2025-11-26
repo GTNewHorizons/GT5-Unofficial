@@ -3,7 +3,6 @@ package gtPlusPlus.core.recipe;
 import static goodgenerator.loader.Loaders.supercriticalFluidTurbineCasing;
 import static gregtech.api.enums.Mods.EtFuturumRequiem;
 import static gregtech.api.enums.Mods.EternalSingularity;
-import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.RemoteIO;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
