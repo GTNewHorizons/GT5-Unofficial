@@ -39,7 +39,6 @@ import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.setM
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -60,6 +59,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import cpw.mods.fml.relauncher.Side;
@@ -101,14 +101,14 @@ import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.godforge.structure.ForgeOfGodsRingsStructureString;
 import tectech.thing.metaTileEntity.multi.godforge.structure.ForgeOfGodsStructureString;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
+import tectech.thing.metaTileEntity.multi.godforge.util.ModuleManager;
 
 public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstructable {
 
     private static IIconContainer ScreenON;
 
-    public ArrayList<MTEBaseModule> moduleHatches = new ArrayList<>();
-
     private final ForgeOfGodsData data = new ForgeOfGodsData();
+    private final ModuleManager moduleManager = new ModuleManager();
 
     private static final int TEXTURE_INDEX = 960;
     private static final long SOUND_LOOP_LENGTH = 440;
@@ -179,6 +179,14 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
         return STRUCTURE_DEFINITION;
     }
 
+    private static IStructureElement<MTEForgeOfGods> getModuleElement(int moduleIndex) {
+        return HatchElementBuilder.<MTEForgeOfGods>builder()
+            .atLeast(ModuleElement.VALUES[moduleIndex])
+            .casingIndex(TEXTURE_INDEX)
+            .dot(2)
+            .buildAndChain(GodforgeCasings, 0);
+    }
+
     public static final IStructureDefinition<MTEForgeOfGods> STRUCTURE_DEFINITION = IStructureDefinition
         .<MTEForgeOfGods>builder()
         .addShape(STRUCTURE_PIECE_MAIN, ForgeOfGodsStructureString.MAIN_STRUCTURE)
@@ -204,15 +212,25 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
         .addElement('G', ofBlock(GodforgeCasings, 5))
         .addElement('H', ofBlock(BlockGodforgeGlass.INSTANCE, 0))
         .addElement('I', ofBlock(GodforgeCasings, 7))
-        .addElement(
-            'J',
-            HatchElementBuilder.<MTEForgeOfGods>builder()
-                .atLeast(moduleElement.Module)
-                .casingIndex(TEXTURE_INDEX)
-                .hint(2)
-                .buildAndChain(GodforgeCasings, 0))
+        // J previously used, no longer used
         .addElement('K', ofBlock(GodforgeCasings, 6))
         .addElement('L', isAir())
+        .addElement('M', getModuleElement(0))
+        .addElement('N', getModuleElement(1))
+        .addElement('O', getModuleElement(2))
+        .addElement('P', getModuleElement(3))
+        .addElement('Q', getModuleElement(4))
+        .addElement('R', getModuleElement(5))
+        .addElement('S', getModuleElement(6))
+        .addElement('T', getModuleElement(7))
+        .addElement('U', getModuleElement(8))
+        .addElement('V', getModuleElement(9))
+        .addElement('W', getModuleElement(10))
+        .addElement('X', getModuleElement(11))
+        .addElement('Y', getModuleElement(12))
+        .addElement('Z', getModuleElement(13))
+        .addElement('1', getModuleElement(14))
+        .addElement('2', getModuleElement(15))
         .build();
 
     public MTEForgeOfGods(int aID, String aName, String aNameRegional) {
@@ -281,8 +299,13 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
     @Override
     public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
         List<StructureError> errors) {
+        moduleManager.startQueueForRemoval();
+        boolean retVal = checkMachine_FOG();
+        moduleManager.endQueueForRemoval();
+        return retVal;
+    }
 
-        moduleHatches.clear();
+    private boolean checkMachine_FOG() {
         // Check structure of multi
         if (data.isRenderActive()) {
             if (!checkPiece(STRUCTURE_PIECE_SHAFT, 63, 14, 1, errors)
@@ -444,9 +467,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
                 }
 
                 // Do module calculations and checks
-                if (!moduleHatches.isEmpty() && data.getInternalBattery() > 0
-                    && moduleHatches.size() <= maxModuleCount) {
-                    for (MTEBaseModule module : moduleHatches) {
+                int installedModules = moduleManager.getInstalledModules();
+                if (installedModules > 0 && data.getInternalBattery() > 0 && installedModules <= maxModuleCount) {
+                    for (MTEBaseModule module : moduleManager.getModules()) {
                         if (allowModuleConnection(module, data)) {
                             module.connect();
                             calculateMaxHeatForModules(module, data);
@@ -467,10 +490,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
                             module.disconnect();
                         }
                     }
-                } else if (moduleHatches.size() > maxModuleCount) {
-                    for (MTEBaseModule module : moduleHatches) {
-                        module.disconnect();
-                    }
+                } else if (installedModules > maxModuleCount) {
+                    moduleManager.disconnectAll();
                 }
                 if (mEfficiency < 0) mEfficiency = 0;
                 endRecipeProcessing();
@@ -533,7 +554,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
         reduceBattery(updatedFuelConsumptionFactor);
     }
 
-    public boolean addModuleToMachineList(IGregTechTileEntity tileEntity, int baseCasingIndex) {
+    public boolean addModuleToMachineList(IGregTechTileEntity tileEntity, int moduleIndex) {
         if (tileEntity == null) {
             return false;
         }
@@ -541,30 +562,34 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
         if (metaTileEntity == null) {
             return false;
         }
-        if (metaTileEntity instanceof MTEBaseModule) {
-            return moduleHatches.add((MTEBaseModule) metaTileEntity);
+        if (metaTileEntity instanceof MTEBaseModule module) {
+            return moduleManager.installModule(module, moduleIndex);
         }
         return false;
     }
 
-    public enum moduleElement implements IHatchElement<MTEForgeOfGods> {
+    public enum ModuleElement implements IHatchElement<MTEForgeOfGods> {
 
-        Module(MTEForgeOfGods::addModuleToMachineList, MTEBaseModule.class) {
+        Module0,
+        Module1,
+        Module2,
+        Module3,
+        Module4,
+        Module5,
+        Module6,
+        Module7,
+        Module8,
+        Module9,
+        Module10,
+        Module11,
+        Module12,
+        Module13,
+        Module14,
+        Module15;
 
-            @Override
-            public long count(MTEForgeOfGods tileEntity) {
-                return tileEntity.moduleHatches.size();
-            }
-        };
+        private static final ModuleElement[] VALUES = values();
 
-        private final List<Class<? extends IMetaTileEntity>> mteClasses;
-        private final IGTHatchAdder<MTEForgeOfGods> adder;
-
-        @SafeVarargs
-        moduleElement(IGTHatchAdder<MTEForgeOfGods> adder, Class<? extends IMetaTileEntity>... mteClasses) {
-            this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
-            this.adder = adder;
-        }
+        private final List<Class<? extends IMetaTileEntity>> mteClasses = Arrays.asList(MTEBaseModule.class);
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
@@ -573,7 +598,12 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
 
         @Override
         public IGTHatchAdder<? super MTEForgeOfGods> adder() {
-            return adder;
+            return (mte, te, i) -> mte.addModuleToMachineList(te, ordinal());
+        }
+
+        @Override
+        public long count(MTEForgeOfGods mte) {
+            return mte.moduleManager.getModuleAt(ordinal()) == null ? 0 : 1;
         }
     }
 
@@ -750,18 +780,14 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
                 "tt.infodata.fog.upgrades.unlocked",
                 data.getUpgrades()
                     .getTotalActiveUpgrades()));
-        str.add(IGregTechDeviceInformation.encode("tt.infodata.fog.connected", moduleHatches.size()));
+        str.add(IGregTechDeviceInformation.encode("tt.infodata.fog.connected", moduleManager.getInstalledModules()));
         str.add(SCANNER_INFO_BAR);
         return str.toArray(new String[0]);
     }
 
     @Override
     public void onRemoval() {
-        if (moduleHatches != null && !moduleHatches.isEmpty()) {
-            for (MTEBaseModule module : moduleHatches) {
-                module.disconnect();
-            }
-        }
+        moduleManager.disconnectAll();
         super.onRemoval();
     }
 
@@ -887,7 +913,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
         int plasma = 0;
         int exotic = 0;
         int exoticMagmatter = 0;
-        for (MTEBaseModule module : moduleHatches) {
+        for (MTEBaseModule module : moduleManager.getModules()) {
             if (module instanceof MTESmeltingModule) {
                 uniqueModuleCount[0] = 1;
                 smelting++;
@@ -977,11 +1003,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
     public void reduceBattery(long amount) {
         if (data.getInternalBattery() - amount <= 0) {
             data.setInternalBattery(0);
-            if (!moduleHatches.isEmpty()) {
-                for (MTEBaseModule module : moduleHatches) {
-                    module.disconnect();
-                }
-            }
+            moduleManager.disconnectAll();
             destroyRenderer();
         } else {
             data.setInternalBattery(data.getInternalBattery() - amount);
