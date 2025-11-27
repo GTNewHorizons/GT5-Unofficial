@@ -1,5 +1,10 @@
 package gregtech.common.gui.modularui.multiblock.godforge.sync;
 
+import gregtech.common.gui.modularui.multiblock.godforge.MTEBaseModuleGui;
+import gregtech.common.gui.modularui.multiblock.godforge.MTEExoticModuleGui;
+import gregtech.common.gui.modularui.multiblock.godforge.MTEMoltenModuleGui;
+import gregtech.common.gui.modularui.multiblock.godforge.MTEPlasmaModuleGui;
+import gregtech.common.gui.modularui.multiblock.godforge.MTESmeltingModuleGui;
 import tectech.thing.metaTileEntity.multi.godforge.MTEBaseModule;
 import tectech.thing.metaTileEntity.multi.godforge.MTEExoticModule;
 import tectech.thing.metaTileEntity.multi.godforge.MTEMoltenModule;
@@ -10,7 +15,7 @@ public final class Modules<T extends MTEBaseModule> {
 
     // spotless:off
 
-    public static final Modules<MTEBaseModule> CORE = new Modules<>("", null, null);
+    public static final Modules<MTEBaseModule> CORE = new Modules<>("core", null, null);
     public static final Modules<MTEBaseModule> ANY = new Modules<>("any", null, MTEBaseModule.class);
 
     public static final Modules<MTESmeltingModule> SMELTING = new Modules<>("smelting", Panels.MAIN_SMELTING, MTESmeltingModule.class);
@@ -40,5 +45,21 @@ public final class Modules<T extends MTEBaseModule> {
 
     public String getModuleId() {
         return "fog.module." + this.moduleId;
+    }
+
+    public static Modules<?> getModule(MTEBaseModule multiblock) {
+        if (multiblock instanceof MTESmeltingModule) return SMELTING;
+        if (multiblock instanceof MTEMoltenModule) return MOLTEN;
+        if (multiblock instanceof MTEPlasmaModule) return PLASMA;
+        if (multiblock instanceof MTEExoticModule) return EXOTIC;
+        return null;
+    }
+
+    public static MTEBaseModuleGui<?> createSubpanelGui(MTEBaseModule multiblock, SyncHypervisor hypervisor) {
+        if (multiblock instanceof MTESmeltingModule smelting) return new MTESmeltingModuleGui(smelting, hypervisor);
+        if (multiblock instanceof MTEMoltenModule molten) return new MTEMoltenModuleGui(molten, hypervisor);
+        if (multiblock instanceof MTEPlasmaModule plasma) return new MTEPlasmaModuleGui(plasma, hypervisor);
+        if (multiblock instanceof MTEExoticModule exotic) return new MTEExoticModuleGui(exotic, hypervisor);
+        return null;
     }
 }

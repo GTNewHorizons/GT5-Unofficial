@@ -11,6 +11,7 @@ import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.ItemDrawable;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 
 import gregtech.api.enums.Materials;
@@ -19,6 +20,7 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.Modules;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.Panels;
+import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncHypervisor;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncValues;
 import tectech.thing.CustomItemList;
 import tectech.thing.metaTileEntity.multi.godforge.MTEExoticModule;
@@ -27,6 +29,10 @@ public class MTEExoticModuleGui extends MTEBaseModuleGui<MTEExoticModule> {
 
     public MTEExoticModuleGui(MTEExoticModule multiblock) {
         super(multiblock);
+    }
+
+    public MTEExoticModuleGui(MTEExoticModule multiblock, SyncHypervisor hypervisor) {
+        super(multiblock, hypervisor);
     }
 
     @Override
@@ -48,7 +54,7 @@ public class MTEExoticModuleGui extends MTEBaseModuleGui<MTEExoticModule> {
     }
 
     @Override
-    protected IWidget createExtraButton() {
+    protected Widget<?> createExtraButton() {
         BooleanSyncValue magmatterCapable = SyncValues.MAGMATTER_CAPABLE
             .lookupFrom(getModuleType(), getMainPanel(), hypervisor);
         BooleanSyncValue magmatterMode = SyncValues.MAGMATTER_MODE
@@ -91,7 +97,8 @@ public class MTEExoticModuleGui extends MTEBaseModuleGui<MTEExoticModule> {
 
     @Override
     protected IWidget createTerminalLeftButton() {
-        IPanelHandler expectedInputsPanel = Panels.EXOTIC_INPUTS_LIST.getFrom(getMainPanel(), hypervisor);
+        IPanelHandler expectedInputsPanel = Panels.EXOTIC_INPUTS_LIST
+            .getFrom(getModuleType(), getMainPanel(), hypervisor);
         return new ButtonWidget<>().size(16)
             .background(GTGuiTextures.PICTURE_INFO)
             .onMousePressed(d -> {
