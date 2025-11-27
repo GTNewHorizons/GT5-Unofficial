@@ -26,6 +26,7 @@ import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterMetadata;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
@@ -219,7 +220,39 @@ public class MTEBeamCrafter extends MTEExtendedPowerMultiBlockBase<gregtech.comm
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Beam Crafter, Beam Assembler")
-            //.addBulkMachineInfo(4, 1.5F, 1F)
+            .addInfo("Collides two beams of particles into target materials to modify ")
+            .addInfo("their subatomic structure")
+            .addSeparator()
+            .addInfo("The Input Beams can be supplied to either Beamline Input Hatch")
+            .addInfo("The particle shown on the left in NEI is "
+                + EnumChatFormatting.AQUA
+                +"Particle 1"
+                + EnumChatFormatting.GRAY
+                +", and the one ")
+            .addInfo("on the right is "
+                + EnumChatFormatting.GOLD
+                +"Particle 2"
+                + EnumChatFormatting.GRAY
+            )
+            .addSeparator()
+            .addInfo("Recipes will not start unless both beams have sufficiently high")
+            .addInfo(EnumChatFormatting.YELLOW+"Beam Energies")
+            .addSeparator()
+            .addInfo("Processing speed is determined purely by the Input "
+                + EnumChatFormatting.RED
+                + "Beam Rates"
+                + EnumChatFormatting.GRAY
+            )
+            .addInfo("Each particle "+EnumChatFormatting.RED+"Amount "+EnumChatFormatting.GRAY+"provided corresponds to one tick of progress")
+            .addInfo("Once the required "
+                +EnumChatFormatting.RED
+                +"Amount "
+                +EnumChatFormatting.GRAY
+                +"of a specific "
+                +EnumChatFormatting.AQUA+"Part"+EnumChatFormatting.GOLD+"icle "+EnumChatFormatting.GRAY+"have been input,")
+            .addInfo("excess particles of that type are voided"
+            )
+            .addSeparator()
             .beginStructureBlock(17, 5, 11, false)
             .addController("Front Center")
             .addCasingInfoMin("Collider Casing", 224, false)
