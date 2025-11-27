@@ -247,14 +247,10 @@ public class MTEBeamCrafter extends MTEExtendedPowerMultiBlockBase<gregtech.comm
         return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 8, 2, 6, elementBudget, env, false, true);
     }
 
-
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         return checkPiece(STRUCTURE_PIECE_MAIN, 8, 2, 6);
     }
-
-
-    public int craftProgress = 0;
 
     @Nullable
     private BeamInformation getInputParticle_A() {
@@ -295,7 +291,6 @@ public class MTEBeamCrafter extends MTEExtendedPowerMultiBlockBase<gregtech.comm
             || (inputParticleID_A == particleID_y && inputParticleID_B == particleID_x && inputEnergy_A > minEnergy_y && inputEnergy_B > minEnergy_x));
 
     }
-
 
     private int currentRecipeCurrentAmountA = 0;
     private int currentRecipeCurrentAmountB = 0;

@@ -35,7 +35,7 @@ public class BeamCrafterRecipes implements Runnable {
                     .build()
             )
             .outputChances(2000)
-            .duration(10 * SECONDS) // todo: this needs to depend purely on beam rates, like target chamber
+            .duration(1 * SECONDS)
             .eut(30720)
             .addTo(beamcrafterRecipes);
 
@@ -57,7 +57,7 @@ public class BeamCrafterRecipes implements Runnable {
                     .build()
             )
             .outputChances(100)
-            .duration(10 * SECONDS) // todo: this needs to depend purely on beam rates, like target chamber
+            .duration(1 * SECONDS)
             .eut(491520)
             .addTo(beamcrafterRecipes);
 
