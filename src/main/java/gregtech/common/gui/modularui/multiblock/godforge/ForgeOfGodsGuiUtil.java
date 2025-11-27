@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui.multiblock.godforge.util;
+package gregtech.common.gui.modularui.multiblock.godforge;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
