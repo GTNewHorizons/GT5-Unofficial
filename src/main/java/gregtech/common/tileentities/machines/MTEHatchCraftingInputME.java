@@ -44,7 +44,6 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 
-import com.glodblock.github.common.item.ItemFluidDrop;
 import com.glodblock.github.common.item.ItemFluidPacket;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Size;
@@ -245,14 +244,12 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             FluidStack[] inputFluids = GTValues.emptyFluidStackArray;
 
             if (patternDetails != null) {
-                for (IAEItemStack singleInput : patternDetails.getInputs()) {
+                for (IAEStack<?> singleInput : patternDetails.getAEInputs()) {
                     if (singleInput == null) continue;
-                    ItemStack singleInputItemStack = singleInput.getItemStack();
-                    if (singleInputItemStack.getItem() instanceof ItemFluidDrop) {
-                        FluidStack fluidStack = ItemFluidDrop.getFluidStack(singleInputItemStack);
-                        if (fluidStack != null) inputFluids = ArrayUtils.addAll(inputFluids, fluidStack);
-                    } else {
-                        inputItems = ArrayUtils.addAll(inputItems, singleInputItemStack);
+                    if (singleInput instanceof IAEItemStack ais) {
+                        inputItems = ArrayUtils.addAll(inputItems, ais.getItemStack());
+                    } else if (singleInput instanceof IAEFluidStack ifs) {
+                        inputFluids = ArrayUtils.addAll(inputFluids, ifs.getFluidStack());
                     }
                 }
             }
