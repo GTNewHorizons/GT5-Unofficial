@@ -21,22 +21,21 @@ public class BeamCrafterRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(Materials.Hydrogen.getGas(2000L))
             .itemOutputs(new ItemStack(ModItems.itemStandarParticleBase, 1, 24)) // typo >:(
+                                                                                                    // unknown particle
             .metadata(
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata
                     .builder()
                     .particleID_A(PROTON.getId())
                     .particleID_B(ELECTRON.getId())
-                    .amount_A(1)
-                    .amount_B(1)
-                    //.amount_A(120*10)
-                    //.amount_B(120*60)
+                    .amount_A(120*10)
+                    .amount_B(120*60)
                     .energy_A(1)
                     .energy_B(1)
                     .build()
             )
             .outputChances(2000)
-            .duration(1 * SECONDS) // todo: this needs to depend purely on beam rates, like target chamber
+            .duration(10 * SECONDS) // todo: this needs to depend purely on beam rates, like target chamber
             .eut(30720)
             .addTo(beamcrafterRecipes);
 
@@ -44,7 +43,7 @@ public class BeamCrafterRecipes implements Runnable {
             .fluidInputs(Materials.Duranium.getMolten(40L))
             .itemInputs(new ItemStack(ModItems.itemStandarParticleBase, 1, 24)
             )
-            .itemOutputs(GregtechItemList.Laser_Lens_Special.get(1))
+            .itemOutputs(GregtechItemList.Laser_Lens_Special.get(1)) // q anomaly
             .metadata(
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata
@@ -58,7 +57,7 @@ public class BeamCrafterRecipes implements Runnable {
                     .build()
             )
             .outputChances(100)
-            .duration(25 * SECONDS) // todo: this needs to depend purely on beam rates, like target chamber
+            .duration(10 * SECONDS) // todo: this needs to depend purely on beam rates, like target chamber
             .eut(491520)
             .addTo(beamcrafterRecipes);
 

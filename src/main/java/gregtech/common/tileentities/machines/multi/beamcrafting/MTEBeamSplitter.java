@@ -259,7 +259,7 @@ public class MTEBeamSplitter extends MTEExtendedPowerMultiBlockBase<MTEBeamSplit
         }
         return null;
     }
-    
+
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
         BeamInformation inputInfo = this.getInputParticle();

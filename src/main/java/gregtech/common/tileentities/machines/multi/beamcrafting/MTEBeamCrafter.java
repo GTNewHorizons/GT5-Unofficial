@@ -6,13 +6,10 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -23,15 +20,11 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.extensions.ArrayExt;
-import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.blocks.BlockCasings13;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterMetadata;
-import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.hatch.MTEHatchInputBeamline;
-import gtnhlanth.common.register.LanthItemList;
-import gtnhlanth.common.tileentity.recipe.beamline.TargetChamberMetadata;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -41,7 +34,6 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -56,8 +48,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY
 import static gregtech.api.recipe.RecipeMaps.BEAMCRAFTER_METADATA;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
-import static gregtech.api.util.GTStructureUtility.ofFrame;
-import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.TARGET_CHAMBER_METADATA;
 
 public class MTEBeamCrafter extends MTEExtendedPowerMultiBlockBase<gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamCrafter>
     implements ISurvivalConstructable {
@@ -308,6 +298,31 @@ public class MTEBeamCrafter extends MTEExtendedPowerMultiBlockBase<gregtech.comm
 
     }
 
+
+    private int currentRecipeCurrentAmountA = 0;
+    private int currentRecipeCurrentAmountB = 0;
+    private int currentRecipeMaxAmountA = 0;
+    private int currentRecipeMaxAmountB = 0;
+
+    @Override
+    protected void incrementProgressTime() {
+
+        BeamInformation inputParticle_A = this.getInputParticle_A();
+        BeamInformation inputParticle_B = this.getInputParticle_B();
+
+        int particleRateA = inputParticle_A.getRate();
+        int particleRateB = inputParticle_B.getRate();
+
+        this.currentRecipeCurrentAmountA += particleRateA;
+        if (this.currentRecipeCurrentAmountA <= currentRecipeMaxAmountA) {
+            mProgresstime += particleRateA;
+        }
+        this.currentRecipeCurrentAmountB += particleRateB;
+        if (this.currentRecipeCurrentAmountB <= currentRecipeMaxAmountB) {
+            mProgresstime += particleRateB;
+        }
+    }
+
     private GTRecipe lastRecipe;
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
@@ -343,6 +358,10 @@ public class MTEBeamCrafter extends MTEExtendedPowerMultiBlockBase<gregtech.comm
         // how would batch mode work? how would parallels work? are parallels even needed, since the machine has
         // linear scaling of processing speed with particleRate?
 
+        this.currentRecipeCurrentAmountA = 0;
+        this.currentRecipeCurrentAmountB = 0;
+        this.currentRecipeMaxAmountA = 0;
+        this.currentRecipeMaxAmountB = 0;
 
         ArrayList<ItemStack> tItems = this.getStoredInputs();
         ItemStack[] inputItems = tItems.toArray(new ItemStack[0]);
@@ -380,7 +399,10 @@ public class MTEBeamCrafter extends MTEExtendedPowerMultiBlockBase<gregtech.comm
 
         if (!checkIfInputParticleInRecipe(inputParticle_A,inputParticle_B,metadata)) return CheckRecipeResultRegistry.NO_RECIPE;
 
-        this.mMaxProgresstime = 20;
+        this.currentRecipeMaxAmountA = metadata.amount_A;
+        this.currentRecipeMaxAmountB = metadata.amount_B;
+        this.mMaxProgresstime = this.currentRecipeMaxAmountA + this.currentRecipeMaxAmountB; // total time to finish recipe in ticks is the sum of the required Amounts
+
         if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1) return CheckRecipeResultRegistry.NO_RECIPE;
 
         if (!tRecipe.equals(this.lastRecipe)) this.lastRecipe = tRecipe;
