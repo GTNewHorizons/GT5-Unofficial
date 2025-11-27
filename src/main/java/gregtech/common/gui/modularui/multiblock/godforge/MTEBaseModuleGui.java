@@ -28,6 +28,7 @@ import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
@@ -119,7 +120,11 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
     @Override
     protected ModularPanel getBasePanel(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         ModularPanel panel = super.getBasePanel(guiData, syncManager, uiSettings);
-        hypervisor.setModularPanel(getMainPanel(), panel);
+
+        if (!isSubpanel) {
+            hypervisor.setModularPanel(getMainPanel(), panel);
+        }
+
         return panel;
     }
 
@@ -127,7 +132,9 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
 
-        hypervisor.setSyncManager(getMainPanel(), syncManager);
+        if (!isSubpanel) {
+            hypervisor.setSyncManager(getMainPanel(), syncManager);
+        }
 
         SyncValues.CONNECTION_STATUS.registerFor(getModuleType(), getMainPanel(), hypervisor);
     }
@@ -172,6 +179,11 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
         return super.createLeftPanelGapRow(parent, syncManager).childPadding(2)
             .marginLeft(1)
             .child(createConnectionStatus());
+    }
+
+    @Override
+    protected Flow createRightPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
+        return new Row();
     }
 
     @Override
