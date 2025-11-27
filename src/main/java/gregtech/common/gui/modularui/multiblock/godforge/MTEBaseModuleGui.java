@@ -13,6 +13,8 @@ import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
+import com.cleanroommc.modularui.drawable.GuiTextures;
+import com.cleanroommc.modularui.drawable.text.TextRenderer;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
@@ -21,6 +23,7 @@ import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Alignment.MainAxis;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widget.SingleChildWidget;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
@@ -29,6 +32,7 @@ import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.common.CommonButtons;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.gui.modularui.multiblock.base.TTMultiblockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.Modules;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.Panels;
@@ -39,10 +43,20 @@ import tectech.thing.metaTileEntity.multi.godforge.MTEBaseModule;
 public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultiblockBaseGui<T> {
 
     protected final SyncHypervisor hypervisor;
+    protected final boolean isSubpanel;
 
     public MTEBaseModuleGui(T multiblock) {
         super(multiblock);
         this.hypervisor = new SyncHypervisor(getModuleType(), getMainPanel());
+        this.isSubpanel = false;
+
+        hypervisor.setModule(getModuleType(), multiblock);
+    }
+
+    public MTEBaseModuleGui(T multiblock, SyncHypervisor hypervisor) {
+        super(multiblock);
+        this.hypervisor = hypervisor;
+        this.isSubpanel = true;
 
         hypervisor.setModule(getModuleType(), multiblock);
     }
@@ -51,6 +65,55 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
 
     public Panels getMainPanel() {
         return getModuleType().getMainPanel();
+    }
+
+    public ModularPanel openSubpanel() {
+        ModularPanel panel = hypervisor.getModularPanel(getModuleType(), getMainPanel());
+        PanelSyncManager syncManager = hypervisor.getSyncManager(getModuleType(), getMainPanel());
+
+        registerSyncValues(syncManager);
+
+        panel.size(217, 121)
+            .child(createTitle())
+            .child(
+                new Column().padding(4)
+                    .child(createTerminalRow(panel, syncManager).alignX(0))
+                    .child(createMuffleButton())
+                    .child(
+                        createPanelGap(panel, syncManager).alignX(0)
+                            .marginLeft(1)))
+            .child(createButtonColumn(panel, syncManager).mainAxisAlignment(MainAxis.START));
+
+        return panel;
+    }
+
+    // todo this should be in common widgets instead of copy pasted
+    private IWidget createTitle() {
+        String title = multiblock.getLocalName();
+
+        int borderRadius = 5;
+        int maxWidth = 216 - borderRadius * 2;
+
+        int titleWidth = TextRenderer.getFontRenderer()
+            .getStringWidth(title);
+        int widgetWidth = Math.min(maxWidth, titleWidth);
+
+        int rows = (int) Math.ceil((double) titleWidth / maxWidth);
+        int heightPerRow = (int) (IKey.renderer.getFontHeight());
+        int height = heightPerRow * rows;
+
+        return new SingleChildWidget<>().coverChildren()
+            .topRelAnchor(0, 1)
+            .widgetTheme(GTWidgetThemes.BACKGROUND_TITLE)
+            .child(
+                IKey.str(title)
+                    .asWidget()
+                    .size(widgetWidth, height)
+                    .widgetTheme(GTWidgetThemes.TEXT_TITLE)
+                    .marginLeft(5)
+                    .marginRight(5)
+                    .marginTop(5)
+                    .marginBottom(1));
     }
 
     @Override
@@ -63,6 +126,7 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
+
         hypervisor.setSyncManager(getMainPanel(), syncManager);
 
         SyncValues.CONNECTION_STATUS.registerFor(getModuleType(), getMainPanel(), hypervisor);
@@ -79,7 +143,8 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
             .child(createControllerSlot())
             .child(createPowerSwitchButton())
             .child(createStructureUpdateButton(syncManager))
-            .child(createVoltageConfigButton());
+            .child(createVoltageConfigButton())
+            .childIf(usesExtraButton(), createExtraButton().marginBottom(2));
     }
 
     @Override
@@ -110,14 +175,20 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
     }
 
     @Override
-    protected Flow createRightPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
-        return super.createRightPanelGapRow(parent, syncManager).marginRight(2)
-            .childIf(usesExtraButton(), this::createExtraButton);
-    }
-
-    @Override
     protected int getTextBoxToInventoryGap() {
         return 20;
+    }
+
+    private ItemSlot createControllerSlot() {
+        return new ItemSlot()
+            .slot(
+                new ModularSlot(multiblock.inventoryHandler, multiblock.getControllerSlotIndex()).slotGroup("item_inv"))
+            .background(GuiTextures.SLOT_ITEM, GTGuiTextures.TT_OVERLAY_SLOT_MESH)
+            .overlay(
+                GTGuiTextures.TT_CONTROLLER_SLOT_HEAT_SINK.asIcon()
+                    .size(18, 6)
+                    .marginTop(22))
+            .marginTop(2);
     }
 
     @Override
@@ -260,7 +331,7 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
-    protected IWidget createExtraButton() {
+    protected Widget<?> createExtraButton() {
         return new Widget<>();
     }
 

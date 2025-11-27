@@ -3,14 +3,15 @@ package gregtech.common.gui.modularui.multiblock.godforge;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.Modules;
+import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncHypervisor;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncValues;
 import tectech.thing.metaTileEntity.multi.godforge.MTESmeltingModule;
 
@@ -18,6 +19,10 @@ public class MTESmeltingModuleGui extends MTEBaseModuleGui<MTESmeltingModule> {
 
     public MTESmeltingModuleGui(MTESmeltingModule multiblock) {
         super(multiblock);
+    }
+
+    public MTESmeltingModuleGui(MTESmeltingModule multiblock, SyncHypervisor hypervisor) {
+        super(multiblock, hypervisor);
     }
 
     @Override
@@ -38,7 +43,7 @@ public class MTESmeltingModuleGui extends MTEBaseModuleGui<MTESmeltingModule> {
     }
 
     @Override
-    protected IWidget createExtraButton() {
+    protected Widget<?> createExtraButton() {
         BooleanSyncValue furnaceModeSyncer = SyncValues.SMELTING_MODE
             .lookupFrom(getModuleType(), getMainPanel(), hypervisor);
         return new ButtonWidget<>().size(16)

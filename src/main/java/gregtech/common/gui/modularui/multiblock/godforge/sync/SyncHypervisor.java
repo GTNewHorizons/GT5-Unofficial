@@ -13,6 +13,8 @@ import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import tectech.thing.metaTileEntity.multi.godforge.MTEBaseModule;
 import tectech.thing.metaTileEntity.multi.godforge.MTEForgeOfGods;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
@@ -40,6 +42,7 @@ public final class SyncHypervisor {
     private final Panels mainPanel;
     private final Table<Modules<?>, Panels, ModularPanel> panels = HashBasedTable.create();
     private final Table<Modules<?>, Panels, PanelSyncManager> syncManagers = HashBasedTable.create();
+    private final Object2IntMap<Modules<?>> openModuleIds = new Object2IntOpenHashMap<>();
 
     public SyncHypervisor(Panels mainPanel) {
         this(Modules.CORE, mainPanel);
@@ -117,6 +120,18 @@ public final class SyncHypervisor {
 
     public PanelSyncManager getSyncManager(Modules<?> module, Panels panel) {
         return syncManagers.get(module, panel);
+    }
+
+    public void setOpenModuleId(Modules<?> module, int id) {
+        openModuleIds.put(module, id);
+    }
+
+    public void clearOpenModuleId(Modules<?> module) {
+        openModuleIds.removeInt(module);
+    }
+
+    public int getOpenModuleId(Modules<?> module) {
+        return openModuleIds.getInt(module);
     }
 
     public void onPanelDispose(Modules<?> module, Panels panel) {
