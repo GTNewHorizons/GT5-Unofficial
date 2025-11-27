@@ -85,7 +85,7 @@ public class DustLoader implements IWerkstoffRunnable {
                         final ISubTagContainer key = container.getKey();
                         final int value = container.getValue();
                         if (key instanceof Materials materialKey) {
-                            if ((materialKey.getGas(0) != null || materialKey.getFluid(0) != null
+                            if ((materialKey.getGas(1) != null || materialKey.getFluid(1) != null
                                 || materialKey.mIconSet == TextureSet.SET_FLUID) && materialKey.getDust(0) == null) {
                                 FluidStack tmpFl = materialKey.getGas(1000L * value);
                                 if (tmpFl == null || tmpFl.getFluid() == null) {
@@ -335,6 +335,13 @@ public class DustLoader implements IWerkstoffRunnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(dustSmall, 4), ItemList.Schematic_2by2.get(0L))
                 .itemOutputs(werkstoff.get(dust))
+                .duration(5 * SECONDS)
+                .eut(4)
+                .addTo(packagerRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(werkstoff.get(dust, 1), ItemList.Schematic_Dust_Small.get(0L))
+                .itemOutputs(werkstoff.get(dustSmall, 4))
                 .duration(5 * SECONDS)
                 .eut(4)
                 .addTo(packagerRecipes);

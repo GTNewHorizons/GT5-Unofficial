@@ -127,6 +127,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
 
         protected final P parentMTE;
         protected final ItemStack pattern;
+        @Nullable
         protected final ICraftingPatternDetails patternDetails;
         protected final GTUtility.ItemId patternItemId;
 
@@ -231,6 +232,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             return fluidInventory.toArray(new FluidStack[0]);
         }
 
+        @Nullable
         public ICraftingPatternDetails getPatternDetails() {
             return patternDetails;
         }
@@ -242,15 +244,16 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             ItemStack[] inputItems = this.parentMTE.getSharedItems();
             FluidStack[] inputFluids = GTValues.emptyFluidStackArray;
 
-            for (IAEItemStack singleInput : this.getPatternDetails()
-                .getInputs()) {
-                if (singleInput == null) continue;
-                ItemStack singleInputItemStack = singleInput.getItemStack();
-                if (singleInputItemStack.getItem() instanceof ItemFluidDrop) {
-                    FluidStack fluidStack = ItemFluidDrop.getFluidStack(singleInputItemStack);
-                    if (fluidStack != null) inputFluids = ArrayUtils.addAll(inputFluids, fluidStack);
-                } else {
-                    inputItems = ArrayUtils.addAll(inputItems, singleInputItemStack);
+            if (patternDetails != null) {
+                for (IAEItemStack singleInput : patternDetails.getInputs()) {
+                    if (singleInput == null) continue;
+                    ItemStack singleInputItemStack = singleInput.getItemStack();
+                    if (singleInputItemStack.getItem() instanceof ItemFluidDrop) {
+                        FluidStack fluidStack = ItemFluidDrop.getFluidStack(singleInputItemStack);
+                        if (fluidStack != null) inputFluids = ArrayUtils.addAll(inputFluids, fluidStack);
+                    } else {
+                        inputItems = ArrayUtils.addAll(inputItems, singleInputItemStack);
+                    }
                 }
             }
 
@@ -460,7 +463,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     private BaseActionSource requestSource = null;
     private @Nullable AENetworkProxy gridProxy = null;
     public List<ProcessingLogic> processingLogics = new ArrayList<>();
-    private List<MTEHatchCraftingInputSlave> proxyHatches = new ArrayList<>();
+    private final List<MTEHatchCraftingInputSlave> proxyHatches = new ArrayList<>();
 
     // holds all internal inventories
     @SuppressWarnings("unchecked") // Java doesn't allow to create an array of a generic type.
@@ -777,7 +780,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         // reconstruct patternDetailsPatternSlotMap
         patternDetailsPatternSlotMap.clear();
         for (PatternSlot<MTEHatchCraftingInputME> patternSlot : internalInventory) {
-            if (patternSlot != null) {
+            if (patternSlot != null && patternSlot.getPatternDetails() != null) {
                 patternDetailsPatternSlotMap.put(patternSlot.getPatternDetails(), patternSlot);
             }
         }
@@ -822,6 +825,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         int i = 0;
         for (PatternSlot<MTEHatchCraftingInputME> slot : internalInventory) {
             if (slot == null) continue;
+            if (slot.getPatternDetails() == null) continue;
             IWideReadableNumberConverter nc = ReadableNumberConverter.INSTANCE;
 
             i += 1;
@@ -829,7 +833,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
                 StatCollector.translateToLocalFormatted(
                     "GT5U.infodata.hatch.internal_inventory.slot",
                     i,
-                    EnumChatFormatting.BLUE + describePattern(slot.patternDetails) + EnumChatFormatting.RESET));
+                    EnumChatFormatting.BLUE + describePattern(slot.getPatternDetails()) + EnumChatFormatting.RESET));
             Map<GTUtility.ItemId, Long> itemMap = GTUtility.convertItemListToMap(slot.itemInventory);
             for (Map.Entry<GTUtility.ItemId, Long> entry : itemMap.entrySet()) {
                 ItemStack item = entry.getKey()
@@ -1004,8 +1008,9 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
 
         PatternSlot<MTEHatchCraftingInputME> patternSlot = new PatternSlot<>(newItem, this);
         internalInventory[index] = patternSlot;
-        patternDetailsPatternSlotMap.put(patternSlot.getPatternDetails(), patternSlot);
-
+        if (patternSlot.getPatternDetails() != null) {
+            patternDetailsPatternSlotMap.put(patternSlot.getPatternDetails(), patternSlot);
+        }
         needPatternSync = true;
     }
 
@@ -1296,6 +1301,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         List<ItemStack> list = new ArrayList<>();
         for (PatternSlot<MTEHatchCraftingInputME> slot : internalInventory) {
             if (slot == null) continue;
+            if (slot.getPatternDetails() == null) continue;
 
             IAEItemStack[] outputs = slot.getPatternDetails()
                 .getCondensedOutputs();
