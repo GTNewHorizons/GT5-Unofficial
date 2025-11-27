@@ -615,10 +615,9 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
         this.doAllVisualThings();
         if (aBaseMetaTileEntity.isServerSide()) {
             if (this.mRadHatches.size() == 1) {
-                this.mSievert = this.mRadHatches.get(0).getSievert();
-            }
-            else
-            {
+                this.mSievert = this.mRadHatches.get(0)
+                    .getSievert();
+            } else {
                 this.mSievert = 0;
             }
             if (aBaseMetaTileEntity.isActive() && this.mNeededSievert > this.mSievert) this.mOutputFluids = null;
