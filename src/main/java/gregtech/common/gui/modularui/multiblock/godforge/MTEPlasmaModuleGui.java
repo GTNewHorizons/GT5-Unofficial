@@ -4,12 +4,13 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
-import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.Modules;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.Panels;
+import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncHypervisor;
 import tectech.loader.ConfigHandler;
 import tectech.thing.metaTileEntity.multi.godforge.MTEPlasmaModule;
 
@@ -17,6 +18,10 @@ public class MTEPlasmaModuleGui extends MTEBaseModuleGui<MTEPlasmaModule> {
 
     public MTEPlasmaModuleGui(MTEPlasmaModule multiblock) {
         super(multiblock);
+    }
+
+    public MTEPlasmaModuleGui(MTEPlasmaModule multiblock, SyncHypervisor hypervisor) {
+        super(multiblock, hypervisor);
     }
 
     @Override
@@ -30,7 +35,7 @@ public class MTEPlasmaModuleGui extends MTEBaseModuleGui<MTEPlasmaModule> {
     }
 
     @Override
-    protected IWidget createExtraButton() {
+    protected Widget<?> createExtraButton() {
         IPanelHandler debugPanel = Panels.PLASMA_DEBUG.getFrom(getModuleType(), getMainPanel(), hypervisor);
         return new ButtonWidget<>().size(16)
             .background(GTGuiTextures.TT_BUTTON_CELESTIAL_32x32)

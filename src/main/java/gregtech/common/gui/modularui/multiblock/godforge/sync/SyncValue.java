@@ -31,6 +31,8 @@ public abstract class SyncValue<T extends ValueSyncHandler<?>> {
 
     public abstract T create(Modules<?> forModule, SyncHypervisor hypervisor);
 
+    protected abstract String getSyncId(Modules<?> fromModule, Panels fromPanel, SyncHypervisor hypervisor);
+
     @SuppressWarnings("unchecked")
     public T lookupFrom(Modules<?> fromModule, Panels fromPanel, SyncHypervisor hypervisor) {
         PanelSyncManager syncManager = hypervisor.getSyncManager(fromModule, fromPanel);
@@ -40,13 +42,6 @@ public abstract class SyncValue<T extends ValueSyncHandler<?>> {
     public void notifyUpdateFrom(Modules<?> fromModule, Panels fromPanel, SyncHypervisor hypervisor) {
         T syncer = lookupFrom(fromModule, fromPanel, hypervisor);
         syncer.notifyUpdate();
-    }
-
-    protected String getSyncId(Modules<?> fromModule, Panels fromPanel, SyncHypervisor hypervisor) {
-        if (inherited) {
-            return syncId;
-        }
-        return fromPanel.getPanelId(fromModule, hypervisor) + "/" + syncId;
     }
 
     /** Sync values exclusive to the main Godforge controller. */
@@ -71,6 +66,14 @@ public abstract class SyncValue<T extends ValueSyncHandler<?>> {
             }
 
             return syncValueSupplier.apply(hypervisor.getData());
+        }
+
+        @Override
+        protected String getSyncId(Modules<?> fromModule, Panels fromPanel, SyncHypervisor hypervisor) {
+            if (inherited) {
+                return syncId;
+            }
+            return fromPanel.getPanelId(fromModule, -1) + "/" + syncId;
         }
 
         // Shortcuts for convenience
@@ -115,6 +118,16 @@ public abstract class SyncValue<T extends ValueSyncHandler<?>> {
 
             return syncValueSupplier.apply(module);
         }
+
+        @Override
+        protected String getSyncId(Modules<?> fromModule, Panels fromPanel, SyncHypervisor hypervisor) {
+            if (inherited) {
+                return syncId;
+            }
+
+            int moduleIndex = hypervisor.getOpenModuleId(fromModule);
+            return fromPanel.getPanelId(fromModule, moduleIndex) + "/" + syncId;
+        }
     }
 
     /**
@@ -149,6 +162,20 @@ public abstract class SyncValue<T extends ValueSyncHandler<?>> {
             }
 
             throw new IllegalStateException("Cannot create sync value as hypervisor has no applicable state");
+        }
+
+        @Override
+        protected String getSyncId(Modules<?> fromModule, Panels fromPanel, SyncHypervisor hypervisor) {
+            if (inherited) {
+                return syncId;
+            }
+
+            if (hypervisor.getData() != null) {
+                return fromPanel.getPanelId(fromModule, -1) + "/" + syncId;
+            }
+
+            int moduleIndex = hypervisor.getOpenModuleId(fromModule);
+            return fromPanel.getPanelId(fromModule, moduleIndex) + "/" + syncId;
         }
     }
 }

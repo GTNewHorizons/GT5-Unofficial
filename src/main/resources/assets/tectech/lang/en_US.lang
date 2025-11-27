@@ -1208,6 +1208,7 @@ gt.blockmachines.multimachine.FOG.ocdivisor=OC Divisor
 gt.blockmachines.multimachine.FOG.processingvoltage=Processing Voltage
 gt.blockmachines.multimachine.FOG.factorpreview=Preview Fuel Factor:
 gt.blockmachines.multimachine.FOG.clickstat=Click to view value breakdown
+gt.blockmachines.multimachine.FOG.clicktoopenmoduleui=Click to open module UI
 
 gt.blockmachines.multimachine.FOG.hint.0=1 - Classic Hatches or Transcendentally Amplified Magnetic Confinement Casing
 gt.blockmachines.multimachine.FOG.hint.1=2 - Module Controllers or Singularity Reinforced Stellar Shielding Casing

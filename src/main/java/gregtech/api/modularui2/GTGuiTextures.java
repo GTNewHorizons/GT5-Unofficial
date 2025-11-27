@@ -893,6 +893,13 @@ public final class GTGuiTextures {
     public static final UITexture GODFORGE_SOUND_ON = UITexture.fullImage(MODID, "gui/overlay_button/sound_on");
     public static final UITexture GODFORGE_SOUND_OFF = UITexture.fullImage(MODID, "gui/overlay_button/sound_off");
 
+    public static final UITexture GODFORGE_MODULE_ON = UITexture
+        .fullImage(MODID, "gui/picture/godforge_module_icon_on");
+    public static final UITexture GODFORGE_MODULE_OFF = UITexture
+        .fullImage(MODID, "gui/picture/godforge_module_icon_off");
+    public static final UITexture GODFORGE_MODULE_RING = UITexture
+        .fullImage(MODID, "gui/picture/godforge_module_ring_icon");
+
     public static final UITexture TT_CONTROLLER_SLOT_HEAT_SINK = UITexture.builder()
         .location(MODID, "gui/picture/heat_sink_small")
         .canApplyTheme()
