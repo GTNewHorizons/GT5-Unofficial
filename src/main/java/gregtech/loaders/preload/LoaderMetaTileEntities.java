@@ -617,7 +617,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEBeamCrafter(
                 BEAM_CRAFTER.ID,
                 "multimachine.beam-crafter",
-                "(WIP) Beam Crafter").getStackForm(1));
+                "Beam Crafter").getStackForm(1));
 
         ItemList.BeamMirror.set(
             new MTEBeamMirror(

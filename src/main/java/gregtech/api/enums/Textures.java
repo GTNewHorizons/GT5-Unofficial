@@ -1957,6 +1957,8 @@ public class Textures {
         OVERLAY_FRONT_LHC_COLLIDER_GLOW,
         OVERLAY_FRONT_LHC_ACCELERATOR,
         OVERLAY_FRONT_LHC_COLLIDER,
+        OVERLAY_FRONT_BEAMCRAFTER,
+        OVERLAY_FRONT_BEAMCRAFTER_ACTIVE,
 
         // semicolon after the comment to reduce merge conflicts
         ;
