@@ -1026,7 +1026,7 @@ fog.upgrade.text.4=Increases the base processing voltage of all modules by: Stel
 fog.upgrade.text.5=Unlocks the Helioflux Melting Core module.
 fog.upgrade.text.6=Unlocks a multiplier to maximum parallel based on fuel consumption rate. This bonus is calculated via this formula: Multiplier = 1 + (Stellar Fuel Units/sec) / 15
 fog.upgrade.text.7=Unlocks the Heliothermal Plasma Fabricator module and basic element -> plasma processing (1 step plasmas, T3 fusion maximum).
-fog.upgrade.text.8=Unlocks a configuration window for maximum battery size and increases the limit to max int. Furthermore, an energy discount multiplier is unlocked that scales with battery size (capped to 0.05, or 5%). The discount is calculated as follows: Discount = (1 - 1.05^(-0.05 * Max Battery Capacity)) / 20
+fog.upgrade.text.8=Unlocks a configuration window for maximum battery size and increases the limit to max int. Furthermore, an energy discount multiplier is unlocked that scales with battery size (capped to 0.05, or 5%%). The discount is calculated as follows: Discount = (1 - 1.05^(-0.05 * Max Battery Capacity)) / 20
 fog.upgrade.text.9=Increases maximum fuel consumption by 1 Stellar Fuel Unit/sec for every purchased upgrade.
 fog.upgrade.text.10=Adds a x2 multiplier to maximum parallel.
 fog.upgrade.text.11=Unlocks the Heliofusion Exoticizer module and quark gluon plasma creation. At this point this module is not affected by any other multipliers or bonuses from other upgrades.
@@ -1037,7 +1037,7 @@ fog.upgrade.text.15=Allows the Heliothermal Plasma Fabricator to process multi s
 fog.upgrade.text.16=Allows the Helioflare Power Forge to receive the full benefits of the Helioflux Melting Core upgrade path.
 fog.upgrade.text.17=Increases the cap of EBF heat bonuses to 30,000K.
 fog.upgrade.text.18=Unlocks a multiplier to maximum parallel based on current heat. This bonus is calculated via this formula: Multiplier = 1 + Heat / 15000
-fog.upgrade.text.19=Improves the EBF energy reduction heat bonus from 5% to 8% and adds an energy discount based on the fill level of the internal battery. This bonus is calculated via the formula: Discount = (Current fill level / Max Capacity - 0.5)^2 * (-0.6) + 0.15, multiplied by 2/3 for modules other than the Plasma Fabricator
+fog.upgrade.text.19=Improves the EBF energy reduction heat bonus from 5%% to 8%% and adds an energy discount based on the fill level of the internal battery. This bonus is calculated via the formula: Discount = (Current fill level / Max Capacity - 0.5)^2 * (-0.6) + 0.15, multiplied by 2/3 for modules other than the Plasma Fabricator
 fog.upgrade.text.20=EBF heat bonuses are granted above 30,000K, but the heat value used in heat bonus calculations is determined by this formula: Power Forge Heat = 30000 + (Current Heat - 30000)^0.85, Melting Core Heat = 30000 + (Current Heat - 30000)^0.8
 fog.upgrade.text.21=Unlocks a multiplier to maximum parallel based on total amount of purchased upgrades. This bonus is calculated via this formula: Multiplier = 1 + Upgrade Amount / 5
 fog.upgrade.text.22=Improves IGCC based on current maximum parallel. Improved Formula: Multiplier = (1 / Heat^0.01) / (Parallel^0.02)
@@ -1163,6 +1163,7 @@ gt.blockmachines.multimachine.FOG.recipes=Recipes Processed
 gt.blockmachines.multimachine.FOG.fuelconsumed=Fuel Units Consumed
 gt.blockmachines.multimachine.FOG.extensions=Extensions Built
 gt.blockmachines.multimachine.FOG.shardgain=Graviton Shards gained
+gt.blockmachines.multimachine.FOG.payUpgradeCosts=Pay Upgrade Cost
 gt.blockmachines.multimachine.FOG.consumeUpgradeMats=Click to consume upgrade materials
 gt.blockmachines.multimachine.FOG.clickhere=Confused? Click here for some general info
 gt.blockmachines.multimachine.FOG.introduction=§NIntroduction
@@ -1214,7 +1215,15 @@ fog.cosmetics.color=Color
 fog.cosmetics.color.red=Red
 fog.cosmetics.color.green=Green
 fog.cosmetics.color.blue=Blue
+fog.cosmetics.color.hue=H
+fog.cosmetics.color.saturation=S
+fog.cosmetics.color.value=V
 fog.cosmetics.color.gamma=Gamma
+fog.cosmetics.color.rgb=RGB
+fog.cosmetics.color.rgb_colored=§cR§aG§9B
+fog.cosmetics.color.hsv=HSV
+fog.cosmetics.color.hsv_colored=§dH§6S§bV
+fog.cosmetics.color.hex=Hex:
 fog.cosmetics.selectcolor.tooltip.1=Left click to select this Star Color
 fog.cosmetics.selectcolor.tooltip.2=Shift-Left click to edit this Star Color (must be a custom color)
 fog.cosmetics.starcolor=Custom Star Color
@@ -1223,6 +1232,7 @@ fog.cosmetics.misc=Miscellaneous
 fog.cosmetics.spin=Spin
 fog.cosmetics.size=Size
 fog.cosmetics.animations=Animations
+fog.cosmetics.animations.tooltip=May take a moment to refresh when toggled
 fog.cosmetics.cyclespeed=Cycle speed between colors
 fog.cosmetics.onlyintegers=Accepts Integers
 fog.cosmetics.onlydecimals=Accepts Decimals
@@ -1244,7 +1254,9 @@ fog.cosmetics.deletecolors.tooltip=Delete this Star Color
 fog.cosmetics.importcolors=Import
 fog.cosmetics.importcolors.tooltip=Import a Star Color from text
 fog.cosmetics.exportcolors=Export
-fog.cosmetics.exportcolors.tooltip=Save exported Star Color to clipboard
+fog.cosmetics.exportcolors.tooltip=Copy exported Star Color to clipboard
+fog.cosmetics.exportcolors.message=Copied exported Star Color to clipboard
+fog.cosmetics.exportcolors.failed=Could not copy exported Star Color to clipboard
 fog.cosmetics.importer.import=Import Star Color
 fog.cosmetics.importer.error=Invalid Star Color
 fog.cosmetics.importer.valid=Valid Star Color
