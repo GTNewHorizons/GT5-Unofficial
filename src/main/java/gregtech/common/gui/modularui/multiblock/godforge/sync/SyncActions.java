@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui.multiblock.godforge.data;
+package gregtech.common.gui.modularui.multiblock.godforge.sync;
 
 import java.util.function.BiConsumer;
 
@@ -6,7 +6,7 @@ import net.minecraft.network.PacketBuffer;
 
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
-import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
+import tectech.thing.metaTileEntity.multi.godforge.MTEExoticModule;
 import tectech.thing.metaTileEntity.multi.godforge.MTEForgeOfGods;
 import tectech.thing.metaTileEntity.multi.godforge.color.ForgeOfGodsStarColor;
 import tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade;
@@ -77,6 +77,12 @@ public final class SyncActions<T, U> {
         },
         Side.SERVER);
 
+    public static SyncActions<Void, MTEExoticModule> REFRESH_EXOTIC_RECIPE = new SyncActions<>(
+        "fog.sync_action.refresh_exotic_recipe",
+        (buf, $) -> {},
+        (buf, module) -> module.refreshRecipe(),
+        Side.SERVER);
+
     // spotless:on
 
     private final String syncId;
@@ -100,7 +106,12 @@ public final class SyncActions<T, U> {
 
     /** Registers for the panel with whatever data is required on the server to run the action. */
     public void registerFor(Panels forPanel, SyncHypervisor hypervisor, U data) {
-        PanelSyncManager syncManager = hypervisor.getSyncManager(forPanel);
+        registerFor(hypervisor.getMainModule(), forPanel, hypervisor, data);
+    }
+
+    /** Registers for the panel with whatever data is required on the server to run the action. */
+    public void registerFor(Modules<?> forModule, Panels forPanel, SyncHypervisor hypervisor, U data) {
+        PanelSyncManager syncManager = hypervisor.getSyncManager(forModule, forPanel);
         syncManager.registerSyncedAction(syncId, buf -> {
             switch (executeSide) {
                 case SERVER -> {
@@ -119,7 +130,11 @@ public final class SyncActions<T, U> {
     }
 
     public void callFrom(Panels fromPanel, SyncHypervisor hypervisor, T data) {
-        PanelSyncManager syncManager = hypervisor.getSyncManager(fromPanel);
+        callFrom(hypervisor.getMainModule(), fromPanel, hypervisor, data);
+    }
+
+    public void callFrom(Modules<?> fromModule, Panels fromPanel, SyncHypervisor hypervisor, T data) {
+        PanelSyncManager syncManager = hypervisor.getSyncManager(fromModule, fromPanel);
         syncManager.callSyncedAction(syncId, buf -> writer.accept(buf, data));
     }
 

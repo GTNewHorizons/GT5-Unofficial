@@ -7,9 +7,9 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
-import gregtech.common.gui.modularui.multiblock.godforge.data.Panels;
-import gregtech.common.gui.modularui.multiblock.godforge.data.SyncValues;
-import gregtech.common.gui.modularui.multiblock.godforge.util.SyncHypervisor;
+import gregtech.common.gui.modularui.multiblock.godforge.sync.Panels;
+import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncHypervisor;
+import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncValues;
 
 public class BatteryConfigPanel {
 
