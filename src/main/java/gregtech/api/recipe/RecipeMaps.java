@@ -1330,7 +1330,7 @@ public final class RecipeMaps {
     public static final RecipeMetadataKey<BeamCrafterMetadata> BEAMCRAFTER_METADATA = SimpleRecipeMetadataKey
         .create(BeamCrafterMetadata.class, "beamcrafter_metadata");
 
-    public static final RecipeMap<RecipeMapBackend> beamcrafterRecipes = RecipeMapBuilder
+    public static final RecipeMap<RecipeMapBackend>  beamcrafterRecipes = RecipeMapBuilder
         .of("gt.recipe.beamcrafter",RecipeMapBackend::new)
         .minInputs(0, 0)
         .frontend(BeamCrafterFrontend::new)

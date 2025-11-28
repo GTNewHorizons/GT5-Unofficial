@@ -10,16 +10,20 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings13;
 import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.common.beamline.BeamInformation;
+import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -301,5 +305,59 @@ public class MTEBeamStabilizer extends MTEExtendedPowerMultiBlockBase<MTEBeamSta
         return null;
     }
 
+    @NotNull
+    @Override
+    public CheckRecipeResult checkProcessing() {
+        BeamInformation inputInfo = this.getInputParticle();
+
+        if (inputInfo == null || inputInfo.getRate() == 0) return CheckRecipeResultRegistry.NO_RECIPE;
+
+        cumulativeStoredBeamPacket();
+        outputPacketAfterRecipe(inputInfo);
+        return CheckRecipeResultRegistry.SUCCESSFUL;
+    }
+
+    int storedParticleType = 0;
+    float storedBeamEnergy = 0;
+
+    //Stored particle amount
+    int cumulativeBeamRate = 0;
+    float storedBeamFocus = 0;
+
+
+    private void cumulativeStoredBeamPacket() {
+        BeamInformation inputParticle = getInputParticle();
+        if (inputParticle.getEnergy() != 0) {
+            if (inputParticle.getParticleId() == this.storedParticleType && inputParticle.getEnergy() == this.storedBeamEnergy) {
+                this.storedParticleType = inputParticle.getParticleId();
+                this.storedBeamEnergy = inputParticle.getEnergy();
+                this.cumulativeBeamRate += inputParticle.getRate();
+                this.storedBeamFocus = inputParticle.getFocus();
+
+            }
+            else {
+                if (this.cumulativeBeamRate == 0) {
+                    this.storedParticleType = inputParticle.getParticleId();
+                    this.storedBeamEnergy = inputParticle.getEnergy();
+                    this.cumulativeBeamRate += inputParticle.getRate();
+                    this.storedBeamFocus = inputParticle.getFocus();
+                }
+            }
+        }
+    }
+
+
+    private void outputPacketAfterRecipe(BeamInformation inputInfo) {
+        if (!this.mOutputBeamline.isEmpty()) {
+            BeamLinePacket packet = new BeamLinePacket(new BeamInformation(this.storedBeamEnergy, 10, this.storedParticleType, this.storedBeamFocus));
+            this.cumulativeBeamRate -= 10;
+            if (this.cumulativeBeamRate < 0) {
+                this.cumulativeBeamRate = 0;
+            }
+            for (MTEHatchOutputBeamline o : this.mOutputBeamline) {
+                o.dataPacket = packet;
+            }
+        }
+    }
 
 }
