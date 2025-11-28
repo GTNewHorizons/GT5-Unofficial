@@ -376,7 +376,7 @@ public class MTERockBreaker extends MTEBasicMachine {
                     inputs.add(ItemList.Display_ITS_FREE.getWithName(1, this.recipeDescription));
                 }
                 if (this.circuit != -1) {
-                    inputs.add(GTUtility.getIntegratedCircuit(this.circuit));
+                    b.circuit(this.circuit);
                 }
                 b.itemInputs(inputs.toArray(new ItemStack[0]));
                 b.addTo(rockBreakerFakeRecipes);
