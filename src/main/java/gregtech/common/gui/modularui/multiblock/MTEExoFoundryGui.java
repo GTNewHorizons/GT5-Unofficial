@@ -348,56 +348,11 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
     }
 
     protected Flow createModuleTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-        IntSyncValue module1Sync = syncManager.findSyncHandler("Module1", IntSyncValue.class);
-        IntSyncValue module2Sync = syncManager.findSyncHandler("Module2", IntSyncValue.class);
-        IntSyncValue module3Sync = syncManager.findSyncHandler("Module3", IntSyncValue.class);
-        IntSyncValue module4Sync = syncManager.findSyncHandler("Module4", IntSyncValue.class);
+
         return new Row().sizeRel(1)
             .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
             .background(IDrawable.EMPTY)
-            .child(
-                GTGuiTextures.EXOFOUNDRY_BASE.asWidget()
-                    .size(60, 80)
-                    .marginRight(60))
-            .child(
-                new Column().size(60, 80)
-                    .pos(0, 0)
-
-                    .child(
-                        new Column().size(60, 40)
-                            .paddingTop(17)
-                            // module 4 and 3
-                            .child(
-                                new Widget<>().size(28, 11)
-                                    .marginBottom(1)
-                                    .overlay(
-                                        new DynamicDrawable(
-                                            () -> FoundryModules.getModule(module4Sync.getIntValue()).texture)))
-                            .child(
-                                new Widget<>().size(28, 11)
-                                    .overlay(
-                                        new DynamicDrawable(
-                                            () -> FoundryModules.getModule(module3Sync.getIntValue()).texture)))
-
-                    )
-
-                    .child(
-                        new Column().size(60, 40)
-                            .paddingTop(6)
-                            // module 2 and 1
-                            .child(
-                                new Widget<>().size(28, 11)
-                                    .marginBottom(1)
-                                    .overlay(
-                                        new DynamicDrawable(
-                                            () -> FoundryModules.getModule(module2Sync.getIntValue()).texture)))
-                            .child(
-                                new Widget<>().size(28, 11)
-                                    .overlay(
-                                        new DynamicDrawable(
-                                            () -> FoundryModules.getModule(module1Sync.getIntValue()).texture))))
-
-            )
+            .child(createFoundryDisplay(syncManager, parent))
             // module selecting
             .child(
                 new Column().size(40, 80)
@@ -411,6 +366,58 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
 
         ;
 
+    }
+
+    private ParentWidget<?> createFoundryDisplay(PanelSyncManager syncManager, ModularPanel parent) {
+        ParentWidget<?> parentWidget = new ParentWidget<>().coverChildren();
+        IntSyncValue module1Sync = syncManager.findSyncHandler("Module1", IntSyncValue.class);
+        IntSyncValue module2Sync = syncManager.findSyncHandler("Module2", IntSyncValue.class);
+        IntSyncValue module3Sync = syncManager.findSyncHandler("Module3", IntSyncValue.class);
+        IntSyncValue module4Sync = syncManager.findSyncHandler("Module4", IntSyncValue.class);
+        parentWidget.child(
+            GTGuiTextures.EXOFOUNDRY_BASE.asWidget()
+                .size(59, 80)
+                .marginRight(60))
+            .child(
+                new Column().size(59, 80)
+                    .pos(0, 0)
+
+                    .child(
+                        new Column().size(59, 40)
+                            .paddingTop(8)
+                            // module 4 and 3
+                            .child(
+                                new Widget<>().size(27, 11)
+                                    .marginBottom(3)
+                                    .overlay(
+                                        new DynamicDrawable(
+                                            () -> FoundryModules.getModule(module4Sync.getIntValue()).texture)))
+                            .child(
+                                new Widget<>().size(27, 11)
+                                    .overlay(
+                                        new DynamicDrawable(
+                                            () -> FoundryModules.getModule(module3Sync.getIntValue()).texture)))
+
+                    )
+
+                    .child(
+                        new Column().size(59, 40)
+                            .paddingTop(7)
+                            // module 2 and 1
+                            .child(
+                                new Widget<>().size(27, 11)
+                                    .marginBottom(3)
+                                    .overlay(
+                                        new DynamicDrawable(
+                                            () -> FoundryModules.getModule(module2Sync.getIntValue()).texture)))
+                            .child(
+                                new Widget<>().size(27, 11)
+                                    .overlay(
+                                        new DynamicDrawable(
+                                            () -> FoundryModules.getModule(module1Sync.getIntValue()).texture))))
+
+            );
+        return parentWidget;
     }
 
     @Override
