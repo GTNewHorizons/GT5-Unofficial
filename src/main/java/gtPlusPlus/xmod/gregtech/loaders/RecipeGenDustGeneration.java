@@ -198,17 +198,11 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
         }
 
         // Add mixer Recipe
-
-        GTRecipeBuilder builder;
-        if (oxygen == null) {
-            builder = GTValues.RA.stdBuilder()
-                .itemInputs(cleanedInputs)
-                .itemOutputs(outputStacks);
-        } else {
-            builder = GTValues.RA.stdBuilder()
-                .itemInputs(cleanedInputs)
-                .itemOutputs(outputStacks)
-                .fluidInputs(oxygen);
+        GTRecipeBuilder builder = GTValues.RA.stdBuilder()
+            .itemInputs(cleanedInputs)
+            .itemOutputs(outputStacks);
+        if (oxygen != null) {
+            builder.fluidInputs(oxygen);
         }
         if (circuitNumber > 0) {
             builder.circuit(circuitNumber);
@@ -302,17 +296,11 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
         }
 
         // Add mixer Recipe
-
-        GTRecipeBuilder builder;
-        if (oxygen == null) {
-            builder = GTValues.RA.stdBuilder()
-                .itemInputs(cleanedInputs)
-                .itemOutputs(outputStacks);
-        } else {
-            builder = GTValues.RA.stdBuilder()
-                .itemInputs(cleanedInputs)
-                .itemOutputs(outputStacks)
-                .fluidInputs(oxygen);
+        GTRecipeBuilder builder = GTValues.RA.stdBuilder()
+            .itemInputs(cleanedInputs)
+            .itemOutputs(outputStacks);
+        if (oxygen != null) {
+            builder.fluidInputs(oxygen);
         }
         if (addCircuit) {
             builder.circuit(20);
