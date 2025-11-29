@@ -6,6 +6,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -30,11 +31,6 @@ import java.util.ArrayList;
 
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
-import static gregtech.api.enums.HatchElement.InputBus;
-import static gregtech.api.enums.HatchElement.InputHatch;
-import static gregtech.api.enums.HatchElement.Maintenance;
-import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE_GLOW;
@@ -293,6 +289,8 @@ public class MTEBeamStabilizer extends MTEExtendedPowerMultiBlockBase<MTEBeamSta
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        mInputBeamline.clear();
+        mOutputBeamline.clear();
         return checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0);
     }
 
@@ -308,49 +306,61 @@ public class MTEBeamStabilizer extends MTEExtendedPowerMultiBlockBase<MTEBeamSta
     @NotNull
     @Override
     public CheckRecipeResult checkProcessing() {
+        this.mMaxProgresstime = TickTime.SECOND;
         BeamInformation inputInfo = this.getInputParticle();
 
         if (inputInfo == null || inputInfo.getRate() == 0) return CheckRecipeResultRegistry.NO_RECIPE;
 
-        cumulativeStoredBeamPacket();
-        outputPacketAfterRecipe(inputInfo);
+        cumulateStoredBeamPacket();
+        outputPacketAfterRecipe(this.playerSetRate);
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
-    int storedParticleType = 0;
+    int storedParticleID = 0;
     float storedBeamEnergy = 0;
-
-    //Stored particle amount
-    int cumulativeBeamRate = 0;
-    float storedBeamFocus = 0;
+    int cumulativeBeamRate = 0; // Stored particle Amount
+    float storedBeamFocus = 0; // for completeness. not used anywhere but beamline
 
 
-    private void cumulativeStoredBeamPacket() {
+    private void cumulateStoredBeamPacket() {
         BeamInformation inputParticle = getInputParticle();
-        if (inputParticle.getEnergy() != 0) {
-            if (inputParticle.getParticleId() == this.storedParticleType && inputParticle.getEnergy() == this.storedBeamEnergy) {
-                this.storedParticleType = inputParticle.getParticleId();
-                this.storedBeamEnergy = inputParticle.getEnergy();
-                this.cumulativeBeamRate += inputParticle.getRate();
-                this.storedBeamFocus = inputParticle.getFocus();
 
-            }
-            else {
-                if (this.cumulativeBeamRate == 0) {
-                    this.storedParticleType = inputParticle.getParticleId();
-                    this.storedBeamEnergy = inputParticle.getEnergy();
-                    this.cumulativeBeamRate += inputParticle.getRate();
-                    this.storedBeamFocus = inputParticle.getFocus();
-                }
-            }
+        // if input particle energy == 0, do nothing
+        if (inputParticle.getEnergy() == 0) {
+            return;
         }
+        // if we reach this point, input particle energy is > 0, and is therefore a meaningful packet
+        // if the same particle AND energy appear, add to accumulation
+        if (this.storedBeamEnergy == inputParticle.getEnergy() && this.storedParticleID == inputParticle.getParticleId()){
+            this.cumulativeBeamRate += inputParticle.getRate();
+            return;
+        }
+        // if the stored cumulativeBeamRate is 0, then update all cached values
+        if (this.cumulativeBeamRate == 0){
+            this.storedBeamEnergy = inputParticle.getEnergy();
+            this.storedBeamFocus = inputParticle.getFocus();
+            this.storedParticleID = inputParticle.getParticleId();
+            this.cumulativeBeamRate += inputParticle.getRate();
+        }
+        // if we reach this point, then the incoming packet is a different particle-energy combo than what is stored,
+        // and there are still particles being output by the machine. therefore the input packet is just ignored (voided)
+
     }
 
-
-    private void outputPacketAfterRecipe(BeamInformation inputInfo) {
+    int playerSetRate = 1000; //todo: make this player set amount
+    private void outputPacketAfterRecipe(int rate) {
         if (!this.mOutputBeamline.isEmpty()) {
-            BeamLinePacket packet = new BeamLinePacket(new BeamInformation(this.storedBeamEnergy, 10, this.storedParticleType, this.storedBeamFocus));
-            this.cumulativeBeamRate -= 10;
+            BeamLinePacket packet = new BeamLinePacket(new BeamInformation(
+                this.storedBeamEnergy, rate, this.storedParticleID, this.storedBeamFocus
+            ));
+            // if storedAmount < playerSetRate, make a storedAmount sized packet
+            if (this.cumulativeBeamRate <= rate) {
+                packet = new BeamLinePacket(new BeamInformation(
+                    this.storedBeamEnergy, this.cumulativeBeamRate, this.storedParticleID, this.storedBeamFocus
+                ));
+            }
+
+            this.cumulativeBeamRate -= rate;
             if (this.cumulativeBeamRate < 0) {
                 this.cumulativeBeamRate = 0;
             }

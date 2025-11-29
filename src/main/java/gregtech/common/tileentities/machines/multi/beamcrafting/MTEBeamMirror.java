@@ -269,6 +269,8 @@ public class MTEBeamMirror extends MTEExtendedPowerMultiBlockBase<gregtech.commo
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        mInputBeamline.clear();
+        mOutputBeamline.clear();
         return checkPiece(STRUCTURE_PIECE_MAIN, 1, 4, 0);
     }
 

@@ -22,6 +22,7 @@ import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.ADVANCED_NIT
 import static gtnhlanth.common.beamline.Particle.ELECTRON;
 import static gtnhlanth.common.beamline.Particle.MUONNEUTRINO;
 import static gtnhlanth.common.beamline.Particle.NEUTRON;
+import static gtnhlanth.common.beamline.Particle.OMEGA;
 import static gtnhlanth.common.beamline.Particle.PROTON;
 import static gtnhlanth.common.beamline.Particle.TAU;
 import static gtnhlanth.common.beamline.Particle.UPSILON;
@@ -39,15 +40,15 @@ public class BeamCrafterRecipes implements Runnable {
                 BeamCrafterMetadata
                     .builder()
                     .particleID_A(PROTON.getId())
-                    .particleID_B(PROTON.getId())
-                    .amount_A(25*10)
-                    .amount_B(25*10)
+                    .particleID_B(ELECTRON.getId())
+                    .amount_A(1200)
+                    .amount_B(7200)
                     .energy_A(1)
                     .energy_B(1)
                     .build()
             )
             .outputChances(2085)
-            .duration(2 * SECONDS) // update later
+            .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(beamcrafterRecipes);
 
@@ -70,7 +71,7 @@ public class BeamCrafterRecipes implements Runnable {
             )
             .outputChances(100)
             .duration(1 * SECONDS)
-            .eut(491520)
+            .eut(TierEU.RECIPE_UV)
             .addTo(beamcrafterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -116,7 +117,7 @@ public class BeamCrafterRecipes implements Runnable {
             .addTo(beamcrafterRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.ProtoHalkonite.getFluid(9216))
+            .fluidInputs(Materials.MoltenProtoHalkoniteBase.getFluid(9216))
             .itemInputs(ItemList.Superconducting_Magnet_Solenoid_UEV.get(4),
                 ItemList.Field_Generator_UHV.get(4))
             .itemOutputs(ItemList.ALICECasing.get(4))
@@ -146,7 +147,7 @@ public class BeamCrafterRecipes implements Runnable {
                 BeamCrafterMetadata
                     .builder()
                     .particleID_A(UPSILON.getId())
-                    .particleID_B(UPSILON.getId())
+                    .particleID_B(OMEGA.getId())
                     .amount_A(5000)
                     .amount_B(5000)
                     .energy_A(1)
@@ -174,7 +175,7 @@ public class BeamCrafterRecipes implements Runnable {
                     .build()
             )
             .outputChances(500)
-            .duration(2 * SECONDS) // update later
+            .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(beamcrafterRecipes);
 
@@ -198,7 +199,7 @@ public class BeamCrafterRecipes implements Runnable {
                     .build()
             )
             .outputChances(2500)
-            .duration(2 * SECONDS) // update later
+            .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(beamcrafterRecipes);
 
