@@ -145,8 +145,8 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
 
     protected IWidget createVoidButton(PanelSyncManager syncManager) {
 
-        GenericSyncValue<CircuitComponentPacket> syncContents = (GenericSyncValue<CircuitComponentPacket>) syncManager
-            .getSyncHandlerFromMapKey("contents:0");
+        GenericSyncValue<CircuitComponentPacket> syncContents = syncManager
+            .findSyncHandler("contents", GenericSyncValue.class);
 
         return new ButtonWidget<>().size(18, 18)
             .onMousePressed(mouseButton -> {
