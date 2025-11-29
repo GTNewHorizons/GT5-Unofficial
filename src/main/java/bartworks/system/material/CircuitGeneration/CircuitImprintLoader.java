@@ -19,6 +19,7 @@ import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -165,8 +166,315 @@ public class CircuitImprintLoader {
         }
     }
 
+    public static void makeCuttingRecipes(){
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.NandChip.get(1), ItemList.Shape_Slicer_Flat.get(0))
+            .itemOutputs(ItemList.SlicedCircuit_NANDChipArray.get(1))
+            .duration(15*SECONDS)
+            .eut(1)
+            .requiresCleanRoom()
+            .addTo(cutterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Circuit_Microprocessor.get(1), ItemList.Shape_Slicer_Flat.get(0))
+            .itemOutputs(ItemList.SlicedCircuit_Microprocessor.get(1))
+            .duration(15*SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .requiresCleanRoom()
+            .addTo(cutterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTModHandler.getIC2Item("electronicCircuit", 1), ItemList.Shape_Slicer_Flat.get(0))
+            .itemOutputs(ItemList.SlicedCircuit_ElectronicCircuit.get(1))
+            .duration(15*SECONDS)
+            .eut(16)
+            .requiresCleanRoom()
+            .addTo(cutterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Circuit_Good.get(1), ItemList.Shape_Slicer_Flat.get(0))
+            .itemOutputs(ItemList.SlicedCircuit_GoodElectronicCircuit.get(1))
+            .duration(15*SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .requiresCleanRoom()
+            .addTo(cutterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Circuit_Chip_ILC.get(1), ItemList.Shape_Slicer_Flat.get(0))
+            .itemOutputs(ItemList.SlicedCircuit_IntegratedLogicCircuit.get(1))
+            .duration(15*SECONDS)
+            .eut(16)
+            .requiresCleanRoom()
+            .addTo(cutterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Circuit_Integrated_Good.get(1), ItemList.Shape_Slicer_Flat.get(0))
+            .itemOutputs(ItemList.SlicedCircuit_GoodIntegratedCircuit.get(1))
+            .duration(15*SECONDS)
+            .eut(24)
+            .requiresCleanRoom()
+            .addTo(cutterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTModHandler.getIC2Item("advancedCircuit", 1), ItemList.Shape_Slicer_Flat.get(0))
+            .itemOutputs(ItemList.SlicedCircuit_AdvancedCircuit.get(1))
+            .duration(15*SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .requiresCleanRoom()
+            .addTo(cutterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Circuit_Processor.get(1), ItemList.Shape_Slicer_Flat.get(0))
+            .itemOutputs(ItemList.SlicedCircuit_IntegratedProcessor.get(1))
+            .duration(15*SECONDS)
+            .eut(60)
+            .requiresCleanRoom()
+            .addTo(cutterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Circuit_Advanced.get(1), ItemList.Shape_Slicer_Flat.get(0))
+            .itemOutputs(ItemList.SlicedCircuit_ProcessorAssembly.get(1))
+            .duration(15*SECONDS)
+            .eut(96)
+            .requiresCleanRoom()
+            .addTo(cutterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Circuit_Data.get(1), ItemList.Shape_Slicer_Flat.get(0))
+            .itemOutputs(ItemList.SlicedCircuit_Workstation.get(1))
+            .duration(15*SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .requiresCleanRoom()
+            .addTo(cutterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Circuit_Elite.get(1), ItemList.Shape_Slicer_Flat.get(0))
+            .itemOutputs(ItemList.SlicedCircuit_Mainframe.get(1))
+            .duration(15*SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .requiresCleanRoom()
+            .addTo(cutterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Circuit_Nanoprocessor.get(1), ItemList.Shape_Slicer_Flat.get(0))
+            .itemOutputs(ItemList.SlicedCircuit_NanoProcessor.get(1))
+            .duration(15*SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .requiresCleanRoom()
+            .addTo(cutterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Circuit_Nanocomputer.get(1), ItemList.Shape_Slicer_Flat.get(0))
+            .itemOutputs(ItemList.SlicedCircuit_NanoAssembly.get(1))
+            .duration(15*SECONDS)
+            .eut(600)
+            .requiresCleanRoom()
+            .addTo(cutterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Circuit_Elitenanocomputer.get(1), ItemList.Shape_Slicer_Flat.get(0))
+            .itemOutputs(ItemList.SlicedCircuit_NanoSupercomputer.get(1))
+            .duration(15*SECONDS)
+            .eut(600)
+            .requiresCleanRoom()
+            .addTo(cutterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Circuit_Master.get(1), ItemList.Shape_Slicer_Flat.get(0))
+            .itemOutputs(ItemList.SlicedCircuit_NanoMainframe.get(1))
+            .duration(15*SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .requiresCleanRoom()
+            .addTo(cutterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Circuit_Quantumprocessor.get(1), ItemList.Shape_Slicer_Flat.get(0))
+            .itemOutputs(ItemList.SlicedCircuit_QuantumProcessor.get(1))
+            .duration(15*SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .requiresCleanRoom()
+            .addTo(cutterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Circuit_Quantumcomputer.get(1), ItemList.Shape_Slicer_Flat.get(0))
+            .itemOutputs(ItemList.SlicedCircuit_QuantumAssembly.get(1))
+            .duration(15*SECONDS)
+            .eut(2400)
+            .requiresCleanRoom()
+            .addTo(cutterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Circuit_Masterquantumcomputer.get(1), ItemList.Shape_Slicer_Flat.get(0))
+            .itemOutputs(ItemList.SlicedCircuit_QuantumSupercomputer.get(1))
+            .duration(15*SECONDS)
+            .eut(2400)
+            .requiresCleanRoom()
+            .addTo(cutterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Circuit_Quantummainframe.get(1), ItemList.Shape_Slicer_Flat.get(0))
+            .itemOutputs(ItemList.SlicedCircuit_QuantumMainframe.get(1))
+            .duration(15*SECONDS)
+            .eut(TierEU.RECIPE_IV)
+            .requiresCleanRoom()
+            .addTo(cutterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Circuit_Crystalprocessor.get(1), ItemList.Shape_Slicer_Flat.get(0))
+            .itemOutputs(ItemList.SlicedCircuit_CrystalProcessor.get(1))
+            .duration(15*SECONDS)
+            .eut(TierEU.RECIPE_IV)
+            .requiresCleanRoom()
+            .addTo(cutterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Circuit_Crystalcomputer.get(1), ItemList.Shape_Slicer_Flat.get(0))
+            .itemOutputs(ItemList.SlicedCircuit_CrystalAssembly.get(1))
+            .duration(15*SECONDS)
+            .eut(9600)
+            .requiresCleanRoom()
+            .addTo(cutterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Circuit_Ultimatecrystalcomputer.get(1), ItemList.Shape_Slicer_Flat.get(0))
+            .itemOutputs(ItemList.SlicedCircuit_CrystalSupercomputer.get(1))
+            .duration(15*SECONDS)
+            .eut(9600)
+            .requiresCleanRoom()
+            .addTo(cutterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Circuit_Crystalmainframe.get(1), ItemList.Shape_Slicer_Flat.get(0))
+            .itemOutputs(ItemList.SlicedCircuit_CrystalMainframe.get(1))
+            .duration(15*SECONDS)
+            .eut(TierEU.RECIPE_LuV)
+            .requiresCleanRoom()
+            .addTo(cutterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Circuit_Neuroprocessor.get(1), ItemList.Shape_Slicer_Flat.get(0))
+            .itemOutputs(ItemList.SlicedCircuit_WetwareProcessor.get(1))
+            .duration(15*SECONDS)
+            .eut(TierEU.RECIPE_LuV)
+            .requiresCleanRoom()
+            .addTo(cutterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Circuit_Wetwarecomputer.get(1), ItemList.Shape_Slicer_Flat.get(0))
+            .itemOutputs(ItemList.SlicedCircuit_WetwareAssembly.get(1))
+            .duration(15*SECONDS)
+            .eut(38400)
+            .requiresCleanRoom()
+            .addTo(cutterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Circuit_Wetwaresupercomputer.get(1), ItemList.Shape_Slicer_Flat.get(0))
+            .itemOutputs(ItemList.SlicedCircuit_WetwareSupercomputer.get(1))
+            .duration(15*SECONDS)
+            .eut(38400)
+            .requiresCleanRoom()
+            .addTo(cutterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Circuit_Bioprocessor.get(1), ItemList.Shape_Slicer_Flat.get(0))
+            .itemOutputs(ItemList.SlicedCircuit_BiowareProcessor.get(1))
+            .duration(15*SECONDS)
+            .eut(TierEU.RECIPE_ZPM)
+            .requiresCleanRoom()
+            .addTo(cutterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Circuit_Biowarecomputer.get(1), ItemList.Shape_Slicer_Flat.get(0))
+            .itemOutputs(ItemList.SlicedCircuit_BiowareAssembly.get(1))
+            .duration(15*SECONDS)
+            .eut(153600)
+            .requiresCleanRoom()
+            .addTo(cutterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Circuit_OpticalProcessor.get(1), ItemList.Shape_Slicer_Flat.get(0))
+            .itemOutputs(ItemList.SlicedCircuit_OpticalProcessor.get(1))
+            .duration(15*SECONDS)
+            .eut(TierEU.RECIPE_UV)
+            .requiresCleanRoom()
+            .addTo(cutterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTModHandler.getModItem(Forestry.ID, "chipsets", 1, 0), ItemList.Shape_Slicer_Flat.get(0))
+            .itemOutputs(ItemList.SlicedCircuit_BasicCircuitBoard.get(1))
+            .duration(15*SECONDS)
+            .eut(1)
+            .requiresCleanRoom()
+            .requireMods(Forestry)
+            .addTo(cutterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTModHandler.getModItem(Forestry.ID, "chipsets", 1, 1), ItemList.Shape_Slicer_Flat.get(0))
+            .itemOutputs(ItemList.SlicedCircuit_EnhancedCircuitBoard.get(1))
+            .duration(15*SECONDS)
+            .eut(1)
+            .requiresCleanRoom()
+            .requireMods(Forestry)
+            .addTo(cutterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTModHandler.getModItem(Forestry.ID, "chipsets", 1, 2), ItemList.Shape_Slicer_Flat.get(0))
+            .itemOutputs(ItemList.SlicedCircuit_RefinedCircuitBoard.get(1))
+            .duration(15*SECONDS)
+            .eut(1)
+            .requiresCleanRoom()
+            .requireMods(Forestry)
+            .addTo(cutterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTModHandler.getModItem(Forestry.ID, "chipsets", 1, 3), ItemList.Shape_Slicer_Flat.get(0))
+            .itemOutputs(ItemList.SlicedCircuit_IntricateCircuitBoard.get(1))
+            .duration(15*SECONDS)
+            .eut(1)
+            .requiresCleanRoom()
+            .requireMods(Forestry)
+            .addTo(cutterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTModHandler.getModItem(Railcraft.ID, "part.circuit", 1, 0), ItemList.Shape_Slicer_Flat.get(0))
+            .itemOutputs(ItemList.SlicedCircuit_ControllerCircuit.get(1))
+            .duration(15*SECONDS)
+            .eut(1)
+            .requiresCleanRoom()
+            .requireMods(Railcraft)
+            .addTo(cutterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTModHandler.getModItem(Railcraft.ID, "part.circuit", 1, 1), ItemList.Shape_Slicer_Flat.get(0))
+            .itemOutputs(ItemList.SlicedCircuit_ReceiverCircuit.get(1))
+            .duration(15*SECONDS)
+            .eut(1)
+            .requiresCleanRoom()
+            .requireMods(Railcraft)
+            .addTo(cutterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTModHandler.getModItem(Railcraft.ID, "part.circuit", 1, 2), ItemList.Shape_Slicer_Flat.get(0))
+            .itemOutputs(ItemList.SlicedCircuit_SignalCircuit.get(1))
+            .duration(15*SECONDS)
+            .eut(1)
+            .requiresCleanRoom()
+            .requireMods(Railcraft)
+            .addTo(cutterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(getModItem(NewHorizonsCoreMod.ID, "item.HighEnergyFlowCircuit", 64, 0), ItemList.Shape_Slicer_Flat.get(0))
+            .itemOutputs(ItemList.SlicedCircuit_HighEnergyFlowCircuit.get(1))
+            .duration(15*SECONDS)
+            .eut(1)
+            .requiresCleanRoom()
+            .requireMods(NewHorizonsCoreMod)
+            .addTo(cutterRecipes);
+    }
+
     public static void run() {
         registerItemstacks();
+        makeCuttingRecipes();
         HashSet<GTRecipe> toRem = new HashSet<>();
         HashSet<GTRecipe> toAdd = new HashSet<>();
         deleteCALRecipesAndTags();
