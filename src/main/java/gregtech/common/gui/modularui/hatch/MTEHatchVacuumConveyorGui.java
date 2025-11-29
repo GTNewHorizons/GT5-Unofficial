@@ -43,7 +43,7 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
 
     @Override
     protected int getBasePanelHeight() {
-        return super.getBasePanelHeight() + 120;
+        return super.getBasePanelHeight() + 100;
     }
 
     @Override
