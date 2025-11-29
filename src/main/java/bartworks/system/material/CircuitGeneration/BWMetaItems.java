@@ -131,7 +131,7 @@ public class BWMetaItems {
         @SideOnly(Side.CLIENT)
         public final void registerIcons(IIconRegister aIconRegister) {
 
-            for (short i = 0; i < CircuitImprintLoader.reverseIDs; ++i) {
+            for (short i = 0; i < CircuitWraps.getMinimalID(); ++i) {
                 if (this.mEnabledItems.get(i)) {
                     BWUtil.set2DCoordTo1DArray(
                         i,
@@ -142,18 +142,14 @@ public class BWMetaItems {
                 }
             }
 
-            for (short i = CircuitImprintLoader.reverseIDs; i < Short.MAX_VALUE; i++) {
-                if (this.mEnabledItems.get(i)) {
-                    BWUtil.set2DCoordTo1DArray(
-                        i,
-                        0,
-                        2,
-                        Objects.requireNonNull(CircuitImprintLoader.circuitIIconRefs.get(i))
+            for (CircuitWraps wrap: CircuitWraps.values()) {
+                if (this.mEnabledItems.get(wrap.id)) {
+                    BWUtil.set2DCoordTo1DArray(wrap.id, 0, 2, Objects.requireNonNull(wrap.itemSingle)
                             .get(1)
                             .getIconIndex(),
                         this.mIconList);
                     BWUtil.set2DCoordTo1DArray(
-                        i,
+                        wrap.id,
                         1,
                         2,
                         aIconRegister.registerIcon(MainMod.MOD_ID + ":WrapOverlay"),
