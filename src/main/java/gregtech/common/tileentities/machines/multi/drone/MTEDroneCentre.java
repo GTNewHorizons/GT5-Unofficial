@@ -62,6 +62,7 @@ import gregtech.common.covers.conditions.RedstoneCondition;
 import gregtech.common.gui.modularui.multiblock.MTEDroneCentreGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.items.ItemTierDrone;
+import gregtech.common.tileentities.machines.multi.drone.production.ProductionRecord;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -76,14 +77,16 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     private Vec3Impl centreCoord;
     private int droneLevel = 0;
 
-    public int selectTime = 100;
+    public int selectedTime = 10;
+    public int activeGroup = 0;
     public String searchFilter = "";
     public boolean useRender = true;
-    public boolean searchOriginalName = false;
+    public boolean searchOriginalName;
+    public boolean editMode;
     public MTEDroneCentreGui.SortMode sortMode = MTEDroneCentreGui.SortMode.NAME;
-
-    public ProductionDataRecorder productionDataRecorder = new ProductionDataRecorder(100, true);
-    private List<DroneConnection> connectionList = new ArrayList<>();
+    public List<String> group = new ArrayList<>(Collections.nCopies(8, "+"));
+    public ProductionRecord productionDataRecorder = new ProductionRecord();
+    public List<DroneConnection> connectionList = new ArrayList<>();
 
     // Save centre by dimID
     private static final HashMultimap<Integer, MTEDroneCentre> droneMap = HashMultimap.create();
@@ -248,6 +251,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
                     endRecipeProcessing();
                 }
             }
+            if (aTick % 200 == 0) productionDataRecorder.update();
         }
         if (mMaxProgresstime > 0 && mMaxProgresstime - mProgresstime == 1) destroyRenderBlock();
         super.onPostTick(aBaseMetaTileEntity, aTick);
@@ -259,7 +263,10 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         droneLevel = aNBT.getInteger("drone");
         useRender = aNBT.getBoolean("useRender");
         sortMode = MTEDroneCentreGui.SortMode.valueOf(aNBT.getString("sort"));
-        productionDataRecorder = ProductionDataRecorder.fromNBT(aNBT.getCompoundTag("productionData"));
+        productionDataRecorder.readFromNBT(aNBT.getCompoundTag("productionData"));
+        NBTTagCompound GroupNBT = aNBT.getCompoundTag("Group");
+        for (int i = 0; i < 8; i++) group.set(i, GroupNBT.getString(String.valueOf(i)));
+        activeGroup = aNBT.getInteger("activeGroup");
     }
 
     @Override
@@ -269,6 +276,10 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         aNBT.setBoolean("useRender", useRender);
         aNBT.setString("sort", sortMode.toString());
         aNBT.setTag("productionData", productionDataRecorder.writeToNBT());
+        NBTTagCompound GroupNBT = new NBTTagCompound();
+        for (int i = 0; i < 8; i++) GroupNBT.setString(String.valueOf(i), group.get(i));
+        aNBT.setTag("Group", GroupNBT);
+        aNBT.setInteger("activeGroup", activeGroup);
     }
 
     @Override
@@ -515,5 +526,13 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
 
     public void setSearchOriginalName(boolean searchOriginalName) {
         this.searchOriginalName = searchOriginalName;
+    }
+
+    public boolean getEditMode() {
+        return editMode;
+    }
+
+    public void setEditMode(boolean editMode) {
+        this.editMode = editMode;
     }
 }

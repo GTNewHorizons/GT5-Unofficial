@@ -147,7 +147,7 @@ import gregtech.common.tileentities.machines.MTEHatchOutputME;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbine;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
-import gregtech.common.tileentities.machines.multi.drone.ProductionDataRecorder;
+import gregtech.common.tileentities.machines.multi.drone.production.ProductionRecord;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusOutput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
@@ -767,8 +767,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                             && mMaintenanceHatches.get(0) instanceof MTEHatchDroneDownLink ddl) {
                             MTEDroneCentre centre = ddl.getCentre();
                             if (centre != null) {
-                                ProductionDataRecorder pdr = centre.productionDataRecorder;
-                                if (pdr.isActive())
+                                ProductionRecord pdr = centre.productionDataRecorder;
+                                if (pdr.active)
                                     pdr.addRecord(((long) mMaxProgresstime) * mEUt, mOutputItems, mOutputFluids);
                             }
                         }

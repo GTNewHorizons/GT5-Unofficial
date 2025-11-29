@@ -34,8 +34,10 @@ public class DroneConnection {
     public String shutdownReason;
     public UUID uuid;
     public boolean isSelected;
+    public int group;
 
-    public DroneConnection(MTEMultiBlockBase machine, MTEDroneCentre centre, HashMap<String, String> tempNameList) {
+    public DroneConnection(MTEMultiBlockBase machine, MTEDroneCentre centre, HashMap<String, String> tempNameList,
+        HashMap<String, Integer> tempGroupList) {
         this.machineItem = machine.getStackForm(1);
         this.machineCoord = machine.getBaseMetaTileEntity()
             .getCoords();
@@ -47,6 +49,8 @@ public class DroneConnection {
         this.unlocalizedName = machine.mName;
         this.customName = Optional.ofNullable(tempNameList.remove(uuid.toString()))
             .orElse(machine.getLocalName());
+        this.group = Optional.ofNullable(tempGroupList.remove(uuid.toString()))
+            .orElse(0);
         this.machineStatus = machine.isAllowedToWork();
         this.shutdownReason = machine.getBaseMetaTileEntity()
             .getLastShutDownReason()
@@ -72,6 +76,7 @@ public class DroneConnection {
         this.machineStatus = aNBT.getBoolean("machineStatus");
         this.shutdownReason = aNBT.getString("shutdownReason");
         this.isSelected = aNBT.getBoolean("isSelected");
+        this.group = aNBT.getInteger("group");
     }
 
     public Optional<MTEMultiBlockBase> getLinkedMachine() {
@@ -131,6 +136,7 @@ public class DroneConnection {
         aNBT.setBoolean("machineStatus", machineStatus);
         aNBT.setString("shutdownReason", shutdownReason);
         aNBT.setBoolean("isSelected", isSelected);
+        aNBT.setInteger("group", group);
         return aNBT;
     }
 
@@ -149,11 +155,8 @@ public class DroneConnection {
     }
 
     public boolean isValid() {
-        boolean isMachineValid = getLinkedMachine().map(MetaTileEntity::isValid)
+        return getLinkedMachine().map(MetaTileEntity::isValid)
             .orElse(false);
-        boolean isCentreValid = getLinkedCentre().map(MetaTileEntity::isValid)
-            .orElse(false);
-        return isMachineValid && isCentreValid;
     }
 
     public void setActive(boolean active) {
@@ -181,7 +184,8 @@ public class DroneConnection {
             && a.customName.equals(b.customName)
             && a.isSelected == b.isSelected
             && a.machineStatus == b.machineStatus
-            && a.shutdownReason.equals(b.shutdownReason);
+            && a.shutdownReason.equals(b.shutdownReason)
+            && a.group == b.group;
 
     }
 }

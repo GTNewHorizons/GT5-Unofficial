@@ -1,20 +1,23 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.util.GTUtility.formatNumbers;
 
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -26,7 +29,7 @@ import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DrawableStack;
-import com.cleanroommc.modularui.drawable.DynamicDrawable;
+import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.RichTooltip;
@@ -34,6 +37,7 @@ import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DynamicSyncHandler;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
+import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.GenericSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.InteractionSyncHandler;
@@ -41,6 +45,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.EmptyWidget;
 import com.cleanroommc.modularui.widget.Widget;
+import com.cleanroommc.modularui.widget.scroll.VerticalScrollData;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.CycleButtonWidget;
 import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
@@ -62,17 +67,18 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.synchandler.DroneConnectionListSyncHandler;
+import gregtech.common.gui.modularui.synchandler.ProductionRecordSyncHandler;
 import gregtech.common.modularui2.sync.LinkedBoolValue;
 import gregtech.common.modularui2.widget.SelectButton;
 import gregtech.common.tileentities.machines.multi.drone.DroneConnection;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
-import gregtech.common.tileentities.machines.multi.drone.ProductionDataRecorder;
+import gregtech.common.tileentities.machines.multi.drone.production.ProductionRecord;
 
 public class MTEDroneCentreGui extends MTEMultiBlockBaseGui<MTEDroneCentre> {
 
     private int lastScroll = 0;
     private int pageIndex;
-    DynamicSyncHandler droneListHandler, productionHandler;
+    DynamicSyncHandler droneListHandler, groupHandler, productionHandler;
     IPanelHandler machineListPanel, productionRecordPanel;
 
     public MTEDroneCentreGui(MTEDroneCentre mteDroneCentre) {
@@ -82,25 +88,45 @@ public class MTEDroneCentreGui extends MTEMultiBlockBaseGui<MTEDroneCentre> {
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        syncManager.syncValue("droneConnections", new DroneConnectionListSyncHandler(multiblock::getConnectionList));
-        syncManager
-            .syncValue("sort", new EnumSyncValue<>(SortMode.class, multiblock::getSortMode, multiblock::setSortMode));
-        syncManager
-            .syncValue("searchFilter", new StringSyncValue(multiblock::getSearchBarText, multiblock::setSearchBarText));
-        syncManager.syncValue(
-            "searchOri",
-            new BooleanSyncValue(multiblock::getSearchOriginalName, multiblock::setSearchOriginalName));
-        syncManager.syncValue(
-            "productionInfo",
-            new GenericSyncValue<>(
-                () -> multiblock.productionDataRecorder,
-                null,
-                ProductionDataRecorder::deserialize,
-                ProductionDataRecorder::serialize,
-                ProductionDataRecorder::isEqual,
-                null));
-        syncManager
-            .syncValue("selectTime", new IntSyncValue(() -> multiblock.selectTime, var -> multiblock.selectTime = var));
+
+        DroneConnectionListSyncHandler droneConnectionListSyncHandler = new DroneConnectionListSyncHandler(
+            multiblock::getConnectionList);
+        EnumSyncValue<SortMode> sortModeSyncHandler = new EnumSyncValue<>(
+            SortMode.class,
+            multiblock::getSortMode,
+            multiblock::setSortMode);
+        StringSyncValue searchFilterSyncHandler = new StringSyncValue(
+            multiblock::getSearchBarText,
+            multiblock::setSearchBarText);
+        ProductionRecordSyncHandler productionRecordSyncHandler = new ProductionRecordSyncHandler(
+            () -> multiblock.productionDataRecorder);
+        IntSyncValue selectTimeSyncHandler = new IntSyncValue(
+            () -> multiblock.selectedTime,
+            var -> multiblock.selectedTime = var);
+        IntSyncValue activeGroupSyncHandler = new IntSyncValue(
+            () -> multiblock.activeGroup,
+            var -> multiblock.activeGroup = var);
+        BooleanSyncValue searchOriSyncHandler = new BooleanSyncValue(
+            multiblock::getSearchOriginalName,
+            multiblock::setSearchOriginalName);
+        BooleanSyncValue editModeSyncHandler = new BooleanSyncValue(multiblock::getEditMode, multiblock::setEditMode);
+        GenericListSyncHandler<String> groupSyncHandler = new GenericListSyncHandler<>(
+            () -> multiblock.group,
+            null,
+            packetBuffer -> packetBuffer.readStringFromBuffer(32768),
+            PacketBuffer::writeStringToBuffer,
+            String::equals,
+            null);
+
+        syncManager.syncValue("droneList", droneConnectionListSyncHandler);
+        syncManager.syncValue("sort", sortModeSyncHandler);
+        syncManager.syncValue("searchFilter", searchFilterSyncHandler);
+        syncManager.syncValue("groupNameList", groupSyncHandler);
+        syncManager.syncValue("selectTime", selectTimeSyncHandler);
+        syncManager.syncValue("activeGroup", activeGroupSyncHandler);
+        syncManager.syncValue("searchOri", searchOriSyncHandler);
+        syncManager.syncValue("productionRecord", productionRecordSyncHandler);
+        syncManager.syncValue("editMode", editModeSyncHandler);
     }
 
     @Override
@@ -165,12 +191,27 @@ public class MTEDroneCentreGui extends MTEMultiBlockBaseGui<MTEDroneCentre> {
             }
             return createListArea(syncManager, pSyncManager);
         });
+        groupHandler = new DynamicSyncHandler().widgetProvider((pSyncManager, packet) -> {
+            if (packet == null) {
+                return new EmptyWidget();
+            }
+            return createGroupTab(syncManager, pSyncManager);
+        });
 
+        syncManager.findSyncHandler("droneList", DroneConnectionListSyncHandler.class)
+            .setChangeListener(() -> droneListHandler.notifyUpdate(packet -> {}));
         syncManager.findSyncHandler("sort", EnumSyncValue.class)
             .setChangeListener(() -> droneListHandler.notifyUpdate(packet -> {}));
         syncManager.findSyncHandler("searchFilter", StringSyncValue.class)
             .setChangeListener(() -> droneListHandler.notifyUpdate(packet -> {}));
         syncManager.findSyncHandler("searchOri", BooleanSyncValue.class)
+            .setChangeListener(() -> droneListHandler.notifyUpdate(packet -> {}));
+        syncManager.findSyncHandler("editMode", BooleanSyncValue.class)
+            .setChangeListener(() -> {
+                droneListHandler.notifyUpdate(packet -> {});
+                groupHandler.notifyUpdate(packet -> {});
+            });
+        syncManager.findSyncHandler("activeGroup", IntSyncValue.class)
             .setChangeListener(() -> droneListHandler.notifyUpdate(packet -> {}));
 
         int heightCoff = syncManager.isClient() ? Minecraft.getMinecraft().currentScreen.height - 40 : 0;
@@ -180,6 +221,7 @@ public class MTEDroneCentreGui extends MTEMultiBlockBaseGui<MTEDroneCentre> {
             public void onOpen(ModularScreen screen) {
                 super.onOpen(screen);
                 droneListHandler.notifyUpdate(packet -> {});
+                groupHandler.notifyUpdate(packet -> {});
             }
 
             @Override
@@ -190,6 +232,12 @@ public class MTEDroneCentreGui extends MTEMultiBlockBaseGui<MTEDroneCentre> {
             .height(heightCoff)
             .background(GTGuiTextures.BACKGROUND_STANDARD)
             .child(ButtonWidget.panelCloseButton())
+            .child(
+                new DynamicSyncedWidget<>().width(16)
+                    .coverChildrenHeight()
+                    .topRel(0.4f)
+                    .leftRel(0f, 0, 1f)
+                    .syncHandler(groupHandler))
             .child(
                 Flow.column()
                     .widthRel(1)
@@ -202,6 +250,42 @@ public class MTEDroneCentreGui extends MTEMultiBlockBaseGui<MTEDroneCentre> {
                             .scale(2))
                     .child(createFunctionArea(syncManager))
                     .child(createDynamicConnectionWidget(syncManager)));
+    }
+
+    private IWidget createGroupTab(PanelSyncManager syncManager, PanelSyncManager dynamicSyncManager) {
+        GenericListSyncHandler<String> groupSyncValue = syncManager
+            .findSyncHandler("groupNameList", GenericListSyncHandler.class);
+        IntSyncValue activeGroupSyncHandler = syncManager.findSyncHandler("activeGroup", IntSyncValue.class);
+        Flow column = Flow.column()
+            .width(16)
+            .coverChildrenHeight()
+            .childPadding(4);
+        for (int i = 0; i < 8; i++) {
+            final int finalI = i;
+            if (multiblock.editMode && multiblock.activeGroup == i && i != 0) {
+                column.child(
+                    new TextFieldWidget().size(16)
+                        .value(
+                            dynamicSyncManager.getOrCreateSyncHandler(
+                                "groupName" + i,
+                                StringSyncValue.class,
+                                () -> new StringSyncValue(
+                                    () -> groupSyncValue.getValue()
+                                        .get(finalI),
+                                    var -> multiblock.group.set(finalI, var)))));
+                continue;
+            }
+            column.child(
+                new SelectButton().size(16, 16)
+                    .right(0)
+                    .overlay(IKey.str(i == 0 ? "All" : String.valueOf(i)))
+                    .tooltip(
+                        var -> var.add(
+                            groupSyncValue.getValue()
+                                .get(finalI)))
+                    .value(LinkedBoolValue.of(activeGroupSyncHandler, i)));
+        }
+        return column;
     }
 
     private IWidget createFunctionArea(PanelSyncManager syncManager) {
@@ -243,6 +327,13 @@ public class MTEDroneCentreGui extends MTEMultiBlockBaseGui<MTEDroneCentre> {
                     })
                     .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.drone_production"))))
             .child(
+                new ToggleButton().size(16)
+                    .value(syncManager.findSyncHandler("editMode", BooleanSyncValue.class))
+                    .background(GTGuiTextures.BUTTON_STANDARD)
+                    .overlay(true, GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_ON)
+                    .overlay(false, GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_OFF)
+                    .tooltip(t -> t.addLine(IKey.lang("GT5U.gui.button.drone_editmode"))))
+            .child(
                 new TextFieldWidget().height(16)
                     .expanded()
                     .value(syncManager.findSyncHandler("searchFilter", StringSyncValue.class)));
@@ -253,11 +344,15 @@ public class MTEDroneCentreGui extends MTEMultiBlockBaseGui<MTEDroneCentre> {
             if (packet == null) {
                 return new EmptyWidget();
             }
-            return createProductionArea(syncManager, pSyncManager);
+            return createProductionArea(syncManager);
         });
 
         syncManager.findSyncHandler("selectTime", IntSyncValue.class)
             .setChangeListener(() -> productionHandler.notifyUpdate(packet -> {}));
+        syncManager.findSyncHandler("productionRecord", GenericSyncValue.class)
+            .setChangeListener(() -> productionHandler.notifyUpdate(packet -> {}));
+        syncManager.findSyncHandler("groupNameList", GenericListSyncHandler.class)
+            .setChangeListener(() -> groupHandler.notifyUpdate(packet -> {}));
 
         int heightCoff = syncManager.isClient() ? Minecraft.getMinecraft().currentScreen.height - 40 : 0;
 
@@ -282,14 +377,15 @@ public class MTEDroneCentreGui extends MTEMultiBlockBaseGui<MTEDroneCentre> {
                     .height(18)
                     .top(4)
                     .left(4)
+                    .marginBottom(4)
                     .childPadding(4)
                     .child(
                         new ToggleButton().size(18)
                             .background(GTGuiTextures.BUTTON_STANDARD)
                             .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                             .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
-                            .value(new BooleanSyncValue(() -> multiblock.productionDataRecorder.isActive(), var -> {
-                                multiblock.productionDataRecorder.setActive(var);
+                            .value(new BooleanSyncValue(() -> multiblock.productionDataRecorder.active, var -> {
+                                multiblock.productionDataRecorder.active = var;
                                 productionHandler.notifyUpdate(packet -> {});
                             })))
                     .child(
@@ -303,7 +399,7 @@ public class MTEDroneCentreGui extends MTEMultiBlockBaseGui<MTEDroneCentre> {
                     .syncHandler(productionHandler));
     }
 
-    private IWidget createProductionArea(PanelSyncManager syncManager, PanelSyncManager dynamicSyncManager) {
+    private IWidget createProductionArea(PanelSyncManager syncManager) {
         PagedWidget.Controller controller = new PagedWidget.Controller() {
 
             @Override
@@ -322,45 +418,21 @@ public class MTEDroneCentreGui extends MTEMultiBlockBaseGui<MTEDroneCentre> {
         productionPage.controller(controller)
             .widthRel(0.95f)
             .expanded()
-            .setEnabledIf(w -> multiblock.productionDataRecorder.isActive());
+            .setEnabledIf(w -> multiblock.productionDataRecorder.active);
         createPages(syncManager, productionPage);
 
         return Flow.column()
             .sizeRel(0.95f, 0.95f)
             .center()
             .childPadding(2)
-            .child(
-                Flow.row()
-                    .widthRel(1)
-                    .height(18)
-                    .childPadding(4)
-                    .setEnabledIf(w -> multiblock.productionDataRecorder.isActive())
-                    .child(
-                        IKey.lang("GT5U.gui.text.drone_maxrecord")
-                            .asWidget())
-                    .child(
-                        new TextFieldWidget().setNumbers(1, 100000)
-                            .value(
-                                dynamicSyncManager.getOrCreateSyncHandler(
-                                    "maxRecord",
-                                    IntSyncValue.class,
-                                    () -> new IntSyncValue(
-                                        () -> multiblock.productionDataRecorder.maxRecords,
-                                        var -> multiblock.productionDataRecorder.maxRecords = var)))
-                            .tooltip(var -> var.add(IKey.lang("GT5U.gui.tooltip.drone_maxrecord"))))
-                    .child(new ButtonWidget<>().onMousePressed(mouseButton -> {
-                        productionHandler.notifyUpdate(packet -> {});
-                        return true;
-                    })
-                        .overlay(GTGuiTextures.OVERLAY_BUTTON_CYCLIC)
-                        .tooltip(t -> t.addLine(IKey.lang("GT5U.gui.tooltip.drone_production_refresh")))))
+            .marginTop(4)
             .child(createTimeButton(syncManager))
             .child(
                 Flow.row()
                     .widthRel(1)
                     .height(18)
                     .marginBottom(4)
-                    .setEnabledIf(w -> multiblock.productionDataRecorder.isActive())
+                    .setEnabledIf(w -> multiblock.productionDataRecorder.active)
                     .child(
                         new PageButton(0, controller).widthRel(0.25f)
                             .overlay(IKey.lang("GT5U.gui.text.drone_production_connection")))
@@ -377,21 +449,22 @@ public class MTEDroneCentreGui extends MTEMultiBlockBaseGui<MTEDroneCentre> {
     }
 
     private void createPages(PanelSyncManager syncManager, PagedWidget<?> productionPage) {
-        ProductionDataRecorder clientProductionDataRecorder = ((GenericSyncValue<ProductionDataRecorder>) syncManager
-            .findSyncHandler("productionInfo")).getValue();
+        GenericSyncValue<ProductionRecord> productionRecord = ((GenericSyncValue<ProductionRecord>) syncManager
+            .findSyncHandler("productionRecord"));
+        ProductionRecord clientProductionDataRecorder = productionRecord.getValue();
         List<DroneConnection> droneConnectionList = syncManager
-            .findSyncHandler("droneConnections", DroneConnectionListSyncHandler.class)
+            .findSyncHandler("droneList", DroneConnectionListSyncHandler.class)
             .getValue();
 
-        long euConsumed = clientProductionDataRecorder.getEuConsumedIn(multiblock.selectTime);
-        LinkedHashMap<ItemStack, Long> itemProduced = clientProductionDataRecorder
-            .getItemsProducedIn(multiblock.selectTime);
-        LinkedHashMap<FluidStack, Long> fluidConsumed = clientProductionDataRecorder
-            .getFluidsProducedIn(multiblock.selectTime);
-        String time = multiblock.selectTime == -1 ? "All" : String.valueOf(multiblock.selectTime);
+        long euConsumed = clientProductionDataRecorder.getEnergyStatsIn(multiblock.selectedTime * 1000L);
+        Map<ItemStack, Long> itemProduced = clientProductionDataRecorder
+            .getItemStatsIn(multiblock.selectedTime * 1000L);
+        Map<FluidStack, Long> fluidConsumed = clientProductionDataRecorder
+            .getFluidStatsIn(multiblock.selectedTime * 1000L);
+        String time = String.valueOf(multiblock.selectedTime)
+            .replace("-1", "All");
         productionPage.addPage(
             Flow.column()
-                .padding(4)
                 .childPadding(2)
                 .widthRel(1)
                 .expanded()
@@ -415,18 +488,17 @@ public class MTEDroneCentreGui extends MTEMultiBlockBaseGui<MTEDroneCentre> {
                     .child(
                         IKey.lang("GT5U.gui.text.drone_average", time)
                             .asWidget()
-                            .setEnabledIf(w -> multiblock.selectTime != -1))
+                            .setEnabledIf(w -> multiblock.selectedTime != -1))
                     .child(
                         IKey.str(
-                            formatNumbers(euConsumed / multiblock.selectTime) + " EU/t "
-                                + GTUtility.getTierNameWithParentheses(euConsumed / multiblock.selectTime))
+                            formatNumbers(euConsumed / multiblock.selectedTime) + " EU/t "
+                                + GTUtility.getTierNameWithParentheses(euConsumed / multiblock.selectedTime))
                             .asWidget()
-                            .setEnabledIf(w -> multiblock.selectTime != -1)))
+                            .setEnabledIf(w -> multiblock.selectedTime != -1)))
             // Todo: Maybe we can put a line-chart here?
             // .child(createSummaryGrid(droneConnectionList)))
             .addPage(
                 Flow.column()
-                    .padding(4)
                     .childPadding(2)
                     .widthRel(1)
                     .expanded()
@@ -437,7 +509,6 @@ public class MTEDroneCentreGui extends MTEMultiBlockBaseGui<MTEDroneCentre> {
                     .child(createItemGrid(itemProduced)))
             .addPage(
                 Flow.column()
-                    .padding(4)
                     .childPadding(2)
                     .widthRel(1)
                     .expanded()
@@ -450,36 +521,33 @@ public class MTEDroneCentreGui extends MTEMultiBlockBaseGui<MTEDroneCentre> {
     private IWidget createTimeButton(PanelSyncManager syncManager) {
         IntSyncValue selectTime = syncManager.findSyncHandler("selectTime", IntSyncValue.class);
         int TIME_HEIGHT = 35;
-        return Flow.row()
+        Flow row = Flow.row()
             .widthRel(1)
             .height(18)
             .childPadding(4)
             .mainAxisAlignment(Alignment.MainAxis.CENTER)
-            .setEnabledIf(w -> multiblock.productionDataRecorder.isActive())
-            .child(
-                new SelectButton().value(LinkedBoolValue.of(selectTime, 100))
+            .setEnabledIf(w -> multiblock.productionDataRecorder.active);
+
+        Map<String, Integer> timeOptions = new java.util.LinkedHashMap<>();
+        timeOptions.put("10s", 10);
+        timeOptions.put("1min", 60);
+        timeOptions.put("10min", 600);
+        timeOptions.put("1h", 3600);
+        timeOptions.put("24h", 86400);
+        timeOptions.put("All", -1);
+
+        timeOptions.forEach(
+            (label, time) -> row.child(
+                new SelectButton().value(LinkedBoolValue.of(selectTime, time))
                     .width(TIME_HEIGHT)
-                    .overlay(IKey.lang("5s")))
-            .child(
-                new SelectButton().value(LinkedBoolValue.of(selectTime, 1200))
-                    .width(TIME_HEIGHT)
-                    .overlay(IKey.lang("1min")))
-            .child(
-                new SelectButton().value(LinkedBoolValue.of(selectTime, 12000))
-                    .width(TIME_HEIGHT)
-                    .overlay(IKey.lang("10min")))
-            .child(
-                new SelectButton().value(LinkedBoolValue.of(selectTime, 72000))
-                    .width(TIME_HEIGHT)
-                    .overlay(IKey.lang("1h")))
-            .child(
-                new SelectButton().value(LinkedBoolValue.of(selectTime, 1728000))
-                    .width(TIME_HEIGHT)
-                    .overlay(IKey.lang("24h")))
-            .child(
-                new SelectButton().value(LinkedBoolValue.of(selectTime, -1))
-                    .width(TIME_HEIGHT)
-                    .overlay(IKey.lang("All")));
+                    .overlay(IKey.lang(label))));
+
+        return row.child(new ButtonWidget<>().onMousePressed(mouseButton -> {
+            productionHandler.notifyUpdate(packet -> {});
+            return true;
+        })
+            .overlay(GTGuiTextures.OVERLAY_BUTTON_CYCLIC)
+            .tooltip(t -> t.addLine(IKey.lang("GT5U.gui.tooltip.drone_production_refresh"))));
     }
 
     private IWidget createMachineGrid(List<DroneConnection> connections) {
@@ -496,7 +564,7 @@ public class MTEDroneCentreGui extends MTEMultiBlockBaseGui<MTEDroneCentre> {
             else result.stackSize += machine.stackSize;
         });
 
-        List<IWidget> cells = new ArrayList<>();
+        List<Flow> cells = new ArrayList<>();
         machineStack.forEach((key, itemStack) -> {
             Flow cell = Flow.row()
                 .childPadding(4)
@@ -512,77 +580,68 @@ public class MTEDroneCentreGui extends MTEMultiBlockBaseGui<MTEDroneCentre> {
             cells.add(cell);
         });
         return new Grid().mapTo(6, cells)
-            .marginTop(24)
-            .minElementMarginRight(4)
             .minElementMarginBottom(2)
             .widthRel(1)
-            .coverChildrenHeight()
-            .align(Alignment.CenterLeft);
+            .scrollable(new VerticalScrollData())
+            .expanded();
     }
 
-    private IWidget createItemGrid(LinkedHashMap<ItemStack, Long> itemList) {
-        if (itemList.isEmpty()) {
+    private <T> IWidget createStatsGrid(Map<T, Long> data, int childPadding,
+        Function<T, IWidget> displayWidgetFactory) {
+        if (data.isEmpty()) {
             return new EmptyWidget();
         }
-        List<IWidget> cells = new ArrayList<>();
-        itemList.forEach((itemStack, stackSize) -> {
-            Flow cell = Flow.row()
-                .align(Alignment.CenterLeft)
-                .coverChildren()
-                .paddingRight(2)
-                .child(
-                    new ItemDisplayWidget().item(itemStack)
-                        .displayAmount(false)
-                        .size(16)
-                        .tooltip(builder -> getTooltipFromItemSafely(builder, itemStack)));
-            cell.child(
-                new TextWidget<>(formatValueWithUnits(stackSize))
-                    .tooltip(builder -> builder.add(formatNumbers(stackSize))));
-            cells.add(cell);
-        });
-        return new Grid().mapTo(4, cells)
-            .marginTop(24)
-            .minElementMarginRight(4)
+        List<IWidget> cells = data.entrySet()
+            .stream()
+            .map(entry -> {
+                T item = entry.getKey();
+                Long stackSize = entry.getValue();
+                return (IWidget) Flow.row()
+                    .childPadding(childPadding)
+                    .align(Alignment.CenterLeft)
+                    .coverChildren()
+                    .paddingRight(2)
+                    .child(displayWidgetFactory.apply(item))
+                    .child(
+                        new TextWidget<>(formatValueWithUnits(stackSize))
+                            .tooltip(builder -> builder.add(formatNumbers(stackSize))));
+            })
+            .collect(Collectors.toList());
+
+        return new Grid().mapTo(5, cells)
             .minElementMarginBottom(2)
             .widthRel(1)
-            .coverChildrenHeight()
-            .align(Alignment.CenterLeft);
+            .scrollable(new VerticalScrollData())
+            .expanded();
     }
 
-    private IWidget createFluidGrid(LinkedHashMap<FluidStack, Long> fluidList) {
-        if (fluidList.isEmpty()) {
-            return new EmptyWidget();
-        }
-        List<IWidget> cells = new ArrayList<>();
-        fluidList.forEach((fluidStack, stackSize) -> {
-            Flow cell = Flow.row()
-                .childPadding(4)
-                .align(Alignment.CenterLeft)
-                .coverChildren()
-                .paddingRight(2)
-                .child(
-                    new FluidDisplayWidget().fluid(fluidStack)
-                        .displayAmount(false)
-                        .size(16)
-                        .tooltip(builder -> builder.addFromFluid(fluidStack)));
-            cell.child(new TextWidget<>(": " + stackSize));
-            cells.add(cell);
-        });
-        return new Grid().mapTo(6, cells)
-            .marginTop(24)
-            .minElementMarginRight(4)
-            .minElementMarginBottom(2)
-            .widthRel(1)
-            .coverChildrenHeight()
-            .align(Alignment.CenterLeft);
+    private IWidget createItemGrid(Map<ItemStack, Long> itemList) {
+        return createStatsGrid(
+            itemList,
+            0,
+            itemStack -> new ItemDisplayWidget().item(itemStack)
+                .displayAmount(false)
+                .size(16)
+                .tooltip(builder -> getTooltipFromItemSafely(builder, itemStack)));
+    }
+
+    private IWidget createFluidGrid(Map<FluidStack, Long> fluidList) {
+        return createStatsGrid(
+            fluidList,
+            4,
+            fluidStack -> new FluidDisplayWidget().fluid(fluidStack)
+                .displayAmount(false)
+                .size(16)
+                .tooltip(builder -> builder.addFromFluid(fluidStack)));
     }
 
     private IWidget createDynamicConnectionWidget(PanelSyncManager syncManager) {
         DroneConnectionListSyncHandler droneConnectionListSyncHandler = syncManager
-            .findSyncHandler("droneConnections", DroneConnectionListSyncHandler.class);
+            .findSyncHandler("droneList", DroneConnectionListSyncHandler.class);
         DynamicSyncedWidget<?> dynamicWidget = new DynamicSyncedWidget<>().widthRel(0.95f)
             .expanded()
             .syncHandler(droneListHandler);
+
         droneConnectionListSyncHandler.setChangeListener(() -> {
             if (dynamicWidget.hasChildren()) {
                 IWidget child = dynamicWidget.getChildren()
@@ -598,7 +657,7 @@ public class MTEDroneCentreGui extends MTEMultiBlockBaseGui<MTEDroneCentre> {
 
     private IWidget createListArea(PanelSyncManager syncManager, PanelSyncManager dynamicSyncManager) {
         DroneConnectionListSyncHandler droneConnectionListSyncHandler = syncManager
-            .findSyncHandler("droneConnections", DroneConnectionListSyncHandler.class);
+            .findSyncHandler("droneList", DroneConnectionListSyncHandler.class);
         List<DroneConnection> clientConnections = droneConnectionListSyncHandler.getValue();
         if (clientConnections.isEmpty()) {
             return IKey.lang("GT5U.gui.text.drone_no_connection")
@@ -609,10 +668,18 @@ public class MTEDroneCentreGui extends MTEMultiBlockBaseGui<MTEDroneCentre> {
                 .scale(2);
         } else {
             ListWidget<IWidget, ?> droneListWidget = new DroneListWidget<>().sizeRel(1);
-            // Filter
-            clientConnections = clientConnections.stream()
+
+            final Comparator<DroneConnection> sorter = switch (multiblock.sortMode) {
+                case NAME -> (o1, o2) -> Collator.getInstance(Locale.UK)
+                    .compare(o1.getCustomName(), o2.getCustomName());
+                case DISTANCE -> Comparator.comparing(DroneConnection::getDistanceSquared);
+                case STATUS -> Comparator.comparing(DroneConnection::isMachineShutdown)
+                    .reversed();
+            };
+
+            List<Flow> rows = clientConnections.stream()
                 .filter(
-                    conn -> conn.getCustomName()
+                    conn -> (conn.getCustomName()
                         .toLowerCase()
                         .contains(
                             multiblock.getSearchBarText()
@@ -622,51 +689,66 @@ public class MTEDroneCentreGui extends MTEMultiBlockBaseGui<MTEDroneCentre> {
                             .contains(
                                 multiblock.getSearchBarText()
                                     .toLowerCase())))
-                .collect(Collectors.toList());
-            // Sort
-            switch (multiblock.sortMode) {
-                case NAME -> clientConnections = clientConnections.stream()
-                    .sorted(
-                        (o1, o2) -> Collator.getInstance(Locale.UK)
-                            .compare(o1.getCustomName(), o2.getCustomName()))
-                    .collect(Collectors.toList());
-                case DISTANCE -> clientConnections = clientConnections.stream()
-                    .sorted(Comparator.comparing(DroneConnection::getDistanceSquared))
-                    .collect(Collectors.toList());
-                case STATUS -> clientConnections = clientConnections.stream()
-                    .sorted(
-                        Comparator.comparing(DroneConnection::isMachineShutdown)
-                            .reversed()
-                            .thenComparing(DroneConnection::getCustomName))
-                    .collect(Collectors.toList());
-            }
-            // Add row
-            List<Flow> rows = new ArrayList<>();
-            for (DroneConnection connection : clientConnections) {
-                Flow row = Flow.row()
-                    .widthRel(1)
-                    .coverChildrenHeight()
-                    .childPadding(4)
-                    .paddingRight(4)
-                    .marginBottom(2)
-                    .child(
+                        && (conn.group == multiblock.activeGroup || multiblock.editMode))
+                .sorted(sorter)
+                .map(connection -> {
+                    Flow row = Flow.row()
+                        .widthRel(1)
+                        .coverChildrenHeight()
+                        .childPadding(4)
+                        .paddingRight(4)
+                        .marginBottom(2);
+                    if (multiblock.getEditMode())
+                        row.child(createGroupButton(connection, droneConnectionListSyncHandler, dynamicSyncManager));
+                    row.child(
                         new ItemDisplayWidget().background(IDrawable.EMPTY)
                             .displayAmount(false)
                             .item(connection.getMachineItem())
                             .size(16)
                             .tooltip(var -> getTooltipFromItemSafely(var, connection.getMachineItem())))
-                    .child(createHighLightButton(connection, syncManager))
-                    .child(createTextButton(connection, dynamicSyncManager, droneConnectionListSyncHandler))
-                    .child(createPowerControlButton(connection, droneConnectionListSyncHandler, dynamicSyncManager));
-                if (connection.isMachineShutdown()) row.child(
-                    new Widget<>().background(GTGuiTextures.OVERLAY_POWER_LOSS)
-                        .tooltip(var -> var.add(connection.getShutdownReason())));
-                row.child(createCustomNameTextField(connection, dynamicSyncManager, droneConnectionListSyncHandler));
-                rows.add(row);
-            }
+                        .child(createHighLightButton(connection, syncManager))
+                        .child(createTextButton(connection, dynamicSyncManager, droneConnectionListSyncHandler))
+                        .child(
+                            createPowerControlButton(connection, droneConnectionListSyncHandler, dynamicSyncManager));
+                    if (connection.isMachineShutdown()) row.child(
+                        new Widget<>().background(GTGuiTextures.OVERLAY_POWER_LOSS)
+                            .tooltip(var -> var.add(connection.getShutdownReason())));
+                    row.child(
+                        createCustomNameTextField(connection, dynamicSyncManager, droneConnectionListSyncHandler));
+                    return row;
+                })
+                .collect(Collectors.toList());
+
             rows.forEach(droneListWidget::child);
             return droneListWidget;
         }
+    }
+
+    private IWidget createGroupButton(DroneConnection conn,
+        DroneConnectionListSyncHandler droneConnectionListSyncHandler, PanelSyncManager dynamicSyncManager) {
+        BooleanSyncValue groupSyncHandler = dynamicSyncManager.getOrCreateSyncHandler(
+            "group" + conn.uuid.toString(),
+            BooleanSyncValue.class,
+            () -> new BooleanSyncValue(
+                () -> droneConnectionListSyncHandler.getValue()
+                    .stream()
+                    .filter(c -> c.uuid.equals(conn.uuid))
+                    .map(con -> con.group == multiblock.activeGroup)
+                    .findFirst()
+                    .orElse(false),
+                bool -> multiblock.getConnectionList()
+                    .stream()
+                    .filter(c -> c.uuid.equals(conn.uuid))
+                    .findFirst()
+                    .ifPresent(con -> con.group = bool ? multiblock.activeGroup : 0)));
+        IDrawable shape = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/slice_shape")
+            .asIcon()
+            .size(8);
+        return new ToggleButton().value(groupSyncHandler)
+            .size(16)
+            .background(IDrawable.EMPTY)
+            .overlay(true, shape, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
+            .overlay(false, shape);
     }
 
     private IWidget createTextButton(DroneConnection connection, PanelSyncManager dynamicSyncManager,
@@ -705,7 +787,7 @@ public class MTEDroneCentreGui extends MTEMultiBlockBaseGui<MTEDroneCentre> {
                             .orElse(false))
                     .findFirst()
                     .orElse(false),
-                bool -> droneConnectionListSyncHandler.getValue()
+                bool -> multiblock.getConnectionList()
                     .stream()
                     .filter(c -> c.uuid.equals(conn.uuid))
                     .findFirst()
@@ -724,10 +806,8 @@ public class MTEDroneCentreGui extends MTEMultiBlockBaseGui<MTEDroneCentre> {
                     })));
         return new ToggleButton().value(powerSwitchSyncer)
             .size(16)
-            .overlay(new DynamicDrawable(() -> {
-                if (conn.machineStatus) return GTGuiTextures.OVERLAY_BUTTON_POWER_SWITCH_ON;
-                return GTGuiTextures.OVERLAY_BUTTON_POWER_SWITCH_OFF;
-            }));
+            .overlay(true, GTGuiTextures.OVERLAY_BUTTON_POWER_SWITCH_ON)
+            .overlay(false, GTGuiTextures.OVERLAY_BUTTON_POWER_SWITCH_OFF);
     }
 
     protected IWidget createCustomNameTextField(DroneConnection conn, PanelSyncManager dynamicSyncManager,

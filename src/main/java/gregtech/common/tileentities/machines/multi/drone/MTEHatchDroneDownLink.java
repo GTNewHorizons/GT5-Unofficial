@@ -50,6 +50,7 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
     private final List<DroneConnection> connections = new ArrayList<>();
     private final List<MTEMultiBlockBase> unlinkedMachines = new ArrayList<>();
     private final HashMap<String, String> savedNameList = new HashMap<>();
+    private final HashMap<String, Integer> savedGroupList = new HashMap<>();
 
     private static final IIconContainer moduleActive = new Textures.BlockIcons.CustomIcon(
         "iconsets/OVERLAY_DRONE_MODULE_ACTIVE");
@@ -98,13 +99,12 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
             aBaseMetaTileEntity.getXCoord(),
             aBaseMetaTileEntity.getYCoord(),
             aBaseMetaTileEntity.getZCoord());
-
-        tryFindDroneCenter();
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
+            if (aTick == 2) tryFindDroneCenter();
             // validate that all connections to the center and the machines are still valid every 5s
             if (aTick % 100 == 0) {
                 validateConnections();
@@ -133,16 +133,6 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
     }
 
     private void validateConnections() {
-        // If centre is offline, delete all connection.
-        if (centre != null && (!centre.isValid() || !centre.getBaseMetaTileEntity()
-            .isActive())) {
-            centre.getConnectionList()
-                .removeAll(connections);
-            clearConnections();
-            centre = null;
-        }
-
-        // Now we validate if the LinkedMachines are still valid.
         connections.removeIf(entry -> {
             boolean result = entry.isValid();
             if (!result) centre.getConnectionList()
@@ -231,10 +221,12 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
     }
 
     private boolean addConnection(MTEMultiBlockBase machine) {
-        if (centre == null || findConnection(machine).isPresent()) {
+        if (centre == null || findConnection(machine).isPresent()
+            || machine.getBaseMetaTileEntity() == null
+            || centre.getBaseMetaTileEntity() == null) {
             return false;
         }
-        DroneConnection connection = new DroneConnection(machine, centre, savedNameList);
+        DroneConnection connection = new DroneConnection(machine, centre, savedNameList, savedGroupList);
         connections.add(connection);
         centre.getConnectionList()
             .add(connection);
@@ -247,6 +239,7 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
             conn.getLinkedMachine()
                 .ifPresent(unlinkedMachines::add);
             savedNameList.put(conn.uuid.toString(), conn.getCustomName());
+            savedGroupList.put(conn.uuid.toString(), conn.group);
             return true;
         });
     }
@@ -292,17 +285,26 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        NBTTagCompound nameList = aNBT.getCompoundTag("conList");
+        NBTTagCompound nameList = aNBT.getCompoundTag("nameList");
+        NBTTagCompound groupList = aNBT.getCompoundTag("groupList");
         for (String s : nameList.func_150296_c()) {
             savedNameList.put(s, nameList.getString(s));
+        }
+        for (String s : groupList.func_150296_c()) {
+            savedGroupList.put(s, groupList.getInteger(s));
         }
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        NBTTagCompound conList = new NBTTagCompound();
-        connections.forEach(conn -> conList.setString(conn.uuid.toString(), conn.getCustomName()));
-        aNBT.setTag("conList", conList);
+        NBTTagCompound nameList = new NBTTagCompound();
+        NBTTagCompound groupList = new NBTTagCompound();
+        connections.forEach(conn -> {
+            nameList.setString(conn.uuid.toString(), conn.getCustomName());
+            groupList.setInteger(conn.uuid.toString(), conn.group);
+        });
+        aNBT.setTag("nameList", nameList);
+        aNBT.setTag("groupList", groupList);
     }
 
     @Override
