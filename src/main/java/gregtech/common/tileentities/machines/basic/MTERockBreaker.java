@@ -375,10 +375,10 @@ public class MTERockBreaker extends MTEBasicMachine {
                     // Add the "IT'S FREE" item
                     inputs.add(ItemList.Display_ITS_FREE.getWithName(1, this.recipeDescription));
                 }
+                b.itemInputs(inputs.toArray(new ItemStack[0]));
                 if (this.circuit != -1) {
                     b.circuit(this.circuit);
                 }
-                b.itemInputs(inputs.toArray(new ItemStack[0]));
                 b.addTo(rockBreakerFakeRecipes);
             }
         }
