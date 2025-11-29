@@ -13,6 +13,7 @@
 
 package bartworks.system.material.CircuitGeneration;
 
+import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.formingPressRecipes;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -82,18 +83,15 @@ public class BWMetaItems {
             .eut(TierEU.RECIPE_HV)
             .addTo(formingPressRecipes);
 
-        RecipeMaps.autoclaveRecipes.add(
-            new GTRecipe(
-                false,
-                new ItemStack[] { BWMetaItems.NEW_CIRCUIT_PARTS.getStack(2) },
-                new ItemStack[] { BWMetaItems.NEW_CIRCUIT_PARTS.getStack(3) },
-                null,
-                new int[] { 7500 },
-                new FluidStack[] { Materials.SolderingAlloy.getMolten(4 * INGOTS) },
-                null,
-                300,
-                (int) TierEU.RECIPE_EV,
-                BWUtil.CLEANROOM));
+        GTValues.RA.stdBuilder()
+            .itemInputs(BWMetaItems.NEW_CIRCUIT_PARTS.getStack(2))
+            .itemOutputs(BWMetaItems.NEW_CIRCUIT_PARTS.getStack(3))
+            .outputChances(75_00)
+            .fluidInputs(Materials.SolderingAlloy.getMolten(4 * INGOTS))
+            .duration(15*SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .requiresCleanRoom()
+            .addTo(autoclaveRecipes);
     }
 
     public static class BW_GT_MetaGenCircuits extends BWMetaItems.BW_GT_MetaGen_Item_Hook {
