@@ -65,7 +65,7 @@ public class ItemAirFilter extends Item {
             return StatCollector.translateToLocal("item.GTPP.air_filter.name.t1");
         } else if (tItem.getItemDamage() == 1) {
             return StatCollector.translateToLocal("item.GTPP.air_filter.name.t2");
-            //damage value 1 is t2 while 0 is t1
+            // damage value 1 is t2 while 0 is t1
         } else {
             return StatCollector.translateToLocal("item.GTPP.air_filter.name");
         }
@@ -81,9 +81,9 @@ public class ItemAirFilter extends Item {
     }
 
     public static long getFilterMaxDamage(final ItemStack aStack) {
-         if (aStack.getItemDamage() == 0) return 50;
-         else if (aStack.getItemDamage() == 1) return 2500;
-         else return 0;//should not happen
+        if (aStack.getItemDamage() == 0) return 50;
+        else if (aStack.getItemDamage() == 1) return 2500;
+        else return 0;// should not happen
     }
 
     public static long getFilterDamage(final ItemStack aStack) {
