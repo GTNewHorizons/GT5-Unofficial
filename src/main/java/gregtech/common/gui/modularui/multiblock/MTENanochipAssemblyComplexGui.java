@@ -1,6 +1,5 @@
 package gregtech.common.gui.modularui.multiblock;
 
-import com.cleanroommc.modularui.widget.Widget;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
@@ -18,6 +17,7 @@ import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
+import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widget.scroll.ScrollData;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.PageButton;
@@ -76,8 +76,6 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
     protected Widget<? extends Widget<?>> makeLogoWidget() {
         return super.makeLogoWidget().setEnabledIf(a -> !multiblock.isTalkModeActive);
     }
-
-
 
     @Override
     protected Flow createPanelGap(ModularPanel panel, PanelSyncManager syncManager) {
