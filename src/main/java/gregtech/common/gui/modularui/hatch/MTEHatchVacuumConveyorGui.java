@@ -6,6 +6,7 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
@@ -29,6 +30,7 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyor;
@@ -42,27 +44,29 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
     }
 
     @Override
-    protected int getBasePanelHeight() {
-        return super.getBasePanelHeight() + 100;
-    }
-
-    @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         ParentWidget<?> parent = super.createContentSection(panel, syncManager);
         parent.child(createCCSlotGroup(panel, syncManager));
-        parent.child(createButtonHoldingColumn(panel, syncManager));
         return parent;
     }
 
     // todo: add more functionality from the ticket
-    private Flow createButtonHoldingColumn(ModularPanel panel, PanelSyncManager syncManager) {
+
+    @Override
+    protected Flow createLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
         Flow column = Flow.column()
             .width(40)
             .coverChildrenHeight()
-            .crossAxisAlignment(Alignment.CrossAxis.END);
+            .crossAxisAlignment(Alignment.CrossAxis.START);
         column.child(createVoidButton(syncManager));
-        return column.align(Alignment.CenterRight)
-            .marginRight(3);
+        return column.align(Alignment.BottomLeft)
+            .paddingBottom(2)
+            .paddingLeft(3);
+    }
+
+    @Override
+    protected boolean supportsLeftCornerFlow() {
+        return true;
     }
 
     @Override
@@ -107,7 +111,7 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
                             .size(18);
                         long amount = packet.getComponents()
                             .get(CircuitComponent.getFromFakeStackUnsafe(item));
-                        return createSlotWidget(item, amount);
+                        return createSlotWidget(item, amount, syncManager);
                     })
                     .build();
             } catch (IOException e) {
@@ -121,20 +125,27 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
                         .writeToNBT()))));
 
         return new DynamicSyncedWidget<>().coverChildren()
-            .align(Alignment.CenterLeft)
-            .marginLeft(4)
+            .align(Alignment.Center)
             .syncHandler(componentHandler);
     }
 
-    private Widget<?> createSlotWidget(ItemStack item, long amount) {
+    private Widget<?> createSlotWidget(ItemStack item, long amount, PanelSyncManager syncManager) {
         return new Widget<>().size(18)
-            .background(GTGuiTextures.SLOT_ITEM_STANDARD, new DynamicDrawable(() -> new ItemDrawable(item)))
+            .background(
+                GTGuiTextures.SLOT_ITEM_STANDARD,
+                new DynamicDrawable(
+                    () -> new ItemDrawable(item).asIcon()
+                        .size(16)))
             .overlay(
                 IKey.dynamic(() -> NumberFormat.format(amount, NumberFormat.AMOUNT_TEXT))
                     .scale(0.6f)
                     .alignment(Alignment.BottomRight)
                     .color(Color.WHITE.main))
-            .setEnabledIf($ -> amount > 0);
+            .tooltip(t -> {
+                if (!syncManager.isClient()) return; //needed since this runs on server and crashes
+                t.addStringLines(item.getTooltip(syncManager.getPlayer(), false))
+                    .addLine(EnumChatFormatting.DARK_GRAY + "Amount: " + GTUtility.formatNumbers(amount));
+            });
     }
 
     @SuppressWarnings("unchecked")

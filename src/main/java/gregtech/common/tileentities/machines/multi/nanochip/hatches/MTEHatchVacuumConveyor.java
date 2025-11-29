@@ -171,11 +171,11 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements IConnec
 
     // for the niche case if someone wants to create a future expanded hatch
     public final int getRowCount() {
-        return 9;
+        return 4;
     }
 
     public final int getColumnCount() {
-        return 5;
+        return 4;
     }
 
     @Override
