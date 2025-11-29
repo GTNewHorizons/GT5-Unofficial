@@ -17,7 +17,7 @@ import gregtech.common.gui.modularui.UIHelper;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class PurificationUnitOzonationFrontend extends PurificationUnitRecipeMapFrontend {
+public class PurificationUnitOzonationFrontend extends CustomBackgroundRecipeMapFrontend {
 
     public PurificationUnitOzonationFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
         NEIRecipePropertiesBuilder neiPropertiesBuilder) {
