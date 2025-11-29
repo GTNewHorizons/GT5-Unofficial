@@ -21,6 +21,7 @@ import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -472,9 +473,129 @@ public class CircuitImprintLoader {
             .addTo(cutterRecipes);
     }
 
+    public static void makeCraftingRecipes(){
+        List<ItemStack> circuitImprints = new ArrayList<>();
+        List<ItemStack> circuitImprintsDefault = Arrays.asList(
+            ItemList.CircuitImprint_NANDChipArray.get(1),
+            ItemList.CircuitImprint_Microprocessor.get(1),
+            ItemList.CircuitImprint_ElectronicCircuit.get(1),
+            ItemList.CircuitImprint_GoodElectronicCircuit.get(1),
+            ItemList.CircuitImprint_IntegratedLogicCircuit.get(1),
+            ItemList.CircuitImprint_GoodIntegratedCircuit.get(1),
+            ItemList.CircuitImprint_AdvancedCircuit.get(1),
+            ItemList.CircuitImprint_IntegratedProcessor.get(1),
+            ItemList.CircuitImprint_ProcessorAssembly.get(1),
+            ItemList.CircuitImprint_Workstation.get(1),
+            ItemList.CircuitImprint_Mainframe.get(1),
+            ItemList.CircuitImprint_NanoProcessor.get(1),
+            ItemList.CircuitImprint_NanoAssembly.get(1),
+            ItemList.CircuitImprint_NanoSupercomputer.get(1),
+            ItemList.CircuitImprint_NanoMainframe.get(1),
+            ItemList.CircuitImprint_QuantumProcessor.get(1),
+            ItemList.CircuitImprint_QuantumAssembly.get(1),
+            ItemList.CircuitImprint_QuantumSupercomputer.get(1),
+            ItemList.CircuitImprint_QuantumMainframe.get(1),
+            ItemList.CircuitImprint_CrystalProcessor.get(1),
+            ItemList.CircuitImprint_CrystalAssembly.get(1),
+            ItemList.CircuitImprint_CrystalSupercomputer.get(1),
+            ItemList.CircuitImprint_CrystalMainframe.get(1),
+            ItemList.CircuitImprint_WetwareProcessor.get(1),
+            ItemList.CircuitImprint_WetwareAssembly.get(1),
+            ItemList.CircuitImprint_WetwareSupercomputer.get(1),
+            ItemList.CircuitImprint_BiowareProcessor.get(1),
+            ItemList.CircuitImprint_BiowareAssembly.get(1),
+            ItemList.CircuitImprint_OpticalProcessor.get(1)
+        );
+        circuitImprints.addAll(circuitImprintsDefault);
+
+        List<ItemStack> slicedCircuits = new ArrayList<>();
+        List<ItemStack> slicedCircuitsDefault = Arrays.asList(
+            ItemList.SlicedCircuit_NANDChipArray.get(1),
+            ItemList.SlicedCircuit_Microprocessor.get(1),
+            ItemList.SlicedCircuit_ElectronicCircuit.get(1),
+            ItemList.SlicedCircuit_GoodElectronicCircuit.get(1),
+            ItemList.SlicedCircuit_IntegratedLogicCircuit.get(1),
+            ItemList.SlicedCircuit_GoodIntegratedCircuit.get(1),
+            ItemList.SlicedCircuit_AdvancedCircuit.get(1),
+            ItemList.SlicedCircuit_IntegratedProcessor.get(1),
+            ItemList.SlicedCircuit_ProcessorAssembly.get(1),
+            ItemList.SlicedCircuit_Workstation.get(1),
+            ItemList.SlicedCircuit_Mainframe.get(1),
+            ItemList.SlicedCircuit_NanoProcessor.get(1),
+            ItemList.SlicedCircuit_NanoAssembly.get(1),
+            ItemList.SlicedCircuit_NanoSupercomputer.get(1),
+            ItemList.SlicedCircuit_NanoMainframe.get(1),
+            ItemList.SlicedCircuit_QuantumProcessor.get(1),
+            ItemList.SlicedCircuit_QuantumAssembly.get(1),
+            ItemList.SlicedCircuit_QuantumSupercomputer.get(1),
+            ItemList.SlicedCircuit_QuantumMainframe.get(1),
+            ItemList.SlicedCircuit_CrystalProcessor.get(1),
+            ItemList.SlicedCircuit_CrystalAssembly.get(1),
+            ItemList.SlicedCircuit_CrystalSupercomputer.get(1),
+            ItemList.SlicedCircuit_CrystalMainframe.get(1),
+            ItemList.SlicedCircuit_WetwareProcessor.get(1),
+            ItemList.SlicedCircuit_WetwareAssembly.get(1),
+            ItemList.SlicedCircuit_WetwareSupercomputer.get(1),
+            ItemList.SlicedCircuit_BiowareProcessor.get(1),
+            ItemList.SlicedCircuit_BiowareAssembly.get(1),
+            ItemList.SlicedCircuit_OpticalProcessor.get(1)
+        );
+        slicedCircuits.addAll(slicedCircuitsDefault);
+
+        if (Forestry.isModLoaded()) {
+            List<ItemStack> circuitImprintsForestry = Arrays.asList(
+                ItemList.CircuitImprint_BasicCircuitBoard.get(1),
+                ItemList.CircuitImprint_EnhancedCircuitBoard.get(1),
+                ItemList.CircuitImprint_RefinedCircuitBoard.get(1),
+                ItemList.CircuitImprint_IntricateCircuitBoard.get(1)
+            );
+            circuitImprints.addAll(circuitImprintsForestry);
+
+            List<ItemStack> slicedCircuitsForestry = Arrays.asList(
+                ItemList.SlicedCircuit_BasicCircuitBoard.get(1),
+                ItemList.SlicedCircuit_EnhancedCircuitBoard.get(1),
+                ItemList.SlicedCircuit_RefinedCircuitBoard.get(1),
+                ItemList.SlicedCircuit_IntricateCircuitBoard.get(1)
+            );
+            slicedCircuits.addAll(slicedCircuitsForestry);
+        }
+
+        if (Railcraft.isModLoaded()) {
+            List<ItemStack> circuitImprintsRailcraft = Arrays.asList(
+                ItemList.CircuitImprint_ControllerCircuit.get(1),
+                ItemList.CircuitImprint_ReceiverCircuit.get(1),
+                ItemList.CircuitImprint_SignalCircuit.get(1)
+            );
+            circuitImprints.addAll(circuitImprintsRailcraft);
+
+            List<ItemStack> slicedCircuitsRailcraft = Arrays.asList(
+                ItemList.SlicedCircuit_ControllerCircuit.get(1),
+                ItemList.SlicedCircuit_ReceiverCircuit.get(1),
+                ItemList.SlicedCircuit_SignalCircuit.get(1)
+            );
+            slicedCircuits.addAll(slicedCircuitsRailcraft);
+        }
+
+        if (NewHorizonsCoreMod.isModLoaded()) {
+            circuitImprints.add(ItemList.CircuitImprint_HighEnergyFlowCircuit.get(1));
+            slicedCircuits.add(ItemList.SlicedCircuit_HighEnergyFlowCircuit.get(1));
+        }
+
+        ItemStack imprintSupportingBoard = BWMetaItems.getCircuitParts().getStack(3);
+        ItemStack exquisitePrasiolite = WerkstoffLoader.Prasiolite.get(OrePrefixes.gemExquisite, 1);
+        long bitmask = GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.KEEPNBT | GTModHandler.RecipeBits.BUFFERED;
+        for (int i=0; i<circuitImprints.size(); i++){
+            ItemStack slicedCircuit = slicedCircuits.get(i);
+            ItemStack circuitImprint = circuitImprints.get(i);
+            Object[] imprintRecipe = {" X ", "GPG", " X ", 'P', slicedCircuit, 'G', exquisitePrasiolite, 'X', imprintSupportingBoard};
+            ShapedOreRecipe gtrecipe = BWUtil.createGTCraftingRecipe(circuitImprint, bitmask, imprintRecipe);
+            GameRegistry.addRecipe(gtrecipe);
+        }
+    }
     public static void run() {
         registerItemstacks();
         makeCuttingRecipes();
+        makeCraftingRecipes();
         HashSet<GTRecipe> toRem = new HashSet<>();
         HashSet<GTRecipe> toAdd = new HashSet<>();
         deleteCALRecipesAndTags();
