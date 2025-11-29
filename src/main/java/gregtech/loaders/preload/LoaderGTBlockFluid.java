@@ -38,7 +38,6 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.fluid.GTFluidFactory;
-import gregtech.api.items.*;
 import gregtech.api.items.BlockLongDistancePipe;
 import gregtech.api.items.CircuitComponentFakeItem;
 import gregtech.api.items.GTGenericItem;
