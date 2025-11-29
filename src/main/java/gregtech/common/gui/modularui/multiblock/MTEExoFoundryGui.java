@@ -2,6 +2,7 @@ package gregtech.common.gui.modularui.multiblock;
 
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.Objects;
 
@@ -24,7 +25,6 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.Widget;
-import com.cleanroommc.modularui.widget.sizer.Area;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
@@ -98,16 +98,44 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
+    @Override
+    protected Widget<? extends Widget<?>> makeLogoWidget(PanelSyncManager syncManager, ModularPanel parent) {
+        IPanelHandler contribPanel = syncManager.panel(
+            "contributorsPanel",
+            (p_syncManager, syncHandler) -> openContributorsPanel(p_syncManager, parent, syncManager),
+            true);
+        return new ButtonWidget<>().size(18)
+            .overlay(IDrawable.EMPTY)
+            .tooltip(t -> t.addLine(EnumChatFormatting.AQUA + translateToLocal("fog.button.thanks.tooltip")))
+            .tooltipShowUpTimer(TOOLTIP_DELAY)
+            .background(GTGuiTextures.PICTURE_EXOFOUNDRY_LOGO)
+            .disableHoverBackground()
+            .onMousePressed(d -> {
+                if (!contribPanel.isPanelOpen()) {
+                    contribPanel.openPanel();
+                } else {
+                    contribPanel.closePanel();
+                }
+                return true;
+            });
+    }
+
+    private ModularPanel openContributorsPanel(PanelSyncManager p_syncManager, ModularPanel parent,
+        PanelSyncManager syncManager) {
+        return new ModularPanel("contributorsPanel").relative(parent)
+            .sizeRel(1)
+            .background(GTGuiTextures.FOUNDRY_BACKGROUND_CONTRIBUTORS);
+    }
+
     private ModularPanel openInfoPanel(PanelSyncManager p_syncManager, ModularPanel parent,
         PanelSyncManager syncManager) {
-        Area area = parent.getArea();
-        int x = area.x + area.width;
-        int y = area.y;
         StringSyncValue speedSync = syncManager.findSyncHandler("Speed", StringSyncValue.class);
         StringSyncValue parallelSync = syncManager.findSyncHandler("Parallels", StringSyncValue.class);
         StringSyncValue euEffBaseSync = syncManager.findSyncHandler("EuEFF", StringSyncValue.class);
         StringSyncValue ocFactorSync = syncManager.findSyncHandler("OCFactor", StringSyncValue.class);
-        return new ModularPanel("statsPanel").pos(x, y)
+        return new ModularPanel("statsPanel").relative(parent)
+            .rightRel(1)
+            .topRel(0)
             .size(130, 120)
             .widgetTheme("backgroundPopup")
             .child(
@@ -218,7 +246,6 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
 
     private ModularPanel openModuleConfigPanel(PanelSyncManager p_syncManager, ModularPanel parent,
         PanelSyncManager syncManager, int index) {
-        Area area = parent.getArea();
         IntSyncValue moduleSync = syncManager.findSyncHandler("Module" + (index + 1), IntSyncValue.class);
         return new ModularPanel("moduleSelectPanel" + index) {
 
@@ -418,12 +445,6 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
 
             );
         return parentWidget;
-    }
-
-    @Override
-    protected Widget<? extends Widget<?>> makeLogoWidget() {
-        return super.makeLogoWidget().tooltip(
-            t -> t.addLine(EnumChatFormatting.DARK_AQUA + "Thank you to Sisyphus and IX for their hard work!"));
     }
 
     // copied methods so I can avoid a public static in MTEExoFoundry

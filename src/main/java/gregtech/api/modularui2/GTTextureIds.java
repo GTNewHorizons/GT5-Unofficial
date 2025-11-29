@@ -25,6 +25,7 @@ public final class GTTextureIds {
     public static final String BACKGROUND_TERMINAL_TECTECH = "gregtech:bg_terminal_tectech";
     public static final String BACKGROUND_REDSTONE_SNIFFER = "gregtech:bg_redstone_sniffer";
     public static final String BACKGROUND_CHAOS_LOCATOR = "gregtech:bg_chaos_locator";
+    public static final String BACKGROUND_CONTRIBUTORS_FOUNDRY = "gregtech:bg_contributors_foundry";
 
     public static final String SLOT_ITEM_STANDARD = "gregtech:slot_item_standard";
     public static final String SLOT_ITEM_BRONZE = "gregtech:slot_item_bronze";

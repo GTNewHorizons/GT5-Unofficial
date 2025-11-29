@@ -212,10 +212,10 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .bottomRel(0, 6, 0)
             .childIf(multiblock.supportsShutdownReasonHoverable(), createShutdownReasonHoverableTerminal(syncManager))
             .childIf(multiblock.supportsMaintenanceIssueHoverable(), createMaintIssueHoverableTerminal(syncManager))
-            .childIf(multiblock.supportsLogo(), makeLogoWidget());
+            .childIf(multiblock.supportsLogo(), makeLogoWidget(syncManager, panel));
     }
 
-    protected Widget<? extends Widget<?>> makeLogoWidget() {
+    protected Widget<? extends Widget<?>> makeLogoWidget(PanelSyncManager syncManager, ModularPanel parent) {
         return new IDrawable.DrawableWidget(IDrawable.EMPTY).size(18)
             .marginTop(4)
             .widgetTheme(GTWidgetThemes.PICTURE_LOGO);

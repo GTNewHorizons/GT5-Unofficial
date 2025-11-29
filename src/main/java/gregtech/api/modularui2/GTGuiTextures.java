@@ -109,6 +109,13 @@ public final class GTGuiTextures {
         .name(GTTextureIds.BACKGROUND_POPUP_FOUNDRY)
         .build();
 
+    public static final UITexture FOUNDRY_BACKGROUND_CONTRIBUTORS = UITexture.builder()
+        .location(GregTech.ID, "gui/background/contributors_foundry")
+        .imageSize(298, 298)
+        .name(GTTextureIds.BACKGROUND_CONTRIBUTORS_FOUNDRY)
+        .adaptable(1)
+        .build();
+
     public static final UITexture BACKGROUND_REDSTONE_SNIFFER = UITexture.builder()
         .location(GregTech.ID, "gui/background/redstone_sniffer")
         .imageSize(195, 136)

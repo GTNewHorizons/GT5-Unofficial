@@ -282,9 +282,8 @@ public final class GTGuiThemes {
             GTTextureIds.BUTTON_FOUNDRY_PRESSED,
             Dyes.MACHINE_METAL.toInt())
         .color(Dyes.dyeWhite.toInt())
-        .textColor(new Color(0xBDA44A).getRGB()) // todo change color here
-        .customTextColor(GTWidgetThemes.TEXT_TITLE.getFullName(), new Color(0xBDA44A).getRGB()) // todo change color
-                                                                                                // here
+        .textColor(new Color(0xBDA44A).getRGB())
+        .customTextColor(GTWidgetThemes.TEXT_TITLE.getFullName(), new Color(0xBDA44A).getRGB())
         .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_LOGO_EXOFOUNDRY)
         .build();
 
