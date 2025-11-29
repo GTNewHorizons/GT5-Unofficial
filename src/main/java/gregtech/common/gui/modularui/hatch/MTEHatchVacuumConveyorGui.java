@@ -1,33 +1,35 @@
 package gregtech.common.gui.modularui.hatch;
 
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 
+import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
+import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.drawable.ItemDrawable;
-import com.cleanroommc.modularui.drawable.text.StringKey;
-import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.utils.NumberFormat;
+import com.cleanroommc.modularui.value.sync.DynamicSyncHandler;
 import com.cleanroommc.modularui.value.sync.GenericSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.SingleChildWidget;
+import com.cleanroommc.modularui.widget.EmptyWidget;
+import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
+import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
+import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Grid;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.modularui2.GTGuis;
+import gregtech.api.util.StringUtils;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyor;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
@@ -40,115 +42,109 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
     }
 
     @Override
-    public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+    protected int getBasePanelHeight() {
+        return super.getBasePanelHeight() + 120;
+    }
 
-        // Sync the contents between server and client
+    @Override
+    protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
+        ParentWidget<?> parent = super.createContentSection(panel, syncManager);
+        parent.child(createCCSlotGroup(panel, syncManager));
+        parent.child(createButtonHoldingColumn(panel, syncManager));
+        return parent;
+    }
+
+    // todo: add more functionality from the ticket
+    private Flow createButtonHoldingColumn(ModularPanel panel, PanelSyncManager syncManager) {
+        Flow column = Flow.column()
+            .width(40)
+            .coverChildrenHeight()
+            .crossAxisAlignment(Alignment.CrossAxis.END);
+        column.child(createVoidButton(syncManager));
+        return column.align(Alignment.CenterRight)
+            .marginRight(3);
+    }
+
+    @Override
+    public void registerSyncValues(PanelSyncManager syncManager) {
+        super.registerSyncValues(syncManager);
         GenericSyncValue<CircuitComponentPacket> contentsSyncHandler = new GenericSyncValue<>(
             () -> hatch.contents != null ? hatch.contents : new CircuitComponentPacket(),
             val -> hatch.contents = val,
-            buf -> {
-                CircuitComponentPacket packet = new CircuitComponentPacket(
-                    (NBTTagCompound) NetworkUtils.readNBTBase(buf));
-                return packet;
+            buf -> { return new CircuitComponentPacket((NBTTagCompound) NetworkUtils.readNBTBase(buf)); },
+            (buf, item) -> { NetworkUtils.writeNBTBase(buf, item.writeToNBT()); },
+            (a, b) -> {
+                return a.getComponents()
+                    .equals(b.getComponents());
             },
-            (buf, item) -> { NetworkUtils.writeNBTBase(buf, item.writeToNBT()); });
+            null);
         syncManager.syncValue("contents", contentsSyncHandler);
-
-        // Create the panel
-        ModularPanel panel = GTGuis.mteTemplatePanelBuilder(hatch, guiData, syncManager, uiSettings)
-            .doesBindPlayerInventory(false)
-            .doesAddGregTechLogo(false)
-            .setHeight(176)
-            .build();
-
-        // Create row for 2 sections
-        Flow panelRow = new Row().widthRel(1)
-            .heightRel(1)
-            .childPadding(2)
-            .margin(7);
-
-        // Create Column for Right side button interactions
-        Flow interactablesColumn = new Column().width(70)
-            .heightRel(1);
-
-        // Create grid and create customly rendered items that can only show a tooltip and amount
-        Grid grid = new Grid().coverChildren()
-            .mapTo(5, hatch.getUiSlotCount(), i -> {
-                SingleChildWidget<?> slot = new SingleChildWidget<>().background(GTGuiTextures.SLOT_ITEM_STANDARD)
-                    .size(18);
-                Widget<?> slotChild = new Widget<>().size(16)
-                    .pos(1, 1);
-                if (hatch.contents != null) {
-                    List<ItemStack> representations = hatch.contents.getItemRepresentations();
-                    if (i < representations.size()) {
-                        ItemStack item = representations.get(i);
-                        ItemDrawable itemDraw = new ItemDrawable(item);
-                        slotChild.background(new DynamicDrawable(() -> itemDraw))
-                            .overlay(
-                                new StringKey(
-                                    NumberFormat.format(
-                                        hatch.contents.getComponents()
-                                            .get(CircuitComponent.getFromFakeStackUnsafe(item)),
-                                        NumberFormat.AMOUNT_TEXT)).scale(0.6f)
-                                            .alignment(Alignment.BottomRight)
-                                            .style(EnumChatFormatting.WHITE));
-                        slotChild.tooltip(
-                            t -> t.clearText()
-                                .addStringLines(item.getTooltip(guiData.getPlayer(), false)));
-                    }
-                }
-                slot.child(slotChild);
-                return slot;
-            });
-
-        // Make sure to update the slots each time the contents gets updated
-        contentsSyncHandler.setChangeListener(() -> {
-            if (hatch.contents == null) {
-                return;
-            }
-
-            for (int i = 0; i < hatch.getUiSlotCount(); i++) {
-                SingleChildWidget<?> slot = (SingleChildWidget<?>) grid.getChildren()
-                    .get(i);
-                Widget<?> slotChild = (Widget<?>) slot.getChildren()
-                    .get(0);
-                if (hatch.contents != null) {
-                    List<ItemStack> representations = hatch.contents.getItemRepresentations();
-                    if (i < representations.size()) {
-                        ItemStack item = representations.get(i);
-                        ItemDrawable itemDraw = new ItemDrawable(item);
-                        slotChild.background(itemDraw)
-                            .overlay(
-                                new StringKey(
-                                    NumberFormat.format(
-                                        hatch.contents.getComponents()
-                                            .get(CircuitComponent.getFromFakeStackUnsafe(item)),
-                                        NumberFormat.AMOUNT_TEXT)).scale(0.6f)
-                                            .alignment(Alignment.BottomRight)
-                                            .style(EnumChatFormatting.WHITE));
-                        slotChild.tooltip(
-                            t -> t.clearText()
-                                .addStringLines(item.getTooltip(guiData.getPlayer(), false)));
-                        continue;
-                    }
-                }
-                slotChild.overlay();
-                slotChild.tooltip(t -> t.clearText());
-
-            }
-        });
-
-        return panel.child(
-            panelRow.child(grid)
-                .child(interactablesColumn.child(createVoidButton(syncManager))));
     }
 
+    @SuppressWarnings("unchecked")
+    private IWidget createCCSlotGroup(ModularPanel panel, PanelSyncManager syncManager) {
+
+        final String[] matrix = new String[hatch.getRowCount()];
+        Arrays.fill(matrix, StringUtils.getRepetitionOf('c', hatch.getColumnCount()));
+
+        GenericSyncValue<CircuitComponentPacket> componentSyncer = syncManager
+            .findSyncHandler("contents", GenericSyncValue.class);
+
+        DynamicSyncHandler componentHandler = new DynamicSyncHandler().widgetProvider((syncManager1, buffer) -> {
+            if (buffer == null) return new EmptyWidget();
+
+            try {
+                CircuitComponentPacket packet = new CircuitComponentPacket(
+                    (NBTTagCompound) NetworkUtils.readNBTBase(buffer));
+                return SlotGroupWidget.builder()
+                    .matrix(matrix)
+                    .key('c', index -> {
+                        List<ItemStack> itemRepresentations = packet.getItemRepresentations();
+                        if (index >= itemRepresentations.size()) return GTGuiTextures.SLOT_ITEM_STANDARD.asWidget()
+                            .size(18);
+                        ItemStack item = itemRepresentations.get(index);
+                        if (item == null) return GTGuiTextures.SLOT_ITEM_STANDARD.asWidget()
+                            .size(18);
+                        long amount = packet.getComponents()
+                            .get(CircuitComponent.getFromFakeStackUnsafe(item));
+                        return createSlotWidget(item, amount);
+                    })
+                    .build();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        componentSyncer.setChangeListener(
+            () -> componentHandler.notifyUpdate(
+                (packet -> packet.writeNBTTagCompoundToBuffer(
+                    componentSyncer.getValue()
+                        .writeToNBT()))));
+
+        return new DynamicSyncedWidget<>().coverChildren()
+            .align(Alignment.CenterLeft)
+            .marginLeft(4)
+            .syncHandler(componentHandler);
+    }
+
+    private Widget<?> createSlotWidget(ItemStack item, long amount) {
+        return new Widget<>().size(18)
+            .background(GTGuiTextures.SLOT_ITEM_STANDARD, new DynamicDrawable(() -> new ItemDrawable(item)))
+            .overlay(
+                IKey.dynamic(() -> NumberFormat.format(amount, NumberFormat.AMOUNT_TEXT))
+                    .scale(0.6f)
+                    .alignment(Alignment.BottomRight)
+                    .color(Color.WHITE.main))
+            .setEnabledIf($ -> amount > 0);
+    }
+
+    @SuppressWarnings("unchecked")
     protected IWidget createVoidButton(PanelSyncManager syncManager) {
 
         GenericSyncValue<CircuitComponentPacket> syncContents = syncManager
             .findSyncHandler("contents", GenericSyncValue.class);
 
-        return new ButtonWidget<>().size(18, 18)
+        return new ButtonWidget<>().overlay(GuiTextures.CODE)
+            .size(18, 18)
             .onMousePressed(mouseButton -> {
                 syncContents.setValue(new CircuitComponentPacket());
                 return true;

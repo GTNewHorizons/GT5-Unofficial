@@ -33,7 +33,6 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.IConnectsToVacu
 public abstract class MTEHatchVacuumConveyor extends MTEHatch implements IConnectsToVacuumConveyor {
 
     public static final int VACUUM_MOVE_TICK = 17;
-    private static final int UI_SLOT_COUNT = 45;
 
     public CircuitComponentPacket contents;
 
@@ -170,8 +169,13 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements IConnec
         return new MTEHatchVacuumConveyorGui(this).build(data, syncManager, uiSettings);
     }
 
-    public int getUiSlotCount() {
-        return UI_SLOT_COUNT;
+    // for the niche case if someone wants to create a future expanded hatch
+    public final int getRowCount() {
+        return 9;
+    }
+
+    public final int getColumnCount() {
+        return 5;
     }
 
     @Override
