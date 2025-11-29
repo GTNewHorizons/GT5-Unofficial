@@ -166,6 +166,7 @@ public class CircuitImprintLoader {
     }
 
     public static void run() {
+        registerItemstacks();
         HashSet<GTRecipe> toRem = new HashSet<>();
         HashSet<GTRecipe> toAdd = new HashSet<>();
         deleteCALRecipesAndTags();
