@@ -13675,6 +13675,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Silver, 3)
             .addMaterial(Materials.CallistoIce, 1)
             .addAspect(TCAspects.HUMANUS, 2)
+            .removeOrePrefix(OrePrefixes.cell) // non molten cell is useless
             .constructMaterial()
             .setGasTemperature(12_406);
     }
