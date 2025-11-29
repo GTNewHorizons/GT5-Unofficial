@@ -662,10 +662,10 @@ public class GTRecipeConstants {
                         .duration((int) Math.max(baseDuration * 1.25, 1))
                         .addTo(RecipeMaps.blastFurnaceRecipes));
             } else {
-                items.add(GTUtility.getIntegratedCircuit(circuitConfig));
                 ret.addAll(
                     builder.copy()
                         .itemInputs(items.toArray(new ItemStack[0]))
+                        .circuit(circuitConfig)
                         .fluidInputs()
                         .duration((int) Math.max(baseDuration * 1.25, 1))
                         .addTo(RecipeMaps.blastFurnaceRecipes));
