@@ -1578,7 +1578,7 @@ public class RecipesGregTech {
 
         RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Apatite, 32L))
-            .circuit(21)
+            .circuit(2)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 2L))
             .fluidInputs(Materials.SulfuricAcid.getFluid(4_000))
             .fluidOutputs(FluidUtils.getFluidStack("sulfuricapatite", 8_000))
