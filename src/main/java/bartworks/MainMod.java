@@ -14,7 +14,6 @@
 package bartworks;
 
 import static bartworks.common.loaders.BioRecipeLoader.runOnServerStarted;
-import static bartworks.system.material.WerkstoffLoader.removeIC2Recipes;
 import static gregtech.api.enums.Mods.BartWorks;
 
 import java.io.IOException;
@@ -182,7 +181,6 @@ public final class MainMod {
 
     @Mod.EventHandler
     public void onModLoadingComplete(FMLLoadCompleteEvent event) {
-        removeIC2Recipes();
         StaticRecipeChangeLoaders.addElectricImplosionCompressorRecipes();
         PlatinumSludgeOverHaul.replacePureElements();
 

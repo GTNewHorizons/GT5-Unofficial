@@ -50,7 +50,8 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
             if (output == null) return;
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(1, stack), GTUtility.getIntegratedCircuit(1))
+                .itemInputs(GTUtility.copyAmount(1, stack))
+                .circuit(1)
                 .itemOutputs(output)
                 .duration(Math.max(material.getMass() / 4L, 1L) * material.mBlastFurnaceTemp * TICKS)
                 .eut(TierEU.RECIPE_MV)

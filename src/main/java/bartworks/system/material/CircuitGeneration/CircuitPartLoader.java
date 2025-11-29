@@ -177,8 +177,8 @@ public class CircuitPartLoader implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     single.get(16)
-                        .copy(),
-                    GTUtility.getIntegratedCircuit(16))
+                        .copy())
+                .circuit(16)
                 .itemOutputs(
                     BWMetaItems.getCircuitParts()
                         .getStack(CircuitImprintLoader.reverseIDs))
