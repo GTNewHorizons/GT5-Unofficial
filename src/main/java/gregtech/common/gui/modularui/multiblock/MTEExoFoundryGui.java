@@ -157,7 +157,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
         contributorColumn.child(
             createContributorSection(
                 "GT5U.gui.text.foundry.structure",
-                createContributorEntry("IX", Color.INDIGO.main)));
+                createContributorEntry("IX", 0xFFE12120)));
         contributorColumn.child(
             createContributorSection(
                 "GT5U.gui.text.foundry.idea",
