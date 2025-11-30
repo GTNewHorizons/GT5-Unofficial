@@ -427,6 +427,12 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
         try {
             AENetworkProxy proxy = getProxy();
+
+            // on some setup endRecipeProcessing() somehow runs before onFirstTick();
+            // test world
+            // https://discord.com/channels/181078474394566657/522098956491030558/1441490828760449124
+            if (!proxy.isReady()) proxy.onReady();
+
             sg = proxy.getStorage()
                 .getFluidInventory();
             energy = proxy.getEnergy();
