@@ -309,8 +309,6 @@ public class MTEBeamStabilizer extends MTEExtendedPowerMultiBlockBase<MTEBeamSta
         this.mMaxProgresstime = TickTime.SECOND;
         BeamInformation inputInfo = this.getInputParticle();
 
-        if (inputInfo == null || inputInfo.getRate() == 0) return CheckRecipeResultRegistry.NO_RECIPE;
-
         cumulateStoredBeamPacket();
         outputPacketAfterRecipe(this.playerSetRate);
         return CheckRecipeResultRegistry.SUCCESSFUL;
@@ -347,18 +345,17 @@ public class MTEBeamStabilizer extends MTEExtendedPowerMultiBlockBase<MTEBeamSta
 
     }
 
-    int playerSetRate = 1000; //todo: make this player set amount
+    int playerSetRate = 7000; //todo: make this player set amount
     private void outputPacketAfterRecipe(int rate) {
         if (!this.mOutputBeamline.isEmpty()) {
-            BeamLinePacket packet = new BeamLinePacket(new BeamInformation(
-                this.storedBeamEnergy, rate, this.storedParticleID, this.storedBeamFocus
-            ));
-            // if storedAmount < playerSetRate, make a storedAmount sized packet
-            if (this.cumulativeBeamRate <= rate) {
-                packet = new BeamLinePacket(new BeamInformation(
-                    this.storedBeamEnergy, this.cumulativeBeamRate, this.storedParticleID, this.storedBeamFocus
-                ));
-            }
+            BeamLinePacket packet = new BeamLinePacket(
+                new BeamInformation(
+                    this.storedBeamEnergy,
+                    Math.min(rate,this.cumulativeBeamRate),
+                    this.storedParticleID,
+                    this.storedBeamFocus
+                )
+            );
 
             this.cumulativeBeamRate -= rate;
             if (this.cumulativeBeamRate < 0) {
