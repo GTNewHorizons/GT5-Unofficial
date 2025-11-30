@@ -144,29 +144,43 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
         contributorColumn.child(
             createContributorSection(
                 "GT5U.gui.text.foundry.projectlead",
-                createContributorEntry("Chrom", Color.PURPLE.brighterSafe(1))));
+                createContributorEntry("Chrom", Color.PURPLE.brighterSafe(2))));
+
         contributorColumn.child(
             createContributorSection(
                 "GT5U.gui.text.foundry.textures",
-                createContributorEntry("Auynonymous", 0xFFFD80CF),
+                createContributorEntry("Auynonymous", 0xFFFD80CF).tooltip(
+                    t -> t.addLine(EnumChatFormatting.DARK_GRAY + "Dev my foundry...")
+                        .scale(0.6f)),
                 createContributorEntry("June", Color.PINK_ACCENT.main)));
+
         contributorColumn.child(
             createContributorSection(
                 "GT5U.gui.text.foundry.rendering",
-                createContributorEntry("Sisyphus", Color.BLUE.main)));
+                createContributorEntry("Sisyphus", 0xFF2BCAD9)));
+
         contributorColumn.child(
-            createContributorSection(
-                "GT5U.gui.text.foundry.structure",
-                createContributorEntry("IX", 0xFFE12120)));
+            createContributorSection("GT5U.gui.text.foundry.structure", createContributorEntry("IX", 0xFFE12120)));
+
         contributorColumn.child(
             createContributorSection(
                 "GT5U.gui.text.foundry.idea",
                 createContributorEntry("TheEpicGamer", Color.BLUE_ACCENT.main),
                 createContributorEntry("Ruling0", Color.GREEN_ACCENT.main)));
+
         contributorColumn.child(
             createContributorSection(
                 "GT5U.gui.text.foundry.playtest",
-                createContributorEntry("Scam Run", Color.DEEP_ORANGE.main)));
+                createContributorEntry("Scam Run", Color.DEEP_ORANGE.main).tooltip(t -> {
+                    t.addLine(EnumChatFormatting.WHITE.toString() + EnumChatFormatting.UNDERLINE + "Members\n");
+                    t.addLine(EnumChatFormatting.DARK_GRAY + "Working");
+                    t.addLine(EnumChatFormatting.DARK_GRAY + "RamseySpace");
+                    t.addLine(EnumChatFormatting.DARK_GRAY + "Ducked");
+                    t.addLine(EnumChatFormatting.DARK_GRAY + "Inphysible");
+                    t.addLine(EnumChatFormatting.DARK_GRAY + "TheEpicGamer");
+                    t.addLine(EnumChatFormatting.DARK_GRAY + "Chrom");
+                })));
+
         panel.child(contributorColumn);
 
         return panel;
