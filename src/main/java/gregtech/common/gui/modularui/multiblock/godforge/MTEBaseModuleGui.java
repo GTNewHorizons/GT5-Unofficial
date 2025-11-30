@@ -11,15 +11,14 @@ import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.GuiTextures;
-import com.cleanroommc.modularui.drawable.text.TextRenderer;
 import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Alignment.MainAxis;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.SingleChildWidget;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
@@ -31,7 +30,6 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.api.gui.widgets.CommonWidgets;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.gui.modularui.multiblock.base.TTMultiblockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.Modules;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.Panels;
@@ -73,7 +71,6 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
         registerSyncValues(syncManager);
 
         panel.size(217, 121)
-            .child(createTitle())
             .child(
                 new Column().padding(4)
                     .child(createTerminalRow(panel, syncManager).alignX(0))
@@ -83,36 +80,11 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
                             .marginLeft(1)))
             .child(createButtonColumn(panel, syncManager).mainAxisAlignment(MainAxis.START));
 
+        if (NetworkUtils.isClient()) {
+            panel.child(CommonWidgets.createMachineTitle(multiblock, 217));
+        }
+
         return panel;
-    }
-
-    // todo this should be in common widgets instead of copy pasted
-    private IWidget createTitle() {
-        String title = multiblock.getLocalName();
-
-        int borderRadius = 5;
-        int maxWidth = 216 - borderRadius * 2;
-
-        int titleWidth = TextRenderer.getFontRenderer()
-            .getStringWidth(title);
-        int widgetWidth = Math.min(maxWidth, titleWidth);
-
-        int rows = (int) Math.ceil((double) titleWidth / maxWidth);
-        int heightPerRow = (int) (IKey.renderer.getFontHeight());
-        int height = heightPerRow * rows;
-
-        return new SingleChildWidget<>().coverChildren()
-            .topRelAnchor(0, 1)
-            .widgetTheme(GTWidgetThemes.BACKGROUND_TITLE)
-            .child(
-                IKey.str(title)
-                    .asWidget()
-                    .size(widgetWidth, height)
-                    .widgetTheme(GTWidgetThemes.TEXT_TITLE)
-                    .marginLeft(5)
-                    .marginRight(5)
-                    .marginTop(5)
-                    .marginBottom(1));
     }
 
     @Override
