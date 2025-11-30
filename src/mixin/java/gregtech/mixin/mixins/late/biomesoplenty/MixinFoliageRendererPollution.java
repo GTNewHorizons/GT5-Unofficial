@@ -20,7 +20,7 @@ public class MixinFoliageRendererPollution {
         at = @At(
             value = "INVOKE",
             target = "Lnet/minecraft/block/Block;colorMultiplier(Lnet/minecraft/world/IBlockAccess;III)I",
-        remap = true))
+            remap = true))
     private int gt5u$pollutionCrossedSquares(int color, Block block, int blockX, int blockY, int blockZ,
         RenderBlocks renderer) {
         ColorOverrideType type = Pollution.blockVine.matchesID(block);
