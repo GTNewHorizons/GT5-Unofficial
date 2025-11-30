@@ -179,9 +179,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
             .child(
                 IKey.lang(titleKey)
                     .style(EnumChatFormatting.UNDERLINE)
-                    // .color(Color.GREEN.main)
                     .alignment(Alignment.CenterLeft)
-                    // .scale(0.8f)
                     .asWidget()
                     .marginBottom(2)
                     .alignX(0))
@@ -191,7 +189,6 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
     private static TextWidget<?> createContributorEntry(String name, int color) {
         IKey key = IKey.str(name)
             .alignment(Alignment.CenterLeft)
-            // .scale(0.8f)
             .color(color);
         return key.asWidget()
             .anchorLeft(0);
