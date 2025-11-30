@@ -648,7 +648,6 @@ public class CircuitImprintLoader {
     }
 
     public static void makeCraftingRecipes() {
-        List<ItemStack> circuitImprints = new ArrayList<>();
         List<ItemStack> circuitImprintsDefault = Arrays.asList(
             ItemList.CircuitImprint_NANDChipArray.get(1),
             ItemList.CircuitImprint_Microprocessor.get(1),
@@ -679,9 +678,8 @@ public class CircuitImprintLoader {
             ItemList.CircuitImprint_BiowareProcessor.get(1),
             ItemList.CircuitImprint_BiowareAssembly.get(1),
             ItemList.CircuitImprint_OpticalProcessor.get(1));
-        circuitImprints.addAll(circuitImprintsDefault);
+        List<ItemStack> circuitImprints = new ArrayList<>(circuitImprintsDefault);
 
-        List<ItemStack> slicedCircuits = new ArrayList<>();
         List<ItemStack> slicedCircuitsDefault = Arrays.asList(
             ItemList.SlicedCircuit_NANDChipArray.get(1),
             ItemList.SlicedCircuit_Microprocessor.get(1),
@@ -712,7 +710,7 @@ public class CircuitImprintLoader {
             ItemList.SlicedCircuit_BiowareProcessor.get(1),
             ItemList.SlicedCircuit_BiowareAssembly.get(1),
             ItemList.SlicedCircuit_OpticalProcessor.get(1));
-        slicedCircuits.addAll(slicedCircuitsDefault);
+        List<ItemStack> slicedCircuits = new ArrayList<>(slicedCircuitsDefault);
 
         if (Forestry.isModLoaded()) {
             List<ItemStack> circuitImprintsForestry = Arrays.asList(
@@ -765,15 +763,12 @@ public class CircuitImprintLoader {
     }
 
     public static void run() {
-        registerItemstacks();
-        makeCuttingRecipes();
-        makeCraftingRecipes();
-        HashSet<GTRecipe> toRem = new HashSet<>();
-        HashSet<GTRecipe> toAdd = new HashSet<>();
-        deleteCALRecipesAndTags();
-        rebuildCircuitAssemblerMap(toRem, toAdd);
-        exchangeRecipesInList(toRem, toAdd);
-        makeCircuitImprintRecipes();
+        // HashSet<GTRecipe> toRem = new HashSet<>();
+        // HashSet<GTRecipe> toAdd = new HashSet<>();
+        // deleteCALRecipesAndTags();
+        // rebuildCircuitAssemblerMap(toRem, toAdd);
+        // exchangeRecipesInList(toRem, toAdd);
+        // makeCircuitImprintRecipes();
     }
 
     private static void reAddOriginalRecipes() {
