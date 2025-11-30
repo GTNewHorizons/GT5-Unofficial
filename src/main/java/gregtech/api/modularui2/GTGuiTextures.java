@@ -2,8 +2,11 @@ package gregtech.api.modularui2;
 
 import static com.cleanroommc.modularui.drawable.UITexture.fullImage;
 import static gregtech.api.enums.Mods.GTNHIntergalactic;
+import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 import static tectech.Reference.MODID;
+
+import java.util.stream.IntStream;
 
 import com.cleanroommc.modularui.drawable.ColorType;
 import com.cleanroommc.modularui.drawable.UITexture;
@@ -328,6 +331,8 @@ public final class GTGuiTextures {
             GTTextureIds.OVERLAY_SLOT_BLOCK_PRIMITIVE)
         .build();
 
+    public static final UITexture OVERLAY_SLOT_ARROW_4 = UITexture.fullImage(GTPlusPlus.ID, "gui/overlay_slot/arrow_4");
+
     public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_NONE = UITexture.builder()
         .canApplyTheme()
         .location(GregTech.ID, "gui/overlay_button/void_excess_none")
@@ -394,6 +399,14 @@ public final class GTGuiTextures {
         .fullImage()
         .canApplyTheme()
         .build();
+
+    public static final UITexture[] OVERLAY_BUTTON_THROUGHPUT = IntStream.range(0, 4) // MTEElectricAutoWorkbench#MAX_THROUGHPUT
+        .mapToObj(i -> UITexture.fullImage(GTPlusPlus.ID, "gui/overlay_button/throughput_" + i))
+        .toArray(UITexture[]::new);
+
+    public static final UITexture[] OVERLAY_BUTTON_MODE = IntStream.range(0, 10) // MTEElectricAutoWorkbench#MAX_MODES
+        .mapToObj(i -> UITexture.fullImage(GTPlusPlus.ID, "gui/overlay_button/mode_" + i))
+        .toArray(UITexture[]::new);
 
     public static final UITexture TT_OVERLAY_SLOT_MESH = UITexture.builder()
         .location(MODID, "gui/overlay_slot/mesh")
@@ -624,6 +637,40 @@ public final class GTGuiTextures {
     public static final UITexture TT_OVERLAY_BUTTON_STATISTICS = UITexture
         .fullImage(MODID, "gui/overlay_button/statistics");
     public static final UITexture TT_OVERLAY_BUTTON_HEAT_ON = UITexture.fullImage(MODID, "gui/overlay_button/heat_on");
+    public static final UITexture TT_OVERLAY_BUTTON_INPUT_SEPARATION = UITexture
+        .fullImage(MODID, "gui/overlay_button/input_separation_on");
+    public static final UITexture TT_OVERLAY_BUTTON_INPUT_SEPARATION_OFF = UITexture
+        .fullImage(MODID, "gui/overlay_button/input_separation_off");
+    public static final UITexture TT_OVERLAY_BUTTON_BATCH_MODE = UITexture
+        .fullImage(MODID, "gui/overlay_button/batch_mode_on");
+    public static final UITexture TT_OVERLAY_BUTTON_BATCH_MODE_OFF = UITexture
+        .fullImage(MODID, "gui/overlay_button/batch_mode_off");
+    public static final UITexture TT_OVERLAY_BUTTON_LOAF_MODE = UITexture
+        .fullImage(MODID, "gui/overlay_button/loaf_mode_on");
+    public static final UITexture TT_OVERLAY_BUTTON_LOAF_MODE_OFF = UITexture
+        .fullImage(MODID, "gui/overlay_button/loaf_mode_off");
+    public static final UITexture TT_OVERLAY_BUTTON_RECIPE_LOCKED = UITexture
+        .fullImage(MODID, "gui/overlay_button/recipe_locked");
+    public static final UITexture TT_OVERLAY_BUTTON_RECIPE_UNLOCKED = UITexture
+        .fullImage(MODID, "gui/overlay_button/recipe_unlocked");
+    public static final UITexture TT_OVERLAY_BUTTON_VOIDING_OFF = UITexture
+        .fullImage(MODID, "gui/overlay_button/voiding_disabled");
+    public static final UITexture TT_OVERLAY_BUTTON_VOIDING_ITEMS = UITexture
+        .fullImage(MODID, "gui/overlay_button/voiding_items");
+    public static final UITexture TT_OVERLAY_BUTTON_VOIDING_FLUIDS = UITexture
+        .fullImage(MODID, "gui/overlay_button/voiding_fluids");
+    public static final UITexture TT_OVERLAY_BUTTON_VOIDING_BOTH = UITexture
+        .fullImage(MODID, "gui/overlay_button/voiding_both");
+    public static final UITexture TT_OVERLAY_BUTTON_STRUCTURE_CHECK = UITexture
+        .fullImage(MODID, "gui/overlay_button/structure_check_on");
+    public static final UITexture TT_OVERLAY_BUTTON_STRUCTURE_CHECK_OFF = UITexture
+        .fullImage(MODID, "gui/overlay_button/structure_check_off");
+    public static final UITexture TT_OVERLAY_BUTTON_FURNACE_MODE = UITexture
+        .fullImage(MODID, "gui/overlay_button/furnace_mode_on");
+    public static final UITexture TT_OVERLAY_BUTTON_FURNACE_MODE_OFF = UITexture
+        .fullImage(MODID, "gui/overlay_button/furnace_mode_off");
+    public static final UITexture TT_OVERLAY_BUTTON_POWER_PANEL = UITexture
+        .fullImage(MODID, "gui/overlay_button/power_panel");
     public static final UITexture TT_OVERLAY_CYCLIC_BLUE = UITexture.fullImage(MODID, "gui/overlay_button/cyclic_blue");
     public static final UITexture TT_OVERLAY_EJECTION_LOCKED = UITexture
         .fullImage(MODID, "gui/overlay_button/eject_disabled");
@@ -836,6 +883,19 @@ public final class GTGuiTextures {
 
     public static final UITexture TT_CONTROLLER_SLOT_HEAT_SINK = UITexture.builder()
         .location(MODID, "gui/picture/heat_sink_small")
+        .canApplyTheme()
+        .build();
+
+    public static final UITexture PICTURE_SLOTS_HOLO_3BY3 = UITexture
+        .fullImage(GregTech.ID, "gui/picture/slots_holo_3by3");
+    public static final UITexture PICTURE_WORKBENCH_CIRCLE = UITexture.builder()
+        .location(GTPlusPlus.ID, "gui/picture/workbench_circle")
+        .imageSize(16, 16)
+        .canApplyTheme()
+        .build();
+    public static final UITexture PICTURE_ARROW_WHITE_DOWN = UITexture.builder()
+        .location(GTPlusPlus.ID, "gui/picture/arrow_white_down")
+        .imageSize(10, 16)
         .canApplyTheme()
         .build();
     // endregion picture

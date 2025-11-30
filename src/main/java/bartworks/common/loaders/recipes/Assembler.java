@@ -18,7 +18,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class Assembler implements Runnable {
@@ -29,8 +28,8 @@ public class Assembler implements Runnable {
             .itemInputs(
                 new ItemStack(ItemRegistry.BW_BLOCKS[0], 1, 0),
                 Materials.Lapis.getPlates(9),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 2L),
-                GTUtility.getIntegratedCircuit(17))
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 2L))
+            .circuit(17)
             .itemOutputs(new ItemStack(ItemRegistry.BW_BLOCKS[0], 1, 1))
             .fluidInputs(GTModHandler.getIC2Coolant(1_000))
             .duration(5 * SECONDS)
@@ -38,10 +37,8 @@ public class Assembler implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                new ItemStack(ItemRegistry.BW_BLOCKS[0], 1, 1),
-                Materials.Lapis.getBlocks(8),
-                GTUtility.getIntegratedCircuit(17))
+            .itemInputs(new ItemStack(ItemRegistry.BW_BLOCKS[0], 1, 1), Materials.Lapis.getBlocks(8))
+            .circuit(17)
             .itemOutputs(new ItemStack(ItemRegistry.BW_BLOCKS[1]))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -101,9 +98,8 @@ public class Assembler implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.AnnealedCopper, 64L),
-                GTUtility.getIntegratedCircuit(17))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.AnnealedCopper, 64L))
+            .circuit(17)
             .itemOutputs(new ItemStack(ItemRegistry.BW_BLOCKS[2], 1, 1))
             .fluidInputs(Materials.Polyethylene.getMolten(8 * INGOTS))
             .duration(1 * TICKS)
@@ -134,17 +130,16 @@ public class Assembler implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Hatch_Input_HV.get(64),
-                Materials.LiquidAir.getCells(1),
-                GTUtility.getIntegratedCircuit(17))
+            .itemInputs(ItemList.Hatch_Input_HV.get(64), Materials.LiquidAir.getCells(1))
+            .circuit(17)
             .itemOutputs(ItemRegistry.compressedHatch.copy())
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Hatch_Output_HV.get(64), GTUtility.getIntegratedCircuit(17))
+            .itemInputs(ItemList.Hatch_Output_HV.get(64))
+            .circuit(17)
             .itemOutputs(ItemRegistry.giantOutputHatch.copy())
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)

@@ -32,9 +32,8 @@ public class ProcessingFoil implements IOreRecipeRegistrator {
 
     private void registerBenderRecipe(Materials material) {
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.copyAmount(1, GTOreDictUnificator.get(OrePrefixes.plate, material, 4L)),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(GTUtility.copyAmount(1, GTOreDictUnificator.get(OrePrefixes.plate, material, 4L)))
+            .circuit(1)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.foil, material, 4L))
             .duration((int) Math.max(material.getMass(), 1L))
             .eut(calculateRecipeEU(material, 24))
