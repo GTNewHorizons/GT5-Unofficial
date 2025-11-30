@@ -151,7 +151,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                 "GT5U.gui.text.foundry.textures",
                 createContributorEntry("Auynonymous", 0xFFFD80CF).tooltip(
                     t -> t.addLine(EnumChatFormatting.DARK_GRAY + "Dev my foundry...")
-                        .scale(0.6f)),
+                        .scale(0.8f)),
                 createContributorEntry("June", Color.PINK_ACCENT.main)));
 
         contributorColumn.child(
@@ -160,13 +160,20 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                 createContributorEntry("Sisyphus", 0xFF2BCAD9)));
 
         contributorColumn.child(
-            createContributorSection("GT5U.gui.text.foundry.structure", createContributorEntry("IX", 0xFFE12120)));
+            createContributorSection(
+                "GT5U.gui.text.foundry.structure",
+                createContributorEntry("IX", 0xFFE12120).tooltip(
+                    t -> t.scale(0.8f)
+                        .addLine(EnumChatFormatting.DARK_GRAY + "Good for Health, Bad for Education"))));
 
         contributorColumn.child(
             createContributorSection(
                 "GT5U.gui.text.foundry.idea",
                 createContributorEntry("TheEpicGamer", Color.BLUE_ACCENT.main),
-                createContributorEntry("Ruling0", Color.GREEN_ACCENT.main)));
+                createContributorEntry(EnumChatFormatting.DARK_GRAY + "0" + EnumChatFormatting.DARK_AQUA + "Ruling", -1)
+                    .tooltip(
+                        t -> t.scale(0.8f)
+                            .addLine(EnumChatFormatting.DARK_GRAY + "Spreadsheets..."))));
 
         contributorColumn.child(
             createContributorSection(
@@ -202,8 +209,8 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
 
     private static TextWidget<?> createContributorEntry(String name, int color) {
         IKey key = IKey.str(name)
-            .alignment(Alignment.CenterLeft)
-            .color(color);
+            .alignment(Alignment.CenterLeft);
+        if (color != -1) key.color(color);
         return key.asWidget()
             .anchorLeft(0);
     }
