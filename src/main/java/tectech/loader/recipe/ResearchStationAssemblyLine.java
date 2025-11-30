@@ -90,7 +90,7 @@ public class ResearchStationAssemblyLine implements Runnable {
         itemPartsUXVAsslineRecipes();
         addWirelessEnergyRecipes();
         addGodforgeRecipes();
-        addLHCRecipes();
+        addBeamcraftingRecipes();
 
         if (TinkersGregworks.isModLoaded() && Avaritia.isModLoaded() // Infinity, Cosmic Neutronium
             && ExtraUtilities.isModLoaded() // Bedrockium
@@ -2951,12 +2951,12 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UXV);
     }
 
-    private void addLHCRecipes() {
+    private void addBeamcraftingRecipes() {
 
         ItemStack neutronAcceleratorUV = NeutronAccelerators[8].copy();
         neutronAcceleratorUV.stackSize = 8;
 
-        // Controller
+        // LHC Controller
         TTRecipeAdder.addResearchableAssemblylineRecipe(
             LanthItemList.SYNCHROTRON,
             256_000,
@@ -2987,21 +2987,21 @@ public class ResearchStationAssemblyLine implements Runnable {
             60 * SECONDS,
             (int) TierEU.RECIPE_UV);
 
-        // CMS Casing (T1 LHC)
+        // Beamcrafter controller
         TTRecipeAdder.addResearchableAssemblylineRecipe(
-            ItemList.ColliderCasing.get(1),
-            256_000,
-            256,
-            (int) TierEU.RECIPE_UV,
-            16,
-            new Object[] { ItemList.Superconducting_Magnet_Solenoid_UV.get(8),
-                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.HSSS, 32),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.HSSS, 32), ItemList.Field_Generator_ZPM.get(4),
-                GTOreDictUnificator.get(OrePrefixes.screw, Materials.CosmicNeutronium, 64) },
-            new FluidStack[] { Materials.Neutronium.getMolten(9216), Materials.Americium.getPlasma(9216) },
-            ItemList.CMSCasing.get(4),
-            30 * SECONDS,
-            (int) TierEU.RECIPE_UHV);
+            LanthItemList.TARGET_CHAMBER,
+            64_000,
+            128,
+            (int) TierEU.RECIPE_ZPM,
+            4,
+            new Object[] { LanthItemList.TARGET_CHAMBER, ItemList.Field_Generator_ZPM.get(4),
+                new ItemStack(LanthItemList.SHIELDED_ACCELERATOR_CASING,32), ItemList.LargeMolecularAssembler.get(2) },
+            new FluidStack[] { Materials.UUMatter.getFluid(8000) },
+            ItemList.BeamCrafter.get(1),
+            60 * SECONDS,
+            (int) TierEU.RECIPE_UV);
+
+
     }
 
     private void addGodforgeRecipes() {
