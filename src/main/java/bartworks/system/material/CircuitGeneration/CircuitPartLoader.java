@@ -112,7 +112,6 @@ public class CircuitPartLoader implements Runnable {
 
     @Override
     public void run() {
-        CircuitPartLoader.makeCircuitParts();
         if (FMLCommonHandler.instance()
             .getEffectiveSide()
             .isClient()) new BWItemRenderer();
