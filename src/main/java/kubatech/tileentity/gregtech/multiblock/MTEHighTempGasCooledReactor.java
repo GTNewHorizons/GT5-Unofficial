@@ -26,6 +26,7 @@ import static gregtech.api.enums.GTValues.AuthorKuba;
 import static gregtech.api.enums.GTValues.AuthorPxx500;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
+import static kubatech.loaders.HTGRLoader.HTGR_ITEM;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,6 +44,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.apache.commons.lang3.tuple.Triple;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
@@ -199,11 +201,11 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     private int emptyticksnodiff = 0;
     private int coolanttaking = 0;
     private int watertaking = 0;
-    private double energymultiplier = 0;
-    private double timemultiplier = 0;
-    private double fuelmultiplier = 0;
-    private double fuelexponent = 0;
-    private double fuelbase = 0;
+    private double energyMultiplier = 0;
+    private double timeMultiplier = 0;
+    private double fuelMultiplier = 0;
+    private double fuelExponent = 0;
+    private double fuelBase = 0;
 
     private MTEHatchInput heliumInputHatch;
     private MTEHatchInput coolantInputHatch;
@@ -576,10 +578,10 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             if (MAX_CAPACITY - this.fuelsupply >= 1) {
                 this.startRecipeProcessing();
                 for (ItemStack itemStack : this.getStoredInputs()) {
-                    if (itemStack == null || itemStack.getItem() != HTGRLoader.HTGR_ITEM) continue;
-                    int damage = HTGRLoader.HTGR_ITEM.getDamage(itemStack);
+                    if (itemStack == null || itemStack.getItem() != HTGR_ITEM) continue;
+                    int damage = HTGR_ITEM.getDamage(itemStack);
                     if (damage != 3) continue;
-                    Materials m = HTGRLoader.HTGR_ITEM.getItemMaterial(itemStack);
+                    Materials m = HTGR_ITEM.getItemMaterial(itemStack);
                     int toget = (int) Math.min(MAX_CAPACITY - this.fuelsupply, itemStack.stackSize);
                     this.fuelsupply += toget;
                     itemStack.stackSize -= toget;
@@ -623,10 +625,21 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
 
         double toReduce = this.fuelsupply * CONVERSION_FACTOR * eff;
 
+        double sum = 0;
+        fuelBase = 0;
+        fuelMultiplier = 0;
+        fuelExponent = 0;
+
         for (Map.Entry<Materials, Double> entry : mStoredFuels.entrySet()) {
             Materials m = entry.getKey();
             double amount = entry.getValue();
             if (amount > 0) {
+                sum += amount;
+                Triple<Double, Double, Double> prop = HTGR_ITEM.getFuelProperties(m);
+                fuelBase += prop.getLeft();
+                fuelMultiplier += prop.getMiddle();
+                fuelExponent += prop.getRight();
+
                 double toUse = (amount / fuelsupply) * toReduce;
                 mStoredBurnedFuels.merge(m, toUse, Double::sum);
                 entry.setValue(amount - toUse);
@@ -634,13 +647,15 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             }
         }
 
+        fuelBase /= sum;
+
         ArrayList<ItemStack> toOutput = new ArrayList<>();
 
         for (Map.Entry<Materials, Double> entry : mStoredBurnedFuels.entrySet()) {
             if (entry.getValue() >= 1.d) {
                 Materials m = entry.getKey();
                 double output = Math.floor(entry.getValue());
-                ItemStack stack = HTGRLoader.HTGR_ITEM.createBurnedTRISOFuel(m);
+                ItemStack stack = HTGR_ITEM.createBurnedTRISOFuel(m);
                 stack.stackSize = (int) output;
                 toOutput.add(stack);
             }
@@ -648,7 +663,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
 
         if (this.canOutputAll(toOutput.toArray(new ItemStack[0]))) {
             for (ItemStack itemStack : toOutput) {
-                Materials m = HTGRLoader.HTGR_ITEM.getItemMaterial(itemStack);
+                Materials m = HTGR_ITEM.getItemMaterial(itemStack);
                 if (m != null) {
                     mStoredBurnedFuels.merge(m, (double) -itemStack.stackSize, Double::sum);
                 }
@@ -656,29 +671,33 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             this.mOutputItems = toOutput.toArray(new ItemStack[0]);
         }
 
-        /*  TODO
-             each fuel ball has 3 values:
-             fuelbase responsible for base generation, averaged from all balls in the reactor
-             fuelmultiplier - multiplying base generation, additive - each ball adds or subtracts multiplier, not averaged
-             fuelexponent - calculated same as multiplier but is an exponent of the multiplier and divides recipe time by exponent^2
-             fuel balls are supposed to have minimal value changes from 1 (for base) and from 0 (for multiplier and exponent)
-             example:   uranium (1,0,0)    plutonium (2,0.00002,0.00001) tungsten (0.5,-0.00001,-0.00005)
-             please remember that the reactor has maximum of 10k balls inside so the multiplier and exponent can go to extreme values if not taken into account
-             (maybe cap them? but that would potentially remove some fun breaking points :p)
-
-             exponent affects the strength of multiplier at the cost of reactor recipe time (overclocking basically, but depending on multiplier can be a hindrance or a boost)
+        /*
+         * TODO
+         * each fuel ball has 3 values:
+         * fuelbase responsible for base generation, averaged from all balls in the reactor
+         * fuelmultiplier - multiplying base generation, additive - each ball adds or subtracts multiplier, not averaged
+         * fuelexponent - calculated same as multiplier but is an exponent of the multiplier and divides recipe time by
+         * exponent^2
+         * fuel balls are supposed to have minimal value changes from 1 (for base) and from 0 (for multiplier and
+         * exponent)
+         * example: uranium (1,0,0) plutonium (2,0.00002,0.00001) tungsten (0.5,-0.00001,-0.00005)
+         * please remember that the reactor has maximum of 10k balls inside so the multiplier and exponent can go to
+         * extreme values if not taken into account
+         * (maybe cap them? but that would potentially remove some fun breaking points :p)
+         * exponent affects the strength of multiplier at the cost of reactor recipe time (overclocking basically, but
+         * depending on multiplier can be a hindrance or a boost)
          */
 
+        this.energyMultiplier = fuelBase * Math.pow(fuelMultiplier, fuelExponent);
+        this.timeMultiplier = 1 / Math.pow(fuelExponent, 2);
 
+        this.coolanttaking = (int) (energyMultiplier
+            * ((COOLANT_PER_PELLET * this.fuelsupply * this.heliumSupply / HELIUM_NEEDED)
+                * (1 - (this.getIdealStatus() - this.getRepairStatus()) / 5d)));
 
-        this.energymultiplier = fuelbase * Math.pow(fuelmultiplier,fuelexponent);
-        this.timemultiplier = 1/Math.pow(fuelexponent,2);
-
-        this.coolanttaking = (int) (energymultiplier * ((COOLANT_PER_PELLET * this.fuelsupply * this.heliumSupply / HELIUM_NEEDED)
-            * (1 - (this.getIdealStatus() - this.getRepairStatus()) / 5d)));
-
-        this.watertaking = (int) (energymultiplier * ((WATER_PER_PELLET * this.fuelsupply * this.heliumSupply / HELIUM_NEEDED)
-            * (1 - (this.getIdealStatus() - this.getRepairStatus()) / 5d)));
+        this.watertaking = (int) (energyMultiplier
+            * ((WATER_PER_PELLET * this.fuelsupply * this.heliumSupply / HELIUM_NEEDED)
+                * (1 - (this.getIdealStatus() - this.getRepairStatus()) / 5d)));
 
         this.mEfficiency = (int) (eff * 10000D);
         this.mEfficiencyIncrease = 0;
@@ -690,7 +709,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
 
         this.updateSlots();
 
-        this.mMaxProgresstime = (int) ( timemultiplier * (BASE_PROCESSING_TIME + (SCALING_PROCESSING_TIME * eff)));
+        this.mMaxProgresstime = (int) (timeMultiplier * (BASE_PROCESSING_TIME + (SCALING_PROCESSING_TIME * eff)));
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
@@ -711,7 +730,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             if (this.fuelsupply >= 1d) {
                 for (Map.Entry<Materials, Double> entry : mStoredFuels.entrySet()) {
                     if (entry.getValue() >= 1d) {
-                        ItemStack fuelStack = HTGRLoader.HTGR_ITEM.createTRISOFuel(entry.getKey());
+                        ItemStack fuelStack = HTGR_ITEM.createTRISOFuel(entry.getKey());
                         int toOutput = (int) Math.floor(entry.getValue());
                         int didOutput = 0;
                         int outputNow = fuelStack.stackSize = Math.min(toOutput, 64);
@@ -792,12 +811,16 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             .append(StatCollector.translateToLocal("kubatech.infodata.htgr.stored_fuel"))
             .append("\n");
         for (Map.Entry<Materials, Double> entry : mStoredFuels.entrySet()) {
+            Triple<Double, Double, Double> prop = HTGR_ITEM.getFuelProperties(entry.getKey());
             sb.append(
                 StatCollector.translateToLocalFormatted(
                     "kubatech.infodata.htgr.stored_fuel_entry",
                     entry.getKey()
                         .getLocalizedNameForItem("%material"),
-                    GTUtility.formatNumbers(entry.getValue())))
+                    GTUtility.formatNumbers(entry.getValue()),
+                    GTUtility.formatNumbers(prop.getLeft()),
+                    GTUtility.formatNumbers(prop.getMiddle()),
+                    GTUtility.formatNumbers(prop.getRight())))
                 .append("\n");
         }
         sb.append(EnumChatFormatting.WHITE)
@@ -806,6 +829,14 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                     "kubatech.infodata.htgr.fuel_supply",
                     GTUtility.formatNumbers(this.fuelsupply),
                     GTUtility.formatNumbers(MAX_CAPACITY)))
+            .append("\n");
+        sb.append(EnumChatFormatting.WHITE)
+            .append(
+                StatCollector.translateToLocalFormatted(
+                    "kubatech.infodata.htgr.fuel_properties",
+                    GTUtility.formatNumbers(this.fuelBase),
+                    GTUtility.formatNumbers(this.fuelMultiplier),
+                    GTUtility.formatNumbers(this.fuelExponent)))
             .append("\n");
         sb.append(EnumChatFormatting.WHITE)
             .append(StatCollector.translateToLocal("kubatech.infodata.htgr.burned_fuel"))

@@ -17,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.MinecraftForgeClient;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.tuple.Triple;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
@@ -46,6 +47,9 @@ public class HTGRLoader {
         .create((Class<Pair<ItemStack, Integer>[]>) (Class<?>) Pair[].class, "htgr_fuel");
     public static final RecipeMetadataKey<ItemStack[]> SHELL = SimpleRecipeMetadataKey
         .create(ItemStack[].class, "htgr_shell");
+    @SuppressWarnings("unchecked")
+    public static final RecipeMetadataKey<Triple<Double, Double, Double>> FUEL_MODIFICATOR = SimpleRecipeMetadataKey
+        .create((Class<Triple<Double, Double, Double>>) (Class<?>) Triple.class, "htgr_shell");
 
     public static final RecipeMap<RecipeMapBackend> HTGRRecipes = RecipeMapBuilder.of("kubatech.htgrrecipes")
         .maxIO(9, 3, 1, 1)
@@ -61,6 +65,8 @@ public class HTGRLoader {
             Materials material = GTOreDictUnificator.getAssociation(inputs[0]).mMaterial.mMaterial;
             Pair<ItemStack, Integer>[] fuels = builder.getMetadata(FUEL);
             ItemStack[] shells = builder.getMetadataOrDefault(SHELL, new ItemStack[0]);
+            Triple<Double, Double, Double> fuelModificator = builder.getMetadata(FUEL_MODIFICATOR);
+            if (fuelModificator != null) HTGR_ITEM.setFuelProperties(material, fuelModificator);
 
             ArrayList<ItemStack> items = new ArrayList<>();
             Collections.addAll(items, inputs);
@@ -193,6 +199,7 @@ public class HTGRLoader {
                 new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 1L) })
+            .metadata(FUEL_MODIFICATOR, Triple.of(2d, 0.00002d, 0.00001d))
             .duration(1)
             .eut(1)
             .addTo(HTGRRecipes);
@@ -236,6 +243,7 @@ public class HTGRLoader {
                 new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 1L) })
+            .metadata(FUEL_MODIFICATOR, Triple.of(0.5d, -0.00001d, -0.00005d))
             .duration(1)
             .eut(1)
             .addTo(HTGRRecipes);

@@ -2,6 +2,7 @@ package kubatech.loaders.item.htgritem;
 
 import static kubatech.kubatech.KT;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -13,13 +14,18 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 
+import org.apache.commons.lang3.tuple.Triple;
+
 import codechicken.nei.api.API;
 import gregtech.api.enums.Materials;
 
 public class HTGRItem extends Item {
 
+    public static final Triple<Double, Double, Double> DEFAULT_FUEL_PROPERTIES = Triple.of(1.0, 0.0, 0.0);
+
     private IIcon[] icons;
-    private HashSet<Materials> knownMaterials = new HashSet<>();
+    private final HashSet<Materials> knownMaterials = new HashSet<>();
+    private final HashMap<Materials, Triple<Double, Double, Double>> fuelProperties = new HashMap<>();
 
     public HTGRItem() {
         super();
@@ -56,6 +62,17 @@ public class HTGRItem extends Item {
     @Override
     public void addInformation(ItemStack stack, EntityPlayer entity, List<String> tooltipList, boolean showDebugInfo) {
         tooltipList.add(StatCollector.translateToLocal("kubatech.tooltip.htgr_material"));
+        Materials material = getItemMaterial(stack);
+        if (material != null) {
+            tooltipList.add(" - " + material.getLocalizedNameForItem("%material"));
+            Triple<Double, Double, Double> properties = fuelProperties.getOrDefault(material, DEFAULT_FUEL_PROPERTIES);
+            tooltipList.add(
+                StatCollector.translateToLocalFormatted(
+                    "kubatech.infodata.htgr.fuel_properties",
+                    properties.getLeft(),
+                    properties.getMiddle(),
+                    properties.getRight()));
+        }
     }
 
     private ItemStack getItemWithMaterial(Materials material, int damage) {
@@ -84,6 +101,14 @@ public class HTGRItem extends Item {
             API.addItemVariant(this, getItemWithMaterial(material, 3));
             API.addItemVariant(this, getItemWithMaterial(material, 4));
         }
+    }
+
+    public void setFuelProperties(Materials material, Triple<Double, Double, Double> properties) {
+        fuelProperties.put(material, properties);
+    }
+
+    public Triple<Double, Double, Double> getFuelProperties(Materials material) {
+        return fuelProperties.getOrDefault(material, DEFAULT_FUEL_PROPERTIES);
     }
 
     public ItemStack createTRISOMixture(Materials material) {
