@@ -33,7 +33,6 @@ import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
 
-import gregtech.api.enums.ItemList;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.util.GTUtility;
@@ -145,8 +144,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
         contributorColumn.child(
             createContributorSection(
                 "GT5U.gui.text.foundry.projectlead",
-                createContributorEntry("Chrom", Color.PURPLE.brighterSafe(2))
-                    .tooltip(t -> { t.addLine(new ItemDrawable(ItemList.GigaChad.get(1))); })));
+                createContributorEntry("Chrom", Color.PURPLE.brighterSafe(2))));
 
         contributorColumn.child(
             createContributorSection(
