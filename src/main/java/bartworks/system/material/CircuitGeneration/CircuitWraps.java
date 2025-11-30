@@ -1,5 +1,13 @@
 package bartworks.system.material.CircuitGeneration;
 
+import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
+import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+
+import java.util.ArrayList;
+
+import net.minecraft.item.ItemStack;
+
 import bartworks.MainMod;
 import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.enums.GTValues;
@@ -8,15 +16,9 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
-import net.minecraft.item.ItemStack;
-
-import java.util.ArrayList;
-
-import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
-import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
-import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 public enum CircuitWraps {
+
     EngravedCrystalChips(32763, ItemList.Circuit_Parts_Crystal_Chip_Elite, ItemList.Wrap_EngravedCrystalChips),
     EngravedLapotrionChips(32762, ItemList.Circuit_Parts_Crystal_Chip_Master, ItemList.Wrap_EngravedLapotrionChips),
     CoatedCircuitBoards(32761, ItemList.Circuit_Board_Coated, ItemList.Wrap_CoatedCircuitBoards),
@@ -26,11 +28,15 @@ public enum CircuitWraps {
     EpoxyCircuitBoards(32757, ItemList.Circuit_Board_Epoxy, ItemList.Wrap_EpoxyCircuitBoards),
     AdvancedCircuitBoards(32756, ItemList.Circuit_Board_Epoxy_Advanced, ItemList.Wrap_AdvancedCircuitBoards),
     FiberReinforcedCircuitBoards(32755, ItemList.Circuit_Board_Fiberglass, ItemList.Wrap_FiberReinforcedCircuitBoards),
-    MoreAdvancedCircuitBoards(32754, ItemList.Circuit_Board_Fiberglass_Advanced, ItemList.Wrap_MoreAdvancedCircuitBoards),
+    MoreAdvancedCircuitBoards(32754, ItemList.Circuit_Board_Fiberglass_Advanced,
+        ItemList.Wrap_MoreAdvancedCircuitBoards),
     EliteCircuitBoards(32753, ItemList.Circuit_Board_Multifiberglass_Elite, ItemList.Wrap_EliteCircuitBoards),
-    MultilayerFiberReinforcedCircuitBoards(32752, ItemList.Circuit_Board_Multifiberglass, ItemList.Wrap_MultilayerFiberReinforcedCircuitBoards),
-    WetwareLifesupportCircuitBoards(32751, ItemList.Circuit_Board_Wetware, ItemList.Wrap_WetwareLifesupportCircuitBoards),
-    ExtremeWetwareLifesupportCircuitBoards(32750, ItemList.Circuit_Board_Wetware_Extreme, ItemList.Wrap_ExtremeWetwareLifesupportCircuitBoards),
+    MultilayerFiberReinforcedCircuitBoards(32752, ItemList.Circuit_Board_Multifiberglass,
+        ItemList.Wrap_MultilayerFiberReinforcedCircuitBoards),
+    WetwareLifesupportCircuitBoards(32751, ItemList.Circuit_Board_Wetware,
+        ItemList.Wrap_WetwareLifesupportCircuitBoards),
+    ExtremeWetwareLifesupportCircuitBoards(32750, ItemList.Circuit_Board_Wetware_Extreme,
+        ItemList.Wrap_ExtremeWetwareLifesupportCircuitBoards),
     PlasticCircuitBoards(32749, ItemList.Circuit_Board_Plastic, ItemList.Wrap_PlasticCircuitBoards),
     PlasticCircuitBoards2(32748, ItemList.Circuit_Board_Plastic_Advanced, ItemList.Wrap_PlasticCircuitBoards2),
     BioCircuitBoards(32747, ItemList.Circuit_Board_Bio, ItemList.Wrap_BioCircuitBoards),
@@ -60,7 +66,8 @@ public enum CircuitWraps {
     NanoPowerICs(32723, ItemList.Circuit_Chip_NPIC, ItemList.Wrap_NanoPowerICs),
     PikoPowerICs(32722, ItemList.Circuit_Chip_PPIC, ItemList.Wrap_PikoPowerICs),
     QuantumPowerICs(32721, ItemList.Circuit_Chip_QPIC, ItemList.Wrap_QuantumPowerICs),
-    NanocomponentCentralProcessingUnits(32720, ItemList.Circuit_Chip_NanoCPU, ItemList.Wrap_NanocomponentCentralProcessingUnits),
+    NanocomponentCentralProcessingUnits(32720, ItemList.Circuit_Chip_NanoCPU,
+        ItemList.Wrap_NanocomponentCentralProcessingUnits),
     QBitProcessingUnits(32719, ItemList.Circuit_Chip_QuantumCPU, ItemList.Wrap_QBitProcessingUnits),
     CrystalProcessingUnits(32718, ItemList.Circuit_Chip_CrystalCPU, ItemList.Wrap_CrystalProcessingUnits),
     CrystalSoCs(32717, ItemList.Circuit_Chip_CrystalSoC, ItemList.Wrap_CrystalSoCs),
@@ -78,58 +85,67 @@ public enum CircuitWraps {
     RawExposedOpticalChips(32705, ItemList.Circuit_Chip_Optical, ItemList.Wrap_RawExposedOpticalChips),
     OpticalCircuitBoards(32704, ItemList.Circuit_Board_Optical, ItemList.Wrap_OpticalCircuitBoards),
     OpticallyPerfectedCPUs(32703, ItemList.Optically_Perfected_CPU, ItemList.Wrap_OpticallyPerfectedCPUs),
-    OpticalCPUContainmentHousings(32702, ItemList.Optical_Cpu_Containment_Housing, ItemList.Wrap_OpticalCPUContainmentHousings),
+    OpticalCPUContainmentHousings(32702, ItemList.Optical_Cpu_Containment_Housing,
+        ItemList.Wrap_OpticalCPUContainmentHousings),
     OpticallyCompatibleMemories(32701, ItemList.Optically_Compatible_Memory, ItemList.Wrap_OpticallyCompatibleMemories),
     LivingCrystalChips(32700, ItemList.Circuit_Parts_Crystal_Chip_Wetware, ItemList.Wrap_LivingCrystalChips),
     LivingBioChips(32699, ItemList.Circuit_Parts_Chip_Bioware, ItemList.Wrap_LivingBioChips),
 
     ;
+
     public int id;
     public ItemList itemSingle;
     public ItemList itemWrap;
 
-
-    CircuitWraps(int id, ItemList itemSingle, ItemList itemWrap){
+    CircuitWraps(int id, ItemList itemSingle, ItemList itemWrap) {
         this.id = id;
         this.itemSingle = itemSingle;
         this.itemWrap = itemWrap;
     }
 
-    public void registerWrap(){
-        if (!itemSingle.hasBeenSet()){
-            MainMod.LOGGER.error("Source item for wrap with ID: "+id+" is registered later than the wrap, this is a bug.");
+    public void registerWrap() {
+        if (!itemSingle.hasBeenSet()) {
+            MainMod.LOGGER
+                .error("Source item for wrap with ID: " + id + " is registered later than the wrap, this is a bug.");
         }
 
         ItemStack itemStack = itemSingle.get(1);
 
-        if (!GTUtility.isStackValid(itemStack)){
-            MainMod.LOGGER.error("Source item for wrap with ID: "+id+" has an invalid stack, this is a bug.");
+        if (!GTUtility.isStackValid(itemStack)) {
+            MainMod.LOGGER.error("Source item for wrap with ID: " + id + " has an invalid stack, this is a bug.");
         }
 
         ArrayList<String> toolTip = new ArrayList<>();
-        if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
-            itemSingle.getItem().addInformation(itemSingle.get(1), null, toolTip, true);
+        if (FMLCommonHandler.instance()
+            .getEffectiveSide()
+            .isClient()) {
+            itemSingle.getItem()
+                .addInformation(itemSingle.get(1), null, toolTip, true);
         }
 
         String tt = !toolTip.isEmpty() ? toolTip.get(0) : "";
         String localised = GTLanguageManager.getTranslation(GTLanguageManager.getTranslateableItemStackName(itemStack));
-        itemWrap.set(BWMetaItems.getCircuitParts().addItem(id, "Wrap of " + localised + "s", tt));
+        itemWrap.set(
+            BWMetaItems.getCircuitParts()
+                .addItem(id, "Wrap of " + localised + "s", tt));
     }
 
-    public void registerWrapRecipe(){
+    public void registerWrapRecipe() {
         GTValues.RA.stdBuilder()
             .itemInputs(itemSingle.get(16), GTUtility.getIntegratedCircuit(16))
-            .itemOutputs(BWMetaItems.getCircuitParts().getStack(id))
+            .itemOutputs(
+                BWMetaItems.getCircuitParts()
+                    .getStack(id))
             .fluidInputs(Materials.Polyethylene.getMolten(1 * HALF_INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
     }
 
-    public static int getMinimalID(){
-        int min = Short.MAX_VALUE-1;
+    public static int getMinimalID() {
+        int min = Short.MAX_VALUE - 1;
 
-        for (CircuitWraps wrap: CircuitWraps.values()){
+        for (CircuitWraps wrap : CircuitWraps.values()) {
             min = Math.min(min, wrap.id);
         }
         return min;
