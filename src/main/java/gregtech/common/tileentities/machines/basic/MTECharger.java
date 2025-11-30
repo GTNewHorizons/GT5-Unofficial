@@ -59,7 +59,8 @@ public class MTECharger extends MTEBasicBatteryBuffer {
 
         if (mMetaTileEntity.dechargerSlotCount() > 0
             && mBaseMetaTileEntity.getStoredEU() < mBaseMetaTileEntity.getEUCapacity()) {
-            for (int i = mMetaTileEntity.dechargerSlotStartIndex(), k = mMetaTileEntity.dechargerSlotCount() + i; i < k; i++) {
+            for (int i = mMetaTileEntity.dechargerSlotStartIndex(), k = mMetaTileEntity.dechargerSlotCount() + i; i
+                < k; i++) {
                 if (mMetaTileEntity.mInventory[i] != null
                     && mBaseMetaTileEntity.getStoredEU() < mBaseMetaTileEntity.getEUCapacity()) {
                     mBaseMetaTileEntity.increaseStoredEnergyUnits(
@@ -80,7 +81,8 @@ public class MTECharger extends MTEBasicBatteryBuffer {
         }
 
         if (mMetaTileEntity.rechargerSlotCount() > 0 && mBaseMetaTileEntity.getStoredEU() > 0) {
-            for (int i = mMetaTileEntity.rechargerSlotStartIndex(), k = mMetaTileEntity.rechargerSlotCount() + i; i < k; i++) {
+            for (int i = mMetaTileEntity.rechargerSlotStartIndex(), k = mMetaTileEntity.rechargerSlotCount() + i; i
+                < k; i++) {
                 if (mBaseMetaTileEntity.getStoredEU() > 0 && mMetaTileEntity.mInventory[i] != null) {
                     mBaseMetaTileEntity.decreaseStoredEU(
                         GTModHandler.chargeElectricItem(
