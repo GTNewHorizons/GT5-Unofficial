@@ -181,7 +181,7 @@ public final class GTBaseGuiBuilder {
         int widgetWidth = Math.min(maxWidth, titleWidth);
 
         int rows = (int) Math.ceil((double) titleWidth / maxWidth);
-        int heightPerRow = (int) (IKey.renderer.getFontHeight());
+        int heightPerRow = TextRenderer.getFontRenderer().FONT_HEIGHT;
         int height = heightPerRow * rows;
 
         return new SingleChildWidget<>().coverChildren()
