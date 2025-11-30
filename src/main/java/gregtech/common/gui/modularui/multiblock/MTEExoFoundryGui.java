@@ -4,6 +4,7 @@ import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 import net.minecraft.util.EnumChatFormatting;
@@ -105,8 +106,10 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
             (p_syncManager, syncHandler) -> openContributorsPanel(p_syncManager, parent, syncManager),
             true);
         return new ButtonWidget<>().size(18)
+            .marginTop(4)
             .overlay(IDrawable.EMPTY)
-            .tooltip(t -> t.addLine(EnumChatFormatting.AQUA + translateToLocal("fog.button.thanks.tooltip")))
+            .tooltip(
+                t -> t.addLine(EnumChatFormatting.AQUA + translateToLocal("GT5U.gui.button.foundry.contributorpanel")))
             .tooltipShowUpTimer(TOOLTIP_DELAY)
             .background(GTGuiTextures.PICTURE_EXOFOUNDRY_LOGO)
             .disableHoverBackground()
@@ -122,9 +125,76 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
 
     private ModularPanel openContributorsPanel(PanelSyncManager p_syncManager, ModularPanel parent,
         PanelSyncManager syncManager) {
-        return new ModularPanel("contributorsPanel").relative(parent)
-            .sizeRel(1)
+        ModularPanel panel = new ModularPanel("contributorsPanel").relative(parent)
+            .size(getBasePanelWidth(), getBasePanelHeight())
             .background(GTGuiTextures.FOUNDRY_BACKGROUND_CONTRIBUTORS);
+        panel.child(
+            IKey.lang("gt.blockmachines.multimachine.FOG.contributors")
+                .asWidget()
+                .style(EnumChatFormatting.GOLD)
+                .marginTop(8)
+                .align(Alignment.TopCenter))
+            .child(ButtonWidget.panelCloseButton());
+
+        Flow contributorColumn = Flow.column()
+            .coverChildren()
+            .marginLeft(14)
+            .marginTop(24);
+
+        contributorColumn.child(
+            createContributorSection(
+                "GT5U.gui.text.foundry.projectlead",
+                createContributorEntry("Chrom", Color.PURPLE.brighterSafe(1))));
+        contributorColumn.child(
+            createContributorSection(
+                "GT5U.gui.text.foundry.textures",
+                createContributorEntry("Auynonymous", 0xFFFD80CF),
+                createContributorEntry("June", Color.PINK_ACCENT.main)));
+        contributorColumn.child(
+            createContributorSection(
+                "GT5U.gui.text.foundry.rendering",
+                createContributorEntry("Sisyphus", Color.BLUE.main)));
+        contributorColumn.child(
+            createContributorSection(
+                "GT5U.gui.text.foundry.structure",
+                createContributorEntry("IX", Color.INDIGO.main)));
+        contributorColumn.child(
+            createContributorSection(
+                "GT5U.gui.text.foundry.idea",
+                createContributorEntry("TheEpicGamer", Color.BLUE_ACCENT.main),
+                createContributorEntry("Ruling0", Color.GREEN_ACCENT.main)));
+        contributorColumn.child(
+            createContributorSection(
+                "GT5U.gui.text.foundry.playtest",
+                createContributorEntry("Scam Run", Color.DEEP_ORANGE.main)));
+        panel.child(contributorColumn);
+
+        return panel;
+    }
+
+    private static Flow createContributorSection(String titleKey, Widget<?>... entries) {
+        return new Column().coverChildren()
+            .marginBottom(5)
+            .alignX(0)
+            .child(
+                IKey.lang(titleKey)
+                    .style(EnumChatFormatting.UNDERLINE)
+                    // .color(Color.GREEN.main)
+                    .alignment(Alignment.CenterLeft)
+                    // .scale(0.8f)
+                    .asWidget()
+                    .marginBottom(2)
+                    .alignX(0))
+            .children(Arrays.asList(entries));
+    }
+
+    private static TextWidget<?> createContributorEntry(String name, int color) {
+        IKey key = IKey.str(name)
+            .alignment(Alignment.CenterLeft)
+            // .scale(0.8f)
+            .color(color);
+        return key.asWidget()
+            .anchorLeft(0);
     }
 
     private ModularPanel openInfoPanel(PanelSyncManager p_syncManager, ModularPanel parent,
