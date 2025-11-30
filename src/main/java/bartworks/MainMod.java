@@ -43,6 +43,7 @@ import bartworks.common.loaders.StaticRecipeChangeLoaders;
 import bartworks.server.EventHandler.ServerEventHandler;
 import bartworks.system.material.CircuitGeneration.CircuitImprintLoader;
 import bartworks.system.material.CircuitGeneration.CircuitPartLoader;
+import bartworks.system.material.CircuitGeneration.CircuitWraps;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.material.gtenhancement.PlatinumSludgeOverHaul;
@@ -103,7 +104,15 @@ public final class MainMod {
     public static MainMod instance;
 
     public MainMod() {
-        GregTechAPI.sAfterGTPreload.add(() -> CircuitImprintLoader.registerItemstacks());
+        GregTechAPI.sAfterGTPostload.add(() -> {
+            CircuitImprintLoader.registerItemstacks();
+            for (CircuitWraps wrap : CircuitWraps.values()) {
+                wrap.registerWrap();
+                wrap.registerWrapRecipe();
+            }
+            CircuitImprintLoader.makeCuttingRecipes();
+            CircuitImprintLoader.makeCraftingRecipes();
+        });
     }
 
     @Mod.EventHandler
@@ -169,8 +178,6 @@ public final class MainMod {
         CheckRecipeResultRegistry.register(new ResultWrongSievert(0, ResultWrongSievert.NeededSievertType.EXACTLY));
 
         RadioHatchMaterialLoader.run();
-        CircuitImprintLoader.makeCuttingRecipes();
-        CircuitImprintLoader.makeCraftingRecipes();
     }
 
     @Mod.EventHandler
