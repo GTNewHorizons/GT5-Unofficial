@@ -64,75 +64,13 @@ public class MTETurboCharger extends MTECharger {
     }
 
     @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isServerSide()) {
+    protected boolean forceCharge() {
+        assert getBaseMetaTileEntity() != null;
+        return !getBaseMetaTileEntity().isAllowedToWork();
+    }
 
-            mCharge = aBaseMetaTileEntity.getStoredEU() / 2 > aBaseMetaTileEntity.getEUCapacity() / 3
-                || !aBaseMetaTileEntity.isAllowedToWork();
-            mDecharge = aBaseMetaTileEntity.getStoredEU() < aBaseMetaTileEntity.getEUCapacity() / 3
-                && aBaseMetaTileEntity.isAllowedToWork();
-            mBatteryCount = 0;
-            mChargeableCount = 0;
-            for (ItemStack tStack : mInventory) {
-                if (GTModHandler.isElectricItem(tStack, mTier)) {
-                    if (GTModHandler.isChargerItem(tStack)) {
-                        mBatteryCount++;
-                    }
-                    mChargeableCount++;
-                }
-            }
-
-            if (getBaseMetaTileEntity() instanceof BaseMetaTileEntity mBaseMetaTileEntity) {
-                if (mBaseMetaTileEntity.getMetaTileEntity() instanceof MetaTileEntity mMetaTileEntity) {
-                    if (mMetaTileEntity.dechargerSlotCount() > 0
-                        && mBaseMetaTileEntity.getStoredEU() < mBaseMetaTileEntity.getEUCapacity()) {
-                        for (int i = mMetaTileEntity.dechargerSlotStartIndex(),
-                            k = mMetaTileEntity.dechargerSlotCount() + i; i < k; i++) {
-                            if (mMetaTileEntity.mInventory[i] != null
-                                && mBaseMetaTileEntity.getStoredEU() < mBaseMetaTileEntity.getEUCapacity()) {
-                                // CODE
-                                mBaseMetaTileEntity.increaseStoredEnergyUnits(
-                                    GTModHandler.dischargeElectricItem(
-                                        mMetaTileEntity.mInventory[i],
-                                        GTUtility.safeInt(
-                                            Math.min(
-                                                V[mTier] * 120,
-                                                mBaseMetaTileEntity.getEUCapacity()
-                                                    - mBaseMetaTileEntity.getStoredEU())),
-                                        (int) Math.min(Integer.MAX_VALUE, mMetaTileEntity.getInputTier()),
-                                        true,
-                                        false,
-                                        false),
-                                    true);
-                                if (mMetaTileEntity.mInventory[i].stackSize <= 0) {
-                                    mMetaTileEntity.mInventory[i] = null;
-                                }
-                            }
-                        }
-                    }
-                    if (mMetaTileEntity.rechargerSlotCount() > 0 && mBaseMetaTileEntity.getStoredEU() > 0) {
-                        for (int i = mMetaTileEntity.rechargerSlotStartIndex(),
-                            k = mMetaTileEntity.rechargerSlotCount() + i; i < k; i++) {
-                            if (mBaseMetaTileEntity.getStoredEU() > 0 && mMetaTileEntity.mInventory[i] != null) {
-                                // CODE
-                                mBaseMetaTileEntity
-                                    .decreaseStoredEU(
-                                        GTModHandler.chargeElectricItem(
-                                            mMetaTileEntity.mInventory[i],
-                                            GTUtility
-                                                .safeInt(Math.min(V[mTier] * 120, mBaseMetaTileEntity.getStoredEU())),
-                                            (int) Math.min(Integer.MAX_VALUE, mMetaTileEntity.getOutputTier()),
-                                            true,
-                                            false),
-                                        true);
-                                if (mMetaTileEntity.mInventory[i].stackSize <= 0) {
-                                    mMetaTileEntity.mInventory[i] = null;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
+    @Override
+    protected long getTransferMultiplier() {
+        return 120;
     }
 }
