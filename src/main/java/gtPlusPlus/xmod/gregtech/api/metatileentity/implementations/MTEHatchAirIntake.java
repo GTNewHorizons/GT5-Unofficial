@@ -45,6 +45,8 @@ public class MTEHatchAirIntake extends MTEHatchFluidGenerator {
 
         if (id == -1) {
             return Materials.NetherAir.mFluid;
+        } else if (id == 1) {
+            return Materials.EnderAir.mFluid;
         } else {
             return Materials.Air.getGas(1)
                 .getFluid();
