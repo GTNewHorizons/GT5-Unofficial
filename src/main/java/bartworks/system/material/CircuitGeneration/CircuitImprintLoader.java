@@ -101,10 +101,10 @@ public class CircuitImprintLoader {
 
         ItemList.CircuitImprint_IntegratedLogicCircuit.set(
             BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Chip_ILC.get(1)), 0, 1));
+                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Basic.get(1L)), 0, 1));
         ItemList.SlicedCircuit_IntegratedLogicCircuit.set(
             BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Chip_ILC.get(1)), 1, 1));
+                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Basic.get(1L)), 1, 1));
         ItemList.CircuitImprint_GoodIntegratedCircuit.set(
             BWMetaItems.getCircuitParts()
                 .getStackWithNBT(getTagFromStack(ItemList.Circuit_Integrated_Good.get(1)), 0, 1));
