@@ -33,6 +33,7 @@ import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
 
+import gregtech.api.enums.ItemList;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.util.GTUtility;
@@ -144,15 +145,18 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
         contributorColumn.child(
             createContributorSection(
                 "GT5U.gui.text.foundry.projectlead",
-                createContributorEntry("Chrom", Color.PURPLE.brighterSafe(2))));
+                createContributorEntry("Chrom", Color.PURPLE.brighterSafe(2))
+                    .tooltip(t -> { t.addLine(new ItemDrawable(ItemList.GigaChad.get(1))); })));
 
         contributorColumn.child(
             createContributorSection(
                 "GT5U.gui.text.foundry.textures",
                 createContributorEntry("Auynonymous", 0xFFFD80CF).tooltip(
-                    t -> t.addLine(EnumChatFormatting.DARK_GRAY + "Dev my foundry...")
-                        .scale(0.8f)),
-                createContributorEntry("June", Color.PINK_ACCENT.main)));
+                    t -> t.scale(0.8f)
+                        .addLine(EnumChatFormatting.DARK_GRAY + "Dev my foundry...")),
+                createContributorEntry("June", Color.PINK_ACCENT.main).tooltip(
+                    t -> t.scale(0.8f)
+                        .addLine(EnumChatFormatting.DARK_GRAY + "I Eat Lawnbasers"))));
 
         contributorColumn.child(
             createContributorSection(
@@ -179,7 +183,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
             createContributorSection(
                 "GT5U.gui.text.foundry.playtest",
                 createContributorEntry("Scam Run", Color.DEEP_ORANGE.main).tooltip(t -> {
-                    t.addLine(EnumChatFormatting.WHITE.toString() + EnumChatFormatting.UNDERLINE + "Members\n");
+                    t.addLine(EnumChatFormatting.WHITE.toString() + EnumChatFormatting.UNDERLINE + "Members");
                     t.addLine(EnumChatFormatting.DARK_GRAY + "Working");
                     t.addLine(EnumChatFormatting.DARK_GRAY + "RamseySpace");
                     t.addLine(EnumChatFormatting.DARK_GRAY + "Ducked");
