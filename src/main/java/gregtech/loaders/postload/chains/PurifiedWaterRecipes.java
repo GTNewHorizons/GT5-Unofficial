@@ -228,7 +228,8 @@ public class PurifiedWaterRecipes {
         // Add re-alignment recipes
         for (int i = 0; i < catalystInputs.length; ++i) {
             GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Quark_Creation_Catalyst_Unaligned.get(1), GTUtility.getIntegratedCircuit(i + 1))
+                .itemInputs(ItemList.Quark_Creation_Catalyst_Unaligned.get(1))
+                .circuit(i + 1)
                 .fluidInputs(Materials.StableBaryonicMatter.getFluid(1_000))
                 .itemOutputs(catalystInputs[i])
                 .duration(30 * SECONDS)
