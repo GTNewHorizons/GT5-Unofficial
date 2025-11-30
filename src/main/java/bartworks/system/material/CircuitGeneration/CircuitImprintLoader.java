@@ -572,79 +572,93 @@ public class CircuitImprintLoader {
             .requiresCleanRoom()
             .addTo(cutterRecipes);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getModItem(Forestry.ID, "chipsets", 1, 0), ItemList.Shape_Slicer_Flat.get(0))
-            .itemOutputs(ItemList.SlicedCircuit_BasicCircuitBoard.get(1))
-            .duration(15 * SECONDS)
-            .eut(1)
-            .requiresCleanRoom()
-            .requireMods(Forestry)
-            .addTo(cutterRecipes);
+        // recipes behind a mod loaded check because the ItemList entry is conditionally set, so if Forestry isn't
+        // present the ItemList entries will cause an IllegalAccessError
+        if (Forestry.isModLoaded()) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTModHandler.getModItem(Forestry.ID, "chipsets", 1, 0), ItemList.Shape_Slicer_Flat.get(0))
+                .itemOutputs(ItemList.SlicedCircuit_BasicCircuitBoard.get(1))
+                .duration(15 * SECONDS)
+                .eut(1)
+                .requiresCleanRoom()
+                .requireMods(Forestry)
+                .addTo(cutterRecipes);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getModItem(Forestry.ID, "chipsets", 1, 1), ItemList.Shape_Slicer_Flat.get(0))
-            .itemOutputs(ItemList.SlicedCircuit_EnhancedCircuitBoard.get(1))
-            .duration(15 * SECONDS)
-            .eut(1)
-            .requiresCleanRoom()
-            .requireMods(Forestry)
-            .addTo(cutterRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTModHandler.getModItem(Forestry.ID, "chipsets", 1, 1), ItemList.Shape_Slicer_Flat.get(0))
+                .itemOutputs(ItemList.SlicedCircuit_EnhancedCircuitBoard.get(1))
+                .duration(15 * SECONDS)
+                .eut(1)
+                .requiresCleanRoom()
+                .requireMods(Forestry)
+                .addTo(cutterRecipes);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getModItem(Forestry.ID, "chipsets", 1, 2), ItemList.Shape_Slicer_Flat.get(0))
-            .itemOutputs(ItemList.SlicedCircuit_RefinedCircuitBoard.get(1))
-            .duration(15 * SECONDS)
-            .eut(1)
-            .requiresCleanRoom()
-            .requireMods(Forestry)
-            .addTo(cutterRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTModHandler.getModItem(Forestry.ID, "chipsets", 1, 2), ItemList.Shape_Slicer_Flat.get(0))
+                .itemOutputs(ItemList.SlicedCircuit_RefinedCircuitBoard.get(1))
+                .duration(15 * SECONDS)
+                .eut(1)
+                .requiresCleanRoom()
+                .requireMods(Forestry)
+                .addTo(cutterRecipes);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getModItem(Forestry.ID, "chipsets", 1, 3), ItemList.Shape_Slicer_Flat.get(0))
-            .itemOutputs(ItemList.SlicedCircuit_IntricateCircuitBoard.get(1))
-            .duration(15 * SECONDS)
-            .eut(1)
-            .requiresCleanRoom()
-            .requireMods(Forestry)
-            .addTo(cutterRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTModHandler.getModItem(Forestry.ID, "chipsets", 1, 3), ItemList.Shape_Slicer_Flat.get(0))
+                .itemOutputs(ItemList.SlicedCircuit_IntricateCircuitBoard.get(1))
+                .duration(15 * SECONDS)
+                .eut(1)
+                .requiresCleanRoom()
+                .requireMods(Forestry)
+                .addTo(cutterRecipes);
+        }
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getModItem(Railcraft.ID, "part.circuit", 1, 0), ItemList.Shape_Slicer_Flat.get(0))
-            .itemOutputs(ItemList.SlicedCircuit_ControllerCircuit.get(1))
-            .duration(15 * SECONDS)
-            .eut(1)
-            .requiresCleanRoom()
-            .requireMods(Railcraft)
-            .addTo(cutterRecipes);
+        if (Railcraft.isModLoaded()) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTModHandler.getModItem(Railcraft.ID, "part.circuit", 1, 0),
+                    ItemList.Shape_Slicer_Flat.get(0))
+                .itemOutputs(ItemList.SlicedCircuit_ControllerCircuit.get(1))
+                .duration(15 * SECONDS)
+                .eut(1)
+                .requiresCleanRoom()
+                .requireMods(Railcraft)
+                .addTo(cutterRecipes);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getModItem(Railcraft.ID, "part.circuit", 1, 1), ItemList.Shape_Slicer_Flat.get(0))
-            .itemOutputs(ItemList.SlicedCircuit_ReceiverCircuit.get(1))
-            .duration(15 * SECONDS)
-            .eut(1)
-            .requiresCleanRoom()
-            .requireMods(Railcraft)
-            .addTo(cutterRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTModHandler.getModItem(Railcraft.ID, "part.circuit", 1, 1),
+                    ItemList.Shape_Slicer_Flat.get(0))
+                .itemOutputs(ItemList.SlicedCircuit_ReceiverCircuit.get(1))
+                .duration(15 * SECONDS)
+                .eut(1)
+                .requiresCleanRoom()
+                .requireMods(Railcraft)
+                .addTo(cutterRecipes);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getModItem(Railcraft.ID, "part.circuit", 1, 2), ItemList.Shape_Slicer_Flat.get(0))
-            .itemOutputs(ItemList.SlicedCircuit_SignalCircuit.get(1))
-            .duration(15 * SECONDS)
-            .eut(1)
-            .requiresCleanRoom()
-            .requireMods(Railcraft)
-            .addTo(cutterRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTModHandler.getModItem(Railcraft.ID, "part.circuit", 1, 2),
+                    ItemList.Shape_Slicer_Flat.get(0))
+                .itemOutputs(ItemList.SlicedCircuit_SignalCircuit.get(1))
+                .duration(15 * SECONDS)
+                .eut(1)
+                .requiresCleanRoom()
+                .requireMods(Railcraft)
+                .addTo(cutterRecipes);
+        }
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                getModItem(NewHorizonsCoreMod.ID, "item.HighEnergyFlowCircuit", 64, 0),
-                ItemList.Shape_Slicer_Flat.get(0))
-            .itemOutputs(ItemList.SlicedCircuit_HighEnergyFlowCircuit.get(1))
-            .duration(15 * SECONDS)
-            .eut(1)
-            .requiresCleanRoom()
-            .requireMods(NewHorizonsCoreMod)
-            .addTo(cutterRecipes);
+        if (NewHorizonsCoreMod.isModLoaded()) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    getModItem(NewHorizonsCoreMod.ID, "item.HighEnergyFlowCircuit", 64, 0),
+                    ItemList.Shape_Slicer_Flat.get(0))
+                .itemOutputs(ItemList.SlicedCircuit_HighEnergyFlowCircuit.get(1))
+                .duration(15 * SECONDS)
+                .eut(1)
+                .requiresCleanRoom()
+                .requireMods(NewHorizonsCoreMod)
+                .addTo(cutterRecipes);
+        }
     }
 
     public static void makeCraftingRecipes() {
