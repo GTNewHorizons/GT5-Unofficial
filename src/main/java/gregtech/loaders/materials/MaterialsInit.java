@@ -377,6 +377,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.IGNIS, 1)
             .addSubTag(SubTag.NO_SMELTING)
             .addOrePrefix(OrePrefixes.nanite)
+            .removeOrePrefix(OrePrefixes.sheetmetal)
             .constructMaterial();
     }
 
@@ -6201,6 +6202,7 @@ public class MaterialsInit {
             .addMetalItems()
             .addToolHeadItems()
             .addGearItems()
+            .removeOrePrefix(OrePrefixes.sheetmetal)
             .setMeltingPoint(400)
             .addMaterial(Materials.Carbon, 21)
             .addMaterial(Materials.Hydrogen, 24)
@@ -6840,6 +6842,7 @@ public class MaterialsInit {
             .addMetalItems()
             .addToolHeadItems()
             .addGearItems()
+            .removeOrePrefix(OrePrefixes.sheetmetal)
             .setMeltingPoint(500)
             .addMaterial(Materials.Carbon, 6)
             .addMaterial(Materials.Hydrogen, 11)
@@ -10053,6 +10056,7 @@ public class MaterialsInit {
             .addMetalItems()
             .addToolHeadItems()
             .addGearItems()
+            .removeOrePrefix(OrePrefixes.sheetmetal)
             .setMeltingPoint(400)
             .addCentrifugeRecipe()
             .addMaterial(Materials.Epoxid, 1)
@@ -13839,6 +13843,7 @@ public class MaterialsInit {
             .removeOrePrefix(OrePrefixes.nugget)
             .removeOrePrefix(OrePrefixes.spring)
             .removeOrePrefix(OrePrefixes.springSmall)
+            .removeOrePrefix(OrePrefixes.sheetmetal)
             .constructMaterial()
             .setProcessingMaterialTierEU(TierEU.RECIPE_ZPM);
     }
