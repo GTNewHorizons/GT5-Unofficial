@@ -103,7 +103,7 @@ public final class MainMod {
     public static MainMod instance;
 
     public MainMod() {
-
+        GregTechAPI.sAfterGTPreload.add(() -> CircuitImprintLoader.registerItemstacks());
     }
 
     @Mod.EventHandler
@@ -169,6 +169,8 @@ public final class MainMod {
         CheckRecipeResultRegistry.register(new ResultWrongSievert(0, ResultWrongSievert.NeededSievertType.EXACTLY));
 
         RadioHatchMaterialLoader.run();
+        CircuitImprintLoader.makeCuttingRecipes();
+        CircuitImprintLoader.makeCraftingRecipes();
     }
 
     @Mod.EventHandler
@@ -195,7 +197,6 @@ public final class MainMod {
 
     public static void runOnPlayerJoined(boolean classicMode, boolean disableExtraGasRecipes) {
         OreDictHandler.adaptCacheForWorld();
-        CircuitImprintLoader.run();
         BioVatLogicAdder.RadioHatch.runBasicItemIntegration();
 
         // Accept recipe map changes into Buffers
