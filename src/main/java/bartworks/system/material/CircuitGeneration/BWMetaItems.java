@@ -32,7 +32,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.MainMod;
 import bartworks.common.loaders.ItemRegistry;
@@ -51,10 +50,8 @@ import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.objects.ItemData;
-import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 
 public class BWMetaItems {
@@ -88,7 +85,7 @@ public class BWMetaItems {
             .itemOutputs(BWMetaItems.NEW_CIRCUIT_PARTS.getStack(3))
             .outputChances(75_00)
             .fluidInputs(Materials.SolderingAlloy.getMolten(4 * INGOTS))
-            .duration(15*SECONDS)
+            .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .requiresCleanRoom()
             .addTo(autoclaveRecipes);
@@ -140,9 +137,13 @@ public class BWMetaItems {
                 }
             }
 
-            for (CircuitWraps wrap: CircuitWraps.values()) {
+            for (CircuitWraps wrap : CircuitWraps.values()) {
                 if (this.mEnabledItems.get(wrap.id)) {
-                    BWUtil.set2DCoordTo1DArray(wrap.id, 0, 2, Objects.requireNonNull(wrap.itemSingle)
+                    BWUtil.set2DCoordTo1DArray(
+                        wrap.id,
+                        0,
+                        2,
+                        Objects.requireNonNull(wrap.itemSingle)
                             .get(1)
                             .getIconIndex(),
                         this.mIconList);
