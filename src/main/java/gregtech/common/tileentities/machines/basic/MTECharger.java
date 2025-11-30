@@ -59,15 +59,15 @@ public class MTECharger extends MTEBasicBatteryBuffer {
 
         if (mMetaTileEntity.dechargerSlotCount() > 0
             && mBaseMetaTileEntity.getStoredEU() < mBaseMetaTileEntity.getEUCapacity()) {
-            for (int i = mMetaTileEntity.dechargerSlotStartIndex(),
-                 k = mMetaTileEntity.dechargerSlotCount() + i; i < k; i++) {
+            for (int i = mMetaTileEntity.dechargerSlotStartIndex(), k = mMetaTileEntity.dechargerSlotCount() + i; i < k; i++) {
                 if (mMetaTileEntity.mInventory[i] != null
                     && mBaseMetaTileEntity.getStoredEU() < mBaseMetaTileEntity.getEUCapacity()) {
                     mBaseMetaTileEntity.increaseStoredEnergyUnits(
                         GTModHandler.dischargeElectricItem(
                             mMetaTileEntity.mInventory[i],
                             GTUtility.safeInt(
-                                Math.min(V[mTier] * getTransferMultiplier(),
+                                Math.min(
+                                    V[mTier] * getTransferMultiplier(),
                                     mBaseMetaTileEntity.getEUCapacity() - mBaseMetaTileEntity.getStoredEU())),
                             (int) Math.min(Integer.MAX_VALUE, mMetaTileEntity.getInputTier()),
                             true,
@@ -80,15 +80,13 @@ public class MTECharger extends MTEBasicBatteryBuffer {
         }
 
         if (mMetaTileEntity.rechargerSlotCount() > 0 && mBaseMetaTileEntity.getStoredEU() > 0) {
-            for (int i = mMetaTileEntity.rechargerSlotStartIndex(),
-                 k = mMetaTileEntity.rechargerSlotCount() + i; i < k; i++) {
+            for (int i = mMetaTileEntity.rechargerSlotStartIndex(), k = mMetaTileEntity.rechargerSlotCount() + i; i < k; i++) {
                 if (mBaseMetaTileEntity.getStoredEU() > 0 && mMetaTileEntity.mInventory[i] != null) {
                     mBaseMetaTileEntity.decreaseStoredEU(
                         GTModHandler.chargeElectricItem(
                             mMetaTileEntity.mInventory[i],
                             GTUtility.safeInt(
-                                Math.min(V[mTier] * getTransferMultiplier(),
-                                    mBaseMetaTileEntity.getStoredEU())),
+                                Math.min(V[mTier] * getTransferMultiplier(), mBaseMetaTileEntity.getStoredEU())),
                             (int) Math.min(Integer.MAX_VALUE, mMetaTileEntity.getOutputTier()),
                             true,
                             false),

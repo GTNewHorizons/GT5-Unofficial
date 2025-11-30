@@ -2,16 +2,10 @@ package gregtech.common.tileentities.machines.basic;
 
 import static gregtech.api.enums.GTValues.V;
 
-import net.minecraft.item.ItemStack;
-
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.BaseMetaTileEntity;
-import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTUtility;
 
 /**
  * Created by danie_000 on 15.10.2016.
