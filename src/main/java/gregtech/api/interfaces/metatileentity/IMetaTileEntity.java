@@ -95,7 +95,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     void loadNBTData(NBTTagCompound aNBT);
 
     /**
-     * Adds the NBT-Information to the ItemStack, when being dismanteled properly Used to store Machine specific Upgrade
+     * Adds the NBT-Information to the ItemStack, when being dismantled properly Used to store Machine specific Upgrade
      * Data.
      */
     void setItemNBT(NBTTagCompound aNBT);
