@@ -494,7 +494,6 @@ public final class GTGuiTextures {
     public static final UITexture STEAM_GAUGE_BG_STEEL = UITexture
         .fullImage(GregTech.ID, "gui/background/steam_dial_steel");
 
-
     // endregion progressbar
 
     // region button
