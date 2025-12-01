@@ -230,7 +230,7 @@ public class RecipeUtils {
                             }
 
                     final ItemStack output = recipe.getRecipeOutput();
-                    if (GTUtility.areStacksEqual(GTOreDictUnificator.get(output), aOutput, aIgnoreNBT)) {
+                    if (GTUtility.areStacksEqual(GTOreDictUnificator.get_nocopy(output), aOutput, aIgnoreNBT)) {
                         allRecipes.remove(i--);
                         size = allRecipes.size();
                         rReturn = true;
