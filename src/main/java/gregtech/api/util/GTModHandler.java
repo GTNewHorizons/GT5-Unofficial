@@ -1377,7 +1377,7 @@ public class GTModHandler {
             }
             ItemStack recipeOutput = recipe.getRecipeOutput();
             if (!(recipe instanceof IGTCraftingRecipe) || ((IGTCraftingRecipe) recipe).isRemovable()) {
-                if (GTUtility.areStacksEqual(GTOreDictUnificator.get(recipeOutput), output, aIgnoreNBT)) {
+                if (GTUtility.areStacksEqual(GTOreDictUnificator.get_nocopy(recipeOutput), output, aIgnoreNBT)) {
                     allRecipes.remove(i--);
                     size = allRecipes.size();
                     rReturn = true;
