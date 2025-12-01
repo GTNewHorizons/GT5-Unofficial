@@ -16,17 +16,14 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 
 public class Mixer implements Runnable {
 
     @Override
     public void run() {
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 10),
-                Materials.Uranium235.getDust(1),
-                GTUtility.getIntegratedCircuit(2))
+            .itemInputs(WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 10), Materials.Uranium235.getDust(1))
+            .circuit(2)
             .itemOutputs(new ItemStack(MTEThoriumHighTempReactor.THTRMaterials.aTHTR_Materials))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -34,9 +31,8 @@ public class Mixer implements Runnable {
 
         if (Gendustry.isModLoaded()) {
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTUtility.getIntegratedCircuit(17),
-                    GTOreDictUnificator.get(OrePrefixes.cell, Materials.Radon, 1L))
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Radon, 1L))
+                .circuit(17)
                 .itemOutputs(Materials.Empty.getCells(1))
                 .fluidInputs(GTModHandler.getLiquidDNA(1_000))
                 .fluidOutputs(new FluidStack(FluidLoader.BioLabFluidMaterials[0], 2_000))

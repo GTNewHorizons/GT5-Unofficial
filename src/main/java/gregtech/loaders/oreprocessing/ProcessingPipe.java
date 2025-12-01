@@ -110,9 +110,8 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                             GTOreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 1) });
                 }
                 GTValues.RA.stdBuilder()
-                    .itemInputs(
-                        GTOreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 4),
-                        GTUtility.getIntegratedCircuit(9))
+                    .itemInputs(GTOreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 4))
+                    .circuit(9)
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.pipeQuadruple, aMaterial, 1))
                     .duration(3 * SECONDS)
                     .eut(calculateRecipeEU(aMaterial, 4))
@@ -128,9 +127,8 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                             .get(aOreDictName.replaceFirst("Nonuple", "Small"), null, 1L, false, true) });
                 }
                 GTValues.RA.stdBuilder()
-                    .itemInputs(
-                        GTOreDictUnificator.get(OrePrefixes.pipeSmall, aMaterial, 9),
-                        GTUtility.getIntegratedCircuit(9))
+                    .itemInputs(GTOreDictUnificator.get(OrePrefixes.pipeSmall, aMaterial, 9))
+                    .circuit(9)
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.pipeNonuple, aMaterial, 1))
                     .duration(3 * SECONDS)
                     .eut(calculateRecipeEU(aMaterial, 8))
