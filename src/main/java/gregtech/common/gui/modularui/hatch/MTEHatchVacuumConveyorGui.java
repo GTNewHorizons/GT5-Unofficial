@@ -47,26 +47,19 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         ParentWidget<?> parent = super.createContentSection(panel, syncManager);
         parent.child(createCCSlotGroup(panel, syncManager));
+        parent.child(createButtonHoldingColumn(panel, syncManager));
         return parent;
     }
 
     // todo: add more functionality from the ticket
-
-    @Override
-    protected Flow createLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
+    protected Flow createButtonHoldingColumn(ModularPanel panel, PanelSyncManager syncManager) {
         Flow column = Flow.column()
             .width(40)
             .coverChildrenHeight()
-            .crossAxisAlignment(Alignment.CrossAxis.START);
+            .crossAxisAlignment(Alignment.CrossAxis.END);
         column.child(createVoidButton(syncManager));
-        return column.align(Alignment.BottomLeft)
-            .paddingBottom(2)
-            .paddingLeft(3);
-    }
-
-    @Override
-    protected boolean supportsLeftCornerFlow() {
-        return true;
+        return column.align(Alignment.CenterRight)
+            .marginRight(3);
     }
 
     @Override
@@ -125,7 +118,8 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
                         .writeToNBT()))));
 
         return new DynamicSyncedWidget<>().coverChildren()
-            .align(Alignment.Center)
+            .align(Alignment.CenterLeft)
+            .marginLeft(3)
             .syncHandler(componentHandler);
     }
 
@@ -142,7 +136,7 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
                     .alignment(Alignment.BottomRight)
                     .color(Color.WHITE.main))
             .tooltip(t -> {
-                if (!syncManager.isClient()) return; //needed since this runs on server and crashes
+                if (!syncManager.isClient()) return; // needed since this runs on server and crashes
                 t.addStringLines(item.getTooltip(syncManager.getPlayer(), false))
                     .addLine(EnumChatFormatting.DARK_GRAY + "Amount: " + GTUtility.formatNumbers(amount));
             });
