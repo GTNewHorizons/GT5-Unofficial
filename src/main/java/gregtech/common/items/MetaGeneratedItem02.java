@@ -2541,8 +2541,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         RA.stdBuilder()
             .itemInputs(
                 ItemList.Cover_RedstoneTransmitter.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L),
-                GTUtility.getIntegratedCircuit(1))
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L))
+            .circuit(1)
             .itemOutputs(ItemList.Cover_AdvancedRedstoneTransmitter.get(1L))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -2550,53 +2550,43 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         RA.stdBuilder()
             .itemInputs(
                 ItemList.Cover_RedstoneReceiver.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L),
-                GTUtility.getIntegratedCircuit(1))
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L))
+            .circuit(1)
             .itemOutputs(ItemList.Cover_AdvancedRedstoneReceiver.get(1L))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
         RA.stdBuilder()
-            .itemInputs(
-                ItemList.Cover_Controller.get(1L),
-                ItemList.Sensor_EV.get(1L),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(ItemList.Cover_Controller.get(1L), ItemList.Sensor_EV.get(1L))
+            .circuit(1)
             .itemOutputs(ItemList.Cover_WirelessController.get(1L))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
         RA.stdBuilder()
-            .itemInputs(
-                ItemList.Cover_FluidDetector.get(1L),
-                ItemList.Emitter_EV.get(1L),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(ItemList.Cover_FluidDetector.get(1L), ItemList.Emitter_EV.get(1L))
+            .circuit(1)
             .itemOutputs(ItemList.Cover_WirelessFluidDetector.get(1L))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
         RA.stdBuilder()
-            .itemInputs(
-                ItemList.Cover_ItemDetector.get(1L),
-                ItemList.Emitter_EV.get(1L),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(ItemList.Cover_ItemDetector.get(1L), ItemList.Emitter_EV.get(1L))
+            .circuit(1)
             .itemOutputs(ItemList.Cover_WirelessItemDetector.get(1L))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
         RA.stdBuilder()
-            .itemInputs(
-                ItemList.Cover_NeedsMaintainance.get(1L),
-                ItemList.Emitter_EV.get(1L),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(ItemList.Cover_NeedsMaintainance.get(1L), ItemList.Emitter_EV.get(1L))
+            .circuit(1)
             .itemOutputs(ItemList.Cover_WirelessNeedsMaintainance.get(1L))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
         RA.stdBuilder()
-            .itemInputs(
-                ItemList.Cover_ActivityDetector.get(1L),
-                ItemList.Emitter_EV.get(1L),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(ItemList.Cover_ActivityDetector.get(1L), ItemList.Emitter_EV.get(1L))
+            .circuit(1)
             .itemOutputs(ItemList.Cover_WirelessActivityDetector.get(1L))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)

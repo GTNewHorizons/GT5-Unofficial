@@ -82,8 +82,6 @@ public final class GTGuiTextures {
         .name(GTTextureIds.BACKGROUND_TERMINAL_STANDARD)
         .build();
 
-
-
     public static final UITexture TT_BACKGROUND_TEXT_FIELD = UITexture.builder()
         .location(MODID, "gui/background/screen_blue")
         .imageSize(90, 72)
@@ -450,26 +448,10 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.PROGRESSBAR_FUEL_BRONZE, GTTextureIds.PROGRESSBAR_FUEL_STEEL, null)
         .build();
-
     public static final UITexture PROGRESSBAR_SIEVERT = UITexture.builder()
         .location(MainMod.MOD_ID, "GUI/progressbar/sievert")
         .fullImage()
         .name(GTTextureIds.PROGRESSBAR_SIEVERT)
-        .build();
-    public static final UITexture PROGRESSBAR_METER_MINT = UITexture.builder()
-        .location(GregTech.ID, "gui/progressbar/meter_mint")
-        .fullImage()
-        .name(GTTextureIds.PROGRESSBAR_METER_MINT)
-        .build();
-    public static final UITexture PROGRESSBAR_METER_ORANGE = UITexture.builder()
-        .location(GregTech.ID, "gui/progressbar/meter_orange")
-        .fullImage()
-        .name(GTTextureIds.PROGRESSBAR_METER_ORANGE)
-        .build();
-    public static final UITexture PROGRESSBAR_METER_ROSE = UITexture.builder()
-        .location(GregTech.ID, "gui/progressbar/meter_rose")
-        .fullImage()
-        .name(GTTextureIds.PROGRESSBAR_METER_ROSE)
         .build();
     public static final UITexture PROGRESSBAR_GODFORGE_PLASMA = UITexture
         .fullImage(MODID, "gui/progressbar/godforge_plasma");
@@ -491,6 +473,22 @@ public final class GTGuiTextures {
         .fullImage(MODID, "gui/progressbar/godforge_progressbar_purple_inverted");
     public static final UITexture PROGRESSBAR_GODFORGE_MILESTONE_RAINBOW_INVERTED = UITexture
         .fullImage(MODID, "gui/progressbar/godforge_progressbar_rainbow_inverted");
+
+    public static final UITexture PROGRESSBAR_METER_MINT = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/meter_mint")
+        .fullImage()
+        .name(GTTextureIds.PROGRESSBAR_METER_MINT)
+        .build();
+    public static final UITexture PROGRESSBAR_METER_ORANGE = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/meter_orange")
+        .fullImage()
+        .name(GTTextureIds.PROGRESSBAR_METER_ORANGE)
+        .build();
+    public static final UITexture PROGRESSBAR_METER_ROSE = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/meter_rose")
+        .fullImage()
+        .name(GTTextureIds.PROGRESSBAR_METER_ROSE)
+        .build();
 
     public static final UITexture STEAM_GAUGE_BG = UITexture.fullImage(GregTech.ID, "gui/background/steam_dial");
     public static final UITexture STEAM_GAUGE_BG_STEEL = UITexture
@@ -911,7 +909,6 @@ public final class GTGuiTextures {
     public static final UITexture CLOSE_BUTTON_HOLLOW = UITexture.fullImage(MODID, "gui/button/transparent_x_10x10");
     public static final UITexture GODFORGE_SOUND_ON = UITexture.fullImage(MODID, "gui/overlay_button/sound_on");
     public static final UITexture GODFORGE_SOUND_OFF = UITexture.fullImage(MODID, "gui/overlay_button/sound_off");
-
 
     public static final UITexture TT_CONTROLLER_SLOT_HEAT_SINK = UITexture.builder()
         .location(MODID, "gui/picture/heat_sink_small")

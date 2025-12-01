@@ -22,7 +22,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 
 public class CircuitAssemblerRecipes implements Runnable {
 
@@ -282,8 +281,8 @@ public class CircuitAssemblerRecipes implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ULV, 2),
                     GTOreDictUnificator.get(OrePrefixes.foil, Materials.Iron, 2),
                     GTOreDictUnificator.get(OrePrefixes.screw, Materials.Iron, 4),
-                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Iron, 1),
-                    GTUtility.getIntegratedCircuit(1))
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Iron, 1))
+                .circuit(1)
                 .itemOutputs(getModItem(Forestry.ID, "chipsets", 1L, 0))
                 .fluidInputs(tMat.getMolten(1152L * tMultiplier / 2))
                 .duration(10 * SECONDS)
@@ -296,8 +295,8 @@ public class CircuitAssemblerRecipes implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 2),
                     GTOreDictUnificator.get(OrePrefixes.foil, Materials.Bronze, 2),
                     GTOreDictUnificator.get(OrePrefixes.screw, Materials.Bronze, 4),
-                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Bronze, 1),
-                    GTUtility.getIntegratedCircuit(1))
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Bronze, 1))
+                .circuit(1)
                 .itemOutputs(getModItem(Forestry.ID, "chipsets", 1L, 1))
                 .fluidInputs(tMat.getMolten(1152L * tMultiplier / 2))
                 .duration(10 * SECONDS)
@@ -310,8 +309,8 @@ public class CircuitAssemblerRecipes implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 2),
                     GTOreDictUnificator.get(OrePrefixes.foil, Materials.Steel, 2),
                     GTOreDictUnificator.get(OrePrefixes.screw, Materials.Steel, 4),
-                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Steel, 1),
-                    GTUtility.getIntegratedCircuit(1))
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Steel, 1))
+                .circuit(1)
                 .itemOutputs(getModItem(Forestry.ID, "chipsets", 1L, 2))
                 .fluidInputs(tMat.getMolten(1152L * tMultiplier / 2))
                 .duration(10 * SECONDS)
@@ -324,8 +323,8 @@ public class CircuitAssemblerRecipes implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 2),
                     GTOreDictUnificator.get(OrePrefixes.foil, Materials.Electrum, 2),
                     GTOreDictUnificator.get(OrePrefixes.screw, Materials.Electrum, 4),
-                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Electrum, 1),
-                    GTUtility.getIntegratedCircuit(1))
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Electrum, 1))
+                .circuit(1)
                 .itemOutputs(getModItem(Forestry.ID, "chipsets", 1L, 3))
                 .fluidInputs(tMat.getMolten(1152L * tMultiplier / 2))
                 .duration(10 * SECONDS)

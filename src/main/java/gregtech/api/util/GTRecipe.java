@@ -984,8 +984,8 @@ public class GTRecipe implements Comparable<GTRecipe> {
          * WARNING: this class will maintain a strong reference over ALL data sticks created this way. DO NOT call this
          * methods recklessly as it will cause memory leak!
          */
-        public ItemStack newDataStickForNEI(String aDisplayName) {
-            ItemStack dataStick = ItemList.Tool_DataStick.getWithName(1L, aDisplayName);
+        public ItemStack newDataStickForNEI(String aDisplayName, long amount) {
+            ItemStack dataStick = ItemList.Tool_DataStick.getWithName(amount, aDisplayName);
             // we don't actually needs to set the recipe data here. no one will read the recipe data before a world load
             // and before a world load id remap will happen and the recipe data will be finally set in the below
             // reInit() method

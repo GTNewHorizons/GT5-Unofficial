@@ -356,7 +356,8 @@ public class DustLoader implements IWerkstoffRunnable {
                     if (werkstoff.contains(WerkstoffLoader.ANAEROBE_SMELTING)
                         || werkstoff.contains(WerkstoffLoader.NOBLE_GAS_SMELTING)) {
                         GTValues.RA.stdBuilder()
-                            .itemInputs(werkstoff.get(dust), GTUtility.getIntegratedCircuit(11))
+                            .itemInputs(werkstoff.get(dust))
+                            .circuit(11)
                             .itemOutputs(
                                 werkstoffStats.getMeltingPoint() < 1750 ? werkstoff.get(ingot)
                                     : werkstoff.get(ingotHot))
@@ -367,7 +368,8 @@ public class DustLoader implements IWerkstoffRunnable {
                             .addTo(BlastFurnaceWithGas);
                     } else {
                         GTValues.RA.stdBuilder()
-                            .itemInputs(werkstoff.get(dust), GTUtility.getIntegratedCircuit(1))
+                            .itemInputs(werkstoff.get(dust))
+                            .circuit(1)
                             .itemOutputs(
                                 werkstoffStats.getMeltingPoint() < 1750 ? werkstoff.get(ingot)
                                     : werkstoff.get(ingotHot))
