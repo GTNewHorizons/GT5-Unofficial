@@ -82,8 +82,6 @@ public final class GTGuiTextures {
         .name(GTTextureIds.BACKGROUND_TERMINAL_STANDARD)
         .build();
 
-
-
     public static final UITexture TT_BACKGROUND_TEXT_FIELD = UITexture.builder()
         .location(MODID, "gui/background/screen_blue")
         .imageSize(90, 72)
@@ -495,7 +493,6 @@ public final class GTGuiTextures {
     public static final UITexture STEAM_GAUGE_BG = UITexture.fullImage(GregTech.ID, "gui/background/steam_dial");
     public static final UITexture STEAM_GAUGE_BG_STEEL = UITexture
         .fullImage(GregTech.ID, "gui/background/steam_dial_steel");
-
 
     // endregion progressbar
 
@@ -911,7 +908,6 @@ public final class GTGuiTextures {
     public static final UITexture CLOSE_BUTTON_HOLLOW = UITexture.fullImage(MODID, "gui/button/transparent_x_10x10");
     public static final UITexture GODFORGE_SOUND_ON = UITexture.fullImage(MODID, "gui/overlay_button/sound_on");
     public static final UITexture GODFORGE_SOUND_OFF = UITexture.fullImage(MODID, "gui/overlay_button/sound_off");
-
 
     public static final UITexture TT_CONTROLLER_SLOT_HEAT_SINK = UITexture.builder()
         .location(MODID, "gui/picture/heat_sink_small")
