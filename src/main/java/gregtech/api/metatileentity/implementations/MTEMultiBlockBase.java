@@ -768,7 +768,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                             MTEDroneCentre centre = ddl.getCentre();
                             if (centre != null) {
                                 ProductionRecord pdr = centre.productionDataRecorder;
-                                if (pdr.active)
+                                if (pdr.isActive())
                                     pdr.addRecord(((long) mMaxProgresstime) * mEUt, mOutputItems, mOutputFluids);
                             }
                         }
