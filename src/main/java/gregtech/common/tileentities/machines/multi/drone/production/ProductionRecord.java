@@ -1,7 +1,16 @@
 package gregtech.common.tileentities.machines.multi.drone.production;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import net.minecraft.item.Item;
@@ -15,8 +24,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class ProductionRecord {
 
-    public boolean active;
-
+    private boolean active;
     private long revision = 0;
     private long lastUpdateTime = 0;
     private final StatsBundle currentTotal = new StatsBundle();
@@ -83,6 +91,14 @@ public class ProductionRecord {
         addEnergy(energy);
         if (items != null && items.length > 0) addStack(items);
         if (fluids != null && fluids.length > 0) addFluid(fluids);
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public void update() {

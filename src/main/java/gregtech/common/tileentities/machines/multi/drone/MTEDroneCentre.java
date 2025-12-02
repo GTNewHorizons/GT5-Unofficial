@@ -71,19 +71,21 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     private static final IIconContainer ACTIVE = new Textures.BlockIcons.CustomIcon("iconsets/DRONE_CENTRE_ACTIVE");
     private static final IIconContainer FACE = new Textures.BlockIcons.CustomIcon("iconsets/DRONE_CENTRE_FACE");
     private static final IIconContainer INACTIVE = new Textures.BlockIcons.CustomIcon("iconsets/DRONE_CENTRE_INACTIVE");
-    public static final int CASING_INDEX = GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings4, 2);
+    private static final int CASING_INDEX = GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings4, 2);
     private static final int CASINGS_MIN = 85;
     private int mCasingAmount = 0;
     private Vec3Impl centreCoord;
     private int droneLevel = 0;
 
-    public int selectedTime = 10;
-    public int activeGroup = 0;
-    public String searchFilter = "";
-    public boolean useRender = true;
-    public boolean searchOriginalName;
-    public boolean editMode;
-    public MTEDroneCentreGui.SortMode sortMode = MTEDroneCentreGui.SortMode.NAME;
+    private int selectedTime = 10;
+    private int activeGroup = 0;
+    private String searchFilter = "";
+    private boolean useRender = true;
+    private boolean searchOriginalName;
+    private boolean editMode;
+    private boolean autoUpdate = true;
+    private MTEDroneCentreGui.SortMode sortMode = MTEDroneCentreGui.SortMode.NAME;
+
     public List<String> group = new ArrayList<>(Collections.nCopies(8, "+"));
     public ProductionRecord productionDataRecorder = new ProductionRecord();
     public List<DroneConnection> connectionList = new ArrayList<>();
@@ -267,6 +269,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         NBTTagCompound GroupNBT = aNBT.getCompoundTag("Group");
         for (int i = 0; i < 8; i++) group.set(i, GroupNBT.getString(String.valueOf(i)));
         activeGroup = aNBT.getInteger("activeGroup");
+        autoUpdate = aNBT.getBoolean("dynamicUpdate");
     }
 
     @Override
@@ -280,6 +283,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         for (int i = 0; i < 8; i++) GroupNBT.setString(String.valueOf(i), group.get(i));
         aNBT.setTag("Group", GroupNBT);
         aNBT.setInteger("activeGroup", activeGroup);
+        aNBT.setBoolean("dynamicUpdate", autoUpdate);
     }
 
     @Override
@@ -534,5 +538,29 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
 
     public void setEditMode(boolean editMode) {
         this.editMode = editMode;
+    }
+
+    public boolean shouldUpdate() {
+        return autoUpdate;
+    }
+
+    public void setUpdate(boolean dynamicUpdate) {
+        this.autoUpdate = dynamicUpdate;
+    }
+
+    public int getSelectedTime() {
+        return selectedTime;
+    }
+
+    public void setSelectedTime(int selectedTime) {
+        this.selectedTime = selectedTime;
+    }
+
+    public int getActiveGroup() {
+        return activeGroup;
+    }
+
+    public void setActiveGroup(int activeGroup) {
+        this.activeGroup = activeGroup;
     }
 }

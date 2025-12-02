@@ -119,7 +119,7 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
                 // In rare cases, this status may not refresh to the connection. Manually refresh it.
                 for (DroneConnection conn : connections) {
                     conn.getLinkedMachine()
-                        .ifPresent(mte -> conn.machineStatus = mte.isAllowedToWork());
+                        .ifPresent(mte -> conn.setActive(mte.isAllowedToWork()));
                 }
             }
 
@@ -135,8 +135,14 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
     private void validateConnections() {
         connections.removeIf(entry -> {
             boolean result = entry.isValid();
-            if (!result) centre.getConnectionList()
-                .remove(entry);
+            if (!result) {
+                entry.getLinkedMachine()
+                    .ifPresent(unlinkedMachines::add);
+                savedNameList.put(entry.uuid.toString(), entry.getCustomName());
+                savedGroupList.put(entry.uuid.toString(), entry.getGroup());
+                centre.getConnectionList()
+                    .remove(entry);
+            }
             return !result;
         });
     }
@@ -239,7 +245,7 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
             conn.getLinkedMachine()
                 .ifPresent(unlinkedMachines::add);
             savedNameList.put(conn.uuid.toString(), conn.getCustomName());
-            savedGroupList.put(conn.uuid.toString(), conn.group);
+            savedGroupList.put(conn.uuid.toString(), conn.getGroup());
             return true;
         });
     }
@@ -301,7 +307,7 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
         NBTTagCompound groupList = new NBTTagCompound();
         connections.forEach(conn -> {
             nameList.setString(conn.uuid.toString(), conn.getCustomName());
-            groupList.setInteger(conn.uuid.toString(), conn.group);
+            groupList.setInteger(conn.uuid.toString(), conn.getGroup());
         });
         aNBT.setTag("nameList", nameList);
         aNBT.setTag("groupList", groupList);
@@ -329,8 +335,8 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
 
             int i = 0;
             for (DroneConnection connection : connections) {
-                if (connection.customName != null) {
-                    tag.setString("name" + i, connection.customName);
+                if (connection.getCustomName() != null) {
+                    tag.setString("name" + i, connection.getCustomName());
                     i++;
                 }
             }
