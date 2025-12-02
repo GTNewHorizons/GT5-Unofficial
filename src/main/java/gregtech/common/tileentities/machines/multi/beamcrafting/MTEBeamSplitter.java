@@ -1,9 +1,28 @@
 package gregtech.common.tileentities.machines.multi.beamcrafting;
 
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.ExoticEnergy;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_GLOW;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
+
+import java.util.ArrayList;
+
+import javax.annotation.Nullable;
+
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -22,30 +41,8 @@ import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.Particle;
 import gtnhlanth.common.hatch.MTEHatchInputBeamline;
-import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
-import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-
-import static gregtech.api.enums.HatchElement.Energy;
-import static gregtech.api.enums.HatchElement.ExoticEnergy;
-import static gregtech.api.enums.HatchElement.InputBus;
-import static gregtech.api.enums.HatchElement.InputHatch;
-import static gregtech.api.enums.HatchElement.Maintenance;
-import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.enums.HatchElement.OutputHatch;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_GLOW;
-import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
-
-public class MTEBeamSplitter extends MTEExtendedPowerMultiBlockBase<MTEBeamSplitter>
-    implements ISurvivalConstructable {
+public class MTEBeamSplitter extends MTEExtendedPowerMultiBlockBase<MTEBeamSplitter> implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
@@ -96,7 +93,8 @@ public class MTEBeamSplitter extends MTEExtendedPowerMultiBlockBase<MTEBeamSplit
                 "BBBBBBBBB"
             }})
         //spotless:on
-        .addElement('B', // collider casing
+        .addElement(
+            'B', // collider casing
             buildHatchAdder(MTEBeamSplitter.class).atLeast(Energy, ExoticEnergy)
                 .casingIndex(((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(10))
                 .dot(1)
@@ -178,7 +176,7 @@ public class MTEBeamSplitter extends MTEExtendedPowerMultiBlockBase<MTEBeamSplit
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-                                 int colorIndex, boolean aActive, boolean redstoneLevel) {
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
         ITexture[] rTexture;
         if (side == aFacing) {
             if (aActive) {
@@ -245,7 +243,6 @@ public class MTEBeamSplitter extends MTEExtendedPowerMultiBlockBase<MTEBeamSplit
         return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 4, 2, 0, elementBudget, env, false, true);
     }
 
-
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mInputBeamline.clear();
@@ -289,8 +286,7 @@ public class MTEBeamSplitter extends MTEExtendedPowerMultiBlockBase<MTEBeamSplit
                             inputInfo.getEnergy(),
                             inputInfo.getRate() / numValidOutputs,
                             inputInfo.getParticleId(),
-                            inputInfo.getFocus()
-                        );
+                            inputInfo.getFocus());
                         BeamLinePacket packet = new BeamLinePacket(outputInfo);
                         o.dataPacket = packet;
                     }

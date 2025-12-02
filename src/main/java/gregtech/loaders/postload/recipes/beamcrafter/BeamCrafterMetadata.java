@@ -15,8 +15,8 @@ public class BeamCrafterMetadata {
     public final float minEnergy_A;
     public final float minEnergy_B;
 
-
-    private BeamCrafterMetadata(int particleID_A, int particleID_B, int amount_A, int amount_B, float minEnergy_A, float minEnergy_B) {
+    private BeamCrafterMetadata(int particleID_A, int particleID_B, int amount_A, int amount_B, float minEnergy_A,
+        float minEnergy_B) {
         this.particleID_A = particleID_A;
         this.particleID_B = particleID_B;
         this.amount_A = amount_A;
@@ -27,7 +27,7 @@ public class BeamCrafterMetadata {
 
     @Override
     public int hashCode() {
-        return Objects.hash(particleID_A,particleID_B, amount_A,amount_B, minEnergy_A, minEnergy_B);
+        return Objects.hash(particleID_A, particleID_B, amount_A, amount_B, minEnergy_A, minEnergy_B);
     }
 
     @Override
@@ -46,16 +46,13 @@ public class BeamCrafterMetadata {
         return true;
     }
 
-
     public static Builder builder() {
         return new Builder();
     }
 
-
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
-            .append("particleID_A", particleID_A)
+        return new ToStringBuilder(this).append("particleID_A", particleID_A)
             .append("particleID_B", particleID_B)
             .append("amount_A", amount_A)
             .append("amount_B", amount_B)
@@ -80,6 +77,7 @@ public class BeamCrafterMetadata {
             this.particleID_A = particleID_A;
             return this;
         }
+
         public Builder particleID_B(int particleID_B) {
             if (particleID_B < 0 || particleID_B >= Particle.VALUES.length) {
                 throw new IllegalArgumentException("'particleID_B' must be within bounds for the Particle enum!");
@@ -87,11 +85,13 @@ public class BeamCrafterMetadata {
             this.particleID_B = particleID_B;
             return this;
         }
+
         public Builder amount_A(int amount_A) {
             if (amount_A < 0) throw new IllegalArgumentException("'amount_A' must be greater than or equal to zero!");
             this.amount_A = amount_A;
             return this;
         }
+
         public Builder amount_B(int amount_B) {
             if (amount_B < 0) throw new IllegalArgumentException("'amount_B' must be greater than or equal to zero!");
             this.amount_B = amount_B;
@@ -103,6 +103,7 @@ public class BeamCrafterMetadata {
             this.minEnergy_A = minEnergy_A;
             return this;
         }
+
         public Builder energy_B(float minEnergy_B) {
             if (minEnergy_B < 0) throw new IllegalArgumentException("'minEnergy_B' must be greater than zero!");
             this.minEnergy_B = minEnergy_B;
@@ -110,14 +111,7 @@ public class BeamCrafterMetadata {
         }
 
         public BeamCrafterMetadata build() {
-            return new BeamCrafterMetadata(
-                particleID_A,
-                particleID_B,
-                amount_A,
-                amount_B,
-                minEnergy_A,
-                minEnergy_B
-            );
+            return new BeamCrafterMetadata(particleID_A, particleID_B, amount_A, amount_B, minEnergy_A, minEnergy_B);
         }
     }
 }

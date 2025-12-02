@@ -2775,6 +2775,12 @@ public enum ItemList implements IItemContainer {
     BeamSplitter,
     BeamStabilizer,
 
+    StableBaryonContainmentUnit,
+    StableLeptonContainmentUnit,
+    StableMesonContainmentUnit,
+    StableBosonContainmentUnit,
+    StableEmptyContainmentUnit,
+
     ManaFly,
     DebugEnergyHatch,
 

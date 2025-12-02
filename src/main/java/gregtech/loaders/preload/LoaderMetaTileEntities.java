@@ -45,10 +45,6 @@ import static gregtech.api.recipe.RecipeMaps.slicerRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 
-import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamCrafter;
-import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMirror;
-import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamSplitter;
-import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamStabilizer;
 import net.minecraft.util.EnumChatFormatting;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -139,8 +135,6 @@ import gregtech.common.tileentities.machines.basic.MTETurboCharger;
 import gregtech.common.tileentities.machines.basic.MTEWorldAccelerator;
 import gregtech.common.tileentities.machines.long_distance.MTELongDistancePipelineFluid;
 import gregtech.common.tileentities.machines.long_distance.MTELongDistancePipelineItem;
-import gregtech.common.tileentities.machines.multi.beamcrafting.MTEHatchAdvancedOutputBeamline;
-import gregtech.common.tileentities.machines.multi.beamcrafting.MTELargeHadronCollider;
 import gregtech.common.tileentities.machines.multi.MTEAirFilter1;
 import gregtech.common.tileentities.machines.multi.MTEAirFilter2;
 import gregtech.common.tileentities.machines.multi.MTEAirFilter3;
@@ -203,6 +197,12 @@ import gregtech.common.tileentities.machines.multi.MTESolarFactory;
 import gregtech.common.tileentities.machines.multi.MTETranscendentPlasmaMixer;
 import gregtech.common.tileentities.machines.multi.MTEVacuumFreezer;
 import gregtech.common.tileentities.machines.multi.MTEWormholeGenerator;
+import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamCrafter;
+import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMirror;
+import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamSplitter;
+import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamStabilizer;
+import gregtech.common.tileentities.machines.multi.beamcrafting.MTEHatchAdvancedOutputBeamline;
+import gregtech.common.tileentities.machines.multi.beamcrafting.MTELargeHadronCollider;
 import gregtech.common.tileentities.machines.multi.compressor.MTEBlackHoleCompressor;
 import gregtech.common.tileentities.machines.multi.compressor.MTEBlackHoleUtility;
 import gregtech.common.tileentities.machines.multi.compressor.MTEHIPCompressor;
@@ -613,28 +613,17 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "multimachine.large-hadron-collider",
                 "Large Hadron Collider").getStackForm(1));
 
-        ItemList.BeamCrafter.set(
-            new MTEBeamCrafter(
-                BEAM_CRAFTER.ID,
-                "multimachine.beam-crafter",
-                "Beam Crafter").getStackForm(1));
+        ItemList.BeamCrafter
+            .set(new MTEBeamCrafter(BEAM_CRAFTER.ID, "multimachine.beam-crafter", "Beam Crafter").getStackForm(1));
 
-        ItemList.BeamMirror.set(
-            new MTEBeamMirror(
-                BEAM_MIRROR.ID,
-                "multimachine.beam-mirror",
-                "Beam Mirror").getStackForm(1));
+        ItemList.BeamMirror
+            .set(new MTEBeamMirror(BEAM_MIRROR.ID, "multimachine.beam-mirror", "Beam Mirror").getStackForm(1));
 
-        ItemList.BeamSplitter.set(
-            new MTEBeamSplitter(
-                BEAM_SPLITTER.ID,
-                "multimachine.beam-splitter",
-                "Beam Splitter").getStackForm(1));
+        ItemList.BeamSplitter
+            .set(new MTEBeamSplitter(BEAM_SPLITTER.ID, "multimachine.beam-splitter", "Beam Splitter").getStackForm(1));
         ItemList.BeamStabilizer.set(
-            new MTEBeamStabilizer(
-                BEAM_STABILIZER.ID,
-                "multimachine.beam-stabilizer",
-                "Beam Stabilizer").getStackForm(1));
+            new MTEBeamStabilizer(BEAM_STABILIZER.ID, "multimachine.beam-stabilizer", "Beam Stabilizer")
+                .getStackForm(1));
 
         ItemList.LATEX.set(new MTELatex(LATEX.ID, "multimachine.latex", "L.A.T.E.X.").getStackForm(1));
         addItemTooltip(ItemList.LATEX.get(1), chain(() -> "Author: ", GTValues.AuthorThree));

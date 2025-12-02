@@ -81,14 +81,14 @@ public class Particle {
          */
 
         // Baryons
-        PROTON = new Particle(ElementaryGroup.BARYON, "Proton", new Particle[]{UP, UP, DOWN});
-        NEUTRON = new Particle(ElementaryGroup.BARYON, "Neutron", new Particle[]{UP, DOWN, DOWN});
-        LAMBDA = new Particle(ElementaryGroup.BARYON, "Lambda", new Particle[]{UP, DOWN, STRANGE});
-        OMEGA = new Particle(ElementaryGroup.BARYON, "Omega", new Particle[]{STRANGE, STRANGE, STRANGE});
+        PROTON = new Particle(ElementaryGroup.BARYON, "Proton", new Particle[] { UP, UP, DOWN });
+        NEUTRON = new Particle(ElementaryGroup.BARYON, "Neutron", new Particle[] { UP, DOWN, DOWN });
+        LAMBDA = new Particle(ElementaryGroup.BARYON, "Lambda", new Particle[] { UP, DOWN, STRANGE });
+        OMEGA = new Particle(ElementaryGroup.BARYON, "Omega", new Particle[] { STRANGE, STRANGE, STRANGE });
 
         // Mesons
-        PION = new Particle(ElementaryGroup.MESON, "Pion", new Particle[]{MUON, MUON_NEUTRINO});
-        ETA_MESON = new Particle(ElementaryGroup.MESON, "ETA Meson", new Particle[]{PION, PION, PION});
+        PION = new Particle(ElementaryGroup.MESON, "Pion", new Particle[] { MUON, MUON_NEUTRINO });
+        ETA_MESON = new Particle(ElementaryGroup.MESON, "ETA Meson", new Particle[] { PION, PION, PION });
 
         // Wildcard
         UNKNOWN = new Particle(ElementaryGroup.UNKNOWN, "Unknown");
@@ -114,7 +114,7 @@ public class Particle {
     public Particle(ElementaryGroup aParticleType, String aParticleName, Particle[] aComposition) {
         mParticleType = aParticleType;
         mParticleName = aParticleName;
-        mComposition = aComposition == null ? new Particle[]{this} : aComposition;
+        mComposition = aComposition == null ? new Particle[] { this } : aComposition;
         aMap.add(this);
     }
 

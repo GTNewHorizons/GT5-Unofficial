@@ -10,7 +10,6 @@ import gregtech.loaders.postload.recipes.ArcFurnaceRecipes;
 import gregtech.loaders.postload.recipes.AssemblerRecipes;
 import gregtech.loaders.postload.recipes.AssemblyLineRecipes;
 import gregtech.loaders.postload.recipes.AutoclaveRecipes;
-import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterRecipes;
 import gregtech.loaders.postload.recipes.BenderRecipes;
 import gregtech.loaders.postload.recipes.BlastFurnaceRecipes;
 import gregtech.loaders.postload.recipes.BreweryRecipes;
@@ -57,6 +56,7 @@ import gregtech.loaders.postload.recipes.ThermalCentrifugeRecipes;
 import gregtech.loaders.postload.recipes.TranscendentPlasmaMixerRecipes;
 import gregtech.loaders.postload.recipes.VacuumFreezerRecipes;
 import gregtech.loaders.postload.recipes.WiremillRecipes;
+import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterRecipes;
 
 public class MachineRecipeLoader implements Runnable {
 

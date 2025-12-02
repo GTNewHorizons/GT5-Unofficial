@@ -1,13 +1,12 @@
 package gtnhlanth.common.beamline;
 
-import com.google.common.collect.ImmutableList;
-import gtnhlanth.common.item.ItemParticle;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.drawable.UITexture;
 
 import gregtech.api.modularui2.GTGuiTextures;
+import gtnhlanth.common.item.ItemParticle;
 
 public enum Particle {
 
@@ -25,11 +24,11 @@ public enum Particle {
         GTGuiTextures.OVERLAY_BUTTON_PARTICLE_ELECTRON),
     MUON(true, 6, 105.66f, 0, "muon", "\u03BC \u207B", -1, null, 300, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_MUON),
     TAU(true, 7, 1776.89f, 0, "tau", "\u03C4 \u207B", -1, null, 100, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_TAU),
-    ELECTRONNEUTRINO(false, 8, 0, 0, "electron neutrino", "\u03BD e", 0, null, 250,
+    ELECTRONNEUTRINO(false, 8, 0, 0, "electron_neutrino", "\u03BD e", 0, null, 250,
         GTGuiTextures.OVERLAY_BUTTON_PARTICLE_ELECTRONNEUTRINO),
-    MUONNEUTRINO(false, 9, 0, 0, "muon neutrino", "\u03BD \u03BC", 0, null, 200,
+    MUONNEUTRINO(false, 9, 0, 0, "muon_neutrino", "\u03BD \u03BC", 0, null, 200,
         GTGuiTextures.OVERLAY_BUTTON_PARTICLE_MUONNEUTRINO),
-    TAUNEUTRINO(false, 10, 0, 0, "tau neutrino", "\u03BD \u03C4", 0, null, 150,
+    TAUNEUTRINO(false, 10, 0, 0, "tau_neutrino", "\u03BD \u03C4", 0, null, 150,
         GTGuiTextures.OVERLAY_BUTTON_PARTICLE_TAUNEUTRINO),
     // Baryons
     PROTON(true, 11, 938.27f, 1000000, "proton", "p\u207A", 1, null, 600, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_PROTON),
@@ -44,7 +43,6 @@ public enum Particle {
     UPSILON(false, 17, 9460.3f, 0, "upsilon", "\u03A5", 0, null, 40, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_UPSILON),
     // Nuclei
     ALPHA(true, 18, 3727.38f, 8000, "alpha", "\u03B1", 2, null, 0, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_ALPHA);
-    // todo: quantum anomaly
     // todo: gregs boson
 
     // The IDs must be in order.
@@ -130,7 +128,7 @@ public enum Particle {
         return this.texture;
     }
 
-    public static boolean isParticle(ItemStack itemstack){
+    public static boolean isParticle(ItemStack itemstack) {
         return (itemstack.getItem() instanceof ItemParticle);
     }
 

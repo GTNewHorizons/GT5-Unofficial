@@ -1,9 +1,34 @@
 package gregtech.common.tileentities.machines.multi.beamcrafting;
 
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.ExoticEnergy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAMCRAFTER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAMCRAFTER_ACTIVE;
+import static gregtech.api.recipe.RecipeMaps.BEAMCRAFTER_METADATA;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
+
+import java.util.ArrayList;
+
+import javax.annotation.Nullable;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
@@ -25,35 +50,9 @@ import gregtech.common.misc.GTStructureChannels;
 import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterMetadata;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.hatch.MTEHatchInputBeamline;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
-import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.enums.HatchElement.Energy;
-import static gregtech.api.enums.HatchElement.ExoticEnergy;
-import static gregtech.api.enums.HatchElement.InputBus;
-import static gregtech.api.enums.HatchElement.InputHatch;
-import static gregtech.api.enums.HatchElement.Maintenance;
-import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.enums.HatchElement.OutputHatch;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAMCRAFTER;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAMCRAFTER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LHC_ACCELERATOR;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_GLOW;
-import static gregtech.api.recipe.RecipeMaps.BEAMCRAFTER_METADATA;
-import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
-
-public class MTEBeamCrafter extends MTEExtendedPowerMultiBlockBase<gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamCrafter>
+public class MTEBeamCrafter
+    extends MTEExtendedPowerMultiBlockBase<gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamCrafter>
     implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -61,10 +60,7 @@ public class MTEBeamCrafter extends MTEExtendedPowerMultiBlockBase<gregtech.comm
     private static final int CASING_INDEX_CENTRE = 1662; // Shielded Acc.
     private final ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
 
-
-
-    private static final IStructureDefinition<gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamCrafter> STRUCTURE_DEFINITION = StructureDefinition
-        .<gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamCrafter>builder()
+    private static final IStructureDefinition<gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamCrafter> STRUCTURE_DEFINITION = StructureDefinition.<gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamCrafter>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
             // spotless:off
@@ -136,8 +132,10 @@ public class MTEBeamCrafter extends MTEExtendedPowerMultiBlockBase<gregtech.comm
                 "                 "
             }})
         //spotless:on
-        .addElement('B', // collider casing
-            buildHatchAdder(MTEBeamCrafter.class).atLeast(Energy, ExoticEnergy, Maintenance, InputBus, InputHatch, OutputBus, OutputHatch)
+        .addElement(
+            'B', // collider casing
+            buildHatchAdder(MTEBeamCrafter.class)
+                .atLeast(Energy, ExoticEnergy, Maintenance, InputBus, InputHatch, OutputBus, OutputHatch)
                 .casingIndex(((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(10))
                 .dot(1)
                 .buildAndChain(GregTechAPI.sBlockCasings13, 10))
@@ -184,7 +182,7 @@ public class MTEBeamCrafter extends MTEExtendedPowerMultiBlockBase<gregtech.comm
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-                                 int colorIndex, boolean aActive, boolean redstoneLevel) {
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
         ITexture[] rTexture;
         if (side == aFacing) {
             if (aActive) {
@@ -224,34 +222,37 @@ public class MTEBeamCrafter extends MTEExtendedPowerMultiBlockBase<gregtech.comm
             .addInfo("their subatomic structure")
             .addSeparator()
             .addInfo("The Input Beams can be supplied to either Beamline Input Hatch")
-            .addInfo("The particle shown on the left in NEI is "
-                + EnumChatFormatting.AQUA
-                +"Particle 1"
-                + EnumChatFormatting.GRAY
-                +", and the one ")
-            .addInfo("on the right is "
-                + EnumChatFormatting.GOLD
-                +"Particle 2"
-                + EnumChatFormatting.GRAY
-            )
+            .addInfo(
+                "The particle shown on the left in NEI is " + EnumChatFormatting.AQUA
+                    + "Particle 1"
+                    + EnumChatFormatting.GRAY
+                    + ", and the one ")
+            .addInfo("on the right is " + EnumChatFormatting.GOLD + "Particle 2" + EnumChatFormatting.GRAY)
             .addSeparator()
             .addInfo("Recipes will not start unless both beams have sufficiently high")
-            .addInfo(EnumChatFormatting.YELLOW+"Beam Energies")
+            .addInfo(EnumChatFormatting.YELLOW + "Beam Energies")
             .addSeparator()
-            .addInfo("Processing speed is determined purely by the Input "
-                + EnumChatFormatting.RED
-                + "Beam Rates"
-                + EnumChatFormatting.GRAY
-            )
-            .addInfo("Each particle "+EnumChatFormatting.RED+"Amount "+EnumChatFormatting.GRAY+"provided corresponds to one tick of progress")
-            .addInfo("Once the required "
-                +EnumChatFormatting.RED
-                +"Amount "
-                +EnumChatFormatting.GRAY
-                +"of a specific "
-                +EnumChatFormatting.AQUA+"Part"+EnumChatFormatting.GOLD+"icle "+EnumChatFormatting.GRAY+"have been input,")
-            .addInfo("excess particles of that type are voided"
-            )
+            .addInfo(
+                "Processing speed is determined purely by the Input " + EnumChatFormatting.RED
+                    + "Beam Rates"
+                    + EnumChatFormatting.GRAY)
+            .addInfo(
+                "Each particle " + EnumChatFormatting.RED
+                    + "Amount "
+                    + EnumChatFormatting.GRAY
+                    + "provided corresponds to one tick of progress")
+            .addInfo(
+                "Once the required " + EnumChatFormatting.RED
+                    + "Amount "
+                    + EnumChatFormatting.GRAY
+                    + "of a specific "
+                    + EnumChatFormatting.AQUA
+                    + "Part"
+                    + EnumChatFormatting.GOLD
+                    + "icle "
+                    + EnumChatFormatting.GRAY
+                    + "have been input,")
+            .addInfo("excess particles of that type are voided")
             .addSeparator()
             .beginStructureBlock(17, 5, 11, false)
             .addController("Front Center")
@@ -293,6 +294,7 @@ public class MTEBeamCrafter extends MTEExtendedPowerMultiBlockBase<gregtech.comm
         }
         return null;
     }
+
     @Nullable
     private BeamInformation getInputParticle_B() {
         int i = 0;
@@ -306,7 +308,8 @@ public class MTEBeamCrafter extends MTEExtendedPowerMultiBlockBase<gregtech.comm
         return null;
     }
 
-    private boolean checkIfInputParticleInRecipe(BeamInformation inputParticle_A,BeamInformation inputParticle_B,BeamCrafterMetadata metadata) {
+    private boolean checkIfInputParticleInRecipe(BeamInformation inputParticle_A, BeamInformation inputParticle_B,
+        BeamCrafterMetadata metadata) {
 
         int particleID_x = metadata.particleID_A;
         int particleID_y = metadata.particleID_B;
@@ -320,8 +323,12 @@ public class MTEBeamCrafter extends MTEExtendedPowerMultiBlockBase<gregtech.comm
 
         // possibilities: (A = x, B = y); (A = y, B = x)
 
-        return ((inputParticleID_A == particleID_x && inputParticleID_B == particleID_y && inputEnergy_A > minEnergy_x && inputEnergy_B > minEnergy_y)
-            || (inputParticleID_A == particleID_y && inputParticleID_B == particleID_x && inputEnergy_A > minEnergy_y && inputEnergy_B > minEnergy_x));
+        return ((inputParticleID_A == particleID_x && inputParticleID_B == particleID_y
+            && inputEnergy_A > minEnergy_x
+            && inputEnergy_B > minEnergy_y)
+            || (inputParticleID_A == particleID_y && inputParticleID_B == particleID_x
+                && inputEnergy_A > minEnergy_y
+                && inputEnergy_B > minEnergy_x));
 
     }
 
@@ -350,34 +357,37 @@ public class MTEBeamCrafter extends MTEExtendedPowerMultiBlockBase<gregtech.comm
     }
 
     private GTRecipe lastRecipe;
+
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
 
         // particleARate - the Rate value of beam packet A. for this multi,
-        //                think of it as the number of particles in the packet
+        // think of it as the number of particles in the packet
         // particleBRate - the Rate value of beam packet B.
         // craftProgressA - part of the progress of the current craft.
-        //                 if a new craft starts that is a different recipe than the previous, reset to 0
-        //                 if the recipe is the same as the previous recipe, keep track of the current craftProgressA
+        // if a new craft starts that is a different recipe than the previous, reset to 0
+        // if the recipe is the same as the previous recipe, keep track of the current craftProgressA
         // craftProgressB - the other part of the progress of the current craft.
-        //                 if a new craft starts that is a different recipe than the previous, reset to 0
-        //                 if the recipe is the same as the previous recipe, keep track of the current craftProgressB
+        // if a new craft starts that is a different recipe than the previous, reset to 0
+        // if the recipe is the same as the previous recipe, keep track of the current craftProgressB
         // recipeParticleACount - the total number of required particle A for the ongoing recipe
         // recipeParticleBCount - the total number of required particle B for the ongoing recipe
         //
         // run the following every second
         //
         // if there is no ongoing recipe, check the item/fluid inputs for a valid recipe
-        //   if not found, do nothing for this processing cycle, and consume a tiny amount of power
-        //   if found, start a craft, and consume the recipe's amount of power until it is done
+        // if not found, do nothing for this processing cycle, and consume a tiny amount of power
+        // if found, start a craft, and consume the recipe's amount of power until it is done
         //
         // add particleRateA to craftProgressA, add particleRateB to craftProgressB
         // every cycle, for every integer number of completed craftProgressA and B,
-        //    deliver output. subtract that much progress from craftProgressA and B such that they are both < recipeParticle(A/B)Count
-        //    if all cached inputs are *not* consumed, wait for more particle packets (do not fail the craft!)
+        // deliver output. subtract that much progress from craftProgressA and B such that they are both <
+        // recipeParticle(A/B)Count
+        // if all cached inputs are *not* consumed, wait for more particle packets (do not fail the craft!)
         //
-        // if all cached inputs are consumed delivered, check for the same recipe again. if present, continue the process without
-        //    resetting craftProgressA/B. otherwise, reset craftProgressA/B
+        // if all cached inputs are consumed delivered, check for the same recipe again. if present, continue the
+        // process without
+        // resetting craftProgressA/B. otherwise, reset craftProgressA/B
         //
         // repeat forever
         //
@@ -408,7 +418,7 @@ public class MTEBeamCrafter extends MTEExtendedPowerMultiBlockBase<gregtech.comm
                 BeamInformation inputParticle_B = this.getInputParticle_B();
 
                 if ((inputParticle_A != null) || (inputParticle_B != null)) {
-                    return checkIfInputParticleInRecipe(inputParticle_A,inputParticle_B,metadata);
+                    return checkIfInputParticleInRecipe(inputParticle_A, inputParticle_B, metadata);
                 }
                 return false;
             })
@@ -423,13 +433,18 @@ public class MTEBeamCrafter extends MTEExtendedPowerMultiBlockBase<gregtech.comm
         BeamInformation inputParticle_B = this.getInputParticle_B();
         if (inputParticle_A == null || inputParticle_B == null) return CheckRecipeResultRegistry.NO_RECIPE;
 
-        if (!checkIfInputParticleInRecipe(inputParticle_A,inputParticle_B,metadata)) return CheckRecipeResultRegistry.NO_RECIPE;
+        if (!checkIfInputParticleInRecipe(inputParticle_A, inputParticle_B, metadata))
+            return CheckRecipeResultRegistry.NO_RECIPE;
 
         this.currentRecipeMaxAmountA = metadata.amount_A;
         this.currentRecipeMaxAmountB = metadata.amount_B;
-        this.mMaxProgresstime = this.currentRecipeMaxAmountA + this.currentRecipeMaxAmountB; // total time to finish recipe in ticks is the sum of the required Amounts
+        this.mMaxProgresstime = this.currentRecipeMaxAmountA + this.currentRecipeMaxAmountB; // total time to finish
+                                                                                             // recipe in ticks is the
+                                                                                             // sum of the required
+                                                                                             // Amounts
 
-        if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1) return CheckRecipeResultRegistry.NO_RECIPE;
+        if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1)
+            return CheckRecipeResultRegistry.NO_RECIPE;
 
         if (!tRecipe.equals(this.lastRecipe)) this.lastRecipe = tRecipe;
 

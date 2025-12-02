@@ -1,68 +1,47 @@
 package gregtech.common.tileentities.machines.multi.beamcrafting;
 
-import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.Textures;
-import gregtech.api.enums.TickTime;
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
-import gregtech.api.recipe.RecipeMap;
-import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
-import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.extensions.ArrayExt;
-import gregtech.common.blocks.BlockCasings10;
-import gregtech.common.blocks.BlockCasings13;
-import gregtech.common.misc.GTStructureChannels;
-import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterMetadata;
-import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
-import gtnhlanth.common.beamline.BeamInformation;
-import gtnhlanth.common.beamline.BeamLinePacket;
-import gtnhlanth.common.beamline.Particle;
-import gtnhlanth.common.hatch.MTEHatchInputBeamline;
-import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
-import gtnhlanth.common.register.LanthItemList;
-import gtnhlanth.common.tileentity.recipe.beamline.TargetChamberMetadata;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
-import org.jetbrains.annotations.NotNull;
-
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static gregtech.api.enums.HatchElement.Energy;
-import static gregtech.api.enums.HatchElement.ExoticEnergy;
-import static gregtech.api.enums.HatchElement.InputBus;
-import static gregtech.api.enums.HatchElement.InputHatch;
-import static gregtech.api.enums.HatchElement.Maintenance;
-import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
-import static gregtech.api.util.GTStructureUtility.ofFrame;
-import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.TARGET_CHAMBER_METADATA;
 
-public class MTEBeamMirror extends MTEExtendedPowerMultiBlockBase<gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMirror>
+import java.util.ArrayList;
+
+import javax.annotation.Nullable;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import org.jetbrains.annotations.NotNull;
+
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.misc.GTStructureChannels;
+import gtnhlanth.common.beamline.BeamInformation;
+import gtnhlanth.common.beamline.BeamLinePacket;
+import gtnhlanth.common.hatch.MTEHatchInputBeamline;
+import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
+
+public class MTEBeamMirror
+    extends MTEExtendedPowerMultiBlockBase<gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMirror>
     implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -71,8 +50,7 @@ public class MTEBeamMirror extends MTEExtendedPowerMultiBlockBase<gregtech.commo
     private final ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
     private final ArrayList<MTEHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
 
-    private static final IStructureDefinition<gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMirror> STRUCTURE_DEFINITION = StructureDefinition
-        .<gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMirror>builder()
+    private static final IStructureDefinition<gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMirror> STRUCTURE_DEFINITION = StructureDefinition.<gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMirror>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
             // spotless:off
@@ -108,7 +86,8 @@ public class MTEBeamMirror extends MTEExtendedPowerMultiBlockBase<gregtech.commo
                 "BBB"
             }})
         //spotless:on
-        .addElement('B', // collider casing
+        .addElement(
+            'B', // collider casing
             ofBlock(GregTechAPI.sBlockCasings13, 10))
         .addElement('A', chainAllGlasses()) // new glass type todo: (?)
         .addElement(
@@ -139,6 +118,7 @@ public class MTEBeamMirror extends MTEExtendedPowerMultiBlockBase<gregtech.commo
 
         return false;
     }
+
     private boolean addBeamLineOutputHatch(IGregTechTileEntity te, int casingIndex) {
         if (te == null) return false;
 
@@ -203,7 +183,7 @@ public class MTEBeamMirror extends MTEExtendedPowerMultiBlockBase<gregtech.commo
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-                                 int colorIndex, boolean aActive, boolean redstoneLevel) {
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
         ITexture[] rTexture;
         if (side == aFacing) {
             if (aActive) {
@@ -245,7 +225,7 @@ public class MTEBeamMirror extends MTEExtendedPowerMultiBlockBase<gregtech.commo
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Beam Mirror")
             .addInfo("Takes in particle beams and sends them back out")
-            .addInfo(EnumChatFormatting.GOLD+"That's literally it")
+            .addInfo(EnumChatFormatting.GOLD + "That's literally it.")
             .beginStructureBlock(3, 5, 5, false)
             .addController("Front Center")
             .addCasingInfoExactly("Collider Casing", 40, false)
@@ -253,7 +233,7 @@ public class MTEBeamMirror extends MTEExtendedPowerMultiBlockBase<gregtech.commo
             .addCasingInfoExactly("Beamline Input Hatch", 1, false)
             .addCasingInfoExactly("Beamline Output Hatch", 1, false)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            //.addTecTechHatchInfo()
+            // .addTecTechHatchInfo()
             .toolTipFinisher();
         return tt;
     }
@@ -268,7 +248,6 @@ public class MTEBeamMirror extends MTEExtendedPowerMultiBlockBase<gregtech.commo
         if (mMachine) return -1;
         return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 4, 0, elementBudget, env, false, true);
     }
-
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
@@ -285,6 +264,5 @@ public class MTEBeamMirror extends MTEExtendedPowerMultiBlockBase<gregtech.commo
         }
         return null;
     }
-
 
 }

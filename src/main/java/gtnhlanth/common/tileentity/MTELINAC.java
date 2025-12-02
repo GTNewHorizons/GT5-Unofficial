@@ -20,7 +20,6 @@ import java.util.Objects;
 
 import javax.annotation.Nullable;
 
-import gregtech.common.tileentities.machines.multi.beamcrafting.MTEHatchAdvancedOutputBeamline;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;

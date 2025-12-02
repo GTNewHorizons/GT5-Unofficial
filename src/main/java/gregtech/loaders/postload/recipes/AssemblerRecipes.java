@@ -31,7 +31,6 @@ import static gregtech.loaders.postload.MachineRecipeLoader.solderingMats;
 import static gtPlusPlus.core.material.MaterialsAlloy.INCONEL_690;
 import static kekztech.common.Blocks.lscLapotronicEnergyUnit;
 
-import gtPlusPlus.core.material.MaterialsElements;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -55,6 +54,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialsAlloy;
+import gtPlusPlus.core.material.MaterialsElements;
 import gtnhlanth.common.register.LanthItemList;
 import tectech.thing.CustomItemList;
 
@@ -6941,8 +6941,7 @@ public class AssemblerRecipes implements Runnable {
             .itemInputs(
                 new ItemStack(LanthItemList.NIOBIUM_CAVITY_CASING, 8),
                 GTOreDictUnificator.get(OrePrefixes.circuit.get(Materials.UHV), 2),
-                ItemRefer.Field_Restriction_Coil_T1.get(1)
-                )
+                ItemRefer.Field_Restriction_Coil_T1.get(1))
             .itemOutputs(ItemList.BeamStabilizer.get(1))
             .fluidInputs(Materials.Grade6PurifiedWater.getFluid(1000L))
             .duration(30 * SECONDS)
@@ -6952,10 +6951,9 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 4),
-                new ItemStack(LanthItemList.BEAMLINE_PIPE.getItem(), 4),
+                GTUtility.copyAmount(8, LanthItemList.BEAMLINE_PIPE),
                 MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getPlateDense(1),
-                GTOreDictUnificator.get(OrePrefixes.circuit.get(Materials.UHV), 2)
-                )
+                GTOreDictUnificator.get(OrePrefixes.circuit.get(Materials.UHV), 2))
             .itemOutputs(ItemList.BeamMirror.get(1))
             .fluidInputs(Materials.Grade6PurifiedWater.getFluid(1000L))
             .duration(30 * SECONDS)

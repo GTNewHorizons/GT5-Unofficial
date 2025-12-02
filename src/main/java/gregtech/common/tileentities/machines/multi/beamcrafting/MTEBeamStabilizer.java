@@ -1,9 +1,29 @@
 package gregtech.common.tileentities.machines.multi.beamcrafting;
 
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.ExoticEnergy;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_GLOW;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
+
+import java.util.ArrayList;
+
+import javax.annotation.Nullable;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TickTime;
@@ -18,28 +38,11 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings13;
 import gregtech.common.gui.modularui.multiblock.MTEBeamStabilizerGui;
-import gregtech.common.gui.modularui.multiblock.MTELargeHadronColliderGui;
 import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.common.util.ForgeDirection;
-import org.jetbrains.annotations.NotNull;
-
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-
-import static gregtech.api.enums.HatchElement.Energy;
-import static gregtech.api.enums.HatchElement.ExoticEnergy;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_GLOW;
-import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
 public class MTEBeamStabilizer extends MTEExtendedPowerMultiBlockBase<MTEBeamStabilizer>
     implements ISurvivalConstructable {
@@ -145,7 +148,8 @@ public class MTEBeamStabilizer extends MTEExtendedPowerMultiBlockBase<MTEBeamSta
                 "       "
             }})
         //spotless:on
-        .addElement('B', // collider casing
+        .addElement(
+            'B', // collider casing
             buildHatchAdder(MTEBeamStabilizer.class).atLeast(Energy, ExoticEnergy)
                 .casingIndex(((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(10))
                 .dot(1)
@@ -224,7 +228,7 @@ public class MTEBeamStabilizer extends MTEExtendedPowerMultiBlockBase<MTEBeamSta
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-                                 int colorIndex, boolean aActive, boolean redstoneLevel) {
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
         ITexture[] rTexture;
         if (side == aFacing) {
             if (aActive) {
@@ -265,25 +269,33 @@ public class MTEBeamStabilizer extends MTEExtendedPowerMultiBlockBase<MTEBeamSta
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Beam Stabilizer")
-            .addInfo("Accepts and stores up to 100000 "
-                + EnumChatFormatting.GREEN + "Particles "
-                + EnumChatFormatting.GRAY + "from ")
-            .addInfo("potentially intermittent high "
-                + EnumChatFormatting.RED + "Rate "
-                + EnumChatFormatting.GRAY + "particle beam packets")
+            .addInfo(
+                "Accepts and stores up to 100000 " + EnumChatFormatting.GREEN
+                    + "Particles "
+                    + EnumChatFormatting.GRAY
+                    + "from ")
+            .addInfo(
+                "potentially intermittent high " + EnumChatFormatting.RED
+                    + "Rate "
+                    + EnumChatFormatting.GRAY
+                    + "particle beam packets")
             .addInfo("and re-releases those particles as a stable beam at a ")
-            .addInfo(EnumChatFormatting.RED + "Rate "
-                + EnumChatFormatting.GRAY + "of your choosing")
+            .addInfo(EnumChatFormatting.RED + "Rate " + EnumChatFormatting.GRAY + "of your choosing")
             .addSeparator()
-            .addInfo("If a particle beam with a different "
-                + EnumChatFormatting.GREEN + "Particle"
-                + EnumChatFormatting.GRAY + ", "
-                + EnumChatFormatting.GOLD + "Energy "
-                + EnumChatFormatting.GRAY + "or ")
-            .addInfo(EnumChatFormatting.AQUA + "Focus "
-                + EnumChatFormatting.GRAY + "is sent to the machine during operation, it is")
-            .addInfo("ignored UNLESS there are no currently stored "
-                + EnumChatFormatting.GREEN + "Particles ")
+            .addInfo(
+                "If a particle beam with a different " + EnumChatFormatting.GREEN
+                    + "Particle"
+                    + EnumChatFormatting.GRAY
+                    + ", "
+                    + EnumChatFormatting.GOLD
+                    + "Energy "
+                    + EnumChatFormatting.GRAY
+                    + "or ")
+            .addInfo(
+                EnumChatFormatting.AQUA + "Focus "
+                    + EnumChatFormatting.GRAY
+                    + "is sent to the machine during operation, it is")
+            .addInfo("ignored UNLESS there are no currently stored " + EnumChatFormatting.GREEN + "Particles ")
             .beginStructureBlock(7, 7, 11, false)
             .addController("Front Center")
             .addCasingInfoExactly("Collider Casing", 109, false)
@@ -292,7 +304,7 @@ public class MTEBeamStabilizer extends MTEExtendedPowerMultiBlockBase<MTEBeamSta
             .addCasingInfoExactly("Beamline Output Hatch", 1, false)
             .addEnergyHatch("Any Collider Casing", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            //.addTecTechHatchInfo()
+            // .addTecTechHatchInfo()
             .toolTipFinisher();
         return tt;
     }
@@ -307,7 +319,6 @@ public class MTEBeamStabilizer extends MTEExtendedPowerMultiBlockBase<MTEBeamSta
         if (mMachine) return -1;
         return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 4, 0, elementBudget, env, false, true);
     }
-
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
@@ -341,7 +352,6 @@ public class MTEBeamStabilizer extends MTEExtendedPowerMultiBlockBase<MTEBeamSta
     int cumulativeBeamRate = 0; // Stored particle Amount
     float storedBeamFocus = 0; // for completeness. not used anywhere but beamline
 
-
     private void cumulateStoredBeamPacket() {
         BeamInformation inputParticle = getInputParticle();
 
@@ -351,35 +361,36 @@ public class MTEBeamStabilizer extends MTEExtendedPowerMultiBlockBase<MTEBeamSta
         }
         // if we reach this point, input particle energy is > 0, and is therefore a meaningful packet
         // if the same particle AND energy appear, add to accumulation
-        if (this.storedBeamEnergy == inputParticle.getEnergy() && this.storedParticleID == inputParticle.getParticleId()){
+        if (this.storedBeamEnergy == inputParticle.getEnergy()
+            && this.storedParticleID == inputParticle.getParticleId()) {
             this.cumulativeBeamRate += inputParticle.getRate();
-            this.cumulativeBeamRate = Math.min(this.cumulativeBeamRate,100000); // capped at 100_000 particles
+            this.cumulativeBeamRate = Math.min(this.cumulativeBeamRate, 100000); // capped at 100_000 particles
             return;
         }
         // if the stored cumulativeBeamRate is 0, then update all cached values
-        if (this.cumulativeBeamRate == 0){
+        if (this.cumulativeBeamRate == 0) {
             this.storedBeamEnergy = inputParticle.getEnergy();
             this.storedBeamFocus = inputParticle.getFocus();
             this.storedParticleID = inputParticle.getParticleId();
             this.cumulativeBeamRate += inputParticle.getRate();
-            this.cumulativeBeamRate = Math.min(this.cumulativeBeamRate,100000); // capped at 100_000 particles
+            this.cumulativeBeamRate = Math.min(this.cumulativeBeamRate, 100000); // capped at 100_000 particles
         }
         // if we reach this point, then the incoming packet is a different particle-energy combo than what is stored,
-        // and there are still particles being output by the machine. therefore the input packet is just ignored (voided)
+        // and there are still particles being output by the machine. therefore the input packet is just ignored
+        // (voided)
 
     }
 
     public int playerTargetBeamRate = 100;
+
     private void outputPacketAfterRecipe(int rate) {
         if (!this.mOutputBeamline.isEmpty()) {
             BeamLinePacket packet = new BeamLinePacket(
                 new BeamInformation(
                     this.storedBeamEnergy,
-                    Math.min(rate,this.cumulativeBeamRate),
+                    Math.min(rate, this.cumulativeBeamRate),
                     this.storedParticleID,
-                    this.storedBeamFocus
-                )
-            );
+                    this.storedBeamFocus));
 
             this.cumulativeBeamRate -= rate;
             if (this.cumulativeBeamRate < 0) {
@@ -390,7 +401,6 @@ public class MTEBeamStabilizer extends MTEExtendedPowerMultiBlockBase<MTEBeamSta
             }
         }
     }
-
 
     public int getCachedBeamRate() {
         BeamInformation inputParticle = getInputParticle();

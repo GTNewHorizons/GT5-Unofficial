@@ -30,13 +30,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-import gregtech.api.recipe.metadata.SimpleRecipeMetadataKey;
-import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterFrontend;
-import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterMetadata;
-import gtnhlanth.common.beamline.Particle;
-import gtnhlanth.common.register.LanthItemList;
-import gtnhlanth.common.tileentity.recipe.beamline.TargetChamberFrontend;
-import gtnhlanth.common.tileentity.recipe.beamline.TargetChamberMetadata;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
@@ -88,17 +81,22 @@ import gregtech.api.recipe.maps.UnpackagerBackend;
 import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.recipe.metadata.PCBFactoryTierKey;
 import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
+import gregtech.api.recipe.metadata.SimpleRecipeMetadataKey;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.multi.purification.PurifiedWaterHelpers;
+import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterFrontend;
+import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterMetadata;
 import gregtech.nei.formatter.FuelSpecialValueFormatter;
 import gregtech.nei.formatter.FusionSpecialValueFormatter;
 import gregtech.nei.formatter.HeatingCoilSpecialValueFormatter;
 import gregtech.nei.formatter.SimpleSpecialValueFormatter;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtnhlanth.common.beamline.Particle;
+import gtnhlanth.common.register.LanthItemList;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
 import mods.railcraft.common.items.RailcraftToolItems;
 import tectech.thing.CustomItemList;
@@ -1326,12 +1324,11 @@ public final class RecipeMaps {
         .progressBar(GTUITextures.PROGRESSBAR_ARROW)
         .build();
 
-
     public static final RecipeMetadataKey<BeamCrafterMetadata> BEAMCRAFTER_METADATA = SimpleRecipeMetadataKey
         .create(BeamCrafterMetadata.class, "beamcrafter_metadata");
 
-    public static final RecipeMap<RecipeMapBackend>  beamcrafterRecipes = RecipeMapBuilder
-        .of("gt.recipe.beamcrafter",RecipeMapBackend::new)
+    public static final RecipeMap<RecipeMapBackend> beamcrafterRecipes = RecipeMapBuilder
+        .of("gt.recipe.beamcrafter", RecipeMapBackend::new)
         .minInputs(0, 0)
         .frontend(BeamCrafterFrontend::new)
         .neiSpecialInfoFormatter(((recipeInfo) -> {
@@ -1349,16 +1346,18 @@ public final class RecipeMaps {
 
             return Arrays.asList(
                 StatCollector.translateToLocal("beamcrafting.energy_A") + ": "
-                    + GTUtility.formatNumbers(minEnergy_A) + "keV",
+                    + GTUtility.formatNumbers(minEnergy_A)
+                    + "keV",
 
                 StatCollector.translateToLocal("beamcrafting.energy_B") + ": "
-                    + GTUtility.formatNumbers(minEnergy_B) + "keV",
+                    + GTUtility.formatNumbers(minEnergy_B)
+                    + "keV",
 
                 StatCollector.translateToLocal("beamcrafting.amount_A") + ": " + GTUtility.formatNumbers(amount_A),
                 StatCollector.translateToLocal("beamcrafting.amount_B") + ": " + GTUtility.formatNumbers(amount_B)
 
-            );}
-        ))
+        );
+        }))
         .neiItemInputsGetter(recipe -> {
             BeamCrafterMetadata metadata = recipe.getMetadata(BEAMCRAFTER_METADATA);
             if (metadata == null) return GTValues.emptyItemStackArray;
@@ -1376,8 +1375,7 @@ public final class RecipeMaps {
         .neiTransferRect(100, 22, 28, 18)
         .maxIO(4, 2, 2, 2)
         .progressBar(GTUITextures.PROGRESSBAR_BEAMCRAFTER)
-        .progressBarSize(50,30)
+        .progressBarSize(50, 30)
         .build();
 
 }
-

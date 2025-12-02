@@ -1,17 +1,15 @@
 package gregtech.loaders.postload.recipes.beamcrafter;
 
-import java.util.Comparator;
+import static gtnhlanth.common.beamline.Particle.isParticle;
+
 import java.util.List;
 
-import codechicken.nei.PositionedStack;
-import com.google.common.collect.ImmutableList;
-import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitUVTreatment;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
+import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 
+import codechicken.nei.PositionedStack;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
@@ -22,12 +20,10 @@ import gregtech.nei.GTNEIDefaultHandler;
 import gregtech.nei.RecipeDisplayInfo;
 import gtnhlanth.util.Util;
 
-import static gtnhlanth.common.beamline.Particle.isParticle;
-
 public class BeamCrafterFrontend extends RecipeMapFrontend {
 
     public BeamCrafterFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
-                                 NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(uiPropertiesBuilder, neiPropertiesBuilder);
     }
 
@@ -55,15 +51,18 @@ public class BeamCrafterFrontend extends RecipeMapFrontend {
     public List<Pos2d> getItemInputPositions(int itemInputCount) {
         return Util.getGridPositions(itemInputCount, 24, 20, 2, 2, 1);
     }
+
     @Override
     public List<Pos2d> getItemOutputPositions(int itemOutputCount) {
         return UIHelper.getGridPositions(itemOutputCount, 128, 20, 2, 1);
     }
+
     // fluids
     @Override
     public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
         return Util.getGridPositions(fluidInputCount, 24, 60, 2, 1, 1);
     }
+
     @Override
     public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
         return UIHelper.getGridPositions(fluidOutputCount, 128, 40, 2, 1);
@@ -71,20 +70,18 @@ public class BeamCrafterFrontend extends RecipeMapFrontend {
 
     @Override
     public void drawNEIOverlays(GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
-        List<Pos2d> positions = ImmutableList.of(
-            new Pos2d(70, -6),
-            new Pos2d(90, -6)
-        );
+        List<Pos2d> positions = ImmutableList.of(new Pos2d(70, -6), new Pos2d(90, -6));
 
         int i = 0;
         for (PositionedStack stack : neiCachedRecipe.mInputs) {
-            if (isParticle(stack.item)){
-                stack.relx = (int) positions.get(i).getX();
-                stack.rely = (int) positions.get(i).getY();
+            if (isParticle(stack.item)) {
+                stack.relx = (int) positions.get(i)
+                    .getX();
+                stack.rely = (int) positions.get(i)
+                    .getY();
                 drawNEIOverlayForInput((GTNEIDefaultHandler.FixedPositionedStack) stack);
                 i++;
-            }
-            else if (stack instanceof GTNEIDefaultHandler.FixedPositionedStack) {
+            } else if (stack instanceof GTNEIDefaultHandler.FixedPositionedStack) {
                 drawNEIOverlayForInput((GTNEIDefaultHandler.FixedPositionedStack) stack);
             }
         }

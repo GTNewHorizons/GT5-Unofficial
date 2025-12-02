@@ -1,5 +1,8 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
+
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
@@ -9,19 +12,14 @@ import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
-import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
+
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamStabilizer;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-
-import static gregtech.api.enums.Mods.GregTech;
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 public class MTEBeamStabilizerGui extends MTEMultiBlockBaseGui<MTEBeamStabilizer> {
 
@@ -34,9 +32,7 @@ public class MTEBeamStabilizerGui extends MTEMultiBlockBaseGui<MTEBeamStabilizer
         super.registerSyncValues(syncManager);
         syncManager.syncValue(
             "playerTargetBeamRate",
-            new IntSyncValue(
-                () -> multiblock.playerTargetBeamRate,
-                i -> multiblock.playerTargetBeamRate = i));
+            new IntSyncValue(() -> multiblock.playerTargetBeamRate, i -> multiblock.playerTargetBeamRate = i));
         syncManager.syncValue("inputBeamRate", new IntSyncValue(multiblock::getCachedBeamRate));
     }
 
@@ -65,9 +61,8 @@ public class MTEBeamStabilizerGui extends MTEMultiBlockBaseGui<MTEBeamStabilizer
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
-
     private ModularPanel openInfoPanel(PanelSyncManager p_syncManager, ModularPanel parent,
-                                       PanelSyncManager syncManager) {
+        PanelSyncManager syncManager) {
         IntSyncValue playerTargetBeamRateSync = (IntSyncValue) syncManager
             .getSyncHandlerFromMapKey("playerTargetBeamRate:0");
 
@@ -92,10 +87,7 @@ public class MTEBeamStabilizerGui extends MTEMultiBlockBaseGui<MTEBeamStabilizer
                                     .height(14)
                                     .marginRight(2)
                                     .value(playerTargetBeamRateSync)
-                                    .setDefaultNumber(100)
-                            )
-                    )
-            );
+                                    .setDefaultNumber(100))));
     }
 
 }

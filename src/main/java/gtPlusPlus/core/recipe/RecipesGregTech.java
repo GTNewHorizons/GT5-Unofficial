@@ -456,9 +456,9 @@ public class RecipesGregTech {
             GregtechItemList.Battery_Gem_2.get(1), GregtechItemList.Battery_Gem_3.get(1),
             GregtechItemList.Battery_Gem_4.get(1), };
 
-        ItemStack[] aExoticInputs = new ItemStack[] { Particle.getBaseParticle(Particle.PROTON),
-            Particle.getBaseParticle(Particle.ELECTRON), Particle.getBaseParticle(Particle.CHARM),
-            Particle.getBaseParticle(Particle.GRAVITON) };
+        ItemStack[] aExoticInputs = new ItemStack[] { ItemList.StableBaryonContainmentUnit.get(1),
+            ItemList.StableLeptonContainmentUnit.get(1), ItemList.StableMesonContainmentUnit.get(1),
+            ItemList.StableBosonContainmentUnit.get(1) };
         aCasingSlot = 0;
         for (int j = 6; j < 10; j++) {
             RA.stdBuilder()

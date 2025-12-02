@@ -161,11 +161,24 @@ tile.recipe.tc=Target Chamber
 tile.recipe.sc=Source Chamber
 
 item.particle.name=Particle
-particle.electron=Electron
 particle.photon=Photon
-particle.alpha=Alpha
-particle.neutron=Neutron
+particle.zboson=Z Boson
+particle.wboson=W Boson
+particle.higgs=Higgs Boson
+particle.graviton=Graviton
+particle.electron=Electron
+particle.muon=Muon
+particle.tau=Tau
+particle.electron_neutrino=Electron Neutrino
+particle.muon_neutrino=Muon Neutrino
+particle.tau_neutrino=Tau Neutrino
 particle.proton=Proton
+particle.neutron=Neutron
+particle.omega=Omega
+particle.eta=Eta
+particle.j/psi=J/Psi
+particle.upsilon=Upsilon
+particle.alpha=Alpha
 GT5U.gui.text.dissolution_ratio=§7Wrong fluid input ratio
 
 beamcrafting.energy_A=min Energy 1
