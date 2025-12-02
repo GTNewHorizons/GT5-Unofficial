@@ -31,6 +31,7 @@ import static gregtech.loaders.postload.MachineRecipeLoader.solderingMats;
 import static gtPlusPlus.core.material.MaterialsAlloy.INCONEL_690;
 import static kekztech.common.Blocks.lscLapotronicEnergyUnit;
 
+import gtPlusPlus.core.material.MaterialsElements;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -6934,6 +6935,31 @@ public class AssemblerRecipes implements Runnable {
             .fluidInputs(MaterialsAlloy.PIKYONIUM.getFluidStack(64 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                new ItemStack(LanthItemList.NIOBIUM_CAVITY_CASING, 8),
+                GTOreDictUnificator.get(OrePrefixes.circuit.get(Materials.UHV), 2),
+                ItemRefer.Field_Restriction_Coil_T1.get(1)
+                )
+            .itemOutputs(ItemList.BeamStabilizer.get(1))
+            .fluidInputs(Materials.Grade6PurifiedWater.getFluid(1000L))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_UHV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                new ItemStack(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 4),
+                new ItemStack(LanthItemList.BEAMLINE_PIPE.getItem(), 4),
+                MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getPlateDense(1),
+                GTOreDictUnificator.get(OrePrefixes.circuit.get(Materials.UHV), 2)
+                )
+            .itemOutputs(ItemList.BeamMirror.get(1))
+            .fluidInputs(Materials.Grade6PurifiedWater.getFluid(1000L))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_UHV)
             .addTo(assemblerRecipes);
 
     }

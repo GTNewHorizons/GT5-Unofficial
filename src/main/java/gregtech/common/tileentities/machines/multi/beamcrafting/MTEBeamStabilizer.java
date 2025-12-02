@@ -25,6 +25,7 @@ import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.jetbrains.annotations.NotNull;
 
@@ -264,6 +265,25 @@ public class MTEBeamStabilizer extends MTEExtendedPowerMultiBlockBase<MTEBeamSta
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Beam Stabilizer")
+            .addInfo("Accepts and stores up to 100000 "
+                + EnumChatFormatting.GREEN + "Particles "
+                + EnumChatFormatting.GRAY + "from ")
+            .addInfo("potentially intermittent high "
+                + EnumChatFormatting.RED + "Rate "
+                + EnumChatFormatting.GRAY + "particle beam packets")
+            .addInfo("and re-releases those particles as a stable beam at a ")
+            .addInfo(EnumChatFormatting.RED + "Rate "
+                + EnumChatFormatting.GRAY + "of your choosing")
+            .addSeparator()
+            .addInfo("If a particle beam with a different "
+                + EnumChatFormatting.GREEN + "Particle"
+                + EnumChatFormatting.GRAY + ", "
+                + EnumChatFormatting.GOLD + "Energy "
+                + EnumChatFormatting.GRAY + "or ")
+            .addInfo(EnumChatFormatting.AQUA + "Focus "
+                + EnumChatFormatting.GRAY + "is sent to the machine during operation, it is")
+            .addInfo("ignored UNLESS there are no currently stored "
+                + EnumChatFormatting.GREEN + "Particles ")
             .beginStructureBlock(7, 7, 11, false)
             .addController("Front Center")
             .addCasingInfoExactly("Collider Casing", 109, false)
@@ -272,7 +292,7 @@ public class MTEBeamStabilizer extends MTEExtendedPowerMultiBlockBase<MTEBeamSta
             .addCasingInfoExactly("Beamline Output Hatch", 1, false)
             .addEnergyHatch("Any Collider Casing", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addTecTechHatchInfo()
+            //.addTecTechHatchInfo()
             .toolTipFinisher();
         return tt;
     }
@@ -333,6 +353,7 @@ public class MTEBeamStabilizer extends MTEExtendedPowerMultiBlockBase<MTEBeamSta
         // if the same particle AND energy appear, add to accumulation
         if (this.storedBeamEnergy == inputParticle.getEnergy() && this.storedParticleID == inputParticle.getParticleId()){
             this.cumulativeBeamRate += inputParticle.getRate();
+            this.cumulativeBeamRate = Math.min(this.cumulativeBeamRate,100000); // capped at 100_000 particles
             return;
         }
         // if the stored cumulativeBeamRate is 0, then update all cached values
@@ -341,6 +362,7 @@ public class MTEBeamStabilizer extends MTEExtendedPowerMultiBlockBase<MTEBeamSta
             this.storedBeamFocus = inputParticle.getFocus();
             this.storedParticleID = inputParticle.getParticleId();
             this.cumulativeBeamRate += inputParticle.getRate();
+            this.cumulativeBeamRate = Math.min(this.cumulativeBeamRate,100000); // capped at 100_000 particles
         }
         // if we reach this point, then the incoming packet is a different particle-energy combo than what is stored,
         // and there are still particles being output by the machine. therefore the input packet is just ignored (voided)

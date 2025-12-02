@@ -3001,6 +3001,19 @@ public class ResearchStationAssemblyLine implements Runnable {
             60 * SECONDS,
             (int) TierEU.RECIPE_UV);
 
+        // Beamcrafter splitter
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
+            CustomItemList.Machine_Multi_Switch.get(1),
+            64_000,
+            128,
+            (int) TierEU.RECIPE_UV,
+            4,
+            new Object[] { CustomItemList.Machine_Multi_Switch.get(1), ItemList.Electromagnet_Samarium.get(4),
+                new ItemStack(LanthItemList.SHIELDED_ACCELERATOR_CASING,4), },
+            new FluidStack[] { Materials.SuperCoolant.getFluid(16000) },
+            ItemList.BeamSplitter.get(1),
+            60 * SECONDS,
+            (int) TierEU.RECIPE_UV);
 
     }
 
