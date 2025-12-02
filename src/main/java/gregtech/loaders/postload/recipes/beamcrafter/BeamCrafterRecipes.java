@@ -20,6 +20,10 @@ import static gregtech.api.recipe.RecipeMaps.beamcrafterRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.ADVANCED_NITINOL;
 import static gtnhlanth.common.beamline.Particle.ELECTRON;
+import static gtnhlanth.common.beamline.Particle.ETA;
+import static gtnhlanth.common.beamline.Particle.HIGGS;
+import static gtnhlanth.common.beamline.Particle.JPSI;
+import static gtnhlanth.common.beamline.Particle.LAMBDA;
 import static gtnhlanth.common.beamline.Particle.MUONNEUTRINO;
 import static gtnhlanth.common.beamline.Particle.NEUTRON;
 import static gtnhlanth.common.beamline.Particle.OMEGA;
@@ -203,7 +207,131 @@ public class BeamCrafterRecipes implements Runnable {
             .eut(TierEU.RECIPE_ZPM)
             .addTo(beamcrafterRecipes);
 
-                /*
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Quark_Catalyst_Housing
+                )
+            .itemOutputs(ItemList.Quark_Creation_Catalyst_Up.get(1))
+            .metadata(
+                BEAMCRAFTER_METADATA,
+                BeamCrafterMetadata
+                    .builder()
+                    .particleID_A(PROTON.getId())
+                    .particleID_B(LAMBDA.getId())
+                    .amount_A(300*60*20)
+                    .amount_B(300*60*20)
+                    .energy_A(1)
+                    .energy_B(1)
+                    .build()
+            )
+            .eut(TierEU.RECIPE_UMV)
+            .addTo(beamcrafterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Quark_Catalyst_Housing
+                )
+            .itemOutputs(ItemList.Quark_Creation_Catalyst_Down.get(1))
+            .metadata(
+                BEAMCRAFTER_METADATA,
+                BeamCrafterMetadata
+                    .builder()
+                    .particleID_A(NEUTRON.getId())
+                    .particleID_B(LAMBDA.getId())
+                    .amount_A(300*60*20)
+                    .amount_B(300*60*20)
+                    .energy_A(1)
+                    .energy_B(1)
+                    .build()
+            )
+            .eut(TierEU.RECIPE_UMV)
+            .addTo(beamcrafterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Quark_Catalyst_Housing
+                )
+            .itemOutputs(ItemList.Quark_Creation_Catalyst_Charm.get(1))
+            .metadata(
+                BEAMCRAFTER_METADATA,
+                BeamCrafterMetadata
+                    .builder()
+                    .particleID_A(JPSI.getId())
+                    .particleID_B(JPSI.getId())
+                    .amount_A(300*60*20)
+                    .amount_B(300*60*20)
+                    .energy_A(1)
+                    .energy_B(1)
+                    .build()
+            )
+            .eut(TierEU.RECIPE_UMV)
+            .addTo(beamcrafterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Quark_Catalyst_Housing
+                )
+            .itemOutputs(ItemList.Quark_Creation_Catalyst_Strange.get(1))
+            .metadata(
+                BEAMCRAFTER_METADATA,
+                BeamCrafterMetadata
+                    .builder()
+                    .particleID_A(ETA.getId())
+                    .particleID_B(ETA.getId())
+                    .amount_A(300*60*20)
+                    .amount_B(300*60*20)
+                    .energy_A(1)
+                    .energy_B(1)
+                    .build()
+            )
+            .eut(TierEU.RECIPE_UMV)
+            .addTo(beamcrafterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Quark_Catalyst_Housing
+                )
+            .itemOutputs(ItemList.Quark_Creation_Catalyst_Bottom.get(1))
+            .metadata(
+                BEAMCRAFTER_METADATA,
+                BeamCrafterMetadata
+                    .builder()
+                    .particleID_A(UPSILON.getId())
+                    .particleID_B(UPSILON.getId())
+                    .amount_A(300*60*20)
+                    .amount_B(300*60*20)
+                    .energy_A(1)
+                    .energy_B(1)
+                    .build()
+            )
+            .eut(TierEU.RECIPE_UMV)
+            .addTo(beamcrafterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Quark_Catalyst_Housing
+                )
+            .itemOutputs(ItemList.Quark_Creation_Catalyst_Top.get(1))
+            .metadata(
+                BEAMCRAFTER_METADATA,
+                BeamCrafterMetadata
+                    .builder()
+                    .particleID_A(HIGGS.getId())
+                    .particleID_B(HIGGS.getId())
+                    .amount_A(300*60*20)
+                    .amount_B(300*60*20)
+                    .energy_A(1)
+                    .energy_B(1)
+                    .build()
+            )
+            .eut(TierEU.RECIPE_UMV)
+            .addTo(beamcrafterRecipes);
+
+        // todo: gravitons
+        // todo: new items to scan for grade 8 casings
+
+        /*
         GTValues.RA.stdBuilder()
             .fluidInputs(FluidUtils.getFluidStack("plasma.hydrogen", 100))
             .itemOutputs(
