@@ -28,7 +28,7 @@ public class DecayableRecipe {
             .itemOutputs(output)
             .eut(1)
             .duration(1)
-            .metadata(GTRecipeConstants.HALF_LIFE, time / 40d)
+            .metadata(GTRecipeConstants.HALF_LIFE, time / 320d)
             .metadata(GTRecipeConstants.DECAY_TYPE, decayType)
             .addTo(RecipeMaps.isotopeDecay);
     }

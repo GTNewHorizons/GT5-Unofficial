@@ -136,15 +136,11 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
 
     @Override
     public FluidStack drain(ForgeDirection side, int maxDrain, boolean doDrain) {
+        if (side != ForgeDirection.UNKNOWN) return null;
         if (fluid.amount <= 0) return null;
         final int toDrain = Math.min(fluid.amount, maxDrain);
         if (doDrain) fluid.amount -= toDrain;
         return GTUtility.copyAmount(toDrain, fluid);
-    }
-
-    @Override
-    protected boolean forceUseMui2() {
-        return true;
     }
 
     @Override
@@ -322,7 +318,8 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
         if (tick % 20 == 0) {
             mMachine = checkMachine(baseMetaTileEntity, null);
 
-            if (mMachine) baseMetaTileEntity.enableWorking();
+            // Sets "Incomplete Structure" text in WAILA
+            setErrorDisplayID(mMachine ? 0 : 64);
 
             if (baseMetaTileEntity.isActive()) {
                 Pollution.addPollution(baseMetaTileEntity, GTMod.proxy.mPollutionCokeOvenPerSecond);
