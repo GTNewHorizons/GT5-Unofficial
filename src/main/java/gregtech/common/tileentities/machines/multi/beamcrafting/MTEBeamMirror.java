@@ -36,6 +36,7 @@ import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
 import gtnhlanth.common.register.LanthItemList;
 import gtnhlanth.common.tileentity.recipe.beamline.TargetChamberMetadata;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
@@ -243,6 +244,8 @@ public class MTEBeamMirror extends MTEExtendedPowerMultiBlockBase<gregtech.commo
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Beam Mirror")
+            .addInfo("Takes in particle beams and sends them back out")
+            .addInfo(EnumChatFormatting.GOLD+"That's literally it")
             .beginStructureBlock(3, 5, 5, false)
             .addController("Front Center")
             .addCasingInfoExactly("Collider Casing", 40, false)
@@ -250,7 +253,7 @@ public class MTEBeamMirror extends MTEExtendedPowerMultiBlockBase<gregtech.commo
             .addCasingInfoExactly("Beamline Input Hatch", 1, false)
             .addCasingInfoExactly("Beamline Output Hatch", 1, false)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addTecTechHatchInfo()
+            //.addTecTechHatchInfo()
             .toolTipFinisher();
         return tt;
     }

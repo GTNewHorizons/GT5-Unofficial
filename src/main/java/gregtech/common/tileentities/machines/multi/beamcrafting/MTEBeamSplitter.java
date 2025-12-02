@@ -219,6 +219,8 @@ public class MTEBeamSplitter extends MTEExtendedPowerMultiBlockBase<MTEBeamSplit
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Beam Splitter")
+            .addInfo("Select which particles to blacklist in the output hatches")
+            .addInfo("Input particles will be split evenly among all valid output hatches")
             .beginStructureBlock(9, 3, 9, false)
             .addController("Front Center")
             .addCasingInfoExactly("Collider Casing", 68, false)
