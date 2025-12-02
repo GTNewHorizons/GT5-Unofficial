@@ -210,7 +210,7 @@ public class MTESmeltingModule extends MTEBaseModule {
             .addInfo("This is a module of the Godforge")
             .addInfo("Must be part of a Godforge to function")
             .addInfo("Used for basic smelting operations at various temperatures")
-            .addSeparator(EnumChatFormatting.AQUA, 74)
+            .addSeparator(EnumChatFormatting.AQUA)
             .addInfo("As the first of the Godforge modules, this module performs the most basic")
             .addInfo("thermal processing, namely smelting materials identically to a furnace or blast furnace")
             .addInfo("The desired method of processing can be selected in the gui")
@@ -228,7 +228,7 @@ public class MTESmeltingModule extends MTEBaseModule {
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Celestial Matter Guidance Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
-            .toolTipFinisher(EnumChatFormatting.AQUA, 74);
+            .toolTipFinisher(EnumChatFormatting.AQUA);
         return tt;
     }
 

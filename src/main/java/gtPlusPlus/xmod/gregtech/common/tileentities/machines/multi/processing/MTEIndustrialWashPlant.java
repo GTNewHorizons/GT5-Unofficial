@@ -106,23 +106,24 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType())
+        tt.addMachineType(
+            "GT5U.GTPP_MULTI_WASH_PLANT.mode.0",
+            "GT5U.GTPP_MULTI_WASH_PLANT.mode.1",
+            "GT5U.GTPP_MULTI_WASH_PLANT.mode.2",
+            "OWP")
             .addBulkMachineInfo(4, 5f, 1f)
-            .addInfo("Can be configured with a screwdriver to also do Simple Washer and process Chemical Bathing")
-            .addInfo("Always requires an Input Hatch full of water to refill structure")
-            .addInfo("Need to be filled with water")
-            .addInfo("Will automatically fill water from input hatch")
+            .addInfo("gt.owp.tips.1")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 3, 7, true)
-            .addController("Front Center")
-            .addCasingInfoMin("Wash Plant Casings", 40, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addOutputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
+            .addController("front_center")
+            .addCasingInfoMin("gtplusplus.blockcasings.2.4.name", 40)
+            .addInputBus("<casing>", 1)
+            .addOutputBus("<casing>", 1)
+            .addInputHatch("<casing>", 1)
+            .addOutputHatch("<casing>", 1)
+            .addEnergyHatch("<casing>", 1)
+            .addMaintenanceHatch("<casing>", 1)
+            .addMufflerHatch("<casing>", 1)
             .toolTipFinisher();
         return tt;
     }

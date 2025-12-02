@@ -23,7 +23,6 @@ import bartworks.common.items.ItemLabParts;
 import bartworks.common.loaders.BioCultureLoader;
 import bartworks.common.loaders.BioItemList;
 import bartworks.common.loaders.FluidLoader;
-import bartworks.util.BWTooltipReference;
 import bartworks.util.BWUtil;
 import bartworks.util.BioCulture;
 import bartworks.util.BioDNA;
@@ -394,6 +393,6 @@ public class MTEBioLab extends MTEBasicMachine {
     @Override
     public String[] getDescription() {
         return new String[] { StatCollector.translateToLocal("tooltip.tile.biolab.0.name"),
-            BWTooltipReference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get() };
+            StatCollector.translateToLocal("tooltip.bw.author_bart_via_bw.name") };
     }
 }
