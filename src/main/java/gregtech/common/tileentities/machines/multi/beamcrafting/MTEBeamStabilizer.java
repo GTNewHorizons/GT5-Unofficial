@@ -17,6 +17,8 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings13;
+import gregtech.common.gui.modularui.multiblock.MTEBeamStabilizerGui;
+import gregtech.common.gui.modularui.multiblock.MTELargeHadronColliderGui;
 import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
@@ -310,7 +312,7 @@ public class MTEBeamStabilizer extends MTEExtendedPowerMultiBlockBase<MTEBeamSta
         BeamInformation inputInfo = this.getInputParticle();
 
         cumulateStoredBeamPacket();
-        outputPacketAfterRecipe(this.playerSetRate);
+        outputPacketAfterRecipe(this.playerTargetBeamRate);
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
@@ -345,7 +347,7 @@ public class MTEBeamStabilizer extends MTEExtendedPowerMultiBlockBase<MTEBeamSta
 
     }
 
-    int playerSetRate = 7000; //todo: make this player set amount
+    public int playerTargetBeamRate = 100;
     private void outputPacketAfterRecipe(int rate) {
         if (!this.mOutputBeamline.isEmpty()) {
             BeamLinePacket packet = new BeamLinePacket(
@@ -367,4 +369,14 @@ public class MTEBeamStabilizer extends MTEExtendedPowerMultiBlockBase<MTEBeamSta
         }
     }
 
+
+    public int getCachedBeamRate() {
+        BeamInformation inputParticle = getInputParticle();
+        return inputParticle != null ? inputParticle.getRate() : 0;
+    }
+
+    @Override
+    protected @NotNull MTEBeamStabilizerGui getGui() {
+        return new MTEBeamStabilizerGui(this);
+    }
 }
