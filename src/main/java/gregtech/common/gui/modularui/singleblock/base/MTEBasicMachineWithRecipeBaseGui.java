@@ -133,7 +133,6 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
 
     @Override
     protected Widget<? extends Widget<?>> createSpecialSlot() {
-        // todo: fix in mui2 side for tooltip overriding
         String key = properties.useSpecialSlot ? SPECIAL_SLOT_TOOLTIP : UNUSED_SLOT_TOOLTIP;
         return new ItemSlot().marginTop(4)
             .slot(new ModularSlot(machine.inventoryHandler, machine.getSpecialSlotIndex()).slotGroup("item_inv"))
@@ -155,7 +154,7 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
             .key('a', i -> new IDrawable.DrawableWidget(IDrawable.EMPTY).size(18))
             .key(
                 'c',
-                i -> new ItemSlot().overlay(slotOverlayFunction.apply(i, false, false, false))
+                i -> new ItemSlot().background(GTGuiTextures.SLOT_ITEM_STANDARD,slotOverlayFunction.apply(i, false, false, false))
                     .slot(
                         new ModularSlot(machine.inventoryHandler, machine.getInputSlot() + i)
                             .singletonSlotGroup(50 + i)))
@@ -275,7 +274,7 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
             .key('a', i -> new IDrawable.DrawableWidget(IDrawable.EMPTY).size(18))
             .key(
                 'c',
-                i -> new ItemSlot().overlay(slotOverlayFunction.apply(i, false, true, false))
+                i -> new ItemSlot().background(GTGuiTextures.SLOT_ITEM_STANDARD,slotOverlayFunction.apply(i, false, true, false))
                     .slot(
                         new ModularSlot(machine.inventoryHandler, machine.getOutputSlot() + i)
                             .accessibility(false, true)))
