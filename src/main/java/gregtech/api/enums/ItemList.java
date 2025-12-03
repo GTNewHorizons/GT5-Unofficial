@@ -369,6 +369,7 @@ public enum ItemList implements IItemContainer {
     Schematic_2by2,
     Schematic_3by3,
     Schematic_Dust,
+    Schematic_Dust_Small,
 
     GigaChad,
 
@@ -1673,9 +1674,9 @@ public enum ItemList implements IItemContainer {
     Hatch_Output_ME,
 
     NULL,
-    Cover_AdvancedRedstoneTransmitterExternal,
+    Cover_AdvancedRedstoneTransmitter,
     Cover_AdvancedRedstoneTransmitterInternal,
-    Cover_AdvancedRedstoneReceiverExternal,
+    Cover_AdvancedRedstoneReceiver,
     Cover_AdvancedRedstoneReceiverInternal,
 
     Cover_WirelessFluidDetector,
@@ -1683,10 +1684,10 @@ public enum ItemList implements IItemContainer {
     Cover_WirelessNeedsMaintainance,
     Cover_WirelessActivityDetector,
 
-    Cover_RedstoneTransmitterExternal,
+    Cover_RedstoneTransmitter,
     Cover_RedstoneTransmitterInternal,
-    Cover_RedstoneReceiverExternal,
-    Cover_RedstoneReceiverInternal,
+    Cover_RedstoneReceiver,
+    Cover_WirelessController,
 
     LargeSteamTurbine,
     LargeGasTurbine,

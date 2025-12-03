@@ -9,7 +9,6 @@ import java.util.Set;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
@@ -39,7 +38,8 @@ public class RecipeGenAssembler extends RecipeGenBase {
         // Frame Box
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { material.getRod(1), material.getFrameBox(1) })) {
             GTValues.RA.stdBuilder()
-                .itemInputs(material.getRod(4), GTUtility.getIntegratedCircuit(4))
+                .itemInputs(material.getRod(4))
+                .circuit(4)
                 .itemOutputs(material.getFrameBox(1))
                 .duration(3 * SECONDS)
                 .eut(material.vVoltageMultiplier)
