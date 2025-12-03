@@ -215,8 +215,13 @@ public class MTEBeamSplitter extends MTEExtendedPowerMultiBlockBase<MTEBeamSplit
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
+        int randomInt = (int) (Math.random() * 101);
+        String beanOrBeam = "Beam";
+        if (randomInt == 69) {
+            beanOrBeam = "Bean";
+        }
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Beam Splitter")
+        tt.addMachineType(beanOrBeam + " Splitter")
             .addInfo("Select which particles to blacklist in the output hatches")
             .addInfo("Input particles will be split evenly among all valid output hatches")
             .beginStructureBlock(9, 3, 9, false)
