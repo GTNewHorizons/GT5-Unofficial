@@ -1,13 +1,11 @@
 package gregtech.common.gui.modularui.singleblock.base;
 
-import static gregtech.api.metatileentity.BaseTileEntity.SPECIAL_SLOT_TOOLTIP;
-import static gregtech.api.metatileentity.BaseTileEntity.UNUSED_SLOT_TOOLTIP;
-
 import java.util.Arrays;
 
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
@@ -23,12 +21,16 @@ import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.util.GTUtility;
 import gregtech.common.modularui2.widget.GTProgressWidget;
+
+import static gregtech.api.metatileentity.BaseTileEntity.BATTERY_SLOT_TOOLTIP;
+import static gregtech.api.metatileentity.BaseTileEntity.BATTERY_SLOT_TOOLTIP_ALT;
 
 public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTEBasicMachineWithRecipe> {
 
@@ -133,18 +135,36 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
 
     @Override
     protected Widget<? extends Widget<?>> createSpecialSlot() {
-        String key = properties.useSpecialSlot ? SPECIAL_SLOT_TOOLTIP : UNUSED_SLOT_TOOLTIP;
+        String[] tooltipKeys = new String[2];
+        if (properties.useSpecialSlot) {
+            tooltipKeys[0] = "GT5U.machines.special_slot.tooltip";
+            tooltipKeys[1] = "GT5U.machines.special_slot.tooltip.1";
+        } else {
+            tooltipKeys[0] = "GT5U.machines.unused_slot.tooltip";
+            tooltipKeys[1] = "GT5U.machines.unused_slot.tooltip.1";
+        }
         return new ItemSlot().marginTop(4)
             .slot(new ModularSlot(machine.inventoryHandler, machine.getSpecialSlotIndex()).slotGroup("item_inv"))
             .background(
                 GTGuiTextures.SLOT_ITEM_STANDARD,
                 properties.useSpecialSlot ? slotOverlayFunction.apply(0, false, false, true) : IDrawable.NONE)
-            .tooltip(t -> t.addLine(GTUtility.translate(key)));
+            .tooltip(
+                t -> t.addLine(GTUtility.translate(tooltipKeys[0]))
+                    .addLine(GTUtility.translate(tooltipKeys[1])));
     }
 
     protected ItemSlot createChargerSlot() {
+
         return new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, machine.rechargerSlotStartIndex()))
-            .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_CHARGER);
+            .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_CHARGER).tooltip(this::createTooltipForChargerSlot);
+    }
+
+    private void createTooltipForChargerSlot(RichTooltip tooltip) {
+        final byte machineTier = machine.mTier;
+        String tierName = GTUtility.getColoredTierNameFromTier(machineTier);
+        tooltip.addLine(GTUtility.translate("GT5U.machines.battery_slot.tooltip"));
+        tooltip.addLine(GTUtility.translate("GT5U.machines.battery_slot.tooltip.1", tierName));
+        tooltip.addLine(GTUtility.translate("GT5U.machines.battery_slot.tooltip.2", tierName));
     }
 
     protected ProgressWidget createProgressBar() {
@@ -159,7 +179,10 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
 
         return SlotGroupWidget.builder()
             .matrix(matrix)
-            .key('a', i -> new IDrawable.DrawableWidget(IDrawable.NONE).size(18))
+            .key(
+                'a',
+                i -> IDrawable.NONE.asWidget()
+                    .size(18))
             .key(
                 'c',
                 i -> new ItemSlot()
@@ -179,7 +202,10 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
         String[] matrix = mapOutSlotsToMatrix();
         return SlotGroupWidget.builder()
             .matrix(matrix)
-            .key('a', i -> new IDrawable.DrawableWidget(IDrawable.EMPTY).size(18))
+            .key(
+                'a',
+                i -> IDrawable.NONE.asWidget()
+                    .size(18))
             .key(
                 'c',
                 i -> new ItemSlot()
