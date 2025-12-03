@@ -112,7 +112,7 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
 
     @Override
     protected IDrawable.DrawableWidget createLogo() {
-        return super.createLogo().marginLeft(20);
+        return super.createLogo().marginLeft(2 + 18 * 2);
     }
 
     protected ToggleButton createAutoOutputButton(String syncKey, UITexture overlay, String tooltipKey) {
@@ -144,13 +144,14 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
 
     protected ItemSlot createChargerSlot() {
         return new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, machine.rechargerSlotStartIndex()))
-            .overlay(GTGuiTextures.OVERLAY_SLOT_CHARGER);
+            .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_CHARGER);
     }
 
     protected ProgressWidget createProgressBar() {
         return new GTProgressWidget().neiTransferRect(machine.getRecipeMap())
             .value(new DoubleSyncValue(() -> (double) machine.mProgresstime / machine.mMaxProgresstime))
-            .texture(GTGuiTextures.PROGRESSBAR_ARROW_STANDARD, 20);
+            .texture(properties.progressBarMUI2, properties.progressBarSizeMUI2)
+            .direction(properties.progressBarDirectionMUI2);
     }
 
     protected SlotGroupWidget createItemInputSlots() {

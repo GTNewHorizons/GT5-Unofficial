@@ -12,6 +12,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
+import com.cleanroommc.modularui.drawable.UITexture;
+import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
@@ -22,6 +24,7 @@ import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import gregtech.api.gui.modularui.FallbackableSteamTexture;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.SteamTexture;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
 
@@ -74,6 +77,10 @@ public final class BasicUIPropertiesBuilder {
     private BasicUIProperties.SlotOverlayGetter<com.cleanroommc.modularui.api.drawable.IDrawable> slotOverlaysMUI2 = (
         index, isFluid, isOutput, isSpecial) -> null;
 
+    private UITexture progressBarTextureMUI2 = GTGuiTextures.PROGRESSBAR_ARROW_STANDARD;
+    private ProgressWidget.Direction progressBarDirectionMUI2 = ProgressWidget.Direction.RIGHT;
+    private int progressBarSizeMUI2 = 20;
+
     BasicUIPropertiesBuilder() {}
 
     public BasicUIProperties build() {
@@ -116,7 +123,10 @@ public final class BasicUIPropertiesBuilder {
             fluidInputPositionsGetter,
             fluidOutputPositionsGetter,
             amperage,
-            slotOverlaysMUI2);
+            slotOverlaysMUI2,
+            progressBarTextureMUI2,
+            progressBarDirectionMUI2,
+            progressBarSizeMUI2);
     }
 
     public BasicUIPropertiesBuilder maxItemInputs(int maxItemInputs) {
@@ -269,6 +279,21 @@ public final class BasicUIPropertiesBuilder {
     public BasicUIPropertiesBuilder slotOverlaysMUI2(
         BasicUIProperties.SlotOverlayGetter<com.cleanroommc.modularui.api.drawable.IDrawable> slotOverlaysMUI2) {
         this.slotOverlaysMUI2 = slotOverlaysMUI2;
+        return this;
+    }
+
+    public BasicUIPropertiesBuilder progressBarTextureMUI2(UITexture progressBarTextureMUI2) {
+        this.progressBarTextureMUI2 = progressBarTextureMUI2;
+        return this;
+    }
+
+    public BasicUIPropertiesBuilder progressBarDirectionMUI2(ProgressWidget.Direction progressBarDirectionMUI2) {
+        this.progressBarDirectionMUI2 = progressBarDirectionMUI2;
+        return this;
+    }
+
+    public BasicUIPropertiesBuilder progressBarSizeMUI2(int progressBarSizeMUI2) {
+        this.progressBarSizeMUI2 = progressBarSizeMUI2;
         return this;
     }
 }

@@ -10,6 +10,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import com.cleanroommc.modularui.drawable.UITexture;
+import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
@@ -172,6 +174,9 @@ public final class BasicUIProperties {
     public final IntFunction<List<Pos2d>> fluidOutputPositionsGetter;
 
     public final SlotOverlayGetter<com.cleanroommc.modularui.api.drawable.IDrawable> slotOverlaysMUI2;
+    public final UITexture progressBarMUI2;
+    public final ProgressWidget.Direction progressBarDirectionMUI2;
+    public final int progressBarSizeMUI2;
 
     /**
      * Amperage for the recipemap. Even though this is placed at frontend because backend logic doesn't need it, some
@@ -189,7 +194,9 @@ public final class BasicUIProperties {
         IntFunction<List<Pos2d>> itemInputPositionsGetter, IntFunction<List<Pos2d>> itemOutputPositionsGetter,
         Supplier<Pos2d> specialItemPositionGetter, IntFunction<List<Pos2d>> fluidInputPositionsGetter,
         IntFunction<List<Pos2d>> fluidOutputPositionsGetter, int amperage,
-        SlotOverlayGetter<com.cleanroommc.modularui.api.drawable.IDrawable> slotOverlaysMUI2) {
+        SlotOverlayGetter<com.cleanroommc.modularui.api.drawable.IDrawable> slotOverlaysMUI2,
+        com.cleanroommc.modularui.drawable.UITexture progressBarMUI2, ProgressWidget.Direction progressBarDirectionMUI2,
+        int progressBarSizeMUI2) {
         if (maxItemInputs < 0 || maxItemOutputs < 0 || maxFluidInputs < 0 || maxFluidOutputs < 0) {
             throw new IllegalArgumentException(
                 "maxItemInputs, maxItemOutputs, maxFluidInputs and maxFluidOutputs cannot be negative");
@@ -224,7 +231,9 @@ public final class BasicUIProperties {
         this.fluidOutputPositionsGetter = fluidOutputPositionsGetter;
         this.amperage = amperage;
         this.slotOverlaysMUI2 = slotOverlaysMUI2;
-
+        this.progressBarMUI2 = progressBarMUI2;
+        this.progressBarDirectionMUI2 = progressBarDirectionMUI2;
+        this.progressBarSizeMUI2 = progressBarSizeMUI2;
         this.progressBarImageSize = switch (progressBarDirection) {
             case UP, DOWN -> progressBarSize.height;
             case CIRCULAR_CW -> Math.max(progressBarSize.width, progressBarSize.height);
