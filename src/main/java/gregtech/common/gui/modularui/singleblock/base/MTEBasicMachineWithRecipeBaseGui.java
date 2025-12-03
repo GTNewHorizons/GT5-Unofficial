@@ -136,14 +136,21 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
         String key = properties.useSpecialSlot ? SPECIAL_SLOT_TOOLTIP : UNUSED_SLOT_TOOLTIP;
         return new ItemSlot().marginTop(4)
             .slot(new ModularSlot(machine.inventoryHandler, machine.getSpecialSlotIndex()).slotGroup("item_inv"))
-            .overlay(properties.useSpecialSlot ? slotOverlayFunction.apply(0, false, false, true) : null)
+            .background(
+                GTGuiTextures.SLOT_ITEM_STANDARD,
+                properties.useSpecialSlot ? slotOverlayFunction.apply(0, false, false, true) : IDrawable.NONE)
             .tooltip(t -> t.addLine(GTUtility.translate(key)));
     }
 
     protected ItemSlot createChargerSlot() {
-        // todo: things from mtebasicmachine that no one cares about
         return new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, machine.rechargerSlotStartIndex()))
             .overlay(GTGuiTextures.OVERLAY_SLOT_CHARGER);
+    }
+
+    protected ProgressWidget createProgressBar() {
+        return new GTProgressWidget().neiTransferRect(machine.getRecipeMap())
+            .value(new DoubleSyncValue(() -> (double) machine.mProgresstime / machine.mMaxProgresstime))
+            .texture(GTGuiTextures.PROGRESSBAR_ARROW_STANDARD, 20);
     }
 
     protected SlotGroupWidget createItemInputSlots() {
@@ -151,14 +158,40 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
 
         return SlotGroupWidget.builder()
             .matrix(matrix)
-            .key('a', i -> new IDrawable.DrawableWidget(IDrawable.EMPTY).size(18))
+            .key('a', i -> new IDrawable.DrawableWidget(IDrawable.NONE).size(18))
             .key(
                 'c',
-                i -> new ItemSlot().background(GTGuiTextures.SLOT_ITEM_STANDARD,slotOverlayFunction.apply(i, false, false, false))
+                i -> new ItemSlot()
+                    .background(GTGuiTextures.SLOT_ITEM_STANDARD, slotOverlayFunction.apply(i, false, false, false))
                     .slot(
                         new ModularSlot(machine.inventoryHandler, machine.getInputSlot() + i)
                             .singletonSlotGroup(50 + i)))
             .build();
+    }
+
+    protected FluidSlot createFluidInputSlot() {
+        return new FluidSlot().overlay(slotOverlayFunction.apply(0, true, false, false))
+            .syncHandler(machine.getFluidTank());
+    }
+
+    protected SlotGroupWidget createItemOutputSlots() {
+        String[] matrix = mapOutSlotsToMatrix();
+        return SlotGroupWidget.builder()
+            .matrix(matrix)
+            .key('a', i -> new IDrawable.DrawableWidget(IDrawable.EMPTY).size(18))
+            .key(
+                'c',
+                i -> new ItemSlot()
+                    .background(GTGuiTextures.SLOT_ITEM_STANDARD, slotOverlayFunction.apply(i, false, true, false))
+                    .slot(
+                        new ModularSlot(machine.inventoryHandler, machine.getOutputSlot() + i)
+                            .accessibility(false, true)))
+            .build();
+    }
+
+    protected FluidSlot createFluidOutputSlot() {
+        return new FluidSlot().overlay(slotOverlayFunction.apply(0, true, true, false))
+            .syncHandler(new FluidSlotSyncHandler(machine.getFluidOutputTank()).canFillSlot(false));
     }
 
     protected String[] mapInSlotsToMatrix() {
@@ -256,33 +289,4 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
 
     }
 
-    protected FluidSlot createFluidInputSlot() {
-        return new FluidSlot().overlay(slotOverlayFunction.apply(0, true, false, false))
-            .syncHandler(machine.getFluidTank());
-    }
-
-    protected ProgressWidget createProgressBar() {
-        return new GTProgressWidget().neiTransferRect(machine.getRecipeMap())
-            .value(new DoubleSyncValue(() -> (double) machine.mProgresstime / machine.mMaxProgresstime))
-            .texture(GTGuiTextures.PROGRESSBAR_ARROW_STANDARD, 20);
-    }
-
-    protected SlotGroupWidget createItemOutputSlots() {
-        String[] matrix = mapOutSlotsToMatrix();
-        return SlotGroupWidget.builder()
-            .matrix(matrix)
-            .key('a', i -> new IDrawable.DrawableWidget(IDrawable.EMPTY).size(18))
-            .key(
-                'c',
-                i -> new ItemSlot().background(GTGuiTextures.SLOT_ITEM_STANDARD,slotOverlayFunction.apply(i, false, true, false))
-                    .slot(
-                        new ModularSlot(machine.inventoryHandler, machine.getOutputSlot() + i)
-                            .accessibility(false, true)))
-            .build();
-    }
-
-    protected FluidSlot createFluidOutputSlot() {
-        return new FluidSlot().overlay(slotOverlayFunction.apply(0, true, true, false))
-            .syncHandler(new FluidSlotSyncHandler(machine.getFluidOutputTank()).canFillSlot(false));
-    }
 }

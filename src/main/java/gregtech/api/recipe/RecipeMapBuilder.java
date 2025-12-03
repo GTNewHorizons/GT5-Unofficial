@@ -206,9 +206,14 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
         return this;
     }
 
+    // ensures the value input is never null
     public RecipeMapBuilder<B> slotOverlaysMUI2(
         BasicUIProperties.SlotOverlayGetter<com.cleanroommc.modularui.api.drawable.IDrawable> slotOverlaysMUI2) {
-        uiPropertiesBuilder.slotOverlaysMUI2(slotOverlaysMUI2);
+        uiPropertiesBuilder.slotOverlaysMUI2((index, isFluid, isOutput, isSpecial) -> {
+            com.cleanroommc.modularui.api.drawable.IDrawable drawable = slotOverlaysMUI2
+                .apply(index, isFluid, isOutput, isSpecial);
+            return drawable == null ? com.cleanroommc.modularui.api.drawable.IDrawable.NONE : drawable;
+        });
         return this;
     }
 

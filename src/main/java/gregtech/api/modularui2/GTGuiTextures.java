@@ -6,12 +6,14 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 import static tectech.Reference.MODID;
 
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import com.cleanroommc.modularui.drawable.ColorType;
 import com.cleanroommc.modularui.drawable.UITexture;
 
 import bartworks.MainMod;
+import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.common.modularui2.util.SteamTextureRegisterer;
 import kekztech.KekzCore;
 
@@ -426,6 +428,83 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_SLOT_CHARGER = fullImage(GregTech.ID, "gui/overlay_slot/charger");
     public static final UITexture OVERLAY_SLOT_CHARGER_FLUID = fullImage(GregTech.ID, "gui/overlay_slot/charger_fluid");
 
+    public static final UITexture OVERLAY_SLOT_BEAKER_1 = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/beaker_1");
+    public static final UITexture OVERLAY_SLOT_BEAKER_2 = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/beaker_2");
+    public static final UITexture OVERLAY_SLOT_BENDER = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/bender");
+    public static final UITexture OVERLAY_SLOT_BOX = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/box");
+    public static final UITexture OVERLAY_SLOT_BOXED = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/boxed");
+    public static final UITexture OVERLAY_SLOT_CANISTER = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/canister");
+    public static final UITexture OVERLAY_SLOT_CANNER = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/canner");
+    public static final UITexture OVERLAY_SLOT_CAULDRON = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/cauldron");
+    public static final UITexture OVERLAY_SLOT_CENTRIFUGE = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_slot/centrifuge");
+    public static final UITexture OVERLAY_SLOT_CENTRIFUGE_FLUID = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_slot/centrifuge_fluid");
+    public static final SteamTexture OVERLAY_SLOT_CENTRIFUGE_STEAM = SteamTexture
+        .fullImage(GregTech.ID, "gui/overlay_slot/centrifuge_%s");
+    public static final UITexture OVERLAY_SLOT_COMPRESSOR = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_slot/compressor");
+    public static final SteamTexture OVERLAY_SLOT_COMPRESSOR_STEAM = SteamTexture
+        .fullImage(GregTech.ID, "gui/overlay_slot/compressor_%s");
+    public static final UITexture OVERLAY_SLOT_CRUSHED_ORE = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_slot/crushed_ore");
+    public static final SteamTexture OVERLAY_SLOT_CRUSHED_ORE_STEAM = SteamTexture
+        .fullImage(GregTech.ID, "gui/overlay_slot/crushed_ore_%s");
+    public static final UITexture OVERLAY_SLOT_CUTTER_SLICED = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_slot/cutter_sliced");
+    public static final UITexture OVERLAY_SLOT_DATA_STICK = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_slot/data_stick");
+    public static final UITexture OVERLAY_SLOT_DUST = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/dust");
+    public static final UITexture OVERLAY_SLOT_EXPLOSIVE = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_slot/explosive");
+    public static final UITexture OVERLAY_SLOT_EXTRUDER_SHAPE = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_slot/extruder_shape");
+    public static final UITexture OVERLAY_SLOT_FURNACE = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/furnace");
+    public static final UITexture OVERLAY_SLOT_GEM = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/gem");
+    public static final UITexture OVERLAY_SLOT_HAMMER = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/hammer");
+    public static final SteamTexture OVERLAY_SLOT_HAMMER_STEAM = SteamTexture
+        .fullImage(GregTech.ID, "gui/overlay_slot/hammer_%s");
+    public static final UITexture OVERLAY_SLOT_HEATER_1 = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/heater_1");
+    public static final UITexture OVERLAY_SLOT_HEATER_2 = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/heater_2");
+    public static final UITexture OVERLAY_SLOT_IMPLOSION = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_slot/implosion");
+    public static final UITexture OVERLAY_SLOT_IN = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/in");
+    public static final UITexture OVERLAY_SLOT_LENS = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/lens");
+    public static final UITexture OVERLAY_SLOT_MICROSCOPE = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_slot/microscope");
+    public static final UITexture OVERLAY_SLOT_MOLD = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/mold");
+    public static final UITexture OVERLAY_SLOT_MOLECULAR_1 = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_slot/molecular_1");
+    public static final UITexture OVERLAY_SLOT_MOLECULAR_2 = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_slot/molecular_2");
+    public static final UITexture OVERLAY_SLOT_MOLECULAR_3 = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_slot/molecular_3");
+    public static final UITexture OVERLAY_SLOT_PAGE_BLANK = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_slot/page_blank");
+    public static final UITexture OVERLAY_SLOT_PAGE_PRINTED = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_slot/page_printed");
+    public static final UITexture OVERLAY_SLOT_PRESS_1 = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/press_1");
+    public static final UITexture OVERLAY_SLOT_PRESS_2 = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/press_2");
+    public static final UITexture OVERLAY_SLOT_PRESS_3 = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/press_3");
+    public static final UITexture OVERLAY_SLOT_RECYCLE = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/recycle");
+    public static final UITexture OVERLAY_SLOT_ROD_1 = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/rod_1");
+    public static final UITexture OVERLAY_SLOT_ROD_2 = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/rod_2");
+    public static final UITexture OVERLAY_SLOT_SLICE_SHAPE = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_slot/slice_shape");
+    public static final UITexture OVERLAY_SLOT_SLICER_SLICED = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_slot/slicer_sliced");
+    public static final UITexture OVERLAY_SLOT_SQUARE = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/square");
+    public static final UITexture OVERLAY_SLOT_UUA = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/uua");
+    public static final UITexture OVERLAY_SLOT_UUM = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/uum");
+    public static final UITexture OVERLAY_SLOT_VIAL_1 = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/vial_1");
+    public static final UITexture OVERLAY_SLOT_VIAL_2 = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/vial_2");
+    public static final UITexture OVERLAY_SLOT_WIREMILL = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/wiremill");
+    public static final UITexture OVERLAY_SLOT_CIRCUIT = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/circuit");
+
+    public static final UITexture[] OVERLAY_SLOTS_NUMBER = IntStream.range(0, 12)
+        .mapToObj(i -> UITexture.fullImage(GregTech.ID, "gui/overlay_slot/number_" + i))
+        .collect(Collectors.toList())
+        .toArray(new UITexture[0]);
     // endregion slot overlay
 
     // region progressbar
