@@ -21,16 +21,12 @@ import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
-import gregtech.api.enums.GTValues;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.util.GTUtility;
 import gregtech.common.modularui2.widget.GTProgressWidget;
-
-import static gregtech.api.metatileentity.BaseTileEntity.BATTERY_SLOT_TOOLTIP;
-import static gregtech.api.metatileentity.BaseTileEntity.BATTERY_SLOT_TOOLTIP_ALT;
 
 public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTEBasicMachineWithRecipe> {
 
@@ -156,7 +152,8 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
     protected ItemSlot createChargerSlot() {
 
         return new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, machine.rechargerSlotStartIndex()))
-            .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_CHARGER).tooltip(this::createTooltipForChargerSlot);
+            .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_CHARGER)
+            .tooltip(this::createTooltipForChargerSlot);
     }
 
     private void createTooltipForChargerSlot(RichTooltip tooltip) {
