@@ -224,7 +224,7 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
      * Unless specified, size should be (20, 36), consisting of two parts; First is (20, 18) size of "empty" image at
      * the top, Second is (20, 18) size of "filled" image at the bottom.
      * <p>
-     * By default, it's set to {@code GTGuiTextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT}.
+     * By default, it's set to {@code GTGuiTextures.PROGRESSBAR_ARROW, ProgressWidget.Direction.RIGHT}.
      */
     public RecipeMapBuilder<B> progressBarMUI2(com.cleanroommc.modularui.drawable.UITexture progressBarTextureMUI2,
         ProgressWidget.Direction progressBarDirectionMUI2) {
