@@ -74,6 +74,9 @@ public class GTRecipeMapUtil {
         List<FluidStack> fluidInputs = new ArrayList<>(Arrays.asList(b.getFluidInputs()));
         List<FluidStack> fluidOutputs = new ArrayList<>(Arrays.asList(b.getFluidOutputs()));
         TIntList chances = b.getChances() != null ? new TIntArrayList(b.getChances()) : null;
+        if (itemInputs.size() == 1 && GTUtility.isAnyIntegratedCircuit(itemInputs.get(0))) {
+            return b;
+        }
         cellToFluid(itemInputs, fluidInputs, removeIntegratedCircuit, null);
         cellToFluid(itemOutputs, fluidOutputs, removeIntegratedCircuit, chances);
         itemInputs.removeIf(Objects::isNull);
