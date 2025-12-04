@@ -12,7 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
@@ -243,7 +242,7 @@ public class MaterialGenerator {
         generateNuclearMaterial(matInfo, false, true, false, false, true, true);
         if (generateDehydratorRecipe && matInfo.getFluid() != null && matInfo.getDust(0) != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.getIntegratedCircuit(20))
+                .circuit(20)
                 .itemOutputs(matInfo.getDust(1))
                 .fluidInputs(matInfo.getFluidStack(1 * INGOTS))
                 .eut(matInfo.vVoltageMultiplier)

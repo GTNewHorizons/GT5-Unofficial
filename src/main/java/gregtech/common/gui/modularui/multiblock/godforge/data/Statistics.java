@@ -49,7 +49,7 @@ public enum Statistics {
             }
             case PARALLEL -> {
                 GodforgeMath.calculateMaxParallelForModules(module, data, fuelFactor);
-                yield String.valueOf(format.format(module.getMaxParallel()));
+                yield String.valueOf(format.format(module.getCalculatedMaxParallel()));
             }
             case SPEED_BONUS -> {
                 GodforgeMath.calculateSpeedBonusForModules(module, data);

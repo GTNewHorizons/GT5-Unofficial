@@ -2153,7 +2153,7 @@ public class OrePrefixes {
     }
 
     private void addAspect(TCAspects aspect, int amount) {
-        new TC_AspectStack(TCAspects.MACHINA, 1).addToAspectList(mAspects);
+        new TC_AspectStack(aspect, amount).addToAspectList(mAspects);
     }
 
     public @NotNull String getDefaultLocalName() {
