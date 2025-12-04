@@ -3,11 +3,10 @@ package gtPlusPlus.core.handler;
 import static gtPlusPlus.core.util.Utils.addBookPagesLocalization;
 import static gtPlusPlus.core.util.Utils.addBookTitleLocalization;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+
+import com.github.bsideup.jabel.Desugar;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -15,12 +14,12 @@ import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
 public class BookHandler {
 
-    public static int mBookKeeperCount = 0;
-
-    public static Map<Integer, BookTemplate> mBookMap = new HashMap<>();
+    public static Int2ObjectMap<BookTemplate> mBookMap = new Int2ObjectOpenHashMap<>();
 
     public static BookTemplate book_ThermalBoiler;
     public static BookTemplate book_MultiPowerStation;
@@ -33,6 +32,7 @@ public class BookHandler {
 
         // Thermal Boiler
         book_ThermalBoiler = writeBookTemplate(
+            0,
             "Manual_Thermal_Boiler",
             "Thermal Boiler Manual",
             "GregoriusT",
@@ -56,6 +56,7 @@ public class BookHandler {
 
         // Test Novel
         book_MultiPowerStation = writeBookTemplate(
+            1,
             "Manual_Multi_PowerStation",
             "Power Storage & You [Version 0.64]",
             "Alkalus",
@@ -116,6 +117,7 @@ public class BookHandler {
 
         // Test Novel
         book_ModularBauble = writeBookTemplate(
+            2,
             "Manual_Modular_Bauble",
             "How to: Modular Baubles",
             "Alkalus",
@@ -136,6 +138,7 @@ public class BookHandler {
                 "There was once a sad and lonely oak tree. \n" });
 
         book_NuclearManual = writeBookTemplate(
+            4,
             "Manual_NuclearStuff_1",
             "Nuclear Chemistry [FFPP]",
             "Alkalus",
@@ -203,7 +206,7 @@ public class BookHandler {
         ItemBookWritten_ThermalBoiler = new ItemStack(ModItems.itemCustomBook, 1, 0);
         ItemBookWritten_MultiPowerStorage = new ItemStack(ModItems.itemCustomBook, 1, 1);
         ItemBookWritten_ModularBaubles = new ItemStack(ModItems.itemCustomBook, 1, 2);
-        ItemBookWritten_NuclearManual = new ItemStack(ModItems.itemCustomBook, 1, 3);
+        ItemBookWritten_NuclearManual = new ItemStack(ModItems.itemCustomBook, 1, 4);
 
         // Multiblock Manuals
         RecipeUtils.addShapelessGregtechRecipe(
@@ -218,39 +221,25 @@ public class BookHandler {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 1) },
             ItemBookWritten_NuclearManual);
 
-        for (int i = 0; i < mBookKeeperCount; i++) {
-            ItemStack bookstack = new ItemStack(ModItems.itemCustomBook, 1, i);
+        for (int meta : mBookMap.keySet()) {
+            ItemStack bookstack = new ItemStack(ModItems.itemCustomBook, 1, meta);
             GTOreDictUnificator.registerOre("bookWritten", bookstack);
             GTOreDictUnificator.registerOre("craftingBook", bookstack);
         }
     }
 
-    private static BookTemplate writeBookTemplate(String aMapping, String aTitle, String aAuthor, String[] aPages) {
-        mBookKeeperCount++;
+    public static BookTemplate writeBookTemplate(int meta, String aMapping, String aTitle, String aAuthor,
+        String[] aPages) {
         for (int i = 0; i < aPages.length; i++) {
             aPages[i] = aPages[i].replaceAll("\n", "<BR>");
         }
         addBookTitleLocalization(aTitle);
         addBookPagesLocalization(aTitle, aPages);
-        BookTemplate mTemp = new BookTemplate(mBookKeeperCount, aMapping, aTitle, aAuthor, aPages);
-        mBookMap.put(mBookKeeperCount - 1, mTemp);
+        BookTemplate mTemp = new BookTemplate(meta, aMapping, aTitle, aAuthor, aPages);
+        mBookMap.put(meta, mTemp);
         return mTemp;
     }
 
-    public static class BookTemplate {
-
-        public final int mMeta;
-        public final String mMapping;
-        public final String mTitle;
-        public final String mAuthor;
-        public final String[] mPages;
-
-        BookTemplate(int aMeta, String aMapping, String aTitle, String aAuthor, String[] aPages) {
-            this.mMeta = aMeta;
-            this.mMapping = aMapping;
-            this.mTitle = aTitle;
-            this.mAuthor = aAuthor;
-            this.mPages = aPages;
-        }
-    }
+    @Desugar
+    public record BookTemplate(int mMeta, String mMapping, String mTitle, String mAuthor, String[] mPages) {}
 }
