@@ -2403,7 +2403,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
             new ItemDroneRemoteInterface(
                 "Item_Drone_Remote_Interface",
                 "Drone Remote Interface",
-                "Built-in super powerful navigation beacon!!"));
+                "Built-in super powerful navigation beacon!!/nRight click an active drone centre to connect"));
         ItemList.Vajra_Core.set(addItem(Vajra_Core.ID, "Vajra Core", ""));
         ItemList.Magnetron.set(addItem(Magnetron.ID, "Magnetron", ""));
         ItemList.ChaosLocator
