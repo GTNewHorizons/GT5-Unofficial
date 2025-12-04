@@ -13,7 +13,6 @@ import com.cleanroommc.modularui.drawable.ColorType;
 import com.cleanroommc.modularui.drawable.UITexture;
 
 import bartworks.MainMod;
-import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.common.modularui2.util.SteamTextureRegisterer;
 import kekztech.KekzCore;
 
@@ -689,15 +688,6 @@ public final class GTGuiTextures {
         .collect(Collectors.toList())
         .toArray(new UITexture[0]);
 
-    public static final SteamTexture OVERLAY_SLOT_CENTRIFUGE_STEAM = SteamTexture
-        .fullImage(GregTech.ID, "gui/overlay_slot/centrifuge_%s");
-    public static final SteamTexture OVERLAY_SLOT_COMPRESSOR_STEAM = SteamTexture
-        .fullImage(GregTech.ID, "gui/overlay_slot/compressor_%s");
-    public static final SteamTexture OVERLAY_SLOT_CRUSHED_ORE_STEAM = SteamTexture
-        .fullImage(GregTech.ID, "gui/overlay_slot/crushed_ore_%s");
-    public static final SteamTexture OVERLAY_SLOT_HAMMER_STEAM = SteamTexture
-        .fullImage(GregTech.ID, "gui/overlay_slot/hammer_%s");
-
     // endregion slot overlay
 
     // region progressbar
@@ -941,24 +931,6 @@ public final class GTGuiTextures {
         .location(GTPlusPlus.ID, "gui/progressbar/fluid_reactor")
         .build();
 
-    public static final SteamTexture PROGRESSBAR_ARROW_2_STEAM = SteamTexture
-        .fullImage(GregTech.ID, "gui/progressbar/arrow_2_%s");
-    public static final SteamTexture PROGRESSBAR_BOILER_EMPTY_STEAM = SteamTexture
-        .fullImage(GregTech.ID, "gui/progressbar/boiler_empty_%s");
-
-    public static final SteamTexture PROGRESSBAR_COMPRESS_STEAM = SteamTexture
-        .fullImage(GregTech.ID, "gui/progressbar/compress_%s");
-
-    public static final SteamTexture PROGRESSBAR_EXTRACT_STEAM = SteamTexture
-        .fullImage(GregTech.ID, "gui/progressbar/extract_%s");
-
-    public static final SteamTexture PROGRESSBAR_HAMMER_STEAM = SteamTexture
-        .fullImage(GregTech.ID, "gui/progressbar/hammer_%s");
-    public static final SteamTexture PROGRESSBAR_HAMMER_BASE_STEAM = SteamTexture
-        .fullImage(GregTech.ID, "gui/progressbar/hammer_base_%s");
-
-    public static final SteamTexture PROGRESSBAR_MACERATE_STEAM = SteamTexture
-        .fullImage(GregTech.ID, "gui/progressbar/macerate_%s");
     public static final UITexture STEAM_GAUGE_BG = UITexture.fullImage(GregTech.ID, "gui/background/steam_dial");
     public static final UITexture STEAM_GAUGE_BG_STEEL = UITexture
         .fullImage(GregTech.ID, "gui/background/steam_dial_steel");
