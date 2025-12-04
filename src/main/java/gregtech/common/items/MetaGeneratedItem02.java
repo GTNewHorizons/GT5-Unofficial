@@ -2329,28 +2329,36 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
             addItem(
                 Cover_AdvancedRedstoneTransmitter.ID,
                 "Advanced Redstone Transmitter",
-                "Transfers Redstone signals wirelessly/n Can only connect with advanced wireless covers",
+                "Transfers Redstone signals wirelessly" + GTSplit.LB
+                    + " Can only connect with advanced wireless covers",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L)));
         ItemList.Cover_AdvancedRedstoneTransmitterInternal.set(
             addItem(
                 Cover_AdvancedRedstoneTransmitterInternal.ID,
                 "Advanced Redstone Transmitter (Internal)",
-                "Transfers Redstone signals wirelessly/n Can only connect with advanced wireless covers/n §cDEPRECATED! This will be removed in the next major update.",
+                "Transfers Redstone signals wirelessly" + GTSplit.LB
+                    + " Can only connect with advanced wireless covers"
+                    + GTSplit.LB
+                    + " §cDEPRECATED! This will be removed in the next major update.",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L)));
         ItemList.Cover_AdvancedRedstoneReceiver.set(
             addItem(
                 Cover_AdvancedRedstoneReceiver.ID,
                 "Advanced Redstone Receiver",
-                "Transfers Redstone signals wirelessly/n Can only connect with advanced wireless covers",
+                "Transfers Redstone signals wirelessly" + GTSplit.LB
+                    + " Can only connect with advanced wireless covers",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L)));
         ItemList.Cover_AdvancedRedstoneReceiverInternal.set(
             addItem(
                 Cover_AdvancedRedstoneReceiverInternal.ID,
                 "Advanced Redstone Receiver (Internal)",
-                "Transfers Redstone signals wirelessly/n Can only connect with advanced wireless covers/n §cDEPRECATED! This will be removed in the next major update.",
+                "Transfers Redstone signals wirelessly" + GTSplit.LB
+                    + " Can only connect with advanced wireless covers"
+                    + GTSplit.LB
+                    + " §cDEPRECATED! This will be removed in the next major update.",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L)));
 
