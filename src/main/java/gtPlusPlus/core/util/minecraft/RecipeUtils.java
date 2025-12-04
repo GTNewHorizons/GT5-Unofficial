@@ -1,6 +1,5 @@
 package gtPlusPlus.core.util.minecraft;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -210,31 +209,30 @@ public class RecipeUtils {
             return false;
         } else {
             boolean rReturn = false;
-            ArrayList<IRecipe> tList = (ArrayList) CraftingManager.getInstance()
+            final List<IRecipe> allRecipes = CraftingManager.getInstance()
                 .getRecipeList();
             aOutput = GTOreDictUnificator.get(aOutput);
-            int tList_sS = tList.size();
-
-            for (int i = 0; i < tList_sS; ++i) {
-                IRecipe tRecipe = tList.get(i);
+            int size = allRecipes.size();
+            for (int i = 0; i < size; ++i) {
+                IRecipe recipe = allRecipes.get(i);
                 if (!aNotRemoveShapelessRecipes
-                    || !(tRecipe instanceof ShapelessRecipes) && !(tRecipe instanceof ShapelessOreRecipe)) {
+                    || !(recipe instanceof ShapelessRecipes) && !(recipe instanceof ShapelessOreRecipe)) {
                     if (aOnlyRemoveNativeHandlers) {
                         if (!GTModHandler.sNativeRecipeClasses.contains(
-                            tRecipe.getClass()
+                            recipe.getClass()
                                 .getName())) {
                             continue;
                         }
                     } else if (GTModHandler.sSpecialRecipeClasses.contains(
-                        tRecipe.getClass()
+                        recipe.getClass()
                             .getName())) {
                                 continue;
                             }
 
-                    ItemStack tStack = tRecipe.getRecipeOutput();
-                    if (GTUtility.areStacksEqual(GTOreDictUnificator.get(tStack), aOutput, aIgnoreNBT)) {
-                        tList.remove(i--);
-                        tList_sS = tList.size();
+                    final ItemStack output = recipe.getRecipeOutput();
+                    if (GTUtility.areStacksEqual(GTOreDictUnificator.get_nocopy(output), aOutput, aIgnoreNBT)) {
+                        allRecipes.remove(i--);
+                        size = allRecipes.size();
                         rReturn = true;
                     }
                 }
@@ -245,7 +243,6 @@ public class RecipeUtils {
     }
 
     public static void addSmeltingRecipe(ItemStack aStackInput, ItemStack aStackOutput, float aXpGained) {
-
         GameRegistry.addSmelting(aStackInput, aStackOutput, aXpGained);
     }
 
