@@ -59,4 +59,9 @@ public class BlockCactusCoke extends Block {
         }
     }
 
+    @Override
+    public int damageDropped(int meta) {
+        return meta;
+    }
+
 }

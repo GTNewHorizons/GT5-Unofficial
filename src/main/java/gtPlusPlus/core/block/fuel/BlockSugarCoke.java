@@ -59,4 +59,9 @@ public class BlockSugarCoke extends Block {
         }
     }
 
+    @Override
+    public int damageDropped(int meta) {
+        return meta;
+    }
+
 }
