@@ -15,7 +15,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.util.GTUtil;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -37,6 +36,9 @@ public class DroneConnection {
     private boolean isSelected;
     private int group;
 
+    private final MTEMultiBlockBase cachedCentre;
+    private final MTEMultiBlockBase cachedMachine;
+
     public DroneConnection(MTEMultiBlockBase machine, MTEDroneCentre centre, HashMap<String, String> tempNameList,
         HashMap<String, Integer> tempGroupList) {
         this.machineItem = machine.getStackForm(1);
@@ -44,6 +46,8 @@ public class DroneConnection {
             .getCoords();
         this.centreCoord = centre.getBaseMetaTileEntity()
             .getCoords();
+        this.cachedCentre = centre;
+        this.cachedMachine = machine;
         this.worldID = centre.getBaseMetaTileEntity()
             .getWorld().provider.dimensionId;
         this.uuid = UUID.nameUUIDFromBytes((machineCoord.toString() + worldID).getBytes());
@@ -78,15 +82,16 @@ public class DroneConnection {
         this.shutdownReason = aNBT.getString("shutdownReason");
         this.isSelected = aNBT.getBoolean("isSelected");
         this.group = aNBT.getInteger("group");
+        this.cachedCentre = getLoadedGTBaseMachineAt(centreCoord, DimensionManager.getWorld(worldID), true);
+        this.cachedMachine = getLoadedGTBaseMachineAt(machineCoord, DimensionManager.getWorld(worldID), true);
     }
 
-    public Optional<MTEMultiBlockBase> getLinkedMachine() {
-        // It will always be null if this method is called on client with out-range coords
-        return Optional.ofNullable(getLoadedGTBaseMachineAt(machineCoord, DimensionManager.getWorld(worldID), false));
+    public MTEMultiBlockBase getLinkedMachine() {
+        return cachedMachine;
     }
 
     public Optional<MTEMultiBlockBase> getLinkedCentre() {
-        return Optional.ofNullable(getLoadedGTBaseMachineAt(centreCoord, DimensionManager.getWorld(worldID), true));
+        return Optional.ofNullable(cachedCentre);
     }
 
     public String getCustomName() {
@@ -157,10 +162,7 @@ public class DroneConnection {
     }
 
     public boolean isValid() {
-        return getLinkedCentre().map(MetaTileEntity::isValid)
-            .orElse(false)
-            && getLinkedMachine().map(MetaTileEntity::isValid)
-                .orElse(false);
+        return cachedCentre != null && cachedMachine != null && cachedCentre.isValid() && cachedMachine.isValid();
     }
 
     public void setShutdownReason(ShutDownReason reason) {
@@ -179,13 +181,19 @@ public class DroneConnection {
 
     public static boolean areEqual(DroneConnection a, DroneConnection b) {
         if (a == null || b == null) return false;
-        return a.machineCoord.equals(b.machineCoord) && a.centreCoord.equals(b.centreCoord)
-            && a.unlocalizedName.equals(b.unlocalizedName)
-            && a.customName.equals(b.customName)
-            && a.isSelected == b.isSelected
-            && a.machineStatus == b.machineStatus
-            && a.shutdownReason.equals(b.shutdownReason)
-            && a.group == b.group;
+
+        long aTick = a.cachedCentre.getBaseMetaTileEntity()
+            .getTimer();
+        // do sync every 10 ticks
+        if (aTick % 10 == 0) {
+            return a.machineCoord.equals(b.machineCoord) && a.centreCoord.equals(b.centreCoord)
+                && a.unlocalizedName.equals(b.unlocalizedName)
+                && a.customName.equals(b.customName)
+                && a.isSelected == b.isSelected
+                && a.machineStatus == b.machineStatus
+                && a.shutdownReason.equals(b.shutdownReason)
+                && a.group == b.group;
+        } else return true;
 
     }
 

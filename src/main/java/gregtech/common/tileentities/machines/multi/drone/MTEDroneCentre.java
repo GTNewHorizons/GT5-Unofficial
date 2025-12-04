@@ -59,8 +59,9 @@ import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.covers.CoverControlsWork;
 import gregtech.common.covers.conditions.RedstoneCondition;
-import gregtech.common.gui.modularui.multiblock.MTEDroneCentreGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.gui.modularui.multiblock.dronecentre.DroneCentreGuiUtil;
+import gregtech.common.gui.modularui.multiblock.dronecentre.MTEDroneCentreGui;
 import gregtech.common.items.ItemTierDrone;
 import gregtech.common.tileentities.machines.multi.drone.production.ProductionRecord;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -84,7 +85,8 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     private boolean searchOriginalName;
     private boolean editMode;
     private boolean autoUpdate = true;
-    private MTEDroneCentreGui.SortMode sortMode = MTEDroneCentreGui.SortMode.NAME;
+    private DroneCentreGuiUtil.SortMode sortMode = DroneCentreGuiUtil.SortMode.NAME;
+    private String key = "";
 
     public List<String> group = new ArrayList<>(Collections.nCopies(8, "+"));
     public ProductionRecord productionDataRecorder = new ProductionRecord();
@@ -160,7 +162,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
 
     @Override
     public boolean supportsPowerPanel() {
-        return false;
+        return true;
     }
 
     @Override
@@ -171,8 +173,14 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
             .addInfo("Monitors multiblock machines in range")
             .addInfo("Replace maintenance hatch on other multi with drone downlink module")
             .addInfo("Provides maintenance, power control, monitoring, and more")
-            .addInfo("Range is determined by drone tier: T1-128, T2-512, T3-4096, T4-Infinite")
-            .addInfo("T4 Drone supports cross-dimension connection")
+            .addSeparator()
+            .addInfo("Operation range is determined by drone tier:")
+            .addInfo("T1-128, T2-512, T3-4096, T4-4096(Auto)/Infinite(Key)")
+            .addInfo("T4 drone allows cross-dimension connection!")
+            .addInfo(EnumChatFormatting.RED + "To enable cross-dimension,")
+            .addInfo(EnumChatFormatting.RED + "downlink module must have the same key with centre.")
+            .addInfo(EnumChatFormatting.RED + "But it's not necessary for auto connection in range")
+            .addSeparator()
             .addInfo("Place drones in input bus; only one needed to operate")
             .addInfo("Automatically upgrade based on the drone level in the input bus")
             .addInfo("There is a chance per second that the drone will crash")
@@ -264,12 +272,13 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         super.loadNBTData(aNBT);
         droneLevel = aNBT.getInteger("drone");
         useRender = aNBT.getBoolean("useRender");
-        sortMode = MTEDroneCentreGui.SortMode.valueOf(aNBT.getString("sort"));
+        sortMode = DroneCentreGuiUtil.SortMode.valueOf(aNBT.getString("sort"));
         productionDataRecorder.readFromNBT(aNBT.getCompoundTag("productionData"));
         NBTTagCompound GroupNBT = aNBT.getCompoundTag("Group");
         for (int i = 0; i < 8; i++) group.set(i, GroupNBT.getString(String.valueOf(i)));
         activeGroup = aNBT.getInteger("activeGroup");
         autoUpdate = aNBT.getBoolean("dynamicUpdate");
+        key = aNBT.getString("key");
     }
 
     @Override
@@ -284,6 +293,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         aNBT.setTag("Group", GroupNBT);
         aNBT.setInteger("activeGroup", activeGroup);
         aNBT.setBoolean("dynamicUpdate", autoUpdate);
+        aNBT.setString("key", key);
     }
 
     @Override
@@ -314,7 +324,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         if (droneLevel == 0) {
             if (!tryConsumeDrone()) return SimpleCheckRecipeResult.ofFailure("drone_noDrone");
         }
-        if (droneLevel == 1 || droneLevel == 2) tryUpdateDrone();
+        if (droneLevel < 4) tryUpdateDrone();
         mMaxProgresstime = 200 * droneLevel;
         createRenderBlock();
         return SimpleCheckRecipeResult.ofSuccess("drone_operating");
@@ -330,6 +340,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
                 aBaseMetaTileEntity.getYCoord(),
                 aBaseMetaTileEntity.getZCoord());
             droneMap.put(aBaseMetaTileEntity.getWorld().provider.dimensionId, this);
+            if (droneLevel == 4) droneMap.put(Integer.MAX_VALUE, this);
         }
     }
 
@@ -349,6 +360,8 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
                 yield ItemList.TierdDrone1.getItem();
             case 3:
                 yield ItemList.TierdDrone2.getItem();
+            case 4:
+                yield ItemList.TierdDrone3.getItem();
             default:
                 yield null;
         }, 1);
@@ -368,18 +381,20 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     @Override
     public void onRemoval() {
         droneMap.remove(getBaseMetaTileEntity().getWorld().provider.dimensionId, this);
+        if (droneLevel == 4) droneMap.remove(Integer.MAX_VALUE, this);
     }
 
     @Override
     public void onUnload() {
         droneMap.remove(getBaseMetaTileEntity().getWorld().provider.dimensionId, this);
+        if (droneLevel == 4) droneMap.remove(Integer.MAX_VALUE, this);
     }
 
     public int getRange() {
         return switch (droneLevel) {
             case 1 -> 128;
             case 2 -> 512;
-            case 3 -> 4096;
+            case 3, 4 -> 4096;
             default -> 0;
         };
     }
@@ -411,6 +426,9 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
                 this.droneLevel = drone.getLevel();
                 item.stackSize--;
                 updateSlots();
+                if (droneLevel == 4) {
+                    droneMap.put(Integer.MAX_VALUE, this);
+                }
                 return;
             }
         }
@@ -445,27 +463,26 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     public void turnOnAll() {
         for (DroneConnection droneConnection : connectionList) {
             if (droneConnection.isValid()) droneConnection.getLinkedMachine()
-                .ifPresent(MTEMultiBlockBase::enableWorking);
+                .enableWorking();
         }
     }
 
     public void turnOffAll(boolean force) {
         for (DroneConnection droneConnection : connectionList) {
-            if (droneConnection.isValid()) droneConnection.getLinkedMachine()
-                .ifPresent(mte -> {
-                    mte.disableWorking();
-                    if (force && mte.getBaseMetaTileEntity() != null) {
-                        for (int i = 0; i < 6; i++) {
-                            if (mte.getBaseMetaTileEntity()
-                                .hasCoverAtSide(ForgeDirection.getOrientation(i))
-                                && mte.getBaseMetaTileEntity()
-                                    .getCoverAtSide(
-                                        ForgeDirection.getOrientation(i)) instanceof CoverControlsWork cover) {
-                                cover.setRedstoneCondition(RedstoneCondition.DISABLE);
-                            }
+            if (droneConnection.isValid()) {
+                MTEMultiBlockBase mte = droneConnection.getLinkedMachine();
+                mte.disableWorking();
+                if (force && mte.getBaseMetaTileEntity() != null) {
+                    for (int i = 0; i < 6; i++) {
+                        if (mte.getBaseMetaTileEntity()
+                            .hasCoverAtSide(ForgeDirection.getOrientation(i))
+                            && mte.getBaseMetaTileEntity()
+                                .getCoverAtSide(ForgeDirection.getOrientation(i)) instanceof CoverControlsWork cover) {
+                            cover.setRedstoneCondition(RedstoneCondition.DISABLE);
                         }
                     }
-                });
+                }
+            }
         }
     }
 
@@ -505,14 +522,14 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         return connectionList.stream()
             .filter(connection -> connection.uuid.equals(uuid))
             .findFirst()
-            .flatMap(DroneConnection::getLinkedMachine);
+            .map(DroneConnection::getLinkedMachine);
     }
 
-    public MTEDroneCentreGui.SortMode getSortMode() {
+    public DroneCentreGuiUtil.SortMode getSortMode() {
         return sortMode;
     }
 
-    public void setSortMode(MTEDroneCentreGui.SortMode sortMode) {
+    public void setSortMode(DroneCentreGuiUtil.SortMode sortMode) {
         this.sortMode = sortMode;
     }
 
@@ -562,5 +579,13 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
 
     public void setActiveGroup(int activeGroup) {
         this.activeGroup = activeGroup;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 }

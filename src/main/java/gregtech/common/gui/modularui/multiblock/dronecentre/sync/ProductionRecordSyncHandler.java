@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui.synchandler;
+package gregtech.common.gui.modularui.multiblock.dronecentre.sync;
 
 import java.util.function.Supplier;
 

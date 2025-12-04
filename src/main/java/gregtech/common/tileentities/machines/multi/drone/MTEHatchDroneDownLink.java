@@ -1,13 +1,12 @@
 package gregtech.common.tileentities.machines.multi.drone;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
-
-import javax.annotation.Nullable;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,7 +14,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -27,6 +25,7 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
+import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -47,6 +46,7 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
 
     private Vec3Impl downlinkCoord;
     private MTEDroneCentre centre;
+    private String key = "";
     private final List<DroneConnection> connections = new ArrayList<>();
     private final List<MTEMultiBlockBase> unlinkedMachines = new ArrayList<>();
     private final HashMap<String, String> savedNameList = new HashMap<>();
@@ -104,22 +104,23 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
+            // We are not sure centre or downlink will be registered first, so we try to find it on the second tick.
             if (aTick == 2) tryFindDroneCenter();
             // validate that all connections to the center and the machines are still valid every 5s
             if (aTick % 100 == 0) {
                 validateConnections();
             }
-
             // if we don't have a connection to a center, search for one every 10s
             if (aTick % 200 == 0) {
-                if (centre == null) {
+                if (centre == null || !centre.isValid()) {
                     tryFindDroneCenter();
                     if (centre == null) return;
                 }
                 // In rare cases, this status may not refresh to the connection. Manually refresh it.
                 for (DroneConnection conn : connections) {
-                    conn.getLinkedMachine()
-                        .ifPresent(mte -> conn.setActive(mte.isAllowedToWork()));
+                    conn.setActive(
+                        conn.getLinkedMachine()
+                            .isAllowedToWork());
                 }
             }
 
@@ -136,8 +137,7 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
         connections.removeIf(entry -> {
             boolean result = entry.isValid();
             if (!result) {
-                entry.getLinkedMachine()
-                    .ifPresent(unlinkedMachines::add);
+                unlinkedMachines.add(entry.getLinkedMachine());
                 savedNameList.put(entry.uuid.toString(), entry.getCustomName());
                 savedGroupList.put(entry.uuid.toString(), entry.getGroup());
                 centre.getConnectionList()
@@ -157,10 +157,6 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
         if (aBaseMetaTileEntity.isClientSide()) return true;
         if (side == aBaseMetaTileEntity.getFrontFacing()) {
             if (aPlayer instanceof FakePlayer) return false;
-            if (!hasConnection()) {
-                aPlayer.addChatComponentMessage(new ChatComponentTranslation("GT5U.machines.dronecentre.noconnection"));
-                return true;
-            }
             openGui(aPlayer);
             return true;
         }
@@ -195,33 +191,51 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
             .removeAll(connections);
     }
 
+    @Override
+    public void onUnload() {
+        if (centre == null) return;
+        centre.getConnectionList()
+            .removeAll(connections);
+    }
+
     private boolean hasConnection() {
         return !connections.isEmpty();
     }
 
     /**
-     * Find a drone center. This will search for all DC in the same dimension, then find one in range.
+     * Find a drone center. If the key is set, traverse T4 map first. Then we can search for all DC in the same
+     * dimension and find one in range.
      */
     private void tryFindDroneCenter() {
-        if (MTEDroneCentre.getCentreMap()
+        if (!key.isEmpty()) {
+            Set<MTEDroneCentre> t4Centres = MTEDroneCentre.getCentreMap()
+                .get(Integer.MAX_VALUE);
+            if (!t4Centres.isEmpty()) t4Centres.stream()
+                .filter(
+                    target -> target.getKey()
+                        .equals(this.key))
+                .findFirst()
+                .ifPresent(target -> this.centre = target);
+        }
+        if (centre == null && MTEDroneCentre.getCentreMap()
             .containsKey(getBaseMetaTileEntity().getWorld().provider.dimensionId)) {
-            List<MTEDroneCentre> target = MTEDroneCentre.getCentreMap()
+            MTEDroneCentre.getCentreMap()
                 .get(getBaseMetaTileEntity().getWorld().provider.dimensionId)
                 .stream()
-                .collect(Collectors.toList());
-            for (MTEDroneCentre centre : target) {
-                if (centre.getCoords()
-                    .withinDistance(this.downlinkCoord, centre.getRange()) && centre.getBaseMetaTileEntity() != null
-                    && centre.getBaseMetaTileEntity()
-                        .isActive()) {
-
-                    clearConnections();
-                    this.centre = centre;
-
-                    unlinkedMachines.removeIf(this::addConnection);
-
-                    return;
-                }
+                .filter(
+                    target -> target.getCoords()
+                        .withinDistance(this.downlinkCoord, target.getRange()))
+                .min(
+                    Comparator.comparing(
+                        target -> target.getKey()
+                            .equals(this.key) ? 0 : 1))
+                .ifPresent(target -> this.centre = target);
+        }
+        if (this.centre != null) {
+            if (centre.getBaseMetaTileEntity() != null && centre.getBaseMetaTileEntity()
+                .isActive()) {
+                clearConnections();
+                unlinkedMachines.removeIf(this::addConnection);
             }
         }
     }
@@ -242,8 +256,7 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
     private void clearConnections() {
         // save data first
         connections.removeIf(conn -> {
-            conn.getLinkedMachine()
-                .ifPresent(unlinkedMachines::add);
+            unlinkedMachines.add(conn.getLinkedMachine());
             savedNameList.put(conn.uuid.toString(), conn.getCustomName());
             savedGroupList.put(conn.uuid.toString(), conn.getGroup());
             return true;
@@ -259,12 +272,27 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
         this.connections.addAll(connections);
     }
 
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        if (!key.equals(this.key)) {
+            this.key = key;
+            if (!NetworkUtils.isClient()) {
+                centre = null;
+                clearConnections();
+                tryFindDroneCenter();
+            }
+        }
+
+    }
+
     public Optional<DroneConnection> findConnection(MTEMultiBlockBase machine) {
         return connections.stream()
             .filter(
                 connection -> connection.getLinkedMachine()
-                    .filter(machine::equals)
-                    .isPresent())
+                    .equals(machine))
             .findFirst();
     }
 
@@ -274,7 +302,6 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
             .findFirst();
     }
 
-    @Nullable
     public MTEDroneCentre getCentre() {
         return centre;
     }
@@ -291,6 +318,8 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        key = aNBT.getString("key");
         NBTTagCompound nameList = aNBT.getCompoundTag("nameList");
         NBTTagCompound groupList = aNBT.getCompoundTag("groupList");
         for (String s : nameList.func_150296_c()) {
@@ -303,6 +332,8 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setString("key", key);
         NBTTagCompound nameList = new NBTTagCompound();
         NBTTagCompound groupList = new NBTTagCompound();
         connections.forEach(conn -> {
