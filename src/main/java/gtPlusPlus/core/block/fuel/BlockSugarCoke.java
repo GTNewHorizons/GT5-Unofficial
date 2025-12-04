@@ -29,6 +29,9 @@ public class BlockSugarCoke extends Block {
         super(Material.rock);
         this.setBlockName("blockSugarCoke");
         this.setStepSound(soundTypeStone);
+        setResistance(20);
+        this.setHardness(5);
+        this.setHarvestLevel("pickaxe", 1);
         GameRegistry.registerBlock(this, ItemBlockMeta.class, "blockSugarCoke");
         for (int i = 0; i < textureArray.length; i++) {
             GTPPCore.burnables.add(Pair.of(8000 * (int) GTUtility.powInt(9, i), new ItemStack(this, 1, i)));
