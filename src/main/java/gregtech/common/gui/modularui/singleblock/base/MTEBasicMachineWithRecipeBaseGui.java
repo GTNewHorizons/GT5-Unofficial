@@ -1,5 +1,7 @@
 package gregtech.common.gui.modularui.singleblock.base;
 
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
+
 import java.util.Arrays;
 
 import com.cleanroommc.modularui.api.drawable.IDrawable;
@@ -28,8 +30,6 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.util.GTUtility;
 import gregtech.common.modularui2.widget.GTProgressWidget;
-
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTEBasicMachineWithRecipe> {
 
@@ -150,14 +150,16 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
                 properties.useSpecialSlot ? slotOverlayFunction.apply(0, false, false, true) : IDrawable.NONE)
             .tooltip(
                 t -> t.addLine(GTUtility.translate(tooltipKeys[0]))
-                    .addLine(GTUtility.translate(tooltipKeys[1]))) .tooltipShowUpTimer(TOOLTIP_DELAY);
+                    .addLine(GTUtility.translate(tooltipKeys[1])))
+            .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
     protected ItemSlot createChargerSlot() {
 
         return new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, machine.rechargerSlotStartIndex()))
             .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_CHARGER)
-            .tooltip(this::createTooltipForChargerSlot).tooltipShowUpTimer(TOOLTIP_DELAY);
+            .tooltip(this::createTooltipForChargerSlot)
+            .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
     private void createTooltipForChargerSlot(RichTooltip tooltip) {
