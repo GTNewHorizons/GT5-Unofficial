@@ -79,7 +79,8 @@ public final class BasicUIPropertiesBuilder {
 
     private UITexture progressBarTextureMUI2 = GTGuiTextures.PROGRESSBAR_ARROW_STANDARD;
     private ProgressWidget.Direction progressBarDirectionMUI2 = ProgressWidget.Direction.RIGHT;
-    private int progressBarSizeMUI2 = 20;
+    private int progressBarWidthMUI2 = 20;
+    private int progressBarHeightMUI2 = 36;
 
     BasicUIPropertiesBuilder() {}
 
@@ -126,7 +127,8 @@ public final class BasicUIPropertiesBuilder {
             slotOverlaysMUI2,
             progressBarTextureMUI2,
             progressBarDirectionMUI2,
-            progressBarSizeMUI2);
+            progressBarWidthMUI2,
+            progressBarHeightMUI2);
     }
 
     public BasicUIPropertiesBuilder maxItemInputs(int maxItemInputs) {
@@ -292,8 +294,9 @@ public final class BasicUIPropertiesBuilder {
         return this;
     }
 
-    public BasicUIPropertiesBuilder progressBarSizeMUI2(int progressBarSizeMUI2) {
-        this.progressBarSizeMUI2 = progressBarSizeMUI2;
+    public BasicUIPropertiesBuilder progressBarSizeMUI2(int progressBarWidthMUI2, int progressBarHeightMUI2) {
+        this.progressBarWidthMUI2 = progressBarWidthMUI2;
+        this.progressBarHeightMUI2 = progressBarHeightMUI2;
         return this;
     }
 }

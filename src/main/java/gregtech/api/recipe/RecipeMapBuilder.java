@@ -243,8 +243,8 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
         return progressBarMUI2(progressBarTextureMUI2, ProgressWidget.Direction.RIGHT);
     }
 
-    public RecipeMapBuilder<B> progressBarSizeMUI2(int progressBarSizeMUI2) {
-        uiPropertiesBuilder.progressBarSizeMUI2(progressBarSizeMUI2);
+    public RecipeMapBuilder<B> progressBarSizeMUI2(int progressBarWidthMUI2, int progressBarHeightMUI2) {
+        uiPropertiesBuilder.progressBarSizeMUI2(progressBarWidthMUI2, progressBarHeightMUI2);
         return this;
     }
 

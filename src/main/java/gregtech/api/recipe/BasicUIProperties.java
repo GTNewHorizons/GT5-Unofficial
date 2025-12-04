@@ -71,7 +71,10 @@ public final class BasicUIProperties {
             .fluidInputPositionsGetter(fluidInputPositionsGetter)
             .fluidOutputPositionsGetter(fluidOutputPositionsGetter)
             .amperage(amperage)
-            .slotOverlaysMUI2(slotOverlaysMUI2);
+            .slotOverlaysMUI2(slotOverlaysMUI2)
+            .progressBarTextureMUI2(progressBarMUI2)
+            .progressBarDirectionMUI2(progressBarDirectionMUI2)
+            .progressBarSizeMUI2(progressBarWidthMUI2, progressBarHeightMUI2);
     }
 
     /**
@@ -176,7 +179,8 @@ public final class BasicUIProperties {
     public final SlotOverlayGetter<com.cleanroommc.modularui.api.drawable.IDrawable> slotOverlaysMUI2;
     public final UITexture progressBarMUI2;
     public final ProgressWidget.Direction progressBarDirectionMUI2;
-    public final int progressBarSizeMUI2;
+    public final int progressBarWidthMUI2;
+    public final int progressBarHeightMUI2;
 
     /**
      * Amperage for the recipemap. Even though this is placed at frontend because backend logic doesn't need it, some
@@ -196,7 +200,7 @@ public final class BasicUIProperties {
         IntFunction<List<Pos2d>> fluidOutputPositionsGetter, int amperage,
         SlotOverlayGetter<com.cleanroommc.modularui.api.drawable.IDrawable> slotOverlaysMUI2,
         com.cleanroommc.modularui.drawable.UITexture progressBarMUI2, ProgressWidget.Direction progressBarDirectionMUI2,
-        int progressBarSizeMUI2) {
+        int progressBarWidthMUI2, int progressBarHeightMUI2) {
         if (maxItemInputs < 0 || maxItemOutputs < 0 || maxFluidInputs < 0 || maxFluidOutputs < 0) {
             throw new IllegalArgumentException(
                 "maxItemInputs, maxItemOutputs, maxFluidInputs and maxFluidOutputs cannot be negative");
@@ -233,7 +237,9 @@ public final class BasicUIProperties {
         this.slotOverlaysMUI2 = slotOverlaysMUI2;
         this.progressBarMUI2 = progressBarMUI2;
         this.progressBarDirectionMUI2 = progressBarDirectionMUI2;
-        this.progressBarSizeMUI2 = progressBarSizeMUI2;
+        this.progressBarWidthMUI2 = progressBarWidthMUI2;
+        this.progressBarHeightMUI2 = progressBarHeightMUI2;
+
         this.progressBarImageSize = switch (progressBarDirection) {
             case UP, DOWN -> progressBarSize.height;
             case CIRCULAR_CW -> Math.max(progressBarSize.width, progressBarSize.height);

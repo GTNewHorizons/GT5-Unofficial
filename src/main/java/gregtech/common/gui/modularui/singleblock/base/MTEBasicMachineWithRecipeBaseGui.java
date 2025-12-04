@@ -21,6 +21,7 @@ import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
 import gregtech.api.modularui2.GTGuiTextures;
@@ -59,22 +60,23 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
         contentSection.child(createChargerSlot().align(Alignment.BottomCenter));
         contentSection.child(
             createItemRecipeArea().alignX(Alignment.CENTER)
-                .alignY(0.3f));
+                .alignY(0.2f));
         return contentSection;
     }
 
     protected Flow createItemRecipeArea() {
 
         Flow itemRow = Flow.row()
-            .coverChildren();
+            .width(18 * 8 + properties.progressBarWidthMUI2)
+            .coverChildrenHeight();
 
         ParentWidget<?> inputSection = new ParentWidget<>().size(18 * 3);
-        inputSection.child(createItemInputSlots().align(Alignment.CenterRight))
-            .marginRight(6);
+        inputSection.child(createItemInputSlots().align(Alignment.CenterRight)); // margins to position the widgets
+                                                                                 // correctly
         ParentWidget<?> outputSection = new ParentWidget<>().size(18 * 3);
         outputSection.child(createItemOutputSlots().align(Alignment.CenterLeft));
-        itemRow.child(inputSection)
-            .child(createProgressBar().marginRight(6))
+        itemRow.child(inputSection.marginRight(19))
+            .child(createProgressBar().marginRight(15))
             .child(outputSection);
 
         return itemRow;
@@ -95,7 +97,7 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
                 createAutoOutputButton(
                     "fluidAutoOutput",
                     GTGuiTextures.OVERLAY_BUTTON_AUTOOUTPUT_FLUID,
-                    BaseTileEntity.FLUID_TRANSFER_TOOLTIP).marginRight(18));
+                    BaseTileEntity.FLUID_TRANSFER_TOOLTIP).marginRight(9));
 
         cornerFlow.childIf(properties.maxFluidInputs > 0, createFluidInputSlot());
 
@@ -110,7 +112,7 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
 
     @Override
     protected IDrawable.DrawableWidget createLogo() {
-        return super.createLogo().marginLeft(2 + 18 * 2);
+        return super.createLogo().marginLeft(2 + 18 + 9);
     }
 
     protected ToggleButton createAutoOutputButton(String syncKey, UITexture overlay, String tooltipKey) {
@@ -165,10 +167,18 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
     }
 
     protected ProgressWidget createProgressBar() {
-        return new GTProgressWidget().neiTransferRect(machine.getRecipeMap())
+        return new GTProgressWidget()
+            .neiTransferRect(properties.neiTransferRectId, GTValues.emptyObjectArray, createTooltipForProgressBar())
             .value(new DoubleSyncValue(() -> (double) machine.mProgresstime / machine.mMaxProgresstime))
-            .texture(properties.progressBarMUI2, properties.progressBarSizeMUI2)
+            .texture(properties.progressBarMUI2, properties.progressBarWidthMUI2)
+            .size(properties.progressBarWidthMUI2, properties.progressBarHeightMUI2 / 2)
             .direction(properties.progressBarDirectionMUI2);
+    }
+
+    private String createTooltipForProgressBar() {
+        final byte machineTier = machine.mTier;
+        String tierName = GTUtility.getColoredTierNameFromTier(machineTier);
+        return GTUtility.translate("GT5U.machines.nei_transfer.voltage.tooltip", tierName);
     }
 
     protected SlotGroupWidget createItemInputSlots() {
