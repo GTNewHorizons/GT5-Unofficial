@@ -5,7 +5,6 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
-import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
@@ -146,9 +145,6 @@ public class DroneRemoteInterfaceGUI {
                                     .onMousePressed(mouseButton -> {
                                         machineListPanel.openPanel();
                                         return true;
-                                    }))
-                            .child(
-                                new IDrawable.DrawableWidget(GTGuiTextures.INFORMATION_SYMBOL)
-                                    .tooltipBuilder(t -> t.add(IKey.lang(""))))));
+                                    }))));
     }
 }
