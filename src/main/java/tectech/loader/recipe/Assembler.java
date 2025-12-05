@@ -1978,7 +1978,7 @@ public class Assembler implements Runnable {
                 GTValues.RA.stdBuilder()
                     .itemInputs(
                         ItemList.Hull_UMV.get(1),
-                        GTOreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 1),
+                        GTOreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 4),
                         ItemList.Sensor_UMV.get(4),
                         ItemList.Electric_Pump_UMV.get(4),
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Quantium, 4),
@@ -1990,7 +1990,7 @@ public class Assembler implements Runnable {
                 GTValues.RA.stdBuilder()
                     .itemInputs(
                         ItemList.Hull_UXV.get(1),
-                        GTOreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 1),
+                        GTOreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 4),
                         ItemList.Sensor_UXV.get(4),
                         ItemList.Electric_Pump_UXV.get(4),
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.BlackPlutonium, 4),
