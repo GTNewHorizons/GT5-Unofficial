@@ -1275,7 +1275,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         tMutation.addMutationCondition(new GTBees.BiomeIDMutationCondition(9, "END Biome")); // sky end biome
     }),
 
-    ESSENTIA(GTBranchDefinition.THAUMIC, "Essentia", true, new Color(0x7A007A), new Color(0xFFFFFF), beeSpecies -> {
+    NECROTIC(GTBranchDefinition.THAUMIC, "Necrotic", true, new Color(0x7A007A), new Color(0xFFFFFF), beeSpecies -> {
         beeSpecies.addProduct(GTModHandler.getModItem(MagicBees.ID, "miscResources", 1, 3), 0.20f);
         beeSpecies.setHumidity(EnumHumidity.NORMAL);
         beeSpecies.setTemperature(EnumTemperature.NORMAL);
@@ -1302,7 +1302,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.END);
         AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectDrunkard);
     }, dis -> {
-        IBeeMutationCustom tMutation = dis.registerMutation(ESSENTIA, THAUMINITE, 5);
+        IBeeMutationCustom tMutation = dis.registerMutation(NECROTIC, THAUMINITE, 5);
         GregTechAPI.sGTCompleteLoad.add(() -> tMutation.requireResource(GregTechAPI.sBlockCasings5, 8));
     }),
 
