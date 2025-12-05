@@ -145,7 +145,7 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
             }
             return !result;
         });
-        if(!centre.isValid()) centre=null;
+        if (!centre.isValid()) centre = null;
     }
 
     private void doNormalMaintain() {

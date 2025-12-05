@@ -191,8 +191,7 @@ public class DroneConnection {
             .getTimer();
         // do sync every 10 ticks
         if (aTick % 10 == 0) {
-            return a.customName.equals(b.customName)
-                && a.isSelected == b.isSelected
+            return a.customName.equals(b.customName) && a.isSelected == b.isSelected
                 && a.machineStatus == b.machineStatus
                 && a.shutdownReason.equals(b.shutdownReason)
                 && a.group == b.group;

@@ -42,11 +42,12 @@ public class DroneCentreGuiUtil {
                 player.closeScreen();
                 return true;
             })
-            .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.drone_highlight"))
-                .addLine("x:"+conn.getMachineCoord().posX)
-                .addLine("y:"+conn.getMachineCoord().posY)
-                .addLine("z:"+conn.getMachineCoord().posZ)
-                .addLine(IKey.lang("GT5U.infodata.dimension",conn.getMachineWorld())));
+            .tooltipBuilder(
+                t -> t.addLine(IKey.lang("GT5U.gui.button.drone_highlight"))
+                    .addLine("x:" + conn.getMachineCoord().posX)
+                    .addLine("y:" + conn.getMachineCoord().posY)
+                    .addLine("z:" + conn.getMachineCoord().posZ)
+                    .addLine(IKey.lang("GT5U.infodata.dimension", conn.getMachineWorld())));
     }
 
     public static void getTooltipFromItemSafely(RichTooltip tooltipBuilder, ItemStack itemStack) {
