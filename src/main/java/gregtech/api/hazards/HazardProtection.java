@@ -37,6 +37,10 @@ public class HazardProtection {
         return isWearingFullHazmatAgainst(entity, Hazard.GAS);
     }
 
+    public static boolean isWearingFullSpaceHazmat(@NotNull EntityLivingBase entity) {
+        return isWearingFullHazmatAgainst(entity, Hazard.SPACE);
+    }
+
     public static boolean isWearingFullHazmatAgainst(@NotNull EntityLivingBase entity, @NotNull Hazard hazard) {
         for (byte i = 1; i < 5; i++) {
             ItemStack stack = entity.getEquipmentInSlot(i);

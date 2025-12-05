@@ -144,6 +144,7 @@ public class RecipeLoaderAgriculturalChem {
 
         // Poop Juice to Basic Slurry
         GTValues.RA.stdBuilder()
+            .circuit(21)
             .itemOutputs(aDirtDust, aDirtDust, aManureByprod1, aManureByprod1, aManureByprod1, aManureByprod1)
             .outputChances(2000, 2000, 500, 500, 250, 250)
             .fluidInputs(new FluidStack(GTPPFluids.PoopJuice, 1_000))
@@ -154,7 +155,7 @@ public class RecipeLoaderAgriculturalChem {
 
         // More Efficient way to get byproducts, less Slurry
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(20))
+            .circuit(20)
             .itemOutputs(aDirtDust, aDirtDust, aManureByprod1, aManureByprod1, aManureByprod2, aManureByprod2)
             .outputChances(4000, 3000, 1250, 1250, 675, 675)
             .fluidInputs(new FluidStack(GTPPFluids.PoopJuice, 1_000))
@@ -165,7 +166,6 @@ public class RecipeLoaderAgriculturalChem {
     }
 
     private static void addAdvancedSlurryRecipes() {
-        ItemStack aCircuit = GTUtility.getIntegratedCircuit(10);
         ItemStack aBone;
         ItemStack aMeat;
         ItemStack aEmptyCells = Materials.Empty.getCells(2);
@@ -179,7 +179,8 @@ public class RecipeLoaderAgriculturalChem {
                     aMeat = GTUtility.copyAmount(5, aMeatStack);
                     // Poop Juice to Fertile Slurry
                     GTValues.RA.stdBuilder()
-                        .itemInputs(aCircuit, aBone, aMeat, aInputCells)
+                        .itemInputs(aBone, aMeat, aInputCells)
+                        .circuit(10)
                         .itemOutputs(aEmptyCells)
                         .fluidInputs(aBloodStack)
                         .fluidOutputs(aOutput)
@@ -261,7 +262,8 @@ public class RecipeLoaderAgriculturalChem {
             }
             if (a != null) {
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.getIntegratedCircuit(2), GTUtility.copyAmount(10, a))
+                    .itemInputs(GTUtility.copyAmount(10, a))
+                    .circuit(2)
                     .fluidInputs(GTModHandler.getDistilledWater(1_000))
                     .fluidOutputs(new FluidStack(GTPPFluids.FermentationBase, 1_000))
                     .duration(30 * SECONDS)
@@ -274,7 +276,8 @@ public class RecipeLoaderAgriculturalChem {
         for (ItemStack a : mList_Master_Seeds) {
             if (a != null) {
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.getIntegratedCircuit(3), GTUtility.copyAmount(20, a))
+                    .itemInputs(GTUtility.copyAmount(20, a))
+                    .circuit(3)
                     .fluidInputs(GTModHandler.getDistilledWater(1_000))
                     .fluidOutputs(new FluidStack(GTPPFluids.FermentationBase, 1_000))
                     .duration(30 * SECONDS)
@@ -286,7 +289,8 @@ public class RecipeLoaderAgriculturalChem {
 
         // Sugar Cane
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(4), new ItemStack(Items.reeds, 32))
+            .itemInputs(new ItemStack(Items.reeds, 32))
+            .circuit(4)
             .fluidInputs(GTModHandler.getDistilledWater(1_000))
             .fluidOutputs(new FluidStack(GTPPFluids.FermentationBase, 1_000))
             .duration(30 * SECONDS)
@@ -295,10 +299,8 @@ public class RecipeLoaderAgriculturalChem {
             .addTo(chemicalPlantRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(5),
-                new ItemStack(Items.reeds, 32),
-                new ItemStack(ModItems.dustCalciumCarbonate, 2))
+            .itemInputs(new ItemStack(Items.reeds, 32), new ItemStack(ModItems.dustCalciumCarbonate, 2))
+            .circuit(5)
             .fluidInputs(FluidUtils.getHotWater(2_000))
             .fluidOutputs(new FluidStack(GTPPFluids.FermentationBase, 2_000))
             .duration(10 * SECONDS)
@@ -311,7 +313,8 @@ public class RecipeLoaderAgriculturalChem {
             .isEmpty()) {
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.getIntegratedCircuit(4), GTOreDictUnificator.get("cropSugarbeet", 4))
+                .itemInputs(GTOreDictUnificator.get("cropSugarbeet", 4))
+                .circuit(4)
                 .fluidInputs(GTModHandler.getDistilledWater(1_000))
                 .fluidOutputs(new FluidStack(GTPPFluids.FermentationBase, 1_000))
                 .duration(30 * SECONDS)
@@ -321,9 +324,9 @@ public class RecipeLoaderAgriculturalChem {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTUtility.getIntegratedCircuit(5),
                     GTOreDictUnificator.get("cropSugarbeet", 4),
                     new ItemStack(ModItems.dustCalciumCarbonate, 2))
+                .circuit(5)
                 .fluidInputs(FluidUtils.getHotWater(2_000))
                 .fluidOutputs(new FluidStack(GTPPFluids.FermentationBase, 2_000))
                 .duration(10 * SECONDS)
@@ -334,10 +337,8 @@ public class RecipeLoaderAgriculturalChem {
 
         // Produce Acetone, Butanol and Ethanol
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(5),
-                GregtechItemList.GoldenBrownCelluloseFiber.get(6),
-                GregtechItemList.RedCelluloseFiber.get(16))
+            .itemInputs(GregtechItemList.GoldenBrownCelluloseFiber.get(6), GregtechItemList.RedCelluloseFiber.get(16))
+            .circuit(5)
             .fluidInputs(new FluidStack(GTPPFluids.FermentationBase, 48_000))
             .fluidOutputs(
                 new FluidStack(GTPPFluids.Butanol, 18_000),
@@ -357,7 +358,8 @@ public class RecipeLoaderAgriculturalChem {
 
         // IC2 Fertilizer
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(12), GregtechItemList.OrganicFertilizerDust.get(4))
+            .itemInputs(GregtechItemList.OrganicFertilizerDust.get(4))
+            .circuit(12)
             .itemOutputs(
                 ItemList.IC2_Fertilizer.get(3),
                 GregtechItemList.ManureByproductsDust.get(1),
@@ -379,7 +381,8 @@ public class RecipeLoaderAgriculturalChem {
 
         // Ammonium Nitrate, Phosphates, Calcium, Copper, Carbon
         GTValues.RA.stdBuilder()
-            .itemInputs(GregtechItemList.ManureByproductsDust.get(4), GTUtility.getIntegratedCircuit(20))
+            .itemInputs(GregtechItemList.ManureByproductsDust.get(4))
+            .circuit(20)
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Phosphorus, 2L),
                 GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Calcium, 2L),
@@ -418,7 +421,7 @@ public class RecipeLoaderAgriculturalChem {
 
         // Red Slurry / Tailings Processing
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(10))
+            .circuit(10)
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Iron, 1),
                 GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Copper, 1),
@@ -438,7 +441,8 @@ public class RecipeLoaderAgriculturalChem {
     private static void addMiscForestryRecipes() {
         if (ItemList.FR_Fertilizer.hasBeenSet()) {
             GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.getIntegratedCircuit(11), GregtechItemList.OrganicFertilizerDust.get(4))
+                .itemInputs(GregtechItemList.OrganicFertilizerDust.get(4))
+                .circuit(11)
                 .itemOutputs(
                     ItemList.FR_Fertilizer.get(3),
                     GregtechItemList.ManureByproductsDust.get(1),

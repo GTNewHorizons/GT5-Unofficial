@@ -8,29 +8,27 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotGroup;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.singleblock.MTEElectricAutoWorkbenchGui;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEElectricAutoWorkbench extends MTEBasicTank implements IAddGregtechLogo {
@@ -39,8 +37,8 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank implements IAddGregte
     public boolean mLastCraftSuccessful = false;
     protected String mLocalName;
 
-    private static final int MAX_MODES = 10;
-    private static final int MAX_THROUGHPUT = 4;
+    public static final int MAX_MODES = 10;
+    public static final int MAX_THROUGHPUT = 4;
 
     public MTEElectricAutoWorkbench(final int aID, final int aTier, final String aDescription) {
         super(
@@ -168,7 +166,7 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank implements IAddGregte
         return side != getBaseMetaTileEntity().getFrontFacing() && side != getBaseMetaTileEntity().getBackFacing();
     }
 
-    private void switchMode() {
+    public void switchMode() {
         mInventory[28] = null;
     }
 
@@ -600,19 +598,11 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank implements IAddGregte
             }
 
             if (mThroughPut < 2) {
-                getBaseMetaTileEntity().decreaseStoredEnergyUnits(
-                    GTUtility.moveOneItemStack(
-                        getBaseMetaTileEntity(),
-                        getBaseMetaTileEntity().getIInventoryAtSide(getBaseMetaTileEntity().getBackFacing()),
-                        getBaseMetaTileEntity().getBackFacing(),
-                        getBaseMetaTileEntity().getFrontFacing(),
-                        null,
-                        false,
-                        (byte) 64,
-                        (byte) 1,
-                        (byte) 64,
-                        (byte) 1) * 10,
-                    true);
+                GTItemTransfer transfer = new GTItemTransfer();
+
+                transfer.outOfMachine(this, aBaseMetaTileEntity.getBackFacing());
+
+                getBaseMetaTileEntity().decreaseStoredEnergyUnits(transfer.transfer() * 10L, true);
             }
         }
     }
@@ -749,81 +739,12 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank implements IAddGregte
     }
 
     @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(
-            new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
-                .setSize(17, 17)
-                .setPos(118, 22));
+    protected boolean useMui2() {
+        return true;
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            SlotGroup.ofItemHandler(inventoryHandler, 3)
-                .endAtSlot(8)
-                .build()
-                .setPos(7, 4))
-            .widget(
-                SlotGroup.ofItemHandler(inventoryHandler, 9)
-                    .startFromSlot(9)
-                    .endAtSlot(17)
-                    .canInsert(false)
-                    .background(GTUITextures.SLOT_DARK_GRAY)
-                    .applyForWidget(SlotWidget::disableShiftInsert)
-                    .build()
-                    .setPos(7, 59))
-            .widget(
-                new SlotWidget(inventoryHandler, 18).setAccess(true, false)
-                    .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_OUT)
-                    .setPos(151, 40))
-            .widget(
-                new DrawableWidget().setDrawable(GTUITextures.PICTURE_SLOTS_HOLO_3BY3)
-                    .setPos(62, 4)
-                    .setSize(54, 54))
-            .widget(
-                SlotGroup.ofItemHandler(inventoryHandler, 3)
-                    .startFromSlot(19)
-                    .endAtSlot(27)
-                    .phantom(true)
-                    .background(GTUITextures.TRANSPARENT)
-                    .build()
-                    .setPos(62, 4))
-            .widget(
-                SlotWidget.phantom(inventoryHandler, 28)
-                    .disableInteraction()
-                    .setBackground(getGUITextureSet().getItemSlot(), GTPPUITextures.OVERLAY_SLOT_ARROW_4)
-                    .setPos(151, 4));
-        builder.widget(
-            new CycleButtonWidget().setGetter(() -> mThroughPut)
-                .setSetter(val -> mThroughPut = val)
-                .setLength(MAX_THROUGHPUT)
-                .setTextureGetter(i -> GTPPUITextures.OVERLAY_BUTTON_THROUGHPUT[i])
-                .setBackground(GTUITextures.BUTTON_STANDARD)
-                .setPos(120, 4)
-                .setSize(18, 18));
-        String[] mModeText = new String[] { "Normal Crafting Table", "???", "1x1", "2x2", "3x3", "Unifier", "Dust",
-            "???", "Hammer?", "Circle" };
-        CycleButtonWidget modeButton = new CycleButtonWidget().setGetter(() -> mMode)
-            .setSetter(val -> {
-                mMode = val;
-                switchMode();
-            })
-            .setLength(MAX_MODES)
-            .setTextureGetter(i -> GTPPUITextures.OVERLAY_BUTTON_MODE[i]);
-        for (int i = 0; i < MAX_MODES; i++) {
-            modeButton.addTooltip(i, "Mode: " + mModeText[i]);
-        }
-        builder.widget(
-            modeButton.setBackground(GTUITextures.BUTTON_STANDARD)
-                .setPos(120, 40)
-                .setSize(18, 18));
-        builder.widget(
-            new DrawableWidget().setDrawable(GTPPUITextures.PICTURE_WORKBENCH_CIRCLE)
-                .setPos(136, 23)
-                .setSize(16, 16))
-            .widget(
-                new DrawableWidget().setDrawable(GTPPUITextures.PICTURE_ARROW_WHITE_DOWN)
-                    .setPos(155, 23)
-                    .setSize(10, 16));
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEElectricAutoWorkbenchGui(this).buildUI(data, syncManager, uiSettings);
     }
 }
