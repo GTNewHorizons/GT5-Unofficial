@@ -28,7 +28,8 @@ public class DroneConnection {
     private final ItemStack machineItem;
     private final ChunkCoordinates machineCoord;
     private final ChunkCoordinates centreCoord;
-    private final int worldID;
+    private final int centreWorld;
+    private final int machineWorld;
 
     private String customName;
     private boolean machineStatus;
@@ -48,9 +49,11 @@ public class DroneConnection {
             .getCoords();
         this.cachedCentre = centre;
         this.cachedMachine = machine;
-        this.worldID = centre.getBaseMetaTileEntity()
+        this.centreWorld = centre.getBaseMetaTileEntity()
             .getWorld().provider.dimensionId;
-        this.uuid = UUID.nameUUIDFromBytes((machineCoord.toString() + worldID).getBytes());
+        this.machineWorld = machine.getBaseMetaTileEntity()
+            .getWorld().provider.dimensionId;
+        this.uuid = UUID.nameUUIDFromBytes((machineCoord.toString() + machineWorld).getBytes());
         this.unlocalizedName = machine.mName;
         this.customName = Optional.ofNullable(tempNameList.remove(uuid.toString()))
             .orElse(machine.getLocalName());
@@ -65,7 +68,8 @@ public class DroneConnection {
     public DroneConnection(NBTTagCompound aNBT) {
         NBTTagCompound machineTag = aNBT.getCompoundTag("machine");
         NBTTagCompound centreTag = aNBT.getCompoundTag("centre");
-        this.worldID = aNBT.getInteger("worldID");
+        this.centreWorld = aNBT.getInteger("centreWorld");
+        this.machineWorld = aNBT.getInteger("machineWorld");
         machineItem = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("item"));
         machineCoord = new ChunkCoordinates(
             machineTag.getInteger("x"),
@@ -82,8 +86,8 @@ public class DroneConnection {
         this.shutdownReason = aNBT.getString("shutdownReason");
         this.isSelected = aNBT.getBoolean("isSelected");
         this.group = aNBT.getInteger("group");
-        this.cachedCentre = getLoadedGTBaseMachineAt(centreCoord, DimensionManager.getWorld(worldID), true);
-        this.cachedMachine = getLoadedGTBaseMachineAt(machineCoord, DimensionManager.getWorld(worldID), true);
+        this.cachedCentre = getLoadedGTBaseMachineAt(centreCoord, DimensionManager.getWorld(centreWorld), false);
+        this.cachedMachine = getLoadedGTBaseMachineAt(machineCoord, DimensionManager.getWorld(machineWorld), false);
     }
 
     public MTEMultiBlockBase getLinkedMachine() {
@@ -135,7 +139,8 @@ public class DroneConnection {
         aNBT.setTag("machine", transCoordsToNBT(machineCoord));
         aNBT.setTag("centre", transCoordsToNBT(centreCoord));
         aNBT.setTag("item", machineItem.writeToNBT(new NBTTagCompound()));
-        aNBT.setInteger("worldID", worldID);
+        aNBT.setInteger("centreWorld", centreWorld);
+        aNBT.setInteger("machineWorld", machineWorld);
         aNBT.setString("name", getCustomName());
         aNBT.setString("unlocalizedName", unlocalizedName);
         aNBT.setString("uuid", this.uuid.toString());
@@ -186,9 +191,7 @@ public class DroneConnection {
             .getTimer();
         // do sync every 10 ticks
         if (aTick % 10 == 0) {
-            return a.machineCoord.equals(b.machineCoord) && a.centreCoord.equals(b.centreCoord)
-                && a.unlocalizedName.equals(b.unlocalizedName)
-                && a.customName.equals(b.customName)
+            return a.customName.equals(b.customName)
                 && a.isSelected == b.isSelected
                 && a.machineStatus == b.machineStatus
                 && a.shutdownReason.equals(b.shutdownReason)
@@ -219,5 +222,9 @@ public class DroneConnection {
 
     public void setGroup(int group) {
         this.group = group;
+    }
+
+    public Object getMachineWorld() {
+        return machineWorld;
     }
 }

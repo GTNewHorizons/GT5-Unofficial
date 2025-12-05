@@ -261,7 +261,11 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
                     endRecipeProcessing();
                 }
             }
-            if (aTick % 200 == 0) productionDataRecorder.update();
+            if (aTick % 200 == 0) {
+                productionDataRecorder.update();
+                // In rare cases, invalid connection may stay on the list, so we need to a check here too.
+                connectionList.removeIf(connection -> !connection.isValid());
+            }
         }
         if (mMaxProgresstime > 0 && mMaxProgresstime - mProgresstime == 1) destroyRenderBlock();
         super.onPostTick(aBaseMetaTileEntity, aTick);
