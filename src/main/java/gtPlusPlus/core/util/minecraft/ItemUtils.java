@@ -26,7 +26,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
@@ -118,7 +117,7 @@ public class ItemUtils {
 
     public static Item[] generateSpecialUseDusts(final String unlocalizedName, final String materialName,
         String mChemForm, final int Colour) {
-        GTLanguageManager.addStringLocalization("gtplusplus.material." + materialName, materialName);
+        MaterialUtils.generateMaterialLocalizedName(materialName);
         final Item[] output = {
             new BaseItemDustUnique("itemDust" + unlocalizedName, materialName, mChemForm, Colour, "Dust"),
             new BaseItemDustUnique("itemDustSmall" + unlocalizedName, materialName, mChemForm, Colour, "Small"),
@@ -379,7 +378,7 @@ public class ItemUtils {
 
     public static ItemStack getOrePrefixStack(OrePrefixes mPrefix, Material mMat, int mAmount) {
 
-        String mName = StringUtils.sanitizeString(mMat.getLocalizedName());
+        String mName = StringUtils.sanitizeString(mMat.getDefaultLocalName());
 
         String mItemName = mPrefix.getName() + mName;
         return ItemUtils.getItemStackOfAmountFromOreDictNoBroken(mItemName, mAmount);

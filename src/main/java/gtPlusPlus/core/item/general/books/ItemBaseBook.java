@@ -53,7 +53,7 @@ public class ItemBaseBook extends ItemWritableBook {
             return NBTUtils.getString(tItem, "title");
         } else if (tItem.getItemDamage() > -1 && tItem.getItemDamage() < BookHandler.mBookMap.size()) {
             return EnumChatFormatting.ITALIC
-                + Utils.addBookTitleLocalization(BookHandler.mBookMap.get(tItem.getItemDamage()).mTitle);
+                + Utils.getBookTitleLocalization(BookHandler.mBookMap.get(tItem.getItemDamage()).mTitle);
         }
         // NBTUtils.tryIterateNBTData(tItem);
         return "GT++ Storybook";

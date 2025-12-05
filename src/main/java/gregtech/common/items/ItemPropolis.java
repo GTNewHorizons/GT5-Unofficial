@@ -78,7 +78,7 @@ public class ItemPropolis extends Item {
 
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
-        return PropolisType.values()[stack.getItemDamage()].getName();
+        return PropolisType.values()[stack.getItemDamage()].getLocalizedName();
     }
 
     public void initPropolisRecipes() {
