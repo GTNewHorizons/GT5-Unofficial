@@ -38,7 +38,7 @@ dependencies {
     api("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
     api("com.github.GTNewHorizons:NotEnoughItems:2.7.91-GTNH:dev")
     api("com.github.GTNewHorizons:NotEnoughIds:2.1.10:dev")
-    api("com.github.GTNewHorizons:GTNHLib:0.6.40:dev")
+    api("com.github.GTNewHorizons:GTNHLib:0.7.10:dev")
     api("com.github.GTNewHorizons:ModularUI:1.2.20:dev")
     api("com.github.GTNewHorizons:ModularUI2:2.2.20-1.7.10:dev")
     api("com.github.GTNewHorizons:waila:1.8.14:dev")
