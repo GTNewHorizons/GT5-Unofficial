@@ -1,5 +1,7 @@
 package gregtech.common.items;
 
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -7,6 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
@@ -40,6 +43,21 @@ public class ItemDroneRemoteInterface extends GTGenericItem implements IGuiHolde
             GuiManager.open(factory, new ItemStackGuiData(player, stack), (EntityPlayerMP) player);
         }
         return super.onItemRightClick(stack, world, player);
+    }
+
+    @Override
+    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
+        super.addInformation(aStack, aPlayer, aList, aF3_H);
+        if (aStack.hasTagCompound() && aStack.getTagCompound()
+            .hasKey("droneCentre")) {
+            NBTTagCompound centreNbt = aStack.getTagCompound()
+                .getCompoundTag("droneCentre");
+            int x = centreNbt.getInteger("x");
+            int y = centreNbt.getInteger("y");
+            int z = centreNbt.getInteger("z");
+            int dim = centreNbt.getInteger("dim");
+            aList.add(StatCollector.translateToLocalFormatted("GT5U.tooltip.drone_remote_connected", x, y, z, dim));
+        } else aList.add(StatCollector.translateToLocal("GT5U.tooltip.drone_remote_disconnected"));
     }
 
     @Override
