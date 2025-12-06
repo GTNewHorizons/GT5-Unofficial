@@ -178,6 +178,7 @@ public enum Mods implements IMod {
     ProjectRedTransmission(ModIDs.PROJECT_RED_TRANSMISSION),
     ProjectRedTransportation(ModIDs.PROJECT_RED_TRANSPORTATION),
     Railcraft(ModIDs.RAILCRAFT),
+    RandomBoubles(ModIDs.RANDOM_BOUBLES),
     RandomThings(ModIDs.RANDOM_THINGS),
     RWG(ModIDs.RWG),
     RemoteIO(ModIDs.REMOTE_IO),
@@ -519,6 +520,7 @@ public enum Mods implements IMod {
             PROJECT_RED_TRANSMISSION = "ProjRed|Transmission",
             PROJECT_RED_TRANSPORTATION = "ProjRed|Transportation";
         public static final String RAILCRAFT = "Railcraft";
+        public static final String RANDOM_BOUBLES = "randomboubles";
         public static final String RANDOM_THINGS = "RandomThings";
         public static final String RWG = "RWG";
         public static final String REMOTE_IO = "RIO";
