@@ -34,15 +34,15 @@ public class ItemBaseBook extends ItemWritableBook {
 
     @Override
     public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
-        for (int i = 0; i < BookHandler.mBookMap.size(); i++) {
-            ItemStack bookstack = new ItemStack(item, 1, i);
+        for (int meta : BookHandler.mBookMap.keySet()) {
+            ItemStack bookstack = new ItemStack(item, 1, meta);
 
             /*
              * bookstack = Utils.getWrittenBook( bookstack, i, mBookMap.get(i).mMapping, mBookMap.get(i).mTitle,
              * mBookMap.get(i).mAuthor, mBookMap.get(i).mPages);
              */
 
-            NBTUtils.createIntegerTagCompound(bookstack, "stats", "mMeta", i);
+            NBTUtils.createIntegerTagCompound(bookstack, "stats", "mMeta", meta);
             list.add(bookstack);
         }
     }
