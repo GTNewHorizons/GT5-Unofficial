@@ -1948,6 +1948,19 @@ public class Textures {
         COKE_OVEN_OVERLAY_INACTIVE,
         COKE_OVEN_OVERLAY_ACTIVE,
 
+        COLLIDER_CASING,
+        CMS_CASING,
+        ATLAS_CASING,
+        ALICE_CASING,
+        LHCB_CASING,
+        OVERLAY_FRONT_LHC,
+        OVERLAY_FRONT_LHC_ACCELERATOR_GLOW,
+        OVERLAY_FRONT_LHC_COLLIDER_GLOW,
+        OVERLAY_FRONT_LHC_ACCELERATOR,
+        OVERLAY_FRONT_LHC_COLLIDER,
+        OVERLAY_FRONT_BEAMCRAFTER,
+        OVERLAY_FRONT_BEAMCRAFTER_ACTIVE,
+
         // semicolon after the comment to reduce merge conflicts
         ;
 
