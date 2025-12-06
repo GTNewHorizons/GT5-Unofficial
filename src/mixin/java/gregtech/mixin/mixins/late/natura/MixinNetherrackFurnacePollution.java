@@ -19,7 +19,7 @@ public abstract class MixinNetherrackFurnacePollution extends TileEntity {
     @Shadow
     public abstract boolean isBurning();
 
-    @Inject(method = "updateEntity", at = @At("TAIL"))
+    @Inject(method = "updateEntity", at = @At("RETURN"))
     private void gt5u$addPollution(CallbackInfo ci) {
         if (isBurning()) {
             furnaceAddPollutionOnUpdate(
