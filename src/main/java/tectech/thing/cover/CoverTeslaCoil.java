@@ -34,26 +34,24 @@ public class CoverTeslaCoil extends Cover {
     @Override
     public void onCoverUnload() {
         ICoverable coverable = coveredTile.get();
-        if (coverable != null && !coverable.isClientSide()) {
-            ITeslaConnectable.TeslaUtil.teslaSimpleNodeSetRemove(
-                new TeslaCoverConnection(
-                    coverable.getIGregTechTileEntityOffset(0, 0, 0),
-                    getTeslaReceptionCapability()));
+        if (coverable instanceof IGregTechTileEntity IGT && !coverable.isClientSide()) {
+            ITeslaConnectable.TeslaUtil
+                .teslaSimpleNodeSetRemove(new TeslaCoverConnection(IGT, getTeslaReceptionCapability()));
         }
     }
 
     @Override
     public void onCoverRemoval() {
         ICoverable coverable = coveredTile.get();
-        if (coverable != null) ITeslaConnectable.TeslaUtil.teslaSimpleNodeSetRemove(
-            new TeslaCoverConnection(coverable.getIGregTechTileEntityOffset(0, 0, 0), getTeslaReceptionCapability()));
+        if (coverable instanceof IGregTechTileEntity IGT) ITeslaConnectable.TeslaUtil
+            .teslaSimpleNodeSetRemove(new TeslaCoverConnection(IGT, getTeslaReceptionCapability()));
     }
 
     @Override
     public void onBaseTEDestroyed() {
         ICoverable coverable = coveredTile.get();
-        if (coverable != null) ITeslaConnectable.TeslaUtil.teslaSimpleNodeSetRemove(
-            new TeslaCoverConnection(coverable.getIGregTechTileEntityOffset(0, 0, 0), getTeslaReceptionCapability()));
+        if (coverable instanceof IGregTechTileEntity IGT) ITeslaConnectable.TeslaUtil
+            .teslaSimpleNodeSetRemove(new TeslaCoverConnection(IGT, getTeslaReceptionCapability()));
     }
 
     @Override
