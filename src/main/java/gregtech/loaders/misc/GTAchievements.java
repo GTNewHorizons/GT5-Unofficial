@@ -2,6 +2,7 @@ package gregtech.loaders.misc;
 
 import static gregtech.api.enums.Mods.Thaumcraft;
 
+import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -43,12 +44,18 @@ public class GTAchievements {
     public ConcurrentHashMap<String, Boolean> issuedAchievements;
     public int adjX = 5;
     public int adjY = 9;
+    public static final double MAX_HEIGHT_ACHIEVEMENT_COLUMN = 27.0;
+    public int achievementColumns;
 
     public GTAchievements() {
         this.achievementList = new ConcurrentHashMap<>();
         this.issuedAchievements = new ConcurrentHashMap<>();
 
-        for (GTRecipe recipe : RecipeMaps.assemblylineVisualRecipes.getAllRecipes()) {
+        Collection<GTRecipe> achievementRecipes = RecipeMaps.assemblylineVisualRecipes.getAllRecipes();
+
+        this.achievementColumns = (int) Math.ceil(achievementRecipes.size() / MAX_HEIGHT_ACHIEVEMENT_COLUMN);
+
+        for (GTRecipe recipe : achievementRecipes) {
             registerAssAchievement(recipe);
         }
 
@@ -424,16 +431,12 @@ public class GTAchievements {
                 .error("Invalid achievement registration attempt for recipe with null output", new Exception());
             return null;
         }
-        if (this.achievementList.get(
-            recipe.getOutput(0)
-                .getUnlocalizedName())
-            == null) {
+        if (this.achievementList.get(recipe.getOutput(0).getUnlocalizedName()) == null) {
             assReg++;
             return registerAchievement(
-                recipe.getOutput(0)
-                    .getUnlocalizedName(),
-                -(11 + assReg % 5),
-                ((assReg) / 5) - 8,
+                recipe.getOutput(0).getUnlocalizedName(),
+                -(11 + assReg % this.achievementColumns),
+                ((assReg) / this.achievementColumns) - 8,
                 recipe.getOutput(0),
                 AchievementList.openInventory,
                 false);
