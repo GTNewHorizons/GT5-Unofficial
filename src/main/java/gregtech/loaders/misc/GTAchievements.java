@@ -60,7 +60,8 @@ public class GTAchievements {
         for (GTRecipe recipe : achievementRecipes) {
             registerAssAchievement(recipe);
         }
-        GTLog.out.println("Registration finished. If you see some langfile entries above, feel free to add them to your lang file to fix the unlocalised entries in the GT Achievements.");
+        GTLog.out.println(
+            "Registration finished. If you see some langfile entries above, feel free to add them to your lang file to fix the unlocalised entries in the GT Achievements.");
         registerAchievement("gettingstartedwithgt", 0, 0, new ItemStack(Items.wooden_pickaxe), "", false);
         registerAchievement("crops", -4, 0, GTModHandler.getIC2Item("crop", 1L), "gettingstartedwithgt", false);
         registerAchievement("havestlead", -4, 2, ItemList.Crop_Drop_Plumbilia.get(1), "crops", false);
