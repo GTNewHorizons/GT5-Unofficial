@@ -1,5 +1,6 @@
 package gregtech.api.util;
 
+import gregtech.api.items.MetaGeneratedTool;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.inventory.InventoryCrafting;
@@ -84,13 +85,17 @@ public class GTShapedRecipe extends ShapedOreRecipe implements IGTCraftingRecipe
             if (GTModHandler.isElectricItem(rStack)) {
                 GTModHandler.dischargeElectricItem(rStack, Integer.MAX_VALUE, Integer.MAX_VALUE, true, false, true);
                 int tCharge = 0;
-                for (int i = 0; i < aGrid.getSizeInventory(); i++) tCharge += GTModHandler.dischargeElectricItem(
-                    aGrid.getStackInSlot(i),
-                    Integer.MAX_VALUE,
-                    Integer.MAX_VALUE,
-                    true,
-                    true,
-                    true);
+                for (int i = 0; i < aGrid.getSizeInventory(); i++) {
+                    ItemStack component = aGrid.getStackInSlot(i);
+                    int drained = GTModHandler.dischargeElectricItem(
+                        component,
+                        Integer.MAX_VALUE,
+                        Integer.MAX_VALUE,
+                        true,
+                        true,
+                        true);
+                    if (drained > 0 && !(component.getItem() instanceof MetaGeneratedTool)) tCharge += drained;
+                }
                 if (tCharge > 0) GTModHandler.chargeElectricItem(rStack, tCharge, Integer.MAX_VALUE, true, false);
             }
 
