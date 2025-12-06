@@ -89,7 +89,7 @@ public class BWMetaGeneratedBlocksCasing extends BWMetaGeneratedBlocks
         Werkstoff.werkstoffHashSet.stream()
             .filter(
                 pMaterial -> Werkstoff.Types.BIOLOGICAL.equals(pMaterial.getType())
-                    && pMaterial.hasGenerationFeature(OrePrefixes.blockCasing)
+                    && pMaterial.hasItemType(OrePrefixes.blockCasing)
                     || pMaterial.doesOreDictedItemExists(OrePrefixes.plate)
                         && pMaterial.doesOreDictedItemExists(OrePrefixes.screw)
                         && pMaterial.doesOreDictedItemExists(OrePrefixes.plateDouble)
