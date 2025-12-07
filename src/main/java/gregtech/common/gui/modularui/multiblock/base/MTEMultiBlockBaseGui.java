@@ -558,10 +558,10 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     protected Flow createLeftPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
         return new Row().coverChildrenWidth()
             .heightRel(1)
-            .child(createVoidExcessButton(syncManager))
-            .child(createInputSeparationButton(syncManager))
-            .child(createBatchModeButton(syncManager))
-            .child(createLockToSingleRecipeButton(syncManager))
+            .childIf(shouldDisplayVoidExcess(), createVoidExcessButton(syncManager))
+            .childIf(shouldDisplayInputSeparation(), createInputSeparationButton(syncManager))
+            .childIf(shouldDisplayBatchMode(), createBatchModeButton(syncManager))
+            .childIf(shouldDisplayRecipeLock(), createLockToSingleRecipeButton(syncManager))
             .childIf(!machineModeIcons.isEmpty(), createModeSwitchButton(syncManager));
     }
 
@@ -573,6 +573,22 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .coverChildrenWidth()
             .heightRel(1)
             .childIf(multiblock.supportsPowerPanel(), createPowerPanelButton(syncManager, parent));
+    }
+
+    protected boolean shouldDisplayVoidExcess() {
+        return true;
+    }
+
+    protected boolean shouldDisplayInputSeparation() {
+        return true;
+    }
+
+    protected boolean shouldDisplayBatchMode() {
+        return true;
+    }
+
+    protected boolean shouldDisplayRecipeLock() {
+        return true;
     }
 
     protected IWidget createVoidExcessButton(PanelSyncManager syncManager) {

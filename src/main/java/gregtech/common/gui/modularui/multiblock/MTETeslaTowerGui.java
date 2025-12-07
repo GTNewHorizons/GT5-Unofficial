@@ -103,6 +103,26 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
             .child(createHeatMapButton(syncManager, parent));
     }
 
+    @Override
+    protected boolean shouldDisplayVoidExcess() {
+        return false;
+    }
+
+    @Override
+    protected boolean shouldDisplayInputSeparation() {
+        return false;
+    }
+
+    @Override
+    protected boolean shouldDisplayBatchMode() {
+        return false;
+    }
+
+    @Override
+    protected boolean shouldDisplayRecipeLock() {
+        return false;
+    }
+
     private IWidget createChartButton(PanelSyncManager syncManager, ModularPanel parent) {
         IPanelHandler chartPanel = syncManager.panel("chart", (a, b) -> openChartPanel(syncManager, parent), true);
         return new ButtonWidget<>().onMousePressed(d -> {
