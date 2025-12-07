@@ -3158,6 +3158,33 @@ public class ResearchStationAssemblyLine implements Runnable {
             10 * SECONDS,
             (int) TierEU.RECIPE_UIV);
 
+        // TODO: (deprecated, remove after 2.9) Gravitational Lens
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
+            new ItemStack(BlockQuantumGlass.INSTANCE, 1),
+            48_000_000,
+            8_192,
+            (int) TierEU.RECIPE_UMV,
+            64,
+            new Object[] { new ItemStack(BlockQuantumGlass.INSTANCE, 8),
+                new ItemStack(ItemRegistry.bw_glasses[1], 8, 0), GregtechItemList.ForceFieldGlass.get(8),
+                new ItemStack(
+                    Particle.getBaseParticle(Particle.GRAVITON)
+                        .getItem(),
+                    32),
+                getItemContainer("RadoxPolymerLens").get(6), getItemContainer("ChromaticLens").get(6),
+                getItemContainer("MysteriousCrystalLens").get(6),
+                WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.lens, 6),
+                MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getPlateDense(36),
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Creon, 6),
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Mellion, 6),
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.SixPhasedCopper, 6) },
+            new FluidStack[] { MaterialsElements.STANDALONE.RHUGNOR.getFluidStack(16 * INGOTS),
+                Materials.Creon.getMolten(16 * INGOTS),
+                MaterialsElements.STANDALONE.ADVANCED_NITINOL.getFluidStack(16 * STACKS) },
+            new ItemStack(BlockGodforgeGlass.INSTANCE, 1),
+            10 * SECONDS,
+            (int) TierEU.RECIPE_UIV);
+
         // Graviton Modulator 1
         TTRecipeAdder.addResearchableAssemblylineRecipe(
             GregtechItemList.Battery_Gem_4.get(1),

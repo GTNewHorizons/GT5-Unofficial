@@ -6780,6 +6780,29 @@ public class AssemblerRecipes implements Runnable {
             .eut(TierEU.RECIPE_UHV)
             .addTo(assemblerRecipes);
 
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                new ItemStack(LanthItemList.NIOBIUM_CAVITY_CASING, 8),
+                GTOreDictUnificator.get(OrePrefixes.circuit.get(Materials.UHV), 2),
+                ItemRefer.Field_Restriction_Coil_T1.get(1))
+            .itemOutputs(ItemList.BeamStabilizer.get(1))
+            .fluidInputs(Materials.Grade5PurifiedWater.getFluid(2000L))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_UHV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                new ItemStack(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 4),
+                GTUtility.copyAmount(8, LanthItemList.BEAMLINE_PIPE),
+                MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getPlateDense(1),
+                GTOreDictUnificator.get(OrePrefixes.circuit.get(Materials.UHV), 2))
+            .itemOutputs(ItemList.BeamMirror.get(1))
+            .fluidInputs(Materials.Grade5PurifiedWater.getFluid(2000L))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_UHV)
+            .addTo(assemblerRecipes);
+
     }
 
     public void withIC2NuclearControl() {
