@@ -1960,6 +1960,11 @@ public class Textures {
         OVERLAY_FRONT_LHC_COLLIDER,
         OVERLAY_FRONT_BEAMCRAFTER,
         OVERLAY_FRONT_BEAMCRAFTER_ACTIVE,
+        OVERLAY_FRONT_BEAM_MIRROR,
+        OVERLAY_FRONT_BEAM_SPLITTER_ACTIVE,
+        OVERLAY_FRONT_BEAM_SPLITTER,
+        OVERLAY_FRONT_BEAM_STABILIZER_ACTIVE,
+        OVERLAY_FRONT_BEAM_STABILIZER,
 
         // semicolon after the comment to reduce merge conflicts
         ;
