@@ -3144,10 +3144,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             64,
             new Object[] { new ItemStack(BlockQuantumGlass.INSTANCE, 8),
                 new ItemStack(ItemRegistry.bw_glasses[1], 8, 0), GregtechItemList.ForceFieldGlass.get(8),
-                new ItemStack(
-                    Particle.getBaseParticle(Particle.GRAVITON)
-                        .getItem(),
-                    32),
+                ItemList.StableBosonContainmentUnit.get(4),
                 getItemContainer("RadoxPolymerLens").get(6), getItemContainer("ChromaticLens").get(6),
                 getItemContainer("MysteriousCrystalLens").get(6),
                 WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.lens, 6),

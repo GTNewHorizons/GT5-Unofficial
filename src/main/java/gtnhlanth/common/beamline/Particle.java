@@ -39,7 +39,7 @@ public enum Particle {
     OMEGA(true, 14, 1672.45f, 0, "omega", "\u03A9 \u207B", -1, null, 60, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_OMEGA),
     // Mesons
     ETA(false, 15, 547.86f, 0, "eta", "\u03B7", 0, null, 400, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_ETA),
-    JPSI(false, 16, 3096.92f, 0, "j/psi", "J/\u03C8", 0, null, 50, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_JPSI),
+    JPSI(false, 16, 3096.92f, 0, "jpsi", "J/\u03C8", 0, null, 50, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_JPSI),
     UPSILON(false, 17, 9460.3f, 0, "upsilon", "\u03A5", 0, null, 40, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_UPSILON),
     // Nuclei
     ALPHA(true, 18, 3727.38f, 8000, "alpha", "\u03B1", 2, null, 0, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_ALPHA);
