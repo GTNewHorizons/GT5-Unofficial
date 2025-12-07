@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import javax.annotation.Nullable;
 
+import gregtech.api.enums.TickTime;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -188,6 +189,7 @@ public class MTEBeamSplitter extends MTEExtendedPowerMultiBlockBase<MTEBeamSplit
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_BEAM_SPLITTER_ACTIVE)
                         .extFacing()
+                        .glow()
                         .build()};
             } else {
                 rTexture = new ITexture[] {
@@ -258,6 +260,7 @@ public class MTEBeamSplitter extends MTEExtendedPowerMultiBlockBase<MTEBeamSplit
 
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
+        this.mMaxProgresstime = TickTime.SECOND;
         BeamInformation inputInfo = this.getInputParticle();
 
         if (inputInfo == null || inputInfo.getRate() == 0) return CheckRecipeResultRegistry.NO_RECIPE;
