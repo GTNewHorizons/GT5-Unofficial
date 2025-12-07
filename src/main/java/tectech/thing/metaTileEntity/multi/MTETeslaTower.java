@@ -94,6 +94,13 @@ import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTe
 public class MTETeslaTower extends TTMultiblockBase
     implements ISurvivalConstructable, ITeslaConnectable, IParametrized {
 
+    private static final String PARAMETER_HYSTERESIS_LOW = "hysteresisLow";
+    private static final String PARAMETER_HYSTERESIS_HIGH = "hysteresisHigh";
+    private static final String PARAMETER_TRANSFER_RADIUS = "transferRadius";
+    private static final String PARAMETER_OUTPUT_VOLTAGE = "outputVoltage";
+    private static final String PARAMETER_OUTPUT_CURRENT = "outputCurrent";
+    private static final String PARAMETER_OVERDRIVE = "overdrive";
+
     // Interface fields
     private final Multimap<Integer, ITeslaConnectableSimple> teslaNodeMap = MultimapBuilder.treeKeys()
         .linkedListValues()
@@ -378,43 +385,44 @@ public class MTETeslaTower extends TTMultiblockBase
     public void initParameters() {
 
         parameterMap.put(
-            "hysteresisLow",
+            PARAMETER_HYSTERESIS_LOW,
             new DoubleParameter(
                 0.25,
                 "gt.blockmachines.multimachine.tm.teslaCoil.cfgi.0",
                 () -> 0.05,
-                () -> (Double) parameterMap.get("hysteresisHigh")
+                () -> (Double) parameterMap.get(PARAMETER_HYSTERESIS_HIGH)
                     .getValue()));
         parameterMap.put(
-            "hysteresisHigh",
+            PARAMETER_HYSTERESIS_HIGH,
             new DoubleParameter(
                 0.75,
                 "gt.blockmachines.multimachine.tm.teslaCoil.cfgi.1",
-                () -> (Double) parameterMap.get("hysteresisLow")
+                () -> (Double) parameterMap.get(PARAMETER_HYSTERESIS_LOW)
                     .getValue(),
                 () -> 0.95));
         parameterMap.put(
-            "transferRadius",
+            PARAMETER_TRANSFER_RADIUS,
             new IntegerParameter(
                 32,
                 "gt.blockmachines.multimachine.tm.teslaCoil.cfgi.2",
                 () -> 1,
                 () -> Integer.MAX_VALUE));
         parameterMap.put(
-            "outputVoltage",
+            PARAMETER_OUTPUT_VOLTAGE,
             new IntegerParameter(
                 -1,
                 "gt.blockmachines.multimachine.tm.teslaCoil.cfgi.5",
                 () -> -1,
                 () -> Integer.MAX_VALUE));
         parameterMap.put(
-            "outputCurrent",
+            PARAMETER_OUTPUT_CURRENT,
             new IntegerParameter(
                 -1,
                 "gt.blockmachines.multimachine.tm.teslaCoil.cfgi.6",
                 () -> -1,
                 () -> (int) outputCurrentMax));
-        parameterMap.put("overdrive", new BooleanParameter(false, "gt.blockmachines.multimachine.tm.teslaCoil.cfgi.8"));
+        parameterMap
+            .put(PARAMETER_OVERDRIVE, new BooleanParameter(false, "gt.blockmachines.multimachine.tm.teslaCoil.cfgi.8"));
     }
 
     private float getRangeMulti(int mTier, int vTier) {
@@ -740,28 +748,28 @@ public class MTETeslaTower extends TTMultiblockBase
     public void saveParameters(NBTTagCompound nbt) {
         nbt.setLong("eEnergyCapacity", energyCapacity);
         nbt.setDouble(
-            "hysteresisLow",
-            (double) parameterMap.get("hysteresisLow")
+            PARAMETER_HYSTERESIS_LOW,
+            (double) parameterMap.get(PARAMETER_HYSTERESIS_LOW)
                 .getValue());
         nbt.setDouble(
-            "hysteresisHigh",
-            (double) parameterMap.get("hysteresisHigh")
+            PARAMETER_HYSTERESIS_HIGH,
+            (double) parameterMap.get(PARAMETER_HYSTERESIS_HIGH)
                 .getValue());
         nbt.setInteger(
-            "transferRadius",
-            (int) parameterMap.get("transferRadius")
+            PARAMETER_TRANSFER_RADIUS,
+            (int) parameterMap.get(PARAMETER_TRANSFER_RADIUS)
                 .getValue());
         nbt.setInteger(
-            "outputVoltage",
-            (int) parameterMap.get("outputVoltage")
+            PARAMETER_OUTPUT_VOLTAGE,
+            (int) parameterMap.get(PARAMETER_OUTPUT_VOLTAGE)
                 .getValue());
         nbt.setInteger(
-            "outputCurrent",
-            (int) parameterMap.get("outputCurrent")
+            PARAMETER_OUTPUT_CURRENT,
+            (int) parameterMap.get(PARAMETER_OUTPUT_CURRENT)
                 .getValue());
         nbt.setBoolean(
-            "overdrive",
-            (boolean) parameterMap.get("overdrive")
+            PARAMETER_OVERDRIVE,
+            (boolean) parameterMap.get(PARAMETER_OVERDRIVE)
                 .getValue());
     }
 
@@ -775,26 +783,36 @@ public class MTETeslaTower extends TTMultiblockBase
 
     @Override
     public void loadParameters(NBTTagCompound nbt) {
-        if (!parameterMap.containsKey("hysteresisHigh")) {
+        if (!parameterMap.containsKey(PARAMETER_HYSTERESIS_HIGH)) {
             loadLegacyParameters(nbt);
             return;
         }
-        ((DoubleParameter) parameterMap.get("hysteresisLow")).setValue(nbt.getDouble("hysteresisLow"));
-        ((DoubleParameter) parameterMap.get("hysteresisHigh")).setValue(nbt.getDouble("hysteresisHigh"));
-        ((IntegerParameter) parameterMap.get("transferRadius")).setValue(nbt.getInteger("transferRadius"));
-        ((IntegerParameter) parameterMap.get("outputVoltage")).setValue(nbt.getInteger("outputVoltage"));
-        ((IntegerParameter) parameterMap.get("outputCurrent")).setValue(nbt.getInteger("outputCurrent"));
-        ((BooleanParameter) parameterMap.get("overdrive")).setValue(nbt.getBoolean("overdrive"));
+        ((DoubleParameter) parameterMap.get(PARAMETER_HYSTERESIS_LOW))
+            .setValue(nbt.getDouble(PARAMETER_HYSTERESIS_LOW));
+        ((DoubleParameter) parameterMap.get(PARAMETER_HYSTERESIS_HIGH))
+            .setValue(nbt.getDouble(PARAMETER_HYSTERESIS_HIGH));
+        ((IntegerParameter) parameterMap.get(PARAMETER_TRANSFER_RADIUS))
+            .setValue(nbt.getInteger(PARAMETER_TRANSFER_RADIUS));
+        ((IntegerParameter) parameterMap.get(PARAMETER_OUTPUT_VOLTAGE))
+            .setValue(nbt.getInteger(PARAMETER_OUTPUT_VOLTAGE));
+        ((IntegerParameter) parameterMap.get(PARAMETER_OUTPUT_CURRENT))
+            .setValue(nbt.getInteger(PARAMETER_OUTPUT_CURRENT));
+        ((BooleanParameter) parameterMap.get(PARAMETER_OVERDRIVE)).setValue(nbt.getBoolean(PARAMETER_OVERDRIVE));
     }
 
     private void loadLegacyParameters(NBTTagCompound nbt) {
         NBTTagCompound oldParams = nbt.getCompoundTag("eParamsInD");
-        ((DoubleParameter) parameterMap.get("hysteresisLow")).setValue(oldParams.getDouble(String.valueOf(0)));
-        ((DoubleParameter) parameterMap.get("hysteresisHigh")).setValue(oldParams.getDouble(String.valueOf(1)));
-        ((IntegerParameter) parameterMap.get("transferRadius")).setValue((int) oldParams.getDouble(String.valueOf(2)));
-        ((IntegerParameter) parameterMap.get("outputVoltage")).setValue((int) oldParams.getDouble(String.valueOf(4)));
-        ((IntegerParameter) parameterMap.get("outputCurrent")).setValue((int) oldParams.getDouble(String.valueOf(5)));
-        ((BooleanParameter) parameterMap.get("overdrive")).setValue(oldParams.getDouble(String.valueOf(8)) != 0);
+        ((DoubleParameter) parameterMap.get(PARAMETER_HYSTERESIS_LOW)).setValue(oldParams.getDouble(String.valueOf(0)));
+        ((DoubleParameter) parameterMap.get(PARAMETER_HYSTERESIS_HIGH))
+            .setValue(oldParams.getDouble(String.valueOf(1)));
+        ((IntegerParameter) parameterMap.get(PARAMETER_TRANSFER_RADIUS))
+            .setValue((int) oldParams.getDouble(String.valueOf(2)));
+        ((IntegerParameter) parameterMap.get(PARAMETER_OUTPUT_VOLTAGE))
+            .setValue((int) oldParams.getDouble(String.valueOf(4)));
+        ((IntegerParameter) parameterMap.get(PARAMETER_OUTPUT_CURRENT))
+            .setValue((int) oldParams.getDouble(String.valueOf(5)));
+        ((BooleanParameter) parameterMap.get(PARAMETER_OVERDRIVE))
+            .setValue(oldParams.getDouble(String.valueOf(8)) != 0);
     }
 
     @Override
@@ -814,9 +832,9 @@ public class MTETeslaTower extends TTMultiblockBase
         // Hysteresis based ePowerPass setting
         float energyFrac = (float) getEUVar() / energyCapacity;
 
-        if (!ePowerPass && energyFrac > getParamValue("hysteresisHigh", Double.class)) {
+        if (!ePowerPass && energyFrac > getParamValue(PARAMETER_HYSTERESIS_HIGH, Double.class)) {
             ePowerPass = true;
-        } else if (ePowerPass && energyFrac < getParamValue("hysteresisLow", Double.class)) {
+        } else if (ePowerPass && energyFrac < getParamValue(PARAMETER_HYSTERESIS_LOW, Double.class)) {
             ePowerPass = false;
         }
 
@@ -964,12 +982,12 @@ public class MTETeslaTower extends TTMultiblockBase
 
     @Override
     public int getTeslaTransmissionRange() {
-        return (int) (getParamValue("transferRadius", Integer.class) * getRangeMulti(mTier, vTier));
+        return (int) (getParamValue(PARAMETER_TRANSFER_RADIUS, Integer.class) * getRangeMulti(mTier, vTier));
     }
 
     @Override
     public boolean isOverdriveEnabled() {
-        return getParamValue("overdrive", Boolean.class);
+        return getParamValue(PARAMETER_OVERDRIVE, Boolean.class);
     }
 
     @Override
@@ -990,7 +1008,7 @@ public class MTETeslaTower extends TTMultiblockBase
 
     @Override
     public long getTeslaOutputVoltage() {
-        int outputVoltageParameter = getParamValue("outputVoltage", Integer.class);
+        int outputVoltageParameter = getParamValue(PARAMETER_OUTPUT_VOLTAGE, Integer.class);
         if (outputVoltageParameter > 0) {
             return min(outputVoltageMax, outputVoltageParameter);
         }
@@ -999,7 +1017,7 @@ public class MTETeslaTower extends TTMultiblockBase
 
     @Override
     public long getTeslaOutputCurrent() {
-        int outputCurrentParameter = getParamValue("outputCurrent", Integer.class);
+        int outputCurrentParameter = getParamValue(PARAMETER_OUTPUT_CURRENT, Integer.class);
         if (outputCurrentParameter > 0) {
             return min(outputCurrentMax, outputCurrentParameter);
         }
