@@ -6,21 +6,19 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
-import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.drawable.text.TextRenderer;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.SingleChildWidget;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
+import gregtech.api.gui.widgets.CommonWidgets;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -155,7 +153,7 @@ public final class GTBaseGuiBuilder {
             panel.bindPlayerInventory();
         }
         if (doesAddTitle && NetworkUtils.isClient()) {
-            panel.child(createTitle());
+            panel.child(CommonWidgets.createMachineTitle(mte, width));
         }
         if (doesAddCoverTabs) {
             panel.child(createCoverTabs());
@@ -168,34 +166,6 @@ public final class GTBaseGuiBuilder {
         }
         syncManager.addCloseListener($ -> mte.markDirty());
         return panel;
-    }
-
-    private IWidget createTitle() {
-        String title = mte.getLocalName();
-
-        int borderRadius = 5;
-        int maxWidth = width - borderRadius * 2;
-
-        int titleWidth = TextRenderer.getFontRenderer()
-            .getStringWidth(title);
-        int widgetWidth = Math.min(maxWidth, titleWidth);
-
-        int rows = (int) Math.ceil((double) titleWidth / maxWidth);
-        int heightPerRow = (int) (IKey.renderer.getFontHeight());
-        int height = heightPerRow * rows;
-
-        return new SingleChildWidget<>().coverChildren()
-            .topRelAnchor(0, 1)
-            .widgetTheme(GTWidgetThemes.BACKGROUND_TITLE)
-            .child(
-                IKey.str(title)
-                    .asWidget()
-                    .size(widgetWidth, height)
-                    .widgetTheme(GTWidgetThemes.TEXT_TITLE)
-                    .marginLeft(5)
-                    .marginRight(5)
-                    .marginTop(5)
-                    .marginBottom(1));
     }
 
     private IWidget createCoverTabs() {

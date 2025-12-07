@@ -311,6 +311,12 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     @Override
+    public boolean isIOSlot(int slot) {
+        // Ignore output slots, special slots, battery slots, and circuit slots
+        return slot >= getInputSlot() && slot < getInputSlot() + mInputSlotCount;
+    }
+
+    @Override
     public boolean isFacingValid(ForgeDirection facing) {
         // Either mMainFacing or mMainFacing is horizontal
         return ((facing.flag | mMainFacing.flag) & ~(UP.flag | DOWN.flag | UNKNOWN.flag)) != 0;
