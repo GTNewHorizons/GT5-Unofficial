@@ -2,6 +2,7 @@ package gregtech.common.gui.modularui.widget;
 
 import static org.lwjgl.opengl.GL11.GL_LINE_STRIP;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -24,6 +25,7 @@ import com.gtnewhorizons.modularui.api.GlStateManager;
 
 public class LineChartWidget extends Widget<LineChartWidget> {
 
+    private DecimalFormat formatter = new DecimalFormat();
     private int lineMarginLeft = 2;
     private int lineMarginTop = 11;
     private int lineMarginRight = 0;
@@ -37,6 +39,11 @@ public class LineChartWidget extends Widget<LineChartWidget> {
     private boolean lowerBoundAlwaysZero = false;
 
     private GenericListSyncHandler<Double> dataSyncHandler;
+
+    public LineChartWidget formatter(DecimalFormat formatter) {
+        this.formatter = formatter;
+        return this;
+    }
 
     public LineChartWidget lineMarginLeft(int lineMarginLeft) {
         this.lineMarginLeft = lineMarginLeft;

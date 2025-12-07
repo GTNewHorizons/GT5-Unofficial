@@ -3,6 +3,7 @@ package gregtech.common.gui.modularui.multiblock;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 import static org.lwjgl.opengl.GL11.GL_LINE_STRIP;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +17,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
 import org.jetbrains.annotations.NotNull;
+import org.lwjgl.opengl.GL11;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
@@ -49,7 +51,6 @@ import gregtech.common.gui.modularui.multiblock.base.TTMultiblockBaseGui;
 import gregtech.common.gui.modularui.synchandler.TeslaNodeData;
 import gregtech.common.gui.modularui.synchandler.TeslaNodeListSyncHandler;
 import gregtech.common.gui.modularui.widget.LineChartWidget;
-import org.lwjgl.opengl.GL11;
 import tectech.thing.metaTileEntity.multi.MTETeslaTower;
 
 public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
@@ -154,7 +155,6 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
             }
         }.size(this.getBasePanelWidth(), this.getBasePanelHeight())
             .relative(parent)
-            .topRel(0)
             .leftRel(0, 0, 0)
             .padding(4)
             .child(
@@ -183,6 +183,7 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
                         roll < specialThemeRate ? GTWidgetThemes.TESLA_TOWER_CHART_SPECIAL
                             : GTWidgetThemes.TESLA_TOWER_CHART)
                     .chartUnit("A")
+                    .formatter(new DecimalFormat("0.0#"))
                     .marginBottom(2)
                     .sizeRel(1));
     }
@@ -250,7 +251,13 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
 
     private @NotNull ModularPanel openHeatMapPanel(PanelSyncManager syncManager, ModularPanel parent) {
         int borderRadius = 4;
-        return new ModularPanel("heatMap").relative(parent)
+        return new ModularPanel("heatMap") {
+
+            @Override
+            public boolean isDraggable() {
+                return false;
+            }
+        }.relative(parent)
             .topRel(0)
             .rightRel(1, 0, 0)
             .size(gridSquareSize * gridChunkSize + borderRadius * 2)
