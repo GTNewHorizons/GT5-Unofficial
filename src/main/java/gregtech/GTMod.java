@@ -56,6 +56,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
+import gregtech.api.metatileentity.DynamicColors; // this is the custom class
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.Textures;
@@ -281,6 +282,7 @@ public class GTMod {
         }
 
         GTPreLoad.getConfiguration(event.getModConfigurationDirectory());
+        DynamicColors.init();
         GTPreLoad.createLogFiles(
             event.getModConfigurationDirectory()
                 .getParentFile());
