@@ -5,6 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.cleanroommc.modularui.screen.viewport.GuiContext;
+import com.cleanroommc.modularui.theme.WidgetTheme;
+import com.gtnewhorizons.angelica.glsm.GLStateManager;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
@@ -45,13 +49,20 @@ import gregtech.common.gui.modularui.multiblock.base.TTMultiblockBaseGui;
 import gregtech.common.gui.modularui.synchandler.TeslaNodeData;
 import gregtech.common.gui.modularui.synchandler.TeslaNodeListSyncHandler;
 import gregtech.common.gui.modularui.widget.LineChartWidget;
+import org.lwjgl.opengl.GL11;
 import tectech.thing.metaTileEntity.multi.MTETeslaTower;
+
+import static org.lwjgl.opengl.GL11.GL_ALPHA;
+import static org.lwjgl.opengl.GL11.GL_ALPHA_TEST;
+import static org.lwjgl.opengl.GL11.GL_BLEND;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
+import static org.lwjgl.opengl.GL11.GL_LINE_STRIP;
 
 public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
 
     private Map<Vec3Impl, Map<Vec3Impl, Integer>> chunkToAmpsMap = new HashMap<>();
-    private final int gridChunkSize = 17;
     private final int gridChunkRadius = 8;
+    private final int gridChunkSize = gridChunkRadius * 2 + 1;
 
     public MTETeslaTowerGui(MTETeslaTower multiblock) {
         super(multiblock);
@@ -149,7 +160,7 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
         }.coverChildren()
             .relative(parent)
             .topRel(0)
-            .rightRel(1, 0, 0)
+            .leftRel(0, 0, 0)
             .padding(4)
             .child(
                 Flow.column()
@@ -239,15 +250,18 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
     }
 
     private @NotNull ModularPanel openHeatMapPanel(PanelSyncManager syncManager, ModularPanel parent) {
+        int borderRadius = 4;
         return new ModularPanel("heatMap").relative(parent)
             .topRel(0)
             .rightRel(1, 0, 0)
-            .size(17 * 8, 17 * 8)
-            .child(createNodeGrid(syncManager));
+            .size(8 * gridChunkSize + borderRadius * 2)
+            .child(createNodeGrid(syncManager, borderRadius));
     }
 
-    private IWidget createNodeGrid(PanelSyncManager syncManager) {
-        com.cleanroommc.modularui.widget.ParentWidget<?> parent = new ParentWidget<>().size(17 * 8, 17 * 8);
+    private IWidget createNodeGrid(PanelSyncManager syncManager, int borderRadius) {
+        com.cleanroommc.modularui.widget.ParentWidget<?> parent = new ParentWidget<>().size(gridChunkSize * 8, gridChunkSize * 8)
+            .marginTop(borderRadius)
+            .marginLeft(borderRadius);
 
         for (int i = 0; i < gridChunkSize; i++) {
             for (int j = 0; j < gridChunkSize; j++) {
@@ -259,14 +273,31 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
         return parent;
     }
 
-    private Widget<?> createMapSlot(PanelSyncManager syncManager, int i, int j) {
+    private Widget<?> createMapSlot(PanelSyncManager syncManager, int gridX, int gridY) {
 
-        return new DynamicDrawable(() -> getDrawableAt(syncManager, i, j)).asWidget()
+        return new DynamicDrawable(() -> getDrawableAt(syncManager, gridX, gridY)).asWidget()
+            .background(this.emptyRectangle())
             .size(8)
-            .tooltipDynamic(t -> addTooltip(t, i, j))
+            .tooltipDynamic(t -> addTooltip(t, gridX, gridY))
             .tooltipAutoUpdate(true);
     }
 
+    private IDrawable emptyRectangle() {
+        return (context, x, y, width, height, widgetTheme) -> {
+            final Tessellator tessellator = Tessellator.instance;
+            tessellator.startDrawing(GL_LINE_STRIP);
+            tessellator.setColorOpaque(0, 0, 0);
+
+            int z = context.getCurrentDrawingZ();
+            tessellator.addVertex(x, y, z);
+            tessellator.addVertex(x+width, y, z);
+            tessellator.addVertex(x+width, y+height, z);
+            tessellator.addVertex(x, y+height, z);
+            tessellator.addVertex(x, y, z);
+            tessellator.draw();
+
+        };
+    }
     private IDrawable getDrawableAt(PanelSyncManager syncManager, int i, int j) {
         Map<Vec3Impl, Integer> ampsAtChunk = chunkToAmpsMap.get(new Vec3Impl(i, 0, j));
 
@@ -295,8 +326,21 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
             .size(8);
     }
 
-    private void addTooltip(RichTooltip t, int i, int j) {
-        Map<Vec3Impl, Integer> ampsAtChunk = chunkToAmpsMap.get(new Vec3Impl(i, 0, j));
+    private void addTooltip(RichTooltip t, int gridX, int gridY) {
+        IGregTechTileEntity base = multiblock.getBaseMetaTileEntity();
+        World world = base.getWorld();
+
+        Chunk multiblockChunk = world.getChunkFromBlockCoords(base.getXCoord(), base.getZCoord());
+        int chunkX = multiblockChunk.xPosition + gridX - gridChunkRadius;
+        int chunkZ = multiblockChunk.zPosition + gridY - gridChunkRadius;
+        t.addLine(String.format("Chunk: %d, %d", chunkX, chunkZ));
+
+        boolean isGridCenter = gridX == gridChunkRadius && gridY == gridChunkRadius;
+        if(isGridCenter){
+            t.addLine("Tesla Tower here!");
+        }
+
+        Map<Vec3Impl, Integer> ampsAtChunk = chunkToAmpsMap.get(new Vec3Impl(gridX, 0, gridY));
         if (ampsAtChunk == null) {
             return;
         }
@@ -306,8 +350,6 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
             .orElse(0);
         t.addLine(totalAmps + "A");
 
-        World world = multiblock.getBaseMetaTileEntity()
-            .getWorld();
 
         Map<ItemDisplayKey, Pair<Integer, Integer>> machineGroupings = new HashMap<>();
         ampsAtChunk.forEach((coords, amps) -> {
