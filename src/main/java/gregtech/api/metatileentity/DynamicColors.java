@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public final class DynamicColors {
+
     private static final Map<String, Integer> COLORS = new HashMap<>();
 
     public static void init() {
