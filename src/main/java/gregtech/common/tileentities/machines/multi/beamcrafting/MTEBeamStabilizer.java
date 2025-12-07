@@ -4,10 +4,6 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAM_STABILIZER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAM_STABILIZER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
@@ -240,7 +236,7 @@ public class MTEBeamStabilizer extends MTEExtendedPowerMultiBlockBase<MTEBeamSta
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_BEAM_STABILIZER_ACTIVE)
                         .extFacing()
-                        .build()};
+                        .build() };
             } else {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
@@ -248,7 +244,7 @@ public class MTEBeamStabilizer extends MTEExtendedPowerMultiBlockBase<MTEBeamSta
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_BEAM_STABILIZER)
                         .extFacing()
-                        .build()};
+                        .build() };
             }
         } else {
             rTexture = new ITexture[] { Textures.BlockIcons

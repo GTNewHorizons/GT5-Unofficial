@@ -189,8 +189,7 @@ public class MTEBeamMirror
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_BEAM_MIRROR)
                     .extFacing()
-                    .build()
-            };
+                    .build() };
         } else {
             rTexture = new ITexture[] { Textures.BlockIcons
                 .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings13, 10)) };
