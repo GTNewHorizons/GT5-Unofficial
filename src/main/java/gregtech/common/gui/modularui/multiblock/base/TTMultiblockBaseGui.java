@@ -67,6 +67,7 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
         return new ItemSlot()
             .slot(
                 new ModularSlot(multiblock.inventoryHandler, multiblock.getControllerSlotIndex()).slotGroup("item_inv"))
+            .marginTop(4)
             .background(new DrawableStack(GuiTextures.SLOT_ITEM, GTGuiTextures.TT_OVERLAY_SLOT_MESH))
             .overlay(
                 GTGuiTextures.TT_CONTROLLER_SLOT_HEAT_SINK.asIcon()

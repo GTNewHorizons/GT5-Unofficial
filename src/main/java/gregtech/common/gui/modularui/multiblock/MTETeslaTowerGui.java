@@ -98,8 +98,8 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
     }
 
     @Override
-    protected Flow createPanelGap(ModularPanel parent, PanelSyncManager syncManager) {
-        return super.createPanelGap(parent, syncManager).child(createChartButton(syncManager, parent))
+    protected Flow createLeftPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
+        return super.createLeftPanelGapRow(parent, syncManager).child(createChartButton(syncManager, parent))
             .child(createHeatMapButton(syncManager, parent));
     }
 
