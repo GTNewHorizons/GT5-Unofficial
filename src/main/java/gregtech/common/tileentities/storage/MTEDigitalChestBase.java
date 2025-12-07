@@ -550,25 +550,42 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
                 @Override
                 public int insert(ImmutableItemStack stack, boolean forced) {
-                    if (getCurrentSlot() != 0) return stack.getStackSize();
+                    int remaining = stack.getStackSize();
 
-                    if (!ItemUtil.isStackEmpty(getItemStack()) && !stack.matches(getItemStack())) {
-                        return stack.getStackSize();
+                    if (getCurrentSlot() == 1) {
+                        int max = getStackSizeLimit(1, stack.toStackFast());
+
+                        ItemStack stored = mInventory[1];
+
+                        int storedAmount = stored == null ? 0 : stored.stackSize;
+
+                        int toInsert = Math.min(stack.getStackSize(), max - storedAmount);
+
+                        if (stored == null) mInventory[1] = stack.toStackFast(0);
+
+                        mInventory[1].stackSize += toInsert;
+                        remaining -= toInsert;
                     }
 
-                    int insertable = Math.min(getItemCapacity() - getItemCount(), stack.getStackSize());
+                    if (!ItemUtil.isStackEmpty(getItemStack()) && !stack.matches(getItemStack())) {
+                        return remaining;
+                    }
+
+                    int insertable = Math
+                        .min((forced ? Integer.MAX_VALUE : getItemCapacity()) - getItemCount(), remaining);
 
                     if (ItemUtil.isStackEmpty(getItemStack())) {
                         setItemStack(stack.toStack(0));
                     }
 
                     setItemCount(getItemCount() + insertable);
+                    remaining -= insertable;
 
                     meInventoryHandler.notifyListeners(insertable, getItemStack());
 
                     MTEDigitalChestBase.this.markDirty();
 
-                    return stack.getStackSize() - insertable;
+                    return remaining;
                 }
             };
         }
