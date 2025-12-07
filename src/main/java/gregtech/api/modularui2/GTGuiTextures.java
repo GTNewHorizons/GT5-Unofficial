@@ -100,6 +100,7 @@ public final class GTGuiTextures {
 
     public static final UITexture BACKGROUND_TESLA_TOWER_CHART = UITexture.builder()
         .location(MODID, "gui/tesla_tower_chart_background")
+        .nonOpaque()
         .build();
     // endregion background
 

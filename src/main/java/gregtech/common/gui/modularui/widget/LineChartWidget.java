@@ -7,15 +7,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 
 import org.lwjgl.opengl.GL11;
 
-import com.cleanroommc.modularui.api.drawable.IDrawable;
-import com.cleanroommc.modularui.drawable.DrawableStack;
-import com.cleanroommc.modularui.drawable.GuiDraw;
-import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.drawable.text.TextRenderer;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
 import com.cleanroommc.modularui.theme.WidgetTheme;
@@ -25,7 +20,6 @@ import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.SyncHandler;
 import com.cleanroommc.modularui.widget.Widget;
-import com.gtnewhorizons.angelica.glsm.GLStateManager;
 import com.gtnewhorizons.modularui.api.GlStateManager;
 
 public class LineChartWidget extends Widget<LineChartWidget> {
@@ -40,10 +34,6 @@ public class LineChartWidget extends Widget<LineChartWidget> {
     private int dataPointLimit = 0;
 
     private boolean renderMinMaxText = true;
-
-    private boolean renderTextureWithAlpha = false;
-    private float alpha = 1f;
-
     private boolean lowerBoundAlwaysZero = false;
 
     private GenericListSyncHandler<Double> dataSyncHandler;
@@ -114,27 +104,6 @@ public class LineChartWidget extends Widget<LineChartWidget> {
 
     public LineChartWidget renderMinMaxText(boolean renderMinMaxText) {
         this.renderMinMaxText = renderMinMaxText;
-        return this;
-    }
-
-    public LineChartWidget renderTextureWithAlpha() {
-        this.renderTextureWithAlpha = true;
-        return this;
-    }
-
-    public LineChartWidget renderTextureWithAlpha(float alpha) {
-        this.renderTextureWithAlpha = true;
-        this.alpha = alpha;
-        return this;
-    }
-
-    public LineChartWidget renderTextureWithAlpha(boolean renderTextureWithAlpha) {
-        this.renderTextureWithAlpha = renderTextureWithAlpha;
-        return this;
-    }
-
-    public LineChartWidget alpha(float alpha) {
-        this.alpha = alpha;
         return this;
     }
 
@@ -263,48 +232,6 @@ public class LineChartWidget extends Widget<LineChartWidget> {
 
         renderer.setPos(0, (int) (getArea().height - renderer.getFontHeight()));
         renderer.draw(minValue + chartUnit);
-    }
-
-    // Normally UITextures are rendered without blend which eliminates opacity
-    @Override
-    public void drawBackground(ModularGuiContext context, WidgetThemeEntry<?> widgetTheme) {
-        if (!renderTextureWithAlpha) {
-            super.drawBackground(context, widgetTheme);
-            return;
-        }
-        IDrawable bg = getCurrentBackground(context.getTheme(), widgetTheme);
-        if (bg instanceof DrawableStack stack) {
-            for (IDrawable drawable : stack.getDrawables()) {
-                if (drawable instanceof UITexture texture) {
-                    renderTexture(texture);
-                } else {
-                    drawable.drawAtZero(context, getArea(), widgetTheme.getTheme());
-                }
-            }
-            return;
-        }
-
-        if (bg instanceof UITexture texture) {
-            renderTexture(texture);
-            return;
-        }
-
-        super.drawBackground(context, widgetTheme);
-    }
-
-    private void renderTexture(UITexture texture) {
-        GlStateManager.enableTexture2D();
-        GlStateManager.disableAlpha();
-        GLStateManager.enableBlend();
-        GLStateManager.glColor4f(1, 1, 1, alpha);
-
-        Minecraft.getMinecraft().renderEngine.bindTexture(texture.location);
-        GuiDraw.drawTexture(0, 0, getArea().width, getArea().height, texture.u0, texture.v0, texture.u1, texture.v1, 0);
-
-        GlStateManager.disableTexture2D();
-        GlStateManager.enableAlpha();
-        GLStateManager.disableBlend();
-        GLStateManager.glColor4f(1, 1, 1, 1f);
     }
 
     private double getPointY(double data, double minValue, double maxValue) {
