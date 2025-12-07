@@ -159,6 +159,8 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
     }
 
     private IWidget createChartWidget() {
+        double specialThemeRate = 0.2;
+        double roll = Math.random();
         return new LineChartWidget()
             .syncHandler(
                 new GenericListSyncHandler<>(
@@ -169,7 +171,8 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
                     Double::equals,
                     null))
             .size(225, 150)
-            .widgetTheme(GTWidgetThemes.TESLA_TOWER_CHART)
+            .widgetTheme(
+                roll < specialThemeRate ? GTWidgetThemes.TESLA_TOWER_CHART_SPECIAL : GTWidgetThemes.TESLA_TOWER_CHART)
             .chartUnit("A")
             .marginBottom(2);
     }

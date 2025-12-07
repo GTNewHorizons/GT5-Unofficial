@@ -113,6 +113,21 @@ public final class GTWidgetThemes {
             new WidgetTheme(
                 0,
                 0,
+                new Rectangle().setColor(Color.rgb(100, 30, 80)),
+                Color.rgb(55, 255, 55),
+                0xFFFAFAFA,
+                false,
+                0))
+        .defaultHoverTheme(null)
+        .parser(noInheritanceParser())
+        .register();
+
+    public static WidgetThemeKey<WidgetTheme> TESLA_TOWER_CHART_SPECIAL = themeApi
+        .widgetThemeKeyBuilder("teslaTowerChartSpecial", WidgetTheme.class)
+        .defaultTheme(
+            new WidgetTheme(
+                0,
+                0,
                 new DrawableStack(
                     new Rectangle().setColor(Color.rgb(100, 30, 80)),
                     GTGuiTextures.BACKGROUND_TESLA_TOWER_CHART),
