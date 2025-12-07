@@ -54,6 +54,8 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     protected boolean mDisableFilter;
     private final MEItemInventoryHandler<?> meInventoryHandler = new MEItemInventoryHandler<>(this);
 
+    private int lastTrueCount;
+
     public MTEDigitalChestBase(int aID, String aName, String aNameRegional, int aTier) {
         super(
             aID,
@@ -277,7 +279,16 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                 mInventory[2] = null;
             }
 
-            meInventoryHandler.notifyListeners(count - savedCount, stack);
+            int extraCount = 0;
+            if (GTUtility.areStacksEqual(mInventory[1], stack)) {
+                extraCount = mInventory[1].stackSize;
+            } else if (stack == null || stack.stackSize <= 0) {
+                extraCount = mInventory[1].stackSize;
+                stack = mInventory[1];
+            }
+
+            meInventoryHandler.notifyListeners(count + extraCount - lastTrueCount, stack);
+            lastTrueCount = count + extraCount;
             if (count != savedCount) getBaseMetaTileEntity().markDirty();
         }
     }
@@ -363,6 +374,10 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
             setItemStack(ItemStack.loadItemStackFromNBT((NBTTagCompound) aNBT.getTag("mItemStack")));
         mVoidOverflow = aNBT.getBoolean("mVoidOverflow");
         mDisableFilter = aNBT.getBoolean("mDisableFilter");
+        lastTrueCount = getItemCount();
+        if (GTUtility.areStacksEqual(getItemStack(), mInventory[1])) {
+            lastTrueCount += mInventory[1].stackSize;
+        }
     }
 
     @Override
