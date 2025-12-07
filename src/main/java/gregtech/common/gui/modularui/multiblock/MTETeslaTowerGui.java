@@ -1,13 +1,12 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import static org.lwjgl.opengl.GL11.GL_LINE_STRIP;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.cleanroommc.modularui.screen.viewport.GuiContext;
-import com.cleanroommc.modularui.theme.WidgetTheme;
-import com.gtnewhorizons.angelica.glsm.GLStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
@@ -49,14 +48,7 @@ import gregtech.common.gui.modularui.multiblock.base.TTMultiblockBaseGui;
 import gregtech.common.gui.modularui.synchandler.TeslaNodeData;
 import gregtech.common.gui.modularui.synchandler.TeslaNodeListSyncHandler;
 import gregtech.common.gui.modularui.widget.LineChartWidget;
-import org.lwjgl.opengl.GL11;
 import tectech.thing.metaTileEntity.multi.MTETeslaTower;
-
-import static org.lwjgl.opengl.GL11.GL_ALPHA;
-import static org.lwjgl.opengl.GL11.GL_ALPHA_TEST;
-import static org.lwjgl.opengl.GL11.GL_BLEND;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
-import static org.lwjgl.opengl.GL11.GL_LINE_STRIP;
 
 public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
 
@@ -157,38 +149,42 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
             public boolean isDraggable() {
                 return false;
             }
-        }.coverChildren()
+        }.size(this.getBasePanelWidth(), this.getBasePanelHeight())
             .relative(parent)
             .topRel(0)
             .leftRel(0, 0, 0)
             .padding(4)
             .child(
                 Flow.column()
-                    .coverChildren()
+                    .sizeRel(1)
                     .child(createChartWidget())
-                    .child(createChartEditRow()));
+                    .child(createChartEditColumn()));
     }
 
     private IWidget createChartWidget() {
         double specialThemeRate = 0.2;
         double roll = Math.random();
-        return new LineChartWidget()
-            .syncHandler(
-                new GenericListSyncHandler<>(
-                    multiblock::getOutputCurrentHistory,
-                    null,
-                    PacketBuffer::readDouble,
-                    PacketBuffer::writeDouble,
-                    Double::equals,
-                    null))
-            .size(225, 150)
-            .widgetTheme(
-                roll < specialThemeRate ? GTWidgetThemes.TESLA_TOWER_CHART_SPECIAL : GTWidgetThemes.TESLA_TOWER_CHART)
-            .chartUnit("A")
-            .marginBottom(2);
+        return Flow.column()
+            .expanded()
+            .child(
+                new LineChartWidget()
+                    .syncHandler(
+                        new GenericListSyncHandler<>(
+                            multiblock::getOutputCurrentHistory,
+                            null,
+                            PacketBuffer::readDouble,
+                            PacketBuffer::writeDouble,
+                            Double::equals,
+                            null))
+                    .widgetTheme(
+                        roll < specialThemeRate ? GTWidgetThemes.TESLA_TOWER_CHART_SPECIAL
+                            : GTWidgetThemes.TESLA_TOWER_CHART)
+                    .chartUnit("A")
+                    .marginBottom(2)
+                    .sizeRel(1));
     }
 
-    private IWidget createChartEditRow() {
+    private IWidget createChartEditColumn() {
         return Flow.column()
             .widthRel(1)
             .coverChildrenHeight()
@@ -259,7 +255,8 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
     }
 
     private IWidget createNodeGrid(PanelSyncManager syncManager, int borderRadius) {
-        com.cleanroommc.modularui.widget.ParentWidget<?> parent = new ParentWidget<>().size(gridChunkSize * 8, gridChunkSize * 8)
+        com.cleanroommc.modularui.widget.ParentWidget<?> parent = new ParentWidget<>()
+            .size(gridChunkSize * 8, gridChunkSize * 8)
             .marginTop(borderRadius)
             .marginLeft(borderRadius);
 
@@ -290,14 +287,15 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
 
             int z = context.getCurrentDrawingZ();
             tessellator.addVertex(x, y, z);
-            tessellator.addVertex(x+width, y, z);
-            tessellator.addVertex(x+width, y+height, z);
-            tessellator.addVertex(x, y+height, z);
+            tessellator.addVertex(x + width, y, z);
+            tessellator.addVertex(x + width, y + height, z);
+            tessellator.addVertex(x, y + height, z);
             tessellator.addVertex(x, y, z);
             tessellator.draw();
 
         };
     }
+
     private IDrawable getDrawableAt(PanelSyncManager syncManager, int i, int j) {
         Map<Vec3Impl, Integer> ampsAtChunk = chunkToAmpsMap.get(new Vec3Impl(i, 0, j));
 
@@ -336,7 +334,7 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
         t.addLine(String.format("Chunk: %d, %d", chunkX, chunkZ));
 
         boolean isGridCenter = gridX == gridChunkRadius && gridY == gridChunkRadius;
-        if(isGridCenter){
+        if (isGridCenter) {
             t.addLine("Tesla Tower here!");
         }
 
@@ -349,7 +347,6 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
             .reduce(Integer::sum)
             .orElse(0);
         t.addLine(totalAmps + "A");
-
 
         Map<ItemDisplayKey, Pair<Integer, Integer>> machineGroupings = new HashMap<>();
         ampsAtChunk.forEach((coords, amps) -> {
