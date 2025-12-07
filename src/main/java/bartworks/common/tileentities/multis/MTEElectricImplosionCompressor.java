@@ -91,12 +91,12 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     implements ISurvivalConstructable, INEIPreviewModifier {
 
     private static final boolean pistonEnabled = !Configuration.multiblocks.disablePistonInEIC;
-    private Boolean piston = true;
+    private boolean piston = true;
     private static final SoundResource sound = SoundResource.RANDOM_EXPLODE;
     private final ArrayList<ChunkCoordinates> chunkCoordinates = new ArrayList<>(5);
     private int mBlockTier = 0;
     private int mCasing;
-    private boolean isSuccessful = true;
+    private boolean isSuccessful = false;
 
     public MTEElectricImplosionCompressor(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
