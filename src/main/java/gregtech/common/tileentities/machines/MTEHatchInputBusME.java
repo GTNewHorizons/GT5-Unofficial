@@ -596,6 +596,11 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
     }
 
     @Override
+    protected boolean useMui2() {
+        return false;
+    }
+
+    @Override
     public int getSizeInventory() {
         // Add fake slots so that multis can detect the stocked items properly
         // 0 to 15: stocked items
@@ -712,7 +717,14 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         IEnergyGrid energy;
 
         try {
-            sg = getProxy().getStorage()
+            AENetworkProxy proxy = getProxy();
+
+            // on some setup endRecipeProcessing() somehow runs before onFirstTick();
+            // test world
+            // https://discord.com/channels/181078474394566657/522098956491030558/1441490828760449124
+            if (!proxy.isReady()) proxy.onReady();
+
+            sg = proxy.getStorage()
                 .getItemInventory();
             energy = getProxy().getEnergy();
         } catch (GridAccessException e) {

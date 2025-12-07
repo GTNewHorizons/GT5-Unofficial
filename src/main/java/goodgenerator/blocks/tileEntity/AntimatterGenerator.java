@@ -32,14 +32,10 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import bartworks.common.loaders.ItemRegistry;
 import goodgenerator.blocks.structures.AntimatterStructures;
@@ -308,16 +304,16 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                     + EnumChatFormatting.GRAY
                     + " every processing cycle")
             .addInfo(EnumChatFormatting.RED + "Voids any invalid fluid!")
-            .addInfo("A cycle lasts 1 second")
+            .addInfo("A cycle lasts 5 seconds")
             .addInfo(
-                "Imbalance between " + EnumChatFormatting.AQUA
+                "An imbalance between " + EnumChatFormatting.AQUA
                     + "Antimatter"
                     + EnumChatFormatting.GRAY
                     + " and "
                     + EnumChatFormatting.GOLD
                     + "Matter"
                     + EnumChatFormatting.RED
-                    + " will decrease efficiency!"
+                    + " decreases efficiency!"
                     + EnumChatFormatting.GRAY)
             .addInfo(
                 "Efficiency formula: Min(" + EnumChatFormatting.AQUA
@@ -393,7 +389,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             .addSeparator()
             .addInfo("Switch the power destination to your wireless network with a screwdriver")
             .addInfo("Wireless mode requires Superconductor Base UMV to work")
-            .addInfo("Wireless mode uses hatch capacity limit")
+            .addInfo("Wireless mode is still limited by hatch capacity")
             .beginStructureBlock(35, 43, 35, false)
             .addCasingInfoMin("Transcendentally Reinforced Borosilicate Glass", 1008, false)
             .addCasingInfoMin("Magnetic Flux Casing", 4122, false)
@@ -537,46 +533,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     protected float efficiencyCache;
     protected float avgEffCache;
     protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
-
-    @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        super.drawTexts(screenElements, inventorySlot);
-
-        screenElements
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector.translateToLocal("gui.AntimatterGenerator.0") + ": "
-                            + EnumChatFormatting.BLUE
-                            + GTUtility.scientificFormat(energyProducedCache)
-                            + EnumChatFormatting.WHITE
-                            + " EU")
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get()))
-            .widget(new FakeSyncWidget.LongSyncer(this::getEnergyProduced, val -> energyProducedCache = val))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector.translateToLocal("gui.AntimatterGenerator.1") + ": "
-                            + EnumChatFormatting.RED
-                            + numberFormat.format(Math.ceil(efficiencyCache * 100))
-                            + EnumChatFormatting.WHITE
-                            + " %")
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get()))
-            .widget(new FakeSyncWidget.FloatSyncer(this::getEfficiency, val -> efficiencyCache = val))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector.translateToLocal("gui.AntimatterGenerator.1") + ": ⟨ "
-                            + EnumChatFormatting.RED
-                            + numberFormat.format(Math.ceil(avgEffCache * 100))
-                            + EnumChatFormatting.WHITE
-                            + " % ⟩₁₀")
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get()))
-            .widget(new FakeSyncWidget.FloatSyncer(this::getAvgEfficiency, val -> avgEffCache = val));
-    }
 
     @Override
     public IStructureDefinition<AntimatterGenerator> getStructureDefinition() {
