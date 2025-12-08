@@ -106,6 +106,7 @@ import gregtech.common.items.PropolisType;
 import gregtech.loaders.misc.bees.GTAlleleEffect;
 import gregtech.loaders.misc.bees.GTFlowers;
 import gtnhlanth.common.register.WerkstoffMaterialPool;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Bride Class for Lambdas
@@ -1275,7 +1276,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         tMutation.addMutationCondition(new GTBees.BiomeIDMutationCondition(9, "END Biome")); // sky end biome
     }),
 
-    ESSENTIA(GTBranchDefinition.THAUMIC, "Essentia", true, new Color(0x7A007A), new Color(0xFFFFFF), beeSpecies -> {
+    ESSENTIA(GTBranchDefinition.THAUMIC, "Essentia", "Reanimus", true, new Color(0x7A007A), new Color(0xFFFFFF), beeSpecies -> {
         beeSpecies.addProduct(GTModHandler.getModItem(MagicBees.ID, "miscResources", 1, 3), 0.20f);
         beeSpecies.setHumidity(EnumHumidity.NORMAL);
         beeSpecies.setTemperature(EnumTemperature.NORMAL);
@@ -2755,6 +2756,38 @@ public enum GTBeeDefinition implements IBeeDefinition {
         String description = "for.description." + lowercaseName;
         String name = "for.bees.species." + lowercaseName;
         GTLanguageManager.addStringLocalization("for.bees.species." + lowercaseName, species);
+
+        String authority = GTLanguageManager.getTranslation("for.bees.authority." + lowercaseName);
+        if (authority.equals("for.bees.authority." + lowercaseName)) {
+            authority = "GTNH";
+        }
+        this.branch = branch;
+        this.species = new GTAlleleBeeSpecies(
+            uid,
+            dominant,
+            name,
+            authority,
+            description,
+            branch.getBranch(),
+            binomial,
+            primary,
+            secondary);
+    }
+
+    GTBeeDefinition(GTBranchDefinition branch, String binomial, String locName, boolean dominant, Color primary,
+        Color secondary, Consumer<GTAlleleBeeSpecies> aSpeciesProperties, Consumer<IAllele[]> aAlleles,
+        Consumer<GTBeeDefinition> aMutations) {
+        this.mAlleles = aAlleles;
+        this.mMutations = aMutations;
+        this.mSpeciesProperties = aSpeciesProperties;
+        String lowercaseName = this.toString()
+            .toLowerCase(Locale.ENGLISH);
+        String species = WordUtils.capitalize(lowercaseName);
+
+        String uid = "gregtech.bee.species" + species;
+        String description = "for.description." + lowercaseName;
+        String name = "for.bees.species." + lowercaseName;
+        GTLanguageManager.addStringLocalization("for.bees.species." + lowercaseName, locName);
 
         String authority = GTLanguageManager.getTranslation("for.bees.authority." + lowercaseName);
         if (authority.equals("for.bees.authority." + lowercaseName)) {
