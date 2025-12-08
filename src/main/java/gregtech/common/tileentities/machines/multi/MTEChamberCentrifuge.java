@@ -601,7 +601,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 amountToDrain = GTUtility.getTier(recipe.mEUt) * 10;
-                if (!checkFluid(7 * amountToDrain)) return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");
+                if (!checkFluid(5 * amountToDrain)) return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");
                 if (mode == 0.0 && GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt) < 3)
                     return CheckRecipeResultRegistry.NO_RECIPE;
                 if (mode == 2.0 && !tier2Fluid) return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");
@@ -679,18 +679,12 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         return sumRotorLevels;
     }
 
-    private boolean checkFluid(int amount) // checks if 5 seconds worth of fluid is found in ANY of the machines input
-    // hatches
-    {
+    private boolean checkFluid(int amount) {
         // checks for fluid in hatch, does not drain it.
-        FluidStack tFluid = tier2Fluid ? Materials.BiocatalyzedPropulsionFluid.getFluid(amount)
+        final FluidStack tFluid = tier2Fluid ? Materials.BiocatalyzedPropulsionFluid.getFluid(amount)
             : new FluidStack(GTPPFluids.Kerosene, amount);
-        for (MTEHatchInput mInputHatch : mInputHatches) {
-            if (drain(mInputHatch, tFluid, false)) {
-                return true;
-            }
-        }
-        return false; // fluid was not found.
+
+        return this.depleteInput(tFluid, true);
     }
 
     public void setTurbineActive() {
