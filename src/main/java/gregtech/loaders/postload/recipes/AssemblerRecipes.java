@@ -2723,7 +2723,7 @@ public class AssemblerRecipes implements Runnable {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 6),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 1))
-            .itemOutputs(ItemList.Casing_MiningNeutronium.get(3))
+            .itemOutputs(ItemList.Casing_MiningNeutronium.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(16)
             .addTo(assemblerRecipes);
@@ -2733,7 +2733,7 @@ public class AssemblerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.BlackPlutonium, 6),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.BlackPlutonium, 1),
                 GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Casing_MiningBlackPlutonium.get(2))
+            .itemOutputs(ItemList.Casing_MiningBlackPlutonium.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(16)
             .addTo(assemblerRecipes);

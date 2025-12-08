@@ -1945,12 +1945,12 @@ public class MTERecipeLoader implements Runnable {
             new Object[] { "PhP", "PFP", aTextPlateWrench, 'P', OrePrefixes.plate.get(Materials.Osmiridium), 'F',
                 OrePrefixes.frameGt.get(Materials.Osmiridium) });
         GTModHandler.addCraftingRecipe(
-            ItemList.Casing_MiningNeutronium.get(3L),
+            ItemList.Casing_MiningNeutronium.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { "PhP", "PFP", aTextPlateWrench, 'P', OrePrefixes.plate.get(Materials.Neutronium), 'F',
                 OrePrefixes.frameGt.get(Materials.Neutronium) });
         GTModHandler.addCraftingRecipe(
-            ItemList.Casing_MiningBlackPlutonium.get(2L),
+            ItemList.Casing_MiningBlackPlutonium.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { "PhP", "PFP", aTextPlateWrench, 'P', OrePrefixes.plate.get(Materials.BlackPlutonium), 'F',
                 OrePrefixes.frameGt.get(Materials.BlackPlutonium) });
