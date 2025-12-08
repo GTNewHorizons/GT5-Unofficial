@@ -92,7 +92,6 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     protected List<UITexture> machineModeIcons = new ArrayList<>();
     protected Map<String, UITexture> customIcons = new HashMap<>();
     private static final int borderRadius = 4;
-    protected final int textBoxToInventoryGap = 26;
     protected final Map<String, IPanelHandler> panelMap = new HashMap<>();
     protected Map<String, UITexture> shutdownReasonTextureMap = new HashMap<>();
     protected Map<String, String> shutdownReasonTooltipMap = new HashMap<>();
@@ -144,8 +143,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         return panel.child(
             Flow.column()
                 .padding(borderRadius)
-                .childIf(multiblock.canBeMuffled(), this.createMuffleButton())
                 .child(createTerminalRow(panel, syncManager))
+                .childIf(multiblock.canBeMuffled(), this.createMuffleButton())
                 .child(createPanelGap(panel, syncManager))
                 .childIf(multiblock.supportsInventoryRow(), createInventoryRow(panel, syncManager)));
     }
@@ -178,26 +177,33 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     }
 
     protected int getBasePanelHeight() {
-        return 181 + textBoxToInventoryGap;
+        return 181 + getTextBoxToInventoryGap();
+    }
+
+    protected int getTextBoxToInventoryGap() {
+        return 22;
     }
 
     protected Flow createTerminalRow(ModularPanel panel, PanelSyncManager syncManager) {
         return new Row().size(getTerminalRowWidth(), getTerminalRowHeight())
-            .child(
-                new ParentWidget<>().size(getTerminalWidgetWidth(), getTerminalWidgetHeight())
-                    .paddingTop(4)
-                    .paddingBottom(4)
-                    .paddingLeft(4)
-                    .paddingRight(0)
+            .child(createTerminalParentWidget(panel, syncManager));
+    }
 
-                    .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
-                    .child(
-                        createTerminalTextWidget(syncManager, panel)
-                            .size(getTerminalWidgetWidth() - 4, getTerminalWidgetHeight() - 8)
-                            .collapseDisabledChild())
-                    .childIf(
-                        multiblock.supportsTerminalRightCornerColumn(),
-                        createTerminalRightCornerColumn(panel, syncManager)));
+    protected ParentWidget<?> createTerminalParentWidget(ModularPanel panel, PanelSyncManager syncManager) {
+        return new ParentWidget<>().size(getTerminalWidgetWidth(), getTerminalWidgetHeight())
+            .paddingTop(4)
+            .paddingBottom(4)
+            .paddingLeft(4)
+            .paddingRight(0)
+            .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
+            .child(
+                createTerminalTextWidget(syncManager, panel)
+                    .size(getTerminalWidgetWidth() - 4, getTerminalWidgetHeight() - 8)
+                    .collapseDisabledChild())
+            .childIf(
+                multiblock.supportsTerminalRightCornerColumn(),
+                createTerminalRightCornerColumn(panel, syncManager))
+            .childIf(multiblock.supportsTerminalLeftCornerColumn(), createTerminalLeftCornerColumn(panel, syncManager));
     }
 
     protected Flow createTerminalRightCornerColumn(ModularPanel panel, PanelSyncManager syncManager) {
@@ -206,11 +212,19 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .bottomRel(0, 6, 0)
             .childIf(multiblock.supportsShutdownReasonHoverable(), createShutdownReasonHoverableTerminal(syncManager))
             .childIf(multiblock.supportsMaintenanceIssueHoverable(), createMaintIssueHoverableTerminal(syncManager))
-            .childIf(
-                multiblock.supportsLogo(),
-                new Widget<>().size(18, 18)
-                    .marginTop(4)
-                    .widgetTheme(GTWidgetThemes.PICTURE_LOGO));
+            .childIf(multiblock.supportsLogo(), makeLogoWidget());
+    }
+
+    protected Widget<? extends Widget<?>> makeLogoWidget() {
+        return new IDrawable.DrawableWidget(IDrawable.EMPTY).size(18)
+            .marginTop(4)
+            .widgetTheme(GTWidgetThemes.PICTURE_LOGO);
+    }
+
+    protected Flow createTerminalLeftCornerColumn(ModularPanel panel, PanelSyncManager syncManager) {
+        return new Column().coverChildren()
+            .leftRel(0, 6, 0)
+            .bottomRel(0, 6, 0);
     }
 
     protected int getTerminalRowWidth() {
@@ -321,6 +335,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                 return new EmptyWidget();
             }
             return Flow.column()
+                .crossAxisAlignment(Alignment.CrossAxis.START)
                 .coverChildren()
                 .child(createItemRecipeInfo(packet, syncManager))
                 .child(createFluidRecipeInfo(packet, syncManager));
@@ -353,7 +368,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         });
     }
 
-    private final int DISPLAY_ROW_HEIGHT = 13;
+    private final int DISPLAY_ROW_HEIGHT = 15;
 
     private IWidget createItemRecipeInfo(PacketBuffer packet, PanelSyncManager syncManager) {
         int size = packet.readInt();
@@ -472,7 +487,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
             .item(itemStack)
             .size(DISPLAY_ROW_HEIGHT - 1)
-            .marginRight(1);
+            .marginRight(2);
     }
 
     private TextWidget<?> createHoverableTextForItem(ItemDisplayKey key, long amount, PanelSyncManager syncManager) {
@@ -499,7 +514,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             + GTUtility.formatShortenedLong(amount)
             + EnumChatFormatting.WHITE
             + GTUtility.appendRate(false, amount, true, maxProgressTimeSyncer.getValue());
-        String itemTextLine = EnumChatFormatting.AQUA + GTUtility.truncateText(itemName, 48 - amountString.length())
+        String itemTextLine = EnumChatFormatting.AQUA + GTUtility.truncateText(itemName, 46 - amountString.length())
             + amountString;
         return itemTextLine;
     }
@@ -510,7 +525,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
             .fluid(fluidStack)
             .size(DISPLAY_ROW_HEIGHT - 1)
-            .marginRight(1);
+            .marginRight(2);
     }
 
     private TextWidget<?> createHoverableTextForFluid(FluidStack fluidStack, long amount,
@@ -525,7 +540,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                 t -> t.addLine(
                     EnumChatFormatting.AQUA + fluidName
                         + "\n"
-                        + GTUtility.appendRate(true, amount, false, maxProgressSyncer.getValue())));
+                        + GTUtility.appendRate(true, amount, false, maxProgressSyncer.getIntValue())));
     }
 
     private @NotNull String getFluidTextLine(String fluidName, long amount, IntSyncValue maxProgressTimeSyncer) {
@@ -535,7 +550,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             + "L"
             + EnumChatFormatting.WHITE
             + GTUtility.appendRate(false, amount, true, maxProgressTimeSyncer.getValue());
-        String fluidTextLine = EnumChatFormatting.AQUA + GTUtility.truncateText(fluidName, 48 - amountString.length())
+        String fluidTextLine = EnumChatFormatting.AQUA + GTUtility.truncateText(fluidName, 46 - amountString.length())
             + amountString;
         return fluidTextLine;
     }
@@ -550,7 +565,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         return new Row().widthRel(1)
             .paddingRight(2)
             .paddingLeft(4)
-            .height(textBoxToInventoryGap)
+            .height(getTextBoxToInventoryGap())
             .child(createLeftPanelGapRow(parent, syncManager))
             .child(createRightPanelGapRow(parent, syncManager));
     }
