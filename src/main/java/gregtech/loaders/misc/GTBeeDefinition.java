@@ -106,7 +106,6 @@ import gregtech.common.items.PropolisType;
 import gregtech.loaders.misc.bees.GTAlleleEffect;
 import gregtech.loaders.misc.bees.GTFlowers;
 import gtnhlanth.common.register.WerkstoffMaterialPool;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Bride Class for Lambdas
@@ -1276,20 +1275,21 @@ public enum GTBeeDefinition implements IBeeDefinition {
         tMutation.addMutationCondition(new GTBees.BiomeIDMutationCondition(9, "END Biome")); // sky end biome
     }),
 
-    ESSENTIA(GTBranchDefinition.THAUMIC, "Essentia", "Reanimus", true, new Color(0x7A007A), new Color(0xFFFFFF), beeSpecies -> {
-        beeSpecies.addProduct(GTModHandler.getModItem(MagicBees.ID, "miscResources", 1, 3), 0.20f);
-        beeSpecies.setHumidity(EnumHumidity.NORMAL);
-        beeSpecies.setTemperature(EnumTemperature.NORMAL);
-    }, template -> {
-        AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.DOWN_2);
-        AlleleHelper.instance.set(template, CAVE_DWELLING, true);
-        AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.VANILLA);
-        AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectReanimation);
-    }, dis -> {
-        IBeeMutationCustom tMutation = dis.registerMutation(SHADOWMETAL, SPARKELING, 5);
-        if (Thaumcraft.isModLoaded())
-            tMutation.requireResource(GameRegistry.findBlock(Thaumcraft.ID, "blockCrystal"), 6);
-    }),
+    ESSENTIA(GTBranchDefinition.THAUMIC, "Essentia", "Reanimus", true, new Color(0x7A007A), new Color(0xFFFFFF),
+        beeSpecies -> {
+            beeSpecies.addProduct(GTModHandler.getModItem(MagicBees.ID, "miscResources", 1, 3), 0.20f);
+            beeSpecies.setHumidity(EnumHumidity.NORMAL);
+            beeSpecies.setTemperature(EnumTemperature.NORMAL);
+        }, template -> {
+            AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.DOWN_2);
+            AlleleHelper.instance.set(template, CAVE_DWELLING, true);
+            AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.VANILLA);
+            AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectReanimation);
+        }, dis -> {
+            IBeeMutationCustom tMutation = dis.registerMutation(SHADOWMETAL, SPARKELING, 5);
+            if (Thaumcraft.isModLoaded())
+                tMutation.requireResource(GameRegistry.findBlock(Thaumcraft.ID, "blockCrystal"), 6);
+        }),
 
     DRAKE(GTBranchDefinition.THAUMIC, "Drake", true, new Color(0x100322), new Color(0x7A007A), beeSpecies -> {
         beeSpecies.addProduct(GTBees.combs.getStackForType(CombType.DRACONIC), 0.30f);
