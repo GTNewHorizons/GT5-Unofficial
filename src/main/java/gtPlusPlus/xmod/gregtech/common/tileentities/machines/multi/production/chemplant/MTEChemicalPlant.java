@@ -163,7 +163,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
             .addInfo("Any catalyst must be placed in the catalyst housing")
             .addInfo("Awakened Draconium coils combined with Tungstensteel pipe casing makes catalyst unbreakable")
             .addController("Bottom Center")
-            .addOtherStructurePart("Catalyst Housing", "Bottom Casing")
+            .addOtherStructurePart("Catalyst Housing", "Any Casing")
             .addStructureHint("item.GTPP.catalyst_housing.name", 1)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
