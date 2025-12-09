@@ -29,8 +29,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -51,10 +49,10 @@ import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.I3DGeometryRenderer;
 import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.PostProcessingManager;
 import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.shaders.BloomShader;
+import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.shaders.UniversiumShader;
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
-import com.gtnewhorizon.gtnhlib.client.renderer.shader.UniverseShader;
 import com.gtnewhorizon.gtnhlib.client.renderer.vbo.IModelCustomExt;
-import com.gtnewhorizon.gtnhlib.client.renderer.vertex.DefaultVertexFormat;
+import com.gtnewhorizon.gtnhlib.client.renderer.vbo.VertexBuffer;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
@@ -1084,6 +1082,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     private int uGlowColor;
     // -1 -> uninitialized; 0 -> inactive
     private long lastInactiveTime = -1;
+    private VertexBuffer starRing;
 
     @Override
     public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
@@ -1181,10 +1180,8 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                 continue;
             }
             if (module == FoundryModules.ACTIVE_TIME_DILATION_SYSTEM) {
-                if (!bloom) {
-                    renderUniversiumRing(i);
-                    ringProgram.use();
-                }
+                renderUniversiumRing(i, bloom);
+                ringProgram.use();
                 i++;
                 continue;
             }
@@ -1204,8 +1201,6 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         }
     }
 
-    private static final float cosmicOpacity = 2.5f;
-
     private void initializeRender() {
         // spotless:off
         ring = (IModelCustomExt) AdvancedModelLoader.loadModel(
@@ -1214,6 +1209,13 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                 "textures/model/foundry_ring.obj"
             )
         );
+//        starRing = WavefrontVBOBuilder.compileToVBO(
+//            new ResourceLocation(
+//                GregTech.resourceDomain,
+//                "textures/model/foundry_ring.obj"
+//            )
+//        );
+
         //ring.setVertexFormat(DefaultVertexFormat.POSITION);
         //todo: fix all of this lol
         uniRing = (IModelCustomExt) AdvancedModelLoader.loadModel(
@@ -1222,7 +1224,6 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                 "textures/model/foundry_ringbaby2.obj"
             )
         );
-        uniRing.setVertexFormat(DefaultVertexFormat.POSITION);
 
 
         try {
@@ -1249,17 +1250,27 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         GL11.glPopMatrix();
     }
 
-    private void renderUniversiumRing(int index) {
+    private void renderUniversiumRing(int index, boolean bloom) {
+        // if (bloom) return;
         // todo: stars on this render, not showing up for some reason
-
-        UniverseShader.INSTANCE.use();
-        UniverseShader.setLightLevel(10);
+        final UniversiumShader shader = UniversiumShader.getInstance();
+        if (bloom) {
+            shader
+                .setBackgroundColor(
+                    FoundryModules.ACTIVE_TIME_DILATION_SYSTEM.red / 2.5f,
+                    FoundryModules.ACTIVE_TIME_DILATION_SYSTEM.green / 2.5f,
+                    FoundryModules.ACTIVE_TIME_DILATION_SYSTEM.blue / 2.5f)
+                .setStarColor(24);
+        } else {
+            shader.setBackgroundColor(0, 0, 0)
+                .setStarColor(0, 0, 0, 4, 4, 4);
+        }
+        shader.setLightLevel(1)
+            .use();
 
         GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
 
-        Minecraft.getMinecraft()
-            .getTextureManager()
-            .bindTexture(TextureMap.locationBlocksTexture);
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 
         GL11.glColor4f(1, 1, 1, 1);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
@@ -1272,8 +1283,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
 
         ring.renderAllVBO();
         GL11.glPopMatrix();
-        UniverseShader.clear();
-        GL20.glUseProgram(0);
+        UniversiumShader.clear();
 
         GL11.glPopAttrib();
 
