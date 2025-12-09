@@ -145,7 +145,7 @@ public class MTESmeltingModule extends MTEBaseModule {
         return furnaceMode;
     }
 
-    private void setFurnaceMode(boolean enabled) {
+    public void setFurnaceMode(boolean enabled) {
         // TODO: Replace with machineMode
         // Hacky solution. Opening the GUI runs this method
         // The furnaceMode and boolean are likely to be the same
