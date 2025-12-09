@@ -18,11 +18,12 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL20;
 
+import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
+
 import codechicken.lib.render.TextureUtils;
 import fox.spiteful.avaritia.render.CosmicRenderShenanigans;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
-import gregtech.common.render.GTRenderUtil;
 
 @SuppressWarnings("RedundantLabeledSwitchRuleCodeBlock")
 public class UniversiumRenderer extends GeneratedMaterialRenderer {
@@ -112,7 +113,7 @@ public class UniversiumRenderer extends GeneratedMaterialRenderer {
                 mc.getTextureManager()
                     .bindTexture(resourcelocation);
             } else {
-                GTRenderUtil.renderItem(type, tIcon);
+                ItemRenderUtil.renderItem(type, tIcon);
             }
 
             GL11.glEnable(GL11.GL_BLEND);
@@ -133,7 +134,7 @@ public class UniversiumRenderer extends GeneratedMaterialRenderer {
             GL11.glColor4d(1, 1, 1, 1);
 
             // Draw cosmic overlay
-            GTRenderUtil.renderItem(type, tIcon);
+            ItemRenderUtil.renderItem(type, tIcon);
 
             CosmicRenderShenanigans.releaseShader();
             CosmicRenderShenanigans.inventoryRender = false;
@@ -141,7 +142,7 @@ public class UniversiumRenderer extends GeneratedMaterialRenderer {
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         } else {
             // RENDER ITEM
-            GTRenderUtil.renderItem(type, tIcon);
+            ItemRenderUtil.renderItem(type, tIcon);
 
             int program = GL11.glGetInteger(GL20.GL_CURRENT_PROGRAM);
 
@@ -151,7 +152,7 @@ public class UniversiumRenderer extends GeneratedMaterialRenderer {
             CosmicRenderShenanigans.useShader();
 
             // RENDER COSMIC OVERLAY
-            GTRenderUtil.renderItem(type, tIcon);
+            ItemRenderUtil.renderItem(type, tIcon);
             CosmicRenderShenanigans.releaseShader();
             GL11.glDepthFunc(GL11.GL_LEQUAL);
 

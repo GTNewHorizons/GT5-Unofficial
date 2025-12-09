@@ -44,6 +44,10 @@ import net.minecraftforge.fluids.IFluidHandler;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
@@ -94,6 +98,7 @@ import gregtech.api.util.GTWaila;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.client.GTSoundLoop;
 import gregtech.common.gui.modularui.UIHelper;
+import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineBaseGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -303,6 +308,12 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         return aIndex > 0 && super.isValidSlot(aIndex)
             && aIndex != getCircuitSlot()
             && aIndex != OTHER_SLOT_COUNT + mInputSlotCount + mOutputItems.length;
+    }
+
+    @Override
+    public boolean isIOSlot(int slot) {
+        // Ignore output slots, special slots, battery slots, and circuit slots
+        return slot >= getInputSlot() && slot < getInputSlot() + mInputSlotCount;
     }
 
     @Override
@@ -1287,6 +1298,21 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                     .setSize(17, 17)
                     .setPos(152, 63));
         }
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEBasicMachineBaseGui(this).build(data, syncManager, uiSettings);
+    }
+
+    // disable the entire inventory row (including corner column)
+    public boolean supportsInventoryRow() {
+        return this.doesBindPlayerInventory();
     }
 
     @Override

@@ -304,16 +304,16 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                     + EnumChatFormatting.GRAY
                     + " every processing cycle")
             .addInfo(EnumChatFormatting.RED + "Voids any invalid fluid!")
-            .addInfo("A cycle lasts 1 second")
+            .addInfo("A cycle lasts 5 seconds")
             .addInfo(
-                "Imbalance between " + EnumChatFormatting.AQUA
+                "An imbalance between " + EnumChatFormatting.AQUA
                     + "Antimatter"
                     + EnumChatFormatting.GRAY
                     + " and "
                     + EnumChatFormatting.GOLD
                     + "Matter"
                     + EnumChatFormatting.RED
-                    + " will decrease efficiency!"
+                    + " decreases efficiency!"
                     + EnumChatFormatting.GRAY)
             .addInfo(
                 "Efficiency formula: Min(" + EnumChatFormatting.AQUA
@@ -389,7 +389,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             .addSeparator()
             .addInfo("Switch the power destination to your wireless network with a screwdriver")
             .addInfo("Wireless mode requires Superconductor Base UMV to work")
-            .addInfo("Wireless mode uses hatch capacity limit")
+            .addInfo("Wireless mode is still limited by hatch capacity")
             .beginStructureBlock(35, 43, 35, false)
             .addCasingInfoMin("Transcendentally Reinforced Borosilicate Glass", 1008, false)
             .addCasingInfoMin("Magnetic Flux Casing", 4122, false)

@@ -2964,6 +2964,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         return true;
     }
 
+    public boolean supportsTerminalLeftCornerColumn() {
+        return false;
+    }
+
     public boolean supportsLogo() {
         return true;
     }
@@ -3078,6 +3082,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     @Override
     protected boolean useMui2() {
         return true;
+    }
+
+    public boolean supportsInventoryRow() {
+        return this.doesBindPlayerInventory();
     }
 
     public boolean shouldDisplayShutDownReason() {

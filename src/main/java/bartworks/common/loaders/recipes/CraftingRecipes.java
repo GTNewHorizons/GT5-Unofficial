@@ -527,17 +527,17 @@ public class CraftingRecipes implements Runnable {
 
         GTModHandler.addCraftingRecipe(
             ItemList.Tool_Vajra.get(1),
-            new Object[] { "RMR", "hCd", "EBE", 'R', OrePrefixes.lens.get(Materials.Ruby), 'M',
+            new Object[] { "RMR", "hCd", "EBE", 'R', OrePrefixes.lens.get(Materials.Amethyst), 'M',
                 ItemList.Magnetron.get(1), 'C', ItemList.Vajra_Core.get(1), 'E',
-                OrePrefixes.plateDense.get(Materials.Electrum), 'B', OrePrefixes.battery.get(Materials.IV) });
+                OrePrefixes.plateDense.get(Materials.Silver), 'B', OrePrefixes.battery.get(Materials.IV) });
 
         RecipeUtils.addShapedRecipe(
             OrePrefixes.plateDense.get(Materials.NeodymiumMagnetic),
             ItemList.HV_Coil.get(1),
             OrePrefixes.plateDense.get(Materials.NeodymiumMagnetic),
-            OrePrefixes.plate.get(Materials.Electrum),
+            OrePrefixes.plate.get(Materials.Silver),
             OrePrefixes.wireGt12.get(Materials.SuperconductorIV),
-            OrePrefixes.plate.get(Materials.Electrum),
+            OrePrefixes.plate.get(Materials.Silver),
             OrePrefixes.plateDense.get(Materials.NeodymiumMagnetic),
             ItemList.HV_Coil.get(1),
             OrePrefixes.plateDense.get(Materials.NeodymiumMagnetic),
@@ -545,7 +545,7 @@ public class CraftingRecipes implements Runnable {
 
         GTModHandler.addCraftingRecipe(
             ItemList.Vajra_Core.get(1),
-            new Object[] { "wEh", "ITI", "SRS", 'E', OrePrefixes.plate.get(Materials.Electrum), 'I',
+            new Object[] { "wEh", "ITI", "SRS", 'E', OrePrefixes.plate.get(Materials.Silver), 'I',
                 OrePrefixes.plateDense.get(Materials.Iridium), 'T', ItemList.Transformer_EV_HV.get(1), 'S',
                 OrePrefixes.wireGt12.get(Materials.SuperconductorIV), 'R', ItemList.Transformer_IV_EV.get(1) });
     }

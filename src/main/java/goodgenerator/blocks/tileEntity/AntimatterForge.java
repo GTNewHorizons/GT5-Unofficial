@@ -207,7 +207,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             .addInfo("Cycles every second")
             .addInfo("Every cycle, the lowest amount of antimatter in the 16 antimatter hatches is recorded")
             .addInfo(
-                "All hatches with more than the lowest amount will " + EnumChatFormatting.RED
+                "All hatches with more than the lowest amount " + EnumChatFormatting.RED
                     + "lose half the difference!"
                     + EnumChatFormatting.GRAY)
             .addInfo(
@@ -228,7 +228,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + EnumChatFormatting.RESET
                     + EnumChatFormatting.GRAY
                     + ")) of antimatter each cycle")
-            .addInfo("Each hatch will multiply the base production per hatch with a random number pulled from")
+            .addInfo("Each hatch multiplies the base production per hatch with a random number pulled from")
             .addInfo(
                 "a normal distribution with a mean of " + baseSkew
                     + " + "
@@ -242,6 +242,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             .addInfo("The total gain of antimatter can be negative!")
             .addSeparator()
             .addInfo("Can be supplied with stabilization fluids to improve antimatter generation")
+            .addInfo("Each stabilization can only use one of the fluids at a time")
             .addInfo(
                 "" + EnumChatFormatting.GREEN
                     + EnumChatFormatting.BOLD
@@ -309,7 +310,6 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + "^(1/3) L of fluid per cycle)")
             .addInfo("1. Depleted Naquadah Fuel Mk V = " + EnumChatFormatting.AQUA + "0.05" + EnumChatFormatting.GRAY)
             .addInfo("2. Depleted Naquadah Fuel Mk VI = " + EnumChatFormatting.AQUA + "0.10" + EnumChatFormatting.GRAY)
-            .addInfo("Each stabilization can only use one of the fluids at a time")
             .beginStructureBlock(53, 53, 47, false)
             .addCasingInfoMin("Antimatter Containment Casing", 512, false)
             .addCasingInfoMin("Magnetic Flux Casing", 2274, false)
