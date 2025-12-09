@@ -17,8 +17,8 @@ import gregtech.api.util.GTUtility;
 public class GlitchEffectRenderer extends GeneratedMaterialRenderer {
 
     public Random rand = new Random();
-    int[] red = new int[] { 255, 50, 50, 192 };
-    int[] cyan = new int[] { 0, 220, 220, 160 };
+    private static final int[] red = new int[] { 255, 50, 50, 192 };
+    private static final int[] cyan = new int[] { 0, 220, 220, 160 };
 
     final long frameTimeNanos = 10_000_000L;
     final int loopFrameCount = 200;
@@ -28,25 +28,40 @@ public class GlitchEffectRenderer extends GeneratedMaterialRenderer {
     double offsetRed = 0;
     double offsetCyan = 0;
 
-    private void applyGlitchEffect(ItemRenderType type, boolean shouldModulateColor, double offset, int[] color,
+    public static void applyRedGlitchEffect(ItemRenderType type, boolean shouldModulateColor, double offset, IIcon... icons) {
+        applyGlitchEffect(type, shouldModulateColor, offset, red, icons);
+    }
+
+    public static void applyCyanGlitchEffect(ItemRenderType type, boolean shouldModulateColor, double offset, IIcon... icons) {
+        applyGlitchEffect(type, shouldModulateColor, offset, cyan, icons);
+    }
+
+    public static void applyRedGlitchEffect(ItemRenderType type, double offset, IIcon... icons) {
+        applyGlitchEffect(type, true, offset, red, icons);
+    }
+
+    public static void applyCyanGlitchEffect(ItemRenderType type, double offset, IIcon... icons) {
+        applyGlitchEffect(type, true, offset, cyan, icons);
+    }
+
+    private static void applyGlitchEffect(ItemRenderType type, boolean shouldModulateColor, double offset, int[] color,
         IIcon... icons) {
+        if (!type.equals(IItemRenderer.ItemRenderType.INVENTORY)) return;
         for (IIcon icon : icons) {
             if (icon == null) continue;
             Tessellator t = Tessellator.instance;
 
-            if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
-                t.startDrawingQuads();
-                if (shouldModulateColor) {
-                    t.setColorRGBA_F(color[0] / 255.0F, color[1] / 255.0F, color[2] / 255.0F, color[3] / 255.0F);
-                } else {
-                    t.setColorRGBA_F(1f, 1f, 1f, 0.75f);
-                }
-                t.addVertexWithUV(0 + offset, 0 + offset, 0, icon.getMinU(), icon.getMinV());
-                t.addVertexWithUV(0 + offset, 16 + offset, 0, icon.getMinU(), icon.getMaxV());
-                t.addVertexWithUV(16 + offset, 16 + offset, 0, icon.getMaxU(), icon.getMaxV());
-                t.addVertexWithUV(16 + offset, 0 + offset, 0, icon.getMaxU(), icon.getMinV());
-                t.draw();
+            t.startDrawingQuads();
+            if (shouldModulateColor) {
+                t.setColorRGBA_F(color[0] / 255.0F, color[1] / 255.0F, color[2] / 255.0F, color[3] / 255.0F);
+            } else {
+                t.setColorRGBA_F(1f, 1f, 1f, 0.75f);
             }
+            t.addVertexWithUV(0 + offset, 0 + offset, 0, icon.getMinU(), icon.getMinV());
+            t.addVertexWithUV(0 + offset, 16 + offset, 0, icon.getMinU(), icon.getMaxV());
+            t.addVertexWithUV(16 + offset, 16 + offset, 0, icon.getMaxU(), icon.getMaxV());
+            t.addVertexWithUV(16 + offset, 0 + offset, 0, icon.getMaxU(), icon.getMinV());
+            t.draw();
         }
     }
 

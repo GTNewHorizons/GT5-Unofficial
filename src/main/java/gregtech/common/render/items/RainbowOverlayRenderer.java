@@ -14,9 +14,9 @@ import gregtech.common.GTClient;
 
 public class RainbowOverlayRenderer extends GeneratedMaterialRenderer {
 
-    private float baseR = 1;
-    private float baseG = 1;
-    private float baseB = 1;
+    private final float baseR;
+    private final float baseG;
+    private final float baseB;
 
     public RainbowOverlayRenderer(short[] rgba) {
         baseR = rgba[0] / 255.0F;

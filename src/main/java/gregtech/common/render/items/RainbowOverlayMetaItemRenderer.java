@@ -17,9 +17,9 @@ import gregtech.common.GTClient;
 
 public class RainbowOverlayMetaItemRenderer implements IItemRenderer {
 
-    private float baseR = 1;
-    private float baseG = 1;
-    private float baseB = 1;
+    private final float baseR;
+    private final float baseG;
+    private final float baseB;
 
     public RainbowOverlayMetaItemRenderer(short[] rgba) {
         baseR = rgba[0] / 255.0F;
@@ -45,8 +45,6 @@ public class RainbowOverlayMetaItemRenderer implements IItemRenderer {
 
     @Override
     public void renderItem(final ItemRenderType type, final ItemStack item, final Object... data) {
-        GL11.glPushMatrix();
-
         if (item.getItem() instanceof MetaGeneratedItem mgItem) {
             IIcon[] icons = mgItem.mIconList[item.getItemDamage() - mgItem.mOffset];
             if (icons != null && icons.length > 0 && icons[0] != null) {
@@ -68,8 +66,6 @@ public class RainbowOverlayMetaItemRenderer implements IItemRenderer {
 
             }
         }
-
-        GL11.glPopMatrix();
     }
 
 }

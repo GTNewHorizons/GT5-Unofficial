@@ -18,8 +18,6 @@ import gregtech.common.config.Client;
 
 public class TranscendentalMetaItemRenderer implements IItemRenderer {
 
-    public Random rand = new Random();
-
     @Override
     public boolean handleRenderType(final ItemStack item, final ItemRenderType type) {
         return Client.render.renderTransMetalFancy && type != ItemRenderType.FIRST_PERSON_MAP;

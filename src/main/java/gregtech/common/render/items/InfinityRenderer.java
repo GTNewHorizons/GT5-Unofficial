@@ -18,7 +18,7 @@ import gregtech.api.util.GTUtility;
 
 public class InfinityRenderer extends GeneratedMaterialRenderer {
 
-    public Random rand = new Random();
+    private static final Random rand = new Random();
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack aStack, Object... data) {
@@ -79,8 +79,7 @@ public class InfinityRenderer extends GeneratedMaterialRenderer {
         }
     }
 
-    private void renderHalo() {
-        GL11.glPushMatrix();
+    public static void renderHalo() {
         IIcon halo = Textures.ItemIcons.HALO.getIcon();
 
         int spread = 10;
@@ -106,22 +105,23 @@ public class InfinityRenderer extends GeneratedMaterialRenderer {
         t.addVertexWithUV(16 + spread, 16 + spread, 0, halo.getMaxU(), halo.getMaxV());
         t.addVertexWithUV(16 + spread, -spread, 0, halo.getMaxU(), halo.getMinV());
         t.draw();
-        GL11.glPopMatrix();
     }
 
-    private void renderPulse(IIcon... icons) {
+    public static void renderPulse(IIcon... icons) {
+        if (icons.length == 0) return;
         Tessellator t = Tessellator.instance;
-        double random = rand.nextGaussian();
-        double scale = (random * 0.15) + 0.95;
-        double offset = (1.0 - scale) / 2.0;
+        float random = (float) rand.nextGaussian();
+        float scale = (random * 0.15f) + 0.95f;
+        float offset = (1.0f - scale) / 2.0f;
+
+        GL11.glPushMatrix();
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glTranslatef(offset * 16.0f, offset * 16.0f, 1.0f);
+        GL11.glScalef(scale, scale, 1.0f);
+
 
         for (IIcon icon : icons) {
             if (icon == null) continue;
-            GL11.glPushMatrix();
-            GL11.glEnable(GL11.GL_BLEND);
-            GL11.glTranslated(offset * 16.0, offset * 16.0, 1.0);
-            GL11.glScaled(scale, scale, 1.0);
-
             t.startDrawingQuads();
             t.setColorRGBA_F(1.0f, 1.0f, 1.0f, 0.6f);
             t.addVertexWithUV(0 - offset, 0 - offset, 0, icon.getMinU(), icon.getMinV());
@@ -129,8 +129,7 @@ public class InfinityRenderer extends GeneratedMaterialRenderer {
             t.addVertexWithUV(16 + offset, 16 + offset, 0, icon.getMaxU(), icon.getMaxV());
             t.addVertexWithUV(16 + offset, 0 - offset, 0, icon.getMaxU(), icon.getMinV());
             t.draw();
-
-            GL11.glPopMatrix();
         }
+        GL11.glPopMatrix();
     }
 }
