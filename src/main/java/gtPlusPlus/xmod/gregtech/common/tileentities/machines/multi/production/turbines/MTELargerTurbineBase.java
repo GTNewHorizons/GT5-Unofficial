@@ -517,7 +517,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
         if (mRuntime++ > 1000) {
             mRuntime = 0;
 
-            if (getBaseMetaTileEntity().getRandomNumber(6000) < getMaintenanceThreshold()) {
+            if (shouldCheckMaintenance() && getBaseMetaTileEntity().getRandomNumber(6000) < getMaintenanceThreshold()) {
                 causeMaintenanceIssue();
             }
             for (MTEHatchTurbine aHatch : getFullTurbineAssemblies()) {
