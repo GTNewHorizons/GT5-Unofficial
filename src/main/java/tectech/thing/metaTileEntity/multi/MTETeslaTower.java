@@ -1118,6 +1118,7 @@ public class MTETeslaTower extends TTMultiblockBase
 
         return data.toArray(new String[0]);
     }
+
     @Override
     public boolean supportsSingleRecipeLocking() {
         return false;
