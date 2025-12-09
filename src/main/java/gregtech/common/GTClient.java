@@ -26,6 +26,7 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
@@ -137,6 +138,7 @@ public class GTClient extends GTProxy {
     public final PollutionRenderer mPollutionRenderer = new PollutionRenderer();
     public GTPowerfailRenderer powerfailRenderer;
     public KeyBinding shakeLockKey;
+    public final boolean fixedBottomFaceUV;
     private final List<Materials> mPosR;
     private final List<Materials> mPosG;
     private final List<Materials> mPosB;
@@ -269,6 +271,8 @@ public class GTClient extends GTProxy {
         mMoltenNegR = Collections.singletonList(Materials.InfusedEntropy);
         mMoltenNegG = Collections.singletonList(Materials.InfusedEntropy);
         mMoltenNegB = Collections.singletonList(Materials.InfusedEntropy);
+        fixedBottomFaceUV = (boolean) Launch.blackboard
+            .getOrDefault("hodgepodge.FixesConfig.fixBottomFaceUV", Boolean.FALSE);
     }
 
     @Override
