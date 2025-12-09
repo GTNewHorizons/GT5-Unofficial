@@ -2524,7 +2524,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         deactivateCoilLease();
     }
 
-    private void deactivateCoilLease() {
+    protected void deactivateCoilLease() {
         if (coilLease != null) {
             GTCoilTracker.deactivate(coilLease);
             coilLease = null;

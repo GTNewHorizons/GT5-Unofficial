@@ -1514,10 +1514,26 @@ public enum ItemList implements IItemContainer {
     Hatch_Antimatter,
 
     Machine_Multi_Canner,
-    Machine_Multi_Solidifier,
 
+    Machine_Multi_Solidifier,
     Casing_Fluid_Solidifier,
     Radiator_Fluid_Solidifier,
+
+    Machine_Multi_ExoFoundry,
+    Glass_ExoFoundry,
+    Casing_ExoFoundry,
+    Secondary_Casing_ExoFoundry,
+    Central_Casing_ExoFoundry,
+    Magnetic_Chassis_T1_ExoFoundry,
+    Magnetic_Chassis_T2_ExoFoundry,
+    Magnetic_Chassis_T3_ExoFoundry,
+    Streamlined_Casters_ExoFoundry,
+    Power_Efficient_Subsystems_ExoFoundry,
+    Extra_Casting_Basins_ExoFoundry,
+    Harmonic_Reinforcement_ExoFoundry,
+    Hypercooler_ExoFoundry,
+    Efficient_Overclocking_ExoFoundry,
+    Active_Time_Dilation_System_ExoFoundry,
 
     Casing_Reinforced_Wood,
 
@@ -2762,7 +2778,6 @@ public enum ItemList implements IItemContainer {
     PlanetaryGasSiphonCasing,
 
     MagLevHarness,
-
     LargeHadronCollider,
     ColliderCasing,
     CMSCasing,
