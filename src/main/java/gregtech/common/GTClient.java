@@ -93,6 +93,7 @@ import gregtech.client.GTMouseEventHandler;
 import gregtech.client.GTPowerfailRenderer;
 import gregtech.client.SeekingOggCodec;
 import gregtech.client.renderer.entity.RenderPowderBarrel;
+import gregtech.client.renderer.waila.TTRenderGTProgressBar;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.config.Client;
 import gregtech.common.entity.EntityPowderBarrelPrimed;
@@ -127,6 +128,7 @@ import gregtech.loaders.misc.GTBees;
 import gregtech.loaders.preload.GTPreLoad;
 import gregtech.nei.NEIGTConfig;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import mcp.mobius.waila.api.impl.ModuleRegistrar;
 import paulscode.sound.SoundSystemConfig;
 import paulscode.sound.SoundSystemException;
 
@@ -374,6 +376,9 @@ public class GTClient extends GTProxy {
                 }
             });
         Pollution.onPostInitClient();
+
+        ModuleRegistrar.instance()
+            .registerTooltipRenderer("waila.gt.progress", new TTRenderGTProgressBar());
     }
 
     @Override
