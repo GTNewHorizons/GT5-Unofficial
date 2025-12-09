@@ -529,7 +529,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PdX", "MGS", "GBP", 'X', stickLong.get(werkstoff.getBridgeMaterial()), 'M',
                 ItemList.Electric_Motor_MV.get(1L), 'S', screw.get(Materials.Aluminium), 'P',
-                plate.get(Materials.Aluminium), 'G', gearGtSmall.get(Materials.Titanium), 'B',
+                plate.get(Materials.Aluminium), 'G', gearGtSmall.get(Materials.Aluminium), 'B',
                 ItemList.Battery_RE_MV_Lithium.get(1L) });
         GTModHandler.addCraftingRecipe(
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
@@ -542,7 +542,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PdX", "MGS", "GBP", 'X', stickLong.get(werkstoff.getBridgeMaterial()), 'M',
                 ItemList.Electric_Motor_MV.get(1L), 'S', screw.get(Materials.Aluminium), 'P',
-                plate.get(Materials.Aluminium), 'G', gearGtSmall.get(Materials.Titanium), 'B',
+                plate.get(Materials.Aluminium), 'G', gearGtSmall.get(Materials.Aluminium), 'B',
                 ItemList.Battery_RE_MV_Cadmium.get(1L) });
         GTModHandler.addCraftingRecipe(
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
@@ -555,7 +555,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PdX", "MGS", "GBP", 'X', stickLong.get(werkstoff.getBridgeMaterial()), 'M',
                 ItemList.Electric_Motor_MV.get(1L), 'S', screw.get(Materials.Aluminium), 'P',
-                plate.get(Materials.Aluminium), 'G', gearGtSmall.get(Materials.Titanium), 'B',
+                plate.get(Materials.Aluminium), 'G', gearGtSmall.get(Materials.Aluminium), 'B',
                 ItemList.Battery_RE_MV_Sodium.get(1L) });
         GTModHandler.addCraftingRecipe(
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
