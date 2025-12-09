@@ -7,9 +7,10 @@ import net.minecraft.util.IIcon;
 
 import org.lwjgl.opengl.GL11;
 
+import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
+
 import gregtech.GTMod;
 import gregtech.common.GTClient;
-import gregtech.common.render.GTRenderUtil;
 
 public class GaiaSpiritRenderer extends GeneratedMaterialRenderer {
 
@@ -24,6 +25,6 @@ public class GaiaSpiritRenderer extends GeneratedMaterialRenderer {
             GL11.glColor3f(color.getRed() / 255.0F, color.getGreen() / 255.0F, color.getBlue() / 255.0F);
         }
 
-        GTRenderUtil.renderItem(type, icon);
+        ItemRenderUtil.renderItem(type, icon);
     }
 }

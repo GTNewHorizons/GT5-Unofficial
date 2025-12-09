@@ -10,9 +10,10 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
+import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.items.MetaGeneratedItem;
-import gregtech.common.render.GTRenderUtil;
 
 public class InfinityMetaItemRenderer implements IItemRenderer {
 
@@ -53,7 +54,7 @@ public class InfinityMetaItemRenderer implements IItemRenderer {
                 GL11.glDisable(GL11.GL_BLEND);
                 GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f); // Reset color to avoid blending affecting icon
 
-                GTRenderUtil.renderItem(type, icons[0]);
+                ItemRenderUtil.renderItem(type, icons[0]);
             }
         }
 

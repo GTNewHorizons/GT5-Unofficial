@@ -113,8 +113,11 @@ public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProv
      * @param id (page<<7)+index of the texture
      */
     public final void updateTexture(int id) {
-        texturePage = id >> 7;
-        textureIndex = id & 127;
+        int newTexturePage = id >> 7;
+        int newTextureIndex = id & 127;
+        if (newTexturePage == texturePage && newTextureIndex == textureIndex) return;
+        texturePage = newTexturePage;
+        textureIndex = newTextureIndex;
 
         IGregTechTileEntity base = getBaseMetaTileEntity();
 
