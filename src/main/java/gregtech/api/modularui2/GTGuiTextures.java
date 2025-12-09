@@ -363,12 +363,6 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.OVERLAY_SLOT_BLOCK_STANDARD)
         .build();
-    public static final UITexture OVERLAY_SLOT_EXTRUDER_SHAPE = UITexture.builder()
-        .location(GregTech.ID, "gui/overlay_slot/extruder_shape")
-        .fullImage()
-        .canApplyTheme()
-        .name(GTTextureIds.SLOT_EXTRUDER_SHAPE)
-        .build();
     private static final SteamTextureRegisterer OVERLAY_SLOT_BLOCK_STEAM = SteamTextureRegisterer.builder()
         .location("gui/overlay_slot/block_%s")
         .fullImage()
@@ -437,8 +431,6 @@ public final class GTGuiTextures {
         GregTech.ID,
         "gui/overlay_button/structure_update");
     public static final UITexture OVERLAY_BUTTON_FORBIDDEN = fullImage(GregTech.ID, "gui/overlay_button/forbidden");
-    public static final UITexture OVERLAY_BUTTON_MUFFLE_ON = fullImage(GregTech.ID, "gui/overlay_button/muffle_on");
-    public static final UITexture OVERLAY_BUTTON_MUFFLE_OFF = fullImage(GregTech.ID, "gui/overlay_button/muffle_off");
     public static final UITexture OVERLAY_BUTTON_PRINT = fullImage(GregTech.ID, "gui/overlay_button/print");
     public static final UITexture OVERLAY_BUTTON_TRANSPOSE = fullImage(GregTech.ID, "gui/overlay_button/transpose");
     public static final UITexture OVERLAY_BUTTON_REDSTONESNIFFERLOCATE = fullImage(
