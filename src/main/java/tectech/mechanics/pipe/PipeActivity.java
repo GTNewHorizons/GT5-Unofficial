@@ -99,7 +99,7 @@ public class PipeActivity {
 
         @Override
         public IMessage onMessage(BatchedPipeActivityMessage message, MessageContext ctx) {
-            World world = Minecraft.getMinecraft().theWorld;
+            var world = Minecraft.getMinecraft().theWorld;
 
             if (message.worldId != world.provider.dimensionId) return null;
 
