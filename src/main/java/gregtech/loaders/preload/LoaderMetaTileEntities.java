@@ -205,6 +205,10 @@ import gregtech.common.tileentities.machines.multi.compressor.MTEIndustrialCompr
 import gregtech.common.tileentities.machines.multi.compressor.MTENeutroniumCompressor;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
+import gregtech.common.tileentities.machines.multi.mega.MTENewMegaDistillationTower;
+import gregtech.common.tileentities.machines.multi.mega.MTENewMegaElectricBlastFurnace;
+import gregtech.common.tileentities.machines.multi.mega.MTENewMegaOilCracker;
+import gregtech.common.tileentities.machines.multi.mega.MTENewMegaVacuumFreezer;
 import gregtech.common.tileentities.machines.multi.pcb.MTEPCBBioChamber;
 import gregtech.common.tileentities.machines.multi.pcb.MTEPCBCoolingTower;
 import gregtech.common.tileentities.machines.multi.pcb.MTEPCBFactory;
@@ -603,6 +607,25 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.LATEX.set(new MTELatex(LATEX.ID, "multimachine.latex", "L.A.T.E.X.").getStackForm(1));
         addItemTooltip(ItemList.LATEX.get(1), chain(() -> "Author: ", GTValues.AuthorThree));
+
+        ItemList.NewMegaElectricBlastFurnace.set(
+            new MTENewMegaElectricBlastFurnace(
+                NewMegaElectricBlastFurnace.ID,
+                "multimachine.new-mega-electric-blast-furnace",
+                "New Mega Electric Blast Furnace").getStackForm(1));
+        ItemList.NewMegaVacuumFreezer.set(
+            new MTENewMegaVacuumFreezer(
+                NewMegaVacuumFreezer.ID,
+                "multimachine.new-mega-vacuum-freezer",
+                "New Mega Vacuum Freezer").getStackForm(1));
+        ItemList.NewMegaDistillationTower.set(
+            new MTENewMegaDistillationTower(
+                NewMegaDistillationTower.ID,
+                "multimachine.new-mega-distillation-tower",
+                "New Mega Distillation Tower").getStackForm(1));
+        ItemList.NewMegaOilCracker.set(
+            new MTENewMegaOilCracker(NewMegaOilCracker.ID, "multimachine.new-mega-oil-cracker", "New Mega Oil Cracker")
+                .getStackForm(1));
 
         if (Thaumcraft.isModLoaded()) {
             ItemList.ResearchCompleter.set(

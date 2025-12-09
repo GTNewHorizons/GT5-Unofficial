@@ -2772,6 +2772,10 @@ public enum ItemList implements IItemContainer {
     CokeOvenCasing,
     CokeOvenHatch,
 
+    NewMegaElectricBlastFurnace,
+    NewMegaVacuumFreezer,
+    NewMegaDistillationTower,
+    NewMegaOilCracker,
     // semicolon after the comment to reduce merge conflicts
     ;
 
