@@ -1546,8 +1546,7 @@ tt.cover.ender_fluid_link.suck=Ender Suction Engaged!
 tt.block.world_accelerator.set_speed=Machine acceleration changed to x%s
 tt.block.world_accelerator.set_range=Machine range changed to %s blocks
 tt.block.world_accelerator.set_range_fail=Can't change range; Machine is in Tile Entity mode!
-tt.block.world_accelerator.set_mode.block=Switched mode to: Block
-tt.block.world_accelerator.set_mode.tile_entity=Switched mode to: Tile Entity
+tt.block.world_accelerator.set_mode=Switched mode to: %s
 
 #OpenTurrets compatibility
 tile.turretHeadEM.name=Elemental Matter Turret

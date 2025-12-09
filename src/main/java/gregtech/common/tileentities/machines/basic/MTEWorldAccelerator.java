@@ -317,8 +317,8 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
             if (pPlayer instanceof EntityPlayerMP playerMP) {
                 playerMP.addChatMessage(
                     new ChatComponentTranslation(
-                        mMode == 0 ? "tt.block.world_accelerator.set_mode.block"
-                            : "tt.block.world_accelerator.set_mode.tile_entity"));
+                        "tt.block.world_accelerator.set_mode",
+                        new ChatComponentTranslation(mUnlocalizedModeStr[mMode])));
             }
         }
     }
