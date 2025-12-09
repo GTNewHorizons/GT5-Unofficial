@@ -82,7 +82,6 @@ public class GlitchEffectRenderer extends GeneratedMaterialRenderer {
         }
 
         if (itemIcon != null) {
-            markNeedsAnimationUpdate(itemIcon);
             renderRegularItem(type, item, itemIcon, aFluid == null);
         }
 
@@ -90,7 +89,6 @@ public class GlitchEffectRenderer extends GeneratedMaterialRenderer {
             IIcon fluidIcon = aFluid.getFluid()
                 .getIcon(aFluid);
             if (fluidIcon != null) {
-                markNeedsAnimationUpdate(fluidIcon);
                 // Adds colour to a cells fluid. Does not colour full fluid icons as shown in NEI etc.
                 renderContainedFluid(type, aFluid, fluidIcon);
             }
@@ -99,7 +97,6 @@ public class GlitchEffectRenderer extends GeneratedMaterialRenderer {
         if (overlay != null) {
             GL11.glColor3f(1.0F, 1.0F, 1.0F);
             TextureUtils.bindAtlas(itemRenderer.getSpriteNumber());
-            markNeedsAnimationUpdate(overlay);
             renderItemOverlay(type, overlay);
         }
 

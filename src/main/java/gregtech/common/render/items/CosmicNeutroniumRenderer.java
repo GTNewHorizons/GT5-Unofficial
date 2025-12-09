@@ -34,7 +34,6 @@ public class CosmicNeutroniumRenderer extends GeneratedMaterialRenderer {
             return;
         }
 
-        markNeedsAnimationUpdate(haloFuzzy);
         GL11.glPushMatrix();
 
         // Ideally this magic haloColour number should scale depending on the # of transparent pixels,
