@@ -271,8 +271,6 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
         return 8;
     }
 
-    private static final String[] mModeStr = { "Blocks", "TileEntities" };
-
     private static final String[] mUnlocalizedModeStr = { "GT5U.word_accelerator.mode.blocks",
         "GT5U.word_accelerator.mode.tile_entities" };
 
