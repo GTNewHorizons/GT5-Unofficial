@@ -104,6 +104,10 @@ public final class GTGuiTextures {
         .name(GTTextureIds.BACKGROUND_CHAOS_LOCATOR)
         .build();
 
+    public static final UITexture BACKGROUND_TESLA_TOWER_CHART = UITexture.builder()
+        .location(MODID, "gui/tesla_tower_chart_background")
+        .nonOpaque()
+        .build();
     public static final UITexture BACKGROUND_STAR = UITexture.fullImage(MODID, "gui/background/star");
     public static final UITexture BACKGROUND_GLOW_ORANGE = UITexture.fullImage(MODID, "gui/background/orange_glow");
     public static final UITexture BACKGROUND_GLOW_PURPLE = UITexture.fullImage(MODID, "gui/background/purple_glow");
@@ -426,6 +430,12 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .build();
 
+    public static final UITexture OVERLAY_BUTTON_TESLA_TOWER_CHART = UITexture.builder()
+        .location(MODID, "gui/overlay_button/tesla_tower_chart")
+        .build();
+    public static final UITexture OVERLAY_BUTTON_TESLA_TOWER_HEAT_MAP = UITexture.builder()
+        .location(MODID, "gui/overlay_button/tesla_tower_minimap")
+        .build();
     public static final UITexture TT_SAFE_VOID_OFF = UITexture.builder()
         .location(MODID, "gui/overlay_button/safe_void_off")
         .canApplyTheme()
@@ -435,7 +445,6 @@ public final class GTGuiTextures {
         .location(MODID, "gui/overlay_button/safe_void_on")
         .canApplyTheme()
         .build();
-
     // endregion slot overlay
 
     // region progressbar
@@ -490,6 +499,9 @@ public final class GTGuiTextures {
     public static final UITexture STEAM_GAUGE_BG = UITexture.fullImage(GregTech.ID, "gui/background/steam_dial");
     public static final UITexture STEAM_GAUGE_BG_STEEL = UITexture
         .fullImage(GregTech.ID, "gui/background/steam_dial_steel");
+
+    public static final UITexture PROGRESSBAR_TESLA_TOWER_CURRENT = UITexture
+        .fullImage(MODID, "gui/tesla_tower_current");
     // endregion progressbar
 
     // region button
