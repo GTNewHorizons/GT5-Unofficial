@@ -1,9 +1,6 @@
 package gregtech.common.render.items;
 
-import java.util.Random;
-
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
@@ -11,9 +8,7 @@ import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 
 import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
-import com.gtnewhorizons.modularui.api.math.Pos2d;
 
-import gregtech.api.enums.Textures;
 import gregtech.api.items.MetaGeneratedItem;
 
 public class CosmicNeutroniumMetaItemRenderer implements IItemRenderer {

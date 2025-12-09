@@ -12,7 +12,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
-import com.gtnewhorizons.modularui.api.math.Pos2d;
 
 import gregtech.api.enums.Textures;
 

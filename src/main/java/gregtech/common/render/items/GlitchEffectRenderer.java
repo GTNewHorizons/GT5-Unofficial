@@ -28,11 +28,13 @@ public class GlitchEffectRenderer extends GeneratedMaterialRenderer {
     double offsetRed = 0;
     double offsetCyan = 0;
 
-    public static void applyRedGlitchEffect(ItemRenderType type, boolean shouldModulateColor, double offset, IIcon... icons) {
+    public static void applyRedGlitchEffect(ItemRenderType type, boolean shouldModulateColor, double offset,
+        IIcon... icons) {
         applyGlitchEffect(type, shouldModulateColor, offset, red, icons);
     }
 
-    public static void applyCyanGlitchEffect(ItemRenderType type, boolean shouldModulateColor, double offset, IIcon... icons) {
+    public static void applyCyanGlitchEffect(ItemRenderType type, boolean shouldModulateColor, double offset,
+        IIcon... icons) {
         applyGlitchEffect(type, shouldModulateColor, offset, cyan, icons);
     }
 

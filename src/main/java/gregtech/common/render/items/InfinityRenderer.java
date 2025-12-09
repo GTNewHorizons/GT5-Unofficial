@@ -119,7 +119,6 @@ public class InfinityRenderer extends GeneratedMaterialRenderer {
         GL11.glTranslatef(offset * 16.0f, offset * 16.0f, 1.0f);
         GL11.glScalef(scale, scale, 1.0f);
 
-
         for (IIcon icon : icons) {
             if (icon == null) continue;
             t.startDrawingQuads();

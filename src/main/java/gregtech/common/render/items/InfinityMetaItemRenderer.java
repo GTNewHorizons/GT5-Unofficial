@@ -1,9 +1,6 @@
 package gregtech.common.render.items;
 
-import java.util.Random;
-
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
@@ -12,7 +9,6 @@ import org.lwjgl.opengl.GL11;
 
 import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
 
-import gregtech.api.enums.Textures;
 import gregtech.api.items.MetaGeneratedItem;
 
 public class InfinityMetaItemRenderer implements IItemRenderer {
