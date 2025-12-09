@@ -20,7 +20,7 @@ public interface IColoredTileEntity {
      * @return Actual color shown on GUI
      */
     default int getGUIColorization() {
-        return Dyes.getOrDefault(getColorization(), Dyes.MACHINE_METAL)
+        return Dyes.getOrDefault(getColorization(), Dyes.GUI_METAL)
             .toInt();
     }
 }
