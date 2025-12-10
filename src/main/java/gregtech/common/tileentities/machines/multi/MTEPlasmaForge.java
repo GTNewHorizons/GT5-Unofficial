@@ -82,13 +82,31 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     private static final double maximum_discount = 0.5d;
     private static final int CONVERGENCE_BITMAP = 0b1;
     private static final int DISCOUNT_BITMAP = 0b10;
+    public int calcMode = 0;
+    public long calcRecipeEUt = 0L;
+    public long calcRecipeDuration = 20L;
+    public int calcTierIndex = 0;
+    public long calcInputValue = 0L;
+    public int calcCatalystType = 5;
+    public int calcNumberFormat = 0;
+    public long calcFinalEUt = 0L;
+    public long calcAmps = 1L;
+    public int calcOverclocks = 0;
+
+    public boolean hasExoticEnergyHatch() {
+        return !mExoticEnergyHatches.isEmpty();
+    }
+
+    public int getEnergyHatchTier() {
+        return mEnergyHatches.isEmpty() ? 14 : mEnergyHatches.get(0).mTier;
+    }
 
     // Valid fuels which the discount will get applied to.
-    private static final FluidStack[] valid_fuels = { Materials.ExcitedDTCC.getFluid(1L),
+    public static final FluidStack[] valid_fuels = { Materials.ExcitedDTCC.getFluid(1L),
         Materials.ExcitedDTPC.getFluid(1L), Materials.ExcitedDTRC.getFluid(1L), Materials.ExcitedDTEC.getFluid(1L),
         Materials.ExcitedDTSC.getFluid(1L) };
 
-    private static final HashMap<Fluid, Pair<Long, Float>> FUEL_ENERGY_VALUES = new HashMap<>() {
+    public static final HashMap<Fluid, Pair<Long, Float>> FUEL_ENERGY_VALUES = new HashMap<>() {
 
         {
             put(
@@ -1141,6 +1159,16 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
         aNBT.setDouble("eLongDiscountValue", discount);
         aNBT.setInteger("catalystType", catalystTypeForRecipesWithoutCatalyst);
         aNBT.setBoolean("convergence", convergence);
+        aNBT.setInteger("calcMode", calcMode);
+        aNBT.setLong("calcRecipeEUt", calcRecipeEUt);
+        aNBT.setLong("calcRecipeDuration", calcRecipeDuration);
+        aNBT.setInteger("calcTierIndex", calcTierIndex);
+        aNBT.setLong("calcInputValue", calcInputValue);
+        aNBT.setInteger("calcCatalystType", calcCatalystType);
+        aNBT.setInteger("calcNumberFormat", calcNumberFormat);
+        aNBT.setLong("calcFinalEUt", calcFinalEUt);
+        aNBT.setLong("calcAmps", calcAmps);
+        aNBT.setInteger("calcOverclocks", calcOverclocks);
         super.saveNBTData(aNBT);
     }
 
@@ -1150,6 +1178,16 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
         discount = aNBT.getDouble("eLongDiscountValue");
         if (aNBT.hasKey("catalystType")) catalystTypeForRecipesWithoutCatalyst = aNBT.getInteger("catalystType");
         convergence = aNBT.getBoolean("convergence");
+        calcMode = aNBT.getInteger("calcMode");
+        calcRecipeEUt = aNBT.getLong("calcRecipeEUt");
+        calcRecipeDuration = aNBT.getLong("calcRecipeDuration");
+        calcTierIndex = aNBT.getInteger("calcTierIndex");
+        calcInputValue = aNBT.getLong("calcInputValue");
+        calcCatalystType = aNBT.getInteger("calcCatalystType");
+        calcNumberFormat = aNBT.getInteger("calcNumberFormat");
+        calcFinalEUt = aNBT.getLong("calcFinalEUt");
+        calcAmps = aNBT.getLong("calcAmps");
+        calcOverclocks = aNBT.getInteger("calcOverclocks");
         super.loadNBTData(aNBT);
     }
 
