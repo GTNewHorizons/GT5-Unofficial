@@ -961,6 +961,11 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
         return data.toArray(new String[0]);
     }
 
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
     private enum CapacitorHatchElement implements IHatchElement<MTETeslaTower> {
 
         INSTANCE;
