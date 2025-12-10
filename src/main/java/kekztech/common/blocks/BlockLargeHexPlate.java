@@ -14,7 +14,6 @@ public final class BlockLargeHexPlate extends Block {
     private static final BlockLargeHexPlate INSTANCE = new BlockLargeHexPlate();
     private static final int BATCH_SIZE = 4;
 
-    // Only two textures needed
     private final IIcon[] icons = new IIcon[2];
 
     private BlockLargeHexPlate() {
@@ -37,12 +36,10 @@ public final class BlockLargeHexPlate extends Block {
         icons[1] = ir.registerIcon("kekztech:LargeHexTile_1");
     }
 
-    // Helper: return 0 or 1 based on coordinate parity
     private int pick(int a, int b) {
-        return (a + b) & 1; // same as %2 but faster
+        return (a + b) & 1; // % 2
     }
 
-    // Clean modulo handling for all coordinate signs
     private int wrap(int v) {
         return Math.floorMod(v, BATCH_SIZE);
     }
@@ -64,7 +61,6 @@ public final class BlockLargeHexPlate extends Block {
 
     @Override
     public IIcon getIcon(int side, int meta) {
-        // Use the "center" tile pattern = (2 + 2) % 2 = 0
-        return icons[ (BATCH_SIZE / 2) & 1 ];
+        return icons[0];
     }
 }
