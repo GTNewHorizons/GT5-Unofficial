@@ -71,6 +71,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -548,6 +549,8 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
+        if (eHolders == null || eHolders.get(0).mInventory[0] == null)
+            stopMachine(ShutDownReasonRegistry.STRUCTURE_INCOMPLETE);
         if (computationRemaining <= 0) {
             computationRemaining = 0;
             mProgresstime = mMaxProgresstime;
