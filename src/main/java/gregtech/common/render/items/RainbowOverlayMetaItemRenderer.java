@@ -50,10 +50,9 @@ public class RainbowOverlayMetaItemRenderer implements IItemRenderer {
             if (icons != null && icons.length > 0 && icons[0] != null) {
 
                 final GTClient clientProxy = GTMod.clientProxy();
-                long animationTicks = clientProxy.getAnimationTicks();
-                float partialTicks = clientProxy.getPartialRenderTicks();
+                float animationTicks = clientProxy.getAnimationRenderTicks();
 
-                Color color = Color.getHSBColor((animationTicks % 180 + partialTicks) % 90 / 90f, 0.4f, 0.9f);
+                Color color = Color.getHSBColor((animationTicks % 90) / 90f, 0.4f, 0.9f);
 
                 float modR = color.getRed() / 255.0F;
                 float modG = color.getGreen() / 255.0F;
