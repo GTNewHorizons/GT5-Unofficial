@@ -447,7 +447,7 @@ public final class GTGuiTextures {
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/charger")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_CHARGER_FLUID = UITexture.builder()
         .canApplyTheme()
         .fullImage()
@@ -459,283 +459,283 @@ public final class GTGuiTextures {
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/beaker_1")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_BEAKER_2 = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/beaker_2")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_BENDER = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/bender")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_BOX = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/box")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_BOXED = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/boxed")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_CANISTER = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/canister")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_CANNER = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/canner")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_CAULDRON = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/cauldron")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_CENTRIFUGE = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/centrifuge")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_CENTRIFUGE_FLUID = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/centrifuge_fluid")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_COMPRESSOR = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/compressor")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_CRUSHED_ORE = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/crushed_ore")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_CUTTER_SLICED = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/cutter_sliced")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_DATA_STICK = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/data_stick")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_DUST = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/dust")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_EXPLOSIVE = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/explosive")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_EXTRUDER_SHAPE = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/extruder_shape")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_FURNACE = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/furnace")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_GEM = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/gem")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_HAMMER = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/hammer")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_HEATER_1 = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/heater_1")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_HEATER_2 = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/heater_2")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_IMPLOSION = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/implosion")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_IN = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/in")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_LENS = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/lens")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_MICROSCOPE = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/microscope")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_MOLD = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/mold")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_MOLECULAR_1 = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/molecular_1")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_MOLECULAR_2 = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/molecular_2")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_MOLECULAR_3 = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/molecular_3")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_PAGE_BLANK = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/page_blank")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_PAGE_PRINTED = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/page_printed")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_PRESS_1 = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/press_1")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_PRESS_2 = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/press_2")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_PRESS_3 = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/press_3")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_RECYCLE = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/recycle")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_ROD_1 = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/rod_1")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_ROD_2 = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/rod_2")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_SLICE_SHAPE = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/slice_shape")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_SLICER_SLICED = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/slicer_sliced")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_SQUARE = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/square")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_UUA = UITexture.builder()
         .canApplyTheme()
         .fullImage()
-        .location(Gregech.ID, "gui/overlay_slot/uua")
+        .location(GregTech.ID, "gui/overlay_slot/uua")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_UUM = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/uum")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_VIAL_1 = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/vial_1")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_VIAL_2 = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/vial_2")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_WIREMILL = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/wiremill")
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_CIRCUIT = UITexture.builder()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/circuit")
         .build();
-  
+
     public static final UITexture[] OVERLAY_SLOTS_NUMBER = IntStream.range(0, 12)
         .mapToObj(
             i -> UITexture.builder()
