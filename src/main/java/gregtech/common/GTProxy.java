@@ -1253,6 +1253,7 @@ public class GTProxy implements IFuelHandler {
         UUID_BY_NAME = null;
         // spotless:on
 
+        GTCapesLoader.clearSelectedCapes();
         PowerGogglesEventHandler.getInstance()
             .onServerStopped(event);
     }
