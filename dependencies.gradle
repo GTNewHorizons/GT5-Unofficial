@@ -57,7 +57,7 @@ dependencies {
 
     compileOnlyApi("com.github.GTNewHorizons:Avaritia:1.78:dev")
 
-    compileOnlyApi('com.github.GTNewHorizons:Angelica:1.0.0-beta68:dev') { transitive = false }
+    compileOnlyApi('com.github.GTNewHorizons:Angelica:1.0.0-beta68a:dev') { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:AppleCore:3.3.8:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:BuildCraft:7.1.47:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.10.8:dev") { transitive = false }
@@ -90,7 +90,7 @@ dependencies {
     compileOnly('com.github.GTNewHorizons:HoloInventory:2.5.5-GTNH:dev') { transitive = false }
     compileOnly rfg.deobf("curse.maven:extra-utilities-225561:2264384")
     compileOnly rfg.deobf('curse.maven:minefactory-reloaded-66672:2366150')
-    compileOnly("com.github.GTNewHorizons:OpenComputers:1.12.6-GTNH:dev") {transitive = false}
+    compileOnly("com.github.GTNewHorizons:OpenComputers:1.12.8-GTNH:dev") {transitive = false}
     // https://www.curseforge.com/minecraft/mc-mods/advancedsolarpanels
     compileOnlyApi rfg.deobf('curse.maven:advsolar-362768:2885953')
     compileOnly('com.github.GTNewHorizons:ThaumicEnergistics:1.7.16-GTNH:dev') {transitive =  false}
@@ -146,7 +146,7 @@ dependencies {
 
     if (tasks.contains("runClient17") || tasks.contains("runClient21")) {
         // For testing ctm & general use
-        runtimeOnlyNonPublishable('com.github.GTNewHorizons:Angelica:1.0.0-beta68:dev') { transitive = false }
+        runtimeOnlyNonPublishable('com.github.GTNewHorizons:Angelica:1.0.0-beta68a:dev') { transitive = false }
     }
 
     // Speeds up mod identification and loading in dev
