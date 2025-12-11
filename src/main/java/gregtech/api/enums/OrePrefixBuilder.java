@@ -8,6 +8,7 @@ public class OrePrefixBuilder {
     private String defaultLocalName = "";
     private String materialPrefix = "";
     private String materialPostfix = "";
+    private String nameKey = null;
     private boolean isUnifiable = false;
     private boolean isMaterialBased = false;
     private boolean isSelfReferencing = false;
@@ -31,6 +32,7 @@ public class OrePrefixBuilder {
             defaultLocalName,
             materialPrefix,
             materialPostfix,
+            nameKey,
             isUnifiable,
             isMaterialBased,
             isSelfReferencing,
@@ -58,6 +60,11 @@ public class OrePrefixBuilder {
 
     public OrePrefixBuilder withSuffix(String materialPostfix) {
         this.materialPostfix = materialPostfix;
+        return this;
+    }
+
+    public OrePrefixBuilder withNameKey(String key) {
+        this.nameKey = key;
         return this;
     }
 

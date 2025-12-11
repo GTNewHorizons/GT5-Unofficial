@@ -12,6 +12,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -45,6 +46,15 @@ public class BlockMetal extends BlockStorage {
         if (aMats.length < 16 && mNEIisLoaded) {
             for (int i = aMats.length; i < 16; i++) codechicken.nei.api.API.hideItem(new ItemStack(this, 1, i));
         }
+    }
+
+    @Override
+    public String getLocalizedName(int meta) {
+        Materials material = GTDataUtils.getIndexSafe(mMats, meta);
+
+        if (material == null) material = Materials._NULL;
+
+        return OrePrefixes.block.getDefaultLocalNameForItem(material);
     }
 
     @Override
