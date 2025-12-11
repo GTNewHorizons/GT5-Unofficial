@@ -221,8 +221,9 @@ public class AdditionalRecipes {
             for (BioCulture bioCulture : BioCulture.BIO_CULTURE_ARRAY_LIST) {
                 if (bioCulture.isBreedable() && bioCulture.getTier() == 0) {
                     GTValues.RA.stdBuilder()
-                        .itemInputs(GTUtility.getIntegratedCircuit(1), new ItemStack(Items.sugar, 64))
+                        .itemInputs(new ItemStack(Items.sugar, 64))
                         .special(BioItemList.getPetriDish(bioCulture))
+                        .circuit(1)
                         .fluidInputs(fluidStack)
                         .fluidOutputs(new FluidStack(bioCulture.getFluid(), 10))
                         .metadata(GLASS, 3)
@@ -382,7 +383,8 @@ public class AdditionalRecipes {
         // Cubic Circonia
         // 2Y + 3O = Y2O3
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Yttrium.getDust(2), GTUtility.getIntegratedCircuit(5))
+            .itemInputs(Materials.Yttrium.getDust(2))
+            .circuit(5)
             .itemOutputs(WerkstoffLoader.YttriumOxide.get(dust, 5))
             .fluidInputs(Materials.Oxygen.getGas(3_000))
             .duration(3 * MINUTES + 24 * SECONDS + 16 * TICKS)
@@ -401,7 +403,8 @@ public class AdditionalRecipes {
 
         // Tellurium
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(crushed, Materials.Lead, 1L), GTUtility.getIntegratedCircuit(17))
+            .itemInputs(GTOreDictUnificator.get(crushed, Materials.Lead, 1L))
+            .circuit(17)
             .itemOutputs(Materials.Lead.getIngots(1), Materials.Tellurium.getNuggets(2))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -463,7 +466,7 @@ public class AdditionalRecipes {
         // Milk
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(1))
+            .circuit(1)
             .itemOutputs(
                 Materials.Sugar.getDustSmall(21),
                 Materials.Calcium.getDustTiny(1),
