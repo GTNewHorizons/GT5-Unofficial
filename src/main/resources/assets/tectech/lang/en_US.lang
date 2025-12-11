@@ -707,7 +707,7 @@ gt.blockmachines.multimachine.tm.teslaCoil.cfgo.6=Energy Stored display
 gt.blockmachines.multimachine.tm.teslaCoil.cfgo.7=Energy Fraction display
 gt.blockmachines.multimachine.tm.teslaCoil.cfgo.8=Scan time display
 gt.blockmachines.multimachine.tm.teslaCoil.cfgo.9=Output max display
-gt.blockmachines.multimachine.tm.teslaCoil.outputVoltage=Output voltage:
+gt.blockmachines.multimachine.tm.teslaCoil.outputVoltage=Output Voltage:
 gt.blockmachines.multimachine.tm.teslaCoil.chartButtonTooltip=Open amperage over time chart
 gt.blockmachines.multimachine.tm.teslaCoil.heatMapButtonTooltip=Open heat map
 
