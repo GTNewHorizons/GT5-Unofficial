@@ -271,9 +271,7 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
             matrix.add(new ArrayList<>());
             for (int j = 0; j < gridChunkSize; j++) {
                 matrix.get(i)
-                    .add(
-                        createMapSlot(syncManager, i, j).pos(gridSquareSize * i, gridSquareSize * j)
-                            .size(gridSquareSize));
+                    .add(createMapSlot(syncManager, i, j).size(gridSquareSize));
             }
         }
 
