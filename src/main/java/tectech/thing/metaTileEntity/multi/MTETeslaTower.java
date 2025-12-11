@@ -44,6 +44,7 @@ import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
@@ -751,11 +752,12 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
             if (!sparkList.isEmpty()) {
                 NetworkDispatcher.INSTANCE.sendToAllAround(
                     new RendererMessage.RendererData(sparkList),
-                    mte.getWorld().provider.dimensionId,
-                    mte.getXCoord(),
-                    mte.getYCoord(),
-                    mte.getZCoord(),
-                    256);
+                    new NetworkRegistry.TargetPoint(
+                        mte.getWorld().provider.dimensionId,
+                        mte.getXCoord(),
+                        mte.getYCoord(),
+                        mte.getZCoord(),
+                        256));
                 sparkList.clear();
             }
         }
