@@ -13,7 +13,6 @@ import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
 
-import codechicken.nei.PositionedStack;
 import gregtech.api.enums.Materials;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
@@ -23,6 +22,8 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitFlocculation;
 import gregtech.nei.GTNEIDefaultHandler;
+
+import net.minecraft.util.StatCollector;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -40,15 +41,17 @@ public class PurificationUnitFlocculatorFrontend extends PurificationUnitRecipeM
 
     @Override
     public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
-        ArrayList<Pos2d> positions = new ArrayList<>();
+        final ArrayList<Pos2d> positions = new ArrayList<>();
         positions.add(new Pos2d(9, 39));
+        positions.add(new Pos2d(5, -1));
         return positions;
     }
 
     @Override
     public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
-        ArrayList<Pos2d> positions = new ArrayList<>();
+        final ArrayList<Pos2d> positions = new ArrayList<>();
         positions.add(new Pos2d(151, 39));
+        positions.add(new Pos2d(147, 48));
         return positions;
     }
 
@@ -62,39 +65,15 @@ public class PurificationUnitFlocculatorFrontend extends PurificationUnitRecipeM
     public List<String> handleNEIItemTooltip(ItemStack stack, List<String> currentTip,
         GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
         if (stack.isItemEqual(GTUtility.getFluidDisplayStack(Materials.PolyAluminiumChloride.getFluid(1_000), false))) {
-            currentTip.add("Consumed during operation");
-            currentTip.add(
-                "+" + MTEPurificationUnitFlocculation.SUCCESS_PER_LEVEL
-                    + "%/"
-                    + MTEPurificationUnitFlocculation.INPUT_CHEMICAL_PER_LEVEL
-                    + "L");
+            currentTip.add(StatCollector.translateToLocal("GT5U.nei.purified_water.grade_3.0"));
+            currentTip.add(StatCollector.translateToLocalFormatted(
+                "GT5U.nei.purified_water.grade_3.1",
+                MTEPurificationUnitFlocculation.SUCCESS_PER_LEVEL,
+                MTEPurificationUnitFlocculation.INPUT_CHEMICAL_PER_LEVEL));
         } else if (stack
             .isItemEqual(GTUtility.getFluidDisplayStack(Materials.FlocculationWasteLiquid.getFluid(1_000), false))) {
-                currentTip.add("Returned in amount equivalent to consumed flocculant.");
+                currentTip.add(StatCollector.translateToLocal("GT5U.nei.purified_water.grade_3.2"));
             }
         return super.handleNEIItemTooltip(stack, currentTip, neiCachedRecipe);
-    }
-
-    @Override
-    public void drawNEIOverlays(GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
-        super.drawNEIOverlays(neiCachedRecipe);
-        // Just to make sure these are only added once, otherwise these keep getting added every display tick
-        if (neiCachedRecipe.mInputs.size() == 1) {
-            // Display flocculation chemical
-            neiCachedRecipe.mInputs.add(
-                new PositionedStack(
-                    GTUtility.getFluidDisplayStack(Materials.PolyAluminiumChloride.getFluid(100_000), true),
-                    5,
-                    -1,
-                    false));
-
-            // Display waste output
-            neiCachedRecipe.mOutputs.add(
-                new PositionedStack(
-                    GTUtility.getFluidDisplayStack(Materials.FlocculationWasteLiquid.getFluid(100_000), true),
-                    147,
-                    48,
-                    false));
-        }
     }
 }

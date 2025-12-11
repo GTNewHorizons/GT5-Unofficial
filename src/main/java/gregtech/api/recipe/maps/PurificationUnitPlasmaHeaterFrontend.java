@@ -33,14 +33,14 @@ public class PurificationUnitPlasmaHeaterFrontend extends PurificationUnitRecipe
 
     @Override
     public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
-        ArrayList<Pos2d> positions = new ArrayList<>();
+        final ArrayList<Pos2d> positions = new ArrayList<>();
         positions.add(new Pos2d(30, 83));
         return positions;
     }
 
     @Override
     public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
-        ArrayList<Pos2d> positions = new ArrayList<>();
+        final ArrayList<Pos2d> positions = new ArrayList<>();
         positions.add(new Pos2d(111, 82));
         return positions;
     }

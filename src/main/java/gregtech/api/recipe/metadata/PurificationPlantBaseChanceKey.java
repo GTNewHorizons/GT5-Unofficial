@@ -6,6 +6,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.RecipeDisplayInfo;
+import net.minecraft.util.StatCollector;
 
 /**
  * Base success chance for Purification Plant recipes
@@ -23,6 +24,6 @@ public class PurificationPlantBaseChanceKey extends RecipeMetadataKey<Float> {
     @Override
     public void drawInfo(RecipeDisplayInfo recipeInfo, @Nullable Object value) {
         double chance = cast(value, 0.0f);
-        recipeInfo.drawText("Base success chance: " + chance + "%");
+        recipeInfo.drawText(StatCollector.translateToLocalFormatted("GT5U.nei.purified_water.base_chance",chance));
     }
 }

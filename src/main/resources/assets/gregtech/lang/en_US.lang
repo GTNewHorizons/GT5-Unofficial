@@ -1862,6 +1862,12 @@ GT5U.nei.nuclear.breeder.neutron_reflecting=Neutron reflecting Breeder
 GT5U.nei.nuclear.breeder.heat_neutral=Heat neutral Breeder
 GT5U.nei.nuclear.breeder.reactor_hull_heat=Every %d reactor hull heat\nincrease speed by %d00%%
 GT5U.nei.nuclear.breeder.required_pulse=Required pulses: %d
+GT5U.nei.purified_water.base_chance=Base success chance: %s%%
+GT5U.nei.purified_water.grade_3.0=Consumed during operation
+GT5U.nei.purified_water.grade_3.1=+%s%%/%dL
+GT5U.nei.purified_water.grade_3.2=Returned in amount equivalent to consumed flocculant.
+GT5U.nei.purified_water.grade_4.0=+%s pH/stack
+GT5U.nei.purified_water.grade_4.1=%s pH/1000L
 
 
 GT5U.config.colormodulation=Color Modulator

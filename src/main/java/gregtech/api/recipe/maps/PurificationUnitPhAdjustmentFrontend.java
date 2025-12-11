@@ -7,6 +7,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.item.ItemStack;
 
+import net.minecraft.util.StatCollector;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
@@ -38,15 +39,23 @@ public class PurificationUnitPhAdjustmentFrontend extends PurificationUnitRecipe
     }
 
     @Override
+    public List<Pos2d> getItemInputPositions(int itemInputCount){
+        final ArrayList<Pos2d> positions = new ArrayList<>();
+        positions.add(new Pos2d(3, 1));
+        return positions;
+    }
+
+    @Override
     public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
-        ArrayList<Pos2d> positions = new ArrayList<>();
+        final ArrayList<Pos2d> positions = new ArrayList<>();
         positions.add(new Pos2d(42, 44));
+        positions.add(new Pos2d(147, 1));
         return positions;
     }
 
     @Override
     public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
-        ArrayList<Pos2d> positions = new ArrayList<>();
+        final ArrayList<Pos2d> positions = new ArrayList<>();
         positions.add(new Pos2d(116, 44));
         return positions;
     }
@@ -57,24 +66,11 @@ public class PurificationUnitPhAdjustmentFrontend extends PurificationUnitRecipe
         GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
         // Add pH adjustment values
         if (stack.isItemEqual(Materials.SodiumHydroxide.getDust(1))) {
-            currentTip.add("+" + MTEPurificationUnitPhAdjustment.PH_PER_ALKALINE_DUST * 64 + " pH/stack");
+            currentTip.add(StatCollector.translateToLocalFormatted("GT5U.nei.purified_water.grade_4.0",MTEPurificationUnitPhAdjustment.PH_PER_ALKALINE_DUST * 64));
         } else
             if (stack.isItemEqual(GTUtility.getFluidDisplayStack(Materials.HydrochloricAcid.getFluid(1_000), false))) {
-                currentTip.add(MTEPurificationUnitPhAdjustment.PH_PER_10_ACID_LITER * 100 + " pH/1000L");
+                currentTip.add(StatCollector.translateToLocalFormatted("GT5U.nei.purified_water.grade_4.1",MTEPurificationUnitPhAdjustment.PH_PER_10_ACID_LITER * 100));
             }
         return super.handleNEIItemTooltip(stack, currentTip, neiCachedRecipe);
-    }
-
-    @Override
-    public void drawNEIOverlays(GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
-        if (neiCachedRecipe.mInputs.size() == 1) {
-            neiCachedRecipe.mInputs.add(new PositionedStack(Materials.SodiumHydroxide.getDust(64), 3, 1, false));
-            neiCachedRecipe.mInputs.add(
-                new PositionedStack(
-                    GTUtility.getFluidDisplayStack(Materials.HydrochloricAcid.getFluid(1_000), true),
-                    147,
-                    1,
-                    false));
-        }
     }
 }

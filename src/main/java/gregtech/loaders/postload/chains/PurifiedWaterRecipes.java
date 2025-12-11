@@ -126,6 +126,20 @@ public class PurifiedWaterRecipes {
 
         // Grade 3 - Flocculation.
         GTValues.RA.stdBuilder()
+            .fluidInputs(Materials.Grade2PurifiedWater.getFluid(1_000),Materials.PolyAluminiumChloride.getFluid(100_000))
+            .fluidOutputs(Materials.Grade3PurifiedWater.getFluid(900),Materials.FlocculationWasteLiquid.getFluid(100_000))
+            .itemOutputs(
+                new ItemStack(Items.clay_ball, 1),
+                Materials.QuartzSand.getDust(1),
+                Materials.PolyvinylChloride.getNuggets(1))
+            .outputChances(1000, 500, 100)
+            .duration(duration)
+            .eut(TierEU.RECIPE_ZPM)
+            .metadata(BASE_CHANCE, 1 * 10.0f)
+            .fake()
+            .addTo(purificationFlocculationRecipes);
+
+        GTValues.RA.stdBuilder()
             .fluidInputs(Materials.Grade2PurifiedWater.getFluid(1_000))
             .fluidOutputs(Materials.Grade3PurifiedWater.getFluid(900))
             .itemOutputs(
@@ -136,6 +150,7 @@ public class PurifiedWaterRecipes {
             .duration(duration)
             .eut(TierEU.RECIPE_ZPM)
             .metadata(BASE_CHANCE, 1 * 10.0f)
+            .hidden()
             .addTo(purificationFlocculationRecipes);
 
         // 2 Al(OH)3 + 3 HCl -> Al2(OH)3 Cl3 + 3 H2O
@@ -157,12 +172,24 @@ public class PurifiedWaterRecipes {
 
         // Grade 4 - pH adjustment
         GTValues.RA.stdBuilder()
+            .itemInputs(Materials.SodiumHydroxide.getDust(64))
+            .fluidInputs(Materials.Grade3PurifiedWater.getFluid(1_000),Materials.HydrochloricAcid.getFluid(1_000))
+            .fluidOutputs(Materials.Grade4PurifiedWater.getFluid(900))
+            .ignoreCollision()
+            .duration(duration)
+            .eut(TierEU.RECIPE_ZPM)
+            .metadata(BASE_CHANCE, 0.0f)
+            .fake()
+            .addTo(purificationPhAdjustmentRecipes);
+
+        GTValues.RA.stdBuilder()
             .fluidInputs(Materials.Grade3PurifiedWater.getFluid(1_000))
             .fluidOutputs(Materials.Grade4PurifiedWater.getFluid(900))
             .ignoreCollision()
             .duration(duration)
             .eut(TierEU.RECIPE_ZPM)
             .metadata(BASE_CHANCE, 0.0f)
+            .hidden()
             .addTo(purificationPhAdjustmentRecipes);
 
         // Grade 5 - Plasma Heating
