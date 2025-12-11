@@ -75,7 +75,7 @@ public final class BasicUIPropertiesBuilder {
     private int amperage = 1;
 
     private BasicUIProperties.SlotOverlayGetter<com.cleanroommc.modularui.api.drawable.IDrawable> slotOverlaysMUI2 = (
-        index, isFluid, isOutput, isSpecial) -> null;
+        index, isFluid, isOutput, isSpecial) -> com.cleanroommc.modularui.api.drawable.IDrawable.NONE;
 
     private UITexture progressBarTextureMUI2 = GTGuiTextures.PROGRESSBAR_ARROW_STANDARD;
     private ProgressWidget.Direction progressBarDirectionMUI2 = ProgressWidget.Direction.RIGHT;

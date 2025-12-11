@@ -130,7 +130,7 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
 
     @Override
     protected int getBasePanelHeight() {
-        return super.getBasePanelHeight() + (18 * (this.shouldIncreaseGuiHeight() ? 1 : 0));
+        return super.getBasePanelHeight() + (9 * (this.shouldIncreaseGuiHeight() ? 1 : 0));
     }
 
     @Override
