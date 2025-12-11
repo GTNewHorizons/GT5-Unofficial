@@ -33,12 +33,12 @@ import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import com.mojang.realmsclient.util.Pair;
@@ -265,19 +265,22 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
     }
 
     private IWidget createNodeGrid(PanelSyncManager syncManager, int borderRadius) {
-        com.cleanroommc.modularui.widget.ParentWidget<?> parent = new ParentWidget<>()
-            .size(gridChunkSize * gridSquareSize, gridChunkSize * gridSquareSize)
-            .marginTop(borderRadius)
-            .marginLeft(borderRadius);
+        List<List<Widget<?>>> matrix = new ArrayList<>();
 
         for (int i = 0; i < gridChunkSize; i++) {
+            matrix.add(new ArrayList<>());
             for (int j = 0; j < gridChunkSize; j++) {
-                parent.child(
-                    createMapSlot(syncManager, i, j).pos(gridSquareSize * i, gridSquareSize * j)
-                        .size(gridSquareSize));
+                matrix.get(i)
+                    .add(
+                        createMapSlot(syncManager, i, j).pos(gridSquareSize * i, gridSquareSize * j)
+                            .size(gridSquareSize));
             }
         }
-        return parent;
+
+        return new Grid().matrix(matrix)
+            .size(gridSquareSize * gridChunkSize)
+            .marginTop(borderRadius)
+            .marginLeft(borderRadius);
     }
 
     private Widget<?> createMapSlot(PanelSyncManager syncManager, int gridX, int gridY) {
