@@ -38,7 +38,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsAlloy;
@@ -420,7 +419,8 @@ public class ComponentAssemblyLineMiscRecipes {
     private static void generateWrapRecipes() {
         for (int i = 0; i <= 11; i++) {
             GTValues.RA.stdBuilder()
-                .itemInputs(getCircuit(i, 16), GTUtility.getIntegratedCircuit(16))
+                .itemInputs(getCircuit(i, 16))
+                .circuit(16)
                 .fluidInputs(Materials.SolderingAlloy.getMolten(1 * HALF_INGOTS))
                 .itemOutputs(new ItemStack(Loaders.circuitWrap, 1, i))
                 .duration(30 * SECONDS)
@@ -428,18 +428,16 @@ public class ComponentAssemblyLineMiscRecipes {
                 .addTo(assemblerRecipes);
         }
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UMV, 16),
-                GTUtility.getIntegratedCircuit(16))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UMV, 16))
+            .circuit(16)
             .fluidInputs(Materials.SolderingAlloy.getMolten(1 * HALF_INGOTS))
             .itemOutputs(new ItemStack(Loaders.circuitWrap, 1, 12))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UXV, 16),
-                GTUtility.getIntegratedCircuit(16))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UXV, 16))
+            .circuit(16)
             .fluidInputs(Materials.SolderingAlloy.getMolten(1 * HALF_INGOTS))
             .itemOutputs(new ItemStack(Loaders.circuitWrap, 1, 13))
             .duration(30 * SECONDS)
