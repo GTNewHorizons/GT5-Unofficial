@@ -145,7 +145,6 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
             }
             return !result;
         });
-        if (!centre.isValid()) centre = null;
     }
 
     private void doNormalMaintain() {
@@ -208,6 +207,7 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
      * dimension and find one in range.
      */
     private void tryFindDroneCenter() {
+        centre = null;
         if (!key.isEmpty()) {
             Set<MTEDroneCentre> t4Centres = MTEDroneCentre.getCentreMap()
                 .get(Integer.MAX_VALUE);
@@ -260,6 +260,8 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
             unlinkedMachines.add(conn.getLinkedMachine());
             savedNameList.put(conn.uuid.toString(), conn.getCustomName());
             savedGroupList.put(conn.uuid.toString(), conn.getGroup());
+            centre.getConnectionList()
+                .remove(conn);
             return true;
         });
     }
@@ -281,7 +283,6 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
         if (!key.equals(this.key)) {
             this.key = key;
             if (!NetworkUtils.isClient()) {
-                centre = null;
                 clearConnections();
                 tryFindDroneCenter();
             }
