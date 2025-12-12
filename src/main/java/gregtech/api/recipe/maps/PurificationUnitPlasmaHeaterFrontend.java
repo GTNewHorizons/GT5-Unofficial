@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
@@ -33,33 +34,11 @@ public class PurificationUnitPlasmaHeaterFrontend extends PurificationUnitRecipe
 
     @Override
     public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
-        final ArrayList<Pos2d> positions = new ArrayList<>();
-        positions.add(new Pos2d(30, 83));
-        return positions;
+        return ImmutableList.of(new Pos2d(30, 83), new Pos2d(26, 53), new Pos2d(107, 52));
     }
 
     @Override
     public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
-        final ArrayList<Pos2d> positions = new ArrayList<>();
-        positions.add(new Pos2d(111, 82));
-        return positions;
-    }
-
-    @Override
-    public void drawNEIOverlays(GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
-        if (neiCachedRecipe.mInputs.size() == 1) {
-            neiCachedRecipe.mInputs.add(
-                new PositionedStack(
-                    GTUtility.getFluidDisplayStack(Materials.Helium.getPlasma(10L), true),
-                    26,
-                    53,
-                    false));
-            neiCachedRecipe.mInputs.add(
-                new PositionedStack(
-                    GTUtility.getFluidDisplayStack(Materials.SuperCoolant.getFluid(100L), true),
-                    107,
-                    52,
-                    false));
-        }
+        return ImmutableList.of(new Pos2d(111, 82));
     }
 }

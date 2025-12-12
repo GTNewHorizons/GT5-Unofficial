@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.item.ItemStack;
 
 import org.jetbrains.annotations.NotNull;
@@ -41,18 +42,12 @@ public class PurificationUnitFlocculatorFrontend extends PurificationUnitRecipeM
 
     @Override
     public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
-        final ArrayList<Pos2d> positions = new ArrayList<>();
-        positions.add(new Pos2d(9, 39));
-        positions.add(new Pos2d(5, -1));
-        return positions;
+        return ImmutableList.of(new Pos2d(9, 39), new Pos2d(5, -1));
     }
 
     @Override
     public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
-        final ArrayList<Pos2d> positions = new ArrayList<>();
-        positions.add(new Pos2d(151, 39));
-        positions.add(new Pos2d(147, 48));
-        return positions;
+        return ImmutableList.of(new Pos2d(151, 39), new Pos2d(147, 48));
     }
 
     @Override

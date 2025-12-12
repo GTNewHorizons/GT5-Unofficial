@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.item.ItemStack;
 
 import net.minecraft.util.StatCollector;
@@ -40,24 +41,17 @@ public class PurificationUnitPhAdjustmentFrontend extends PurificationUnitRecipe
 
     @Override
     public List<Pos2d> getItemInputPositions(int itemInputCount){
-        final ArrayList<Pos2d> positions = new ArrayList<>();
-        positions.add(new Pos2d(3, 1));
-        return positions;
+        return ImmutableList.of(new Pos2d(3, 1));
     }
 
     @Override
     public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
-        final ArrayList<Pos2d> positions = new ArrayList<>();
-        positions.add(new Pos2d(42, 44));
-        positions.add(new Pos2d(147, 1));
-        return positions;
+        return ImmutableList.of(new Pos2d(42, 44), new Pos2d(147, 1));
     }
 
     @Override
     public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
-        final ArrayList<Pos2d> positions = new ArrayList<>();
-        positions.add(new Pos2d(116, 44));
-        return positions;
+        return ImmutableList.of(new Pos2d(116, 44));
     }
 
     @Override

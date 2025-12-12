@@ -194,12 +194,23 @@ public class PurifiedWaterRecipes {
 
         // Grade 5 - Plasma Heating
         GTValues.RA.stdBuilder()
+            .fluidInputs(Materials.Grade4PurifiedWater.getFluid(1_000),Materials.Helium.getPlasma(10L),Materials.SuperCoolant.getFluid(100L))
+            .fluidOutputs(Materials.Grade5PurifiedWater.getFluid(900))
+            .ignoreCollision()
+            .duration(duration)
+            .eut(TierEU.RECIPE_UV)
+            .metadata(BASE_CHANCE, 0.0f)
+            .fake()
+            .addTo(purificationPlasmaHeatingRecipes);
+
+        GTValues.RA.stdBuilder()
             .fluidInputs(Materials.Grade4PurifiedWater.getFluid(1_000))
             .fluidOutputs(Materials.Grade5PurifiedWater.getFluid(900))
             .ignoreCollision()
             .duration(duration)
             .eut(TierEU.RECIPE_UV)
             .metadata(BASE_CHANCE, 0.0f)
+            .hidden()
             .addTo(purificationPlasmaHeatingRecipes);
 
         MTEPurificationUnitUVTreatment.LENS_ITEMS.add(GGMaterial.orundum.get(OrePrefixes.lens, 1));
@@ -218,12 +229,24 @@ public class PurifiedWaterRecipes {
 
         // Grade 6 - UV treatment
         GTValues.RA.stdBuilder()
+            .itemInputs(MTEPurificationUnitUVTreatment.LENS_ITEMS.toArray(new ItemStack[9]))
             .fluidInputs(Materials.Grade5PurifiedWater.getFluid(1_000))
             .fluidOutputs(Materials.Grade6PurifiedWater.getFluid(900))
             .ignoreCollision()
             .duration(duration)
             .eut(TierEU.RECIPE_UV)
             .metadata(BASE_CHANCE, 0.0f)
+            .fake()
+            .addTo(purificationUVTreatmentRecipes);
+
+        GTValues.RA.stdBuilder()
+            .fluidInputs(Materials.Grade5PurifiedWater.getFluid(1_000))
+            .fluidOutputs(Materials.Grade6PurifiedWater.getFluid(900))
+            .ignoreCollision()
+            .duration(duration)
+            .eut(TierEU.RECIPE_UV)
+            .metadata(BASE_CHANCE, 0.0f)
+            .hidden()
             .addTo(purificationUVTreatmentRecipes);
 
         // Grade 7 - Degasification
@@ -238,17 +261,20 @@ public class PurifiedWaterRecipes {
 
         // Grade 8 - Quark Extraction
 
-        ItemStack[] catalystInputs = new ItemStack[] { ItemList.Quark_Creation_Catalyst_Up.get(1L),
+        final ItemStack[] catalystInputs = new ItemStack[] { ItemList.Quark_Creation_Catalyst_Up.get(1L),
             ItemList.Quark_Creation_Catalyst_Down.get(1L), ItemList.Quark_Creation_Catalyst_Bottom.get(1L),
             ItemList.Quark_Creation_Catalyst_Top.get(1L), ItemList.Quark_Creation_Catalyst_Strange.get(1L),
             ItemList.Quark_Creation_Catalyst_Charm.get(1L) };
+        final ItemStack[] particleExtractorInputItems1 = new ItemStack[catalystInputs.length * (catalystInputs.length - 1)];
+        final ItemStack[] particleExtractorInputItems2 = new ItemStack[catalystInputs.length * (catalystInputs.length - 1)];
 
         // Add all combinations of input items to the frontend map
+        int k = 0;
         for (int i = 0; i < catalystInputs.length; ++i) {
             for (int j = 1; j < catalystInputs.length; ++j) {
-                PurificationUnitParticleExtractorFrontend.inputItems.add(catalystInputs[i]);
-                PurificationUnitParticleExtractorFrontend.inputItemsShuffled
-                    .add(catalystInputs[(i + j) % catalystInputs.length]);
+                particleExtractorInputItems1[k] = catalystInputs[i];
+                particleExtractorInputItems2[k] = catalystInputs[(i + j) % catalystInputs.length];
+                k++;
             }
         }
 
@@ -269,7 +295,7 @@ public class PurifiedWaterRecipes {
         }
 
         // Initial aligned quark catalysts, these are not meant to be done often, and simply exist to get you started
-        ItemStack[] quarks = new ItemStack[] { // make sure these are in the same order as the list above
+        final ItemStack[] quarks = new ItemStack[] { // make sure these are in the same order as the list above
             Particle.getBaseParticle(Particle.UP), Particle.getBaseParticle(Particle.DOWN),
             Particle.getBaseParticle(Particle.BOTTOM), Particle.getBaseParticle(Particle.TOP),
             Particle.getBaseParticle(Particle.STRANGE), Particle.getBaseParticle(Particle.CHARM) };
@@ -314,9 +340,10 @@ public class PurifiedWaterRecipes {
 
         GTValues.RA.stdBuilder()
             // Fake item inputs
-            .itemInputs(ItemList.Quark_Creation_Catalyst_Charm.get(1), ItemList.Quark_Creation_Catalyst_Strange.get(1))
+            .itemInputs(particleExtractorInputItems1, particleExtractorInputItems2)
             .fluidInputs(Materials.Grade7PurifiedWater.getFluid(1_000))
-            .fluidOutputs(Materials.Grade8PurifiedWater.getFluid(900), Materials.StableBaryonicMatter.getFluid(500))
+            .fluidOutputs(Materials.Grade8PurifiedWater.getFluid(900),
+                Materials.StableBaryonicMatter.getFluid(extraBaryonicOutput))
             .itemOutputs(ItemList.Quark_Creation_Catalyst_Unaligned.get(2L), Particle.getBaseParticle(Particle.UNKNOWN))
             .outputChances(10000, 100)
             .ignoreCollision()
