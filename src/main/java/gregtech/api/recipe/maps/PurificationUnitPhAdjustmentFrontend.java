@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.google.common.collect.ImmutableList;
+import gregtech.api.recipe.BasicUIProperties;
 import net.minecraft.item.ItemStack;
 
 import net.minecraft.util.StatCollector;
@@ -56,7 +57,7 @@ public class PurificationUnitPhAdjustmentFrontend extends PurificationUnitRecipe
 
     @Override
     public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
-        return ImmutableList.of(new Pos2d(116, 44), new Pos2d(0, 0));
+        return ImmutableList.of(new Pos2d(116, 44));
     }
 
     @Override

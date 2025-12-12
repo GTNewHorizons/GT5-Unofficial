@@ -1255,7 +1255,7 @@ public final class RecipeMaps {
 
     public static final RecipeMap<RecipeMapBackend> purificationPhAdjustmentRecipes = RecipeMapBuilder
         .of("gt.recipe.purificationplantphadjustment")
-        .maxIO(0, 0, 1, 1)
+        .maxIO(1, 0, 2, 1)
         .minInputs(0, 1)
         .progressBar(GTUITextures.PROGRESSBAR_MIXER)
         .frontend(PurificationUnitPhAdjustmentFrontend::new)
@@ -1263,14 +1263,14 @@ public final class RecipeMaps {
 
     public static final RecipeMap<RecipeMapBackend> purificationPlasmaHeatingRecipes = RecipeMapBuilder
         .of("gt.recipe.purificationplantplasmaheating")
-        .maxIO(0, 0, 1, 1)
+        .maxIO(0, 0, 3, 1)
         .minInputs(0, 1)
         .progressBar(GTUITextures.PROGRESSBAR_BOILER_HEAT)
         .frontend(PurificationUnitPlasmaHeaterFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> purificationUVTreatmentRecipes = RecipeMapBuilder
         .of("gt.recipe.purificationplantuvtreatment")
-        .maxIO(0, 0, 1, 1)
+        .maxIO(9, 0, 1, 1)
         .minInputs(0, 1)
         .progressBar(GTUITextures.PROGRESSBAR_ARROW)
         .frontend(PurificationUnitLaserFrontend::new)
