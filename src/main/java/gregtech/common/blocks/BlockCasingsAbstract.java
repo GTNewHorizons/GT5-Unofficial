@@ -28,6 +28,7 @@ import com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.items.GTGenericBlock;
@@ -163,7 +164,7 @@ public abstract class BlockCasingsAbstract extends GTGenericBlock
 
     @Override
     public int colorMultiplier(IBlockAccess aWorld, int aX, int aY, int aZ) {
-        return gregtech.api.enums.Dyes.MACHINE_METAL.toInt();
+        return Dyes.MACHINE_METAL.toInt();
     }
 
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advancedTooltips) {
