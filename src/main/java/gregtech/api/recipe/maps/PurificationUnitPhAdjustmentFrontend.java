@@ -45,13 +45,18 @@ public class PurificationUnitPhAdjustmentFrontend extends PurificationUnitRecipe
     }
 
     @Override
+    public List<Pos2d> getItemOutputPositions(int itemInputCount){
+        return super.getItemOutputPositions(1);
+    }
+
+    @Override
     public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
         return ImmutableList.of(new Pos2d(42, 44), new Pos2d(147, 1));
     }
 
     @Override
     public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
-        return ImmutableList.of(new Pos2d(116, 44));
+        return ImmutableList.of(new Pos2d(116, 44), new Pos2d(0, 0));
     }
 
     @Override

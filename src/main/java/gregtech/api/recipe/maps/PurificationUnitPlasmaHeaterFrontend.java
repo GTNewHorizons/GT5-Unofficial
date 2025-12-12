@@ -39,6 +39,6 @@ public class PurificationUnitPlasmaHeaterFrontend extends PurificationUnitRecipe
 
     @Override
     public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
-        return ImmutableList.of(new Pos2d(111, 82));
+        return ImmutableList.of(new Pos2d(111, 82), new Pos2d(0, 0), new Pos2d(0, 0));
     }
 }
