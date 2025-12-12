@@ -42,12 +42,12 @@ public class PurificationUnitPhAdjustmentFrontend extends PurificationUnitRecipe
 
     @Override
     public List<Pos2d> getItemInputPositions(int itemInputCount){
-        return ImmutableList.of(new Pos2d(3, 1));
+        return ImmutableList.of(new Pos2d(3+4, 1+10));
     }
 
     @Override
     public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
-        return ImmutableList.of(new Pos2d(42, 44), new Pos2d(147, 1));
+        return ImmutableList.of(new Pos2d(42, 44), new Pos2d(147+4, 1+10));
     }
 
     @Override

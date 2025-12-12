@@ -42,12 +42,12 @@ public class PurificationUnitFlocculatorFrontend extends PurificationUnitRecipeM
 
     @Override
     public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
-        return ImmutableList.of(new Pos2d(9, 39), new Pos2d(5, -1));
+        return ImmutableList.of(new Pos2d(9, 39), new Pos2d(5+4, -1+10));
     }
 
     @Override
     public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
-        return ImmutableList.of(new Pos2d(151, 39), new Pos2d(147, 48));
+        return ImmutableList.of(new Pos2d(151, 39), new Pos2d(147+4, 48+10));
     }
 
     @Override
