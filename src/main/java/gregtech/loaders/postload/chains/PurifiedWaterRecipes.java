@@ -265,16 +265,13 @@ public class PurifiedWaterRecipes {
             ItemList.Quark_Creation_Catalyst_Down.get(1L), ItemList.Quark_Creation_Catalyst_Bottom.get(1L),
             ItemList.Quark_Creation_Catalyst_Top.get(1L), ItemList.Quark_Creation_Catalyst_Strange.get(1L),
             ItemList.Quark_Creation_Catalyst_Charm.get(1L) };
-        final ItemStack[] particleExtractorInputItems1 = new ItemStack[catalystInputs.length * (catalystInputs.length - 1)];
-        final ItemStack[] particleExtractorInputItems2 = new ItemStack[catalystInputs.length * (catalystInputs.length - 1)];
 
         // Add all combinations of input items to the frontend map
-        int k = 0;
         for (int i = 0; i < catalystInputs.length; ++i) {
             for (int j = 1; j < catalystInputs.length; ++j) {
-                particleExtractorInputItems1[k] = catalystInputs[i];
-                particleExtractorInputItems2[k] = catalystInputs[(i + j) % catalystInputs.length];
-                k++;
+                PurificationUnitParticleExtractorFrontend.inputItems.add(catalystInputs[i]);
+                PurificationUnitParticleExtractorFrontend.inputItemsShuffled
+                    .add(catalystInputs[(i + j) % catalystInputs.length]);
             }
         }
 
@@ -340,7 +337,7 @@ public class PurifiedWaterRecipes {
 
         GTValues.RA.stdBuilder()
             // Fake item inputs
-            .itemInputs(particleExtractorInputItems1, particleExtractorInputItems2)
+            .itemInputs(catalystInputs)
             .fluidInputs(Materials.Grade7PurifiedWater.getFluid(1_000))
             .fluidOutputs(Materials.Grade8PurifiedWater.getFluid(900),
                 Materials.StableBaryonicMatter.getFluid(extraBaryonicOutput))
