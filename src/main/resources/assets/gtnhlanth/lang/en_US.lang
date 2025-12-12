@@ -15,6 +15,7 @@ GT5U.gui.text.gtnhlanth.inscoolant=Insufficient coolant in machine!
 GT5U.gui.text.gtnhlanth.noaccel=Particle type can't be accelerated!
 GT5U.gui.text.gtnhlanth.low_input_eut=Input EU/t too low to produce  photons!
 GT5U.gui.text.gtnhlanth.scerror=Math error, broken recipe?
+GT5U.gui.text.gtnhlanth.inputinterrupt=Input Beam must not be interrupted or changed!
 
 # NEI
 value.disstank=Ratio: %s:1
@@ -160,12 +161,31 @@ tile.recipe.tc=Target Chamber
 tile.recipe.sc=Source Chamber
 
 item.particle.name=Particle
-particle.electron=Electron
 particle.photon=Photon
-particle.alpha=Alpha
-particle.neutron=Neutron
+particle.zboson=Z Boson
+particle.wboson=W Boson
+particle.higgs=Higgs Boson
+particle.graviton=Graviton
+particle.electron=Electron
+particle.muon=Muon
+particle.tau=Tau
+particle.electron_neutrino=Electron Neutrino
+particle.muon_neutrino=Muon Neutrino
+particle.tau_neutrino=Tau Neutrino
 particle.proton=Proton
+particle.neutron=Neutron
+particle.lambda=lambda
+particle.omega=Omega
+particle.eta=Eta
+particle.jpsi=J/Psi
+particle.upsilon=Upsilon
+particle.alpha=Alpha
 GT5U.gui.text.dissolution_ratio=§7Wrong fluid input ratio
+
+beamcrafting.energy_A=min Energy 1
+beamcrafting.energy_B=min Energy 2
+beamcrafting.amount_A=Amount 1
+beamcrafting.amount_B=Amount 2
 
 tooltip.gtnhlanth.particle.rest_mass=Rest Mass: %f MeV
 tooltip.gtnhlanth.particle.charge=Charge: %s e

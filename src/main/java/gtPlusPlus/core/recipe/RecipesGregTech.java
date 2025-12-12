@@ -457,9 +457,9 @@ public class RecipesGregTech {
             GregtechItemList.Battery_Gem_2.get(1), GregtechItemList.Battery_Gem_3.get(1),
             GregtechItemList.Battery_Gem_4.get(1), };
 
-        ItemStack[] aExoticInputs = new ItemStack[] { Particle.getBaseParticle(Particle.PROTON),
-            Particle.getBaseParticle(Particle.ELECTRON), Particle.getBaseParticle(Particle.CHARM),
-            Particle.getBaseParticle(Particle.GRAVITON) };
+        ItemStack[] aExoticInputs = new ItemStack[] { ItemList.StableBaryonContainmentUnit.get(1),
+            ItemList.StableLeptonContainmentUnit.get(1), ItemList.StableMesonContainmentUnit.get(1),
+            ItemList.StableBosonContainmentUnit.get(1) };
         aCasingSlot = 0;
         for (int j = 6; j < 10; j++) {
             RA.stdBuilder()
@@ -468,6 +468,38 @@ public class RecipesGregTech {
                 .itemInputs(
                     aGemCasings[aCasingSlot],
                     GTUtility.copyAmount(16, aExoticInputs[aCasingSlot]),
+                    CI.getTieredComponent(OrePrefixes.plate, j, 16),
+                    new Object[] { CI.circuits[j], 8 },
+                    CI.getTieredComponent(OrePrefixes.wireGt16, j + 1, 32),
+                    CI.getTieredComponent(OrePrefixes.bolt, j, 8),
+                    CI.getTieredComponent(OrePrefixes.screw, j - 1, 8))
+                .fluidInputs(
+                    CI.getTieredFluid(j, 16 * INGOTS),
+                    CI.getTertiaryTieredFluid(j - 2, 32 * INGOTS),
+                    CI.getAlternativeTieredFluid(j, 16 * INGOTS),
+                    CI.getTertiaryTieredFluid(j - 1, 16 * INGOTS))
+                .itemOutputs(aGemBatteries[aCasingSlot++])
+                .eut(GTValues.VP[j])
+                .duration(2 * MINUTES)
+                .addTo(AssemblyLine);
+        }
+
+        /*
+         * // todo: deprecated, remove after 2.9
+         * Gem Battery Recipes
+         */
+
+        ItemStack[] aExoticInputs_OLD = new ItemStack[] { Particle.getBaseParticle(Particle.PROTON),
+            Particle.getBaseParticle(Particle.ELECTRON), Particle.getBaseParticle(Particle.CHARM),
+            Particle.getBaseParticle(Particle.GRAVITON) };
+        aCasingSlot = 0;
+        for (int j = 6; j < 10; j++) {
+            RA.stdBuilder()
+                .metadata(RESEARCH_ITEM, aExoticInputs_OLD[aCasingSlot])
+                .metadata(SCANNING, new Scanning(1 * MINUTES, GTValues.VP[aCasingSlot + 7]))
+                .itemInputs(
+                    aGemCasings[aCasingSlot],
+                    GTUtility.copyAmount(16, aExoticInputs_OLD[aCasingSlot]),
                     CI.getTieredComponent(OrePrefixes.plate, j, 16),
                     new Object[] { CI.circuits[j], 8 },
                     CI.getTieredComponent(OrePrefixes.wireGt16, j + 1, 32),
