@@ -3,6 +3,9 @@ package gregtech.common.tileentities.machines;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_HATCH_ACTIVE;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -41,7 +44,6 @@ import appeng.api.storage.IMEInventoryHandler;
 import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.StorageChannel;
 import appeng.api.storage.data.IAEItemStack;
-import appeng.api.storage.data.IAEStack;
 import appeng.api.storage.data.IItemList;
 import appeng.api.util.AECableType;
 import appeng.api.util.AEColor;
@@ -175,6 +177,27 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         return itemAmount;
     }
 
+    private static final MethodHandle GET_RESTRICTION_LONG;
+
+    static {
+        try {
+            Field field = CellInventory.class.getDeclaredField("restrictionLong");
+            field.setAccessible(true);
+            GET_RESTRICTION_LONG = MethodHandles.lookup()
+                .unreflectGetter(field);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException("Could not unreflect getter for CellInventory.restrictionLong", e);
+        }
+    }
+
+    private static long getRestrictionLong(CellInventory cellInventory) {
+        try {
+            return (long) GET_RESTRICTION_LONG.invokeExact(cellInventory);
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     protected long getCacheCapacity() {
         ItemStack upgradeItemStack = mInventory[0];
 
@@ -188,11 +211,10 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
 
         long capacity = storageCell.getBytesLong(upgradeItemStack) * 8;
 
-        if (inventory instanceof CellInventoryHandler<?>handler) {
-            final CellInventory<?> cellInventory = (CellInventory<?>) handler.getCellInv();
+        if (inventory instanceof CellInventoryHandler handler) {
+            final CellInventory cellInventory = (CellInventory) handler.getCellInv();
 
-            long restriction = (long) cellInventory.getRestriction()
-                .get(0);
+            long restriction = getRestrictionLong(cellInventory);
 
             if (restriction > 0) {
                 capacity = Math.min(capacity, restriction);
@@ -475,7 +497,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
                 }
 
                 CellConfig cfg = (CellConfig) ((ItemBasicStorageCell) upgradeItemStack.getItem())
-                    .getConfigAEInventory(upgradeItemStack);
+                    .getConfigInventory(upgradeItemStack);
 
                 if (!cfg.isEmpty()) {
                     StringBuilder builder = new StringBuilder();
@@ -484,21 +506,21 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
                     boolean isFirst = true;
 
                     for (int i = 0; i < cfg.getSizeInventory(); i++) {
-                        IAEStack<?> stack = cfg.getAEStackInSlot(i);
+                        ItemStack stack = cfg.getStackInSlot(i);
 
-                        if (!(stack instanceof IAEItemStack ais)) continue;
+                        if (stack != null) {
+                            hadFilters = true;
 
-                        hadFilters = true;
+                            lockedItems.add(GTUtility.ItemId.create(stack));
 
-                        lockedItems.add(GTUtility.ItemId.create(ais.getItemStack()));
+                            if (isFirst) {
+                                builder.append(stack.getDisplayName());
 
-                        if (isFirst) {
-                            builder.append(stack.getDisplayName());
-
-                            isFirst = false;
-                        } else {
-                            builder.append(", ")
-                                .append(stack.getDisplayName());
+                                isFirst = false;
+                            } else {
+                                builder.append(", ")
+                                    .append(stack.getDisplayName());
+                            }
                         }
                     }
 
