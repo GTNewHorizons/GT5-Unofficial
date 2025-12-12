@@ -126,8 +126,12 @@ public class PurifiedWaterRecipes {
 
         // Grade 3 - Flocculation.
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Grade2PurifiedWater.getFluid(1_000),Materials.PolyAluminiumChloride.getFluid(100_000))
-            .fluidOutputs(Materials.Grade3PurifiedWater.getFluid(900),Materials.FlocculationWasteLiquid.getFluid(100_000))
+            .fluidInputs(
+                Materials.Grade2PurifiedWater.getFluid(1_000),
+                Materials.PolyAluminiumChloride.getFluid(100_000))
+            .fluidOutputs(
+                Materials.Grade3PurifiedWater.getFluid(900),
+                Materials.FlocculationWasteLiquid.getFluid(100_000))
             .itemOutputs(
                 new ItemStack(Items.clay_ball, 1),
                 Materials.QuartzSand.getDust(1),
@@ -173,7 +177,7 @@ public class PurifiedWaterRecipes {
         // Grade 4 - pH adjustment
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.SodiumHydroxide.getDust(64))
-            .fluidInputs(Materials.Grade3PurifiedWater.getFluid(1_000),Materials.HydrochloricAcid.getFluid(1_000))
+            .fluidInputs(Materials.Grade3PurifiedWater.getFluid(1_000), Materials.HydrochloricAcid.getFluid(1_000))
             .fluidOutputs(Materials.Grade4PurifiedWater.getFluid(900))
             .ignoreCollision()
             .duration(duration)
@@ -194,7 +198,10 @@ public class PurifiedWaterRecipes {
 
         // Grade 5 - Plasma Heating
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Grade4PurifiedWater.getFluid(1_000),Materials.Helium.getPlasma(10L),Materials.SuperCoolant.getFluid(100L))
+            .fluidInputs(
+                Materials.Grade4PurifiedWater.getFluid(1_000),
+                Materials.Helium.getPlasma(10L),
+                Materials.SuperCoolant.getFluid(100L))
             .fluidOutputs(Materials.Grade5PurifiedWater.getFluid(900))
             .ignoreCollision()
             .duration(duration)
@@ -339,7 +346,8 @@ public class PurifiedWaterRecipes {
             // Fake item inputs
             .itemInputs(catalystInputs)
             .fluidInputs(Materials.Grade7PurifiedWater.getFluid(1_000))
-            .fluidOutputs(Materials.Grade8PurifiedWater.getFluid(900),
+            .fluidOutputs(
+                Materials.Grade8PurifiedWater.getFluid(900),
                 Materials.StableBaryonicMatter.getFluid(extraBaryonicOutput))
             .itemOutputs(ItemList.Quark_Creation_Catalyst_Unaligned.get(2L), Particle.getBaseParticle(Particle.UNKNOWN))
             .outputChances(10000, 100)

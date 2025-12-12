@@ -1,6 +1,5 @@
 package gregtech.api.recipe.maps;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.ParametersAreNonnullByDefault;

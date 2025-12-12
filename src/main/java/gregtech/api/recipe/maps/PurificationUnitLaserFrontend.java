@@ -25,17 +25,17 @@ public class PurificationUnitLaserFrontend extends PurificationUnitRecipeMapFron
     }
 
     @Override
-    public @NotNull List<Pos2d> getItemInputPositions(int itemInputCount){
+    public @NotNull List<Pos2d> getItemInputPositions(int itemInputCount) {
         return ImmutableList.of(
-            new Pos2d(62+4, -6+10),
-            new Pos2d(40+4, -1+10),
-            new Pos2d(32+4, 20+10),
-            new Pos2d(52+4, 27+10),
-            new Pos2d(75+4, 29+10),
-            new Pos2d(98+4, 27+10),
-            new Pos2d(118+4, 20+10),
-            new Pos2d(110+4, -1+10),
-            new Pos2d(88+4, -6+10));
+            new Pos2d(62 + 4, -6 + 10),
+            new Pos2d(40 + 4, -1 + 10),
+            new Pos2d(32 + 4, 20 + 10),
+            new Pos2d(52 + 4, 27 + 10),
+            new Pos2d(75 + 4, 29 + 10),
+            new Pos2d(98 + 4, 27 + 10),
+            new Pos2d(118 + 4, 20 + 10),
+            new Pos2d(110 + 4, -1 + 10),
+            new Pos2d(88 + 4, -6 + 10));
     }
 
     @Override
