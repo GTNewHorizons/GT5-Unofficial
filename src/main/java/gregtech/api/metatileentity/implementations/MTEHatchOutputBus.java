@@ -63,10 +63,10 @@ public class MTEHatchOutputBus extends MTEHatch
             tier,
             slots,
             ArrayExt.of(
-                "Item Output for Multiblocks",
-                "Capacity: " + getSlots(tier) + " stack" + (getSlots(tier) >= 2 ? "s" : ""),
-                "Left click with data stick to save filter config",
-                "Right click with data stick to load filter config"));
+                GTUtility.nestParams(
+                    "gt.te.output_bus.desc",
+                    getSlots(tier),
+                    (getSlots(tier) >= 2 ? "gt.te.stack.plural" : "gt.te.stack.singular"))));
     }
 
     public MTEHatchOutputBus(int aID, String aName, String aNameRegional, int aTier, String[] aDescription) {
