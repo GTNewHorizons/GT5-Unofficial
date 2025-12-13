@@ -45,6 +45,10 @@ public abstract class MTEBasicTank extends MTETieredMachineBlock implements IAdd
         fluidStack -> mFluid = fluidStack,
         this::getRealCapacity);
 
+    public FluidStackTank getFluidTank() {
+        return fluidTank;
+    }
+
     /**
      * @param aInvSlotCount should be 3
      */
