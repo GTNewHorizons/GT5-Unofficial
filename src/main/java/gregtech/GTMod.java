@@ -734,8 +734,6 @@ public class GTMod {
         event.registerServerCommand(new SPMCommand());
         event.registerServerCommand(new SpaceProjectCommand());
         event.registerServerCommand(new GTPowerfailCommand());
-        // Sets a new Machine Block Update Thread everytime a world is loaded
-        RunnableMachineUpdate.initExecutorService();
     }
 
     @Mod.EventHandler
