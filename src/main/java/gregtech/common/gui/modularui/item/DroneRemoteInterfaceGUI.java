@@ -129,7 +129,7 @@ public class DroneRemoteInterfaceGUI {
                                     .asWidget())
                             .child(
                                 IKey.dynamic(
-                                    () -> centre == null
+                                    () -> centre == null || !centre.isValid()
                                         ? StatCollector.translateToLocal("GT5U.gui.text.status.offline")
                                         : StatCollector.translateToLocal("GT5U.gui.text.status.online"))
                                     .asWidget()))
@@ -142,6 +142,7 @@ public class DroneRemoteInterfaceGUI {
                                 new ButtonWidget<>().size(18)
                                     .overlay(GTGuiTextures.BUTTON_STANDARD, GTGuiTextures.OVERLAY_BUTTON_WHITELIST)
                                     .tooltipBuilder(t -> t.add(IKey.lang("GT5U.gui.button.drone_open_list")))
+                                    .setEnabledIf(var -> centre == null || !centre.isValid())
                                     .onMousePressed(mouseButton -> {
                                         machineListPanel.openPanel();
                                         return true;
