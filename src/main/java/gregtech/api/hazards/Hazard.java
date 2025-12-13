@@ -11,7 +11,8 @@ public enum Hazard {
     HEAT,
     RADIOLOGICAL,
     ELECTRICAL,
-    GAS;
+    GAS,
+    SPACE;
 
     public static final Hazard[] VALUES = Hazard.values();
 }

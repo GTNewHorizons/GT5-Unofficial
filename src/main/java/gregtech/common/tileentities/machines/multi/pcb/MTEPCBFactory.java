@@ -46,19 +46,13 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures.BlockIcons;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
@@ -457,10 +451,15 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                         .setDurationModifier(getDurationMultiplierFromRoughness())
                         .setDurationDecreasePerOC(compatMode.OCTier == 2 ? 4.0 : 2.0);
                 }
+                if (mCoolingTower != null) {
+                    return super.createOverclockCalculator(recipe).setNoOverclock(!isOC())
+                        .setEUtDiscount(Math.sqrt(structures))
+                        .setDurationModifier(getDurationMultiplierFromRoughness())
+                        .setDurationDecreasePerOC(!mCoolingTower.isTier1 ? 4.0 : 2.0);
+                }
                 return super.createOverclockCalculator(recipe).setNoOverclock(!isOC())
                     .setEUtDiscount(Math.sqrt(structures))
-                    .setDurationModifier(getDurationMultiplierFromRoughness())
-                    .setDurationDecreasePerOC(!mCoolingTower.isTier1 ? 4.0 : 2.0);
+                    .setDurationModifier(getDurationMultiplierFromRoughness());
             }
 
             @Nonnull
@@ -653,22 +652,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
     public void setTraceSize(int value) {
         mRoughnessMultiplier = 100f / (int) value;
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-
-        builder.widget(
-            new NumericWidget().setGetter(() -> (int) ((1f / mRoughnessMultiplier) * 100f))
-                .setSetter(val -> mRoughnessMultiplier = 100f / (int) val)
-                .setBounds(50, 200)
-                .setTextColor(Color.WHITE.normal)
-                .setTextAlignment(Alignment.Center)
-                .addTooltip(translateToLocal("GT5U.MBTT.PCB.Tooltip.5"))
-                .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
-                .setSize(74, 16)
-                .setPos(98, 91));
-        super.addUIWidgets(builder, buildContext);
     }
 
     @Override
