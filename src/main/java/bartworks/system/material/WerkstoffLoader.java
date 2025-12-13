@@ -117,7 +117,6 @@ import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.FluidState;
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
@@ -1732,10 +1731,8 @@ public class WerkstoffLoader {
             ProgressManager.ProgressBar progressBar = ProgressManager
                 .push("Register BW Materials", Werkstoff.werkstoffHashSet.size() + 1);
             DebugLog.log("Loading Recipes" + (System.nanoTime() - timepre));
-            int[] clsArr = GTValues.emptyIntArray;
-            int size = 0;
             if (BetterLoadingScreen.isModLoaded()) {
-                clsArr = CLSCompat.initCls();
+                CLSCompat.initCls();
             }
 
             IWerkstoffRunnable[] werkstoffRunnables = { new ToolLoader(), new DustLoader(), new GemLoader(),
@@ -1744,6 +1741,7 @@ public class WerkstoffLoader {
                 new MultipleMetalLoader(), new MetalLoader(), new BlockLoader() };
 
             long timepreone = 0;
+            int pos = 0;
             for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
                 timepreone = System.nanoTime();
                 DebugLog.log(
@@ -1755,7 +1753,7 @@ public class WerkstoffLoader {
                     continue;
                 }
                 if (BetterLoadingScreen.isModLoaded()) {
-                    size = CLSCompat.invokeStepSize(werkstoff, clsArr, size);
+                    CLSCompat.updateDisplay(werkstoff, pos);
                 }
                 DebugLog.log("Werkstoff: " + werkstoff.getDefaultName() + " " + (System.nanoTime() - timepreone));
                 for (IWerkstoffRunnable runnable : werkstoffRunnables) {
@@ -1767,6 +1765,7 @@ public class WerkstoffLoader {
                 }
                 DebugLog.log("Done" + " " + (System.nanoTime() - timepreone));
                 progressBar.step(werkstoff.getDefaultName());
+                pos++;
             }
             DebugLog.log("Loading New Circuits" + " " + (System.nanoTime() - timepreone));
             BWMetaItems.init();
