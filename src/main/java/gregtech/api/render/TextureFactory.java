@@ -1,5 +1,8 @@
 package gregtech.api.render;
 
+import gregtech.common.render.GTBlockTextureBuilder;
+import gregtech.common.render.GTMultiTextureRender;
+import gregtech.common.render.GTSidedTextureRender;
 import net.minecraft.block.Block;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -34,7 +37,6 @@ import gregtech.common.render.GTTextureBuilder;
  *
  * See: the {@link ITextureBuilder} interface
  */
-@SuppressWarnings("unused")
 public final class TextureFactory {
 
     private TextureFactory() {
@@ -48,8 +50,7 @@ public final class TextureFactory {
      * @return The instance of an {@link ITexture} implementation
      */
     public static ITexture of(final ITexture texture) {
-        return builder().addLayer(texture)
-            .build();
+        return new GTMultiTextureRender(texture);
     }
 
     /**
@@ -59,8 +60,7 @@ public final class TextureFactory {
      * @return The instance of an {@link ITexture} implementation
      */
     public static ITexture of(final ITexture... textures) {
-        return builder().addLayer(textures)
-            .build();
+        return new GTMultiTextureRender(textures);
     }
 
     /**
@@ -77,10 +77,14 @@ public final class TextureFactory {
      */
     public static ITexture of(final IIconContainer bottom, final IIconContainer top, final IIconContainer north,
         final IIconContainer south, final IIconContainer west, final IIconContainer east, final short[] rgba) {
-        return builder().addIcon(bottom, top, north, south, west, east)
-            .setRGBA(rgba)
-            .setAllowAlpha(true)
-            .build();
+        return new GTSidedTextureRender(
+            bottom,
+            top,
+            north,
+            south,
+            west,
+            east,
+            rgba);
     }
 
     /**
@@ -94,25 +98,14 @@ public final class TextureFactory {
      */
     public static ITexture of(final IIconContainer bottom, final IIconContainer top, final IIconContainer sides,
         final short[] rgba) {
-        return builder().addIcon(bottom, top, sides, sides, sides, sides)
-            .setRGBA(rgba)
-            .setAllowAlpha(true)
-            .build();
-    }
-
-    /**
-     * Rendered {@link ITexture} factory
-     *
-     * @param iconContainer The {@link IIconContainer} to render
-     * @param rgba          The {@code short[]} RGBA tint for the texture.
-     * @param allowAlpha    Determine if texture will use alpha blending (Not yet implemented)
-     * @return The instance of an {@link ITexture} implementation
-     */
-    public static ITexture of(final IIconContainer iconContainer, final short[] rgba, final boolean allowAlpha) {
-        return builder().addIcon(iconContainer)
-            .setRGBA(rgba)
-            .setAllowAlpha(allowAlpha)
-            .build();
+        return new GTSidedTextureRender(
+            bottom,
+            top,
+            sides,
+            sides,
+            sides,
+            sides,
+            rgba);
     }
 
     public static ITexture of(final IIconContainer iconContainer, final short[] rgba) {
@@ -136,20 +129,20 @@ public final class TextureFactory {
      * @return The instance of an {@link ITexture} implementation
      */
     public static ITexture of(final Block block, final int meta, final ForgeDirection side, final short[] rgba) {
-        return builder().setFromBlock(block, meta)
+        return blockBuilder().setFromBlock(block, meta)
             .setFromSide(side)
             .setRGBA(rgba)
             .build();
     }
 
     public static ITexture of(final Block block, final int meta, final ForgeDirection side) {
-        return builder().setFromBlock(block, meta)
+        return blockBuilder().setFromBlock(block, meta)
             .setFromSide(side)
             .build();
     }
 
     public static ITexture of(final Block block, final int meta) {
-        return builder().setFromBlock(block, meta)
+        return blockBuilder().setFromBlock(block, meta)
             .build();
     }
 
@@ -164,5 +157,9 @@ public final class TextureFactory {
      */
     public static ITextureBuilder builder() {
         return new GTTextureBuilder();
+    }
+
+    public static GTBlockTextureBuilder blockBuilder() {
+        return new GTBlockTextureBuilder();
     }
 }
