@@ -15,6 +15,7 @@ package bartworks.common.loaders;
 
 import static gregtech.api.enums.MetaTileEntityIDs.AcidGeneratorEV;
 import static gregtech.api.enums.MetaTileEntityIDs.AcidGeneratorHV;
+import static gregtech.api.enums.MetaTileEntityIDs.AcidGeneratorIV;
 import static gregtech.api.enums.MetaTileEntityIDs.AcidGeneratorLV;
 import static gregtech.api.enums.MetaTileEntityIDs.AcidGeneratorMV;
 import static gregtech.api.enums.MetaTileEntityIDs.CircuitAssemblyLine;
@@ -317,7 +318,7 @@ public class ItemRegistry {
     public static ItemStack[] diode12A = new ItemStack[GTValues.VN.length];
     public static ItemStack[] diode16A = new ItemStack[GTValues.VN.length];
     public static ItemStack[] energyDistributor = new ItemStack[GTValues.VN.length];
-    public static ItemStack[] acidGens = new ItemStack[3];
+    public static ItemStack[] acidGens = new ItemStack[4];
     public static ItemStack acidGensLV;
     public static ItemStack[] megaMachines = new ItemStack[5];
     public static ItemStack dehp;
@@ -463,7 +464,11 @@ public class ItemRegistry {
             "acidgenerator" + GTValues.VN[4],
             StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GTValues.VN[4],
             4).getStackForm(1);
-
+        ItemRegistry.acidGens[3] = new MTEAcidGenerator(
+            AcidGeneratorIV.ID,
+            "acidgenerator" + GTValues.VN[5],
+            StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GTValues.VN[5],
+            5).getStackForm(1);
         ItemRegistry.acidGensLV = new MTEAcidGenerator(
             AcidGeneratorLV.ID,
             "acidgenerator" + GTValues.VN[1],

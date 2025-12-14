@@ -30,6 +30,8 @@ import gregtech.api.render.TextureFactory;
 
 public class MTEAcidGenerator extends MTEBasicGenerator {
 
+    private static final int [] EFFICIENCIES={97,94,91,88,82};
+
     public MTEAcidGenerator(int aID, String aName, String aNameRegional, int aTier, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, GTValues.emptyStringArray, aTextures);
     }
@@ -50,6 +52,9 @@ public class MTEAcidGenerator extends MTEBasicGenerator {
 
     @Override
     public int getEfficiency() {
+        if(this.mTier>=1&&this.mTier<= EFFICIENCIES.length){
+            return EFFICIENCIES[this.mTier-1];
+        }
         return 100 - 3 * this.mTier;
     }
 
