@@ -446,6 +446,16 @@ public class GTPostLoad {
         }
     }
 
+    public static void addCauldronRecipe() {
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dustImpure, Materials.Stone, 1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1))
+            .duration(0)
+            .eut(0)
+            .fake()
+            .addTo(RecipeMaps.cauldronRecipe);
+    }
+
     public static void identifyAnySteam() {
         final String[] steamCandidates = { "steam", "ic2steam" };
         final String[] superHeatedSteamCandidates = { "ic2superheatedsteam" };

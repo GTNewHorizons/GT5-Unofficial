@@ -560,6 +560,7 @@ public class GTMod {
         }
 
         GTPostLoad.addSolidFakeLargeBoilerFuels();
+        GTPostLoad.addCauldronRecipe();
         GTPostLoad.identifyAnySteam();
 
         VoidMinerLoader.init();
