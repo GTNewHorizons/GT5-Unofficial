@@ -1,14 +1,14 @@
 package gregtech.api.render;
 
-import gregtech.common.render.GTBlockTextureBuilder;
-import gregtech.common.render.GTMultiTextureRender;
-import gregtech.common.render.GTSidedTextureRender;
 import net.minecraft.block.Block;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.ITextureBuilder;
+import gregtech.common.render.GTBlockTextureBuilder;
+import gregtech.common.render.GTMultiTextureRender;
+import gregtech.common.render.GTSidedTextureRender;
 import gregtech.common.render.GTTextureBuilder;
 
 /**
@@ -31,9 +31,16 @@ import gregtech.common.render.GTTextureBuilder;
  *     TextureFactory.builder().addIcon(OVERLAY_FUSION1_GLOW).glow().build());
  *
  *     // Texture with same bottom flipped orientation as vanilla
- *     TextureFactory.builder().addIcon(GRANITE_RED_STONE).stdOrient().build();
+ *     TextureFactory.builder().addIcon(GRANITE_RED_STONE).extFacing().build();
  * }
  * </pre>
+ * 
+ * <br>
+ * <p>
+ * The {@link #blockBuilder()} is used to copy the texture of another block onto a new {@link ITexture} instance. <br>
+ * For more details, check out the documentation inside of {@link GTBlockTextureBuilder}
+ * </p>
+ * <br>
  *
  * See: the {@link ITextureBuilder} interface
  */
@@ -77,14 +84,7 @@ public final class TextureFactory {
      */
     public static ITexture of(final IIconContainer bottom, final IIconContainer top, final IIconContainer north,
         final IIconContainer south, final IIconContainer west, final IIconContainer east, final short[] rgba) {
-        return new GTSidedTextureRender(
-            bottom,
-            top,
-            north,
-            south,
-            west,
-            east,
-            rgba);
+        return new GTSidedTextureRender(bottom, top, north, south, west, east, rgba);
     }
 
     /**
@@ -98,14 +98,7 @@ public final class TextureFactory {
      */
     public static ITexture of(final IIconContainer bottom, final IIconContainer top, final IIconContainer sides,
         final short[] rgba) {
-        return new GTSidedTextureRender(
-            bottom,
-            top,
-            sides,
-            sides,
-            sides,
-            sides,
-            rgba);
+        return new GTSidedTextureRender(bottom, top, sides, sides, sides, sides, rgba);
     }
 
     public static ITexture of(final IIconContainer iconContainer, final short[] rgba) {

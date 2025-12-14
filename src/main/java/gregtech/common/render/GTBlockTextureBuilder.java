@@ -1,14 +1,15 @@
 package gregtech.common.render;
 
+import net.minecraft.block.Block;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.ITextureBuilder;
-import net.minecraft.block.Block;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class GTBlockTextureBuilder {
+
     private Block fromBlock;
     private int fromMeta;
     private ForgeDirection fromSide;
@@ -19,6 +20,11 @@ public class GTBlockTextureBuilder {
         rgba = Dyes._NULL.getRGBA();
     }
 
+    /**
+     * @param block The {@link Block}
+     * @param meta  The meta value for the Block
+     * @return {@link GTBlockTextureBuilder} for chaining
+     */
     public GTBlockTextureBuilder setFromBlock(final Block block, final int meta) {
         this.fromBlock = block;
         this.fromMeta = meta;
@@ -26,11 +32,25 @@ public class GTBlockTextureBuilder {
         return this;
     }
 
+    /**
+     * @param side
+     *             <p>
+     *             The {@link ForgeDirection} side providing the texture
+     *             </p>
+     *             <p>
+     *             Default is {@link ForgeDirection#UNKNOWN} to use same side as rendered
+     *             </p>
+     * @return {@link GTBlockTextureBuilder} for chaining
+     */
     public GTBlockTextureBuilder setFromSide(final ForgeDirection side) {
         this.fromSide = side;
         return this;
     }
 
+    /**
+     * @param rgba The RGBA tint for this {@link ITexture}
+     * @return {@link GTBlockTextureBuilder} for chaining
+     */
     public GTBlockTextureBuilder setRGBA(final short[] rgba) {
         this.rgba = rgba;
         return this;
@@ -39,8 +59,7 @@ public class GTBlockTextureBuilder {
     /**
      * Force using world coord overload of getIcon.
      *
-     * @return {@link ITextureBuilder} for chaining
-     * @throws IllegalStateException if setFromBlock has never been called.
+     * @return {@link GTBlockTextureBuilder} for chaining
      */
     public GTBlockTextureBuilder useWorldCoord() {
         this.worldCoord = true;
@@ -50,7 +69,7 @@ public class GTBlockTextureBuilder {
     /**
      * Force using meta overload of getIcon.
      *
-     * @return {@link ITextureBuilder} for chaining
+     * @return {@link GTBlockTextureBuilder} for chaining
      */
     public GTBlockTextureBuilder noWorldCoord() {
         this.worldCoord = false;
@@ -64,7 +83,6 @@ public class GTBlockTextureBuilder {
         }
         return new GTCopiedBlockTextureRender(fromBlock, fromSide.ordinal(), fromMeta, rgba);
     }
-
 
     private static boolean isCTMBlock(Block fromBlock, int fromMeta) {
         return GTMod.proxy.mCTMBlockCache.computeIfAbsent(fromBlock, fromMeta, GTBlockTextureBuilder::apply);

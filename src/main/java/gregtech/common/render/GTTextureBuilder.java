@@ -1,22 +1,13 @@
 package gregtech.common.render;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import javax.annotation.Nullable;
 
-import net.minecraft.block.Block;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.ITextureBuilder;
 
-public class GTTextureBuilder implements ITextureBuilder {
+public final class GTTextureBuilder implements ITextureBuilder {
 
     private @Nullable IIconContainer iconContainer;
     private short[] rgba;
@@ -42,7 +33,7 @@ public class GTTextureBuilder implements ITextureBuilder {
 
     @Override
     @Deprecated
-    //TODO remove this
+    // TODO remove this
     public ITextureBuilder stdOrient() {
         this.extFacing = false;
         return this;

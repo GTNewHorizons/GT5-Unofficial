@@ -149,8 +149,8 @@ public class RecipeGenPlates extends RecipeGenBase {
                 .addTo(benderRecipes);
 
             CoverRegistry.registerDecorativeCover(
-                    material.getFoil(1),
-                    TextureFactory.of(material.getTextureSet().mTextures[70], material.getRGBA()));
+                material.getFoil(1),
+                TextureFactory.of(material.getTextureSet().mTextures[70], material.getRGBA()));
             Logger.WARNING("Bender Foil Recipe: " + material.getLocalizedName() + " - Success");
         }
 

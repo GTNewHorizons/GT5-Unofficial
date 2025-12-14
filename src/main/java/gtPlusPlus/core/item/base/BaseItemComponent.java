@@ -139,12 +139,12 @@ public class BaseItemComponent extends Item {
             Material.mComponentMap.put(componentMaterial.getUnlocalizedName(), aMap);
             if (componentType == ComponentTypes.PLATE) {
                 CoverRegistry.registerDecorativeCover(
-                        componentMaterial.getPlate(1),
-                        TextureFactory.of(componentMaterial.getTextureSet().mTextures[71], componentMaterial.getRGBA()));
+                    componentMaterial.getPlate(1),
+                    TextureFactory.of(componentMaterial.getTextureSet().mTextures[71], componentMaterial.getRGBA()));
             } else if (componentType == ComponentTypes.PLATEDOUBLE) {
                 CoverRegistry.registerDecorativeCover(
-                        componentMaterial.getPlateDouble(1),
-                        TextureFactory.of(componentMaterial.getTextureSet().mTextures[72], componentMaterial.getRGBA()));
+                    componentMaterial.getPlateDouble(1),
+                    TextureFactory.of(componentMaterial.getTextureSet().mTextures[72], componentMaterial.getRGBA()));
             }
             return true;
         } else {

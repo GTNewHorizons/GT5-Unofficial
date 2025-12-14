@@ -1,8 +1,5 @@
 package gregtech.api.interfaces;
 
-import net.minecraft.block.Block;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 
 import gregtech.api.render.TextureFactory;
