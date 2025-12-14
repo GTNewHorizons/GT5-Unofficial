@@ -20,7 +20,6 @@ import gregtech.api.metatileentity.implementations.MTEItemPipe;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.BlockFrameBox;
 
 public final class LoaderMetaPipeEntities implements Runnable {
@@ -60,9 +59,8 @@ public final class LoaderMetaPipeEntities implements Runnable {
                     && GTOreDictUnificator.get(OrePrefixes.stick, material, 1) != null) {
                     // Auto generate frame box recipe in an assembler.
                     GTValues.RA.stdBuilder()
-                        .itemInputs(
-                            GTOreDictUnificator.get(OrePrefixes.stick, material, 4),
-                            GTUtility.getIntegratedCircuit(4))
+                        .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, material, 4))
+                        .circuit(4)
                         .itemOutputs(block.getStackForm(1, meta))
                         .duration(3 * SECONDS + 4 * TICKS)
                         .eut(calculateRecipeEU(material, 7))
@@ -366,7 +364,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
 
         // Superconductor base
         WireCableBuilder.builder()
-            .material(Materials.Pentacadmiummagnesiumhexaoxid)
+            .material(Materials.SuperconductorMVBase)
             .startId(2200)
             .lossWire(2)
             .amperage(1)
@@ -374,7 +372,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .disableCable()
             .build();
         WireCableBuilder.builder()
-            .material(Materials.Titaniumonabariumdecacoppereikosaoxid)
+            .material(Materials.SuperconductorHVBase)
             .startId(2220)
             .lossWire(8)
             .amperage(2)
@@ -382,7 +380,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .disableCable()
             .build();
         WireCableBuilder.builder()
-            .material(Materials.Uraniumtriplatinid)
+            .material(Materials.SuperconductorEVBase)
             .startId(2240)
             .lossWire(16)
             .amperage(3)
@@ -390,7 +388,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .disableCable()
             .build();
         WireCableBuilder.builder()
-            .material(Materials.Vanadiumtriindinid)
+            .material(Materials.SuperconductorIVBase)
             .startId(2260)
             .lossWire(64)
             .amperage(4)
@@ -398,7 +396,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .disableCable()
             .build();
         WireCableBuilder.builder()
-            .material(Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid)
+            .material(Materials.SuperconductorLuVBase)
             .startId(2280)
             .lossWire(256)
             .amperage(6)
@@ -406,7 +404,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .disableCable()
             .build();
         WireCableBuilder.builder()
-            .material(Materials.Tetranaquadahdiindiumhexaplatiumosminid)
+            .material(Materials.SuperconductorZPMBase)
             .startId(2300)
             .lossWire(1024)
             .amperage(8)
@@ -414,7 +412,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .disableCable()
             .build();
         WireCableBuilder.builder()
-            .material(Materials.Longasssuperconductornameforuvwire)
+            .material(Materials.SuperconductorUVBase)
             .startId(2500)
             .lossWire(4096)
             .amperage(12)
@@ -422,7 +420,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .disableCable()
             .build();
         WireCableBuilder.builder()
-            .material(Materials.Longasssuperconductornameforuhvwire)
+            .material(Materials.SuperconductorUHVBase)
             .startId(2520)
             .lossWire(16384)
             .amperage(16)
@@ -685,7 +683,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
                 true).getStackForm(1L));
 
         FluidPipeBuilder.builder()
-            .material(Materials.Plastic)
+            .material(Materials.Polyethylene)
             .displayName("Plastic")
             .startId(5170)
             .baseCapacity(360)

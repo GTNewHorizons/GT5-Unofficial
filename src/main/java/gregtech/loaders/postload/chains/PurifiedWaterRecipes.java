@@ -228,7 +228,8 @@ public class PurifiedWaterRecipes {
         // Add re-alignment recipes
         for (int i = 0; i < catalystInputs.length; ++i) {
             GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Quark_Creation_Catalyst_Unaligned.get(1), GTUtility.getIntegratedCircuit(i + 1))
+                .itemInputs(ItemList.Quark_Creation_Catalyst_Unaligned.get(1))
+                .circuit(i + 1)
                 .fluidInputs(Materials.StableBaryonicMatter.getFluid(1_000))
                 .itemOutputs(catalystInputs[i])
                 .duration(30 * SECONDS)
@@ -251,7 +252,7 @@ public class PurifiedWaterRecipes {
                 .itemInputs(ItemList.Quark_Catalyst_Housing.get(1), quarks[i])
                 .fluidInputs(Materials.ExcitedDTRC.getFluid(10_000))
                 .itemOutputs(catalystInputs[i])
-                .fluidOutputs(Materials.DimensionallyTranscendentResidue.getFluid(5_000))
+                .fluidOutputs(Materials.DTR.getFluid(5_000))
                 .metadata(COIL_HEAT, 10800)
                 .eut(TierEU.RECIPE_UMV)
                 .duration(5 * MINUTES)

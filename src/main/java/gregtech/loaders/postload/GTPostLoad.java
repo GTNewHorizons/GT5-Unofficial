@@ -308,7 +308,7 @@ public class GTPostLoad {
         }
 
         MTEMassfabricator.uuaRecipe = GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(1))
+            .circuit(1)
             .fluidInputs(Materials.UUAmplifier.getFluid(MTEMassfabricator.sUUAperUUM))
             .fluidOutputs(Materials.UUMatter.getFluid(1L))
             .duration(MTEMassfabricator.sDurationMultiplier / MTEMassfabricator.sUUASpeedBonus)
@@ -444,6 +444,16 @@ public class GTPostLoad {
             RecipeMaps.largeBoilerFakeFuels.getBackend()
                 .addSolidRecipe(GTModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1));
         }
+    }
+
+    public static void addCauldronRecipe() {
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dustImpure, Materials.Stone, 1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1))
+            .duration(0)
+            .eut(0)
+            .fake()
+            .addTo(RecipeMaps.cauldronRecipe);
     }
 
     public static void identifyAnySteam() {

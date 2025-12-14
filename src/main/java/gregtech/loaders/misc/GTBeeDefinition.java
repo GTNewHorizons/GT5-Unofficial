@@ -272,7 +272,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
     FERTILIZER(GTBranchDefinition.ORGANIC, "Fertilizer", true, new Color(0x7fcef5), new Color(0x654525), beeSpecies -> {
         beeSpecies.addProduct(GTModHandler.getModItem(ExtraBees.ID, "honeyComb", 1, 9), 0.15f);
         beeSpecies.addSpecialty(GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1), 0.2f);
-        beeSpecies.addSpecialty(GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1), 0.2f);
+        beeSpecies.addSpecialty(GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.AshDark, 1), 0.2f);
         beeSpecies.addSpecialty(ItemList.FR_Fertilizer.get(1), 0.3f);
         beeSpecies.addSpecialty(ItemList.IC2_Fertilizer.get(1), 0.3f);
         beeSpecies.setHumidity(DAMP);
@@ -1275,20 +1275,21 @@ public enum GTBeeDefinition implements IBeeDefinition {
         tMutation.addMutationCondition(new GTBees.BiomeIDMutationCondition(9, "END Biome")); // sky end biome
     }),
 
-    ESSENTIA(GTBranchDefinition.THAUMIC, "Essentia", true, new Color(0x7A007A), new Color(0xFFFFFF), beeSpecies -> {
-        beeSpecies.addProduct(GTModHandler.getModItem(MagicBees.ID, "miscResources", 1, 3), 0.20f);
-        beeSpecies.setHumidity(EnumHumidity.NORMAL);
-        beeSpecies.setTemperature(EnumTemperature.NORMAL);
-    }, template -> {
-        AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.DOWN_2);
-        AlleleHelper.instance.set(template, CAVE_DWELLING, true);
-        AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.VANILLA);
-        AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectReanimation);
-    }, dis -> {
-        IBeeMutationCustom tMutation = dis.registerMutation(SHADOWMETAL, SPARKELING, 5);
-        if (Thaumcraft.isModLoaded())
-            tMutation.requireResource(GameRegistry.findBlock(Thaumcraft.ID, "blockCrystal"), 6);
-    }),
+    ESSENTIA(GTBranchDefinition.THAUMIC, "Essentia", "Reanimus", true, new Color(0x7A007A), new Color(0xFFFFFF),
+        beeSpecies -> {
+            beeSpecies.addProduct(GTModHandler.getModItem(MagicBees.ID, "miscResources", 1, 3), 0.20f);
+            beeSpecies.setHumidity(EnumHumidity.NORMAL);
+            beeSpecies.setTemperature(EnumTemperature.NORMAL);
+        }, template -> {
+            AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.DOWN_2);
+            AlleleHelper.instance.set(template, CAVE_DWELLING, true);
+            AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.VANILLA);
+            AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectReanimation);
+        }, dis -> {
+            IBeeMutationCustom tMutation = dis.registerMutation(SHADOWMETAL, SPARKELING, 5);
+            if (Thaumcraft.isModLoaded())
+                tMutation.requireResource(GameRegistry.findBlock(Thaumcraft.ID, "blockCrystal"), 6);
+        }),
 
     DRAKE(GTBranchDefinition.THAUMIC, "Drake", true, new Color(0x100322), new Color(0x7A007A), beeSpecies -> {
         beeSpecies.addProduct(GTBees.combs.getStackForType(CombType.DRACONIC), 0.30f);
@@ -2755,6 +2756,38 @@ public enum GTBeeDefinition implements IBeeDefinition {
         String description = "for.description." + lowercaseName;
         String name = "for.bees.species." + lowercaseName;
         GTLanguageManager.addStringLocalization("for.bees.species." + lowercaseName, species);
+
+        String authority = GTLanguageManager.getTranslation("for.bees.authority." + lowercaseName);
+        if (authority.equals("for.bees.authority." + lowercaseName)) {
+            authority = "GTNH";
+        }
+        this.branch = branch;
+        this.species = new GTAlleleBeeSpecies(
+            uid,
+            dominant,
+            name,
+            authority,
+            description,
+            branch.getBranch(),
+            binomial,
+            primary,
+            secondary);
+    }
+
+    GTBeeDefinition(GTBranchDefinition branch, String binomial, String locName, boolean dominant, Color primary,
+        Color secondary, Consumer<GTAlleleBeeSpecies> aSpeciesProperties, Consumer<IAllele[]> aAlleles,
+        Consumer<GTBeeDefinition> aMutations) {
+        this.mAlleles = aAlleles;
+        this.mMutations = aMutations;
+        this.mSpeciesProperties = aSpeciesProperties;
+        String lowercaseName = this.toString()
+            .toLowerCase(Locale.ENGLISH);
+        String species = WordUtils.capitalize(lowercaseName);
+
+        String uid = "gregtech.bee.species" + species;
+        String description = "for.description." + lowercaseName;
+        String name = "for.bees.species." + lowercaseName;
+        GTLanguageManager.addStringLocalization("for.bees.species." + lowercaseName, locName);
 
         String authority = GTLanguageManager.getTranslation("for.bees.authority." + lowercaseName);
         if (authority.equals("for.bees.authority." + lowercaseName)) {

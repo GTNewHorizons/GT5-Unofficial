@@ -20,7 +20,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class AutoclaveRecipes implements Runnable {
@@ -172,7 +171,7 @@ public class AutoclaveRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 4))
             .itemOutputs(GTModHandler.getIC2Item("carbonFiber", 1L))
             .outputChances(10000)
-            .fluidInputs(Materials.Plastic.getMolten(1 * QUARTER_INGOTS))
+            .fluidInputs(Materials.Polyethylene.getMolten(1 * QUARTER_INGOTS))
             .duration(1 * SECONDS + 17 * TICKS)
             .eut((int) TierEU.RECIPE_LV)
             .addTo(autoclaveRecipes);
@@ -232,9 +231,8 @@ public class AutoclaveRecipes implements Runnable {
             .addTo(autoclaveRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1))
+            .circuit(1)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3))
             .outputChances(7500)
             .fluidInputs(Materials.Water.getFluid(1_000))
@@ -243,9 +241,8 @@ public class AutoclaveRecipes implements Runnable {
             .addTo(autoclaveRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1))
+            .circuit(1)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3))
             .outputChances(9000)
             .fluidInputs(GTModHandler.getDistilledWater(1_000))

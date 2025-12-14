@@ -31,8 +31,6 @@ import net.minecraftforge.fluids.IFluidTank;
 
 import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.widget.Widget;
-import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -463,12 +461,6 @@ public class MTEBoilerLava extends MTEBoiler {
     protected IDrawable[] getAshSlotBackground() {
         return new IDrawable[] { getGUITextureSet().getItemSlot(),
             GTUITextures.OVERLAY_SLOT_BLOCK_STEAM.get(getSteamVariant()) };
-    }
-
-    @Override
-    protected Widget createFuelSlotMui1() {
-        return new FluidSlotWidget(lavaTank).setBackground(getGUITextureSet().getFluidSlot(), getOverlaySlotIn())
-            .setPos(115, 61);
     }
 
     static class LavaTank extends FluidTank {

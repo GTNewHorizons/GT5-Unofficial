@@ -691,6 +691,7 @@ public class Textures {
         OVERLAY_WIRELESS_FLUID_DETECTOR,
         OVERLAY_WIRELESS_MAINTENANCE_DETECTOR,
         OVERLAY_WIRELESS_ACTIVITYDETECTOR,
+        OVERLAY_WIRELESS_CONTROLLER,
         OVERLAY_METRICS_TRANSMITTER,
 
         OVERLAY_FLUID_STORAGE_MONITOR0,
@@ -1939,6 +1940,13 @@ public class Textures {
         NANITE_CORE,
         NANITE_SHIELDING_FRAME,
         OVERLAY_ENERGY_IN_DEBUG,
+        OVERLAY_BUS_IN_DEBUG,
+
+        OVERLAY_HATCH_IN_DEBUG,
+
+        COKE_OVEN_CASING,
+        COKE_OVEN_OVERLAY_INACTIVE,
+        COKE_OVEN_OVERLAY_ACTIVE,
 
         // semicolon after the comment to reduce merge conflicts
         ;

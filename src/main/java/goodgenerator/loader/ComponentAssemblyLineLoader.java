@@ -24,7 +24,6 @@ import static gregtech.api.util.GTRecipeBuilder.NUGGETS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeConstants.COAL_CASING_TIER;
-import static gregtech.api.util.GTUtility.getIntegratedCircuit;
 import static gtPlusPlus.core.material.MaterialMisc.MUTATED_LIVING_SOLDER;
 import static gtPlusPlus.core.material.MaterialsAlloy.CINOBITE;
 import static gtPlusPlus.core.material.MaterialsAlloy.INDALLOY_140;
@@ -186,7 +185,7 @@ public class ComponentAssemblyLineLoader {
             .metadata(COAL_CASING_TIER, COAL_LV)
             .addTo(componentAssemblyLineRecipes);
 
-        for (var rubber : new Materials[] { Rubber, Silicone, StyreneButadieneRubber }) {
+        for (var rubber : new Materials[] { Rubber, RubberSilicone, StyreneButadieneRubber }) {
             // Pump
             GTValues.RA.stdBuilder()
                 .itemOutputs(Electric_Pump_LV.get(64))
@@ -301,7 +300,7 @@ public class ComponentAssemblyLineLoader {
             .metadata(COAL_CASING_TIER, COAL_MV)
             .addTo(componentAssemblyLineRecipes);
 
-        for (var rubber : new Materials[] { Rubber, Silicone, StyreneButadieneRubber }) {
+        for (var rubber : new Materials[] { Rubber, RubberSilicone, StyreneButadieneRubber }) {
             // Pump
             GTValues.RA.stdBuilder()
                 .itemOutputs(Electric_Pump_MV.get(64))
@@ -414,7 +413,7 @@ public class ComponentAssemblyLineLoader {
             .metadata(COAL_CASING_TIER, COAL_HV)
             .addTo(componentAssemblyLineRecipes);
 
-        for (var rubber : new Materials[] { Rubber, Silicone, StyreneButadieneRubber }) {
+        for (var rubber : new Materials[] { Rubber, RubberSilicone, StyreneButadieneRubber }) {
             // Pump
             GTValues.RA.stdBuilder()
                 .itemOutputs(Electric_Pump_HV.get(64))
@@ -527,7 +526,7 @@ public class ComponentAssemblyLineLoader {
             .metadata(COAL_CASING_TIER, COAL_EV)
             .addTo(componentAssemblyLineRecipes);
 
-        for (var rubber : new Materials[] { Rubber, Silicone, StyreneButadieneRubber }) {
+        for (var rubber : new Materials[] { Rubber, RubberSilicone, StyreneButadieneRubber }) {
             // Pump
             GTValues.RA.stdBuilder()
                 .itemOutputs(Electric_Pump_EV.get(64))
@@ -606,8 +605,8 @@ public class ComponentAssemblyLineLoader {
                 get(stickLong, NeodymiumMagnetic, 24),
                 get(stickLong, TungstenSteel, 48),
                 get(wireGt16, Graphene, 48),
-                get(cableGt16, Tungsten, 12),
-                getIntegratedCircuit(MOTOR_CIRCUIT))
+                get(cableGt16, Tungsten, 12))
+            .circuit(MOTOR_CIRCUIT)
             .duration(48 * SECONDS)
             .eut(RECIPE_EV)
             .metadata(COAL_CASING_TIER, COAL_IV)
@@ -621,8 +620,8 @@ public class ComponentAssemblyLineLoader {
                 get(plateDense, TungstenSteel, 16),
                 get(stickLong, TungstenSteel, 48),
                 get(cableGt16, Tungsten, 6),
-                get(gearGt, TungstenSteel, 12),
-                getIntegratedCircuit(PISTON_CIRCUIT))
+                get(gearGt, TungstenSteel, 12))
+            .circuit(PISTON_CIRCUIT)
             .duration(48 * SECONDS)
             .eut(RECIPE_EV)
             .metadata(COAL_CASING_TIER, COAL_IV)
@@ -636,14 +635,14 @@ public class ComponentAssemblyLineLoader {
                 get(Electric_Piston_IV, 48),
                 get(stickLong, TungstenSteel, 48),
                 get(wrapCircuit, IV, 3),
-                get(cableGt16, Tungsten, 9),
-                getIntegratedCircuit(ROBOT_ARM_CIRCUIT))
+                get(cableGt16, Tungsten, 9))
+            .circuit(ROBOT_ARM_CIRCUIT)
             .duration(48 * SECONDS)
             .eut(RECIPE_EV)
             .metadata(COAL_CASING_TIER, COAL_IV)
             .addTo(componentAssemblyLineRecipes);
 
-        for (var rubber : new Materials[] { Silicone, StyreneButadieneRubber }) {
+        for (var rubber : new Materials[] {RubberSilicone, StyreneButadieneRubber }) {
             // Pump
             GTValues.RA.stdBuilder()
                 .itemOutputs(Electric_Pump_IV.get(64))
@@ -652,8 +651,8 @@ public class ComponentAssemblyLineLoader {
                     get(rotor, TungstenSteel, 48),
                     get(screw, TungstenSteel, 48),
                     get(cableGt16, Tungsten, 3),
-                    get(pipeMedium, TungstenSteel, 48),
-                    getIntegratedCircuit(PUMP_CIRCUIT))
+                    get(pipeMedium, TungstenSteel, 48))
+                .circuit(PUMP_CIRCUIT)
                 .fluidInputs(
                     rubber.getMolten(24 * INGOTS))
                 .duration(48 * SECONDS)
@@ -667,8 +666,8 @@ public class ComponentAssemblyLineLoader {
                 .itemInputsUnsafe(
                     get(Electric_Motor_IV, 96),
                     get(plateDense, rubber, 32),
-                    get(cableGt16, Tungsten, 3),
-                    getIntegratedCircuit(CONVEYOR_CIRCUIT))
+                    get(cableGt16, Tungsten, 3))
+                .circuit(CONVEYOR_CIRCUIT)
                 .duration(48 * SECONDS)
                 .eut(RECIPE_EV)
                 .metadata(COAL_CASING_TIER, COAL_IV)
@@ -682,8 +681,8 @@ public class ComponentAssemblyLineLoader {
                 get(QuantumStar, 48),
                 get(plateDense, TungstenSteel, 21),
                 get(stickLong, Iridium, 24),
-                get(wrapCircuit, IV, 3),
-                getIntegratedCircuit(SENSOR_CIRCUIT))
+                get(wrapCircuit, IV, 3))
+            .circuit(SENSOR_CIRCUIT)
             .duration(48 * SECONDS)
             .eut(RECIPE_EV)
             .metadata(COAL_CASING_TIER, COAL_IV)
@@ -695,8 +694,8 @@ public class ComponentAssemblyLineLoader {
             .itemInputsUnsafe(
                 get(QuantumStar, 48),
                 get(wrapCircuit, IV, 6),
-                get(cableGt16, Tungsten, 6),
-                getIntegratedCircuit(EMITTER_CIRCUIT))
+                get(cableGt16, Tungsten, 6))
+            .circuit(EMITTER_CIRCUIT)
             .fluidInputs(
                 Iridium.getMolten(1 * STACKS + 32 * INGOTS))
             .duration(48 * SECONDS)
@@ -709,8 +708,8 @@ public class ComponentAssemblyLineLoader {
             .itemOutputs(Field_Generator_IV.get(64))
             .itemInputsUnsafe(
                 get(QuantumStar, 48),
-                get(wrapCircuit, Materials.ZPM, 12),
-                getIntegratedCircuit(FIELD_GENERATOR_CIRCUIT))
+                get(wrapCircuit, Materials.ZPM, 12))
+            .circuit(FIELD_GENERATOR_CIRCUIT)
             .fluidInputs(
                 HSSS.getMolten(3 * STACKS))
             .duration(24 * MINUTES)
@@ -725,8 +724,8 @@ public class ComponentAssemblyLineLoader {
             .itemOutputs(Electric_Motor_LuV.get(64))
             .itemInputsUnsafe(
                 get(stickLong, SamariumMagnetic, 24),
-                get(cableGt16, YttriumBariumCuprate, 6),
-                getIntegratedCircuit(MOTOR_CIRCUIT))
+                get(cableGt16, YttriumBariumCuprate, 6))
+            .circuit(MOTOR_CIRCUIT)
             .fluidInputs(
                 INDALLOY_140.getFluidStack(48 * INGOTS),
                 Lubricant.getFluid(12_000),
@@ -743,8 +742,8 @@ public class ComponentAssemblyLineLoader {
             .itemInputsUnsafe(
                 get(Electric_Motor_LuV, 48),
                 get(plateDense, HSSS, 32),
-                get(cableGt16, YttriumBariumCuprate, 12),
-                getIntegratedCircuit(PISTON_CIRCUIT))
+                get(cableGt16, YttriumBariumCuprate, 12))
+            .circuit(PISTON_CIRCUIT)
             .fluidInputs(
                 INDALLOY_140.getFluidStack(48 * INGOTS),
                 Lubricant.getFluid(12_000),
@@ -754,15 +753,15 @@ public class ComponentAssemblyLineLoader {
             .metadata(COAL_CASING_TIER, COAL_LuV)
             .addTo(componentAssemblyLineRecipes);
 
-        for (var rubber : new Materials[] { Silicone, StyreneButadieneRubber }) {
+        for (var rubber : new Materials[] {RubberSilicone, StyreneButadieneRubber }) {
             // Pump
             GTValues.RA.stdBuilder()
                 .itemOutputs(Electric_Pump_LuV.get(64))
                 .itemInputsUnsafe(
                     get(Electric_Motor_LuV, 48),
                     get(plateDense, HSSS, 10),
-                    get(cableGt16, YttriumBariumCuprate, 6),
-                    getIntegratedCircuit(PUMP_CIRCUIT))
+                    get(cableGt16, YttriumBariumCuprate, 6))
+                .circuit(PUMP_CIRCUIT)
                 .fluidInputs(
                     INDALLOY_140.getFluidStack(48 * INGOTS),
                     Lubricant.getFluid(12_000),
@@ -781,8 +780,8 @@ public class ComponentAssemblyLineLoader {
                     get(Electric_Motor_LuV, 96),
                     get(plateDense, HSSS, 10),
                     get(cableGt16, YttriumBariumCuprate, 6),
-                    get(plateDense, rubber, 53),
-                    getIntegratedCircuit(CONVEYOR_CIRCUIT))
+                    get(plateDense, rubber, 53))
+                .circuit(CONVEYOR_CIRCUIT)
                 .fluidInputs(
                     INDALLOY_140.getFluidStack(48 * INGOTS),
                     Lubricant.getFluid(12_000),
@@ -802,8 +801,8 @@ public class ComponentAssemblyLineLoader {
                 get(wrapCircuit, LuV, 6),
                 get(wrapCircuit, IV, 12),
                 get(wrapCircuit, EV, 24),
-                get(cableGt16, YttriumBariumCuprate, 18),
-                getIntegratedCircuit(ROBOT_ARM_CIRCUIT))
+                get(cableGt16, YttriumBariumCuprate, 18))
+            .circuit(ROBOT_ARM_CIRCUIT)
             .fluidInputs(
                 INDALLOY_140.getFluidStack(3 * STACKS),
                 Lubricant.getFluid(12_000),
@@ -822,8 +821,8 @@ public class ComponentAssemblyLineLoader {
                 get(plateDense, Ruridit, 42),
                 get(QuantumStar, 48),
                 get(wrapCircuit, LuV, 12),
-                get(cableGt16, YttriumBariumCuprate, 21),
-                getIntegratedCircuit(SENSOR_CIRCUIT))
+                get(cableGt16, YttriumBariumCuprate, 21))
+            .circuit(SENSOR_CIRCUIT)
             .fluidInputs(
                 INDALLOY_140.getFluidStack(3 * STACKS),
                 Gallium.getMolten(36 * STACKS))
@@ -840,8 +839,8 @@ public class ComponentAssemblyLineLoader {
                 get(Electric_Motor_LuV, 48),
                 get(QuantumStar, 48),
                 get(wrapCircuit, LuV, 12),
-                get(cableGt16, YttriumBariumCuprate, 21),
-                getIntegratedCircuit(EMITTER_CIRCUIT))
+                get(cableGt16, YttriumBariumCuprate, 21))
+            .circuit(EMITTER_CIRCUIT)
             .fluidInputs(
                 INDALLOY_140.getFluidStack(3 * STACKS),
                 Gallium.getMolten(36 * STACKS),
@@ -860,8 +859,8 @@ public class ComponentAssemblyLineLoader {
                 get(QuantumStar, 96),
                 get(Emitter_LuV, 192),
                 get(wrapCircuit, Materials.ZPM, 12),
-                get(cableGt16, YttriumBariumCuprate, 24),
-                getIntegratedCircuit(FIELD_GENERATOR_CIRCUIT))
+                get(cableGt16, YttriumBariumCuprate, 24))
+            .circuit(FIELD_GENERATOR_CIRCUIT)
             .fluidInputs(
                 INDALLOY_140.getFluidStack(3 * STACKS),
                 Ruridit.getMolten(24 * STACKS))
@@ -877,8 +876,8 @@ public class ComponentAssemblyLineLoader {
             .itemOutputs(Electric_Motor_ZPM.get(64))
             .itemInputsUnsafe(
                 get(stickLong, SamariumMagnetic, 48),
-                get(cableGt16, VanadiumGallium, 24),
-                getIntegratedCircuit(MOTOR_CIRCUIT))
+                get(cableGt16, VanadiumGallium, 24))
+            .circuit(MOTOR_CIRCUIT)
             .fluidInputs(
                 INDALLOY_140.getFluidStack(1 * STACKS + 32 * INGOTS),
                 Lubricant.getFluid(36_000),
@@ -895,8 +894,8 @@ public class ComponentAssemblyLineLoader {
             .itemInputsUnsafe(
                 get(Electric_Motor_ZPM, 48),
                 get(plateDense, NaquadahAlloy, 32),
-                get(cableGt16, VanadiumGallium, 48),
-                getIntegratedCircuit(PISTON_CIRCUIT))
+                get(cableGt16, VanadiumGallium, 48))
+            .circuit(PISTON_CIRCUIT)
             .fluidInputs(
                 INDALLOY_140.getFluidStack(1 * STACKS + 32 * INGOTS),
                 Lubricant.getFluid(36_000),
@@ -914,8 +913,8 @@ public class ComponentAssemblyLineLoader {
                 get(Electric_Piston_ZPM, 48),
                 get(wrapCircuit, Materials.ZPM, 6),
                 get(wrapCircuit, LuV, 12),
-                get(wrapCircuit, IV, 24),
-                getIntegratedCircuit(ROBOT_ARM_CIRCUIT))
+                get(wrapCircuit, IV, 24))
+            .circuit(ROBOT_ARM_CIRCUIT)
             .fluidInputs(
                 INDALLOY_140.getFluidStack(6 * STACKS),
                 Lubricant.getFluid(36_000),
@@ -926,15 +925,15 @@ public class ComponentAssemblyLineLoader {
             .metadata(COAL_CASING_TIER, COAL_ZPM)
             .addTo(componentAssemblyLineRecipes);
 
-        for (var rubber : new Materials[] { Silicone, StyreneButadieneRubber }) {
+        for (var rubber : new Materials[] {RubberSilicone, StyreneButadieneRubber }) {
             // Pump
             GTValues.RA.stdBuilder()
                 .itemOutputs(Electric_Pump_ZPM.get(64))
                 .itemInputsUnsafe(
                     get(Electric_Motor_ZPM, 48),
                     get(plateDense, NaquadahAlloy, 10),
-                    get(cableGt16, VanadiumGallium, 24),
-                    getIntegratedCircuit(PUMP_CIRCUIT))
+                    get(cableGt16, VanadiumGallium, 24))
+                .circuit(PUMP_CIRCUIT)
                 .fluidInputs(
                     INDALLOY_140.getFluidStack(1 * STACKS + 32 * INGOTS),
                     Lubricant.getFluid(36_000),
@@ -952,8 +951,8 @@ public class ComponentAssemblyLineLoader {
                 .itemInputsUnsafe(
                     get(Electric_Motor_ZPM, 96),
                     get(plateDense, NaquadahAlloy, 10),
-                    get(cableGt16, VanadiumGallium, 24),
-                    getIntegratedCircuit(CONVEYOR_CIRCUIT))
+                    get(cableGt16, VanadiumGallium, 24))
+                .circuit(CONVEYOR_CIRCUIT)
                 .fluidInputs(
                     INDALLOY_140.getFluidStack(1 * STACKS + 32 * INGOTS),
                     Lubricant.getFluid(36_000),
@@ -973,8 +972,8 @@ public class ComponentAssemblyLineLoader {
                 get(Electric_Motor_ZPM, 48),
                 get(plateDense, Osmiridium, 42),
                 get(QuantumStar, 96),
-                get(wrapCircuit, Materials.ZPM, 12),
-                getIntegratedCircuit(SENSOR_CIRCUIT))
+                get(wrapCircuit, Materials.ZPM, 12))
+            .circuit(SENSOR_CIRCUIT)
             .fluidInputs(
                 INDALLOY_140.getFluidStack(6 * STACKS),
                 Trinium.getMolten(36 * STACKS),
@@ -991,8 +990,8 @@ public class ComponentAssemblyLineLoader {
                 get(frameGt, NaquadahAlloy, 48),
                 get(Electric_Motor_ZPM, 48),
                 get(QuantumStar, 96),
-                get(wrapCircuit, Materials.ZPM, 12),
-                getIntegratedCircuit(EMITTER_CIRCUIT))
+                get(wrapCircuit, Materials.ZPM, 12))
+            .circuit(EMITTER_CIRCUIT)
             .fluidInputs(
                 INDALLOY_140.getFluidStack(6 * STACKS),
                 Trinium.getMolten(36 * STACKS),
@@ -1011,8 +1010,8 @@ public class ComponentAssemblyLineLoader {
                 get(plateDense, NaquadahAlloy, 32),
                 get(QuantumStar, 96),
                 get(Emitter_ZPM, 192),
-                get(wrapCircuit, UV, 12),
-                getIntegratedCircuit(FIELD_GENERATOR_CIRCUIT))
+                get(wrapCircuit, UV, 12))
+            .circuit(FIELD_GENERATOR_CIRCUIT)
             .fluidInputs(
                 INDALLOY_140.getFluidStack(6 * STACKS),
                 Europium.getMolten(24 * STACKS),
@@ -1028,8 +1027,8 @@ public class ComponentAssemblyLineLoader {
         GTValues.RA.stdBuilder()
             .itemOutputs(Electric_Motor_UV.get(64))
             .itemInputsUnsafe(
-                get(cableGt16, NaquadahAlloy, 24),
-                getIntegratedCircuit(MOTOR_CIRCUIT))
+                get(cableGt16, NaquadahAlloy, 24))
+            .circuit(MOTOR_CIRCUIT)
             .fluidInputs(
                 INDALLOY_140.getFluidStack(6 * STACKS + 48 * INGOTS),
                 Lubricant.getFluid(96_000),
@@ -1048,8 +1047,8 @@ public class ComponentAssemblyLineLoader {
             .itemInputsUnsafe(
                 get(Electric_Motor_UV, 48),
                 get(plateDense, Neutronium, 32),
-                get(cableGt16, NaquadahAlloy, 48),
-                getIntegratedCircuit(PISTON_CIRCUIT))
+                get(cableGt16, NaquadahAlloy, 48))
+            .circuit(PISTON_CIRCUIT)
             .fluidInputs(
                 INDALLOY_140.getFluidStack(6 * STACKS + 48 * INGOTS),
                 Lubricant.getFluid(96_000),
@@ -1068,8 +1067,8 @@ public class ComponentAssemblyLineLoader {
                 get(Electric_Piston_UV, 48),
                 get(wrapCircuit, UV, 6),
                 get(wrapCircuit, Materials.ZPM, 12),
-                get(wrapCircuit, LuV, 24),
-                getIntegratedCircuit(ROBOT_ARM_CIRCUIT))
+                get(wrapCircuit, LuV, 24))
+            .circuit(ROBOT_ARM_CIRCUIT)
             .fluidInputs(
                 INDALLOY_140.getFluidStack(12 * STACKS),
                 Lubricant.getFluid(96_000),
@@ -1081,15 +1080,15 @@ public class ComponentAssemblyLineLoader {
             .metadata(COAL_CASING_TIER, COAL_UV)
             .addTo(componentAssemblyLineRecipes);
 
-        for (var rubber : new Materials[] { Silicone, StyreneButadieneRubber }) {
+        for (var rubber : new Materials[] {RubberSilicone, StyreneButadieneRubber }) {
             // Pump
             GTValues.RA.stdBuilder()
                 .itemOutputs(Electric_Pump_UV.get(64))
                 .itemInputsUnsafe(
                     get(Electric_Motor_UV, 48),
                     get(plateDense, Neutronium, 10),
-                    get(cableGt16, NaquadahAlloy, 24),
-                    getIntegratedCircuit(PUMP_CIRCUIT))
+                    get(cableGt16, NaquadahAlloy, 24))
+                .circuit(PUMP_CIRCUIT)
                 .fluidInputs(
                     INDALLOY_140.getFluidStack(6 * STACKS + 48 * INGOTS),
                     Lubricant.getFluid(96_000),
@@ -1108,8 +1107,8 @@ public class ComponentAssemblyLineLoader {
                 .itemInputsUnsafe(
                     get(Electric_Motor_UV, 96),
                     get(plateDense, Neutronium, 10),
-                    get(cableGt16, NaquadahAlloy, 24),
-                    getIntegratedCircuit(CONVEYOR_CIRCUIT))
+                    get(cableGt16, NaquadahAlloy, 24))
+                .circuit(CONVEYOR_CIRCUIT)
                 .fluidInputs(
                     INDALLOY_140.getFluidStack(6 * STACKS + 48 * INGOTS),
                     Lubricant.getFluid(96_000),
@@ -1130,8 +1129,8 @@ public class ComponentAssemblyLineLoader {
                 get(Electric_Motor_UV, 48),
                 get(plateDense, Neutronium, 42),
                 get(Gravistar, 192),
-                get(wrapCircuit, UV, 12),
-                getIntegratedCircuit(SENSOR_CIRCUIT))
+                get(wrapCircuit, UV, 12))
+            .circuit(SENSOR_CIRCUIT)
             .fluidInputs(
                 INDALLOY_140.getFluidStack(12 * STACKS),
                 Naquadria.getMolten(42 * STACKS + 48 * INGOTS),
@@ -1148,8 +1147,8 @@ public class ComponentAssemblyLineLoader {
                 get(frameGt, Neutronium, 48),
                 get(Electric_Motor_UV, 48),
                 get(Gravistar, 192),
-                get(wrapCircuit, UV, 12),
-                getIntegratedCircuit(EMITTER_CIRCUIT))
+                get(wrapCircuit, UV, 12))
+            .circuit(EMITTER_CIRCUIT)
             .fluidInputs(
                 INDALLOY_140.getFluidStack(12 * STACKS),
                 Naquadria.getMolten(42 * STACKS + 48 * INGOTS),
@@ -1168,8 +1167,8 @@ public class ComponentAssemblyLineLoader {
                 get(plateDense, Neutronium, 32),
                 get(Gravistar, 96),
                 get(Emitter_UV, 192),
-                get(wrapCircuit, UHV, 12),
-                getIntegratedCircuit(FIELD_GENERATOR_CIRCUIT))
+                get(wrapCircuit, UHV, 12))
+            .circuit(FIELD_GENERATOR_CIRCUIT)
             .fluidInputs(
                 INDALLOY_140.getFluidStack(12 * STACKS),
                 Americium.getMolten(36 * STACKS),
@@ -1186,8 +1185,8 @@ public class ComponentAssemblyLineLoader {
         GTValues.RA.stdBuilder()
             .itemOutputs(Electric_Motor_UHV.get(64))
             .itemInputsUnsafe(
-                get(cableGt16, Bedrockium, 24),
-                getIntegratedCircuit(MOTOR_CIRCUIT))
+                get(cableGt16, Bedrockium, 24))
+            .circuit(MOTOR_CIRCUIT)
             .fluidInputs(
                 INDALLOY_140.getFluidStack(13 * STACKS + 32 * INGOTS),
                 Lubricant.getFluid(192_000),
@@ -1206,8 +1205,8 @@ public class ComponentAssemblyLineLoader {
             .itemInputsUnsafe(
                 get(Electric_Motor_UHV, 48),
                 get(plateDense, CosmicNeutronium, 32),
-                get(cableGt16, Bedrockium, 48),
-                getIntegratedCircuit(PISTON_CIRCUIT))
+                get(cableGt16, Bedrockium, 48))
+            .circuit(PISTON_CIRCUIT)
             .fluidInputs(
                 INDALLOY_140.getFluidStack(13 * STACKS + 32 * INGOTS),
                 Lubricant.getFluid(192_000),
@@ -1226,8 +1225,8 @@ public class ComponentAssemblyLineLoader {
                 get(Electric_Piston_UHV, 48),
                 get(wrapCircuit, UHV, 6),
                 get(wrapCircuit, UV, 12),
-                get(wrapCircuit, Materials.ZPM, 24),
-                getIntegratedCircuit(ROBOT_ARM_CIRCUIT))
+                get(wrapCircuit, Materials.ZPM, 24))
+            .circuit(ROBOT_ARM_CIRCUIT)
             .fluidInputs(
                 INDALLOY_140.getFluidStack(13 * STACKS + 32 * INGOTS),
                 Lubricant.getFluid(192_000),
@@ -1239,15 +1238,15 @@ public class ComponentAssemblyLineLoader {
             .metadata(COAL_CASING_TIER, COAL_UHV)
             .addTo(componentAssemblyLineRecipes);
 
-        for (var rubber : new Materials[] { Silicone, StyreneButadieneRubber }) {
+        for (var rubber : new Materials[] {RubberSilicone, StyreneButadieneRubber }) {
             // Pump
             GTValues.RA.stdBuilder()
                 .itemOutputs(Electric_Pump_UHV.get(64))
                 .itemInputsUnsafe(
                     get(Electric_Motor_UHV, 48),
                     get(plateDense, CosmicNeutronium, 21),
-                    get(cableGt16, Bedrockium, 24),
-                    getIntegratedCircuit(PUMP_CIRCUIT))
+                    get(cableGt16, Bedrockium, 24))
+                .circuit(PUMP_CIRCUIT)
                 .fluidInputs(
                     INDALLOY_140.getFluidStack(13 * STACKS + 32 * INGOTS),
                     Lubricant.getFluid(192_000),
@@ -1266,8 +1265,8 @@ public class ComponentAssemblyLineLoader {
                 .itemInputsUnsafe(
                     get(Electric_Motor_UHV, 96),
                     get(plateDense, CosmicNeutronium, 10),
-                    get(cableGt16, Bedrockium, 24),
-                    getIntegratedCircuit(CONVEYOR_CIRCUIT))
+                    get(cableGt16, Bedrockium, 24))
+                .circuit(CONVEYOR_CIRCUIT)
                 .fluidInputs(
                     INDALLOY_140.getFluidStack(13 * STACKS + 32 * INGOTS),
                     Lubricant.getFluid(192_000),
@@ -1288,8 +1287,8 @@ public class ComponentAssemblyLineLoader {
                 get(Electric_Motor_UHV, 48),
                 get(plateDense, CosmicNeutronium, 42),
                 get(Gravistar, 384),
-                get(wrapCircuit, UHV, 12),
-                getIntegratedCircuit(SENSOR_CIRCUIT))
+                get(wrapCircuit, UHV, 12))
+            .circuit(SENSOR_CIRCUIT)
             .fluidInputs(
                 INDALLOY_140.getFluidStack(13 * STACKS + 32 * INGOTS),
                 ElectrumFlux.getMolten(48 * STACKS),
@@ -1307,8 +1306,8 @@ public class ComponentAssemblyLineLoader {
                 get(frameGt, CosmicNeutronium, 48),
                 get(Electric_Motor_UHV, 48),
                 get(Gravistar, 384),
-                get(wrapCircuit, UHV, 12),
-                getIntegratedCircuit(EMITTER_CIRCUIT))
+                get(wrapCircuit, UHV, 12))
+            .circuit(EMITTER_CIRCUIT)
             .fluidInputs(
                 INDALLOY_140.getFluidStack(13 * STACKS + 32 * INGOTS),
                 ElectrumFlux.getMolten(48 * STACKS),
@@ -1328,8 +1327,8 @@ public class ComponentAssemblyLineLoader {
                 get(plateDense, CosmicNeutronium, 32),
                 get(Gravistar, 192),
                 get(Emitter_UHV, 192),
-                get(wrapCircuit, UEV, 12),
-                getIntegratedCircuit(FIELD_GENERATOR_CIRCUIT))
+                get(wrapCircuit, UEV, 12))
+            .circuit(FIELD_GENERATOR_CIRCUIT)
             .fluidInputs(
                 INDALLOY_140.getFluidStack(13 * STACKS + 32 * INGOTS),
                 Neutronium.getMolten(48 * STACKS),
@@ -1346,8 +1345,8 @@ public class ComponentAssemblyLineLoader {
         GTValues.RA.stdBuilder()
             .itemOutputs(Electric_Motor_UEV.get(64))
             .itemInputsUnsafe(
-                get(cableGt16, Draconium, 24),
-                getIntegratedCircuit(MOTOR_CIRCUIT))
+                get(cableGt16, Draconium, 24))
+            .circuit(MOTOR_CIRCUIT)
             .fluidInputs(
                 MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
                 Lubricant.getFluid(192_000),
@@ -1366,8 +1365,8 @@ public class ComponentAssemblyLineLoader {
             .itemInputsUnsafe(
                 get(Electric_Motor_UEV, 48),
                 get(plateDense, Infinity, 32),
-                get(cableGt16, Draconium, 48),
-                getIntegratedCircuit(PISTON_CIRCUIT))
+                get(cableGt16, Draconium, 48))
+            .circuit(PISTON_CIRCUIT)
             .fluidInputs(
                 MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
                 Lubricant.getFluid(192_000),
@@ -1386,8 +1385,8 @@ public class ComponentAssemblyLineLoader {
                 get(Electric_Piston_UEV, 48),
                 get(wrapCircuit, UEV, 6),
                 get(wrapCircuit, UHV, 12),
-                get(wrapCircuit, UV, 24),
-                getIntegratedCircuit(ROBOT_ARM_CIRCUIT))
+                get(wrapCircuit, UV, 24))
+            .circuit(ROBOT_ARM_CIRCUIT)
             .fluidInputs(
                 MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
                 Lubricant.getFluid(192_000),
@@ -1399,7 +1398,7 @@ public class ComponentAssemblyLineLoader {
             .metadata(COAL_CASING_TIER, COAL_UEV)
             .addTo(componentAssemblyLineRecipes);
 
-        for (var rubber : new Materials[] { Silicone, StyreneButadieneRubber }) {
+        for (var rubber : new Materials[] {RubberSilicone, StyreneButadieneRubber }) {
             // Pump
             GTValues.RA.stdBuilder()
                 .itemOutputs(Electric_Pump_UEV.get(64))
@@ -1407,8 +1406,8 @@ public class ComponentAssemblyLineLoader {
                     get(Electric_Motor_UEV, 48),
                     get(pipeLarge, NetherStar, 96),
                     get(plateDense, Infinity, 21),
-                    get(cableGt16, Draconium, 24),
-                    getIntegratedCircuit(PUMP_CIRCUIT))
+                    get(cableGt16, Draconium, 24))
+                .circuit(PUMP_CIRCUIT)
                 .fluidInputs(
                     MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
                     Lubricant.getFluid(192_000),
@@ -1426,8 +1425,8 @@ public class ComponentAssemblyLineLoader {
                 .itemInputsUnsafe(
                     get(Electric_Motor_UEV, 96),
                     get(plateDense, Infinity, 10),
-                    get(cableGt16, Draconium, 24),
-                    getIntegratedCircuit(CONVEYOR_CIRCUIT))
+                    get(cableGt16, Draconium, 24))
+                .circuit(CONVEYOR_CIRCUIT)
                 .fluidInputs(
                     MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
                     Lubricant.getFluid(192_000),
@@ -1448,8 +1447,8 @@ public class ComponentAssemblyLineLoader {
                 get(Electric_Motor_UEV, 48),
                 get(plateDense, Infinity, 42),
                 get(Gravistar, 768),
-                get(wrapCircuit, UEV, 12),
-                getIntegratedCircuit(SENSOR_CIRCUIT))
+                get(wrapCircuit, UEV, 12))
+            .circuit(SENSOR_CIRCUIT)
             .fluidInputs(
                 MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
                 InfinityCatalyst.getMolten(48 * STACKS),
@@ -1467,8 +1466,8 @@ public class ComponentAssemblyLineLoader {
                 get(frameGt, Infinity, 48),
                 get(Electric_Motor_UEV, 48),
                 get(Gravistar, 768),
-                get(wrapCircuit, UEV, 12),
-                getIntegratedCircuit(EMITTER_CIRCUIT))
+                get(wrapCircuit, UEV, 12))
+            .circuit(EMITTER_CIRCUIT)
             .fluidInputs(
                 MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
                 InfinityCatalyst.getMolten(48 * STACKS),
@@ -1488,8 +1487,8 @@ public class ComponentAssemblyLineLoader {
                 get(plateDense, Infinity, 32),
                 get(Gravistar, 384),
                 get(Emitter_UEV, 192),
-                get(wrapCircuit, UIV, 12),
-                getIntegratedCircuit(FIELD_GENERATOR_CIRCUIT))
+                get(wrapCircuit, UIV, 12))
+            .circuit(FIELD_GENERATOR_CIRCUIT)
             .fluidInputs(
                 MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
                 Tritanium.getMolten(48 * STACKS),
@@ -1513,8 +1512,8 @@ public class ComponentAssemblyLineLoader {
         GTValues.RA.stdBuilder()
             .itemOutputs(Electric_Motor_UIV.get(64))
             .itemInputsUnsafe(
-                get(cableGt16, NetherStar, 24),
-                getIntegratedCircuit(MOTOR_CIRCUIT))
+                get(cableGt16, NetherStar, 24))
+            .circuit(MOTOR_CIRCUIT)
             .fluidInputs(
                 MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
                 DimensionallyShiftedSuperfluid.getFluid(32 * STACKS + 53 * INGOTS + 3 * NUGGETS),
@@ -1531,8 +1530,8 @@ public class ComponentAssemblyLineLoader {
         GTValues.RA.stdBuilder()
             .itemOutputs(Electric_Motor_UIV.get(64))
             .itemInputsUnsafe(
-                get(cableGt16, NetherStar, 24),
-                getIntegratedCircuit(MOTOR_CIRCUIT))
+                get(cableGt16, NetherStar, 24))
+            .circuit(MOTOR_CIRCUIT)
             .fluidInputs(
                 MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
                 DimensionallyShiftedSuperfluid.getFluid(32 * STACKS + 53 * INGOTS + 3 * NUGGETS),
@@ -1553,8 +1552,8 @@ public class ComponentAssemblyLineLoader {
             .itemInputsUnsafe(
                 get(Electric_Motor_UIV, 48),
                 get(plateDense, TranscendentMetal, 32),
-                get(cableGt16, NetherStar, 48),
-                getIntegratedCircuit(PISTON_CIRCUIT))
+                get(cableGt16, NetherStar, 48))
+            .circuit(PISTON_CIRCUIT)
             .fluidInputs(
                 MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
                 DimensionallyShiftedSuperfluid.getFluid(192_000),
@@ -1574,8 +1573,8 @@ public class ComponentAssemblyLineLoader {
                 get(wrapCircuit, UIV, 6),
                 get(wrapCircuit, UEV, 12),
                 get(wrapCircuit, UHV, 24),
-                get(cableGt16, NetherStar, 72),
-                getIntegratedCircuit(ROBOT_ARM_CIRCUIT))
+                get(cableGt16, NetherStar, 72))
+            .circuit(ROBOT_ARM_CIRCUIT)
             .fluidInputs(
                 MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
                 DimensionallyShiftedSuperfluid.getFluid(192_000),
@@ -1586,15 +1585,15 @@ public class ComponentAssemblyLineLoader {
             .metadata(COAL_CASING_TIER, COAL_UIV)
             .addTo(componentAssemblyLineRecipes);
 
-        for (var rubber : new Materials[] { Silicone, StyreneButadieneRubber }) {
+        for (var rubber : new Materials[] {RubberSilicone, StyreneButadieneRubber }) {
             // Pump
             GTValues.RA.stdBuilder()
                 .itemOutputs(Electric_Pump_UIV.get(64))
                 .itemInputsUnsafe(
                     get(Electric_Motor_UIV, 48),
                     get(plateDense, TranscendentMetal, 21),
-                    get(cableGt16, NetherStar, 24),
-                    getIntegratedCircuit(PUMP_CIRCUIT))
+                    get(cableGt16, NetherStar, 24))
+                .circuit(PUMP_CIRCUIT)
                 .fluidInputs(
                     MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
                     DimensionallyShiftedSuperfluid.getFluid(192_000),
@@ -1613,8 +1612,8 @@ public class ComponentAssemblyLineLoader {
                 .itemInputsUnsafe(
                     get(Electric_Motor_UIV, 96),
                     get(plateDense, TranscendentMetal, 10),
-                    get(cableGt16, NetherStar, 24),
-                    getIntegratedCircuit(CONVEYOR_CIRCUIT))
+                    get(cableGt16, NetherStar, 24))
+                .circuit(CONVEYOR_CIRCUIT)
                 .fluidInputs(
                     MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
                     DimensionallyShiftedSuperfluid.getFluid(192_000),
@@ -1636,8 +1635,8 @@ public class ComponentAssemblyLineLoader {
                 get(plateDense, TranscendentMetal, 42),
                 get(NuclearStar, 96),
                 get(wrapCircuit, UIV, 12),
-                get(cableGt16, NetherStar, 84),
-                getIntegratedCircuit(SENSOR_CIRCUIT))
+                get(cableGt16, NetherStar, 84))
+            .circuit(SENSOR_CIRCUIT)
             .fluidInputs(
                 MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
                 TRINIUM_REINFORCED_STEEL.getFluidStack(12 * STACKS),
@@ -1658,8 +1657,8 @@ public class ComponentAssemblyLineLoader {
                 get(Electric_Motor_UIV, 48),
                 get(NuclearStar, 96),
                 get(wrapCircuit, UIV, 12),
-                get(cableGt16, NetherStar, 84),
-                getIntegratedCircuit(EMITTER_CIRCUIT))
+                get(cableGt16, NetherStar, 84))
+            .circuit(EMITTER_CIRCUIT)
             .fluidInputs(
                 MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
                 TRINIUM_REINFORCED_STEEL.getFluidStack(12 * STACKS),
@@ -1682,8 +1681,8 @@ public class ComponentAssemblyLineLoader {
                 get(NuclearStar, 48),
                 get(Emitter_UIV, 192),
                 get(wrapCircuit, UMV, 12),
-                get(cableGt16, NetherStar, 96),
-                getIntegratedCircuit(FIELD_GENERATOR_CIRCUIT))
+                get(cableGt16, NetherStar, 96))
+            .circuit(FIELD_GENERATOR_CIRCUIT)
             .fluidInputs(
                 MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
                 DimensionallyShiftedSuperfluid.getFluid(12 * STACKS),
@@ -1703,8 +1702,8 @@ public class ComponentAssemblyLineLoader {
                 get(NuclearStar, 48),
                 get(Emitter_UIV, 192),
                 get(wrapCircuit, UMV, 12),
-                get(cableGt16, NetherStar, 96),
-                getIntegratedCircuit(FIELD_GENERATOR_CIRCUIT))
+                get(cableGt16, NetherStar, 96))
+            .circuit(FIELD_GENERATOR_CIRCUIT)
             .fluidInputs(
                 MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
                 DimensionallyShiftedSuperfluid.getFluid(12 * STACKS),
@@ -1723,8 +1722,8 @@ public class ComponentAssemblyLineLoader {
         GTValues.RA.stdBuilder()
             .itemOutputs(Electric_Motor_UMV.get(64))
             .itemInputsUnsafe(
-                get(cableGt16, Quantium, 24),
-                getIntegratedCircuit(MOTOR_CIRCUIT))
+                get(cableGt16, Quantium, 24))
+            .circuit(MOTOR_CIRCUIT)
             .fluidInputs(
                 MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
                 DimensionallyShiftedSuperfluid.getFluid(192_000),
@@ -1743,8 +1742,8 @@ public class ComponentAssemblyLineLoader {
             .itemInputsUnsafe(
                 get(Electric_Motor_UMV, 48),
                 get(plateDense, SpaceTime, 32),
-                get(cableGt16, Quantium, 48),
-                getIntegratedCircuit(PISTON_CIRCUIT))
+                get(cableGt16, Quantium, 48))
+            .circuit(PISTON_CIRCUIT)
             .fluidInputs(
                 MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
                 DimensionallyShiftedSuperfluid.getFluid(192_000),
@@ -1764,8 +1763,8 @@ public class ComponentAssemblyLineLoader {
                 get(Electric_Piston_UMV, 48),
                 get(wrapCircuit, UMV, 6),
                 get(wrapCircuit, UIV, 12),
-                get(wrapCircuit, UEV, 24),
-                getIntegratedCircuit(ROBOT_ARM_CIRCUIT))
+                get(wrapCircuit, UEV, 24))
+            .circuit(ROBOT_ARM_CIRCUIT)
             .fluidInputs(
                 MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
                 DimensionallyShiftedSuperfluid.getFluid(192_000),
@@ -1778,15 +1777,15 @@ public class ComponentAssemblyLineLoader {
             .metadata(COAL_CASING_TIER, COAL_UMV)
             .addTo(componentAssemblyLineRecipes);
 
-        for (var rubber : new Materials[] { Silicone, StyreneButadieneRubber }) {
+        for (var rubber : new Materials[] {RubberSilicone, StyreneButadieneRubber }) {
             // Pump
             GTValues.RA.stdBuilder()
                 .itemOutputs(Electric_Pump_UMV.get(64))
                 .itemInputsUnsafe(
                     get(Electric_Motor_UMV, 48),
                     get(plateDense, SpaceTime, 21),
-                    get(cableGt16, Quantium, 24),
-                    getIntegratedCircuit(PUMP_CIRCUIT))
+                    get(cableGt16, Quantium, 24))
+                .circuit(PUMP_CIRCUIT)
                 .fluidInputs(
                     MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
                     DimensionallyShiftedSuperfluid.getFluid(192_000),
@@ -1806,8 +1805,8 @@ public class ComponentAssemblyLineLoader {
                 .itemInputsUnsafe(
                     get(Electric_Motor_UMV, 96),
                     get(plateDense, SpaceTime, 10),
-                    get(cableGt16, Quantium, 24),
-                    getIntegratedCircuit(CONVEYOR_CIRCUIT))
+                    get(cableGt16, Quantium, 24))
+                .circuit(CONVEYOR_CIRCUIT)
                 .fluidInputs(
                     MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
                     DimensionallyShiftedSuperfluid.getFluid(192_000),
@@ -1829,8 +1828,8 @@ public class ComponentAssemblyLineLoader {
                 get(Electric_Motor_UMV, 48),
                 get(plateDense, SpaceTime, 42),
                 get(NuclearStar, 192),
-                get(wrapCircuit, UMV, 12),
-                getIntegratedCircuit(SENSOR_CIRCUIT))
+                get(wrapCircuit, UMV, 12))
+            .circuit(SENSOR_CIRCUIT)
             .fluidInputs(
                 MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
                 CELESTIAL_TUNGSTEN.getFluidStack(15 * STACKS),
@@ -1851,8 +1850,8 @@ public class ComponentAssemblyLineLoader {
                 get(frameGt, SpaceTime, 48),
                 get(Electric_Motor_UMV, 48),
                 get(NuclearStar, 192),
-                get(wrapCircuit, UMV, 12),
-                getIntegratedCircuit(EMITTER_CIRCUIT))
+                get(wrapCircuit, UMV, 12))
+            .circuit(EMITTER_CIRCUIT)
             .fluidInputs(
                 MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
                 CELESTIAL_TUNGSTEN.getFluidStack(15 * STACKS),
@@ -1875,8 +1874,8 @@ public class ComponentAssemblyLineLoader {
                 get(plateDense, SpaceTime, 32),
                 get(NuclearStar, 96),
                 get(Emitter_UMV, 192),
-                get(wrapCircuit, UXV, 12),
-                getIntegratedCircuit(FIELD_GENERATOR_CIRCUIT))
+                get(wrapCircuit, UXV, 12))
+            .circuit(FIELD_GENERATOR_CIRCUIT)
             .fluidInputs(
                 MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
                 HYPOGEN.getFluidStack(51 * STACKS),
@@ -1904,11 +1903,11 @@ public class ComponentAssemblyLineLoader {
                 get(EnergisedTesseract, 48),
                 get(wrapCircuit, UHV, 114),
                 get(wireGt16, SpaceTime, 48),
-                get(nanite, Gold, 12),
-                getIntegratedCircuit(MOTOR_CIRCUIT))
+                get(nanite, Gold, 12))
+            .circuit(MOTOR_CIRCUIT)
             .fluidInputs(
                 DimensionallyShiftedSuperfluid.getFluid(384_000),
-                MagnetohydrodynamicallyConstrainedStarMatter.getMolten(31 * STACKS + 10 * INGOTS + 6 * NUGGETS),
+                MHDCSM.getMolten(31 * STACKS + 10 * INGOTS + 6 * NUGGETS),
                 Eternity.getMolten(28 * STACKS + 10 * INGOTS + 6 * NUGGETS),
                 Universium.getMolten(15 * STACKS),
                 MagMatter.getMolten(12 * STACKS),
@@ -1925,11 +1924,11 @@ public class ComponentAssemblyLineLoader {
             .itemInputsUnsafe(
                 get(Electric_Motor_UXV, 48),
                 get(wrapCircuit, UHV, 84),
-                get(nanite, Gold, 12),
-                getIntegratedCircuit(PISTON_CIRCUIT))
+                get(nanite, Gold, 12))
+            .circuit(PISTON_CIRCUIT)
             .fluidInputs(
                 DimensionallyShiftedSuperfluid.getFluid(384_000),
-                MagnetohydrodynamicallyConstrainedStarMatter.getMolten(26 * STACKS + 21 * INGOTS + 3 * NUGGETS),
+                MHDCSM.getMolten(26 * STACKS + 21 * INGOTS + 3 * NUGGETS),
                 Eternity.getMolten(23 * STACKS + 21 * INGOTS + 3 * NUGGETS),
                 SpaceTime.getMolten(15 * STACKS),
                 MagMatter.getMolten(9 * STACKS),
@@ -1949,12 +1948,12 @@ public class ComponentAssemblyLineLoader {
                 get(wrapCircuit, UMV, 12),
                 get(wrapCircuit, UIV, 24),
                 get(wrapCircuit, UHV, 54),
-                get(nanite, Gold, 24),
-                getIntegratedCircuit(ROBOT_ARM_CIRCUIT))
+                get(nanite, Gold, 24))
+            .circuit(ROBOT_ARM_CIRCUIT)
             .fluidInputs(
                 DimensionallyShiftedSuperfluid.getFluid(384_000),
                 SpaceTime.getMolten(21 * STACKS),
-                MagnetohydrodynamicallyConstrainedStarMatter.getMolten(19 * STACKS + 32 * INGOTS),
+                MHDCSM.getMolten(19 * STACKS + 32 * INGOTS),
                 Eternity.getMolten(16 * STACKS + 32 * INGOTS),
                 MagMatter.getMolten(10 * STACKS + 32 * INGOTS),
                 Universium.getMolten(3 * STACKS))
@@ -1970,11 +1969,11 @@ public class ComponentAssemblyLineLoader {
                 get(Electric_Motor_UXV, 48),
                 get(wrapCircuit, UHV, 42),
                 get(wireGt16, SpaceTime, 48),
-                get(nanite, Gold, 12),
-                getIntegratedCircuit(PUMP_CIRCUIT))
+                get(nanite, Gold, 12))
+            .circuit(PUMP_CIRCUIT)
             .fluidInputs(
                 DimensionallyShiftedSuperfluid.getFluid(384_000),
-                MagnetohydrodynamicallyConstrainedStarMatter.getMolten(20 * STACKS + 5 * INGOTS + 3 * NUGGETS),
+                MHDCSM.getMolten(20 * STACKS + 5 * INGOTS + 3 * NUGGETS),
                 Eternity.getMolten(17 * STACKS + 5 * INGOTS + 3 * NUGGETS),
                 MagMatter.getMolten(12 * STACKS + 48 * INGOTS),
                 RadoxPolymer.getMolten(12 * STACKS),
@@ -1993,13 +1992,13 @@ public class ComponentAssemblyLineLoader {
                 get(Electric_Motor_UXV, 96),
                 get(wrapCircuit, UHV, 36),
                 get(wireGt16, SpaceTime, 48),
-                get(nanite, Gold, 12),
-                getIntegratedCircuit(CONVEYOR_CIRCUIT))
+                get(nanite, Gold, 12))
+            .circuit(CONVEYOR_CIRCUIT)
             .fluidInputs(
                 DimensionallyShiftedSuperfluid.getFluid(384_000),
                 RadoxPolymer.getMolten(59 * STACKS + 58 * INGOTS),
                 Kevlar.getMolten(59 * STACKS + 58 * INGOTS),
-                MagnetohydrodynamicallyConstrainedStarMatter.getMolten(11 * STACKS + 21 * INGOTS + 3 * NUGGETS),
+                MHDCSM.getMolten(11 * STACKS + 21 * INGOTS + 3 * NUGGETS),
                 Eternity.getMolten(8 * STACKS + 21 * INGOTS + 3 * NUGGETS),
                 SpaceTime.getMolten(3 * STACKS),
                 Universium.getMolten(3 * STACKS))
@@ -2012,17 +2011,17 @@ public class ComponentAssemblyLineLoader {
         GTValues.RA.stdBuilder()
             .itemOutputs(Sensor_UXV.get(64))
             .itemInputsUnsafe(
-                get(frameGt, MagnetohydrodynamicallyConstrainedStarMatter, 48),
+                get(frameGt, MHDCSM, 48),
                 get(Electric_Motor_UXV, 48),
                 get(NuclearStar, 768),
                 get(wrapCircuit, UXV, 12),
                 get(wrapCircuit, UHV, 48),
-                get(nanite, Gold, 24),
-                getIntegratedCircuit(SENSOR_CIRCUIT))
+                get(nanite, Gold, 24))
+            .circuit(SENSOR_CIRCUIT)
             .fluidInputs(
                 MUTATED_LIVING_SOLDER.getFluidStack(75 * STACKS),
                 SpaceTime.getMolten(36 * STACKS),
-                MagnetohydrodynamicallyConstrainedStarMatter.getMolten(21 * STACKS),
+                MHDCSM.getMolten(21 * STACKS),
                 Eternity.getMolten(18 * STACKS),
                 Universium.getMolten(15 * STACKS),
                 MagMatter.getMolten(12 * STACKS))
@@ -2035,17 +2034,17 @@ public class ComponentAssemblyLineLoader {
         GTValues.RA.stdBuilder()
             .itemOutputs(Emitter_UXV.get(64))
             .itemInputsUnsafe(
-                get(frameGt, MagnetohydrodynamicallyConstrainedStarMatter, 48),
+                get(frameGt, MHDCSM, 48),
                 get(Electric_Motor_UXV, 48),
                 get(NuclearStar, 768),
                 get(wrapCircuit, UXV, 12),
                 get(wrapCircuit, UHV, 48),
-                get(nanite, Gold, 24),
-                getIntegratedCircuit(EMITTER_CIRCUIT))
+                get(nanite, Gold, 24))
+            .circuit(EMITTER_CIRCUIT)
             .fluidInputs(
                 MUTATED_LIVING_SOLDER.getFluidStack(75 * STACKS),
                 SpaceTime.getMolten(36 * STACKS),
-                MagnetohydrodynamicallyConstrainedStarMatter.getMolten(21 * STACKS),
+                MHDCSM.getMolten(21 * STACKS),
                 Eternity.getMolten(18 * STACKS),
                 Universium.getMolten(15 * STACKS),
                 MagMatter.getMolten(12 * STACKS))
@@ -2058,17 +2057,17 @@ public class ComponentAssemblyLineLoader {
         GTValues.RA.stdBuilder()
             .itemOutputs(Field_Generator_UXV.get(64))
             .itemInputsUnsafe(
-                get(frameGt, MagnetohydrodynamicallyConstrainedStarMatter, 48),
+                get(frameGt, MHDCSM, 48),
                 get(NuclearStar, 3072),
                 get(Emitter_UXV, 192),
                 get(wrapCircuit, UXV, 24),
                 get(wrapCircuit, UHV, 66),
-                get(nanite, Gold, 36),
-                getIntegratedCircuit(FIELD_GENERATOR_CIRCUIT))
+                get(nanite, Gold, 36))
+            .circuit(FIELD_GENERATOR_CIRCUIT)
             .fluidInputs(
                 MUTATED_LIVING_SOLDER.getFluidStack(75 * STACKS),
                 SpaceTime.getMolten(27 * STACKS),
-                MagnetohydrodynamicallyConstrainedStarMatter.getMolten(19 * STACKS + 32 * INGOTS),
+                MHDCSM.getMolten(19 * STACKS + 32 * INGOTS),
                 Eternity.getMolten(16 * STACKS + 32 * INGOTS),
                 Universium.getMolten(15 * STACKS),
                 MagMatter.getMolten(12 * STACKS),
