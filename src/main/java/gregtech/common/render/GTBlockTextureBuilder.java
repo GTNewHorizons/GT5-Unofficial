@@ -8,7 +8,7 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.ITexture;
 
-public class GTBlockTextureBuilder {
+public final class GTBlockTextureBuilder {
 
     private Block fromBlock;
     private int fromMeta;
