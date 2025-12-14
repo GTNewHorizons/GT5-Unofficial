@@ -448,16 +448,16 @@ public class GTPostLoad {
     }
 
     public static void addCauldronRecipe() {
+        OrePrefixes prefixDustImpure = OrePrefixes.dustImpure;
+        OrePrefixes prefixDust = OrePrefixes.dust;
+
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dustImpure, Materials.Stone, 1))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1))
+            .itemInputs(GTOreDictUnificator.get(prefixDustImpure, Materials.Stone, 1))
+            .itemOutputs(GTOreDictUnificator.get(prefixDust, Materials.Stone, 1))
             .duration(0)
             .eut(0)
             .fake()
             .addTo(RecipeMaps.cauldronRecipe);
-
-        OrePrefixes prefixDustImpure = OrePrefixes.dustImpure;
-        OrePrefixes prefixDust = OrePrefixes.dust;
 
         for (Materials material : Materials.getAll()) {
             if (material == null) return;
