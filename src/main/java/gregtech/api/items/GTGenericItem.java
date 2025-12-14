@@ -44,9 +44,20 @@ public class GTGenericItem extends Item implements IProjectileItem {
         super();
         mName = "gt." + aUnlocalized;
         GTLanguageManager.addStringLocalization(mName + ".name", aEnglish);
-        if (GTUtility.isStringValid(aEnglishTooltip))
+        if (GTUtility.isStringValid(aEnglishTooltip)) {
             GTLanguageManager.addStringLocalization(mTooltip = mName + ".tooltip_main", aEnglishTooltip);
-        else mTooltip = null;
+        } else {
+            mTooltip = null;
+        }
+        setCreativeTab(GregTechAPI.TAB_GREGTECH);
+        GameRegistry.registerItem(this, mName, GregTech.ID);
+        BlockDispenser.dispenseBehaviorRegistry.putObject(this, new GT_Item_Dispense());
+    }
+
+    /// An alternate constructor that doesn't require a tooltip
+    public GTGenericItem(String unlocalized) {
+        mName = "gt." + unlocalized;
+        mTooltip = null;
         setCreativeTab(GregTechAPI.TAB_GREGTECH);
         GameRegistry.registerItem(this, mName, GregTech.ID);
         BlockDispenser.dispenseBehaviorRegistry.putObject(this, new GT_Item_Dispense());
@@ -92,9 +103,14 @@ public class GTGenericItem extends Item implements IProjectileItem {
         if (getMaxDamage() > 0 && !getHasSubtypes())
             aList.add((aStack.getMaxDamage() - getDamage(aStack)) + " / " + aStack.getMaxDamage());
         if (mTooltip != null) aList.add(GTLanguageManager.getTranslation(mTooltip));
-        if (GTModHandler.isElectricItem(aStack))
+        if (showElectricTier() && GTModHandler.isElectricItem(aStack)) {
             aList.add(StatCollector.translateToLocalFormatted("GT5U.tooltip.electric.tier", getTier(aStack)));
+        }
         addAdditionalToolTips(aList, aStack, aPlayer);
+    }
+
+    protected boolean showElectricTier() {
+        return true;
     }
 
     protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
