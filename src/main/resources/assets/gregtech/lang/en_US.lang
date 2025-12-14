@@ -704,6 +704,11 @@ GTPP.algae.tooltip.production=Production: %d
 GTPP.algae.tooltip.lifespan=Lifespan in days: %d
 GTPP.algae.tooltip.generation=Generation: %d
 
+#Cauldron Recipe Info
+GT5U.cauldron_recipe.supports=Supports any Impure Dust
+GT5U.cauldron_recipe.consumed=Consumed Water
+
+
 # Power Goggles
 GT5U.power_goggles.open_config_gui=Open Power Goggles Config
 GT5U.power_goggles.toggle_power_chart=Toggle Power Goggles Chart
@@ -1078,6 +1083,7 @@ gt.recipe.largeboilerfakefuels=Large Boiler
 gt.recipe.nanoforge=Nano Forge
 gt.recipe.pcbfactory=PCB Factory
 gt.recipe.ic2nuke=Nuclear Fission
+gt.recipe.cauldron=Cauldron
 gt.recipe.entropic-processing=Entropic Processing
 gt.recipe.isotope-decay=Isotope Decay
 gt.recipe.purificationplantclarifier=Clarifier

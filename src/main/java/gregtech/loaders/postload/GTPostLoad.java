@@ -39,6 +39,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.maps.CauldronFrontend;
 import gregtech.api.util.GTCLSCompat;
 import gregtech.api.util.GTForestryCompat;
 import gregtech.api.util.GTLog;
@@ -444,6 +445,32 @@ public class GTPostLoad {
             RecipeMaps.largeBoilerFakeFuels.getBackend()
                 .addSolidRecipe(GTModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1));
         }
+    }
+
+    public static void addCauldronRecipe() {
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dustImpure, Materials.Stone, 1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1))
+            .duration(0)
+            .eut(0)
+            .fake()
+            .addTo(RecipeMaps.cauldronRecipe);
+
+        OrePrefixes prefixDustImpure = OrePrefixes.dustImpure;
+        OrePrefixes prefixDust = OrePrefixes.dust;
+
+        for (Materials material : Materials.getAll()) {
+            if (material == null) return;
+
+            ItemStack input = GTOreDictUnificator.get(prefixDustImpure, material, 1);
+            ItemStack output = GTOreDictUnificator.get(prefixDust, material, 1);
+
+            if (input != null && output != null) {
+                CauldronFrontend.inputItems.add(input);
+                CauldronFrontend.outputItems.add(output);
+            }
+        }
+
     }
 
     public static void identifyAnySteam() {
