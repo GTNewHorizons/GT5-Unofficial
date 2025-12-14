@@ -2152,7 +2152,7 @@ public class OrePrefixes {
     }
 
     private void addAspect(TCAspects aspect, int amount) {
-        new TC_AspectStack(TCAspects.MACHINA, 1).addToAspectList(mAspects);
+        new TC_AspectStack(aspect, amount).addToAspectList(mAspects);
     }
 
     public @NotNull String getDefaultLocalName() {
@@ -2362,12 +2362,6 @@ public class OrePrefixes {
         pipeRestrictiveMedium.mSecondaryMaterial = new MaterialStack(Materials.Steel, ring.materialAmount * 3);
         pipeRestrictiveLarge.mSecondaryMaterial = new MaterialStack(Materials.Steel, ring.materialAmount * 4);
         pipeRestrictiveHuge.mSecondaryMaterial = new MaterialStack(Materials.Steel, ring.materialAmount * 5);
-        cableGt16.mSecondaryMaterial = new MaterialStack(Materials.Rubber, plate.materialAmount * 5);
-        cableGt12.mSecondaryMaterial = new MaterialStack(Materials.Rubber, plate.materialAmount * 4);
-        cableGt08.mSecondaryMaterial = new MaterialStack(Materials.Rubber, plate.materialAmount * 3);
-        cableGt04.mSecondaryMaterial = new MaterialStack(Materials.Rubber, plate.materialAmount * 2);
-        cableGt02.mSecondaryMaterial = new MaterialStack(Materials.Rubber, plate.materialAmount);
-        cableGt01.mSecondaryMaterial = new MaterialStack(Materials.Rubber, plate.materialAmount);
         bucket.mSecondaryMaterial = new MaterialStack(Materials.Iron, ingot.materialAmount * 3);
         bucketClay.mSecondaryMaterial = new MaterialStack(Materials.Clay, dust.materialAmount * 5);
         CELL_TYPES

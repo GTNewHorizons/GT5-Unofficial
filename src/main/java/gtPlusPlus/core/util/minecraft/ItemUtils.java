@@ -454,24 +454,6 @@ public class ItemUtils {
         return aDisplay;
     }
 
-    public static ItemStack[] cleanItemStackArray(ItemStack[] input) {
-        int aArraySize = input.length;
-        ItemStack[] aOutput = new ItemStack[aArraySize];
-        ArrayList<ItemStack> aCleanedItems = new ArrayList<>();
-        for (ItemStack checkStack : input) {
-            if (checkStack != null) {
-                aCleanedItems.add(checkStack);
-            }
-        }
-        for (int i = 0; i < aCleanedItems.size(); i++) {
-            ItemStack aMappedStack = aCleanedItems.get(i);
-            if (aMappedStack != null) {
-                aOutput[i] = aMappedStack;
-            }
-        }
-        return aOutput;
-    }
-
     public static ItemStack depleteStack(ItemStack aStack, int aAmount) {
         final int cap = aStack.stackSize;
         if (cap >= 1 && cap >= aAmount) {

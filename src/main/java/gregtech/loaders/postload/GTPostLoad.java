@@ -309,7 +309,7 @@ public class GTPostLoad {
         }
 
         MTEMassfabricator.uuaRecipe = GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(1))
+            .circuit(1)
             .fluidInputs(Materials.UUAmplifier.getFluid(MTEMassfabricator.sUUAperUUM))
             .fluidOutputs(Materials.UUMatter.getFluid(1L))
             .duration(MTEMassfabricator.sDurationMultiplier / MTEMassfabricator.sUUASpeedBonus)
