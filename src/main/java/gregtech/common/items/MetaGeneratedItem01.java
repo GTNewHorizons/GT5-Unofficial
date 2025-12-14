@@ -2226,7 +2226,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 addItem(
                     Conveyor_Module_UEV.ID,
                     "Conveyor Module (UEV)",
-                    "2,048 items 1/20 sec (as Cover)",
+                    "2,048 items every 1/20 sec (as Cover)",
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.ITER, 512L)))
@@ -2236,7 +2236,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 addItem(
                     Conveyor_Module_UIV.ID,
                     "Conveyor Module (UIV)",
-                    "4,096 items 1/20 sec (as Cover)",
+                    "4,096 items every 1/20 sec (as Cover)",
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.ITER, 512L)))
