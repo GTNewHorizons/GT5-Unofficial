@@ -20,12 +20,16 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import bartworks.system.material.Werkstoff;
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.TCustomHashMap;
 import gnu.trove.strategy.HashingStrategy;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SubTag;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gtneioreplugin.plugin.block.BlockDimensionDisplay;
 import gtneioreplugin.util.GT5OreLayerHelper;
 import gtneioreplugin.util.GT5OreSmallHelper;
@@ -207,7 +211,7 @@ public class EyeOfHarmonyRecipe {
         return switch (key) {
             case "Ne" -> GTOreDictUnificator.get(OrePrefixes.dust, Materials.Netherrack, 1);
             case "ED", "VA", "EA" -> GTOreDictUnificator.get(OrePrefixes.dust, Materials.Endstone, 1);
-            case "Mo" -> getModItem(NewHorizonsCoreMod.ID, "item.MoonStoneDust", 1, placeholder);
+            case "Mo", "Ra" -> getModItem(NewHorizonsCoreMod.ID, "item.MoonStoneDust", 1, placeholder);
             case "De" -> getModItem(NewHorizonsCoreMod.ID, "item.DeimosStoneDust", 1, placeholder);
             case "Ma" -> getModItem(NewHorizonsCoreMod.ID, "item.MarsStoneDust", 1, placeholder);
             case "Ph" -> getModItem(NewHorizonsCoreMod.ID, "item.PhobosStoneDust", 1, placeholder);
@@ -312,9 +316,10 @@ public class EyeOfHarmonyRecipe {
     private static final double SECONDARY_MULTIPLIER = (1.0 / 9.0); // Thermal centrifuge byproduct chance.
     private static final double TERTIARY_MULTIPLIER = (0.1); // Macerating thermal centrifuged byproduct chance.
     private static final double QUATERNARY_MULTIPLIER = (0.7); // Mercury/chem bath processing chance.
+    private static final double QUATERNARY99_MULTIPLIER = (0.99); // Mercury/chem bath processing chance.
+    private static final double ELECTROMAGNETIC_MULTIPLIER = (0.4 / 4.0 + 0.2 / 9.0); // MagneticSep. processing chance.
 
-    private static final double[] ORE_MULTIPLIER = { PRIMARY_MULTIPLIER, SECONDARY_MULTIPLIER, TERTIARY_MULTIPLIER,
-        QUATERNARY_MULTIPLIER };
+    private static final double[] ORE_MULTIPLIER = { PRIMARY_MULTIPLIER, SECONDARY_MULTIPLIER, TERTIARY_MULTIPLIER };
 
     public static class HashMapHelper extends HashMap<Materials, Double> {
 
@@ -338,11 +343,64 @@ public class EyeOfHarmonyRecipe {
         if (material == null) return;
         outputMap.add(material.mDirectSmelting, (material.mOreMultiplier * 2) * mainMultiplier * probability);
 
+        if (material.contains(SubTag.ELECTROMAGNETIC_SEPERATION_GOLD))
+            outputMap.add(Materials.Gold, mainMultiplier * (ELECTROMAGNETIC_MULTIPLIER * 2) * probability);
+        if (material.contains(SubTag.ELECTROMAGNETIC_SEPERATION_IRON))
+            outputMap.add(Materials.Iron, mainMultiplier * (ELECTROMAGNETIC_MULTIPLIER * 2) * probability);
+        if (material.contains(SubTag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM))
+            outputMap.add(Materials.Neodymium, mainMultiplier * (ELECTROMAGNETIC_MULTIPLIER * 2) * probability);
+
+        if (material.mOreByProducts.size() == 0) {
+            if (material.contains(SubTag.WASHING_MERCURY_99_PERCENT))
+                outputMap.add(material.mDirectSmelting, mainMultiplier * (QUATERNARY99_MULTIPLIER * 2) * probability);
+            else if (material.contains(SubTag.WASHING_MERCURY))
+                outputMap.add(material.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+            else if (material.contains(SubTag.WASHING_SODIUMPERSULFATE))
+                outputMap.add(material.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+        }
+
+        if (material.contains(SubTag.WASHING_MERCURY_99_PERCENT))
+            outputMap.add(material.mDirectSmelting, mainMultiplier * (QUATERNARY99_MULTIPLIER * 2) * probability);
+        else if (material.contains(SubTag.WASHING_MERCURY))
+            outputMap.add(material.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+        else if (material.contains(SubTag.WASHING_SODIUMPERSULFATE))
+            outputMap.add(material.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+
         int index = 0;
         for (Materials byProductMaterial : material.mOreByProducts) {
-            outputMap
-                .add(byProductMaterial.mDirectSmelting, mainMultiplier * (ORE_MULTIPLIER[index++] * 2) * probability);
+            if (index < 3) outputMap
+                .add(byProductMaterial.mDirectSmelting, mainMultiplier * (ORE_MULTIPLIER[index] * 2) * probability);
+            // For Materials that index is > 3, normally they will not be used (unless using Chem bath).
+
+            if (byProductMaterial.mMaterialInto == material.mMaterialInto) continue;
+
+            // Will never duplicate since mOreByProducts does not support duplicate.
+            if (byProductMaterial.contains(SubTag.WASHING_MERCURY_99_PERCENT)) outputMap
+                .add(byProductMaterial.mDirectSmelting, mainMultiplier * (QUATERNARY99_MULTIPLIER * 2) * probability);
+            else if (byProductMaterial.contains(SubTag.WASHING_MERCURY)) outputMap
+                .add(byProductMaterial.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+            else if (byProductMaterial.contains(SubTag.WASHING_SODIUMPERSULFATE)) outputMap
+                .add(byProductMaterial.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+            else if (index >= 3) outputMap
+                .add(byProductMaterial.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+            // EOH is better than other ore processing so it can get products that normally cannot get.
+
+            index++;
         }
+
+        for (int i = index; i < 3; i++) {
+            Materials byProductMaterial = GTUtility
+                .selectItemInList(i, material.mMacerateInto, material.mOreByProducts);
+            outputMap.add(byProductMaterial.mDirectSmelting, mainMultiplier * (ORE_MULTIPLIER[i] * 2) * probability);
+            // Since it's duplicate, do not check if it can Mercury/chem bath.
+        }
+    }
+
+    public static void processHelperIfPossible(HashMapHelper outputMap, IOreMaterial material, double mainMultiplier,
+        double probability) {
+        if (material instanceof Materials gtMat) processHelper(outputMap, gtMat, mainMultiplier, probability);
+        else if (material instanceof Werkstoff bwMat)
+            processHelper(outputMap, bwMat.getBridgeMaterial(), mainMultiplier, probability);
     }
 
     private static ArrayList<Pair<Materials, Long>> processDimension(
@@ -354,15 +412,11 @@ public class EyeOfHarmonyRecipe {
 
         if (normalOreDimWrapper != null) {
             normalOreDimWrapper.oreVeinToProbabilityInDimension.forEach((veinInfo, probability) -> {
-                if (veinInfo.mPrimaryVeinMaterial instanceof Materials gtMat)
-                    processHelper(outputMap, gtMat, mainMultiplier, probability);
-                if (veinInfo.mSecondaryMaterial instanceof Materials gtMat)
-                    processHelper(outputMap, gtMat, mainMultiplier, probability);
+                processHelperIfPossible(outputMap, veinInfo.mPrimaryVeinMaterial, mainMultiplier, probability);
+                processHelperIfPossible(outputMap, veinInfo.mSecondaryMaterial, mainMultiplier, probability);
                 // 8.0 to replicate void miner getDropsVanillaVeins method yields.
-                if (veinInfo.mBetweenMaterial instanceof Materials gtMat)
-                    processHelper(outputMap, gtMat, mainMultiplier / 8.0, probability);
-                if (veinInfo.mSporadicMaterial instanceof Materials gtMat)
-                    processHelper(outputMap, gtMat, mainMultiplier / 8.0, probability);
+                processHelperIfPossible(outputMap, veinInfo.mBetweenMaterial, mainMultiplier / 8.0, probability);
+                processHelperIfPossible(outputMap, veinInfo.mSporadicMaterial, mainMultiplier / 8.0, probability);
             });
         }
 
@@ -370,8 +424,7 @@ public class EyeOfHarmonyRecipe {
         if (smallOreDimWrapper != null) {
             smallOreDimWrapper.oreVeinProbabilities.forEach(
                 (veinInfo, probability) -> {
-                    if (veinInfo.material instanceof Materials gtMat)
-                        processHelper(outputMap, gtMat, mainMultiplier, probability);
+                    processHelperIfPossible(outputMap, veinInfo.material, mainMultiplier, probability);
                 });
         }
 
