@@ -34,7 +34,7 @@ import gregtech.common.render.GTTextureBuilder;
  *     TextureFactory.builder().addIcon(GRANITE_RED_STONE).extFacing().build();
  * }
  * </pre>
- * 
+ *
  * <br>
  * <p>
  * The {@link #blockBuilder()} is used to copy the texture of another block onto a new {@link ITexture} instance. <br>
@@ -51,13 +51,11 @@ public final class TextureFactory {
     }
 
     /**
-     * Multi-layered {@link ITexture} factory
-     *
-     * @param texture The layer of {@link ITexture} from bottom to top
-     * @return The instance of an {@link ITexture} implementation
+     * @Deprecated This method is a no-op. There's no reason to call this.
      */
+    @Deprecated
     public static ITexture of(final ITexture texture) {
-        return new GTMultiTextureRender(texture);
+        return texture;
     }
 
     /**
