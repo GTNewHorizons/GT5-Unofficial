@@ -30,14 +30,17 @@ import gregtech.api.render.TextureFactory;
 
 public class MTEAcidGenerator extends MTEBasicGenerator {
 
-    private static final int[] EFFICIENCIES = { 97, 94, 91, 88, 82 };
+    private final int efficiency;
 
-    public MTEAcidGenerator(int aID, String aName, String aNameRegional, int aTier, ITexture... aTextures) {
+    public MTEAcidGenerator(int aID, String aName, String aNameRegional, int aTier, int efficiency,
+        ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, GTValues.emptyStringArray, aTextures);
+        this.efficiency = efficiency;
     }
 
-    public MTEAcidGenerator(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public MTEAcidGenerator(String aName, int aTier, int efficiency, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
+        this.efficiency = efficiency;
     }
 
     @Override
@@ -52,15 +55,12 @@ public class MTEAcidGenerator extends MTEBasicGenerator {
 
     @Override
     public int getEfficiency() {
-        if (this.mTier >= 1 && this.mTier <= EFFICIENCIES.length) {
-            return EFFICIENCIES[this.mTier - 1];
-        }
-        return 100 - 3 * this.mTier;
+        return efficiency;
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return new MTEAcidGenerator(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+        return new MTEAcidGenerator(this.mName, this.mTier, this.efficiency, this.mDescriptionArray, this.mTextures);
     }
 
     @Override
