@@ -1321,11 +1321,22 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> cauldronRecipe = RecipeMapBuilder
         .of("gt.recipe.cauldron", RecipeMapBackend::new)
-        .maxIO(1, 1, 0, 0)
-        .minInputs(1, 0)
+        .maxIO(1, 1, 1, 0)
+        .minInputs(1, 1)
         .progressBar(GTUITextures.PROGRESSBAR_ARROW)
+        .neiRecipeBackgroundOffset(7, 0)
+        .neiRecipeBackgroundSize(165, 60)
+        .progressBarPos(83, 24)
+        .logoPos(150, 38)
         .frontend(CauldronFrontend::new)
-        .neiHandlerInfo(builder -> builder.setDisplayStack(new ItemStack(Items.cauldron)))
+        .neiHandlerInfo(builder -> {
+            builder.setWidth(170);
+            builder.setHeight(60);
+            builder.setDisplayStack(new ItemStack(Items.cauldron));
+            builder.setShowFavoritesButton(false);
+            builder.setShowOverlayButton(false);
+            return builder;
+        })
         .build();
 
 }

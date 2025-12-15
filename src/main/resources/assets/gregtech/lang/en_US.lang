@@ -704,11 +704,6 @@ GTPP.algae.tooltip.production=Production: %d
 GTPP.algae.tooltip.lifespan=Lifespan in days: %d
 GTPP.algae.tooltip.generation=Generation: %d
 
-#Cauldron Recipe Info
-GT5U.cauldron_recipe.supports=Supports any Impure Dust
-GT5U.cauldron_recipe.consumed=Consumed Water
-
-
 # Power Goggles
 GT5U.power_goggles.open_config_gui=Open Power Goggles Config
 GT5U.power_goggles.toggle_power_chart=Toggle Power Goggles Chart
