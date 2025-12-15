@@ -30,7 +30,7 @@ import gregtech.api.render.TextureFactory;
 
 public class MTEAcidGenerator extends MTEBasicGenerator {
 
-    private static final int [] EFFICIENCIES={97,94,91,88,82};
+    private static final int[] EFFICIENCIES = { 97, 94, 91, 88, 82 };
 
     public MTEAcidGenerator(int aID, String aName, String aNameRegional, int aTier, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, GTValues.emptyStringArray, aTextures);
@@ -52,8 +52,8 @@ public class MTEAcidGenerator extends MTEBasicGenerator {
 
     @Override
     public int getEfficiency() {
-        if(this.mTier>=1&&this.mTier<= EFFICIENCIES.length){
-            return EFFICIENCIES[this.mTier-1];
+        if (this.mTier >= 1 && this.mTier <= EFFICIENCIES.length) {
+            return EFFICIENCIES[this.mTier - 1];
         }
         return 100 - 3 * this.mTier;
     }
@@ -65,9 +65,7 @@ public class MTEAcidGenerator extends MTEBasicGenerator {
 
     @Override
     public ITexture[] getFront(byte aColor) {
-        return new ITexture[] { super.getFront(aColor)[0],
-            TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL),
-            Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier + 1] };
+        return new ITexture[] { super.getFront(aColor)[0], Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier + 1] };
     }
 
     @Override
@@ -85,7 +83,6 @@ public class MTEAcidGenerator extends MTEBasicGenerator {
     @Override
     public ITexture[] getTop(byte aColor) {
         return new ITexture[] { super.getTop(aColor)[0],
-            TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL),
             TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/chemical_reactor/OVERLAY_FRONT")),
             TextureFactory.builder()
                 .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/chemical_reactor/OVERLAY_FRONT_GLOW"))
@@ -102,7 +99,6 @@ public class MTEAcidGenerator extends MTEBasicGenerator {
     @Override
     public ITexture[] getFrontActive(byte aColor) {
         return new ITexture[] { super.getFrontActive(aColor)[0],
-            TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL),
             Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier + 1] };
     }
 
@@ -121,7 +117,6 @@ public class MTEAcidGenerator extends MTEBasicGenerator {
     @Override
     public ITexture[] getTopActive(byte aColor) {
         return new ITexture[] { super.getTopActive(aColor)[0],
-            TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL),
             TextureFactory
                 .of(new Textures.BlockIcons.CustomIcon("basicmachines/chemical_reactor/OVERLAY_FRONT_ACTIVE")),
             TextureFactory.builder()

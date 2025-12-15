@@ -76,9 +76,9 @@ public class CraftingRecipes implements Runnable {
         };
 
         ItemStack[] bats = { ItemList.Battery_Hull_LV.get(1L), ItemList.Battery_Hull_MV.get(1L),
-            ItemList.Battery_Hull_HV.get(1L) };
+            ItemList.Battery_Hull_HV.get(1L), ItemList.BatteryHull_EV.get(1L) };
         ItemStack[] chreac = { ItemList.Machine_MV_ChemicalReactor.get(1L), ItemList.Machine_HV_ChemicalReactor.get(1L),
-            ItemList.Machine_EV_ChemicalReactor.get(1L) };
+            ItemList.Machine_EV_ChemicalReactor.get(1L), ItemList.Machine_IV_ChemicalReactor.get(1L) };
 
         GTModHandler.addCraftingRecipe(
             new MTELESU(LESU.ID, "LESU", "L.E.S.U.").getStackForm(1L),
@@ -143,7 +143,7 @@ public class CraftingRecipes implements Runnable {
             new Object[] { "SWF", "Sf ", "Ss ", 'S', "stickWood", 'W', new ItemStack(Blocks.wool, 1, Short.MAX_VALUE),
                 'F', new ItemStack(Items.string), });
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 4; i++) {
             Materials cable = cables[i + 2];
             ItemStack machinehull = ItemList.MACHINE_HULLS[i + 2].get(1L);
             GTModHandler.addCraftingRecipe(
