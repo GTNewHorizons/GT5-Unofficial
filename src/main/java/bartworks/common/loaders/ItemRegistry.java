@@ -472,7 +472,7 @@ public class ItemRegistry {
             "acidgenerator" + GTValues.VN[5],
             StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GTValues.VN[5],
             5,
-            67).getStackForm(1);
+            50).getStackForm(1);
         ItemRegistry.acidGensLV = new MTEAcidGenerator(
             AcidGeneratorLV.ID,
             "acidgenerator" + GTValues.VN[1],
