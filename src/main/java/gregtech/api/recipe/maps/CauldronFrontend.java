@@ -23,8 +23,6 @@ import gregtech.nei.GTNEIDefaultHandler;
 @MethodsReturnNonnullByDefault
 public class CauldronFrontend extends RecipeMapFrontend {
 
-    private final String consumed = StatCollector.translateToLocal("GT5U.nei.cauldron.consumed");
-
     public CauldronFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
         NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(uiPropertiesBuilder, neiPropertiesBuilder);
@@ -54,7 +52,7 @@ public class CauldronFrontend extends RecipeMapFrontend {
         GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
 
         if (stack.getItem() instanceof ItemFluidDisplay) {
-            currentTip.add(EnumChatFormatting.RED + consumed);
+            currentTip.add(EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.nei.cauldron.consumed"));
         }
 
         return super.handleNEIItemTooltip(stack, currentTip, neiCachedRecipe);
