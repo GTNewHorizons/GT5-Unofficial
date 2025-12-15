@@ -80,7 +80,7 @@ import gregtech.common.blocks.BlockCasings13;
 import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.gui.modularui.multiblock.MTENanoForgeGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
-import gregtech.common.tileentities.render.TileEntityNanoForgeRenderer;
+import gregtech.common.tileentities.render.RenderingTileEntityNanoForge;
 import tectech.thing.gui.TecTechUITextures;
 
 public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
@@ -500,7 +500,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                     }
 
                     if (renderActive) {
-                        TileEntityNanoForgeRenderer tile = getRenderer();
+                        RenderingTileEntityNanoForge tile = getRenderer();
                         ItemData data = GTOreDictUnificator.getAssociation(outputNanite);
                         if (data != null) {
                             Materials mat = data.mMaterial.mMaterial;
@@ -571,7 +571,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
             // Updates every 10 sec
             if (mUpdate <= -150) mUpdate = 50;
             if (renderActive && !renderDisabled) {
-                TileEntityNanoForgeRenderer tile = getRenderer();
+                RenderingTileEntityNanoForge tile = getRenderer();
                 if (tile != null) {
                     // Manually calculating deltaT for server - annoying minecraft
                     long systemTime = System.currentTimeMillis();
@@ -981,13 +981,13 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
         return true;
     }
 
-    private TileEntityNanoForgeRenderer getRenderer() {
+    private RenderingTileEntityNanoForge getRenderer() {
         ChunkCoordinates renderPos = getRenderPos();
         TileEntity tile = this.getBaseMetaTileEntity()
             .getWorld()
             .getTileEntity(renderPos.posX, renderPos.posY, renderPos.posZ);
 
-        if (tile instanceof TileEntityNanoForgeRenderer nanoForgeTile) {
+        if (tile instanceof RenderingTileEntityNanoForge nanoForgeTile) {
             return nanoForgeTile;
         }
         return null;
