@@ -1326,7 +1326,6 @@ public final class RecipeMaps {
         .progressBar(GTUITextures.PROGRESSBAR_ARROW)
         .neiRecipeBackgroundOffset(7, 0)
         .neiRecipeBackgroundSize(165, 60)
-        // .progressBarPos(83, 24)
         .logoPos(150, 38)
         .frontend(CauldronFrontend::new)
         .neiHandlerInfo(builder -> {
