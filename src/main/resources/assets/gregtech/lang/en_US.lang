@@ -705,11 +705,6 @@ GTPP.algae.tooltip.production=Production: %d
 GTPP.algae.tooltip.lifespan=Lifespan in days: %d
 GTPP.algae.tooltip.generation=Generation: %d
 
-#Cauldron Recipe Info
-GT5U.cauldron_recipe.supports=Supports any Impure Dust
-GT5U.cauldron_recipe.consumed=Consumed Water
-
-
 # Power Goggles
 GT5U.power_goggles.open_config_gui=Open Power Goggles Config
 GT5U.power_goggles.toggle_power_chart=Toggle Power Goggles Chart
@@ -1869,6 +1864,7 @@ GT5U.nei.nuclear.breeder.neutron_reflecting=Neutron reflecting Breeder
 GT5U.nei.nuclear.breeder.heat_neutral=Heat neutral Breeder
 GT5U.nei.nuclear.breeder.reactor_hull_heat=Every %d reactor hull heat\nincrease speed by %d00%%
 GT5U.nei.nuclear.breeder.required_pulse=Required pulses: %d
+GT5U.nei.cauldron.consumed=Consumed per operation
 
 
 GT5U.config.colormodulation=Color Modulator
