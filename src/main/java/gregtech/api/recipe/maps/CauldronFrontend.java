@@ -1,26 +1,23 @@
 package gregtech.api.recipe.maps;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import gregtech.common.items.ItemFluidDisplay;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 
-import gregtech.api.enums.Materials;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
+import gregtech.common.items.ItemFluidDisplay;
 import gregtech.nei.GTNEIDefaultHandler;
-import net.minecraft.util.StatCollector;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -35,7 +32,9 @@ public class CauldronFrontend extends RecipeMapFrontend {
 
     @Override
     public List<Pos2d> getItemInputPositions(int itemInputCount) {
-        return Arrays.asList(UIHelper.getItemInputPositions(2).get(0));
+        return Arrays.asList(
+            UIHelper.getItemInputPositions(2)
+                .get(0));
     }
 
     @Override
@@ -45,9 +44,10 @@ public class CauldronFrontend extends RecipeMapFrontend {
 
     @Override
     public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
-        return Arrays.asList(UIHelper.getItemInputPositions(2).get(1));
+        return Arrays.asList(
+            UIHelper.getItemInputPositions(2)
+                .get(1));
     }
-
 
     @Override
     public List<String> handleNEIItemTooltip(ItemStack stack, List<String> currentTip,
