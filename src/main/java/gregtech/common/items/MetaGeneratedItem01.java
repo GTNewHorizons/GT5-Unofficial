@@ -21,6 +21,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SCREEN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SCREEN_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SHUTTER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_VALVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_WIRELESS_CONTROLLER;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_8V;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_EV;
@@ -145,9 +146,8 @@ import static gregtech.common.items.IDMetaItem01.Cover_FluidLimiter;
 import static gregtech.common.items.IDMetaItem01.Cover_ItemDetector;
 import static gregtech.common.items.IDMetaItem01.Cover_NeedsMaintenance;
 import static gregtech.common.items.IDMetaItem01.Cover_PlayerDetector;
-import static gregtech.common.items.IDMetaItem01.Cover_RedstoneReceiverExternal;
-import static gregtech.common.items.IDMetaItem01.Cover_RedstoneReceiverInternal;
-import static gregtech.common.items.IDMetaItem01.Cover_RedstoneTransmitterExternal;
+import static gregtech.common.items.IDMetaItem01.Cover_RedstoneReceiver;
+import static gregtech.common.items.IDMetaItem01.Cover_RedstoneTransmitter;
 import static gregtech.common.items.IDMetaItem01.Cover_RedstoneTransmitterInternal;
 import static gregtech.common.items.IDMetaItem01.Cover_Screen;
 import static gregtech.common.items.IDMetaItem01.Cover_Shutter;
@@ -161,6 +161,7 @@ import static gregtech.common.items.IDMetaItem01.Cover_SolarPanel_LuV;
 import static gregtech.common.items.IDMetaItem01.Cover_SolarPanel_MV;
 import static gregtech.common.items.IDMetaItem01.Cover_SolarPanel_UV;
 import static gregtech.common.items.IDMetaItem01.Cover_SolarPanel_ZPM;
+import static gregtech.common.items.IDMetaItem01.Cover_WirelessController;
 import static gregtech.common.items.IDMetaItem01.Cover_Wireless_Energy_LV;
 import static gregtech.common.items.IDMetaItem01.Duct_Tape;
 import static gregtech.common.items.IDMetaItem01.Electric_Motor_EV;
@@ -311,6 +312,7 @@ import static gregtech.common.items.IDMetaItem01.Schematic_2by2;
 import static gregtech.common.items.IDMetaItem01.Schematic_3by3;
 import static gregtech.common.items.IDMetaItem01.Schematic_Crafting;
 import static gregtech.common.items.IDMetaItem01.Schematic_Dust;
+import static gregtech.common.items.IDMetaItem01.Schematic_Dust_Small;
 import static gregtech.common.items.IDMetaItem01.Sensor_EV;
 import static gregtech.common.items.IDMetaItem01.Sensor_HV;
 import static gregtech.common.items.IDMetaItem01.Sensor_IV;
@@ -524,13 +526,13 @@ import gregtech.common.covers.CoverNeedMaintainance;
 import gregtech.common.covers.CoverPlayerDetector;
 import gregtech.common.covers.CoverPump;
 import gregtech.common.covers.CoverRedstoneReceiverExternal;
-import gregtech.common.covers.CoverRedstoneReceiverInternal;
 import gregtech.common.covers.CoverRedstoneTransmitterExternal;
 import gregtech.common.covers.CoverRedstoneTransmitterInternal;
 import gregtech.common.covers.CoverShutter;
 import gregtech.common.covers.CoverSolarPanel;
 import gregtech.common.covers.CoverSteamRegulator;
 import gregtech.common.covers.CoverSteamValve;
+import gregtech.common.covers.CoverWirelessController;
 import gregtech.common.items.behaviors.BehaviourCoverTool;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
 import gregtech.common.items.behaviors.BehaviourDataStick;
@@ -1275,7 +1277,14 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 new ItemData(Materials.Steel, 7257600L),
                 new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FABRICO, 1L)));
-
+        ItemList.Schematic_Dust_Small.set(
+            addItem(
+                Schematic_Dust_Small.ID,
+                "Schematic (Small Dusts)",
+                "Splits Dusts into 4 (use in Packager)",
+                new ItemData(Materials.Steel, 7257600L),
+                new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 1L),
+                new TCAspects.TC_AspectStack(TCAspects.FABRICO, 1L)));
         ItemList.Battery_Hull_LV.set(
             addItem(
                 Battery_Hull_LV.ID,
@@ -2142,7 +2151,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Conveyor_Module_LV.ID,
                 "Conveyor Module (LV)",
-                "1 stack every 20 secs (as Cover)",
+                "16 items every 5 secs (as Cover)",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 1L)));
@@ -2150,7 +2159,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Conveyor_Module_MV.ID,
                 "Conveyor Module (MV)",
-                "1 stack every 5 secs (as Cover)",
+                "64 items every 5 secs (as Cover)",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 2L)));
@@ -2158,7 +2167,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Conveyor_Module_HV.ID,
                 "Conveyor Module (HV)",
-                "1 stack every 1 sec (as Cover)",
+                "64 items every 1 sec (as Cover)",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 4L)));
@@ -2166,7 +2175,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Conveyor_Module_EV.ID,
                 "Conveyor Module (EV)",
-                "1 stack every 1/5 sec (as Cover)",
+                "64 items every 1/5 sec (as Cover)",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 8L)));
@@ -2174,7 +2183,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Conveyor_Module_IV.ID,
                 "Conveyor Module (IV)",
-                "1 stack every 1/20 sec (as Cover)",
+                "64 items every 1/20 sec (as Cover)",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 16L)));
@@ -2182,7 +2191,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Conveyor_Module_LuV.ID,
                 "Conveyor Module (LuV)",
-                "2 stacks every 1/20 sec (as Cover)",
+                "128 items every 1/20 sec (as Cover)",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 32L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 32L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 32L)));
@@ -2190,7 +2199,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Conveyor_Module_ZPM.ID,
                 "Conveyor Module (ZPM)",
-                "4 stacks every 1/20 sec (as Cover)",
+                "256 items every 1/20 sec (as Cover)",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 64L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 64L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 64L)));
@@ -2198,7 +2207,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Conveyor_Module_UV.ID,
                 "Conveyor Module (UV)",
-                "8 stacks every 1/20 sec (as Cover)",
+                "512 items every 1/20 sec (as Cover)",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 128L)));
@@ -2207,7 +2216,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 addItem(
                     Conveyor_Module_UHV.ID,
                     "Conveyor Module (UHV)",
-                    "16 stacks every 1/20 sec (as Cover)",
+                    "1024 items every 1/20 sec (as Cover)",
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
                     new TCAspects.TC_AspectStack(TCAspects.ITER, 256L)))
@@ -2217,7 +2226,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 addItem(
                     Conveyor_Module_UEV.ID,
                     "Conveyor Module (UEV)",
-                    "32 stacks every 1/20 sec (as Cover)",
+                    "2,048 items every 1/20 sec (as Cover)",
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.ITER, 512L)))
@@ -2227,7 +2236,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 addItem(
                     Conveyor_Module_UIV.ID,
                     "Conveyor Module (UIV)",
-                    "64 stacks every 1/20 sec (as Cover)",
+                    "4,096 items every 1/20 sec (as Cover)",
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.ITER, 512L)))
@@ -2236,7 +2245,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Conveyor_Module_UMV.ID,
                 "Conveyor Module (UMV)",
-                "128 stacks every 1/20 sec (as Cover)",
+                "8,192 items every 1/20 sec (as Cover)",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 512L)));
@@ -2244,7 +2253,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Conveyor_Module_UXV.ID,
                 "Conveyor Module (UXV)",
-                "256 stacks every 1/20 sec (as Cover)",
+                "16,384 items every 1/20 sec (as Cover)",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 512L)));
@@ -2252,7 +2261,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Conveyor_Module_MAX.ID,
                 "Conveyor Module (MAX)",
-                "512 stacks every 1/20 sec (as Cover)",
+                "32,768 items every 1/20 sec (as Cover)",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 512L)));
@@ -3179,10 +3188,10 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 8L)));
 
-        ItemList.Cover_RedstoneTransmitterExternal.set(
+        ItemList.Cover_RedstoneTransmitter.set(
             addItem(
-                Cover_RedstoneTransmitterExternal.ID,
-                "Redstone Transmitter (External)",
+                Cover_RedstoneTransmitter.ID,
+                "Redstone Transmitter",
                 "Transfers Redstone signals wireless",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L)));
@@ -3190,21 +3199,21 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Cover_RedstoneTransmitterInternal.ID,
                 "Redstone Transmitter (Internal)",
+                "Transfers Redstone signals wireless/n §cDEPRECATED! This will be removed in the next major update.",
+                new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
+                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L)));
+        ItemList.Cover_RedstoneReceiver.set(
+            addItem(
+                Cover_RedstoneReceiver.ID,
+                "Redstone Receiver",
                 "Transfers Redstone signals wireless",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L)));
-        ItemList.Cover_RedstoneReceiverExternal.set(
+        ItemList.Cover_WirelessController.set(
             addItem(
-                Cover_RedstoneReceiverExternal.ID,
-                "Redstone Receiver (External)",
-                "Transfers Redstone signals wireless",
-                new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L)));
-        ItemList.Cover_RedstoneReceiverInternal.set(
-            addItem(
-                Cover_RedstoneReceiverInternal.ID,
-                "Redstone Receiver (Internal)",
-                "Transfers Redstone signals wireless",
+                Cover_WirelessController.ID,
+                "Wireless Machine Controller Cover",
+                "Turns Machines ON/OFF wirelessly/n Can only connect with advanced wireless covers",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L)));
 
@@ -3923,59 +3932,59 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         CoverRegistry.registerCover(
             ItemList.Conveyor_Module_LV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-            context -> new CoverConveyor(context, 400, 1, TextureFactory.of(OVERLAY_CONVEYOR)));
+            context -> new CoverConveyor(context, 100, 1, 16, TextureFactory.of(OVERLAY_CONVEYOR)));
         CoverRegistry.registerCover(
             ItemList.Conveyor_Module_MV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-            context -> new CoverConveyor(context, 100, 1, TextureFactory.of(OVERLAY_CONVEYOR)));
+            context -> new CoverConveyor(context, 100, 1, 64, TextureFactory.of(OVERLAY_CONVEYOR)));
         CoverRegistry.registerCover(
             ItemList.Conveyor_Module_HV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[3][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-            context -> new CoverConveyor(context, 20, 1, TextureFactory.of(OVERLAY_CONVEYOR)));
+            context -> new CoverConveyor(context, 20, 1, 64, TextureFactory.of(OVERLAY_CONVEYOR)));
         CoverRegistry.registerCover(
             ItemList.Conveyor_Module_EV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[4][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-            context -> new CoverConveyor(context, 4, 1, TextureFactory.of(OVERLAY_CONVEYOR)));
+            context -> new CoverConveyor(context, 4, 1, 64, TextureFactory.of(OVERLAY_CONVEYOR)));
         CoverRegistry.registerCover(
             ItemList.Conveyor_Module_IV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[5][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-            context -> new CoverConveyor(context, 1, 1, TextureFactory.of(OVERLAY_CONVEYOR)));
+            context -> new CoverConveyor(context, 1, 1, 64, TextureFactory.of(OVERLAY_CONVEYOR)));
         CoverRegistry.registerCover(
             ItemList.Conveyor_Module_LuV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[6][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-            context -> new CoverConveyor(context, 1, 2, TextureFactory.of(OVERLAY_CONVEYOR)));
+            context -> new CoverConveyor(context, 1, 2, 64, TextureFactory.of(OVERLAY_CONVEYOR)));
         CoverRegistry.registerCover(
             ItemList.Conveyor_Module_ZPM.get(1L),
             TextureFactory.of(MACHINE_CASINGS[7][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-            context -> new CoverConveyor(context, 1, 4, TextureFactory.of(OVERLAY_CONVEYOR)));
+            context -> new CoverConveyor(context, 1, 4, 64, TextureFactory.of(OVERLAY_CONVEYOR)));
         CoverRegistry.registerCover(
             ItemList.Conveyor_Module_UV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[8][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-            context -> new CoverConveyor(context, 1, 8, TextureFactory.of(OVERLAY_CONVEYOR)));
+            context -> new CoverConveyor(context, 1, 8, 64, TextureFactory.of(OVERLAY_CONVEYOR)));
         CoverRegistry.registerCover(
             ItemList.Conveyor_Module_UHV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[9][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-            context -> new CoverConveyor(context, 1, 16, TextureFactory.of(OVERLAY_CONVEYOR)));
+            context -> new CoverConveyor(context, 1, 16, 64, TextureFactory.of(OVERLAY_CONVEYOR)));
         CoverRegistry.registerCover(
             ItemList.Conveyor_Module_UEV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[10][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-            context -> new CoverConveyor(context, 1, 32, TextureFactory.of(OVERLAY_CONVEYOR)));
+            context -> new CoverConveyor(context, 1, 32, 64, TextureFactory.of(OVERLAY_CONVEYOR)));
         CoverRegistry.registerCover(
             ItemList.Conveyor_Module_UIV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[11][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-            context -> new CoverConveyor(context, 1, 64, TextureFactory.of(OVERLAY_CONVEYOR)));
+            context -> new CoverConveyor(context, 1, 64, 64, TextureFactory.of(OVERLAY_CONVEYOR)));
         CoverRegistry.registerCover(
             ItemList.Conveyor_Module_UMV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[12][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-            context -> new CoverConveyor(context, 1, 128, TextureFactory.of(OVERLAY_CONVEYOR)));
+            context -> new CoverConveyor(context, 1, 128, 64, TextureFactory.of(OVERLAY_CONVEYOR)));
         CoverRegistry.registerCover(
             ItemList.Conveyor_Module_UXV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[13][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-            context -> new CoverConveyor(context, 1, 256, TextureFactory.of(OVERLAY_CONVEYOR)));
+            context -> new CoverConveyor(context, 1, 256, 64, TextureFactory.of(OVERLAY_CONVEYOR)));
         CoverRegistry.registerCover(
             ItemList.Conveyor_Module_MAX.get(1L),
             TextureFactory.of(MACHINE_CASINGS[14][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-            context -> new CoverConveyor(context, 1, 512, TextureFactory.of(OVERLAY_CONVEYOR)));
+            context -> new CoverConveyor(context, 1, 512, 64, TextureFactory.of(OVERLAY_CONVEYOR)));
 
         CoverRegistry.registerCover(
             ItemList.Robot_Arm_LV.get(1L),
@@ -4121,7 +4130,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
 
         CoverRegistry.registerCover(
-            ItemList.Cover_RedstoneTransmitterExternal.get(1L),
+            ItemList.Cover_RedstoneTransmitter.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_REDSTONE_TRANSMITTER)),
             context -> new CoverRedstoneTransmitterExternal(context, TextureFactory.of(OVERLAY_REDSTONE_TRANSMITTER)),
             CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
@@ -4131,14 +4140,14 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             context -> new CoverRedstoneTransmitterInternal(context, TextureFactory.of(OVERLAY_REDSTONE_TRANSMITTER)),
             CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         CoverRegistry.registerCover(
-            ItemList.Cover_RedstoneReceiverExternal.get(1L),
+            ItemList.Cover_RedstoneReceiver.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_REDSTONE_RECEIVER)),
             context -> new CoverRedstoneReceiverExternal(context, TextureFactory.of(OVERLAY_REDSTONE_RECEIVER)),
             CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         CoverRegistry.registerCover(
-            ItemList.Cover_RedstoneReceiverInternal.get(1L),
-            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_REDSTONE_RECEIVER)),
-            context -> new CoverRedstoneReceiverInternal(context, TextureFactory.of(OVERLAY_REDSTONE_RECEIVER)),
+            ItemList.Cover_WirelessController.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_WIRELESS_CONTROLLER)),
+            context -> new CoverWirelessController(context, TextureFactory.of(OVERLAY_WIRELESS_CONTROLLER)),
             CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
 
         CoverRegistry.registerCover(
@@ -4233,6 +4242,10 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             ItemList.Schematic_Dust.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { aTextEmptyRow, aTextShape, "  d", 'P', ItemList.Schematic });
+        GTModHandler.addCraftingRecipe(
+            ItemList.Schematic_Dust_Small.get(1L),
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { aTextEmptyRow, aTextShape, " d ", 'P', ItemList.Schematic });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Battery_Hull_LV.get(1L),
@@ -4705,6 +4718,10 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             ItemList.Schematic.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { ItemList.Schematic_Dust });
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.Schematic.get(1L),
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { ItemList.Schematic_Dust_Small });
 
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.Tool_DataOrb.get(1L),
@@ -4715,19 +4732,6 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             ItemList.Tool_DataStick.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { ItemList.Tool_DataStick.get(1L) });
-
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.Cover_RedstoneTransmitterInternal.get(1L),
-            new Object[] { ItemList.Cover_RedstoneTransmitterExternal.get(1L) });
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.Cover_RedstoneReceiverInternal.get(1L),
-            new Object[] { ItemList.Cover_RedstoneReceiverExternal.get(1L) });
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.Cover_RedstoneTransmitterExternal.get(1L),
-            new Object[] { ItemList.Cover_RedstoneTransmitterInternal.get(1L) });
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.Cover_RedstoneReceiverExternal.get(1L),
-            new Object[] { ItemList.Cover_RedstoneReceiverInternal.get(1L) });
 
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.ItemFilter_Export.get(1L),
