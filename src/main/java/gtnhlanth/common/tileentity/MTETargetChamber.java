@@ -199,7 +199,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             .addInfo("and have sufficient " + createFocusText("Focus") + " and " + EnumChatFormatting.GOLD+"Rate")
             .addInfo(EnumChatFormatting.WHITE + "Processing Time" + EnumChatFormatting.GRAY + " is determined solely by the " + createRateText("Beam Rate"))
             .addInfo(EnumChatFormatting.WHITE + "Processing Time = 5 seconds * " + EnumChatFormatting.GOLD + "Minimum Required Rate" + EnumChatFormatting.WHITE + " / " + createRateText("Input Beam Rate"))
-            .addInfo("Can process up to one " + createMaskText("Mask's") + " worth of durability per game tick")
+            .addInfo("Can process up to the durability of all " + createMaskText("Mask's") + " in the Focus Input Bus of one type per game tick")
             .beginStructureBlock(5, 5, 6, true)
             .addController("Front bottom")
             .addCasingInfoExactly("Grate Machine Casing", 29, false)

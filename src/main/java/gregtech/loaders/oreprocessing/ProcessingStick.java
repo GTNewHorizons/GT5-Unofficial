@@ -107,7 +107,7 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
                     .addTo(cutterRecipes);
             }
 
-            if ((aMaterial.mUnificatable) && (aMaterial.mMaterialInto == aMaterial)) {
+            if ((aMaterial.mUnifiable) && (aMaterial.mMaterialInto == aMaterial)) {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.stick, aMaterial, 2L),
@@ -125,7 +125,8 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
             {
                 if (GTOreDictUnificator.get(OrePrefixes.springSmall, aMaterial, 1L) != null) {
                     GTValues.RA.stdBuilder()
-                        .itemInputs(GTUtility.copyAmount(1, aStack), GTUtility.getIntegratedCircuit(1))
+                        .itemInputs(GTUtility.copyAmount(1, aStack))
+                        .circuit(1)
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.springSmall, aMaterial, 2L))
                         .duration(5 * SECONDS)
                         .eut(calculateRecipeEU(aMaterial, 8))

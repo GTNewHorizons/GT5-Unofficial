@@ -49,7 +49,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -64,6 +63,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.blocks.BlockCasingsAbstract;
 
 public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreezer> implements ISurvivalConstructable {
@@ -109,9 +109,9 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
 
     private static final ArrayList<SubspaceCoolingFluid> SUBSPACE_COOLING_FLUIDS = new ArrayList<>(
         Arrays.asList(
-            new SubspaceCoolingFluid(MaterialsUEVplus.SpaceTime, 1, 7500),
-            new SubspaceCoolingFluid(MaterialsUEVplus.Space, 2, 5000),
-            new SubspaceCoolingFluid(MaterialsUEVplus.Eternity, 3, 2500)));
+            new SubspaceCoolingFluid(Materials.SpaceTime, 1, 7500),
+            new SubspaceCoolingFluid(Materials.Space, 2, 5000),
+            new SubspaceCoolingFluid(Materials.Eternity, 3, 2500)));
 
     private SubspaceCoolingFluid currentCoolingFluid = null;
 
@@ -233,8 +233,12 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Vacuum Freezer, MVF")
-            .addInfo("Handles all things cooling!")
+            .addInfo(
+                TooltipHelper.coloredText(
+                    TooltipHelper.italicText("\"Handles all things cooling!\""),
+                    EnumChatFormatting.DARK_GRAY))
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
+            .addSeparator()
             .addTecTechHatchInfo()
             .addUnlimitedTierSkips()
             .addSeparator()

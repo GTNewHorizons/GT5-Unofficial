@@ -25,6 +25,8 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.gui.modularui.multiblock.godforge.MTEMoltenModuleGui;
 import tectech.recipe.TecTechRecipeMaps;
 
 public class MTEMoltenModule extends MTEBaseModule {
@@ -85,12 +87,12 @@ public class MTEMoltenModule extends MTEBaseModule {
             @NotNull
             @Override
             protected CheckRecipeResult onRecipeStart(@NotNull GTRecipe recipe) {
-                if (!addEUToGlobalEnergyMap(userUUID, -calculatedEut * duration)) {
-                    return CheckRecipeResultRegistry.insufficientPower(calculatedEut * duration);
+                BigInteger powerForRecipe = BigInteger.valueOf(calculatedEut)
+                    .multiply(BigInteger.valueOf(duration));
+                if (!addEUToGlobalEnergyMap(userUUID, powerForRecipe.negate())) {
+                    return CheckRecipeResultRegistry.insufficientStartupPower(powerForRecipe);
                 }
-                addToPowerTally(
-                    BigInteger.valueOf(calculatedEut)
-                        .multiply(BigInteger.valueOf(duration)));
+                addToPowerTally(powerForRecipe);
                 addToRecipeTally(calculatedParallels);
                 currentParallel = calculatedParallels;
                 EUt = calculatedEut;
@@ -110,6 +112,11 @@ public class MTEMoltenModule extends MTEBaseModule {
         logic.setMaxParallel(getActualParallel());
         logic.setSpeedBonus(getSpeedBonus());
         logic.setEuModifier(getEnergyDiscount());
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEMoltenModuleGui(this);
     }
 
     @Override

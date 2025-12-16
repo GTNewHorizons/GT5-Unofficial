@@ -40,7 +40,19 @@ public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProv
     }
 
     public static int getSlots(int aTier) {
-        return aTier < 1 ? 1 : aTier == 1 ? 4 : aTier == 2 ? 9 : 16;
+        return (aTier + 1) * (aTier + 1);
+    }
+
+    private int getOffsetTier() {
+        return mTier < 4 ? 0 : mTier - 1;
+    }
+
+    public int getOffsetX() {
+        return getOffsetTier() * 2;
+    }
+
+    public int getOffsetY() {
+        return getOffsetTier() * 16;
     }
 
     @Override
@@ -101,8 +113,11 @@ public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProv
      * @param id (page<<7)+index of the texture
      */
     public final void updateTexture(int id) {
-        texturePage = id >> 7;
-        textureIndex = id & 127;
+        int newTexturePage = id >> 7;
+        int newTextureIndex = id & 127;
+        if (newTexturePage == texturePage && newTextureIndex == textureIndex) return;
+        texturePage = newTexturePage;
+        textureIndex = newTextureIndex;
 
         IGregTechTileEntity base = getBaseMetaTileEntity();
 

@@ -166,7 +166,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
             }
         }))
         // Superconductor Base ZPM frame box
-        .addElement('G', ofFrame(Materials.Tetranaquadahdiindiumhexaplatiumosminid))
+        .addElement('G', ofFrame(Materials.SuperconductorZPMBase))
         // Coolant input hatch
         .addElement(
             'K',

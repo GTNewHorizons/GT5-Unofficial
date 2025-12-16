@@ -14,7 +14,6 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsBotania;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
@@ -38,11 +37,12 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV
             && GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L) != null) {
 
-            if (aMaterial == MaterialsBotania.Livingrock || aMaterial == MaterialsBotania.Livingwood
-                || aMaterial == MaterialsBotania.Dreamwood) {
+            if (aMaterial == Materials.Livingrock || aMaterial == Materials.Livingwood
+                || aMaterial == Materials.Dreamwood) {
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.copyAmount(1, aStack), GTUtility.getIntegratedCircuit(3))
+                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .circuit(3)
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
                     .fluidInputs(
                         Materials.Water.getFluid(
@@ -54,7 +54,8 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                     .addTo(cutterRecipes);
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.copyAmount(1, aStack), GTUtility.getIntegratedCircuit(3))
+                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .circuit(3)
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
                     .fluidInputs(
                         GTModHandler.getDistilledWater(
@@ -66,7 +67,8 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                     .addTo(cutterRecipes);
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.copyAmount(1, aStack), GTUtility.getIntegratedCircuit(3))
+                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .circuit(3)
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
                     .fluidInputs(
                         Materials.Lubricant.getFluid(

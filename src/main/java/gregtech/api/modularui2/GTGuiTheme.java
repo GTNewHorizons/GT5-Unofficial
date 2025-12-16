@@ -14,6 +14,7 @@ import com.cleanroommc.modularui.utils.JsonArrayBuilder;
 import com.cleanroommc.modularui.utils.JsonBuilder;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import gregtech.api.enums.Dyes;
 
 /**
  * Theme object gets applied to the entire panel. If you want to customize the appearance of specific widget, see
@@ -114,7 +115,7 @@ public class GTGuiTheme {
          * Set a tooltip hover background fallback for when specific widgets do not set their own.
          */
         public Builder globalHoverBackground(String hoverBackgroundId) {
-            theme.elementBuilder.add(b -> b.add("hoverBackground", hoverBackgroundId));
+            theme.elementBuilder.add(b -> b.add("background:hover", hoverBackgroundId));
             return this;
         }
 
@@ -216,7 +217,7 @@ public class GTGuiTheme {
                         new JsonBuilder().add("type", "texture")
                             .add("id", buttonId))
                         .add(
-                            "hoverBackground",
+                            "background:hover",
                             new JsonBuilder().add("type", "texture")
                                 .add("id", hoverId))
                         .add("textColor", textColor)
@@ -342,7 +343,7 @@ public class GTGuiTheme {
                         new JsonBuilder().add("type", "texture")
                             .add("id", backgroundId))
                         .add(
-                            "hoverBackground",
+                            "background:hover",
                             new JsonBuilder().add("type", "texture")
                                 .add("id", hoverBackgroundId))
                         .add(
@@ -350,7 +351,7 @@ public class GTGuiTheme {
                             new JsonBuilder().add("type", "texture")
                                 .add("id", selectedBackgroundId))
                         .add(
-                            "selectedHoverBackground",
+                            "selectedBackground:hover",
                             new JsonBuilder().add("type", "texture")
                                 .add("id", selectedHoverBackgroundId))
                         .add("selectedColor", selectedColor)
@@ -399,6 +400,11 @@ public class GTGuiTheme {
          */
         public Builder customTextColor(String textType, int color) {
             theme.elementBuilder.add(b -> b.add(textType, new JsonBuilder().add("textColor", color)));
+            return this;
+        }
+
+        public Builder themedColor(String themeId, int color) {
+            theme.elementBuilder.add(b -> b.add(themeId, new JsonBuilder().add("color", color)));
             return this;
         }
 
@@ -488,7 +494,7 @@ public class GTGuiTheme {
                         new JsonBuilder().add("type", "texture")
                             .add("id", backgroundId))
                         .add(
-                            "hoverBackground",
+                            "background:hover",
                             new JsonBuilder().add("type", "texture")
                                 .add("id", hoverBackgroundId))));
             return this;
@@ -534,6 +540,18 @@ public class GTGuiTheme {
                             new JsonBuilder().add("type", "texture")
                                 .add("id", fullTextureId))
                         .add("imageSize", imageSize)));
+            return this;
+        }
+
+        /**
+         * A shorthand for applying a Dye to every (non-text) part of the UI theme
+         * 
+         * @param dye - dye to apply
+         * @return this
+         */
+        public Builder fullColor(Dyes dye) {
+            this.color(dye.toInt())
+                .simpleToggleButton(GTTextureIds.BUTTON_STANDARD, GTTextureIds.BUTTON_STANDARD_PRESSED, dye.toInt());
             return this;
         }
 

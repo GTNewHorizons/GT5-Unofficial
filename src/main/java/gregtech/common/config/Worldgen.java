@@ -13,31 +13,6 @@ import gregtech.api.enums.Mods;
 public class Worldgen {
 
     public static General general = new General();
-    public static EndAsteroids endAsteroids = new EndAsteroids();
-
-    @Config.LangKey("GT5U.gui.config.worldgen.end_asteroids")
-    public static class EndAsteroids {
-
-        @Config.Comment("The maximum size for the end asteroids.")
-        @Config.DefaultInt(200)
-        @Config.RequiresMcRestart
-        public int EndAsteroidMaxSize;
-
-        @Config.Comment("The minimum size for the end asteroids.")
-        @Config.DefaultInt(200)
-        @Config.RequiresMcRestart
-        public int EndAsteroidMinSize;
-
-        @Config.Comment("The probability weight to generate end asteroids.")
-        @Config.DefaultInt(300)
-        @Config.RequiresMcRestart
-        public int EndAsteroidProbability;
-
-        @Config.Comment("if true, enables end asteroids.")
-        @Config.DefaultBoolean(true)
-        @Config.RequiresMcRestart
-        public boolean generateEndAsteroids;
-    }
 
     @Config.LangKey("GT5U.gui.config.worldgen.general")
     public static class General {

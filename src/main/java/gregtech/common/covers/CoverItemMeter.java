@@ -20,6 +20,8 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.cover.CoverItemMeterGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.gui.mui1.cover.ItemMeterUIFactory;
 import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
@@ -62,7 +64,7 @@ public class CoverItemMeter extends Cover {
         return this.threshold;
     }
 
-    public CoverItemMeter setThresdhold(int threshold) {
+    public CoverItemMeter setThreshold(int threshold) {
         this.threshold = threshold;
         return this;
     }
@@ -209,6 +211,11 @@ public class CoverItemMeter extends Cover {
     @Override
     public boolean hasCoverGUI() {
         return true;
+    }
+
+    @Override
+    protected @NotNull CoverBaseGui<?> getCoverGui() {
+        return new CoverItemMeterGui(this);
     }
 
     @Override

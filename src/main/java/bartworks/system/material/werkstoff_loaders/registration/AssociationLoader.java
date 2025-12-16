@@ -26,7 +26,7 @@ public class AssociationLoader implements IWerkstoffRunnable {
 
     @Override
     public void run(Werkstoff werkstoff) {
-        for (OrePrefixes prefixes : OrePrefixes.values()) {
+        for (OrePrefixes prefixes : OrePrefixes.VALUES) {
             if (!werkstoff.hasItemType(prefixes)) continue;
 
             Materials werkstoffBridgeMaterial = werkstoff.getBridgeMaterial();

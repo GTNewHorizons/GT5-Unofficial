@@ -369,6 +369,7 @@ public enum ItemList implements IItemContainer {
     Schematic_2by2,
     Schematic_3by3,
     Schematic_Dust,
+    Schematic_Dust_Small,
 
     GigaChad,
 
@@ -1083,6 +1084,7 @@ public enum ItemList implements IItemContainer {
     Hatch_Input_Bus_ZPM,
     Hatch_Input_Bus_UV,
     Hatch_Input_Bus_MAX,
+    Hatch_Input_Bus_Debug,
 
     Hatch_Output_ULV,
     Hatch_Output_LV,
@@ -1660,6 +1662,8 @@ public enum ItemList implements IItemContainer {
     Super_Chest_EV,
     Super_Chest_IV,
 
+    Debug_Fluid_Tank,
+
     Long_Distance_Pipeline_Fluid,
     Long_Distance_Pipeline_Item,
 
@@ -1670,9 +1674,9 @@ public enum ItemList implements IItemContainer {
     Hatch_Output_ME,
 
     NULL,
-    Cover_AdvancedRedstoneTransmitterExternal,
+    Cover_AdvancedRedstoneTransmitter,
     Cover_AdvancedRedstoneTransmitterInternal,
-    Cover_AdvancedRedstoneReceiverExternal,
+    Cover_AdvancedRedstoneReceiver,
     Cover_AdvancedRedstoneReceiverInternal,
 
     Cover_WirelessFluidDetector,
@@ -1680,10 +1684,10 @@ public enum ItemList implements IItemContainer {
     Cover_WirelessNeedsMaintainance,
     Cover_WirelessActivityDetector,
 
-    Cover_RedstoneTransmitterExternal,
+    Cover_RedstoneTransmitter,
     Cover_RedstoneTransmitterInternal,
-    Cover_RedstoneReceiverExternal,
-    Cover_RedstoneReceiverInternal,
+    Cover_RedstoneReceiver,
+    Cover_WirelessController,
 
     LargeSteamTurbine,
     LargeGasTurbine,
@@ -1748,6 +1752,12 @@ public enum ItemList implements IItemContainer {
     Casing_Item_Pipe_Quantium,
     Casing_Item_Pipe_Fluxed_Electrum,
     Casing_Item_Pipe_Black_Plutonium,
+
+    Casing_Cable,
+    Casing_Graphite_Moderator,
+    Casing_Insulated_Fluid_Pipe,
+    Casing_Beryllium_Integrated_Reactor,
+    Casing_Refined_Graphite,
 
     MobRep_LV,
     MobRep_MV,
@@ -2148,6 +2158,8 @@ public enum ItemList implements IItemContainer {
     Superconducting_Magnet_Solenoid_UMV,
     RadiantNaquadahAlloyCasing,
     PCBFactory,
+    PCBBioChamber,
+    PCBCoolingTower,
     BasicPhotolithographicFrameworkCasing,
     ReinforcedPhotolithographicFrameworkCasing,
     RadiationProofPhotolithographicFrameworkCasing,
@@ -2202,6 +2214,7 @@ public enum ItemList implements IItemContainer {
     CasingIchorium,
     EntropicProcessor,
     DecayWarehouse,
+    LATEX,
     AcceleratorLV,
     AcceleratorMV,
     AcceleratorHV,
@@ -2223,6 +2236,7 @@ public enum ItemList implements IItemContainer {
     Hatch_Input_UMV,
     Hatch_Input_UXV,
     Hatch_Input_MAX,
+    Hatch_Input_Debug,
     Hatch_Output_UEV,
     Hatch_Output_UIV,
     Hatch_Output_UMV,
@@ -2674,6 +2688,9 @@ public enum ItemList implements IItemContainer {
     Intensely_Bonded_Netherite_Nanoparticles,
     Hot_Netherite_Scrap,
     LargeMolecularAssembler,
+    Beryllium_Shielding_Plate,
+    Alumina_Support_Ring,
+    Alumina_Support_Ring_Raw,
     Prismarine_Precipitate,
     Prismatic_Crystal,
     Radiation_Proof_Prismatic_Naquadah_Composite_Sheet,
@@ -2747,6 +2764,14 @@ public enum ItemList implements IItemContainer {
     MagLevHarness,
 
     ManaFly,
+    DebugEnergyHatch,
+
+    ChaosLocator,
+
+    CokeOvenController,
+    CokeOvenCasing,
+    CokeOvenHatch,
+
     // semicolon after the comment to reduce merge conflicts
     ;
 
